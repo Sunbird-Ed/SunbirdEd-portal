@@ -621,7 +621,7 @@ li.subStr::after {
   border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.15) !important;
 }
 .ui.basic.label {
-  border: calculateRem(1px) solid var(--rc-fdfdfd) !important;
+  border: calculateRem(1px) solid var(--rc-fdfdfd);
 }
 .ui.basic.label:hover {
   border-color: var(--primary-color) !important;

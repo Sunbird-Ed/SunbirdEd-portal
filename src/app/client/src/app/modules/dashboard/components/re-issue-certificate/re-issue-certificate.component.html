@@ -14,7 +14,7 @@
                 <label for="search-user-input-id" class="hide">{{resourceService?.frmelmnts?.lbl?.searchUser}}</label>
                 <input class="sb-form-control font-weight-bold" id="search-user-input-id" name="id" placeholder="{{resourceService?.frmelmnts?.lbl?.searchUser}}" type="id" [(ngModel)]="userName" (ngModelChange)="resetValues()">
                 <small class="message sb-color-error font-weight-bold mt-8"></small></div>
-              <button class="sb-btn sb-btn-normal ml-16" id="search-btn" type="button" (click)="searchCertificates();addTelemetry('search-user-cert', {userId: userName, courseId: courseId})" [disabled]="!userName"
+              <button class="sb-btn sb-btn-normal ml-16" id="search-btn" type="button" tabindex="0" (click)="searchCertificates();addTelemetry('search-user-cert', {userId: userName, courseId: courseId})" [disabled]="!userName"
                 #searchBtn [ngClass]="{'sb-btn-disabled': !userName?.trim(), 'sb-btn-outline-primary': userName}">{{resourceService?.frmelmnts?.lbl?.search}}</button>
             </div>
           </div>
@@ -80,7 +80,7 @@
               </div>
               <div class="two wide column pl-0" *ngIf="batch?.certificates?.length || batch?.status === 2">
                 <div class="re-issue-status text-center cursor-pointer">
-                  <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
+                  <a class="font-weight-bold sb-color-primary" tabindex="0" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
                 </div>
               </div>
             </div>   
