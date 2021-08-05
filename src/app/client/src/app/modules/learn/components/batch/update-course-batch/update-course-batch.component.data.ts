@@ -68,7 +68,19 @@ export const getUserList = {
           'gender': null,
           'subject': [],
           'roles': [
-            'PUBLIC'
+            {
+              "role": "COURSE_MENTOR",
+              "createdDate": null,
+              "updatedBy": null,
+              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
+              "scope": [
+                {
+                  "organisationId": "0124065033550888960"
+                }
+              ],
+              "updatedDate": null,
+              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+            }
           ],
           'channel': null,
           'language': [],
@@ -78,11 +90,11 @@ export const getUserList = {
           'isDeleted': false,
           'organisations': [],
           'countryCode': '+91',
-          'id': '3e6c6eb7-8c0c-45b6-9114-e36b59e1aa8b',
+          'id': 'b2479136-8608-41c0-b3b1-283f38c338ed',
           'tempPassword': null,
           'email': '',
           'phoneverified': null,
-          'identifier': '3e6c6eb7-8c0c-45b6-9114-e36b59e1aa8b',
+          'identifier': 'b2479136-8608-41c0-b3b1-283f38c338ed',
           'thumbnail': null,
           'address': [],
           'jobProfile': [],
@@ -304,11 +316,19 @@ export const getUserDetails = {
           'regOrgId': null,
           'subject': [],
           'roles': [
-            'CONTENT_CREATOR',
-            'CONTENT_CREATION',
-            'CONTENT_REVIEWER',
-            'CONTENT_REVIEW',
-            'FLAG_REVIEWER'
+            {
+              "role": "COURSE_MENTOR",
+              "createdDate": null,
+              "updatedBy": null,
+              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
+              "scope": [
+                {
+                  "organisationId": "0124065033550888960"
+                }
+              ],
+              "updatedDate": null,
+              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+            }
           ],
           'language': [],
           'updatedDate': '2017-08-17 06:46:20:422+0000',
@@ -393,7 +413,19 @@ export const getUserDetails = {
             'Economics'
           ],
           'roles': [
-            'public'
+            {
+              "role": "COURSE_MENTOR",
+              "createdDate": null,
+              "updatedBy": null,
+              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
+              "scope": [
+                {
+                  "organisationId": "0124065033550888960"
+                }
+              ],
+              "updatedDate": null,
+              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+            }
           ],
           'channel': null,
           'language': [

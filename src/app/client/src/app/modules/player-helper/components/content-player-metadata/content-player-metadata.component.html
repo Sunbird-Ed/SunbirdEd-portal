@@ -6,13 +6,13 @@
         </h4>
         <div *ngIf="!readMore">
             <span class="overflow-word-wrap">{{metadata.description | slice:0:150 }}&nbsp;</span>
-            <span class="ui expand-or-minimize mouse-pointer" (click)="readMore = !readMore" *ngIf="metadata.description.length > 150 && readMore === false">
+            <span class="ui expand-or-minimize mouse-pointer" tabindex="0" (click)="readMore = !readMore" *ngIf="metadata.description.length > 150 && readMore === false">
                 {{resourceService.frmelmnts.lbl.readmore}}
             </span>
         </div>
         <div *ngIf="readMore">
             <span class="overflow-word-wrap">{{metadata.description}}&nbsp;</span>
-            <span class="ui expand-or-minimize mouse-pointer" (click)="readMore = false">
+            <span class="ui expand-or-minimize mouse-pointer" tabindex="0" (click)="readMore = false">
                 {{resourceService.frmelmnts.lbl.readless}}
             </span>
         </div>
@@ -51,7 +51,7 @@
         <dd>
             <span *ngIf="metadata.copyright" class="d-inline-block mr-20">{{metadata.copyright}}
                 <span *ngIf="metadata.copyrightYear">,&nbsp;{{metadata.copyrightYear}}</span></span>
-            <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
+            <a tabindex="0" (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
                 {{resourceService.frmelmnts.lbl.contentCredits}}
             </a>
         </dd>

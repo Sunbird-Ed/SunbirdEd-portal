@@ -11,7 +11,7 @@
 <div class="grey text text-center my-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
 <div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-32 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
-  <span (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
+  <span tabindex="0" (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
   again</div>
 <div *ngIf="!infoMessage" class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</div>
 <form class="sb-form borderd mb-16" [formGroup]="otpForm">
@@ -31,5 +31,5 @@
        <input type="submit" appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
        class="sb-btn sb-btn-normal w-50" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
       </div>
-      <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
+      <a tabindex="0" (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
 </form>
