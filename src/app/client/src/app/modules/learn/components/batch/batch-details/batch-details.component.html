@@ -59,7 +59,9 @@
                 </div>
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto"
                   tabindex="0" 
-                  (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
+                  (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);"
+                  [ngClass]="{'sb-btn-disabled': (!isExpiredBatchEditable && batch.status === 2)}"
+                  [disabled]="(!isExpiredBatchEditable && batch.status === 2)">
                   {{resourceService?.frmelmnts?.lbl?.edit}}
                 </button>
               </div>

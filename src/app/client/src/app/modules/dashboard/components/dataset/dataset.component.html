@@ -51,13 +51,14 @@
   </div>
 
   <div>
-    <sui-accordion class="styled fluid sb-accordion">
-      <sui-accordion-panel [isOpen]="true">
-        <div title class="sb-accordion-title">
-          {{ resourceService?.frmelmnts?.lbl?.dataDictionary}}
-          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
-        </div>
-        <div content class="sb-accordion-content">
+    <mat-accordion>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ resourceService?.frmelmnts?.lbl?.dataDictionary}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="sb-accordion-content">
           <div class="sb-accordion-text">
             <div appMarkdown [input]="dataDictionary"
               *ngIf="!reportService?.isUserSuperAdmin() && dataDictionary?.length"></div>
@@ -66,9 +67,11 @@
             </div>
             <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
               <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
-                <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
-                <div class="ui warning message" *ngIf="!dataDictionary?.length">
-                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                <div class="ui bottom attached segment" style="min-height: 200px; width:100%; overflow: auto;">
+                  <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
+                  <div class="ui warning message" *ngIf="!dataDictionary?.length">
+                    {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                  </div>
                 </div>
               </mat-tab>
               <mat-tab label="{{resourceService?.frmelmnts?.lbl?.edit}}">
@@ -88,25 +91,27 @@
             </mat-tab-group>
           </div>
         </div>
-      </sui-accordion-panel>
+      </mat-expansion-panel>
 
-      <sui-accordion-panel [isOpen]="false">
-        <div title class="sb-accordion-title">
-          {{ resourceService?.frmelmnts?.lbl?.datasetExamples}}
-          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
-        </div>
-        <div content class="sb-accordion-content">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ resourceService?.frmelmnts?.lbl?.datasetExamples}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="sb-accordion-content">
           <div class="sb-accordion-text">
             <div appMarkdown [input]="examples" *ngIf="!reportService?.isUserSuperAdmin() && examples?.length"></div>
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !examples?.length">
               {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
-
             <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
               <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
-                <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
-                <div class="ui warning message" *ngIf="!examples?.length">
-                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                <div class="ui bottom attached segment" style="min-height: 200px; width:100%; overflow: auto;">
+                  <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
+                  <div class="ui warning message" *ngIf="!examples?.length">
+                    {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                  </div>
                 </div>
               </mat-tab>
               <mat-tab label="{{resourceService?.frmelmnts?.lbl?.edit}}">
@@ -114,7 +119,6 @@
                   [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
                   (textChanged)="onMarkdownChange($event, 'examples')"
                   style="min-height: 200px; width:100%; overflow: auto;"></div>
-
                 <div class="sb-table-container m-0">
                   <div class="sb-table-search-header px-0">
                     <button (click)="handleMarkdownSubmission('examples')" type="button" tabindex="0"
@@ -126,7 +130,7 @@
             </mat-tab-group>
           </div>
         </div>
-      </sui-accordion-panel>
-    </sui-accordion>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>

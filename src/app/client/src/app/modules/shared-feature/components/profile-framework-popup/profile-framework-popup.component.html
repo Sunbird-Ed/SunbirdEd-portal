@@ -3,6 +3,7 @@
   [isClosable]="isClosable"
   [transitionDuration]="0"
   [size]="'normal'"
+  tabindex="0"
   class="sb-modal sb-preference-modal"
   #modal 
   (dismissed)="modal.deny();close.emit();popupControlService.changePopupStatus(true);"
