@@ -33,7 +33,7 @@
             </sui-select>
           </div>
           <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
-            class="link" (click)="applySorting(sortByOption)">
+            class="link" tabindex="0" (click)="applySorting(sortByOption)">
           </i>
         </div>
       </div>
@@ -55,7 +55,7 @@
             <span *ngFor="let item of queryParams[value.id] ">
               <a class="ui label mt-5 mr-5">
                 {{item}}
-                <i class="delete icon" (click)="removeFilterSelection(value.id,item)"></i>
+                <i class="delete icon" tabindex="0" (click)="removeFilterSelection(value.id,item)"></i>
               </a>
             </span>
           </span>

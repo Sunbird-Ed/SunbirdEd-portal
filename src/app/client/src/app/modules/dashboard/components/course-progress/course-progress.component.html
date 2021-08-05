@@ -27,7 +27,7 @@
             <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
               [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id" #select>
               <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
-                (click)="setBatchId(course);" appTelemetryInteract [telemetryInteractObject]="interactObject"
+                (click)="setBatchId(course);" tabindex="0" appTelemetryInteract [telemetryInteractObject]="interactObject"
                 [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
                 [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
               </sui-select-option>
@@ -115,7 +115,7 @@
 
   <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
     <div class="ui pointing secondary menu">
-      <a class="item" (click)="loadOndemandReports(2)"
+      <a class="item" (click)="loadOndemandReports(2)" tabindex="0"
         suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
     </div>
     <div class="ui segment state-report" suiTabContent="1">

@@ -70,11 +70,6 @@ export class SolutionListingComponent implements OnInit {
       },
       (error) => {}
     );
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
   }
 
   getSolutions() {
@@ -118,6 +113,11 @@ export class SolutionListingComponent implements OnInit {
           this.noResult = true;
       }
     );
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   }
 
   public navigateToPage(page: number): void {

@@ -55,10 +55,10 @@
           <div class="description pt-10">
             <div *ngIf="descriptionReadMore && userDetails.profileSummary.length > 120">
               <span class="overflow-word-wrap">{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
-              <span class="ui expand-or-minimize" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readmore | translate}}</span>
+              <span class="ui expand-or-minimize" tabindex="0" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readmore | translate}}</span>
             </div>
             <div class="overflow-word-wrap" *ngIf="!descriptionReadMore && userDetails.profileSummary.length > 120"> {{userDetails.profileSummary}}&nbsp;
-              <span class="ui expand-or-minimize" (click)="descriptionReadMore = true;">{{resourceService.frmelmnts?.lbl?.readless | translate}}</span>
+              <span class="ui expand-or-minimize" tabindex="0" (click)="descriptionReadMore = true;">{{resourceService.frmelmnts?.lbl?.readless | translate}}</span>
             </div>
           </div>
         </div>
@@ -156,7 +156,7 @@
                 </div>
               </div>
               <div *ngIf="!skill.isEndorsable" class="ui circular labels float-ContentRight ">
-                <a class="ui basic label" (click)="submitEndorsement(skill.skillName)" [ngClass]="{'not-active': disableEndorsementButton }">
+                <a class="ui basic label" tabindex="0" (click)="submitEndorsement(skill.skillName)" [ngClass]="{'not-active': disableEndorsementButton }">
                   +1 </a>
               </div>
             </div>
@@ -164,13 +164,13 @@
         </div>
         <div class="ui bottom attached tabular menu  expand-or-minimize-btn ng-scope " *ngIf="userDetails.skills.length > defaultLimit">
           <div class="active item  expand-or-minimize-btn-pad">
-            <a (click)="toggle(true); skillLimit = userDetails.skills.length" *ngIf="skillViewMore">
+            <a tabindex="0" (click)="toggle(true); skillLimit = userDetails.skills.length" *ngIf="skillViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewmore | translate}}
                 <i class="chevron down icon"></i>
               </span>
             </a>
-            <a (click)="toggle(false)" *ngIf="!skillViewMore">
+            <a tabindex="0" (click)="toggle(false)" *ngIf="!skillViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewless | translate}}
                 <i class="chevron up icon"></i>
@@ -204,13 +204,13 @@
         </div>
         <div class="ui bottom attached tabular menu expand-or-minimize-btn" *ngIf="userDetails.badgeArray.length > badgeDefaultLimit">
           <div class="active item expand-or-minimize-btn-pad">
-            <a (click)="badgeToggle(true)" *ngIf="badgeViewMore">
+            <a tabindex="0" (click)="badgeToggle(true)" *ngIf="badgeViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewmore | translate}}
                 <i class="chevron down icon"></i>
               </span>
             </a>
-            <a (click)="badgeToggle(false)" *ngIf="!badgeViewMore">
+            <a tabindex="0" (click)="badgeToggle(false)" *ngIf="!badgeViewMore">
               <span class="cursor-pointer">
                 {{resourceService?.frmelmnts?.btn?.viewless | translate}}
                 <i class="chevron up icon"></i>

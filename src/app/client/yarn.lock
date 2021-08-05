@@ -158,6 +158,16 @@
     ora "4.0.3"
     rxjs "6.5.4"
 
+"@angular-slider/ngx-slider@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@angular-slider/ngx-slider/-/ngx-slider-2.0.3.tgz#98e805ef388f9326144e111b76226d0db35fe080"
+  integrity sha512-5NSHsYtHomBgJyPe7KtxTAJDLywHbuTb36NjD3dafbbj1VUbshX1m04d4JcyEiAB+Zeetcjkiy4jxQypUXYhHA==
+  dependencies:
+    detect-passive-events "^1.0.4"
+    rxjs "^6.5.2"
+    rxjs-compat "^6.5.2"
+    tslib "^1.9.0"
+
 "@angular/animations@^9.1.13":
   version "9.1.13"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-9.1.13.tgz#561305f7bf4a7a5ea3ff172d6fac31615667acb0"
@@ -1514,15 +1524,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.15.tgz#e860204a970905160ad7da35b82883220e1efd88"
-  integrity sha512-+0AiFR5vVpnfj6fEoKUovIZ3iRlB329jf5BKb20CFjcW3uJriIKzZOlBa1KSyqhp7f5SX3RTN4+u/NSoBRsAXg==
+"@project-sunbird/sb-themes@0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.19.tgz#db4ff11057df779e70f161fc867892e20237e6d5"
+  integrity sha512-kBUFSrF5Ib8DOnNZ//I8IyiZRcD1NNOkUkvw9+wo4E4rlrWaOOqgcjWCx7Bx+mNvQUbOXlXW5p5QONWnEJzUTg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.1.41":
-  version "4.1.41"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.41.tgz#39a9479148e82e95fd0e8f44f504f202967415e5"
-  integrity sha512-A8CLsLPKEE8hFO+cXTms0lcKRv+xFTyYIpe13BtvlcdXzPcrl3PyyjqCyLkYIpS0mMqyrijyixoKraZLMtdDLA==
+"@project-sunbird/sunbird-collection-editor-v9@4.2.4":
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.4.tgz#c4f43e11fbc7ea4e0224f73a770df34897424b25"
+  integrity sha512-Yn/rjXGmcFlBLoEPJ0EZVzkEZJuNpIcPCkxUqoGIJcDgViMz1P/44l9P5QhwVbJZ1UMGCQCrREwiFimMy00E1g==
   dependencies:
     tslib "^1.10.0"
 
@@ -1646,11 +1656,12 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.7.tgz#7754716a2f95a96dc2e637a39e04320c0a8cd56a"
-  integrity sha512-96RUqk8E8FiHmzh3S39vRQUvou5YziRa+oc7kufVeyTDGuzZAtpPpLrPnZmhZJ8q9qkHzAtxF0mDvGMO1K8HoA==
+"@shikshalokam/sl-questionnaire@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.8.tgz#fe880c5bb8669b7288bf602d922ff2f4460e34d0"
+  integrity sha512-a3oDdM57BimiEYvj3ieXRr7vbiEQMdjvBiqxaS5c/9mtLfSFho9xEtcmh1bADs4d3BDAVmx+e/hU5QnBV8PJ+A==
   dependencies:
+    "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
 
 "@shikshalokam/sl-reports-library@^1.0.5":
@@ -3694,10 +3705,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements-v9@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.1.1.tgz#483475543ff1022390afe3edc4a6151c38ed6fb9"
-  integrity sha512-U5NzgykLxW+pq+BKbyxV+NrzG1sqMLa3q+PDItVlmQQYvjqM0Rs1LE/idgTggnFi9qKVIrh0S4TlEh4a2mpkcw==
+common-form-elements-v9@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.2.0.tgz#aa9b84ae9327c7ad7031a5a4340a7866419549b9"
+  integrity sha512-3Il30057H2HqgcAwcNQ5z+6HHZz6hUYQ6XoyLuq74OxAIOUU8PJbslZAj/O1sc1l80Ip+Z7RRkS8fEKUHkC5Eg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -4441,6 +4452,11 @@ detect-node@^2.0.4:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.1.0.tgz#c9c70775a49c3d03bc2c06d9a73be550f978f8b1"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
+
+detect-passive-events@^1.0.4:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/detect-passive-events/-/detect-passive-events-1.0.5.tgz#ce324db665123bef9e368b8059ff95d95217cc05"
+  integrity sha512-foW7Q35wwOCxVzW0xLf5XeB5Fhe7oyRgvkBYdiP9IWgLMzjqUqTvsJv9ymuEWGjY6AoDXD3OC294+Z9iuOw0QA==
 
 dezalgo@^1.0.0:
   version "1.0.3"
@@ -8460,10 +8476,10 @@ moment-duration-format@2.3.2:
   resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-2.3.2.tgz#5fa2b19b941b8d277122ff3f87a12895ec0d6212"
   integrity sha512-cBMXjSW+fjOb4tyaVHuaVE/A5TqkukDWiOfxxAjY+PEqmmBQlLwn+8OzwPiG3brouXKY5Un4pBjAeB6UToXHaQ==
 
-moment@2.29.1, moment@^2.10.2, moment@^2.29.1:
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+moment@2.22.1, moment@^2.10.2, moment@^2.29.1:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
+  integrity sha512-shJkRTSebXvsVqk56I+lkb2latjBs8I+pc2TzWc545y2iFnSjm7Wg0QMh+ZWcdSLQyGEau5jI8ocnmkyTgr9YQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -8658,10 +8674,10 @@ ng2-material-dropdown@0.11.0:
   dependencies:
     tslib "^1.9.0"
 
-ng2-semantic-ui-v9@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.3.tgz#19e0db6948127ce46ec415810dcccb334e1458a6"
-  integrity sha512-nP+/BwiyIl3GnEPTCRVuQOofi/5VO/WkqbynaIas5tTxJRZXmKjyFk5L8e769C2Sz2+/jf8RWXq9CRIlE17F+Q==
+ng2-semantic-ui-v9@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.4.tgz#728e54d9dab1703438026dd182d942c70ee05563"
+  integrity sha512-nVzQP+lBSEWobhZX/ouNhivSe1cw/wju0fTe2Dq96eGC/iVz9gQ4McsyompGgcIIxYqRAJW+AdX0XgMhYD/uyg==
   dependencies:
     bowser "^1.7.2"
     date-fns "2.0.0-alpha.1"
@@ -10714,6 +10730,11 @@ rust-result@^1.0.0:
   dependencies:
     individual "^2.0.0"
 
+rxjs-compat@^6.5.2:
+  version "6.6.7"
+  resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.6.7.tgz#6eb4ef75c0a58ea672854a701ccc8d49f41e69cb"
+  integrity sha512-szN4fK+TqBPOFBcBcsR0g2cmTTUF/vaFEOZNuSdfU8/pGFnNmmn2u8SystYXG1QMrjOPBc6XTKHMVfENDf6hHw==
+
 rxjs@6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.4.0.tgz#f3bb0fe7bda7fb69deac0c16f17b50b0b8790504"
@@ -10728,7 +10749,7 @@ rxjs@6.5.4:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^6.4.0, rxjs@^6.5.3, rxjs@^6.5.5:
+rxjs@^6.4.0, rxjs@^6.5.2, rxjs@^6.5.3, rxjs@^6.5.5:
   version "6.6.7"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
   integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
