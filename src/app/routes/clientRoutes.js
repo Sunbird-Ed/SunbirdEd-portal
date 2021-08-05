@@ -287,6 +287,7 @@ const redirectTologgedInPage = (req, res) => {
 	}
   if ((_.get(req, 'query.redirect_uri')) && (_.get(req, 'query.redirect_uri')).includes(VDNURL)){
     res.cookie ('redirectPath', VDNURL);
+    res.cookie ('redirectTo', (_.get(req, 'query.redirect_uri')));
   }
 	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
 		if (_.get(redirectRoutes, req.originalUrl)) {
