@@ -28,10 +28,10 @@
                                 <div *ngIf="batchDetails.description" class="des-content">
                                     <p *ngIf="!readMore"> {{ batchDetails.description | slice:0:120}}&nbsp;
                                         <span class="ui cardsKnowMore mouse-pointer" *ngIf="batchDetails.description && batchDetails.description.length > 120 && readMore === false"
-                                            (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                                            tabindex="0" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
                                     </p>
                                     <p *ngIf="readMore" class="courseStructureDesc"> {{ batchDetails.description}}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+                                        <span class="ui cardsKnowMore mouse-pointer" tabindex="0" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
                                     </p>
                                 </div>
                             </div>

@@ -55,7 +55,7 @@
   <dl class="sb-meta-data">
       <dt>{{resourceService.frmelmnts?.lbl?.contentCredits}}</dt>
       <dd appTelemetryInteract [telemetryInteractObject]="getTelemetryInteractObject()" [telemetryInteractEdata]= "getTelemetryInteractEdata({id: 'view-credits'})">
-          <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer text-underline">{{resourceService.frmelmnts?.lbl?.view}}</a>
+          <a tabindex="0" (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer text-underline">{{resourceService.frmelmnts?.lbl?.view}}</a>
       </dd>
   </dl>
 </div>

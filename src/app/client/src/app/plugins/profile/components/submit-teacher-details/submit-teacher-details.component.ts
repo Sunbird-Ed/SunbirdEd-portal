@@ -583,7 +583,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     };
     request.consumerId = this.userService.channel;
     request.objectId = this.userService.channel;
-    request.objectType = 'global';
+    request.objectType = 'Organisation';
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {

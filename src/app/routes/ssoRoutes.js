@@ -19,6 +19,7 @@ const errorUrl = '/sso/sign-in/error';
 const { logger } = require('@project-sunbird/logger');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
+const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org/';
 
 module.exports = (app) => {
 
@@ -46,6 +47,9 @@ module.exports = (app) => {
       }
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
+      if (_.get(req,'cookies.redirectPath')){
+        res.cookie ('userDetails', userDetails.identifier);
+      }
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
@@ -197,7 +201,12 @@ module.exports = (app) => {
 
   app.get(successUrl, async (req, res) => { // to support mobile sso flow
     sendSsoKafkaMessage(req);
-    res.status(200).sendFile('./success_loader.html', {root: __dirname})
+    if (_.get(req, 'cookies.redirectPath')){
+      res.redirect(VDNURL+'/v1/sourcing/sso/success/redirect?obj='+(_.get(req, 'cookies.userDetails')));
+    } else {
+      res.status(200).sendFile('./success_loader.html', {root: __dirname})
+    }
+    // res.status(200).sendFile('./success_loader.html', {root: __dirname})
   });
 
   app.get('/v1/sso/success/redirect', async (req, res) => {
