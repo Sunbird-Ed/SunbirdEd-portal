@@ -2,7 +2,7 @@
 <div class="relative9 sbt-inside-page-container">
     <div class="sbt-header-menu-bar">
       <div class="ui container d-flex flex-ai-center">
-        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round" *ngIf="showingResults" type="button">
+        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round" *ngIf="showingResults" type="button" (click)="goBack()">
           <i class="icon-svg icon-svg--xxs icon-back mr-4">
             <svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -28,7 +28,7 @@
             </div>
         
             <div class="no-result-container d-flex flex-dc flex-jc-center p-24 sb-bg-color-white">
-                <div class="d-flex flex-dc flex-jc-center flex-ai-center">
+                <div class="d-flex flex-dc flex-jc-center flex-ai-center" *ngIf="showNoResult">
                 <div>
                     <img height="125px" width="150px" src="./assets/images/erroricon.png">
                 </div>
@@ -58,8 +58,8 @@
           <div class="btn-container ml-24 d-flex">
             <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn" (click)="enableAssignRole()">+ ADD NEW ROLE</button>
           </div>
-          <div class="user-workexp-container">
-            <div *ngIf="showCards">
+          <div class="user-workexp-container" *ngIf="!showCards"></div>
+          <div class="user-workexp-container" *ngIf="showCards">
               <div class="user-workexp-card" *ngFor="let item of userRole">
                 <div class="user-workexp">
                   <div class="user-workexp__header">
@@ -71,16 +71,15 @@
                           </svg></i><span>Edit</span> </button></div>
                   </div>
                   <div class="user-workexp__metadata">
-                    <div class="worked-from"></div>
+                    <div class="worked-from">{{item.orgName}}</div>
                   </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div> 
     </div>
-  </div>
+</div>
   <!-- Admin role page end -->
 
   <sui-modal
@@ -91,7 +90,7 @@
   class="sb-modal"
   appBodyScroll
   [appTelemetryImpression]="telemetryImpression" 
-  (dismissed)="redirect()" 
+  (dismissed)="dismissRoleAssign()" 
   #modal
   *ngIf="showAssignRole"
 >
@@ -112,10 +111,10 @@
   <div class="sb-modal-content o-y-visible" *ngIf="!showMainLoader">
     <div class="ui grid">
       <div class="ten wide column mb-30">
-        <span class="ui header">{{resourceService.frmelmnts?.lbl?.editUserDetails | translate}}</span>
+        <span class="ui header">Add new role</span>
       </div>
     </div>
-    <form class="ui form" [formGroup]="userDetailsForm" *ngIf="userDetails">
+    <form class="ui form" [formGroup]="userDetailsForm">
       <div class="field">
         <label>{{resourceService.frmelmnts?.lbl?.role | translate}}</label>
       </div>
@@ -131,6 +130,15 @@
   
   <!--Actions-->
   <div class="sb-modal-actions">
+    <button [disabled]="!enableSubmitBtn"
+      appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" 
+      [telemetryInteractEdata]="submitInteractEdata" 
+      (click)="onSubmitForm()" tabindex="0"
+      class="sb-btn sb-btn-normal"
+    >
+      {{resourceService.frmelmnts?.btn?.cancel | translate}}
+    </button>
     <button [disabled]="!enableSubmitBtn"
       appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" 
