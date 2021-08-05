@@ -89,7 +89,7 @@
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only" appTelemetryInteract
           appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
-          (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+          tabindex="0" (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>
     </div>
     <!-- User info computer view ends-->
@@ -114,7 +114,7 @@
         <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.subject)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
-        [telemetryInteractEdata]="editFrameworkInteractEData" (click)="showEdit = !showEdit">
+        [telemetryInteractEdata]="editFrameworkInteractEData" tabindex="0" (click)="showEdit = !showEdit">
         <button appOnlineOnly
           class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>

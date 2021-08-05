@@ -64,10 +64,10 @@ module.exports = (app) => {
          newGoogleUserDetails['emailId'] = payload.email;
          logger.info({msg: 'creating new google user'});
          errType = 'USER_CREATE_API';
-         newUserDetails = await createUserWithMailId(newGoogleUserDetails, 'google-auth', req).catch(handleCreateUserError);
+         newUserDetails = await createUserWithMailId(newGoogleUserDetails, 'android', req).catch(handleCreateUserError);
          await utils.delay(GOOGLE_SIGN_IN_DELAY);
        }
-       const keyCloakToken = await createSession(emailId, {client_id: 'google-auth'}, req, res).catch(handleCreateSessionError);
+       const keyCloakToken = await createSession(emailId, {client_id: 'android'}, req, res).catch(handleCreateSessionError);
        res.send(keyCloakToken);
      }).catch((err) => {
        res.status(400).send({

@@ -48,7 +48,7 @@
         <button
             class="sb-btn sb-btn-normal sb-btn-primary"
             *ngIf="!createForm" 
-            (click)="disableApproveBtn=true; updateOrgType()" 
+            tabindex="0" (click)="disableApproveBtn=true; updateOrgType()" 
             [class.disabled]="disabled"
             appTelemetryInteract 
             [telemetryInteractEdata]="updateOrganizationType"
@@ -57,7 +57,7 @@
         </button>
         <button
             class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-            (click)="modal.deny()"
+            tabindex="0" (click)="modal.deny()"
             appTelemetryInteract 
             [telemetryInteractEdata]="cancelModal"
         >

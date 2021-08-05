@@ -6,7 +6,7 @@
         <label>
         <sui-select [isSearchable]="false" formControlName="reportType" class="selection course-dashboard-select" placeholder="Choose your report"
                     [options]="reportTypes" labelField="title" valueField="title" #select>
-          <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
+          <sui-select-option *ngFor="let report of reportTypes" [value]="report" tabindex="0" (click)="reportChanged(report);">
           </sui-select-option>
         </sui-select></label>
 
@@ -15,7 +15,7 @@
         </div>
         <button type="button" [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))"
         [ngClass]="{'sb-btn-disabled': (!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))}"
-        (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary">
+        tabindex="0" (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary">
           {{resourceService?.frmelmnts?.lbl?.request}}
         </button>
       </div>
