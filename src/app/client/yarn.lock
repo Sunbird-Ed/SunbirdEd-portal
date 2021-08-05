@@ -1524,15 +1524,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.15.tgz#e860204a970905160ad7da35b82883220e1efd88"
-  integrity sha512-+0AiFR5vVpnfj6fEoKUovIZ3iRlB329jf5BKb20CFjcW3uJriIKzZOlBa1KSyqhp7f5SX3RTN4+u/NSoBRsAXg==
+"@project-sunbird/sb-themes@0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.19.tgz#db4ff11057df779e70f161fc867892e20237e6d5"
+  integrity sha512-kBUFSrF5Ib8DOnNZ//I8IyiZRcD1NNOkUkvw9+wo4E4rlrWaOOqgcjWCx7Bx+mNvQUbOXlXW5p5QONWnEJzUTg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.1.41":
-  version "4.1.41"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.41.tgz#39a9479148e82e95fd0e8f44f504f202967415e5"
-  integrity sha512-A8CLsLPKEE8hFO+cXTms0lcKRv+xFTyYIpe13BtvlcdXzPcrl3PyyjqCyLkYIpS0mMqyrijyixoKraZLMtdDLA==
+"@project-sunbird/sunbird-collection-editor-v9@4.2.4":
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.4.tgz#c4f43e11fbc7ea4e0224f73a770df34897424b25"
+  integrity sha512-Yn/rjXGmcFlBLoEPJ0EZVzkEZJuNpIcPCkxUqoGIJcDgViMz1P/44l9P5QhwVbJZ1UMGCQCrREwiFimMy00E1g==
   dependencies:
     tslib "^1.10.0"
 
@@ -1562,13 +1562,6 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-player-sdk-v9@4.1.4":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.1.4.tgz#07e006fff6e61091d722f14c1af1be8c607bc61b"
-  integrity sha512-FZMTefJHDeBAkgLw591UmYpjhlNo7yRYO8edcYCr2T0OfBHAsJGZLAGLcgulZ18FFWfT/z96z/HdrHFDl6E+tg==
-  dependencies:
-    tslib "^1.9.0"
-
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
@@ -1576,12 +1569,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.1.23":
-  version "4.1.23"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.23.tgz#1aaae5b8b7ccaa18a411e518532e81253362d64e"
-  integrity sha512-LXuylt0vPsyJD9Z9/Zo6AFt1pYA+cnU4/P2iXZP3y7IbxdUX+hnBJSBB1yRYx9p0V2OJPEF9b0/ngNfk8JaIeQ==
+"@project-sunbird/sunbird-quml-player-v9@4.1.18":
+  version "4.1.18"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.18.tgz#9dbd3c5594edc4a506ca6acfb04b00b2fb461e54"
+  integrity sha512-uyxnivfxaVEN0LRNqanO+SZ+V6nVqgJArGVcMtOA39PJJdchtSGZodY5S29ceSygtHAutFiPSzxwB0Gox4NWEQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.1.4"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
 "@project-sunbird/sunbird-video-player-v9@4.2.1":
   version "4.2.1"
@@ -3712,10 +3705,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements-v9@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.1.1.tgz#483475543ff1022390afe3edc4a6151c38ed6fb9"
-  integrity sha512-U5NzgykLxW+pq+BKbyxV+NrzG1sqMLa3q+PDItVlmQQYvjqM0Rs1LE/idgTggnFi9qKVIrh0S4TlEh4a2mpkcw==
+common-form-elements-v9@4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.2.0.tgz#aa9b84ae9327c7ad7031a5a4340a7866419549b9"
+  integrity sha512-3Il30057H2HqgcAwcNQ5z+6HHZz6hUYQ6XoyLuq74OxAIOUU8PJbslZAj/O1sc1l80Ip+Z7RRkS8fEKUHkC5Eg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
