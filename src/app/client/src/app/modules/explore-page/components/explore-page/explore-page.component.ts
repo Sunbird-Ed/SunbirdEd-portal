@@ -321,13 +321,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.cacheService.exists('searchFilters')) {
             const _searchFilters = this.cacheService.get('searchFilters');
             let _cacheFilters = {
-                gradeLevel: _.union(_searchFilters['gradeLevel'], filters['gradeLevel']),
-                subject: _.union(_searchFilters['subject'], filters['subject']),
-                medium: _.union(_searchFilters['medium'], filters['medium']),
-                publisher: _.union(_searchFilters['publisher'], filters['publisher']),
-                audience: _.union(_searchFilters['audience'], filters['audience']),
-                channel: _.union(_searchFilters['channel'], filters['channel']),
-                audienceSearchFilterValue: _.union(_searchFilters['audienceSearchFilterValue'], filters['audienceSearchFilterValue']),
+                gradeLevel: [..._.intersection(filters['gradeLevel'], _searchFilters['gradeLevel']), ..._.difference(filters['gradeLevel'], _searchFilters['gradeLevel'])],
+                subject: [..._.intersection(filters['subject'], _searchFilters['subject']),
+                    ..._.difference(filters['subject'], _searchFilters['subject'])].map((e) => { return _.startCase(e) }),
+                medium: [..._.intersection(filters['medium'], _searchFilters['medium']), ..._.difference(filters['medium'], _searchFilters['medium'])],
+                publisher: [..._.intersection(filters['publisher'], _searchFilters['publisher']), ..._.difference(filters['publisher'], _searchFilters['publisher'])],
+                audience: [..._.intersection(filters['audience'], _searchFilters['audience']), ..._.difference(filters['audience'], _searchFilters['audience'])],
+                channel: [..._.intersection(filters['channel'], _searchFilters['channel']), ..._.difference(filters['channel'], _searchFilters['channel'])],
+                audienceSearchFilterValue: [..._.intersection(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue']),
+                    ..._.difference(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue'])],
                 board: [_.union(_searchFilters['board'], filters['board'])[0]],
                 selectedTab: this.getSelectedTab()
             }
@@ -1127,11 +1129,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     getPersistFilters(defaultFilters?) {
         if (this.cacheService.exists('searchFilters')) {
             const _filter = this.cacheService.get('searchFilters');
-            if (defaultFilters && !this.isUserLoggedIn()) {
+            if (defaultFilters) {
                 return {
                     board: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, 'board') : _.get(_filter, 'board'),
                     gradeLevel: _.get(_filter, 'gradeLevel'),
-                    medium: _.get(_filter, 'medium')
+                    medium: _.get(_filter, 'medium'),
+                    subject: _.get(_filter, 'subject').map((e) => { return _.startCase(e) })
                 }
             }
         }

@@ -8,7 +8,7 @@ import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
 import {IFrameworkCategoryFilterFieldTemplateConfig} from 'common-form-elements-v9';
-
+import { CacheService } from 'ng2-cache-service';
 
 @Component({
   selector: 'app-search-filter',
@@ -96,7 +96,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, private router: Router,
     private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
-    public layoutService: LayoutService, private formService: FormService) { }
+    public layoutService: LayoutService, private formService: FormService,
+    private cacheService: CacheService) { }
 
   get filterData() {
     return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'];
@@ -353,6 +354,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
 
   onSearchFrameworkFilterReset() {
+    if (this.cacheService.exists('searchFilters')) {
+      this.cacheService.remove('searchFilters');
+    }
     if (this.searchFrameworkFilterComponent) {
       this.searchFrameworkFilterComponent.resetFilter();
     }
