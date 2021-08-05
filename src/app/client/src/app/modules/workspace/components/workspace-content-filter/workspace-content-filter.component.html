@@ -33,7 +33,7 @@
               </sui-select>
             </div>
             <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
-              class="link" (click)="applySorting(sortByOption)">
+              class="link" tabindex="0" (click)="applySorting(sortByOption)">
             </i>
           </div>
         </div>

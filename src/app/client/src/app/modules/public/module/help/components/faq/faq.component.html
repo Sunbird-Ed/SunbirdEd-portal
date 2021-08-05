@@ -5,7 +5,7 @@
 <div class="help-page relative9 sbt-inside-page-container">
   <div class="help-page__header sb-bg-color-white p-16">
     <div class="ui container d-flex flex-ai-center">
-      <button (click)="goBack()"
+      <button tabindex="0" (click)="goBack()"
         class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round" type="button"><i
           class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -32,7 +32,7 @@
             [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
             <sb-list #sbFaqCategoryList [title]="faqData?.constants?.selectCategoryTitle" [listData]="faqData?.categories"
               [btnText]="faqData?.constants?.reportIssueMsg" [btnImg]="'./assets/images/report.svg'"
-              (itemClick)="onCategorySelect($event)" (btnClick)="enableFaqReport($event)">
+              (itemClick)="onCategorySelect($event)" tabindex="0" (btnClick)="enableFaqReport($event)">
             </sb-list>
           </section>
           <section class="sbhelp_container__left sbhelp_container__debug mt-16" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView"
@@ -81,7 +81,7 @@
           <div class="sbhelp_container__faq">
             <sb-faq [extraTemplate]="extraTemplate" [data]="selectedFaqCategory"
               (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
-              (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
+              (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');" tabindex="0"
               (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
               (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');">
             </sb-faq>

@@ -2,7 +2,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { TenantService, FormService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { IImpressionEventInput, TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService, IInteractEventEdata, IAuditEventInput } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
 import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
@@ -156,6 +156,31 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
       localStorage.setItem('guestUserType', name);
       this.userSelect.emit(true);
     }
+    this.logAuditEvent(code);
+  }
+  logAuditEvent(code: any) {
+    const auditEventInput: IAuditEventInput = {
+      'context': {
+        'env': 'onboarding',
+        'cdata': [
+          { id: code, type: 'UserType' },     
+        ]
+      },
+      'object': {
+        'id': code,
+        'type': '',
+        'ver': ''
+      },
+      'edata': {
+        'state': 'Updated',
+        'props': [
+          'profile_type'
+        ],
+        'type': 'set-usertype',
+        'prevstate':'set-usertype',
+      }
+    };
+    this.telemetryService.audit(auditEventInput);
   }
 
   setPopupInteractEdata() {

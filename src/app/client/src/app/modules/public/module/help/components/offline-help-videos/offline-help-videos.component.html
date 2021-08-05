@@ -22,7 +22,7 @@
   <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-xl-3 content-video__content" [style.height.px]="videoContainerHeight">
     <!-- card component -->
     <div *ngFor="let video of slideData" class="sbcard sbcard--recently-viewed mb-8"
-      [ngClass]="{active:activeVideoObject.id === video.id }" (click)="changeVideoAttributes(video)"
+      [ngClass]="{active:activeVideoObject.id === video.id }" tabindex="0" (click)="changeVideoAttributes(video)"
       appTelemetryInteract [telemetryInteractEdata]="setInteractData(video)">
       <div class="sbcard__main-area">
         <!-- card img -->
