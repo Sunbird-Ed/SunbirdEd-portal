@@ -143,8 +143,8 @@ describe('AllTextbooksComponent', () => {
     (workSpaceService, route, http) => {
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
-      expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_2124341006465925121871', 'TextBook', 'alltextbooks', 'NCF', 'Review']);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/edit/', 'TextBook',
+        'do_2124341006465925121871', 'alltextbooks', 'Review']);
   }));
   it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
     (modalService, workSpaceService, activatedRoute, http) => {
