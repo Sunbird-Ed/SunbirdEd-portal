@@ -96,15 +96,16 @@ export class ObservationDetailsComponent implements OnInit {
         if (!this.selectedEntity._id) {
           this.selectedEntity = this.entities.entities[0];
         }
-        if(data.result.license){
-         this.courseHierarchy=data.result.license;
-        }
         this.observationId = this.entities._id;
         this.getObservationForm();
       } else {
         this.entities = [];
       }
 
+      if(data.result && data.result.license){
+        this.courseHierarchy=data.result.license;
+       }
+       
     }, error => {
       this.showLoader = false;
     });
