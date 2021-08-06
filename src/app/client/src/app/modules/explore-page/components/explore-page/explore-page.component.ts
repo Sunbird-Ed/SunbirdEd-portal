@@ -148,14 +148,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (this.isUserLoggedIn()) {
                         this.defaultFilters = this.userService.defaultFrameworkFilters;
                         this.userProfile = this.userService.userProfile;
-                    } else if (!this.isDesktopApp) {
-                        let guestUserDetails: any = localStorage.getItem('guestUserDetails');
-                        if (guestUserDetails) {
-                            guestUserDetails = JSON.parse(guestUserDetails);
-                            this.userProfile = guestUserDetails;
-                            this.userProfile['firstName'] = guestUserDetails.formatedName;
-                            this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
-                        }
+                    } else {
+                        this.userService.getGuestUser().subscribe((response) => {
+                            const guestUserDetails: any = response;
+                            if (guestUserDetails) {
+                                this.userProfile = guestUserDetails;
+                                this.userProfile['firstName'] = guestUserDetails.formatedName;
+                                this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
+                            }
+                        });
                     }
                     this._addFiltersInTheQueryParams();
                     return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
@@ -182,7 +183,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
-        this.userPreference = this.setUserPreferences();
+        this.setUserPreferences();
         this.initConfiguration();
 
         this.segmentationTagService.getSegmentCommand();
@@ -923,8 +924,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     setUserPreferences() {
         try {
-            return this.isUserLoggedIn() ?
-                { framework: this.userService.defaultFrameworkFilters } : JSON.parse(localStorage.getItem('guestUserDetails'));
+            if (this.isUserLoggedIn()) {
+                this.userPreference = { framework: this.userService.defaultFrameworkFilters };
+            } else {
+                this.userService.getGuestUser().subscribe((response) => {
+                    this.userPreference = response;
+                });
+            }
         } catch (error) {
             return null;
         }
@@ -992,12 +998,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.toasterService.warning(this.resourceService.messages.emsg.m0012);
             });
         } else {
-            this.userPreference.framework = event;
-            if (this.userPreference && _.get(this.userPreference, 'framework')) {
-                localStorage.setItem('guestUserDetails', JSON.stringify(this.userPreference));
-            }
-            this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
-            this._addFiltersInTheQueryParams(event);
+            const req = { ...this.userPreference, framework: event };
+            this.userService.updateGuestUser(req).subscribe(res => {
+                this.userPreference.framework = event;
+                this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+            }, err => {
+                this.toasterService.warning(_.get(this.resourceService, 'messages.emsg.m0012'));
+            });
         }
         if (window['TagManager']) {
             window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
