@@ -59,6 +59,7 @@ export class ReportComponent implements OnInit {
   public resetFilters: Object;
   filterType = 'report-filter';
   public reportResult: any;
+  public showExportsOption = true;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
   }
@@ -157,7 +158,7 @@ export class ReportComponent implements OnInit {
                 const result: any = Object.assign({});
                 const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-                result['charts'] =  chart;
+                result['charts'] = chart;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
@@ -243,7 +244,7 @@ export class ReportComponent implements OnInit {
   private downloadReportAsPdf() {
 
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
-      scrollX:  0,
+      scrollX: 0,
       scrollY: -window.scrollY,
       scale: 2
     }).then(canvas => {
@@ -558,7 +559,7 @@ export class ReportComponent implements OnInit {
     const chartData = [];
     if (this.reportData.charts) {
       this.reportData.charts.map(chartInfo => {
-        chartData.push({ id:chartInfo.chartConfig.id ,data:chartInfo.chartData});
+        chartData.push({ id: chartInfo.chartConfig.id, data: chartInfo.chartData });
       });
     }
     return chartData;
@@ -566,9 +567,9 @@ export class ReportComponent implements OnInit {
 
   getChartData(chart) {
     const chartInfo = this.chartsReportData.charts.find(data => {
-       if (data['chartConfig']['id'] == chart['chartConfig']['id']) {
-         return true;
-       }
+      if (data['chartConfig']['id'] == chart['chartConfig']['id']) {
+        return true;
+      }
     });
     return chartInfo;
   }
@@ -576,9 +577,9 @@ export class ReportComponent implements OnInit {
     if (this.chartsReportData && this.chartsReportData.charts) {
       this.chartsReportData.charts.map(element => {
         data.chartData.forEach(chart => {
-            if(chart['id']===element['chartConfig']['id']){
-              element.chartData = chart.data;
-            }
+          if (chart['id'] === element['chartConfig']['id']) {
+            element.chartData = chart.data;
+          }
         });
         return element;
       });
@@ -592,7 +593,12 @@ export class ReportComponent implements OnInit {
 
   resetFilter() {
     this.resetFilters = { data: this.getAllChartData(), reset: true };
+  }
 
+  selectedTabChange(event) {
+    const { type, downloadURL } = _.get(event, 'tab.textLabel');
+    this.showExportsOption = ['chart', 'download'].includes(type);
+    downloadURL && this.setDownloadUrl(downloadURL);
   }
 }
 

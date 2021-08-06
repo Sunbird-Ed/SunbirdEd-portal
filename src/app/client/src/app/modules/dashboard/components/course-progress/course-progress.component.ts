@@ -721,4 +721,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }
     });
   }
+  selectedTabChange(event) {
+    const { index } = _.get(event, 'tab.textLabel');
+    if (index == 2) {
+      this.loadOndemandReports(2);
+    }
+  }
 }
