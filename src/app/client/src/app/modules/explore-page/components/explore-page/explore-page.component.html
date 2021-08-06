@@ -61,19 +61,26 @@
                 </p>
                 <!-- <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p> -->
                 <p>
-                  <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}: </span>
-                  <span *ngIf="userPreference?.framework?.board?.length" class="title">{{convertToString(userPreference?.framework?.board)}}</span>
-                
-                  <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}: </span>
-                  <span class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
-                  <span class="title" *ngIf="userPreference?.framework?.medium?.length > 1">
+                  <span class="mr-24">
+                     <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}: </span>
+                     <span *ngIf="userPreference?.framework?.board?.length" class="font-weight-bold">{{convertToString(userPreference?.framework?.board)}}</span>
+                  </span>
+
+                  <span class="mr-24">
+                     <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}: </span>
+                     <span class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
+                     <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
                     ... + {{userPreference?.framework?.medium?.length-1}}
+                     </span>
                   </span>
-                  <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}: </span>
-                  <span class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
-                  <span class="title" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
+
+                  <span class="mr-24">
+                     <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}: </span>
+                     <span class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
+                     <span class="font-weight-bold" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
                     ... + {{userPreference?.framework?.gradeLevel?.length-1}}
-                  </span>
+                     </span>
+                </span>
                 </p>
               </div>
                 <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
