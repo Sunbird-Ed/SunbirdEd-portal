@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse} from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
   templateUrl: './new-collection-editor.component.html',
   styleUrls: ['./new-collection-editor.component.scss']
 })
-export class NewCollectionEditorComponent implements OnInit {
+export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public editorConfig: any;
   public deviceId: string;
   public portalVersion: string;
@@ -24,6 +24,7 @@ export class NewCollectionEditorComponent implements OnInit {
   public queryParams: object;
   public collectionDetails: any;
   public showQuestionEditor = false;
+  private browserBackEventSub;
   public hierarchyConfig: any;
   public layoutType: string;
   public baseUrl: string;
@@ -51,6 +52,7 @@ export class NewCollectionEditorComponent implements OnInit {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.userProfile = this.userService.userProfile;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
+    this.disableBrowserBackButton();
     this.getDetails().pipe(
       first(),
       tap(data => {
@@ -335,4 +337,45 @@ export class NewCollectionEditorComponent implements OnInit {
       }
     }
   }
+
+  private disableBrowserBackButton() {
+    sessionStorage.setItem('inEditor', 'true');
+    window.location.hash = 'no';
+    this.workSpaceService.toggleWarning(this.routeParams.type);
+    this.browserBackEventSub = this.workSpaceService.browserBackEvent.subscribe(() => {
+      const closeEditorIntractEdata: IInteractEventEdata = {
+        id: 'browser-back-button',
+        type: 'click',
+        pageid: 'collection-editor'
+      };
+      this.generateInteractEvent(closeEditorIntractEdata);
+    });
+  }
+  private generateInteractEvent(intractEdata) {
+    if (intractEdata) {
+      const appTelemetryInteractData: any = {
+        context: {
+          env: 'collection-editor'
+        },
+        edata: intractEdata
+      };
+      if (this.collectionDetails) {
+        appTelemetryInteractData.object = {
+          id: this.collectionDetails.identifier,
+          type: this.collectionDetails.contentType || this.collectionDetails.resourceType || 'collection',
+          ver: this.collectionDetails.pkgVersion ? this.collectionDetails.pkgVersion.toString() : '1.0',
+        };
+      }
+      this.telemetryService.interact(appTelemetryInteractData);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.browserBackEventSub) {
+      this.browserBackEventSub.unsubscribe();
+    }
+    sessionStorage.setItem('inEditor', 'false');
+    this.workSpaceService.toggleWarning();
+  }
+
 }
