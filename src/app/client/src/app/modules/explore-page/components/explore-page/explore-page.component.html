@@ -51,8 +51,8 @@
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" (click)="showEdit = !showEdit">
-            <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference" tabindex="0">
+          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled">
+            <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference" tabindex="0">
               <div class="preference">
                 <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName | titlecase}} {{userProfile?.lastName |
                   titlecase}}</p>
