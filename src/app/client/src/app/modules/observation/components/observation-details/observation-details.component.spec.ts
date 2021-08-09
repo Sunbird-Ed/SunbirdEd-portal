@@ -194,10 +194,12 @@ describe('ObservationDetailsComponent', () => {
     spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => Promise.resolve(ProfileData));
     component.payload = ProfileData;
     spyOn(component, 'updateSubmission').and.callThrough();
-    component.updateSubmission(EventForSubmission);
+    let event = {
+      data:"title changed",returnParams:{submissionId:'123'}
+    }
+    component.updateSubmission(event);
     component.payload.title = EventForSubmission.data.title;
     spyOn(observationService, 'post').and.returnValue(observableOf());
-    // component.getEntities();
     expect(component.updateSubmission).toHaveBeenCalled();
   });
 

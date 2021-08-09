@@ -138,6 +138,6 @@
   <add-entity (closeEvent)="modalClose()" [observationId]="observationId" [solutionId]="solutionId"> </add-entity>
 </div>
 
-<div *ngIf="openEditModal.show">
-  <app-edit-submission [submission]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
+<div *ngIf="openEditModal?.show">
+  <app-edit-submission [editData]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
 </div>

@@ -4,6 +4,7 @@ import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, Layou
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObservationUtilService } from '../../service';
 import { Location } from '@angular/common';
+import {editData} from '../edit-submission/edit-submission.component'
 @Component({
   selector: 'app-observation-details',
   templateUrl: './observation-details.component.html',
@@ -32,10 +33,10 @@ export class ObservationDetailsComponent implements OnInit {
     type: 'delete'
   }];
   showDownloadModal = false;
-  openEditModal = {
-    show: false,
-    data: ''
-  };
+  openEditModal: {
+    show: Boolean,
+    data: editData|null
+  }= {show:false,data:null};
   showLoader = false;
   public loaderMessage: ILoaderMessage;
   public noResultMessageForEntity: INoResultMessage = {
@@ -240,8 +241,16 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
   openEditSubmission(event) {
+    this.openEditModal.data = {
+      title: this.resourceService.frmelmnts?.lbl?.instanceName,
+      defaultValue:event.title,
+      leftBtnText: this.resourceService.frmelmnts?.btn?.cancel,
+      rightBtnText: this.resourceService.frmelmnts?.btn?.update,
+      action: 'submissionTitleUpdate',
+      returnParams :{submissionId:event._id}
+    };
     this.openEditModal.show = true;
-    this.openEditModal.data = event;
+
   }
 
   async deleteSubmission(event) {
@@ -276,16 +285,18 @@ export class ObservationDetailsComponent implements OnInit {
     }
   }
 
-  closeEditModal(event?) {
+  closeEditModal(event) {
     this.openEditModal.show = false;
-    if (event.data) { this.updateSubmission(event.data); }
+    if (!event.data) return;
+    if (event.action === 'submissionTitleUpdate') { this.updateSubmission(event); }
+    if (event.action === 'markEcmNotApplicable') { this.markEcmNotApplicable(event); }
   }
 
   updateSubmission(event) {
     this.showLoader = true;
-    this.payload.title = event.title;
+    this.payload.title =event.data;
     const paramOptions = {
-      url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE + event._id,
+      url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE + event.returnParams.submissionId,
       param: {},
       data: this.payload,
     };
@@ -298,6 +309,10 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
   actionOnSubmission(event) {
+    if (event.action == 'markEcmNotApplicable') {
+      this.markEcmNotApplicableRemark(event.data)
+      return
+    }
     event.action == 'edit' ? this.openEditSubmission(event.data) : this.deleteSubmission(event.data);
   }
 
@@ -307,5 +322,67 @@ export class ObservationDetailsComponent implements OnInit {
       data: submission
     };
     this.actionOnSubmission(data);
+  }
+  async markEcmNotApplicableRemark(e) {
+    if (e.notApplicable) {
+      const metaData = await this.observationUtilService.getAlertMetaData();
+      metaData.content.body.data = this.resourceService.frmelmnts.lbl.allReadyNotApplicable
+      metaData.content.body.type = "text";
+      metaData.content.title = this.resourceService.frmelmnts.lbl.allReadyNotApplicableTitle;
+      metaData.size = "small";
+      metaData.footer.buttons.push({  
+        type: "cancel",
+        returnValue: false,
+        buttonText: 'Go back',
+      });
+      metaData.footer.className = "double-btn";
+      const returnData = await this.observationUtilService.showPopupAlert(
+        metaData
+      );
+      return;
+    }
+    this.openEditModal.data = {
+      title: this.resourceService.frmelmnts?.lbl?.notApplicable,
+      subTitle:this.resourceService.frmelmnts?.lbl?.notApplicableRemark  ,
+      leftBtnText: this.resourceService.frmelmnts?.btn?.goBack,
+      rightBtnText: this.resourceService.frmelmnts?.btn?.save,
+      action: 'markEcmNotApplicable',
+      returnParams:{submissionId:e.submissionId,code:e.code}
+    };
+
+    this.openEditModal.show = true;
+  }
+ async markEcmNotApplicable(event) {
+    let payload = {
+      evidence: {},
+    };
+    const evidence = {
+      externalId: event.returnParams.code,
+      notApplicable: true,
+      remarks:event.data
+    };
+    payload.evidence = evidence;
+    const profile: Object = await this.observationUtilService.getProfileDataList();
+    if (!profile) {
+      return;
+    }
+   payload = { ...profile, ...payload };
+   const submissionId= event.returnParams.submissionId
+      const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
+        `${submissionId}`,
+      data: payload,
+      };
+    
+     this.observationService.post(paramOptions).subscribe(
+      (data) => {
+        this.getEntities()
+      },
+      (error) => {
+        
+      }
+    );
+
   }
 }
