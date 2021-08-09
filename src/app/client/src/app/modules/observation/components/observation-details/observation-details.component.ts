@@ -41,27 +41,7 @@ export class ObservationDetailsComponent implements OnInit {
   public noResultMessageForEntity: INoResultMessage = {
     'messageText': 'frmelmnts.msg.noEntityFound'
   };
-  courseHierarchy={
-    author:'CBSE',
-    creator:'CBSE',
-    copyright: "CBSE",
-    copyrightYear: 1998,
-    contentType: "Course",
-    organisation: [
-      "CBSE"
-    ],
-    orgDetails: {
-      email: null,
-      orgName: "CBSE"
-    },
-    licenseDetails: {
-      name: "CC BY 4.0",
-      url: "https://creativecommons.org/licenses/by/4.0/legalcode",
-      description: "For details see below:"
-    },
-    createdOn: Date.now(),
-    lastUpdatedOn:Date.now()
-  };
+  courseHierarchy:any;
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
@@ -122,6 +102,10 @@ export class ObservationDetailsComponent implements OnInit {
         this.entities = [];
       }
 
+      if(data.result && data.result.license){
+        this.courseHierarchy=data.result.license;
+       }
+       
     }, error => {
       this.showLoader = false;
     });
