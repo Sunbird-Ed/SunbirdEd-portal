@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserService, KendraService } from '@sunbird/core';
+import { UserService, KendraService,FormService } from '@sunbird/core';
 import { IUserData, ConfigService, ResourceService, AlertModal } from '@sunbird/shared';
 import { take } from 'rxjs/operators';
 import { SuiModalService } from 'ng2-semantic-ui-v9';
@@ -23,6 +23,7 @@ export class ObservationUtilService {
     public resourceService: ResourceService,
     public router: Router,
     public slUtil: SlUtilsService,
+    private formService: FormService
   ) {
     this.config = config;
     this.slUtil.openAlert = this.showPopupAlert;
@@ -34,15 +35,19 @@ export class ObservationUtilService {
       .pipe(take(1))
       .toPromise()
       .then((profileData: IUserData) => {
-        if (
-          profileData &&
+        if (profileData &&
           profileData.userProfile &&
-          profileData.userProfile['profileUserType'] &&
-          profileData.userProfile['profileUserType']['subType'] === null
-        ) {
-          return false;
-        } else {
-          return true;
+          profileData.userProfile['profileUserType'])
+          {
+          if ( profileData.userProfile['profileUserType']['type'] === 'administrator' && 
+          profileData.userProfile['profileUserType']['subType'] === null) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+        else{
+          return true
         }
       })
       .catch((error) => { });
@@ -125,7 +130,7 @@ export class ObservationUtilService {
         profileData.value['profileUserType'] &&
           profileData.value['profileUserType']['subType']
           ? profileData.value['profileUserType']['subType'].toUpperCase()
-          : null;
+          : 'TE';
       this.dataParam = obj;
       resolve(obj);
     });
@@ -171,4 +176,24 @@ export class ObservationUtilService {
     };
     return obj;
   }
+
+
+  browseByCategoryForm() {
+    const formServiceInputParams = {
+      formType: 'category',
+      formAction: 'homeListing',
+      contentType: 'targetedCategory'
+    };
+    return new Promise((resolve, reject) => {
+      this.formService.getFormConfig(formServiceInputParams)
+        .subscribe((data: any) => {
+          if (data) {
+            resolve(data);
+          }
+        }, (error) => {
+          reject()
+        });
+    });
+   }
+
 }

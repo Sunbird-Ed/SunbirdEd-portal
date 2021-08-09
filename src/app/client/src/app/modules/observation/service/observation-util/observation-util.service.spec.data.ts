@@ -277,3 +277,13 @@ export const metaData = {
     ],
   },
 };
+
+
+export const categoryData = { 
+    CBSE: { 
+      teacher: [{ 
+        name: "observation", 
+        icon: "assets/images/mask-image/observation.svg" 
+      }] 
+    } 
+};

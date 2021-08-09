@@ -3188,3 +3188,12 @@ export const RESPONSE = {
     'selectedTab': 'textbook'
   }
 };
+
+export const categoryData = { 
+    CBSE: { 
+      teacher: [{ 
+        name: "observation", 
+        icon: "assets/images/mask-image/observation.svg" 
+      }] 
+  } 
+};

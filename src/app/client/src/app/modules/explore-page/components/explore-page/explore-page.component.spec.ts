@@ -8,7 +8,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RESPONSE } from './explore-page.component.spec.data';
+import { RESPONSE,categoryData } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ExplorePageComponent } from './explore-page.component';
@@ -20,11 +20,13 @@ import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 import { find } from 'lodash-es';
 import { result } from 'lodash';
+import {ObservationModule} from '../../../observation/observation.module';
+import {ObservationUtilService} from '../../../observation/service'
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService;
+  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService,observationUtilService;
   const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -91,10 +93,10 @@ describe('ExplorePageComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule,ObservationModule],
       declarations: [ExplorePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-        FormService, ProfileService, ContentManagerService, TelemetryService,
+        FormService, ProfileService, ContentManagerService, TelemetryService,ObservationUtilService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -110,6 +112,7 @@ describe('ExplorePageComponent', () => {
     orgDetailsService = TestBed.get(OrgDetailsService);
     cacheService = TestBed.get(CacheService);
     segmentationTagService = TestBed.get(SegmentationTagService);
+    observationUtilService=TestBed.get(ObservationUtilService)
     sendOrgDetails = true;
     sendPageApi = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
@@ -910,4 +913,34 @@ describe('ExplorePageComponent', () => {
       expect(Object.keys(res)).toContain('medium');
     });
   });
+
+    it("should call the getFormConfigs to get form category",()=>{
+      spyOn(component,"getFormConfigs").and.callThrough();
+      component.userType='teacher';
+      component.userPreference = { framework: {
+          "board": [
+              "CBSE"
+          ],
+          "gradeLevel": [
+              "Class 1"
+          ],
+          "id": [
+              "ekstep_ncert_k-12"
+          ],
+          "medium": [
+              "English"
+          ],
+          "subject": [
+              "English"
+          ]
+      }
+      };
+      spyOn(observationUtilService,"browseByCategoryForm").and.callFake(()=>{
+        return categoryData;
+      });
+      component.showCategory=true;
+      component.getFormConfigs();
+      expect(component.getFormConfigs).toHaveBeenCalled();
+    })
+
 });
