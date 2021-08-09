@@ -324,6 +324,20 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     this.editorConfig.config = _.assign(this.editorConfig.config, this.hierarchyConfig);
   }
 
+  private disableBrowserBackButton() {
+    window.location.hash = 'no';
+    sessionStorage.setItem('inEditor', 'true');
+    this.workSpaceService.toggleWarning(this.routeParams.type);
+    this.browserBackEventSub = this.workSpaceService.browserBackEvent.subscribe(() => {
+      const closeEditorIntractEdata: IInteractEventEdata = {
+        id: 'browser-back-button',
+        type: 'click',
+        pageid: 'collection-editor'
+      };
+      this.generateInteractEvent(closeEditorIntractEdata);
+    });
+  }
+
   private getEditorMode() {
     const contentStatus = this.collectionDetails.status.toLowerCase();
     if (contentStatus === 'draft' || contentStatus === 'live') {
@@ -336,20 +350,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         return 'review';
       }
     }
-  }
-
-  private disableBrowserBackButton() {
-    sessionStorage.setItem('inEditor', 'true');
-    window.location.hash = 'no';
-    this.workSpaceService.toggleWarning(this.routeParams.type);
-    this.browserBackEventSub = this.workSpaceService.browserBackEvent.subscribe(() => {
-      const closeEditorIntractEdata: IInteractEventEdata = {
-        id: 'browser-back-button',
-        type: 'click',
-        pageid: 'collection-editor'
-      };
-      this.generateInteractEvent(closeEditorIntractEdata);
-    });
   }
   private generateInteractEvent(intractEdata) {
     if (intractEdata) {
