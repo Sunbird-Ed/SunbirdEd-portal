@@ -24,7 +24,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public collectionDetails: any;
   public showQuestionEditor = false;
-  private browserBackEventSub;
+  private browserBackEventSubscribe;
   public hierarchyConfig: any;
   public layoutType: string;
   public baseUrl: string;
@@ -270,6 +270,14 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnDestroy() {
+    if (this.browserBackEventSubscribe) {
+      this.browserBackEventSubscribe.unsubscribe();
+    }
+    sessionStorage.setItem('inEditor', 'false');
+    this.workSpaceService.toggleWarning();
+  }
+
   setEditorConfig() {
     // tslint:disable-next-line:max-line-length
     const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
@@ -328,13 +336,13 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     window.location.hash = 'no';
     sessionStorage.setItem('inEditor', 'true');
     this.workSpaceService.toggleWarning(this.routeParams.type);
-    this.browserBackEventSub = this.workSpaceService.browserBackEvent.subscribe(() => {
-      const closeEditorIntractEdata: IInteractEventEdata = {
+    this.browserBackEventSubscribe = this.workSpaceService.browserBackEvent.subscribe(() => {
+      const intractEventEdata: IInteractEventEdata = {
         id: 'browser-back-button',
         type: 'click',
         pageid: 'collection-editor'
       };
-      this.generateInteractEvent(closeEditorIntractEdata);
+      this.generateInteractEvent(intractEventEdata);
     });
   }
 
@@ -351,31 +359,24 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private generateInteractEvent(intractEdata) {
-    if (intractEdata) {
-      const appTelemetryInteractData: any = {
+
+  generateInteractEvent(intractEventEdata) {
+    if (intractEventEdata) {
+      const telemetryInteractData: any = {
         context: {
           env: 'collection-editor'
         },
-        edata: intractEdata
+        edata: intractEventEdata
       };
       if (this.collectionDetails) {
-        appTelemetryInteractData.object = {
+        telemetryInteractData.object = {
           id: this.collectionDetails.identifier,
           type: this.collectionDetails.contentType || this.collectionDetails.resourceType || 'collection',
           ver: this.collectionDetails.pkgVersion ? this.collectionDetails.pkgVersion.toString() : '1.0',
         };
       }
-      this.telemetryService.interact(appTelemetryInteractData);
+      this.telemetryService.interact(telemetryInteractData);
     }
-  }
-
-  ngOnDestroy() {
-    if (this.browserBackEventSub) {
-      this.browserBackEventSub.unsubscribe();
-    }
-    sessionStorage.setItem('inEditor', 'false');
-    this.workSpaceService.toggleWarning();
-  }
+  } 
 
 }
