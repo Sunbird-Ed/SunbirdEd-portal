@@ -68,7 +68,9 @@ describe('ExplorePageComponent', () => {
           notMatchContent: 'did not match any content'
         },
         board: 'Board',
-        browseBy: 'Browse by'
+        browseBy: 'Browse by',
+        targetCategory:"Category",
+        browseOther:"Browse Other"
       }
     },
     tbk: {
@@ -733,6 +735,13 @@ describe('ExplorePageComponent', () => {
     it('should return section page title', () => {
       const sectionTitle = component.getSectionTitle('frmelmnts.lbl.board');
       expect(sectionTitle).toEqual('Browse by Board');
+    });
+
+    it('should return category title', () => {
+      spyOn(component,"getSectionCategoryTitle").and.callThrough();
+      const getSectionCategoryTitle = component.getSectionCategoryTitle('frmelmnts.lbl.targetCategory');
+      component.getSectionCategoryTitle('frmelmnts.lbl.targetCategory')
+      expect(getSectionCategoryTitle).toEqual('Browse Other Category');
     });
 
     it('should update profile for logged in users', () => {
