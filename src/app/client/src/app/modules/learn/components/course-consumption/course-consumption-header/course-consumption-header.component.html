@@ -15,7 +15,14 @@
           </svg></i>
         {{resourceService?.frmelmnts?.btn?.back}}
       </button>
-      <div *ngIf="enrolledCourse && batchEndDate && showBatchCounter" class="d-flex">
+      <div class="batch-details__created mt-8 fsmall" *ngIf="!enrolledBatchInfo && isValidEnrollmentEndDate(enrollmentEndDate)">
+        <span class="sb-label-12size"
+          *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
+          {{enrollmentEndDate | dateFormat}}</span>
+        <span class="sb-label-status-error"
+          *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
+      </div>
+      <div *ngIf="batchEndDate && showBatchCounter" class="d-flex">
         <span class="fnormal sb-color-gray-400">{{resourceService?.frmelmnts?.lbl?.BatchExpiringIn}}:&nbsp;</span>  
         <span class="fsmall font-weight-bold mb-8 sb-color-gray-800"><h6 >{{batchRemaningTime}}</h6></span>
       </div>
