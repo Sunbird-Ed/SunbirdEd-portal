@@ -10,7 +10,7 @@ let envVariables = {
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
-  PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '') 
+  PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
   ? env.sunbird_portal_session_secret.split(',') : '',
 
   // discussion forum
@@ -96,6 +96,10 @@ let envVariables = {
   KEYCLOAK_DESKTOP_CLIENT: {
     clientId: env.sunbird_desktop_keycloak_client_id || 'desktop',
   },
+  KEYCLOAK_GOOGLE_IOS_CLIENT: {
+    clientId: env.sunbird_google_oauth_ios_clientId,
+    secret: env.sunbird_trampoline_desktop_keycloak_secret
+  },
 
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
@@ -107,6 +111,10 @@ let envVariables = {
   GOOGLE_OAUTH_CONFIG: {
     clientId: env.sunbird_google_oauth_clientId,
     clientSecret: env.sunbird_google_oauth_clientSecret
+  },
+  GOOGLE_OAUTH_CONFIG_IOS: {
+    clientId: env.sunbird_google_oauth_ios_clientId,
+    clientSecret: env.sunbird_google_oauth_ios_clientSecret
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   google_captcha_private_key: env.google_captcha_private_key,

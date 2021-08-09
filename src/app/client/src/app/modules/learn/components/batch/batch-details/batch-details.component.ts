@@ -62,6 +62,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isConnected = false;
   isDesktopApp = false;
   isExpiredBatchEditable = true;
+  showBatchDetailsBeforeJoin = false;
+  batchDetails: {};
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -168,6 +170,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
           if (data.result.response.content && data.result.response.content.length > 0) {
             this.batchList = data.result.response.content;
             this.fetchUserDetails();
+            this.showBatchDetails();
           } else {
             this.showBatchList = true;
           }
@@ -229,6 +232,11 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
             this.toasterService.error(this.resourceService.messages.fmsg.m0004);
           }
         });
+  }
+
+  showBatchDetails() {
+    this.showBatchDetailsBeforeJoin = !this.enrolledBatchInfo;
+    this.batchDetails = this.batchList[0];
   }
 
   getEnrolledCourseBatchDetails() {

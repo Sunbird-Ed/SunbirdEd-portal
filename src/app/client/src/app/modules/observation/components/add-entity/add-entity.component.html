@@ -39,12 +39,12 @@
     <!--/Content-->
     <div class="actions footer">
         <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
-            (click)="closeModal()">
+            tabindex="0" (click)="closeModal()">
             {{resourceService.frmelmnts?.btn?.close}}
         </button>
         <div class="w-10"></div>
         <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
-            (click)="submit()" [disabled]="selectedListCount == 0"
+            tabindex="0" (click)="submit()" [disabled]="selectedListCount == 0"
             [ngClass]="{'sb-btn-disabled' : selectedListCount == 0}">
             {{resourceService.frmelmnts?.btn?.submit}}
         </button>

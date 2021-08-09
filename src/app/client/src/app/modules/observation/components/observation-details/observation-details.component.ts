@@ -42,7 +42,7 @@ export class ObservationDetailsComponent implements OnInit {
   public noResultMessageForEntity: INoResultMessage = {
     'messageText': 'frmelmnts.msg.noEntityFound'
   };
-
+  courseHierarchy:any;
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
@@ -103,6 +103,10 @@ export class ObservationDetailsComponent implements OnInit {
         this.entities = [];
       }
 
+      if(data.result && data.result.license){
+        this.courseHierarchy=data.result.license;
+       }
+       
     }, error => {
       this.showLoader = false;
     });

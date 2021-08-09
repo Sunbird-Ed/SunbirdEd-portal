@@ -5,7 +5,7 @@
   >
   <sui-accordion-panel 
     [ngClass]="child.extraClasses"
-    (click)="!child.folder && onNodeClick(child)"
+    tabindex="0" (click)="!child.folder && onNodeClick(child)"
     [(isOpen)]="child.togglePanelIcon"
     [isDisabled]="(!child.children.length) || (!child.folder)"
     >

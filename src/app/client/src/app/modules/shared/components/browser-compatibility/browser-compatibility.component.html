@@ -45,7 +45,7 @@
         </a>
         <button 
             class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-            (click)="hideCompatibilityModel()"
+            tabindex="0" (click)="hideCompatibilityModel()"
         >
             {{resourceService.frmelmnts.btn.ok}}
         </button>
@@ -61,9 +61,9 @@
                     <i class="exclamation triangle icon"></i>
                     <span>
                         {{resourceService.frmelmnts.lbl.incompatibleBrowser}} {{resourceService.frmelmnts.lbl.forDetails}} 
-                        <a class="cursor-pointer mr-10" (click)="openCompatibilityModel()">{{resourceService.frmelmnts.lbl.clickHere}}</a>
+                        <a class="cursor-pointer mr-10" tabindex="0" (click)="openCompatibilityModel()">{{resourceService.frmelmnts.lbl.clickHere}}</a>
                     </span>
-                    <i class="close icon closeBtn-dial-code cursor-pointer" (click)="hideFooter = false"></i>
+                    <i class="close icon closeBtn-dial-code cursor-pointer" tabindex="0" (click)="hideFooter = false"></i>
                 </div>
             </div>
         </div>

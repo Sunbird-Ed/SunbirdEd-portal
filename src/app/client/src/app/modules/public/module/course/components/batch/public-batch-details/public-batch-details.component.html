@@ -10,9 +10,39 @@
     </div>
     <div class="sb-modal-actions">
         <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="signInInteractEdata" (click)="setTelemetryData(); setUrlToCourse();"
+            [telemetryInteractEdata]="signInInteractEdata" tabindex="0" (click)="setTelemetryData(); setUrlToCourse();"
             class="sb-btn sb-btn-normal sb-btn-primary">
             {{resourceService.frmelmnts?.btn?.login}}
         </a>
     </div>
 </sui-modal>
+
+<!-- batch details -->
+<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
+    <sui-accordion-panel [isOpen]="false">
+      <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+        <span>{{resourceService?.frmelmnts?.lbl?.batchdetails}}</span>
+        <i class="chevron down icon" role="img" title="expand"></i>
+      </div>
+      <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+        <div class="batch-details">
+          <div class="mb-16">
+            <div class="batch-details__name sb-color-primary font-weight-bold fmedium">
+              {{batchDetails?.name}}</div>
+            <div class="batch-details__created mt-8 fsmall">
+              <span class="date">{{batchDetails?.startDate | dateFormat}} </span>
+              <span *ngIf="batchDetails?.endDate" class="date"> -
+                {{batchDetails?.endDate | dateFormat}}</span>
+            </div>
+          </div>
+          <div class="batch-details__created mt-8 fsmall" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
+            <span class="sb-label-12size"
+              *ngIf="!isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
+              {{batchDetails?.enrollmentEndDate | dateFormat}}</span>
+            <span class="sb-label-status-error"
+              *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
+          </div>
+        </div>
+      </div>
+    </sui-accordion-panel>
+  </sui-accordion>

@@ -9,7 +9,7 @@
         <button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract [telemetryInteractEdata]="userDeclaredDetailsEdata"
                 [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
                 type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24"
-                (click)="downloadFile(userDeclaredDetailsUrl)">
+                tabindex="0" (click)="downloadFile(userDeclaredDetailsUrl)">
           {{resourceService.frmelmnts?.btn?.download}}
         </button>
         <!-- <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span> -->
@@ -24,7 +24,7 @@
     <div class="d-flex flex-ai-center ml-8 py-8 ui container" *ngIf="showAdminTnC">
       <label class="d-flex flex-ai-center">
         <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} <a class="sb-color-primary cursor-pointer" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
-          [telemetryInteractEdata]="adminPolicyDetailsInteractEdata" (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lnk?.adminPolicy}}</a></span>
+          [telemetryInteractEdata]="adminPolicyDetailsInteractEdata" tabindex="0" (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lnk?.adminPolicy}}</a></span>
       </label>
     </div>
   </div>
@@ -51,8 +51,8 @@
             <dd>Schools</dd>
           </dl>
          <div class="ml-auto" *ngIf="geoSummary && geoSummary.length">
-            <button class="sb-btn sb-btn-normal" [ngClass]="(geoButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="geoTableView()" appTelemetryInteract [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
-            <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(geoCSV, '', slug + '.csv')" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
+            <button class="sb-btn sb-btn-normal" [ngClass]="(geoButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" tabindex="0" (click)="geoTableView()" appTelemetryInteract [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
+            <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" tabindex="0" (click)="downloadCSVFile(geoCSV, '', slug + '.csv')" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
          </div>
         </div>
       </div>

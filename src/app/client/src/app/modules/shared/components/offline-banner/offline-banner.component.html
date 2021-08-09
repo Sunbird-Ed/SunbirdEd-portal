@@ -13,7 +13,7 @@
         </dl>
       </div>
       <div class="sb-banner-content-left">
-        <button appTelemetryInteract [telemetryInteractEdata]="{id:'offlineApp-button' , type:'click' , pageid:pageId }" class="sb-btn sb-btn-primary sb-btn-normal" (click)="navigateToDownloadApkPage()">{{resourceService?.frmelmnts?.btn?.downloadDesktopApp}}&#x200E;</button>
+        <button appTelemetryInteract [telemetryInteractEdata]="{id:'offlineApp-button' , type:'click' , pageid:pageId }" class="sb-btn sb-btn-primary sb-btn-normal" tabindex="0" (click)="navigateToDownloadApkPage()">{{resourceService?.frmelmnts?.btn?.downloadDesktopApp}}&#x200E;</button>
       </div>
     </div>
   </div>

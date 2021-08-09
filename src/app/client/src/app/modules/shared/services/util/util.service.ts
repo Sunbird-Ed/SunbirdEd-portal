@@ -387,12 +387,19 @@ export class UtilService {
     if (sections && sections.facets) {
       _.forEach(sections.facets, (facet) => {
         if (_.indexOf(keys, facet.name) > -1) {
-          if (facetObj[facet.name]) {
-            facetObj[facet.name].push(...facet.values);
+          if (facet.name === 'additionalCategories') {
+            facet.values.forEach((data) => {
+              data['type'] = facet.name;
+            });
+            facetObj['primaryCategory'].push(...facet.values);
           } else {
-            facetObj[facet.name] = [];
-            facetObj[facet.name].push(...facet.values);
-          }
+            if (facetObj[facet.name]) {
+              facetObj[facet.name].push(...facet.values);
+            } else {
+              facetObj[facet.name] = [];
+              facetObj[facet.name].push(...facet.values);
+            }
+         }
         }
       });
     }

@@ -10,7 +10,7 @@ const uuid = require('uuid/v1')
 const bodyParser = require('body-parser');
 const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
 const envHelper = require('../helpers/environmentVariablesHelper.js');
-const { GOOGLE_OAUTH_CONFIG } = require('../helpers/environmentVariablesHelper.js')
+const { GOOGLE_OAUTH_CONFIG, GOOGLE_OAUTH_CONFIG_IOS } = require('../helpers/environmentVariablesHelper.js')
 const {OAuth2Client} = require('google-auth-library');
 
 /**
@@ -40,7 +40,7 @@ module.exports = (app) => {
 
   app.post('/google/auth/android', bodyParser.json(), async (req, res) => {
     let errType, newUserDetails, payload = {}
-    const CLIENT_ID = GOOGLE_OAUTH_CONFIG.clientId;
+    let CLIENT_ID = req && req.body.platform && req.body.platform === 'ios' ? GOOGLE_OAUTH_CONFIG_IOS.clientId : GOOGLE_OAUTH_CONFIG.clientId;
     const client = new OAuth2Client(CLIENT_ID);
     async function verify() {
       const ticket = await client.verifyIdToken({
@@ -64,10 +64,11 @@ module.exports = (app) => {
          newGoogleUserDetails['emailId'] = payload.email;
          logger.info({msg: 'creating new google user'});
          errType = 'USER_CREATE_API';
-         newUserDetails = await createUserWithMailId(newGoogleUserDetails, 'google-auth', req).catch(handleCreateUserError);
+         newUserDetails = await createUserWithMailId(newGoogleUserDetails, 'android', req).catch(handleCreateUserError);
          await utils.delay(GOOGLE_SIGN_IN_DELAY);
        }
-       const keyCloakToken = await createSession(emailId, {client_id: 'google-auth'}, req, res).catch(handleCreateSessionError);
+       const clientId = req && req.body.platform && req.body.platform === 'ios' ? 'ios': 'android';
+       const keyCloakToken = await createSession(emailId, {client_id: 'android'}, req, res).catch(handleCreateSessionError);
        res.send(keyCloakToken);
      }).catch((err) => {
        res.status(400).send({
