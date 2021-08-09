@@ -740,7 +740,6 @@ describe('ExplorePageComponent', () => {
     it('should return category title', () => {
       spyOn(component,"getSectionCategoryTitle").and.callThrough();
       const getSectionCategoryTitle = component.getSectionCategoryTitle('frmelmnts.lbl.targetCategory');
-      component.getSectionCategoryTitle('frmelmnts.lbl.targetCategory')
       expect(getSectionCategoryTitle).toEqual('Browse Other Category');
     });
 
