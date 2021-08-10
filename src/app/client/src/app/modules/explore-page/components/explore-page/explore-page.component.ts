@@ -4,7 +4,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, ViewChild } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
-    OfflineCardService, BrowserCacheTtlService
+    OfflineCardService, BrowserCacheTtlService,IUserData
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
-
+import {ObservationUtilService} from '../../../observation/service'
 
 @Component({
     selector: 'app-explore-page-component',
@@ -81,7 +81,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     isFilterEnabled = true;
     defaultTab = 'Textbook';
     userProfile: any;
-
+    targetedCategory:any;
+    subscription: any;
+    userType: any;
+    targetedCategorytheme:any;
+    showTargetedCategory:boolean=false;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -107,9 +111,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
-        private segmentationTagService: SegmentationTagService) {
+        private segmentationTagService: SegmentationTagService,private observationUtil: ObservationUtilService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
+        this.subscription = this.utilService.currentRole.subscribe(async (result) => {
+            if (result) {
+                this.userType = result;
+            }
+        });
         }
 
 
@@ -186,6 +195,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
+        this.userPreference = this.setUserPreferences();
+        this.getFormConfigs();
         this.initConfiguration();
 
         this.segmentationTagService.getSegmentCommand();
@@ -526,6 +537,44 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 })
             );
+    }
+
+    getFormConfigs() {
+        this.activatedRoute.queryParams.subscribe(queryParams => {
+            if (queryParams.selectedTab === 'home') {
+                if (!this.userType) {
+                    if (this.isUserLoggedIn) {
+                    this.userService.userData$.subscribe((profileData: IUserData) => {
+                        if (profileData
+                            && profileData.userProfile
+                            && profileData.userProfile['profileUserType']) {
+                            this.userType = profileData.userProfile['profileUserType']['type'];
+                        }
+                    });
+                } else {
+                    const user = localStorage.getItem('userType');
+                    if (user) {
+                        this.userType = user;
+                    }
+                }
+            }
+            this.observationUtil.browseByCategoryForm()
+                .then((data: any) => {
+                    if (data && data[this.userPreference.framework.board[0]] &&
+                        data[this.userPreference.framework.board[0]][this.userType]) {
+                        this.showTargetedCategory = true
+                        this.targetedCategory = data[this.userPreference.framework.board[0]][this.userType];
+                        this.targetedCategorytheme = {
+                            "iconBgColor": "rgba(255,255,255,1)",
+                            "pillBgColor": "rgba(255,255,255,1)"
+                        }
+                    }
+                    else {
+                        this.showTargetedCategory = false
+                    }
+                });
+            }
+        });
     }
 
     private getContentSection(section, searchOptions) {
@@ -995,8 +1044,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    handleTargetedpillSelected(pillData){
+        switch (pillData.name) {
+            case 'observation':
+                this.router.navigate(['observation']);
+                break;
+        }
+    }
+
+
     getSectionTitle (title) {
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+    }
+
+    getSectionCategoryTitle (title) {
+        return get(this.resourceService, 'frmelmnts.lbl.browseOther') + ' ' + get(this.resourceService, title);
     }
 
     getBannerTitle (title) {
@@ -1013,6 +1075,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
+                this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
             }, err => {
@@ -1022,6 +1085,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const req = { ...this.userPreference, framework: event };
             this.userService.updateGuestUser(req).subscribe(res => {
                 this.userPreference.framework = event;
+                this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
             }, err => {
                 this.toasterService.warning(_.get(this.resourceService, 'messages.emsg.m0012'));
