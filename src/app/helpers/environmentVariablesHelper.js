@@ -96,6 +96,10 @@ let envVariables = {
   KEYCLOAK_DESKTOP_CLIENT: {
     clientId: env.sunbird_desktop_keycloak_client_id || 'desktop',
   },
+  KEYCLOAK_GOOGLE_IOS_CLIENT: {
+    clientId: env.sunbird_google_oauth_ios_clientId,
+    secret: env.sunbird_trampoline_desktop_keycloak_secret
+  },
 
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,

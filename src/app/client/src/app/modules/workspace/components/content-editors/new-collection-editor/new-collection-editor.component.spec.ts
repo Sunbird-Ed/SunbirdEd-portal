@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, BrowserCacheTtlService, LayoutService } from '@sunbird/shared';
 import { UserService, PublicDataService, ContentService, FrameworkService, CoreModule } from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { of as observableOf, throwError } from 'rxjs';
@@ -62,7 +62,7 @@ describe('NewCollectionEditorComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         UserService, PublicDataService, ContentService, { provide: FrameworkService, useValue: mockFrameworkService },
-        ResourceService, ToasterService, ConfigService, LayoutService,
+        ResourceService, ToasterService, ConfigService, LayoutService, TelemetryService,
         BrowserCacheTtlService, WorkSpaceService, EditorService,
         { provide: NavigationHelperService, useClass: NavigationHelperServiceStub },
         { provide: Router, useClass: RouterStub },
@@ -78,6 +78,7 @@ describe('NewCollectionEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NewCollectionEditorComponent);
     component = fixture.componentInstance;
+    component.editorConfig = mockRes.editorConfig;
   });
 
   it('should create', () => {
@@ -98,8 +99,9 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.setEditorConfig).toHaveBeenCalled();
   }));
 
-  xit('should throw error if getting collection details fails',
+  it('should throw error if getting collection details fails',
     inject([EditorService], (editorService) => {
+      component['routeParams'] = {type: 'Course'};
       spyOn(editorService, 'getContent').and.returnValue(throwError({}));
       spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
       component.ngOnInit();
@@ -381,4 +383,27 @@ describe('NewCollectionEditorComponent', () => {
     component.ngOnInit();
     expect(component.redirectToWorkSpace).toHaveBeenCalled();
   });
+
+  it('Should generate interact telemetry event', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.callThrough();
+    component.collectionDetails = mockRes.successResult.result.content;
+    component['generateInteractEvent']({});
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
+
+  it('Should disable browser back button', fakeAsync(() => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'browserBackEvent').and.returnValue(observableOf({}));
+    spyOn(workSpaceService, 'toggleWarning').and.callThrough();
+    spyOn(component, 'generateInteractEvent').and.callThrough();
+    component.collectionDetails = mockRes.successResult.result.content;
+    component['routeParams'] = {type: 'Course'};
+    component['disableBrowserBackButton']();
+    expect(workSpaceService.toggleWarning).toHaveBeenCalledWith('Course');
+    workSpaceService.browserBackEvent.emit();
+    tick(1000);
+    expect(component.generateInteractEvent).toHaveBeenCalled();
+  }));
+
 });
