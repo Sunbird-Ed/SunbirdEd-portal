@@ -4,7 +4,7 @@ import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, Layou
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObservationUtilService } from '../../service';
 import { Location } from '@angular/common';
-import {editData} from '../edit-submission/edit-submission.component'
+import {Editdata} from '../edit-submission/edit-submission.component'
 @Component({
   selector: 'app-observation-details',
   templateUrl: './observation-details.component.html',
@@ -34,8 +34,8 @@ export class ObservationDetailsComponent implements OnInit {
   }];
   showDownloadModal = false;
   openEditModal: {
-    show: Boolean,
-    data: editData|null
+    show: boolean,
+    data: Editdata|null
   }= {show:false,data:null};
   showLoader = false;
   public loaderMessage: ILoaderMessage;
@@ -327,9 +327,9 @@ export class ObservationDetailsComponent implements OnInit {
     };
     this.actionOnSubmission(data);
   }
-  async markEcmNotApplicableRemark(e) {
+  markEcmNotApplicableRemark(e) {
     if (e.notApplicable) {
-      const metaData = await this.observationUtilService.getAlertMetaData();
+      const metaData = this.observationUtilService.getAlertMetaData();
       metaData.content.body.data = this.resourceService.frmelmnts.lbl.allReadyNotApplicable
       metaData.content.body.type = "text";
       metaData.content.title = this.resourceService.frmelmnts.lbl.allReadyNotApplicableTitle;
@@ -340,7 +340,7 @@ export class ObservationDetailsComponent implements OnInit {
         buttonText: 'Go back',
       });
       metaData.footer.className = "double-btn";
-      const returnData = await this.observationUtilService.showPopupAlert(
+      this.observationUtilService.showPopupAlert(
         metaData
       );
       return;
@@ -356,7 +356,7 @@ export class ObservationDetailsComponent implements OnInit {
 
     this.openEditModal.show = true;
   }
- async markEcmNotApplicable(event) {
+ markEcmNotApplicable(event) {
     let payload = {
       evidence: {},
     };
@@ -366,7 +366,7 @@ export class ObservationDetailsComponent implements OnInit {
       remarks:event.data
     };
     payload.evidence = evidence;
-    const profile: Object = await this.observationUtilService.getProfileDataList();
+    const profile: Object = this.observationUtilService.getProfileDataList();
     if (!profile) {
       return;
     }
