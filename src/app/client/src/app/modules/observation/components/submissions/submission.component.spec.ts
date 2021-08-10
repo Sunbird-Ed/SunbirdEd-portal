@@ -46,6 +46,7 @@ describe('SubmissionsComponent', () => {
         const type = 'edit';
         const param = { action: type, data: Submission };
         spyOn(component, 'actionEvent').and.callThrough();
+        component.submission ={_id:'60c70f07944a3a53d9256010'}
         component.actionEvent(Submission, type);
         spyOn( component.onAction, 'emit').and.returnValue(param);
         expect(component.actionEvent).toHaveBeenCalled();
