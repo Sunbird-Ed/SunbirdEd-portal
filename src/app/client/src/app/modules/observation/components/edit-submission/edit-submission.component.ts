@@ -1,13 +1,13 @@
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
-export interface editData {
-    title?: String,
-    subTitle?: String
-    defaultValue?: String
-    leftBtnText?: String,
-    rightBtnText?: String,
-    action: String,
+export interface Editdata {
+    title?: string,
+    subTitle?: string
+    defaultValue?: string
+    leftBtnText?: string,
+    rightBtnText?: string,
+    action: string,
     returnParams:any
 }
 @Component({
@@ -18,10 +18,10 @@ export interface editData {
 
 export class EditSubmissionComponent implements OnInit {
     @ViewChild('modal') modal;
-    @Input() editData:editData
+    @Input() editData:Editdata
     @Output() onAction = new EventEmitter<any>();
     showPopup;
-    updatedValue:String
+    updatedValue:string
     constructor(
         public location: LocationStrategy,
     ) { 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
     selector: 'submission',
