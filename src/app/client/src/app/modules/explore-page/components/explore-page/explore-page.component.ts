@@ -85,7 +85,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     subscription: any;
     userType: any;
     targetedCategorytheme:any;
-    showCategory:boolean;
+    showTargetedCategory:boolean=false;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -541,45 +541,38 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.activatedRoute.queryParams.subscribe(queryParams => {
             if (queryParams.selectedTab === 'home') {
                 if (!this.userType) {
-                    if (this.userService.loggedIn) {
-                        this.userService.userData$.subscribe((profileData: IUserData) => {
-                            if (_.get(profileData, 'userProfile.profileUserType.type')) {
-                                this.userType = profileData.userProfile['profileUserType']['type'];
-                            }
-                        });
-                    } else {
-                        const user = localStorage.getItem('userType');
-                        if (user) {
-                            this.userType = user;
+                    if (this.isUserLoggedIn) {
+                    this.userService.userData$.subscribe((profileData: IUserData) => {
+                        if (profileData
+                            && profileData.userProfile
+                            && profileData.userProfile['profileUserType']) {
+                            this.userType = profileData.userProfile['profileUserType']['type'];
                         }
+                    });
+                } else {
+                    const user = localStorage.getItem('userType');
+                    if (user) {
+                        this.userType = user;
                     }
                 }
-                if (this.userType === 'teacher') {
-                    this.observationUtil.browseByCategoryForm()
-                        .then((data: any) => {
-                            if (data[this.userPreference.framework.board[0]]) {
-                                this.showCategory = true
-                                this.targetedCategory = data[this.userPreference.framework.board[0]][this.userType];
-                                this.targetedCategorytheme = {
-                                    "iconBgColor": "rgba(255,255,255,1)",
-                                    "pillBgColor": "rgba(255,255,255,1)"
-                                }
-                            }
-                            else {
-                                this.showCategory = false
-                            }
-                        });
-                }
-                else {
-                    this.targetedCategory = null;
-                    this.userType = null;
-                }
             }
-            else{
-                this.showCategory = false
+            this.observationUtil.browseByCategoryForm()
+                .then((data: any) => {
+                    if (data && data[this.userPreference.framework.board[0]] &&
+                        data[this.userPreference.framework.board[0]][this.userType]) {
+                        this.showTargetedCategory = true
+                        this.targetedCategory = data[this.userPreference.framework.board[0]][this.userType];
+                        this.targetedCategorytheme = {
+                            "iconBgColor": "rgba(255,255,255,1)",
+                            "pillBgColor": "rgba(255,255,255,1)"
+                        }
+                    }
+                    else {
+                        this.showTargetedCategory = false
+                    }
+                });
             }
         });
-
     }
 
     private getContentSection(section, searchOptions) {
@@ -1045,7 +1038,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     handleTargetedpillSelected(pillData){
-        this.router.navigate(['observation']);
+        switch (pillData.name) {
+            case 'observation':
+                this.router.navigate(['observation']);
+                break;
+        }
     }
 
 
