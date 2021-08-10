@@ -20,7 +20,7 @@
         <h5 class="m-20">{{ frmelmnts?.lbl?.sectionName }}</h5>
         <div class="sbt-page-content-area sections">
           <div *ngFor="let section of sections" class="section-list">
-            <a class="item item--tests" (click)="scrollToContent(section.code)">
+            <a class="item item--tests" tabindex="0" (click)="scrollToContent(section.code)">
               {{ section.name }}
             </a>
           </div>
@@ -39,7 +39,7 @@
             sb-left-icon-btn
             mr-auto
           "
-          (click)="goBack()"
+          tabindex="0" (click)="goBack()"
         >
           <i class="icon-svg icon-svg--xxs icon-back mr-4"
             ><svg class="icon icon-svg--primary">
@@ -93,7 +93,7 @@
         <button
           class="sb-btn sb-btn-normal sb-btn-primary"
           type="button"
-          (click)="onSubmit('save')"
+          tabindex="0" (click)="onSubmit('save')"
         >
           {{ resourceService?.frmelmnts?.btn?.save | translate }}
         </button>
@@ -105,7 +105,7 @@
           }"
           type="button"
           [disabled]="!questionnaireForm?.valid"
-          (click)="onSubmit()"
+          tabindex="0" (click)="onSubmit()"
         >
           {{ resourceService?.frmelmnts?.btn?.submit | translate }}
         </button>

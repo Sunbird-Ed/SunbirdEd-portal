@@ -17,7 +17,7 @@
     </div>
   </div>
   <ng-template #emptyComments>
-    <div (click)="focusOnInput()" class="ui comments scrolling">
+    <div tabindex="0" (click)="focusOnInput()" class="ui comments scrolling">
       <div class="placeholder">
           <i class="sb-icon-comment"></i>
           <span class="">{{resourceService.frmelmnts.lbl.emptycomments}}</span>

@@ -6,7 +6,7 @@
                 <div class="sbchapter-open__topics__title" *ngIf="child?.children?.length">{{child.name}}</div>
                 <div class="sbchapter-open__topics" *ngIf="child?.children?.length">
                     <div *ngFor="let itemName of child?.children; let j = index;">
-                        <div class="sbchapter-open__topic" [ngClass]="{'sbchapter__item--active': activeContent?.sbUniqueIdentifier === itemName?.sbUniqueIdentifier}" (click)="onTocChapterClick($event, itemName)">{{itemName.name}}</div>
+                        <div class="sbchapter-open__topic" [ngClass]="{'sbchapter__item--active': activeContent?.sbUniqueIdentifier === itemName?.sbUniqueIdentifier}" tabindex="0" (click)="onTocChapterClick($event, itemName)">{{itemName.name}}</div>
                     </div>
                 </div>
             </div>

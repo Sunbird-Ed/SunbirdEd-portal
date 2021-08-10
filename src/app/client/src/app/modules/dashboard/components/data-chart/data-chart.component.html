@@ -38,14 +38,14 @@
     <button *ngIf="isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
       [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
-      (click)="addChartSummary()" type="button"
+      (click)="addChartSummary()" type="button" tabindex="0"
       class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"><i class="add icon"></i>
       {{ chartSummarylabel }}
     </button>
   
   
 
-  <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn" (click)="filterModalPopup(true)" *ngIf="filters?.length > 0" [ngClass]="{'hide': hideElements}" >
+  <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn" (click)="filterModalPopup(true)" tabindex="0" *ngIf="filters?.length > 0" [ngClass]="{'hide': hideElements}" >
     {{ resourceService?.frmelmnts?.lbl?.filters }}
   </button>
  </div>

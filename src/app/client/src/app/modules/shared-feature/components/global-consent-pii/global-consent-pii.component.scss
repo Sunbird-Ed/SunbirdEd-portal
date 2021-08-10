@@ -12,7 +12,7 @@
 .profile-fields{
 word-break: break-all;
     .profile-field-label{
-        width: calculateRem(125px);
+        width: calculateRem(150px);
         @media screen and (max-width:768px) {
           width: auto;
         }

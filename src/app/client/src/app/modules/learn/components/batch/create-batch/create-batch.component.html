@@ -2,7 +2,7 @@
   class="sb-modal sb-batch-modal" appBodyScroll *ngIf='showCreateModal' (dismissed)="redirect()" #createBatchModel>
 
   <!--Header-->
-  <i class="close icon" (click)="redirect()"></i>
+  <i class="close icon" tabindex="0" (click)="redirect()"></i>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts.lbl.createnewbatch}}
   </div>
@@ -60,11 +60,11 @@
             <div class="d-flex py-8 flex-w-wrap">
               <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                 <input formControlName="enableDiscussions" type="radio" id="true" value="true">
-                <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
+                <label for="true">{{resourceService?.frmelmnts?.btn?.yes}}</label>
               </div>
               <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                 <input formControlName="enableDiscussions" type="radio" id="false" value="false">
-                <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
+                <label for="false">{{resourceService?.frmelmnts?.btn?.no}}</label>
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@
             <div class="sb-field ui left icon input" [ngClass]="{'disabled': !createBatchForm.value.startDate}">
               <i class="calendar icon date-calendar"></i>
               <input
-                (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
+                tabindex="0" (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
                 class="sb-form-control" [pickerMinDate]='createBatchForm.value.startDate'
                 [pickerMaxDate]='createBatchForm.value.endDate' suiDatepicker formControlName="enrollmentEndDate"
                 [pickerMode]="'date'">
