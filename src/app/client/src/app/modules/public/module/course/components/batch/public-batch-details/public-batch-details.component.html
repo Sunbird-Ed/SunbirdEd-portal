@@ -32,13 +32,13 @@
                 {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchstartdate}}</div>
               <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}</div>
             </div>
-            <hr class="section-hr" />
+            <hr class="section-hr" *ngIf="batchDetails?.endDate"/>
             <div class="pb-24" *ngIf="batchDetails?.endDate">
               <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
                 {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchenddate}}</div>
               <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
             </div>
-            <hr class="section-hr" />
+            <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"/>
             <div class="pb-24" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
               <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
                 {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
