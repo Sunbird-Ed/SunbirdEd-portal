@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
 const envHelper = require('./environmentVariablesHelper');
-const key = envHelper.CRYPTO_ENCRYPTION_KEY;
+let key = envHelper.CRYPTO_ENCRYPTION_KEY;
 const iv = crypto.randomBytes(16);
 
 /**
@@ -10,7 +10,8 @@ const iv = crypto.randomBytes(16);
  * @param text string to encypt the data
  * @returns {{encryptedData: string, iv: string}}
  */
-const encrypt = (text) => {
+const encrypt = (text, keyValue) => {
+  key = keyValue ? keyValue : key
   let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
   let encrypted = cipher.update(text);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
@@ -22,7 +23,8 @@ const encrypt = (text) => {
  * @param text string to decrypt with the iv key
  * @returns {string}
  */
-const decrypt = (text) => {
+const decrypt = (text, keyValue) => {
+  key = keyValue ? keyValue : key
   let iv = Buffer.from(text.iv, 'hex');
   let encryptedText = Buffer.from(text.encryptedData, 'hex');
   let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
