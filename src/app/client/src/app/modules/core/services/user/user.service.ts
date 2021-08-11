@@ -482,7 +482,7 @@ export class UserService {
     }
   }
 
-  updateGuestUser(userDetails, formValue): Observable<any> {
+  updateGuestUser(userDetails, formValue?): Observable<any> {
     if (window['TagManager']) {
       window['TagManager'].SBTagService.pushTag(formValue, 'USERLOCATION_', true);
       window['TagManager'].SBTagService.pushTag(userDetails, 'USERFRAMEWORK_', true);
