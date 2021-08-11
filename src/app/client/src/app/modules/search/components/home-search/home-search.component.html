@@ -45,7 +45,7 @@
                              appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
                              (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
             <ng-template #desktopCard>
-              <div class="sb-desktop-library-card">
+              <div class="sb-desktop-library-card relative9">
                 <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                                 [telemetryInteractEdata]="cardIntractEdata"
                                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
