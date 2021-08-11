@@ -570,6 +570,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         };
         this.getInteractEdata(telemetryData);
+        this.moveToTop();
         if (this.isUserLoggedIn()) {
             this.playerService.playContent(event.data);
         } else {
@@ -1096,11 +1097,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 const url = (this.isUserLoggedIn()) ? route : anonymousUrl;
                 if (url) {
                     this.router.navigate([url]);
-                    window.scroll({
-                        top: 0,
-                        left: 0,
-                        behavior: 'smooth'
-                    });
+                    this.moveToTop();
                 } else {
                     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
                 }
@@ -1114,7 +1111,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 break;
         }
     }
-
+    public moveToTop() {
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    }
     handleBannerClick(data) {
         const telemetryData = {
           context: {
