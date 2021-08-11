@@ -48,7 +48,7 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       if (_.get(req,'cookies.redirectPath')){
-        res.cookie ('userDetails', encrypt(userDetails.userName, externalKey));
+        res.cookie ('userDetails', JSON.stringify(encrypt(userDetails.userName, externalKey)));
       }
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
