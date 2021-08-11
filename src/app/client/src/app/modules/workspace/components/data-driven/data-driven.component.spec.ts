@@ -180,7 +180,7 @@ describe('DataDrivenComponent', () => {
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent(undefined);
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework, 'Draft']);
+      ['workspace/edit/', 'TextBook', 'do_2124708548063559681134', 'draft', 'Draft']);
   });
   it('should not router to collection editor ', () => {
     const state = 'draft';

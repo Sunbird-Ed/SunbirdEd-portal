@@ -554,7 +554,7 @@
                 </svg></i>
               {{resourceService?.frmelmnts?.lbl?.accessible}}
             </li>
-            <li *ngIf="!isDesktopApp" tabindex="0" class="list-item p-0" (click)="toggleSideMenu(false)"
+            <li *ngIf="!isDesktopApp" tabindex="0" class="list-item p-0" (click)="toggleSideMenu(false);clearFiltersCache()"
               appTelemetryInteract [telemetryInteractEdata]="signInIntractEdata">
               <a appOnlineOnly href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">

@@ -841,6 +841,18 @@ export const courseSectionFacetData = {
       'values': [
         { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
       ]
+    },
+    {
+      'name': 'additionalCategories',
+      'values': [
+        { 'name': 'tv lesson', 'count': 84 }
+      ]
+    },
+    {
+      'name': 'primaryCategory',
+      'values': [
+        { 'name': 'etextbook', 'count': 84 },
+      ]
     }
   ],
   'keys': ['board']

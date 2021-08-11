@@ -712,5 +712,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
+  clearFiltersCache () {
+    if (this.cacheService.exists('searchFilters')) {
+      this.cacheService.remove('searchFilters');
+    }
+  }
 
 }

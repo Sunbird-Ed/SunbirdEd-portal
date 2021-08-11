@@ -39,7 +39,7 @@
               [contentList]="section.contents | sortBy:'name':'asc'" [type]="'infinite_card_grid'"
               (cardClick)="playContent($event)">
             </sb-library-cards-grid>
-            <div class="sb-desktop-library-card">
+            <div class="sb-desktop-library-card relative9">
               <sb-library-cards-grid *ngIf="!isPageAssemble && isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
               [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
               (hoverActionClick)="hoverActionClicked($event)">

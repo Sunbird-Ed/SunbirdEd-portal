@@ -19,6 +19,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() formInput: any = {};
   @Input() isClosable = false;
   @Input() isGuestUser = false;
+  @Input() isPreference = false;
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
@@ -36,10 +37,14 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   telemetryInteractObject: IInteractEventObject;
   private editMode: boolean;
   guestUserHashTagId;
+  instance: string;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
-    public popupControlService: PopupControlService) { }
+    public popupControlService: PopupControlService) {
+      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
+     }
 
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
