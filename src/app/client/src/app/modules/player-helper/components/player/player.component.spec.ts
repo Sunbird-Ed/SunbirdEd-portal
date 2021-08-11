@@ -293,7 +293,7 @@ describe('PlayerComponent', () => {
     expect(screen.orientation.type).toEqual('landscape-primary');
   });
 
-  it('should call emitSceneChangeEvent', (done) => {
+  it('should call emitSceneChangeEvent ', (done) => {
     spyOn(component.sceneChangeEvent, 'emit');
     component.emitSceneChangeEvent();
     setTimeout(() => {
