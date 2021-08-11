@@ -99,7 +99,7 @@
                 </ngx-slick>
               </div>
               <sb-pills-grid *ngIf="section?.section?.isEnabled"
-                [title]="getSectionTitle(section?.section?.title, section?.section?.defaultTitle)"
+                [title]="getSectionTitle(section?.section?.title, section?.section?.defaultTitle) "
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
                 [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
                 [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
