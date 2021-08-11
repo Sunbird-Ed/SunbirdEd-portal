@@ -995,8 +995,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    getSectionTitle (title, defaultTitle?) {
-        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title) ||  defaultTitle;
+    getSectionTitle (title) {
+        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
     }
 
     getBannerTitle (title) {
