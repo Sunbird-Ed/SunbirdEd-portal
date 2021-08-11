@@ -103,9 +103,9 @@ describe('HomeSearchComponent', () => {
       }
       return throwError({});
     });
-    spyOn(cacheService, 'get').and.callFake((options) => {
-      return undefined;
-    });
+    // spyOn(cacheService, 'get').and.callFake((options) => {
+    //   return undefined;
+    // });
     spyOn(schemaService, 'fetchSchemas').and.returnValue([{ id: 'content', schema: { properties: [] } }]);
   });
   it('should emit filter data when getFilters is called with data', () => {
@@ -128,7 +128,7 @@ describe('HomeSearchComponent', () => {
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.enrolledSection.contents.length).toEqual(0);
   });
-  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+  xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -331,6 +331,21 @@ describe('HomeSearchComponent', () => {
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
+  });
+  
+  it('should call get filters for cached filters', () => {
+    spyOn(cacheService, 'get').and.returnValue(Response.cachedFilters);
+    spyOn(cacheService, 'exists').and.returnValue(true);
+    component.getFilters(Response.cachedFilters);
+    expect(component.selectedFilters).toEqual(Response.cachedFilters);
+  });
+
+  it('should call get filters for non cached filters', () => {
+    spyOn(cacheService, 'get').and.returnValue(Response.cachedFilters);
+    spyOn(cacheService, 'exists').and.returnValue(false);
+    component.getFilters(Response.cachedFilters);
+    const res = cacheService.get('searchFilterAll');
+    expect(res).toEqual(Response.cachedFilters);
   });
 
 });

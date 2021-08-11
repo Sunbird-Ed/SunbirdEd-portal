@@ -336,9 +336,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             filters = _cacheFilters;
         }
-        this.cacheService.set('searchFilters', filters, { expires: Date.now() + 1000 * 60 * 60 });
-        this.showLoader = true;
         const currentPageData = this.getCurrentPageData();
+        // Cache timeout is 24 hours - 86400000 milliseconds
+        const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
+        this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
+        this.showLoader = true;
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];

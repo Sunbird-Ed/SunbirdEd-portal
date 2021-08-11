@@ -241,5 +241,22 @@ export const Response = {
         },
         'limit': 100
       }
-    }]
+    }],
+    cachedFilters: {
+      'primaryCategory': [
+        'course'
+      ],
+      'se_boards': [
+        'CBSE/NCERT'
+      ],
+      'se_mediums': [
+        'english'
+      ],
+      'se_gradeLevels': [
+        'class 1'
+      ],
+      'se_subjects': [
+        'Accountancy'
+      ]
+    }
   };

@@ -246,6 +246,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     this.selectedFilters = filterData;
+    // Cache timeout is 1 hour - 3600000 milliseconds
+    const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
     if (_.get(filterData, 'se_boards')) {
       if (this.cacheService.exists('searchFiltersAll')) {
         const _searchFilters = this.cacheService.get('searchFiltersAll');
@@ -259,9 +261,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
           selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab')
         }
         this.selectedFilters = _cacheFilters;
-        this.cacheService.set('searchFiltersAll', this.selectedFilters, { expires: Date.now() + 1000 * 60 * 60 });
+        this.cacheService.set('searchFiltersAll', this.selectedFilters, { expires: Date.now() + _cacheTimeout });
       } else {
-        this.cacheService.set('searchFiltersAll', filterData, { expires: Date.now() + 1000 * 60 * 60 });
+        this.cacheService.set('searchFiltersAll', filterData, { expires: Date.now() + _cacheTimeout });
       }
     }
     if (this.cacheService.exists('searchFiltersAll')) {
