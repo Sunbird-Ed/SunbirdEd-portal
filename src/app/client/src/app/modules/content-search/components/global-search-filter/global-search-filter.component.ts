@@ -18,6 +18,7 @@ import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import { UserService } from '@sunbird/core';
 import { IFacetFilterFieldTemplateConfig } from 'common-form-elements-v9';
+import { CacheService } from 'ng2-cache-service';
 
 @Component({
   selector: 'app-global-search-filter',
@@ -39,14 +40,15 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   @Input() layoutConfiguration;
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
-
+  @Input() cachedFilters?: any;
+  
   @ViewChild('sbSearchFacetFilterComponent') searchFacetFilterComponent: any;
 
   filterFormTemplateConfig?: IFacetFilterFieldTemplateConfig[];
 
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, private utilService: UtilService,
-    public userService: UserService) {
+    public userService: UserService, private cacheService: CacheService) {
   }
 
   onChange(facet) {
@@ -164,8 +166,14 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         return queryFilters;
       })).subscribe(filters => {
         this.selectedFilters = _.cloneDeep(filters);
-        this.emitFilterChangeEvent(true);
-        this.hardRefreshFilter();
+        if (this.cachedFilters) {
+          this.selectedFilters = this.cachedFilters;
+          this.emitFilterChangeEvent();
+          this.hardRefreshFilter();
+        } else {
+          this.emitFilterChangeEvent(true);
+          this.hardRefreshFilter();
+        }
       }, error => {
         console.error('fetching filter data failed', error);
       });
