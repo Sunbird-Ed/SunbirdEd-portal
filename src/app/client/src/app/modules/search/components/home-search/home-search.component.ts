@@ -248,6 +248,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedFilters = filterData;
     // Cache timeout is 1 hour - 3600000 milliseconds
     const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
+    /* istanbul ignore if */
     if (_.get(filterData, 'se_boards')) {
       if (this.cacheService.exists('searchFiltersAll')) {
         const _searchFilters = this.cacheService.get('searchFiltersAll');

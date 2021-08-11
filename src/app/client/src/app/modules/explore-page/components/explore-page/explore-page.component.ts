@@ -319,6 +319,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public getFilters({ filters, status }) {
         if (!filters || status === 'FETCHING') { return; }
         // If filter are available in cache; merge with incoming filters
+        /* istanbul ignore if */
         if (this.cacheService.exists('searchFilters')) {
             const _searchFilters = this.cacheService.get('searchFilters');
             let _cacheFilters = {
