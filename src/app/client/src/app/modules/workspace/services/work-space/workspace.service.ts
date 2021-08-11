@@ -370,4 +370,24 @@ export class WorkSpaceService {
     );
   }
 
+  newtoggleWarning(type?: string) {
+    this.showWarning = sessionStorage.getItem('inEditor');
+    if (this.showWarning === 'true') {
+      this.listener = (event) => {
+        window.location.hash = 'no';
+        if (event.state) {
+          const alertMsg = type ? this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0040
+            : this.resourceService.messages.imsg.m0037;
+          this.browserBackEvent.emit();
+          alert(alertMsg);
+          window.location.hash = 'no';
+        }
+      };
+      window.addEventListener('popstate', this.listener, false);
+    } else {
+      window.location.hash = '';
+      window.removeEventListener('popstate', this.listener);
+    }
+  }
+
 }
