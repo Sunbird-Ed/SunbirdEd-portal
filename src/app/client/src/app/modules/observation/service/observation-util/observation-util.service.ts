@@ -130,7 +130,7 @@ export class ObservationUtilService {
         profileData.value['profileUserType'] &&
           profileData.value['profileUserType']['subType']
           ? profileData.value['profileUserType']['subType'].toUpperCase()
-          : 'TE';
+          : profileData.value['profileUserType']['type'].toUpperCase();
       this.dataParam = obj;
       resolve(obj);
     });

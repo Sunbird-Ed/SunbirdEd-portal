@@ -118,7 +118,7 @@
               [pillSize]="'medium'" [platform]="'portal'" 
               [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'">
               <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="pillData?.name | titlecase"
-                [icon]="pillData?.icon" [value]="pillData" (click)="handleTargetedpillSelected(pillData)"
+                [icon]="pillData?.icon?.web" [value]="pillData" (click)="handleTargetedpillSelected(pillData)"
                 [theme]="targetedCategorytheme" ></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />

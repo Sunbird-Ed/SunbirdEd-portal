@@ -923,7 +923,9 @@ describe('ExplorePageComponent', () => {
   });
 
     it("should call the getFormConfigs to get form category if loggin",()=>{
+      component.selectedTab="home";
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+      spyOn(component, 'setUserPreferences').and.callThrough();
       userService.userData$ = observableOf({
         profileData:{
         userProfile: {
@@ -935,29 +937,20 @@ describe('ExplorePageComponent', () => {
         },
       });
       spyOn(component,"getFormConfigs").and.callThrough();
-      component.userType='teacher';
-      component.userPreference = { framework: {
-          board: [
-              "CBSE"
-          ],
-          gradeLevel: [
-              "Class 1"
-          ],
-          id: [
-              "ekstep_ncert_k-12"
-          ],
-          medium: [
-              "English"
-          ],
-          subject: [
-              "English"
-          ]
+      component.userPreference = { framework: {board: ["CBSE"]}};
+      let data={
+        cbse:{
+          teacher:{
+            name:"observation",
+            icon:{
+              web:"assets/images/mask-image/observation.png"
+            }
+          }
+        }
       }
-      };
-      const mySpy = spyOn(
-        observationUtilService,
-        'browseByCategoryForm'
-      ).and.callFake(() => Promise.resolve(categoryData));
+      spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
+        return Promise.resolve(data);
+      });
       component.showTargetedCategory=true;
       component.getFormConfigs();
       expect(component.getFormConfigs).toHaveBeenCalled();
@@ -965,33 +958,50 @@ describe('ExplorePageComponent', () => {
 
     it("should call the getFormConfigs to get form category if not login",()=>{
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      spyOn(component, 'setUserPreferences').and.callThrough();
+      component.selectedTab="home";
       spyOn(component,"getFormConfigs").and.callThrough();
       component.userType='teacher';
-      component.userPreference = { framework: {
-          "board": [
-              "CBSE"
-          ],
-          "gradeLevel": [
-              "Class 1"
-          ],
-          "id": [
-              "ekstep_ncert_k-12"
-          ],
-          "medium": [
-              "English"
-          ],
-          "subject": [
-              "English"
-          ]
-      }
-      };
-      const mySpy = spyOn(
-        observationUtilService,
-        'browseByCategoryForm'
-      ).and.callFake(() => Promise.resolve(categoryData));
+      component.userPreference = { framework: {board: ["CBSE"]}};
+      spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
+        return Promise.resolve(categoryData);
+      });
       component.showTargetedCategory=true;
       component.getFormConfigs();
       expect(component.getFormConfigs).toHaveBeenCalled();
+    })
+
+    it("should call the getFormConfigs to get form category if not login",()=>{
+      spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      spyOn(component, 'setUserPreferences').and.callThrough();
+      component.selectedTab="home";
+      spyOn(component,"getFormConfigs").and.callThrough();
+      component.userType='teacher';
+      component.userPreference = { framework: {board: ["CBSE"]}};
+      let data={
+        cbse:{
+          student:{
+            name:"observation",
+            icon:{
+              web:"assets/images/mask-image/observation.png"
+            }
+          }
+        }
+      }
+      spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
+        return Promise.resolve(data);
+      });
+      component.showTargetedCategory=false;
+      component.getFormConfigs();
+      expect(component.getFormConfigs).toHaveBeenCalled();
+    })
+
+    it("should call the getFormConfigs to get form category when selected is not home",()=>{
+      spyOn(component, 'getFormConfigs').and.callThrough();
+      component.selectedTab="explore";
+      component.getFormConfigs();
+      expect(component.getFormConfigs).toHaveBeenCalled();
+      expect(component.showTargetedCategory).toEqual(false);
     })
 
   it("shoulc call the handleTargetedpillSelected when the browse by category clicked",()=>{

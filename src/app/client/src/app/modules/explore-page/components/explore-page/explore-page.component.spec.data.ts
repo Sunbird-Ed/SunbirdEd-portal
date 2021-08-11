@@ -3189,11 +3189,13 @@ export const RESPONSE = {
   }
 };
 
-export const categoryData = { 
-    CBSE: { 
-      teacher: [{ 
-        name: "observation", 
-        icon: "assets/images/mask-image/observation.svg" 
-      }] 
-  } 
+export const categoryData = {
+  cbse: {
+    teacher: [{
+      name: "observation",
+      icon: {
+        web:"assets/images/mask-image/observation.png" 
+      }
+    }]
+  }
 };

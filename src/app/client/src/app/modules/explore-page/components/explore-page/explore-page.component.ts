@@ -86,6 +86,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     userType: any;
     targetedCategorytheme:any;
     showTargetedCategory:boolean=false;
+    selectedTab:any;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -196,7 +197,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.userPreference = this.setUserPreferences();
+        this.activatedRoute.queryParams.subscribe(queryParams => {
+        this.selectedTab=queryParams.selectedTab;    
         this.getFormConfigs();
+        });
         this.initConfiguration();
 
         this.segmentationTagService.getSegmentCommand();
@@ -540,8 +544,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     getFormConfigs() {
-        this.activatedRoute.queryParams.subscribe(queryParams => {
-            if (queryParams.selectedTab === 'home') {
+            if (this.selectedTab === 'home') {
                 if (!this.userType) {
                     if (this.isUserLoggedIn) {
                     this.userService.userData$.subscribe((profileData: IUserData) => {
@@ -560,10 +563,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.observationUtil.browseByCategoryForm()
                 .then((data: any) => {
-                    if (data && data[this.userPreference.framework.board[0]] &&
-                        data[this.userPreference.framework.board[0]][this.userType]) {
+                    let currentRole=this.userPreference.framework.board[0].toLowerCase()
+                    if (data && data[currentRole] &&
+                        data[currentRole][this.userType]) {
                         this.showTargetedCategory = true
-                        this.targetedCategory = data[this.userPreference.framework.board[0]][this.userType];
+                        this.targetedCategory = data[currentRole][this.userType];
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
                             "pillBgColor": "rgba(255,255,255,1)"
@@ -574,7 +578,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 });
             }
-        });
+            else{
+                this.showTargetedCategory = false
+            }
     }
 
     private getContentSection(section, searchOptions) {
