@@ -81,6 +81,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     isFilterEnabled = true;
     defaultTab = 'Textbook';
     userProfile: any;
+    subjectSearchRequest: any;
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -414,6 +415,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         request.channelId = this.selectedFilters['channel'];
                     }
                     const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
+                    this.subjectSearchRequest = option;
                     return this.searchService.contentSearch(option)
                         .pipe(
                             map((response) => {
@@ -961,7 +963,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return _.isArray(value) ? _.join(value, ', ') : undefined;
     }
 
-    handlePillSelect(event, facetName) {
+    handlePillSelect(event, facetName?) {
         if (!event || !event.data || !event.data.length) {
             return;
         }

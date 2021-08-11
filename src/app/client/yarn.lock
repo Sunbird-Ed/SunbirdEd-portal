@@ -1489,10 +1489,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.2.tgz#f67da3d7f6e80381161f071eb4115255ea364ffb"
-  integrity sha512-NhlaI2PhWVgHsm/7e9R/M/WapJZ4mmSKux73CZ8dXh8c+YgwjDmuxbq42RE5OG05rdDPLmxIEfNYTST9/tpGug==
+"@project-sunbird/common-consumption-v9@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.4.tgz#70bd8705b8e437a5afbdb13c2e2bf9fbfd25a1b6"
+  integrity sha512-lzDJ3BK3jqQlpGcVSRQgbaAa40QaEYZDN2PeZ5bDdcl0jQw3i9IBrLliSt3GWYWyD934n7wlPioHUmvka+x5VA==
 
 "@project-sunbird/discussions-ui-v8@2.1.6":
   version "2.1.6"
@@ -3816,10 +3816,10 @@ content-disposition@0.5.3:
   dependencies:
     safe-buffer "5.1.2"
 
-content-section@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/content-section/-/content-section-0.0.5.tgz#4b5ff3e3d3cec35a4ddb81161467b1f3e96e5e9a"
-  integrity sha512-6LIPFIcqGajDUChDx7iKDhIlQsnWNpkWZDNjzDCnEiBppu25DgUsXPveLy30JwO9k1OLbInwRdfmyb5U6uUT3Q==
+content-section@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/content-section/-/content-section-0.0.6.tgz#a2fd1dec9626e417a1fc9bd82f04117f956fa116"
+  integrity sha512-rR5mrmOovQN9GUxfwaAggYZLi16XYrlX/4ewz5CyR+IqlO4jrnmHYjgDipQbcK9Ji1yRVodkXoqW47rEJiUlYw==
   dependencies:
     tslib "^1.10.0"
 

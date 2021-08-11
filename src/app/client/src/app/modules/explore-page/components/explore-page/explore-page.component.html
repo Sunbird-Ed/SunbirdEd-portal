@@ -5,7 +5,7 @@
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
-    <!-- `isFilterEnabled` reference from current page data --> 
+    <!-- `isFilterEnabled` reference from current page data -->
     <div *ngIf="!isDesktopApp && isFilterEnabled" [ngClass]="FIRST_PANEL_LAYOUT">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
         (filterChange)="getFilters($event)" [defaultTab]="defaultTab" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
@@ -86,6 +86,15 @@
                 <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
               </div>
             </div>
+            <div *ngIf="subjectSearchRequest">
+              <sb-subject-section [searchRequest]="subjectSearchRequest"
+                                  (clickEvent)="handlePillSelect($event)"
+                                  [currentPageData]="_currentPageData"
+                                  [title]="getSectionTitle('frmelmnts.lbl.subjects')"
+                                  [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless"
+                                  [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore">
+              </sb-subject-section>
+            </div>
             <div *ngFor="let section of facetSections">
               <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList.length > 0">
                 <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}</div>
@@ -98,17 +107,6 @@
                   </div>
                 </ngx-slick>
               </div>
-              <sb-pills-grid *ngIf="section?.section?.isEnabled"
-                [title]="getSectionTitle(section?.section?.title)"
-                [minDisplayCount]="section?.section?.theme?.limit || 4"
-                [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
-                [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
-                [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'" (select)="handlePillSelect($event, section.name)">
-                <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
-                  [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)" [value]="pillData"
-                  [theme]="pillData?.theme"></sb-pill-item>
-              </sb-pills-grid>
-              <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
             </div>
             <div *ngFor="let section of contentSections" class="pl-16">
               <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)" [sortBy]="section?.apiConfig?.sortBy"
@@ -140,8 +138,8 @@
                 (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
               </sb-library-cards-grid>
               <div class="sb-desktop-library-card relative9">
-                <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
-                [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
+                <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'"
+                [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
                 (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
                 </sb-library-cards-grid>
               </div>
