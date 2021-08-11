@@ -21,6 +21,7 @@ import { FormService } from '../../../../core/services/form/form.service';
 import { IForumContext } from '../../../interfaces';
 import { ContentManagerService } from '../../../../public/module/offline/services';
 import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
+import { ACTIVITY_DASHBOARD, GROUP_DETAILS, MY_GROUPS } from '../../../../groups/interfaces';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -82,7 +83,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isTrackable = false;
   viewDashboard = false;
   tocId;
-  isGroupAdmin: boolean;
+  isGroupAdmin: string;
   showLoader = false;
   batchEndCounter: number;
   showBatchCounter: boolean;
@@ -147,6 +148,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
         this.tocId = params.textbook;
+        this.isGroupAdmin = params.isAdmin;
+        this.groupId = params.groupId;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -544,4 +547,19 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
+   /**
+   * @description - navigate to groups activity dashboard page
+   */
+    navigateToActivityDashboard() {
+      this.addTelemetry('activity-detail', [{ id: this.courseHierarchy.identifier , type: this.courseHierarchy.primaryCategory}]);
+      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, `${ACTIVITY_DASHBOARD}`, this.courseHierarchy.identifier],
+        {
+          state: {
+            hierarchyData: this.courseHierarchy,
+          }
+        });
+    }
+    addTelemetry(id, cdata, extra?, obj?) {
+      this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
+    }
 }
