@@ -275,7 +275,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       this.browserBackEventSubscribe.unsubscribe();
     }
     sessionStorage.setItem('inEditor', 'false');
-    this.workSpaceService.toggleWarning();
+    this.workSpaceService.newtoggleWarning();
   }
 
   setEditorConfig() {
@@ -335,7 +335,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   private disableBrowserBackButton() {
     window.location.hash = 'no';
     sessionStorage.setItem('inEditor', 'true');
-    this.workSpaceService.toggleWarning(this.routeParams.type);
+    this.workSpaceService.newtoggleWarning(this.routeParams.type);
     this.browserBackEventSubscribe = this.workSpaceService.browserBackEvent.subscribe(() => {
       const intractEventEdata: IInteractEventEdata = {
         id: 'browser-back-button',

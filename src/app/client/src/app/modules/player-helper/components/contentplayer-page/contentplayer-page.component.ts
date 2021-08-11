@@ -17,6 +17,7 @@ import { PublicPlayerService } from '@sunbird/public';
 })
 export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges {
   @Input() contentDetails;
+  @Input() collectionData;
   @Input() playerConfig;
   @Input() tocPage = false;
   @Input() dialCode: string;
