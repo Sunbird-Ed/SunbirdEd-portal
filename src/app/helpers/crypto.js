@@ -8,6 +8,7 @@ const iv = crypto.randomBytes(16);
 /**
  * Encrypts the data and return encrypted data with iv
  * @param text string to encypt the data
+ * @param key key to encypt 
  * @returns {{encryptedData: string, iv: string}}
  */
 const encrypt = (text, keyValue) => {
@@ -21,6 +22,7 @@ const encrypt = (text, keyValue) => {
 /**
  * decrypts the data and returns back decrypted data
  * @param text string to decrypt with the iv key
+ * @param key key to decrypt 
  * @returns {string}
  */
 const decrypt = (text, keyValue) => {
