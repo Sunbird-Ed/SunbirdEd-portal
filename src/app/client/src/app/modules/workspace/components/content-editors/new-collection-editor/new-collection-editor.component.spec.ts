@@ -395,12 +395,12 @@ describe('NewCollectionEditorComponent', () => {
   it('Should disable browser back button', fakeAsync(() => {
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'browserBackEvent').and.returnValue(observableOf({}));
-    spyOn(workSpaceService, 'toggleWarning').and.callThrough();
+    spyOn(workSpaceService, 'newtoggleWarning').and.callThrough();
     spyOn(component, 'generateInteractEvent').and.callThrough();
     component.collectionDetails = mockRes.successResult.result.content;
     component['routeParams'] = {type: 'Course'};
     component['disableBrowserBackButton']();
-    expect(workSpaceService.toggleWarning).toHaveBeenCalledWith('Course');
+    expect(workSpaceService.newtoggleWarning).toHaveBeenCalledWith('Course');
     workSpaceService.browserBackEvent.emit();
     tick(1000);
     expect(component.generateInteractEvent).toHaveBeenCalled();

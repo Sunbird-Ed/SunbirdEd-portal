@@ -98,6 +98,7 @@
                   </div>
                 </ngx-slick>
               </div>
+              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList.length > 0" class="section-hr my-32" />
               <sb-pills-grid *ngIf="section?.section?.isEnabled"
                 [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
@@ -139,7 +140,7 @@
                 [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
                 (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
               </sb-library-cards-grid>
-              <div class="sb-desktop-library-card">
+              <div class="sb-desktop-library-card relative9">
                 <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
                 [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
                 (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
