@@ -4,7 +4,7 @@ import { of, Observable } from 'rxjs';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { ConfigService, ResourceService, SharedModule, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import { Router, NavigationEnd, ActivatedRoute, RouterModule } from '@angular/router';
-import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission } from './Observation-details.component.mock.data';
+import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission,AlertNotApplicable } from './Observation-details.component.mock.data';
 import { ObservationService } from '@sunbird/core';
 import { ObservationUtilService } from '../../service';
 import { EntityListComponent } from '../entity-list/entity-list.component';
@@ -31,6 +31,9 @@ const resourceBundle = {
       no: 'No',
       delete: 'Delete',
       observeAgain: 'Observe again',
+    },
+    msg:{
+      noEntityFound:"No Entity Found"
     },
   },
   languageSelected$: of({})
@@ -311,4 +314,86 @@ describe('ObservationDetailsComponent', () => {
     expect(component.observeAgain).toHaveBeenCalled();
     expect(component.getEntities).toHaveBeenCalled();
   });
+
+
+  it("should call the markEcmNotApplicable when the modal is closed and event callback",()=>{
+    spyOn(component,"markEcmNotApplicable").and.callThrough();
+    let event={
+      action:"",
+      data:{},
+      returnParams:{
+        code:"OB"
+      }
+    }
+    spyOn(observationUtilService,'getProfileDataList').and.callFake(() => Promise.resolve(ProfileData));
+    spyOn(observationService,"post").and.returnValue({ subscribe: (data) => {} })
+    component.markEcmNotApplicable(event);
+    expect(component.markEcmNotApplicable).toHaveBeenCalled();
+  });
+
+  it("should call the markEcmNotApplicableRemark fro the remarks on making not applicable true",()=>{
+    spyOn(component,"markEcmNotApplicableRemark").and.callThrough();
+    let event={
+      notApplicable:true
+    }
+    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(()=>{
+      return AlertMetaData;
+    })
+    spyOn(observationUtilService, 'showPopupAlert').and.returnValue(Promise.resolve(true));
+    component.markEcmNotApplicableRemark(event);
+    expect(component.markEcmNotApplicableRemark).toHaveBeenCalled();
+  });
+
+  it("should call the markEcmNotApplicableRemark fro the remarks on making not applicable false",()=>{
+    spyOn(component,"markEcmNotApplicableRemark").and.callThrough();
+    let event={
+      notApplicable:false
+    }
+    component.markEcmNotApplicableRemark(event);
+    expect(component.markEcmNotApplicableRemark).toHaveBeenCalled();
+    expect(component.openEditModal.show).toEqual(true);
+  });
+
+  it("should call the #closeEditModal() when action is submissionTitleUpdate",()=>{
+    spyOn(component,"closeEditModal").and.callThrough();
+    component.payload={
+      title:""
+    }
+    let event ={
+      data:{},
+      action:"submissionTitleUpdate",
+      returnParams:{
+        code:"OB"
+      }
+    }
+    component.closeEditModal(event);
+    expect(component.closeEditModal).toHaveBeenCalled();
+    expect(component.openEditModal.show).toEqual(false);
+  });
+
+  it("should call the #closeEditModal() when action is markEcmNotApplicable",()=>{
+    spyOn(component,"closeEditModal").and.callThrough();
+    let event ={
+      data:{},
+      action:"markEcmNotApplicable",
+      returnParams:{
+        code:"OB"
+      }
+    }
+    component.closeEditModal(event);
+    expect(component.closeEditModal).toHaveBeenCalled();
+    expect(component.openEditModal.show).toEqual(false);
+  });
+
+  it("should call the #deleteSubmission",()=>{
+    spyOn(component,"deleteSubmission").and.callThrough();
+    let event={}
+    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(()=>{
+      return AlertMetaData;
+    })
+    spyOn(observationUtilService, 'showPopupAlert').and.returnValue(Promise.resolve(true));
+    component.deleteSubmission(event);
+    expect(component.deleteSubmission).toHaveBeenCalled();
+  })
+
 });

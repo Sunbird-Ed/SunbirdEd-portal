@@ -37,10 +37,10 @@ export class ObservationUtilService {
       .then((profileData: IUserData) => {
         if (profileData &&
           profileData.userProfile &&
-          profileData.userProfile['profileUserType'])
+          profileData.userProfile['profileUserType'] &&
+          profileData.userProfile['profileUserType']['type'] === 'administrator')
           {
-          if ( profileData.userProfile['profileUserType']['type'] === 'administrator' && 
-          profileData.userProfile['profileUserType']['subType'] === null) {
+          if (profileData.userProfile['profileUserType']['subType'] === null) {
             return false;
           } else {
             return true;

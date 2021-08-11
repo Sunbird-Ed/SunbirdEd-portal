@@ -56,7 +56,7 @@ describe('ObservationUtilService', () => {
         { provide: Router },
         { provide: ResourceService },
       ],
-      imports: [HttpClientTestingModule, SuiModalModule,SharedModule,CoreModule],
+      imports: [HttpClientTestingModule, SuiModalModule,CoreModule],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
   );
@@ -73,15 +73,10 @@ describe('ObservationUtilService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should run #getProfileData() if adminstartor', async (done) => {
-    userService.userData$ = observableOf({
-      userProfile: {
-        profileUserType: {
-          subType: 'deo',
-          type: 'administrator',
-        },
-      },
-    });
+  it('should run #getProfileData() for administrator', async (done) => {
+    ResponseData.userProfile.profileUserType.type="administrator";
+    ResponseData.userProfile.profileUserType.subType="deo";
+    userService.userData$ = observableOf(ResponseData);
     spyOn(service, 'getProfileData').and.callThrough();
     const value = await service.getProfileData();
     setTimeout(() => {
@@ -91,33 +86,10 @@ describe('ObservationUtilService', () => {
     });
   });
 
-  it('should run #getProfileData() if teacher', async (done) => {
-    userService.userData$ = observableOf({
-      userProfile: {
-        profileUserType: {
-          subType: null,
-          type: 'teacher',
-        },
-      },
-    });
-    spyOn(service, 'getProfileData').and.callThrough();
-    const value = await service.getProfileData();
-    setTimeout(() => {
-      expect(service.getProfileData).toHaveBeenCalled();
-      expect(value).toEqual(true);
-      done();
-    });
-  });
-
-  it('should run #getProfileData() null', async (done) => {
-    userService.userData$ = observableOf({
-      userProfile: {
-        profileUserType: {
-          subType: null,
-          type: 'administrator',
-        },
-      },
-    });
+  it('should run #getProfileData() for administrator subtype null', async (done) => {
+    ResponseData.userProfile.profileUserType.type="administrator";
+    ResponseData.userProfile.profileUserType.subType=null;
+    userService.userData$ = of(ResponseData);
     spyOn(service, 'getProfileData').and.callThrough();
     const value = await service.getProfileData();
     setTimeout(() => {
@@ -125,6 +97,39 @@ describe('ObservationUtilService', () => {
       expect(value).toEqual(false);
       done();
     });
+  });
+
+  it('should run #getProfileData() for administrator subtype not null', async (done) => {
+    ResponseData.userProfile.profileUserType.type="administrator";
+    ResponseData.userProfile.profileUserType.subType="deo";
+    userService.userData$ = of(ResponseData);
+    spyOn(service, 'getProfileData').and.callThrough();
+    const value = await service.getProfileData();
+    setTimeout(() => {
+      expect(service.getProfileData).toHaveBeenCalled();
+      expect(value).toEqual(true);
+      done();
+    });
+  });
+
+
+  it('should run #getProfileData() for teacher', async (done) => {
+    ResponseData.userProfile.profileUserType.type="teacher";
+    ResponseData.userProfile.profileUserType.subType=null;
+    userService.userData$ = observableOf(ResponseData);
+    spyOn(service, 'getProfileData').and.callThrough();
+    const value = await service.getProfileData();
+    setTimeout(() => {
+      expect(service.getProfileData).toHaveBeenCalled();
+      expect(value).toEqual(true);
+      done();
+    });
+  });
+
+
+  it('should run #getProfileData() on error',() => {
+    spyOn(service, 'getProfileData').and.callThrough();
+    spyOn(userService,"userData$").and.returnValue(observableThrowError("error"))
   });
 
   it('should run #getProfileDataList()', async () => {
