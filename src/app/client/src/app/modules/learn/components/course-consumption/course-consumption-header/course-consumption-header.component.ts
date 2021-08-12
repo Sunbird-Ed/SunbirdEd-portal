@@ -148,7 +148,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
         this.tocId = params.textbook;
-        this.isGroupAdmin = JSON.parse(params.isAdmin);
+        if (params.isAdmin === 'true') {
+        this.isGroupAdmin = params.isAdmin;
+        }
         this.groupId = params.groupId;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
@@ -551,8 +553,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    * @description - navigate to groups activity dashboard page
    */
     navigateToActivityDashboard() {
-      this.addTelemetry('activity-detail', [{ id: this.courseHierarchy.identifier , type: this.courseHierarchy.primaryCategory}]);
-      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, `${ACTIVITY_DASHBOARD}`, this.courseHierarchy.identifier],
+      this.addTelemetry('activity-detail', [{ id: _.get(this.courseHierarchy, 'identifier') , type:  _.get(this.courseHierarchy, 'primaryCategory')}]);
+      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, `${ACTIVITY_DASHBOARD}`, _.get(this.courseHierarchy, 'identifier')],
         {
           state: {
             hierarchyData: this.courseHierarchy,

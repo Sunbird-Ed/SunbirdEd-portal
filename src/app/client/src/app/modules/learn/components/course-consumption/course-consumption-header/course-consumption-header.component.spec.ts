@@ -20,6 +20,7 @@ import { DiscussionService } from './../../../../discussion/services/discussion/
 import { MockResponseData } from './course-consumption-header.spec.data';
 import { ContentManagerService } from '../../../../public/module/offline/services/content-manager/content-manager.service';
 import { GroupsService } from '../../../../groups/services';
+import { noUndefined } from '@angular/compiler/src/util';
 
 const resourceServiceMockData = {
   messages: {
@@ -512,6 +513,13 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.addTelemetry('activity-detail', [], { query: 'test' }, {});
     expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'activity-detail', extra: { query: 'test' } },
       { data: Object({ telemetry: Object({ env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate' }) }), params: Object({ courseId: 'do_212347136096788480178' }) }, [], '123', {});
+  });
+
+  it('should call navigateToActivityDashboard()', () => {
+  spyOn(component, 'addTelemetry');
+  component.navigateToActivityDashboard();
+  expect(component.addTelemetry).toHaveBeenCalled();
+  expect(component['router'].navigate).toHaveBeenCalled();
   });
 
 });
