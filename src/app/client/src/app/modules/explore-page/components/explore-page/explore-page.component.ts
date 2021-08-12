@@ -196,7 +196,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
-        this.userPreference = this.setUserPreferences();
         this.activatedRoute.queryParams.subscribe(queryParams => {
         this.selectedTab=queryParams.selectedTab;    
         this.getFormConfigs();
