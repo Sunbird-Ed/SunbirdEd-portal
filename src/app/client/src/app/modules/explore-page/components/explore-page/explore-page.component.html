@@ -111,7 +111,7 @@
               <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
             </div>
 
-            <div *ngIf="showTargetedCategory">
+            <div *ngIf="showTargetedCategory && targetedCategory.length">
               <sb-pills-grid 
               [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')"
               [minDisplayCount]="4"

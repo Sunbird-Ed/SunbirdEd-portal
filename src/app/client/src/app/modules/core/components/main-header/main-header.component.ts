@@ -24,6 +24,7 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
+import { ObservationUtilService} from '../../../observation/service'
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
@@ -153,8 +154,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   userType: any;
   showBackButton: boolean;
   showingResult: string;
-
-
+  userPreference:any;
+  showReportMenu:boolean=false;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -163,7 +164,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
-    private connectionService: ConnectionService, public electronService: ElectronService) {
+    private connectionService: ConnectionService, public electronService: ElectronService,private observationUtilService:ObservationUtilService) {
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
@@ -188,18 +189,54 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
         this.userType = result;
+        if(this.userType!='adminstrator'){
+          this.setUserPreferences();
+          }
       } else {
         if (this.userService.loggedIn) {
           this.userService.userData$.subscribe((profileData: IUserData) => {
             if (_.get(profileData, 'userProfile.profileUserType.type')) {
               this.userType = profileData.userProfile['profileUserType']['type'];
+              if(this.userType!='adminstrator'){
+                this.setUserPreferences();
+                }
             }
           });
         }
       }
     });
-
   }
+
+  getFormConfigs() {
+    this.observationUtilService.browseByCategoryForm()
+      .then((data: any) => {
+        let currentBoard = this.userPreference.framework.board[0].toLowerCase();
+        let currentUserType=this.userType.toLowerCase();
+        if (data && data[currentBoard] &&
+          data[currentBoard][currentUserType]) {
+            this.showReportMenu=true;
+        }
+        else{
+          this.showReportMenu=false;
+        }
+      });
+  }
+
+  setUserPreferences() {
+    try {
+        if (this.userService.loggedIn) {
+            this.userPreference = { framework: this.userService.defaultFrameworkFilters };
+            this.getFormConfigs();
+        } else {
+            this.userService.getGuestUser().subscribe((response) => {
+                this.userPreference = response;
+                this.getFormConfigs();
+            });
+        }
+    } catch (error) {
+        return null;
+    }
+}
 
   updateHrefPath(url) {
     if (url.indexOf('explore-course') >= 0) {

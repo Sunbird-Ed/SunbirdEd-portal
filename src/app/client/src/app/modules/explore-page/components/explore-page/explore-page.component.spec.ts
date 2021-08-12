@@ -924,6 +924,7 @@ describe('ExplorePageComponent', () => {
 
     it("should call the getFormConfigs to get form category if loggin",()=>{
       component.selectedTab="home";
+      component.userType=undefined;
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
       spyOn(component, 'setUserPreferences').and.callThrough();
       userService.userData$ = observableOf({
@@ -960,6 +961,7 @@ describe('ExplorePageComponent', () => {
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
       spyOn(component, 'setUserPreferences').and.callThrough();
       component.selectedTab="home";
+      component.userType=undefined;
       spyOn(component,"getFormConfigs").and.callThrough();
       component.userType='teacher';
       component.userPreference = { framework: {board: ["CBSE"]}};
@@ -973,6 +975,8 @@ describe('ExplorePageComponent', () => {
 
     it("should call the getFormConfigs to get form category if not login",()=>{
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      component.userType=undefined;
+      spyOn(localStorage, 'userType').and.returnValue('teacher');
       spyOn(component, 'setUserPreferences').and.callThrough();
       component.selectedTab="home";
       spyOn(component,"getFormConfigs").and.callThrough();
@@ -1005,6 +1009,7 @@ describe('ExplorePageComponent', () => {
     })
 
   it("shoulc call the handleTargetedpillSelected when the browse by category clicked",()=>{
+    spyOn(component, 'isUserLoggedIn').and.returnValue(true);
     spyOn(component,"handleTargetedpillSelected").and.callThrough();
     const router = TestBed.get(Router);
     component.handleTargetedpillSelected({name:"observation"});

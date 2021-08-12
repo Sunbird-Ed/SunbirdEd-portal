@@ -3194,7 +3194,7 @@ export const categoryData = {
     teacher: [{
       name: "observation",
       icon: {
-        web:"assets/images/mask-image/observation.png" 
+        web:"assets/images/mask-image/observation_category.png" 
       }
     }]
   }
