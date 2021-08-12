@@ -11,9 +11,9 @@
 
 
  <!-- language dropdown -->
- <label class="mb-0" *ngIf="isLayoutAvailable()">
+ <span class="mb-0" *ngIf="isLayoutAvailable()">
  <sui-select *ngIf="isLayoutAvailable()" role="tablist" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick"[(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
   <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
     [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option"  role="img"  title="{{option.accessibleText}}">
   </sui-select-option>
-</sui-select></label>
+</sui-select></span>
