@@ -118,32 +118,6 @@ describe('ActivityListComponent', () => {
     expect(component.addTelemetry).toHaveBeenCalled();
   });
 
-  // it('should call openActivity for group member', fakeAsync(() => {
-  //   spyOn(component, 'addTelemetry');
-  //   component.groupData = {id: '123'};
-  //   const event = {
-  //     data: {
-  //     name: 'Class 5 English',
-  //     identifier: 'do_123523212190',
-  //     appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
-  //     organisation: ['Pre-prod Custodian Organization'],
-  //     subject: 'Social Science',
-  //     primaryCategory: 'Course',
-  //     mimeType: 'collection'
-  //   }};
-  //   component.groupData.isAdmin = true;
-  //   component.groupData.active = true;
-  //   const activatedRoute = TestBed.get(ActivatedRoute);
-  //   activatedRoute.changeQueryParams({ contentType: 'Course',
-  //   title: 'ACTIVITY_COURSE_TITLE'});
-  //   tick(100);
-  //   const option = {relativeTo: component['activateRoute'], queryParams: { primaryCategory: 'Course',
-  //   title: 'ACTIVITY_COURSE_TITLE', mimeType: 'collection', groupId: '123'}};
-  //   component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
-  //   expect(router.navigate).toHaveBeenCalledWith(['activity-details', 'do_123523212190'], option);
-  //   expect(component.addTelemetry).toHaveBeenCalled();
-  // }));
-
   it('should call getMenuData', () => {
     component.showMenu = false;
     const eventData = {

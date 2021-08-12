@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivityDashboardComponent } from './activity-dashboard.component';
-import { GroupsService } from '../../../services';
+import { groupData, GroupsService } from '../../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,7 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { of, throwError } from 'rxjs';
-import { courseHierarchy, activityData, dashletData } from './activity-dashboard.component.spec.data';
+import { courseHierarchy, activityData, dashletData, groupInfo } from './activity-dashboard.component.spec.data';
 import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
 

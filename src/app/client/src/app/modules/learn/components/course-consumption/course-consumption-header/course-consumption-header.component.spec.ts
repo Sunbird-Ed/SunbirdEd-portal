@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import { DiscussionService } from './../../../../discussion/services/discussion/discussion.service';
 import { MockResponseData } from './course-consumption-header.spec.data';
 import { ContentManagerService } from '../../../../public/module/offline/services/content-manager/content-manager.service';
+import { GroupsService } from '../../../../groups/services';
 
 const resourceServiceMockData = {
   messages: {
@@ -503,4 +504,14 @@ describe('CourseConsumptionHeaderComponent', () => {
       }
     });
   });
+
+  it('should call addTelemetry', () => {
+    const groupService = TestBed.get(GroupsService);
+    component.groupId = '123';
+    spyOn(groupService, 'addTelemetry');
+    component.addTelemetry('activity-detail', [], { query: 'test' }, {});
+    expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'activity-detail', extra: { query: 'test' } },
+      { data: Object({ telemetry: Object({ env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate' }) }), params: Object({ courseId: 'do_212347136096788480178' }) }, [], '123', {});
+  });
+
 });

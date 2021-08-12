@@ -83,7 +83,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isTrackable = false;
   viewDashboard = false;
   tocId;
-  isGroupAdmin: string;
+  isGroupAdmin = false;
   showLoader = false;
   batchEndCounter: number;
   showBatchCounter: boolean;
@@ -148,7 +148,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
         this.tocId = params.textbook;
-        this.isGroupAdmin = params.isAdmin;
+        this.isGroupAdmin = JSON.parse(params.isAdmin);
         this.groupId = params.groupId;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
