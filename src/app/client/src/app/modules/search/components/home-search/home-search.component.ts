@@ -457,6 +457,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryService.interact(appTelemetryInteractData);
   }
 
+  /* istanbul ignore next */
   public handleFilterChange(filters) {
     const filterData = filters && filters.filters || {};
     if (filterData.channel && this.facets) {
