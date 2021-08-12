@@ -75,7 +75,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setTelemetryData();
   }
   ngOnInit() {
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (this.cacheService.exists('searchFiltersAll')) {
       this.selectedFilters = this.cacheService.get('searchFiltersAll');
     }
@@ -474,9 +474,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.selectedFilters = filterData;
     const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (_.get(filterData, 'se_boards')) {
-      /* istanbul ignore if */
+      /* istanbul ignore next */
       if (this.cacheService.exists('searchFiltersAll')) {
         const _searchFilters = this.cacheService.get('searchFiltersAll');
         let _cacheFilters = {
@@ -494,7 +494,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cacheService.set('searchFiltersAll', filterData, { expires: Date.now() + _cacheTimeout });
       }
     }
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (this.cacheService.exists('searchFiltersAll')) {
       this.selectedFilters = this.cacheService.get('searchFiltersAll');
     }
