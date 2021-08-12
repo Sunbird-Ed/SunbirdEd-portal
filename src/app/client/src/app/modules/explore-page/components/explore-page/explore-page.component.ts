@@ -542,7 +542,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             );
     }
 
-    
     getFormConfigs() {
             if (this.selectedTab === 'home') {
                 if (!this.userType) {
