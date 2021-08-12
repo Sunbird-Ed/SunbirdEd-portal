@@ -20,7 +20,6 @@ import { DiscussionService } from './../../../../discussion/services/discussion/
 import { MockResponseData } from './course-consumption-header.spec.data';
 import { ContentManagerService } from '../../../../public/module/offline/services/content-manager/content-manager.service';
 import { GroupsService } from '../../../../groups/services';
-import { noUndefined } from '@angular/compiler/src/util';
 
 const resourceServiceMockData = {
   messages: {
@@ -516,10 +515,17 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should call navigateToActivityDashboard()', () => {
-  spyOn(component, 'addTelemetry');
+  component.courseHierarchy = { identifier: '123', primaryCategory: 'Course'}
+  component.groupId = 'do_123'
+  spyOn(component, 'addTelemetry').and.stub();
   component.navigateToActivityDashboard();
   expect(component.addTelemetry).toHaveBeenCalled();
-  expect(component['router'].navigate).toHaveBeenCalled();
+  expect(component['router'].navigate).toHaveBeenCalledWith(['my-groups/group-details', 'do_123', 'activity-dashboard', '123'],
+  {
+    state: {
+      hierarchyData: { identifier: '123', primaryCategory: 'Course'},
+    }
+  });
   });
 
 });

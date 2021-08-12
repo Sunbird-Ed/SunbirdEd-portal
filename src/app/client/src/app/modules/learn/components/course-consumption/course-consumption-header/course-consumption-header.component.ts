@@ -561,6 +561,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           }
         });
     }
+    
+    /**
+     * @param  {} id
+     * @param  {} cdata
+     * @param  {} extra?
+     * @param  {} obj?
+     */
     addTelemetry(id, cdata, extra?, obj?) {
       this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
     }
