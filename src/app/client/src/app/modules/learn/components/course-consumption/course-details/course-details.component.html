@@ -10,6 +10,9 @@
     </div>
     <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_gradeLevels">
       <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ courseHierarchy?.se_gradeLevels?.join(', ')}}</span></div>
+    <!-- <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_subjects">
+      <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.se_subjects?.join(', ')}}</span>
+    </div> -->
     <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.audience">
       <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ courseHierarchy?.audience?.join(', ')}}</span>
     </div>
