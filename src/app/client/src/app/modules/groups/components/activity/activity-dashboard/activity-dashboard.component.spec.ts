@@ -88,6 +88,7 @@ describe('ActivityDashboardComponent', () => {
     component = fixture.componentInstance;
     component.hierarchyData = courseHierarchy.result.content;
     component.activity = activityData;
+    component.groupData = groupInfo;
     component.memberListUpdatedOn = '123';
     activatedRoute.snapshot = {
       params: {
@@ -113,10 +114,38 @@ describe('ActivityDashboardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call getDashletData()', () => {
+  it('should call getAggData()', () => {
     spyOn<any>(component, 'getAggData');
     component.ngOnInit();
     expect(component['getAggData']).toHaveBeenCalled();
+  });
+
+  it('should call getAggData() success', () => {
+    const activityDatas = { id: _.get(courseHierarchy.result.content, 'identifier'), type: 'Course' };
+    const groupService = TestBed.get(GroupsService);
+    component.groupData = groupInfo;
+    spyOn(groupService, 'getActivity').and.returnValue(of(activityData));
+    component.getAggData();
+    groupService.getActivity('do_2132740696478433281380', activityDatas, component.groupData, 1).subscribe(data => {
+    expect(component.activity).toBeDefined();
+    expect(component.memberListUpdatedOn).toBeDefined();
+    });
+  });
+
+  it('should call getAggData() fail', () => {
+    const activityDatas = { id: _.get(courseHierarchy.result.content, 'identifier'), type: 'Course' };
+    const groupService = TestBed.get(GroupsService);
+    const toasterService = TestBed.get(ToasterService);
+    component.groupData = groupInfo;
+    spyOn(toasterService, 'error');
+    spyOn(component, 'navigateBack').and.returnValue(true);
+    spyOn(groupService, 'getActivity').and.returnValue(throwError({ err: '' }));
+    component.getAggData();
+    groupService.getActivity('do_2132740696478433281380', activityDatas, component.groupData, 1).subscribe(data => {},
+      data => { }, (err) => {
+    expect(component.activity).toBeDefined();
+    expect(component.memberListUpdatedOn).toBeDefined();
+    });
   });
 
   it('should get data for dashlet library', () => {
