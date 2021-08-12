@@ -114,9 +114,9 @@ describe('ActivityDashboardComponent', () => {
   });
 
   it('should call getDashletData()', () => {
-    spyOn<any>(component, 'getDashletData');
+    spyOn<any>(component, 'getAggData');
     component.ngOnInit();
-    expect(component['getDashletData']).toHaveBeenCalled();
+    expect(component['getAggData']).toHaveBeenCalled();
   });
 
   it('should get data for dashlet library', () => {
@@ -143,12 +143,9 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call navigateBack()', () => {
     const toasterService = TestBed.get(ToasterService);
-    const groupService = TestBed.get(GroupsService);
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(groupService, 'goBack').and.returnValue(true);
     component.navigateBack();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-    expect(groupService.goBack).toHaveBeenCalled();
   });
 
   it('should call addTelemetry', () => {
