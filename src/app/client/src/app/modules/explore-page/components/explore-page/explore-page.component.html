@@ -111,13 +111,15 @@
               </sb-pills-grid>
               <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
             </div>
-            <div *ngFor="let section of contentSections" class="pl-16">
-              <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)" [sortBy]="section?.apiConfig?.sortBy"
-                [searchRequest]="section?.searchRequest" [title]="section?.title" [layoutConfig]="layoutConfiguration"
-                (viewMoreClick)="viewAll($event, section)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
-              </sb-content-section>
+            <div *ngIf="getSelectedTab() === 'home'">
+              <div *ngFor="let section of contentSections" class="pl-16">
+                <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)" [sortBy]="section?.apiConfig?.sortBy"
+                  [searchRequest]="section?.searchRequest" [title]="section?.title" [layoutConfig]="layoutConfiguration"
+                  (viewMoreClick)="viewAll($event, section)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
+                </sb-content-section>
+              </div>
             </div>
-            <div *ngIf="facetSections.length === 0 && !showLoader">
+            <div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
               <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
                 [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
                 [buttonText]="noResultMessage?.buttonText"

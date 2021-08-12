@@ -348,9 +348,15 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
 
   private getEditorMode() {
     const contentStatus = this.collectionDetails.status.toLowerCase();
-    if (contentStatus === 'draft' || contentStatus === 'live') {
+    if (contentStatus === 'draft' || contentStatus === 'live' || contentStatus === 'flagdraft'
+        || contentStatus === 'unlisted') {
       return 'edit';
     }
+
+    if (contentStatus === 'flagged' || contentStatus === 'flagreview') {
+      return 'read';
+    }
+
     if (contentStatus === 'review') {
       if (this.collectionDetails.createdBy === this.userProfile.id) {
         return 'read';
