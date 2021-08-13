@@ -3190,7 +3190,7 @@ export const RESPONSE = {
 };
 
 export const categoryData = {
-  cbse: {
+  "tn_k-12_5": {
     teacher: [{
       name: "observation",
       icon: {

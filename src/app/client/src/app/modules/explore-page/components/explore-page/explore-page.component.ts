@@ -196,7 +196,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
-        this.activatedRoute.queryParams.subscribe(queryParams => {
+        this.subscription$=this.activatedRoute.queryParams.subscribe(queryParams => {
         this.selectedTab=queryParams.selectedTab;    
         this.getFormConfigs();
         });
@@ -562,10 +562,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.observationUtil.browseByCategoryForm()
                 .then((data: any) => {
-                    let currentBoard=this.userPreference.framework.board[0].toLowerCase();
+                    let currentBoard;
+                   Array.isArray(this.userPreference.framework.id) ? (currentBoard=this.userPreference.framework.id[0]) : (currentBoard=this.userPreference.framework.id)
                     let currentUserType=this.userType.toLowerCase();
                     if (data && data[currentBoard] &&
-                        data[currentBoard][currentUserType]) {
+                        data[currentBoard][currentUserType]) {    
                         this.showTargetedCategory = true
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {

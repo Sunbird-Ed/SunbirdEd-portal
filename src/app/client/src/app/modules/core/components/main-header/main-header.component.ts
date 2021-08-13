@@ -210,7 +210,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   getFormConfigs() {
     this.observationUtilService.browseByCategoryForm()
       .then((data: any) => {
-        let currentBoard = this.userPreference.framework.board[0].toLowerCase();
+        let currentBoard;
+        Array.isArray(this.userPreference.framework.id) ? (currentBoard=this.userPreference.framework.id[0]) : (currentBoard=this.userPreference.framework.id)
         let currentUserType=this.userType.toLowerCase();
         if (data && data[currentBoard] &&
           data[currentBoard][currentUserType]) {

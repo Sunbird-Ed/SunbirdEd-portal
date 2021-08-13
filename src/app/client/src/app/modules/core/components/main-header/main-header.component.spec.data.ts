@@ -292,7 +292,7 @@ export const mockData = {
     edata: {id: 'switch-theme', type: 'click', pageid: '/', subtype: 'joy'}
   },
   categoryData:{
-    cbse: {
+    "tn_k-12_5": {
       teacher: [{
         name: "observation",
         icon: {

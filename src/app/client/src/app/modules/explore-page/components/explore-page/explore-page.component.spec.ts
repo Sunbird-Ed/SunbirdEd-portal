@@ -938,7 +938,7 @@ describe('ExplorePageComponent', () => {
         },
       });
       spyOn(component,"getFormConfigs").and.callThrough();
-      component.userPreference = { framework: {board: ["CBSE"]}};
+      component.userPreference = { framework: {id: ["tn_k-12_5"]}};
       let data={
         cbse:{
           teacher:{
@@ -964,7 +964,7 @@ describe('ExplorePageComponent', () => {
       component.userType=undefined;
       spyOn(component,"getFormConfigs").and.callThrough();
       component.userType='teacher';
-      component.userPreference = { framework: {board: ["CBSE"]}};
+      component.userPreference = { framework: {id:"tn_k-12_5"}};
       spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
         return Promise.resolve(categoryData);
       });
@@ -975,13 +975,12 @@ describe('ExplorePageComponent', () => {
 
     it("should call the getFormConfigs to get form category if not login",()=>{
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
-      component.userType=undefined;
-      spyOn(localStorage, 'userType').and.returnValue('teacher');
+      component.userType='teacher';
       spyOn(component, 'setUserPreferences').and.callThrough();
       component.selectedTab="home";
       spyOn(component,"getFormConfigs").and.callThrough();
       component.userType='teacher';
-      component.userPreference = { framework: {board: ["CBSE"]}};
+      component.userPreference = { framework: {id:"tn_k-12_5"}};
       let data={
         cbse:{
           student:{

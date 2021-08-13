@@ -31,7 +31,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import {ObservationUtilService} from '../../../observation/service'
 
-fdescribe('MainHeaderComponent', () => {
+describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
   let fixture: ComponentFixture<MainHeaderComponent>;
   const resourceBundle = {
@@ -383,7 +383,7 @@ it("should call the setUserPreference when logged in ",()=>{
   userService._authenticated = true;
   spyOn(userService,"loggedIn").and.returnValue(true);
   spyOn(component, 'setUserPreferences').and.callThrough();
-  const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+  const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'],id:["tn_k-12_5"] };
   component.userPreference = { framework: event };
   component.setUserPreferences();
   expect(component.setUserPreferences).toHaveBeenCalled();
@@ -395,7 +395,7 @@ it("should call the setUserPreference when not loggin",()=>{
   userService._authenticated = false;
   spyOn(userService,"loggedIn").and.returnValue(false);
   spyOn(component, 'setUserPreferences').and.callThrough();
-   const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+   const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'],id:"tn_k-12_5" };
   spyOn(userService,"getGuestUser").and.returnValue(observableOf({ framework: event }))
   component.setUserPreferences();
   expect(component.setUserPreferences).toHaveBeenCalled();
@@ -406,7 +406,7 @@ it("should call the getFormConfigs to get form category",()=>{
   let observationUtilService = TestBed.get(ObservationUtilService);
   spyOn(component,"getFormConfigs").and.callThrough();
   component.userType='teacher';
-  component.userPreference = { framework: {board: ["CBSE"]}};
+  component.userPreference = { framework: {id:"tn_k-12_5"}};
   spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
     return Promise.resolve(mockData.categoryData)
   });
