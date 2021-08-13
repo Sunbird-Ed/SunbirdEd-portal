@@ -3190,11 +3190,11 @@ export const RESPONSE = {
 };
 
 export const categoryData = {
-  cbse: {
+  "tn_k-12_5": {
     teacher: [{
       name: "observation",
       icon: {
-        web:"assets/images/mask-image/observation.png" 
+        web:"assets/images/mask-image/observation_category.png" 
       }
     }]
   }

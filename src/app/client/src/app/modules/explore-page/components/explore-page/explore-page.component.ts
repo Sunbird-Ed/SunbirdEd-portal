@@ -81,7 +81,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     isFilterEnabled = true;
     defaultTab = 'Textbook';
     userProfile: any;
-    targetedCategory:any;
+    targetedCategory:any=[];
     subscription: any;
     userType: any;
     targetedCategorytheme:any;
@@ -196,7 +196,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
-        this.activatedRoute.queryParams.subscribe(queryParams => {
+        this.subscription$=this.activatedRoute.queryParams.subscribe(queryParams => {
         this.selectedTab=queryParams.selectedTab;    
         this.getFormConfigs();
         });
@@ -545,7 +545,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     getFormConfigs() {
             if (this.selectedTab === 'home') {
                 if (!this.userType) {
-                    if (this.isUserLoggedIn) {
+                    if (this.isUserLoggedIn()) {
                     this.userService.userData$.subscribe((profileData: IUserData) => {
                         if (profileData
                             && profileData.userProfile
@@ -562,11 +562,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.observationUtil.browseByCategoryForm()
                 .then((data: any) => {
-                    let currentRole=this.userPreference.framework.board[0].toLowerCase()
-                    if (data && data[currentRole] &&
-                        data[currentRole][this.userType]) {
+                    let currentBoard;
+                   Array.isArray(this.userPreference.framework.id) ? (currentBoard=this.userPreference.framework.id[0]) : (currentBoard=this.userPreference.framework.id)
+                    let currentUserType=this.userType.toLowerCase();
+                    if (data && data[currentBoard] &&
+                        data[currentBoard][currentUserType]) {    
                         this.showTargetedCategory = true
-                        this.targetedCategory = data[currentRole][this.userType];
+                        this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
                             "iconBgColor": "rgba(255,255,255,1)",
                             "pillBgColor": "rgba(255,255,255,1)"
@@ -1050,11 +1052,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     handleTargetedpillSelected(pillData){
-        switch (pillData.name) {
-            case 'observation':
-                this.router.navigate(['observation']);
-                break;
+        if(this.isUserLoggedIn()) {
+            if(pillData.name === 'observation'){
+                this.router.navigate(['observation']);      
+            } 
         }
+        else{
+            window.location.href ='/resources';
+        }  
     }
 
 

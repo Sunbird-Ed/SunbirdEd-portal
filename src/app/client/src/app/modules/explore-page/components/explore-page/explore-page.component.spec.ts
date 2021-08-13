@@ -924,6 +924,7 @@ describe('ExplorePageComponent', () => {
 
     it("should call the getFormConfigs to get form category if loggin",()=>{
       component.selectedTab="home";
+      component.userType=undefined;
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
       spyOn(component, 'setUserPreferences').and.callThrough();
       userService.userData$ = observableOf({
@@ -937,7 +938,7 @@ describe('ExplorePageComponent', () => {
         },
       });
       spyOn(component,"getFormConfigs").and.callThrough();
-      component.userPreference = { framework: {board: ["CBSE"]}};
+      component.userPreference = { framework: {id: ["tn_k-12_5"]}};
       let data={
         cbse:{
           teacher:{
@@ -960,9 +961,10 @@ describe('ExplorePageComponent', () => {
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
       spyOn(component, 'setUserPreferences').and.callThrough();
       component.selectedTab="home";
+      component.userType=undefined;
       spyOn(component,"getFormConfigs").and.callThrough();
       component.userType='teacher';
-      component.userPreference = { framework: {board: ["CBSE"]}};
+      component.userPreference = { framework: {id:"tn_k-12_5"}};
       spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
         return Promise.resolve(categoryData);
       });
@@ -973,11 +975,12 @@ describe('ExplorePageComponent', () => {
 
     it("should call the getFormConfigs to get form category if not login",()=>{
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      component.userType='teacher';
       spyOn(component, 'setUserPreferences').and.callThrough();
       component.selectedTab="home";
       spyOn(component,"getFormConfigs").and.callThrough();
       component.userType='teacher';
-      component.userPreference = { framework: {board: ["CBSE"]}};
+      component.userPreference = { framework: {id:"tn_k-12_5"}};
       let data={
         cbse:{
           student:{
@@ -1005,6 +1008,7 @@ describe('ExplorePageComponent', () => {
     })
 
   it("shoulc call the handleTargetedpillSelected when the browse by category clicked",()=>{
+    spyOn(component, 'isUserLoggedIn').and.returnValue(true);
     spyOn(component,"handleTargetedpillSelected").and.callThrough();
     const router = TestBed.get(Router);
     component.handleTargetedpillSelected({name:"observation"});

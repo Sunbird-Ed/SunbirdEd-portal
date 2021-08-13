@@ -29,6 +29,7 @@ import {CacheService} from 'ng2-cache-service';
 import {mockData} from './main-header.component.spec.data';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';
+import {ObservationUtilService} from '../../../observation/service'
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -77,7 +78,7 @@ describe('MainHeaderComponent', () => {
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
         PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
-        UserService, ConfigService, AnimationBuilder, ElectronService,
+        UserService, ConfigService, AnimationBuilder, ElectronService,ObservationUtilService,
         LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
     })
       .compileComponents();
@@ -376,4 +377,42 @@ describe('MainHeaderComponent', () => {
     component.backButton.goBack();
     expect(component.showBackButton).toBeFalsy();
   });
+
+it("should call the setUserPreference when logged in ",()=>{
+  const userService = TestBed.get(UserService);
+  userService._authenticated = true;
+  spyOn(userService,"loggedIn").and.returnValue(true);
+  spyOn(component, 'setUserPreferences').and.callThrough();
+  const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'],id:["tn_k-12_5"] };
+  component.userPreference = { framework: event };
+  component.setUserPreferences();
+  expect(component.setUserPreferences).toHaveBeenCalled();
+  expect(userService.loggedIn).toEqual(true);
+})
+
+it("should call the setUserPreference when not loggin",()=>{
+  const userService = TestBed.get(UserService);
+  userService._authenticated = false;
+  spyOn(userService,"loggedIn").and.returnValue(false);
+  spyOn(component, 'setUserPreferences').and.callThrough();
+   const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'],id:"tn_k-12_5" };
+  spyOn(userService,"getGuestUser").and.returnValue(observableOf({ framework: event }))
+  component.setUserPreferences();
+  expect(component.setUserPreferences).toHaveBeenCalled();
+  expect(userService.loggedIn).toEqual(false);
+})
+
+it("should call the getFormConfigs to get form category",()=>{
+  let observationUtilService = TestBed.get(ObservationUtilService);
+  spyOn(component,"getFormConfigs").and.callThrough();
+  component.userType='teacher';
+  component.userPreference = { framework: {id:"tn_k-12_5"}};
+  spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
+    return Promise.resolve(mockData.categoryData)
+  });
+  component.getFormConfigs();
+  expect(component.getFormConfigs).toHaveBeenCalled();
+})
+
+
 });
