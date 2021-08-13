@@ -17,7 +17,7 @@ export class UciComponent implements OnInit {
 
   ngOnInit(): void {
     this.url = this.config.urlConFig.URLS.UCI;
-    this.userService.userData$.pipe(first()).subscribe(async (user) => {
+    this.userService.userData$.pipe(first()).subscribe((user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
       }
