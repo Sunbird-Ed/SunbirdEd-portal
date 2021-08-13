@@ -197,7 +197,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
         this.subscription$=this.activatedRoute.queryParams.subscribe(queryParams => {
-        this.selectedTab=queryParams.selectedTab;    
+        this.selectedTab=queryParams.selectedTab; 
+        this.showTargetedCategory=false;   
         this.getFormConfigs();
         });
         this.initConfiguration();
@@ -578,10 +579,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.showTargetedCategory = false
                     }
                 });
-            }
-            else{
-                this.showTargetedCategory = false
-            }
+             }
     }
 
     private getContentSection(section, searchOptions) {
