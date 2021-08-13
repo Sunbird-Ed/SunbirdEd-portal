@@ -112,7 +112,7 @@
           class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
           [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
-            [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
+            [contentDetails]="activeContent" [collectionData]="collectionData" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
         </section>
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9"

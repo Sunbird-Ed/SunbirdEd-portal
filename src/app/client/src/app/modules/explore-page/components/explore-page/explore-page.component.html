@@ -98,6 +98,7 @@
                   </div>
                 </ngx-slick>
               </div>
+              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList.length > 0" class="section-hr my-32" />
               <sb-pills-grid *ngIf="section?.section?.isEnabled"
                 [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
@@ -115,22 +116,24 @@
               <sb-pills-grid 
               [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')"
               [minDisplayCount]="4"
-              [pillSize]="'medium'" [platform]="'portal'" 
+              [pillSize]=" ̰'medium'" [platform]="'portal'" 
               [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'">
               <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="pillData?.name | titlecase"
                 [icon]="pillData?.icon?.web" [value]="pillData" (click)="handleTargetedpillSelected(pillData)"
                 [theme]="targetedCategorytheme" ></sb-pill-item>
-            </sb-pills-grid>
-            <hr class="section-hr my-32" />
+              </sb-pills-grid>
+              <hr class="section-hr my-32" />
             </div>
-
-            <div *ngFor="let section of contentSections" class="pl-16">
-              <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)" [sortBy]="section?.apiConfig?.sortBy"
-                [searchRequest]="section?.searchRequest" [title]="section?.title" [layoutConfig]="layoutConfiguration"
-                (viewMoreClick)="viewAll($event, section)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
-              </sb-content-section>
+            
+            <div *ngIf="getSelectedTab() === 'home'">
+              <div *ngFor="let section of contentSections" class="pl-16">
+                <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)" [sortBy]="section?.apiConfig?.sortBy"
+                  [searchRequest]="section?.searchRequest" [title]="section?.title" [layoutConfig]="layoutConfiguration"
+                  (viewMoreClick)="viewAll($event, section)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
+                </sb-content-section>
+              </div>
             </div>
-            <div *ngIf="facetSections.length === 0 && !showLoader">
+            <div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
               <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
                 [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
                 [buttonText]="noResultMessage?.buttonText"

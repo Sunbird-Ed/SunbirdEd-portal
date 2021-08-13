@@ -275,7 +275,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       this.browserBackEventSubscribe.unsubscribe();
     }
     sessionStorage.setItem('inEditor', 'false');
-    this.workSpaceService.toggleWarning();
+    this.workSpaceService.newtoggleWarning();
   }
 
   setEditorConfig() {
@@ -335,7 +335,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   private disableBrowserBackButton() {
     window.location.hash = 'no';
     sessionStorage.setItem('inEditor', 'true');
-    this.workSpaceService.toggleWarning(this.routeParams.type);
+    this.workSpaceService.newtoggleWarning(this.routeParams.type);
     this.browserBackEventSubscribe = this.workSpaceService.browserBackEvent.subscribe(() => {
       const intractEventEdata: IInteractEventEdata = {
         id: 'browser-back-button',
@@ -348,9 +348,15 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
 
   private getEditorMode() {
     const contentStatus = this.collectionDetails.status.toLowerCase();
-    if (contentStatus === 'draft' || contentStatus === 'live') {
+    if (contentStatus === 'draft' || contentStatus === 'live' || contentStatus === 'flagdraft'
+        || contentStatus === 'unlisted') {
       return 'edit';
     }
+
+    if (contentStatus === 'flagged' || contentStatus === 'flagreview') {
+      return 'read';
+    }
+
     if (contentStatus === 'review') {
       if (this.collectionDetails.createdBy === this.userProfile.id) {
         return 'read';

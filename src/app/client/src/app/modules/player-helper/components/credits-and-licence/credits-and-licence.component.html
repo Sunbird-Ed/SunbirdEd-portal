@@ -69,26 +69,3 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion>
-
-
-<sui-accordion class="styled fluid sb-accordion ui accordion content-metadeta__content">
-  <sui-accordion-panel>
-    <div title class="sb-accordion-title fnormal">
-      {{resourceService?.frmelmnts?.lbl?.collectionRelevantFor}}
-      <i class="chevron down icon ml-8"></i>
-    </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
-      <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="contentData?.se_boards">
-        <span>{{resourceService?.frmelmnts?.lbl?.board}}:&nbsp;</span><span>{{ contentData?.se_boards?.join(', ')}}</span>
-      </div>
-      <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="contentData?.se_gradeLevels">
-        <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ contentData?.se_gradeLevels?.join(', ')}}</span></div>
-      <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="contentData?.se_mediums">
-        <span>{{resourceService?.frmelmnts?.lbl?.medium}}:&nbsp;</span><span>{{ contentData?.se_mediums?.join(', ')}}</span>
-      </div>
-      <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="contentData?.audience">
-        <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ contentData?.audience?.join(', ')}}</span>
-      </div>
-    </div>
-  </sui-accordion-panel>
-</sui-accordion>

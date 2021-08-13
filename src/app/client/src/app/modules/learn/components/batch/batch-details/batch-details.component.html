@@ -107,20 +107,25 @@
     <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
       <div class="batch-details">
         <div class="mb-16">
-          <div class="batch-details__name sb-color-primary font-weight-bold fmedium">
-            {{batchDetails?.name}}</div>
-          <div class="batch-details__created mt-8 fsmall">
-            <span class="date">{{batchDetails?.startDate | dateFormat}} </span>
-            <span *ngIf="batchDetails?.endDate" class="date"> -
-              {{batchDetails?.endDate | dateFormat}}</span>
+          <div *ngIf="batchDetails?.startDate">
+            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchstartdate}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}</div>
           </div>
-        </div>
-        <div class="batch-details__created mt-8 fsmall" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-          <span class="sb-label-12size"
-            *ngIf="!isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
-            {{batchDetails?.enrollmentEndDate | dateFormat}}</span>
-          <span class="sb-label-status-error"
-            *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
+          <hr class="section-hr"  *ngIf="batchDetails?.endDate"/>
+          <div *ngIf="batchDetails?.endDate">
+            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchenddate}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
+          </div>
+          <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"/>
+          <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
+            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate | dateFormat}}</div>
+            <div class="sb-label-status-error fsmall"
+            *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</div>
+          </div>
         </div>
       </div>
     </div>

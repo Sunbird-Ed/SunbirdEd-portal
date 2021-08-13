@@ -127,7 +127,6 @@
               {{generaliseLabelService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
             </button>
           </div>
-
           <div class="ml-auto text-right mt-8" *ngIf="!isDesktopApp && permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
           appPermission [permission]="dashboardPermission">
           <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
@@ -135,9 +134,17 @@
             class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeDashboard()">
             Close dashboard
           </button>
+        </div>   
         </div>
-
-        </div>
+         <!--Activity Dashboard-->
+         <div *ngIf="isGroupAdmin">
+           <button tabindex="0" (click)="navigateToActivityDashboard()"
+           class="sb-btn sb-btn-normal  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-secondary sb-activity-dashboard-btn"
+           title="Activity Dashboard">
+           <img src="assets/images/Activity_icon.svg" width="20px" class="mr-8" alt="Activity Dashboard">
+           Activity Dashboard
+         </button>
+      </div>
       </div>
     </div>
   </div>

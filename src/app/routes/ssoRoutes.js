@@ -12,7 +12,7 @@ const {generateAuthToken, getGrantFromCode} = require('../helpers/keyCloakHelper
 const {parseJson, isDateExpired} = require('../helpers/utilityService');
 const {getUserIdFromToken} = require('../helpers/jwtHelper');
 const fs = require('fs');
-
+const externalKey = envHelper.CRYPTO_ENCRYPTION_KEY_EXTERNAL;
 const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
@@ -48,7 +48,7 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       if (_.get(req,'cookies.redirectPath')){
-        res.cookie ('userDetails', userDetails.userName);
+        res.cookie ('userDetails', JSON.stringify(encrypt(userDetails.userName, externalKey)));
       }
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
