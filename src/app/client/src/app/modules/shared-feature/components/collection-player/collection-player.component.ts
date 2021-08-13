@@ -474,7 +474,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.router.navigate([navigateUrl, 1], { queryParams: { key: textbook } });
       } else {
         const url = this.userService.loggedIn ? '/resources' : '/explore';
-        this.navigationHelperService.navigateToPreviousUrl(url);
+        this.router.navigate([url], { queryParams: { selectedTab: 'textbook' } });
       }
     }
   }
