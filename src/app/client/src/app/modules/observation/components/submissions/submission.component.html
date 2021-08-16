@@ -43,7 +43,7 @@
                         disabled
                         class="sb-btn sb-btn-normal sb-btn-disabled ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start }}
                     </button>
-                    <button *ngIf="(evidance?.canBeNotAllowed) && (evidance?.status !== 'completed' || evidence?.status !== 'ratingPending' || evidance?.notApplicable)" 
+                    <button *ngIf="(evidance?.canBeNotAllowed && evidance?.status !== 'completed' && evidence?.status !== 'ratingPending') || (evidance?.notApplicable)" 
                         (click)="actionEvent(evidance,'markEcmNotApplicable')"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-2 textbook__addbtn">{{resourceService.frmelmnts.lbl.notApplicable}}
                     </button>

@@ -1,5 +1,5 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'"
-    (dismissed)="showPopup = false" #modal class="sb-modal edit-sub-modal">
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+    (dismissed)="closeModal()" #modal class="sb-modal edit-sub-modal">
     <!--Header-->
     <div class="header">
         <h4> {{editData?.title}} </h4>
