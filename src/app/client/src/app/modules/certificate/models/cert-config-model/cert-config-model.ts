@@ -81,7 +81,7 @@ export class CertConfigModel {
                 'asset': {
                     'name': _.get(rawFormValues, 'certificateTitle'),
                     'code': _.get(rawFormValues, 'certificateTitle'),
-                    'mimeType': 'application/vnd.ekstep.content-archive',
+                    'mimeType': 'image/svg+xml',
                     'license': 'CC BY 4.0',
                     'primaryCategory': 'Certificate Template',
                     // 'contentType': 'Asset',
