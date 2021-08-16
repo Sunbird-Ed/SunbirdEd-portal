@@ -77,3 +77,18 @@
     width: calculateRem(50px);
   }
 }
+.close.inside.icon{
+  font-size: 0.875rem;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: 0px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  }
