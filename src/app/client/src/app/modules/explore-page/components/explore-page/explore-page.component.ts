@@ -346,7 +346,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 channel: [..._.intersection(filters['channel'], _searchFilters['channel']), ..._.difference(filters['channel'], _searchFilters['channel'])],
                 audienceSearchFilterValue: [..._.intersection(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue']),
                     ..._.difference(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue'])],
-                board: [_.union(_searchFilters['board'], filters['board'])[0]],
+                board: filters['board'],
                 selectedTab: this.getSelectedTab()
             }
             filters = _cacheFilters;
