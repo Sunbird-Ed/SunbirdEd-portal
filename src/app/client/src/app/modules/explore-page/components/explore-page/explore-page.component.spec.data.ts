@@ -3188,3 +3188,14 @@ export const RESPONSE = {
     'selectedTab': 'textbook'
   }
 };
+
+export const categoryData = {
+  "tn_k-12_5": {
+    teacher: [{
+      name: "observation",
+      icon: {
+        web:"assets/images/mask-image/observation_category.png" 
+      }
+    }]
+  }
+};

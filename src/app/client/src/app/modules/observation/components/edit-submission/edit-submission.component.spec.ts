@@ -7,6 +7,15 @@ import { Submission } from './edit-submission.component.mock';
 describe('SubmissionsComponent', () => {
     let component: EditSubmissionComponent;
     let fixture: ComponentFixture<EditSubmissionComponent>;
+    let editData = {
+      title: "test",
+      subTitle: "test",
+      defaultValue: "test",
+      leftBtnText: "test",
+      rightBtnText: "test",
+      action: "test",
+      returnParams: {},
+    };
     const resourceBundle = {
         frmelmnts: {
             lbl: {
@@ -31,6 +40,7 @@ describe('SubmissionsComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(EditSubmissionComponent);
         component = fixture.componentInstance;
+        component.editData = editData
         fixture.detectChanges();
     });
 

@@ -8,7 +8,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RESPONSE } from './explore-page.component.spec.data';
+import { RESPONSE,categoryData } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ExplorePageComponent } from './explore-page.component';
@@ -20,11 +20,13 @@ import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 import { find } from 'lodash-es';
 import { result } from 'lodash';
+import {ObservationModule} from '../../../observation/observation.module';
+import {ObservationUtilService} from '../../../observation/service'
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService;
+  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService,observationUtilService;
   const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -66,7 +68,9 @@ describe('ExplorePageComponent', () => {
           notMatchContent: 'did not match any content'
         },
         board: 'Board',
-        browseBy: 'Browse by'
+        browseBy: 'Browse by',
+        targetCategory:"Category",
+        browseOther:"Browse Other"
       }
     },
     tbk: {
@@ -91,10 +95,10 @@ describe('ExplorePageComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule,ObservationModule],
       declarations: [ExplorePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-        FormService, ProfileService, ContentManagerService, TelemetryService,
+        FormService, ProfileService, ContentManagerService, TelemetryService,ObservationUtilService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -110,6 +114,7 @@ describe('ExplorePageComponent', () => {
     orgDetailsService = TestBed.get(OrgDetailsService);
     cacheService = TestBed.get(CacheService);
     segmentationTagService = TestBed.get(SegmentationTagService);
+    observationUtilService=TestBed.get(ObservationUtilService)
     sendOrgDetails = true;
     sendPageApi = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
@@ -732,6 +737,12 @@ describe('ExplorePageComponent', () => {
       expect(sectionTitle).toEqual('Browse by Board');
     });
 
+    it('should return category title', () => {
+      spyOn(component,"getSectionCategoryTitle").and.callThrough();
+      const getSectionCategoryTitle = component.getSectionCategoryTitle('frmelmnts.lbl.targetCategory');
+      expect(getSectionCategoryTitle).toEqual('Browse Other Category');
+    });
+
     it('should update profile for logged in users', () => {
       component.frameworkModal = {
         modal: {
@@ -923,4 +934,99 @@ describe('ExplorePageComponent', () => {
       });
     });
   });
+
+    it("should call the getFormConfigs to get form category if loggin",()=>{
+      component.selectedTab="home";
+      component.userType=undefined;
+      spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+      spyOn(component, 'setUserPreferences').and.callThrough();
+      userService.userData$ = observableOf({
+        profileData:{
+        userProfile: {
+          profileUserType: {
+            subType: null,
+            type: 'teacher',
+          },
+        },
+        },
+      });
+      spyOn(component,"getFormConfigs").and.callThrough();
+      component.userPreference = { framework: {id: ["tn_k-12_5"]}};
+      let data={
+        cbse:{
+          teacher:{
+            name:"observation",
+            icon:{
+              web:"assets/images/mask-image/observation.png"
+            }
+          }
+        }
+      }
+      spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
+        return Promise.resolve(data);
+      });
+      component.showTargetedCategory=true;
+      component.getFormConfigs();
+      expect(component.getFormConfigs).toHaveBeenCalled();
+    })
+
+    it("should call the getFormConfigs to get form category if not login",()=>{
+      spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      spyOn(component, 'setUserPreferences').and.callThrough();
+      component.selectedTab="home";
+      component.userType=undefined;
+      spyOn(component,"getFormConfigs").and.callThrough();
+      component.userType='teacher';
+      component.userPreference = { framework: {id:"tn_k-12_5"}};
+      spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
+        return Promise.resolve(categoryData);
+      });
+      component.showTargetedCategory=true;
+      component.getFormConfigs();
+      expect(component.getFormConfigs).toHaveBeenCalled();
+    })
+
+    it("should call the getFormConfigs to get form category if not login",()=>{
+      spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      component.userType='teacher';
+      spyOn(component, 'setUserPreferences').and.callThrough();
+      component.selectedTab="home";
+      spyOn(component,"getFormConfigs").and.callThrough();
+      component.userType='teacher';
+      component.userPreference = { framework: {id:"tn_k-12_5"}};
+      let data={
+        cbse:{
+          student:{
+            name:"observation",
+            icon:{
+              web:"assets/images/mask-image/observation.png"
+            }
+          }
+        }
+      }
+      spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
+        return Promise.resolve(data);
+      });
+      component.showTargetedCategory=false;
+      component.getFormConfigs();
+      expect(component.getFormConfigs).toHaveBeenCalled();
+    })
+
+    it("should call the getFormConfigs to get form category when selected is not home",()=>{
+      spyOn(component, 'getFormConfigs').and.callThrough();
+      component.selectedTab="explore";
+      component.getFormConfigs();
+      expect(component.getFormConfigs).toHaveBeenCalled();
+      expect(component.showTargetedCategory).toEqual(false);
+    })
+
+  it("shoulc call the handleTargetedpillSelected when the browse by category clicked",()=>{
+    spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+    spyOn(component,"handleTargetedpillSelected").and.callThrough();
+    const router = TestBed.get(Router);
+    component.handleTargetedpillSelected({name:"observation"});
+    router.url = '/observation';
+    expect(component.handleTargetedpillSelected).toHaveBeenCalled();
+  })
+
 });
