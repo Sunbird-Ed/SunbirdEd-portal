@@ -251,7 +251,8 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       this.layoutService.initiateSwitchLayout();
       localStorage.removeItem('collectionEditorLayoutType');
     }
-    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+    const contentStatus = this.routeParams.contentStatus.toLowerCase();
+    if (contentStatus === 'draft' || contentStatus === 'live') {
       this.retireLock();
     } else {
       this.redirectToWorkSpace();
