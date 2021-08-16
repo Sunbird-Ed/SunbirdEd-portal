@@ -40,11 +40,6 @@ module.exports = (app) => {
       };
       errType = 'VERIFY_TOKEN';
       verifyToken(jwtPayload);
-      errType = 'ORG_SEARCH';
-      orgDetails = await orgSearch(jwtPayload.school_id, req);
-      if (!(_.get(orgDetails, 'result.response.count') > 0)) {
-        throw 'SCHOOL_ID_NOT_REGISTERED'
-      }
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       if (_.get(req,'cookies.redirectPath')){
@@ -65,6 +60,11 @@ module.exports = (app) => {
           }
         })
       } else {
+        errType = 'ORG_SEARCH';
+        orgDetails = await orgSearch(jwtPayload.school_id, req);
+        if (!(_.get(orgDetails, 'result.response.count') > 0)) {
+          throw 'SCHOOL_ID_NOT_REGISTERED'
+        }
         const dataToEncrypt = {
           identifier: (userDetails && userDetails.id) ? userDetails.id : ''
         };
