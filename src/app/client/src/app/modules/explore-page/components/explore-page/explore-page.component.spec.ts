@@ -920,6 +920,19 @@ describe('ExplorePageComponent', () => {
       expect(Object.keys(res)).toContain('gradeLevel');
       expect(Object.keys(res)).toContain('medium');
     });
+
+    it('it should call move to top window scroll', () => {
+      spyOn(global['window'], 'scroll').and.callFake((options) => {
+        return {};
+      });
+      component.moveToTop();
+      expect(global['window']['scroll']).toHaveBeenCalled();
+      expect(global['window']['scroll']).toHaveBeenCalledWith({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    });
   });
 
     it("should call the getFormConfigs to get form category if loggin",()=>{

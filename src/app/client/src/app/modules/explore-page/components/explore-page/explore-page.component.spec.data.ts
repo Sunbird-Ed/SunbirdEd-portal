@@ -1720,6 +1720,9 @@ export const RESPONSE = {
     'filter': {
       'isEnabled': true
     },
+    'metaData': {
+      'cacheTimeout': 86400000
+    },
     'search': {
       'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
       'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
