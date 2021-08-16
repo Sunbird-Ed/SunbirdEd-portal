@@ -89,6 +89,13 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
     this.userInformation['phone'] = this.usersProfile.phone;
+    if(this.usersProfile && this.usersProfile.externalIds) {
+      _.forEach(this.usersProfile.externalIds, (externaleId) => {
+        if (externaleId.provider === this.usersProfile.channel) {
+          this.userInformation['externalId'] = externaleId.id; 
+        }
+      });      
+    }
 
     if (_.get(this.usersProfile, 'userLocations.length')) {
       this.usersProfile.userLocations.forEach(locDetail => {

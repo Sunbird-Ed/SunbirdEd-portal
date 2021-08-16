@@ -20,11 +20,15 @@
                 <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_boards">
                     <span>{{resourceService?.frmelmnts?.lbl?.board}}:&nbsp;</span><span>{{ collectionData.se_boards}}</span>
                 </div>
-                <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_gradeLevels">
-                    <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ collectionData.se_gradeLevels}}</span></div>
                 <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_mediums">
                     <span>{{resourceService?.frmelmnts?.lbl?.medium}}:&nbsp;</span><span>{{ collectionData?.se_mediums?.join(', ')}}</span>
                 </div>
+                <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_gradeLevels">
+                    <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ collectionData.se_gradeLevels}}</span>
+                </div>
+                <!-- <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_subjects">
+                    <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ collectionData?.se_subjects?.join(', ')}}</span>
+                </div> -->
                 <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.audience">
                     <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ collectionData?.audience?.join(', ')}}</span>
                 </div>

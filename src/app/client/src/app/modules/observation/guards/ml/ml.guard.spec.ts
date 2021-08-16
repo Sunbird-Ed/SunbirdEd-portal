@@ -40,6 +40,7 @@ describe('MlGuard', () => {
         ConfigService,
         CacheService,
         ToasterService,
+        UserService,
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle },
         { provide: APP_BASE_HREF, useValue: baseHref },
@@ -95,7 +96,7 @@ describe('MlGuard', () => {
     });
   });
 
-  it('should run #getProfileData() not any role', async (done) => {
+  it('should run #getProfileData() for teacher', async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
@@ -108,7 +109,7 @@ describe('MlGuard', () => {
     const value = await guard.canActivate();
     setTimeout(() => {
       expect(guard.canActivate).toHaveBeenCalled();
-      expect(value).toEqual(false);
+      expect(value).toEqual(true);
       done();
     });
   });

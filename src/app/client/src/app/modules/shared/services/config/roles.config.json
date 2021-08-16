@@ -57,7 +57,8 @@
        "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER", "REPORT_ADMIN"],
        "reportViewerRole": ["REPORT_VIEWER", "REPORT_ADMIN"],
-       "alltextbookRole": ["ORG_ADMIN"]
+       "alltextbookRole": ["ORG_ADMIN"],
+       "uciAdmin": ["ORG_ADMIN"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
