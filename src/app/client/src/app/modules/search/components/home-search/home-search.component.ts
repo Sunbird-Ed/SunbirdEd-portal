@@ -457,6 +457,21 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryService.interact(appTelemetryInteractData);
   }
 
+  /**
+   * @param  { Object } filters - filters object
+   * @description handleFilterChange
+   * - Function to handle filters data
+   * - `filters` object propagating from app-global-search-filter
+   * - Set filters data to cache with key `searchFiltersAll`
+   * - TTL for `searchFiltersAll` is based on form configuration
+   * - Form configuration key `metaData.cacheTimeout` provides TTL for cache storage of filters
+   * - If form configuration is not set then by default `3600000` value is set as TTL
+   * - If `filters` object has se_boards key and cache has data
+   * - Incoming data is merged with existing data
+   * - Final filters are stored in cache
+   * - If cache does not have filters
+   * - then incoming filters are stored in cache
+   */
   /* istanbul ignore next */
   public handleFilterChange(filters) {
     const filterData = filters && filters.filters || {};
