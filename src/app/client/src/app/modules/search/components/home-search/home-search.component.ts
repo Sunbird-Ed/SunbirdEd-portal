@@ -76,9 +76,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     /* istanbul ignore next */
-    if (this.cacheService.exists('searchFiltersAll')) {
-      this.selectedFilters = this.cacheService.get('searchFiltersAll');
-    }
+    // if (this.cacheService.exists('searchFiltersAll')) {
+    //   this.selectedFilters = this.cacheService.get('searchFiltersAll');
+    // }
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.listenLanguageChange();
     this.contentManagerService.contentDownloadStatus$
@@ -489,31 +489,31 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     this.selectedFilters = filterData;
-    const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
-    /* istanbul ignore next */
-    if (_.get(filterData, 'se_boards')) {
-      /* istanbul ignore next */
-      if (this.cacheService.exists('searchFiltersAll')) {
-        const _searchFilters = this.cacheService.get('searchFiltersAll');
-        let _cacheFilters = {
-          primaryCategory: [..._.intersection(filterData['primaryCategory'], _searchFilters['primaryCategory']), ..._.difference(filterData['primaryCategory'], _searchFilters['primaryCategory'])],
-          se_boards: [_.union(_searchFilters['se_boards'], filterData['se_boards'])[0]],
-          se_mediums: [..._.intersection(filterData['se_mediums'], _searchFilters['se_mediums']), ..._.difference(filterData['se_mediums'], _searchFilters['se_mediums'])],
-          se_gradeLevels: [..._.intersection(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels']), ..._.difference(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels'])],
-          se_subjects: [..._.intersection(filterData['se_subjects'], _searchFilters['se_subjects']),
-          ..._.difference(filterData['se_subjects'], _searchFilters['se_subjects'])].map((e) => { return _.startCase(e) }),
-          selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab')
-        }
-        this.selectedFilters = _cacheFilters;
-        this.cacheService.set('searchFiltersAll', this.selectedFilters, { expires: Date.now() + _cacheTimeout });
-      } else {
-        this.cacheService.set('searchFiltersAll', filterData, { expires: Date.now() + _cacheTimeout });
-      }
-    }
-    /* istanbul ignore next */
-    if (this.cacheService.exists('searchFiltersAll')) {
-      this.selectedFilters = this.cacheService.get('searchFiltersAll');
-    }
+    // const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
+    // /* istanbul ignore next */
+    // if (_.get(filterData, 'se_boards')) {
+    //   /* istanbul ignore next */
+    //   // if (this.cacheService.exists('searchFiltersAll')) {
+    //   //   const _searchFilters = this.cacheService.get('searchFiltersAll');
+    //   //   let _cacheFilters = {
+    //   //     primaryCategory: [..._.intersection(filterData['primaryCategory'], _searchFilters['primaryCategory']), ..._.difference(filterData['primaryCategory'], _searchFilters['primaryCategory'])],
+    //   //     se_boards: [_.union(_searchFilters['se_boards'], filterData['se_boards'])[0]],
+    //   //     se_mediums: [..._.intersection(filterData['se_mediums'], _searchFilters['se_mediums']), ..._.difference(filterData['se_mediums'], _searchFilters['se_mediums'])],
+    //   //     se_gradeLevels: [..._.intersection(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels']), ..._.difference(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels'])],
+    //   //     se_subjects: [..._.intersection(filterData['se_subjects'], _searchFilters['se_subjects']),
+    //   //     ..._.difference(filterData['se_subjects'], _searchFilters['se_subjects'])].map((e) => { return _.startCase(e) }),
+    //   //     selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab')
+    //   //   }
+    //   //   this.selectedFilters = _cacheFilters;
+    //   //   this.cacheService.set('searchFiltersAll', this.selectedFilters, { expires: Date.now() + _cacheTimeout });
+    //   // } else {
+    //     this.cacheService.set('searchFiltersAll', filterData, { expires: Date.now() + _cacheTimeout });
+    //   //}
+    // }
+    // /* istanbul ignore next */
+    // // if (this.cacheService.exists('searchFiltersAll')) {
+    // //   this.selectedFilters = this.cacheService.get('searchFiltersAll');
+    // // }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
