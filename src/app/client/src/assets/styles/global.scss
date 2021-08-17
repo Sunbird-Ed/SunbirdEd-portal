@@ -395,7 +395,7 @@ app-workspace {
   background: none;
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);
   height: 100%;
-  padding: calculateRem(16px) calculateRem(24px) calculateRem(24px) 0;
+  padding: calculateRem(16px) 0 calculateRem(24px) 0;
 
   html[dir="rtl"] & {
     border-radius: 0 calculateRem(40px) 0 0px;
@@ -404,7 +404,6 @@ app-workspace {
 
   @include respond-above(sm) {
     background: var(--sbt-body-bg2);
-    padding: calculateRem(16px) 0 calculateRem(24px) 0;
   }
 
 
@@ -1430,8 +1429,10 @@ sunbird-epub-player .sunbird-epub-container {
   height: 100% !important;
 }
 
-.modals.dimmer .ui.scrolling.modal.small {
-  position: fixed !important;
-  margin: 3.5rem auto!important;
-  will-change: auto;
+html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
+  background: none;
+}
+
+.sb-join-modal-content div.sb-h4 {
+  line-height: normal;
 }
