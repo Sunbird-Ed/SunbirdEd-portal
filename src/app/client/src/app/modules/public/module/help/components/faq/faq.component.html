@@ -77,7 +77,7 @@
           </div>
         
         <div *ngIf="selectedFaqCategory?.faqs?.length">
-          <div class="faq_title mb-16">{{faqData?.constants?.faqTitle}}</div>
+          <h4 class="faq_title mb-16">{{faqData?.constants?.faqTitle}}</h4>
           <div class="sbhelp_container__faq">
             <sb-faq [extraTemplate]="extraTemplate" [data]="selectedFaqCategory"
               (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
