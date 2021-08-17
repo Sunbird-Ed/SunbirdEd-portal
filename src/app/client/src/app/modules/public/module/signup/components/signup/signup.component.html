@@ -6,9 +6,9 @@
         </div>
         <div *ngIf="showSignUpForm" [appTelemetryStart]="telemetryStart">
           <!-- <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="fs-1 font-weight-bold mb-16 text-center">{{resourceService.frmelmnts.lbl.signUp}}</div> -->
-          <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
+          <h2 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
             class="title text-center">
-            {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</div>
+            {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h2>
           <div class="year-birth my-16 required">
             <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
            <label> <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
