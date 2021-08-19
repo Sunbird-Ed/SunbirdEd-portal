@@ -210,7 +210,19 @@ let envVariables = {
   //ML URLs
   ML_URL: {
     OBSERVATION_URL: ''
-  }
+  },
+
+  // Kong device registration and refresh token keys
+  KONG_DEVICE_REGISTER_TOKEN: env.sunbird_kong_device_register || 'false',
+  KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token,
+  sunbird_anonymous_session_ttl: env.sunbird_anonymous_session_ttl ? parseInt(env.sunbird_anonymous_session_ttl) : 10 * 60 * 1000,
+
+  // Redis storage
+  PORTAL_REDIS_URL: env.sunbird_redis_urls,
+  PORTAL_REDIS_PORT: env.sunbird_redis_port,
+  PORTAL_REDIS_TYPE: env.sunbird_redis_type,
+  PORTAL_REDIS_PASSWORD: env.sunbird_redis_password,
+  PORTAL_REDIS_CONNECTION_STRING: env.portal_redis_connection_string
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
