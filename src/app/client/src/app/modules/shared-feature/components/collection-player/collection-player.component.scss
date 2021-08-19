@@ -28,6 +28,7 @@
         background-color: var(--gray-800);
         display: inline-block;
         margin: 0px 0.5rem;
+        vertical-align: middle;
     }
   
   @include respond-below(sm) {
