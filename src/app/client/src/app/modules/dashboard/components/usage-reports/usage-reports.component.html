@@ -17,16 +17,16 @@
           </ul>
         </div>
         <div class="ten wide column sb-sideview-tab-container pl-40 pt-72 pb-48" *ngIf="currentReport">
-          <h2 class="ui small header">
+          <h3 class="mb-16">
             {{currentReport?.title || currentReport?.label}}
-          </h2>
+          </h3>
           <p *ngIf="currentReport?.description" [innerHTML]="transformHTML(currentReport.description)"></p>
           <ng-container *ngIf="!showLoader">
-            <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
+            <mat-tab-group (selectedTabChange)="selectedTabChange($event)" class="mat-tab__usage-report">
               <mat-tab appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                 [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')"
                 [label]="{'type': 'chart', 'downloadURL': currentReport.downloadUrl}">
-                <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24">
+                <div class="p-0 b-0 no-bg py-24">
                   <ng-template mat-tab-label>
                     <span>{{resourceService?.frmelmnts?.lbl?.graphs}}</span>
                   </ng-template>
@@ -49,10 +49,10 @@
                     <span>{{table?.name}}</span>
                   </ng-template>
                   <ng-template matTabContent>
-                    <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24">
+                    <div class="p-0 b-0 no-bg py-24">
                       <ng-container *ngTemplateOutlet="commonReportActions">
                       </ng-container>
-                      <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24">
+                      <div class="p-0 b-0 no-bg py-24">
                         <div *ngIf="table.data">
                           <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
                           </app-data-table>
@@ -66,7 +66,7 @@
                 </mat-tab>
               </ng-container>
               <mat-tab label="{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}" *ngIf="isFileDataLoaded">
-                <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24">
+                <div class="p-0 b-0 no-bg py-24">
                   <ng-container *ngTemplateOutlet="commonReportActions">
                   </ng-container>
                   <div class="sb-graph-section p-24 my-24">
@@ -129,7 +129,7 @@
                             --
                           </td>
                           <td>
-                            <button type="button" class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8"
+                            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto mr-8"
                               appTelemetryInteract
                               [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                               [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
@@ -164,7 +164,7 @@
       <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
         [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
         *ngIf="!isFileDataLoaded && currentReport?.downloadUrl"
-        class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()" tabindex="0"><i
+        class="sb-left-icon-btn sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="downloadCSV()" tabindex="0"><i
           class="icon"></i>
         {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
     </div>

@@ -51,15 +51,15 @@
   </div>
 
   <div>
-    <mat-accordion>
-      <mat-expansion-panel hideToggle>
+    <mat-accordion class="sb-mat__accordion">
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
             {{ resourceService?.frmelmnts?.lbl?.dataDictionary}}
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="sb-accordion-content">
-          <div class="sb-accordion-text">
+        <div>
+          <div>
             <div appMarkdown [input]="dataDictionary"
               *ngIf="!reportService?.isUserSuperAdmin() && dataDictionary?.length"></div>
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !dataDictionary?.length">
@@ -67,7 +67,7 @@
             </div>
             <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
               <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
-                <div class="ui bottom attached segment" style="min-height: 200px; width:100%; overflow: auto;">
+                <div>
                   <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
                   <div class="ui warning message" *ngIf="!dataDictionary?.length">
                     {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
@@ -93,21 +93,21 @@
         </div>
       </mat-expansion-panel>
 
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
             {{ resourceService?.frmelmnts?.lbl?.datasetExamples}}
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="sb-accordion-content">
-          <div class="sb-accordion-text">
+        <div>
+          <div>
             <div appMarkdown [input]="examples" *ngIf="!reportService?.isUserSuperAdmin() && examples?.length"></div>
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !examples?.length">
               {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
             <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
               <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
-                <div class="ui bottom attached segment" style="min-height: 200px; width:100%; overflow: auto;">
+                <div>
                   <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
                   <div class="ui warning message" *ngIf="!examples?.length">
                     {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
