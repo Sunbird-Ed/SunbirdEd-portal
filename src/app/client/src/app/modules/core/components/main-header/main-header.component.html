@@ -11,7 +11,7 @@
       <div class="ui grid padded width-100">
         <div class="p-0 d-flex flex-ai-center" [ngClass]="isDesktopApp ? 'five wide column' : 'two wide column'">
           <!--Logo-->
-          <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
+          <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="link" aria-label="Navigate to Homepage">
             <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
               src="{{tenantInfo.logo}}">
           </a>
@@ -178,7 +178,7 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 sbt-header-logo">
           <div class="d-flex flex-ai-center flex-jc-space-between w-100">
             <!--Logo-->
-            <a class="logo sbt-logo" tabindex="8" title="{{tenantInfo.titleName}}" role="banner">
+            <a class="logo sbt-logo" tabindex="8" title="{{tenantInfo.titleName}}" role="link" aria-label="Navigate to Homepage">
               <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
                 src="{{tenantInfo.logo}}">
             </a>
@@ -278,14 +278,14 @@
             <!--Avtar Dropdown-->
             <a class="profile-avtar p-0 ml-16">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                <div class="sbt-guest-profile" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
+                <div class="sbt-guest-profile" aria-haspopup="true" aria-controls="overlaySidebarID" aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
                   (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                     width="48"></div>
-                <ngx-avatar *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
+                <ngx-avatar aria-haspopup="true"  aria-controls="overlaySidebarID" aria-label="Guest User" *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
                   [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
                   name="{{guestUser?.formatedName || 'Guest'}}">
                 </ngx-avatar>
-                <ngx-avatar *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)"
+                <ngx-avatar aria-haspopup="true"  aria-controls="overlaySidebarID" aria-label="User Profile" *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)"
                   [style]="SbtavtarDesktopStyle" [size]="48" initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>
               </div>
@@ -317,10 +317,14 @@
 </div>
 
 
+     
+     
+     
+
 <div class="overlay-sidebar" *ngIf="showSideMenu">
-  <div class="overlay-sidebar__menu" tabindex="-1">
+  <div class="overlay-sidebar__menu" tabindex="0" role="dialog" id="overlaySidebarID" aria-labelledby="dialog1_label" aria-modal="true" aria-label="open sidebar navigation">
     <div class="profile__info">
-      <i class="icon-svg icon-svg--xs icon-close" role="img" title="closesidemenu" tabindex="0"
+      <i class="icon-svg icon-svg--xs icon-close" role="button" aria-label="Close sidebar navigation" title="Close sidebar" tabindex="0"
         (click)="toggleSideMenu(false)">
         <svg class="icon icon-svg--gray">
           <use xlink:href="./assets/images/sprite.svg#close"></use>
@@ -338,7 +342,7 @@
         </div>
 
         <div appOnlineOnly (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')"
-          class="add-user mb-16" *ngIf="totalUsersCount <1">
+        role="button" tabindex="0" class="add-user mb-16" *ngIf="totalUsersCount <1">
           <div class="add-user__icon">
             <img src="assets/images/user-circle.svg" alt="Add user">
           </div>
@@ -348,10 +352,10 @@
         </div>
 
         <div appOnlineOnly class="d-flex flex-w-wrap">
-          <sb-member-list [layoutConfig]=memberCardConfig [memberList]="userListToShow" [isMenu]="false"
+          <sb-member-list tabindex="0" [layoutConfig]=memberCardConfig [memberList]="userListToShow" [isMenu]="false"
             (cardClick)="switchUser($event)">
           </sb-member-list>
-          <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2"
+          <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2" role="button" tabindex="0" attr.aria-label="More Users"
             (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
             <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
             <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}
@@ -363,7 +367,7 @@
     </div>
     <div *ngIf="userService?.loggedIn">
       <div class="profile__actions">
-        <div appOnlineOnly class="add-user add-user--horizontal" *ngIf="totalUsersCount >=1"
+        <div appOnlineOnly class="add-user add-user--horizontal" tabindex="0" aria-label="Add User" role="button" *ngIf="totalUsersCount >=1"
           (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
           <div class="add-user__icon">
             <img src="assets/images/user-circle.svg" alt="Add user">
@@ -373,26 +377,26 @@
           </div>
         </div>
         <ul class="profile__actions__list pl-0">
-          <div class="mobile only" *ngIf="!layoutConfiguration">
+          <div class="mobile only" *ngIf="!layoutConfiguration" tabindex="0">
             <app-content-type [layoutConfiguration]="layoutConfiguration" (closeSideMenu)="toggleSideMenu(false)">
             </app-content-type>
           </div>
 
-          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" routerLink="profile">
+          <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false)" routerLink="profile">
             <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.profile}}
           </li>
 
-          <li class="list-item" *ngIf="userType=='administrator'" tabindex="0" [routerLink]="['/solution/solution-listing']" (click)="toggleSideMenu(false);" >
+          <li class="list-item" role="link" *ngIf="userType=='administrator'" tabindex="0" [routerLink]="['/solution/solution-listing']" (click)="toggleSideMenu(false);" >
             <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/statistics.svg#Layer_1"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.report}}
           </li>
 
-          <li class="list-item" tabindex="0" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
+          <li class="list-item" tabindex="0" role="link" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
             appPermission [permission]='adminDashboard' (click)="toggleSideMenu(false)"
             [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
@@ -400,19 +404,19 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.dashboard}}
           </li>
-          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)"
+          <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false)"
             *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission [permission]='orgSetupRole'
             routerLink="org/orgType">
             {{resourceService.frmelmnts?.lbl?.orgtypes}}
           </li>
-          <li class="list-item" tabindex="0" *ngIf='!isValidCustodianOrgUser && !isDesktopApp'
+          <li class="list-item" tabindex="0" role="link" *ngIf='!isValidCustodianOrgUser && !isDesktopApp'
             (click)="toggleSideMenu(false);showAccountMergemodal = true;">
             <i class="icon-svg icon-svg--sm icon-mergeaccount mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#mergeaccount"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lbl?.mergeAccount}}
           </li>
-          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)"
+          <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false)"
             *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission [permission]='orgAdminRole'
             routerLink="manage">
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
@@ -421,7 +425,7 @@
             {{resourceService.frmelmnts?.lbl?.manage}}
           </li>
 
-          <li class="list-item" appOnlineOnly (click)="toggleSideMenu(false)"
+          <li class="list-item" role="link" appOnlineOnly (click)="toggleSideMenu(false)"
             [class.active]="router.isActive(routerLinks?.groups)" tabindex="0"
             *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
             [telemetryInteractEdata]="myGroupIntractEData">
@@ -431,7 +435,7 @@
             {{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
           </li>
 
-          <li class="list-item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
+          <li class="list-item"  role="link" [class.active]="router.isActive('/workspace')" appTelemetryInteract
             [telemetryInteractEdata]="workspaceMenuIntractEdata" (click)="toggleSideMenu(false)"
             *ngIf='!isDesktopApp && isLayoutAvailable() && permissionService.permissionAvailable' appPermission
             [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
@@ -440,42 +444,42 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.workspace}}
           </li>
-          <li class="list-item" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+          <li class="list-item" role="link" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
             (click)="toggleSideMenu(false);navigate('/faq')">
             <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#help"></use>
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
+          <li class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
             <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
           </li>
-          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry"
+          <li class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry"
             *appDesktopOnly>
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#sync"></use>
               </svg></i>
             <span>{{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}</span>
           </li>
-          <li class="list-item hide" tabindex="0" (click)="toggleSideMenu(false);">
+          <li class="list-item hide" role="link" tabindex="0" (click)="toggleSideMenu(false);">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
             {{resourceService?.frmelmnts?.lbl?.accessible}}
           </li>
 
-          <li appOnlineOnly class="list-item" tabindex="0" appTelemetryInteract
+          <li appOnlineOnly class="list-item" role="link" tabindex="0" appTelemetryInteract
             [telemetryInteractEdata]="getLogoutInteractEdata()" (click)="toggleSideMenu(false);logout()">
             <i class="icon-svg icon-svg--sm icon-logout mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#logout"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.logout}}
           </li>
-          <li *appDesktopOnly class="list-item" tabindex="0" (click)="toggleSideMenu(false);" appTelemetryInteract
+          <li *appDesktopOnly class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);" appTelemetryInteract
             [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
@@ -495,17 +499,17 @@
         <div class="profile__actions">
           <ul class="profile__actions__list pl-0">
 
-            <div class="mobile only" *ngIf="!layoutConfiguration">
+            <div class="mobile only" *ngIf="!layoutConfiguration" tabindex="0">
               <app-content-type [layoutConfiguration]="layoutConfiguration" (closeSideMenu)="toggleSideMenu(false)">
               </app-content-type>
             </div>
-            <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" routerLink="guest-profile">
+            <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false)" routerLink="guest-profile">
               <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
                 </svg></i>
               {{resourceService.frmelmnts?.lnk?.profile}}
             </li>
-            <li appOnlineOnly class="list-item" tabindex="0" (click)="toggleSideMenu(false)"
+            <li appOnlineOnly class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false)"
               [class.active]="router.isActive(routerLinks?.explore)" *ngIf="!router.isActive('', true) && !isDesktopApp"
               [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
               <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
@@ -513,40 +517,40 @@
                 </svg></i>
               {{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
             </li>
-            <li class="list-item" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
+            <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);switchLayout()">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
                 </svg></i>
               <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
             </li>
-            <li class="list-item" tabindex="0" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry"
+            <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry"
               *appDesktopOnly>
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#sync"></use>
                 </svg></i>
               <span>{{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}</span>
             </li>
-            <li class="list-item" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+            <li class="list-item" tabindex="0" role="link" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
               (click)="toggleSideMenu(false);navigate('/faq')">
               <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#help"></use>
                 </svg></i>
               {{resourceService?.frmelmnts?.tab?.help}}
             </li>
-            <li *ngIf="!isDesktopApp" tabindex="0" class="list-item hide" (click)="toggleSideMenu(false)">
+            <li *ngIf="!isDesktopApp" tabindex="0" role="link" class="list-item hide" (click)="toggleSideMenu(false)">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
                 </svg></i>
               {{resourceService?.frmelmnts?.lbl?.accessible}}
             </li>
-            <li *ngIf="isDesktopApp" tabindex="0" class="list-item hide" (click)="toggleSideMenu(false)" appOnlineOnly>
+            <li *ngIf="isDesktopApp" tabindex="0" role="link" class="list-item hide" (click)="toggleSideMenu(false)" appOnlineOnly>
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
                 </svg></i>
               {{resourceService?.frmelmnts?.lbl?.accessible}}
             </li>
-            <li *ngIf="!isDesktopApp" tabindex="0" class="list-item p-0" (click)="toggleSideMenu(false)"
+            <li *ngIf="!isDesktopApp" tabindex="0" role="link" class="list-item p-0" (click)="toggleSideMenu(false);clearFiltersCache()"
               appTelemetryInteract [telemetryInteractEdata]="signInIntractEdata">
               <a appOnlineOnly href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
@@ -555,7 +559,7 @@
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>
-            <li class="list-item p-0" tabindex="0" (click)="toggleSideMenu(false)" appTelemetryInteract
+            <li class="list-item p-0" tabindex="0" role="link" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata" *appDesktopOnly appOnlineOnly>
               <a appOnlineOnly (click)="doLogin()" class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
@@ -564,7 +568,7 @@
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>
-            <li *appDesktopOnly class="list-item" tabindex="0" (click)="toggleSideMenu(false);" appTelemetryInteract
+            <li *appDesktopOnly class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);" appTelemetryInteract
               [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
