@@ -6,7 +6,7 @@
   <div class="help-page__header sb-bg-color-white p-16">
     <div class="ui container d-flex flex-ai-center">
       <button tabindex="0" (click)="goBack()"
-        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round" type="button"><i
+        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round" role="button" attr.aria-label=“{{resourceService?.frmelmnts?.btn?.back}}” type="button"><i
           class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i><span>{{resourceService?.frmelmnts?.btn?.back}}</span> </button>
