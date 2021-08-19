@@ -23,7 +23,7 @@ import { result } from 'lodash';
 import {ObservationModule} from '../../../observation/observation.module';
 import {ObservationUtilService} from '../../../observation/service'
 
-fdescribe('ExplorePageComponent', () => {
+describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
   let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService,observationUtilService;
