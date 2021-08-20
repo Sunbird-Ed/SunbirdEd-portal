@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.2.11":
-  version "4.2.11"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.11.tgz#cb886ba01fd01ad968ce84636627060d63260910"
-  integrity sha512-noVOTd9RWkClkbpXF57RJqKi3wiigv2Cv4Exd6BIcoeAHnF2XDAzR8PesW5XhpgSOF7tBlO2ub9+bSkGuSJPvA==
+"@project-sunbird/sunbird-collection-editor-v9@4.2.12":
+  version "4.2.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.12.tgz#06959c3ccd4cfa65831d95d65e4eeaf5fe4d95cd"
+  integrity sha512-rd+krMLOY1adyH0jCUvTKfMtTbnNR55l4OMxjPdL19Es5go/dLAG5wf2PyfvIFUSxyclPLZJ3H+UxG7T5vdj/Q==
   dependencies:
     tslib "^1.10.0"
 
@@ -1565,17 +1565,17 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.2.tgz#33cc06085515f419eae302959bb0921151e6b7c5"
-  integrity sha512-/j+8M4x/gZDtQeYU+jm4EBKhIs+GcBLCMg64GMe98A8bhVJWurEHySVnPw5pDCsd08uNDw3xYadN0ybSOaxnpA==
+"@project-sunbird/sunbird-quml-player-v9@4.2.4":
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.4.tgz#93a178b32169531301dd7cfc0c1e235b88e1c6ce"
+  integrity sha512-jytU2gplrNYKY/NqIOfN2U5uF8eJ+LLZ+d5B1VydVlVMVyevdUttT5vOXTuz5CFHJUggW4aRm2m71Er68Bvv7w==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
 
-"@project-sunbird/sunbird-video-player-v9@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.2.1.tgz#d2fdc718e0750af83de1bced248b73f67630a7aa"
-  integrity sha512-wOLebWREulgmO6zTmNjQrCkhU3DywMxCPVvcnfdV0RmYtO12HHqRd8zv3VyMJo1cAtyDlkAJY4C4yXjNlfUbrw==
+"@project-sunbird/sunbird-video-player-v9@4.2.3":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.2.3.tgz#89ab60c7b591872afb2af025242b341c49411336"
+  integrity sha512-oCYXduglA8Uz/m8CLGHPBxw803sLBfE4yT4iQfLgekPTGTJR2J6X5S39dw22yC96EGEFeusau2R9RCV7cD/HMg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
 
@@ -5252,7 +5252,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
