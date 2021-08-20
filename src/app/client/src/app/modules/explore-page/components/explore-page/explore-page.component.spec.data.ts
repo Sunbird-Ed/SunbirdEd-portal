@@ -3202,3 +3202,21 @@ export const categoryData = {
     }]
   }
 };
+
+export const EventPillData={
+  event: {
+      "isTrusted": true
+  },
+  data: [
+      {
+          name: "Observation",
+          value: {
+              name: "observation",
+              icon: {
+                  web: "assets/images/mask-image/observation_category.png",
+                  app: "assets/imgs/ic_observation_category.png"
+              }
+          }
+      }
+  ]
+};
