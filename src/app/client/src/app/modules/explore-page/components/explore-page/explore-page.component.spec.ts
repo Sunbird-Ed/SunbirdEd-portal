@@ -8,7 +8,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RESPONSE,categoryData } from './explore-page.component.spec.data';
+import { RESPONSE,categoryData, EventPillData } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ExplorePageComponent } from './explore-page.component';
@@ -1024,7 +1024,7 @@ describe('ExplorePageComponent', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
     spyOn(component,"handleTargetedpillSelected").and.callThrough();
     const router = TestBed.get(Router);
-    component.handleTargetedpillSelected({name:"observation"});
+    component.handleTargetedpillSelected(EventPillData);
     router.url = '/observation';
     expect(component.handleTargetedpillSelected).toHaveBeenCalled();
   })
