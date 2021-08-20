@@ -10,13 +10,14 @@
 
     <div class="mt-8">
         <app-credits-and-licence *ngIf="contentDetails" [contentData]="contentDetails"></app-credits-and-licence>
+        
         <sui-accordion *ngIf="collectionData" class="styled fluid sb-accordion ui accordion content-metadeta__content">
             <sui-accordion-panel>
-                <div role="button" aria-expanded="false" title class="sb-accordion-title fnormal">
+                <div tabindex="0" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="isCollapsed" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.collectionRelevantFor}} accordion" aria-controls="collectionRelevantFor" title class="sb-accordion-title fnormal">
                 {{resourceService?.frmelmnts?.lbl?.collectionRelevantFor}}
                 <i class="chevron down icon ml-8"></i>
                 </div>
-                <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+                <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8" role="region" id="collectionRelevantFor" aria-labelledby="collectionRelevantFor">
                 <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_boards">
                     <span>{{resourceService?.frmelmnts?.lbl?.board}}:&nbsp;</span><span>{{ collectionData.se_boards}}</span>
                 </div>
