@@ -1054,7 +1054,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    handleTargetedpillSelected(pillData){
+    handleTargetedpillSelected(event){
+        if (!event || !event.data || !event.data.length) {
+            return;
+        }
+        let pillData = event.data[0].value;
         if(this.isUserLoggedIn()) {
             if(pillData.name === 'observation'){
                 this.router.navigate(['observation']);      
