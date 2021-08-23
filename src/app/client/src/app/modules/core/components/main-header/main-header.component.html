@@ -324,12 +324,12 @@
 <div class="overlay-sidebar" *ngIf="showSideMenu">
   <div class="overlay-sidebar__menu" tabindex="0" role="dialog" id="overlaySidebarID" aria-labelledby="dialog1_label" aria-modal="true" aria-label="open sidebar navigation">
     <div class="profile__info">
-      <i class="icon-svg icon-svg--xs icon-close" role="button" aria-label="Close sidebar navigation" title="Close sidebar" tabindex="0"
+      <em class="icon-svg icon-svg--xs icon-close" role="button" aria-label="Close sidebar navigation" title="Close sidebar" tabindex="0"
         (click)="toggleSideMenu(false)">
         <svg class="icon icon-svg--gray">
           <use xlink:href="./assets/images/sprite.svg#close"></use>
         </svg>
-      </i>
+      </em>
 
       <div *ngIf="userService.loggedIn">
         <div class="mb-16">
