@@ -2,10 +2,10 @@
 
   <sb-accordion-item [expanded]="false">
 
-    <sb-accordion-header class="sb-bg-color-gray-0">
+    <sb-accordion-header class="sb-bg-color-gray-0" tabindex="0" (click)="expanded = !expanded" [attr.aria-expanded]="expanded" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}} accordion" aria-controls="creditsAndLicenceInfo">
       <span class="title">{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
     </sb-accordion-header>
-    <sb-accordion-body>
+    <sb-accordion-body role="region" id="creditsAndLicenceInfo" aria-labelledby="creditsAndLicenceInfo">
       <div class="credits-section">
 
         <h4 *ngIf="content?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
