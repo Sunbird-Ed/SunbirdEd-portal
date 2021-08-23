@@ -824,30 +824,28 @@ export class AppComponent implements OnInit, OnDestroy {
     this.fontSize = parseInt(currentFontSize);
 
     if (value === 'increase') {
-      this.removeAriaPressedAttribute();
       this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'true');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'false');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'false');
       this.fontSize = this.fontSize + 2;
       if (this.fontSize <= 20) {
         this.setLocalFontSize(this.fontSize);
       }
     } else if (value === 'decrease') {
-      this.removeAriaPressedAttribute();
       this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'false');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'false');
       this.fontSize = this.fontSize - 2;
       if (this.fontSize >= 12) {
         this.setLocalFontSize(this.fontSize);
       }
     } else {
-      this.removeAriaPressedAttribute();
       this.renderer.setAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'false');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'false');
       this.setLocalFontSize(this.defaultFontSize);
     }
-  }
 
-  removeAriaPressedAttribute() {
-    this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'false');
-    this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'false');
-    this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'false');
   }
 
   setLocalFontSize(value: any) {

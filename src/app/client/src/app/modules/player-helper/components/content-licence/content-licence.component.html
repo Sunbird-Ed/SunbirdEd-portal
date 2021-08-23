@@ -1,8 +1,8 @@
 <sb-accordion class="sb-toc-credits" [multi]="false">
 
-  <sb-accordion-item [expanded]="false" >
+  <sb-accordion-item [expanded]="false">
 
-    <sb-accordion-header class="sb-bg-color-gray-0" tabindex="0" (click)="expanded = !expanded" [attr.aria-expanded]="!expanded" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}} accordion" aria-controls="creditsAndLicenceInfo">
+    <sb-accordion-header class="sb-bg-color-gray-0" tabindex="0" (click)="expanded = !expanded" [attr.aria-expanded]="expanded" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}} accordion" aria-controls="creditsAndLicenceInfo">
       <span class="title">{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
     </sb-accordion-header>
     <sb-accordion-body role="region" id="creditsAndLicenceInfo" aria-labelledby="creditsAndLicenceInfo">
