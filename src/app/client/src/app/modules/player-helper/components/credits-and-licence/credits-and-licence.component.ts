@@ -11,7 +11,7 @@ export class CreditsAndLicenceComponent implements OnInit {
 
   @Input() contentData;
   instance: string;
-
+  isCollapsed: boolean = false;
 
   constructor(public resourceService: ResourceService) { }
 

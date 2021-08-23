@@ -1,6 +1,6 @@
 <div *ngIf="contentData.description" class="content-metadeta sb-bg-color-white mt-8 text-left">
-  <div class="mx-16 py-16 content-metadeta__content">
-    <div class="content-metadeta__title fnormal font-weight-bold" role="heading" aria-level="2">
+  <div class="mx-16 py-16 content-metadeta__content" tabindex="0">
+    <div class="content-metadeta__title fnormal font-weight-bold"  role="heading" aria-level="2">
       {{resourceService?.frmelmnts?.lbl?.description}}</div>
     <p class="content-metadeta__text fnormal pt-8">
       {{contentData?.description}}
@@ -11,13 +11,11 @@
 
 <sui-accordion class="styled fluid sb-accordion">
   <sui-accordion-panel>
-    <div title class="sb-accordion-title fnormal" role="link" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.aboutTheContent}}”>
+    <div role="button" tabindex="0" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="isCollapsed" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.aboutTheContent}} accordion" aria-controls="aboutTheContent" title class="sb-accordion-title fnormal">
       {{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
       <i class="chevron down icon ml-8"></i>
     </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
-     
-
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8" role="region" id="aboutTheContent" aria-labelledby="aboutTheContent">
       <div class="py-8" *ngIf="contentData?.author">
         <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.author}}</div>
         <div class="content-metadeta__text fnormal">{{contentData?.author}}</div>
