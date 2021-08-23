@@ -1536,24 +1536,24 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.2.2.tgz#47912c5b348c7193c05ba9469d0a45d926880215"
-  integrity sha512-YxuNV8M5FFnvNkHDRUj5gafgNyhbT4n+Hg/le6hLNJ6v2ooBxPZRyXAvNYWjq3/c67O3InXcZXZFTHIK0FM+bw==
+"@project-sunbird/sunbird-epub-player-v9@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.1.4.tgz#60609509aa470f6c89d33edd03a3a5551f5467bc"
+  integrity sha512-jVUAae/Y/YrK7aK7Ai22myJvEoofrKj0FdcZ3izeSn11JAarT1Va4pqtxqaV1FlG2MbbRPSq9Iw0tYL78iFgjw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.1"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.6"
 
-"@project-sunbird/sunbird-pdf-player-v9@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.2.1.tgz#164c4a32081bc8274ae2a90600344b9b3d8dbd03"
-  integrity sha512-JNJTlA6U/JaptaJHVRhM6dGZf582t2lIGktN2CZsd4W/Ew3pg3jTjkCcoWdUleWLsYGP0dQz/donrbRAV7hkNQ==
+"@project-sunbird/sunbird-pdf-player-v9@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.1.5.tgz#1836959ad2a551b20f947b212c57ed586ded2107"
+  integrity sha512-ffM8Joy8XfN0S/qohdHZr+6QWW27coz62tj1xPZkq4kGnzjo1VnN0lFiq9QC1lhHz3vMsq2Q1lG7PELjP0lkFQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.1"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.6"
 
-"@project-sunbird/sunbird-player-sdk-v9@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.2.1.tgz#d57576360f5db1d3740cd364d93844981108eac9"
-  integrity sha512-T7tiaRE1rPsPQZIX1HzXBXbPQ5seTj+9pXJ4otSX4y4WlrhuOAi04K2XHlJp/5HKYUS7fjlBymBZeMykKdK/QQ==
+"@project-sunbird/sunbird-player-sdk-v9@4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.1.6.tgz#ca7cd31c59bc50d4f9e31c45ec1f1792579de906"
+  integrity sha512-pcwo/yhc5rZoRtTY6pbnDNZeMD+NqFXE1YHXgZ01Gy1a3u/sA0OCCA5oNe8fa96QgDBxAAnBLX1GImNdPwB3uQ==
 
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
@@ -1562,19 +1562,19 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.2.5":
-  version "4.2.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.5.tgz#4668e84d5c32b95f32dde2b73263708d17709476"
-  integrity sha512-+ajLyP1ZW/CtrO9xg730Auke2ZRJMzgAGsIAzgpbAoXfatFdDK4pPj6VXNHjtiI4LaX5urqGUbvvAwcpB5vRMQ==
+"@project-sunbird/sunbird-quml-player-v9@4.1.25":
+  version "4.1.25"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.25.tgz#850260f9a471cb2e3a6f192a8dff1a86151de3b2"
+  integrity sha512-yBp4aCkbnFsXvzrxTQFbL4RvBx+BHOGzkNuE+GrLoEcg9eVx3CAE58oAWQ4iZH+p2Y79j43zEI9uJ3PYyPkcFg==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.1"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.6"
 
-"@project-sunbird/sunbird-video-player-v9@4.2.5":
-  version "4.2.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.2.5.tgz#34d6760e50d11cf19a36513a1f5b8d90780c4d30"
-  integrity sha512-wU8o3oiJzEjEGPe87awKy5szZJ1LRgpUKgQ1vTxEiZ6xFJHWKGaHpqxx9/uRLe6D1KzC4wA4eWQhlGIPwbZUDA==
+"@project-sunbird/sunbird-video-player-v9@4.1.9":
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.1.9.tgz#196f1399db3ef7ae1b13ced1666e9f2bac580741"
+  integrity sha512-CZV4ZcM8pXEtgyxiBj/uKJbOR5YUu6bn0DFRNj9UFDpNJqg47s4jmdWWkPRHeNr2SMr9xGwG2LjX43OOnqlbdA==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.1"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.6"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
