@@ -54,6 +54,10 @@ describe('AppComponent', () => {
   let resourceService;
   let setAttributeSpy;
   let removeAttributeSpy;
+  let increaseFontSize;
+  let decreaseFontSize;
+  let resetFontSize;
+  let darkModeToggle;
   const resourceMockData = {
     messages: {
       fmsg: { m0097: 'Something went wrong' },
@@ -92,10 +96,12 @@ describe('AppComponent', () => {
     configService = TestBed.get(ConfigService);
     userService = TestBed.get(UserService);
     resourceService = TestBed.get(ResourceService);
-    component.darkModeToggle  = TestBed.get(ElementRef);
-    component.increaseFontSize = TestBed.get(ElementRef);
-    component.decreaseFontSize  = TestBed.get(ElementRef);
-    component.resetFontSize  = TestBed.get(ElementRef);
+    darkModeToggle = component.darkModeToggle  = TestBed.get(ElementRef);
+    increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
+
+
     spyOn(navigationHelperService, 'initialize').and.callFake(() => {});
     spyOn(telemetryService, 'initialize');
     spyOn(telemetryService, 'getDeviceId').and.callFake((cb) => cb('123'));
@@ -354,6 +360,9 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.changeFontSize('reset');
     expect(component.fontSize).toBe(16);
     expect(component.setLocalFontSize).toHaveBeenCalledWith(16);
+    expect(setAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
   });
 
   it('should increase font size of the browser by 2px', () => {
@@ -362,6 +371,9 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.changeFontSize('increase');
     expect(component.fontSize).toBe(20);
     expect(component.setLocalFontSize).toHaveBeenCalledWith(20);
+    expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
   });
 
   it('should decrease font size of the browser by 2px', () => {
@@ -370,6 +382,9 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.changeFontSize('decrease');
     expect(component.fontSize).toBe(12);
     expect(component.setLocalFontSize).toHaveBeenCalledWith(12);
+    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
   });
 
   it('should call isDisableFontSize with the value 12', () => {
@@ -380,11 +395,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   });
 
   it('should call isDisableFontSize with the value 12', () => {
-    
-    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
-    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
-    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
-
     component.isDisableFontSize(20);
     expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled', 'true');
     expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');

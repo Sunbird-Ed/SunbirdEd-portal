@@ -814,7 +814,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isDisableFontSize(localFontSize);
     }
   }
-
   changeFontSize(value: string) {
 
     const elFontSize = window.getComputedStyle(document.documentElement).getPropertyValue('font-size');
@@ -825,24 +824,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (value === 'increase') {
       this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'true');
-      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'false');
-      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'false');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
       this.fontSize = this.fontSize + 2;
       if (this.fontSize <= 20) {
         this.setLocalFontSize(this.fontSize);
       }
     } else if (value === 'decrease') {
       this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'true');
-      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'false');
-      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'false');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
       this.fontSize = this.fontSize - 2;
       if (this.fontSize >= 12) {
         this.setLocalFontSize(this.fontSize);
       }
     } else {
       this.renderer.setAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'true');
-      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'false');
-      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'false');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
       this.setLocalFontSize(this.defaultFontSize);
     }
 
