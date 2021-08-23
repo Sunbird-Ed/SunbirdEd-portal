@@ -5,8 +5,8 @@
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
-       <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+      <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
+       <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" role="img" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
        suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
        <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
          backgroundColor: '#ffffff',
@@ -25,7 +25,7 @@
     <div class="mt-8 mb-16 d-flex flex-jc-center">
       <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
       <div class="fnormal ml-5" id="copyUser">{{userProfile.userName}}</div>
-      <div class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)" suiPopup popupText="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [popupInverted]="true" [popupPlacement]="'bottom left'">
+      <div role="button" class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)" suiPopup popupText="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [popupInverted]="true" [popupPlacement]="'bottom left'">
         <i class="icon-svg icon-svg--xs icon-edit">
           <svg class="icon icon-svg--primary">
           <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
@@ -215,7 +215,7 @@
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
+        <div role="button" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
           class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">

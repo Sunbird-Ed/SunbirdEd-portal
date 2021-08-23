@@ -26,7 +26,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   @Input() batchId: string;
   @Input() courseHierarchy: any;
   @Input() courseProgressData: any;
-
+  isOpen = true;
   courseMentor = false;
   batchList = [];
   userList = [];
