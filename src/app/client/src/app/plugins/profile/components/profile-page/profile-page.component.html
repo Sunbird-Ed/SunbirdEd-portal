@@ -31,7 +31,7 @@
           <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
         </svg>
         </i>
-        <span class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.copy}}</span>
+        <span class="sb-color-primary" role="link" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.copy}}”>{{resourceService?.frmelmnts?.lbl?.copy}}</span>
       </div>
 
     </div>
@@ -221,7 +221,7 @@
           [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addPhoneNo}}” tabindex="0"
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
@@ -230,11 +230,11 @@
       </div>
      <div class="d-flex flex-jc-center">
       <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
+      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15" attr.aria-label=“{{userProfile.email}}” *ngIf="userProfile.email" appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
       <i class="mail blue icon mr-5"></i> {{userProfile.email}}
     </div>
-    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
+    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addEmailID}}”
       class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
       appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
@@ -244,14 +244,14 @@
 
       <!-- Add/edit recovery email/phone-->
     <div class="d-flex flex-jc-center">
-      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
+      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0" (click)="showRecoveryId=true; mode='edit'" attr.aria-label=“{{userProfile.recoveryEmail}}” class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
       appTelemetryInteract
       [telemetryInteractEdata]="editRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
         <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
         <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
        </div>
-       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" tabindex="0" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
+       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}” tabindex="0" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
       appTelemetryInteract
       [telemetryInteractEdata]="addRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
