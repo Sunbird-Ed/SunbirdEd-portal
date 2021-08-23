@@ -41,13 +41,13 @@
         <div class="twelve wide column right aligned py-0 mt-16" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager && pager.pages.length">
                 <div class="sb-pagination my-0">
-                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
-                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
-                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)"
+                <a role="button" [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
+                <a role="button" [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
+                <a href=“javascript:void(0);” role=“button” aria-current=“page” *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)"
                     class="sb-item">{{page}}</a>
-                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)"
+                <a role="button" [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)"
                     class="sb-item">&gt;</a>
-                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)"
+                <a role="button" [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)"
                     class="sb-item ">&raquo;</a>
                 </div>
             </div>
