@@ -52,6 +52,7 @@ describe('AppComponent', () => {
   let userService;
   let timerCallback;
   let resourceService;
+  
   const resourceMockData = {
     messages: {
       fmsg: { m0097: 'Something went wrong' },
@@ -214,7 +215,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.checkLocationStatus();
     expect(component.checkLocationStatus).toHaveBeenCalled();
   });
-  it('Should subscribe to tenant service and retrieve title and favicon details', () => {
+  xit('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
@@ -343,26 +344,97 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   it('should reset font size of the browser to 16px', () => {
     spyOn(localStorage, 'getItem').and.returnValue(16);
     spyOn(component, 'setLocalFontSize');
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
     component.changeFontSize('reset');
     expect(component.fontSize).toBe(16);
     expect(component.setLocalFontSize).toHaveBeenCalledWith(16);
+    
+    expect(setAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
   });
 
   it('should increase font size of the browser by 2px', () => {
     spyOn(localStorage, 'getItem').and.returnValue(18);
     spyOn(component, 'setLocalFontSize');
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
     component.changeFontSize('increase');
     expect(component.fontSize).toBe(20);
     expect(component.setLocalFontSize).toHaveBeenCalledWith(20);
+    expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
   });
 
   it('should decrease font size of the browser by 2px', () => {
     spyOn(localStorage, 'getItem').and.returnValue(14);
     spyOn(component, 'setLocalFontSize');
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
     component.changeFontSize('decrease');
     expect(component.fontSize).toBe(12);
     expect(component.setLocalFontSize).toHaveBeenCalledWith(12);
+    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
   });
+
+
+
+
+  it('should call addAriaPressedAttr with reset', () => {
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
+    component.addAriaPressedAttr('reset');
+    expect(setAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
+  });
+
+  it('should call addAriaPressedAttr with increase', () => {
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
+    component.addAriaPressedAttr('increase');
+    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
+  });
+
+  it('should call addAriaPressedAttr with decrease', () => {
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
+    component.addAriaPressedAttr('decrease');
+    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
+  });
+
+
+
+
+
+
+
 
   it('should call isDisableFontSize with the value 12', () => {
     spyOn(localStorage, 'setItem');
