@@ -45,7 +45,7 @@ const fakeActivatedRoute = {
 };
 
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let telemetryService;
@@ -53,6 +53,8 @@ describe('AppComponent', () => {
   let userService;
   let timerCallback;
   let resourceService;
+  let setAttributeSpy;
+  let removeAttributeSpy;
   const resourceMockData = {
     messages: {
       fmsg: { m0097: 'Something went wrong' },
@@ -91,10 +93,16 @@ describe('AppComponent', () => {
     configService = TestBed.get(ConfigService);
     userService = TestBed.get(UserService);
     resourceService = TestBed.get(ResourceService);
+    component.darkModeToggle  = TestBed.get(ElementRef);
+    component.increaseFontSize = TestBed.get(ElementRef);
+    component.decreaseFontSize  = TestBed.get(ElementRef);
+    component.resetFontSize  = TestBed.get(ElementRef);
     spyOn(navigationHelperService, 'initialize').and.callFake(() => {});
     spyOn(telemetryService, 'initialize');
     spyOn(telemetryService, 'getDeviceId').and.callFake((cb) => cb('123'));
     spyOn(document, 'querySelector').and.returnValue({ setAttribute: () => { }});
+    setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
     spyOn(Fingerprint2, 'constructor').and.returnValue({get: () => {}});
     spyOn(document, 'getElementById').and.callFake((id) => {
       if (id === 'buildNumber') {
@@ -373,8 +381,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   });
 
   it('should call isDisableFontSize with the value 12', () => {
-    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
-    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    
     const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
     const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
     const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
