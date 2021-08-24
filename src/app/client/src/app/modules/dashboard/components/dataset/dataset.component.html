@@ -65,7 +65,7 @@
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !dataDictionary?.length">
               {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
-            <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
+            <mat-tab-group  class="sb-mat__tab sb-mat__tab--tabinacc" *ngIf="reportService?.isUserSuperAdmin()">
               <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
                 <div>
                   <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
@@ -105,7 +105,7 @@
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !examples?.length">
               {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
-            <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
+            <mat-tab-group class="sb-mat__tab sb-mat__tab--tabinacc" *ngIf="reportService?.isUserSuperAdmin()">
               <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
                 <div>
                   <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>

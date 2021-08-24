@@ -2,15 +2,9 @@
 @import "mixins/mixins";
 
 .sb-graph-section{
-    position: relative;
-    z-index: 1;
-    margin: 15px !important;
-    border: calculateRem(1px) solid  var(--rc-dddddd);
-    padding: calculateRem(24px);
-    margin-top: calculateRem(24px);
-    background: var(--white);
     box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
-    border-radius: calculateRem(4px);
+    background: var(--sb-graph-section-bg);
+    border: 0.0625rem solid var(--rc-dddddd);
     .sb-table-fixed .sb-table tbody td, .sb-table-fixed .sb-table-body td {
         text-overflow: initial;
         overflow: initial;
@@ -146,18 +140,10 @@
       }
     }
   }
-  .graph-section {
-    border-top: 1px solid #ccc !important;
-    padding-bottom: 15px !important;
-    background-color: #E9E8D9 !important;
-    border-radius: 0px 0px 24px 24px !important;
-    margin-top: 0px !important;
-    padding-top: 5px !important;
-  }
 
-  .ui.selection.dropdown {
-    color: var(--ui-dropdown-selection-icon) !important;   
-  }
+//   .ui.selection.dropdown {
+//     color: var(--ui-dropdown-selection-icon) !important;   
+//   }
 
   .report-block {
     padding-top: 10px;
@@ -204,16 +190,16 @@
      border-radius: 0px !important;
      background: #E9E8D9 !important;
  }
- .sb-field 
-    ::ng-deep { 
-        .ui.selection.dropdown {
-            color: #333 !important;
-            font-size: 15px !important;
-            min-height:40px !important;
-            border-radius: 24px !important;
-            border:1px #D7D7D7 solid !important;
-        }
-}
+//  .sb-field 
+//     ::ng-deep { 
+//         .ui.selection.dropdown {
+//             color: #333 !important;
+//             font-size: 15px !important;
+//             min-height:40px !important;
+//             border-radius: 24px !important;
+//             border:1px #D7D7D7 solid !important;
+//         }
+// }
 
 .label-success {
     color: green;
@@ -245,13 +231,7 @@
     box-shadow: var(--sbt-box-shadow-6px) !important;
     
 }
-.report-title {
-    font-size: 22px;
-    color:#333333;
-    font-family: "Noto Sans";
-    line-height: 24px;
-    font-weight: 500;
-}
+
 .icon-back {
     height: 20px;
     width: 48px;
@@ -267,22 +247,33 @@
         }
     }
 }
+
+.sbt-container {
+  .reports-container {
+    padding-top: calculateRem(16px);
+  }
+
+  .reports-content-header {
+    border-radius: calculateRem(24px) !important;
+  }
+}
+
 .reports-content-header {
-    border-radius: 24px !important;
-    background: #E9E8D9 !important;
+  background: var(--primary-0);
+  box-shadow: var(--sbt-box-shadow-3px);
 }
 
  .cc-player__btn-back {
     background: #E9E8D9 !important;
  }
 
-.ui.dropdown.selection   {
-    ::ng-deep {
-        .dropdown.icon {
-            color: #024F9D !important;
-        }
-    }
-}
+// .ui.dropdown.selection   {
+//     ::ng-deep {
+//         .dropdown.icon {
+//             color: #024F9D !important;
+//         }
+//     }
+// }
 .sb-label-value {
     background: #ddd;
     border-radius: 16px;
@@ -346,15 +337,15 @@
 }
 
 
-.sb-field .ui.selection.dropdown  {
-    ::ng-deep {
-        .text {
-            color: #fff !important;
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-    }
-}
+// .sb-field .ui.selection.dropdown  {
+//     ::ng-deep {
+//         .text {
+//             color: #fff !important;
+//             padding-left: 5px;
+//             padding-right: 5px;
+//         }
+//     }
+// }
 .filter-drop .ui.selection.dropdown  {
     ::ng-deep {
         .text {
@@ -367,13 +358,13 @@
 .sb-label-value {
     background-color: #F2F2EA !important;
 }
-.files-block {
-    background: #E9E8D9 !important;
-    margin:0px !important;
-    border-radius: 0px 0px 24px 24px !important;
-    box-shadow: none;
-    border-top: 1px solid #ccc;
-}
+// .files-block {
+//     background: #E9E8D9 !important;
+//     margin:0px !important;
+//     border-radius: 0px 0px 24px 24px !important;
+//     box-shadow: none;
+//     border-top: 1px solid #ccc;
+// }
 
 .main-container {
     padding: 0 1%;

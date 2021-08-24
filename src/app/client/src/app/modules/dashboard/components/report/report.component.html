@@ -2,12 +2,12 @@
 
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-container relative9 sbt-fluid-content-bg':''" class="main-container">
-  <div class="ui report-main-block" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})"
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9 sbt-fluid-content-bg':''">
+  <div class="" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})"
     #reportElement>
-    <div class="twelve wide column px-0">
-      <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
-        <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
+    <div class="">
+      <div class="">
+        <div class="reports-container w-100" *ngIf="showComponent">
           <ng-container *ngIf="(report$ | async) as currentReport else loading">
             <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
               <div id="report-header" class="report__header">
@@ -122,7 +122,7 @@
                     </app-dataset>
                   </div>
                   <div id="report-body" class="my-16" *ngIf="type === 0">
-                    <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
+                    <mat-tab-group (selectedTabChange)="selectedTabChange($event)" class="sb-mat__tab sb-mat__tab--tabinacc">
                       <mat-tab [label]="{'type': 'chart', 'downloadURL': currentReport?.reportMetaData?.downloadUrl}"
                         appTelemetryInteract
                         [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
@@ -142,7 +142,7 @@
                             </app-filter>
                           </div>
                         </div>
-                        <div class="ui bottom p-0 b-0 no-bg my-24 graph-section">
+                        <div class="ui bottom p-0 b-0 no-bg my-24 ">
                           <div class="sb-graph-section p-24 my-24"
                             *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
                             <app-map *ngIf="chart?.chartConfig?.chartType === 'map'" [mapData]="chart?.mapData"
@@ -247,11 +247,11 @@
                                   --
                                 </td>
                                 <td>
-                                  <button type="button" class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8"
+                                  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto mr-8"
                                     appTelemetryInteract
                                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                                     [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
-                                    (click)="downloadCSV(file.downloadUrl)"><i class="icon"></i>
+                                    (click)="downloadCSV(file.downloadUrl)">
                                     {{resourceService?.frmelmnts?.lbl?.dashboard?.downloadfile}}</button>
                                 </td>
                             </tbody>
@@ -324,12 +324,12 @@
       <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" type="button"
         *ngIf="currentReport?.reportMetaData?.downloadUrl && !currentReport?.files?.length"
-        class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()" tabindex="0"><i
+        class="sb-left-icon-btn sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="downloadCSV()" tabindex="0"><i
           class="download icon"></i>
         {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
       <div class="sb-field mb-0 mr-8 d-flex flex-jc-flex-end">
         <label>
-          <sui-select *ngIf="showExportsOption" class="selection mr-12 active-btn"
+          <sui-select *ngIf="showExportsOption" class="selection mr-12"
             [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
             (selectedOptionChange)="downloadReport($event)">
             <sui-select-option *ngFor="let option of exportOptions" [value]="option" appTelemetryInteract
