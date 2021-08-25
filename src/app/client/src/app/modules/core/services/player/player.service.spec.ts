@@ -129,6 +129,7 @@ describe('PlayerService', () => {
     const router = TestBed.get(Router);
     const mockData = MockResponse.contentMetadata;
     mockData.contentType = 'TextBook';
+    mockData.primaryCategory = 'TextBook';
     playerService.playContent(mockData);
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', MockResponse.contentMetadata.identifier],
