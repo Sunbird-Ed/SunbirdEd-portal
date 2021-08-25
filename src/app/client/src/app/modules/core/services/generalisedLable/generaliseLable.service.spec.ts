@@ -59,7 +59,7 @@ describe('GeneraliseLabelService', () => {
     it('should return default resource bundle if content type wise resource bundle not found', () => {
         const service: GeneraliseLabelService = TestBed.get(GeneraliseLabelService);
         service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
-        MockResponse.courseHierarchy.contentType = 'LessionPlan';
+        MockResponse.courseHierarchy.primaryCategory = 'LessionPlan';
         const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
         expect(service['contentTypeLblKey']).toEqual('dflt');
         expect(fileName).toEqual('all_labels_en.json');
@@ -91,6 +91,6 @@ describe('GeneraliseLabelService', () => {
         mockData.contentType = 'Course';
         const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
         expect(fileName).toEqual('all_labels_en.json');
-        expect(service['isTrackable']).toEqual('trackable');
+        expect(service['isTrackable']).toEqual('nontrackable');
     });
 });

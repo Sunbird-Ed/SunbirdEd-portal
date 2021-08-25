@@ -236,7 +236,7 @@ describe('HomeSearchComponent', () => {
       }
     };
     component.playContent({data});
-    expect(playerService.playContent).toHaveBeenCalledWith(data.metaData);
+    expect(playerService.playContent).toHaveBeenCalledWith(data);
   });
 
   it('should playContent for on going batch with batch id', () => {

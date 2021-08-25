@@ -287,6 +287,7 @@ export const MockResponse = {
     },
     contentMetadata: {
         'contentType': 'Course',
+        'primaryCategory': 'Course',
         'framework': 'tpd',
         'identifier': 'do_1130206856421867521137',
         'mimeType': 'application/vnd.ekstep.content-collection'
