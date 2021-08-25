@@ -1,6 +1,6 @@
 <sui-accordion class="styled fluid sb-accordion sb-new-theme-accordion submissions">
-    <sui-accordion-panel [isOpen]="false" class="sb-accordion-title submission-title">
-        <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+    <sui-accordion-panel class="sb-accordion-title submission-title">
+        <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen" attr.aria-label="{{submission?.title}} accordion" aria-controls="submissionTitle">
             <span>{{submission?.title}}</span>
             <div>
                 <i class="dropdown large icon" role="img" title="expand"></i>
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div content class="content-submission sb-bg-color-white pt-0 pb-8 sb-g-col-xs-12">
+        <div content class="content-submission sb-bg-color-white pt-0 pb-8 sb-g-col-xs-12" role="region" id="submissionTitle" aria-labelledby="submissionTitle">
             <div *ngFor="let evidance of submission?.evidencesStatus" class="evidences-list cc-player__content-header sb-g ">
                 <div class=" sb-g-col-xs-12 sb-g-col-sm-10 sb-g-col-lg-10">
                     <div class="content-header__title font-weight-bold ellipsis text-left sb-g-col-xs-12">
