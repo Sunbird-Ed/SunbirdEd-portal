@@ -75,9 +75,6 @@ export class GeneraliseLabelService {
     }
     // this.isTrackable = _.lowerCase(_.get(contentData, 'trackable.enabled')) === 'yes' ? 'trackable' : 'nontrackable';
     const resourceBundleConfig = this.gResourseBundleForm;
-    // if(this.collectionType === 'digital textbook'){
-    //   this.collectionType = 'textbook';
-    // }
     const resourceConfig = _.get(resourceBundleConfig, this.collectionType) || _.get(resourceBundleConfig, 'default');
     this.contentTypeLblKey = resourceConfig.key;
     const resourceBundle = _.get(resourceConfig, `${this.isTrackable}`);
