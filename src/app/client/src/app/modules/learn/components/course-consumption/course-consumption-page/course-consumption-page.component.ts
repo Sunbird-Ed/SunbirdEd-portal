@@ -75,7 +75,13 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         if (enrollCourses) { // batch found in enrolled list
           this.batchId = enrollCourses.batchId;
           if (enrollCourses.batchId !== routeParams.batchId) { // if batch from route dint match or not present
-            this.router.navigate([`learn/course/${this.courseId}/batch/${this.batchId}`]); // but course was found in enroll list
+            if (queryParams.groupId && queryParams.isAdmin && queryParams.isExistInGroup) { // if queryparams is passed from the groups to show the Activity Dashboard at group level
+              this.showAddGroup = false; // set this variable as false because this course is already added to the group
+              this.router.navigate([`learn/course/${this.courseId}/batch/${this.batchId}`], { queryParams }); // but course was found in enroll list
+            }
+            else {
+              this.router.navigate([`learn/course/${this.courseId}/batch/${this.batchId}`]); // but course was found in enroll list
+            }
           }
         } else {
           // if query params has batch and autoEnroll=true then auto enroll to that batch
@@ -104,11 +110,11 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
+      pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
   private getBatchDetailsFromEnrollList(enrolledCourses = [], { courseId, batchId }) {
     this.showBatchInfo = false;
