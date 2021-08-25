@@ -114,7 +114,7 @@ describe('ActivityListComponent', () => {
     component.groupData.active = true;
     component.groupData.isAdmin = true;
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
-    expect(component['playerService'].playContent).toHaveBeenCalledWith(event.data, {groupId: '123', isAdmin: true});
+    expect(component['playerService'].playContent).toHaveBeenCalledWith(event.data, {groupId: '123', isAdmin: true, isExistInGroup: true});
     expect(component.addTelemetry).toHaveBeenCalled();
   });
 
