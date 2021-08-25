@@ -234,7 +234,7 @@ select:-internal-autofill-selected {
     border-radius:calculateRem(28px);
     line-height: normal;
     background: var(--sb-search-input-bg);
-    color: var(--sb-search-input-text);
+    color: #545454;
     html[dir="rtl"] & {
       padding: calculateRem(4px) calculateRem(40px) calculateRem(4px) calculateRem(88px);
     } 
