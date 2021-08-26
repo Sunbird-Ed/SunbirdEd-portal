@@ -13,7 +13,7 @@
   (dismissed)="closeModal();addTelemetry('close-group-form', '', { type: SELECT_CLOSE, subtype: CLOSE_ICON })"
   >
   <div class="sb-modal-header" *ngIf="groupId">{{resourceService?.frmelmnts?.lbl?.editGroup}}</div>
-  <div class="sb-modal-header" *ngIf="!groupId">{{ resourceService?.frmelmnts?.lbl?.createGroup }}</div>
+  <h3 class="sb-modal-header" *ngIf="!groupId">{{ resourceService?.frmelmnts?.lbl?.createGroup }}</h3>
   <div class="sb-modal-content o-y-visible">
     <form class="sb-form" [formGroup]="groupForm">
       <div class="sb-field mb-16">
