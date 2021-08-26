@@ -12,7 +12,7 @@
   <ng-container *ngIf="showForm">
 
     <!--Header-->
-    <div class="sb-modal-header" [ngSwitch]="contactType">
+    <div class="sb-modal-header" [ngSwitch]="contactType" role="heading" aria-level="2">
       <span *ngSwitchCase="'email'">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
       <span *ngSwitchCase="'phone'">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
     </div>
