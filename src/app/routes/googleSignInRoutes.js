@@ -40,7 +40,7 @@ module.exports = (app) => {
 
   app.post('/google/auth/android', bodyParser.json(), async (req, res) => {
     let errType, newUserDetails, payload = {}
-    let CLIENT_ID = req.platform && req.platform === 'ios' ? GOOGLE_OAUTH_CONFIG_IOS.clientId : GOOGLE_OAUTH_CONFIG.clientId;
+    let CLIENT_ID = req && req.body.platform && req.body.platform === 'ios' ? GOOGLE_OAUTH_CONFIG_IOS.clientId : GOOGLE_OAUTH_CONFIG.clientId;
     const client = new OAuth2Client(CLIENT_ID);
     async function verify() {
       const ticket = await client.verifyIdToken({
@@ -67,6 +67,7 @@ module.exports = (app) => {
          newUserDetails = await createUserWithMailId(newGoogleUserDetails, 'android', req).catch(handleCreateUserError);
          await utils.delay(GOOGLE_SIGN_IN_DELAY);
        }
+       const clientId = req && req.body.platform && req.body.platform === 'ios' ? 'ios': 'android';
        const keyCloakToken = await createSession(emailId, {client_id: 'android'}, req, res).catch(handleCreateSessionError);
        res.send(keyCloakToken);
      }).catch((err) => {

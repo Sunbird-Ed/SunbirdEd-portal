@@ -468,13 +468,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     if (this.dialCode) {
       this.router.navigate(['/get/dial/', this.dialCode]);
     } else {
-      const { url, queryParams: { textbook = null } = {} } = this.navigationHelperService.getPreviousUrl();
+      const previousPageUrl = this.navigationHelperService.getPreviousUrl();
+      const { url, queryParams: { textbook = null } = {} } = previousPageUrl;
       if (url && ['/explore-course', '/learn'].some(val => url.startsWith(val)) && textbook) {
         const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
         this.router.navigate([navigateUrl, 1], { queryParams: { key: textbook } });
+      } else if (previousPageUrl.queryParams) {
+        this.router.navigate([previousPageUrl.url], {queryParams: previousPageUrl.queryParams});
       } else {
         const url = this.userService.loggedIn ? '/resources' : '/explore';
-        this.navigationHelperService.navigateToPreviousUrl(url);
+        this.router.navigate([url], { queryParams: { selectedTab: 'textbook' } });
       }
     }
   }

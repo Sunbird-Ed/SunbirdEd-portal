@@ -1720,6 +1720,9 @@ export const RESPONSE = {
     'filter': {
       'isEnabled': true
     },
+    'metaData': {
+      'cacheTimeout': 86400000
+    },
     'search': {
       'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
       'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
@@ -3158,5 +3161,62 @@ export const RESPONSE = {
             ]
         }
     }
+  ],
+  persistFilters: {
+    'gradeLevel': [
+      'Class 1',
+      'Class 2',
+      'Class 3',
+      'Class 4',
+      'Class 5',
+      'Class 6',
+      'Class 7',
+      'Class 8'
+    ],
+    'subject': [
+      'home science',
+      'english'
+    ],
+    'medium': [
+      'Tamil',
+      'English'
+    ],
+    'publisher': [],
+    'audience': [],
+    'channel': [],
+    'audienceSearchFilterValue': [],
+    'board': [
+      'State (Tamil Nadu)'
+    ],
+    'selectedTab': 'textbook'
+  }
+};
+
+export const categoryData = {
+  "tn_k-12_5": {
+    teacher: [{
+      name: "observation",
+      icon: {
+        web:"assets/images/mask-image/observation_category.png" 
+      }
+    }]
+  }
+};
+
+export const EventPillData={
+  event: {
+      "isTrusted": true
+  },
+  data: [
+      {
+          name: "Observation",
+          value: {
+              name: "observation",
+              icon: {
+                  web: "assets/images/mask-image/observation_category.png",
+                  app: "assets/imgs/ic_observation_category.png"
+              }
+          }
+      }
   ]
 };

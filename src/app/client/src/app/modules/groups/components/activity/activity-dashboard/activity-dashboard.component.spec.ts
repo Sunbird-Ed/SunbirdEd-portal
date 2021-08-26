@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivityDashboardComponent } from './activity-dashboard.component';
-import { GroupsService } from '../../../services';
+import { groupData, GroupsService } from '../../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,7 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { of, throwError } from 'rxjs';
-import { courseHierarchy, activityData, dashletData } from './activity-dashboard.component.spec.data';
+import { courseHierarchy, activityData, dashletData, groupInfo } from './activity-dashboard.component.spec.data';
 import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
 
@@ -88,6 +88,7 @@ describe('ActivityDashboardComponent', () => {
     component = fixture.componentInstance;
     component.hierarchyData = courseHierarchy.result.content;
     component.activity = activityData;
+    component.groupData = groupInfo;
     component.memberListUpdatedOn = '123';
     activatedRoute.snapshot = {
       params: {
@@ -113,10 +114,38 @@ describe('ActivityDashboardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call getDashletData()', () => {
-    spyOn<any>(component, 'getDashletData');
+  it('should call getAggData()', () => {
+    spyOn<any>(component, 'getAggData');
     component.ngOnInit();
-    expect(component['getDashletData']).toHaveBeenCalled();
+    expect(component['getAggData']).toHaveBeenCalled();
+  });
+
+  it('should call getAggData() success', () => {
+    const activityDatas = { id: _.get(courseHierarchy.result.content, 'identifier'), type: 'Course' };
+    const groupService = TestBed.get(GroupsService);
+    component.groupData = groupInfo;
+    spyOn(groupService, 'getActivity').and.returnValue(of(activityData));
+    component.getAggData();
+    groupService.getActivity('do_2132740696478433281380', activityDatas, component.groupData, 1).subscribe(data => {
+    expect(component.activity).toBeDefined();
+    expect(component.memberListUpdatedOn).toBeDefined();
+    });
+  });
+
+  it('should call getAggData() fail', () => {
+    const activityDatas = { id: _.get(courseHierarchy.result.content, 'identifier'), type: 'Course' };
+    const groupService = TestBed.get(GroupsService);
+    const toasterService = TestBed.get(ToasterService);
+    component.groupData = groupInfo;
+    spyOn(toasterService, 'error');
+    spyOn(component, 'navigateBack').and.returnValue(true);
+    spyOn(groupService, 'getActivity').and.returnValue(throwError({ err: '' }));
+    component.getAggData();
+    groupService.getActivity('do_2132740696478433281380', activityDatas, component.groupData, 1).subscribe(data => {},
+      data => { }, (err) => {
+    expect(component.activity).toBeDefined();
+    expect(component.memberListUpdatedOn).toBeDefined();
+    });
   });
 
   it('should get data for dashlet library', () => {
@@ -143,12 +172,9 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call navigateBack()', () => {
     const toasterService = TestBed.get(ToasterService);
-    const groupService = TestBed.get(GroupsService);
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(groupService, 'goBack').and.returnValue(true);
     component.navigateBack();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-    expect(groupService.goBack).toHaveBeenCalled();
   });
 
   it('should call addTelemetry', () => {

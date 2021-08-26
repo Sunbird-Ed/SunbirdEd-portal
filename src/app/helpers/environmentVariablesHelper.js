@@ -40,6 +40,7 @@ let envVariables = {
   ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
+  CRYPTO_ENCRYPTION_KEY_EXTERNAL:env.crypto_encryption_key_external || '030702me8696b8ee2aa71x9n13l4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
   REPORT_SERVICE_URL: env.sunbird_report_service_url || 'https://staging.open-sunbird.org/api/data/v1/report-service',
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
@@ -95,6 +96,10 @@ let envVariables = {
   },
   KEYCLOAK_DESKTOP_CLIENT: {
     clientId: env.sunbird_desktop_keycloak_client_id || 'desktop',
+  },
+  KEYCLOAK_GOOGLE_IOS_CLIENT: {
+    clientId: env.sunbird_google_oauth_ios_clientId,
+    secret: env.sunbird_trampoline_desktop_keycloak_secret
   },
 
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
@@ -219,9 +224,12 @@ try {
   if (process.env.sunbird_environment === 'local' && fs.existsSync(devConfig)) {
     const devVariables = require('./devConfig');
     module.exports = devVariables;
+    console.log('local---->',devVariables);
   } else {
     module.exports = envVariables;
+    console.log('env---->',envVariables);
   }
 } catch (error) {
   module.exports = envVariables;
+  console.log('errorEnv---->',envVariables);
 }

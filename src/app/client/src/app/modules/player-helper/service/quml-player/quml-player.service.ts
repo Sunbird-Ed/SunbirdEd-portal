@@ -7,6 +7,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { PublicPlayerService } from '@sunbird/public';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { map } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 
 export class QumlPlayerService implements QuestionCursor, EditorCursor {
@@ -49,5 +50,19 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
   getQuestionSet(identifier: string) {
     return this.playerService.getQuestionSetHierarchy(identifier);
   }
-
+  getAllQuestionSet(identifiers: string[]): Observable<any> {
+    const option = {
+      params: {
+        fields: 'maxScore'
+      }
+    };
+    const requests = _.map(identifiers, id => {
+      return this.playerService.getQuestionSetRead(id, option);
+    });
+    return forkJoin(requests).pipe(
+        map(res => {
+          return res.map(item => _.get(item, 'result.questionSet.maxScore'));
+        })
+    );
+  }
 }
