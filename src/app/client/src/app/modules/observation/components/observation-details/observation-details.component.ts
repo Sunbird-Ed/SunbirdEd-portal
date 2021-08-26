@@ -381,7 +381,20 @@ export class ObservationDetailsComponent implements OnInit {
     
      this.observationService.post(paramOptions).subscribe(
       (data) => {
-        this.getEntities()
+        try {
+          this.submissions.find(sub => {
+            if (sub._id == event.returnParams.submissionId) {
+              sub.evidencesStatus.find(evidence => {
+                if (evidence.code == event.returnParams.code) {
+                  evidence.notApplicable = true
+                  evidence.status ='completed'
+                }
+              })
+            }
+          })
+        } catch (error) {
+          
+        }
       },
       (error) => {
         
