@@ -12,6 +12,7 @@ export class SubmissionsComponent implements OnInit {
     showPopOver = true;
     @Output() selectedSubmission = new EventEmitter();
     @Output() onAction = new EventEmitter();
+    isOpen = false;
     actions = [{
         name: this.resourceService.frmelmnts.lbl.edit,
         icon: 'pencil alternate large icon',

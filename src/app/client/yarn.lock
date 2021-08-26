@@ -1489,10 +1489,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.2.tgz#f67da3d7f6e80381161f071eb4115255ea364ffb"
-  integrity sha512-NhlaI2PhWVgHsm/7e9R/M/WapJZ4mmSKux73CZ8dXh8c+YgwjDmuxbq42RE5OG05rdDPLmxIEfNYTST9/tpGug==
+"@project-sunbird/common-consumption-v9@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.5.tgz#c3da54f4caf1a6c6d84a8a0a21881265e50389cd"
+  integrity sha512-3zwcrqx5Ctw2pwcfftCoyjAYLMhpOkS5f2rFZe6C2aDMKd3D6Q1zsp5oXsSWhKWyR6H/sVZeVHgjBe6sd4wyog==
 
 "@project-sunbird/discussions-ui-v8@2.1.6":
   version "2.1.6"
@@ -1536,17 +1536,17 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.1.2.tgz#12f469f244339be981938b724b00868dc6e4d6d8"
-  integrity sha512-fvseP8CnkMb6OeTMxG2jNeqnevSen2pmqBjxYQvelBJVbuQnD0cP3FbgB1+9oRLIeZIHNCTFcZy8XMzA1q9q+A==
+"@project-sunbird/sunbird-epub-player-v9@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.1.4.tgz#60609509aa470f6c89d33edd03a3a5551f5467bc"
+  integrity sha512-jVUAae/Y/YrK7aK7Ai22myJvEoofrKj0FdcZ3izeSn11JAarT1Va4pqtxqaV1FlG2MbbRPSq9Iw0tYL78iFgjw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.6"
 
-"@project-sunbird/sunbird-pdf-player-v9@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.1.2.tgz#cd825ce5a59372174462c332687c614b1cc6c7d5"
-  integrity sha512-ri7Vz52rCqqNX8OIWoglyvdqODBQHSp3jt2z7R1FB+HMnzfg+av0sEKELk4nm92qPJUJRwQwnn4rD/ivIbhZww==
+"@project-sunbird/sunbird-pdf-player-v9@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.1.5.tgz#1836959ad2a551b20f947b212c57ed586ded2107"
+  integrity sha512-ffM8Joy8XfN0S/qohdHZr+6QWW27coz62tj1xPZkq4kGnzjo1VnN0lFiq9QC1lhHz3vMsq2Q1lG7PELjP0lkFQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
@@ -1656,10 +1656,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.8.tgz#fe880c5bb8669b7288bf602d922ff2f4460e34d0"
-  integrity sha512-a3oDdM57BimiEYvj3ieXRr7vbiEQMdjvBiqxaS5c/9mtLfSFho9xEtcmh1bADs4d3BDAVmx+e/hU5QnBV8PJ+A==
+"@shikshalokam/sl-questionnaire@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.10.tgz#13f372bcd68ab6a282668d3707bb478cd0a4cf33"
+  integrity sha512-KB7INNcwIpGGUbaGOrawgPXYcaCdm6HKszPJdnDxAdkIwxOYnbWipfXzcyLp1zZm+9nEYI8vE+NFKpTgsz+NwQ==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
