@@ -130,7 +130,7 @@ let PERMISSIONS_HELPER = {
           }
         });
       } else if (body.responseCode !== 'OK') {
-        logger.error({ msg: 'getCurrentUserRoles :: Error while reading user/v1/read', body });
+        logger.error({ msg: 'getCurrentUserRoles :: Error while reading user/v5/read', body });
         callback(body, null);
       } else {
         logger.error({ msg: 'getCurrentUserRoles error while user/v1/read', error });
