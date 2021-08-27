@@ -1489,15 +1489,15 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.1.5":
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.5.tgz#c3da54f4caf1a6c6d84a8a0a21881265e50389cd"
-  integrity sha512-3zwcrqx5Ctw2pwcfftCoyjAYLMhpOkS5f2rFZe6C2aDMKd3D6Q1zsp5oXsSWhKWyR6H/sVZeVHgjBe6sd4wyog==
+"@project-sunbird/common-consumption-v9@4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.6.tgz#52f9ad800d1f6de30d6a871b4bb5d24798ed8025"
+  integrity sha512-z41H+ixkEzxghuFpqF8/wdJHCmANstktTJJdthsHEEoQBLXLJFckFSdR/UABCD74lcqOWOjjTSAj7NaM8N8n9A==
 
-"@project-sunbird/discussions-ui-v8@2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.6.tgz#ea92729deae161f070ec7ba8c7ac74ae94a890e5"
-  integrity sha512-gbTX6cTfLVggv3f140d9M1A9vWb0jtGFi8dscHh4MbziQ/kofAHcw46Ybxlnr1aMrAJJwOlMcX8ojqfgHKzk3Q==
+"@project-sunbird/discussions-ui-v8@2.1.12":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.12.tgz#17e48ec38f9c09e0d806ad615fbc8f09cc41b832"
+  integrity sha512-+SXO1fpxH8qdqr0GyR8jLrEZp/dycSflW3riSMfjOkNuv1m9sxT8AM7sLxXeEw4ezQuAT/rI2yCJ851haXohcw==
   dependencies:
     tslib "^1.9.0"
 
