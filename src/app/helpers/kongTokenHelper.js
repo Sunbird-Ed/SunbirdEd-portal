@@ -18,6 +18,7 @@ const KONG_DEVICE_REGISTER_TOKEN        = require('./environmentVariablesHelper.
 const KONG_DEVICE_REGISTER_AUTH_TOKEN   = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_AUTH_TOKEN;
 
 const KONG_SESSION_TOKEN                = 'kongDeviceToken';
+const KONG_ACCESS_TOKEN                 = 'kongAccessToken';
 const BLACKLISTED_URL                   = ['/service/health', '/health'];
 
 /**
@@ -76,6 +77,8 @@ const registerDeviceWithKong = () => {
             req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
             req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
             req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
+            req.session['roles'] = [];
+            req.session.roles.push('PUBLIC');
             req.session.save(function (error) {
               if (error) {
                 next(error, null)
@@ -198,8 +201,53 @@ const _log = (req, message) => {
   });
 };
 
+const getKongAccessToken = (req, cb) => {
+  try {
+    _log(req, 'KONG_TOKEN :: requesting kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]');
+    const keycloakObj = JSON.parse(_.get(req, 'session.keycloak-token'));
+    var options = {
+      method: 'POST',
+      url: PORTAL_BASE_URL + '/auth/v1/refresh/token',
+      headers: {
+        'Authorization': 'Bearer ' + _.get(req, 'session.kongDeviceToken'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      form: {
+        refresh_token: keycloakObj['refresh_token']
+      }
+    };
+    sendRequest(options).then((response) => {
+      const responseData = JSON.parse(response);
+      if (_.get(responseData, 'params.status') === 'successful') {
+        _log(req, 'KONG_TOKEN :: Successfully generated kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]');
+        req.session.cookie.maxAge = _.get(responseData, 'expires_in') * 1000;
+        req.session.cookie.expires = new Date(Date.now() +  (_.get(responseData, 'expires_in') * 1000));
+        req.session.kongAccessToken = _.get(responseData, 'result.access_token');
+        req.session.save(function (error) {
+          if (error) {
+            cb(error, null)
+          } else {
+            cb();
+          }
+        });
+      } else {
+        _log(req, 'KONG_TOKEN :: Failed to generate kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]');
+        cb(true);
+      }
+    }).catch((error) => {
+      _log(req, 'KONG_TOKEN :: API Failed to generate kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]. Error => ' + error);
+      cb(error);
+    });
+  } catch (error) {
+    _log(req, 'KONG_TOKEN :: Method failed to generate kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]. Error => ' + error);
+    cb(error);
+  }
+};
+
+
 module.exports = {
   registerDeviceWithKong,
   getPortalAuthToken,
-  updateSessionTTL
+  updateSessionTTL,
+  getKongAccessToken
 };
