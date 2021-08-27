@@ -10,7 +10,7 @@
   #modal
 >
   <!--Header-->
-  <div class="sb-modal-header" *ngIf="userDetails">
+  <div class="sb-modal-header" *ngIf="userDetails" role="heading" aria-level="2">
     {{resourceService.frmelmnts?.lbl?.setRole | translate}} {{userDetails.firstName}} 
     {{userDetails.lastName}}
   </div>

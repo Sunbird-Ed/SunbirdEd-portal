@@ -28,12 +28,12 @@
 
 <!-- create batch -->
 <sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="isTrackable && viewBatch">
-  <sui-accordion-panel [isOpen]="true">
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+  <sui-accordion-panel>
+    <div role="button" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion" aria-controls="batches" title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
       <i class="chevron down icon" role="img" title="expand"></i>
     </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="batches" aria-labelledby="batches">
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
@@ -134,7 +134,7 @@
 
 <!-- Leave batch card -->
 <sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
-  <sui-accordion-panel [isOpen]="false">
+  <sui-accordion-panel [isOpen]="false" [attr.aria-expanded]="!isOpen" aria-label="accordion area label" (click)="isOpen = !isOpen">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
       <i class="chevron down icon" role="img" title="expand"></i>

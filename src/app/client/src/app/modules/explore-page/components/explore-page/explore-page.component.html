@@ -91,7 +91,7 @@
                 <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}</div>
                 <ngx-slick *ngIf="displayBanner " class="carousel banner-carousel relative9 mt-24" #slickModal="slick-modal" [config]="bannerSlideConfig">
                   <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16">
-                    <div class="sb--card sb--card--theme2 banner-image" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
+                    <div class="sb--card sb--card--theme2 banner-image" role="link" tabindex="0" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
                       <!-- <div class="banner-overlay"></div> -->
                       <div *ngIf="banner?.ui?.text !== ''" class="explore-text">{{banner?.ui?.text}}</div>
                     </div>
@@ -117,9 +117,9 @@
               [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')"
               [minDisplayCount]="4"
               [pillSize]="'medium'" [platform]="'portal'" 
-              [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'">
+              [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'" (select)="handleTargetedpillSelected($event)">
               <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="pillData?.name | titlecase"
-                [icon]="pillData?.icon?.web" [value]="pillData" (click)="handleTargetedpillSelected(pillData)"
+                [icon]="pillData?.icon?.web" [value]="pillData"
                 [theme]="targetedCategorytheme" ></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />

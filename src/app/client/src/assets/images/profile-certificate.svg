@@ -193,7 +193,7 @@
             <g id="Group-20-Copy" transform="translate(480.000000, 255.000000)">
                 <g id="Group-5" transform="translate(122.000000, 64.000000)">
                     <g id="DIKSHA-Certificate-with-placeholder">
-                        <polygon id="Fill-1" fill="#FFFFFF" points="0 0 237.646057 0 237.646057 167.932784 0 167.932784"></polygon>
+                        <polygon fill="#FFFFFF" points="0 0 237.646057 0 237.646057 167.932784 0 167.932784"></polygon>
                         <polygon id="Stroke-2" stroke="#EBE8E5" stroke-width="1.12895989" points="3.38687967 3.38687967 234.541417 3.38687967 234.541417 164.545904 3.38687967 164.545904"></polygon>
                         <g id="Group-6" transform="translate(7.338239, 103.299830)">
                             <mask id="mask-2" fill="white">
@@ -862,28 +862,28 @@
                             <g id="Clip-246"></g>
                             <polygon id="Fill-245" fill="#000000" mask="url(#mask-152)" points="-1.32296318 -1.19469358 1.64055653 -1.19469358 1.64055653 1.76883742 -1.32296318 1.76883742"></polygon>
                         </g>
-                        <g id="Group-250" transform="translate(25.683838, 139.991026)">
+                        <g transform="translate(25.683838, 139.991026)">
                             <mask id="mask-154" fill="white">
                                 <use xlink:href="#path-153"></use>
                             </mask>
                             <g id="Clip-249"></g>
                             <polygon id="Fill-248" fill="#000000" mask="url(#mask-154)" points="-1.33981855 -1.08055574 1.62370116 -1.08055574 1.62370116 1.8829668 -1.33981855 1.8829668"></polygon>
                         </g>
-                        <g id="Group-253" transform="translate(25.401598, 140.273266)">
+                        <g transform="translate(25.401598, 140.273266)">
                             <mask id="mask-156" fill="white">
                                 <use xlink:href="#path-155"></use>
                             </mask>
                             <g id="Clip-252"></g>
                             <polygon id="Fill-251" fill="#000000" mask="url(#mask-156)" points="-1.27227853 -1.19469358 1.69124119 -1.19469358 1.69124119 1.76883742 -1.27227853 1.76883742"></polygon>
                         </g>
-                        <g id="Group-256" transform="translate(25.683838, 139.991026)">
+                        <g transform="translate(25.683838, 139.991026)">
                             <mask id="mask-158" fill="white">
                                 <use xlink:href="#path-157"></use>
                             </mask>
                             <g id="Clip-255"></g>
                             <polygon id="Fill-254" fill="#000000" mask="url(#mask-158)" points="-1.33981855 -1.22207086 1.62370116 -1.22207086 1.62370116 1.74144321 -1.33981855 1.74144321"></polygon>
                         </g>
-                        <g id="Group-259" transform="translate(25.683838, 139.991026)">
+                        <g transform="translate(25.683838, 139.991026)">
                             <mask id="mask-160" fill="white">
                                 <use xlink:href="#path-159"></use>
                             </mask>
@@ -1587,7 +1587,7 @@
                         <use id="Mask" fill="#D8D8D8" xlink:href="#path-349"></use>
                         <g mask="url(#mask-350)">
                             <g transform="translate(-168.000000, -71.000000)">
-                                <polygon id="Fill-1" fill="#FFFFFF" points="0 0 484.797989 0 484.797989 342.582902 0 342.582902"></polygon>
+                                <polygon fill="#FFFFFF" points="0 0 484.797989 0 484.797989 342.582902 0 342.582902"></polygon>
                                 <polygon id="Stroke-2" stroke="#EBE8E5" stroke-width="2.30307833" points="6.909235 6.909235 478.464524 6.909235 478.464524 335.673667 6.909235 335.673667"></polygon>
                                 <g id="Group-91" transform="translate(89.244285, 47.213106)">
                                     <mask id="mask-352" fill="white">
