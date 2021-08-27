@@ -61,7 +61,7 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
     });
     return forkJoin(requests).pipe(
         map(res => {
-          return res.map(item => _.get(item, 'result.questionSet.maxScore'));
+          return res.map(item => _.get(item, 'result.questionset.maxScore'));
         })
     );
   }
