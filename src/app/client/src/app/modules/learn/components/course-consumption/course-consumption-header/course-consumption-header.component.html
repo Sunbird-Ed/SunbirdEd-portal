@@ -138,13 +138,10 @@
         </div>
          <!--Activity Dashboard-->
          <div *ngIf="isGroupAdmin">
-           <button tabindex="0" (click)="navigateToActivityDashboard()"
-           class="sb-btn sb-btn-normal  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-secondary sb-activity-dashboard-btn"
-           title="Activity Dashboard">
-           <img src="assets/images/Activity_icon.svg" width="20px" class="mr-8" alt="Activity Dashboard">
-           Activity Dashboard
-         </button>
-      </div>
+            <button class="sb-btn sb-btn-normal  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-secondary sb-activity-dashboard-btn"
+            appActivityDashbord [hierarchyData]="courseHierarchy">
+            Activity Dashboard</button>
+         </div>
       </div>
     </div>
   </div>

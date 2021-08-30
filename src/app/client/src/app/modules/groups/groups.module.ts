@@ -43,7 +43,7 @@ import { ActivityDetailsComponent } from './components/activity/activity-details
     DiscussionModule,
     SharedFeatureModule
   ],
-  providers: [GroupsService],
+  providers: [],
   declarations: [ MyGroupsComponent, AddMemberComponent,
     GroupHeaderComponent, NoGroupResultComponent,
     AddActivityComponent, MemberActionsComponent, GroupMembersComponent, FtuPopupComponent,

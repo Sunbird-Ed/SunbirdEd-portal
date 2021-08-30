@@ -61,6 +61,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() groupId: string;
   @Input() showAddGroup = false;
   @Input() layoutConfiguration;
+  public isGroupAdmin = false;
   enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR', 'CONTENT_CREATOR'];
@@ -83,7 +84,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isTrackable = false;
   viewDashboard = false;
   tocId;
-  isGroupAdmin = false;
   showLoader = false;
   batchEndCounter: number;
   showBatchCounter: boolean;
@@ -119,6 +119,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    this.isGroupAdmin = _.get(this.groupService, 'groupData.isAdmin');
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this.connectionService.monitor().pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
@@ -148,10 +149,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
         this.tocId = params.textbook;
-        if (params.isAdmin === 'true') {
-        this.isGroupAdmin = params.isAdmin;
-        }
-        this.groupId = params.groupId;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -549,26 +546,4 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
-   /**
-   * @description - navigate to groups activity dashboard page
-   */
-    navigateToActivityDashboard() {
-      this.addTelemetry('activity-detail', [{ id: _.get(this.courseHierarchy, 'identifier') , type:  _.get(this.courseHierarchy, 'primaryCategory')}]);
-      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, `${ACTIVITY_DASHBOARD}`, _.get(this.courseHierarchy, 'identifier')],
-        {
-          state: {
-            hierarchyData: this.courseHierarchy,
-          }
-        });
-    }
-    
-    /**
-     * @param  {} id
-     * @param  {} cdata
-     * @param  {} extra?
-     * @param  {} obj?
-     */
-    addTelemetry(id, cdata, extra?, obj?) {
-      this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
-    }
 }

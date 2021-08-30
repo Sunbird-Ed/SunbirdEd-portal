@@ -12,6 +12,7 @@ import { CsGroupService } from '@project-sunbird/client-services/services/group/
 import { CsModule } from '@project-sunbird/client-services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { SELECT_ACTIVITY } from '../../../groups/interfaces/telemetryConstants';
+import { GroupsService } from '../../../groups/services/groups/groups.service';
 
 
 // tslint:disable-next-line:only-arrow-functions
@@ -40,7 +41,8 @@ export class AddToGroupDirective implements OnInit {
     @Inject('CS_GROUP_SERVICE')
     private csGroupService: CsGroupService,
     private activatedRoute: ActivatedRoute,
-    private telemetryService: TelemetryService ) { }
+    private telemetryService: TelemetryService,
+    private groupService: GroupsService) { }
 
   @HostListener('click', ['$event'])
   clickEvent(event) {
@@ -51,7 +53,6 @@ export class AddToGroupDirective implements OnInit {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.groupAddableBlocData = data;
     });
-    (this.ref.nativeElement as HTMLButtonElement).style.display = 'none';
     if (CsGroupAddableBloc.instance.initialised) {
       CsGroupAddableBloc.instance.state$.pipe(
         takeUntil(this.unsubscribe$),
@@ -60,6 +61,7 @@ export class AddToGroupDirective implements OnInit {
         (this.ref.nativeElement as HTMLButtonElement).style.display = data ? 'block' : 'none';
       });
     }
+    (this.ref.nativeElement as HTMLButtonElement).style.display = this.groupService.isActivityAdded ? 'none' : 'block';
   }
 
   addActivityToGroup() {

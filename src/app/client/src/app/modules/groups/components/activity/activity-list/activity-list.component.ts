@@ -97,8 +97,8 @@ export class ActivityListComponent implements OnInit, OnDestroy {
       this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
       const options = { relativeTo: this.activateRoute, queryParams: { primaryCategory: _.get(event, 'data.primaryCategory'),
       title: activityType, mimeType: _.get(event, 'data.mimeType'), groupId: _.get(this.groupData, 'id')}};
-      this.playerService.playContent(_.get(event, 'data'), {groupId: _.get(this.groupData, 'id'), isAdmin: _.get(this.groupData, 'isAdmin'), isExistInGroup: true });
-
+      this.groupService.isActivityAdded = true; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
+      this.playerService.playContent(_.get(event, 'data'), {groupId: _.get(this.groupData, 'id')});
   }
 
   getMenuData(event) {

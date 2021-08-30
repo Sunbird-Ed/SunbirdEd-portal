@@ -79,7 +79,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private groupsService: GroupsService,
     public layoutService: LayoutService,
     public courseConsumptionService: CourseConsumptionService,
-    public orgDetailsService: OrgDetailsService
+    public orgDetailsService: OrgDetailsService,
+    private groupService: GroupsService
   ) {
     this.csGroupAddableBloc = CsGroupAddableBloc.instance;
   }
@@ -88,6 +89,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.groupAddableBlocData = data;
     });
+    this.groupService.isActivityAdded = false; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
