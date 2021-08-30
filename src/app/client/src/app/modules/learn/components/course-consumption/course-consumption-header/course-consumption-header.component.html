@@ -33,8 +33,8 @@
 <!-- Textbook details with continue playing and join course button routerLink="/registration" -->
 <div class="textbook-container cc-player__content-header relative9">
   <div class="ui container">
-    <div class="textbook py-16 sb-g cc-player">
-      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+    <div class="d-flex flex-w-wrap flex-ai-center textbook py-16 cc-player">
+      <div class="d-flex flex-dc flex-basis-1 mr-32">
         <!-- Textbook details -->
         <div class="textbook__details d-flex flex-ai-center">
           <!-- Textbook image -->
@@ -87,7 +87,7 @@
 
       </div>
 
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course" [ngClass]="{'d-flex': isDesktopApp}">
+      <div class="d-flex flex-ai-end flex-w-wrap certified-course" [ngClass]="{'d-flex': isDesktopApp}">
         <div class="certified-course__btn" *ngIf="showAddGroup">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
           appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
@@ -136,12 +136,13 @@
           </button>
         </div>   
         </div>
-         <!--Activity Dashboard-->
-         <div *ngIf="isGroupAdmin">
-            <button class="sb-btn sb-btn-normal  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-secondary sb-activity-dashboard-btn"
-            appActivityDashbord [hierarchyData]="courseHierarchy">
-            Activity Dashboard</button>
-         </div>
+      <!--Activity Dashboard-->
+        <div *ngIf="isGroupAdmin" class="sb-activity-dashboard-btn-content">
+          <button class="sb-btn sb-btn-normal  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-secondary sb-activity-dashboard-btn"
+          appActivityDashbord [hierarchyData]="courseHierarchy">
+          <img src="assets/images/Activity_icon.svg" width="20px" class="mr-8" alt="Activity Dashboard">
+          {{resourceService?.frmelmnts?.btn?.activityDashboard}}</button>
+        </div>
       </div>
     </div>
   </div>
