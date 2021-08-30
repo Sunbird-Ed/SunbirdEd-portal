@@ -504,28 +504,4 @@ describe('CourseConsumptionHeaderComponent', () => {
       }
     });
   });
-
-  it('should call addTelemetry', () => {
-    const groupService = TestBed.get(GroupsService);
-    component.groupId = '123';
-    spyOn(groupService, 'addTelemetry');
-    component.addTelemetry('activity-detail', [], { query: 'test' }, {});
-    expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'activity-detail', extra: { query: 'test' } },
-      { data: Object({ telemetry: Object({ env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate' }) }), params: Object({ courseId: 'do_212347136096788480178' }) }, [], '123', {});
-  });
-
-  it('should call navigateToActivityDashboard()', () => {
-  component.courseHierarchy = { identifier: '123', primaryCategory: 'Course'}
-  component.groupId = 'do_123'
-  spyOn(component, 'addTelemetry').and.stub();
-  component.navigateToActivityDashboard();
-  expect(component.addTelemetry).toHaveBeenCalled();
-  expect(component['router'].navigate).toHaveBeenCalledWith(['my-groups/group-details', 'do_123', 'activity-dashboard', '123'],
-  {
-    state: {
-      hierarchyData: { identifier: '123', primaryCategory: 'Course'},
-    }
-  });
-  });
-
 });
