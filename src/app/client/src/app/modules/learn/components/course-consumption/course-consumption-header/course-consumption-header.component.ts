@@ -21,7 +21,6 @@ import { FormService } from '../../../../core/services/form/form.service';
 import { IForumContext } from '../../../interfaces';
 import { ContentManagerService } from '../../../../public/module/offline/services';
 import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
-import { ACTIVITY_DASHBOARD, GROUP_DETAILS, MY_GROUPS } from '../../../../groups/interfaces';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -61,7 +60,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() groupId: string;
   @Input() showAddGroup = false;
   @Input() layoutConfiguration;
-  public isGroupAdmin = false;
+  isGroupAdmin = false;
   enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR', 'CONTENT_CREATOR'];
@@ -117,7 +116,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
-
+  
   ngOnInit() {
     this.isGroupAdmin = _.get(this.groupService, 'groupData.isAdmin');
     this.isDesktopApp = this.utilService.isDesktopApp;

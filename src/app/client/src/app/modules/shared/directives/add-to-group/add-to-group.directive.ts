@@ -12,7 +12,7 @@ import { CsGroupService } from '@project-sunbird/client-services/services/group/
 import { CsModule } from '@project-sunbird/client-services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { SELECT_ACTIVITY } from '../../../groups/interfaces/telemetryConstants';
-import { GroupsService } from '../../../groups/services/groups/groups.service';
+import { ActivityDashboardService } from '../../services';
 
 
 // tslint:disable-next-line:only-arrow-functions
@@ -42,7 +42,8 @@ export class AddToGroupDirective implements OnInit {
     private csGroupService: CsGroupService,
     private activatedRoute: ActivatedRoute,
     private telemetryService: TelemetryService,
-    private groupService: GroupsService) { }
+    // private groupService: GroupsService,
+    public activityDashboardService: ActivityDashboardService) { }
 
   @HostListener('click', ['$event'])
   clickEvent(event) {
@@ -61,7 +62,7 @@ export class AddToGroupDirective implements OnInit {
         (this.ref.nativeElement as HTMLButtonElement).style.display = data ? 'block' : 'none';
       });
     }
-    (this.ref.nativeElement as HTMLButtonElement).style.display = this.groupService.isActivityAdded ? 'none' : 'block';
+    (this.ref.nativeElement as HTMLButtonElement).style.display = this.activityDashboardService.isActivityAdded ? 'none' : 'block';
   }
 
   addActivityToGroup() {

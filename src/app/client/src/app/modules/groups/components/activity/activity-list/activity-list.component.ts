@@ -5,8 +5,7 @@ import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
 import { GroupsService } from '../../../services/groups/groups.service';
-import { ACTIVITY_DETAILS } from './../../../interfaces';
-import { ToasterService, ConfigService, ResourceService, LayoutService } from '@sunbird/shared';
+import { ToasterService, ConfigService, ResourceService, LayoutService, ActivityDashboardService } from '../../../../shared/services';
 export interface IActivity {
   name: string;
   identifier: string;
@@ -48,6 +47,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService,
     private playerService: PlayerService,
     private layoutService: LayoutService,
+    public activityDashboardService: ActivityDashboardService,
   ) {
     this.config = this.configService.appConfig;
   }
@@ -97,7 +97,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
       this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
       const options = { relativeTo: this.activateRoute, queryParams: { primaryCategory: _.get(event, 'data.primaryCategory'),
       title: activityType, mimeType: _.get(event, 'data.mimeType'), groupId: _.get(this.groupData, 'id')}};
-      this.groupService.isActivityAdded = true; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
+      this.activityDashboardService.isActivityAdded = true; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
       this.playerService.playContent(_.get(event, 'data'), {groupId: _.get(this.groupData, 'id')});
   }
 

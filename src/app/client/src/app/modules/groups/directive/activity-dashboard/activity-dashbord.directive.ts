@@ -1,8 +1,9 @@
 import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import _ from 'lodash';
-import { ACTIVITY_DASHBOARD, GROUP_DETAILS, MY_GROUPS } from '../../../groups/interfaces';
-import { GroupsService } from '../../../groups/services/groups/groups.service'
+import { ACTIVITY_DASHBOARD, GROUP_DETAILS, MY_GROUPS } from '../../interfaces';
+import { GroupsService } from '../../services/groups/groups.service';
+import { ActivityDashboardService } from '../../../shared/services/activity-dashboard/activity-dashboard.service';
 
 @Directive({
   selector: '[appActivityDashbord]'
@@ -13,7 +14,8 @@ export class ActivityDashbordDirective implements OnInit {
   constructor(public router: Router,
     public groupService: GroupsService,
     public activatedRoute: ActivatedRoute,
-    public ref: ElementRef) { }
+    public ref: ElementRef,
+    public activityDashboardService: ActivityDashboardService) { }
 
   @HostListener('click', ['$event'])
   onClick(event) {
@@ -21,9 +23,7 @@ export class ActivityDashbordDirective implements OnInit {
   }
 
   ngOnInit() {
-    console.log('hierarchyData', this.hierarchyData);
-    const isAdded = this.groupService.isActivityAdded;
-    console.log('isadded', isAdded);
+    const isAdded = this.activityDashboardService.isActivityAdded;
     (this.ref.nativeElement as HTMLButtonElement).style.display = isAdded ? 'block' : 'none';
   }
   /**

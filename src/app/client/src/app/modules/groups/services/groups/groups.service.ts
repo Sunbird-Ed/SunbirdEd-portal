@@ -31,8 +31,7 @@ export class GroupsService {
   public showMenu = new EventEmitter();
   public showActivateModal = new EventEmitter();
   public updateEvent = new EventEmitter();
-  private _isActivityAdded = false;
-  public _groupListCount: number;
+    public _groupListCount: number;
   private _groupsTnc;
   private _userData;
 
@@ -162,15 +161,7 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
   get groupData() {
     return this._groupData;
   }
-
-  set isActivityAdded(isAdded) {
-    this._isActivityAdded = isAdded;
-  }
-
-  get isActivityAdded() {
-    return this._isActivityAdded;
-  }
-
+  
   emitCloseForm() {
     this.closeForm.emit();
   }

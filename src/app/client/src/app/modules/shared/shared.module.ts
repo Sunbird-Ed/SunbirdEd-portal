@@ -32,7 +32,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {TitleCasePipe} from '@angular/common';
 import { NetworkStatusComponent } from './components/network-status/network-status.component';
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
-import { ActivityDashbordDirective } from './directives/activity-dashboard/activity-dashbord.directive';
 
 @NgModule({
   imports: [
@@ -50,8 +49,8 @@ import { ActivityDashbordDirective } from './directives/activity-dashboard/activ
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
-    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ActivityDashbordDirective],
-  exports: [AppLoaderComponent, DateFormatPipe, TranslateModule, ActivityDashbordDirective,
+    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent],
+  exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,

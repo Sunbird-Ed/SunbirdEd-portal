@@ -19,7 +19,6 @@ import dayjs from 'dayjs';
 import { DiscussionService } from './../../../../discussion/services/discussion/discussion.service';
 import { MockResponseData } from './course-consumption-header.spec.data';
 import { ContentManagerService } from '../../../../public/module/offline/services/content-manager/content-manager.service';
-import { GroupsService } from '../../../../groups/services';
 
 const resourceServiceMockData = {
   messages: {
