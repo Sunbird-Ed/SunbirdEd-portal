@@ -6,9 +6,9 @@ import { GroupsService } from '../../services/groups/groups.service';
 import { ActivityDashboardService } from '../../../shared/services/activity-dashboard/activity-dashboard.service';
 
 @Directive({
-  selector: '[appActivityDashbord]'
+  selector: '[appActivityDashboard]'
 })
-export class ActivityDashbordDirective implements OnInit {
+export class ActivityDashboardDirective implements OnInit {
   @Input() hierarchyData: any;
 
   constructor(public router: Router,

@@ -20,7 +20,7 @@ import { SlickModule } from 'ngx-slick';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
-import { ActivityDashbordDirective } from './directive/activity-dashboard/activity-dashbord.directive';
+import { ActivityDashboardDirective } from './directive/activity-dashboard/activity-dashbord.directive';
 
 @NgModule({
   imports: [
@@ -56,9 +56,9 @@ import { ActivityDashbordDirective } from './directive/activity-dashboard/activi
     AddActivityContentTypesComponent,
     PopupComponent,
     ActivityDetailsComponent,
-    ActivityDashbordDirective
+    ActivityDashboardDirective
     ],
-    exports: [ActivityDashbordDirective]
+    exports: [ActivityDashboardDirective]
 })
 export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService) {

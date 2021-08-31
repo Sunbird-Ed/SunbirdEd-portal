@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivityDashboardService } from '@sunbird/shared';
-import { ActivityDashbordDirective } from './activity-dashbord.directive';
+import { ActivityDashboardDirective } from './activity-dashbord.directive';
 
-describe('ActivityDashbordDirective', () => {
-  let directive: ActivityDashbordDirective;
+describe('ActivityDashboardDirective', () => {
+  let directive: ActivityDashboardDirective;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [ActivityDashbordDirective, ActivityDashboardService]
+      providers: [ActivityDashboardDirective, ActivityDashboardService]
     });
-    directive = TestBed.get(ActivityDashbordDirective);
+    directive = TestBed.get(ActivityDashboardDirective);
   });
   it('should create an instance', () => {
     expect(directive).toBeTruthy();
