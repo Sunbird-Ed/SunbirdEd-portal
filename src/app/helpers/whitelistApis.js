@@ -1161,6 +1161,7 @@ const API_LIST = {
     '/action/composite/v3/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
+        ROLE.PUBLIC,
         ROLE.CONTENT_CREATOR,
         ROLE.CONTENT_REVIEWER,
         ROLE.COURSE_CREATOR,
@@ -1776,6 +1777,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    '/learner/framework/v1/read/ekstep_ncert_k-12': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    }
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',

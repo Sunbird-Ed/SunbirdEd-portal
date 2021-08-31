@@ -201,6 +201,12 @@ const _log = (req, message) => {
   });
 };
 
+/**
+ * @param  { Object } req - API Request object
+ * @param  { Callback } next - Request callback
+ * @description getKongAccessToken
+ * 1. Generate x-auth-token for user
+ */
 const getKongAccessToken = (req, cb) => {
   try {
     _log(req, 'KONG_TOKEN :: requesting kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]');
