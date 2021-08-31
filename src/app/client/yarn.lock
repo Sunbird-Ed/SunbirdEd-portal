@@ -1489,10 +1489,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.2.tgz#f67da3d7f6e80381161f071eb4115255ea364ffb"
-  integrity sha512-NhlaI2PhWVgHsm/7e9R/M/WapJZ4mmSKux73CZ8dXh8c+YgwjDmuxbq42RE5OG05rdDPLmxIEfNYTST9/tpGug==
+"@project-sunbird/common-consumption-v9@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.5.tgz#c3da54f4caf1a6c6d84a8a0a21881265e50389cd"
+  integrity sha512-3zwcrqx5Ctw2pwcfftCoyjAYLMhpOkS5f2rFZe6C2aDMKd3D6Q1zsp5oXsSWhKWyR6H/sVZeVHgjBe6sd4wyog==
 
 "@project-sunbird/discussions-ui-v8@2.2.0-beta-8":
   version "2.2.0-beta-8"
@@ -1524,22 +1524,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.19.tgz#db4ff11057df779e70f161fc867892e20237e6d5"
-  integrity sha512-kBUFSrF5Ib8DOnNZ//I8IyiZRcD1NNOkUkvw9+wo4E4rlrWaOOqgcjWCx7Bx+mNvQUbOXlXW5p5QONWnEJzUTg==
+"@project-sunbird/sb-themes@0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
+  integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-<<<<<<< HEAD
-"@project-sunbird/sunbird-collection-editor-v9@4.2.8":
-  version "4.2.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.8.tgz#4293ce71b0b4234fea44d6220d28bf31a51a8750"
-  integrity sha512-iJmmDaVtoDotClO2NvLwTS+Hi85zBbovnSPQsIxxwgBnSlg2RB+AjwKrEaT8qfJPJFGblPTjsidxOxrPxla+mw==
-=======
-"@project-sunbird/sunbird-collection-editor-v9@4.2.9":
-  version "4.2.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.9.tgz#c68d8c086a864f5f610de847cc681f6aa763c186"
-  integrity sha512-YaZealZAESvehGumtaDgWF2GcAQ6k1+VfAimIHHmStGM40ajuFnrGscPdfRFoMtZ42OwJzkT9jHRosUC29DBuw==
->>>>>>> 1204252c03ddb06bf0c2e43f4c5039af62f92eb5
+"@project-sunbird/sunbird-collection-editor-v9@4.2.13":
+  version "4.2.13"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.13.tgz#2739410996989fcef6c2643cbdde33e991ce89a6"
+  integrity sha512-FiCmPlNSCWSZlOV7rDN5nVi1zHxmvwtvIlceA11AqzwxsX7tdSlCS/fAtX1XcDhoCTdVdNm9fQUFYfGYqQhycw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1572,17 +1565,17 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.2.tgz#33cc06085515f419eae302959bb0921151e6b7c5"
-  integrity sha512-/j+8M4x/gZDtQeYU+jm4EBKhIs+GcBLCMg64GMe98A8bhVJWurEHySVnPw5pDCsd08uNDw3xYadN0ybSOaxnpA==
+"@project-sunbird/sunbird-quml-player-v9@4.2.4":
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.4.tgz#93a178b32169531301dd7cfc0c1e235b88e1c6ce"
+  integrity sha512-jytU2gplrNYKY/NqIOfN2U5uF8eJ+LLZ+d5B1VydVlVMVyevdUttT5vOXTuz5CFHJUggW4aRm2m71Er68Bvv7w==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
 
-"@project-sunbird/sunbird-video-player-v9@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.2.1.tgz#d2fdc718e0750af83de1bced248b73f67630a7aa"
-  integrity sha512-wOLebWREulgmO6zTmNjQrCkhU3DywMxCPVvcnfdV0RmYtO12HHqRd8zv3VyMJo1cAtyDlkAJY4C4yXjNlfUbrw==
+"@project-sunbird/sunbird-video-player-v9@4.2.4":
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.2.4.tgz#f7515229249ba77eb14dc5fcfc14d79b7e2ac211"
+  integrity sha512-/XQa+m/V/AobZCH/cOGqaOkr16Umf2WmU4dUr0bEhPiAt3P1PSpNw4umK4j4M9EQeq245Hn21SrwHDh3MjOSlA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
 
@@ -1608,6 +1601,13 @@
   integrity sha1-1hzTgnE85/a7fLIF1l8SC/FFwWo=
   dependencies:
     tslib "^1.9.0"
+
+"@samagra-x/uci-console@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.1.5.tgz#9223bbd070cfed088d2522c0c865e689639410d3"
+  integrity sha512-y2T0kgZmBXLutO8dndJS4CfroV5oVlkqArOy3xQQcxuemWK5AKZvGph1pV9J1E3+mGuU26nJz30jiKXLxiEmfQ==
+  dependencies:
+    tslib "^1.10.0"
 
 "@scarf/scarf@0.1.5":
   version "0.1.5"
@@ -1659,10 +1659,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.8.tgz#fe880c5bb8669b7288bf602d922ff2f4460e34d0"
-  integrity sha512-a3oDdM57BimiEYvj3ieXRr7vbiEQMdjvBiqxaS5c/9mtLfSFho9xEtcmh1bADs4d3BDAVmx+e/hU5QnBV8PJ+A==
+"@shikshalokam/sl-questionnaire@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.10.tgz#13f372bcd68ab6a282668d3707bb478cd0a4cf33"
+  integrity sha512-KB7INNcwIpGGUbaGOrawgPXYcaCdm6HKszPJdnDxAdkIwxOYnbWipfXzcyLp1zZm+9nEYI8vE+NFKpTgsz+NwQ==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
@@ -1781,9 +1781,9 @@
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
 
 "@types/node@*":
-  version "16.4.13"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.13.tgz#7dfd9c14661edc65cccd43a29eb454174642370d"
-  integrity sha512-bLL69sKtd25w7p1nvg9pigE4gtKVpGTPojBFLMkGHXuUgap2sLqQt2qUnqmVCDfzGUL0DRNZP+1prIZJbMeAXg==
+  version "16.6.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.6.1.tgz#aee62c7b966f55fc66c7b6dfa1d58db2a616da61"
+  integrity sha512-Sr7BhXEAer9xyGuCN3Ek9eg9xPviCF2gfu9kTfuU2HkTVAMYSDeX40fvpmo72n5nansg3nsBjuQBrsS28r+NUw==
 
 "@types/node@^12.20.15":
   version "12.20.19"
@@ -3281,9 +3281,9 @@ caniuse-lite@1.0.30001019:
   integrity sha512-6ljkLtF1KM5fQ+5ZN0wuyVvvebJxgJPTmScOMaFuQN2QuOzvRJnWSKfzQskQU5IOU4Gap3zasYPIinzwUjoj/g==
 
 caniuse-lite@^1.0.30000980, caniuse-lite@^1.0.30001017, caniuse-lite@^1.0.30001248:
-  version "1.0.30001249"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001249.tgz#90a330057f8ff75bfe97a94d047d5e14fabb2ee8"
-  integrity sha512-vcX4U8lwVXPdqzPWi6cAJ3FnQaqXbBqy/GZseKNQzRj37J7qZdGcBtxq/QLFNLLlfsoXLUdHw8Iwenri86Tagw==
+  version "1.0.30001251"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001251.tgz#6853a606ec50893115db660f82c094d18f096d85"
+  integrity sha512-HOe1r+9VkU4TFmnU70z+r7OLmtR+/chB1rdcJUeQlAinjEeb0cKL20tlAtOagNZhbrtLnCvV19B4FmF1rgzl6A==
 
 canonical-path@1.0.0:
   version "1.0.0"
@@ -4594,9 +4594,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.322, electron-to-chromium@^1.3.793:
-  version "1.3.802"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.802.tgz#0afa989321de3e904ac653ee79e0d642883731a1"
-  integrity sha512-dXB0SGSypfm3iEDxrb5n/IVKeX4uuTnFHdve7v+yKJqNpEP0D4mjFJ8e1znmSR+OOVlVC+kDO6f2kAkTFXvJBg==
+  version "1.3.806"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.806.tgz#21502100f11aead6c501d1cd7f2504f16c936642"
+  integrity sha512-AH/otJLAAecgyrYp0XK1DPiGVWcOgwPeJBOLeuFQ5l//vhQhwC9u6d+GijClqJAmsHG4XDue81ndSQPohUu0xA==
 
 element-closest@^2.0.2:
   version "2.0.2"
@@ -6749,9 +6749,11 @@ is-arrayish@^0.2.1:
   integrity sha1-d8mYQFJ6qOyxqLppe4BkWnqSap0=
 
 is-bigint@^1.0.1:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/is-bigint/-/is-bigint-1.0.3.tgz#fc9d9e364210480675653ddaea0518528d49a581"
-  integrity sha512-ZU538ajmYJmzysE5yU4Y7uIrPQ2j704u+hXFiIPQExpqzzUbpe5jCPdTfmz7jXRxZdvjY3KZ3ZNenoXQovX+Dg==
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/is-bigint/-/is-bigint-1.0.4.tgz#08147a1875bc2b32005d41ccd8291dffc6691df3"
+  integrity sha512-zB9CruMamjym81i2JZ3UMn54PKGsQzsJeo6xvN3HJJ4CAsQNB6iRutp2To77OfCNuoxspsIhzaPoO1zyCEhFOg==
+  dependencies:
+    has-bigints "^1.0.1"
 
 is-binary-path@^1.0.0:
   version "1.0.1"
@@ -11888,9 +11890,9 @@ tar-stream@^2.1.4:
     readable-stream "^3.1.1"
 
 tar@^4.4.10, tar@^4.4.8:
-  version "4.4.16"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.16.tgz#4a48b3c025e77d9d0c788f038a09b91c594d326d"
-  integrity sha512-gOVUT/KWPkGFZQmCRDVFNUWBl7niIo/PRR7lzrIqtZpit+st54lGROuVjc6zEQM9FhH+dJfQIl+9F0k8GNXg5g==
+  version "4.4.17"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.17.tgz#44be5e3fa8353ee1d11db3b1401561223a5c3985"
+  integrity sha512-q7OwXq6NTdcYIa+k58nEMV3j1euhDhGCs/VRw9ymx/PbH0jtIM2+VTgDE/BW3rbLkrBUXs5fzEKgic5oUciu7g==
   dependencies:
     chownr "^1.1.4"
     fs-minipass "^1.2.7"
@@ -12167,9 +12169,9 @@ tslib@^1.10.0, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
 tslib@^2.0.0, tslib@^2.0.1:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
-  integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
 tslint@^5.9.1:
   version "5.20.1"

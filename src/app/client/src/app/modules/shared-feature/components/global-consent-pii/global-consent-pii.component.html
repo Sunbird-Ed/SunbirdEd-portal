@@ -1,12 +1,12 @@
 <sui-accordion class="styled fluid sb-accordion ui accordion sb-new-theme-accordion" *ngIf="showSettingsPage">
-  <sui-accordion-panel [isOpen]="false">
+  <sui-accordion-panel>
 
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between" role="button" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.dataSetting}} accordion" aria-controls="dataSetting">
       <span>{{resourceService?.frmelmnts?.lbl?.dataSetting}}</span>
       <i class="chevron down icon" aria-hidden="true" role="img" title="expand"></i>
     </div>
 
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="dataSetting" aria-labelledby="dataSetting">
       <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
         <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
       </label>
@@ -64,6 +64,10 @@
        <div class="d-flex mb-16 fnormal">
         <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.userId}}<span class="mx-8">:</span></label> 
         <div class="font-weight-normal">{{userInformation.userid || '-'}}</div>
+       </div>
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.externalId}}<span class="mx-8">:</span></label> 
+        <div class="font-weight-normal">{{userInformation.externalId || '-'}}</div>
        </div>
 
        <div class="d-flex mb-16 fnormal">

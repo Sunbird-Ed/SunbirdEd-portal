@@ -4,7 +4,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, ViewChild } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
-    OfflineCardService, BrowserCacheTtlService
+    OfflineCardService, BrowserCacheTtlService,IUserData
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
-
+import {ObservationUtilService} from '../../../observation/service'
 
 @Component({
     selector: 'app-explore-page-component',
@@ -81,7 +81,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     isFilterEnabled = true;
     defaultTab = 'Textbook';
     userProfile: any;
-
+    targetedCategory:any=[];
+    subscription: any;
+    userType: any;
+    targetedCategorytheme:any;
+    showTargetedCategory:boolean=false;
+    selectedTab:any;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -107,9 +112,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
-        private segmentationTagService: SegmentationTagService) {
+        private segmentationTagService: SegmentationTagService,private observationUtil: ObservationUtilService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
+        this.subscription = this.utilService.currentRole.subscribe(async (result) => {
+            if (result) {
+                this.userType = result;
+            }
+        });
         }
 
 
@@ -186,6 +196,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
+        this.subscription$=this.activatedRoute.queryParams.subscribe(queryParams => {
+        this.selectedTab=queryParams.selectedTab; 
+        this.showTargetedCategory=false;   
+        this.getFormConfigs();
+        });
         this.initConfiguration();
 
         this.segmentationTagService.getSegmentCommand();
@@ -319,6 +334,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public getFilters({ filters, status }) {
         if (!filters || status === 'FETCHING') { return; }
         // If filter are available in cache; merge with incoming filters
+        /* istanbul ignore if */
         if (this.cacheService.exists('searchFilters')) {
             const _searchFilters = this.cacheService.get('searchFilters');
             let _cacheFilters = {
@@ -331,14 +347,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 channel: [..._.intersection(filters['channel'], _searchFilters['channel']), ..._.difference(filters['channel'], _searchFilters['channel'])],
                 audienceSearchFilterValue: [..._.intersection(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue']),
                     ..._.difference(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue'])],
-                board: [_.union(_searchFilters['board'], filters['board'])[0]],
+                board: filters['board'],
                 selectedTab: this.getSelectedTab()
             }
             filters = _cacheFilters;
         }
-        this.cacheService.set('searchFilters', filters, { expires: Date.now() + 1000 * 60 * 60 });
-        this.showLoader = true;
         const currentPageData = this.getCurrentPageData();
+        const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
+        this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
+        this.showLoader = true;
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
@@ -526,6 +543,47 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 })
             );
+    }
+
+    getFormConfigs() {
+            if (this.selectedTab === 'home') {
+                if (!this.userType) {
+                    if (this.isUserLoggedIn()) {
+                    this.userService.userData$.subscribe((profileData: IUserData) => {
+                        if (profileData
+                            && profileData.userProfile
+                            && profileData.userProfile['profileUserType']) {
+                            this.userType = profileData.userProfile['profileUserType']['type'];
+                        }
+                    });
+                } else {
+                    const user = localStorage.getItem('userType');
+                    if (user) {
+                        this.userType = user;
+                    }
+                }
+            }
+            this.observationUtil.browseByCategoryForm()
+                .then((data: any) => {
+                    let currentBoard;
+                    if(this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']){
+                        currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id)
+                    }
+                    let currentUserType=this.userType.toLowerCase();
+                    if (data && data[currentBoard] &&
+                        data[currentBoard][currentUserType]) {    
+                        this.showTargetedCategory = true
+                        this.targetedCategory = data[currentBoard][currentUserType];
+                        this.targetedCategorytheme = {
+                            "iconBgColor": "rgba(255,255,255,1)",
+                            "pillBgColor": "rgba(255,255,255,1)"
+                        }
+                    }
+                    else {
+                        this.showTargetedCategory = false
+                    }
+                });
+             }
     }
 
     private getContentSection(section, searchOptions) {
@@ -996,8 +1054,28 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    handleTargetedpillSelected(event){
+        if (!event || !event.data || !event.data.length) {
+            return;
+        }
+        let pillData = event.data[0].value;
+        if(this.isUserLoggedIn()) {
+            if(pillData.name === 'observation'){
+                this.router.navigate(['observation']);      
+            } 
+        }
+        else{
+            window.location.href ='/resources';
+        }  
+    }
+
+
     getSectionTitle (title) {
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+    }
+
+    getSectionCategoryTitle (title) {
+        return get(this.resourceService, 'frmelmnts.lbl.browseOther') + ' ' + get(this.resourceService, title);
     }
 
     getBannerTitle (title) {
@@ -1014,6 +1092,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
+                this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
             }, err => {
@@ -1023,6 +1102,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const req = { ...this.userPreference, framework: event };
             this.userService.updateGuestUser(req).subscribe(res => {
                 this.userPreference.framework = event;
+                this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
             }, err => {
                 this.toasterService.warning(_.get(this.resourceService, 'messages.emsg.m0012'));

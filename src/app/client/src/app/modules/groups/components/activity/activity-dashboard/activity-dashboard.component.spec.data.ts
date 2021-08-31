@@ -1,4 +1,4 @@
-export const groupData = {
+export const groupInfo = {
     activities: [
         { id: 'do_1234', activityInfo: { name: 'activity1', trackable: { enabled: 'Yes' } } },
         { id: 'do_0903232', activityInfo: { name: 'activity2' } }]

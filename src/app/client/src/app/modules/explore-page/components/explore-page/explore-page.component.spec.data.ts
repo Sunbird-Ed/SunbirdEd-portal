@@ -1720,6 +1720,9 @@ export const RESPONSE = {
     'filter': {
       'isEnabled': true
     },
+    'metaData': {
+      'cacheTimeout': 86400000
+    },
     'search': {
       'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
       'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
@@ -3187,4 +3190,33 @@ export const RESPONSE = {
     ],
     'selectedTab': 'textbook'
   }
+};
+
+export const categoryData = {
+  "tn_k-12_5": {
+    teacher: [{
+      name: "observation",
+      icon: {
+        web:"assets/images/mask-image/observation_category.png" 
+      }
+    }]
+  }
+};
+
+export const EventPillData={
+  event: {
+      "isTrusted": true
+  },
+  data: [
+      {
+          name: "Observation",
+          value: {
+              name: "observation",
+              icon: {
+                  web: "assets/images/mask-image/observation_category.png",
+                  app: "assets/imgs/ic_observation_category.png"
+              }
+          }
+      }
+  ]
 };

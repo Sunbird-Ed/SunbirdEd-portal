@@ -290,5 +290,15 @@ export const mockData = {
   telemetryEventJoy: {
     context: {env: 'main-header', cdata: []},
     edata: {id: 'switch-theme', type: 'click', pageid: '/', subtype: 'joy'}
+  },
+  categoryData:{
+    "tn_k-12_5": {
+      teacher: [{
+        name: "observation",
+        icon: {
+          web:"assets/images/mask-image/observation.png" 
+        }
+      }]
+    }
   }
 };
