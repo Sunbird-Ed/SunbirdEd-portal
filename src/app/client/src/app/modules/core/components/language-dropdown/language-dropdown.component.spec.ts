@@ -61,7 +61,7 @@ describe('LanguageDropdownComponent', () => {
         component = fixture.componentInstance;
     });
 
-    xit('On language change', () => {
+    it('On language change', () => {
         const utilService = TestBed.get(UtilService);
         const cacheService = TestBed.get(CacheService);
         spyOn(utilService, 'emitLanguageChangeEvent');
@@ -69,7 +69,7 @@ describe('LanguageDropdownComponent', () => {
         component.onLanguageChange('en');
         expect(utilService.emitLanguageChangeEvent).toHaveBeenCalled();
     });
-    xit('On ngOninit for else case', inject([CacheService], (cacheService) => {
+    it('On ngOninit for else case', inject([CacheService], (cacheService) => {
         cacheService.set('portalLanguage', null);
         component.ngOnInit();
         expect(component.selectedLanguage).toBe('en');
