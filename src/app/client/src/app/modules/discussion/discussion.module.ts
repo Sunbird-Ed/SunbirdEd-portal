@@ -35,13 +35,13 @@ export class DiscussionModule {
         // waiting for the DF routes to be added in the history by navigationService.
         // Do not remove the setTimeout(), because after the routerEvent subscribe in navigationService,
         // popHistory() should be called.
-        setTimeout(() => {
-          this.navigationHelperService.popHistory();
-        }, 200);
+        if(e.url && e.url.includes('discussion-forum')){
+          setTimeout(() => {
+            this.navigationHelperService.popHistory();
+          }, 200);
+        }
       }
-      if (_.get(event, 'action') === 'DF_BACK' ) {
-        this.navigationHelperService.popHistory();
-      }
+      
     });
   }
 }
