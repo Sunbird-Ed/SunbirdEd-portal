@@ -303,3 +303,8 @@ form.On {
     max-width: calculateRem(328px);
   }
 }
+.birthYearOptions:focus-visible {
+  border: none !important;
+  border-radius: 0;
+  outline: none;
+}
