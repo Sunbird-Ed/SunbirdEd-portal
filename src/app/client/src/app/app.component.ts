@@ -817,9 +817,11 @@ export class AppComponent implements OnInit, OnDestroy {
   changeFontSize(value: string) {
 
     const elFontSize = window.getComputedStyle(document.documentElement).getPropertyValue('font-size');
+
     const localFontSize = localStorage.getItem('fontSize');
     const currentFontSize = localFontSize ? localFontSize : elFontSize;
     this.fontSize = parseInt(currentFontSize);
+
     if (value === 'increase') {
       this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'true');
       this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
@@ -842,23 +844,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
       this.setLocalFontSize(this.defaultFontSize);
     }
-  }
 
-  addAriaPressedAttr(value: string) {
-    this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
-    this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
-    this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
-    switch (value) {
-      case 'increase':
-        this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'true');
-        break;
-      case 'decrease':
-        this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'true');
-        break;
-      case 'reset':
-        this.renderer.setAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'true');
-        break;
-    }
   }
 
   setLocalFontSize(value: any) {
