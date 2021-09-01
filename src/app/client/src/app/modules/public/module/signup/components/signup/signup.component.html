@@ -11,13 +11,21 @@
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h2>
           <div class="year-birth my-16 required">
             <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
-           <label> <sui-select attr.aria-label="{{resourceService.frmelmnts?.lbl?.yearOfBirth}}" class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
+           <label *ngIf="!isIOSDevice"> <sui-select attr.aria-label="{{resourceService.frmelmnts?.lbl?.yearOfBirth}}" class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
                         (selectedOptionChange)="changeBirthYear($event)"
                         #select>
               <sui-select-option *ngFor="let option of select.filteredOptions"
                                  [value]="option" tabindex="0">
               </sui-select-option>
             </sui-select></label>
+            <!-- Dropdown only for iOS device -->
+            <label *ngIf="isIOSDevice">
+              <select name="birthYearOptions" id="birthYearOptions" class="sb-form-control birthYearOptions" (change)="changeBirthYear($event, true)">
+                <option value="" disabled selected>{{resourceService.frmelmnts?.lbl?.year}}</option>
+                <option *ngFor="let option of birthYearOptions" [value]="option">{{option}}</option>
+              </select>
+            </label>
+            <!-- Dropdown only for iOS device -->
           </div>
           <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</label>
