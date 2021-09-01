@@ -38,7 +38,7 @@
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors">{{resourceService.frmelmnts.lbl.validPhone}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.email.touched && signUpForm.controls['email'].errors">{{resourceService.frmelmnts.lbl.validEmail}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors)">{{showUniqueError}}</label>
-            <div class="inline fields mt-10 mb-10" id="Mandatory">
+            <div class="inline fields mt-10 mb-10" id="Mandatory" role="group" aria-labelledby="contact-label">
               <div class="field">
                 <div class="ui radio checkbox" tabindex="0" (click)="showContact='phone'">
                   <input class="sb-form-control" type="radio" checked="checked" value="phone" formControlName="contactType" role="phone" id="phoneNumber" aria-labelledby="Mandatory">
