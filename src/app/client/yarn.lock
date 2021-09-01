@@ -1489,15 +1489,15 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.1.5":
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.5.tgz#c3da54f4caf1a6c6d84a8a0a21881265e50389cd"
-  integrity sha512-3zwcrqx5Ctw2pwcfftCoyjAYLMhpOkS5f2rFZe6C2aDMKd3D6Q1zsp5oXsSWhKWyR6H/sVZeVHgjBe6sd4wyog==
+"@project-sunbird/common-consumption-v9@4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.6.tgz#52f9ad800d1f6de30d6a871b4bb5d24798ed8025"
+  integrity sha512-z41H+ixkEzxghuFpqF8/wdJHCmANstktTJJdthsHEEoQBLXLJFckFSdR/UABCD74lcqOWOjjTSAj7NaM8N8n9A==
 
-"@project-sunbird/discussions-ui-v8@2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.6.tgz#ea92729deae161f070ec7ba8c7ac74ae94a890e5"
-  integrity sha512-gbTX6cTfLVggv3f140d9M1A9vWb0jtGFi8dscHh4MbziQ/kofAHcw46Ybxlnr1aMrAJJwOlMcX8ojqfgHKzk3Q==
+"@project-sunbird/discussions-ui-v8@2.1.12":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.12.tgz#17e48ec38f9c09e0d806ad615fbc8f09cc41b832"
+  integrity sha512-+SXO1fpxH8qdqr0GyR8jLrEZp/dycSflW3riSMfjOkNuv1m9sxT8AM7sLxXeEw4ezQuAT/rI2yCJ851haXohcw==
   dependencies:
     tslib "^1.9.0"
 
@@ -1524,10 +1524,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.20.tgz#9409980303deafb68f226479c79db88ccb56afa7"
-  integrity sha512-sx/jLl8LiXwp0Ht+pz7i3d0Q3pKnVTz4F7rOfWaF8I1Q9KGG9w4sMMF9S2Pe8VCAs9Td1Noc6sdcPcCUm0E5Dg==
+"@project-sunbird/sb-themes@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.22.tgz#79ac5fad58fba008c7eba17747a06b6773d611b5"
+  integrity sha512-2IuWGMokeUwef5iSce1JIRY0SLVPcXwnk86DEhM+y9PrbLnZokkRGA5vMGZpRx6vimuURBD7tSuA3YksU1AAMw==
 
 "@project-sunbird/sunbird-collection-editor-v9@4.1.65":
   version "4.1.65"

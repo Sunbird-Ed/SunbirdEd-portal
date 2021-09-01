@@ -412,7 +412,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
     const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
     component.addAriaPressedAttr('increase');
-    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+    expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed', 'true');
     expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
     expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
   });
