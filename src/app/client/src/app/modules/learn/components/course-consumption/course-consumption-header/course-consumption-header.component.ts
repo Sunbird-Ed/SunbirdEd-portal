@@ -21,7 +21,6 @@ import { FormService } from '../../../../core/services/form/form.service';
 import { IForumContext } from '../../../interfaces';
 import { ContentManagerService } from '../../../../public/module/offline/services';
 import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
-import { ACTIVITY_DASHBOARD, GROUP_DETAILS, MY_GROUPS } from '../../../../groups/interfaces';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -61,6 +60,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() groupId: string;
   @Input() showAddGroup = false;
   @Input() layoutConfiguration;
+  isGroupAdmin = false;
   enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR', 'CONTENT_CREATOR'];
@@ -83,7 +83,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isTrackable = false;
   viewDashboard = false;
   tocId;
-  isGroupAdmin = false;
   showLoader = false;
   batchEndCounter: number;
   showBatchCounter: boolean;
@@ -117,8 +116,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
-
+  
   ngOnInit() {
+    this.isGroupAdmin = _.get(this.groupService, 'groupData.isAdmin');
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this.connectionService.monitor().pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
@@ -148,10 +148,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
         this.tocId = params.textbook;
-        if (params.isAdmin === 'true') {
-        this.isGroupAdmin = params.isAdmin;
-        }
-        this.groupId = params.groupId;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -549,26 +545,4 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
-   /**
-   * @description - navigate to groups activity dashboard page
-   */
-    navigateToActivityDashboard() {
-      this.addTelemetry('activity-detail', [{ id: _.get(this.courseHierarchy, 'identifier') , type:  _.get(this.courseHierarchy, 'primaryCategory')}]);
-      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, `${ACTIVITY_DASHBOARD}`, _.get(this.courseHierarchy, 'identifier')],
-        {
-          state: {
-            hierarchyData: this.courseHierarchy,
-          }
-        });
-    }
-    
-    /**
-     * @param  {} id
-     * @param  {} cdata
-     * @param  {} extra?
-     * @param  {} obj?
-     */
-    addTelemetry(id, cdata, extra?, obj?) {
-      this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
-    }
 }
