@@ -135,7 +135,7 @@
         <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
           <button appTelemetryInteract appOnlineOnly
             [telemetryInteractEdata]="editProfileInteractEdata"
-            class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16" tabindex="0"
+            class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}" tabindex="0"
             (click)="showEditUserDetailsPopup=true" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
           <button appTelemetryInteract appOnlineOnly tabindex="0"
                   [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
@@ -175,7 +175,7 @@
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
           appTelemetryInteract appOnlineOnly
-          [telemetryInteractEdata]="myFrameworkEditEdata"
+          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.boards}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}"
           (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
@@ -205,7 +205,7 @@
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="myFrameworkEditEdata" tabindex="0"
-        (click)="showEdit = !showEdit">
+        (click)="showEdit = !showEdit" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}">
         <button appOnlineOnly class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>

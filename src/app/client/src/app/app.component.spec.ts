@@ -44,7 +44,7 @@ const fakeActivatedRoute = {
 };
 
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let telemetryService;
