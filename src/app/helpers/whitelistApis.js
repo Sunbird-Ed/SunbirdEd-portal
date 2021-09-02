@@ -1636,67 +1636,35 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
-    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId': {
+    '/kendra/users/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/api/v1/users/entityTypesByLocationAndRole/:stateId': {
+    '/kendra/solutions/mlcore/v1/targetedSolutions': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/v1/solutions/targetedSolutions': {
+    '/assessment/observations/mlsurvey/v1/entities': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/api/v1/solutions/targetedSolutions': {
+    '/assessment/observationSubmissions/mlsurvey/v1/list/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observations/entities': {
+    '/kendra/users/mlcore/v1/targetedEntity/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/api/v1/observations/entities': {
+    '/assessment/observations/mlsurvey/v1/searchEntities': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/list/:id': {
+    '/assessment/observationSubmissions/mlsurvey/v1/create/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/api/v1/observationSubmissions/list/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/kendra/v1/users/targetedEntity/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/kendra/api/v1/users/targetedEntity/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v2/observations/searchEntities': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v2/observations/searchEntities': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v1/observationSubmissions/create/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observationSubmissions/create/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v2/observations/assessment/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v2/observations/assessment/:id': {
+    '/assessment/observations/mlsurvey/v1/assessment/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1708,27 +1676,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/list/:id': {
+    '/assessment/observations/mlsurvey/v1/updateEntities/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/api/v1/observationSubmissions/list/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v1/observations/updateEntities/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observations/updateEntities/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v1/observationSubmissions/update/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observationSubmissions/update/:id': {
+    '/assessment/observationSubmissions/mlsurvey/v1/update/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1752,27 +1704,15 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/dhiti/v1/reports/fetch': {
+    '/dhiti/reports/mlreports/v1/fetch': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/dhiti/api/v1/reports/fetch': {
+    '/assessment/observationSubmissions/mlsurvey/v1/solutionList': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/solutionList': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observationSubmissions/solutionList': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/dhiti/v1/observations/listAllEvidences': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/dhiti/api/v1/observations/listAllEvidences': {
+    '/dhiti/observations/mlsurvey/v1/listAllEvidences': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1887,21 +1827,12 @@ const API_LIST = {
     '/dataset/v1/request/read/:tag',
     '/report/request/read/:tag',
     '/kendra/v1/users/entityTypesByLocationAndRole/:stateId',
-    '/kendra/api/v1/users/entityTypesByLocationAndRole/:stateId',
-    '/assessment/v1/observationSubmissions/list/:id',
-    '/assessment/apiv1/observationSubmissions/list/:id',
-    '/kendra/v1/users/targetedEntity/:id',
-    '/kendra/api/v1/users/targetedEntity/:id',
-    '/assessment/v1/observationSubmissions/create/:id',
-    '/assessment/api/v1/observationSubmissions/create/:id',
-    '/assessment/v2/observations/assessment/:id',
-    '/assessment/api/v2/observations/assessment/:id',
-    '/assessment/v1/observationSubmissions/list/:id',
-    '/assessment/api/v1/observationSubmissions/list/:id',
-    '/assessment/v1/observations/updateEntities/:id',
-    '/assessment/api/v1/observations/updateEntities/:id',
-    '/assessment/v1/observationSubmissions/update/:id',
-    '/assessment/api/v1/observationSubmissions/update/:id',
+    '/assessment/observationSubmissions/mlsurvey/v1/list/:id',
+    '/kendra/users/mlcore/v1/targetedEntity/:id',
+    '/assessment/observationSubmissions/mlsurvey/v1/create/:id',
+    '/assessment/observations/mlsurvey/v1/assessment/:id',
+    '/assessment/observations/mlsurvey/v1/updateEntities/:id',
+    '/assessment/observationSubmissions/mlsurvey/v1/update/:id',
     '/action/collection/v1/import/:id',
     '/action/collection/v1/export/:id'
   ]
