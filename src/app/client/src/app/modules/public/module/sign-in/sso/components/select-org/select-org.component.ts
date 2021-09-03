@@ -19,11 +19,13 @@ export class SelectOrgComponent implements OnInit, AfterViewInit {
   public submitOrgInteractEdata;
   enableSSO = (<HTMLInputElement>document.getElementById('enableSSO'))
     ? (<HTMLInputElement>document.getElementById('enableSSO')).value || 'true' : 'true';
+  isIOSDevice: boolean = false;
 
   constructor(private formService: FormService, public activatedRoute: ActivatedRoute, private tenantService: TenantService,
     public resourceService: ResourceService, public navigationhelperService: NavigationHelperService) { }
 
   ngOnInit() {
+    this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.setTenantInfo();
     this.setTelemetryData();
     this.setRedirectUriCookie();
@@ -42,6 +44,9 @@ export class SelectOrgComponent implements OnInit, AfterViewInit {
     });
   }
   public handleOrgChange(event) {
+    if (this.isIOSDevice) {
+      this.selectedOrg = event.target.value;
+    }
     this.disableSubmitBtn = false;
   }
   private getSsoOrgList() {
