@@ -39,7 +39,7 @@
   "dependencies": {
     "@project-sunbird/telemetry-sdk": "0.0.26",
     "archiver": "^3.0.0",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.2",
     "chokidar": "^3.0.0",
     "decompress-zip": "^0.2.2",
