@@ -9,7 +9,7 @@
 <app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION" [deviceProfile]="deviceProfile" [isClosable]="false"
   (close)="locationSubmit()">
   <div slot="popup-header">
-    <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+    <img [src]="tenantInfo?.logo" class="brand-logo" alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
     <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
   </div>
   <div slot="popup-sub-header">

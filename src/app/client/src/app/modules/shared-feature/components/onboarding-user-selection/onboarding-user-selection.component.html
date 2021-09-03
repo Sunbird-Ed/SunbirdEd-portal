@@ -1,7 +1,7 @@
 <div class="sb-onboard" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-onboard__container">
     <div class="sb-onboard__header">
-      <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+      <img [src]="tenantInfo?.logo" class="brand-logo" alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
       <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
     </div>
     <div class="sb-onboard__content">
