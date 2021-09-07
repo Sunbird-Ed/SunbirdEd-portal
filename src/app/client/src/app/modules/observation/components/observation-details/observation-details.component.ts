@@ -42,7 +42,7 @@ export class ObservationDetailsComponent implements OnInit {
   public noResultMessageForEntity: INoResultMessage = {
     'messageText': 'frmelmnts.msg.noEntityFound'
   };
-  courseHierarchy:any;
+  courseHierarchy:any={};
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
