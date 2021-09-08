@@ -119,7 +119,7 @@
       <div class="twelve wide column mt-20" *ngIf="graphData && graphData.length > 0">
         <p class="text-align-right dashBoardCardText">
           {{resourceService?.frmelmnts?.instn?.t0058}}
-          <a href="javascript:void(0);" [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline pl-10"
+          <a [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline pl-10"
             (click)="downloadReport();" tabindex="0"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'download',type:'click',pageid:'org-admin-dashboard'}">
             {{resourceService?.frmelmnts?.instn?.t0059}}</a>
