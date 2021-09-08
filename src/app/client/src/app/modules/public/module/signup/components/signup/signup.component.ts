@@ -54,6 +54,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   formInputType: string;
   isP1CaptchaEnabled: any;
   yearOfBirth: string;
+  isIOSDevice: boolean = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -66,6 +67,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
       this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
@@ -113,11 +115,15 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   changeBirthYear(selectedBirthYear) {
+    let _selectedYOB = selectedBirthYear;
+    if (this.isIOSDevice) {
+      _selectedYOB = parseInt(selectedBirthYear.target.value);
+    }
     this.signUpForm.enable();
     this.disableForm = false;
     const currentYear = new Date().getFullYear();
-    this.yearOfBirth = `${selectedBirthYear}`;
-    const userAge = currentYear - selectedBirthYear;
+    this.yearOfBirth = `${_selectedYOB}`;
+    const userAge = currentYear - _selectedYOB;
     this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;
   }
 

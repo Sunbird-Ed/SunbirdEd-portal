@@ -303,3 +303,13 @@ form.On {
     max-width: calculateRem(328px);
   }
 }
+
+
+.ui.form#signUpForm .required.field>.checkbox:after, .ui.form#signUpForm .required.field>label:after, .ui.form#signUpForm .required.fields.grouped>label:after, .ui.form#signUpForm .required.fields:not(.grouped)>.field>.checkbox:after, .ui.form#signUpForm .required.fields:not(.grouped)>.field>label:after {
+  display: none !important;
+}
+.birthYearOptions:focus-visible {
+  border: none !important;
+  border-radius: 0;
+  outline: none;
+}

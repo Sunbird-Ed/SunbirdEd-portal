@@ -1489,10 +1489,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.1.5":
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.5.tgz#c3da54f4caf1a6c6d84a8a0a21881265e50389cd"
-  integrity sha512-3zwcrqx5Ctw2pwcfftCoyjAYLMhpOkS5f2rFZe6C2aDMKd3D6Q1zsp5oXsSWhKWyR6H/sVZeVHgjBe6sd4wyog==
+"@project-sunbird/common-consumption-v9@4.1.8":
+  version "4.1.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.8.tgz#45d7ca7078af5876a061d9d7528991be548cde72"
+  integrity sha512-PZpMxqzXiF9kQc9A2DPqOfCr4q6Z/FPlRi4J/ouDNRTBt6IbbAkfJT3Ffgfvd3brnPV0vQNL4vKNnmpzcmPncw==
 
 "@project-sunbird/discussions-ui-v8@2.2.1":
   version "2.2.1"
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.2.18":
-  version "4.2.18"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.18.tgz#2fc8169ff2213e7edde8b13ecf70487f47e6d53d"
-  integrity sha512-uNZg4eIQDZkXJh62MGlzd/TiWQ4GO3yrpe9X+N+RHpsBAt/1XhfW6Gu/z15huVU5Ct2tMXWtajhOB+HivDhYFQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.2.21":
+  version "4.2.21"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.21.tgz#306b7b804a086f89bf1af6e7113f79a4d0c12af1"
+  integrity sha512-vB+iCuUsMzbPv05SWptpbnHS9HXDC4r2p9pMH5RLk6g5AQr5vVjZxCcQ0GWBQ/kioiwFsTul4/ZPQ3nRO828wg==
   dependencies:
     tslib "^1.10.0"
 
@@ -1558,6 +1558,11 @@
   dependencies:
     tslib "^1.9.0"
 
+"@project-sunbird/sunbird-player-sdk-v9@^4.2.3":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.2.3.tgz#e8608fef20f0c789385b08874172639745cc5fe6"
+  integrity sha512-KyABMbp+40ieOQP5JHEEomwo9DEAEJHGG+tRgPuzvdYMxbiP3Nbrlmo3FPiKU6oFiUI89bw0GAU6r1GcvEpDMQ==
+
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
@@ -1565,12 +1570,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.2.4":
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.4.tgz#93a178b32169531301dd7cfc0c1e235b88e1c6ce"
-  integrity sha512-jytU2gplrNYKY/NqIOfN2U5uF8eJ+LLZ+d5B1VydVlVMVyevdUttT5vOXTuz5CFHJUggW4aRm2m71Er68Bvv7w==
+"@project-sunbird/sunbird-quml-player-v9@4.2.7":
+  version "4.2.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.7.tgz#e6f08cdbabe401fc32dabb1fc59dfb2774d01965"
+  integrity sha512-fMknXIyVmeA3ElRlIbDVjyPSwHPu8fS3fpiDwK8sJwEcq7d1aoljwoB6dUVqNVOZM16fIoedZgrXO8iYB403mQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.3"
 
 "@project-sunbird/sunbird-video-player-v9@4.2.4":
   version "4.2.4"
@@ -3708,10 +3713,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements-v9@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.2.1.tgz#8e9e44f84c740c29782fcd40307801837813dc50"
-  integrity sha512-KyjEFbROOjdKf5eBJkaFA2HAkt2w4hyDwvhvWxnphWF6xSNKWTA2CHxbTYka+iIWBMC3pbYfTsom3Rd1DrUfUA==
+common-form-elements-v9@4.2.7:
+  version "4.2.7"
+  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.2.7.tgz#dd589f9e5a56df9f3272b9d638904f79490c0857"
+  integrity sha512-MfXGbQMk1S3ptU2gkDlZUsD2Wj4gdCWDA8q+JsdepElT2Z2obLxwNh3LQuS8AfRYwQd30Ch6Z7UHU9WaYE0nug==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"

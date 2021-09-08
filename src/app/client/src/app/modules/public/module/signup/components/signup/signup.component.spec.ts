@@ -443,4 +443,19 @@ describe('SignUpComponent', () => {
     expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp, undefined);
   });
 
+  it('call the year of birth method', () => {
+    const obj = {
+      target: {
+        value: currentYear - 20
+      }
+    }
+    component.ngOnInit();
+    component.isIOSDevice = true;
+    component.changeBirthYear(obj);
+    const email = component.signUpForm.controls['email'];
+    email.setValue('User2010@gmail.com');
+    expect(component.yearOfBirth).toEqual('2001');
+    expect(component.isMinor).toBe(false);
+  });
+
 });
