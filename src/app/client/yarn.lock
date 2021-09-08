@@ -1558,7 +1558,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-player-sdk-v9@^4.2.3":
+"@project-sunbird/sunbird-player-sdk-v9@^4.2.2":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.2.3.tgz#e8608fef20f0c789385b08874172639745cc5fe6"
   integrity sha512-KyABMbp+40ieOQP5JHEEomwo9DEAEJHGG+tRgPuzvdYMxbiP3Nbrlmo3FPiKU6oFiUI89bw0GAU6r1GcvEpDMQ==
@@ -1570,12 +1570,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.2.7":
-  version "4.2.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.2.7.tgz#e6f08cdbabe401fc32dabb1fc59dfb2774d01965"
-  integrity sha512-fMknXIyVmeA3ElRlIbDVjyPSwHPu8fS3fpiDwK8sJwEcq7d1aoljwoB6dUVqNVOZM16fIoedZgrXO8iYB403mQ==
+"@project-sunbird/sunbird-quml-player-v9@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.1.tgz#a74bfe18d0a83d646e3a33cc062621afd6fbfad0"
+  integrity sha512-oxwPzIA7mw/zJPRV4iqA87OKXIRRIUlVdqR715+r9T2tq5EjH5hK4Rpsinh74ARQH7PoHtvtPAcTeY7fW+Da/g==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.3"
+    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.2"
 
 "@project-sunbird/sunbird-video-player-v9@4.2.4":
   version "4.2.4"
