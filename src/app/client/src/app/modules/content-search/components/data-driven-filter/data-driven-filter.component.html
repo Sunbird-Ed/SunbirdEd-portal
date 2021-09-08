@@ -121,7 +121,7 @@
               <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
                 (click)="resetFilters()" tabindex="0" appTelemetryInteract
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i class="icon undo"></i></button>
-                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen" tabindex="0">	
+                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen" tabindex="0"  attr.aria-label="{{resourceService.frmelmnts?.btn?.close}}">	
                     <svg class="icon icon-svg--red">	
                         <use xlink:href="./assets/images/sprite.svg#close"></use>	
                     </svg>	
