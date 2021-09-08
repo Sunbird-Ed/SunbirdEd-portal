@@ -9,14 +9,14 @@
   #contentShareModal>
 
 <!--Header-->
-<div class="sb-modal-header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
+<div class="sb-modal-header" role="heading" aria-level="2" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
   {{resourceService?.frmelmnts?.lbl?.share}}
 </div>
 <!--/Header-->
 
 <!--Content-->
 <div class="sb-modal-content">
-  <p class="mb-8">
+  <p class="mb-8" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.arialabelShare}}">
     {{resourceService?.frmelmnts?.lbl?.sharelink}}
   </p>
   <div 

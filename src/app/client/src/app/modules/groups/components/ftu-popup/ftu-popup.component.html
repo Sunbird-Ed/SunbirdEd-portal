@@ -1,18 +1,18 @@
 
 <div class="sb-group-page-container" *ngIf="showWelcomePopup">
   <div class="sb-group-container sb-group-container--sm sb-bg-color-white">
-    <a class="close" tabindex="0" (click)="closeModal();addTelemetry('ftu-close')"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
+    <a class="close" tabindex="0" (click)="closeModal();addTelemetry('ftu-close')" role="button" aria-label="Close Welcome dialog"><i  class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
       <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
     <!-- below content comes from CC -->
     <h4 class="sb-group-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
-    <img src="./assets/images/groups.png" class="sb-group-container__img" alt="{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}" />
+    <img src="./assets/images/groups.png" class="sb-group-container__img" role="presentation" alt="" />
     <p class="sb-group-container__description">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
   </div>
 </div>
 
 <div class="sb-group-page-container" *ngIf="showMemberPopup">
   <div class="sb-group-container sb-group-container--md sb-bg-color-white">
-    <a class="close" tabindex="0" (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
+    <a class="close" role="button" tabindex="0" aria-label="Close Member dialog" (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><i  class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
       <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
     <!-- below content comes from CC -->
     <div class="sb-bg-color-white sb-modal-content w-100 text-left pb-16">

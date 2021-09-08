@@ -24,6 +24,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
+  isOpen = false;
   instance: string;
   consentPii = 'Yes';
   isDataShareOn = false;

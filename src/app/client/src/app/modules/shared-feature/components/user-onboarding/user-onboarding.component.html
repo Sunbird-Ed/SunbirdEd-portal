@@ -9,11 +9,11 @@
 <app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION" [deviceProfile]="deviceProfile" [isClosable]="false"
   (close)="locationSubmit()">
   <div slot="popup-header">
-    <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+    <img [src]="tenantInfo?.logo" class="brand-logo" alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
     <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
   </div>
   <div slot="popup-sub-header">
-    <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
+    <p class="subtitle" role="heading" aria-level="1">{{resourceService?.messages?.imsg?.m0075}}</p>
   </div>
   <div slot="popup-footer">
     <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>

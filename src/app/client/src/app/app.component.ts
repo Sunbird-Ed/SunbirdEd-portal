@@ -118,6 +118,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
+  @ViewChild('darkModeToggle') darkModeToggle: ElementRef;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -209,6 +210,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setTheme() {
     const themeColour = localStorage.getItem('layoutColour') || 'Default';
+    this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
     this.setSelectedThemeColour(themeColour);
     document.documentElement.setAttribute('data-theme', themeColour);
     this.layoutService.setLayoutConfig(this.layoutConfiguration);
@@ -812,7 +814,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isDisableFontSize(localFontSize);
     }
   }
-
   changeFontSize(value: string) {
 
     const elFontSize = window.getComputedStyle(document.documentElement).getPropertyValue('font-size');
@@ -822,16 +823,25 @@ export class AppComponent implements OnInit, OnDestroy {
     this.fontSize = parseInt(currentFontSize);
 
     if (value === 'increase') {
+      this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'true');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
       this.fontSize = this.fontSize + 2;
       if (this.fontSize <= 20) {
         this.setLocalFontSize(this.fontSize);
       }
     } else if (value === 'decrease') {
+      this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
       this.fontSize = this.fontSize - 2;
       if (this.fontSize >= 12) {
         this.setLocalFontSize(this.fontSize);
       }
     } else {
+      this.renderer.setAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
       this.setLocalFontSize(this.defaultFontSize);
     }
 
@@ -910,6 +920,7 @@ export class AppComponent implements OnInit, OnDestroy {
   changeTheme() {
     this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
     this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
+    this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${this.dataThemeAttribute}`);
     this.setLocalTheme(this.dataThemeAttribute);
     localStorage.setItem('data-theme', this.dataThemeAttribute);
   }
