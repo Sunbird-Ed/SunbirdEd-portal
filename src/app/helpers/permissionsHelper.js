@@ -64,6 +64,9 @@ let PERMISSIONS_HELPER = {
         if (!_.includes(reqObj.session.roles, 'PUBLIC')) {
           reqObj.session.roles.push('PUBLIC');
         }
+        if (!_.includes(reqObj.session.roles, 'ANONYMOUS')) {
+          reqObj.session.roles.push('ANONYMOUS');
+        }
       }
     } catch (e) {
       logger.error({msg: 'setUserSessionData :: Error while saving user session data', err: e});

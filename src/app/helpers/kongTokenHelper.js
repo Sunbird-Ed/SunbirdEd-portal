@@ -14,7 +14,9 @@ const PORTAL_BASE_URL                   = require('./environmentVariablesHelper.
 const SUNBIRD_DEFAULT_TTL               = require('./environmentVariablesHelper.js').sunbird_session_ttl;
 const SUNBIRD_ANONYMOUS_TTL             = require('./environmentVariablesHelper.js').sunbird_anonymous_session_ttl;
 const PORTAL_API_AUTH_TOKEN             = require('./environmentVariablesHelper.js').PORTAL_API_AUTH_TOKEN;
+const KONG_SERVICE_ENDPOINT             = require('./environmentVariablesHelper.js').sunbird_device_api;
 const KONG_DEVICE_REGISTER_TOKEN        = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_TOKEN;
+const KONG_DEFAULT_DEVICE_TOKEN         = require('./environmentVariablesHelper.js').sunbird_default_device_token;
 const KONG_DEVICE_REGISTER_AUTH_TOKEN   = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_AUTH_TOKEN;
 
 const KONG_SESSION_TOKEN                = 'kongDeviceToken';
@@ -30,7 +32,7 @@ const generateKongToken = async (req) => {
     try {
       var options = {
         method: 'POST',
-        url: PORTAL_BASE_URL + '/api/api-manager/v2/consumer/portal/credential/register',
+        url: KONG_SERVICE_ENDPOINT + 'api-manager/v2/consumer/portal/credential/register',
         headers: {
           'Authorization': 'Bearer ' + KONG_DEVICE_REGISTER_AUTH_TOKEN,
           'Content-Type': 'application/json'
@@ -72,20 +74,11 @@ const registerDeviceWithKong = () => {
       if (KONG_DEVICE_REGISTER_TOKEN === 'true' && !getKongTokenFromSession(req)) {
         _log(req, 'KONG_TOKEN :: requesting device register with kong');
         generateKongToken(req).then((kongToken) => {
+          let _token;
+          // If success; use response token
+          // else use default token
           if (_.get(kongToken, 'result.token')) {
-            req.session[KONG_SESSION_TOKEN] = _.get(kongToken, 'result.token');
-            req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
-            req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
-            req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
-            req.session['roles'] = [];
-            req.session.roles.push('PUBLIC');
-            req.session.save(function (error) {
-              if (error) {
-                next(error, null)
-              } else {
-                next();
-              }
-            });
+           _token = _.get(kongToken, 'result.token');
           } else {
             logger.error({
               'id': 'api.kong.tokenManager', 'ts': new Date(),
@@ -99,18 +92,32 @@ const registerDeviceWithKong = () => {
               'responseCode': 'Internal Server Error',
               'result': {}
             });
-            next(new Error('api.kong.tokenManager:: Internal Server Error'));
+            _token = KONG_DEFAULT_DEVICE_TOKEN;
+            // next(new Error('api.kong.tokenManager:: Internal Server Error'));
           }
+          req.session[KONG_SESSION_TOKEN] = _token;
+          req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
+          req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
+          req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
+          req.session['roles'] = [];
+          req.session.roles.push('ANONYMOUS');
+          req.session.save(function (error) {
+            if (error) {
+              next(error, null)
+            } else {
+              next();
+            }
+          });
         }).catch((err) => {
           next(err);
         });
       } else {
-        let _msg = getKongTokenFromSession(req) ? 'using existing token' : 'no token from session'
-        _log(req, 'KONG_TOKEN :: request denied - either flag is set to false or ' + _msg);
+        let _msg = getKongTokenFromSession(req) ? 'existing token' : ' no token from session';
+        _log(req, 'KONG_TOKEN :: request using ' + _msg);
         _refreshLoginTTL(req, res, next);
       }
     } else {
-      _log(req, 'KONG_TOKEN :: request denied - URL blacklisted');
+      _log(req, 'KONG_TOKEN :: URL blacklisted');
       next();
     }
   }
@@ -167,7 +174,7 @@ const unless = (req) => {
  */
 const getPortalAuthToken = (req) => {
   _log(req, (KONG_DEVICE_REGISTER_TOKEN === 'true') ? 'USE_KONG_TOKEN' : 'USE_PORTAL_TOKEN');
-  return (KONG_DEVICE_REGISTER_TOKEN === 'true') ? _.get(req, 'session.' + KONG_SESSION_TOKEN) : PORTAL_API_AUTH_TOKEN;
+  return (KONG_DEVICE_REGISTER_TOKEN === 'true') ? _.get(req, 'session.' + KONG_ACCESS_TOKEN) : PORTAL_API_AUTH_TOKEN;
 };
 
 /**
@@ -213,7 +220,7 @@ const getKongAccessToken = (req, cb) => {
     const keycloakObj = JSON.parse(_.get(req, 'session.keycloak-token'));
     var options = {
       method: 'POST',
-      url: PORTAL_BASE_URL + '/auth/v1/refresh/token',
+      url: KONG_SERVICE_ENDPOINT + 'auth/v1/refresh/token',
       headers: {
         'Authorization': 'Bearer ' + _.get(req, 'session.kongDeviceToken'),
         'Content-Type': 'application/x-www-form-urlencoded'
