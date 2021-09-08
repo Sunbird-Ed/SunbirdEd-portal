@@ -236,12 +236,12 @@ try {
   if (process.env.sunbird_environment === 'local' && fs.existsSync(devConfig)) {
     const devVariables = require('./devConfig');
     module.exports = devVariables;
-    console.log('local---->',devVariables);
+    // console.log('local---->',devVariables);
   } else {
     module.exports = envVariables;
-    console.log('env---->',envVariables);
+    // console.log('env---->',envVariables);
   }
 } catch (error) {
   module.exports = envVariables;
-  console.log('errorEnv---->',envVariables);
+  // console.log('errorEnv---->',envVariables);
 }

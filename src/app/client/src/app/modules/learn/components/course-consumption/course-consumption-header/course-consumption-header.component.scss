@@ -94,3 +94,8 @@
   font-size: 12px;
   font-weight: bold;
 }
+@include respond-below(sm){
+  .sb-activity-dashboard-btn-content{
+    margin-bottom: 0.5rem;
+  }
+}
