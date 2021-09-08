@@ -10,6 +10,7 @@ const http = require('http');
 const https = require('https');
 const httpAgent = new http.Agent({ keepAlive: true, });
 const httpsAgent = new https.Agent({ keepAlive: true, });
+const { getPortalAuthToken } = require('../helpers/kongTokenHelper');
 const keyCloakConfig = {
   'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
   'realm': envHelper.KEY_CLOAK_REALM,
@@ -50,7 +51,7 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
       proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
       proxyReqOpts.headers['x-auth-token'] = srcReq.kauth.grant.access_token.token
     }
-    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken;
+    proxyReqOpts.headers.Authorization = 'Bearer ' + getPortalAuthToken(srcReq);
     proxyReqOpts.rejectUnauthorized = false
     proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
     proxyReqOpts.headers['connection'] = 'keep-alive';
@@ -91,7 +92,7 @@ const overRideRequestHeaders = function (upstreamUrl = "", data) {
       srcReq.kauth.grant.access_token.token) {
       proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
     }
-    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
+    proxyReqOpts.headers.Authorization = 'Bearer ' + getPortalAuthToken(srcReq)
     proxyReqOpts.rejectUnauthorized = false
     proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
     proxyReqOpts.headers['connection'] = 'keep-alive';
@@ -102,7 +103,7 @@ const overRideRequestHeaders = function (upstreamUrl = "", data) {
 const decoratePublicRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
     proxyReqOpts.headers['X-App-Id'] = appId
-    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
+    proxyReqOpts.headers.Authorization = 'Bearer ' + getPortalAuthToken(srcReq)
     return proxyReqOpts
   }
 }
