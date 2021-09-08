@@ -1494,10 +1494,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.5.tgz#c3da54f4caf1a6c6d84a8a0a21881265e50389cd"
   integrity sha512-3zwcrqx5Ctw2pwcfftCoyjAYLMhpOkS5f2rFZe6C2aDMKd3D6Q1zsp5oXsSWhKWyR6H/sVZeVHgjBe6sd4wyog==
 
-"@project-sunbird/discussions-ui-v8@2.2.0-beta-8":
-  version "2.2.0-beta-8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta-8.tgz#16cd277e49dd04fe5971e38805406eb48c57defa"
-  integrity sha512-1weqTzn9iy+7F2EsgsL6t422YYEWWglRnJ96Z+kjzsnVa6okK0ygzKq1yU8xYZ+W6eMjo4Ltqpb772JN2naeZQ==
+"@project-sunbird/discussions-ui-v8@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.1.tgz#c466a31f6a96000d9356f454a70650f21fb5571d"
+  integrity sha512-8iPCYfTVybq/5kjZm4eUr36VOrUHUifR2sB7J6i7NOaOtjOfJo0aBIqwl50RPgSTtJiUXDpcg6ZRsF+h0SJ3fQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.2.13":
-  version "4.2.13"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.13.tgz#2739410996989fcef6c2643cbdde33e991ce89a6"
-  integrity sha512-FiCmPlNSCWSZlOV7rDN5nVi1zHxmvwtvIlceA11AqzwxsX7tdSlCS/fAtX1XcDhoCTdVdNm9fQUFYfGYqQhycw==
+"@project-sunbird/sunbird-collection-editor-v9@4.2.18":
+  version "4.2.18"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.2.18.tgz#2fc8169ff2213e7edde8b13ecf70487f47e6d53d"
+  integrity sha512-uNZg4eIQDZkXJh62MGlzd/TiWQ4GO3yrpe9X+N+RHpsBAt/1XhfW6Gu/z15huVU5Ct2tMXWtajhOB+HivDhYFQ==
   dependencies:
     tslib "^1.10.0"
 
