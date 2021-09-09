@@ -1268,12 +1268,10 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/service/health': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      checksNeeded: []
     },
     '/health': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      checksNeeded: []
     },
     '/plugin/v1/form/read': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1302,6 +1300,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/google/auth': {
+      description: 'Google Sign in',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
@@ -1537,11 +1536,13 @@ const API_LIST = {
     },
     '/v1/sso/create/session': {
       description: 'Desktop API',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/api/data/v1/form/read': {
       description: 'Desktop API',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     // Question & QuestionSet API's
     '/action/questionset/v1/create': {
