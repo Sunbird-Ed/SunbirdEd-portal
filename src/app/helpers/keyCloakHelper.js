@@ -37,9 +37,9 @@ const authenticated = function (request, next) {
   postLoginRequest.push(function (callback) {
     permissionsHelper.getCurrentUserRoles(request, callback)
   });
-  // postLoginRequest.push(function (callback) {
-  //   getKongAccessToken(request, callback);
-  // });
+  postLoginRequest.push(function (callback) {
+    getKongAccessToken(request, callback);
+  });
   async.series(postLoginRequest, function (err, results) {
     telemetryHelper.logSessionStart(request);
     if (err) {
