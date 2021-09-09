@@ -15,6 +15,7 @@ const SUNBIRD_DEFAULT_TTL               = require('./environmentVariablesHelper.
 const SUNBIRD_ANONYMOUS_TTL             = require('./environmentVariablesHelper.js').sunbird_anonymous_session_ttl;
 const PORTAL_API_AUTH_TOKEN             = require('./environmentVariablesHelper.js').PORTAL_API_AUTH_TOKEN;
 const KONG_SERVICE_ENDPOINT             = require('./environmentVariablesHelper.js').sunbird_device_api;
+const KONG_REFRESH_TOKEN_API            = require('./environmentVariablesHelper.js').sunbird_kong_refresh_token_api;
 const KONG_DEVICE_REGISTER_TOKEN        = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_TOKEN;
 const KONG_DEFAULT_DEVICE_TOKEN         = require('./environmentVariablesHelper.js').sunbird_default_device_token;
 const KONG_DEVICE_REGISTER_AUTH_TOKEN   = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_AUTH_TOKEN;
@@ -220,7 +221,7 @@ const getKongAccessToken = (req, cb) => {
     const keycloakObj = JSON.parse(_.get(req, 'session.keycloak-token'));
     var options = {
       method: 'POST',
-      url: KONG_SERVICE_ENDPOINT + 'auth/v1/refresh/token',
+      url: KONG_REFRESH_TOKEN_API,
       headers: {
         'Authorization': 'Bearer ' + _.get(req, 'session.kongDeviceToken'),
         'Content-Type': 'application/x-www-form-urlencoded'
