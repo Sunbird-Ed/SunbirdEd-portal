@@ -219,11 +219,13 @@ const getKongAccessToken = (req, cb) => {
   try {
     _log(req, 'KONG_TOKEN :: requesting kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]');
     const keycloakObj = JSON.parse(_.get(req, 'session.keycloak-token'));
+    // Use default token in case of VDN; as there is no anonymous session workflow for VDN
+    const _bearerKey = KONG_DEVICE_REGISTER_TOKEN === 'true' ? _.get(req, 'session.kongDeviceToken') : KONG_DEFAULT_DEVICE_TOKEN;
     var options = {
       method: 'POST',
       url: KONG_REFRESH_TOKEN_API,
       headers: {
-        'Authorization': 'Bearer ' + _.get(req, 'session.kongDeviceToken'),
+        'Authorization': 'Bearer ' + _bearerKey,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       form: {
