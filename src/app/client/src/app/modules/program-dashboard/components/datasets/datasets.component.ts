@@ -316,7 +316,7 @@ export class DatasetsComponent implements OnInit {
       setTimeout(() => {
         this.isProcessed = false;
       }, 5000)
-      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
       this.passwordForm.reset();
     }
   }
