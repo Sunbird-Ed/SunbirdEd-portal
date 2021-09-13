@@ -12,7 +12,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { mockData } from './datasets.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, Subject } from 'rxjs';
 
-fdescribe('DatasetsComponent', () => {
+describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
   let fixture: ComponentFixture<DatasetsComponent>;
 
