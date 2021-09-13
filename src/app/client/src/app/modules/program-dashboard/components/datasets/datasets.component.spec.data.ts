@@ -250,6 +250,10 @@ export let mockData = {
               'requested_channel': 'in.ekstep',
               'status': 'SUBMITTED',
               'last_updated': 1599661955303,
+              'datasetConfig':{
+                "title":"report 1",
+                'type': 'assessment-dashboard-metrics'
+              },
               'request_data': {
                 'batchFilters': [
                   'TPD',
@@ -296,6 +300,10 @@ export let mockData = {
               'requested_channel': 'in.ekstep',
               'status': 'SUBMITTED',
               'last_updated': 1599728944037,
+              'datasetConfig':{
+                "title":"report 2",
+                'type': 'assessment-dashboard-metrics',
+              },
               'request_data': {
                 'batchFilters': [
                   'TPD',

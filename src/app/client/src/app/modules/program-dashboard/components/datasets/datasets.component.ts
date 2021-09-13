@@ -53,7 +53,7 @@ export class DatasetsComponent implements OnInit {
 
   downloadCSV = true;
   isColumnsSearchable = false;
-  tag: string = "PROGRAM-REPORT";
+  tag: string;
 
   reportForm = new FormGroup({
     programName: new FormControl('', [Validators.required]),
@@ -99,7 +99,7 @@ export class DatasetsComponent implements OnInit {
   public userRoles: Array<string> = [];
   public userId: string;
   public selectedReport;
-  public slug:String;
+  public selectedSolution: string;
 
   getProgramsList() {
     const paramOptions = {
@@ -134,15 +134,15 @@ export class DatasetsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loadReports();
+  
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          this.slug = user.userProfile['rootOrg'].slug;
           this.userRoles = user.userProfile.userRoles;
           this.userId = user.userProfile.id;
+          
         }
       });
     this.initLayout();
@@ -160,8 +160,6 @@ export class DatasetsComponent implements OnInit {
 
   public programSelection($event) {
 
-    this.userRoles.push("PROGRAM_MANAGER");
-    
     let program = this.programs.filter(data => {
       if (data._id == $event) {
         return data
@@ -180,6 +178,8 @@ export class DatasetsComponent implements OnInit {
           return data
         }
       });
+      this.tag = solution[0]._id;
+      this.loadReports();
       if (solution[0].isRubricDriven == true && solution[0].type == "observation") {
         let type = solution[0].type + "_with_rubric";
         this.reportTypes = this.formData[type];
@@ -230,37 +230,40 @@ export class DatasetsComponent implements OnInit {
       if (data) {
         const reportData = _.get(data, 'result.jobs');
         this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
-        this.onDemandReportData = [...this.onDemandReportData];
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     });
   }
 
-  reportChanged(ev) {
-    this.selectedReport = ev;
+  reportChanged(selectedReportData) {
+    this.selectedReport = selectedReportData;
   }
 
   submitRequest() {
+    this.selectedSolution = this.reportForm.controls.solution.value;
     const isRequestAllowed = this.checkStatus();
     if (isRequestAllowed) {
       this.isProcessed = false;
       let config = {
-        state_slug:this.slug,
-        programId: this.programSelected,
-        solutionId: this.reportForm.controls.solution.value,
+        type: this.selectedReport['datasetId'],
+        params:{
+          programId: this.programSelected,
+          solutionId: this.reportForm.controls.solution.value,
+        },
         title: this.selectedReport.name
       }
       let request = {
         request: {
+          dataset:'druid-dataset',
           tag: this.tag,
           requestedBy: this.userId,
-          dataset: this.selectedReport['datasetId'],
           datasetConfig: config,
           output_format: 'csv'
 
         }
       };
+     
       if (this.selectedReport.encrypt === true) {
         request.request['encryptionKey'] = this.passwordForm.controls.password.value;
       }
@@ -268,22 +271,45 @@ export class DatasetsComponent implements OnInit {
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
 
-
           if (data.result.status === this.reportStatus.failed) {
-            const error = _.get(data, 'result.statusMessage') || _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
+            const error =  _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
             this.toasterService.error(error);
+          } else {
+
+            if(data['result'] && data['result']['requestId']){
+
+            let dataFound=  this.onDemandReportData.filter(function(submittedReports){
+                 if( submittedReports['requestId']== data['result']['requestId']){
+                  return data;
+                }
+                
+              });
+
+              if(dataFound && dataFound.length > 0){              
+                this.popup = false;
+                this.isProcessed = true;
+                setTimeout(() => {
+                  this.isProcessed = false;
+                }, 5000)
+                this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
+                this.passwordForm.reset();
+
+              } else {
+                data = this.dataModification(data['result']);
+                const updatedReportList = [data, ...this.onDemandReportData];
+                this.onDemandReportData = updatedReportList;
+                this.awaitPopUp = true;
+                this.passwordForm.reset();
+
+              }
+            }
           }
-          data = this.dataModification(data['result']);
-          const updatedReportList = [data, ...this.onDemandReportData];
-          this.onDemandReportData = _.slice(updatedReportList, 0, 10);
-          this.reportTypes =[];
+        
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
-      this.awaitPopUp = true;
-      this.reportForm.reset();
-      this.passwordForm.reset();
+
     } else {
       this.popup = false;
       this.isProcessed = true;
@@ -291,7 +317,6 @@ export class DatasetsComponent implements OnInit {
         this.isProcessed = false;
       }, 5000)
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
-      this.reportForm.reset();
       this.passwordForm.reset();
     }
   }
@@ -328,8 +353,7 @@ export class DatasetsComponent implements OnInit {
 
   }
   dataModification(row) {
-    const dataSet = _.find(this.reportTypes, { datasetId: row.dataset }) || {};
-    row.title = dataSet.name;
+    row.title = row.datasetConfig.title;
     return row;
   }
 
@@ -337,20 +361,21 @@ export class DatasetsComponent implements OnInit {
     let requestStatus = true;
     const selectedReportList = [];
     _.forEach(this.onDemandReportData, (value) => {
-      if (value.dataset === this.selectedReport.datasetId) {
+      if (value.datasetConfig.type == this.selectedReport.datasetId  && value.datasetConfig.params.solutionId == this.selectedSolution) {
         selectedReportList.push(value);
       }
     });
     const sortedReportList = _.sortBy(selectedReportList, [(data) => {
       return data && data.jobStats && data.jobStats.dtJobSubmitted;
     }]);
+  
     const reportListData = _.last(sortedReportList) || {};
-    if (!_.isEmpty(reportListData)) { // checking the report is already created or not
-      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state 
+    if (!_.isEmpty(reportListData)) { 
+      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); 
       if (!isInProgress) {
         requestStatus = true;
       } else {
-        requestStatus = false; // report is in SUBMITTED/PROCESSING state and can not create new report
+        requestStatus = false; 
       }
     }
     return requestStatus;

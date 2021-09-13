@@ -12,7 +12,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { mockData } from './datasets.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, Subject } from 'rxjs';
 
-describe('DatasetsComponent', () => {
+fdescribe('DatasetsComponent', () => {
   let component: DatasetsComponent;
   let fixture: ComponentFixture<DatasetsComponent>;
 
@@ -140,6 +140,7 @@ describe('DatasetsComponent', () => {
 
   it('should load report', () => {
     component.tag = 'mockTag';
+    component.onDemandReportData = [];
     const onDemandReportService = TestBed.get(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
     component.loadReports();
@@ -157,13 +158,15 @@ describe('DatasetsComponent', () => {
       "encrypt": false,
       "datasetId": "ml-observation-status-report"
     };
-    component.onDemandReportData = [{1: 'a'}];
+    component.onDemandReportData = [{1: 'a' ,requestId:"0",dataset: 'ml-observation-status-report0',datasetConfig:{ title:"Status Report",type:"ml-observation-status-report0" } }];
     component.reportTypes = mockData.FormData['observation'];
     const onDemandReportService = TestBed.get(OnDemandReportService);
-    spyOn(onDemandReportService, 'submitRequest').and.returnValue(observableOf({result: { title:"Status Report",2: 'b', dataset: 'ml-observation-status-report'}}));
+    spyOn(onDemandReportService, 'submitRequest').and.returnValue(observableOf({result: {requestId:"1", datasetConfig: { title:"Status Report",type:"ml-observation-status-report" }, title:"Status Report",2: 'b', dataset: 'ml-observation-status-report'}}));
     component.submitRequest();
     expect(component.onDemandReportData).toEqual([{
-      2: 'b', title: 'Status Report', dataset: 'ml-observation-status-report' }, {1: 'a'}]);
+      requestId:"1", datasetConfig: { title:"Status Report",type:"ml-observation-status-report" 
+    }, title:"Status Report",2: 'b', dataset: 'ml-observation-status-report'
+  }, {1: 'a',requestId:"0",dataset: 'ml-observation-status-report0',datasetConfig:{ title:"Status Report",type:"ml-observation-status-report0" } }]);
   });
 
 
@@ -177,37 +180,18 @@ describe('DatasetsComponent', () => {
 
   }));
 
-  it('should call selectSolution', fakeAsync(() => {
+  it('should call selectSolution',fakeAsync(() => {
 
     const spy = spyOn(component, 'selectSolution').and.callThrough();
     tick(1000);
     component.programSelected = "5f34ec17585244939f89f90c";
     component.formData = mockData.FormData;
-    component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
-    component.solutions = mockData.solutions.result;
-    component.selectSolution("5f34ec17585244939f89f90d");
-    expect(spy).toHaveBeenCalled();
-    expect(component.reportTypes).toEqual([
-      {
-        "name": "Question Report",
-        "encrypt": true,
-        "datasetId": "ml-observation-question-report"
-      },
-      {
-        "name": "Status Report",
-        "encrypt": false,
-        "datasetId": "ml-observation-status-report"
-      }
-    ]);
+    
+    component.onDemandReportData = [];
+    const onDemandReportService = TestBed.get(OnDemandReportService);
+    spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
+    component.loadReports();
 
-  }));
-
-  it('should call loadReports', fakeAsync(() => {
-
-    const spy = spyOn(component, 'selectSolution').and.callThrough();
-    tick(1000);
-    component.programSelected = "5f34ec17585244939f89f90c";
-    component.formData = mockData.FormData;
     component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
     component.solutions = mockData.solutions.result;
     component.selectSolution("5f34ec17585244939f89f90d");
