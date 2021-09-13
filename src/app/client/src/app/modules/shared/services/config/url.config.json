@@ -363,7 +363,7 @@
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",
-      "PRESIGNED_URLS": "v1/cloud-services/files/preSignedUrls"
+      "PRESIGNED_URLS": "cloud-services/mlcore/v1/files/preSignedUrls"
     },
     "DHITI":{
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
