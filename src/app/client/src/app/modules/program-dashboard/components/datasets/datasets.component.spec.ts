@@ -138,7 +138,7 @@ fdescribe('DatasetsComponent', () => {
     expect(component.showConfirmationModal).toEqual(false);
   });
 
-  it('should load report', () => {
+  it('should load reports', () => {
     component.tag = 'mockTag';
     component.onDemandReportData = [];
     const onDemandReportService = TestBed.get(OnDemandReportService);
