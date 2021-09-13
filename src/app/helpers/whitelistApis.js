@@ -1668,11 +1668,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/v1/cloud-services/files/preSignedUrls': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/kendra/v1/api/cloud-services/files/preSignedUrls': {
+    '/kendra/cloud-services/mlcore/v1/files/preSignedUrls': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
