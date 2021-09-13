@@ -15,6 +15,7 @@ export class ActivityDashboardComponent implements OnInit {
   hierarchyData: any;
   dashletData: any;
   activity: any;
+  groupData: any;
   memberListUpdatedOn: string;
 
   constructor(
@@ -28,18 +29,32 @@ export class ActivityDashboardComponent implements OnInit {
     if (_.get(_routerExtras, 'extras.state')) {
       const extras = _.get(_routerExtras, 'extras.state');
       this.hierarchyData = extras.hierarchyData;
-      this.activity = extras.activity;
-      this.memberListUpdatedOn = extras.memberListUpdatedOn;
     } else {
-      const groupId = this.activatedRoute.snapshot.params.groupId;
-      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, groupId]);
+      // if we refresh the page, the router data will be undefined so its redirect to group detail page
+      this.navigateBack();
     }
   }
 
   ngOnInit() {
-    this.getDashletData();
+    // if we refresh the page, the groupdata will be undefined so its redirect to group detail page
+    this.groupData = this.groupService.groupData ? this.groupService.groupData : this.navigateBack();
+    this.getAggData();
   }
 
+  getAggData() {
+    const leafNodesCount = _.get(this.hierarchyData, 'leafNodesCount') || 0;
+    const activityData = { id: _.get(this.hierarchyData, 'identifier'), type: 'Course' };
+    const groupId = this.activatedRoute.snapshot.params.groupId;
+    this.groupService.getActivity(groupId, activityData, this.groupData, leafNodesCount)
+      .subscribe((data) => {
+        this.activity = data;
+        this.memberListUpdatedOn = _.max(_.get(data, 'activity.agg').map(agg => agg.lastUpdatedOn));
+        this.getDashletData();
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.navigateBack();
+      });
+  }
   /**
    * @description - get dashlet data for dashlet library
    */
@@ -57,7 +72,8 @@ export class ActivityDashboardComponent implements OnInit {
    */
   navigateBack() {
     this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    this.groupService.goBack();
+    const groupId = this.activatedRoute.snapshot.params.groupId;
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, groupId]);
   }
 
   /**

@@ -103,7 +103,7 @@
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
     <div class="sbt-filter-switcher-container cursor-pointer mobile only" appTelemetryInteract
-    [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="accordionDefaultOpen = !accordionDefaultOpen">
+    [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="accordionDefaultOpen = !accordionDefaultOpen" tabindex="0">
       <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
       <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters}}</div>
     </div>
@@ -119,10 +119,10 @@
           <div class="sbt-filter-bar mr-16 pl-24">
             <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
               <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
-                (click)="resetFilters()" appTelemetryInteract
+                (click)="resetFilters()" appTelemetryInteract tabindex="0"
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
                   class="icon undo"></i></button>
-                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" tabindex="0" (click)="accordionDefaultOpen = !accordionDefaultOpen">	
+                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" tabindex="0" (click)="accordionDefaultOpen = !accordionDefaultOpen" attr.aria-label="{{resourceService.frmelmnts?.btn?.close}}">	
                     <svg class="icon icon-svg--red">	
                         <use xlink:href="./assets/images/sprite.svg#close"></use>	
                     </svg>	
@@ -139,11 +139,11 @@
                     <ng-container *ngFor="let item of formInputData[field.code]">
                       <a class="ui label mt-8 mr-8" *ngIf='!item?.name && field.code !== "channel"'>
                         {{item}}
-                        <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                        <i class="delete icon" tabindex="0" (click)="removeFilterSelection(field.code,item)"></i>
                       </a>
                       <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code !== "channel"'>
                         {{item.name}}
-                        <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                        <i class="delete icon" tabindex="0" (click)="removeFilterSelection(field.code,item)"></i>
                       </a>
                     </ng-container>
 

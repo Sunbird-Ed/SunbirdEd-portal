@@ -12,7 +12,7 @@
       <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
         <ng-container>
           <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
-            *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
+            *ngIf="initFilters && allTabData" (filterChange)="handleFilterChange($event)" [cachedFilters]="selectedFilters">
           </app-global-search-filter>
         </ng-container>
       </div>
@@ -26,13 +26,13 @@
                     <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
                       {{resourceService.frmelmnts?.lbl?.inAll | translate}}
                 </h4>
-            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn " type="button"  (click)= "goback()">
+            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn " type="button"  tabindex="0" (click)= "goback()">
               {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
         </div>
     </div>
     <div class="twelve wide column">
       <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
-              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
       <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length"
         class="sb-grid dynamic-section-card ">
         <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
@@ -45,7 +45,7 @@
                              appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
                              (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
             <ng-template #desktopCard>
-              <div class="sb-desktop-library-card">
+              <div class="sb-desktop-library-card relative9">
                 <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                                 [telemetryInteractEdata]="cardIntractEdata"
                                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
@@ -68,12 +68,13 @@
     <div class="twelve wide column right aligned" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
       <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails.pages.length">
         <div class="sb-pagination my-0">
-            <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
-            <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
-            <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
-            <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
-            <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+            <a role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
         </div>
+        
       </div>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">

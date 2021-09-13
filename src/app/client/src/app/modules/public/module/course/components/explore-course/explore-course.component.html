@@ -45,13 +45,13 @@
         <div class="twelve wide column right aligned py-0" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails.pages.length">
                 <div class="sb-pagination my-0">
-                    <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
-                    <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
-                    <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" (click)="navigateToPage(page)"
+                    <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
+                    <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+                    <a href=“javascript:void(0);” role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" tabindex="0" (click)="navigateToPage(page)"
                         class="sb-item">{{page}}</a>
-                    <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.currentPage + 1)"
+                    <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)"
                         class="sb-item">&gt;</a>
-                    <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.totalPages)"
+                    <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)"
                         class="sb-item ">&raquo;</a>
                 </div>
             </div>

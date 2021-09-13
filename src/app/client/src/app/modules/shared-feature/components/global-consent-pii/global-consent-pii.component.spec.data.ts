@@ -20,6 +20,13 @@ export const MockData = {
       'phone': '******2507',
       'userType': 'OTHER',
       'lastName': 'usr',
+      'externalIds': [
+        {
+          'idType': 'custchannel',
+          'provider': 'custchannel',
+          'id': 'umesha32@yopmail.com'
+        }
+      ],
       'organisations': [
         {
           'updatedBy': null,
@@ -82,6 +89,46 @@ export const MockData = {
           }
         }
       ],
+      'promptTnC': false,
+      'emailVerified': true
+    },
+    userProfileObj: {
+      'maskedPhone': '******2507',
+      'rootOrgName': 'CustROOTOrg10',
+      'subject': [],
+      'channel': 'custchannel',
+      'language': [],
+      'updatedDate': '2020-09-07 10:20:22:122+0000',
+      'managedBy': null,
+      'flagsValue': 3,
+      'id': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+      'recoveryEmail': '',
+      'identifier': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+      'thumbnail': null,
+      'profileVisibility': {},
+      'rootOrgId': '01285019302823526477',
+      'prevUsedEmail': '',
+      'firstName': 'dev-user13',
+      'tncAcceptedOn': '2020-08-12T06:36:35.914Z',
+      'phone': '******2507',
+      'userType': 'OTHER',
+      'lastName': 'usr',
+      'externalIds': [
+        {
+          'idType': 'testchannel',
+          'provider': 'testchannel',
+          'id': 'umesha32@yopmail.com'
+        }
+      ],
+      'organisations': [],
+      'maskedEmail': 'de*********@yopmail.com',
+      'tempPassword': null,
+      'email': 'de*********@yopmail.com',
+      'userLocations': [
+      ],
+      'userName': 'devuser13',
+      'userId': 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+      'declarations': [],
       'promptTnC': false,
       'emailVerified': true
     },

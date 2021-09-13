@@ -10,9 +10,44 @@
     </div>
     <div class="sb-modal-actions">
         <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="signInInteractEdata" (click)="setTelemetryData(); setUrlToCourse();"
+            [telemetryInteractEdata]="signInInteractEdata" tabindex="0" (click)="setTelemetryData(); setUrlToCourse();"
             class="sb-btn sb-btn-normal sb-btn-primary">
             {{resourceService.frmelmnts?.btn?.login}}
         </a>
     </div>
 </sui-modal>
+
+<!-- batch details -->
+<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
+    <sui-accordion-panel [isOpen]="false">
+      <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+        <span>{{resourceService?.frmelmnts?.lbl?.batchdetails}}</span>
+        <i class="chevron down icon" role="img" title="expand"></i>
+      </div>
+      <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+        <div class="batch-details">
+          <div class="mb-16">
+            <div *ngIf="batchDetails?.startDate">
+              <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+                {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchstartdate}}</div>
+              <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}</div>
+            </div>
+            <hr class="section-hr" *ngIf="batchDetails?.endDate"/>
+            <div *ngIf="batchDetails?.endDate">
+              <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+                {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchenddate}}</div>
+              <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
+            </div>
+            <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"/>
+            <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
+              <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+                {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
+              <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate | dateFormat}}</div>
+              <div class="sb-label-status-error fsmall"
+              *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sui-accordion-panel>
+  </sui-accordion>

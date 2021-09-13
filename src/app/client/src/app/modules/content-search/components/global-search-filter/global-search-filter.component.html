@@ -1,7 +1,7 @@
 <ng-container *ngIf="facets && layoutConfiguration">
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
-    <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen">
+    <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
       <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
       <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
     </div>
@@ -15,10 +15,10 @@
           <div class="sbt-filter-bar mr-16 pl-24">
             <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
               <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
-                (click)="onSearchFacetFilterReset()" appTelemetryInteract
+                (click)="onSearchFacetFilterReset()" tabindex="0" appTelemetryInteract
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset | translate}} <i
                   class="icon undo"></i></button>
-                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
+                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen" tabindex="0" attr.aria-label="{{resourceService.frmelmnts?.btn?.close}}">
                     <svg class="icon icon-svg--red">
                         <use xlink:href="./assets/images/sprite.svg#close"></use>
                     </svg>
@@ -50,7 +50,7 @@
         <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
           <div title class="sb-data-driven-filter-header" appTelemetryInteract
             [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-            (click)="isOpen = !isOpen">
+            (click)="isOpen = !isOpen" tabindex="0">
             <i class="icon filter"></i>
             {{resourceService.frmelmnts?.lbl?.filters}}
             <i class="dropdown icon"></i>
@@ -65,7 +65,7 @@
                       <ng-container *ngFor="let item of selectedFilters[facet.name]">
                         <a class="ui label mt-8 mr-8 text-capitalize" *ngIf="item && item.length > 0">
                           {{item}}
-                          <i class="delete icon" (click)="removeFilterSelection({type: facet.name, value: item})"></i>
+                          <i class="delete icon" tabindex="0" (click)="removeFilterSelection({type: facet.name, value: item})"></i>
                         </a>
                       </ng-container>
                     </div>
@@ -109,7 +109,7 @@
                 </div>
               </div>
               <div class="sb-prominent-filter-field">
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()"
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()" tabindex="0"
                   appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata">
                   {{resourceService.frmelmnts?.btn?.reset}}
                 </button>

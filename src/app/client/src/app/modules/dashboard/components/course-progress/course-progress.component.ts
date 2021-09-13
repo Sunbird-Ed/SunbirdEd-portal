@@ -285,6 +285,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	* @param {string} batchId batch identifier
   */
   setBatchId(batch?: any): void {
+    this.fetchForumIdReq = null;
     this.showWarningDiv = false;
     this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
@@ -368,6 +369,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete');
         this.currentBatch.lastUpdatedOn = _.get(result, 'lastUpdatedOn') || '';
       }
+      this.generateDataForDF(this.currentBatch);
     }, error => {
       this.stateWiseReportData = [
         {
@@ -402,6 +404,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         }
       ];
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      this.generateDataForDF(this.currentBatch);
     });
   }
 
@@ -698,6 +701,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
   generateDataForDF(batchId) {
+    this.fetchForumIdReq = null;
     if (batchId) {
       this.fetchForumIdReq = {
         type: 'batch',
@@ -713,7 +717,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.route.navigate(['/discussion-forum'], {
       queryParams: {
         categories: JSON.stringify({ result: routerData.forumIds }),
-        userName: routerData.userName
+        userId: routerData.userId
       }
     });
   }

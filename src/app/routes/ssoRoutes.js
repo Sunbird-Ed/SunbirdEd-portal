@@ -12,13 +12,14 @@ const {generateAuthToken, getGrantFromCode} = require('../helpers/keyCloakHelper
 const {parseJson, isDateExpired} = require('../helpers/utilityService');
 const {getUserIdFromToken} = require('../helpers/jwtHelper');
 const fs = require('fs');
-
+const externalKey = envHelper.CRYPTO_ENCRYPTION_KEY_EXTERNAL;
 const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
 const { logger } = require('@project-sunbird/logger');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
+const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
 
 module.exports = (app) => {
 
@@ -39,13 +40,11 @@ module.exports = (app) => {
       };
       errType = 'VERIFY_TOKEN';
       verifyToken(jwtPayload);
-      errType = 'ORG_SEARCH';
-      orgDetails = await orgSearch(jwtPayload.school_id, req);
-      if (!(_.get(orgDetails, 'result.response.count') > 0)) {
-        throw 'SCHOOL_ID_NOT_REGISTERED'
-      }
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
+      if (_.get(req,'cookies.redirectPath')){
+        res.cookie ('userDetails', JSON.stringify(encrypt(userDetails.userName, externalKey)));
+      }
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
@@ -61,6 +60,11 @@ module.exports = (app) => {
           }
         })
       } else {
+        errType = 'ORG_SEARCH';
+        orgDetails = await orgSearch(jwtPayload.school_id, req);
+        if (!(_.get(orgDetails, 'result.response.count') > 0)) {
+          throw 'SCHOOL_ID_NOT_REGISTERED'
+        }
         const dataToEncrypt = {
           identifier: (userDetails && userDetails.id) ? userDetails.id : ''
         };
@@ -197,7 +201,12 @@ module.exports = (app) => {
 
   app.get(successUrl, async (req, res) => { // to support mobile sso flow
     sendSsoKafkaMessage(req);
-    res.status(200).sendFile('./success_loader.html', {root: __dirname})
+    if (_.get(req, 'cookies.redirectPath')){ 
+      res.redirect(VDNURL+'/v1/sourcing/sso/success/redirect?userName='+(_.get(req, 'cookies.userDetails')) + '&redirectUrl='+ (_.get(req, 'cookies.redirectTo')));
+    } else {
+      res.status(200).sendFile('./success_loader.html', {root: __dirname})
+    }
+    // res.status(200).sendFile('./success_loader.html', {root: __dirname})
   });
 
   app.get('/v1/sso/success/redirect', async (req, res) => {

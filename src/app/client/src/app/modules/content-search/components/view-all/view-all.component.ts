@@ -409,15 +409,17 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    this.moveToTop();
   }
-
+  public moveToTop() {
+    window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+    });
+}
   playContent(event) {
-
+    this.moveToTop();
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.publicPlayerService.playContent(event);
     } else {

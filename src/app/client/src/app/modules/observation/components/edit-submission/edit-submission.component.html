@@ -1,25 +1,25 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'"
-    (dismissed)="showPopup = false" #modal class="sb-modal edit-sub-modal">
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+    (dismissed)="closeModal()" #modal class="sb-modal edit-sub-modal">
     <!--Header-->
     <div class="header">
-        <h4> {{resourceService.frmelmnts?.lbl?.instanceName}} </h4>
+        <h4> {{editData?.title}} </h4>
+        <p *ngIf="editData?.subTitle">{{editData?.subTitle}}</p>
     </div>
     <!--/Header-->
     <!--Content-->
-    <div class="sb-modal-content content" *ngIf="submission">
-
-        <input type="text" [(ngModel)]="submission.title" class="edit-sub-input">
+    <div class="sb-modal-content content" *ngIf="editData">
+        <input type="text" [(ngModel)]="updatedValue" class="edit-sub-input">
     </div>
     <!--/Content-->
     <div class="actions footer">
         <button type="button" class=" ui sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
             (click)="closeModal()">
-            {{resourceService.frmelmnts?.btn?.cancel}}
+            {{editData?.leftBtnText}}
         </button>
         <div class="w-10"></div>
         <button type="button" class="ui sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
-            (click)="submit()" [disabled]="!submission?.title" [ngClass]="{'sb-btn-disabled' : !submission?.title}">
-            {{resourceService.frmelmnts?.btn?.update}}
+            (click)="submit()" [disabled]="!updatedValue" [ngClass]="{'sb-btn-disabled' : !updatedValue}">
+            {{editData?.rightBtnText}}
         </button>
     </div>
 </sui-modal>

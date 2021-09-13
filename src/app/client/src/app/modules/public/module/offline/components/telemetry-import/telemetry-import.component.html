@@ -6,7 +6,7 @@
           <span class="sb-bordered-list-item-title-extra ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.TotalSize}}
             {{importedFilesSize | filesize }}</span></div>
   
-        <button class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary" (click)="openImportTelemetryDialog()">
+        <button class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary" tabindex="0" (click)="openImportTelemetryDialog()">
           <img src="assets/images/plus-icon.svg" width="12px" height="12px" class="mr-8">
           {{resourceService?.frmelmnts?.lbl?.desktop?.importNewFile}}
         </button>
@@ -34,7 +34,7 @@
           <span *ngIf="items.status === 'failed' && items.failedCode !== 'MANIFEST_MISSING'" class="sb-color-error">
             {{items.status}}
             <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8" [disabled]="items.disable"
-              (click)="reTryImport(items)">
+              tabindex="0" (click)="reTryImport(items)">
               {{resourceService?.frmelmnts?.btn?.retry}}
             </button>
           </span>

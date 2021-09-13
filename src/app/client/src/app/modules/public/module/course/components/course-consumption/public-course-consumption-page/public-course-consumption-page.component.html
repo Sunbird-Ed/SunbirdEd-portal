@@ -4,12 +4,19 @@
     <div class="ui container">
         <div class="py-8 d-flex flex-ai-center">
             <!-- /* Back button */ -->
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" (click)="redirectToExplore()">
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" tabindex="0" (click)="redirectToExplore()">
                 <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                         <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
                     </svg></i>
                 {{resourceService?.frmelmnts?.btn?.back}}
             </button>
+            <div class="batch-details__created mt-8 fsmall" *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)">
+              <span class="sb-label-12size"
+                *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
+                {{enrollmentEndDate | dateFormat}}</span>
+              <span class="sb-label-status-error"
+                *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
+            </div>
         </div>
     </div>
 </div>
@@ -26,14 +33,14 @@
                     </div>
                     <div class="ml-8 textbook__heading">
                         <!-- Textbook title -->
-                        <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
+                        <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name}}
                         </h5>
                         <!-- Textbook Rating with share icon -->
                         <div class="textbook__rating d-flex flex-ai-center">
                             <sui-rating class="ui star rating" [isReadonly]="true"
                                 [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
-                            <button (click)="onShareLink()"
+                            <button tabindex="0" (click)="onShareLink()"
                                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
                                 <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#share"></use>
@@ -48,13 +55,13 @@
             <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course" [ngClass]="{'d-flex': isDesktopApp}">
                 <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
                     <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-                        (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+                        tabindex="0" (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
                 </div>
                 <div *ngIf="isDesktopApp && !enrolledCourse && !courseMentor" class="d-flex">
-                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
-                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" appOnlineOnly (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.download}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0" (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" tabindex="0" (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" appOnlineOnly tabindex="0" (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.download}}</button>
                     <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
                     <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
                 </div>

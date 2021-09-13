@@ -59,7 +59,8 @@
        "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER", "REPORT_ADMIN"],
        "reportViewerRole": ["REPORT_VIEWER", "REPORT_ADMIN"],
        "alltextbookRole": ["ORG_ADMIN"],
-       "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"] 
+       "uciAdmin": ["ORG_ADMIN"],
+       "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {

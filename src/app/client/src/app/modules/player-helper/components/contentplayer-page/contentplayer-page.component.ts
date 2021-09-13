@@ -17,6 +17,7 @@ import { PublicPlayerService } from '@sunbird/public';
 })
 export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges {
   @Input() contentDetails;
+  @Input() collectionData;
   @Input() playerConfig;
   @Input() tocPage = false;
   @Input() dialCode: string;
@@ -29,7 +30,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
-
+  isCollapsed: boolean = false;
 
   unsubscribe$ = new Subject<void>();
   contentId: string;

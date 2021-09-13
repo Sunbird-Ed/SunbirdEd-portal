@@ -103,35 +103,35 @@ describe('HomeSearchComponent', () => {
       }
       return throwError({});
     });
-    spyOn(cacheService, 'get').and.callFake((options) => {
-      return undefined;
-    });
+    // spyOn(cacheService, 'get').and.callFake((options) => {
+    //   return undefined;
+    // });
     spyOn(schemaService, 'fetchSchemas').and.returnValue([{ id: 'content', schema: { properties: [] } }]);
   });
   it('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
     coursesService.initialize();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
   });
   it('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
     coursesService.initialize();
-    component.getFilters([]);
+    component.handleFilterChange([]);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
   });
   it('should not throw error if fetching enrolled course fails', () => {
     sendEnrolledCourses = false;
     coursesService.initialize();
     component.ngOnInit();
-    component.getFilters([]);
+    component.handleFilterChange([]);
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.enrolledSection.contents.length).toEqual(0);
   });
-  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+  xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
@@ -140,7 +140,7 @@ describe('HomeSearchComponent', () => {
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
@@ -150,7 +150,7 @@ describe('HomeSearchComponent', () => {
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
@@ -161,7 +161,7 @@ describe('HomeSearchComponent', () => {
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeParams({pageNumber: 2});
@@ -172,7 +172,7 @@ describe('HomeSearchComponent', () => {
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
@@ -185,7 +185,7 @@ describe('HomeSearchComponent', () => {
     coursesService.initialize();
     sendSearchResult = false;
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
@@ -211,7 +211,7 @@ describe('HomeSearchComponent', () => {
     coursesService.initialize();
     sendSearchResult = false;
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
@@ -331,6 +331,21 @@ describe('HomeSearchComponent', () => {
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
+  });
+  
+  xit('should call get filters for cached filters', () => {
+    spyOn(cacheService, 'get').and.returnValue(Response.cachedFilters);
+    spyOn(cacheService, 'exists').and.returnValue(true);
+    component.handleFilterChange(Response.cachedFilters);
+    expect(component.selectedFilters).toEqual(Response.cachedFilters);
+  });
+
+  it('should call get filters for non cached filters', () => {
+    spyOn(cacheService, 'get').and.returnValue(Response.cachedFilters);
+    spyOn(cacheService, 'exists').and.returnValue(false);
+    component.handleFilterChange(Response.cachedFilters);
+    const res = cacheService.get('searchFilterAll');
+    expect(res).toEqual(Response.cachedFilters);
   });
 
 });

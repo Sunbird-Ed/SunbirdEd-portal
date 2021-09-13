@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
     selector: 'submission',
@@ -12,6 +12,7 @@ export class SubmissionsComponent implements OnInit {
     showPopOver = true;
     @Output() selectedSubmission = new EventEmitter();
     @Output() onAction = new EventEmitter();
+    isOpen = false;
     actions = [{
         name: this.resourceService.frmelmnts.lbl.edit,
         icon: 'pencil alternate large icon',
@@ -32,6 +33,6 @@ export class SubmissionsComponent implements OnInit {
         this.selectedSubmission.emit(data);
     }
     actionEvent(data, type) {
-        this.onAction.emit({action: type, data: data});
+        this.onAction.emit({action: type, data: {...data,submissionId:this.submission._id}});
     }
 }

@@ -78,11 +78,10 @@
 }
 
 .orange.text {
-  color: var(--red-100);
+  color: #A30010;
 }
-
 .orange-border {
-  border-color: var(--red-100) !important;
+  border-color: #A30010 !important;
 }
 
 .blue.text {
@@ -101,7 +100,7 @@
 
 .ui.basic.error.label {
   background: none !important;
-  color: var(--red-100) !important;
+  color: #A30010 !important;
   border: 0 !important;
   padding-left: 0;
   font-size: calculateRem(14px);
@@ -303,4 +302,14 @@ form.On {
   .container-wrapper{
     max-width: calculateRem(328px);
   }
+}
+
+
+.ui.form#signUpForm .required.field>.checkbox:after, .ui.form#signUpForm .required.field>label:after, .ui.form#signUpForm .required.fields.grouped>label:after, .ui.form#signUpForm .required.fields:not(.grouped)>.field>.checkbox:after, .ui.form#signUpForm .required.fields:not(.grouped)>.field>label:after {
+  display: none !important;
+}
+.birthYearOptions:focus-visible {
+  border: none !important;
+  border-radius: 0;
+  outline: none;
 }

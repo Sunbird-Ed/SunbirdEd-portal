@@ -14,7 +14,7 @@ p {
 sb-form.faq-sbforms {}
 
 ::ng-deep {
-  .multi-select-container .list-border {
+  sb-form.faq-sbforms .multi-select-container .list-border {
     background: var(--white);
     border: 0px solid #ddd !important;
   }
@@ -94,6 +94,9 @@ sb-form.faq-sbforms {}
     sb-textarea{
       textarea{
         height: 16rem;
+      }
+      .remaining-length {
+        color: #575757 !important;
       }
     }
   }

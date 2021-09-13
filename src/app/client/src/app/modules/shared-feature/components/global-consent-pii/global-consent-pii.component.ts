@@ -24,6 +24,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
+  isOpen = false;
   instance: string;
   consentPii = 'Yes';
   isDataShareOn = false;
@@ -89,6 +90,13 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
     this.userInformation['phone'] = this.usersProfile.phone;
+    if(this.usersProfile && this.usersProfile.externalIds) {
+      _.forEach(this.usersProfile.externalIds, (externaleId) => {
+        if (externaleId.provider === this.usersProfile.channel) {
+          this.userInformation['externalId'] = externaleId.id; 
+        }
+      });      
+    }
 
     if (_.get(this.usersProfile, 'userLocations.length')) {
       this.usersProfile.userLocations.forEach(locDetail => {
@@ -185,6 +193,11 @@ export class GlobalConsentPiiComponent implements OnInit {
     } else if ( this.type === 'global-consent') {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
+      const declReq = []
+      if(this.getDeclarationReqObject(this.usersProfile)){
+        declReq.push(this.getDeclarationReqObject(this.usersProfile));
+        this.updateUserDeclaration(declReq);
+      }
     }
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
@@ -245,6 +258,43 @@ export class GlobalConsentPiiComponent implements OnInit {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
+  }
+
+  updateUserDeclaration(request) {
+    this.csUserService.updateUserDeclarations(request, { apiPath: '/learner/user/v1' })
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(() => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0037'));
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0052);
+    });
+  }
+  getDeclarationReqObject(usersProfile) {
+    let userExternalId = null;
+    if(usersProfile && usersProfile.externalIds) {
+      _.forEach(usersProfile.externalIds, (externaleId) => {
+        if (externaleId.provider === usersProfile.channel) {
+          userExternalId = externaleId.id; 
+        }
+      });      
+    }
+    const info:any = {
+      'declared-ext-id': userExternalId,
+      'declared-phone': '',
+      'declared-email':''
+    }
+    const declarationObj = {
+      operation:'add',
+      userId : usersProfile.userId,
+      orgId: usersProfile.rootOrgId,
+      info: info
+    }
+    if(userExternalId) {
+      return declarationObj;
+    } else {
+      return null;
+    }
+    
   }
 
   ngOnDestroy() {

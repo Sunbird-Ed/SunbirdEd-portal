@@ -7,7 +7,7 @@
       <span class="mr-8" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
       <span class="dot-divider" *ngIf="contentData?.me_averageRating"></span>
       <span class="mr-8" *ngIf="contentData?.me_averageRating">{{contentData?.me_averageRating || '0'}}</span>
-      <span *ngIf="contentData?.me_averageRating"><i class="icon star outline"></i></span>
+      <span *ngIf="contentData?.me_averageRating"><i class="icon star outline" attr.aria-label="{{resourceService.frmelmnts?.lbl?.arialabelCourserating}}"></i></span>
     </div>
   </div>
 
@@ -39,7 +39,7 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
     {{resourceService?.frmelmnts?.lbl?.delete}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
-    (click)="logTelemetry('cancel-delete-content', contentData); showDeleteModal = !showDeleteModal;">
+    tabindex="0" (click)="logTelemetry('cancel-delete-content', contentData); showDeleteModal = !showDeleteModal;">
     {{resourceService.frmelmnts?.btn?.cancel}}
   </button>
 </div>

@@ -482,7 +482,7 @@ export class UserService {
     }
   }
 
-  updateGuestUser(userDetails, formValue): Observable<any> {
+  updateGuestUser(userDetails, formValue?): Observable<any> {
     if (window['TagManager']) {
       window['TagManager'].SBTagService.pushTag(formValue, 'USERLOCATION_', true);
       window['TagManager'].SBTagService.pushTag(userDetails, 'USERFRAMEWORK_', true);
@@ -517,7 +517,7 @@ export class UserService {
   get defaultFrameworkFilters() {
     const isUserLoggedIn = this.loggedIn || false;
     const { framework = null } = this.userProfile || {};
-    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
+    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board',"id"])) || {};
     return { board: ['CBSE'], gradeLevel: isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
   }
 }

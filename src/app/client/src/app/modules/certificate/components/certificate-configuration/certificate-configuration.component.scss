@@ -71,7 +71,6 @@
     }
 
     .certificate-content-area {
-      height: 100%;
       width: 100%;
     }
 
@@ -305,7 +304,11 @@
     }
   }
 }
-
+::ng-deep {
+  .overlay-buttons .sb-btn-no-border{
+    align-items: center;
+  }
+}
 
 .progess-add-content {
   .left-border {
