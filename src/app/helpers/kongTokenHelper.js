@@ -241,9 +241,9 @@ const getKongAccessToken = (req, cb) => {
     sendRequest(options).then((response) => {
       const responseData = JSON.parse(response);
       if (_.get(responseData, 'params.status') === 'successful') {
-        _log(req, 'KONG_TOKEN refresh_token :: Successfully generated kong auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]');
-        req.session.cookie.maxAge = _.get(responseData, 'expires_in') * 1000;
-        req.session.cookie.expires = new Date(Date.now() +  (_.get(responseData, 'expires_in') * 1000));
+        _log(req, 'KONG_TOKEN refresh_token :: Successfully generated kong refresh auth token for session id [ ' + _.get(req, 'sessionID') || 'no_key' + ' ]');
+        req.session.cookie.maxAge = _.get(responseData.result, 'expires_in') * 1000;
+        req.session.cookie.expires = new Date(Date.now() +  (_.get(responseData.result, 'expires_in') * 1000));
         req.session[KONG_ACCESS_TOKEN] = _.get(responseData, 'result.access_token');
         req.session.save(function (error) {
           if (error) {
