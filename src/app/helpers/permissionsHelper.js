@@ -13,7 +13,7 @@ const telemetryHelper       = require('./telemetryHelper');
 const learnerURL            = envHelper.LEARNER_URL;
 const apiAuthToken          = envHelper.PORTAL_API_AUTH_TOKEN;
 const { logger }            = require('@project-sunbird/logger');
-const { getBearerToken } = require('../helpers/kongTokenHelper')
+const { getBearerToken, getAuthToken } = require('../helpers/kongTokenHelper')
 
 let PERMISSIONS_HELPER = {
 
