@@ -806,7 +806,7 @@ const API_LIST = {
     '/action/content/v3/read/:do_id': {
       description: 'API is accessed by non logged in user',
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
@@ -819,7 +819,7 @@ const API_LIST = {
     '/action/content/v3/hierarchy/:do_id': {
       description: 'API used to read textbook for anonymous users',
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER],
     },
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1233,11 +1233,11 @@ const API_LIST = {
     },
     '/collection-editor/telemetry': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content-editor/telemetry': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/app/telemetry': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1253,7 +1253,7 @@ const API_LIST = {
     },
     '/content/data/v1/telemetry': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1292,12 +1292,12 @@ const API_LIST = {
     '/api/data/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/plugin/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/google/auth': {
       description: 'Google Sign in',

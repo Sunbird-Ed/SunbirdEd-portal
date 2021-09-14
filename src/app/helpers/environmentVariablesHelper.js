@@ -217,7 +217,20 @@ let envVariables = {
   KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token,
   sunbird_anonymous_session_ttl: env.sunbird_anonymous_session_ttl ? parseInt(env.sunbird_anonymous_session_ttl) : 10 * 60 * 1000,
   sunbird_default_device_token: env.sunbird_default_device_token || '',
+  // Kong endpoints
+  sunbird_anonymous_device_register_api: env.sunbird_anonymous_device_register_api || '',
+  sunbird_loggedin_device_register_api: env.sunbird_loggedin_device_register_api || '',
   sunbird_kong_refresh_token_api: env.sunbird_kong_refresh_token_api || '',
+
+  // Device register API for anonymous users
+  sunbird_anonymous_register_token: env.sunbird_anonymous_register_token || '',
+  // Device register API for logged in users
+  sunbird_loggedin_register_token: env.sunbird_loggedin_register_token || '',
+
+  // Fallback token for device register API for `anonymous` users
+  sunbird_anonymous_default_token: env.sunbird_anonymous_default_token || '',
+  // Fallback token for device register API for `logged` users
+  sunbird_logged_default_token: env.sunbird_logged_default_token || '',
 
   // Redis storage
   PORTAL_REDIS_URL: env.sunbird_redis_urls,
