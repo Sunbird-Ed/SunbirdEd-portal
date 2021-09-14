@@ -1241,7 +1241,7 @@ const API_LIST = {
     },
     '/app/telemetry': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/v1/tenant/info/:tenantId': {
       checksNeeded: ['ROLE_CHECK'],
