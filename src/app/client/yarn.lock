@@ -1489,8 +1489,8 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.1.9":
-  version "4.1.9"
+"@project-sunbird/common-consumption-v9@4.3.1":
+  version "4.3.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.8.tgz#45d7ca7078af5876a061d9d7528991be548cde72"
   integrity sha512-PZpMxqzXiF9kQc9A2DPqOfCr4q6Z/FPlRi4J/ouDNRTBt6IbbAkfJT3Ffgfvd3brnPV0vQNL4vKNnmpzcmPncw==
 
