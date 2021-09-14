@@ -12,9 +12,7 @@ const { sendRequest }                       = require('./httpRequestHandler');
 
 const SUNBIRD_DEFAULT_TTL                   = require('./environmentVariablesHelper.js').sunbird_session_ttl;
 const SUNBIRD_ANONYMOUS_TTL                 = require('./environmentVariablesHelper.js').sunbird_anonymous_session_ttl;
-const PORTAL_API_AUTH_TOKEN                 = require('./environmentVariablesHelper.js').PORTAL_API_AUTH_TOKEN;
 const KONG_DEVICE_REGISTER_TOKEN            = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_TOKEN;
-const KONG_DEFAULT_DEVICE_TOKEN             = require('./environmentVariablesHelper.js').sunbird_default_device_token;
 
 const KONG_LOGGEDIN_FALLBACK_TOKEN          = require('./environmentVariablesHelper.js').sunbird_logged_default_token;
 const KONG_ANONYMOUS_FALLBACK_TOKEN         = require('./environmentVariablesHelper.js').sunbird_anonymous_default_token;
@@ -26,8 +24,8 @@ const KONG_LOGGEDIN_DEVICE_REGISTER_API     = require('./environmentVariablesHel
 const KONG_ANONYMOUS_DEVICE_REGISTER_API    = require('./environmentVariablesHelper.js').sunbird_anonymous_device_register_api;
 
 const BLACKLISTED_URL                       = ['/service/health', '/health'];
-const KONG_ACCESS_TOKEN                     = 'kongAccessToken';
-const KONG_DEVICE_BEARER_TOKEN              = 'kongDeviceBearerToken';
+const KONG_ACCESS_TOKEN                     = 'userAccessToken';
+const KONG_DEVICE_BEARER_TOKEN              = 'apiBearerToken';
 
 /**
  * @param  { Object } req - API Request object
