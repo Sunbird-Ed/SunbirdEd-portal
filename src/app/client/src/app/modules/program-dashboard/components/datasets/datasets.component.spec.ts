@@ -8,9 +8,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { mockData } from './datasets.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, Subject } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { APP_BASE_HREF } from '@angular/common';
 
 describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
@@ -43,7 +44,7 @@ describe('DatasetsComponent', () => {
         RouterTestingModule,
         TelemetryModule.forRoot(),
         SharedModule.forRoot(),
-        SharedFeatureModule,
+        HttpClientTestingModule,
         SuiModule,
         FormsModule,
         ReactiveFormsModule,
@@ -64,7 +65,8 @@ describe('DatasetsComponent', () => {
         { provide: ResourceService, useValue: resourceServiceMockData },
         KendraService,
         ConfigService,
-        OnDemandReportService
+        OnDemandReportService,
+        { provide: APP_BASE_HREF, useValue: '/' }
       ],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [DatasetsComponent]
