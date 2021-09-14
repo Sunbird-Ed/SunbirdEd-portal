@@ -13,6 +13,7 @@ const telemetryHelper       = require('./telemetryHelper');
 const learnerURL            = envHelper.LEARNER_URL;
 const apiAuthToken          = envHelper.PORTAL_API_AUTH_TOKEN;
 const { logger }            = require('@project-sunbird/logger');
+const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 let PERMISSIONS_HELPER = {
 
@@ -95,8 +96,8 @@ let PERMISSIONS_HELPER = {
         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
         'content-type': 'application/json',
         'accept': 'application/json',
-        'Authorization': 'Bearer ' + apiAuthToken,
-        'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
+        'Authorization': 'Bearer ' + getBearerToken(reqObj),
+        'x-authenticated-user-token':  getAuthToken(reqObj)
       },
       json: true
     }

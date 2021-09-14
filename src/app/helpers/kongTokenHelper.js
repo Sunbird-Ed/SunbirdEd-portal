@@ -226,7 +226,7 @@ const getKongAccessToken = (req, cb) => {
     const keycloakObj = JSON.parse(_.get(req, 'session.keycloak-token'));
     // Use default token in case of VDN; as there is no anonymous session workflow for VDN
     const _bearerKey = KONG_DEVICE_REGISTER_TOKEN === 'true' ?
-      _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN) : KONG_DEFAULT_DEVICE_TOKEN;
+      _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN) : KONG_LOGGEDIN_DEVICE_REGISTER_TOKEN;
     var options = {
       method: 'POST',
       url: KONG_REFRESH_TOKEN_API,
@@ -342,8 +342,22 @@ const generateLoggedInKongToken = (req, cb) => {
   // });
 };
 
+/**
+ * @param  { Object } req - API Request object
+ * @description Function to return bearer token
+ * @returns { String } Portal bearer token
+ */
 const getBearerToken = (req) => {
   return  _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN);
+};
+
+/**
+ * @param  { Object } req - API Request object
+ * @description Function to return x-auth token
+ * @returns { String } Portal x-auth token
+ */
+ const getAuthToken = (req) => {
+  return  _.get(req, 'session.' + KONG_ACCESS_TOKEN);
 };
 
 module.exports = {
@@ -352,5 +366,6 @@ module.exports = {
   updateSessionTTL,
   getKongAccessToken,
   generateLoggedInKongToken,
-  getBearerToken
+  getBearerToken,
+  getAuthToken
 };

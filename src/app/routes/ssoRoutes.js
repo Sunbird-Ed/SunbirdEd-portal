@@ -20,6 +20,7 @@ const { logger } = require('@project-sunbird/logger');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
 const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
+const { getAuthToken } = require('../helpers/kongTokenHelper');
 
 module.exports = (app) => {
 
@@ -595,7 +596,7 @@ const ssoValidations = async (req, res) => {
       encryptedData: parseJson(decodeURIComponent(req.get('x-authenticated-user-data')))
     };
   }
-  req.session.nonStateUserToken = req.session.nonStateUserToken || req.get('x-authenticated-user-token');
+  req.session.nonStateUserToken = req.session.nonStateUserToken ||  getAuthToken(req);
   if (!req.session.nonStateUserToken || !(req.session.migrateAccountInfo && req.session.migrateAccountInfo.encryptedData)) {
     res.status(401).send({
       responseCode: 'UNAUTHORIZED'
