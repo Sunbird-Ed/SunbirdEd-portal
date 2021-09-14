@@ -11,6 +11,7 @@ const dateFormat = require('dateformat')
 const {decodeToken} = require('./jwtHelper');
 const { logger } = require('@project-sunbird/logger');
 const { ProxyLogger } = require("@project-sunbird/logger/decorator");
+const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -273,7 +274,7 @@ const getHeaders = (req) => {
     'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
     'content-type': 'application/json',
     'accept': 'application/json',
-    'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+    'Authorization': 'Bearer ' + getBearerToken(req)
   }
 }
 module.exports = { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId };
