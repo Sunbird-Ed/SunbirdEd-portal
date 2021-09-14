@@ -819,7 +819,7 @@ const API_LIST = {
     '/action/content/v3/hierarchy/:do_id': {
       description: 'API used to read textbook for anonymous users',
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
