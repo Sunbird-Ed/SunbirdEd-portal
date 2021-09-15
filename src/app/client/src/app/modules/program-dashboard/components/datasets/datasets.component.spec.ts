@@ -38,8 +38,8 @@ describe('DatasetsComponent', () => {
       }
     }
   };
+  
   configureTestSuite();
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
