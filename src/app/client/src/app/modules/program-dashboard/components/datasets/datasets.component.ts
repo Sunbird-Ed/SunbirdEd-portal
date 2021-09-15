@@ -66,7 +66,6 @@ export class DatasetsComponent implements OnInit {
 
   programSelected: any;
 
-
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -395,5 +394,4 @@ export class DatasetsComponent implements OnInit {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     });
   }
-
 }
