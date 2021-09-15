@@ -268,7 +268,7 @@ export class DatasetsComponent implements OnInit {
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
           if (data.result.status === this.reportStatus.failed) {
-            const error =  _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
+            const error =  _.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed');
             this.toasterService.error(error);
           } else {
 
@@ -287,7 +287,7 @@ export class DatasetsComponent implements OnInit {
                 setTimeout(() => {
                   this.isProcessed = false;
                 }, 5000)
-                this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
+                this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
                 this.passwordForm.reset();
 
               } else {
