@@ -12,6 +12,7 @@ import { mockData } from './datasets.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, Subject } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF } from '@angular/common';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
@@ -37,6 +38,7 @@ describe('DatasetsComponent', () => {
       }
     }
   };
+  configureTestSuite();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
