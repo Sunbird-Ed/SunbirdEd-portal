@@ -208,7 +208,6 @@ export class DatasetsComponent implements OnInit {
   private closeConfirmationModal() {
     this.showConfirmationModal = false;
   }
-
   goBack() {
     this.location.back();
   }
