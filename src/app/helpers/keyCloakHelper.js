@@ -8,6 +8,7 @@ const telemetryHelper = require('./telemetryHelper.js')
 const userHelper = require('./userHelper.js')
 let memoryStore = null;
 const { logger } = require('@project-sunbird/logger');
+const { getKongAccessToken, generateLoggedInKongToken } = require('./kongTokenHelper')
 
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);
@@ -33,6 +34,12 @@ const authenticated = function (request, next) {
     console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
   }
   const postLoginRequest = [];
+  postLoginRequest.push(function (callback) {
+    generateLoggedInKongToken(request, callback);
+  });
+  postLoginRequest.push(function (callback) {
+    getKongAccessToken(request, callback);
+  });
   postLoginRequest.push(function (callback) {
     permissionsHelper.getCurrentUserRoles(request, callback)
   });

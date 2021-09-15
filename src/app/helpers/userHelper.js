@@ -8,6 +8,7 @@ const uuidv1 = require('uuid/v1');
 const requestPromise = require('request-promise'); //  'request' npm package with Promise support
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN;
 const { logger } = require('@project-sunbird/logger');
+const { getBearerToken, getAuthToken } = require('../helpers/kongTokenHelper')
 
 module.exports = {
   getUserDetails: async function (userId, userToken) {
@@ -67,7 +68,7 @@ module.exports = {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err') || 'FAILED');
     })
   },
-  getUserDetailsV2: async function (userId, userToken) {
+  getUserDetailsV2: async function (userId, userToken, req = undefined) {
     const options = {
       method: 'GET',
       url: learnerURL + 'user/v2/read/' + userId,
@@ -78,8 +79,8 @@ module.exports = {
         'x-msgid': uuidv1(),
         'content-type': 'application/json',
         'accept': 'application/json',
-        'Authorization': 'Bearer ' + apiAuthToken,
-        'x-authenticated-user-token': userToken
+        'Authorization': 'Bearer ' + getBearerToken(req),
+        'x-authenticated-user-token':  getAuthToken(req)
       },
       json: true
     };

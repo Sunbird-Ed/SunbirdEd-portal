@@ -43,7 +43,7 @@ module.exports = function (app) {
                     const { reports, count } = _.get(data, 'result');
                     if (count === 0) return proxyResData;
                     var token = _.get(req, 'kauth.grant.access_token.token');
-                    const user = await getUserDetailsV2(req.session.userId, token);
+                    const user = await getUserDetailsV2(req.session.userId, token, req);
                     const filteredReports = reportHelper.getReports(reports, user);
                     data.result.reports = filteredReports;
                     data.result.count = filteredReports.length;

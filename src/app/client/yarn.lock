@@ -1489,10 +1489,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.1.tgz#5191767011b64ef7f9d9a177474b32e4d0aedb5c"
-  integrity sha512-SDDTR+Ez+l2mD9pI1AWP0iRY9hpdRYwl9h4xQD2z8g9Bi6veIOmfrwXO2oK6m0Bhe37JdaWacQ4dkpAtBsp3ZQ==
+"@project-sunbird/common-consumption-v9@4.3.3":
+  version "4.1.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.8.tgz#45d7ca7078af5876a061d9d7528991be548cde72"
+  integrity sha512-PZpMxqzXiF9kQc9A2DPqOfCr4q6Z/FPlRi4J/ouDNRTBt6IbbAkfJT3Ffgfvd3brnPV0vQNL4vKNnmpzcmPncw==
 
 "@project-sunbird/discussions-ui-v8@2.2.0":
   version "2.2.0"
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.6":
-  version "4.3.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.6.tgz#0e2234556407d16d99e4d3eeec5168c6082a411c"
-  integrity sha512-b+ABIheb6AL1ZCQ4voHi1mVVigaFqSd+1NE035xf4GMpPLrV3aqpr8Pbm6OMd59e9KShrRbA63PZPao48WPRGQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.3.8":
+  version "4.3.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.8.tgz#e2805d86e6e30d1f05fe8cc6a8eebc11d1ea8638"
+  integrity sha512-uxDOptC+w5yNnArJ380vhv19KGcEozjxUUn7rRHq7Q+rls8e743M3iWOwJ8TYEWYES3IwU8KfmelwhxlBK8R0Q==
   dependencies:
     tslib "^1.10.0"
 
@@ -1570,10 +1570,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.3.2":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.2.tgz#03d6b8ca9d1df94cac7172d660f8b548fbf337c9"
-  integrity sha512-TvhD9QxC6VHPCBlx6aGK2ZD5wYH7RnSEp4P3t2A84F2a4uDm9GFn1gPPxXENiHc/ApUrtXCV5A1pxTY+sBzwxQ==
+"@project-sunbird/sunbird-quml-player-v9@4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.3.tgz#2e21bb30b9d910d9a2087ac7de804b990fb563de"
+  integrity sha512-PTE8t5vYmeo5m7zOQPqO2e//oGlwxyMi/luPubs7cghOMLl5mRYIO2hDEZU9WdvZX1xgad7NrQsjt2R/tYLMDw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.2"
 
@@ -1664,10 +1664,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.10.tgz#13f372bcd68ab6a282668d3707bb478cd0a4cf33"
-  integrity sha512-KB7INNcwIpGGUbaGOrawgPXYcaCdm6HKszPJdnDxAdkIwxOYnbWipfXzcyLp1zZm+9nEYI8vE+NFKpTgsz+NwQ==
+"@shikshalokam/sl-questionnaire@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.11.tgz#bd81ac92ec359fd1de0fa99a33c1b9dda9bfdd75"
+  integrity sha512-jhfuqt3KX0BE3Kwg92jpwE+D1chBhA2r2TW24WioJd+63wNkoqxhW4SHFwsF1YTX+fwx8AFElRT9sVp6wNsbog==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
@@ -3722,10 +3722,10 @@ common-form-elements-v9@4.2.7:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.0.tgz#83627fc20ac38dade3b3c402501ff6a76b1edf98"
-  integrity sha512-DkECqaOW4N9ObeunSOKOfZYN1EBGZ4ZuL1UQULRNMtwqnI4Tcc1lNJYsMZvca/zOgV+ccuOTl6Ga4LWvi/8NSw==
+common-form-elements-web-v9@4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.1.tgz#70e8efa2bdc981c58c7f60c00a05ab0379597bbf"
+  integrity sha512-h6782TRdH26nqRl/wQjYSN7CnfPAf+j8uOcXbLIVJ7qbbdwplw6sH9Z1H9P2rtquYC0pe8N01G+ty1CP5XGytw==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"

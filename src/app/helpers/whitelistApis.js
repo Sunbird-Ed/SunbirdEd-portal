@@ -22,7 +22,8 @@ const ROLE = {
   ADMIN: 'ADMIN',
   PUBLIC: 'PUBLIC',
   TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
-  ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
+  ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
+  ANONYMOUS: 'ANONYMOUS'
 };
 
 const API_LIST = {
@@ -271,7 +272,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/system/settings/get/custodianOrgId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/system/settings/get/courseFrameworkId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -286,7 +288,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/system/settings/get/:slug': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/system/settings/get/googleReCaptcha': {
       checksNeeded: ['ROLE_CHECK'],
@@ -399,7 +402,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/learner/course/v1/batch/list': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/course/v1/batch/user/remove': {
       checksNeeded: ['ROLE_CHECK'],
@@ -540,24 +544,28 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/data/v1/location/search': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/location/search': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/role/read': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/certreg/v1/certs/validate': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/otp/v1/verify': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/otp/v1/generate': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/certreg/v1/certs/download': {
       checksNeeded: ['ROLE_CHECK'],
@@ -641,16 +649,20 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/questionset/v1/hierarchy/:do_id': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/user/v1/exists/email/:emailId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/user/v1/exists/phone/:phoneNumber': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/anonymous/otp/v1/generate': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/form/read': {
       checksNeeded: ['ROLE_CHECK'],
@@ -793,7 +805,8 @@ const API_LIST = {
     },
     '/action/content/v3/read/:do_id': {
       description: 'API is accessed by non logged in user',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
@@ -805,7 +818,8 @@ const API_LIST = {
     },
     '/action/content/v3/hierarchy/:do_id': {
       description: 'API used to read textbook for anonymous users',
-      checksNeeded: [],
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1161,6 +1175,7 @@ const API_LIST = {
     '/action/composite/v3/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
+        ROLE.PUBLIC,
         ROLE.CONTENT_CREATOR,
         ROLE.CONTENT_REVIEWER,
         ROLE.COURSE_CREATOR,
@@ -1213,34 +1228,44 @@ const API_LIST = {
       ]
     },
     '/signup': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/collection-editor/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content-editor/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/app/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/v1/tenant/info/:tenantId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/user/session/start/:deviceId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/content/data/v1/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/desktop/handleGauth': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/desktop/google/auth/success': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/service/health': {
       checksNeeded: []
@@ -1249,13 +1274,16 @@ const API_LIST = {
       checksNeeded: []
     },
     '/plugin/v1/form/read': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/tenant/info/': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/device/register/:deviceId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/user/v1/switch/:userId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1263,14 +1291,18 @@ const API_LIST = {
     },
     '/api/data/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/plugin/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/google/auth': {
-      checksNeeded: []
+      description: 'Google Sign in',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     // discussion forum apis
     '/discussion/user/v1/create': {
@@ -1504,11 +1536,13 @@ const API_LIST = {
     },
     '/v1/sso/create/session': {
       description: 'Desktop API',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/api/data/v1/form/read': {
       description: 'Desktop API',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     // Question & QuestionSet API's
     '/action/questionset/v1/create': {
@@ -1712,6 +1746,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    '/learner/framework/v1/read/ekstep_ncert_k-12': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    }
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',

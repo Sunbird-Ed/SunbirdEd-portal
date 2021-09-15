@@ -21,6 +21,7 @@ telemtryEventConfig['pdata']['ver'] = packageObj.version
 telemtryEventConfig['pdata']['pid'] = appId
 // TODO: handle telemetry event config
 const pdata = { id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend' };
+const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 module.exports = {
   /**
@@ -439,7 +440,7 @@ module.exports = {
       url: envHelper.TELEMETRY_SERVICE_LOCAL_URL + 'v1/telemetry',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + apiToken
+        'Authorization': 'Bearer ' + getBearerToken(req)
       },
       body: data,
       json: true
