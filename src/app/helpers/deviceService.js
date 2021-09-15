@@ -6,6 +6,7 @@ const { logger } = require('@project-sunbird/logger');
 const {sendRequest} = require('./httpRequestHandler');
 const {parseJson} = require('./utilityService');
 const uuidv1 = require('uuid/v1');
+const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 const getDeviceProfile = async (req, res) => {
   const options = {
@@ -15,7 +16,7 @@ const getDeviceProfile = async (req, res) => {
       Connection: 'keep-alive',
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
+      'Authorization': 'Bearer ' + getBearerToken(req),
       'X-REAL-IP': req.headers['x-real-ip'],
       'X-FORWARDED-FOR': req.headers['x-real-ip']
     }
@@ -53,7 +54,7 @@ const registerDeviceProfile = async (req, res) => {
       Connection: 'keep-alive',
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
+      'Authorization': 'Bearer ' + getBearerToken(req),
     },
     body: req.body,
     json: true
