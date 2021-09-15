@@ -39,7 +39,6 @@ export class DatasetsComponent implements OnInit {
   };
 
   public isProcessed = false;
-
   formData: Object;
   public columns = [
     { name: 'Report type', isSortable: true, prop: 'datasetConfig.title', placeholder: 'Filter report type' },
