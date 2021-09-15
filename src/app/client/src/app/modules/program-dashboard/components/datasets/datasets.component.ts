@@ -267,7 +267,6 @@ export class DatasetsComponent implements OnInit {
 
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
-
           if (data.result.status === this.reportStatus.failed) {
             const error =  _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
             this.toasterService.error(error);
