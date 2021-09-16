@@ -8,7 +8,7 @@ import { programDashboardRoutingModule } from './program-dashboard-routing.modul
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { DatasetsComponent } from './components/datasets/datasets.component';
+import { DatasetsComponent } from './components/program-datasets/program-datasets.component';
 
 
 @NgModule({

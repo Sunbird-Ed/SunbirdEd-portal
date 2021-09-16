@@ -1,1 +1,1 @@
-export * from './datasets/datasets.component';
+export * from './program-datasets/program-datasets.component';

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { DatasetsComponent } from './datasets.component';
+import { DatasetsComponent } from './program-datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 // import { KendraService, UserService, FormService } from '@sunbird/core';
 // import { ResourceService, SharedModule, ConfigService,OnDemandReportService } from '@sunbird/shared';
@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 // import { SuiModule } from 'ng2-semantic-ui-v9';
 // import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { TelemetryModule } from '@sunbird/telemetry';
-// import { mockData } from './datasets.component.spec.data';
+// import { mockData } from './program-datasets.component.spec.data';
 // import { of as observableOf, throwError as observableThrowError, of, Subject } from 'rxjs';
 // import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { APP_BASE_HREF } from '@angular/common';
