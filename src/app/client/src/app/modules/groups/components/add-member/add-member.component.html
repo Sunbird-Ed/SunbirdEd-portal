@@ -16,11 +16,11 @@
         <div class="sb-field instance-id-verify">
           <div class="d-flex flex-jc-space-between flex-ai-center">
             <div class="w-100">
-              <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
+              <div class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
                   <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" tabindex="0" (click)="toggleModal(true);setInteractData('member-ftu-popup')"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/sprite.svg#info"></use>
                   </svg></i></span>
-              </label>
+                </div>
               <div class="d-flex flex-jc-space-between flex-dc">
                 <div class="w-100 relative">
                   <input type="id" name="id" aria-label="search user id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}" [(ngModel)]="memberId" (ngModelChange)="reset()">
@@ -30,7 +30,7 @@
               </div>
             </div>
             <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" tabindex="0" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" tabindex="0" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId}, '', {type: VERIFY_USER})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" tabindex="0" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId}, '', {type: VERIFY_USER})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>
 
