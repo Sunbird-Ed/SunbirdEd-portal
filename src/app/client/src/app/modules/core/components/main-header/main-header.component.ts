@@ -55,6 +55,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myActivityRole: Array<string>;
   orgAdminRole: Array<string>;
   orgSetupRole: Array<string>;
+  programDashboardRole: Array<string>;
   avtarMobileStyle = {
     backgroundColor: 'transparent',
     color: '#AAAAAA',
