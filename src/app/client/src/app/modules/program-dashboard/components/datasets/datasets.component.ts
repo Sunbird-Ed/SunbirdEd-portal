@@ -99,35 +99,44 @@ export class DatasetsComponent implements OnInit {
   public selectedReport;
   public selectedSolution: string;
 
-  getProgramsList() {
-    const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
-    };
-    this.kendraService.get(paramOptions).subscribe(data => {
-      if (data && data.result) {
-        this.programs = data.result;
+  // getProgramsList() {
+  //   const paramOptions = {
+  //     url:
+  //       this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
+  //   };
+  //   this.kendraService.get(paramOptions).subscribe(data => {
+  //     if (data && data.result) {
+  //       this.programs = data.result;
+  //     }
+  //   }, error => {
+  //     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+  //   })
+
+  // }
+
+  // getSolutionList(program) {
+
+  //   const paramOptions = {
+  //     url:
+  //       this.config.urlConFig.URLS.KENDRA.SOLUTIONS_BY_PROGRAMID + "/" + program._id + "?role=" + program.role
+  //   };
+  //   this.kendraService.get(paramOptions).subscribe(data => {
+  //     if (data && data.result) {
+  //       this.solutions = data.result;
+  //     }
+  //   }, error => {
+  //     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+  //   })
+
+  // }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
       }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
-
-  }
-
-  getSolutionList(program) {
-
-    const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.KENDRA.SOLUTIONS_BY_PROGRAMID + "/" + program._id + "?role=" + program.role
-    };
-    this.kendraService.get(paramOptions).subscribe(data => {
-      if (data && data.result) {
-        this.solutions = data.result;
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
-
+    });
   }
 
   ngOnInit() {
@@ -144,252 +153,245 @@ export class DatasetsComponent implements OnInit {
         }
       });
     this.initLayout();
-    this.getProgramsList();
-    this.getFormDetails();
-  }
-  initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-      if (layoutConfig != null) {
-        this.layoutConfiguration = layoutConfig.layout;
-      }
-    });
+    // this.getProgramsList();
+    // this.getFormDetails();
   }
 
-  public programSelection($event) {
 
-    let program = this.programs.filter(data => {
-      if (data._id == $event) {
-        return data
-      }
-    })
-    this.solutions = [];
-    this.reportTypes = [];
-    this.getSolutionList(program[0]);
+  // public programSelection($event) {
 
-  }
-  public selectSolution($event) {
+  //   let program = this.programs.filter(data => {
+  //     if (data._id == $event) {
+  //       return data
+  //     }
+  //   })
+  //   this.solutions = [];
+  //   this.reportTypes = [];
+  //   this.getSolutionList(program[0]);
 
-    if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
-      let solution = this.solutions.filter(data => {
-        if (data._id == $event) {
-          return data
-        }
-      });
-      this.tag = solution[0]._id;
-      this.loadReports();
-      if (solution[0].isRubricDriven == true && solution[0].type == "observation") {
-        let type = solution[0].type + "_with_rubric";
-        this.reportTypes = this.formData[type];
-      } else {
-        this.reportTypes = this.formData[solution[0].type];
-      }
+  // }
+  // public selectSolution($event) {
 
-    }
-  }
+  //   if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
+  //     let solution = this.solutions.filter(data => {
+  //       if (data._id == $event) {
+  //         return data
+  //       }
+  //     });
+  //     this.tag = solution[0]._id;
+  //     this.loadReports();
+  //     if (solution[0].isRubricDriven == true && solution[0].type == "observation") {
+  //       let type = solution[0].type + "_with_rubric";
+  //       this.reportTypes = this.formData[type];
+  //     } else {
+  //       this.reportTypes = this.formData[solution[0].type];
+  //     }
 
-  public closeModal(): void {
-    this.popup = false;
-  }
+  //   }
+  // }
 
-  public csvRequest() {
-    this.popup = false;
-    this.submitRequest();
-  }
+  // public closeModal(): void {
+  //   this.popup = false;
+  // }
 
-  public requestDataset() {
-    if (this.selectedReport.encrypt == true) {
-      this.popup = true;
-    } else {
-      this.showConfirmationModal = true;
-    }
-  }
+  // public csvRequest() {
+  //   this.popup = false;
+  //   this.submitRequest();
+  // }
 
-  private closeConfirmationModal() {
-    this.showConfirmationModal = false;
-  }
-  goBack() {
-    this.location.back();
-  }
+  // public requestDataset() {
+  //   if (this.selectedReport.encrypt == true) {
+  //     this.popup = true;
+  //   } else {
+  //     this.showConfirmationModal = true;
+  //   }
+  // }
 
-  public handleConfirmationEvent(event: boolean) {
-    this.closeConfirmationModal();
-    if (event == true) {
-      this.submitRequest();
-    }
-  }
-  public closeConfirmModal() {
-    this.awaitPopUp = false;
-  }
+  // private closeConfirmationModal() {
+  //   this.showConfirmationModal = false;
+  // }
+  // goBack() {
+  //   this.location.back();
+  // }
 
-  loadReports() {
-    this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
-      if (data) {
-        const reportData = _.get(data, 'result.jobs');
-        this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-  }
+  // public handleConfirmationEvent(event: boolean) {
+  //   this.closeConfirmationModal();
+  //   if (event == true) {
+  //     this.submitRequest();
+  //   }
+  // }
+  // public closeConfirmModal() {
+  //   this.awaitPopUp = false;
+  // }
 
-  reportChanged(selectedReportData) {
-    this.selectedReport = selectedReportData;
-  }
+  // loadReports() {
+  //   this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
+  //     if (data) {
+  //       const reportData = _.get(data, 'result.jobs');
+  //       this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
+  //     }
+  //   }, error => {
+  //     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+  //   });
+  // }
 
-  submitRequest() {
-    this.selectedSolution = this.reportForm.controls.solution.value;
-    const isRequestAllowed = this.checkStatus();
-    if (isRequestAllowed) {
-      this.isProcessed = false;
-      let config = {
-        type: this.selectedReport['datasetId'],
-        params:{
-          programId: this.programSelected,
-          solutionId: this.reportForm.controls.solution.value,
-        },
-        title: this.selectedReport.name
-      }
-      let request = {
-        request: {
-          dataset:'druid-dataset',
-          tag: this.tag,
-          requestedBy: this.userId,
-          datasetConfig: config,
-          output_format: 'csv'
+  // reportChanged(selectedReportData) {
+  //   this.selectedReport = selectedReportData;
+  // }
 
-        }
-      };
+  // submitRequest() {
+  //   this.selectedSolution = this.reportForm.controls.solution.value;
+  //   const isRequestAllowed = this.checkStatus();
+  //   if (isRequestAllowed) {
+  //     this.isProcessed = false;
+  //     let config = {
+  //       type: this.selectedReport['datasetId'],
+  //       params:{
+  //         programId: this.programSelected,
+  //         solutionId: this.reportForm.controls.solution.value,
+  //       },
+  //       title: this.selectedReport.name
+  //     }
+  //     let request = {
+  //       request: {
+  //         dataset:'druid-dataset',
+  //         tag: this.tag,
+  //         requestedBy: this.userId,
+  //         datasetConfig: config,
+  //         output_format: 'csv'
+
+  //       }
+  //     };
      
-      if (this.selectedReport.encrypt === true) {
-        request.request['encryptionKey'] = this.passwordForm.controls.password.value;
-      }
+  //     if (this.selectedReport.encrypt === true) {
+  //       request.request['encryptionKey'] = this.passwordForm.controls.password.value;
+  //     }
 
-      this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
-        if (data && data.result) {
-          if (data.result.status === this.reportStatus.failed) {
-            const error =  _.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed');
-            this.toasterService.error(error);
-          } else {
+  //     this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
+  //       if (data && data.result) {
+  //         if (data.result.status === this.reportStatus.failed) {
+  //           const error =  _.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed');
+  //           this.toasterService.error(error);
+  //         } else {
 
-            if(data['result'] && data['result']['requestId']){
+  //           if(data['result'] && data['result']['requestId']){
 
-            let dataFound=  this.onDemandReportData.filter(function(submittedReports){
-                 if( submittedReports['requestId']== data['result']['requestId']){
-                  return data;
-                }
+  //           let dataFound=  this.onDemandReportData.filter(function(submittedReports){
+  //                if( submittedReports['requestId']== data['result']['requestId']){
+  //                 return data;
+  //               }
                 
-              });
+  //             });
 
-              if(dataFound && dataFound.length > 0){              
-                this.popup = false;
-                this.isProcessed = true;
-                setTimeout(() => {
-                  this.isProcessed = false;
-                }, 5000)
-                this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
-                this.passwordForm.reset();
+  //             if(dataFound && dataFound.length > 0){              
+  //               this.popup = false;
+  //               this.isProcessed = true;
+  //               setTimeout(() => {
+  //                 this.isProcessed = false;
+  //               }, 5000)
+  //               this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
+  //               this.passwordForm.reset();
 
-              } else {
-                data = this.dataModification(data['result']);
-                const updatedReportList = [data, ...this.onDemandReportData];
-                this.onDemandReportData = updatedReportList;
-                this.awaitPopUp = true;
-                this.passwordForm.reset();
+  //             } else {
+  //               data = this.dataModification(data['result']);
+  //               const updatedReportList = [data, ...this.onDemandReportData];
+  //               this.onDemandReportData = updatedReportList;
+  //               this.awaitPopUp = true;
+  //               this.passwordForm.reset();
 
-              }
-            }
-          }
+  //             }
+  //           }
+  //         }
         
-        }
-      }, error => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      });
+  //       }
+  //     }, error => {
+  //       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+  //     });
 
-    } else {
-      this.popup = false;
-      this.isProcessed = true;
-      setTimeout(() => {
-        this.isProcessed = false;
-      }, 5000)
-      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
-      this.passwordForm.reset();
-    }
-  }
+  //   } else {
+  //     this.popup = false;
+  //     this.isProcessed = true;
+  //     setTimeout(() => {
+  //       this.isProcessed = false;
+  //     }, 5000)
+  //     this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
+  //     this.passwordForm.reset();
+  //   }
+  // }
 
-  public getFormDetails() {
+  // public getFormDetails() {
 
-    const formServiceInputParams = {
-      formType: 'program-dashboard',
-      formAction: 'reportData',
-      contentType: "csv-dataset",
-      component: 'portal'
-    };
+  //   const formServiceInputParams = {
+  //     formType: 'program-dashboard',
+  //     formAction: 'reportData',
+  //     contentType: "csv-dataset",
+  //     component: 'portal'
+  //   };
 
-    this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
-      if (formData) {
-        if (this.userRoles.includes('PROGRAM_DESIGNER')) {
-          let formReportTypes = Object.keys(formData);
-          formReportTypes.map(key => {
-            let filteredReportTypes = formData[key].filter(ele => {
-              if (ele.roles.includes("PROGRAM_DESIGNER")) {
-                return ele
-              }
-            })
-            formData[key] = filteredReportTypes;
-          });
-          this.formData = formData;
-        } else {
-          this.formData = formData;
-        }
-      }
-    }, error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+  //   this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
+  //     if (formData) {
+  //       if (this.userRoles.includes('PROGRAM_DESIGNER')) {
+  //         let formReportTypes = Object.keys(formData);
+  //         formReportTypes.map(key => {
+  //           let filteredReportTypes = formData[key].filter(ele => {
+  //             if (ele.roles.includes("PROGRAM_DESIGNER")) {
+  //               return ele
+  //             }
+  //           })
+  //           formData[key] = filteredReportTypes;
+  //         });
+  //         this.formData = formData;
+  //       } else {
+  //         this.formData = formData;
+  //       }
+  //     }
+  //   }, error => {
+  //     this.toasterService.error(this.resourceService.messages.emsg.m0005);
+  //   });
 
-  }
-  dataModification(row) {
-    row.title = row.datasetConfig.title;
-    return row;
-  }
+  // }
+  // dataModification(row) {
+  //   row.title = row.datasetConfig.title;
+  //   return row;
+  // }
 
-  checkStatus() {
-    let requestStatus = true;
-    const selectedReportList = [];
-    _.forEach(this.onDemandReportData, (value) => {
-      if (value.datasetConfig.type == this.selectedReport.datasetId  && value.datasetConfig.params.solutionId == this.selectedSolution) {
-        selectedReportList.push(value);
-      }
-    });
-    const sortedReportList = _.sortBy(selectedReportList, [(data) => {
-      return data && data.jobStats && data.jobStats.dtJobSubmitted;
-    }]);
+  // checkStatus() {
+  //   let requestStatus = true;
+  //   const selectedReportList = [];
+  //   _.forEach(this.onDemandReportData, (value) => {
+  //     if (value.datasetConfig.type == this.selectedReport.datasetId  && value.datasetConfig.params.solutionId == this.selectedSolution) {
+  //       selectedReportList.push(value);
+  //     }
+  //   });
+  //   const sortedReportList = _.sortBy(selectedReportList, [(data) => {
+  //     return data && data.jobStats && data.jobStats.dtJobSubmitted;
+  //   }]);
   
-    const reportListData = _.last(sortedReportList) || {};
-    if (!_.isEmpty(reportListData)) { 
-      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); 
-      if (!isInProgress) {
-        requestStatus = true;
-      } else {
-        requestStatus = false; 
-      }
-    }
-    return requestStatus;
-  }
-  onDownloadLinkFail(data) {
-    const tagId = data && data.tag && data.tag.split(':');
-    this.onDemandReportService.getReport(_.head(tagId), data.requestId).subscribe((data: any) => {
-      if (data) {
-        const downloadUrls = _.get(data, 'result.downloadUrls') || [];
-        const downloadPath = _.head(downloadUrls);
-        if (downloadPath) {
-          window.open(downloadPath, '_blank');
-        } else {
-          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        }
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-  }
+  //   const reportListData = _.last(sortedReportList) || {};
+  //   if (!_.isEmpty(reportListData)) { 
+  //     let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); 
+  //     if (!isInProgress) {
+  //       requestStatus = true;
+  //     } else {
+  //       requestStatus = false; 
+  //     }
+  //   }
+  //   return requestStatus;
+  // }
+  // onDownloadLinkFail(data) {
+  //   const tagId = data && data.tag && data.tag.split(':');
+  //   this.onDemandReportService.getReport(_.head(tagId), data.requestId).subscribe((data: any) => {
+  //     if (data) {
+  //       const downloadUrls = _.get(data, 'result.downloadUrls') || [];
+  //       const downloadPath = _.head(downloadUrls);
+  //       if (downloadPath) {
+  //         window.open(downloadPath, '_blank');
+  //       } else {
+  //         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+  //       }
+  //     }
+  //   }, error => {
+  //     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+  //   });
+  // }
 }
