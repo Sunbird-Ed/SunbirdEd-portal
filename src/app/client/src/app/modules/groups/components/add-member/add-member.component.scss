@@ -86,7 +86,7 @@
 
 .instance-id-verify {
 	button {
-		margin-top: calculateRem(32px);
+		margin-top: calculateRem(24px);
 		margin-left: calculateRem(8px);
 		align-self: normal;
 		@include respond-below(sm) {
