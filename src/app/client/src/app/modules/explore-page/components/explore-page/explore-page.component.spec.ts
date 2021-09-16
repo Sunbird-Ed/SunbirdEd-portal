@@ -802,7 +802,9 @@ describe('ExplorePageComponent', () => {
             selectedTab: 'all',
             showClose: 'true',
             isInside: 'english',
-            returnTo: ''
+            returnTo: '',
+            description: '',
+            title: ''
         }
       });
     });
