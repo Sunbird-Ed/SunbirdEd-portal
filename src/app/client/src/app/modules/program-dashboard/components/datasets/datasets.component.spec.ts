@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DatasetsComponent } from './datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-// import { KendraService, UserService, FormService } from '@sunbird/core';
+import { KendraService, UserService, FormService } from '@sunbird/core';
 import { ResourceService, SharedModule, ConfigService,OnDemandReportService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -65,7 +65,7 @@ describe('DatasetsComponent', () => {
           }
         },
         { provide: ResourceService, useValue: resourceServiceMockData },
-        // KendraService,
+        KendraService,
         ConfigService,
         // OnDemandReportService,
         { provide: APP_BASE_HREF, useValue: '/' }
@@ -91,17 +91,17 @@ describe('DatasetsComponent', () => {
   });
 
 
-  // it('should fetch programsList', () => {
-  //   const userService = TestBed.get(UserService);
-  //   userService._userData$.next({ err: null, userProfile: mockData.userProfile });
-  //   userService._userProfile = mockData.userProfile;
-  //   component.userRoles= mockData.userProfile.roles;
-  //   const kendraService = TestBed.get(KendraService);
-  //   spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.programs));
-  //   component.getProgramsList();
-  //   expect(component.programs).toEqual(mockData.programs.result);
+  it('should fetch programsList', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
+    userService._userProfile = mockData.userProfile;
+    component.userRoles= mockData.userProfile.roles;
+    const kendraService = TestBed.get(KendraService);
+    spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.programs));
+    component.getProgramsList();
+    expect(component.programs).toEqual(mockData.programs.result);
 
-  // });
+  });
 
   // it('should call programSelection', () => {
   //   const kendraService = TestBed.get(KendraService);
@@ -175,14 +175,14 @@ describe('DatasetsComponent', () => {
 
 
   
-  // it('should call getFormDetails', fakeAsync(() => {
+  it('should call getFormDetails', fakeAsync(() => {
 
-  //   const formService = TestBed.get(FormService);
-  //   spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.FormData));
-  //   component.getFormDetails();
-  //   expect(component.formData).toEqual(mockData.FormData);
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.FormData));
+    component.getFormDetails();
+    expect(component.formData).toEqual(mockData.FormData);
 
-  // }));
+  }));
 
   // it('should call selectSolution',fakeAsync(() => {
 
