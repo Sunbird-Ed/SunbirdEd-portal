@@ -99,19 +99,30 @@ export class DatasetsComponent implements OnInit {
   public selectedReport;
   public selectedSolution: string;
 
-  getProgramsList() {
-    const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
-    };
-    this.kendraService.get(paramOptions).subscribe(data => {
-      if (data && data.result) {
-        this.programs = data.result;
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+  ngOnInit() {
+  
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.userDataSubscription = this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+          this.userRoles = user.userProfile.userRoles;
+          this.userId = user.userProfile.id;
+          
+        }
+      });
+    this.initLayout();
+    this.getProgramsList();
+    this.getFormDetails();
+  }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
   }
 
   getSolutionList(program) {
@@ -130,44 +141,21 @@ export class DatasetsComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-
-  
-    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
-    this.userDataSubscription = this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-          this.userRoles = user.userProfile.userRoles;
-          this.userId = user.userProfile.id;
-          
-        }
-      });
-    this.initLayout();
-    this.getProgramsList();
-    this.getFormDetails();
-  }
-  initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-      if (layoutConfig != null) {
-        this.layoutConfiguration = layoutConfig.layout;
+  getProgramsList() {
+    const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
+    };
+    this.kendraService.get(paramOptions).subscribe(data => {
+      if (data && data.result) {
+        this.programs = data.result;
       }
-    });
-  }
-
-  public programSelection($event) {
-
-    let program = this.programs.filter(data => {
-      if (data._id == $event) {
-        return data
-      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     })
-    this.solutions = [];
-    this.reportTypes = [];
-    this.getSolutionList(program[0]);
 
   }
+
   public selectSolution($event) {
 
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
@@ -188,21 +176,25 @@ export class DatasetsComponent implements OnInit {
     }
   }
 
-  public closeModal(): void {
-    this.popup = false;
-  }
+  public programSelection($event) {
 
+    let program = this.programs.filter(data => {
+      if (data._id == $event) {
+        return data
+      }
+    })
+    this.solutions = [];
+    this.reportTypes = [];
+    this.getSolutionList(program[0]);
+
+  }
   public csvRequest() {
     this.popup = false;
     this.submitRequest();
   }
 
-  public requestDataset() {
-    if (this.selectedReport.encrypt == true) {
-      this.popup = true;
-    } else {
-      this.showConfirmationModal = true;
-    }
+  public closeModal(): void {
+    this.popup = false;
   }
 
   private closeConfirmationModal() {
@@ -213,14 +205,12 @@ export class DatasetsComponent implements OnInit {
     this.location.back();
   }
 
-  public handleConfirmationEvent(event: boolean) {
-    this.closeConfirmationModal();
-    if (event == true) {
-      this.submitRequest();
+  public requestDataset() {
+    if (this.selectedReport.encrypt == true) {
+      this.popup = true;
+    } else {
+      this.showConfirmationModal = true;
     }
-  }
-  public closeConfirmModal() {
-    this.awaitPopUp = false;
   }
 
   loadReports() {
@@ -236,6 +226,91 @@ export class DatasetsComponent implements OnInit {
 
   reportChanged(selectedReportData) {
     this.selectedReport = selectedReportData;
+  }
+
+  public handleConfirmationEvent(event: boolean) {
+    this.closeConfirmationModal();
+    if (event == true) {
+      this.submitRequest();
+    }
+  }
+  public closeConfirmModal() {
+    this.awaitPopUp = false;
+  }
+
+  public getFormDetails() {
+
+    const formServiceInputParams = {
+      formType: 'program-dashboard',
+      formAction: 'reportData',
+      contentType: "csv-dataset",
+      component: 'portal'
+    };
+
+    this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
+      if (formData) {
+        if (this.userRoles.includes('PROGRAM_DESIGNER')) {
+          let formReportTypes = Object.keys(formData);
+          formReportTypes.map(key => {
+            let filteredReportTypes = formData[key].filter(ele => {
+              if (ele.roles.includes("PROGRAM_DESIGNER")) {
+                return ele
+              }
+            })
+            formData[key] = filteredReportTypes;
+          });
+          this.formData = formData;
+        } else {
+          this.formData = formData;
+        }
+      }
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+
+  }
+  dataModification(row) {
+    row.title = row.datasetConfig.title;
+    return row;
+  }
+  checkStatus() {
+    let requestStatus = true;
+    const selectedReportList = [];
+    _.forEach(this.onDemandReportData, (value) => {
+      if (value.datasetConfig.type == this.selectedReport.datasetId  && value.datasetConfig.params.solutionId == this.selectedSolution) {
+        selectedReportList.push(value);
+      }
+    });
+    const sortedReportList = _.sortBy(selectedReportList, [(data) => {
+      return data && data.jobStats && data.jobStats.dtJobSubmitted;
+    }]);
+  
+    const reportListData = _.last(sortedReportList) || {};
+    if (!_.isEmpty(reportListData)) { 
+      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); 
+      if (!isInProgress) {
+        requestStatus = true;
+      } else {
+        requestStatus = false; 
+      }
+    }
+    return requestStatus;
+  }
+  onDownloadLinkFail(data) {
+    const tagId = data && data.tag && data.tag.split(':');
+    this.onDemandReportService.getReport(_.head(tagId), data.requestId).subscribe((data: any) => {
+      if (data) {
+        const downloadUrls = _.get(data, 'result.downloadUrls') || [];
+        const downloadPath = _.head(downloadUrls);
+        if (downloadPath) {
+          window.open(downloadPath, '_blank');
+        } else {
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        }
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
   }
 
   submitRequest() {
@@ -319,79 +394,5 @@ export class DatasetsComponent implements OnInit {
     }
   }
 
-  public getFormDetails() {
 
-    const formServiceInputParams = {
-      formType: 'program-dashboard',
-      formAction: 'reportData',
-      contentType: "csv-dataset",
-      component: 'portal'
-    };
-
-    this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
-      if (formData) {
-        if (this.userRoles.includes('PROGRAM_DESIGNER')) {
-          let formReportTypes = Object.keys(formData);
-          formReportTypes.map(key => {
-            let filteredReportTypes = formData[key].filter(ele => {
-              if (ele.roles.includes("PROGRAM_DESIGNER")) {
-                return ele
-              }
-            })
-            formData[key] = filteredReportTypes;
-          });
-          this.formData = formData;
-        } else {
-          this.formData = formData;
-        }
-      }
-    }, error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
-
-  }
-  dataModification(row) {
-    row.title = row.datasetConfig.title;
-    return row;
-  }
-
-  checkStatus() {
-    let requestStatus = true;
-    const selectedReportList = [];
-    _.forEach(this.onDemandReportData, (value) => {
-      if (value.datasetConfig.type == this.selectedReport.datasetId  && value.datasetConfig.params.solutionId == this.selectedSolution) {
-        selectedReportList.push(value);
-      }
-    });
-    const sortedReportList = _.sortBy(selectedReportList, [(data) => {
-      return data && data.jobStats && data.jobStats.dtJobSubmitted;
-    }]);
-  
-    const reportListData = _.last(sortedReportList) || {};
-    if (!_.isEmpty(reportListData)) { 
-      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); 
-      if (!isInProgress) {
-        requestStatus = true;
-      } else {
-        requestStatus = false; 
-      }
-    }
-    return requestStatus;
-  }
-  onDownloadLinkFail(data) {
-    const tagId = data && data.tag && data.tag.split(':');
-    this.onDemandReportService.getReport(_.head(tagId), data.requestId).subscribe((data: any) => {
-      if (data) {
-        const downloadUrls = _.get(data, 'result.downloadUrls') || [];
-        const downloadPath = _.head(downloadUrls);
-        if (downloadPath) {
-          window.open(downloadPath, '_blank');
-        } else {
-          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        }
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-  }
 }
