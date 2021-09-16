@@ -1491,8 +1491,8 @@
 
 "@project-sunbird/common-consumption-v9@4.3.3":
   version "4.3.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.8.tgz#45d7ca7078af5876a061d9d7528991be548cde72"
-  integrity sha512-PZpMxqzXiF9kQc9A2DPqOfCr4q6Z/FPlRi4J/ouDNRTBt6IbbAkfJT3Ffgfvd3brnPV0vQNL4vKNnmpzcmPncw==
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.3.tgz#69be92d2c1fc64d7b80c0e7b61bf48c8d9038560"
+  integrity sha512-McUvxZ2OdRFFrN9DZUPj3fQ+bCtCc7C1M0CPN72w2JshBinRaadfH+iHH7gr3Ox8bgcTHKjBO4n3yF635bMFow==
 
 "@project-sunbird/discussions-ui-v8@2.2.0":
   version "2.2.0"
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.5":
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.5.tgz#ca860257b10d2a7f35b2b0a118a1db1c621ca817"
-  integrity sha512-zDqzS2kfCfHH2wi/ZBQMRbzwPj+GWm62JkWTVW6A8f+TG/CQR/iaXR21ZDTu7e1Kl+kq/gsSdrsdVyCmE9bFEg==
+"@project-sunbird/sunbird-collection-editor-v9@4.3.9":
+  version "4.3.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.9.tgz#f9819819244ea4c3d0c84717450bbf03485cee4a"
+  integrity sha512-VDXFry+MrjlE9dl/WbbYodTWokTg9jTWTpGWQXAXq8TRVpuiUWZbMizYzKraOFpH8cnottbVmHn5ilcgYab5CQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -1570,10 +1570,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.3.2":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.2.tgz#03d6b8ca9d1df94cac7172d660f8b548fbf337c9"
-  integrity sha512-TvhD9QxC6VHPCBlx6aGK2ZD5wYH7RnSEp4P3t2A84F2a4uDm9GFn1gPPxXENiHc/ApUrtXCV5A1pxTY+sBzwxQ==
+"@project-sunbird/sunbird-quml-player-v9@4.3.7":
+  version "4.3.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.7.tgz#cf04f74081f100bd18f03770c3105c4d85be5cdf"
+  integrity sha512-PHWiUMdG0EEGvO7bQ/0zhl30GfMi1XB2C5NG1/krsNC2nzQtknkZcyTBplFfx+i4KvpoZz2VTaKi1vSsCmpC9g==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.2"
 
@@ -1664,10 +1664,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.10.tgz#13f372bcd68ab6a282668d3707bb478cd0a4cf33"
-  integrity sha512-KB7INNcwIpGGUbaGOrawgPXYcaCdm6HKszPJdnDxAdkIwxOYnbWipfXzcyLp1zZm+9nEYI8vE+NFKpTgsz+NwQ==
+"@shikshalokam/sl-questionnaire@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.11.tgz#bd81ac92ec359fd1de0fa99a33c1b9dda9bfdd75"
+  integrity sha512-jhfuqt3KX0BE3Kwg92jpwE+D1chBhA2r2TW24WioJd+63wNkoqxhW4SHFwsF1YTX+fwx8AFElRT9sVp6wNsbog==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
@@ -3722,10 +3722,10 @@ common-form-elements-v9@4.2.7:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.0.tgz#83627fc20ac38dade3b3c402501ff6a76b1edf98"
-  integrity sha512-DkECqaOW4N9ObeunSOKOfZYN1EBGZ4ZuL1UQULRNMtwqnI4Tcc1lNJYsMZvca/zOgV+ccuOTl6Ga4LWvi/8NSw==
+common-form-elements-web-v9@4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.1.tgz#70e8efa2bdc981c58c7f60c00a05ab0379597bbf"
+  integrity sha512-h6782TRdH26nqRl/wQjYSN7CnfPAf+j8uOcXbLIVJ7qbbdwplw6sH9Z1H9P2rtquYC0pe8N01G+ty1CP5XGytw==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
