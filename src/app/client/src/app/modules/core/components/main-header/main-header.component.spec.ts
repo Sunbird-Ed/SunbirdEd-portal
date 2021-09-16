@@ -378,6 +378,20 @@ describe('MainHeaderComponent', () => {
     expect(component.showBackButton).toBeFalsy();
   });
 
+  fit('should return explore title', () => {
+    component.activatedRoute = {
+      snapshot: {
+        queryParams: {
+          isInside: 'sample-subject',
+          title: 'sample-title',
+          description: 'sample-des'
+        }
+      }
+    } as any;
+    component.backButton.showResult();
+    expect(component.showBackButton).toBeFalsy();
+  });
+
 it("should call the setUserPreference when logged in ",()=>{
   const userService = TestBed.get(UserService);
   userService._authenticated = true;

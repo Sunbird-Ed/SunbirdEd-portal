@@ -2003,6 +2003,10 @@ export const RESPONSE = {
           'params': '',
           'contextKey': 'res.facet.subject'
         },
+        'landing': {
+          'title': 'frmelmnts.lbl.exploretitle',
+          'description': 'frmelmnts.lbl.exploredescription'
+        },
         'theme': {
           'component': 'sb-pills-grid',
           'limit': 10,
@@ -2070,6 +2074,10 @@ export const RESPONSE = {
           'req': {},
           'params': '',
           'contextKey': 'res.facet.primaryCategory'
+        },
+        'landing': {
+          'title': 'frmelmnts.lbl.exploretitle',
+          'description': 'frmelmnts.lbl.exploredescription'
         },
         'theme': {
           'component': 'sb-pills-grid',
@@ -2303,6 +2311,10 @@ export const RESPONSE = {
           'req': {},
           'params': '',
           'contextKey': 'res.facet.primaryCategory'
+        },
+        'landing': {
+          'title': 'frmelmnts.lbl.exploretitle',
+          'description': 'frmelmnts.lbl.exploredescription'
         },
         'data': [
           {
@@ -3193,11 +3205,11 @@ export const RESPONSE = {
 };
 
 export const categoryData = {
-  "tn_k-12_5": {
+  'tn_k-12_5': {
     teacher: [{
-      name: "observation",
+      name: 'observation',
       icon: {
-        web:"assets/images/mask-image/observation_category.png" 
+        web:'assets/images/mask-image/observation_category.png' 
       }
     }]
   }
@@ -3205,16 +3217,16 @@ export const categoryData = {
 
 export const EventPillData={
   event: {
-      "isTrusted": true
+      'isTrusted': true
   },
   data: [
       {
-          name: "Observation",
+          name: 'Observation',
           value: {
-              name: "observation",
+              name: 'observation',
               icon: {
-                  web: "assets/images/mask-image/observation_category.png",
-                  app: "assets/imgs/ic_observation_category.png"
+                  web: 'assets/images/mask-image/observation_category.png',
+                  app: 'assets/imgs/ic_observation_category.png'
               }
           }
       }
