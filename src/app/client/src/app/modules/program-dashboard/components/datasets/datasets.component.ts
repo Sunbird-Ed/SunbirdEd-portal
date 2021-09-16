@@ -71,14 +71,14 @@ export class DatasetsComponent implements OnInit {
     public layoutService: LayoutService,
     public telemetryService: TelemetryService,
     public resourceService: ResourceService,
-    public kendraService: KendraService,
-    public userService: UserService,
-    public onDemandReportService: OnDemandReportService,
+    // public kendraService: KendraService,
+    // public userService: UserService,
+    // public onDemandReportService: OnDemandReportService,
     config: ConfigService,
-    public toasterService: ToasterService,
-    public formService: FormService,
-    public router: Router,
-    public location: Location
+    // public toasterService: ToasterService,
+    // public formService: FormService,
+    // public router: Router,
+    // public location: Location
   ) {
     this.config = config;
     this.activatedRoute = activatedRoute;
@@ -99,20 +99,20 @@ export class DatasetsComponent implements OnInit {
   public selectedReport;
   public selectedSolution: string;
 
-  getProgramsList() {
-    const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
-    };
-    this.kendraService.get(paramOptions).subscribe(data => {
-      if (data && data.result) {
-        this.programs = data.result;
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+  // getProgramsList() {
+  //   const paramOptions = {
+  //     url:
+  //       this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
+  //   };
+  //   this.kendraService.get(paramOptions).subscribe(data => {
+  //     if (data && data.result) {
+  //       this.programs = data.result;
+  //     }
+  //   }, error => {
+  //     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+  //   })
 
-  }
+  // }
 
   // getSolutionList(program) {
 
@@ -143,18 +143,18 @@ export class DatasetsComponent implements OnInit {
 
   
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
-    this.userDataSubscription = this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-          this.userRoles = user.userProfile.userRoles;
-          this.userId = user.userProfile.id;
+    // this.userDataSubscription = this.userService.userData$.subscribe(
+    //   (user: IUserData) => {
+    //     if (user && !user.err) {
+    //       this.userProfile = user.userProfile;
+    //       this.userRoles = user.userProfile.userRoles;
+    //       this.userId = user.userProfile.id;
           
-        }
-      });
+    //     }
+    //   });
     this.initLayout();
-    this.getProgramsList();
-    this.getFormDetails();
+    // this.getProgramsList();
+    // this.getFormDetails();
   }
 
 
@@ -191,9 +191,9 @@ export class DatasetsComponent implements OnInit {
   //   }
   // }
 
-  // public closeModal(): void {
-  //   this.popup = false;
-  // }
+  public closeModal(): void {
+    this.popup = false;
+  }
 
   // public csvRequest() {
   //   this.popup = false;
@@ -320,37 +320,37 @@ export class DatasetsComponent implements OnInit {
   //   }
   // }
 
-  public getFormDetails() {
+  // public getFormDetails() {
 
-    const formServiceInputParams = {
-      formType: 'program-dashboard',
-      formAction: 'reportData',
-      contentType: "csv-dataset",
-      component: 'portal'
-    };
+  //   const formServiceInputParams = {
+  //     formType: 'program-dashboard',
+  //     formAction: 'reportData',
+  //     contentType: "csv-dataset",
+  //     component: 'portal'
+  //   };
 
-    this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
-      if (formData) {
-        if (this.userRoles.includes('PROGRAM_DESIGNER')) {
-          let formReportTypes = Object.keys(formData);
-          formReportTypes.map(key => {
-            let filteredReportTypes = formData[key].filter(ele => {
-              if (ele.roles.includes("PROGRAM_DESIGNER")) {
-                return ele
-              }
-            })
-            formData[key] = filteredReportTypes;
-          });
-          this.formData = formData;
-        } else {
-          this.formData = formData;
-        }
-      }
-    }, error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+  //   this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
+  //     if (formData) {
+  //       if (this.userRoles.includes('PROGRAM_DESIGNER')) {
+  //         let formReportTypes = Object.keys(formData);
+  //         formReportTypes.map(key => {
+  //           let filteredReportTypes = formData[key].filter(ele => {
+  //             if (ele.roles.includes("PROGRAM_DESIGNER")) {
+  //               return ele
+  //             }
+  //           })
+  //           formData[key] = filteredReportTypes;
+  //         });
+  //         this.formData = formData;
+  //       } else {
+  //         this.formData = formData;
+  //       }
+  //     }
+  //   }, error => {
+  //     this.toasterService.error(this.resourceService.messages.emsg.m0005);
+  //   });
 
-  }
+  // }
   // dataModification(row) {
   //   row.title = row.datasetConfig.title;
   //   return row;
