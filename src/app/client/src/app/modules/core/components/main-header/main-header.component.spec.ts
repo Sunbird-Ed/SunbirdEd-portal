@@ -31,7 +31,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import {ObservationUtilService} from '../../../observation/service'
 
-describe('MainHeaderComponent', () => {
+fdescribe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
   let fixture: ComponentFixture<MainHeaderComponent>;
   const resourceBundle = {
@@ -417,7 +417,7 @@ it("should call the getFormConfigs to get form category",()=>{
 })
 it('should have program dashboard role ', () => {
   component.ngOnInit();
-  expect(component.programDashboardRole).toEqual(["PROGRAM_MANGER"]);
+  expect(component.programDashboardRole).toEqual(["PROGRAM_MANAGER","PROGRAM_DESIGNER"]);
 });
 
 
