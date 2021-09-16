@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ToasterService, IUserData, IUserProfile, LayoutService, ResourceService, ConfigService, OnDemandReportService } from '@sunbird/shared';
-import { TelemetryService } from '@sunbird/telemetry';
-import { Subject, Subscription } from 'rxjs';
-import { KendraService, UserService, FormService } from '@sunbird/core';
-import { takeUntil } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import * as _ from 'lodash-es';
-import { Location } from '@angular/common';
+// import { ToasterService, IUserData, IUserProfile, LayoutService, ResourceService, ConfigService, OnDemandReportService } from '@sunbird/shared';
+// import { TelemetryService } from '@sunbird/telemetry';
+// import { Subject, Subscription } from 'rxjs';
+// // import { KendraService, UserService, FormService } from '@sunbird/core';
+// import { takeUntil } from 'rxjs/operators';
+// import { ActivatedRoute, Router } from '@angular/router';
+// import { FormGroup, FormControl, Validators } from '@angular/forms';
+// import * as _ from 'lodash-es';
+// import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-datasets',
@@ -18,86 +18,86 @@ import { Location } from '@angular/common';
 
 export class DatasetsComponent implements OnInit {
 
-  public activatedRoute: ActivatedRoute;
-  public showConfirmationModal = false;
+  // public activatedRoute: ActivatedRoute;
+  // public showConfirmationModal = false;
 
-  config;
-  reportTypes = [];
-  programs = [];
-  solutions = [];
-  public message = 'There is no data available';
-  instance: string;
+  // config;
+  // reportTypes = [];
+  // programs = [];
+  // solutions = [];
+  // public message = 'There is no data available';
+  // instance: string;
 
-  @ViewChild('modal', { static: false }) modal;
+  // @ViewChild('modal', { static: false }) modal;
   popup: boolean = false;
-  awaitPopUp: boolean = false;
-  reportStatus = {
-    'submitted': 'SUBMITTED',
-    'processing': 'PROCESSING',
-    'failed': 'FAILED',
-    'success': 'SUCCESS',
-  };
+  // awaitPopUp: boolean = false;
+  // reportStatus = {
+  //   'submitted': 'SUBMITTED',
+  //   'processing': 'PROCESSING',
+  //   'failed': 'FAILED',
+  //   'success': 'SUCCESS',
+  // };
 
-  public isProcessed = false;
-  formData: Object;
-  public columns = [
-    { name: 'Report type', isSortable: true, prop: 'datasetConfig.title', placeholder: 'Filter report type' },
-    { name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date', type: 'date' },
-    { name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status' },
-    { name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link' },
-    { name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date', type: 'dateTime' },
-  ];
+  // public isProcessed = false;
+  // formData: Object;
+  // public columns = [
+  //   { name: 'Report type', isSortable: true, prop: 'datasetConfig.title', placeholder: 'Filter report type' },
+  //   { name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date', type: 'date' },
+  //   { name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status' },
+  //   { name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link' },
+  //   { name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date', type: 'dateTime' },
+  // ];
 
-  public onDemandReportData = [];
+  // public onDemandReportData = [];
 
-  downloadCSV = true;
-  isColumnsSearchable = false;
-  tag: string;
+  // downloadCSV = true;
+  // isColumnsSearchable = false;
+  // tag: string;
 
-  reportForm = new FormGroup({
-    programName: new FormControl('', [Validators.required]),
-    solution: new FormControl('', [Validators.required]),
-    reportType: new FormControl('', [Validators.required])
-  });
+  // reportForm = new FormGroup({
+  //   programName: new FormControl('', [Validators.required]),
+  //   solution: new FormControl('', [Validators.required]),
+  //   reportType: new FormControl('', [Validators.required])
+  // });
 
-  passwordForm = new FormGroup({
-    password: new FormControl('', [Validators.minLength(8), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
-  });
+  // passwordForm = new FormGroup({
+  //   password: new FormControl('', [Validators.minLength(8), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
+  // });
 
-  programSelected: any;
+  // programSelected: any;
 
-  constructor(
-    activatedRoute: ActivatedRoute,
-    public layoutService: LayoutService,
-    public telemetryService: TelemetryService,
-    public resourceService: ResourceService,
-    // public kendraService: KendraService,
-    // public userService: UserService,
-    // public onDemandReportService: OnDemandReportService,
-    config: ConfigService,
-    // public toasterService: ToasterService,
-    // public formService: FormService,
-    // public router: Router,
-    // public location: Location
-  ) {
-    this.config = config;
-    this.activatedRoute = activatedRoute;
-  }
+  // constructor(
+  //   activatedRoute: ActivatedRoute,
+  //   public layoutService: LayoutService,
+  //   public telemetryService: TelemetryService,
+  //   public resourceService: ResourceService,
+  //   public kendraService: KendraService,
+  //   public userService: UserService,
+  //   public onDemandReportService: OnDemandReportService,
+  //   config: ConfigService,
+  //   public toasterService: ToasterService,
+  //   public formService: FormService,
+  //   public router: Router,
+  //   public location: Location
+  // ) {
+  //   this.config = config;
+  //   this.activatedRoute = activatedRoute;
+  // }
 
-  layoutConfiguration: any;
-  public unsubscribe$ = new Subject<void>();
-  userDataSubscription: Subscription;
+  // layoutConfiguration: any;
+  // public unsubscribe$ = new Subject<void>();
+  // userDataSubscription: Subscription;
   /**
    * Reference of User Profile interface
    */
-  userProfile: IUserProfile;
+  // userProfile: IUserProfile;
   /**
    * all user role
    */
-  public userRoles: Array<string> = [];
-  public userId: string;
-  public selectedReport;
-  public selectedSolution: string;
+  // public userRoles: Array<string> = [];
+  // public userId: string;
+  // public selectedReport;
+  // public selectedSolution: string;
 
   // getProgramsList() {
   //   const paramOptions = {
@@ -130,19 +130,19 @@ export class DatasetsComponent implements OnInit {
 
   // }
 
-  initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-      if (layoutConfig != null) {
-        this.layoutConfiguration = layoutConfig.layout;
-      }
-    });
-  }
+  // initLayout() {
+    // this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    // this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+    //   if (layoutConfig != null) {
+    //     this.layoutConfiguration = layoutConfig.layout;
+    //   }
+    // });
+  // }
 
   ngOnInit() {
 
   
-    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    // this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     // this.userDataSubscription = this.userService.userData$.subscribe(
     //   (user: IUserData) => {
     //     if (user && !user.err) {
@@ -152,7 +152,7 @@ export class DatasetsComponent implements OnInit {
           
     //     }
     //   });
-    this.initLayout();
+    // this.initLayout();
     // this.getProgramsList();
     // this.getFormDetails();
   }

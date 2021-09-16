@@ -2,54 +2,54 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { DatasetsComponent } from './datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 // import { KendraService, UserService, FormService } from '@sunbird/core';
-import { ResourceService, SharedModule, ConfigService,OnDemandReportService } from '@sunbird/shared';
+// import { ResourceService, SharedModule, ConfigService,OnDemandReportService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TelemetryModule } from '@sunbird/telemetry';
+// import { SuiModule } from 'ng2-semantic-ui-v9';
+// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// import { TelemetryModule } from '@sunbird/telemetry';
 // import { mockData } from './datasets.component.spec.data';
-import { of as observableOf, throwError as observableThrowError, of, Subject } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+// import { of as observableOf, throwError as observableThrowError, of, Subject } from 'rxjs';
+// import { HttpClientTestingModule } from '@angular/common/http/testing';
 // import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('DatasetsComponent', () => {
+fdescribe('DatasetsComponent', () => {
   let component: DatasetsComponent;
   let fixture: ComponentFixture<DatasetsComponent>;
 
 
-  const resourceServiceMockData = {
-    frmelmnts: {
-      btn: {
-        ok: 'ok',
-        yes: 'yes',
-        no: 'no'
+  // const resourceServiceMockData = {
+  //   frmelmnts: {
+  //     btn: {
+  //       ok: 'ok',
+  //       yes: 'yes',
+  //       no: 'no'
 
-      },
-      lbl: {
-        program: "Program Name",
-        solution: "Solution Name",
-        reportType: "Report Type",
-        csvDataSets: 'CSV Datasets',
-        programDatasets: 'Program Datasets',
-        detailsReports: 'Details Reports',
-        confirmReportRequest: 'Are you sure you want to request this report?'
-      }
-    }
-  };
+  //     },
+  //     lbl: {
+  //       program: "Program Name",
+  //       solution: "Solution Name",
+  //       reportType: "Report Type",
+  //       csvDataSets: 'CSV Datasets',
+  //       programDatasets: 'Program Datasets',
+  //       detailsReports: 'Details Reports',
+  //       confirmReportRequest: 'Are you sure you want to request this report?'
+  //     }
+  //   }
+  // };
   configureTestSuite();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        TelemetryModule.forRoot(),
+        // TelemetryModule.forRoot(),
         // SharedModule.forRoot(),
-        HttpClientTestingModule,
-        SuiModule,
-        FormsModule,
-        ReactiveFormsModule,
+        // HttpClientTestingModule,
+        // SuiModule,
+        // FormsModule,
+        // ReactiveFormsModule,
       ],
       providers: [
         {
@@ -64,9 +64,9 @@ describe('DatasetsComponent', () => {
             }
           }
         },
-        { provide: ResourceService, useValue: resourceServiceMockData },
+        // { provide: ResourceService, useValue: resourceServiceMockData },
         // KendraService,
-        ConfigService,
+        // ConfigService,
         // OnDemandReportService,
         // { provide: APP_BASE_HREF, useValue: '/' }
       ],
@@ -80,7 +80,7 @@ describe('DatasetsComponent', () => {
 
     fixture = TestBed.createComponent(DatasetsComponent);
     component = fixture.componentInstance;
-    component.layoutConfiguration = {};
+    // component.layoutConfiguration = {};
     // component.formData = mockData.FormData;
     // fixture.detectChanges();
 
