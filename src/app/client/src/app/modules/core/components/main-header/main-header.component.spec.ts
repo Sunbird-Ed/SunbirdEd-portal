@@ -31,7 +31,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import {ObservationUtilService} from '../../../observation/service'
 
-fdescribe('MainHeaderComponent', () => {
+describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
   let fixture: ComponentFixture<MainHeaderComponent>;
   const resourceBundle = {
