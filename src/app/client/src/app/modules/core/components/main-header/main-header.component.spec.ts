@@ -85,9 +85,11 @@ describe('MainHeaderComponent', () => {
   }));
 
   beforeEach(() => {
+
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
     component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
+    component.programDashboardRole = ["PROGRAM_MANGER"];
   });
 
   it('should subscribe to user service', () => {
@@ -413,6 +415,10 @@ it("should call the getFormConfigs to get form category",()=>{
   component.getFormConfigs();
   expect(component.getFormConfigs).toHaveBeenCalled();
 })
+it('should have program dashboard role ', () => {
+  component.ngOnInit();
+  expect(component.programDashboardRole).toEqual(["PROGRAM_MANAGER","PROGRAM_DESIGNER"]);
+});
 
 
 });
