@@ -142,13 +142,18 @@ describe('ExploreContentComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['']);
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    component.selectedFilters = {
+      se_boards: ['sample-board'],
+      se_medium: ['sample-medium'],
+      se_gardeLevel: ['sample-grade']
+    };
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(3);
   }));
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
     component.ngOnInit();
@@ -157,7 +162,7 @@ describe('ExploreContentComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(3);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
@@ -167,7 +172,7 @@ describe('ExploreContentComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({ board: ['NCRT'] });
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(3);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
@@ -177,7 +182,7 @@ describe('ExploreContentComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(3);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
@@ -188,7 +193,7 @@ describe('ExploreContentComponent', () => {
     activatedRoute.changeQueryParams({ board: ['NCRT'] });
     activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(3);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
@@ -214,7 +219,7 @@ describe('ExploreContentComponent', () => {
   it('should call updateDownloadStatus when updateCardData is called', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus');
-    component.contentList = Response.successData.result.content;
+   component.contentList = Response.contentList as any;
     component.updateCardData(Response.download_list);
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
   });
@@ -234,7 +239,7 @@ describe('ExploreContentComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(3);
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
@@ -326,7 +331,7 @@ describe('ExploreContentComponent', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(3);
   }));
 
 });
