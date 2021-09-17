@@ -210,7 +210,10 @@ let envVariables = {
   //ML URLs
   ML_URL: {
     OBSERVATION_URL: ''
-  }
+  },
+
+  // VDN URL
+  vdnURL:env.vdnURL || ''
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
@@ -227,7 +230,7 @@ try {
     // console.log('local---->',devVariables);
   } else {
     module.exports = envVariables;
-    // console.log('env---->',envVariables);
+   // console.log('env---->',envVariables);
   }
 } catch (error) {
   module.exports = envVariables;
