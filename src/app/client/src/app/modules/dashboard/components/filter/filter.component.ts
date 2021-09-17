@@ -42,6 +42,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   previousFilters: any;
   formChartData:any =[];
 
+  isTest=false;
+
   @Input()
   set selectedFilter(val: any) {
     if (val) {
@@ -96,6 +98,9 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   }
 
+  testIt(){
+    this.isTest=true;
+  }
 
   ngOnInit() {
     let charts =[];

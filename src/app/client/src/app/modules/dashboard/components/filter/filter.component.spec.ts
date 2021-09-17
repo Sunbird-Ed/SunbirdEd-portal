@@ -222,4 +222,13 @@ describe('FilterComponent', () => {
 
   }));
 
+
+  it('should call testIt', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.testIt();
+    expect(component.isTest).toEqual(true);
+  }));
+
+
 });
