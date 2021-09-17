@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DatasetsComponent } from './components/datasets/datasets.component';
+import { DatasetsComponent } from './components/program-datasets/program-datasets.component';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'program-dashboard';
 
