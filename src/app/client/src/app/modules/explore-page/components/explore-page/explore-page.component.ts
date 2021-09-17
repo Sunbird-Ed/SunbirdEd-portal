@@ -482,7 +482,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                             name: _facet['name'] === 'tv lesson' ? 'tv classes' : _facet['name'],
                                                             value: _facet['name'],
                                                             theme: this.utilService.getRandomColor(facet.theme.colorMapping),
-                                                            type: _facet.type ? _facet.type : ''
+                                                            type: _facet.type ? _facet.type : '',
+                                                            landing: facet.landing ? facet.landing : ''
                                                         });
                                                        }
                                                     }
@@ -491,7 +492,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                         name: _facet['name'],
                                                         value: _facet['name'],
                                                         theme: this.utilService.getRandomColor(facet.theme.colorMapping),
-                                                        type: _facet.type ? _facet.type : ''
+                                                        type: _facet.type ? _facet.type : '',
+                                                        landing: facet.landing ? facet.landing : ''
                                                     });
                                                 }
                                             });
@@ -1034,6 +1036,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         params['showClose'] = 'true';
         params['isInside'] = event.data[0].value.name;
         params['returnTo'] = contentType;
+        params['title'] = event.data[0].value.landing ? event.data[0].value.landing.title : '';
+        params['description'] = event.data[0].value.landing ? event.data[0].value.landing.description : '';
 
         const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
             const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
@@ -1121,7 +1125,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             forEach(facet.data, _facet => {
                 _facetArray.push({
                     name: _facet['name'],
-                    value: _facet['value']
+                    value: _facet['value'],
+                    landing: facet.landing ? facet.landing : ''
                 });
             });
             this.facetSections.push({

@@ -12,6 +12,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../offline/services';
+import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach} from 'lodash-es';
 
 @Component({
   templateUrl: './explore-content.component.html',
@@ -197,7 +198,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     const pageType = _.get(this.queryParams, 'pageTitle');
     const filters: any = this.schemaService.schemaValidator({
       inputObj: this.queryParams || {}, properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'contentType', 'utm_source']
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'description', 'mediaType', 'contentType', 'utm_source']
     });
     if (!filters.channel) {
       filters.channel = this.hashTagId;
@@ -251,6 +252,43 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
+          const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
+          const filteredContents = omit(groupBy(get(data, 'result.content'), content => {
+            return content['groupByKey'] || content['subject'] || 'Others';
+        }), ['undefined']);
+        for (const [key, value] of Object.entries(filteredContents)) {
+            const isMultipleSubjects = key && key.split(',').length > 1;
+            if (isMultipleSubjects) {
+                const subjects = key && key.split(',');
+                subjects.forEach((subject) => {
+                    if (filteredContents[subject]) {
+                        filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+                    } else {
+                        filteredContents[subject] = value;
+                    }
+                });
+                delete filteredContents[key];
+            }
+        }
+        const sections = [];
+        for (const section in filteredContents) {
+            if (section) {
+                if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
+                    continue;
+                }
+                sections.push({
+                    name: section,
+                    contents: filteredContents[section]
+                });
+            }
+        }
+        _map(sections, (section) => {
+            forEach(section.contents, contents => {
+                contents.cardImg = contents.appIcon || 'assets/images/book.png';
+            });
+            return section;
+        });
+        this.contentList = sections;
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
@@ -273,7 +311,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-          this.contentList = _.concat(_.get(data, 'result.content') || [], _.get(data, 'result.QuestionSet') || []) || [];
           this.addHoverData();
         this.totalCount = data.result.count;
         this.setNoResultMessage();
