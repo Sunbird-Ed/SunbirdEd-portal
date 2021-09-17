@@ -191,9 +191,7 @@ export class DatasetsComponent implements OnInit {
   //   }
   // }
 
-  public closeModal(): void {
-    this.popup = false;
-  }
+
 
   // public csvRequest() {
   //   this.popup = false;
@@ -395,4 +393,7 @@ export class DatasetsComponent implements OnInit {
   //     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
   //   });
   // }
+  public closeModal(): void {
+    this.popup = false;
+  }
 }
