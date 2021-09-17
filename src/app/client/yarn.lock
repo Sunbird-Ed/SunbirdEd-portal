@@ -1490,7 +1490,7 @@
     whatwg-fetch "^3.1.0"
 
 "@project-sunbird/common-consumption-v9@4.3.5":
-  version "4.3.5"
+  version "4.3.3"
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.3.tgz#69be92d2c1fc64d7b80c0e7b61bf48c8d9038560"
   integrity sha512-McUvxZ2OdRFFrN9DZUPj3fQ+bCtCc7C1M0CPN72w2JshBinRaadfH+iHH7gr3Ox8bgcTHKjBO4n3yF635bMFow==
 
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.9":
-  version "4.3.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.9.tgz#f9819819244ea4c3d0c84717450bbf03485cee4a"
-  integrity sha512-VDXFry+MrjlE9dl/WbbYodTWokTg9jTWTpGWQXAXq8TRVpuiUWZbMizYzKraOFpH8cnottbVmHn5ilcgYab5CQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.3.11":
+  version "4.3.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.11.tgz#7edf2a62fb7235d065f67eee15e4d217740b3887"
+  integrity sha512-JQtQr4WHJt1cj6227FEjC2RDFSqQDbzHTGF2ryMWZ644cSLTM7G6g3VolkO6ZB/1MaWPcBvmXK5pI8s+uylW5w==
   dependencies:
     tslib "^1.10.0"
 
@@ -3722,10 +3722,10 @@ common-form-elements-v9@4.2.7:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.1.tgz#70e8efa2bdc981c58c7f60c00a05ab0379597bbf"
-  integrity sha512-h6782TRdH26nqRl/wQjYSN7CnfPAf+j8uOcXbLIVJ7qbbdwplw6sH9Z1H9P2rtquYC0pe8N01G+ty1CP5XGytw==
+common-form-elements-web-v9@4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.3.tgz#18d8c5d35c8f1c85905b8de40fe997f04f49a2a1"
+  integrity sha512-yQ3LHlu+69nHywxFkmRR+R8C4sKYTuNlkT+PTwqk5ooy5hPznG7fDL4Ttgu3Rg0xRQRPqP/xFweksvOtzxWOtQ==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
