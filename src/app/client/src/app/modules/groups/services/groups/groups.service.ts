@@ -1,5 +1,5 @@
-import { delay } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { delay, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
@@ -8,8 +8,8 @@ CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersReque
   CsGroupUpdateGroupGuidelinesRequest,
   CsGroupSupportedActivitiesFormField
 } from '@project-sunbird/client-services/services/group/interface';
-import { UserService, LearnerService, TncService } from '@sunbird/core';
-import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
+import { UserService, LearnerService, TncService, PlayerService } from '@sunbird/core';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
@@ -31,9 +31,10 @@ export class GroupsService {
   public showMenu = new EventEmitter();
   public showActivateModal = new EventEmitter();
   public updateEvent = new EventEmitter();
-    public _groupListCount: number;
+  public _groupListCount: number;
   private _groupsTnc;
   private _userData;
+  public unsubscribe$ = new Subject<void>();
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -44,7 +45,9 @@ export class GroupsService {
     private router: Router,
     private configService: ConfigService,
     private learnerService: LearnerService,
-    private tncService: TncService
+    private tncService: TncService,
+    private toasterService: ToasterService,
+    private playerService: PlayerService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -372,5 +375,22 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
 
   getDashletData(courseHeirarchyData, aggData) {
     return this.groupCservice.activityService.getDataForDashlets(courseHeirarchyData, aggData);
+  }
+
+  navigateToActivityToc(activityId, groupId, isAdmin) {
+    this.getGroupById(groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
+      groupData.activities.forEach(element => {
+        if (element.id === activityId) {
+          this.playerService.playContent(element.activityInfo, { groupId: groupId, isAdmin: isAdmin });
+        }
+      });
+    }, e => {
+      this.toasterService.error('Something went wrong, please try again later')
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
