@@ -1890,314 +1890,509 @@ export const RESPONSE = {
     }
   },
   currentPageData: {
-    'index': 0,
-    'title': 'frmelmnts.lbl.home',
-    'desc': 'frmelmnts.lbl.home',
-    'menuType': 'Content',
-    'contentType': 'home',
-    'isEnabled': true,
-    'isOnlineOnly': true,
-    'theme': {
-      'baseColor': '',
-      'textColor': '',
-      'supportingColor': '',
-      'className': 'home',
-      'imageName': 'courses-banner-img.svg'
-    },
-    'anonumousUserRoute': {
-      'route': '/home',
-      'queryParam': 'home'
-    },
-    'loggedInUserRoute': {
-      'route': '/explore',
-      'queryParam': 'home'
-    },
-    'metaData': {
-      'filters': [
-        'board',
-        'gradeLevel',
-        'subject',
-        'medium',
-        'publisher',
-        'audience',
-        'channel'
-      ],
-      'groupByKey': 'subject',
-      'defaultFilters': {
-        'board': [
-          'CBSE'
-        ],
-        'gradeLevel': [
-          'Class 10'
-        ],
-        'medium': []
-      }
-    },
-    'search': {
-      'facets': [
-        'se_subjects',
-        'primaryCategory',
-        'medium'
-      ],
-      'fields': [
-        'name',
-        'appIcon',
-        'medium',
-        'subject',
-        'resourceType',
-        'contentType',
-        'organisation',
-        'topic',
-        'mimeType',
-        'trackable',
-        'gradeLevel',
-        'se_boards',
-        'se_subjects',
-        'se_mediums',
-        'se_gradeLevels'
-      ],
-      'filters': {
-        'channel': [],
-        'subject': [],
-        'audience': [],
-        'primaryCategory': [
-          'Digital Textbook',
-          'eTextbook'
-        ],
-        'se_boards': [
-          'State (Tamil Nadu)'
-        ],
-        'se_mediums': [
-          'English'
-        ],
-        'se_gradeLevels': [
-          'Class 1',
-          'Class 10',
-          'Class 11',
-          'Class 2',
-          'Class 3',
-          'Class 4',
-          'Class 5',
-          'Class 6',
-          'Class 7',
-          'Class 8',
-          'Class 9'
-        ]
-      }
-    },
-    'filter': {
-      'isEnabled': false,
-      'type': 'facet'
-    },
-    'sections': [
-      {
-        'index': 0,
-        'title': 'frmelmnts.lbl.subjects',
-        'desc': 'Section for subjects',
-        'facetKey': 'se_subjects',
-        'isEnabled': true,
-        'apiConfig': {
-          'url': '',
-          'method': '',
-          'req': {},
-          'params': '',
-          'contextKey': 'res.facet.subject'
-        },
-        'landing': {
-          'title': 'frmelmnts.lbl.exploretitle',
-          'description': 'frmelmnts.lbl.exploredescription'
-        },
-        'theme': {
-          'component': 'sb-pills-grid',
-          'limit': 10,
-          'infiniteCard': false,
-          'colorMapping': [
-            {
-              primary: 'rgba(255,139,46,1)',
-              secondary: 'rgba(255,139,46,0.3)'
-            },
-            {
-              primary: 'rgba(163,99,255,1)',
-              secondary: 'rgba(163,99,255,0.3)'
-            },
-            {
-              primary: 'rgba(34,139,255,1)',
-              secondary: 'rgba(34,139,255,0.3)'
-            },
-            {
-              primary: 'rgba(95,192,32,1)',
-              secondary: 'rgba(95,192,32,0.3)'
-            },
-            {
-              primary: 'rgba(255,128,47,1)',
-              secondary: 'rgba(255,128,47,0.3)'
-            },
-            {
-              primary: 'rgba(251,70,70,1)',
-              secondary: 'rgba(251,70,70,0.3)'
-            },
-            {
-              primary: 'rgba(83,109,252,1)',
-              secondary: 'rgba(83,109,252,0.3)'
-            },
-            {
-              primary: 'rgba(15,186,208,1)',
-              secondary: 'rgba(15,186,208,0.3)'
-            }
-          ],
-          'icons': {
-            'english': 'assets/images/book_english.svg',
-            'mathematics': 'assets/images/calculator.svg',
-            'science': 'assets/images/globe.svg',
-            'default': 'assets/images/book_default.svg'
-          }
-        },
-        'anonumousUserRoute': {
-          'route': '/explore-course',
-          'queryParam': 'course'
-        },
-        'loggedInUserRoute': {
-          'route': '/learn',
-          'queryParam': 'course'
-        }
+      'index': 0,
+      'title': 'frmelmnts.lbl.home',
+      'desc': 'frmelmnts.lbl.home',
+      'menuType': 'Content',
+      'contentType': 'home',
+      'isEnabled': true,
+      'default': true,
+      'isOnlineOnly': true,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': '',
+        'className': 'home',
+        'imageName': 'courses-banner-img.svg'
       },
-      {
-        'index': 1,
-        'title': 'frmelmnts.lbl.dscfrmctgries',
-        'desc': 'Section for category',
-        'facetKey': 'primaryCategory',
-        'isEnabled': true,
-        merge: {destination: 'additionalCategories'},
-        'apiConfig': {
-          'url': '',
-          'method': '',
-          'req': {},
-          'params': '',
-          'contextKey': 'res.facet.primaryCategory'
-        },
-        'landing': {
-          'title': 'frmelmnts.lbl.exploretitle',
-          'description': 'frmelmnts.lbl.exploredescription'
-        },
-        'theme': {
-          'component': 'sb-pills-grid',
-          'limit': 10,
-          'infiniteCard': false,
-          'colorMapping': [
-            {
-              primary: 'rgba(255,139,46,1)',
-              secondary: 'rgba(255,139,46,0.3)'
-            },
-            {
-              primary: 'rgba(163,99,255,1)',
-              secondary: 'rgba(163,99,255,0.3)'
-            },
-            {
-              primary: 'rgba(34,139,255,1)',
-              secondary: 'rgba(34,139,255,0.3)'
-            },
-            {
-              primary: 'rgba(95,192,32,1)',
-              secondary: 'rgba(95,192,32,0.3)'
-            },
-            {
-              primary: 'rgba(255,128,47,1)',
-              secondary: 'rgba(255,128,47,0.3)'
-            },
-            {
-              primary: 'rgba(251,70,70,1)',
-              secondary: 'rgba(251,70,70,0.3)'
-            },
-            {
-              primary: 'rgba(83,109,252,1)',
-              secondary: 'rgba(83,109,252,0.3)'
-            },
-            {
-              primary: 'rgba(15,186,208,1)',
-              secondary: 'rgba(15,186,208,0.3)'
-            }
-          ],
-          'icons': {
-            'digital textbooks': 'assets/images/textbook.svg',
-            'courses': 'assets/images/course.svg',
-            'tv programs': 'assets/images/tv.svg',
-            'documents': 'assets/images/documents.svg',
-            'videos': 'assets/images/videos.svg',
-            'default': 'assets/images/all_content.svg'
-          }
-        },
-        'anonumousUserRoute': {
-          'route': '/explore-course',
-          'queryParam': 'course'
-        },
-        'loggedInUserRoute': {
-          'route': '/learn',
-          'queryParam': 'course'
-        }
+      'anonumousUserRoute': {
+        'route': '/explore',
+        'queryParam': 'home'
       },
-      {
-        'index': 2,
-        'title': 'frmelmnts.lbl.medium',
-        'desc': 'Section for medium',
-        'facetKey': 'medium',
-        'isEnabled': false,
-        'apiConfig': {
-          'url': '',
-          'method': '',
-          'req': {},
-          'params': '',
-          'contextKey': 'res.facet.medium'
-        },
-        'theme': {
-          'component': 'sb-pills-grid',
-          'limit': 10,
-          'infiniteCard': false,
-          'colorMapping': [
-            {
-              primary: 'rgba(255,139,46,1)',
-              secondary: 'rgba(255,139,46,0.3)'
-            },
-            {
-              primary: 'rgba(163,99,255,1)',
-              secondary: 'rgba(163,99,255,0.3)'
-            },
-            {
-              primary: 'rgba(34,139,255,1)',
-              secondary: 'rgba(34,139,255,0.3)'
-            },
-            {
-              primary: 'rgba(95,192,32,1)',
-              secondary: 'rgba(95,192,32,0.3)'
-            },
-            {
-              primary: 'rgba(255,128,47,1)',
-              secondary: 'rgba(255,128,47,0.3)'
-            },
-            {
-              primary: 'rgba(251,70,70,1)',
-              secondary: 'rgba(251,70,70,0.3)'
-            },
-            {
-              primary: 'rgba(83,109,252,1)',
-              secondary: 'rgba(83,109,252,0.3)'
-            },
-            {
-              primary: 'rgba(15,186,208,1)',
-              secondary: 'rgba(15,186,208,0.3)'
-            }
+      'loggedInUserRoute': {
+        'route': '/resources',
+        'queryParam': 'home'
+      },
+      'metaData': {
+        'filters': [
+          'board',
+          'gradeLevel',
+          'subject',
+          'medium',
+          'publisher',
+          'audience',
+          'channel'
+        ],
+        'groupByKey': 'subject',
+        'defaultFilters': {
+          'board': [
+            'CBSE'
+          ],
+          'gradeLevel': [
+            'Class 10'
+          ],
+          'medium': [
+            
           ]
-        },
-        'anonumousUserRoute': {
-          'route': '/home',
-          'queryParam': 'course'
-        },
-        'loggedInUserRoute': {
-          'route': '/learn',
-          'queryParam': 'course'
         }
-      }
-    ]
-  },
+      },
+      'search': {
+        'facets': [
+          'subject',
+          'primaryCategory',
+          'medium',
+          'banner',
+          'additionalCategories'
+        ],
+        'fields': [
+          'name',
+          'appIcon',
+          'medium',
+          'subject',
+          'resourceType',
+          'contentType',
+          'organisation',
+          'topic',
+          'mimeType',
+          'trackable',
+          'gradeLevel',
+          'se_boards',
+          'se_subjects',
+          'se_mediums',
+          'se_gradeLevels'
+        ],
+        'filters': {
+          'channel': [
+            
+          ],
+          'subject': [
+            
+          ],
+          'audience': [
+            
+          ],
+          'primaryCategory': [
+            'Digital Textbook',
+            'eTextbook',
+            'Course'
+          ],
+          'board': [
+            
+          ],
+          'medium': [
+            
+          ],
+          'gradeLevel': [
+            
+          ]
+        }
+      },
+      'filter': {
+        'isEnabled': false,
+        'type': 'facet'
+      },
+      'sections': [
+        {
+          'index': 5,
+          'title': 'frmelmnts.lbl.recentlyPublishedCourses',
+          'desc': 'Section for Searched contents',
+          'facetKey': 'search',
+          'isEnabled': true,
+          'apiConfig': {
+            'url': '',
+            'method': '',
+            'req': {
+              'request': {
+                'filters': {
+                  'contentType': [
+                    'Course'
+                  ],
+                  'primaryCategory': [
+                    'Course'
+                  ],
+                  'batches.enrollmentType': 'open',
+                  'batches.status': [
+                    1
+                  ],
+                  'status': [
+                    'Live'
+                  ],
+                  'se_boards': [
+                    'State (Tamil Nadu)'
+                  ],
+                  'se_mediums': [
+                    'English',
+                    'Tamil'
+                  ],
+                  'se_gradeLevels': [
+                    'Class 1',
+                    'Class 2',
+                    'Class 5'
+                  ]
+                },
+                'limit': 100,
+                'fields': [
+                  'name',
+                  'appIcon',
+                  'mimeType',
+                  'gradeLevel',
+                  'identifier',
+                  'medium',
+                  'pkgVersion',
+                  'board',
+                  'subject',
+                  'resourceType',
+                  'contentType',
+                  'channel',
+                  'organisation',
+                  'trackable',
+                  'se_boards',
+                  'se_subjects',
+                  'se_mediums',
+                  'se_gradeLevels',
+                  'lastPublishedOn'
+                ],
+                'facets': [
+                  'se_subjects'
+                ],
+                'sort_by': {
+                  'lastPublishedOn': 'desc'
+                }
+              }
+            },
+            'params': '',
+            'contextKey': 'res.facet.search',
+            'sortBy': 'lastPublishedOn'
+          }
+        },
+        {
+          'index': 6,
+          'title': 'frmelmnts.lbl.fromncert',
+          'defaultTitle': 'From NCERT',
+          'desc': 'Section for Searched contents',
+          'facetKey': 'search',
+          'isEnabled': true,
+          'apiConfig': {
+            'url': '',
+            'method': '',
+            'req': {
+              'request': {
+                'filters': {
+                  'primaryCategory': [
+                    'Course',
+                    'Digital Textbook'
+                  ],
+                  'status': [
+                    'Live'
+                  ],
+                  'channel': '01329314824202649627'
+                },
+                'limit': 100,
+                'fields': [
+                  'name',
+                  'appIcon',
+                  'mimeType',
+                  'gradeLevel',
+                  'identifier',
+                  'medium',
+                  'pkgVersion',
+                  'board',
+                  'subject',
+                  'resourceType',
+                  'contentType',
+                  'channel',
+                  'organisation',
+                  'trackable',
+                  'se_boards',
+                  'se_subjects',
+                  'se_mediums',
+                  'se_gradeLevels',
+                  'lastPublishedOn'
+                ],
+                'facets': [
+                  'se_subjects'
+                ],
+                'sort_by': {
+                  'lastPublishedOn': 'desc'
+                }
+              }
+            },
+            'params': '',
+            'contextKey': 'res.facet.search',
+            'sortBy': 'lastPublishedOn'
+          }
+        },
+        {
+          'index': 4,
+          'title': 'frmelmnts.lbl.search',
+          'desc': 'Section for Searched contents',
+          'facetKey': 'search',
+          'isEnabled': true,
+          'apiConfig': {
+            'url': '',
+            'method': '',
+            'req': {
+              'request': {
+                'filters': {
+                  'channel': [
+                    
+                  ],
+                  'subject': [
+                    
+                  ],
+                  'audience': [
+                    
+                  ],
+                  'primaryCategory': [
+                    'Digital Textbook'
+                  ],
+                  'se_boards': [
+                    'State (Tamil Nadu)'
+                  ],
+                  'se_mediums': [
+                    'English'
+                  ],
+                  'se_gradeLevels': [
+                    'Class 4'
+                  ]
+                },
+                'limit': 100,
+                'fields': [
+                  'name',
+                  'appIcon',
+                  'mimeType',
+                  'gradeLevel',
+                  'identifier',
+                  'medium',
+                  'pkgVersion',
+                  'board',
+                  'subject',
+                  'resourceType',
+                  'primaryCategory',
+                  'contentType',
+                  'channel',
+                  'organisation',
+                  'trackable',
+                  'se_boards',
+                  'se_subjects',
+                  'se_mediums',
+                  'se_gradeLevels'
+                ],
+                'facets': [
+                  'se_subjects'
+                ]
+              }
+            },
+            'params': '',
+            'contextKey': 'res.facet.search'
+          }
+        },
+        {
+          'index': 1,
+          'title': 'frmelmnts.lbl.bannerTitle',
+          'desc': 'Section for Banner',
+          'facetKey': 'banner',
+          'isEnabled': true
+        },
+        {
+          'index': 0,
+          'title': 'frmelmnts.lbl.subjects',
+          'desc': 'Section for subjects',
+          'facetKey': 'subject',
+          'isEnabled': true,
+          'apiConfig': {
+            'url': '',
+            'method': '',
+            'req': {
+              
+            },
+            'params': '',
+            'contextKey': 'res.facet.subject'
+          },
+          'theme': {
+            'component': 'sb-pills-grid',
+            'limit': 10,
+            'infiniteCard': false,
+            'colorMapping': [
+              {
+                'primary': 'rgba(255,139,46,1)',
+                'secondary': 'rgba(255,139,46,0.3)'
+              },
+              {
+                'primary': 'rgba(163,99,255,1)',
+                'secondary': 'rgba(163,99,255,0.3)'
+              },
+              {
+                'primary': 'rgba(34,139,255,1)',
+                'secondary': 'rgba(34,139,255,0.3)'
+              },
+              {
+                'primary': 'rgba(95,192,32,1)',
+                'secondary': 'rgba(95,192,32,0.3)'
+              },
+              {
+                'primary': 'rgba(255,128,47,1)',
+                'secondary': 'rgba(255,128,47,0.3)'
+              },
+              {
+                'primary': 'rgba(251,70,70,1)',
+                'secondary': 'rgba(251,70,70,0.3)'
+              },
+              {
+                'primary': 'rgba(83,109,252,1)',
+                'secondary': 'rgba(83,109,252,0.3)'
+              },
+              {
+                'primary': 'rgba(15,186,208,1)',
+                'secondary': 'rgba(15,186,208,0.3)'
+              }
+            ],
+            'icons': {
+              'english': 'assets/images/book_english.svg',
+              'mathematics': 'assets/images/calculator.svg',
+              'science': 'assets/images/globe.svg',
+              'default': 'assets/images/book_default.svg'
+            }
+          },
+          'landing': {
+            'title': 'frmelmnts.lbl.exploretitle',
+            'description': 'frmelmnts.lbl.exploredescription'
+          },
+          'anonumousUserRoute': {
+            'route': '/explore-course',
+            'queryParam': 'course'
+          },
+          'loggedInUserRoute': {
+            'route': '/learn',
+            'queryParam': 'course'
+          }
+        },
+        {
+          'index': 6,
+          'title': 'frmelmnts.lbl.dscfrmctgries',
+          'desc': 'Section for category',
+          'facetKey': 'primaryCategory',
+          'isEnabled': true,
+          'apiConfig': {
+            'url': '',
+            'method': '',
+            'req': {
+              
+            },
+            'params': '',
+            'contextKey': 'res.facet.primaryCategory'
+          },
+          'filter': {
+            'primaryCategory': [
+              'course',
+              'digital textbook',
+              'etextbook'
+            ],
+            'additionalCategories': [
+              'tv lesson'
+            ]
+          },
+          'merge': {
+            'source': 'primaryCategory',
+            'destination': 'additionalCategories'
+          },
+          'theme': {
+            'component': 'sb-pills-grid',
+            'limit': 10,
+            'infiniteCard': false,
+            'colorMapping': [
+              {
+                'primary': 'rgba(255,255,255,1)',
+                'secondary': 'rgba(255,255,255,1)'
+              }
+            ],
+            'icons': {
+              'digital textbooks': 'assets/images/textbook.svg',
+              'courses': 'assets/images/course.svg',
+              'tv programs': 'assets/images/tv.svg',
+              'documents': 'assets/images/documents.svg',
+              'videos': 'assets/images/videos.svg',
+              'default': 'assets/images/all_content.svg'
+            }
+          },
+          'landing': {
+            'title': 'frmelmnts.lbl.exploretitle',
+            'description': 'frmelmnts.lbl.exploredescription'
+          },
+          'anonumousUserRoute': {
+            'route': '/explore-course',
+            'queryParam': 'course'
+          },
+          'loggedInUserRoute': {
+            'route': '/learn',
+            'queryParam': 'course'
+          }
+        },
+        {
+          'index': 3,
+          'title': 'frmelmnts.lbl.medium',
+          'desc': 'Section for medium',
+          'facetKey': 'medium',
+          'isEnabled': false,
+          'apiConfig': {
+            'url': '',
+            'method': '',
+            'req': {
+              
+            },
+            'params': '',
+            'contextKey': 'res.facet.medium'
+          },
+          'theme': {
+            'component': 'sb-pills-grid',
+            'limit': 10,
+            'infiniteCard': false,
+            'colorMapping': [
+              {
+                'primary': 'rgba(255,139,46,1)',
+                'secondary': 'rgba(255,139,46,0.3)'
+              },
+              {
+                'primary': 'rgba(163,99,255,1)',
+                'secondary': 'rgba(163,99,255,0.3)'
+              },
+              {
+                'primary': 'rgba(34,139,255,1)',
+                'secondary': 'rgba(34,139,255,0.3)'
+              },
+              {
+                'primary': 'rgba(95,192,32,1)',
+                'secondary': 'rgba(95,192,32,0.3)'
+              },
+              {
+                'primary': 'rgba(255,128,47,1)',
+                'secondary': 'rgba(255,128,47,0.3)'
+              },
+              {
+                'primary': 'rgba(251,70,70,1)',
+                'secondary': 'rgba(251,70,70,0.3)'
+              },
+              {
+                'primary': 'rgba(83,109,252,1)',
+                'secondary': 'rgba(83,109,252,0.3)'
+              },
+              {
+                'primary': 'rgba(15,186,208,1)',
+                'secondary': 'rgba(15,186,208,0.3)'
+              }
+            ]
+          },
+          'anonumousUserRoute': {
+            'route': '/home',
+            'queryParam': 'course'
+          },
+          'loggedInUserRoute': {
+            'route': '/learn',
+            'queryParam': 'course'
+          }
+        }
+      ]
+    },
   explorePageData: {
     'index': 1,
     'title': 'frmelmnts.lbl.explore',
