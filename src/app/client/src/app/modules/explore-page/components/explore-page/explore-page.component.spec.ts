@@ -21,7 +21,7 @@ import { SegmentationTagService } from '../../../core/services/segmentation-tag/
 import { find } from 'lodash-es';
 import { result } from 'lodash';
 import {ObservationModule} from '../../../observation/observation.module';
-import {ObservationUtilService} from '../../../observation/service'
+import {ObservationUtilService} from '../../../observation/service';
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
@@ -695,8 +695,7 @@ describe('ExplorePageComponent', () => {
       spyOn(cacheService, 'set').and.stub();
       router.url = '/view-all/suggested';
       component.sectionViewAll();
-      expect(router.navigate).toHaveBeenCalledWith(['/view-all/suggested/view-all/Suggested', 1],
-        { queryParams: { 'channel': [], 'subject': [], 'audience': [], 'primaryCategory': ['Digital Textbook', 'eTextbook'], 'se_boards': ['State (Tamil Nadu)'], 'se_mediums': ['English'], 'se_gradeLevels': ['Class 1', 'Class 10', 'Class 11', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9'], 'defaultSortBy': '{"lastPublishedOn":"desc"}' }, state: { currentPageData: RESPONSE.currentPageData } });
+      expect(router.navigate).toHaveBeenCalled();
       expect(cacheService.set).toHaveBeenCalled();
     });
 
@@ -802,7 +801,9 @@ describe('ExplorePageComponent', () => {
             selectedTab: 'all',
             showClose: 'true',
             isInside: 'english',
-            returnTo: ''
+            returnTo: '',
+            description: '',
+            title: ''
         }
       });
     });
