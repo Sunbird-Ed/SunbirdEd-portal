@@ -156,6 +156,11 @@ describe('ExploreContentComponent', () => {
     expect(component.contentList.length).toEqual(3);
   }));
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
+    component.selectedFilters = {
+      se_boards: ['sample-board'],
+      se_medium: ['sample-medium'],
+      se_gardeLevel: ['sample-grade']
+    };
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
@@ -334,4 +339,18 @@ describe('ExploreContentComponent', () => {
     expect(component.contentList.length).toEqual(3);
   }));
 
+  it('should return group by subjects', fakeAsync(() => {
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    component.selectedFilters = {
+      se_boards: ['sample-board'],
+      se_medium: ['sample-medium'],
+      se_gardeLevel: ['sample-grade']
+    };
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    tick(100);
+    expect(component.initFilters).toBeTruthy();
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
+  }));
 });
