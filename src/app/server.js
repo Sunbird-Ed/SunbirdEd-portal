@@ -51,6 +51,7 @@ const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
 const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
+const { registerDeviceWithKong } = require('./helpers/kongTokenHelper');
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -82,6 +83,16 @@ const app = express()
 app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
+
+app.use(session({
+  secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+  resave: false,
+  cookie: {
+    maxAge: envHelper.sunbird_anonymous_session_ttl
+  },
+  saveUninitialized: false,
+  store: memoryStore
+}), registerDeviceWithKong());
 
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
@@ -241,6 +252,8 @@ require('./routes/discussionsForum.js')(app, keycloak) // report routes
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
+  
+require('./routes/notificationRoute.js')(app) // group api routes
 
 require('./routes/groupRoutes.js')(app) // group api routes
 
@@ -324,7 +337,9 @@ async function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
-      logger.info({ msg: `Portal global API Whitelist check is set to - ${envHelper.PORTAL_API_WHITELIST_CHECK}` })
+      logger.info({ msg: `✅ Portal global API Whitelist check is set to    - ${envHelper.PORTAL_API_WHITELIST_CHECK}` })
+      logger.info({ msg: `✅ Portal global Kong device register is set to   - ${envHelper.KONG_DEVICE_REGISTER_TOKEN}` })
+      logger.info({ msg: `✅ Portal global Session storage is set to        - ${envHelper.PORTAL_SESSION_STORE_TYPE}` })
     })
     handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;

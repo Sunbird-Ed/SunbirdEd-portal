@@ -12,6 +12,7 @@ const {isDate} = require('../helpers/utilityService');
 let ssoWhiteListChannels;
 const privateBaseUrl = '/private/user/';
 const {isValidAndNotEmptyString} = require('../helpers/utilityService');
+const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 const keycloakTrampoline = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -297,7 +298,7 @@ const getHeaders = (req) => {
     'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
     'content-type': 'application/json',
     'accept': 'application/json',
-    'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+    'Authorization': 'Bearer ' + getBearerToken(req)
   }
 }
 const handleGetUserByIdError = (error) => {
@@ -341,7 +342,7 @@ const getSsoUpdateWhiteListChannels = async (req) => {
     url: envHelper.LEARNER_URL + 'data/v1/system/settings/get/ssoUpdateWhitelistChannels',
     headers: {
       'content-type': 'application/json',
-      'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+      'Authorization': 'Bearer ' + getBearerToken(req)
     }
   };
   try {

@@ -274,12 +274,12 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
     this.coursesService.findEnrolledCourses(metaData.identifier);
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
-      return this.playerService.playContent(metaData);
+      return this.playerService.playContent(data);
     }
 
     if (onGoingBatchCount === 1) { // play course if only one open batch is present
       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
-      return this.playerService.playContent(metaData);
+      return this.playerService.playContent(data);
     }
     // else if (onGoingBatchCount === 0 && expiredBatchCount === 1){
     //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;

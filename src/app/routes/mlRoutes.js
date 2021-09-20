@@ -5,7 +5,7 @@
  */
 const proxyUtils = require('../proxy/proxyUtils.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
-const mlURL = envHelper.ML_SERVICE_BASE_URL
+const mlURL = envHelper.LEARNER_URL
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
@@ -78,11 +78,19 @@ function handleRequest(serviceUrl) {
       let urlParam = req.params['0']
       let query = require('url').parse(req.url).query
       logger.info({ msg: '==============================/ML_URL/* ===================================called - ' + mlURL + req.method + ' - ' + req.url });
+      let pathname = new URL(mlURL).pathname;
+      let mlNewUrl='';
+      if(pathname != '/api/'){
+        mlNewUrl = mlURL + 'api/'
+      }
+      else{
+        mlNewUrl = mlURL;
+      }
       if (query) {
-        const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam + '?' + query).path;
+        const url = require('url').parse(mlNewUrl + urlParam + '?' + query).path;
         return url
       } else {
-        const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam).path
+        const url = require('url').parse(mlNewUrl + urlParam).path
         return url
       }
     },
