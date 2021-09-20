@@ -23,7 +23,9 @@ const ROLE = {
   PUBLIC: 'PUBLIC',
   TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
   ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
-  ANONYMOUS: 'ANONYMOUS'
+  ANONYMOUS: 'ANONYMOUS',
+  PROGRAM_MANAGER:"PROGRAM_MANAGER",
+  PROGRAM_DESIGNER: "PROGRAM_DESIGNER"
 };
 
 const API_LIST = {
@@ -1660,11 +1662,11 @@ const API_LIST = {
     },
     '/report/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
     '/report/request/read/:tag': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1676,11 +1678,11 @@ const API_LIST = {
     },
     '/report/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
     '/kendra/users/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1760,7 +1762,23 @@ const API_LIST = {
     },
     '/learner/framework/v1/read/ekstep_ncert_k-12': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/dhiti/v1/observations/listAllEvidences': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/dhiti/api/v1/observations/listAllEvidences': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/v1/user-extension/programsByPlatformRoles': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
+    },
+    '/v1/user-extension/solutions': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     }
   },
   URL_PATTERN: [

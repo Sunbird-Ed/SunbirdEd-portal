@@ -362,8 +362,10 @@
       "OBSERVATION_REPORT_SOLUTION_LIST": "observationSubmissions/mlsurvey/v1/solutionList?"
     },
     "KENDRA": {
-      "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",
-      "PRESIGNED_URLS": "cloud-services/mlcore/v1/files/preSignedUrls"
+      "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/",
+      "PRESIGNED_URLS": "v1/cloud-services/files/preSignedUrls",
+      "PROGRAMS_BY_PLATFORM_ROLES": "v1/user-extension/programsByPlatformRoles",
+      "SOLUTIONS_BY_PROGRAMID": "v1/user-extension/solutions"
     },
     "DHITI":{
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",
