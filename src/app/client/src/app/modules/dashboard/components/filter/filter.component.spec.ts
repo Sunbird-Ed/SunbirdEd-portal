@@ -10,6 +10,8 @@ import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ActivatedRoute } from '@angular/router';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
 
 import { of } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
@@ -52,7 +54,9 @@ describe('FilterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FilterComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [SuiModule, ReactiveFormsModule, TelemetryModule.forRoot(), CoreModule, NgxDaterangepickerMd.forRoot()],
+      imports: [BrowserAnimationsModule,
+        BrowserModule,
+        SuiModule, ReactiveFormsModule, TelemetryModule.forRoot(), CoreModule, NgxDaterangepickerMd.forRoot()],
       // providers:[ResourceService]
       providers: [{ provide: ResourceService, useValue: resourceServiceMockData },
       {
@@ -220,6 +224,48 @@ describe('FilterComponent', () => {
     mockChartData.filters[1]['options'] = ['10'];
     expect(component.filters).toEqual(mockChartData.filters);
 
+  }));
+
+  it('should call autoCompleteChange', fakeAsync(() => {
+
+    component.filters = mockChartData.filters;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
+    component.ngOnInit();
+    tick(1000);
+    component.autoCompleteChange(["01285019302823526477"],"state")
+    tick(1000);
+    expect(component.filtersFormGroup.controls).toBeTruthy();
+   
+    expect(component.selectedFilters).toEqual({
+      'state': ['01285019302823526477']
+    });
+   
+  }));
+
+  it('should call getSelectedData', fakeAsync(() => {
+
+    component.filters = mockChartData.filters;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
+    component.ngOnInit();
+    tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
+    tick(1000);
+    // expect(component.selectedFilters).toEqual({
+    //   'state': ['01285019302823526477']
+    // });
+
+    const res= component.getSelectedData("state");
+    tick(1000);
+    expect(component.filtersFormGroup.controls).toBeTruthy();
+   
+    expect(res).toEqual(['01285019302823526477']);
+
+    const res2= component.getSelectedData("state2");
+    tick(1000);
+    expect(component.filtersFormGroup.controls).toBeTruthy();
+   
+    expect(res2).toEqual([]);
+   
   }));
 
 });

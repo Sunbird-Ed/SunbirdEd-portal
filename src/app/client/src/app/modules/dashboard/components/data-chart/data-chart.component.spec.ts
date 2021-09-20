@@ -16,8 +16,11 @@ import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReportService } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NoopAnimationsModule} from '@angular/platform-browser/animations';
 
-describe('DataChartComponent', () => {
+
+fdescribe('DataChartComponent', () => {
     let component: DataChartComponent;
     let fixture: ComponentFixture<DataChartComponent>;
     configureTestSuite();
@@ -26,8 +29,9 @@ describe('DataChartComponent', () => {
             declarations: [],
             schemas: [NO_ERRORS_SCHEMA],
             imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
-                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule, DashboardModule],
-            providers: [ReportService, {
+                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule, DashboardModule,
+                MatDialogModule, NoopAnimationsModule],
+            providers: [ ReportService, {
                 provide: ActivatedRoute, useValue: {
                     snapshot: {
                         params: {

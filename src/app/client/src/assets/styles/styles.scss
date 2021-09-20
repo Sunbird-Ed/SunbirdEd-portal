@@ -30,3 +30,5 @@
 
 // @import '~@swimlane/ngx-datatable/src/themes/material';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
+
+.cdk-overlay-container {z-index: 999999 !important;}

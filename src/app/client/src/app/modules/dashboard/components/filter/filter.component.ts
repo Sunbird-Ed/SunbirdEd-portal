@@ -9,6 +9,7 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 
 
+
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -96,7 +97,6 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   }
 
-
   ngOnInit() {
     let charts =[];
     if(this.chartData && this.chartData.length > 0) {
@@ -123,15 +123,18 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
     _.forEach(this.filters, filter => {
       const options = (_.sortBy(_.uniq(
-        _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
+        _.map(chartData, (data) =>  data[filter.reference] ? data[filter.reference].toLowerCase() : ''
         )))).filter(Boolean);
 
       if (!filterKeys.includes(filter.reference)) {
         filter.options = options;
       } else {
         if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-          filter.options = options;
+          if(options.length > filter.options){
+            filter.options = options;
+          } 
         }
+        
       }
     });
     this.previousFilters = this.selectedFilters;
@@ -150,6 +153,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         filter.options = (_.sortBy(_.uniq(
           _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
           )))).filter(Boolean);
+
+          console.log(" form ---------",filter.options);
 
       });
 
@@ -269,6 +274,21 @@ export class FilterComponent implements OnInit, OnDestroy {
       return true;
     } else {
       return false;
+    }
+  }
+  autoCompleteChange(data,reference){    
+    let object = {};
+    if(data && data.length > 0){
+      object[reference] =data;
+    }
+    this.filtersFormGroup.controls[reference].setValue(data);
+  }
+  getSelectedData(reference){
+
+    if(this.selectedFilters && this.selectedFilters[reference]){
+      return this.selectedFilters[reference];
+    } else {
+      return [];
     }
   }
 

@@ -160,8 +160,8 @@ sui-select.selection.ui.dropdown {
 
 ::ng-deep {
   .sb-field .ui.selection.dropdown {
-    position: relative;
-    z-index: 2;
+    // position: relative;
+    // z-index: 2;
   }
 
   .sb-hawkeye-modal.sb-modal {
@@ -291,5 +291,13 @@ sui-select.selection.ui.dropdown {
 
   }
 }
+::ng-deep {
+  .mat-dialog-container {
+      background-color: #E9E8D9 !important;
+      border-radius: 24px;
+  }
+
+}
+
 
 
