@@ -165,7 +165,7 @@ export class NotificationServiceImpl implements SbNotificationService {
       case 'group-activity-added':
         if (additionalInfo.activity) {
           const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false
-          this.groupService.navigateToActivityToc(additionalInfo.activity.id, _.get(additionalInfo, 'group.id'), isAdmin);
+          this.groupService.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin);
           break;
         }
       case 'group-activity-removed':
