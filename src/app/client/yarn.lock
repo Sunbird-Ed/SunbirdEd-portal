@@ -1490,7 +1490,7 @@
     whatwg-fetch "^3.1.0"
 
 "@project-sunbird/common-consumption-v9@4.3.5":
-  version "4.3.5"
+  version "4.3.3"
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.3.tgz#69be92d2c1fc64d7b80c0e7b61bf48c8d9038560"
   integrity sha512-McUvxZ2OdRFFrN9DZUPj3fQ+bCtCc7C1M0CPN72w2JshBinRaadfH+iHH7gr3Ox8bgcTHKjBO4n3yF635bMFow==
 
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.12":
-  version "4.3.12"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.12.tgz#b2fe102f6be501b59c287334d89439e78f1392a2"
-  integrity sha512-1u/nBzqhaYvIHtpzPkdT+MEVg/1i8yZzyncsZXH1SifgCORuyKNd31xh4TkZJmM9fT+lJlD+3h23XQN7V2BR/A==
+"@project-sunbird/sunbird-collection-editor-v9@4.3.16":
+  version "4.3.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.16.tgz#61e740b58a65a82f46ab12d463b5334c94a5d5ed"
+  integrity sha512-XLiWQXvs87u4wa8M9PXVBQXMF9jfGRusBxh17vbBdQSfwMobmg8BpmgBE2FIPjGa/HdTP2D1G5HkpGHL64XIPw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1570,10 +1570,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.3.7":
-  version "4.3.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.7.tgz#cf04f74081f100bd18f03770c3105c4d85be5cdf"
-  integrity sha512-PHWiUMdG0EEGvO7bQ/0zhl30GfMi1XB2C5NG1/krsNC2nzQtknkZcyTBplFfx+i4KvpoZz2VTaKi1vSsCmpC9g==
+"@project-sunbird/sunbird-quml-player-v9@4.3.9":
+  version "4.3.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.9.tgz#21e843b11886f2423b8a09d401963e89256e3f29"
+  integrity sha512-e0VG+LmKp9LjT6yot7R6yv78OFx7bin66x6DjdG/UtvWqLDBsliA5wiGS2IFs5AgXe7Y/IT8ken+Q6j7M1Q7jQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.2"
 
@@ -3722,10 +3722,10 @@ common-form-elements-v9@4.2.7:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.1.tgz#70e8efa2bdc981c58c7f60c00a05ab0379597bbf"
-  integrity sha512-h6782TRdH26nqRl/wQjYSN7CnfPAf+j8uOcXbLIVJ7qbbdwplw6sH9Z1H9P2rtquYC0pe8N01G+ty1CP5XGytw==
+common-form-elements-web-v9@4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.4.tgz#251399f1bc703b111ab91c51035a90dcb82c34b1"
+  integrity sha512-Uc7FfDgGNzIMYUOj9eft09AKRZ10KWGTT0XW5oBjn/YgssReK1RAnOc9FAIGTMt0LLPGhQVraUkpq0/SjJlgLw==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
