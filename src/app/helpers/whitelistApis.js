@@ -709,19 +709,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    // notification apis
-    '/learner/notification/v1/feed/read/:uid': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
-    '/learner/notification/v1/feed/delete': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
-    '/learner/notification/v1/feed/update': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
+
     //certreg reg apis
     '/certreg/v1/user/search': {
       checksNeeded: ['ROLE_CHECK'],

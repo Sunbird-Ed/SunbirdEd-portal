@@ -1,4 +1,4 @@
-import { of, combineLatest, observable } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';
@@ -289,11 +289,5 @@ describe('GroupsService', () => {
     const accepted = service.isTncUpdated();
     expect(accepted).toEqual(false);
   });
-  // it('should call getNavigationPath()', async () => {
-  //   const service = TestBed.get(GroupsService);
-  //   spyOn(service['groupCservice'], 'getById');
-  //   service.getNavigationPath('do_123', '123', true);
-  //   expect(service['groupCservice'].getById).toHaveBeenCalledWith('123',
-  //     { includeMembers: true, includeActivities: true });
-  // })
+
 });
