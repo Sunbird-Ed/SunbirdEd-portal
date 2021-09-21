@@ -144,7 +144,7 @@ describe('HomeSearchComponent', () => {
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
@@ -349,7 +349,7 @@ describe('HomeSearchComponent', () => {
   });
 
   it('should return view more list', () => {
-    const events = {name: 'sample-name'};
+    const events = {name: 'sample-name', returnTo: 'home'};
     const userService = TestBed.get(UserService);
     spyOn(userService, 'loggedIn').and.returnValue(true);
     const telemetryService = TestBed.get(TelemetryService);
