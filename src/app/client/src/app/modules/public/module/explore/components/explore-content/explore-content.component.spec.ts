@@ -2,7 +2,7 @@ import { ExploreContentComponent } from './explore-content.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, UtilService } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService, SchemaService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, CoreModule, UserService, SchemaService, TelemetryService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
@@ -353,4 +353,15 @@ describe('ExploreContentComponent', () => {
     expect(component.initFilters).toBeTruthy();
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
+
+  it('should return view more list', () => {
+    const events = {name: 'sample-name'};
+    const userServices = TestBed.get(UserService);
+    spyOn(userServices, 'loggedIn').and.returnValue(true);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.viewAll(events);
+    expect(userServices.loggedIn).toHaveBeenCalled();
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
 });
