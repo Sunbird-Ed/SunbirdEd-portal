@@ -145,7 +145,7 @@ describe('HomeSearchComponent', () => {
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(2);
-    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
     coursesService.initialize();
@@ -349,14 +349,20 @@ describe('HomeSearchComponent', () => {
   });
 
   it('should return view more list', () => {
-    const events = {name: 'sample-name', returnTo: 'home'};
-    const userService = TestBed.get(UserService);
-    spyOn(userService, 'loggedIn').and.returnValue(true);
+    const events = {
+      name: 'sample-name/?',
+      contents: JSON.stringify({name: 'sample-content'})
+    };
+    component.queryParams = {
+      returnTo: 'home'
+    };
+    const userServices = TestBed.get(UserService);
+    spyOn(userServices, 'loggedIn').and.returnValue(true);
     const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact');
+    spyOn(telemetryService, 'interact').and.stub();
     component.viewAll(events);
-    expect(userService.loggedIn).toHaveBeenCalled();
-    expect(telemetryService.interact).toHaveBeenCalled();
+    expect(events.contents).toBeTruthy();
+    expect(events.name).toBeTruthy();
   });
 
 });
