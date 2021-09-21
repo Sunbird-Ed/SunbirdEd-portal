@@ -1,53 +1,45 @@
-import { Injectable } from '@angular/core';
+import { UserFeedCategory, UserFeedEntry, UserFeedStatus } from '@project-sunbird/client-services/models';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { CsModule } from '@project-sunbird/client-services';
-import { SbNotificationService } from 'sb-notification';
+import { CsUserServiceConfig } from '@project-sunbird/client-services';
+import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
+import { SbNotificationService , Notification, NotificationFeedEntry } from 'sb-notification';
 import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
-import { CsLibInitializerService } from '../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { GROUP_DETAILS, MY_GROUPS, GroupsService } from '@sunbird/groups';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationServiceImpl implements SbNotificationService {
 
+  private config: CsUserServiceConfig = {
+    apiPath: '/learner/user/v1'
+  };
   notificationList$ = new BehaviorSubject([]);
   showNotificationModel$ = new Subject<boolean>();
-  NotificationCsService: any;
 
   constructor(
+    @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
     private userService: UserService,
     private toasterService: ToasterService,
     private router: Router,
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
-    private csLibInitializerService: CsLibInitializerService,
-    private groupService: GroupsService,
   ) {
-    if (!CsModule.instance.isInitialised) {
-      this.csLibInitializerService.initializeCs();
-    }
-    // creating the instance for notification service in csl
-    this.NotificationCsService = CsModule.instance.notificationService;
     this.fetchNotificationList();
   }
 
-  /**
-   * @description - fetch notification list for the current user
-   * @returns Promise
-   */
-  async fetchNotificationList(): Promise<any> {
+  async fetchNotificationList(): Promise<NotificationFeedEntry<Notification>[]> {
     try {
-      let notificationData = await this.NotificationCsService.notificationRead(_.get(this.userService, 'userid')).toPromise();
-      notificationData = notificationData.feeds;
+      const notificationData: UserFeedEntry[] = await this.csUserService.getUserFeed(_.get(this.userService, 'userid'), this.config).toPromise();
       if (!Array.isArray(notificationData)) {
         return [];
       }
       notificationData
+        .filter(e => e.category === UserFeedCategory.NOTIFICATION)
         .sort(((a, b) => (new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())));
       this.notificationList$.next(notificationData);
       return notificationData as any[];
@@ -58,53 +50,22 @@ export class NotificationServiceImpl implements SbNotificationService {
     }
   }
 
-  /**
-   * @description - To update the status of the notification and if it is trackable then redirection will happen
-   * @param  {any} notificationData
-   */
   async handleNotificationClick(notificationData: any) {
-    // update the status of the notification to read
-    this.markNotificationAsRead(notificationData.data);
-
     if (!notificationData || !notificationData.data) {
       return false;
     }
+    const navigationDetails = this.getNavigationPath(notificationData);
+    const path = navigationDetails.path || '';
+    const navigationExtras: NavigationExtras = navigationDetails.navigationExtras || {};
 
-    const navigationDetails = await this.getNavigationPath(notificationData);
-
-    if (navigationDetails) {
-      const path = navigationDetails.path || '';
-      const navigationExtras: NavigationExtras = navigationDetails.navigationExtras || {};
-      if (path) {
-        this.showNotificationModel$.next(false);
-        this.router.navigate([path], navigationExtras);
-        this.fetchNotificationList();
-      }
+    if (path) {
+      this.showNotificationModel$.next(false);
+      this.router.navigate([path], navigationExtras);
+      await this.markNotificationAsRead(notificationData.data);
+      this.fetchNotificationList();
     }
   }
 
-  /**
-   * @description -To update the notification Status to read onclick of the notification
-   */
-  markNotificationAsRead(notificationData) {
-    if (_.get(notificationData, 'status') === 'unread') {
-      const req = {
-        ids: [notificationData.id],
-        userId: _.get(this.userService, 'userid')
-      }
-      this.generateInteractEvent('notification-read', { id: notificationData.id, type: 'notificationId' });
-      this.NotificationCsService.notificationUpdate(req).subscribe(() => {
-        this.fetchNotificationList();
-      },
-        e => this.toasterService.error('Something went wrong, please try again later'));
-    }
-  }
-
-  /**
-   * @description - delete the particular notification
-   * @param  {} notificationData
-   * @returns Promise
-   */
   async deleteNotification(notificationData): Promise<boolean> {
     try {
       const notificationDetails = _.get(notificationData, 'data');
@@ -123,11 +84,6 @@ export class NotificationServiceImpl implements SbNotificationService {
     }
   }
 
-  /**
-   * @description - delete all the notification from the user list 
-   * @param  {any} notificationListData
-   * @returns Promise
-   */
   async clearAllNotifications(notificationListData: any): Promise<boolean> {
     try {
       const notificationArray = _.get(notificationListData, 'data');
@@ -148,60 +104,45 @@ export class NotificationServiceImpl implements SbNotificationService {
     }
   }
 
-  /**
-   * @description - generating the router path for redirection based on the category type
-   * @param  {} event
-   */
-  async getNavigationPath(event) {
-    const additionalInfo = _.get(event, 'data.action.additionalInfo');
-    let navigateToDetailPage = false;
-    switch (_.get(event, 'data.action.type')) {
-      case 'member-added':
-        navigateToDetailPage = true;
-        break;
-      case 'member-exit':
-        navigateToDetailPage = true;
-        break;
-      case 'group-activity-added':
-        if (additionalInfo.activity) {
-          const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false
-          this.groupService.navigateToActivityToc(additionalInfo.activity.id, _.get(additionalInfo, 'group.id'), isAdmin);
-          break;
-        }
-      case 'group-activity-removed':
-        navigateToDetailPage = true;
-        break;
-      case 'certificateUpdate':
-        return {
-          path: '/profile',
-          navigationExtras: { state: { scrollToId: 'learner-passbook' } }
-        }
-      case 'contentURL':
-        if (additionalInfo.contentURL || additionalInfo.deepLink) {
-          const navigationLink = _.get(additionalInfo, 'contentURL') || _.get(additionalInfo, 'deepLink');
-          if (navigationLink) {
-            return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
-          }
-          break;
-        }
-
-      default: return {}
-    }
-    if (navigateToDetailPage && additionalInfo.group) {
+  private getNavigationPath(event) {
+    if (_.get(event, 'data.data.actionData.actionType') === 'certificateUpdate') {
       return {
-        path: `${MY_GROUPS}/${GROUP_DETAILS}/` + _.get(additionalInfo, 'group.id'),
+        path: '/profile',
+        navigationExtras: { state: { scrollToId: 'learner-passbook' } }
       };
+    }
+
+    const navigationLink = _.get(event, 'data.data.actionData.contentURL') || _.get(event, 'data.data.actionData.deepLink');
+    if (navigationLink) {
+      return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
+    }
+
+    return {};
+  }
+
+  private async markNotificationAsRead(notificationDetails) {
+    if (notificationDetails.id) {
+      this.generateInteractEvent('notification-read', { id: notificationDetails.id, type: 'notificationId' });
+      await this.updateNotificationRead(notificationDetails.id);
+    }
+  }
+
+  private async updateNotificationRead(notificationId) {
+    try {
+      await this.csUserService.updateUserFeedEntry(
+        this.userService.userid, notificationId, UserFeedCategory.NOTIFICATION, { status: UserFeedStatus.READ }, this.config
+      ).toPromise();
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 
   private async deleteNotificationData(notificationId) {
     try {
-      const req = {
-        ids: [notificationId],
-        userId: this.userService.userid,
-        category: 'group-feed'
-      }
-      await this.NotificationCsService.notificationDelete(req).toPromise();
+      await this.csUserService.deleteUserFeedEntry(
+        this.userService.userid, notificationId, UserFeedCategory.NOTIFICATION, this.config
+      ).toPromise();
       return true;
     } catch (e) {
       return false;
@@ -232,4 +173,5 @@ export class NotificationServiceImpl implements SbNotificationService {
     };
     this.telemetryService.interact(data);
   }
+
 }
