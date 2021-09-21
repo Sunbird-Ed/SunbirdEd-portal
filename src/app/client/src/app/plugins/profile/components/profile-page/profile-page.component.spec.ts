@@ -320,7 +320,7 @@ describe('ProfilePageComponent', () => {
     spyOn(telemetryService, 'interact').and.stub();
     component.navigateToCourse(courseData);
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
-    expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
+    expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234/batch/124579954']);
   });
   it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
     component.userProfile = Response.userData;

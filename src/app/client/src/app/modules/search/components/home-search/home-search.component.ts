@@ -12,6 +12,8 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
+import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach} from 'lodash-es';
+
 
 @Component({
   templateUrl: './home-search.component.html'
@@ -149,6 +151,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$))
       .subscribe(({ params, queryParams }) => {
         this.queryParams = { ...queryParams };
+        this.globalSearchFacets = (this.queryParams && this.queryParams.searchFilters) ?
+        JSON.parse(this.queryParams.searchFilters) : this.globalSearchFacets;
         this.paginationDetails.currentPage = params.pageNumber;
         this.contentList = [];
         this.fetchContents();
@@ -164,7 +168,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     filters = this.schemaService.schemaValidator({
       inputObj: filters || {},
       properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject']
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject', 'description']
     });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
@@ -195,6 +199,43 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
+          const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
+          const filteredContents = omit(groupBy(get(data, 'result.content'), content => {
+            return (this.queryParams['se_subjects'] ? content['primaryCategory'] : content['subject']);
+        }), ['undefined']);
+        for (const [key, value] of Object.entries(filteredContents)) {
+            const isMultipleSubjects = key && key.split(',').length > 1;
+            if (isMultipleSubjects) {
+                const subjects = key && key.split(',');
+                subjects.forEach((subject) => {
+                    if (filteredContents[subject]) {
+                        filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+                    } else {
+                        filteredContents[subject] = value;
+                    }
+                });
+                delete filteredContents[key];
+            }
+        }
+        const sections = [];
+        for (const section in filteredContents) {
+            if (section) {
+                if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
+                    continue;
+                }
+                sections.push({
+                    name: section,
+                    contents: filteredContents[section]
+                });
+            }
+        }
+        _map(sections, (section) => {
+            forEach(section.contents, contents => {
+                contents.cardImg = contents.appIcon || 'assets/images/book.png';
+            });
+            return section;
+        });
+        this.contentList = sections;
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
@@ -217,10 +258,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        const { constantData, metaData, dynamicFields } = this.configService.appConfig.HomeSearch;
-        this.contentList = _.concat(_.get(data, 'result.content') || [], _.get(data, 'result.QuestionSet') || []) || [];
-        this.contentList = _.map(this.contentList, (content: any) =>
-          this.utilService.processContent(content, constantData, dynamicFields, metaData));
         this.addHoverData();
       }, err => {
         this.showLoader = false;
@@ -523,4 +560,45 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
 
+public viewAll(event) {
+    this.logViewAllTelemetry(event);
+    const queryParams = { content: JSON.stringify(event.contents) , ...{ selectedTab: this.queryParams.returnTo, viewMore: true} };
+    const sectionUrl = '/explore' + '/view-all/' + event.name.replace(/\s/g, '-');
+    this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: {} });
+ }
+
+ public isUserLoggedIn(): boolean {
+  return this.userService && (this.userService.loggedIn || false);
 }
+
+logViewAllTelemetry(event) {
+  const telemetryData = {
+      cdata: [{
+          type: 'section',
+          id: event.name
+      }],
+      edata: {
+          id: 'view-all'
+      }
+  };
+  this.getInteractEdata(telemetryData);
+}
+
+getInteractEdata(event) {
+  const cardClickInteractData = {
+      context: {
+          cdata: event.cdata,
+          env: this.isUserLoggedIn() ? 'library' : this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+          id: get(event, 'edata.id'),
+          type: 'click',
+          pageid: this.isUserLoggedIn() ? 'library' : this.activatedRoute.snapshot.data.telemetry.pageid
+      },
+      object: get(event, 'object')
+  };
+  this.telemetryService.interact(cardClickInteractData);
+}
+
+}
+
