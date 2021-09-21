@@ -130,7 +130,9 @@ export class FilterComponent implements OnInit, OnDestroy {
         filter.options = options;
       } else {
         if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-          filter.options = options;
+          if(options.length > filter.options){
+            filter.options = options;
+          } 
         }
       }
     });
@@ -269,6 +271,22 @@ export class FilterComponent implements OnInit, OnDestroy {
       return true;
     } else {
       return false;
+    }
+  }
+
+  autoCompleteChange(data,reference){    
+    let object = {};
+    if(data && data.length > 0){
+      object[reference] =data;
+    }
+    this.filtersFormGroup.controls[reference].setValue(data);
+  }
+  getSelectedData(reference){
+
+    if(this.selectedFilters && this.selectedFilters[reference]){
+      return this.selectedFilters[reference];
+    } else {
+      return [];
     }
   }
 
