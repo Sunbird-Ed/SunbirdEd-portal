@@ -15,7 +15,53 @@ export const Response = {
         'content': [{
           'identifier': 'do_2124339707713126401772',
           'name': 'Test_Collection_19_mar_2018_20001'
-        }]
+        },
+        {
+          'trackable': {
+              'enabled': 'No',
+              'autoBatch': 'No'
+          },
+          'identifier': 'do_2133455247951380481573',
+          'subject': [
+              'Accountancy',
+              'Biology'
+          ],
+          'channel': '01329314824202649627',
+          'organisation': [
+              'CBSE'
+          ],
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+              'English',
+              'Hindi'
+          ],
+          'pkgVersion': 1,
+          'objectType': 'Content',
+          'gradeLevel': [
+              'Class 10',
+              'Class 11',
+              'Class 1',
+              'Class 12',
+              'Class 2',
+              'Class 3',
+              'Class 4',
+              'Class 5',
+              'Class 6',
+              'Class 7',
+              'Class 8',
+              'Class 9'
+          ],
+          'appIcon': 'https://sunbirdstagingpublic.blob.core.windows.net/sunbird-content-staging/content/do_2133455247951380481573/artifact/11111_1553061607920.thumb.jpg',
+          'primaryCategory': 'Digital Textbook',
+          'name': 'Question set offline book test',
+          'contentType': 'TextBook',
+          'board': 'CBSE',
+          'resourceType': 'Book',
+          'orgDetails': {
+              'email': null,
+              'orgName': 'CBSE'
+          }
+      }]
       }
     },
     successDataWithNoCount: {

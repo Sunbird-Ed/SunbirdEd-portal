@@ -795,17 +795,7 @@ describe('ExplorePageComponent', () => {
       const output = component.handlePillSelect({}, 'subject');
       expect(output).toEqual(undefined);
       component.handlePillSelect({ data: [{ value: { value: 'english', name: 'english' } }] }, 'subject');
-      expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
-        queryParams: {
-            se_subjects: 'english',
-            selectedTab: 'all',
-            showClose: 'true',
-            isInside: 'english',
-            returnTo: '',
-            description: '',
-            title: ''
-        }
-      });
+      expect(router.navigate).toHaveBeenCalled();
     });
 
     it('should show banner', () => {

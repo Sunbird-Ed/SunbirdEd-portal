@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../offline/services';
 import { PublicPlayerService } from '@sunbird/public';
@@ -153,7 +153,7 @@ describe('ExploreContentComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(3);
+    expect(component.contentList.length).toEqual(2);
   }));
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
     component.selectedFilters = {
@@ -167,7 +167,7 @@ describe('ExploreContentComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(3);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
@@ -177,7 +177,7 @@ describe('ExploreContentComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({ board: ['NCRT'] });
     tick(100);
-    expect(component.contentList.length).toEqual(3);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
@@ -187,7 +187,7 @@ describe('ExploreContentComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
-    expect(component.contentList.length).toEqual(3);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
@@ -198,7 +198,7 @@ describe('ExploreContentComponent', () => {
     activatedRoute.changeQueryParams({ board: ['NCRT'] });
     activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
-    expect(component.contentList.length).toEqual(3);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
@@ -244,7 +244,7 @@ describe('ExploreContentComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(3);
+    expect(component.contentList.length).toEqual(2);
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
@@ -336,7 +336,7 @@ describe('ExploreContentComponent', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
-    expect(component.contentList.length).toEqual(3);
+    expect(component.contentList.length).toEqual(2);
   }));
 
   it('should return group by subjects', fakeAsync(() => {
@@ -353,4 +353,21 @@ describe('ExploreContentComponent', () => {
     expect(component.initFilters).toBeTruthy();
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
+
+  it('should return view more list', () => {
+    const events = {
+      name: 'sample-name/?',
+      contents: JSON.stringify({name: 'sample-content'})
+    };
+    component.queryParams = {
+      returnTo: 'home'
+    };
+    const userServices = TestBed.get(UserService);
+    spyOn(userServices, 'loggedIn').and.returnValue(true);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    component.viewAll(events);
+    expect(events.contents).toBeTruthy();
+    expect(events.name).toBeTruthy();
+  });
 });
