@@ -1,7 +1,7 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { MeterialAutoCompleteComponent } from './material-auto-complete.component';
+import { MaterialAutoCompleteComponent } from './material-auto-complete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -9,13 +9,13 @@ import { AutocompletePipe } from './AutocompletePipe'
 
 describe('MaterialAutoCompleteComponent', () => {
   let component: MaterialAutoCompleteComponent;
-  let fixture: ComponentFixture<MeterialAutoCompleteComponent>;
+  let fixture: ComponentFixture<MaterialAutoCompleteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       imports:[],
-      declarations: [ MeterialAutoCompleteComponent,AutocompletePipe ]
+      declarations: [ MaterialAutoCompleteComponent,AutocompletePipe ]
     })
     .compileComponents();
   }));
@@ -23,7 +23,7 @@ describe('MaterialAutoCompleteComponent', () => {
   configureTestSuite();
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MeterialAutoCompleteComponent);
+    fixture = TestBed.createComponent(MaterialAutoCompleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
