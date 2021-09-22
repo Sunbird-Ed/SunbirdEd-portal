@@ -231,9 +231,7 @@ describe('HomeSearchComponent', () => {
     spyOn(courseService, 'findEnrolledCourses').and.returnValue({ onGoingBatchCount: 0, expiredBatchCount: 0 });
     spyOn(playerService, 'playContent').and.callThrough();
     const data = {
-      metaData: {
-        identifier: '123',
-      }
+      identifier: 'sample-identifier'
     };
     component.playContent({data});
     expect(playerService.playContent).toHaveBeenCalledWith(data);
@@ -252,9 +250,7 @@ describe('HomeSearchComponent', () => {
     };
     spyOn(courseService, 'findEnrolledCourses').and.returnValue(returnValue);
     const data = {
-      metaData: {
-        identifier: '123',
-      }
+      identifier: 'sample-identifier'
     };
     component.playContent({data});
   });

@@ -306,7 +306,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public playContent({ data }) {
-    const { metaData } = data;
+    const metaData = data;
     this.changeDetectorRef.detectChanges();
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
     this.coursesService.findEnrolledCourses(metaData.identifier);
