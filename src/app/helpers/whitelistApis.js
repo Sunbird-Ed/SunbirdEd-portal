@@ -1670,7 +1670,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
-    '/kendra/users/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
+    '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1860,7 +1860,7 @@ const API_LIST = {
     '/dataset/v1/request/list/:tag',
     '/dataset/v1/request/read/:tag',
     '/report/request/read/:tag',
-    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId',
+    '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId',
     '/assessment/observationSubmissions/mlsurvey/v1/list/:id',
     '/kendra/users/mlcore/v1/targetedEntity/:id',
     '/assessment/observationSubmissions/mlsurvey/v1/create/:id',
