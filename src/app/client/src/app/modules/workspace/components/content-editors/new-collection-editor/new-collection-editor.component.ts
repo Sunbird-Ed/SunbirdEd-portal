@@ -279,7 +279,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
     this.workSpaceService.newtoggleWarning();
   }
 
-  setEditorConfig() {
+  async setEditorConfig() {
     // tslint:disable-next-line:max-line-length
     const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
     this.editorConfig = {
@@ -321,7 +321,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         cloudStorageUrls : this.userService.cloudStorageUrls
       },
       config: {
-        mode: this.getEditorMode()
+        mode: await this.getEditorMode()
       }
     };
     this.editorConfig.config.showAddCollaborator = true;
