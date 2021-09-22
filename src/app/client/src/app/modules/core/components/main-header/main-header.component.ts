@@ -746,8 +746,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           const successMessage = filterPipe.transform(_.get(this.resourceService, title),
             '{searchString}', isInside);
           this.showingResult = successMessage;
-          this.showingDescription = filterPipe.transform(_.get(this.resourceService, description),
-          '{searchString}', isInside) + ' ' + this.resourceService.instance;
+          this.showingDescription = description ? (filterPipe.transform(_.get(this.resourceService, description),
+          '{searchString}', isInside) + ' ' + this.resourceService.instance) : '';
         } else {
           this.showBackButton = false;
         }
