@@ -78,19 +78,11 @@ function handleRequest(serviceUrl) {
       let urlParam = req.params['0']
       let query = require('url').parse(req.url).query
       logger.info({ msg: '==============================/ML_URL/* ===================================called - ' + mlURL + req.method + ' - ' + req.url });
-      let pathname = new URL(mlURL).pathname;
-      let mlNewUrl='';
-      if(pathname != '/api/'){
-        mlNewUrl = mlURL + 'api/'
-      }
-      else{
-        mlNewUrl = mlURL;
-      }
       if (query) {
-        const url = require('url').parse(mlNewUrl + urlParam + '?' + query).path;
+        const url = require('url').parse(mlURL + urlParam + '?' + query).path;
         return url
       } else {
-        const url = require('url').parse(mlNewUrl + urlParam).path
+        const url = require('url').parse(mlURL + urlParam).path
         return url
       }
     },

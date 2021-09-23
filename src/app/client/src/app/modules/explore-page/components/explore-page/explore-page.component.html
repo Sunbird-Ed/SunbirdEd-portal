@@ -87,7 +87,7 @@
               </div>
             </div>
             <div *ngFor="let section of facetSections">
-              <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList.length > 0">
+              <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
                 <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}</div>
                 <ngx-slick *ngIf="displayBanner " class="carousel banner-carousel relative9 mt-24" #slickModal="slick-modal" [config]="bannerSlideConfig">
                   <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16">
@@ -98,7 +98,7 @@
                   </div>
                 </ngx-slick>
               </div>
-              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList.length > 0" class="section-hr my-32" />
+              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0" class="section-hr my-32" />
               <sb-pills-grid *ngIf="section?.section?.isEnabled"
                 [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"

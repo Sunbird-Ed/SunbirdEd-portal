@@ -69,6 +69,9 @@ const appRoutes: Routes = [
     path: 'solution', loadChildren: () => import('app/modules/report/report.module').then(m => m.ReportModule)
   },
   {
+    path: 'program', loadChildren: () => import('app/modules/program-dashboard/program-dashboard.module').then(m => m.programDashboardModule)
+  },
+  {
     path: 'error', component: ErrorPageComponent
   },
   {
