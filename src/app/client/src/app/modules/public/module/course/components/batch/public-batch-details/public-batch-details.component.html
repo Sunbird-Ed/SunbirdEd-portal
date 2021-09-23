@@ -29,13 +29,13 @@
           <div class="mb-16">
             <div *ngIf="batchDetails?.startDate">
               <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-                {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchstartdate}}</div>
+                {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
               <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}</div>
             </div>
             <hr class="section-hr" *ngIf="batchDetails?.endDate"/>
             <div *ngIf="batchDetails?.endDate">
               <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-                {{resourceService?.frmelmnts?.lbl?.batch}} {{resourceService?.frmelmnts?.lbl?.batchenddate}}</div>
+                {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
               <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
             </div>
             <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"/>
