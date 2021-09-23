@@ -1274,6 +1274,9 @@ const API_LIST = {
     '/google/auth': {
       checksNeeded: []
     },
+    '/apple/auth': {
+        checksNeeded: []
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: [],

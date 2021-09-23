@@ -5,6 +5,8 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
 
 let envVariables = {
 
+  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys",
+
   // Environment variables
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
