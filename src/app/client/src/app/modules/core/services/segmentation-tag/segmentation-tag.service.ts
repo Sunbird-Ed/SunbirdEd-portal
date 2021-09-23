@@ -46,7 +46,7 @@ export class SegmentationTagService {
         if (!this.exeCommands.find(ele => ele.commandId === cmdCriteria.commandId)) {
             switch (cmdCriteria.controlFunction) {
                 case 'BANNER_CONFIG':
-                    if (cmdCriteria.controlFunctionPayload && cmdCriteria.controlFunctionPayload.showBanner) {
+                    if (cmdCriteria.targetedClient === 'portal' && cmdCriteria.controlFunctionPayload && cmdCriteria.controlFunctionPayload.showBanner) {
                         this.exeCommands.push(cmdCriteria);
                     }
                     break;
