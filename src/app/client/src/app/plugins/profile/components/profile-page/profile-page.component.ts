@@ -506,6 +506,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   navigateToCourse(coursedata) {
     const courseId = _.get(coursedata, 'courseId');
+    const batchId = _.get(coursedata, 'batchId')
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
@@ -527,7 +528,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
     this.telemetryService.interact(interactData);
-    this.router.navigate([`learn/course/${courseId}`]);
+    this.router.navigate([`learn/course/${courseId}/batch/${batchId}`]);
   }
 
   toggleOtherCertific(showMore) {

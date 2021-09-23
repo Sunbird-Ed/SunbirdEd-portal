@@ -85,6 +85,7 @@ describe('MainHeaderComponent', () => {
   }));
 
   beforeEach(() => {
+
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
     component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
@@ -413,6 +414,5 @@ it("should call the getFormConfigs to get form category",()=>{
   component.getFormConfigs();
   expect(component.getFormConfigs).toHaveBeenCalled();
 })
-
 
 });
