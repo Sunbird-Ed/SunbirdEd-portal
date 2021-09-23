@@ -236,3 +236,6 @@ try {
   module.exports = envVariables;
   // console.log('errorEnv---->',envVariables);
 }
+
+// Add below variable for Apple Login
+// APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"

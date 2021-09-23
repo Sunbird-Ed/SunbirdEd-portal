@@ -247,7 +247,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     body: {
       params: {
         source: client_id,
-        signupType: "google"
+        signupType: client_id === "apple" ? "apple" : "google"
       },
       request: {
         firstName: accountDetails.name,
@@ -261,7 +261,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     if (data.responseCode === 'OK') {
       return data;
     } else {
-      logger.error({msg: 'googleOauthHelper: createUserWithMailId failed', additionalInfo: {data}});
+      logger.error({msg: client_id + 'OauthHelper: createUserWithMailId failed', additionalInfo: {data}});
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   })

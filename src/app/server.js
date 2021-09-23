@@ -228,6 +228,8 @@ require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in route
 
 require('./ios/routes')(app); // ios routes and middlewares
 
+require('./ios/routes/appleSignInRoutes.js')(app, keycloak) // apple sign in routes
+
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
 
 require('./routes/refreshTokenRoutes.js')(app, keycloak) // refresh token routes
