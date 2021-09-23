@@ -2,7 +2,7 @@ import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements-web
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
 import { concat, defer, iif, Observable, of } from 'rxjs';
-import { distinctUntilChanged, mergeMap, map } from 'rxjs/operators';
+import { distinctUntilChanged, mergeMap, map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import { LocationService } from '../../services/location/location.service';
@@ -85,10 +85,10 @@ export class SbFormLocationOptionsFactory {
                 list = locationList.map((s) => ({ label: s.name, value: s }));
               }
               // school is fetched from userProfile.organisation instead of userProfile.userLocations
-              if (config.code === 'school' && initial && !formControl.value) {
+              if (config.code === 'school' && initial && !formControl.value && !!config.default) {
                 const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);
                 formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
-              } else if (config.default && initial && !formControl.value) {
+              } else if (!!config.default && initial && !formControl.value) {
                 const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);
                 formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
                 config.default['code'] = option ? option.value['code'] : config.default['code'];
@@ -126,7 +126,10 @@ export class SbFormLocationOptionsFactory {
               identifier: ele.identifier
             }
           };
-        }))
+        })),
+        catchError((error) => {
+          return [];
+        })
       ).toPromise();
     } else {
       return this.fetchUserLocation({
