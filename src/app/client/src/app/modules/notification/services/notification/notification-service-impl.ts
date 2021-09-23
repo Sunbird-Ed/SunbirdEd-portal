@@ -73,8 +73,8 @@ export class NotificationServiceImpl implements SbNotificationService {
     const navigationDetails = await this.getNavigationPath(notificationData);
 
     if (navigationDetails) {
-      const path = navigationDetails.path || '';
-      const navigationExtras: NavigationExtras = navigationDetails.navigationExtras || {};
+      const path = navigationDetails['path']|| '';
+      const navigationExtras: NavigationExtras = navigationDetails['navigationExtras'] || {};
       if (path) {
         this.showNotificationModel$.next(false);
         this.router.navigate([path], navigationExtras);
@@ -153,44 +153,23 @@ export class NotificationServiceImpl implements SbNotificationService {
    * @param  {} event
    */
   async getNavigationPath(event) {
+    console.log('event', event);
+    const category = _.get(event, 'data.category');
     const additionalInfo = _.get(event, 'data.action.additionalInfo');
-    let navigateToDetailPage = false;
-    switch (_.get(event, 'data.action.type')) {
-      case 'member-added':
-        navigateToDetailPage = true;
-        break;
-      case 'member-exit':
-        navigateToDetailPage = true;
-        break;
-      case 'group-activity-added':
-        if (additionalInfo.activity) {
-          const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false
-          this.groupService.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin);
-          break;
-        }
-      case 'group-activity-removed':
-        navigateToDetailPage = true;
-        break;
-      case 'certificateUpdate':
+    if (category === 'group' || category === 'groups') {
+     return this.groupService.navigate(event, additionalInfo);
+    } else {
+      if (_.get(event, 'data.action.type') === 'certificateUpdate') {
         return {
           path: '/profile',
           navigationExtras: { state: { scrollToId: 'learner-passbook' } }
-        }
-      case 'contentURL':
-        if (additionalInfo.contentURL || additionalInfo.deepLink) {
-          const navigationLink = _.get(additionalInfo, 'contentURL') || _.get(additionalInfo, 'deepLink');
-          if (navigationLink) {
-            return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
-          }
-          break;
-        }
-
-      default: return {}
-    }
-    if (navigateToDetailPage && additionalInfo.group) {
-      return {
-        path: `${MY_GROUPS}/${GROUP_DETAILS}/` + _.get(additionalInfo, 'group.id'),
-      };
+        };
+      }
+      const navigationLink = additionalInfo.contentURL || additionalInfo.deepLink;
+      if (navigationLink) {
+        return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
+      }      
+      return {};
     }
   }
 

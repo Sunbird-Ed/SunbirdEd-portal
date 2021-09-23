@@ -36,7 +36,7 @@ describe('NotificationServiceImpl', () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
      
-      spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf(notificationList));
+      spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf(notificationData));
       // act
       const resp = await service.fetchNotificationList();
       // assert
@@ -193,7 +193,15 @@ describe('NotificationServiceImpl', () => {
     it ('should call getNavigationPath()', async () => {
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
 
-      const resp = await service.getNavigationPath({data: notificationList});
+      const resp = await service.getNavigationPath({data: notificationData});
+
+      expect(resp).toEqual({ path: 'my-groups/group-details/dfb38dd6-2200-4622-ac07-0a0e3740e948'});
+    })
+
+    it ('should fail call getNavigationPath()', async () => {
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+
+      const resp = await service.getNavigationPath({data: {action: {additionalInfo: {}}} });
 
       expect(resp).toEqual({});
     })

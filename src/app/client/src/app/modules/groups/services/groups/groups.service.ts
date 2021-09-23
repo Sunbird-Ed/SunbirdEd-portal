@@ -13,7 +13,7 @@ import { UserService, LearnerService, TncService, PlayerService } from '@sunbird
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
+import { GROUP_DETAILS, IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models';
 
@@ -378,6 +378,20 @@ export class GroupsService {
     return this.groupCservice.activityService.getDataForDashlets(courseHeirarchyData, aggData);
   }
 
+  navigate(data, additionalInfo) {
+    const type = _.get(data, 'data.action.type');
+    if (type === 'member-added' || type === 'member-exit' || type === 'group-activity-removed') {
+      return {
+        path: `${MY_GROUPS}/${GROUP_DETAILS}/` + _.get(additionalInfo, 'group.id'),
+      };
+    }
+    if (type === 'group-activity-added') {
+      const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false
+      this.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin);
+    }
+    return {};
+  }
+
   navigateToActivityToc(activity, groupId, isAdmin) {
     this.getGroupById(groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
       const response = this.groupContentsByActivityType(false, groupData);
@@ -388,9 +402,10 @@ export class GroupsService {
         }
       })
     }, e => {
-        this.toasterService.error('Something went wrong, please try again later')
+      this.toasterService.error('Something went wrong, please try again later')
     });
   }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
