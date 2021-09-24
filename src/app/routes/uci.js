@@ -1,5 +1,5 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
-const BASE_REPORT_URL = "/admin";
+const BASE_REPORT_URL = "/uci/admin";
 const proxy = require('express-http-proxy');
 const { uci_service_base_url } = require('../helpers/environmentVariablesHelper.js');
 const jwt = require('jsonwebtoken');
@@ -45,8 +45,8 @@ function proxyObject() {
     return proxy(uci_service_base_url, {
         proxyReqOptDecorator: addHeaders(),
         proxyReqPathResolver: function (req) {
-            let urlParam = req.originalUrl;
-            console.log("Request comming from :", urlParam)
+            let urlParam = req.originalUrl.replace("/uci/", "/");
+            console.log("[UCI] Request coming from: ", {urlParam});
             let query = require('url').parse(req.url).query;
             if (query) {
                 return require('url').parse(uci_service_base_url + urlParam + '?' + query).path
