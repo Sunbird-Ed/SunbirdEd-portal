@@ -1781,11 +1781,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/v1/user-extension/programsByPlatformRoles': {
+    '/kendra/v1/user-extension/programsByPlatformRoles': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     },
-    '/v1/user-extension/solutions': {
+    '/kendra/v1/user-extension/solutions': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     }
