@@ -15,6 +15,7 @@ let envVariables = {
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
+  uci_service_base_url: env.uci_service_base_url || "http://uci-service:9999",
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
