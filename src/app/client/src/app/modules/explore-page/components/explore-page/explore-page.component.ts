@@ -920,6 +920,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public viewAll(event, contentSection?) {
+        this.moveToTop();
         let searchQuery;
         if (contentSection) {
             event = { contents: event.data, count: event.data.length, name: contentSection.title };

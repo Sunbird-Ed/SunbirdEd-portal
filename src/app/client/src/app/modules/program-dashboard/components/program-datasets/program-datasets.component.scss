@@ -1,0 +1,47 @@
+
+.ui.dropdown.selection {
+    padding: 0.5rem 0.75rem !important;
+}
+
+.li-item {
+    text-align: right;
+    padding: 10px;
+    background: aliceblue;
+    border: none;
+}
+::ng-deep{
+    
+    .ui.selection.dropdown {
+        padding: 11px;
+        display: block !important;
+        min-width: 260px !important;
+    }
+    .datatable-body-cell-label {
+        padding: 10px !important;
+    }
+    .sb-field-group {
+        padding: 10px !important;
+    }
+    .sb-modal-actions {
+        justify-content: center;
+    } 
+  
+    
+}
+.sb-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sb-modal .ui.modal {
+    margin-top: 15% !important;
+}
+.ngx-datatable.fixed-header .datatable-header {
+    padding: 10px;
+}
+.sidebar-block {
+    min-height: 400px;
+}
+.justify-flex-end {
+    justify-content: flex-end;
+}
