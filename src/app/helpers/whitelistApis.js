@@ -1759,7 +1759,72 @@ const API_LIST = {
     '/v1/user-extension/solutions': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
-    }
+    },
+    // UCI Related APIs
+    "/uci/admin/v1/bot/get": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/search": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/pause/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/start/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/delete/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/getByParam": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/update/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/get": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/search": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/queryBuilder": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/update/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/delete/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/forms/upload": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1878,7 +1943,23 @@ const API_LIST = {
     '/assessment/observations/mlsurvey/v1/updateEntities/:id',
     '/assessment/observationSubmissions/mlsurvey/v1/update/:id',
     '/action/collection/v1/import/:id',
-    '/action/collection/v1/export/:id'
+    '/action/collection/v1/export/:id',
+    '/uci/admin/v1/bot/get',
+    '/uci/admin/v1/bot/search',
+    '/uci/admin/v1/bot/pause/:botId',
+    '/uci/admin/v1/bot/start/:botId',
+    '/uci/admin/v1/bot/delete/:botId',
+    '/uci/admin/v1/bot/getByParam',
+    '/uci/admin/v1/bot/create',
+    '/uci/admin/v1/bot/update/:id',
+    '/uci/admin/v1/userSegment/get',
+    '/uci/admin/v1/userSegment/search',
+    '/uci/admin/v1/userSegment/create',
+    '/uci/admin/v1/userSegment/queryBuilder',
+    '/uci/admin/v1/conversationLogic/create',
+    '/uci/admin/v1/conversationLogic/update/:id',
+    '/uci/admin/v1/conversationLogic/delete/:id',
+    '/uci/admin/v1/forms/upload',
   ]
 };
 module.exports = API_LIST;
