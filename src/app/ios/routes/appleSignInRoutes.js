@@ -1,4 +1,5 @@
 const { createSession, fetchUserByEmailId, createUserWithMailId } = require('../../helpers/googleOauthHelper');
+const { IOSFormMiddleware } = require('../middleware/formMiddleware');
 const jwt = require('jsonwebtoken');
 const APPLE_SIGN_IN_DELAY = 3000;
 const envHelper = require('../../helpers/environmentVariablesHelper.js');
@@ -78,6 +79,8 @@ module.exports = (app) => {
         }
 
     }
+
+    app.use('/api/data/v1/form/read', bodyParser.json(), IOSFormMiddleware);
 
     app.post('/apple/auth/ios', bodyParser.json(), async (req, res) => {
         try {
