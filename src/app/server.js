@@ -226,7 +226,7 @@ require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
 require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
 
-require('./ios/routes')(app); // ios routes and middlewares
+require('./ios/routes/index.js')(app); // ios routes and middlewares
 
 require('./ios/routes/appleSignInRoutes.js')(app, keycloak) // apple sign in routes
 
