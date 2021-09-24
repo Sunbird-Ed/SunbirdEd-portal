@@ -37,9 +37,7 @@ module.exports = function (app) {
 
 function addHeaders() {
     return function (proxyReqOpts, srcReq) {
-    //    let decoratedHeaders =  proxyUtils.decorateRequestHeaders(uci_service_base_url)()
-        proxyReqOpts.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
-        return proxyReqOpts;
+       return proxyUtils.decorateRequestHeaders(uci_service_base_url)()
     }
 }
 
