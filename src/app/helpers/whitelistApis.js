@@ -1916,7 +1916,8 @@ const API_LIST = {
     '/assessment/v1/observationSubmissions/update/:id',
     '/assessment/api/v1/observationSubmissions/update/:id',
     '/action/collection/v1/import/:id',
-    '/action/collection/v1/export/:id'
+    '/action/collection/v1/export/:id',
+    '/kendra/v1/user-extension/solutions/:id'
   ]
 };
 module.exports = API_LIST;
