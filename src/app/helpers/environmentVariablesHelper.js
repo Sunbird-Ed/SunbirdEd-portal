@@ -15,6 +15,7 @@ let envVariables = {
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
+  uci_service_base_url: env.uci_service_base_url || "http://uci-service:9999",
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
@@ -237,7 +238,9 @@ let envVariables = {
   PORTAL_REDIS_PORT: env.sunbird_redis_port,
   PORTAL_REDIS_TYPE: env.sunbird_redis_type,
   PORTAL_REDIS_PASSWORD: env.sunbird_redis_password,
-  PORTAL_REDIS_CONNECTION_STRING: env.portal_redis_connection_string
+  PORTAL_REDIS_CONNECTION_STRING: env.portal_redis_connection_string,
+  // VDN URL
+  vdnURL:env.vdnURL || ''
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
@@ -254,7 +257,7 @@ try {
     // console.log('local---->',devVariables);
   } else {
     module.exports = envVariables;
-    // console.log('env---->',envVariables);
+   // console.log('env---->',envVariables);
   }
 } catch (error) {
   module.exports = envVariables;

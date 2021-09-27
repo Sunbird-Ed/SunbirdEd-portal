@@ -34,31 +34,18 @@
       <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
       <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length"
-        class="sb-grid dynamic-section-card ">
-        <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
-          <!-- <ng-container *ngIf="!layoutConfiguration">
-          <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
-            [data]="content" (clickEvent)="playContent($event)"></app-card>
-          </ng-container> -->
-          <ng-container>
-            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" *ngIf="!isDesktopApp;else desktopCard"
-                             appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
-                             (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
-            <ng-template #desktopCard>
-              <div class="sb-desktop-library-card relative9">
-                <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
-                                [telemetryInteractEdata]="cardIntractEdata"
-                                [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
-                                [hover-template]="hoverTemplate" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
-                  <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
-                    <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
-                      (hoverActionClick)="hoverActionClicked($event)">
-                    </sb-card-hover>
-                  </ng-template>
-                </sb-library-card>
-              </div>
-            </ng-template>
-          </ng-container>
+        class="dynamic-section-card">
+        <div *ngFor="let section of contentList; let last = last" [ngClass]="{'last mb-0':last}">
+          <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
+            [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" [viewMore]="true"
+            (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
+          </sb-library-cards-grid>
+          <div class="sb-desktop-library-card relative9">
+            <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
+            [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" [viewMore]="true"
+            (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
+            </sb-library-cards-grid>
+          </div>
         </div>
       </div>
     </div>
@@ -68,11 +55,11 @@
     <div class="twelve wide column right aligned" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
       <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails.pages.length">
         <div class="sb-pagination my-0">
-            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
-            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
-            <a href=“javascript:void(0);” role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
-            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
-            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+            <a role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
         </div>
         
       </div>

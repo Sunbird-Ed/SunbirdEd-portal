@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -150,7 +151,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private location: Location) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -197,7 +198,16 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
       takeUntil(this.unsubscribe)
     ).subscribe((response: any) => {
-      this.getContents(response);
+      if (this.queryParams.viewMore) {
+        const contents = JSON.parse(this.queryParams.content);
+        this.showLoader = false;
+        this.totalCount = contents.length;
+        this.pager = this.paginationService.getPager(contents.length, this.pageNumber, this.pageLimit);
+        const contentList = this.formatSearchresults(contents);
+        this.searchList = contentList.slice(((this.pager.currentPage - 1) * 20), ((this.pager.currentPage * 20)));
+      } else {
+        this.getContents(response);
+      }
     }, (error) => {
       this.showLoader = false;
       this.noResult = true;
@@ -644,10 +654,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     return facetsData;
   }
   public handleCloseButton() {
+    if (this.queryParams.viewMore) {
+      this.location.back();
+    } else {
     const [path] = this.router.url.split('/view-all');
     const redirectionUrl = `/${path.toString()}`;
     const { selectedTab = '' } = this.queryParams || {};
     this.router.navigate([redirectionUrl], { queryParams: { selectedTab } });
+    }
   }
 
   private getFormConfig(input = { formType: 'contentcategory', formAction: 'menubar', contentType: 'global' }): Observable<object> {

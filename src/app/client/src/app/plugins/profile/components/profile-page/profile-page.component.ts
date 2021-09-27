@@ -146,7 +146,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.getOrgDetails();
-        this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
         this.getTrainingAttended();
         this.setNonCustodianUserLocation();
@@ -240,20 +239,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   getLocationDetails(locations, type) {
     const location: any = _.find(locations, { type: type });
     return location ? location.name : false;
-  }
-
-  getContribution(): void {
-    const { constantData, metaData, dynamicFields } = this.configService.appConfig.Course.otherCourse;
-      const searchParams = {
-        status: ['Live'],
-        contentType: this.configService.appConfig.WORKSPACE.contentType,
-        params: { lastUpdatedOn: 'desc' }
-      };
-      const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
-      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
-        this.contributions = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
-        this.totalContributions = _.get(data, 'result.count') || 0;
-      });
   }
 
   getTrainingAttended() {
@@ -506,6 +491,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   navigateToCourse(coursedata) {
     const courseId = _.get(coursedata, 'courseId');
+    const batchId = _.get(coursedata, 'batchId')
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
@@ -527,7 +513,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
     this.telemetryService.interact(interactData);
-    this.router.navigate([`learn/course/${courseId}`]);
+    this.router.navigate([`learn/course/${courseId}/batch/${batchId}`]);
   }
 
   toggleOtherCertific(showMore) {

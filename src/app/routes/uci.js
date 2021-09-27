@@ -1,7 +1,7 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
-const BASE_REPORT_URL = "/admin";
+const BASE_REPORT_URL = "/uci/admin";
 const proxy = require('express-http-proxy');
-const { discussions_middleware } = require('../helpers/environmentVariablesHelper.js');
+const { uci_service_base_url } = require('../helpers/environmentVariablesHelper.js');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash')
 const bodyParser = require('body-parser');
@@ -37,23 +37,21 @@ module.exports = function (app) {
 
 function addHeaders() {
     return function (proxyReqOpts, srcReq) {
-    //    let decoratedHeaders =  proxyUtils.decorateRequestHeaders(discussions_middleware)()
-        proxyReqOpts.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
-        return proxyReqOpts;
+       return proxyUtils.decorateRequestHeaders(uci_service_base_url)()
     }
 }
 
 function proxyObject() {
-    return proxy(discussions_middleware, {
+    return proxy(uci_service_base_url, {
         proxyReqOptDecorator: addHeaders(),
         proxyReqPathResolver: function (req) {
-            let urlParam = req.originalUrl;
-            console.log("Request comming from :", urlParam)
+            let urlParam = req.originalUrl.replace("/uci/", "/");
+            console.log("[UCI] Request coming from: ", {urlParam});
             let query = require('url').parse(req.url).query;
             if (query) {
-                return require('url').parse(discussions_middleware + urlParam + '?' + query).path
+                return require('url').parse(uci_service_base_url + urlParam + '?' + query).path
             } else {
-                return require('url').parse(discussions_middleware + urlParam).path
+                return require('url').parse(uci_service_base_url + urlParam).path
             }
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
