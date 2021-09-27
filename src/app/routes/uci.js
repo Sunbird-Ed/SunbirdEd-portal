@@ -7,7 +7,7 @@ const { logger } = require('@project-sunbird/logger');
 // TODO: remove this hack for Local dev
 let verifyToken;
 if(process.env.sunbird_environment !== 'local'){
-    verifyToken = proxyUtils.verifyToken();
+    verifyToken = proxyUtils.verifyToken;
 }else{
     verifyToken = () => (req, res, next) => {next()};
 }
