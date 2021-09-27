@@ -1,13 +1,8 @@
-const mapping = {
-    'config_userType_v2_app': {
-        type: 'config',
-        subType: 'userType_v2_ios'
-    }
-}
+const mapping = { 'config_userType_v2_app': { type: 'config', subType: 'userType_v2_ios' } };
 
 const IOSFormMiddleware = (req, res, next) => {
     const platform = req.get('X-Platform-Id');
-    if (platform && typeof(platform) == 'string' && platform.toLowerCase() === 'ios') {
+    if (platform && typeof (platform) == 'string' && platform.toLowerCase() === 'ios') {
         const { body } = req;
         if (body) {
             const { type, subType, component } = body.request || {};

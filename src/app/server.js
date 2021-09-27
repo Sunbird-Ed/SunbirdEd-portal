@@ -234,6 +234,8 @@ require('./routes/refreshTokenRoutes.js')(app, keycloak) // refresh token routes
 
 require('./routes/accountMergeRoute.js')(app, keycloak) // refresh token routes
 
+require('./routes/ios.js')(app);
+
 require('./routes/clientRoutes.js')(app, keycloak) // client app routes
 
 require('./routes/reportRoutes.js')(app, keycloak) // report routes
