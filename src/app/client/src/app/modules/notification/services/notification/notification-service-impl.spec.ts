@@ -188,14 +188,13 @@ describe('NotificationServiceImpl', () => {
     });
 
   });
-
-  describe('getNavigationPath()', () => {
+  describe('getNavigationPath()', async() => {
     it ('should call getNavigationPath()', async () => {
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
 
       const resp = await service.getNavigationPath({data: notificationData});
 
-      expect(resp).toEqual({ path: 'my-groups/group-details/dfb38dd6-2200-4622-ac07-0a0e3740e948'});
+      expect(resp).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90'});
     })
 
     it ('should fail call getNavigationPath()', async () => {
@@ -208,4 +207,3 @@ describe('NotificationServiceImpl', () => {
   });
 
 });
-

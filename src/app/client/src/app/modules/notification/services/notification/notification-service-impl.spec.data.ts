@@ -1,36 +1,3 @@
-export const notificationData = {
-  "expireOn": null,
-  "createdBy": "8454cb21-3ce9-4e30-85b5-fade097880d8",
-  "action": {
-      "template": {
-          "ver": "4.3.0",
-          "data": "{\"title\": \"you have been added to dev group by ntptest104\"}",
-          "type": "JSON"
-      },
-      "createdBy": {
-          "id": "8454cb21-3ce9-4e30-85b5-fade097880d8",
-          "name": "ntptest104",
-          "type": "User"
-      },
-      "additionalInfo": {
-          "group": {
-              "id": "dfb38dd6-2200-4622-ac07-0a0e3740e948",
-              "name": "dev group"
-          },
-          "groupRole": "admin"
-      },
-      "type": "member-added"
-  },
-  "id": "8736208f-1b23-465a-bbd4-4492e5180a5b",
-  "updatedOn": null,
-  "category": "groups",
-  "priority": 1,
-  "createdOn": 1631080910003,
-  "userId": "8454cb21-3ce9-4e30-85b5-fade097880d8",
-  "version": null,
-  "status": "unread"
-};
-
 export const notificationList = [
   {
     data: {
@@ -71,3 +38,43 @@ export const notificationList = [
     status: 'read'
   }
 ];
+export const notificationData = {
+  "expireOn": null,
+  "updatedBy": "4cd4c690-eab6-4938-855a-447c7b1b8ea9",
+  "createdBy": "fbe926ac-a395-40e4-a65b-9b4f711d7642",
+  "action": {
+      "template": {
+          "ver": "4.3.0",
+          "data": "{\"title\": \"3.7 Book with Collaborator has been assigned to zen by TNORGADMIN\"}",
+          "type": "JSON"
+      },
+      "createdBy": {
+          "name": "TNORGADMIN",
+          "id": "fbe926ac-a395-40e4-a65b-9b4f711d7642",
+          "type": "user"
+      },
+      "additionalInfo": {
+          "activity": {
+              "id": "do_21322315085421772811333",
+              "type": "Digital Textbook",
+              "name": "3.7 Book with Collaborator"
+          },
+          "groupRole": "member",
+          "group": {
+              "name": "zen",
+              "id": "2ae1e555-b9cc-4510-9c1d-2f90e94ded90"
+          }
+      },
+      "type": "group-activity-added",
+      "category": "group"
+  },
+  "id": "86972448-dfd6-4877-bdcd-d83c5b886951",
+  "updatedOn": 1632118806779,
+  "category": "group",
+  "priority": 1,
+  "createdOn": 1631870811982,
+  "userId": "4cd4c690-eab6-4938-855a-447c7b1b8ea9",
+  "version": null,
+  "status": "read"
+}
+

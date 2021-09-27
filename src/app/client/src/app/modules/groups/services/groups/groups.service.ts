@@ -1,11 +1,10 @@
 import { delay, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import {
-  CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest,
-  CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest,
+import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest,
+CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest,
   CsGroupUpdateGroupGuidelinesRequest,
   CsGroupSupportedActivitiesFormField
 } from '@project-sunbird/client-services/services/group/interface';
@@ -37,6 +36,7 @@ export class GroupsService {
   private _userData;
   public unsubscribe$ = new Subject<void>();
 
+
   constructor(
     private csLibInitializerService: CsLibInitializerService,
     private userService: UserService,
@@ -62,7 +62,7 @@ export class GroupsService {
     if (members) {
       this.setCurrentUserRole(members);
       const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
-      return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.title)], ['desc', 'desc', 'asc']);
+     return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.title)], ['desc', 'desc', 'asc']);
     }
     return [];
   }
@@ -98,8 +98,8 @@ export class GroupsService {
     const currentUser = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
     group.isCreator = _.get(group, 'createdBy') === this.userService.userid;
     group.isAdmin = group.isCreator ? true :
-      (currentUser ? _.isEqual(_.get(currentUser, 'role'), 'admin') :
-        _.isEqual(_.get(group, 'memberRole'), 'admin'));
+    (currentUser ? _.isEqual(_.get(currentUser, 'role'), 'admin') :
+    _.isEqual(_.get(group, 'memberRole'), 'admin'));
     group.initial = _.get(group, 'name[0]');
     return group;
   }
@@ -151,10 +151,10 @@ export class GroupsService {
   }
 
   getUserData(memberId: string, captchaToken: object = {}) {
-    return this.userCservice.checkUserExists({ key: 'userName', value: memberId }, captchaToken);
+    return this.userCservice.checkUserExists({key: 'userName', value: memberId}, captchaToken);
   }
 
-  getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
+getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
     return this.groupCservice.activityService.getDataAggregation(groupId, activity, mergeGroup, leafNodesCount);
   }
 
@@ -165,7 +165,7 @@ export class GroupsService {
   get groupData() {
     return this._groupData;
   }
-
+  
   emitCloseForm() {
     this.closeForm.emit();
   }
@@ -199,13 +199,13 @@ export class GroupsService {
     });
 
     return groupList || [];
-  }
+    }
 
 
-  addTelemetry(eid: { id: string, extra?: {}, edata?: { type: string, subtype?: string } }, routeData, cdata, groupId?, obj?) {
+  addTelemetry(eid: {id: string, extra?: {}, edata?: {type: string, subtype?: string}}, routeData, cdata, groupId?, obj?) {
     const id = _.get(routeData, 'params.groupId') || groupId;
     // Overridding the default edata properties if user is passing
-    const type = (_.defaults({}, eid.edata, { type: 'click' })).type;
+    const  type = (_.defaults({}, eid.edata, {type: 'click'})).type;
     const interactData: IInteractEventInput = {
       context: {
         env: _.get(routeData, 'data.telemetry.env'),
@@ -226,7 +226,7 @@ export class GroupsService {
     }
 
     if (id) {
-      interactData.context.cdata.push({ id: id, type: 'Group' });
+      interactData.context.cdata.push({id: id, type: 'Group'});
     }
 
     if (obj) {
@@ -238,8 +238,8 @@ export class GroupsService {
 
   getImpressionObject(routeData, url, edata?): IImpressionEventInput {
     // Overridding the default edata properties if user is passing
-    const type = (_.defaults({}, edata, { type: _.get(routeData, 'data.telemetry.type') })).type;
-    const subtype = (_.defaults({}, edata, { subtype: _.get(routeData, 'data.telemetry.subtype') })).subtype;
+    const type = (_.defaults({},  edata, { type: _.get(routeData, 'data.telemetry.type')})).type;
+    const subtype = (_.defaults({},  edata, { subtype: _.get(routeData, 'data.telemetry.subtype')})).subtype;
     const impressionObj = {
       context: {
         env: _.get(routeData, 'data.telemetry.env')
@@ -278,56 +278,56 @@ export class GroupsService {
     return this.groupCservice.getSupportedActivities();
   }
 
-  set groupListCount(count) {
+  set groupListCount (count) {
     this._groupListCount = count;
   }
 
-  get groupListCount() {
+  get groupListCount () {
     return this._groupListCount;
   }
 
   getSelectedLanguageStrings(activity: CsGroupSupportedActivitiesFormField) {
     this.resourceService.languageSelected$.pipe(delay(600)).subscribe(item => {
-      if (!_.isEmpty(activity)) {
-        if (activity.translations) {
-          _.find(JSON.parse(activity.translations), (value, key) => {
-            if (item.value === key) {
-              activity.title = value;
-            }
-          });
-        }
+      if (!_.isEmpty(activity) ) {
+            if (activity.translations) {
+              _.find(JSON.parse(activity.translations), (value, key) => {
+                if (item.value === key) {
+                  activity.title = value;
+                }
+            });
+          }
       }
     });
     return activity;
   }
 
-  groupContentsByActivityType(showList, groupData) {
+  groupContentsByActivityType (showList, groupData) {
     const activitiesGrouped = _.get(groupData, 'activitiesGrouped');
     if (activitiesGrouped) {
 
-      const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
-        activityGroup = this.getSelectedLanguageStrings(activityGroup);
+        const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
+          activityGroup = this.getSelectedLanguageStrings(activityGroup);
 
-        acc[activityGroup.title] = activityGroup.items.map((i) => {
-          const activity = {
-            ...i.activityInfo,
-            type: i.type,
-            cardImg: _.get(i, 'activityInfo.appIcon') || this.configService.appConfig.assetsPath.book,
-          };
-          return activity;
-        });
-        showList = !showList ? Object.values(acc).length > 0 : showList;
-        return acc;
+              acc[activityGroup.title] = activityGroup.items.map((i) => {
+                const activity = {
+                  ...i.activityInfo,
+                  type: i.type,
+                  cardImg: _.get(i, 'activityInfo.appIcon') || this.configService.appConfig.assetsPath.book,
+                };
+                return activity;
+              });
+              showList = !showList ? Object.values(acc).length > 0 : showList;
+              return acc;
 
-      }, {});
-      Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
-      return { showList, activities: activityList };
+        }, {});
+        Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
+        return { showList, activities: activityList };
     }
     return { showList, activities: activitiesGrouped || {} };
-  }
+}
 
   emitActivateEvent(name, eventName) {
-    this.showActivateModal.emit({ name, eventName });
+    this.showActivateModal.emit({name, eventName});
   }
 
   deActivateGroupById(groupId: string) {
@@ -348,11 +348,11 @@ export class GroupsService {
   }
 
   isUserAcceptedTnc() {
-    const userTncAccepted = _.get(this._userData, 'allTncAccepted');
-    return this._userData ? (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc'))) : true;
+      const userTncAccepted = _.get(this._userData, 'allTncAccepted');
+      return this._userData ? (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc'))) : true;
   }
 
-  set groupsTncDetails(groupsTnc) {
+  set groupsTncDetails (groupsTnc) {
     groupsTnc.value = (typeof groupsTnc.value === 'string') ? JSON.parse(groupsTnc.value) : groupsTnc.value;
 
     this._groupsTnc = groupsTnc;
@@ -371,14 +371,14 @@ export class GroupsService {
   }
 
   updateGroupGuidelines(request: CsGroupUpdateGroupGuidelinesRequest) {
-    return this.groupCservice.updateGroupGuidelines(request);
+  return this.groupCservice.updateGroupGuidelines(request);
   }
 
   getDashletData(courseHeirarchyData, aggData) {
     return this.groupCservice.activityService.getDataForDashlets(courseHeirarchyData, aggData);
   }
 
-  navigate(data, additionalInfo) {
+  navigateNotification(data, additionalInfo) {
     const type = _.get(data, 'data.action.type');
     if (type === 'member-added' || type === 'member-exit' || type === 'group-activity-removed') {
       return {
@@ -395,7 +395,6 @@ export class GroupsService {
   navigateToActivityToc(activity, groupId, isAdmin) {
     this.getGroupById(groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
       const response = this.groupContentsByActivityType(false, groupData);
-      console.log(groupData, response);
       response.activities[activity.type].forEach(Selectedactivity => {
         if (activity.id === Selectedactivity.identifier) {
           this.playerService.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
@@ -411,3 +410,4 @@ export class GroupsService {
     this.unsubscribe$.complete();
   }
 }
+

@@ -1,4 +1,4 @@
-import { of, combineLatest, observable } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';
@@ -10,7 +10,7 @@ import { SharedModule } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupMemberRole, CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
-import { groupData, modifiedActivities, groupsTnc, modified } from './groups.service.spec.data';
+import { groupData, modifiedActivities, groupsTnc, modified, notificationData } from './groups.service.spec.data';
 
 describe('GroupsService', () => {
   configureTestSuite();
@@ -290,11 +290,24 @@ describe('GroupsService', () => {
     expect(accepted).toEqual(false);
   });
 
-  it('should call navigateToActivityToc()', async () => {
+  it('should call navigateToActivityToc()', () => {
     const service = TestBed.get(GroupsService);
-    spyOn(service['groupCservice'], 'getById');
-    service.navigateToActivityToc('do_123', '123', true);
-    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123',
-      { includeMembers: true, includeActivities: true });
-  })
+    spyOn(service, 'getGroupById').and.returnValue(of());
+    spyOn(service, 'groupContentsByActivityType').and.returnValue({showList:  true});
+    service.navigateToActivityToc('123', true, true, true);
+    service.getGroupById('123', true, true, true).subscribe((data: CsGroup) => {
+      expect(service.groupContentsByActivityType).toHaveBeenCalledWith(false,
+        {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
+        description: '', membershipType: 'invite_only'});
+    });
+  });
+
+  it('should call navigateNotification()', () => {
+    const service = TestBed.get(GroupsService);
+    const additionalInfo = notificationData.data.action.additionalInfo;
+    const accepted = service.navigateNotification(notificationData, additionalInfo);
+    expect(accepted).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90' });
+  });
+
 });
+

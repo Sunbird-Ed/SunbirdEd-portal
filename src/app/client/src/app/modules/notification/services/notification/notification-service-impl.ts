@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CsModule } from '@project-sunbird/client-services';
 import { SbNotificationService } from 'sb-notification';
@@ -8,7 +8,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
 import { CsLibInitializerService } from '../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { GROUP_DETAILS, MY_GROUPS, GroupsService } from '@sunbird/groups';
+import { GroupsService } from '@sunbird/groups';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,7 @@ export class NotificationServiceImpl implements SbNotificationService {
    */
   async fetchNotificationList(): Promise<any> {
     try {
-      let notificationData = await this.NotificationCsService.notificationRead(_.get(this.userService, 'userid')).toPromise();
+      let notificationData: any = await this.NotificationCsService.notificationRead(_.get(this.userService, 'userid')).toPromise();
       notificationData = notificationData.feeds;
       if (!Array.isArray(notificationData)) {
         return [];
@@ -153,11 +153,10 @@ export class NotificationServiceImpl implements SbNotificationService {
    * @param  {} event
    */
   async getNavigationPath(event) {
-    console.log('event', event);
     const category = _.get(event, 'data.category');
     const additionalInfo = _.get(event, 'data.action.additionalInfo');
     if (category === 'group' || category === 'groups') {
-     return this.groupService.navigate(event, additionalInfo);
+      return this.groupService.navigateNotification(event, additionalInfo);
     } else {
       if (_.get(event, 'data.action.type') === 'certificateUpdate') {
         return {
@@ -168,7 +167,7 @@ export class NotificationServiceImpl implements SbNotificationService {
       const navigationLink = additionalInfo.contentURL || additionalInfo.deepLink;
       if (navigationLink) {
         return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
-      }      
+      }
       return {};
     }
   }
@@ -211,4 +210,6 @@ export class NotificationServiceImpl implements SbNotificationService {
     };
     this.telemetryService.interact(data);
   }
+
 }
+
