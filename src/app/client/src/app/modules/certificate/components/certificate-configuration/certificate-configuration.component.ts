@@ -583,4 +583,52 @@ SECOND_PANEL_LAYOUT;
       this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
   }
+  getBatchDetailsNew(batchId) {
+    return this.certificateService.getBatchDetails(batchId).pipe(
+      tap(batchDetails => {
+        this.batchDetails = _.get(batchDetails, 'result.response');
+        const cert_templates = _.get(this.batchDetails, 'cert_templates');
+        if (_.isEmpty(cert_templates)) {
+          this.getCertConfigFields();
+        } else {
+          // Certifciate has attached to a batch
+          if (_.isArray(cert_templates)) {
+            this.batchDetails.cert_templates = cert_templates[0];
+          }
+          this.processCertificateDetails(cert_templates);
+        }
+      })
+    );
+  }
+  sendInteractDataNew(interactData) {
+    const data = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'Batch',
+          id: _.get(this.queryParams, 'batchId')
+        },
+        {
+          type: 'Course',
+          id: _.get(this.queryParams, 'courseId')
+        }]
+      },
+      edata: {
+        id: _.get(interactData, 'id'),
+        type: 'CLICK',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+
+    if (this.configurationMode === 'edit') {
+      data['object'] = {
+        id: _.get(this.selectedTemplate, 'name'),
+        type: 'Certificate',
+        ver: '1.0',
+        rollup: { l1: _.get(this.queryParams, 'courseId') }
+      };
+    }
+
+    this.telemetryService.interact(data);
+  }
 }
