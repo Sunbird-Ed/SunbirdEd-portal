@@ -1,6 +1,8 @@
 import { RouteReuseStrategy, ActivatedRouteSnapshot, DetachedRouteHandle } from '@angular/router';
 import * as _ from 'lodash-es';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class CustomRouteReuseStrategy implements RouteReuseStrategy {
   private handlers: { [key: string]: DetachedRouteHandle } = {};
 

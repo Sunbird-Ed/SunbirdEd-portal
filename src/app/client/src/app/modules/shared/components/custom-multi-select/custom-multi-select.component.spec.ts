@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SortByPipe } from './../../pipes/sortBy/sortBy.pipe';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomMultiSelectComponent } from './custom-multi-select.component';

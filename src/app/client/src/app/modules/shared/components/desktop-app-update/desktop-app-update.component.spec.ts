@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserCacheTtlService, ConfigService, ResourceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { of as observableOf, throwError } from 'rxjs';
 import { AppUpdateService } from '../../../core/services/app-update/app-update.service';
 import { DesktopAppUpdateComponent } from './desktop-app-update.component';

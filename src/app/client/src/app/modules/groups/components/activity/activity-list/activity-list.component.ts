@@ -6,8 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { ACTIVITY_DETAILS } from './../../../interfaces';
-import { ToasterService, ConfigService, ResourceService } from '@sunbird/shared';
-
+import { ToasterService, ConfigService, ResourceService, LayoutService } from '@sunbird/shared';
 export interface IActivity {
   name: string;
   identifier: string;
@@ -24,7 +23,7 @@ export interface IActivity {
   styleUrls: ['./activity-list.component.scss']
 })
 export class ActivityListComponent implements OnInit, OnDestroy {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() groupData;
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
@@ -37,6 +36,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   disableViewAllMode = false;
   selectedTypeContents = {};
   config: any;
+  layoutConfiguration: any;
 
 
   constructor(
@@ -46,13 +46,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     private groupService: GroupsService,
     private toasterService: ToasterService,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private layoutService: LayoutService,
   ) {
     this.config = this.configService.appConfig;
   }
 
   ngOnInit() {
     this.showLoader = false;
+    this.initLayout();
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
@@ -72,7 +74,18 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     });
 
   }
-
+  /**
+   * used to archive the both theme
+   */
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
+  }
 
   openActivity(event: any, activityType) {
       if (!this.groupData.active) {
@@ -107,7 +120,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   toggleModal(show = false) {
     const activity = {id: _.get(this.selectedActivity, 'identifier'), type: _.get(this.selectedActivity, 'primaryCategory'),
-    ver: _.get(this.selectedActivity, 'pkgVersion') ? `${_.get(this.selectedActivity, 'pkgVersion')}` : '1.0'}
+    ver: _.get(this.selectedActivity, 'pkgVersion') ? `${_.get(this.selectedActivity, 'pkgVersion')}` : '1.0'};
     show ? this.addTelemetry('remove-activity-kebab-menu-btn', [], {}, activity) :
     this.addTelemetry('close-remove-activity-popup', [], {}, activity);
     this.showModal = show;

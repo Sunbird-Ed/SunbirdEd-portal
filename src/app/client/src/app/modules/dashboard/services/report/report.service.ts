@@ -36,10 +36,13 @@ export class ReportService {
     return this.usageService.getData(filePath).pipe(
       map(configData => {
         return {
+          loaded:true,
           result: _.get(configData, 'result'),
           ...(id && { id })
         };
       })
+      ,catchError(error => of({ loaded:false }))
+
     );
   }
 
@@ -53,6 +56,8 @@ export class ReportService {
     });
     return forkJoin(...apiCalls).pipe(
       mergeMap(response => {
+
+        response = response.filter(function(item){ if(item ){ return item.loaded = true } });
         return this.getFileMetaData(dataSources).pipe(
           map(metadata => {
             return _.map(response, res => {
@@ -61,12 +66,6 @@ export class ReportService {
             });
           })
         );
-      }),
-      catchError(err => {
-        if (err.status === 404) {
-          return throwError({ messageText: 'messages.stmsg.reportNotReady' });
-        }
-        return throwError(err);
       })
     );
   }
@@ -176,7 +175,7 @@ export class ReportService {
       const { chartType, dataSource = null, mapData = {} } = chart;
       const chartObj: any = {};
       chartObj.chartConfig = chart;
-      if(!chartObj.chartConfig['id']){
+      if (!chartObj.chartConfig['id']) {
         chartObj.chartConfig['id']  = UUID.UUID();
       }
       chartObj.downloadUrl = downloadUrl;
@@ -190,8 +189,14 @@ export class ReportService {
           reportData: chartObj.chartData
         };
       }
-      return chartObj;
-    });
+      if(chartObj && chartObj.chartData && chartObj.chartData.length > 0){
+        return chartObj;
+      }
+    }).filter(function(chartData){
+       if(chartData ){
+          return (chartData['chartData'] != null || chartData['chartData'] != undefined) 
+        }
+      });
   }
 
   public prepareTableData(tablesArray: any, data: any, downloadUrl: string, hash?: string): Array<{}> {

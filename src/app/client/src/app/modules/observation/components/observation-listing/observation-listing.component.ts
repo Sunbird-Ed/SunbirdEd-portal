@@ -13,7 +13,7 @@ import {
   LayoutService,
   COLUMN_TYPE,
   OfflineCardService,
-} from "@sunbird/shared";
+} from '@sunbird/shared';
 import {
   SearchService,
   PlayerService,
@@ -23,8 +23,8 @@ import {
   OrgDetailsService,
   SchemaService,
   KendraService
-} from "@sunbird/core";
-import { combineLatest, Subject, of } from "rxjs";
+} from '@sunbird/core';
+import { combineLatest, Subject, of } from 'rxjs';
 import {
   Component,
   OnInit,
@@ -32,14 +32,14 @@ import {
   EventEmitter,
   ChangeDetectorRef,
   AfterViewInit,
-} from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import * as _ from "lodash-es";
+} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash-es';
 import {
   IInteractEventEdata,
   IImpressionEventInput,
   TelemetryService,
-} from "@sunbird/telemetry";
+} from '@sunbird/telemetry';
 import {
   takeUntil,
   map,
@@ -48,22 +48,21 @@ import {
   debounceTime,
   tap,
   mergeMap,
-} from "rxjs/operators";
-import { CacheService } from "ng2-cache-service";
-import { ContentManagerService } from "../../../public/module/offline/services/content-manager/content-manager.service";
-import { ObservationUtilService } from "../../service";
+} from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
+import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
+import { ObservationUtilService } from '../../service';
 import {Location} from '@angular/common';
 
 @Component({
-  selector: "app-observation-listing",
-  templateUrl: "./observation-listing.component.html",
-  styleUrls: ["./observation-listing.component.scss"],
+  selector: 'app-observation-listing',
+  templateUrl: './observation-listing.component.html',
+  styleUrls: ['./observation-listing.component.scss'],
 })
 export class ObservationListingComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
-  pageTitleSrc = "resourceService?.frmelmnts?.lbl?.observation";
-  svgToDisplay = "textbooks-banner-img.svg";
+  implements OnInit, OnDestroy, AfterViewInit {
+  pageTitleSrc = 'resourceService?.frmelmnts?.lbl?.observation';
+  svgToDisplay = 'textbooks-banner-img.svg';
   contentList: any = [];
   public unsubscribe$ = new Subject<void>();
   layoutConfiguration: any;
@@ -82,14 +81,14 @@ export class ObservationListingComponent
   SECOND_PANEL_LAYOUT;
   public allTabData;
   config;
-  searchData: any = "";
+  searchData: any = '';
   public numberOfSections = new Array(
     this.configService.appConfig.SEARCH.PAGE_LIMIT
   );
   public paginationDetails: IPagination;
   queryParam: any = {};
-  showEditUserDetailsPopup:any= true;
-  payload:any;
+  showEditUserDetailsPopup: any = true;
+  payload: any;
   constructor(
     public searchService: SearchService,
     public router: Router,
@@ -114,57 +113,57 @@ export class ObservationListingComponent
     private offlineCardService: OfflineCardService,
     private kendraService: KendraService,
     config: ConfigService,
-    private observationUtil:ObservationUtilService,
-    private location:Location,
+    private observationUtil: ObservationUtilService,
+    private location: Location,
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.paginationDetails = this.paginationService.getPager(0,1,this.configService.appConfig.SEARCH.PAGE_LIMIT);
+    this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
   }
 
-  async ngOnInit(){
+  async ngOnInit() {
     this.initLayout();
-    this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
-     if(!this.showEditUserDetailsPopup){
-       let metaData=this.observationUtil.getAlertMetaData();
-       metaData.type="update profile";
-       metaData.isClosed=true;
-       metaData.size="mini";
-       metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
-       metaData.content.body.type="text";
-       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateprofilecontent;
-       metaData.footer.className="single-btn"
+    this.showEditUserDetailsPopup = await this.observationUtil.getProfileInfo();
+     if (!this.showEditUserDetailsPopup) {
+       const metaData = this.observationUtil.getAlertMetaData();
+       metaData.type = 'update profile';
+       metaData.isClosed = true;
+       metaData.size = 'mini';
+       metaData.content.title = this.resourceService.frmelmnts.lbl.updateProfileTitle;
+       metaData.content.body.type = 'text';
+       metaData.content.body.data = this.resourceService.frmelmnts.lbl.updateprofilecontent;
+       metaData.footer.className = 'single-btn';
        metaData.footer.buttons.push(
         {
-          type:"accept",
-          returnValue:true,
-          buttonText:this.resourceService.frmelmnts.btn.update,
-          className:"popup-btn"
+          type: 'accept',
+          returnValue: true,
+          buttonText: this.resourceService.frmelmnts.btn.update,
+          className: 'popup-btn'
         }
         );
-      let returnData=await this.observationUtil.showPopupAlert(metaData);
-      if(returnData){
-        let queryParam = {
-          showEditUserDetailsPopup:true
-        }
-       this.router.navigate(['profile'],{queryParams:queryParam});
+      const returnData = await this.observationUtil.showPopupAlert(metaData);
+      if (returnData) {
+        const queryParam = {
+          showEditUserDetailsPopup: true
+        };
+       this.router.navigate(['profile'], {queryParams: queryParam});
       }
       return;
      }
      this.activatedRoute.queryParams.subscribe((params) => {
-      if (params["key"]) {
-        this.searchData = params["key"];
+      if (params['key']) {
+        this.searchData = params['key'];
         return this.fetchContentList();
       }
-      this.searchData="";
+      this.searchData = '';
       this.fetchContentList();
     });
     this.listenLanguageChange();
   }
 
-  async getProfileCheck(){
+  async getProfileCheck() {
     await this.observationUtil.getProfileInfo()
-    .then((result:any)=>{
+    .then((result: any) => {
       return result;
     });
   }
@@ -176,19 +175,19 @@ export class ObservationListingComponent
 }
 
   private setNoResultMessage() {
-    let {  noContentfoundSubTitle} = _.get(this.resourceService, 'frmelmnts.lbl');
-    const title = _.get(this.resourceService,'messages.stmsg.m0006')
+    const {  noContentfoundSubTitle} = _.get(this.resourceService, 'frmelmnts.lbl');
+    const title = _.get(this.resourceService, 'messages.stmsg.m0006');
     this.noResultMessage = { title, noContentfoundSubTitle };
   }
 
-  getDataParam(){
+  getDataParam() {
     this.observationUtil.getProfileDataList()
-    .then((result:any)=>{
-      this.payload=result;
-    })
+    .then((result: any) => {
+      this.payload = result;
+    });
   }
 
-  back():void{
+  back(): void {
     this.location.back();
   }
 
@@ -216,7 +215,7 @@ export class ObservationListingComponent
     window.scroll({
       top: 0,
       left: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }
 
@@ -228,17 +227,17 @@ export class ObservationListingComponent
   }
 
   setFormat(data) {
-    let result = [];
+    const result = [];
     this.contentList = [];
 
     data.forEach((value) => {
-      let solution_name:string = value.name;
-      solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1): "";
-      const subject:any=[];
-      subject.push(value.programName)
-      let obj = {
+      let solution_name: string = value.name;
+      solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1) : '';
+      const subject: any = [];
+      subject.push(value.programName);
+      const obj = {
         name: solution_name,
-        contentType: "Observation",
+        contentType: 'Observation',
         metaData: {
           identifier: value.solutionId,
         },
@@ -248,7 +247,7 @@ export class ObservationListingComponent
         medium: value.language,
         organization: value.creator,
         _id: value._id,
-        subject:subject
+        subject: subject
       };
       result.push(obj);
       this.contentList = result;
@@ -318,29 +317,29 @@ export class ObservationListingComponent
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.userService.slug
-          ? "/" + this.userService.slug + this.router.url
+          ? '/' + this.userService.slug + this.router.url
           : this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         duration: this.navigationhelperService.getPageLoadTime(),
       },
     };
     this.cardIntractEdata = {
-      id: "content-card",
-      type: "click",
+      id: 'content-card',
+      type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
     };
   }
 
   playContent(event) {
-    let data = event.data;
+    const data = event.data;
     this.queryParam = {
       programId: data.programId,
       solutionId: data.solutionId,
       observationId: data._id,
       solutionName: data.name,
-      programName:data.subject[0]
+      programName: data.subject[0]
     };
-    this.router.navigate(["observation/details"], {
+    this.router.navigate(['observation/details'], {
       queryParams: this.queryParam,
     });
   }
@@ -353,14 +352,14 @@ export class ObservationListingComponent
       if (!obj) {
         this.inViewLogs.push({
           objid: elem.data.metaData.identifier,
-          objtype: elem.data.metaData.contentType || "content",
+          objtype: elem.data.metaData.contentType || 'content',
           index: elem.id,
         });
       }
     });
     if (this.telemetryImpression) {
       this.telemetryImpression.edata.visits = this.inViewLogs;
-      this.telemetryImpression.edata.subtype = "pageexit";
+      this.telemetryImpression.edata.subtype = 'pageexit';
       this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
   }

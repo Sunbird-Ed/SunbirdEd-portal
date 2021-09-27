@@ -23,8 +23,8 @@ export class PopupComponent implements AfterViewInit {
   @Output() handleGroupTnc = new EventEmitter();
   @Output() handleEvent = new EventEmitter();
 
-  @ViewChild('modal', {static: false}) modal;
-  @ViewChild('tncModal', {static: false}) tncModal;
+  @ViewChild('modal') modal;
+  @ViewChild('tncModal') tncModal;
 
   channel: string;
   acceptTncType = acceptTnc;

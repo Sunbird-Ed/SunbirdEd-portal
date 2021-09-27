@@ -118,6 +118,9 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * used to archive the both theme
+   */
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
@@ -126,30 +129,22 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   private fetchContentOnParamChange() {
-    combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams, this.groupsService.getGroupById(this.groupId, true, true)])
+    combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(debounceTime(5), // to sync params and queryParams events
         delay(10), // to trigger pageexit telemetry event
         tap(data => {
           this.showLoader = true;
           // TODO set telemetry here
         }),
-        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1], group: result[2] })),
+        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$))
-      .subscribe(({ params, queryParams, group }) => {
-        const user = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
-
-        /* istanbul ignore else */
-        if (!user || _.get(user, 'role') === 'member' || _.get(user, 'status') === 'inactive' || _.get(group, 'status') === 'inactive') {
-          this.toasterService.warning(this.resourceService.messages.emsg.noAdminRole);
-          this.groupsService.goBack();
-        } else {
-          this.groupData = this.groupsService.addGroupFields(group);
+      .subscribe(({ params, queryParams }) => {
           this.queryParams = { ...queryParams };
           this.paginationDetails.currentPage = params.pageNumber;
           this.contentList = [];
           this.fetchContents();
-        }
       });
   }
 
@@ -249,7 +244,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.searchService.contentSearch(option, false)
       .pipe(
         mergeMap(data => {
-          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
             return this.orgDetailsService.searchOrgDetails({
@@ -260,7 +255,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
                 channelFacet.values = _.get(orgDetails, 'content');
                 return of(data);
               })
-            )
+            );
           }
           return of(data);
         })

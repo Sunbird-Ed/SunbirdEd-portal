@@ -26,7 +26,7 @@ import dayjs from 'dayjs';
 export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
 
-  @ViewChild(OnDemandReportsComponent, {static: false})
+  @ViewChild(OnDemandReportsComponent)
   public onDemandReports: OnDemandReportsComponent;
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
@@ -273,7 +273,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-  summaryReport(tabNumber){
+  summaryReport(tabNumber) {
     this.setInteractEventDataForTabs('summary-report');
     this.selectedTab = tabNumber;
     this.getSummaryReports();
@@ -285,6 +285,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	* @param {string} batchId batch identifier
   */
   setBatchId(batch?: any): void {
+    this.fetchForumIdReq = null;
     this.showWarningDiv = false;
     this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
@@ -294,11 +295,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    if(this.selectedTab === 1){
+    if (this.selectedTab === 1) {
       this.summaryReport(1);
     } else {
       this.loadOndemandReports(2);
-    } 
+    }
   }
 
 
@@ -360,7 +361,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             state: x.state,
             district: x.district,
             noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
-          }
+          };
         });
         this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
@@ -368,6 +369,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete');
         this.currentBatch.lastUpdatedOn = _.get(result, 'lastUpdatedOn') || '';
       }
+      this.generateDataForDF(this.currentBatch);
     }, error => {
       this.stateWiseReportData = [
         {
@@ -402,7 +404,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         }
       ];
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+      this.generateDataForDF(this.currentBatch);
+    });
   }
 
   /**
@@ -565,8 +568,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 
 
   getFieldValue(array, field) {
-    if (_.find(array, {"type": field})) {
-      return _.find(array, {"type": field}).count;
+    if (_.find(array, {'type': field})) {
+      return _.find(array, {'type': field}).count;
     } else {
       return;
     }
@@ -617,14 +620,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    */
   loadOndemandReports(tabNumber) {
     this.getSummaryReports();
-    setTimeout(()=> {
-      if(this.onDemandReports) {
+    setTimeout(() => {
+      if (this.onDemandReports) {
       this.setInteractEventDataForTabs('on-demand-reports');
       this.selectedTab = tabNumber;
       if (_.isEmpty(this.reportTypes)) {
         this.getFormData();
       }
-      this.onDemandReports.loadReports(this.currentBatch)
+      this.onDemandReports.loadReports(this.currentBatch);
     }
       }, 500);
   }
@@ -698,6 +701,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
   generateDataForDF(batchId) {
+    this.fetchForumIdReq = null;
     if (batchId) {
       this.fetchForumIdReq = {
         type: 'batch',
@@ -713,7 +717,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.route.navigate(['/discussion-forum'], {
       queryParams: {
         categories: JSON.stringify({ result: routerData.forumIds }),
-        userName: routerData.userName
+        userId: routerData.userId
       }
     });
   }

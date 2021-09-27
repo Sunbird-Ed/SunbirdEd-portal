@@ -1,4 +1,9 @@
 @import './varsass';
+.sbt-header {
+  .sbt-container {
+    padding: 0 5%;
+  }
+}
 .sbt-header-bar {
   width: 100%;
   @include respond-above(sm) {
@@ -6,12 +11,12 @@
   }
 }
 .sbt-header-tool-bar {
-  background: var(--sbt-header-bg);
+  background: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
-  padding: 0px calculateRem(16px);
+  // padding: 0px calculateRem(16px);
   @include respond-above(sm) {
     flex-wrap: nowrap;
     padding: 0px 0px;
@@ -41,28 +46,36 @@
     }
 }
 .sbt-header-menu-bar {
+  height: 5.5rem;
+      background: none;
+      padding: 0px;
+      display: flex;
+      /* align-items: center; */
+      /* justify-content: center; */
+      background: var(--sbt-header-bg) !important;
+      border-radius: 24px 24px 0 0;
+      padding: 1rem 1rem 1rem 1rem;
+      overflow: hidden;
+      overflow-x: auto;
   position: relative;
-  background: var(--sbt-header-bg);
   @include respond-below(sm) {
   overflow-x: auto;
-  padding: 0 calculateRem(8px) calculateRem(8px) calculateRem(16px);
+  padding: 1rem 0.5rem 1rem 1rem;
   }
-  @include respond-above(sm) {
-    height:calculateRem(64px);
-    background: none;
-    padding: 0px;
-    }
+
 }
 .sbt-header-menu-extension {
   background: var(--sbt-header-bg);
 }
 .sbt-header-menu {
+  position: relative;
+  margin:0 auto;
   @include respond-above(sm) {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 50%;
-  transform: translateY(-50%);
+  // position: absolute;
+  // left: 0px;
+  // right: 0px;
+  // top: 50%;
+  // transform: translateY(-50%);
   }
 }
 .ui.menu {
@@ -189,7 +202,8 @@
         color: var(--white);
         border: 0;
         font-weight: 500;
-        padding: calculateRem(8px) 0 calculateRem(8px) calculateRem(8px);
+        padding: calculateRem(8px) 0;
+        top:calculateRem(4px);
       }
       .menu {
         width: 100%;

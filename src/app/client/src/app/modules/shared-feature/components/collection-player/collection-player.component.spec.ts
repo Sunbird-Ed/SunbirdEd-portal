@@ -5,7 +5,7 @@ import { CollectionPlayerComponent } from './collection-player.component';
 import { CoreModule, CopyContentService, GeneraliseLabelService } from '@sunbird/core';
 import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ContentUtilsServiceService,
   ConnectionService, OfflineCardService, UtilService } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CollectionHierarchyGetMockResponse, collectionTree, requiredProperties, contentHeaderData } from './collection-player.component.spec.data';
@@ -291,7 +291,7 @@ describe('CollectionPlayerComponent', () => {
     const utilService = TestBed.get(UtilService);
     utilService._isDesktopApp = true;
     const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]))
+    spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]));
     spyOn(component, 'checkDownloadStatus');
     component.ngOnInit();
     expect(component.checkDownloadStatus).toHaveBeenCalled();
@@ -392,5 +392,9 @@ describe('CollectionPlayerComponent', () => {
     component.deleteCollection(contentHeaderData.collectionData);
     expect(component.disableDelete).toBeFalsy();
     expect(component.toasterService.error(resourceBundle.messages.etmsg.desktop.deleteTextbookErrorMessage));
+  });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
   });
 });

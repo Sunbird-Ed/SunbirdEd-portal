@@ -1,5 +1,5 @@
 import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
-import {FieldConfig, FieldConfigOption} from 'common-form-elements';
+import {FieldConfig, FieldConfigOption} from 'common-form-elements-v9';
 import {FormGroup} from '@angular/forms';
 import {delay, distinctUntilChanged, map, mergeMap, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
@@ -211,7 +211,7 @@ export class SbFormLocationSelectionDelegate {
       };
 
       const task = this.locationService.updateProfile(payload).toPromise()
-        .then(() => ({ userProfile: 'success',type: _.get(formValue, 'persona') }))
+        .then(() => ({ userProfile: 'success', type: _.get(formValue, 'persona') }))
         .catch(() => ({ userProfile: 'fail' }));
       tasks.push(task);
     }

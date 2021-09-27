@@ -4,7 +4,7 @@ import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService, CertRegService } from '@sunbird/core';
-import { ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ToasterService, ResourceService, NavigationHelperService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 })
 export class CreateTemplateComponent implements OnInit, OnDestroy {
 
-  @ViewChild(BrowseImagePopupComponent, {static: false})
+  @ViewChild(BrowseImagePopupComponent)
   public browseImage: BrowseImagePopupComponent;
 
   public unsubscribe$ = new Subject<void>();
@@ -39,6 +39,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   center = 275;
   disableCreateTemplate = true;
   certConfigModalInstance = new CertConfigModel();
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
   images = {
     'LOGO1': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
     'LOGO2': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
@@ -65,7 +68,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     private certRegService: CertRegService,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
-    public navigationHelperService: NavigationHelperService) {
+    public navigationHelperService: NavigationHelperService,
+    public layoutService: LayoutService) {
   }
 
   ngOnInit() {
@@ -76,6 +80,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
     this.getDefaultTemplates();
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
   }
 
   getDefaultTemplates() {
@@ -317,7 +323,7 @@ urltoFile(url, filename, mimeType) {
   }
 
 
-  sanitizeHTML(html){
+  sanitizeHTML(html) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
@@ -336,5 +342,14 @@ urltoFile(url, filename, mimeType) {
   back() {
     this.uploadCertificateService.certificate.next(null);
     this.navigationHelperService.navigateToLastUrl();
+  }
+  redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+    }
   }
 }

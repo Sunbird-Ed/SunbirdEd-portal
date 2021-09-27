@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ForumComponent } from './forum.component';
@@ -23,7 +23,7 @@ describe('ForumComponent', () => {
         forumId: '12'
       }
     }
-  }
+  };
 
   configureTestSuite();
   beforeEach(async(() => {
@@ -68,7 +68,7 @@ describe('ForumComponent', () => {
 
   it('should navigateBack', () => {
     spyOn(component['location'], 'back');
-    component.navigateToPreviousPage()
+    component.navigateToPreviousPage();
     expect(component['location'].back).toHaveBeenCalled();
   });
 

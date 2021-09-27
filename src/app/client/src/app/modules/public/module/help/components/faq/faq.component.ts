@@ -11,7 +11,10 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
 import { VideoConfig } from './faq-data';
+import { HttpOptions } from '../../../../../shared/interfaces/httpOptions';
+import { FormService } from '../../../../../core/services/form/form.service';
 
+const TEN_MINUTES = 1000 * 60 * 10;
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
@@ -34,10 +37,14 @@ export class FaqComponent implements OnInit {
   isMobileView = false;
   showFaqReport: boolean;
   showOnlyFaqCategory = true;
-  @ViewChild('sbFaqCategoryList', { static: false }) sbFaqCategoryList;
+  @ViewChild('sbFaqCategoryList') sbFaqCategoryList;
   @ViewChildren('videoPlayer') videoPlayer;
   showVideoModal = false;
   playerConfig: any;
+  isDisabled = false;
+  timeInterval = String(TEN_MINUTES);
+  time = 0;
+  isExpanded = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -52,7 +59,7 @@ export class FaqComponent implements OnInit {
     private router: Router, private telemetryService: TelemetryService,
     private faqService: FaqService, private toasterService: ToasterService,
     private configService: ConfigService, private publicDataService: PublicDataService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public formService: FormService) {
   }
 
   ngOnInit() {
@@ -93,6 +100,11 @@ export class FaqComponent implements OnInit {
       }
     });
     this.checkScreenView(window.innerWidth);
+    if (localStorage.getItem('debugDisabled')) {
+      this.isDisabled = (localStorage.getItem('debugDisabled') === 'true') ? true : false;
+      this.updateButtonVisibility();
+    }
+
   }
 
   private getFaqJson() {
@@ -146,13 +158,13 @@ export class FaqComponent implements OnInit {
       this.selectedFaqCategory['constants'] = _.get(this.faqData, 'constants');
         setTimeout(() => {
           if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
-            this.sbFaqCategoryList.selectedIndex = 0
+            this.sbFaqCategoryList.selectedIndex = 0;
           }
         }, 0);
     }
   }
 
-  private prepareFaqData(data){
+  private prepareFaqData(data) {
     for (let i = 0; i < data.categories.length; i++) {
       if (_.get(data.categories[i], 'faqs.length')) {
         for (let j = 0; j < data.categories[i].faqs.length; j++) {
@@ -260,7 +272,7 @@ export class FaqComponent implements OnInit {
     video.metadata.name = event.data.name;
     video.metadata.artifactUrl = event.data.url;
 
-    this.playerConfig = video
+    this.playerConfig = video;
     this.showVideoModal = true;
 
     this.videoPlayer.changes.subscribe(() => {
@@ -274,8 +286,60 @@ export class FaqComponent implements OnInit {
     this.showOnlyFaqCategory = false;
     this.showFaqReport = true;
     if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
-      this.sbFaqCategoryList.selectedIndex = -1
+      this.sbFaqCategoryList.selectedIndex = -1;
     }
   }
 
+  private async getDebugTimeInterval(): Promise<string> {
+    try {
+      const params = { formType: 'config', formAction: 'get', contentType: 'debugMode', component: 'portal' };
+      const formFields = await this.formService.getFormConfig(params).toPromise();
+      const field = formFields.filter(item => item.timeInterval);
+
+      if (field.length) {
+        this.timeInterval = field[0].timeInterval;
+      }
+    } catch (error) {
+      this.timeInterval = String(TEN_MINUTES);
+    }
+    this.time = Number(this.timeInterval) / (1000 * 60);
+    return new Promise((resolve) => resolve(this.timeInterval));
+  }
+  updateButtonVisibility() {
+    const currentTime = Math.floor(Date.now());
+    const valueStored = Number(localStorage.getItem('debugDisabledAt'));
+    const disableTime = Number(valueStored + Number(this.timeInterval));
+    if (currentTime > disableTime) {
+      this.isDisabled = false;
+      localStorage.setItem('debugDisabled', 'false');
+      localStorage.setItem('debugDisabledAt', '0');
+    } else {
+      const time = disableTime - currentTime;
+      this.time = Number(this.timeInterval) / (1000 * 60);
+      setTimeout(() => {
+      this.isDisabled = false;
+      localStorage.setItem('debugDisabled', 'false');
+      localStorage.setItem('debugDisabledAt', '0');
+    }, time);
+    }
+  }
+  async enableDebugMode(event) {
+    const timeInterval = await this.getDebugTimeInterval();
+    localStorage.setItem('debugDisabled', 'true');
+    localStorage.setItem('debugDisabledAt', String(Math.floor(Date.now())));
+    this.isDisabled = true;
+    this.updateButtonVisibility();
+    const httpOptions: HttpOptions = {
+      params: {
+        logLevel: 'debug',
+        timeInterval
+      }
+    };
+    this.http.get('/enableDebugMode', httpOptions).subscribe((res) => {
+      this.toasterService.success(_.get(this.resourceService, 'frmelmnts.alert.debugModeEnabledSuccess'));
+    }, error => {
+      console.error('Error while enabling debug mode');
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.alert.debugModeEnabledFailed'));
+    });
+  }
 }

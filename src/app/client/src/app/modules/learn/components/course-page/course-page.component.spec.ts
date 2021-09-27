@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, SharedModule, UtilService, LayoutServi
 import { PageApiService, OrgDetailsService, CoreModule, FormService, UserService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './course-page.component.spec.data';
@@ -444,7 +444,7 @@ describe('CoursePageComponent', () => {
     it('should fetch page Data based on search API', done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
-        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {} })
+        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {}; });
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
@@ -468,8 +468,8 @@ describe('CoursePageComponent', () => {
     it('should fetch page Data based on else block', done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
-        spyOn<any>(component, 'fetchCourses').and.callFake(function () { return {} })
-        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {} })
+        spyOn<any>(component, 'fetchCourses').and.callFake(function () { return {}; });
+        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {}; });
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));

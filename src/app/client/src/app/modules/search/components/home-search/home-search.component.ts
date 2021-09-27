@@ -107,8 +107,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.checkForBack();
         this.moveToTop();
   }
-  checkForBack(){
-    if(_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true'){
+  checkForBack() {
+    if (_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true') {
       this.showBackButton = true;
     }
   }
@@ -173,7 +173,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     // Replacing cbse/ncert value with cbse
-    const cbseNcertExists =[_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
+    const cbseNcertExists = [_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
     if (cbseNcertExists) {
       filters.se_boards = ['cbse'];
     }
@@ -191,7 +191,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
-          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
             return this.orgDetailsService.searchOrgDetails({
@@ -202,7 +202,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                 channelFacet.values = _.get(orgDetails, 'content');
                 return of(data);
               })
-            )
+            );
           }
           return of(data);
         })
@@ -282,7 +282,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate([url], { queryParams: this.queryParams });
     this.moveToTop();
   }
-  goback(){
+  goback() {
     if (this.navigationhelperService['_history'].length > 1) {
       this.navigationhelperService.goBack();
     }
@@ -300,7 +300,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (onGoingBatchCount === 1) { // play course if only one open batch is present
       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
       return this.playerService.playContent(metaData);
-    } 
+    }
     // else if (onGoingBatchCount === 0 && expiredBatchCount === 1){
     //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
     //   return this.playerService.playContent(metaData);

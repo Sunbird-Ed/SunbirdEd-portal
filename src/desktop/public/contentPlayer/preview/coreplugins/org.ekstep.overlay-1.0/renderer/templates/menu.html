@@ -2,7 +2,7 @@
 <!-- Menu container -->
 <div class="gc-menu">
     <a ng-if="!showUser" class="gc-menu-btn old_menu" href="javascript:void(0)" ng-click="openMenu()">
-        <img ng-if="!navigationTop" class="menu-icon icon" ng-src="{{imageBasePath}}menu_icon_old.png" ng-hide="menuOpened"/>
+        <img ng-if="!navigationTop" class="menu-icon icon" ng-src="{{imageBasePath}}menu_icon_old.png" alt="Sidebar Menu Icon" ng-hide="menuOpened"/>
         <div><img ng-if="navigationTop" class="menu-icon icon nav-top hamberger-menu" ng-src="{{imageBasePath}}menu.png" ng-hide="menuOpened"/></div>
     </a>
     <a ng-if="showUser" class="gc-menu-btn hamberger-menu" href="javascript:void(0)" ng-click="openMenu()">

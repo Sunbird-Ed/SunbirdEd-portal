@@ -2955,5 +2955,206 @@ export const RESPONSE = {
         }
       }
     ]
-  }
+  },
+  bannerData: [
+    {
+        'commandId': 1619548201250,
+        'commandType': 'SEGMENT_COMMAND',
+        'controlFunction': 'BANNER_CONFIG',
+        'expiresAfter': 1652250968000,
+        'tagCriteria': 'AND',
+        'tagFilterUpto': null,
+        'tagFilters': [
+            'USERFRAMEWORK_State (Tamil Nadu)',
+            'USERFRAMEWORK_English',
+            'USERFRAMEWORK_Class 1'
+        ],
+        'targetDeviceIds': null,
+        'targetVersion': null,
+        'controlFunctionPayload': {
+            'showBanner': true,
+            'values': [
+                {
+                    'code': 'banner_external_url',
+                    'ui': {
+                        'background': 'https://image.freepik.com/free-vector/minimalist-watercolor_91008-209.jpg',
+                        'text': 'Sample External Url'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'externalUrl',
+                        'params': {
+                            'route': 'https://diksha.gov.in/'
+                        }
+                    },
+                    'expiry': '1653031067'
+                },
+                {
+                    'code': 'banner_internal_url',
+                    'ui': {
+                        'background': 'https://image.freepik.com/free-vector/minimalist-watercolor_91008-209.jpg',
+                        'text': 'Sample Internal Url'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'internalUrl',
+                        'params': {
+                            'route': 'guest-profile'
+                        }
+                    },
+                    'expiry': '1653031067'
+                },
+                {
+                    'code': 'banner_search',
+                    'ui': {
+                        'background': 'https://image.freepik.com/free-vector/minimalist-watercolor_91008-209.jpg',
+                        'text': 'Sample Search'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'search',
+                        'params': {
+                            'filter': {
+                                'offset': 0,
+                                'fields': [
+                                    'subject'
+                                ],
+                                'facets': [
+                                    'subject',
+                                    'primaryCategory',
+                                    'targetSubjectIds'
+                                ],
+                                'filters': {
+                                    'audience': [],
+                                    'objectType': [
+                                        'Content'
+                                    ],
+                                    'se_gradeLevels': [
+                                        'class 9',
+                                        'class 10',
+                                        'class 11',
+                                        'class 12'
+                                    ],
+                                    'se_mediums': [
+                                        'english'
+                                    ],
+                                    'se_boards': [
+                                        'state (tamil nadu)'
+                                    ]
+                                },
+                                'exists': [],
+                                'sort_by': {}
+                            }
+                        }
+                    },
+                    'expiry': '1653031067'
+                },
+                {
+                    'code': 'banner_content',
+                    'ui': {
+                        'background': 'https://image.freepik.com/free-vector/minimalist-watercolor_91008-209.jpg',
+                        'text': 'Sample content'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'content',
+                        'params': {
+                            'identifier': 'do_21302358976737280014'
+                        }
+                    },
+                    'expiry': '1653031067'
+                }
+            ]
+        }
+    },
+    {
+        'commandId': 1619548208500,
+        'commandType': 'SEGMENT_COMMAND',
+        'controlFunction': 'BANNER_CONFIG',
+        'expiresAfter': 1652250968000,
+        'tagCriteria': 'AND',
+        'tagFilterUpto': null,
+        'tagFilters': [
+            'USERFRAMEWORK_State (Tamil Nadu)',
+            'USERFRAMEWORK_English',
+            'USERFRAMEWORK_Class 4'
+        ],
+        'targetDeviceIds': null,
+        'targetVersion': null,
+        'controlFunctionPayload': {
+            'showBanner': true,
+            'values': [
+                {
+                    'code': 'banner_external_url',
+                    'ui': {
+                        'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+                        'text': 'Sample External Url'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'externalUrl',
+                        'params': {
+                            'route': 'https://diksha.gov.in/'
+                        }
+                    },
+                    'expiry': '1653031067'
+                },
+                {
+                    'code': 'banner_internal_url',
+                    'ui': {
+                        'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+                        'text': 'Sample Internal Url'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'internalUrl',
+                        'params': {
+                            'route': 'profile'
+                        }
+                    },
+                    'expiry': '1653031067'
+                },
+                {
+                    'code': 'banner_search',
+                    'ui': {
+                        'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+                        'text': 'Sample Search'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'search',
+                        'params': {
+                            'query': 'limited attempt course',
+                            'filter': {
+                                'offset': 0,
+                                'filters': {
+                                    'audience': [],
+                                    'objectType': [
+                                        'Content'
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    'expiry': '1653031067'
+                },
+                {
+                    'code': 'banner_content',
+                    'ui': {
+                        'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+                        'text': 'Sample content'
+                    },
+                    'action': {
+                        'type': 'navigate',
+                        'subType': 'content',
+                        'params': {
+                            'identifier': 'do_21302358976737280014'
+                        }
+                    },
+                    'expiry': '1653031067'
+                }
+            ]
+        }
+    }
+  ]
 };

@@ -38,6 +38,8 @@ module.exports = function (app) {
     app.get(`${BASE_REPORT_URL}/user/:userslug/downvoted`, proxyUtils.verifyToken(), proxyObject())
     app.get(`${BASE_REPORT_URL}/user/:userslug/bookmarks`, proxyUtils.verifyToken(), proxyObject())
     app.get(`${BASE_REPORT_URL}/user/:userslug/best`, proxyUtils.verifyToken(), proxyObject())
+    app.get(`${BASE_REPORT_URL}/user/:userslug/posts`, proxyUtils.verifyToken(), proxyObject())
+
 
     // topic apis
     app.get(`${BASE_REPORT_URL}/unread`, proxyUtils.verifyToken(), proxyObject());

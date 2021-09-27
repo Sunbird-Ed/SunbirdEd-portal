@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ToasterService, ResourceService, ConfigService} from '../../services';
 import {OnDemandReportService} from '../../services/on-demand-report/on-demand-report.service';
-import {SuiModule} from 'ng2-semantic-ui';
+import {SuiModule} from 'ng2-semantic-ui-v9';
 import {FormsModule} from '@angular/forms';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {SbDatatableComponent} from '../sb-datatable/sb-datatable.component';
@@ -156,7 +156,7 @@ describe('OnDemandReportsComponent', () => {
     component.selectedReport = MockData.selectedReport;
     MockData.responseData.result.jobs[0]['status'] = 'SUCCESS';
     component.onDemandReportData = MockData.responseData.result.jobs;
-    component.batch = {endDate: "2020-10-25"};
+    component.batch = {endDate: '2020-10-25'};
     const result = component.checkStatus();
     expect(result).toBeTruthy();
   });

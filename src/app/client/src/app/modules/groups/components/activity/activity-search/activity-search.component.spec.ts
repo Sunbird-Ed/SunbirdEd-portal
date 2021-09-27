@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule, FrameworkService, SearchService, FormService } from '@sunbird/core';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SlickModule } from 'ngx-slick';
 import { of, throwError, BehaviorSubject } from 'rxjs';
 import { ActivitySearchComponent } from './activity-search.component';

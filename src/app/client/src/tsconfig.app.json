@@ -78,19 +78,20 @@
         "app/modules/location"
       ],
       "sunbird-collection-editor": [
-        "../node_modules/@project-sunbird/sunbird-collection-editor"
+        "../node_modules/@project-sunbird/sunbird-collection-editor-v9"
       ],
       "sunbird-collection-editor/*": [
-        "../node_modules/@project-sunbird/sunbird-collection-editor/*"
+        "../node_modules/@project-sunbird/sunbird-collection-editor-v9/*"
       ]
     },
-    "module": "es2015",
     "types": []
   },
-  "exclude": [
-    "app/testUtil/**/*.*",
-    "test.ts",
-    "**/*.spec.ts",
-    "**/*.spec.data.ts"
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts",
+    "./*.d.ts"
   ]
 }

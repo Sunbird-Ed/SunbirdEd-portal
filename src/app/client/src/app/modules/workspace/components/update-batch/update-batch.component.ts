@@ -19,12 +19,12 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private updateBatchModal;
-  @ViewChild('updateBatchModal', {static: false}) set setBatchModal(element) {
+  @ViewChild('updateBatchModal') set setBatchModal(element) {
     if (element) {
       this.updateBatchModal = element;
     }
     this.initDropDown();
-  };
+  }
   /**
   * batchId
   */

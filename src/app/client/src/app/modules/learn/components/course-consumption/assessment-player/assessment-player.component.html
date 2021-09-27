@@ -1,6 +1,7 @@
+
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
-<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" class="text-left relative9">
 
   <!-- Header: Back Button Previous Module & Next Module button -->
   <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
@@ -8,7 +9,7 @@
       <div class="py-8 d-flex flex-ai-center">
         <!-- Back button -->
         <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
-          (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
+          tabindex="0" (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
           <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
             </svg></i>
@@ -17,14 +18,14 @@
         <div class="d-flex flex-ai-center">
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
-            (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
+            tabindex="0" (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
             <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
           </button>
           <!-- Previous Module button -->
           <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
           <!-- Next Module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" aria-label="next-module" *ngIf="nextModule"
-            (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
+            tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
             {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
           </button>
           <!-- Next Module button -->
@@ -42,11 +43,11 @@
             <!-- Textbook image -->
             <div class="textbook__heading">
               <!-- Textbook title -->
-              <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
+              <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name | titlecase}}
               </h5>
               <!-- Textbook Rating with share icon -->
               <div class="textbook__rating mt-4">
-                <button (click)="onShareLink();shareLinkModal=true;"
+                <button tabindex="0" (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
                   <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
                     <use xlink:href="assets/images/sprite.svg#share"></use>
@@ -83,7 +84,7 @@
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
               <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
-                <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
+                <app-player *ngIf="showPlayer" class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
                   (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
@@ -119,9 +120,18 @@
                   </sb-toc-card>
                 </div>
               </div>
+
+              <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
+                <div class="child-content-padding">
+                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                  </sb-toc-card>
+                </div>
+              </div>
+
               <div *ngIf="item?.children?.length">
-                <div *ngFor="let child of item?.children">
-                  <div class="toc-child-item">
+                <div *ngFor="let child of item?.children" >
+                  <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
                     <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
                       [contentStatus]="contentStatus" [type]="cardType">
                     </sb-toc-child-item>
@@ -142,9 +152,10 @@
       </section>
     </div>
   </div>
-</div>
-<div class="ui container py-16" *ngIf="showLoader">
-  <app-loader [data]='loaderMessage'></app-loader>
+
+  <div class="ui container py-16" *ngIf="showLoader">
+    <app-loader [data]='loaderMessage'></app-loader>
+  </div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">

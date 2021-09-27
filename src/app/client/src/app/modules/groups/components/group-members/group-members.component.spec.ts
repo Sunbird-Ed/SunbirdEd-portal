@@ -1,5 +1,5 @@
 import { IGroupMember } from './../../interfaces/group';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupMembersComponent } from './group-members.component';
@@ -100,7 +100,7 @@ describe('GroupMembersComponent', () => {
       description: '',
       membershipType: GroupMembershipType.INVITE_ONLY,
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
     spyOn(component['groupsService'], 'addFieldsToMember').and.returnValue(members);
     spyOn(component['groupsService'], 'membersList').and.returnValue(of(members));
@@ -109,7 +109,6 @@ describe('GroupMembersComponent', () => {
 
   it('should create', () => {
     component.groupId = '123';
-    spyOn(component, 'getUpdatedGroupData');
     const expectedMemberList = members.map(item => { item.isMenu = false; return item; });
     console.log('expectedMemberList', expectedMemberList);
     component.showKebabMenu = true;
@@ -117,7 +116,6 @@ describe('GroupMembersComponent', () => {
     document.body.dispatchEvent(new Event('click'));
     component.ngOnInit();
     expect(component).toBeTruthy();
-    expect(component.getUpdatedGroupData).toHaveBeenCalled();
   });
 
   it('should call getMenuData', () => {
@@ -309,7 +307,7 @@ describe('GroupMembersComponent', () => {
       description: '', membershipType: GroupMembershipType.INVITE_ONLY,
       members: [],
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
     spyOn(component['groupsService'], 'getGroupById').and.returnValue(of(response));
     component.getUpdatedGroupData();

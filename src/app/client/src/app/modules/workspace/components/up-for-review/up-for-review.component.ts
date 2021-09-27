@@ -11,7 +11,7 @@ import {
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The upforReview component search for all the upforreview content
@@ -309,7 +309,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
       if (!_.isEmpty(contentAndCollectionPrimaryCategories)) {
         primaryCategory = _.without(contentAndCollectionPrimaryCategories, 'Digital Textbook');
       } else {
-        primaryCategory = _.without(this.config.appConfig.WORKSPACE.primaryCategory, 'Digital Textbook')
+        primaryCategory = _.without(this.config.appConfig.WORKSPACE.primaryCategory, 'Digital Textbook');
       }
     }
     if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1 &&

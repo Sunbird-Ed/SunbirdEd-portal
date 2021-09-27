@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule, PublicDataService } from '@sunbird/core';
@@ -13,7 +13,7 @@ import { FaqService } from '../../services/faq/faq.service';
 import { FaqComponent } from './faq.component';
 import { FaqData, RESPONSE } from './faq.component.spec.data';
 import { HttpClient } from '@angular/common/http';
-
+import { FormService } from '../../../../../core/services/form/form.service';
 
 describe('FaqComponent', () => {
   let component: FaqComponent;
@@ -32,6 +32,10 @@ describe('FaqComponent', () => {
     },
     'frmelmnts': {
       'lbl': {},
+      'alert': {
+        debugModeEnabledSuccess: 'Debug mode enabled successfully',
+        debugModeEnabledFailed: 'Unable to enable debug mode'
+      }
     }
   };
 
@@ -171,7 +175,7 @@ describe('FaqComponent', () => {
   it('should call goBack but will change the view', () => {
     spyOn(location, 'back');
     component.showOnlyFaqCategory = false;
-    component.isMobileView = true
+    component.isMobileView = true;
     component.goBack();
     expect(location.back).not.toHaveBeenCalled();
   });
@@ -179,7 +183,7 @@ describe('FaqComponent', () => {
   describe('onCategorySelect', () => {
     it('should terminate flow if the data is empty', () => {
       // arrange
-      const eventData = {}
+      const eventData = {};
       // act
       component.onCategorySelect(eventData);
       // assert
@@ -193,19 +197,19 @@ describe('FaqComponent', () => {
           faqs: [],
           videos: [],
         }
-      }
+      };
       component.faqData = FaqData;
       const outputData = {
         faqs: [],
         videos: [],
         constants: FaqData.constants
-      }
+      };
       // act
       component.onCategorySelect(eventData);
       // assert
       setTimeout(() => {
         expect(component.selectedFaqCategory).toEqual(outputData);
-        done()
+        done();
       }, 0);
     });
   });
@@ -247,7 +251,7 @@ describe('FaqComponent', () => {
       component.showVideoModal = false;
       component.videoPlayer = {
         changes: of({})
-      }
+      };
       const eventData = {
         data: {
           thumbnail: 'some_thumbnail',
@@ -286,6 +290,32 @@ describe('FaqComponent', () => {
       expect(component.showOnlyFaqCategory).toEqual(false);
       expect(component.showFaqReport).toEqual(true);
       expect(component.sbFaqCategoryList.selectedIndex).toEqual(-1);
+    });
+  });
+
+  describe('enableDebugMode', () => {
+    it('should return debug mode time interval', fakeAsync(() => {
+      const formService = TestBed.inject(FormService);
+      spyOn(formService, 'getFormConfig').and.returnValue(of([{ timeInterval: '10' }]));
+      component['getDebugTimeInterval']().then((res) => {
+        expect(res).toEqual('10');
+      });
+    }));
+
+    it('should do api call to enable debug Mode', () => {
+      const httpService = TestBed.get(HttpClient);
+      httpService.get.and.returnValue(of({ enabled: true }));
+      spyOn<any>(component, 'getDebugTimeInterval').and.returnValue(Promise.resolve('10'));
+      component.enableDebugMode({});
+      expect(component['getDebugTimeInterval']).toHaveBeenCalled();
+    });
+
+    it('should do api call to enable debug Mode, with error', () => {
+      const httpService = TestBed.get(HttpClient);
+      httpService.get.and.returnValue(throwError({}));
+      spyOn<any>(component, 'getDebugTimeInterval').and.returnValue(Promise.resolve('10'));
+      component.enableDebugMode({});
+      expect(component['getDebugTimeInterval']).toHaveBeenCalled();
     });
   });
 

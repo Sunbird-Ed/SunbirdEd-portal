@@ -21,8 +21,8 @@ export class CertConfigModel {
         }
         criteria['enrollment'] =  { status: 2 };
         if (_.get(rawValues, 'scoreRange')) {
-            const scoreRange = (_.get(rawValues, 'scoreRange')).substr(0,(_.get(rawValues, 'scoreRange')).indexOf('%'));
-            criteria['assessment'] = { score:{'>=': parseInt(scoreRange)}};
+            const scoreRange = (_.get(rawValues, 'scoreRange')).substr(0, (_.get(rawValues, 'scoreRange')).indexOf('%'));
+            criteria['assessment'] = { score: {'>=': parseInt(scoreRange)}};
         }
         return criteria;
     }
@@ -37,7 +37,7 @@ export class CertConfigModel {
         dropDowns['issueTo'] = _.get(criteria, 'user.rootOrgId') ?
         [{ name: this.dropDownFields.MY_STATE_TEACHER }] : [{ name: this.dropDownFields.ALL }];
         dropDowns['certTypes'] = _.get(criteria, 'enrollment.status') === 2 ? [{ name: this.dropDownFields.COMPLETION_CERTIFICATE }] : [{}];
-        dropDowns ['scoreRange'] = _.get(criteria,'assessment.score')?criteria.assessment.score['>=']+'%':'';
+        dropDowns ['scoreRange'] = _.get(criteria, 'assessment.score') ? criteria.assessment.score['>='] + '%' : '';
         return dropDowns;
     }
 
@@ -81,7 +81,7 @@ export class CertConfigModel {
                 'asset': {
                     'name': _.get(rawFormValues, 'certificateTitle'),
                     'code': _.get(rawFormValues, 'certificateTitle'),
-                    'mimeType': 'application/vnd.ekstep.content-archive',
+                    'mimeType': 'image/svg+xml',
                     'license': 'CC BY 4.0',
                     'primaryCategory': 'Certificate Template',
                     // 'contentType': 'Asset',

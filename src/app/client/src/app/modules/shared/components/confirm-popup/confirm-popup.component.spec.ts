@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
@@ -15,12 +15,12 @@ describe('ConfirmPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPopupComponent],
-      imports: [SuiModule, HttpClientTestingModule,TranslateModule.forRoot({
+      imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({
          loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
-      }),],
+      }), ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
     })
       .compileComponents();

@@ -10,7 +10,7 @@ import {TenantService} from '@sunbird/core';
   styleUrls: ['./merge-account-status.component.scss']
 })
 export class MergeAccountStatusComponent implements OnInit, OnDestroy {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   isMergeSuccess: any = {};
   error_type: string;
   redirectUri: string;

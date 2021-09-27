@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService, ElectronService
+  ManagedUserService, CoursesService, DeviceRegisterService, ElectronService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -15,7 +15,7 @@ import {
   UtilService,
   ToasterService,
   IUserData, LayoutService,
-  NavigationHelperService, ConnectionService
+  NavigationHelperService, ConnectionService, InterpolatePipe
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -36,6 +36,7 @@ type reportsListVersionType = 'v1' | 'v2';
 export class MainHeaderComponent implements OnInit, OnDestroy {
   @Input() routerEvents;
   @Input() layoutConfiguration;
+
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',
@@ -120,13 +121,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   contributeMenuEdata: IInteractEventEdata;
   myGroupIntractEData: IInteractEventEdata;
   aboutUsEdata: IInteractEventEdata;
-  showContributeTab: boolean;
   hideHeader = false;
   ShowStudentDropdown = false;
-  routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
+  routerLinks = { explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}` };
   public unsubscribe = new Subject<void>();
   selected = [];
-  userTypes = [{id: 1, type: 'Teacher'}, {id: 2, type: 'Student'}];
+  userTypes = [{ id: 1, type: 'Teacher' }, { id: 2, type: 'Student' }];
   groupsMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
@@ -141,7 +141,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   workSpaceRole: Array<string>;
   reportsListVersion: reportsListVersionType;
-  showLocationPopup: boolean = false;
+  showLocationPopup = false;
   locationTenantInfo: any = {};
   deviceProfile: any;
   isCustodianUser: boolean;
@@ -149,11 +149,17 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isDesktopApp = false;
   showLoadContentModal = false;
   guestUser;
+  subscription: any;
+  userType: any;
+  showBackButton: boolean;
+  showingResult: string;
+
+
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
-    private telemetryService: TelemetryService, private programsService: ProgramsService,
+    private telemetryService: TelemetryService,
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
@@ -178,6 +184,21 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     ).subscribe((event: NavigationEnd) => {
       this.updateHrefPath(event.url);
     });
+
+    this.subscription = this.utilService.currentRole.subscribe(async (result) => {
+      if (result) {
+        this.userType = result;
+      } else {
+        if (this.userService.loggedIn) {
+          this.userService.userData$.subscribe((profileData: IUserData) => {
+            if (_.get(profileData, 'userProfile.profileUserType.type')) {
+              this.userType = profileData.userProfile['profileUserType']['type'];
+            }
+          });
+        }
+      }
+    });
+
   }
 
   updateHrefPath(url) {
@@ -249,14 +270,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
       this.languages = data[0].range;
     }, (err: any) => {
-      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr','accessibleText':'English' }];
+      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr', 'accessibleText': 'English' }];
     });
   }
   navigateToHome() {
     if (this.userService.loggedIn) {
       window.location.href = '/resources';
     } else {
-      window.location.href = this.userService.slug ? this.userService.slug + '/explore'  : '/explore';
+      window.location.href = this.userService.slug ? this.userService.slug + '/explore' : '/explore';
     }
   }
   onEnter(key) {
@@ -324,6 +345,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       } else {
         this.showExploreComponent = false;
       }
+      this.backButton.showResult();
     });
   }
 
@@ -386,12 +408,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   getFeatureId(featureId, taskId) {
-    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
+    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
   }
 
   fetchManagedUsers() {
     const requests = [this.managedUserService.managedUserList$];
-    if (this.userService.userProfile.managedBy) {
+    if (_.get(this.userService, 'userProfile.managedBy')) {
       requests.push(this.managedUserService.getParentProfile());
     }
     zip(...requests).subscribe((data) => {
@@ -504,9 +526,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.connectionService.monitor()
-    .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
     this.getGuestUser();
     this.checkFullScreenView();
     try {
@@ -525,9 +547,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           document.title = _.get(this.userService, 'rootOrgName');
         }
       });
-      this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
-        this.showContributeTab = showTab;
-      });
     } else {
       this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
         if (data && !data.err) {
@@ -537,7 +556,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }
     this.getUrl();
     this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
-    this.tenantService.tenantData$.subscribe(({tenantData}) => {
+    this.tenantService.tenantData$.subscribe(({ tenantData }) => {
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
     });
@@ -583,7 +602,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   navigateToGroups() {
-    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS;
   }
 
   isLayoutAvailable() {
@@ -642,7 +661,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       }
       this.deviceProfile = _.get(deviceProfile, 'result');
       this.showLocationPopup = true;
-    }, (err) => { 
+    }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
     });
   }
@@ -652,7 +671,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   doLogin() {
-    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe();
+    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN }).subscribe();
   }
 
   initializeManagedUser(selectedUser) {
@@ -669,5 +688,29 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.utilService.redirect('/resources');
     }, 5100);
   }
+
+  get backButton() {
+    const { isInside, returnTo } = this.activatedRoute.snapshot.queryParams;
+    return {
+      goBack: () => {
+        if (returnTo) {
+          this.showBackButton = false;
+          this.router.navigate(['/explore'], { queryParams: { selectedTab: returnTo } });
+        }
+      },
+      showResult: () => {
+        if (isInside) {
+          this.showBackButton = true;
+          const filterPipe = new InterpolatePipe();
+          const successMessage = filterPipe.transform(_.get(this.resourceService, 'frmelmnts.lbl.showingResultsFor'),
+            '{searchString}', isInside);
+          this.showingResult = successMessage;
+        } else {
+          this.showBackButton = false;
+        }
+      }
+    };
+  }
+
 
 }

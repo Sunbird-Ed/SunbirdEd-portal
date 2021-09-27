@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import {ContentService, UserService, LearnerService, CoreModule, FormService} from '@sunbird/core';
 import { By } from '@angular/platform-browser';
 import {
@@ -47,8 +47,8 @@ describe('CourseProgressComponent', () => {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
         'm0141': 'Data unavailable to generate Score Report'
       },
-      "fmsg": {
-        "m0004": "Could not fetch data, try again later"
+      'fmsg': {
+        'm0004': 'Could not fetch data, try again later'
       }
     },
     'frmelmnts': {

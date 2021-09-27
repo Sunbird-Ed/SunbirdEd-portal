@@ -21,7 +21,7 @@ import { DiscussionService } from '../../../../../../app/modules/discussion/serv
 })
 export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('createBatchModel', {static: false}) private createBatchModel;
+  @ViewChild('createBatchModel') private createBatchModel;
 
   private userSearchTime: any;
 
@@ -221,8 +221,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
             avatar: userData.avatar,
             otherDetail: this.getUserOtherDetail(userData)
           };
-          _.forEach(userData.organisations, (userOrgData) => {
-            if (_.indexOf(userOrgData.roles, 'COURSE_MENTOR') !== -1) {
+          _.forEach(userData.roles, (roles) => {
+            if (roles.role === 'COURSE_MENTOR') {
               mentorList.push(user);
             }
           });
@@ -487,7 +487,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
     };
-    if (cdata){
+    if (cdata) {
       telemetryData.context.cdata.push(cdata);
     }
     this.telemetryService.interact(telemetryData);

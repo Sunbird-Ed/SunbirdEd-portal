@@ -26,7 +26,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
-  @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
+  @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -69,7 +69,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   /**
  * Dom element reference of contentRatingModal
  */
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -100,14 +100,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   ngOnInit() {
     if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
       this.playerConfig.config.sideMenu.showDownload = false;
-      this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
-        this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+      if (!_.get(this.playerConfig, 'metadata.instructions')) {
+        this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
+          this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+          this.showQumlPlayer = true;
+        }, (error) => {
+          this.showQumlPlayer = true;
+        });
+      } else {
         this.showQumlPlayer = true;
-      }, (error) => {
-        this.showQumlPlayer = true;
-      });
+      }
     }
-    
+
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -288,7 +292,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
       this.isFullScreenView = true;
-      this.rotatePlayer();
+      if (_.get(this.playerConfig, 'metadata.mimeType') !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        this.rotatePlayer();
+      }
     }
     this.showNewPlayer = true;
   }
@@ -334,38 +340,57 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreReviewEvents.emit(event);
     }
   }
+
+  generatelimitedAttemptEvent(event) {
+    if (_.get(event, 'edata.isLastAttempt')) {
+      this.selfAssessLastAttempt.emit(event);
+    } else if (_.get(event, 'edata.maxLimitExceeded')) {
+      this.selfAssessLastAttempt.emit(event);
+    }
+  }
+
   eventHandler(event) {
+    if (event.eid === 'exdata') {
+      this.generatelimitedAttemptEvent(event);
+      return;
+    }
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
     }
     if (_.get(event, 'edata.type') === 'PRINT') {
-      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      const windowFrame = window.document.querySelector('pdf-viewer iframe');
       if (windowFrame) {
-        windowFrame['contentWindow'].print()
+        windowFrame['contentWindow'].print();
       }
       this.mobileViewDisplay = 'none';
     }
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
-    if (!event) {
+    let eventCopy = newPlayerEvent ? _.cloneDeep(event) : event;
+    if (!eventCopy) {
       return;
     }
     if (newPlayerEvent) {
-      event = { detail: {telemetryData: event}};
+      eventCopy = { detail: {telemetryData: eventCopy}};
     }
-    const eid = _.get(event, 'detail.telemetryData.eid');
-    if (eid && (eid === 'START' || eid === 'END')) {
-      this.showRatingPopup(event);
+    const eid = _.get(eventCopy, 'detail.telemetryData.eid');
+    const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
+    if (eid && (eid === 'START' || eid === 'END') && contentId === _.get(this.playerConfig, 'metadata.identifier')) {
+      this.showRatingPopup(eventCopy);
       if (this.contentProgressEvents$) {
-        this.contentProgressEvents$.next(event);
+        this.contentProgressEvents$.next(eventCopy);
       }
     } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
     if (eid && (eid === 'ASSESS') || eid === 'START' || eid === 'END') {
-      this.assessmentEvents.emit(event);
+      this.assessmentEvents.emit(eventCopy);
+    }
+
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset && eid === 'END') {
+      this.questionScoreSubmitEvents.emit(event);
     }
   }
   emitSceneChangeEvent(timer = 0) {

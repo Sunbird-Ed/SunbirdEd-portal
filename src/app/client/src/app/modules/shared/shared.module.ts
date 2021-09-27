@@ -1,22 +1,22 @@
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NoResultComponent, AppLoaderComponent, CardComponent,
   CardCreationComponent, ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent,
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent,
-  OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent,SbDatatableComponent,
-  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent,AlertModalComponent, FullPageLoaderComponent
+  OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent, SbDatatableComponent,
+  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent, FullPageLoaderComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
   OfflineCardService, RecaptchaService, LayoutService, ConnectionService
 } from './services';
-import { ContentDirectionDirective, MarkdownDirective } from './directives';
+import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import {DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe} from './pipes';
@@ -25,7 +25,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
-import { HighlightTextDirective } from './directives/highlight-text/highlight-text.directive';
 import { AppLandingSectionComponent } from './components/app-landing-section/app-landing-section.component';
 import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { AddToGroupDirective } from './directives/add-to-group/add-to-group.directive';
@@ -33,12 +32,13 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {TitleCasePipe} from '@angular/common';
 import { NetworkStatusComponent } from './components/network-status/network-status.component';
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
+
 @NgModule({
   imports: [
     CommonModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
-    FormsModule,ReactiveFormsModule,NgxDatatableModule,
+    FormsModule, ReactiveFormsModule, NgxDatatableModule,
     TelemetryModule,
     TranslateModule.forChild()
   ],
@@ -48,23 +48,21 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
-    SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
-    DesktopAppUpdateComponent,AlertModalComponent,
-    SystemWarningComponent,
-    FullPageLoaderComponent],
+    SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
+    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule,SbDataTablePipe, 
-    InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent,
-    FullPageLoaderComponent],
-  entryComponents:[AlertModalComponent]
+    MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
+    InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
+    AlertModalComponent, FullPageLoaderComponent],
+  entryComponents: [AlertModalComponent]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [ResourceService, ConfigService, ToasterService, PaginationService, RecaptchaService,

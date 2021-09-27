@@ -3,7 +3,7 @@
 </app-landing-section>
 
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-user-profile relative9':''" >
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-user-profile relative9 sbt-fluid-content-bg pt-16':''" >
 <app-user-filter></app-user-filter>
 <div class="ui container mt-16">
   <div [appTelemetryImpression]="telemetryImpression" class="ui grid mt-0">
@@ -39,14 +39,14 @@
                   <div class="content userSearchContent">
                     <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
                         [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
-                        class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>-->
+                        class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" tabindex="0" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>-->
                     <div class="header mb-5" *ngIf="user.status===1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
                     <div class="header mb-5" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
 
                     <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
                       <!-- update user roles -->
                       <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
-                        class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
+                        class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" tabindex="0" (click)="user.status===1 && userSearchService.userDetailsObject=user">
                         <i class="edit large icon"></i>
                       </span>
                       <!-- delete user -->
@@ -105,11 +105,11 @@
         <div class="twelve wide column pt-0">
           <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
             <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length">
-              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
-              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
-              <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
-              <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-              <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">First</a>
+              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+              <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>
+              <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+              <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
             </div>
           </div>
         </div>

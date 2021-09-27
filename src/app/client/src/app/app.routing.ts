@@ -6,61 +6,64 @@ import { MlGuard } from './modules/observation/guards';
 
 const appRoutes: Routes = [
   {
-    path: 'learn/course', loadChildren: 'app/modules/learn/course-consumption.module#CourseConsumptionModule'
+    path: 'learn/course', loadChildren: () => import('app/modules/learn/course-consumption.module').then(m => m.CourseConsumptionModule)
   },
   {
-    path: 'learn', loadChildren: 'app/modules/learn/learn.module#LearnModule'
+    path: 'learn', loadChildren: () => import('app/modules/learn/learn.module').then(m => m.LearnModule)
   },
   {
-    path: 'resources', loadChildren: 'app/modules/resource/resource.module#ResourceModule'
+    path: 'resources', loadChildren: () => import('app/modules/resource/resource.module').then(m => m.ResourceModule)
   },
   {
-    path: 'search', loadChildren: 'app/modules/search/search.module#SearchModule'
+    path: 'search', loadChildren: () => import('app/modules/search/search.module').then(m => m.SearchModule)
   },
   {
-    path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
+    path: 'workspace', loadChildren: () => import('app/modules/workspace/workspace.module').then(m => m.WorkspaceModule)
   },
   {
-    path: 'org', loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
+    path: 'org', loadChildren: () => import('app/modules/org-management/org-management.module').then(m => m.OrgManagementModule)
   },
   {
-    path: 'dashBoard', loadChildren: 'app/modules/dashboard/dashboard.module#DashboardModule'
+    path: 'dashBoard', loadChildren: () => import('app/modules/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
-    path: 'profile', loadChildren: 'app/plugins/profile/profile.module#ProfileModule'
+    path: 'profile', loadChildren: () => import('app/plugins/profile/profile.module').then(m => m.ProfileModule)
   },
   {
-    path: 'certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
+    path: 'certs', loadChildren: () => import('app/modules/certificate/certificate.module').then(m => m.CertificateModule)
   },
   {
-    path: 'recover', loadChildren: 'app/modules/recover-account/recover-account.module#RecoverAccountModule'
+    path: 'recover', loadChildren: () => import('app/modules/recover-account/recover-account.module').then(m => m.RecoverAccountModule)
   },
   {
-    path: 'accountMerge', loadChildren: 'app/modules/merge-account/merge-account.module#MergeAccountModule'
+    path: 'accountMerge', loadChildren: () => import('app/modules/merge-account/merge-account.module').then(m => m.MergeAccountModule)
   },
   {
-    path: 'get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
+    path: 'get', loadChildren: () => import('app/modules/dial-code-search/dial-code-search.module').then(m => m.DialCodeSearchModule)
   },
   {
-    path: 'manage', loadChildren: 'app/modules/manage/manage.module#ManageModule'
+    path: 'manage', loadChildren: () => import('app/modules/manage/manage.module').then(m => m.ManageModule)
   },
   {
-    path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
+    path: '', loadChildren: () => import('app/modules/public/public.module').then(m => m.PublicModule)
   },
   {
-    path: 'discussion-forum', loadChildren: 'app/modules/discussion/discussion.module#DiscussionModule'
+    path: 'discussion-forum', loadChildren: () => import('app/modules/discussion/discussion.module').then(m => m.DiscussionModule)
   },
   {
-    path: MY_GROUPS, loadChildren: 'app/modules/groups/groups.module#GroupsModule'
+    path: MY_GROUPS, loadChildren: () => import('app/modules/groups/groups.module').then(m => m.GroupsModule)
   },
   {
-    path: NOTIFICATION, loadChildren: 'app/modules/notification/notification.module#NotificationModule'
+    path: NOTIFICATION, loadChildren: () => import('app/modules/notification/notification.module').then(m => m.NotificationModule)
   },
   {
-    path: 'observation', loadChildren: 'app/modules/observation/observation.module#ObservationModule', canActivate: [MlGuard]
+    path: 'observation', loadChildren: () => import('app/modules/observation/observation.module').then(m => m.ObservationModule), canActivate: [MlGuard]
   },
   {
-    path: 'questionnaire', loadChildren: 'app/modules/questionnaire/questionnaire.module#QuestionnaireModule'
+    path: 'questionnaire', loadChildren: () => import('app/modules/questionnaire/questionnaire.module').then(m => m.QuestionnaireModule)
+  },
+  {
+    path: 'solution', loadChildren: () => import('app/modules/report/report.module').then(m => m.ReportModule)
   },
   {
     path: 'error', component: ErrorPageComponent

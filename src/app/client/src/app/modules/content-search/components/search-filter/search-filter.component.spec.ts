@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchFilterComponent } from './search-filter.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, BrowserCacheTtlService, ToasterService, SharedModule, LayoutService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { OrgDetailsService, TenantService, ChannelService, FormService } from '@sunbird/core';
@@ -41,7 +41,8 @@ describe('SearchFilterComponent', () => {
                 'm0077': 'Fetching search result failed',
                 'm0051': 'Fetching other courses failed, please try again later...'
             }
-        }
+        },
+        languageSelected$: of({})
     };
     class FakeActivatedRoute {
         queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });

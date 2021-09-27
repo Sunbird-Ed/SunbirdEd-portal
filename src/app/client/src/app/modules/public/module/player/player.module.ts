@@ -6,8 +6,8 @@ import { SharedModule } from '@sunbird/shared';
 import { BadgingModule } from '@sunbird/badge';
 import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { SuiModalModule } from 'ng2-semantic-ui';
-import { CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
+import { CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({

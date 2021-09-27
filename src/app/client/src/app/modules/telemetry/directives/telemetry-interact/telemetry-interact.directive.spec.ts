@@ -34,7 +34,7 @@ const telemetryInteractObject = {
   class="ui primary button">save</button>`
 })
 class TestDirectiveComponent {
-  @ViewChild(TelemetryInteractDirective, {static: false}) appTelemetryInteract: TelemetryInteractDirective;
+  @ViewChild(TelemetryInteractDirective) appTelemetryInteract: TelemetryInteractDirective;
   telemetryInteractObject = telemetryInteractObject;
   telemetryInteractEdata = telemetryInteractEdata;
   constructor() {

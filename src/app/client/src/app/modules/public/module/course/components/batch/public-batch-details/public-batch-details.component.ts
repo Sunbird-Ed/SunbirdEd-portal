@@ -30,7 +30,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   showBatchList = false;
   statusOptions = [
     { name: 'Ongoing', value: 1 },
-    { name: 'Upcoming', value: 0 }
+    { name: 'Upcoming', value: 0 },
+    { name: 'Expired', value: 2 }
   ];
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   signInInteractEdata: IInteractEventEdata;
@@ -155,7 +156,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
 
   setUrlToCourse() {
     const queryParam = this.tocId ? `?textbook=${this.tocId}` : '';
-    if(this.utilService.isDesktopApp) {
+    if (this.utilService.isDesktopApp) {
       this.electronService.get({ url: `${this.config.urlConFig.URLS.OFFLINE.LOGIN}?redirectTo=${this.baseUrl + queryParam}`}).subscribe();
     } else {
       window.location.href = this.baseUrl + queryParam;

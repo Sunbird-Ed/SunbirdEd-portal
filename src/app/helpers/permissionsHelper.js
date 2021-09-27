@@ -34,7 +34,7 @@ let PERMISSIONS_HELPER = {
         if (body.result.response.managedToken) {
           reqObj.session.managedToken = body.result.response.managedToken
         }
-        reqObj.session.roles = body.result.response.roles
+        reqObj.session.roles = _.map(body.result.response.roles, 'role');
         if (body.result.response.organisations) {
           _.forEach(body.result.response.organisations, function (org) {
             if (org.roles && _.isArray(org.roles)) {
@@ -80,7 +80,7 @@ let PERMISSIONS_HELPER = {
    */
   getCurrentUserRoles: function (reqObj, callback, userIdentifier, isManagedUser) {
     var userId = userIdentifier || reqObj.session.userId;
-    var url = learnerURL + 'user/v1/read/' + userId;
+    var url = learnerURL + 'user/v5/read/' + userId;
     if (isManagedUser) {
       url = url + '?withTokens=true'
     }

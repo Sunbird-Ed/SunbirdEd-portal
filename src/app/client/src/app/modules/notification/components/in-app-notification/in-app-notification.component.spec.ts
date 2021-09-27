@@ -3,11 +3,11 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { InAppNotificationComponent } from './in-app-notification.component';
 
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModalModule, SuiModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { of as observableOf, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
@@ -47,13 +47,13 @@ describe('InAppNotificationComponent', () => {
   };
 
   const MockNotificationServiceImpl = {
-    fetchNotificationList() { return {} as any },
+    fetchNotificationList() { return {} as any; },
     handleNotificationClick() {},
-    deleteNotification() { return false },
-    clearAllNotifications() { return false },
+    deleteNotification() { return false; },
+    clearAllNotifications() { return false; },
     showNotificationModel$: observableOf(true),
     notificationList$: observableOf([]),
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -135,7 +135,7 @@ describe('InAppNotificationComponent', () => {
       notificationService.notificationList$.subscribe(data => {
         expect(component.notificationCount).toEqual(0);
         done();
-      })
+      });
     });
 
     it('should fetch the notification list and the list is empty', (done) => {
@@ -148,8 +148,8 @@ describe('InAppNotificationComponent', () => {
       // assert
       notificationService.notificationList$.subscribe(data => {
         expect(component.notificationCount).toEqual(0);
-        done()
-      })
+        done();
+      });
     });
 
   });

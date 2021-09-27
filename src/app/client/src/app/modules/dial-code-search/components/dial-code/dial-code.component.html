@@ -1,13 +1,13 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9 sbt-dial-code':''" >
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9 sbt-dial-code sbt-inside-page-container':''" >
 <!-- Back button -->
 <div class="sb-bg-color-white sb-back-btn-panel">
   <div class="ui container py-8">
     <button type="button" appTelemetryInteract [telemetryInteractEdata]="backInteractEdata"
       [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-link
-      sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()">
+      sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()" tabindex="0">
       <i class="icon-svg icon-svg--xxs icon-back mr-4" aria-hidden="true">
         <svg class="icon icon-svg--primary">
           <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
@@ -34,7 +34,7 @@
     </div>
     <div *ngIf="showSelectChapter && !showLoader && searchResults?.length > 0" class="my-24">
       <button appTelemetryInteract [telemetryInteractEdata]="selectChapterInteractEdata"
-        [telemetryInteractCdata]="selectChapterTelemetryCdata" (click)="redirectToDetailsPage(dialContentId)"
+        [telemetryInteractCdata]="selectChapterTelemetryCdata" tabindex="0" (click)="redirectToDetailsPage(dialContentId)"
         class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn"
         type="button">{{resourceService.frmelmnts?.lbl?.selectChapter}}
         <i class="icon chevron circle right" aria-hidden="true"></i></button>
@@ -120,14 +120,14 @@
   </div>
 </div>
 
-<div class="mobile-popup-dimmer" *ngIf="showMobilePopup" (click)="closeMobileAppPopup()"
+<div class="mobile-popup-dimmer" *ngIf="showMobilePopup" tabindex="0" (click)="closeMobileAppPopup()"
   [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
     <div class="download-mobile-app">
       <div class="mobile-app-popup-close">
         <i class="close icon" aria-hidden="true"></i>
       </div>
-      <div class="download-mobile-app-logo p-15" (click)="redirectToDikshaApp()">
+      <div class="download-mobile-app-logo p-15" tabindex="0" (click)="redirectToDikshaApp()">
         <div class="mobile-circles">
           <div class="big-box border-round border-r50"></div>
           <div class="oval-box border-round ml-24"></div>

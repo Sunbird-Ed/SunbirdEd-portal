@@ -3,7 +3,7 @@
 <div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
 
   <ng-container>
-    <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+    <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
   </ng-container>
 
   <!--Logged in user-->
@@ -43,7 +43,7 @@
 	<div class="ui sidebar right vertical menu">
 
     <div class="mobile only">
-      <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+      <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
     </div>
 
     <!--Logged in user-->
@@ -57,7 +57,7 @@
 			</div>
 			<div class="ui divider mt-0"></div>
 			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" 
-			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
 
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
@@ -81,26 +81,26 @@
 				</a>
 			</div>
 			<div class="ui divider mt-0"></div>
-			<a class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)" routerLink="/explore">
+			<a class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)" routerLink="/explore" tabindex="0">
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
 			<a class="item"
 				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"				
-				[routerLink]="['/explore']" (click)="showSideBar()"
+				[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.resources}}
 			</a>
 			<a class="item"
 				[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')"
-				[routerLink]="['/explore-course']" (click)="showSideBar()"
+				[routerLink]="['/explore-course']" (click)="showSideBar()" tabindex="0"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
 			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
-			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 
-      <a class="item" (click)="showSideBar(false);switchLayout()">
+      <a class="item" (click)="showSideBar(false);switchLayout()" tabindex="0">
         <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
         <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
       </a>
@@ -114,7 +114,7 @@
 
 <ng-container *ngIf="isLayoutAvailable()">
 
-  <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+  <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
 
   <!--Mobile-->
 <div class="mobile only">
@@ -130,12 +130,12 @@
 			</div>
 			<div class="ui divider mt-0"></div>
 			<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
-				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
+				(click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
 				routerLink="/resources">
 				{{resourceService?.frmelmnts?.tab?.resources}}
 			</a>
 			<a class="item" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
-				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
+				(click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
@@ -144,11 +144,11 @@
 		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
 			</a>
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
-				(click)="showSideBar()" routerLink="/profile">
+				(click)="showSideBar()" tabindex="0" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
 			<a class="item logout-btn" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
-				(click)="logout()">
+				(click)="logout()" tabindex="0">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
 		</ng-container>
@@ -164,23 +164,23 @@
 				</a>
 			</div>
 			<div class="ui divider mt-0"></div>
-			<a class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)" routerLink="/explore">
+			<a class="item" (click)="showSideBar()" tabindex="0" *ngIf="router.isActive('', true)" routerLink="/explore">
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
 			<a class="item"
 				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"				
-				[routerLink]="['/explore']" (click)="showSideBar()"
+				[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.resources}}
 			</a>
 			<a class="item"
 				[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')"
-				[routerLink]="['/explore-course']" (click)="showSideBar()"
+				[routerLink]="['/explore-course']" (click)="showSideBar()" tabindex="0"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
 			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
-			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 			
 			</ng-container>

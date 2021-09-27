@@ -18,10 +18,10 @@ export class OnDemandReportsComponent implements OnInit {
   @Input() batch;
   public columns = [
     {name: 'Report type', isSortable: true, prop: 'title', placeholder: 'Filter report type'},
-    {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date',type: 'date'},
+    {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date', type: 'date'},
     {name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status'},
     {name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
-    {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'dateTime'},
+    {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date', type: 'dateTime'},
     // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
   public onDemandReportData: any[];
@@ -45,7 +45,7 @@ export class OnDemandReportsComponent implements OnInit {
       this.reportForm = new FormGroup({
         reportType: new FormControl('', [Validators.required]),
         password : new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
-      })
+      });
   }
 
   ngOnInit() {
@@ -53,9 +53,9 @@ export class OnDemandReportsComponent implements OnInit {
   }
 
   loadReports(batchDetails?: any) {
-    if(batchDetails){
+    if (batchDetails) {
       this.batch = batchDetails;
-      this.tag = batchDetails.courseId+'_'+batchDetails.batchId;
+      this.tag = batchDetails.courseId + '_' + batchDetails.batchId;
     }
     if (this.batch) {
       this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
@@ -143,9 +143,9 @@ export class OnDemandReportsComponent implements OnInit {
       });
     } else {
       this.isProcessed = true;
-      setTimeout(()=>{
+      setTimeout(() => {
         this.isProcessed = false;
-      }, 5000)
+      }, 5000);
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
     }
   }
@@ -167,11 +167,11 @@ export class OnDemandReportsComponent implements OnInit {
       batchEndDate = new Date(`${this.batch.endDate} 23:59:59`).getTime();
     }
     if (!_.isEmpty(reportListData)) { // checking the report is already created or not
-      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state 
+      const isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state
       if (!isInProgress) {
         requestStatus = true;
         // TODO: The below code has commented because of API lag to generate the reports
-        // requestStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate); // performing the date checks if the report is not in SUBMITTED/PROCESSING state  
+        // requestStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate); // performing the date checks if the report is not in SUBMITTED/PROCESSING state
       } else {
         requestStatus = false; // report is in SUBMITTED/PROCESSING state and can not create new report
       }

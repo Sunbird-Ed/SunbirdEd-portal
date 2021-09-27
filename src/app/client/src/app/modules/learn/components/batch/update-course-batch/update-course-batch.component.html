@@ -2,7 +2,7 @@
   class="sb-modal sb-batch-modal" appBodyScroll *ngIf='showUpdateModal' (dismissed)="redirect()" #updateBatchModal>
 
   <!--Header-->
-  <i class="close icon" (click)="redirect()"></i>
+  <i class="close icon" tabindex="0" (click)="redirect()"></i>
   <div class="sb-modal-header">
     <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
     <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
@@ -104,7 +104,7 @@
             <div class="sb-field ui left icon input">
               <i class="calendar icon date-calendar"></i>
               <input class="sb-form-control"
-                [attr.disabled]="(batchDetails.status === 2 || showFormInViewMode) ? true : null"
+                [attr.disabled]="(showFormInViewMode) ? true : null"
                 [pickerMinDate]='pickerMinDateForEndDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'" aria-label="end Date">
             </div>
           </div>
@@ -116,7 +116,7 @@
             <div class="sb-field ui left icon input" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
               <i class="calendar icon date-calendar"></i>
               <input class="sb-form-control"
-                (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
+                tabindex="0" (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
                 [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
                 suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'" aria-label="enrollment End Date">
             </div>
@@ -152,7 +152,7 @@
           <img class="ui right spaced avatar image"
             src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-img">
           {{selectmentor.name}}{{selectmentor.otherDetail}}
-          <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeMentor(selectmentor)"></i>
+          <i class="delete icon" *ngIf="batchDetails.status === 0" tabindex="0" (click)="removeMentor(selectmentor)"></i>
         </a>
       </div>
       <div class="sb-field-group mb-8" *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
@@ -195,10 +195,10 @@
     <button class="sb-btn sb-btn-normal sb-btn-primary"
       [ngClass]="{'sb-btn-disabled': disableSubmitBtn || showFormInViewMode}" appTelemetryInteract
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateBatchInteractEdata"
-      [telemetryInteractCdata]="telemetryCdata" tabindex="0" (click)="updateBatch()">
+      [telemetryInteractCdata]="telemetryCdata" tabindex="0" tabindex="0" (click)="updateBatch()">
       {{resourceService?.frmelmnts?.btn?.update}}
     </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetForm()"
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="resetForm()"
       [ngClass]="{'sb-btn-disabled': showFormInViewMode}" tabindex="0" appTelemetryInteract
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="clearButtonInteractEdata"
       [telemetryInteractCdata]="telemetryCdata">

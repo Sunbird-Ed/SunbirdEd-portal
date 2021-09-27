@@ -35,7 +35,7 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
   courseName: string;
   issuedOn: string;
   watchVideoLink: string;
-  @ViewChild('codeInputField', {static: false}) codeInputField: ElementRef;
+  @ViewChild('codeInputField') codeInputField: ElementRef;
 
   constructor(
     public activatedRoute: ActivatedRoute,

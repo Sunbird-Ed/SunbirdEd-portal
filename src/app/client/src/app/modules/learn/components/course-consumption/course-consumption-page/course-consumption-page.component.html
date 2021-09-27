@@ -1,8 +1,9 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <app-course-consumption-header *ngIf="!showLoader && !showError && showAddGroup !== null"
     [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId"
-    [showAddGroup]="showAddGroup"></app-course-consumption-header>
+    [showAddGroup]="showAddGroup" [layoutConfiguration]="layoutConfiguration"></app-course-consumption-header>
 <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
 <div *ngIf="showLoader" class="ui container">
     <div class="ui grid">
@@ -10,6 +11,7 @@
             <app-loader></app-loader>
         </div>
     </div>
+</div>
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches"
     (routeChanged)="refreshComponent($event)">

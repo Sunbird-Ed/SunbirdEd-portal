@@ -18,7 +18,7 @@ import { ContentIDParam } from '../../interfaces/delteparam';
  * Interface for passing the configuartion for modal
 */
 
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 
 /**
  * The published  component search for all the published component
@@ -30,7 +30,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
   styleUrls: ['./published.component.scss']
 })
 export class PublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
-  @ViewChild('modalTemplate', {static: false})
+  @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
   * state for content editior
@@ -315,7 +315,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   contentClick(param, content) {
     this.contentMimeType = content.metaData.mimeType;
     if (param.data && param.data.originData) {
-      const originData = JSON.parse(param.data.originData)
+      const originData = JSON.parse(param.data.originData);
       if (originData.copyType === 'shallow') {
         const errMsg = (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
         this.toasterService.error(errMsg);

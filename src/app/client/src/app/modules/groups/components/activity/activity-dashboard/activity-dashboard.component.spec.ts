@@ -1,46 +1,48 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivityDashboardComponent } from './activity-dashboard.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet';
 import { GroupsService } from '../../../services';
-import { ConfigService } from '@sunbird/shared';
-import { CourseConsumptionService } from '@sunbird/learn';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { RouterModule, ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
-import { BehaviorSubject, of, throwError } from 'rxjs';
-import { groupData, courseHierarchy, activityData, dashletData } from './activity-dashboard.component.spec.data';
+import { of, throwError } from 'rxjs';
+import { courseHierarchy, activityData, dashletData } from './activity-dashboard.component.spec.data';
 import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
-import * as $ from 'jquery';
-import 'datatables.net';
-import { By } from '@angular/platform-browser';
-
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
   let fixture: ComponentFixture<ActivityDashboardComponent>;
   let activatedRoute;
+  let router;
 
-  class FakeActivatedRoute {
-    queryParamsMock = new BehaviorSubject<any>({});
-    paramsMock = new BehaviorSubject<any>({ groupId: 'abcd12322', activityId: 'do_34534' });
-    get params() { return this.paramsMock.asObservable(); }
-    get queryParams() { return this.queryParamsMock.asObservable(); }
-    snapshot = {
-      params: {},
-      data: {
-        telemetry: {}
+  class ActivatedRouteStub {
+    snapshot: {
+      params: {
+        activityId: 'do_2132740696478433281380',
+        groupId: '83201038-9f23-4a8f-8055-01f79dbf2e20'
       }
     };
-    public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
-    public changeParams(params) { this.paramsMock.next(params); }
   }
+
   class RouterStub {
-    navigate = jasmine.createSpy('navigate');
+    url = 'my-groups/group-details/83201038-9f23-4a8f-8055-01f79dbf2e20';
+    navigate() { }
+    getCurrentNavigation = () => {
+      const _routerExtras = {
+        extras: {
+          state: {
+            hierarchyData: courseHierarchy.result.content,
+            activity: activityData,
+            memberListUpdatedOn: '12'
+          }
+        }
+      };
+      return _routerExtras;
+    }
   }
 
   const resourceBundle = {
@@ -51,21 +53,28 @@ describe('ActivityDashboardComponent', () => {
       },
       'emsg': {
         'm002': 'Could not find the group. Try again later',
-        'm0005': 'Something went wrong, please try again',
+        'm0005': 'Something went wrong, try again later',
         'noAdminRoleActivity': 'You are not authorised to access this page'
       }
     }
   };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityDashboardComponent],
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(),
-        RouterModule, DashletModule],
+      imports: [
+        SharedModule.forRoot(),
+        HttpClientTestingModule,
+        CoreModule,
+        TelemetryModule.forRoot(),
+        SharedModule,
+        RouterModule
+      ],
       providers: [
-        GroupsService, ConfigService, CourseConsumptionService, ToasterService,
+        GroupsService, ToasterService,
         { provide: ResourceService, useValue: resourceBundle },
-        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: Router, useClass: RouterStub },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -75,7 +84,28 @@ describe('ActivityDashboardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ActivityDashboardComponent);
     activatedRoute = TestBed.get(ActivatedRoute);
+    router = TestBed.get(Router);
     component = fixture.componentInstance;
+    component.hierarchyData = courseHierarchy.result.content;
+    component.activity = activityData;
+    component.memberListUpdatedOn = '123';
+    activatedRoute.snapshot = {
+      params: {
+        groupId: 'do_2132740696478433281380',
+        activityId: '83201038-9f23-4a8f-8055-01f79dbf2e20'
+      }
+    };
+    component.activatedRoute = activatedRoute;
+    spyOn(router, 'getCurrentNavigation').and.returnValue({
+      extras: {
+        state: {
+          hierarchyData: courseHierarchy.result.content,
+          activity: activityData,
+          activityName: 'abc',
+          memberListUpdatedOn: '12'
+        }
+      }
+    });
     fixture.detectChanges();
   });
 
@@ -83,126 +113,50 @@ describe('ActivityDashboardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should subscribe to query param change events on init', () => {
-    spyOn<any>(component, 'fetchActivityOnParamChange');
-    component.ngOnInit();
-    expect(component['fetchActivityOnParamChange']).toHaveBeenCalled();
-  });
-
-
-  it('should get Params on routes changes', fakeAsync(() => {
-    spyOn(component, 'fetchActivity');
-    component['fetchActivityOnParamChange']();
-    activatedRoute.changeParams({ groupId: 'abcd12322', activityId: 'do_34534' });
-    tick(100);
-    expect(component.groupId).toBeDefined();
-    expect(component.fetchActivity).toHaveBeenCalled();
-  }));
-
-  it('should fetch activity', () => {
-    const activityId = 'do_2127638382202880001645';
-    const groupId = 'abc123';
-    component.isLoader = true;
-    const groupService = TestBed.get(GroupsService);
-    spyOn(groupService, 'getGroupById').and.returnValue(of({ groupName: 'name', groupDescription: 'description' }));
-    spyOn(component, 'getHierarchy');
-    component.fetchActivity(groupId, activityId);
-    expect(component.getHierarchy).toHaveBeenCalled();
-    expect(component.isLoader).toBe(false);
-  });
-
-  it('should call getHierarchy()', () => {
-    const activityId = 'do_2127638382202880001645';
-    const inputParams = { params: component.configService.appConfig.CourseConsumption.contentApiQueryParams };
-    spyOn(component['courseConsumptionService'], 'getCourseHierarchy').and.returnValue(of(courseHierarchy));
-    spyOn(component, 'getAggData');
-    component.getHierarchy(activityId, groupData);
-    component['courseConsumptionService'].getCourseHierarchy('do_2127638382202880001645', inputParams).subscribe(data => {
-      expect(component.activity).toBeDefined();
-      expect(component.getAggData).toHaveBeenCalled();
-    });
-
-    // expect(component.coursehierarchy).toBeDefined();
-  });
-
-  it('should throw error in getHierarchy()', () => {
-    const activityId = 'do_2127638382202880001645';
-    const inputParams = { params: component.configService.appConfig.CourseConsumption.contentApiQueryParams };
-    spyOn(component['courseConsumptionService'], 'getCourseHierarchy').and.returnValue(throwError({}));
-    spyOn(component['toasterService'], 'error');
-    spyOn(component, 'navigateBack');
-    component.getHierarchy(activityId, groupData);
-    component['courseConsumptionService'].getCourseHierarchy('do_2127638382202880001645', inputParams).subscribe(data => {
-    }, err => {
-      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
-      expect(component.navigateBack).toHaveBeenCalled();
-    });
-  });
-
-
-  it('should call getAggData()', () => {
-   const activityId = 'do_2127638382202880001645';
-   const leafNodesCount = 5;
-    spyOn(component['groupService'], 'getActivity').and.returnValue(of(activityData));
-    spyOn(component, 'getDashletData');
-    component.getAggData(activityId, courseHierarchy, groupData, leafNodesCount);
-    component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
-      { id: 'do_2125636421522554881918', type: 'Course' }, groupData).subscribe(data => {
-        expect(component.getDashletData).toHaveBeenCalled();
-      });
-    expect(component['groupService'].getActivity).toHaveBeenCalledWith('ddebb90c-59b5-4e82-9805-0fbeabed9389',
-      { id: 'do_2125636421522554881918', type: 'Course' }, groupData);
-  });
-  it('should throw error in getAggData()', () => {
-    const activityId = 'do_2127638382202880001645';
-    const leafNodesCount = 5;
-    spyOn(component['groupService'], 'getActivity').and.returnValue(throwError({}));
-    spyOn(component['toasterService'], 'error');
-    spyOn(component, 'navigateBack');
-    component.getAggData(activityId, courseHierarchy, groupData, leafNodesCount);
-    component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
-      { id: 'do_2125636421522554881918', type: 'Course' }, groupData).subscribe(data => {
-      }, err => {
-        expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
-        expect(component.navigateBack).toHaveBeenCalled();
-      });
-  });
-
   it('should call getDashletData()', () => {
-    spyOn(component['groupService'], 'getDashletData').and.returnValue(of(dashletData));
-    component.getDashletData(courseHierarchy, activityData);
-    component['groupService'].getDashletData(courseHierarchy, activityData).subscribe(data => {
-      expect(component.Dashletdata).toBeDefined();
-      expect(component.columnConfig).toBeDefined();
+    spyOn<any>(component, 'getDashletData');
+    component.ngOnInit();
+    expect(component['getDashletData']).toHaveBeenCalled();
+  });
+
+  it('should get data for dashlet library', () => {
+    const groupService = TestBed.get(GroupsService);
+    spyOn(groupService, 'getDashletData').and.returnValue(of(dashletData));
+    component.getDashletData();
+    groupService.getDashletData(courseHierarchy.result.content, activityData).subscribe(data => {
+      expect(component.dashletData).toBeDefined();
+    });
+  });
+
+  it('should fail while getting the data for dashlet library', () => {
+    const toasterService = TestBed.get(ToasterService);
+    const groupService = TestBed.get(GroupsService);
+    spyOn(toasterService, 'error');
+    spyOn(component, 'navigateBack').and.returnValue(true);
+    spyOn(groupService, 'getDashletData').and.returnValue(throwError({ err: '' }));
+    component.getDashletData();
+    groupService.getDashletData(component.hierarchyData, component.activity).subscribe(data => { }, (err) => {
+      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+      expect(component['navigateBack']).toHaveBeenCalled();
     });
   });
 
   it('should call navigateBack()', () => {
-    spyOn(component['toasterService'], 'error');
-    spyOn(component['groupService'], 'goBack');
+    const toasterService = TestBed.get(ToasterService);
+    const groupService = TestBed.get(GroupsService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(groupService, 'goBack').and.returnValue(true);
     component.navigateBack();
-    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-    expect(component['groupService'].goBack).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+    expect(groupService.goBack).toHaveBeenCalled();
   });
 
   it('should call addTelemetry', () => {
     const groupService = TestBed.get(GroupsService);
-    component.groupId = '123';
     spyOn(groupService, 'addTelemetry');
-    component.addTelemetry('download-csv', [], {}, { id: 'abc', type: 'Course', version: '1.0' });
+    component.addTelemetry();
     expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'download-csv', extra: {} },
-      { params: {}, data: { telemetry: {} } }, [], '123', { id: 'abc', type: 'Course', version: '1.0' });
+      // tslint:disable-next-line:max-line-length
+      { params: { groupId: 'do_2132740696478433281380', activityId: '83201038-9f23-4a8f-8055-01f79dbf2e20' } }, [], 'do_2132740696478433281380', { id: '83201038-9f23-4a8f-8055-01f79dbf2e20', type: 'course' });
   });
-
-  // fit('should call downloadCSV()', () => {
-  //   component.lib = {
-  //     instance: {
-  //         exportCsv: (fn: (value: Params) => void) => fn( Promise.resolve('csv data'))
-  //     }
-  // };
-  //   spyOn(component, 'addTelemetry');
-  //   component.downloadCSV();
-  //   expect(component.addTelemetry).toHaveBeenCalled();
-  // });
-
 });

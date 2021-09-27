@@ -233,13 +233,13 @@ export class UserService {
     }
     profileData.rootOrgAdmin = false;
     let userRoles = ['PUBLIC'];
+    userRoles = _.union(userRoles, _.map(profileData.roles, 'role'));
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {
-        if (org.roles && _.isArray(org.roles)) {
-          userRoles = _.union(userRoles, org.roles);
+        if (userRoles && _.isArray(userRoles)) {
           if (org.organisationId === profileData.rootOrgId &&
-            (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
-              _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
+            (_.indexOf(userRoles, 'ORG_ADMIN') > -1 ||
+              _.indexOf(userRoles, 'SYSTEM_ADMINISTRATION') > -1)) {
             profileData.rootOrgAdmin = true;
           }
           orgRoleMap[org.organisationId] = org.roles;
@@ -275,7 +275,7 @@ export class UserService {
     }
 
     if (window['TagManager']) {
-      window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations }, 'USERLOCATION_', true)
+      window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations, userTyep: profileData.profileUserType }, 'USERLOCATION_', true);
       window['TagManager'].SBTagService.pushTag(profileData.framework, 'USERFRAMEWORK_', true);
     }
   }
@@ -360,19 +360,10 @@ export class UserService {
   private setRoleOrgMap(profile) {
     let roles = [];
     const roleOrgMap = {};
-    _.forEach(profile.organisations, (org) => {
-      roles = roles.concat(org.roles);
-    });
+    roles = _.map(profile.roles, 'role');
     roles = _.uniq(roles);
-    _.forEach(roles, (role) => {
-      _.forEach(profile.organisations, (org) => {
-        roleOrgMap[role] = roleOrgMap[role] || [];
-        if (_.indexOf(org.roles, role) > -1) { }
-        roleOrgMap[role].push(org.organisationId);
-      });
-    });
-    _.forEach(this._userProfile.roles, (value, index) => {
-      roleOrgMap[value] = _.union(roleOrgMap[value], [this.rootOrgId]);
+    _.forEach(this._userProfile.roles, (roleObj, index) => {
+      roleOrgMap[roleObj.role] = _.map(roleObj.scope, 'organisationId');
     });
     this._userProfile.roleOrgMap = roleOrgMap;
   }

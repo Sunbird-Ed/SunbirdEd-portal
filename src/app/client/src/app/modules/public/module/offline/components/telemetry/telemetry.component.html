@@ -20,7 +20,7 @@
         </div>
         <div class="d-flex flex-w-wrap px-16">
           <div>
-            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal my-8" [ngClass]="disableSync || !isConnected ? 'sb-btn-disabled pointer-events-disabled': ''" [disabled]="disableSync || !isConnected"  (click)="syncTelemetry()">
+            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal my-8" [ngClass]="disableSync || !isConnected ? 'sb-btn-disabled pointer-events-disabled': ''" [disabled]="disableSync || !isConnected"  tabindex="0" (click)="syncTelemetry()">
               {{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}   ({{telemetryInfo?.totalSize | filesize}})</button>
               <dl class="my-0 profile-description">
                   <dd class="multiline-list-value profile-description-title" *ngIf="showSyncStatus">
@@ -36,13 +36,13 @@
           <div class="share-tele-btn">
   
             <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
-              my-8" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="telemetryInfo?.totalSize">
+              my-8" tabindex="0" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="telemetryInfo?.totalSize">
               {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
              ({{telemetryInfo?.totalSize | filesize}})
             </button>
   
             <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
-              my-8" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="!telemetryInfo?.totalSize">
+              my-8" tabindex="0" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="!telemetryInfo?.totalSize">
               {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
               ({{telemetryInfo?.totalSize | filesize}})
             </button>

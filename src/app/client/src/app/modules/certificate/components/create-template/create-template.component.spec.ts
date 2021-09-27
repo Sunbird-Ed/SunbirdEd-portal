@@ -377,4 +377,11 @@ class RouterStub {
   //   ]);
   // });
 
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.redoLayout();
+    component.layoutConfiguration = null;
+    component.redoLayout();
+  });
+
 });

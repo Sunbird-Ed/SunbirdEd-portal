@@ -43,6 +43,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_ftu_groups');
     this.initLayout();
+    this.getLatestTnc();
     this.getMyGroupList();
     this.setTelemetryImpression({type: PAGE_LOADED});
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
@@ -84,20 +85,26 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   checkUserAcceptedTnc() {
     const accepted = this.groupService.isUserAcceptedTnc();
     if (accepted) {
-      this.getLatestTnc(accepted);
+      this.isTncUpdatedAfterAcceptance(accepted);
     } else {
       this.showTncModal = this.groupsList.length > 0;
-      const data = this.showTncModal ? this.getLatestTnc() : '';
     }
   }
 
-  getLatestTnc(accepted?) {
+  getLatestTnc() {
     this.tncService.getGroupsTnc().subscribe(data => {
       this.groupService.groupsTncDetails = _.get(data, 'result.response');
-      if (accepted) {
-        this.showTncModal =  this.groupService.isTncUpdated() ? this.groupsList.length > 0 : false;
-      }
     });
+  }
+
+  /**
+   * @param  {boolean} accepted
+   * @description - It will check if the tnc is updated which was previously accepted
+   */
+  isTncUpdatedAfterAcceptance(accepted: boolean) {
+    if (accepted) {
+      this.showTncModal =  this.groupService.isTncUpdated() ? this.groupsList.length > 0 : false;
+    }
   }
 
   public showCreateFormModal() {

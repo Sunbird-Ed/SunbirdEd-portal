@@ -1,0 +1,61 @@
+<sui-modal
+  [mustScroll]="false"
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal sb-success add-entity-modal"
+  (dismissed)="closeModal()"
+  #modal
+>
+  <div class="sb-modal-header">
+    <h4>{{ resourceService.frmelmnts?.lbl?.selectEntity }}</h4>
+  </div>
+  <div
+    class="sb-modal-content content search-results"
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [scrollWindow]="false"
+    [infiniteScrollThrottle]="throttle"
+  >
+    <div *ngIf="solution.entities?.length">
+      <div *ngFor="let entity of solution.entities; let i = index">
+        <div class="sb-radio-btn-checkbox sb-radio-btn-primary checked-box">
+          <input
+            value="{{ entity._id }}"
+            id="{{ entity._id }}"
+            type="radio"
+            [checked]="entity.selected"
+            (change)="onEntityChange(entity)"
+          />
+          <label for="{{ entity._id }}"> {{ entity.name }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="twelve wide column" *ngIf="!solution.entities?.length">
+      <app-no-result [data]="noResultMessage"></app-no-result>
+    </div>
+  </div>
+  <div class="actions footer">
+    <button
+      type="button"
+      class="sb-btn sb-btn-normal sb-btn-primary text-uppercase"
+      type="submit"
+      (click)="submit()"
+      [disabled]="selectedListCount == 0"
+      [ngClass]="{ 'sb-btn-disabled': selectedListCount == 0 }"
+    >
+      {{ resourceService.frmelmnts?.btn?.submit }}
+
+      <span class="arrow-icon">
+        <em class="icon-svg icon-svg--xxs icon-back">
+          <svg class="icon icon-svg--white">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
+          </svg>
+        </em>
+      </span>
+    </button>
+  </div>
+</sui-modal>
+<div class="twelve wide column" *ngIf="showLoaderBox">
+  <app-loader [data]="loaderMessage"></app-loader>
+</div>

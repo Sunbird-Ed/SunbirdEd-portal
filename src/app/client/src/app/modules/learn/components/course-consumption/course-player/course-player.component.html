@@ -91,12 +91,12 @@
                         <div *ngIf="item?.children?.length">
                           <div *ngFor="let child of item?.children">
                               <!-- toc card for Non Self Assess content -->
-                              <sb-toc-child-item *ngIf="child?.contentType !== 'SelfAssess'" [childData]="child" class="sb-toc-child-item"
+                              <sb-toc-child-item *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'" [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType">
                               </sb-toc-child-item>
                               <!-- toc card for Self Assess content with Label for Best Score -->
-                              <sb-toc-child-item *ngIf="child?.contentType === 'SelfAssess'" [childData]="child" class="sb-toc-child-item"
+                              <sb-toc-child-item *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'" [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType" 
                                 [maxAttempts]="child?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
@@ -227,7 +227,7 @@
       <div class="textbook__details d-flex flex-ai-center">
         <img src="./assets/images/book.png" class="textbook__bookimg" alt="">
         <div class="ml-8 textbook__heading">
-          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS</h5>
+          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS</h5>
           <div class="textbook__rating">
             <sui-rating class="star mini" [ngModel]="4" [maximum]="5"></sui-rating>
           </div>

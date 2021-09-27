@@ -347,12 +347,12 @@ export const response = {
       'dateTime': null,
       'preferredLanguage': 'English',
       'approvedBy': null,
-      'channel': 'ROOT_ORG',
+      'channel': 'ROOT_ORG'
     },
     'identifier': '874ed8a5-782e-4f6c-8f36-e0288455901e',
     'userName': 'ntptest102',
     'rootOrgId': 'ORG_001',
-    'userid': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'userid': '874ed8a5-782e-4f6c-8f36-e0288455901e'
   }
 };
 

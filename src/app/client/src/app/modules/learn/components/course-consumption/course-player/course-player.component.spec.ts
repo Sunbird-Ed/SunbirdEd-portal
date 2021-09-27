@@ -56,7 +56,7 @@ describe('CoursePlayerComponent', () => {
       startDate: '2045-01-25',
       status: 1
     }
-  ]
+  ];
   const featureBatch = [
     {
       batchId: '0130936282663157765',
@@ -78,7 +78,7 @@ describe('CoursePlayerComponent', () => {
       startDate: '2045-01-25',
       status: 1
     }
-  ]
+  ];
   const ongoingBatch = [
     {
       batchId: '0130936282663157765',
@@ -100,7 +100,7 @@ describe('CoursePlayerComponent', () => {
       startDate: '2020-01-25',
       status: 1
     }
-  ]
+  ];
   const resourceServiceMockData = {
     messages: {
       imsg: { m0027: 'Something went wrong' },
@@ -136,7 +136,7 @@ describe('CoursePlayerComponent', () => {
       data: {
         telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
       },
-      queryParams: { 
+      queryParams: {
         showCourseCompleteMessage: 'true'
       },
       params: {
@@ -767,7 +767,7 @@ describe('CoursePlayerComponent', () => {
     component.courseHierarchy.batches = [batchs[0]];
     component.navigateToPlayerPage({});
      expect(component.validateBatchDate).toHaveBeenCalledWith([batchs[0]]);
-  })
+  });
 
   it('shold call navigateToPlayerPage case 2', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);

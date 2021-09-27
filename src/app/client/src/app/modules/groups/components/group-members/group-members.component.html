@@ -11,13 +11,14 @@
           <i class="search icon" aria-hidden="true"></i>
           <label for="search-within-group" class="hide">{{resourceService?.frmelmnts?.lbl?.searchWithinGroup}}</label>
           <input class="sb-search-input" id="search-within-group" type="text" #searchInputBox (input)="search(searchInputBox.value)"
-            [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" />
+            [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup"/>
+            <i class="icon close mt-4" (click)="resetValue();"></i>
         </div>
         <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
       </div>
     </div>
 
-    <div  *ngIf="showAddMember()" (click)="addMember();addTelemetry('add-member-btn', '', { type: ADD_MEMBER})">
+    <div  *ngIf="showAddMember()" tabindex="0" (click)="addMember();addTelemetry('add-member-btn', '', { type: ADD_MEMBER})">
       <div class="cursor-pointer mb-8 fnormal px-8">
         <img alt="admin" src="./assets/images/add-member-1.png" width="32">
         {{resourceService?.frmelmnts?.lbl?.addMember}}
@@ -33,13 +34,13 @@
         </sb-member-card>
         <div class="kabab-menu-dropdown-content"
           *ngIf="showKebabMenu && selectedMember?.identifier === member?.identifier">
-          <div class="list mb-8" (click)="openModal('promoteAsAdmin')" *ngIf="!member?.isAdmin">
+          <div class="list mb-8" tabindex="0" (click)="openModal('promoteAsAdmin')" *ngIf="!member?.isAdmin">
             <span>{{resourceService?.frmelmnts?.btn?.makeAdmin}}</span>
           </div>
-          <div class="list mb-8" (click)="openModal('dismissAsAdmin')" *ngIf="member?.isAdmin && !member?.isCreator">
+          <div class="list mb-8" tabindex="0" (click)="openModal('dismissAsAdmin')" *ngIf="member?.isAdmin && !member?.isCreator">
             <span>{{resourceService?.frmelmnts?.btn?.dismissAdmin}}</span>
           </div>
-          <div class="list sb-color-error" (click)="openModal('removeFromGroup')" *ngIf="!member?.isCreator">
+          <div class="list sb-color-error" tabindex="0" (click)="openModal('removeFromGroup')" *ngIf="!member?.isCreator">
             <span>{{resourceService?.frmelmnts?.btn?.removeMember}}</span>
           </div>
         </div>

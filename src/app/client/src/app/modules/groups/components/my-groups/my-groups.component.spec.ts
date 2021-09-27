@@ -8,11 +8,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash-es';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, TncService } from '@sunbird/core';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { GroupsService } from '../../services';
 import { of, throwError } from 'rxjs';
-import { mockGroupList } from './my-groups.component.spec.data';
+import { mockGroupList, tncData } from './my-groups.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { APP_BASE_HREF } from '@angular/common';
 import { GroupEntityStatus, GroupMembershipType } from '@project-sunbird/client-services/models';
@@ -39,7 +39,7 @@ describe('MyGroupsComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],
-      providers: [ TelemetryService, GroupsService, { provide: Router, useClass: RouterStub },
+      providers: [ TncService, TelemetryService, GroupsService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId },
         { provide: ResourceService, useValue: resourceBundle},
         { provide: APP_BASE_HREF, useValue: '/' } ],
@@ -122,7 +122,7 @@ describe('MyGroupsComponent', () => {
     membershipType: GroupMembershipType.INVITE_ONLY,
     status: GroupEntityStatus.ACTIVE,
     active: true,
-    isActive() { return true ;}
+    isActive() { return true ; }
     });
     component.addTelemetry('ftu-popup', '137cabc7-79b6-495e-b987-b0c87c317e91');
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup',
@@ -189,5 +189,32 @@ describe('MyGroupsComponent', () => {
 
   });
 
+  it('should fetch the latest version of tnc and store it', () => {
+    /** Arrange */
+    const tncService = TestBed.get(TncService);
+    const groupService = TestBed.get(GroupsService);
+    spyOn<any>(tncService, 'getGroupsTnc').and.returnValue(of(tncData));
+    const groupsTncDetails = spyOnProperty(groupService, 'groupsTncDetails', 'set');
+
+    /** Act */
+    component.getLatestTnc();
+
+    /** Assert */
+    expect(groupsTncDetails).toHaveBeenCalledWith(tncData.result.response);
+  });
+
+  it('should show tnc popup if previously selected tnc got updated', () => {
+    /** Arrange */
+    const groupService = TestBed.get(GroupsService);
+    spyOn<any>(groupService, 'isTncUpdated').and.returnValue(true);
+    component.groupsList.length = 5;
+
+    /** Act */
+    component.isTncUpdatedAfterAcceptance(true);
+
+    /** Assert */
+    expect(component.showTncModal).toBeTruthy();
+
+  });
 
 });
