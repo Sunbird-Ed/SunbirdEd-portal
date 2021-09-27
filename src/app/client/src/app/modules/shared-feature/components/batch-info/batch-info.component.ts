@@ -79,6 +79,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     this.routeChanged.emit(false);
     event.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
     event.contentType = 'Course'; // to route to course page
+    event.primaryCategory = 'Course';
     this.playerService.playContent(event);
   }
   public handleEnrollmentEndDate(batchDetails) {
