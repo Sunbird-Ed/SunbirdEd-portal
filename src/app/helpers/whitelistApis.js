@@ -1785,7 +1785,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     },
-    '/kendra/v1/user-extension/solutions': {
+    '/kendra/v1/user-extension/solutions/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     }
