@@ -1,5 +1,10 @@
 const mapping = { 'config_userType_v2_app': { type: 'config', subType: 'userType_v2_ios' } };
-
+/**
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @description Middleware is responsible to modify Form API Calls for the IOS Platform
+ */
 const IOSFormMiddleware = (req, res, next) => {
     const platform = req.get('X-Platform-Id');
     if (platform && typeof (platform) == 'string' && platform.toLowerCase() === 'ios') {
