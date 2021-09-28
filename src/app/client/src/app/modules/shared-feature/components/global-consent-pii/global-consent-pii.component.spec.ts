@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, TncService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { MockData } from './global-consent-pii.component.spec.data';
 // import {  } from '../../../core/services/generalisedLable/generaliseLable.service';
@@ -145,7 +145,7 @@ describe('GlobalConsentPiiComponent', () => {
     expect(component.showConsentPopup).toBe(true);
     expect(component.toggleEditSetting).toHaveBeenCalled();
   });
-
+  
   it('should call ngOnDestroy', () => {
     spyOn(component.unsubscribe, 'complete');
     spyOn(component.unsubscribe, 'next');
@@ -243,5 +243,18 @@ describe('GlobalConsentPiiComponent', () => {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
+  });
+
+  it('should call getDeclarationReqObject', () => {
+    const declObj = component.getDeclarationReqObject(MockData.userProfile);
+    const newObj = {
+      info:{'declared-ext-id': 'umesha32@yopmail.com',
+      'declared-phone': '',
+      'declared-email':''},
+      operation:'add',
+      userId : 'd8bfe598-21c8-4c9c-b335-a3f75a97a988',
+      orgId: '01285019302823526477',
+    }
+    expect(declObj).toEqual(newObj);
   });
 });

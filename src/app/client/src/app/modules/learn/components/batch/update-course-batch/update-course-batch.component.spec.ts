@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LearnModule, CourseBatchService, CourseConsumptionService} from '@sunbird/learn';
 import {UpdateCourseBatchComponent} from './update-course-batch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
 import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
@@ -113,7 +113,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.batchUpdateForm).toBeDefined();
     expect(component.showUpdateModal).toBeTruthy();
     expect(component.selectedParticipants.length).toBe(2);
-    expect(component.selectedMentors.length).toBe(6);
+    expect(component.selectedMentors.length).toBe(1);
   });
   it('should navigate to parent page if fetching batch details fails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -366,7 +366,8 @@ describe('UpdateCourseBatchComponent', () => {
       event: 'issueCert',
       value: 'yes',
       mode: 'edit',
-      batchId: '13456789'
+      batchId: '13456789',
+      isCertInBatch: true
     });
   });
   it('should log issue-certificate-yes interact telemetry on changing input to yes', () => {

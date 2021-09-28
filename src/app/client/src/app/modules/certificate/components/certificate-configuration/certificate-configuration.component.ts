@@ -4,11 +4,11 @@ import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry'
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { DomSanitizer } from '@angular/platform-browser';
 
 export interface IConfigLabels {
@@ -23,10 +23,10 @@ export interface IConfigLabels {
   styleUrls: ['./certificate-configuration.component.scss']
 })
 export class CertificateConfigurationComponent implements OnInit, OnDestroy {
-  @ViewChild('selectCertType', {static: false}) selectCertType;
-  @ViewChild('selectRecipient', {static: false}) selectRecipient;
-  @ViewChild('templateChangeModal', {static: false}) templateChangeModal;
-  @ViewChild('selectScoreRange', {static: false}) selectScoreRange;
+  @ViewChild('selectCertType') selectCertType;
+  @ViewChild('selectRecipient') selectRecipient;
+  @ViewChild('templateChangeModal') templateChangeModal;
+  @ViewChild('selectScoreRange') selectScoreRange;
 
   public unsubscribe$ = new Subject<void>();
   showPreviewModal;
@@ -56,9 +56,12 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   newTemplateIdentifier: any;
   showAlertModal = false;
   addScoreRule = false;
-  arrayValue={};
+  arrayValue = {};
   scoreRange: any;
-  isSingleAssessment=false;
+  isSingleAssessment = false;
+layoutConfiguration: any;
+FIRST_PANEL_LAYOUT;
+SECOND_PANEL_LAYOUT;
 
   constructor(
     private certificateService: CertificateService,
@@ -72,7 +75,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private toasterService: ToasterService,
     private router: Router,
-    private telemetryService: TelemetryService) { }
+    private telemetryService: TelemetryService,
+    public layoutService: LayoutService) { }
   /**
    * @description - It will handle back button click.
    */
@@ -89,6 +93,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.initializeLabels();
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
     this.currentState = this.screenStates.default;
     this.uploadCertificateService.certificate.subscribe(res => {
       if (res && !_.isEmpty(res)) {
@@ -116,12 +122,12 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
-  checkMultipleAssessment(){
+  checkMultipleAssessment() {
     const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
-    const selfAssessCount = _.get(contentTypes, 'SelfAssess')
+    const selfAssessCount = _.get(contentTypes, 'SelfAssess');
     if (selfAssessCount && selfAssessCount > 1) {
       this.isSingleAssessment = false;
-    } else if(selfAssessCount && selfAssessCount == 1){
+    } else if (selfAssessCount && selfAssessCount == 1) {
       this.isSingleAssessment = true;
     } else {
       this.isSingleAssessment = false;
@@ -299,7 +305,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   attachCertificateToBatch() {
     this.sendInteractData({ id: this.configurationMode === 'add' ? 'attach-certificate' : 'confirm-template-change' });
-    if(this.addScoreRule === false) {
+    if (this.addScoreRule === false) {
       this.userPreference.value['scoreRange'] = null;
     }
     const request = {
@@ -347,18 +353,18 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   processCertificateDetails(certTemplateDetails) {
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name', 'url']);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList', 'name', 'url']);
     this.templateIdentifier = _.get(templateData, 'identifier');
-    this.selectedTemplate = { 
-      'name': _.get(templateData, 'name'), 
-      'identifier': _.get(templateData, 'identifier'), 
+    this.selectedTemplate = {
+      'name': _.get(templateData, 'name'),
+      'identifier': _.get(templateData, 'identifier'),
       'previewUrl': _.get(templateData, 'previewUrl'),
       'issuer': JSON.stringify(_.get(templateData, 'issuer')),
       'data': JSON.stringify(_.get(templateData, 'data')),
       'signatoryList': JSON.stringify(_.get(templateData, 'signatoryList')),
-      'artifactUrl':_.get(templateData, 'artifactUrl')
+      'artifactUrl': _.get(templateData, 'artifactUrl')
      };
-     if(!_.get(templateData, 'previewUrl') && _.get(templateData, 'url')) {
+     if (!_.get(templateData, 'previewUrl') && _.get(templateData, 'url')) {
       this.selectedTemplate['previewUrl'] = _.get(templateData, 'url');
       templateData['previewUrl'] = _.get(templateData, 'url');
      }
@@ -551,21 +557,30 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
     this.uploadCertificateService.certificate.next(null);
   }
-  public addRule(){
+  public addRule() {
     this.addScoreRule = true;
     let range = 100;
     const step = 10;
-    let arr = []
-    while(range > 0){
+    const arr = [];
+    while (range > 0) {
       arr.push(range);
-      range=range-step;
+      range = range - step;
     }
-    this.arrayValue['range']=arr;
+    this.arrayValue['range'] = arr;
   }
-  removeRule(){
+  removeRule() {
     setTimeout(() => {
       this.userPreference.value['scoreRange'] = null;
     }, 500);
     this.addScoreRule = false;
+  }
+  redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+    }
   }
 }

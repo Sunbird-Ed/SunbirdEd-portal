@@ -19,8 +19,8 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
 
   @Output() closeVideoModal = new EventEmitter<any>();
 
-  @ViewChild('aspectRatio', {static: false}) aspectRatio: ElementRef;
-  @ViewChild('playerInfo', {static: false}) playerInfo: ElementRef;
+  @ViewChild('aspectRatio') aspectRatio: ElementRef;
+  @ViewChild('playerInfo') playerInfo: ElementRef;
   videoContainerHeight: number;
   aspectRatioHeight: number;
   playerInfoHeight: number;
@@ -83,7 +83,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
           id: 'find-content-offline-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.playcontent),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_play_content_joyful_theme.mp4' 
+          url: 'assets/videos/How_do_I_play_content_joyful_theme.mp4'
         },
         {
           id: 'copy-content-joyful-theme',
@@ -174,7 +174,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   setVideoHeight() {
-    console.log('aspect ratio value', this.aspectRatio); 
+    console.log('aspect ratio value', this.aspectRatio);
     this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
     this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
     this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;

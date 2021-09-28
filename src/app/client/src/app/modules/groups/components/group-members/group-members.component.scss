@@ -61,3 +61,17 @@
     left:0;
   }
 }
+
+.icon-input-close {
+	position: absolute;
+	top: calculateRem(4px);
+	right: calculateRem(4px);
+	cursor: pointer;
+	width: calculateRem(24px);
+	height: calculateRem(24px);
+
+	html[dir="rtl"] & {
+		left: calculateRem(8px);
+		right: inherit;
+	}
+}

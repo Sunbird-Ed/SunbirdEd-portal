@@ -18,7 +18,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
-  @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
+  @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -42,14 +42,14 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   /**
  * Dom element reference of contentRatingModal
  */
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() contentData;
   @Input() layoutConfiguration;
   isFullScreenView;
   isLoading: Boolean = false; // To restrict player loading multiple times
   isDesktopApp: Boolean = false;
   constructor(public router: Router, public layoutService: LayoutService, public navigationHelperService: NavigationHelperService,
-    public playerService: PublicPlayerService, public resourceService: ResourceService,private contentManagerService: ContentManagerService,
+    public playerService: PublicPlayerService, public resourceService: ResourceService, private contentManagerService: ContentManagerService,
     public utilService: UtilService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
@@ -86,7 +86,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
       });
     }
     this.initLayout();
-    if(this.isDesktopApp) { 
+    if (this.isDesktopApp) {
       this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.deleteContent(data);
       });

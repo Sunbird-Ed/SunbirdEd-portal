@@ -1,35 +1,20 @@
-<div class="sbt-back-header sbt-center-container sb-dashlet-table">
+<div class="sbt-back-header sbt-inside-page-container sb-dashlet-table">
   <app-back-button></app-back-button>
   <div class="content-header">
     <div class="ui container pb-16">
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <div class="d-flex flex-basis-1 mr-32 min-w-0 content-header__content__title">
-          <!-- <div class="content-header__img mr-8">
-            <img [src]="activity?.appIcon || './assets/images/book.png'" alt="" />
-          </div> -->
           <div class="d-flex flex-dc">
             <div class="content-header__title font-weight-bold ellipsis text-left">
-              {{activity?.name}}
+              {{ hierarchyData.name }}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="ui container py-16" *ngIf="isLoader">
-      <app-loader [data]='loaderMessage'></app-loader>
-    </div>
   </div>
-  <div class="ui container" *ngIf="!isLoader">
-    <sb-dashlet [type]="'table'" [data]="Dashletdata" [config]="columnConfig" id="table" #lib>
-      <ng-template sbTemplateRef="header" let-config>
-        <div role="alert" class="datatable-update">
-          <div *ngIf="memberListUpdatedOn">
-            <label class="last-update-label px-8"> Last update : {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}
-            </label>
-          </div>
-          <button class="download-csv" (click)="downloadCSV($event)">
-            Download as CSV<img src="assets/images/download-icon.svg" class="download-icon"></button>
-        </div>
-      </ng-template>
-    </sb-dashlet>
+  <div class="ui container sb-dashlet-table" *ngIf="dashletData">
+    <app-dashboard [dashletData]="dashletData" [fileName]="hierarchyData.name" (downloadCsv)="addTelemetry()"
+      [lastUpdatedOn]="memberListUpdatedOn"></app-dashboard>
   </div>
+</div>

@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { OrgDetailsService, SearchService, TenantService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import {
@@ -16,7 +16,7 @@ import {
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CacheService } from 'ng2-cache-service';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, Observable, of as observableOf, of, throwError } from 'rxjs';
 import { ContentManagerService, SystemInfoService } from '../../services';

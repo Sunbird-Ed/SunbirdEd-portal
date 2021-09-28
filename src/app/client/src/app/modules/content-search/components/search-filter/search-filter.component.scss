@@ -15,6 +15,9 @@
   &__dropdown {
     padding: calculateRem(16px) 0;
     z-index: 1;
+    .sb-field label{
+      margin-bottom: 0;
+    }
   }
 
   &__separator {
@@ -45,6 +48,9 @@
       width: 100%;
       .sb-field {
         width: 100%;
+        label{
+          width: 100%;
+        }
       }
     }
     .state-medium-container__separator {

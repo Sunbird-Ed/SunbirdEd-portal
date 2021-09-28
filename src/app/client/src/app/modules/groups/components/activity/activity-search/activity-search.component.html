@@ -10,7 +10,7 @@
           <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
             <div>{{resourceService?.frmelmnts?.lbl?.addContentType | interpolate:'{contentType}': groupAddableBlocData?.params?.contentType}}</div>
           </div>
-          <div class="d-flex flex-ai-center flex-jc-space-between content-header__info mt-16">
+          <div class="d-flex flex-jc-space-between content-header__info mt-16">
             <div class="sb-search-box large">
               <div class="input-div relative">
                 <i aria-hidden="true" class="search icon"></i>
@@ -19,9 +19,9 @@
                   [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
               </div>
               <button class="sb-btn sb-btn-normal"
-                (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+                tabindex="0" (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
             </div>
-            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="toggleFilter()">
+            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" tabindex="0" (click)="toggleFilter()">
               <img class="mr-4" alt="filter" src="./assets/images/outline-tune.svg"
                 width="16">{{resourceService?.frmelmnts?.lbl?.filterby}}
             </button>
@@ -30,11 +30,13 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showFilters">
-    <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
-    </app-global-search-filter>
-  </div>
-  <div class="ui container">
+
+  <div [ngClass]="layoutConfiguration ? 'd-flex':'ui container'">
+    <div *ngIf="showFilters" class="pr-16 flex-b">
+        <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
+        </app-global-search-filter>
+    </div>
+    <div class="flex-basis-1">
     <div class="mt-24">
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
@@ -58,20 +60,17 @@
           <!-- <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
             [cardImg]="content?.image || './assets/images/book.png'">
           </sb-course-card> -->
-
-          <sb-library-card [content]="content"
-              [cardImg]="content?.image || 'assets/images/add-icon.svg'"  [hover-template]="hoverTemplate" [type]="'recently_viewed'">
-            <ng-template #hoverTemplate let-hoverData="hoverData" 
-              let-content="content">
-              <sb-card-hover class="card-hover" 
-                [hoverData]="hoverData"
+          <sb-library-card [content]="content" [layoutConfig]="layoutConfiguration"
+            [cardImg]="content?.image || 'assets/images/add-icon.svg'" [hover-template]="hoverTemplate"
+            [type]="'recently_viewed'">
+            <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+              <sb-card-hover class="card-hover activity-card-hover" [hoverData]="hoverData" 
                 [content]="content"
                 (hoverActionClick)="hoverActionClicked($event, appAddToGroupElement)">
               </sb-card-hover>
             </ng-template>
             <div appAddToGroup #appAddToGroupElement [identifier]="content?.identifier" [pageId]="ADD_ACTIVITY_TO_GROUP"></div>
           </sb-library-card>
-
         </div>
       </div>
 
@@ -83,19 +82,21 @@
         *ngIf="paginationDetails?.totalItems > configService?.appConfig?.SEARCH.PAGE_LIMIT && !showLoader">
         <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails?.pages?.length">
           <div class="sb-pagination my-0">
-            <a [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item "
-              (click)="navigateToPage(1) ">&laquo;</a>
-            <a [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item "
-              (click)="navigateToPage(paginationDetails?.currentPage - 1)">&lt;</a>
-            <a *ngFor="let page of paginationDetails?.pages" [ngClass]="{active:paginationDetails?.currentPage===page}"
-              (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
-            <a [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}"
-              (click)="navigateToPage(paginationDetails?.currentPage + 1)" class="sb-item">&gt;</a>
-            <a [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}"
-              (click)="navigateToPage(paginationDetails?.totalPages)" class="sb-item ">&raquo;</a>
+            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item "
+              tabindex="0" (click)="navigateToPage(1)">&laquo;</a>
+            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item "
+              tabindex="0" (click)="navigateToPage(paginationDetails?.currentPage - 1)">&lt;</a>
+            <a href=“javascript:void(0);” role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails?.pages" [ngClass]="{active:paginationDetails?.currentPage===page}"
+              tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}"
+              tabindex="0" (click)="navigateToPage(paginationDetails?.currentPage + 1)" class="sb-item">&gt;</a>
+            <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}"
+              tabindex="0" (click)="navigateToPage(paginationDetails?.totalPages)" class="sb-item ">&raquo;</a>
           </div>
         </div>
       </div>
     </div>
+    </div>
+  
   </div>
 </div>

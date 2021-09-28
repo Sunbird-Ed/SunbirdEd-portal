@@ -87,7 +87,7 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*', '/assessment/*','/cloudUpload/*'
+  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*'
 ],
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -177,7 +177,22 @@ app.get('/enableDebugMode', (req, res, next) => {
   const timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10;
   console.log("enable debug mode called", logLevel, timeInterval);
   enableDebugMode(timeInterval, logLevel)
-  res.send('debug enabled');
+  res.send({
+    id: "enabledDebugMode",
+    ver: "1.0",
+    ts: new Date().toISOString(),
+    params: {
+      resmsgid: uuid(),
+      msgid: uuid(),
+      status: "successful",
+      err: null,
+      errmsg: null,
+    },
+    responseCode: "OK",
+    result: {
+      enabled: true
+    }
+  });
 });
 
 app.all('/sessionExpired', endSession, (req, res) => {

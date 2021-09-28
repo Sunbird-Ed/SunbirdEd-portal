@@ -9,7 +9,7 @@ import {throwError as observableThrowError, of as observableOf, Observable, of }
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import * as _ from 'lodash-es';
 
@@ -284,19 +284,19 @@ describe('ViewAllComponent', () => {
       component['getCurrentPageData']().subscribe(res => {
         expect(res).toEqual(currentPageData);
         done();
-      })
+      });
     });
 
     it('from the form config is history state is not available', done => {
       const formService = TestBed.get(FormService);
       spyOn(formService, 'getFormConfig').and.returnValue(of([{
         contentType: 'textbook'
-      }]))
+      }]));
 
       component['getCurrentPageData']().subscribe(res => {
         expect(res).toEqual({ contentType: 'textbook' });
         done();
-      })
-    })
-  })
+      });
+    });
+  });
 });

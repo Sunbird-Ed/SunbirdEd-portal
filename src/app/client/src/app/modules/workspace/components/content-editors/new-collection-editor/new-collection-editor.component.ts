@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService} from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse} from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of, throwError } from 'rxjs';
+import { map, mergeMap, tap, first } from 'rxjs/operators';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 
 @Component({
@@ -18,16 +19,18 @@ export class NewCollectionEditorComponent implements OnInit {
   public deviceId: string;
   public portalVersion: string;
   public userProfile: any;
-  public showLoader = true;
+  public showLoader = false;
   private routeParams: any;
+  public queryParams: object;
   public collectionDetails: any;
   public showQuestionEditor = false;
   public hierarchyConfig: any;
   public layoutType: string;
   public baseUrl: string;
+  public publicStorageAccount: any;
   constructor(private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
-    private config: ConfigService, private contentService: ContentService,
+    private config: ConfigService, private contentService: ContentService, private router: Router,
     public editorService: EditorService, public workSpaceService: WorkSpaceService,
     public frameworkService: FrameworkService, public toasterService: ToasterService,
     private activatedRoute: ActivatedRoute, private navigationHelperService: NavigationHelperService,
@@ -40,18 +43,36 @@ export class NewCollectionEditorComponent implements OnInit {
     this.layoutType = localStorage.getItem('layoutType') || 'joy';
     this.baseUrl = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
+      this.publicStorageAccount = (<HTMLInputElement>document.getElementById('publicStorageAccount'))
+      ? (<HTMLInputElement>document.getElementById('publicStorageAccount')).value : undefined;
   }
 
   ngOnInit() {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.userProfile = this.userService.userProfile;
-    this.getCollectionDetails().subscribe(data => {
+    this.queryParams = this.activatedRoute.snapshot.queryParams;
+    this.getDetails().pipe(
+      first(),
+      tap(data => {
         this.switchLayout();
-        this.collectionDetails = data.result.content || data.result.questionset;
+      })).subscribe((data) => {
+        this.showLoader = true;
         this.showQuestionEditor = this.collectionDetails.mimeType === 'application/vnd.sunbird.questionset' ? true : false;
         this.getFrameWorkDetails();
+        this.loadScripts();
+      },
+      (error) => {
+          if (error === 'NO_PERMISSION') {
+            this.redirectToWorkSpace();
+            this.toasterService.error(this.resourceService.messages.emsg.m0013);
+          } else if (['RESOURCE_SELF_LOCKED', 'RESOURCE_LOCKED'].includes(_.get(error, 'error.params.err'))) {
+            this.retireLock();
+            this.toasterService.error(_.replace(error.error.params.errmsg, 'resource', 'content'));
+          } else {
+            this.redirectToWorkSpace();
+            this.toasterService.error(this.resourceService.messages.emsg.m0004);
+          }
       });
-    this.loadScripts();
   }
 
   switchLayout() {
@@ -65,14 +86,103 @@ export class NewCollectionEditorComponent implements OnInit {
     combineLatest(this.lazzyLoadScriptService.loadScript('semanticTreePicker.js'));
   }
 
-  private getCollectionDetails() {
+  public getCollectionDetails() {
     const options: any = { params: {} };
     options.params.mode = 'edit';
     if (this.routeParams.type && this.routeParams.type === 'QuestionSet') {
-      return this.workSpaceService.getQuestion(this.routeParams.contentId, options);
+      return this.workSpaceService.getQuestion(this.routeParams.contentId, options).
+      pipe(mergeMap((data) => {
+        this.collectionDetails = data.result.questionset;
+        if (this.validateRequest()) {
+          return of(data);
+        } else {
+          return throwError('NO_PERMISSION');
+        }
+      }));
     } else {
-      return this.editorService.getContent(this.routeParams.contentId, options);
+      return this.editorService.getContent(this.routeParams.contentId, options).
+      pipe(mergeMap((data) => {
+        this.collectionDetails = data.result.content;
+        if (this.validateRequest()) {
+          return of(data);
+        } else {
+          return throwError('NO_PERMISSION');
+        }
+      }));
     }
+  }
+
+  public getDetails() {
+    const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
+    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded', 'alltextbooks'].includes(this.routeParams.state);
+    const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+    if (_.isEmpty(lockInfo) && allowedEditState && ( allowedEditStatus || this.userService.userProfile.rootOrgAdmin )) {
+      return combineLatest(
+        this.getCollectionDetails(),
+        this.editorService.getOwnershipType(),
+        this.lockContent(),
+      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1]})));
+    } else {
+      return combineLatest(
+        this.getCollectionDetails(),
+        this.editorService.getOwnershipType(),
+      ).pipe(map(data => ({ collectionInfo: data[0], ownershipType: data[1]})));
+    }
+  }
+
+  lockContent () {
+    const contentInfo = {
+      contentType: this.routeParams.type,
+      framework: this.routeParams.framework,
+      identifier: this.routeParams.contentId,
+      mimeType: this.routeParams.type && this.routeParams.type === 'QuestionSet' ? 'application/vnd.sunbird.questionset' : 'application/vnd.ekstep.content-collection'
+    };
+    const input = {
+      resourceId : contentInfo.identifier,
+      resourceType : 'Content',
+      resourceInfo : JSON.stringify(contentInfo),
+      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id}),
+      createdBy : this.userService.userProfile.id,
+      isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
+    };
+    return this.workSpaceService.lockContent(input).pipe(tap((data) => {
+      this.queryParams = data.result;
+      this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: data.result});
+    }));
+  }
+
+  retireLock () {
+    const inputData = {'resourceId': this.routeParams.contentId, 'resourceType': 'Content'};
+    this.workSpaceService.retireLock(inputData).subscribe(
+      (data: ServerResponse) => {
+        this.redirectToWorkSpace();
+      },
+      (err: ServerResponse) => {
+        this.redirectToWorkSpace();
+      }
+    );
+  }
+
+  /**
+   *Validate the request
+   */
+   public validateRequest() {
+    const validStatus = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionStatus, this.collectionDetails.status) > -1;
+    const validState = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionState, this.routeParams.state) > -1;
+    if ((this.collectionDetails.mimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection
+    || this.collectionDetails.mimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection) && validStatus) {
+      if (validState && this.collectionDetails.createdBy !== this.userService.userid) {
+        return true; // we need to remove this case or validState should be changed
+      } else if (validState && _.includes(this.collectionDetails.collaborators, this.userService.userid)) {
+        return true;
+      } else if (validState && this.collectionDetails.createdBy === this.userService.userid) {
+        return true;
+      } else if (this.collectionDetails.createdBy === this.userService.userid) {
+        return true;
+      }
+      return false;
+    }
+    return false;
   }
 
   getFrameWorkDetails() {
@@ -139,7 +249,11 @@ export class NewCollectionEditorComponent implements OnInit {
       this.layoutService.initiateSwitchLayout();
       localStorage.removeItem('collectionEditorLayoutType');
     }
-    this.redirectToWorkSpace();
+    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+      this.retireLock();
+    } else {
+      this.redirectToWorkSpace();
+    }
   }
 
   redirectToWorkSpace () {
@@ -199,7 +313,10 @@ export class NewCollectionEditorComponent implements OnInit {
         mode: this.getEditorMode()
       }
     };
+    this.editorConfig.config.showAddCollaborator = true;
+    this.editorConfig.config.publicStorageAccount = this.publicStorageAccount;
     if (this.showQuestionEditor) {
+      this.editorConfig.config.showAddCollaborator = false;
       this.editorConfig.context.framework = this.collectionDetails.framework || this.frameworkService['_channelData'].defaultFramework;
     }
     this.editorConfig.config = _.assign(this.editorConfig.config, this.hierarchyConfig);

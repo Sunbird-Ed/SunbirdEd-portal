@@ -9,7 +9,7 @@
   #contentShareModal>
 
 <!--Header-->
-<div class="sb-modal-header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
+<div class="sb-modal-header" role="heading" aria-level="2" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
   {{resourceService?.frmelmnts?.lbl?.share}}
 </div>
 <!--/Header-->
@@ -35,7 +35,7 @@
       />
       <button 
         class="ui basic primary button"
-        (click)="copyLink(popup)"
+        tabindex="0" (click)="copyLink(popup)"
         appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata" 
         [telemetryInteractObject]="telemetryShareData[0]"
         #copyLinkButton >

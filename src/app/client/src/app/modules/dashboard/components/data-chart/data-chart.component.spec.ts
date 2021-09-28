@@ -6,7 +6,7 @@ import { SharedModule } from '@sunbird/shared';
 import { ChartsModule } from 'ng2-charts';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DataChartComponent } from './data-chart.component';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ReactiveFormsModule } from '@angular/forms';
 import { mockChartData } from './data-chart.component.spec.data';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
@@ -229,14 +229,14 @@ describe('DataChartComponent', () => {
         component.ngOnInit();
         tick(1000);
         component.dateFilters = ['date'];
-        const response = component.checkFilterReferance("date");
+        const response = component.checkFilterReferance('date');
         expect(response).toEqual(true);
     }));
 
     it('should set globalFilter', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
-        component.globalFilter = { chartData: mockChartData.chartData };
+        component.globalFilter = { chartData: [{ 'id': 'aggregated_live_textbook_qr_content_status', data : mockChartData.chartData }]};
         expect(component.chartData).toEqual(mockChartData.chartData);
 
     }));

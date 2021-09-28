@@ -1,11 +1,12 @@
 <app-landing-section [textToDisplay]=""
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <div [ngClass]="layoutConfiguration ? 'relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
-       <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+      <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
+       <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" role="img" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
        suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
        <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
          backgroundColor: '#ffffff',
@@ -24,13 +25,13 @@
     <div class="mt-8 mb-16 d-flex flex-jc-center">
       <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
       <div class="fnormal ml-5" id="copyUser">{{userProfile.userName}}</div>
-      <div class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)" suiPopup popupText="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [popupInverted]="true" [popupPlacement]="'bottom left'">
+      <div role="button" class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)" suiPopup popupText="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [popupInverted]="true" [popupPlacement]="'bottom left'">
         <i class="icon-svg icon-svg--xs icon-edit">
           <svg class="icon icon-svg--primary">
           <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
         </svg>
         </i>
-        <span class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.copy}}</span>
+        <span class="sb-color-primary" role="link" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.copy}}”>{{resourceService?.frmelmnts?.lbl?.copy}}</span>
       </div>
 
     </div>
@@ -134,7 +135,7 @@
         <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
           <button appTelemetryInteract appOnlineOnly
             [telemetryInteractEdata]="editProfileInteractEdata"
-            class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16" tabindex="0"
+            class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}" tabindex="0"
             (click)="showEditUserDetailsPopup=true" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
           <button appTelemetryInteract appOnlineOnly tabindex="0"
                   [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
@@ -174,7 +175,7 @@
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
           appTelemetryInteract appOnlineOnly
-          [telemetryInteractEdata]="myFrameworkEditEdata"
+          [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.boards}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}"
           (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
@@ -204,7 +205,7 @@
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="myFrameworkEditEdata" tabindex="0"
-        (click)="showEdit = !showEdit">
+        (click)="showEdit = !showEdit" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}">
         <button appOnlineOnly class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
@@ -214,13 +215,13 @@
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
+        <div role="button" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
           class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addPhoneNo}}” tabindex="0"
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
@@ -229,11 +230,11 @@
       </div>
      <div class="d-flex flex-jc-center">
       <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
+      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15" attr.aria-label=“{{userProfile.email}}” *ngIf="userProfile.email" appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
       <i class="mail blue icon mr-5"></i> {{userProfile.email}}
     </div>
-    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
+    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addEmailID}}”
       class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
       appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
@@ -243,14 +244,14 @@
 
       <!-- Add/edit recovery email/phone-->
     <div class="d-flex flex-jc-center">
-      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
+      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0" (click)="showRecoveryId=true; mode='edit'" attr.aria-label=“{{userProfile.recoveryEmail}}” class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
       appTelemetryInteract
       [telemetryInteractEdata]="editRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
         <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
         <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
        </div>
-       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" tabindex="0" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
+       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}” tabindex="0" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
       appTelemetryInteract
       [telemetryInteractEdata]="addRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
@@ -408,6 +409,7 @@
         <!-- / certificates-->
       </div>
   </div>
+</div>
 </div>
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"

@@ -16,7 +16,7 @@ const USER_DETAILS_KEY = 'guestUserDetails';
 })
 
 export class GuestProfileComponent implements OnInit {
-  @ViewChild('frameworkModal', { static: false }) frameworkModal;
+  @ViewChild('frameworkModal') frameworkModal;
   avatarStyle = {
     backgroundColor: '#ffffff',
     border: '1px solid #fff',
@@ -86,6 +86,10 @@ export class GuestProfileComponent implements OnInit {
     this.frameworkModal.modal.deny();
     this.showEdit = !this.showEdit;
     this.guestUser.framework = event;
+
+    if (window['TagManager']) {
+      window['TagManager'].SBTagService.pushTag(this.guestUser, 'USERFRAMEWORK_', true);
+    }
 
     if (this.isDesktop) {
       this.updateGuestUser(this.guestUser);

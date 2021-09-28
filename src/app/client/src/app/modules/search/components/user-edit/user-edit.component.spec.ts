@@ -132,7 +132,7 @@ describe('UserEditComponent', () => {
   it('should call ngOnInit method to get all roles', () => {
     const userService = TestBed.get(UserService);
     const searchService = TestBed.get(UserSearchService);
-    const searchServiceSpy = spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
+    const searchServiceSpy = spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     (userService as any)._userData$.next({ err: null, userProfile: Response.userData.result.response });
     component.ngOnInit();
     expect(component.userId).toEqual('6d4da241-a31b-4041-bbdb-dd3a898b3f85');
@@ -142,9 +142,6 @@ describe('UserEditComponent', () => {
     expect(component.userDetails).toEqual(Response.successData.result.response);
     expect(component.rootOrgRoles).toBeTruthy();
     expect(component.rootOrgRoles).toEqual([
-      'ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'BOOK_CREATOR'
-    ]);
-    expect(component.selectedOrgUserRoles).toEqual([
       'ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'BOOK_CREATOR'
     ]);
     expect(component.selectedSchoolId).toBeTruthy();
@@ -171,7 +168,7 @@ describe('UserEditComponent', () => {
   });
   it('should call search api', () => {
     const searchService = TestBed.get(UserSearchService);
-    spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
+    spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
     component.selectedOrgUserRoles = Response.successData.result.response.organisations[0].roles;
@@ -179,7 +176,7 @@ describe('UserEditComponent', () => {
   });
   it('should throw error when searchService api is not called', () => {
     const searchService = TestBed.get(UserSearchService);
-    spyOn(searchService, 'getUserById').and.callFake(() => observableThrowError({}));
+    spyOn(searchService, 'getUserByIdV5').and.callFake(() => observableThrowError({}));
     component.populateUserDetails();
     expect(component.userDetails).toBeUndefined();
   });
@@ -247,7 +244,7 @@ describe('UserEditComponent', () => {
   it('should not  show user name in modal header', () => {
     const searchService = TestBed.get(UserSearchService);
     const userService = TestBed.get(UserService);
-    spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
+    spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
     component.selectedOrgUserRoles = Response.successData.result.response.organisations[0].roles;
@@ -259,10 +256,9 @@ describe('UserEditComponent', () => {
 
   it('should show roles from all the organizations', () => {
     const searchService = TestBed.get(UserSearchService);
-    spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
+    spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
-    expect(component.selectedOrgUserRoles).toContain('ORG_ADMIN');
-    expect(component.selectedOrgUserRoles).toContain('SYSTEM_ADMINISTRATION');
+    expect(component.selectedOrgUserRoles).toContain('REPORT_ADMIN');
     expect(component.selectedOrgUserRoles).toContain('BOOK_CREATOR');
   });
 
@@ -354,6 +350,7 @@ describe('UserEditComponent', () => {
     spyOn(toasterService, 'success').and.callFake(() => { });
     spyOn(userSearchService, 'updateRoles').and.returnValue(observableOf(serverResponse));
     component.userDetails = Response.userData;
+    component.selectedOrgUserRoles = ['BOOK_CREATOR'];
     component.initializeFormFields();
     component.updateProfile();
     expect(toasterService.success).toHaveBeenCalledWith('User updated successfully');
@@ -364,8 +361,39 @@ describe('UserEditComponent', () => {
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(userSearchService, 'updateRoles').and.returnValue(observableThrowError('sorry'));
     component.userDetails = Response.userData;
+    component.selectedOrgUserRoles = ['BOOK_CREATOR'];
     component.initializeFormFields();
     component.updateProfile();
     expect(toasterService.error).toHaveBeenCalledWith('Updating user failed. Try again later');
+  });
+
+  it('should call getRolesReqBody for update user roles', () => {
+    const newRoles = ['COURSE_MENTOR'];
+    const currentRoles = ['BOOK_REVIEWER'];
+    const orgId = '01269878797503692810';
+    const reqBody = [
+      {
+        'role': 'BOOK_REVIEWER',
+        'operation': 'remove',
+        'scope': [
+          {
+            'organisationId': '01269878797503692810'
+          }
+        ]
+      },
+      {
+        'role': 'COURSE_MENTOR',
+        'operation': 'add',
+        'scope': [
+          {
+            'organisationId': '01269878797503692810'
+          }
+        ]
+      }
+    ];
+    spyOn(component, 'getRolesReqBody').and.returnValue(reqBody);
+    const res = component.getRolesReqBody(newRoles, currentRoles, orgId);
+    expect(component.getRolesReqBody).toHaveBeenCalledWith(newRoles, currentRoles, orgId);
+    expect(res.length).toBe(2);
   });
 });

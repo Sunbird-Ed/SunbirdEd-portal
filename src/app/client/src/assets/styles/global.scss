@@ -327,37 +327,14 @@ app-workspace {
 
 
 /* new theme */
-.sbt-fluid-header-bg {
-  display: none;
-  background: none;
 
-  @include respond-above(sm) {
-    background: linear-gradient(to right, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-header-bg) 60%, var(--sbt-header-bg) 84%, var(--sbt-header-bg) 100%);
-
-    html[dir="rtl"] & {
-      background: linear-gradient(to left, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-header-bg) 60%, var(--sbt-header-bg) 84%, var(--sbt-header-bg) 100%);
-    }
-  }
-}
-
-.sbt-fluid-content-bg {
-  background: none;
-
-  @include respond-above(sm) {
-    background: linear-gradient(to right, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-body-bg2) 60%, var(--sbt-body-bg2) 84%, var(--sbt-body-bg2) 100%);
-
-    html[dir="rtl"] & {
-      background: linear-gradient(to left, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-body-bg2) 60%, var(--sbt-body-bg2) 84%, var(--sbt-body-bg2) 100%);
-    }
-  }
-}
 
 .sbt-container {
   width: 100%;
   margin: 0 auto;
 
   @include respond-above(sm) {
-    padding: 0 2%;
+    // padding: 0 5% 0 3%;
   }
 }
 
@@ -418,16 +395,15 @@ app-workspace {
   background: none;
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);
   height: 100%;
-  padding: calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(24px);
+  padding: calculateRem(16px) 0 calculateRem(24px) 0;
 
   html[dir="rtl"] & {
     border-radius: 0 calculateRem(40px) 0 0px;
-    padding: calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(8px);
+    padding: calculateRem(16px) 0 calculateRem(24px) calculateRem(8px);
   }
 
   @include respond-above(sm) {
     background: var(--sbt-body-bg2);
-    padding: calculateRem(16px) calculateRem(8px) calculateRem(24px) calculateRem(24px);
   }
 
 
@@ -572,14 +548,14 @@ app-workspace {
 }
 
 /* my groups */
-.sbt-center-container {
-  width: calc(100% - 4%);
-  margin: 0 auto;
-}
+// .sbt-center-container {
+//   width: calc(100% - 4%);
+//   margin: 0 auto;
+// }
 
 .sbt-mygroups {
   .sb-bg-color-white {
-    margin-top: 24px;
+    margin-top: 0px;
     border-radius: 24px;
     background: var(--sbt-compt-bg) !important;
     padding: 0px 16px;
@@ -805,11 +781,7 @@ html.PlayerMediaQueryClass {
   top: 0;
 
   &.sbt-container {
-    padding: 0;
-
-    html[layout="joy"] & {
-      padding: 0 2%;
-    }
+    padding: 0 5%;
   }
 
   @include respond-below(sm) {
@@ -826,7 +798,7 @@ html.PlayerMediaQueryClass {
 quml-player {
   .quml-container {
     width: 100%;
-    background: white;
+    background: var(--white);
     height: 100%;
     overflow: auto;
 
@@ -836,17 +808,12 @@ quml-player {
       font-weight: inherit;
     }
 
-
     .lanscape-mode-right {
       // height: calc(100% - 56px);
 
       ul::before {
         z-index: 0 !important;
       }
-    }
-
-    figure.image img {
-      max-width: 100%;
     }
   }
 }
@@ -1202,29 +1169,6 @@ a.ui.labels .label:hover {
   color: var(--black) !important;
 }
 
-quml-player {
-  .quml-container {
-    width: 100%;
-    background: white;
-    height: 100%;
-    overflow: auto;
-
-    .filter-option:hover,
-    .active {
-      border-bottom: unset;
-      font-weight: inherit;
-    }
-
-    .lanscape-mode-right {
-      // height: calc(100% - 56px);
-
-      ul::before {
-        z-index: 0 !important;
-      }
-    }
-  }
-}
-
 .logo.sbt-logo,
 .five.wide.column .d-flex.logo,
 .five.wide.column .logo.flex-ai-jc-center,
@@ -1334,7 +1278,6 @@ html[data-theme='Darkmode'][layout='joy'] {}
   }
 }
 
-
 //desktop
 .sb-desktop-filter-section .status-container__title {
   max-width: 100% !important;
@@ -1382,24 +1325,37 @@ html[data-theme='Darkmode'][layout='joy'] {}
 
 // tab index css
 *:focus-visible{
+  border: 0.0625rem #fe0000 solid !important;
+  border-radius: 0.25rem;
+  outline: none;
+}
+.profile-avtar:focus-within{
   border: 1px #fe0000 solid !important;
   border-radius: 5px;
   outline: none;
 }
-*:focus:not(:focus-visible){
-  outline: none;
-  border-style:none;
+input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
+  outline: 2px solid #fe0000;
+  border-radius: 5px;
+  
+}
+.sb-checkbox.sb-checkbox-primary.sb-checkbox-rightaligned label:focus-within{
+  outline: 2px solid #fe0000;
+  border-radius: 5px;
 }
 // tab index css end
 
 // player SB-24647 changes
+.contentViewerIframeShadow.player-fullscreen.content-full-video epub-viewer {
+  height: calc(100% - 7rem);
+}
 .notVisible {
   top: 0rem !important;
   position: relative !important;
 }
 
 .contentViewerIframeShadow sunbird-pdf-player sb-player-side-menu-icon.notVisible,
-#playerFullscreen.player-fullscreen sunbird-pdf-player sb-player-side-menu-icon.notVisible {
+#playerFullscreen.player-fullscreen sunbird-pdf-player sb-player-side-menu-icon.notVisible, .contentViewerIframeShadow sunbird-epub-player sb-player-side-menu-icon.notVisible {
   top: 0 !important;
   position: absolute !important;
 }
@@ -1413,7 +1369,7 @@ html[data-theme='Darkmode'][layout='joy'] {}
 }
 
 iframe#contentPlayer.player-fullscreen {
-  height: calc(100% - 64px) !important;
+  height: calc(100% - 4rem) !important;
   top: calc(50% - 2rem);
 }
 
@@ -1437,8 +1393,12 @@ html[layout="joy"] .contentViewerIframeShadow {
 html[layout="old"] sunbird-pdf-player .sb-player-splash-container .loading-text {
   color:var(--white);
 }
-
-.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .player-endpage, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .sb-player-splash-container {
+html[data-theme=Darkmode][layout='old'] {
+  sunbird-pdf-player .sb-player-splash-container .loading-text{
+    color: var(--black);
+  }
+}
+.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .player-endpage, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .sb-player-splash-container, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container {
   height: calc(100% - 4rem)!important;
 }
 
@@ -1450,3 +1410,29 @@ sb-pills-grid{
   }
 }
 // ends
+
+//epup player splash
+sunbird-epub-player .sunbird-epub-container {
+  div:first-child{
+    height: inherit;
+    sb-player-start-page{
+      .sb-player-splash-container{
+        height: 100% !important;
+      }
+    }
+  }
+  .epub-container sb-player-sidebar .navBlock .player-nav-unit{
+    height: auto !important;
+  }
+}
+.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
+  height: 100% !important;
+}
+
+html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
+  background: none;
+}
+
+.sb-join-modal-content div.sb-h4 {
+  line-height: normal;
+}

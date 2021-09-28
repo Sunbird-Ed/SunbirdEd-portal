@@ -25,18 +25,22 @@ export class LogSyncManager {
     this.settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
     this.standardLog = containerAPI.getStandardLoggerInstance();
   }
-  public async start() {
+  public async start(isForceSync = false) {
     if (!this.isInProgress) {
-      await this.checkPreviousLogSync();
+      await this.checkPreviousLogSync(isForceSync);
     }
   }
 
-  private async checkPreviousLogSync() {
-    // check in the settingSDK if the LAST_ERROR_LOG_SYNC_ON is not today
-    const errorLogDBData = await this.settingSDK.get(LAST_ERROR_LOG_SYNC_ON).catch(() => undefined);
-    const lastSyncDate = _.get(errorLogDBData, "lastSyncOn");
-    if (!lastSyncDate || this.isLessThanToday(lastSyncDate)) {
+  private async checkPreviousLogSync(isForceSync) {
+    if (isForceSync) {
       await this.launchChildProcess();
+    } else {
+      // check in the settingSDK if the LAST_ERROR_LOG_SYNC_ON is not today
+      const errorLogDBData = await this.settingSDK.get(LAST_ERROR_LOG_SYNC_ON).catch(() => undefined);
+      const lastSyncDate = _.get(errorLogDBData, "lastSyncOn");
+      if (!lastSyncDate || this.isLessThanToday(lastSyncDate)) {
+        await this.launchChildProcess();
+      }
     }
   }
 

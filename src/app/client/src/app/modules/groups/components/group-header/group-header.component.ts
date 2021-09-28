@@ -19,7 +19,7 @@ import { UPDATE_GROUP, SELECT_DELETE, SELECT_DEACTIVATE, SELECT_NO, DELETE_SUCCE
 })
 export class GroupHeaderComponent implements OnInit, OnDestroy {
   dropdownContent = true;
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() groupData: IGroupCard;
   @Output() handleFtuModal = new EventEmitter();
   showModal = false;
@@ -47,7 +47,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-    private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService, 
+    private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService,
     public discussionTelemetryService: DiscussionTelemetryService, public activateRoute: ActivatedRoute) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
@@ -282,7 +282,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/discussion-forum'], {
         queryParams: {
           categories: JSON.stringify({ result: routerData.forumIds }),
-          userName: routerData.userName
+          userId: routerData.userId
         }
       });
     }

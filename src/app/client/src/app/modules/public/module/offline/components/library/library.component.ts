@@ -4,7 +4,7 @@ import { combineLatest, Subject, of } from 'rxjs';
 import { tap, catchError, filter, takeUntil, first, debounceTime, delay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import {
-    OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, 
+    OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData,
     NavigationHelperService, ILanguage,  LayoutService, COLUMN_TYPE, ConnectionService
 } from '@sunbird/shared';
 import { SearchService, UserService, OrgDetailsService } from '@sunbird/core';
@@ -236,7 +236,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
     public getFilters(filters) {
-        let filterData = filters && filters.filters || {};
+        const filterData = filters && filters.filters || {};
         if (filterData.channel && this.facets) {
             const channelIds = [];
             const facetsData = _.find(this.facets, { 'name': 'channel' });

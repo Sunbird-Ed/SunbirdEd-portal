@@ -1,0 +1,23 @@
+<!-- <div class="telemetry-cont" telemetryEventsButton>
+  <button id="telemetry-btn" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 ng-star-inserted" type="button" (click)="openModal()">
+    <i _ngcontent-mrt-c56="" class="blue share alternate icon"></i> Errors 
+  </button>
+</div> -->
+
+<div class="telemetry-cont" telemetryEventsButton>
+  <div id="telemetry-btn" class="telemetry-float-icon float-icon" (click)="openModal()">
+  <img class="chat-icon" src="../../../../../assets/images/telemetry.svg" alt="telemetry events">
+    <span class="telemetry-btn-label">Telemetry!</span>
+  </div> 
+</div>
+
+<sui-modal *ngIf="showTelemetryEventsModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal sb-modal-addsummary" appBodyScroll #modal (dismissed)="modal.deny();closeModal()">
+  <div class="sb-modal-header">
+    {{input?.title}}
+  </div>
+  <div class="sb-modal-content o-x-hide">
+    <sb-datatable [name]="'Telemetry events'" [message]="" [data]="telemetryEventsArr" [columns]="columns"
+              [downloadCSV]="true" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
+  </div>
+</sui-modal>

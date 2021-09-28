@@ -2,7 +2,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, SharedModule, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -129,30 +129,6 @@ describe('UserOrgManagementComponent', () => {
     expect(geoDetail).toEqual('geo-summary-district');
   });
 
-  it('value of variable userJSON should be user-summary.json', () => {
-    const userJSON = component.userJSON;
-    expect(userJSON).toEqual('user-summary');
-  });
-
-  it('value of variable userCSV should be user-detail.csv', () => {
-    const userCSV = component.userCSV;
-    expect(userCSV).toEqual('user-detail');
-  });
-
-  it('value of variable userSummary should be validated-user-summary.json', () => {
-    const userSummary = component.userSummary;
-    expect(userSummary).toEqual('validated-user-summary');
-  });
-
-  it('value of variable userDetail should be validated-user-summary-district.json', () => {
-    const userDetail = component.userDetail;
-    expect(userDetail).toEqual('validated-user-summary-district');
-  });
-
-  it('value of variable userZip should be validated-user-detail.zip', () => {
-    const userZip = component.userZip;
-    expect(userZip).toEqual('validated-user-detail');
-  });
 
   it('value of variable GeoTableId should be GeoDetailsTable', () => {
     const GeoTableId = component.GeoTableId;
@@ -164,43 +140,27 @@ describe('UserOrgManagementComponent', () => {
     expect(userTableId).toEqual('ValidatedUserDetailsTable');
   });
 
-  it('should fetch user json', () => {
-    const manageService = TestBed.get(ManageService);
-    spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
-    component.slug = 'sunbird';
-    component.userJSON = 'user.json';
-    component.getUserJSON();
-    expect(component.uploadedDetails).toBeDefined();
-  });
 
   it('should fetch geo json', () => {
     const manageService = TestBed.get(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
     component.slug = 'sunbird';
-    component.userJSON = 'user.json';
+    // component.userJSON = 'user.json';
     component.getGeoJSON();
     expect(component.geoData).toBeDefined();
   });
 
-  it('should fetch user summary', () => {
-    const manageService = TestBed.get(ManageService);
-    spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
-    component.slug = 'sunbird';
-    component.userJSON = 'user.json';
-    component.getUserSummary();
-    expect(component.validatedUser).toBeDefined();
-  });
 
   it('should fetch geo summary', () => {
     const manageService = TestBed.get(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
     component.slug = 'sunbird';
-    component.userJSON = 'user.json';
+    // component.userJSON = 'user.json';
     component.getGeoDetail();
     expect(component.geoSummary).toBeDefined();
   });
 
-  it('should download csv file', () => {
+  xit('should download csv file', () => {
     const manageService = TestBed.get(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({
       result: {
@@ -209,8 +169,8 @@ describe('UserOrgManagementComponent', () => {
     }));
     spyOn(window, 'open');
     component.slug = 'sunbird';
-    component.userJSON = 'user';
-    component.downloadZipFile(component.userJSON, 'user.json');
+    // component.userJSON = 'user';
+    // component.downloadZipFile(component.userJSON, 'user.json');
     expect(window.open).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalledWith('a', '_blank');
   });
@@ -223,7 +183,7 @@ describe('UserOrgManagementComponent', () => {
     }));
     spyOn(window, 'open');
     component.slug = 'sunbird';
-    component.userJSON = 'user';
+    // component.userJSON = 'user';
     userService._userData$.next({ err: null, userProfile: { rootOrg: { channel: 'MOCKCHANNEL' } } });
     component.fetchDeclaredUserDetails();
     expect(component.userDeclaredDetailsUrl).toBe('signedUrl');
@@ -300,37 +260,6 @@ describe('UserOrgManagementComponent', () => {
     component.geoButtonText = resourceMockData.frmelmnts.btn.viewless;
     component.geoTableView();
     expect(component.geoButtonText).toEqual('View Details');
-  });
-
-  it('should call teachersTableView and update userTabledata  array', () => {
-    component.teachersButtonText = resourceMockData.frmelmnts.btn.viewdetails;
-    component.validatedUserSummary = [
-      {
-        index: '0',
-        districtName: 'District 1',
-        blocks: 'Block 1',
-        schools: 'School 1',
-        registered: true
-      },
-      {
-        index: '1',
-        districtName: 'District 2',
-        blocks: 'Block 2',
-        schools: 'School 2',
-        registered: true
-      }
-    ];
-    spyOn(component, 'renderUserDetails').and.callThrough();
-    component.teachersTableView();
-    expect(component.teachersButtonText).toEqual('View less');
-    expect(component.userTabledata.length).toEqual(2);
-    expect(component.renderUserDetails).toHaveBeenCalled();
-  });
-
-  it('should call teachersTableView and set appropriate button text', () => {
-    component.teachersButtonText = resourceMockData.frmelmnts.btn.viewless;
-    component.teachersTableView();
-    expect(component.teachersButtonText).toEqual('View Details');
   });
 
   it('should open modal', () => {

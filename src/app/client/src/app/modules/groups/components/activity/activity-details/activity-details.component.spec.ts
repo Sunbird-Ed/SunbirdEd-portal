@@ -4,11 +4,12 @@ import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, UserService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { of, BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { configureTestSuite } from '@sunbird/test-util';
-import { courseHierarchy, nestedCourse, activityData, groupData, content } from './activity-details.component.spec.data';
+import { courseHierarchy, nestedCourse, activityData, groupData, content, updatedGroupData } from './activity-details.component.spec.data';
 import * as _ from 'lodash-es';
 import { ActivityDetailsComponent } from './activity-details.component';
 
@@ -31,9 +32,9 @@ describe('ActivityDetailsComponent', () => {
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
+  const RouterStub = {
+    navigate: () => Promise.resolve(true)
+  };
 
   const resourceBundle = {
     'messages': {
@@ -53,7 +54,7 @@ describe('ActivityDetailsComponent', () => {
         ACTIVITY_COURSE_TITLE: 'Courses',
         ACTIVITY_EXPLANATION_CONTENT_TITLE: 'Explanation content',
         ACTIVITY_PRACTICE_QUESTION_SET_TITLE: 'Practice question set',
-        ACTIVITY_PRACTICE_RESOURE_TITLE : 'Practice resource',
+        ACTIVITY_PRACTICE_RESOURE_TITLE: 'Practice resource',
         ACTIVITY_RESOURCE_TITLE: 'Resource',
         ACTIVITY_TEXTBOOK_TITLE: 'Textbooks',
         ACTIVITY_TV_EPISODE_TITLE: 'TV Episode'
@@ -69,18 +70,25 @@ describe('ActivityDetailsComponent', () => {
       providers: [
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useValue: RouterStub },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
+
+  afterEach(() => {
+    fixture.destroy();
+    TestBed.resetTestingModule();
+  });
+
   beforeEach(() => {
     fixture = TestBed.createComponent(ActivityDetailsComponent);
     component = fixture.componentInstance;
     activatedRoute = TestBed.get(ActivatedRoute);
     fixture.detectChanges();
   });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -106,6 +114,8 @@ describe('ActivityDetailsComponent', () => {
   it('should fetch activity', () => {
     component.groupId = 'abcd12343';
     const groupService = TestBed.get(GroupsService);
+    spyOn(component, 'getContent').and.stub();
+    spyOn(component, 'checkForNestedCourses').and.stub();
     spyOn(groupService, 'getGroupById').and.returnValue(of({ groupName: 'name', groupDescription: 'description' }));
     component.fetchActivity('Course');
     expect(component.showLoader).toBe(true);
@@ -161,50 +171,55 @@ describe('ActivityDetailsComponent', () => {
     component.groupId = '123';
     spyOn(groupService, 'addTelemetry');
     component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' }, {});
-    expect(groupService.addTelemetry).toHaveBeenCalledWith({id: 'activity-dashboard-member-search', extra: { query: 'test' }},
-    { params: {}, data: { telemetry: {} }}, [], '123', {});
+    expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'activity-dashboard-member-search', extra: { query: 'test' } },
+      { params: {}, data: { telemetry: {} } }, [], '123', {});
   });
 
   it('should sort and return members', () => {
     component['userService'].setUserId('1');
     component.members = [
-      { title: 'A', identifier: '1', progress: '0', initial: 'A', indexOfMember: 0},
-      { title: 'D', identifier: '2', progress: '80', initial: 'D', indexOfMember: 0},
-      { title: 'E', identifier: '3', progress: '100', initial: 'E', indexOfMember: 0},
-      { title: 'K', identifier: '4', progress: '0', initial: 'K', indexOfMember: 0},
-      { title: 'B', identifier: '5', progress: '0', initial: 'B', indexOfMember: 0},
+      { title: 'A', identifier: '1', progress: '0', initial: 'A', indexOfMember: 0 },
+      { title: 'D', identifier: '2', progress: '80', initial: 'D', indexOfMember: 0 },
+      { title: 'E', identifier: '3', progress: '100', initial: 'E', indexOfMember: 0 },
+      { title: 'K', identifier: '4', progress: '0', initial: 'K', indexOfMember: 0 },
+      { title: 'B', identifier: '5', progress: '0', initial: 'B', indexOfMember: 0 },
     ];
     const sortedMembers = [
-      { title: 'A', identifier: '1', progress: '0', initial: 'A', indexOfMember: 0},
-      { title: 'B', identifier: '5', progress: '0', initial: 'B', indexOfMember: 0},
-      { title: 'D', identifier: '2', progress: '80', initial: 'D', indexOfMember: 0},
-      { title: 'E', identifier: '3', progress: '100', initial: 'E', indexOfMember: 0},
-      { title: 'K', identifier: '4', progress: '0', initial: 'K', indexOfMember: 0},
+      { title: 'A', identifier: '1', progress: '0', initial: 'A', indexOfMember: 0 },
+      { title: 'B', identifier: '5', progress: '0', initial: 'B', indexOfMember: 0 },
+      { title: 'D', identifier: '2', progress: '80', initial: 'D', indexOfMember: 0 },
+      { title: 'E', identifier: '3', progress: '100', initial: 'E', indexOfMember: 0 },
+      { title: 'K', identifier: '4', progress: '0', initial: 'K', indexOfMember: 0 },
     ];
     const members = component.getSortedMembers();
     expect(members).toEqual(sortedMembers);
   });
 
-  it ('should call getCollectionHierarchy()', () => {
-    spyOn(component['playerService'], 'getCollectionHierarchy').and.returnValue(of (courseHierarchy));
-    spyOn(component, 'updateArray');
+  it('should call getCollectionHierarchy()', () => {
+    const activity = { id: 'do_2127638382202880001645', type: 'course' };
+    spyOn(component['playerService'], 'getCollectionHierarchy').and.returnValue(of(courseHierarchy));
+    spyOn(component, 'updateArray').and.stub();
+    spyOn(component, 'getUpdatedActivityData').and.stub();
     spyOn(component, 'flattenDeep').and.returnValue(nestedCourse);
     component.activityId = 'do_21307962614412902412404';
-    component.groupData = { activities: [{ id: 'do_1234', activityInfo: { name: 'activity1' } }, { id: 'do_0903232', activityInfo: { name: 'activity2' } }] };
-    component.checkForNestedCourses(activityData);
+    // tslint:disable-next-line:max-line-length
+    // component.groupData = { activities: [{ id: 'do_1234', activityInfo: { name: 'activity1' } }, { id: 'do_0903232', activityInfo: { name: 'activity2' } }] };
+    component.checkForNestedCourses(updatedGroupData, activity);
     component['playerService'].getCollectionHierarchy('do_21307962614412902412404', {}).subscribe(data => {
       expect(component.updateArray).toHaveBeenCalledWith(courseHierarchy.result.content);
+      expect(component.getUpdatedActivityData).toHaveBeenCalledWith(updatedGroupData, activity);
       expect(component.flattenDeep).toHaveBeenCalledWith(courseHierarchy.result.content.children);
       expect(component.showLoader).toBeFalsy();
     });
   });
 
-  it ('should throw error in checkForNestedCourses()', () => {
-    spyOn(component['playerService'], 'getCollectionHierarchy').and.returnValue(throwError ({}));
+  it('should throw error in checkForNestedCourses()', () => {
+    const activity = { id: 'do_2127638382202880001645', type: 'course' };
+    spyOn(component['playerService'], 'getCollectionHierarchy').and.returnValue(throwError({}));
     component.activityId = 'do_21307962614412902412404';
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'navigateBack');
-    component.checkForNestedCourses(activityData);
+    component.checkForNestedCourses(updatedGroupData, activity);
     component['playerService'].getCollectionHierarchy('do_21307962614412902412404', {}).subscribe(data => {
     }, err => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
@@ -212,84 +227,89 @@ describe('ActivityDetailsComponent', () => {
     });
   });
 
-  it ('should call getContent()', () => {
-    spyOn(component['playerService'], 'getContent').and.returnValue(of (content));
-    spyOn(component, 'updateArray');
+  it('should call getContent()', fakeAsync(() => {
     component.activityId = 'do_2127638382202880001645';
-    component.groupData = { activities: [] };
-    component.getContent(activityData);
+    const activity = { id: 'do_2127638382202880001645', type: 'course' };
+    spyOn(component['playerService'], 'getContent').and.returnValue(of(content));
+    spyOn(component, 'updateArray').and.stub();
+    spyOn(component, 'getUpdatedActivityData').and.stub();
+    component.getContent(updatedGroupData, activity);
+    tick(200);
     component['playerService'].getContent('do_2127638382202880001645', {}).subscribe(data => {
       expect(component.updateArray).toHaveBeenCalledWith(content.result.content);
+      expect(component.leafNodesCount).toEqual(content.result.content.leafNodesCount);
       expect(component.showLoader).toBeFalsy();
     });
-  });
+  }));
 
-  it ('should throw error in getContent()', () => {
-    spyOn(component['playerService'], 'getContent').and.returnValue(throwError ({}));
+  it('should throw error in getContent()', fakeAsync(() => {
+    const activity = { id: 'do_2127638382202880001645', type: 'course' };
     component.activityId = 'do_2127638382202880001645';
+    spyOn<any>(component['playerService'], 'getContent').and.returnValue(throwError({}));
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'navigateBack');
-    component.getContent(activityData);
+    component.getContent(updatedGroupData, activity);
+    tick(200);
     component['playerService'].getContent('do_2127638382202880001645', {}).subscribe(data => {
     }, err => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
       expect(component.navigateBack).toHaveBeenCalled();
     });
-  });
+  }));
 
   it('should push course to nested[]', () => {
-    component.nestedCourses = [{identifier: '1', name: 'Test 1', leafNodesCount: 1}];
-    component.updateArray({identifier: '123', name: 'Test 2', leafNodesCount: 2});
+    component.nestedCourses = [{ identifier: '1', name: 'Test 1', leafNodesCount: 1 }];
+    component.updateArray({ identifier: '123', name: 'Test 2', leafNodesCount: 2 });
     expect(component.nestedCourses.length).toEqual(2);
-    expect(component.selectedCourse).toEqual({identifier: '1', name: 'Test 1', leafNodesCount: 1});
+    expect(component.selectedCourse).toEqual({ identifier: '1', name: 'Test 1', leafNodesCount: 1 });
 
   });
 
   it('should flatten nested courses', () => {
-   const response = component.flattenDeep(courseHierarchy.result.content.children);
+    const response = component.flattenDeep(courseHierarchy.result.content.children);
     expect(response.length).toEqual(4);
   });
 
   it('should flatten nested courses where there is no children', () => {
     const response = component.flattenDeep(nestedCourse);
-     expect(response.length).toEqual(2);
-   });
-
-  it ('should handleSelectedCourse', () => {
-    component.searchInputBox = {nativeElement: { value: '' }};
-    component.groupData = groupData;
-    component.nestedCourses = [
-    {identifier: 'do_1234', name: 'Test 1', leafNodesCount: 1},
-    {identifier: 'do_0903232', name: 'Test 2', leafNodesCount: 2}
-    ];
-    component.groupId = 'ddebb90c-59b5-4e82-9805-0fbeabed9389';
-    spyOn(component['groupService'], 'getActivity').and.returnValue(of (activityData));
-    spyOn(component, 'processData');
-    spyOn(component, 'toggleDropdown');
-    component.handleSelectedCourse({identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2});
-    expect(component.selectedCourse).toEqual({identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2});
-    component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
-    {id: 'do_2125636421522554881918' , type: 'Course'}, groupData).subscribe(data => {
-      expect(component.showLoader).toBeFalsy();
-      expect(component.processData).toHaveBeenCalledWith(data);
-      expect(component.toggleDropdown).toHaveBeenCalled();
-    });
-    expect(component['groupService'].getActivity).toHaveBeenCalledWith('ddebb90c-59b5-4e82-9805-0fbeabed9389',
-    {id: 'do_2125636421522554881918' , type: 'Course'}, groupData);
+    expect(response.length).toEqual(2);
   });
 
-  it ('should throw error on handleSelectedCourse()', () => {
-    component.searchInputBox = {nativeElement: { value: '' }};
+  it('should handleSelectedCourse', () => {
+    component.searchInputBox = { nativeElement: { value: '' } };
+    component.groupData = groupData;
+    component.nestedCourses = [
+      { identifier: 'do_1234', name: 'Test 1', leafNodesCount: 1 },
+      { identifier: 'do_0903232', name: 'Test 2', leafNodesCount: 2 }
+    ];
+    component.groupId = 'ddebb90c-59b5-4e82-9805-0fbeabed9389';
+    spyOn(component['groupService'], 'getActivity').and.returnValue(of(activityData));
+    spyOn(component, 'processData');
     spyOn(component, 'toggleDropdown');
-    spyOn(component['groupService'], 'getActivity').and.returnValue(throwError ({}));
-    spyOn(component['toasterService'], 'error');
-    component.handleSelectedCourse({identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2});
+    component.handleSelectedCourse({ identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2 });
+    expect(component.selectedCourse).toEqual({ identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2 });
     component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
-    {id: 'do_2125636421522554881918' , type: 'Course'}, groupData).subscribe(data => {
-    }, err => {
-      expect(component.showLoader).toBeFalsy();
-      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-    });
+      { id: 'do_2125636421522554881918', type: 'Course' }, groupData).subscribe(data => {
+        expect(component.showLoader).toBeFalsy();
+        expect(component.processData).toHaveBeenCalledWith(data);
+        expect(component.toggleDropdown).toHaveBeenCalled();
+      });
+    expect(component['groupService'].getActivity).toHaveBeenCalledWith('ddebb90c-59b5-4e82-9805-0fbeabed9389',
+      { id: 'do_2125636421522554881918', type: 'Course' }, groupData);
+  });
+
+  it('should throw error on handleSelectedCourse()', () => {
+    component.searchInputBox = { nativeElement: { value: '' } };
+    spyOn(component, 'toggleDropdown');
+    spyOn(component['groupService'], 'getActivity').and.returnValue(throwError({}));
+    spyOn(component['toasterService'], 'error');
+    component.handleSelectedCourse({ identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2 });
+    component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
+      { id: 'do_2125636421522554881918', type: 'Course' }, groupData).subscribe(data => {
+      }, err => {
+        expect(component.showLoader).toBeFalsy();
+        expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+      });
   });
 
   it('should toggledropdown', () => {
@@ -306,28 +326,28 @@ describe('ActivityDetailsComponent', () => {
     expect(component['unsubscribe$'].complete).toHaveBeenCalled();
   });
 
-  it ('should return TRUE (when content is trackable or contentType = COURSE)', () => {
+  it('should return TRUE (when content is trackable or contentType = COURSE)', () => {
     spyOn(component['searchService'], 'isContentTrackable').and.returnValue(true);
-    const value = component.isContentTrackable({identifier: '123', trackable: {enabled: 'yes'}}, 'course');
+    const value = component.isContentTrackable({ identifier: '123', trackable: { enabled: 'yes' } }, 'course');
     expect(value).toBe(true);
-    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'yes'}}, 'course');
+    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({ identifier: '123', trackable: { enabled: 'yes' } }, 'course');
   });
 
-  it ('should return FALSE (when content is not trackable or contentType != COURSE)', ()  => {
+  it('should return FALSE (when content is not trackable or contentType != COURSE)', () => {
     spyOn(component['searchService'], 'isContentTrackable').and.returnValue(false);
-    const value = component.isContentTrackable({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
+    const value = component.isContentTrackable({ identifier: '123', trackable: { enabled: 'no' } }, 'resource');
     expect(value).toBe(false);
-    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
+    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({ identifier: '123', trackable: { enabled: 'no' } }, 'resource');
   });
 
-  it ('should return "courses"', fakeAsync(()  => {
+  it('should return "courses"', fakeAsync(() => {
     activatedRoute.changeQueryParams({ title: 'courses' });
     tick(100);
     const value = component.showActivityType();
     expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLowerCase());
   }));
 
-  it ('should call utilService.downloadCsv', fakeAsync(()  => {
+  it('should call utilService.downloadCsv', fakeAsync(() => {
     component.memberListToShow = [{
       identifier: '87cb1e5b-16cf-4160-9a2c-7384da0ae97f',
       indexOfMember: 0,
@@ -340,7 +360,7 @@ describe('ActivityDetailsComponent', () => {
     spyOn(component['utilService'], 'downloadCSV');
     component.downloadCSVFile();
     expect(component['utilService'].downloadCSV).toHaveBeenCalledWith(courseHierarchy.result.content,
-      [{courseName: 'ParentCourse', memberName: 'Content Creactor', progress: '0%'}]);
+      [{ courseName: 'ParentCourse', memberName: 'Content Creactor', progress: '0%' }]);
   }));
 
 });

@@ -13,7 +13,7 @@ import {
   UtilService
 } from '@sunbird/shared';
 import { IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import { FieldConfig } from 'common-form-elements';
+import { FieldConfig } from 'common-form-elements-v9';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,7 +26,7 @@ import { ProfileService } from './../../services';
 })
 export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   showSuccessModal = false;
   userProfile: any;
   formAction: string;
@@ -583,7 +583,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     };
     request.consumerId = this.userService.channel;
     request.objectId = this.userService.channel;
-    request.objectType = 'global';
+    request.objectType = 'Organisation';
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {

@@ -15,7 +15,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   /**
   *Output for Sharelink;
   */
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() contentData?: any;
   public startext = '';
   public feedbackText = '';

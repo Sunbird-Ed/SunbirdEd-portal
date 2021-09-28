@@ -3,8 +3,8 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
-import { SuiModule } from 'ng2-semantic-ui';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupHeaderComponent } from './group-header.component';
@@ -417,14 +417,14 @@ describe('GroupHeaderComponent', () => {
     it('should navigate to discussion Forum', () => {
       const routerData = {
         forumIds: [6],
-        userName: 'cctn1350'
+        userId: 1
       };
       spyOn(component['router'], 'navigate');
       component.assignForumData(routerData);
       expect(component['router'].navigate).toHaveBeenCalledWith(['/discussion-forum'], {
         queryParams: {
           categories: JSON.stringify({ result: routerData.forumIds }),
-          userName: routerData.userName
+          userId: routerData.userId
         }
       });
     });

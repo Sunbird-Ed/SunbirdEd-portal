@@ -10,6 +10,9 @@ import { GroupsService } from './../../../services';
 import { IActivity } from '../activity-list/activity-list.component';
 import { PublicPlayerService } from '@sunbird/public';
 import { ACTIVITY_DASHBOARD, MY_GROUPS, GROUP_DETAILS } from '../../../interfaces/routerLinks';
+import {
+  CsGroupActivityAggregationMetric
+} from '@project-sunbird/client-services/services/group/activity';
 @Component({
   selector: 'app-activity-details',
   templateUrl: './activity-details.component.html',
@@ -17,7 +20,7 @@ import { ACTIVITY_DASHBOARD, MY_GROUPS, GROUP_DETAILS } from '../../../interface
 })
 export class ActivityDetailsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('searchInputBox', {static: false}) searchInputBox;
+  @ViewChild('searchInputBox') searchInputBox;
   unsubscribe$ = new Subject<void>();
   showLoader = true;
   queryParams;
@@ -42,6 +45,8 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   parentId: string;
   public csvExporter: any;
   activityType: string;
+  courseHierarchy: any;
+  activityDetails: any;
 
   constructor(
     public resourceService: ResourceService,
@@ -65,11 +70,11 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
+      pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   private fetchActivityOnParamChange() {
@@ -81,7 +86,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
         }),
         map((result) => ({ params: { groupId: result[0].groupId, activityId: result[0].activityId }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$))
-        .subscribe(({ params, queryParams }) => {
+      .subscribe(({ params, queryParams }) => {
         this.queryParams = { ...queryParams };
         this.groupId = params.groupId;
         this.activityId = params.activityId;
@@ -100,26 +105,23 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   }
 
   fetchActivity(type: string) {
+    this.showLoader = true;
     const activityData = { id: this.activityId, type };
-    this.groupService.getGroupById(this.groupId, true, true).pipe(tap(res => {
+    this.groupService.getGroupById(this.groupId, true, true).subscribe(res => {
       this.validateUser(res);
-    }), concatMap(res => {
-        this.groupData = res;
-        return this.groupService.getActivity(this.groupId, activityData, res);
-    })).subscribe(data => {
-        this.getActivityInfo();
-        if (_.get(this.queryParams, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-          this.checkForNestedCourses(data);
-        } else {
-          this.getContent(data);
-        }
+      this.groupData = res;
+      this.getActivityInfo();
+      if (_.get(this.queryParams, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.checkForNestedCourses(res, activityData);
+      } else {
+        this.getContent(res, activityData);
+      }
     }, err => {
-      console.error('Error', err);
       this.navigateBack();
     });
   }
 
-  navigateBack () {
+  navigateBack() {
     this.showLoader = false;
     this.toasterService.error(this.resourceService.messages.emsg.m0005);
     this.groupService.goBack();
@@ -148,7 +150,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
         const completedCount = _.get(_.find(item.agg, { metric: 'completedCount' }), 'value');
         const userProgress = {
           title: _.get(item, 'userId') === this.userService.userid ?
-          `${_.get(item, 'name')}(${this.resourceService.frmelmnts.lbl.you})` : _.get(item, 'name'),
+            `${_.get(item, 'name')}(${this.resourceService.frmelmnts.lbl.you})` : _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
           initial: _.get(item, 'name[0]'),
           indexOfMember: index
@@ -158,7 +160,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
           const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0';
           userProgress['progress'] = progress >= 100 ? '100' : progress;
         }
-
+        this.showLoader = false;
         return userProgress;
       }
     });
@@ -169,7 +171,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   getSortedMembers() {
     // sorting by name - alpha order
     const sortedMembers = this.members.sort((a, b) =>
-    ((a.title).toLowerCase() > (b.title).toLowerCase()) ? 1 : (((b.title).toLowerCase() > (a.title).toLowerCase()) ? -1 : 0));
+      ((a.title).toLowerCase() > (b.title).toLowerCase()) ? 1 : (((b.title).toLowerCase() > (a.title).toLowerCase()) ? -1 : 0));
     // const sortMembersByProgress = [];
     // const sortMembersByName = [];
     // _.map(_.cloneDeep(this.members), member => {
@@ -189,52 +191,71 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?, obj?) {
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId, obj);
+    this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
   }
-
-  checkForNestedCourses(activityData) {
-  this.playerService.getCollectionHierarchy(this.activityId, {})
-  .pipe(takeUntil(this.unsubscribe$))
-  .subscribe((data) => {
-    const courseHierarchy = data.result.content;
-    this.parentId = _.get(courseHierarchy, 'identifier');
-    this.updateArray(courseHierarchy);
-    const childCourses = this.flattenDeep(courseHierarchy.children).filter(c => c.contentType === 'Course');
-    if (childCourses.length > 0) {
-      childCourses.map((course) => {
-        this.updateArray(course);
+  /**
+   * @description - To get the course hierarchy Data
+   * @param  {} groupData
+   * @param  {} activityData
+   */
+  checkForNestedCourses(groupData, activityData) {
+    this.playerService.getCollectionHierarchy(this.activityId, {})
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data) => {
+        this.courseHierarchy = data.result.content;
+        this.parentId = _.get(this.courseHierarchy, 'identifier');
+        this.leafNodesCount = this.courseHierarchy.leafNodesCount;
+        this.updateArray(this.courseHierarchy);
+        this.getUpdatedActivityData(groupData, activityData);
+        const childCourses = this.flattenDeep(this.courseHierarchy.children).filter(c => c.contentType === 'Course');
+        if (childCourses.length > 0) {
+          childCourses.map((course) => {
+            this.updateArray(course);
+          });
+        }
+        this.showLoader = false;
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.navigateBack();
       });
-    }
-    this.processData(activityData);
-    this.showLoader = false;
-  }, err => {
-    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-    this.navigateBack();
-    });
   }
 
-  getContent(activityData) {
-    this.playerService.getContent(this.activityId, {})
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((data) => {
-      const courseHierarchy = data.result.content;
-      this.updateArray(courseHierarchy);
-      this.processData(activityData);
+  /**
+   * @description - get updated activity progress data
+   * @param  {} groupData
+   * @param  {} activityData
+   */
+  getUpdatedActivityData(groupData, activityData) {
+    this.showLoader = true;
+    this.groupService.getActivity(this.groupId, activityData, groupData, this.leafNodesCount).subscribe(data => {
+      this.processData(data);
       this.showLoader = false;
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-      this.navigateBack();
+      this.activityDetails = data;
     });
+  }
+  getContent(groupData, activityData) {
+    this.playerService.getContent(this.activityId, {})
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data) => {
+        const courseHierarchy = data.result.content;
+        this.leafNodesCount = _.get(courseHierarchy, 'leafNodesCount') || 0;
+        this.updateArray(courseHierarchy);
+        this.getUpdatedActivityData(groupData, activityData);
+        this.showLoader = false;
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.navigateBack();
+      });
   }
 
   updateArray(course) {
     this.nestedCourses.push({
-    identifier: _.get(course, 'identifier'),
-    name: _.get(course, 'name'),
-    leafNodesCount: _.get(course, 'leafNodesCount') || 0,
-    pkgVersion: _.get(course, 'pkgVersion') ? `${_.get(course, 'pkgVersion')}` : '1.0',
-    primaryCategory: _.get(course, 'primaryCategory')
-  });
+      identifier: _.get(course, 'identifier'),
+      name: _.get(course, 'name'),
+      leafNodesCount: _.get(course, 'leafNodesCount') || 0,
+      pkgVersion: _.get(course, 'pkgVersion') ? `${_.get(course, 'pkgVersion')}` : '1.0',
+      primaryCategory: _.get(course, 'primaryCategory')
+    });
     this.selectedCourse = this.nestedCourses[0];
   }
 
@@ -256,14 +277,13 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     this.searchInputBox.nativeElement.value = '';
     this.selectedCourse = course;
     this.toggleDropdown();
-    const activityData = { id: this.selectedCourse.identifier, type: 'Course'};
+    const activityData = { id: this.selectedCourse.identifier, type: 'Course' };
     this.groupService.getActivity(this.groupId, activityData, this.groupData)
       .subscribe((data) => {
         this.showLoader = false;
         this.processData(data);
       }, error => {
         this.showLoader = false;
-        console.error('Error', error);
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.groupService.goBack();
       });
@@ -272,7 +292,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
 
-  isContentTrackable (content, type) {
+  isContentTrackable(content, type) {
     return this.searchService.isContentTrackable(content, type);
   }
 
@@ -282,7 +302,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
 
   downloadCSVFile() {
     this.addTelemetry('download-csv', [], {},
-    {id: _.get(this.selectedCourse, 'identifier'), type: _.get(this.selectedCourse, 'primaryCategory'), ver: _.get(this.selectedCourse, 'pkgVersion')});
+      { id: _.get(this.selectedCourse, 'identifier'), type: _.get(this.selectedCourse, 'primaryCategory'), ver: _.get(this.selectedCourse, 'pkgVersion') });
 
     const data = _.map(this.memberListToShow, member => {
       const name = _.get(member, 'title');
@@ -295,18 +315,20 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     this.utilService.downloadCSV(this.selectedCourse, data);
   }
 
-
   /**
    * @description - navigate to activity dashboard page
    */
   navigateToActivityDashboard() {
-    this.addTelemetry('activity-detail', [{id: _.get(this.activity, 'identifier'), type: _.get(this.activity, 'resourceType')}]);
-    const options = { relativeTo: this.activatedRoute, queryParams: { primaryCategory: this.activityType,
-    title: this.activityType, mimeType: _.get(this.activity, 'mimeType'), groupId: _.get(this.groupData, 'id')}};
+    this.addTelemetry('activity-detail', [{ id: _.get(this.activity, 'identifier'), type: _.get(this.activity, 'resourceType') }]);
     this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), `${ACTIVITY_DASHBOARD}`, _.get(this.activity, 'identifier')],
-     {queryParams: options.queryParams});
-}
-
+      {
+        state: {
+          hierarchyData: this.courseHierarchy,
+          activity: this.activityDetails,
+          memberListUpdatedOn: this.memberListUpdatedOn
+        }
+      });
+  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();

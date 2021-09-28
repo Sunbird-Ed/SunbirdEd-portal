@@ -4,7 +4,7 @@ import { ExploreContentComponent, ExploreCurriculumCoursesComponent } from './co
 import { ViewAllComponent } from '@sunbird/content-search';
 const routes: Routes = [
   {
-    path: '', loadChildren: '../../../explore-page/explore-page.module#ExplorePageModule'
+    path: '', loadChildren: () => import('../../../explore-page/explore-page.module').then(m => m.ExplorePageModule)
   },
   {
     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,

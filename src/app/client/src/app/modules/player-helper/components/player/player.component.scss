@@ -89,7 +89,7 @@
   right:50%;
   bottom:50%;
   transform: translate(-50%, -50%);
-  position: absolute;
+  position: absolute !important;
   transition: all ease .3s;
   iframe {
     height: calc(100vh - 4rem) !important;

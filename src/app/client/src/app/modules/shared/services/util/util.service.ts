@@ -19,7 +19,7 @@ export class UtilService {
   public searchKeyword = new EventEmitter<string>();
   private csvExporter: any;
   private _isDesktopApp = false;
-  public formData:any;
+  public formData: any;
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();
 
@@ -54,7 +54,7 @@ export class UtilService {
 
   processContent(data, staticData, dynamicFields, metaData) {
     let fieldValue: any;
-    const content: any = {
+    let content: any = {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
       downloadStatus: data.downloadStatus,
@@ -92,7 +92,8 @@ export class UtilService {
       content['topic'] = this.getTopicSubTopic('topic', data.content.topic);
       content['subTopic'] = this.getTopicSubTopic('subTopic', data.content.topic);
       content['contentType'] = _.get(data.content, 'contentType') || '';
-      content['orgDetails'] = _.get(data.content, 'orgDetails') || {};
+      content['organisation'] = _.get(data.content, 'orgDetails.orgName') || {};
+      content = { ...content, ..._.pick(data.content, ['subject', 'medium', 'gradeLevel']) };
     }
 
     if (data.gradeLevel && data.gradeLevel.length) {
@@ -253,7 +254,7 @@ export class UtilService {
   }
 
   updateRoleChange(type) {
-    if(type){  
+    if (type) {
       this.roleChanged.next(type);
     }
 
@@ -429,9 +430,34 @@ export class UtilService {
   }
 
   getAppBaseUrl() {
-    let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+    const origin = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
+  }
+
+  /**
+ * Parse the nested object & convert to flattern object(key, value)
+ * @param {JSON object} data
+ * ex: {user: {id: 1, name: xyz}} it will convert to {user.id: 1, user.name:}
+ */
+   flattenObject(jsonObj) {
+    const toReturn = {};
+
+    for (const i in jsonObj) {
+      if (!jsonObj.hasOwnProperty(i)) { continue; }
+
+      if ((typeof jsonObj[i]) == 'object' && jsonObj[i] !== null) {
+        const flatObject = this.flattenObject(jsonObj[i]);
+        for (const x in flatObject) {
+          if (!flatObject.hasOwnProperty(x)) { continue; }
+
+          toReturn[i + '.' + x] = flatObject[x];
+        }
+      } else {
+        toReturn[i] = jsonObj[i];
+      }
+    }
+    return toReturn;
   }
 
   getRandomColor(colorSet) {
@@ -440,7 +466,7 @@ export class UtilService {
       return {
         iconBgColor: randomColor.primary,
         pillBgColor: randomColor.secondary
-      }
+      };
     } else {
       return null;
     }

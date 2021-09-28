@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "2.0.0",
+    "version": "4.1.0",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
@@ -72,7 +72,7 @@
     },
     "dependencies": {
         "@project-sunbird/OpenRAP": "file:OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz",
-        "@project-sunbird/logger": "0.0.10",
+        "@project-sunbird/logger": "0.0.11",
         "body-parser": "^1.19.0",
         "busboy": "^0.3.0",
         "cheerio": "^1.0.0-rc.3",
@@ -98,7 +98,6 @@
         "typescript-ioc": "^1.2.5",
         "uuid": "^3.3.2",
         "web-resource-inliner": "^4.3.4",
-        "jwt-decode": "^2.2.0",
         "winreg": "^1.2.4"
     },
     "devDependencies": {

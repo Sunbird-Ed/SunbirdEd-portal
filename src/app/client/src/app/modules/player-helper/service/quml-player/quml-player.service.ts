@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import * as _ from 'lodash-es';
-import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v8';
-import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
+import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
+import { EditorCursor } from '@project-sunbird/sunbird-collection-editor-v9';
 import { CsModule } from '@project-sunbird/client-services';
+import { PublicPlayerService } from '@sunbird/public';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { map } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 
 export class QumlPlayerService implements QuestionCursor, EditorCursor {
-  private questionMap =  new Map();
+  private questionMap = new Map();
   private contentCsService: any;
-  constructor(public csLibInitializerService: CsLibInitializerService) {
+  constructor(public csLibInitializerService: CsLibInitializerService,
+    public playerService: PublicPlayerService) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
     }
@@ -21,9 +24,9 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
     if (_.isEmpty(questionId)) { return of({}); }
     const question = this.getQuestionData(questionId);
     if (question) {
-        return of({questions : _.castArray(question)});
+      return of({ questions: _.castArray(question) });
     } else {
-        return this.contentCsService.getQuestionList(_.castArray(questionId));
+      return this.contentCsService.getQuestionList(_.castArray(questionId));
     }
   }
 
@@ -41,6 +44,10 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
 
   clearQuestionMap() {
     this.questionMap.clear();
+  }
+
+  getQuestionSet(identifier: string) {
+    return this.playerService.getQuestionSetHierarchy(identifier);
   }
 
 }

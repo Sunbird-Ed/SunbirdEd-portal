@@ -31,7 +31,7 @@ export class ReportComponent implements OnInit {
   public reportObj: any;
   public isUserReportAdmin = false;
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
-  @ViewChild('reportElement', {static: false}) reportElement;
+  @ViewChild('reportElement') reportElement;
   public hideElements: boolean;
   public reportExportInProgress = false;
   public exportOptions = ['Pdf', 'Img'];
@@ -57,7 +57,7 @@ export class ReportComponent implements OnInit {
   public chartsReportData: any;
   public globalFilterChange: Object;
   public resetFilters: Object;
-  filterType:string = "report-filter";
+  filterType = 'report-filter';
   public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
@@ -78,7 +78,7 @@ export class ReportComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
- 
+
   ngOnInit() {
     this.initLayout();
     this.report$ = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
@@ -100,7 +100,7 @@ export class ReportComponent implements OnInit {
             return of({});
           })
         );
-      
+
       })
     );
 
@@ -164,7 +164,7 @@ export class ReportComponent implements OnInit {
                 result['reportSummary'] = reportSummary;
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
-              
+
                 this.chartsReportData = JSON.parse(JSON.stringify(result));
                 this.reportData = JSON.parse(JSON.stringify(result));
                 return result;
@@ -241,7 +241,7 @@ export class ReportComponent implements OnInit {
   }
 
   private downloadReportAsPdf() {
-    
+
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
       scrollX:  0,
       scrollY: -window.scrollY,
@@ -295,7 +295,7 @@ export class ReportComponent implements OnInit {
 
   public openReportSummaryModal(): void {
     this.openAddSummaryModal({
-      title: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
+      title: (this.currentReportSummary != '' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
       type: 'report',
       ...(this._reportSummary && { summary: this._reportSummary })
     });
@@ -311,7 +311,7 @@ export class ReportComponent implements OnInit {
           this._reportSummary = summary;
 
           return {
-            label: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
+            label: (this.currentReportSummary != '' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
             text: [summary],
             createdOn: _.get(summaryObj, 'createdon')
           };
@@ -555,18 +555,18 @@ export class ReportComponent implements OnInit {
   }
 
   getAllChartData() {
-    let chartData = [];
+    const chartData = [];
     if (this.reportData.charts) {
       this.reportData.charts.map(chartInfo => {
-        chartData.push(...chartInfo.chartData);
+        chartData.push({ id:chartInfo.chartConfig.id ,data:chartInfo.chartData});
       });
     }
     return chartData;
   }
 
-  getChartData(chart){
-    let chartInfo = this.chartsReportData.charts.find(data=>{
-       if(data['chartConfig']['id']==chart['chartConfig']['id']){
+  getChartData(chart) {
+    const chartInfo = this.chartsReportData.charts.find(data => {
+       if (data['chartConfig']['id'] == chart['chartConfig']['id']) {
          return true;
        }
     });
@@ -575,20 +575,24 @@ export class ReportComponent implements OnInit {
   public filterChanged(data: any): void {
     if (this.chartsReportData && this.chartsReportData.charts) {
       this.chartsReportData.charts.map(element => {
-        element.chartData = data.chartData;
+        data.chartData.forEach(chart => {
+            if(chart['id']===element['chartConfig']['id']){
+              element.chartData = chart.data;
+            }
+        });
         return element;
       });
     }
     this.globalFilterChange = {
       chartData: data.chartData,
       filters: data.filters
-    }
+    };
     this.cdr.detectChanges();
   }
 
-  resetFilter(){
-    this.resetFilters = { data: this.getAllChartData(),reset:true }
-    
+  resetFilter() {
+    this.resetFilters = { data: this.getAllChartData(), reset: true };
+
   }
 }
 

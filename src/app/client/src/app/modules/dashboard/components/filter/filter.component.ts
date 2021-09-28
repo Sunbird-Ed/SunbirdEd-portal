@@ -16,12 +16,12 @@ import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operato
 })
 export class FilterComponent implements OnInit, OnDestroy {
 
-  @Input() hideElements: boolean = false;
+  @Input() hideElements = false;
   @Input() chartData: any;
   @Input() filters: any;
   @Input() telemetryInteractObject: IInteractEventObject;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
-  @Input() filterType:string;
+  @Input() filterType: string;
 
   filtersFormGroup: FormGroup;
   chartLabels: any = [];
@@ -37,19 +37,20 @@ export class FilterComponent implements OnInit, OnDestroy {
   selectedEndDate: any;
   loadash = _;
   showFilters: Boolean = true;
-  dateFilters:Array<string>;
+  dateFilters: Array<string>;
   public unsubscribe = new Subject<void>();
   previousFilters: any;
+  formChartData:any =[];
 
   @Input()
   set selectedFilter(val: any) {
     if (val) {
       this.selectedFilters = {};
-      if(val.filters){
+      if (val.filters) {
         this.filters = val.filters;
       }
       this.formGeneration(val.data);
-      if(val.selectedFilters){
+      if (val.selectedFilters) {
         this.selectedFilters = val.selectedFilters;
         this.filtersFormGroup.patchValue(val.selectedFilters);
       }
@@ -59,18 +60,17 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   @Input()
   set resetFilters(val: any) {
-    if (val) {
+    if (val) {    
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
         this.chartData = val.data;
         this.buildFiltersForm();
-        if(val.reset && val.reset==true){
+        if (val.reset && val.reset == true) {
           this.selectedFilters = {};
-        }
-        else if(val.filters){
+        } else if (val.filters) {
           this.filtersFormGroup.patchValue(val.filters);
           this.selectedFilters = val.filters;
-        } else if(currentFilterValue){
+        } else if (currentFilterValue) {
           this.filtersFormGroup.patchValue(currentFilterValue);
           this.selectedFilters = currentFilterValue;
         }
@@ -85,7 +85,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     'This Month': [moment().startOf('month'), moment().endOf('month')],
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   };
-  @ViewChild('datePickerForFilters',{static: false}) datepicker: ElementRef;
+  @ViewChild('datePickerForFilters') datepicker: ElementRef;
 
   constructor(
     public resourceService: ResourceService,
@@ -98,6 +98,14 @@ export class FilterComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    let charts =[];
+    if(this.chartData && this.chartData.length > 0) {
+      this.chartData.map(function(data){
+        charts.push(...data.data);
+        return data.data;
+      })
+    }
+    this.formChartData = charts;
     if (this.filters) {
       this.buildFiltersForm();
     }
@@ -107,29 +115,28 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  formUpdate(chartData){
-    let filterKeys = Object.keys(this.selectedFilters);
+  formUpdate(chartData) {
+    const filterKeys = Object.keys(this.selectedFilters);
     let previousKeys = [];
     if (this.previousFilters) {
       previousKeys = Object.keys(this.previousFilters);
     }
     _.forEach(this.filters, filter => {
-      let options = (_.sortBy(_.uniq(
-        _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ""
+      const options = (_.sortBy(_.uniq(
+        _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
         )))).filter(Boolean);
 
       if (!filterKeys.includes(filter.reference)) {
         filter.options = options;
       } else {
         if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-          filter.options = options
+          filter.options = options;
         }
       }
     });
     this.previousFilters = this.selectedFilters;
   }
   formGeneration(chartData) {
-
       this.filtersFormGroup = this.fb.group({});
       _.forEach(this.filters, filter => {
 
@@ -141,15 +148,15 @@ export class FilterComponent implements OnInit, OnDestroy {
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
         filter.options = (_.sortBy(_.uniq(
-          _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ""
+          _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
           )))).filter(Boolean);
 
       });
-   
+
   }
 
   buildFiltersForm() {
-    this.formGeneration(this.chartData);
+    this.formGeneration(this.formChartData);
     this.filtersSubscription = this.filtersFormGroup.valueChanges
       .pipe(
         takeUntil(this.unsubscribe),
@@ -165,7 +172,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       }, (err) => {
         console.log(err);
       });
-      if(this.chartData.selectedFilters){
+      if (this.chartData.selectedFilters) {
           this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
       }
 
@@ -180,7 +187,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   resetFilter() {
-    if(this.filtersFormGroup){
+    if (this.filtersFormGroup) {
       this.filtersFormGroup.reset();
     }
     if (this.datepicker) {
@@ -205,32 +212,47 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   filterData() {
     if (this.selectedFilters) {
-      const res: Array<{}> = _.filter(this.chartData, data => {
-        return _.every(this.selectedFilters, (filterValues, key) => {
-          if(data[key]){
-            return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
-          }
-        });
-      });
-      this.formUpdate(res);
 
+      let filterData = [];
+      let filteredChartData =[];
+      this.chartData.forEach(chart => {
+
+        let id = chart.id;
+        delete chart.id;
+        delete chart.data.selectedFilters;
+        delete chart.data.id;
+        
+        let result: Array<{}> = _.filter(chart.data, data => {
+            return _.every(this.selectedFilters, (filterValues, key) => {
+              if(data[key]){
+                return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
+              }
+            });
+            
+        });
+
+        filteredChartData.push({ id:id,data: result });
+        result['selectedFilters'] = this.selectedFilters;
+        filterData.push(...result);
+      });
+
+      this.formUpdate(filterData);
       let keys = Object.keys(this.selectedFilters);
       this.dateFilters = [];
-      this.filters.map(ele=>{
-          if(ele && ele['controlType'].toLowerCase()=="date"){
-            keys.map(item=>{
-              if(item==ele['reference']){
+      this.filters.map(ele => {
+          if (ele && ele['controlType'].toLowerCase() == 'date') {
+            keys.map(item => {
+              if (item == ele['reference']) {
                 this.dateFilters.push(item);
               }
-            })
+            });
           }
       });
 
-
       this.filterChanged.emit({
-        allFilters:this.filters,
+        allFilters: this.filters,
         filters: this.selectedFilters,
-        chartData: res,
+        chartData: filteredChartData,
       });
     } else {
       this.dateFilters = [];
@@ -242,11 +264,11 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
 
   }
-  checkFilterReferance(element){
-    if(this.dateFilters && this.dateFilters.includes(element)){
-      return true
+  checkFilterReferance(element) {
+    if (this.dateFilters && this.dateFilters.includes(element)) {
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 

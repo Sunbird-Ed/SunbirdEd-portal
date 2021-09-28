@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mockActivityList } from './activity-list.component.data.spec';
@@ -212,7 +212,7 @@ describe('ActivityListComponent', () => {
     spyOn(component, 'addTelemetry');
     component.toggleModal();
     expect(component.showModal).toEqual(false);
-    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup',[], {},
+    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup', [], {},
     {id: 'do_1235232121343', type: 'Course', ver: '1.0'});
   });
 

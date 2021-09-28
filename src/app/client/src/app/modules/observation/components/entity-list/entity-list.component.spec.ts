@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EntityListComponent } from './entity-list.component';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Entity } from './entity-list.component.mock';
 describe('EntityListComponent', () => {
@@ -26,12 +26,12 @@ describe('EntityListComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
-    it("Should emit the action on entity", () => {
-        let type = "change";
-        spyOn(component, "action").and.callThrough();
-        spyOn(component.onAction, "emit").and.callThrough();
+    it('Should emit the action on entity', () => {
+        const type = 'change';
+        spyOn(component, 'action').and.callThrough();
+        spyOn(component.onAction, 'emit').and.callThrough();
         component.action(Entity, type);
         component.onAction.emit({ action: type, data: Entity });
         expect(component.action).toHaveBeenCalled();
-    })
+    });
 });

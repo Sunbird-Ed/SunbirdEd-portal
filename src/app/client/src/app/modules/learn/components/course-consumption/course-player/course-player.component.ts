@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { TocCardType } from '@project-sunbird/common-consumption-v8';
+import { TocCardType } from '@project-sunbird/common-consumption-v9';
 import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
@@ -15,7 +15,7 @@ import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
-import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
+import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v9/lib/pipes-module/mime-type';
 import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
@@ -26,7 +26,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
   styleUrls: ['course-player.component.scss']
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   public courseInteractObject: IInteractEventObject;
   public contentInteractObject: IInteractEventObject;
   public closeContentIntractEdata: IInteractEventEdata;
@@ -86,11 +86,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public batchMessage: any;
   showDataSettingSection = false;
   assessmentMaxAttempts: number;
-  @ViewChild('joinTrainingModal', {static: false}) joinTrainingModal;
+  @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   tocId;
   groupId;
-  showLastAttemptsModal: boolean = false;
+  showLastAttemptsModal = false;
   navigateToContentObject: any;
   _routerStateContentStatus: any;
   isConnected = false;
@@ -124,7 +124,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
-  } 
+  }
   ngOnInit() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
@@ -257,14 +257,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
           this.createdBatchId = _.get(event, 'batchId');
-          this.showConfirmationPopup = true;
-          this.popupMode = _.get(event, 'mode');
+          if (!_.get(event, 'isCertInBatch')) {
+            this.showConfirmationPopup = true;
+            this.popupMode = _.get(event, 'mode');
+          }
         }
       }, 1000);
     });
-    const isForceSynced = localStorage.getItem(this.courseId+'_isforce-sync');
-        if(isForceSynced){
-          this.showForceSync = false
+    const isForceSynced = localStorage.getItem(this.courseId + '_isforce-sync');
+        if (isForceSynced) {
+          this.showForceSync = false;
         }
   }
 
@@ -327,8 +329,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    let fieldsArray: Array<string> = ['progress', 'score'];
-    const req:any = {
+    const fieldsArray: Array<string> = ['progress', 'score'];
+    const req: any = {
       userId: this.userService.userid,
       courseId: this.courseId,
       contentIds: this.contentIds,
@@ -544,12 +546,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       const batchStartDate = new Date(batch[0].startDate);
       const batchenrollEndDate = batch[0].enrollmentEndDate ? new Date(batch[0].enrollmentEndDate) : null;
       if (batchStartDate > currentDate) {
-        batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch[0].startDate)
+        batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch[0].startDate);
       } else if (batchenrollEndDate !== null && batchenrollEndDate < currentDate) {
-        batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', batch[0].enrollmentEndDate)
+        batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', batch[0].enrollmentEndDate);
       }
     }
-    return batchMessage
+    return batchMessage;
   }
 
   isEnrollmentAllowed(enrollmentEndDate) {
@@ -566,7 +568,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
           /* istanbul ignore else */
           if (_.get(unit, 'children.length')) {
-            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item.mimeType !== 'application/vnd.sunbird.question');
             /* istanbul ignore else */
             if (this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {
@@ -714,7 +716,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
   public forceSync() {
-    localStorage.setItem(this.courseId+'_isforce-sync', 'true');
+    localStorage.setItem(this.courseId + '_isforce-sync', 'true');
     this.showForceSync = false;
     this.closeSharePopup('force-sync');
     this.dropdownContent = !this.dropdownContent;
@@ -722,7 +724,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       'courseId': this.courseId,
       'batchId': this.batchId,
       'userId': _.get(this.userService, 'userid')
-    }
+    };
     this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
     .pipe(takeUntil(this.unsubscribe))
     .subscribe((res) => {

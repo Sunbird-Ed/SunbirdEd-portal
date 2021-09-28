@@ -171,19 +171,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else {
       redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
     }
-    
+
     if (!_.includes(['Users', 'profile'], this.selectedOption)) {
-      if(url === '/observation'){
-        this.queryParam['selectedTab'] = 'observation';
-      }else{
       this.queryParam['selectedTab'] = this.isDesktopApp && !this.isConnected ? 'mydownloads' : 'all';
-      }
+
     }
-    if(this.isDesktopApp && !this.isConnected) {
+    if (this.isDesktopApp && !this.isConnected) {
       this.route.navigate(['mydownloads'], { queryParams: this.queryParam });
-    } else if(url === '/observation'){
-      this.route.navigate(['observation'],{ queryParams: this.queryParam,replaceUrl: true})
-    }else {
+    } else {
       this.route.navigate([redirectUrl, 1], { queryParams: this.queryParam });
     }
   }
@@ -198,9 +193,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.setDropdownSelectedOption(this.searchUrl[this.value[1]]);
     } else if (this.value[1] === 'search' && searchEnabledStates.includes(this.value[1])) {
       this.setDropdownSelectedOption(this.value[2]);
-    } else if(this.value[1] === 'observation'){
+    } else if (this.value[1] === 'observation') {
       this.showInput = true;
-    }else {
+    } else {
       this.selectedOption = 'All';
       this.setSearchPlaceHolderValue();
       this.showInput = false;

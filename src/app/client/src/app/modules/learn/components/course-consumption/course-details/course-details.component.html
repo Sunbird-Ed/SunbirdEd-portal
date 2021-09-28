@@ -16,12 +16,12 @@
         {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
         <span class="ui cardsKnowMore mouse-pointer"
           *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
-          (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
+          tabindex="0" (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
       </p>
       <p *ngIf="readMore" class="traning-relevant__description sb-color-gray-400">
         {{ courseHierarchy?.description}}&nbsp;
         <span class="ui cardsKnowMore mouse-pointer"
-          (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
+          tabindex="0" (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
       </p>
     </div>
   </div>

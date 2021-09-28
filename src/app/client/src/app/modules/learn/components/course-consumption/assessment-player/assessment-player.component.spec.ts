@@ -14,7 +14,7 @@ import {
 } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { of, throwError } from 'rxjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
@@ -102,11 +102,14 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should go to courseDetails page', fakeAsync(() => {
     spyOn(component['router'], 'navigate');
+    const activeContent = { id: '123' };
+    component.activeContent = activeContent;
     component.isCourseCompletionPopupShown = true;
     fixture.detectChanges();
     component.goBack();
     tick(500);
     fixture.detectChanges();
+    expect(component.lastActiveContentBeforeModuleChange).toBe(activeContent);
     expect(component['router'].navigate).toHaveBeenCalled();
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], { queryParams: {} });
   }));
@@ -285,18 +288,24 @@ describe('AssessmentPlayerComponent', () => {
     component.activeContent = {
       contentType: 'SelfAssess'
     };
+    component.lastActiveContentBeforeModuleChange = {
+      mimeType: 'application/vnd.ekstep.h5p-archive',
+      identifier: '123'
+    }
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn<any>(component, 'validEndEvent').and.returnValue(true);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(throwError({}));
     const event = {
-      detail: { telemetryData: { eid: undefined } },
+      detail: { telemetryData: { eid: 'END', object: { id: '123' } } },
       data: 'renderer:question:submitscore'
     };
     component.isRouterExtrasAvailable = false;
     fixture.detectChanges();
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalledWith(jasmine.objectContaining({
+      status: 2
+    }));
   });
 
   it('should not update content state if, batch id is not present', () => {
@@ -537,9 +546,9 @@ describe('AssessmentPlayerComponent', () => {
     fixture.detectChanges();
     component.setTelemetryShareData(param);
     expect(component.telemetryShareData).toEqual([{
-      id: "do_123232534312",
-      type: "Course",
-      ver: "1"
+      id: 'do_123232534312',
+      type: 'Course',
+      ver: '1'
     }]);
   });
 
@@ -590,7 +599,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onSelfAssessLastAttempt last attempt', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
-    const event = { 
+    const event = {
       'data': 'renderer:selfassess:lastattempt'
     };
     component.onSelfAssessLastAttempt(event);
@@ -600,7 +609,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onSelfAssessLastAttempt max attempt exceeded', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
-    const event = { 
+    const event = {
       'data': 'renderer:maxLimitExceeded'
     };
     component.onSelfAssessLastAttempt(event);
@@ -700,5 +709,8 @@ describe('AssessmentPlayerComponent', () => {
     component.getCourseCompletionStatus(true);
     expect(component.showMaxAttemptsModal).toBe(false);
   });
-
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
+  });
 });

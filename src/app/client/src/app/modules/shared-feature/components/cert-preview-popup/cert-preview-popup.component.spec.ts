@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CertPreviewPopupComponent } from './cert-preview-popup.component';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ResourceService } from '@sunbird/shared';
-import { By } from "@angular/platform-browser";
+import { By } from '@angular/platform-browser';
 
 describe('CertPreviewPopupComponent', () => {
   let component: CertPreviewPopupComponent;

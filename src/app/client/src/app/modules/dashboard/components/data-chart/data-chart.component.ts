@@ -29,9 +29,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() isUserReportAdmin = false;
   @Output() openAddSummaryModal = new EventEmitter();
   @Input() hash: string;
-  
- 
- public unsubscribe = new Subject<void>(); 
+
+
+ public unsubscribe = new Subject<void>();
  // contains the chart configuration
   chartConfig: any;
   chartData: any;
@@ -72,41 +72,41 @@ export class DataChartComponent implements OnInit, OnDestroy {
   private _chartSummary: string;
   private _globalFilter; // private property _item
   resetFilters;
-  filterPopup:Boolean = false;
-  filterOpen:Boolean =false;
-  chartSummarylabel:string;
-  currentFilters:Array<{}>;
-  @ViewChild('datePickerForFilters', {static: false}) datepicker: ElementRef;
-  @ViewChild('chartRootElement', {static: false}) chartRootElement;
-  @ViewChild('chartCanvas', {static: false}) chartCanvas;
-  filterType:string = "chart-filter";
-  dateFilters:Array<string>;
- 
+  filterPopup: Boolean = false;
+  filterOpen: Boolean = false;
+  chartSummarylabel: string;
+  currentFilters: Array<{}>;
+  @ViewChild('datePickerForFilters') datepicker: ElementRef;
+  @ViewChild('chartRootElement') chartRootElement;
+  @ViewChild('chartCanvas') chartCanvas;
+  filterType = 'chart-filter';
+  dateFilters: Array<string>;
 
-  @ViewChild(BaseChartDirective, {static: false}) chartDirective: BaseChartDirective;
+
+  @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService, private reportService: ReportService) {
     this.alwaysShowCalendars = true;
   }
 
- 
+
   ngOnInit() {
 
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
     this.chartSummarylabel = "Add " + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
-    
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
+   
     this.prepareChart();
     this.setTelemetryCdata();
     this.cdr.detectChanges();
 
   }
 
- 
+
 
   private calculateBigNumber(chartData) {
 
@@ -162,11 +162,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   prepareChart() {
     if (!this.checkForExternalChart()) {
-      
+
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
       this.chartColors = _.get(this.chartConfig, 'colors') || [];
       this.chartType = _.get(this.chartConfig, 'chartType');
-      
+
       // shows percentage in pie chart if showPercentage config is enabled.
       if (this.chartType === 'pie' && _.get(this.chartOptions, 'showPercentage')) {
         (this.chartOptions.tooltips || (this.chartOptions.tooltips = {})).callbacks = this.showPercentageInCharts();
@@ -207,7 +207,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       if (_.get(apiResponse, 'responseCode') === 'OK') {
         const chartData = _.get(apiResponse, 'result.data');
         this.chartData = chartData;
-        this.resetFilters = { data:chartData };
+        this.resetFilters = { data: chartData };
 
       }
     }, err => {
@@ -239,11 +239,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
 
   getDataSetValue(chartData = this.chartData) {
+
     let groupedDataBasedOnLabels;
     const labelsExpr = _.get(this.chartConfig, 'labelsExpr');
     if (labelsExpr) {
       const sortedData = this.sortData(chartData, labelsExpr);
-      groupedDataBasedOnLabels = _.groupBy(sortedData, (data) =>  ( data[labelsExpr]? (_.trim(data[labelsExpr].toLowerCase()) ) : ""  ));
+      groupedDataBasedOnLabels = _.groupBy(sortedData, (data) =>  ( data[labelsExpr] ? (_.trim(data[labelsExpr].toLowerCase()) ) : ''  ));
     }
     this.setChartLabels(groupedDataBasedOnLabels);
     this.datasets = [];
@@ -288,11 +289,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
   private getData(groupedDataBasedOnLabels, dataExpr, pickTopNElements: number) {
 
     const data = _.mapValues(groupedDataBasedOnLabels, value => {
-      value = value.filter(element=>{
-        if(element[dataExpr]){
+      value = value.filter(element => {
+        if (element[dataExpr]) {
           return element;
         }
-      })
+      });
       return _.sumBy(value, (o) => +o[dataExpr]);
     });
 
@@ -373,10 +374,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
             const summary = _.get(summaryObj, 'summary');
             this._chartSummary = summary;
 
-            if(summary){
+            if (summary) {
               this.chartSummarylabel = _.get(this.resourceService, 'frmelmnts.lbl.updateChartSummary');
             }
-            
+
             return {
               label: _.get(this.resourceService, 'frmelmnts.lbl.chartSummary'),
               text: [summary],
@@ -397,74 +398,88 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input()
   set globalFilter(val: any) {
-    if(val){
-      val.chartData['selectedFilters'] = {};
-      this.chartData = val.chartData;
-      this.chartData['selectedFilters'] = { };
-      this.cdr.detectChanges();
-      this.getDataSetValue(val.chartData);
-      this.calculateBigNumber(val.chartData);
-      this.resetForm();
+    if(val && val.chartData){
+      let updatedChartData = val.chartData.filter(chart=>{
+        if(chart && chart.id){
+          if(this.chartConfig['id']==chart.id){
+            return chart.data;
+          }
+        }
+      });
+
+      if(updatedChartData && updatedChartData[0] &&  updatedChartData[0].data){
+        delete updatedChartData[0].data['selectedFilters'];
+        this.chartData = updatedChartData[0].data;
+        this.cdr.detectChanges();
+        this.getDataSetValue(updatedChartData[0].data);
+        this.calculateBigNumber(updatedChartData[0].data);
+        this.resetForm();
+
+      }
+
     }
   }
 
-  public filterChanged(data: any):void {
+  public filterChanged(data: any): void {
     this.cdr.detectChanges();
     this.currentFilters = data.filters;
-    let keys = Object.keys(this.currentFilters);
+    const keys = Object.keys(this.currentFilters);
     this.dateFilters = [];
-    this.filters.map(ele=>{
-        if(ele && ele['controlType'].toLowerCase()=="date"){
-          keys.map(item=>{
-            if(item==ele['reference']){
+    this.filters.map(ele => {
+        if (ele && ele['controlType'].toLowerCase() == 'date') {
+          keys.map(item => {
+            if (item == ele['reference']) {
               this.dateFilters.push(item);
             }
-          })
+          });
         }
     });
 
-    if(data.filters){
+    if (data.filters) {
       this.chartData['selectedFilters'] = data.filters;
-    }else {
+    } else {
       this.chartData['selectedFilters'] = {};
     }
-    this.getDataSetValue(data.chartData);
-    this.calculateBigNumber(data.chartData);
+    this.getDataSetValue(data.chartData[0].data);
+    this.calculateBigNumber(data.chartData[0].data);
   }
-  public graphStatsChange(data:any):void {
-    this.showStats=data;
+  public graphStatsChange(data: any): void {
+    this.showStats = data;
   }
   changeChartType(chartType) {
     this.chartType = _.lowerCase(chartType);
   }
-  filterModalPopup(operator){
+  filterModalPopup(operator) {
 
-    if(operator == false){
+    if (operator == false) {
       this.filterPopup = false;
       this.cdr.detectChanges();
-    }else {
-      if(this.currentFilters){
+    } else {
+      if (this.currentFilters) {
         this.chartData['selectedFilters'] = this.currentFilters;
+        this.resetFilters = { data: this.chartData,reset:true };
       }else {
         this.chartData['selectedFilters'] = {};
       }
       this.cdr.detectChanges();
       this.filterPopup = true;
     }
-    
-  }
-  
-  resetForm(){
-    this.chartData['selectedFilters'] = {};
-    this.resetFilters = { data: this.chartData,reset:true };
-    this.currentFilters = [];
-  }
-  checkFilterReferance(element){
-    if(this.dateFilters && this.dateFilters.includes(element)){
-      return true
-    } else {
-      return false
-    }
+
   }
 
+  resetForm() {
+    this.chartData['selectedFilters'] = {};
+    this.resetFilters = { data: this.chartData, reset: true };
+    this.currentFilters = [];
+  }
+  checkFilterReferance(element) {
+    if (this.dateFilters && this.dateFilters.includes(element)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  getChartData(){
+    return [{ id:this.chartConfig.id ,data: this.chartData , selectedFilters:this.currentFilters }];
+  }
 }

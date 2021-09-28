@@ -1,0 +1,89 @@
+@import "variables";
+@import "mixins/mixins";
+
+.main-container {
+  padding:0 1%;
+}
+
+.sbgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
+  grid-gap: 1rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .sb__DesktopOnly {
+    display: none;
+  }
+}
+
+:host {
+  .ui.tabular.menu.report-menu .item {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+:host::ng-deep {
+  .listallreports-section {
+    .dataTables_wrapper .dataTables_filter input {
+      outline: 0;
+    }
+  }
+}
+
+
+.table-bottom {
+  border: 0.0625rem solid var(--gray-100);
+}
+
+.pull-right {
+  float: right !important;
+  width: 120px;
+}
+
+.pull-left {
+  float:left;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  margin-top:7px
+}
+
+select.search-entity {
+  width: 120px;
+  border: 1px solid #aaa;
+  color: #333;
+  border-radius: 3px;
+  padding: 4px;
+  font-size: 0.8125rem;
+  margin-bottom: 5px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+select .select-entries{
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background-color: transparent;
+  padding: 4px;
+  font-size: 0.8125rem;
+}
+
+.header-section {
+  width: 70px;
+  text-align: center;
+}
+
+.date-section {
+  width: 180px;
+  text-align: center;
+}
+
+label {
+  float: left;
+}
+
+.iconSize{
+  font-size: 18px;
+}

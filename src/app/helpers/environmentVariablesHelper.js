@@ -49,7 +49,7 @@ let envVariables = {
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
   reportsListVersion: env.reportsListVersion || 'v1',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
-  ML_SERVICE_BASE_URL: env.ML_SERVICE_BASE_URL || "https://survey.preprod.ntp.net.in/staging",
+  ML_SERVICE_BASE_URL: env.ml_survey_url || 'https://survey.preprod.ntp.net.in/staging',
   SUNBIRD_PROTO: env.sunbird_base_proto,
 
   // TTL and Intervals
@@ -122,6 +122,7 @@ let envVariables = {
   CACHE_STORE: env.sunbird_cache_store || 'memory',
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
+  SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_azure_storage_account_name,
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',

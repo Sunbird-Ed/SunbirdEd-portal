@@ -28,23 +28,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     'blocks': 0,
     'schools': 0
   };
-  public uploadedDetails = {
-    'total_uploaded': 0,
-    'accounts_validated': 0,
-    'accounts_rejected': 0,
-    'accounts_failed': 0,
-    'accounts_duplicate': 0,
-    'accounts_unclaimed': 0,
-    'accounts_eligible': 0
-  };
   public geoSummary;
-  public validatedUser = {
-    'districts': 0,
-    'blocks': 0,
-    'schools': 0,
-    'subOrgRegistered': 0,
-    'rootOrgRegistered': 0
-  };
   public validatedUserSummary;
   public geoButtonText;
   public teachersButtonText;
@@ -53,11 +37,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public geoJSON = 'geo-summary';
   public geoCSV = 'geo-detail';
   public geoDetail = 'geo-summary-district';
-  public userJSON = 'user-summary';
-  public userCSV = 'user-detail';
-  public userSummary = 'validated-user-summary';
-  public userDetail = 'validated-user-summary-district';
-  public userZip = 'validated-user-detail';
   public GeoTableId = 'GeoDetailsTable';
   public geoTableHeader;
   public geoTabledata = [];
@@ -109,7 +88,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   ngOnInit(): void {
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
-    this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
+    this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
@@ -129,13 +108,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         this.getAdminPolicyTnC();
         this.fetchDeclaredUserDetails();
         this.slug = await _.get(this.userService, 'userProfile.rootOrg.slug');
-        if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
-          this.getUserJSON();
-        }
+
         this.getGeoJSON();
-        this.getUserSummary();
-        this.getGeoDetail();
-        this.getUserDetail();
+       this.getGeoDetail();
+
       }
     });
   }
@@ -266,27 +242,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
       };
     });
   }
-
-  public getUserJSON() {
-    this.manageService.getData(this.userJSON, `${this.slug}.json`).subscribe(
-      data => {
-        const result = _.get(data, 'result');
-        this.uploadedDetails = {
-          'total_uploaded': result['total'] ? result['total'] : 0,
-          'accounts_validated': result['accounts_validated'] ? result['accounts_validated'] : 0,
-          'accounts_rejected': result['accounts_rejected'] ? result['accounts_rejected'] : 0,
-          'accounts_failed': result['accounts_failed'] ? result['accounts_failed'] : 0,
-          'accounts_duplicate': result['accounts_duplicate'] ? result['accounts_duplicate'] : 0,
-          'accounts_unclaimed': result['accounts_unclaimed'] ? result['accounts_unclaimed'] : 0,
-          'accounts_eligible': result['accounts_eligible'] ? result['accounts_eligible'] : 0
-        };
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-
   public getGeoJSON() {
     this.manageService.getData(this.geoJSON, `${this.slug}.json`).subscribe(
       data => {
@@ -303,23 +258,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     );
   }
 
-  public getUserSummary() {
-    this.manageService.getData(this.userSummary, `${this.slug}.json`).subscribe(
-      data => {
-        const result = _.get(data, 'result');
-        this.validatedUser = {
-          'districts': result['districts'] ? result['districts'] : 0,
-          'blocks': result['blocks'] ? result['blocks'] : 0,
-          'schools': result['schools'] ? result['schools'] : 0,
-          'subOrgRegistered': result['subOrgRegistered'] ? result['subOrgRegistered'] : 0,
-          'rootOrgRegistered': result['rootOrgRegistered'] ? result['rootOrgRegistered'] : 0
-        };
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
+
 
   public getGeoDetail() {
     this.manageService.getData(this.geoDetail, `${this.slug}.json`).subscribe(
@@ -333,17 +272,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     );
   }
 
-  public getUserDetail() {
-    this.manageService.getData(this.userDetail, `${this.slug}.json`).subscribe(
-      data => {
-        const result = _.get(data, 'result');
-        this.validatedUserSummary = result;
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
+
 
   public renderGeoDetails() {
     setTimeout(() => {
@@ -407,25 +336,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         'lengthChange': false
       });
     }, 100);
-  }
-
-  public teachersTableView() {
-    this.userTabledata = [];
-    if (this.teachersButtonText === this.resourceService.frmelmnts.btn.viewdetails) {
-      this.teachersButtonText = this.resourceService.frmelmnts.btn.viewless;
-      for (let i = 0; i < this.validatedUserSummary.length; i++) {
-        this.userTabledata.push([
-          this.validatedUserSummary[i].index, this.validatedUserSummary[i].districtName,
-          this.validatedUserSummary[i].blocks, this.validatedUserSummary[i].schools,
-          this.validatedUserSummary[i].registered
-        ]);
-        if (i === (this.validatedUserSummary.length - 1)) {
-          this.renderUserDetails();
-        }
-      }
-    } else {
-      this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
-    }
   }
 
   public openModal() {

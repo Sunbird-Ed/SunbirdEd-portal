@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 })
 export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   userId: string;
   allRoles: Array<RolesAndPermissions>;
   userDetailsForm: FormGroup;
@@ -92,7 +92,7 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
   populateUserDetails() {
     const option = { userId: this.userId };
-    this.userSearchService.getUserById(option).subscribe(
+    this.userSearchService.getUserByIdV5(option).subscribe(
       (apiResponse: ServerResponse) => {
         this.userDetails = apiResponse.result.response;
         const rootOrgDetails = _.filter(this.userDetails.organisations, (org) => {
@@ -109,6 +109,9 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
           _.forEach(subOrgDetails, (org) => {
             this.selectedOrgUserRoles = _.union(this.selectedOrgUserRoles, org.roles);
           });
+        }
+        if (_.get(this.userDetails, 'roles') && !_.isEmpty(this.userDetails.roles)) {
+          this.selectedOrgUserRoles = _.map(this.userDetails.roles, 'role');
         }
         if (!_.isEmpty(subOrgDetails)) {
           const orgs = _.sortBy(subOrgDetails, ['orgjoindate']);
@@ -251,7 +254,7 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
         return _.includes(mainRoles, role);
     });
     const rolesAdded =  _.concat(newRoles, _.intersection(mainRoles, this.rootOrgRoles));
-    const data = { userId: this.userId,  orgId: orgId, roles: rolesAdded};
+    const data = { userId: this.userId, roles: this.getRolesReqBody(rolesAdded, this.selectedOrgUserRoles, orgId) };
     this.userSearchService.updateRoles(data)
     .subscribe(
       (apiResponse: ServerResponse) => {
@@ -263,6 +266,36 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
         this.redirect();
       }
     );
+  }
+
+  getRolesReqBody(newRoles, currentRoles, orgId) {
+    const reqBody = [];
+    // Get newly added roles array comparing to existing roles
+    const newlyAddedRoles = _.difference(newRoles, currentRoles);
+    // Get deleted roles from existing roles
+    const deletedRoles = _.difference(currentRoles, newRoles);
+    // Consolidated master role array of existing and newly added roles
+    const masterRoles = [...currentRoles, ...newlyAddedRoles];
+    _.forEach(masterRoles, (role) => {
+      if (_.indexOf(deletedRoles, role) > -1) {
+        reqBody.push({
+          role: role,
+          operation: 'remove',
+          scope: [{
+            organisationId: orgId
+          }]
+        });
+      } else {
+        reqBody.push({
+          role: role,
+          operation: 'add',
+          scope: [{
+            organisationId: orgId
+          }]
+        });
+      }
+    });
+    return reqBody;
   }
 
   redirect(): void {

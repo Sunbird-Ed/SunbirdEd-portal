@@ -7,7 +7,7 @@ import { ProfileService } from '@sunbird/profile';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { of, throwError } from 'rxjs';
 import { UpdateContactDetailsComponent } from './update-contact-details.component';
 
@@ -34,7 +34,7 @@ describe('UpdateContactDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+        HttpClientTestingModule, SuiModalModule, TelemetryModule.forRoot()],
       declarations: [UpdateContactDetailsComponent],
       providers: [
         ProfileService,

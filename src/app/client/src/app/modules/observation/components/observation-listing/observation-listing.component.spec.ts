@@ -1,5 +1,5 @@
-import { ObservationListingComponent } from "./observation-listing.component";
-import { BehaviorSubject, throwError, of } from "rxjs";
+import { ObservationListingComponent } from './observation-listing.component';
+import { BehaviorSubject, throwError, of } from 'rxjs';
 import {
   async,
   ComponentFixture,
@@ -7,13 +7,13 @@ import {
   tick,
   fakeAsync,
   flush,
-} from "@angular/core/testing";
+} from '@angular/core/testing';
 import {
   ResourceService,
   ToasterService,
   SharedModule,
   UtilService,
-} from "@sunbird/shared";
+} from '@sunbird/shared';
 import {
   SearchService,
   OrgDetailsService,
@@ -21,21 +21,20 @@ import {
   UserService,
   SchemaService,
   KendraService,
-} from "@sunbird/core";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SuiModule } from "ng2-semantic-ui";
-import * as _ from "lodash-es";
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { Response, EventData } from "./observation-listing.component.spec.data";
-import { ActivatedRoute, Router } from "@angular/router";
-import { TelemetryModule } from "@sunbird/telemetry";
-import { configureTestSuite } from "@sunbird/test-util";
-import { ObservationUtilService } from "../../service";
-import { Location } from "@angular/common";
-import { RouterTestingModule } from "@angular/router/testing";
+} from '@sunbird/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SuiModule } from 'ng2-semantic-ui-v9';
+import * as _ from 'lodash-es';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Response, EventData } from './observation-listing.component.spec.data';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { ObservationUtilService } from '../../service';
+import { Location } from '@angular/common';
+import { RouterTestingModule } from '@angular/router/testing';
 
-
-describe("ObservationListingComponent", () => {
+describe('ObservationListingComponent', () => {
   let component: ObservationListingComponent;
   let fixture: ComponentFixture<ObservationListingComponent>;
   let toasterService,
@@ -50,8 +49,8 @@ describe("ObservationListingComponent", () => {
   const mockSearchData: any = Response.successData;
   const mockEventData: any = EventData;
   class FakeActivatedRoute {
-    queryParamsMock = new BehaviorSubject<any>({ subject: ["English"] });
-    paramsMock = new BehaviorSubject<any>({ pageNumber: "1" });
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    paramsMock = new BehaviorSubject<any>({ pageNumber: '1' });
     get params() {
       return this.paramsMock.asObservable();
     }
@@ -59,32 +58,32 @@ describe("ObservationListingComponent", () => {
       return this.queryParamsMock.asObservable();
     }
     snapshot = {
-      params: { key: "" },
+      params: { key: '' },
       data: {
         telemetry: {
-          env: "observation",
-          pageid: "observation/details",
-          type: "view",
-          subtype: "paginate",
+          env: 'observation',
+          pageid: 'observation/details',
+          type: 'view',
+          subtype: 'paginate',
         },
       },
     };
   }
   let showEditUserDetailsPopup: any = true;
-  let sendContentResult = true;
+  const sendContentResult = true;
   let payload = {};
-  let returnData:any;
+  let returnData: any;
   const resourceBundle = {
     frmelmnts: {
       lbl: {
-        observation: "Observation",
+        observation: 'Observation',
       },
-      alert:{
-        updateprofiletitle:"update Title",
-        updateprofilecontent:"Please update profile"
+      alert: {
+        updateprofiletitle: 'update Title',
+        updateprofilecontent: 'Please update profile'
       },
-      btn:{
-        update:"Update"
+      btn: {
+        update: 'Update'
       }
     },
     languageSelected$: of({}),
@@ -119,25 +118,28 @@ describe("ObservationListingComponent", () => {
     kendraService = TestBed.get(KendraService);
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('call ngonit when getProfileInfo check is false', fakeAsync(() => {
     showEditUserDetailsPopup;
-    spyOn(observationUtilService, "getProfileInfo").and.returnValue(Promise.resolve(false));
+    spyOn(observationUtilService, 'getProfileInfo').and.returnValue(Promise.resolve(false));
     fixture.whenStable().then(() => {
-      component.showEditUserDetailsPopup=false;
-      showEditUserDetailsPopup=false;
+      component.showEditUserDetailsPopup = false;
+      showEditUserDetailsPopup = false;
     });
-    spyOn(observationUtilService, "showPopupAlert").and.returnValue(Promise.resolve(true));
+    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(()=>{
+      return Response.metaData;
+    })
+    spyOn(observationUtilService, 'showPopupAlert').and.returnValue(Promise.resolve(true));
     component.ngOnInit();
     expect(observationUtilService).toBeDefined();
-    expect(component.ngOnInit).toBeDefined()   
+    expect(component.ngOnInit).toBeDefined();
   }));
 
 
-  it("should redo layout on render", () => {
+  it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.ngOnInit();
     component.redoLayout();
@@ -145,11 +147,11 @@ describe("ObservationListingComponent", () => {
     component.redoLayout();
   });
 
-  it("should call getProfileCheck", fakeAsync(() => {
-    const mySpy = spyOn(observationUtilService, "getProfileInfo").and.callFake(
+  it('should call getProfileCheck', fakeAsync(() => {
+    const mySpy = spyOn(observationUtilService, 'getProfileInfo').and.callFake(
       () => Promise.resolve(true)
     );
-    spyOn(component, "getProfileCheck").and.callThrough(); //callThrough()
+    spyOn(component, 'getProfileCheck').and.callThrough(); // callThrough()
     component.getProfileCheck();
     expect(component.getProfileCheck).toHaveBeenCalled();
     expect(observationUtilService).toBeDefined();
@@ -157,31 +159,31 @@ describe("ObservationListingComponent", () => {
     expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
-  it("should call the navigateToPage for pagination", () => {
+  it('should call the navigateToPage for pagination', () => {
     component.navigateToPage(1);
     component.fetchContentList(1);
-    spyOn(component, "navigateToPage");
+    spyOn(component, 'navigateToPage');
   });
 
-  it("should call ObservationUtilService - getProfileDataList", () => {
-    let mySpy = spyOn(
+  it('should call ObservationUtilService - getProfileDataList', () => {
+    const mySpy = spyOn(
       observationUtilService,
-      "getProfileDataList"
+      'getProfileDataList'
     ).and.callFake(() => Promise.resolve(Response.profileData));
     payload = Response.profileData;
     component.getDataParam();
-    spyOn(component, "getDataParam").and.callThrough();
+    spyOn(component, 'getDataParam').and.callThrough();
     expect(observationUtilService).toBeDefined();
     expect(observationUtilService).toBeTruthy();
     expect(mySpy).toBeDefined();
     expect(mySpy).toHaveBeenCalledTimes(1);
   });
 
-  it("should call KendraService - fetchContentList", () => {
+  it('should call KendraService - fetchContentList', () => {
     component.ngOnInit();
-    spyOn(component, "fetchContentList").and.callThrough();
+    spyOn(component, 'fetchContentList').and.callThrough();
     component.fetchContentList(1);
-    let mySpy = spyOn(kendraService, "post").and.returnValue(
+    const mySpy = spyOn(kendraService, 'post').and.returnValue(
       of({
         result: {
           count: Response.successData.count,
@@ -195,35 +197,35 @@ describe("ObservationListingComponent", () => {
     expect(mySpy).toBeDefined();
   });
 
-  it("should call setFormat", () => {
+  it('should call setFormat', () => {
     component.totalCount = Response.successData.count;
     component.setFormat(Response.successData.data);
   });
 
-  it("Should navigate to  back if profile not updated", () => {
+  it('Should navigate to  back if profile not updated', () => {
     component.back();
     const location: Location = TestBed.get(Location);
-    expect(location.path()).toBe("");
+    expect(location.path()).toBe('');
   });
 
-  it("should unsubscribe from all observable subscriptions", () => {
+  it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
-    spyOn(component.unsubscribe$, "complete");
+    spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
-  it("should call playcontent for the observation list data ", () => {
+  it('should call playcontent for the observation list data ', () => {
     component.playContent(mockEventData);
-    spyOn(component, "playContent");
+    spyOn(component, 'playContent');
   });
 
-  it("should call inview for the observation list data ", () => {
+  it('should call inview for the observation list data ', () => {
     component.inView(mockEventData);
-    spyOn(component, "inView");
+    spyOn(component, 'inView');
   });
 
-  it("should call the ngAfterViewInit", () => {
+  it('should call the ngAfterViewInit', () => {
     component.ngAfterViewInit();
   });
 });

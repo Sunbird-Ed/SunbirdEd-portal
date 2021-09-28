@@ -70,7 +70,7 @@ export const response = {
     constructSearchRequestWithFilter: {
         'filters': {
             'channel': '01231711180382208027',
-            'mimeType':['application/vnd.ekstep.ecml-archive','application/vnd.ekstep.html-archive','audio/x-wav','audio/wav']
+            'mimeType': ['application/vnd.ekstep.ecml-archive', 'application/vnd.ekstep.html-archive', 'audio/x-wav', 'audio/wav']
         },
         'fields': [
             'name',

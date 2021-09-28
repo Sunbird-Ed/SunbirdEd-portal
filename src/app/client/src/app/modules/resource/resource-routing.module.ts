@@ -5,7 +5,7 @@ import { ViewAllComponent } from '@sunbird/content-search';
 const telemetryEnv = 'library';
 const routes: Routes = [
   {
-    path: '', loadChildren: './../explore-page/explore-page.module#ExplorePageModule'
+    path: '', loadChildren: () => import('./../explore-page/explore-page.module').then(m => m.ExplorePageModule)
   },
   {
     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
@@ -21,7 +21,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'play', loadChildren: './modules/player/player.module#PlayerModule'
+    path: 'play', loadChildren: () => import('./modules/player/player.module').then(m => m.PlayerModule)
   },
   {
     path: 'curriculum-courses', component: CurriculumCoursesComponent, data: {

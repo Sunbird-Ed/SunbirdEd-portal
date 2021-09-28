@@ -14,10 +14,10 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 import { BatchDetailsComponent,  } from './components/batch/batch-details/batch-details.component';
 import { UnEnrollBatchComponent} from './components/batch/unenroll-batch/unenroll-batch.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { AssessmentPlayerComponent } from './components/course-consumption/assessment-player/assessment-player.component';
 import { CourseCompletionComponent } from './components/course-consumption/course-completion/course-completion.component';
 import { CertificateNameUpdatePopupComponent } from './components/course-consumption/certificate-name-update-popup/certificate-name-update-popup.component';
@@ -26,6 +26,8 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { NotificationModule } from '../notification/notification.module';
 import { DiscussionModule } from '../discussion/discussion.module';
+import { PendingchangesGuard } from '@sunbird/public';
+
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -58,7 +60,8 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
   ],
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
-    { provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService] }
+    { provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService] },
+    PendingchangesGuard
   ],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent,

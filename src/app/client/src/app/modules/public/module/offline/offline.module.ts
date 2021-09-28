@@ -2,7 +2,7 @@ import { ContentManagerService } from './services';
 import {
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
     SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
@@ -20,7 +20,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { NgInviewModule } from 'angular-inport';
 import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({

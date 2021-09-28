@@ -100,7 +100,7 @@ module.exports = (app, keycloak) => {
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
   '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
   '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*',
-   '/observation', '/observation/*'], 
+   '/observation', '/observation/*','/solution','/solution/*','/questionnaire','/questionnaire/*'], 
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,
@@ -170,6 +170,7 @@ function getLocals(req) {
   locals.buildNumber = envHelper.BUILD_NUMBER
   locals.apiCacheTtl = envHelper.PORTAL_API_CACHE_TTL
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
+  locals.publicStorageAccount = envHelper.SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME;
   locals.userUploadRefLink = envHelper.sunbird_portal_user_upload_ref_link
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
   locals.deviceApi = envHelper.sunbird_device_api

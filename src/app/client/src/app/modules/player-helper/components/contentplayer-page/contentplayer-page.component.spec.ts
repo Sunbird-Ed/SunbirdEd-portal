@@ -45,7 +45,7 @@ describe('ContentPlayerComponent', () => {
       providers: [
         ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Router, useClass: RouterStub },{ provide: APP_BASE_HREF, useValue: '/' }
+        { provide: Router, useClass: RouterStub }, { provide: APP_BASE_HREF, useValue: '/' }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -148,7 +148,7 @@ describe('ContentPlayerComponent', () => {
     spyOn(playerService, 'getContent').and.returnValue(of(resourceData.content));
     spyOn(component, 'getContentConfigDetails');
     spyOn(component.isContentDeleted, 'next');
-    component.getContent()
+    component.getContent();
     expect(component.getContentConfigDetails).toHaveBeenCalled();
     expect(component.isContentDeleted.next).toHaveBeenCalledWith({ value: false });
   });
@@ -158,7 +158,7 @@ describe('ContentPlayerComponent', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'getContent').and.returnValue(throwError({}));
     spyOn(component.isContentDeleted, 'next');
-    component.getContent()
+    component.getContent();
     expect(component.isContentDeleted.next).toHaveBeenCalledWith({ value: true });
   });
 
@@ -223,6 +223,6 @@ describe('ContentPlayerComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 
-  
+
 
 });

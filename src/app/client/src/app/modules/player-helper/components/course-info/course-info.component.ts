@@ -13,7 +13,7 @@ export class CourseInfoComponent implements OnInit {
   showContentCreditsModal = false;
   showCredits = false;
   instance: string;
-
+  isOpen = false;
   constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {

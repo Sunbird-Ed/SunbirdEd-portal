@@ -2,7 +2,7 @@
 
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" >
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9 sbt-fluid-content-bg':''" >
 <div class="ui" [appTelemetryImpression]="telemetryImpression">
   <div class="twelve wide column px-0 sb-workspace-bg">
     <div class="ui container stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll" *ngIf="!noResult">
@@ -11,7 +11,7 @@
         <ul class="m-0">
           <li appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(report.id)"
             [telemetryInteractEdata]="setTelemetryInteractEdata('report-view')" *ngFor="let report of reportMetaData"
-            (click)="renderReport(report)" class="item m-0" [ngClass]="{'active': currentReport.id === report.id}">
+            (click)="renderReport(report)" tabindex="0" class="item m-0" [ngClass]="{'active': currentReport.id === report.id}">
             {{report.label || report.title}}</li>
         </ul>
       </div>
@@ -26,10 +26,10 @@
             <div class="ui pointing secondary menu d-flex flex-ai-center">
               <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                 [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item" suiTabHeader="graph"
-                (click)="setDownloadUrl(currentReport.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                (click)="setDownloadUrl(currentReport.downloadUrl)" tabindex="0">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
               <a appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                 [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
-                *ngFor="let table of tables" (click)="setDownloadUrl(table.downloadUrl)" class="item"
+                *ngFor="let table of tables" (click)="setDownloadUrl(table.downloadUrl)" tabindex="0" class="item"
                 [suiTabHeader]="table.id">{{table?.name}}</a>
                 <a *ngIf="isFileDataLoaded" appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                 [telemetryInteractEdata]="setTelemetryInteractEdata('download')" class="item" suiTabHeader="files"
@@ -38,7 +38,7 @@
                <button type="button" *ngIf="!isFileDataLoaded && currentReport?.downloadUrl"
                class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8" appTelemetryInteract
                [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-               [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" (click)="downloadCSV()"><i
+               [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" (click)="downloadCSV()" tabindex="0"><i
                  class="icon"></i> {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
             </div>
             <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="files">
@@ -104,7 +104,7 @@
                       <button type="button" class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8" appTelemetryInteract
                       [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
                       [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
-                      (click)="downloadCSV(file.downloadUrl)"><i
+                      (click)="downloadCSV(file.downloadUrl)" tabindex="0"><i
                     class="icon"></i> {{resourceService?.frmelmnts?.lbl?.dashboard?.downloadfile}}</button>
                     </td>
                 </tbody>

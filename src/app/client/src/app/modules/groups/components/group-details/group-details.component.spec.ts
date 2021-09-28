@@ -1,7 +1,7 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupDetailsComponent } from './group-details.component';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -79,7 +79,7 @@ describe('GroupDetailsComponent', () => {
     spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
 
-    groupService.getGroupById('123',true, true, true).subscribe((data: CsGroup) => {
+    groupService.getGroupById('123', true, true, true).subscribe((data: CsGroup) => {
       expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
         {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
         description: '', membershipType: GroupMembershipType.INVITE_ONLY});

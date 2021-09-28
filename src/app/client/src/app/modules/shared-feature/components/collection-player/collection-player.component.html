@@ -1,14 +1,15 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
-<div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div *ngIf="collectionData" class="relative9" [style.display]="!showLoader ? 'block' : 'none'"
     [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
 
-    <div class="sb-bg-white relative position cc-player__btn-back ">
+    <div class="sb-bg-white relative position cc-player__btn-back mt-0">
       <div class="ui container py-8 px-0">
         <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
-          (click)="closeCollectionPlayer()">
+          tabindex="0" (click)="closeCollectionPlayer()">
           <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
             </svg></i>
@@ -22,7 +23,7 @@
       <div class="ui container py-16">
         <div class="content-header__content">
           <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-            <div class="content-header__title font-weight-bold ellipsis text-left">{{collectionData.name}}</div>
+            <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2" tabindex="0">{{collectionData.name}}</div>
             <div class="d-flex flex-ai-center content-header__info mt-4" *ngIf="collectionTreeNodes">
               <span *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes?.data?.subject}}</span>
               <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
@@ -32,15 +33,15 @@
           <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
 
             <div *ngIf="isDesktopApp">
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0" (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" tabindex="0" (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" tabindex="0" (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
             </div>
 
-            <button type="button" *ngIf="!isCopyAsCourseClicked" (click)="onShareLink();sharelinkModal=true;"
+            <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0" (click)="onShareLink();sharelinkModal=true;"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
             </button>
@@ -49,14 +50,14 @@
               [telemetryInteractEdata]="copyContentInteractEdata"
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
-              (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              tabindex="0" (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
             </button>
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="copyContentInteractEdata"
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
-              appPermission [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)"
+              appPermission [permission]="['BOOK_CREATOR']" tabindex="0" (click)="copyContent(collectionTreeNodes.data)"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
             </button>
@@ -64,7 +65,7 @@
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR']" (click)="copyAsCourse()"
+              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="copyAsCourse()"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <img src="assets/images/copy-clone.svg" alt="copy-clone" class="mr-4 pt-2">
               {{generaliseLabelService?.frmelmnts?.lbl?.copyAsCourse}}
@@ -73,7 +74,7 @@
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR']" (click)="clearSelection()"
+              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="clearSelection()"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               {{resourceService?.frmelmnts?.btn?.cancel}}
             </button>
@@ -83,7 +84,7 @@
               [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
               href="javascript:void(0)"
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR']" (click)="createCourse()"
+              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="createCourse()"
               class="sb-btn sb-btn-normal sb-btn-primary">
               {{generaliseLabelService?.frmelmnts?.btn?.create}}
             </button>
@@ -121,7 +122,7 @@
               <h6 class="sb-color-primary font-weight-normal">
                 {{generaliseLabelService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
               <div class="sb-checkbox sb-checkbox-rightaligned sb-checkbox-primary ml-auto m-0">
-                <input (click)="selectAllItem()" type="checkbox" id="checkbox" name="example">
+                <input tabindex="0" (click)="selectAllItem()" type="checkbox" id="checkbox" name="example">
                 <label class="mb-0 mr-0 sb-color-primary" for="checkbox">
                   {{resourceService?.frmelmnts?.lbl?.selectAll}}</label>
               </div>

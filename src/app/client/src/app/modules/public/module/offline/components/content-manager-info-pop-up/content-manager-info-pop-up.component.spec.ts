@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentManagerInfoPopUpComponent } from './content-manager-info-pop-up.component';
 import { contantData } from './content-manager-info-pop-up.component.spec.data';
 import { ResourceService, SharedModule } from '@sunbird/shared';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';

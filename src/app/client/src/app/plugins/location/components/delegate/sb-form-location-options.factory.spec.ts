@@ -1,10 +1,10 @@
 import { SbFormLocationOptionsFactory } from './sb-form-location-options.factory';
 import {LocationService} from '../../services';
 import {FormControl} from '@angular/forms';
-import {FieldConfig} from 'common-form-elements';
+import {FieldConfig} from 'common-form-elements-v9';
 import {take} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
-import {FieldConfigOption} from 'common-form-elements/lib/common-form-config';
+import {FieldConfigOption} from 'common-form-elements-v9/lib/common-form-config';
 import {Location} from '@project-sunbird/client-services/models/location';
 import {ServerResponse} from '@sunbird/shared';
 import {UserService} from '@sunbird/core';
@@ -247,7 +247,7 @@ describe('SbFormLocationOptionsFactory', () => {
       }));
       spyOn(mockOrgDetailsService, 'searchOrgDetails').and.returnValue(of(
         {
-          content: 
+          content:
           [
             {
               externalId: 'SOME_SELECTED_DISTRICT_CODE_1',

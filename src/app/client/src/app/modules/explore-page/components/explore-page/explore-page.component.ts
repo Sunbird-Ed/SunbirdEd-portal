@@ -15,6 +15,7 @@ import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
+import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { ProfileService } from '@sunbird/profile';
     styleUrls: ['./explore-page.component.scss']
 })
 export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('frameworkModal', { static: false }) frameworkModal;
+    @ViewChild('frameworkModal') frameworkModal;
     public initFilter = false;
     public inViewLogs = [];
     public showLoader = true;
@@ -40,6 +41,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public numberOfSections;
     public isLoading = true;
     public cardData: Array<{}> = [];
+    bannerSegment: any;
+    displayBanner: boolean;
+    bannerList?: any[];
     layoutConfiguration: any;
     formData: any;
     FIRST_PANEL_LAYOUT;
@@ -62,22 +66,27 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledSection: any;
     public selectedCourseBatches: any;
     private myCoursesSearchQuery = JSON.stringify({
-        'request': { "filters": { "contentType": ["Course"], "objectType": ["Content"], "status": ["Live"] }, "sort_by": { "lastPublishedOn": "desc" }, "limit": 10, "organisationId": _.get(this.userService.userProfile, 'organisationIds') }
+        'request': { 'filters': { 'contentType': ['Course'], 'objectType': ['Content'], 'status': ['Live'] }, 'sort_by': { 'lastPublishedOn': 'desc' }, 'limit': 10, 'organisationId': _.get(this.userService.userProfile, 'organisationIds') }
     });
     public facets$ = this._facets$.asObservable().pipe(startWith({}), catchError(err => of({})));
     queryParams: { [x: string]: any; };
     _currentPageData: any;
     facetSections: any = [];
+    contentSections = [];
     instance: string;
     userPreference: any;
     searchResponse: any = [];
     selectedFacet: { facet: any; value: any; };
     showEdit = false;
-    isFilterEnabled: boolean = true;
-    defaultTab = 'Textbook'
+    isFilterEnabled = true;
+    defaultTab = 'Textbook';
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
+    }
+
+    get bannerSlideConfig() {
+        return cloneDeep(this.configService.appConfig.Banner.slideConfig);
     }
 
     @HostListener('window:scroll', []) onScroll(): void {
@@ -96,7 +105,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private formService: FormService, private playerService: PlayerService, private coursesService: CoursesService,
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
-        private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService) {
+        private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
+        private segmentationTagService: SegmentationTagService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         }
@@ -160,10 +170,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return combineLatest(queryParams, params).pipe(
             tap(([params = {}, queryParams = {}]) => {
                 if (this.isUserLoggedIn()) {
-                    this.prepareVisits([])
+                    this.prepareVisits([]);
                 }
                 this.queryParams = { ...params, ...queryParams };
-            }))
+            }));
     }
 
     ngOnInit() {
@@ -171,13 +181,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userPreference = this.setUserPreferences();
         this.initConfiguration();
 
+        this.segmentationTagService.getSegmentCommand();
         const enrolledSection$ = this.getQueryParams().pipe(
                 tap(() => {
                     const currentPage = this._currentPageData = this.getCurrentPageData();
                     this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPage, 'title');
                     this.isFilterEnabled = true;
                     if (_.get(currentPage, 'filter')) {
-                        this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled')
+                        this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled');
                     }
                     if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
                         this.fetchContents$.next(currentPage);
@@ -214,7 +225,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         contents: []
                     };
                     const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
-                    if (err) return enrolledSection;
+                    if (err) { return enrolledSection; }
                     const enrolledContentPredicate = course => {
                         const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
                         return pagePrimaryCategories.some(category => _.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(contentType) === _.toLower(pageContentType));
@@ -294,7 +305,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getCurrentPageData() {
-        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')|| _.get(this.defaultTab, 'contentType') || 'textbook');
+        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook');
     }
 
     public getFilters({ filters, status }) {
@@ -340,13 +351,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.apiContentList = [];
                     this.pageSections = [];
                     this.svgToDisplay = get(currentPageData, 'theme.imageName');
+                    this.displayBanner = (_.get(currentPageData, 'contentType') === 'home') ? true : false;
 
                     this.redoLayout();
                     this.facetSections = [];
                     if (_.get(currentPageData, 'filter')) {
-                        this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
+                        this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled');
                     }
-                    if(_.get(currentPageData, 'contentType') === 'explore') {
+                    if (_.get(currentPageData, 'contentType') === 'explore') {
+                        this.contentSections = [];
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
@@ -355,6 +368,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (_.get(currentPageData, 'contentType') === 'home') {
                         _reqFilters = this.contentSearchService.mapCategories({ filters: {..._.get(this.userPreference, 'framework')} });
                         delete _reqFilters['id'];
+                        this.segmentationTagService.getUpdatedCommands().then(() => {
+                            this.showorHideBanners();
+                        });
                     } else {
                         _reqFilters = this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } });
                     }
@@ -408,11 +424,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 }
                                 // Construct data array for sections
                                 if (_.get(currentPageData, 'sections') && _.get(currentPageData, 'sections').length > 0) {
-                                    const facetKeys = _.map(currentPageData.sections, (section) => { return section.facetKey });
+                                    const facetKeys = _.map(currentPageData.sections, (section) => section.facetKey);
                                     const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
                                     forEach(currentPageData.sections, facet => {
-                                        if (_.get(facets, facet.facetKey) && _.get(facets, facet.facetKey).length > 0) {
-                                            let _facetArray = [];
+                                        if (_.get(facets, facet.facetKey)) {
+                                            const _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
                                                 _facetArray.push({
                                                     name: _facet['name'],
@@ -423,10 +439,20 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             this.facetSections.push({
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
-                                                section: facet
+                                                section: facet,
+                                                index: facet.index
                                             });
                                         }
                                     });
+                                    this.facetSections = _.sortBy(this.facetSections, ['index']);
+                                    if (facetKeys.indexOf('search') > -1) {
+                                        this.contentSections = [];
+                                        const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
+                                        searchSections.forEach((item) => {
+                                            this.contentSections.push(this.getContentSection(item, option));
+                                        });
+
+                                    }
                                 }
                                 return _map(sections, (section) => {
                                     forEach(section.contents, contents => {
@@ -458,6 +484,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 })
             );
+    }
+
+    private getContentSection(section, searchOptions) {
+        const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
+        const requiredProps = ['se_boards', 'se_gradeLevels', 'se_mediums'];
+        if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
+            const preferences = _.pick(searchOptions.filters, requiredProps);
+            section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
+        }
+
+        return {
+            isEnabled: Boolean(_.get(section, 'isEnabled')),
+            searchRequest: _.get(section, 'apiConfig.req'),
+            title: get(this.resourceService, section.title)
+        };
     }
 
     addHoverData() {
@@ -759,13 +800,33 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
-    public viewAll(event) {
+    logViewAllTelemetry(event) {
+        const telemetryData = {
+            cdata: [{
+                type: 'section',
+                id: event.name
+            }],
+            edata: {
+                id: 'view-all'
+            }
+        };
+        this.getInteractEdata(telemetryData);
+    }
+
+    public viewAll(event, contentSection?) {
         let searchQuery;
-        if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
-            searchQuery = JSON.parse(this.myCoursesSearchQuery);
+        if (contentSection) {
+            event = { contents: event.data, count: event.data.length, name: contentSection.title };
+            searchQuery = contentSection.searchRequest;
         } else {
-            searchQuery = JSON.parse(event.searchQuery);
+            if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
+                searchQuery = JSON.parse(this.myCoursesSearchQuery);
+            } else {
+                searchQuery = JSON.parse(event.searchQuery);
+            }
         }
+
+        this.logViewAllTelemetry(event);
         const searchQueryParams: any = {};
         _.forIn(searchQuery.request.filters, (value, key) => {
             if (_.isPlainObject(value)) {
@@ -774,15 +835,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 searchQueryParams[key] = value;
             }
         });
-        searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+        searchQueryParams.defaultSortBy = _.get(searchQuery, 'request.sort_by') ? JSON.stringify(searchQuery.request.sort_by) : JSON.stringify({ lastPublishedOn: 'desc' });
         searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
+        searchQueryParams['isContentSection'] = Boolean(contentSection);
         if (this.isUserLoggedIn()) {
             this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: 600 });
         } else {
             this.cacheService.set('viewAllQuery', searchQueryParams);
         }
         this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-        const queryParams = { ...searchQueryParams, ...this.queryParams };
+        const queryParams = contentSection ? { ...searchQueryParams, ...{ selectedTab: this.queryParams.selectedTab } } :
+        { ...searchQueryParams, ...this.queryParams };
         const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
         this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData()} });
     }
@@ -803,7 +866,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
       }
       default: {
-        sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections')
+        sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections');
       }
     }
     return sectionName;
@@ -857,12 +920,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         let params = {};
         const contentType = _.get(this.getCurrentPageData(), 'contentType');
-        if(contentType === 'home') {
+        if (contentType === 'home') {
             params = _.omit(this.queryParams, ['id', 'selectedTab']);
         }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
         params['showClose'] = 'true';
+        params['isInside'] = event.data[0].value.name;
+        params['returnTo'] = contentType;
 
         const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
             const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
@@ -870,21 +935,25 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
-            if (_.toLower(value) === 'cbse') return 'CBSE/NCERT';
+            if (_.toLower(value) === 'cbse') { return 'CBSE/NCERT'; }
             return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
         });
 
         params = paramValuesInLowerCase;
 
-        if(this.isUserLoggedIn()){
+        if (this.isUserLoggedIn()) {
             this.router.navigate(['search/Library', 1], { queryParams: params });
-        } else{
+        } else {
             this.router.navigate(['explore', 1], { queryParams: params });
         }
     }
 
     getSectionTitle (title) {
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+    }
+
+    getBannerTitle (title) {
+        return get(this.resourceService, title);
     }
 
     getSelectedTab () {
@@ -910,13 +979,16 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
             this._addFiltersInTheQueryParams(event);
         }
+        if (window['TagManager']) {
+            window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
+        }
         // this.setUserPreferences();
         // this.fetchContents$.next(this._currentPageData);
     }
 
     getExplorePageSections () {
         return of(forEach(this.getCurrentPageData().sections, facet => {
-            let _facetArray = [];
+            const _facetArray = [];
             forEach(facet.data, _facet => {
                 _facetArray.push({
                     name: _facet['name'],
@@ -929,5 +1001,87 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 section: facet
             });
         }));
+    }
+
+    showorHideBanners() {
+        this.bannerSegment = [];
+         this.segmentationTagService.exeCommands.find((cmd) => {
+            if (cmd.controlFunction === 'BANNER_CONFIG') {
+                const banners = _.get(cmd, 'controlFunctionPayload.values');
+                forEach(banners, banner => {
+                    this.bannerSegment.push(banner);
+                });
+            }
+        });
+        this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
+        if (this.bannerSegment ) {
+            this.setBannerConfig();
+        }
+    }
+
+    setBannerConfig() {
+        this.bannerList = this.bannerSegment.filter((value) =>
+            Number(value.expiry) > Math.floor(Date.now() / 1000)
+        );
+    }
+
+    navigateToSpecificLocation(data) {
+        switch (data.code) {
+            case 'banner_external_url':
+                window.open(_.get(data.action, 'params.route'), '_blank');
+                break;
+            case 'banner_search':
+                const queryParams = _.get(data.action, 'params.filter.filters');
+                if (_.get(data.action, 'params.query')) {
+                    queryParams['key'] = _.get(data.action, 'params.query');
+                }
+                queryParams['selectedTab'] = 'all';
+                if (this.isUserLoggedIn()) {
+                    this.router.navigate(['search/Library', 1], { queryParams: queryParams });
+                } else {
+                    this.router.navigate(['explore', 1], { queryParams: queryParams });
+                }
+                break;
+            case 'banner_internal_url':
+                const route = _.get(data.action, 'params.route');
+                const anonymousUrl = _.get(data.action, 'params.anonymousRoute');
+                const url = (this.isUserLoggedIn()) ? route : anonymousUrl;
+                if (url) {
+                    this.router.navigate([url]);
+                    window.scroll({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+                }
+                break;
+            case 'banner_content':
+                const contentId = _.get(data.action, 'params.identifier');
+                const params = {};
+                params['key'] = contentId;
+                params['selectedTab'] = 'all';
+                this.router.navigate(['explore', 1], { queryParams: params });
+                break;
+        }
+    }
+
+    handleBannerClick(data) {
+        const telemetryData = {
+          context: {
+            env:  this.activatedRoute.snapshot.data.telemetry.env,
+            cdata: [{
+              id: data.code,
+              type: 'Banner'
+            }]
+          },
+          edata: {
+            id: data.code,
+            type: 'click',
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+          }
+        };
+        this.telemetryService.interact(telemetryData);
     }
 }

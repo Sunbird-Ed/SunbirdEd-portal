@@ -4,7 +4,7 @@
       <div class="header">{{group.label | translate}}</div>
       <sui-select-option class="active" *ngFor="let option of group.option"
                          [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"
-        (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
+        tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
     </div>
   </sui-select>
 </ng-container>
@@ -19,13 +19,13 @@
           <!-- <div class="header">{{group.label}}</div> -->
           <sui-select-option class="active" *ngFor="let option of group.option"
                              [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"
-            (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
+            tabindex="0" (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
         </div>
       </div>
       <div class="sbt-dropdown-section"  *ngIf="!showHeader">
         <div *ngFor="let option of optionData; let i=index">
           <sui-select-option class="active" [value]="option"
-            (click)="onChange({label: i, value: option , selectedOption: option })"></sui-select-option>
+            tabindex="0" (click)="onChange({label: i, value: option , selectedOption: option })"></sui-select-option>
         </div>
       </div>
     </sui-select>
