@@ -10,7 +10,7 @@ let envVariables = {
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
-  PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '') 
+  PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
   ? env.sunbird_portal_session_secret.split(',') : '',
 
   // discussion forum
@@ -40,6 +40,7 @@ let envVariables = {
   ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
+  CRYPTO_ENCRYPTION_KEY_EXTERNAL:env.crypto_encryption_key_external || '030702me8696b8ee2aa71x9n13l4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
   REPORT_SERVICE_URL: env.sunbird_report_service_url || 'https://staging.open-sunbird.org/api/data/v1/report-service',
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
@@ -96,6 +97,10 @@ let envVariables = {
   KEYCLOAK_DESKTOP_CLIENT: {
     clientId: env.sunbird_desktop_keycloak_client_id || 'desktop',
   },
+  KEYCLOAK_GOOGLE_IOS_CLIENT: {
+    clientId: env.sunbird_google_oauth_ios_clientId,
+    secret: env.sunbird_trampoline_desktop_keycloak_secret
+  },
 
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
@@ -107,6 +112,10 @@ let envVariables = {
   GOOGLE_OAUTH_CONFIG: {
     clientId: env.sunbird_google_oauth_clientId,
     clientSecret: env.sunbird_google_oauth_clientSecret
+  },
+  GOOGLE_OAUTH_CONFIG_IOS: {
+    clientId: env.sunbird_google_oauth_ios_clientId,
+    clientSecret: env.sunbird_google_oauth_ios_clientSecret
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   google_captcha_private_key: env.google_captcha_private_key,
@@ -201,7 +210,10 @@ let envVariables = {
   //ML URLs
   ML_URL: {
     OBSERVATION_URL: ''
-  }
+  },
+
+  // VDN URL
+  vdnURL:env.vdnURL || ''
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
@@ -215,9 +227,12 @@ try {
   if (process.env.sunbird_environment === 'local' && fs.existsSync(devConfig)) {
     const devVariables = require('./devConfig');
     module.exports = devVariables;
+    // console.log('local---->',devVariables);
   } else {
     module.exports = envVariables;
+   // console.log('env---->',envVariables);
   }
 } catch (error) {
   module.exports = envVariables;
+  // console.log('errorEnv---->',envVariables);
 }

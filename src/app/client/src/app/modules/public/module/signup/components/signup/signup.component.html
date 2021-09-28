@@ -11,19 +11,27 @@
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h2>
           <div class="year-birth my-16 required">
             <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
-           <label> <sui-select attr.aria-label="{{resourceService.frmelmnts?.lbl?.yearOfBirth}}" class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
+           <label *ngIf="!isIOSDevice"> <sui-select attr.aria-label="{{resourceService.frmelmnts?.lbl?.yearOfBirth}}" class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
                         (selectedOptionChange)="changeBirthYear($event)"
                         #select>
               <sui-select-option *ngFor="let option of select.filteredOptions"
                                  [value]="option" tabindex="0">
               </sui-select-option>
             </sui-select></label>
+            <!-- Dropdown only for iOS device -->
+            <label *ngIf="isIOSDevice">
+              <select name="birthYearOptions" id="birthYearOptions" class="sb-form-control birthYearOptions" (change)="changeBirthYear($event, true)">
+                <option value="" disabled selected>{{resourceService.frmelmnts?.lbl?.year}}</option>
+                <option *ngFor="let option of birthYearOptions" [value]="option">{{option}}</option>
+              </select>
+            </label>
+            <!-- Dropdown only for iOS device -->
           </div>
           <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
             <div class="required field mb-8">
-              <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts?.lbl?.name}}</label>
+              <label for="signup-form-name" class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts?.lbl?.name}}<span class="sb-color-red">*</span></label>
               <label for="signup-form-name" class="hide">{{resourceService.frmelmnts?.lbl?.name}}</label>
               <input id="signup-form-name" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
                 type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
@@ -32,23 +40,23 @@
                  *ngIf="!(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors) && !showUniqueError">
               <label id="phoneOrEmail" class="pt-0 font-weight-bold">
                 {{resourceService.frmelmnts.lbl.phoneOrEmail}}
-                <span *ngIf="isMinor">{{resourceService.frmelmnts?.lbl?.parentOrGuardian}}</span>
+                <span *ngIf="isMinor">{{resourceService.frmelmnts?.lbl?.parentOrGuardian}}</span><span class="sb-color-red">*</span>
               </label>
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors">{{resourceService.frmelmnts.lbl.validPhone}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.email.touched && signUpForm.controls['email'].errors">{{resourceService.frmelmnts.lbl.validEmail}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors)">{{showUniqueError}}</label>
-            <div class="inline fields mt-10 mb-10" id="Mandatory">
+            <div class="inline fields mt-10 mb-10">
               <div class="field">
                 <div class="ui radio checkbox" tabindex="0" (click)="showContact='phone'">
-                  <input class="sb-form-control" type="radio" checked="checked" value="phone" formControlName="contactType" role="phone" id="phoneNumber" aria-labelledby="Mandatory">
-                  <label for="phoneNumber" class="pl-20">{{resourceService.frmelmnts.lbl.phoneNumber}}</label>
+                  <input class="sb-form-control" type="radio" checked="checked" value="phone" formControlName="contactType" role="phone" id="phoneNumber" aria-labelledby="phoneNumberLbl">
+                  <label for="phoneNumber"  id="phoneNumberLbl" class="pl-20">{{resourceService.frmelmnts.lbl.phoneNumber}}</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox" tabindex="0" (click)="showContact='email'">
-                  <input class="sb-form-control" type="radio" formControlName="contactType" value="email" role="email" id="email" aria-labelledby="Mandatory">
-                  <label for="email" class="pl-20">{{resourceService.frmelmnts.lbl.email}}</label>
+                  <input class="sb-form-control" type="radio" formControlName="contactType" value="email" role="email" id="email" aria-labelledby="emailLbl">
+                  <label for="email" id="emailLbl"  class="pl-20">{{resourceService.frmelmnts.lbl.email}}</label>
                 </div>
               </div>
             </div>
@@ -68,7 +76,7 @@
               </div>
             </div>
             <div class="required field mb-16">
-              <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.password}}</label>
+              <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.password}}<span class="sb-color-red">*</span></label>
               <div class="ui icon input">
                 <label for="signup-form-password" class="hide">{{resourceService.frmelmnts.lbl.EnterPassword}}</label>
                 <input id="signup-form-password" tabindex="0" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
@@ -80,7 +88,7 @@
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors">{{resourceService.frmelmnts.lbl.errorConfirmPassword}}</label>
             <div class="required field mb-16">
-              <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors)">{{resourceService.frmelmnts.lbl.confirmPassword}}</label>
+              <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors)">{{resourceService.frmelmnts.lbl.confirmPassword}}<span class="sb-color-red">*</span></label>
               <label for="signup-form-confirmPassword" class="hide">{{resourceService.frmelmnts.lbl.reEnterPassword}}</label>
               <input id="signup-form-confirmPassword" tabindex="0" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors}"
                 formControlName="confirmPassword" type="password" name="confirmPassword" placeholder="{{resourceService.frmelmnts.lbl.reEnterPassword}}">
@@ -89,7 +97,7 @@
               {{resourceService.frmelmnts.lbl.fieldsmarked}}<span class="sb-error">*</span>{{resourceService.frmelmnts.lbl.mandatory  }}
           </div>
             <!-- Google invisible recaptcha -->
-            <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" tabindex='0' #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+            <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" tabindex='-1' #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
             <div class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
               <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
                      formControlName="tncAccepted" name="tncAccepted">

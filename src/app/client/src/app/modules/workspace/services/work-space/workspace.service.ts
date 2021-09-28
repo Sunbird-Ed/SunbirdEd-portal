@@ -103,7 +103,8 @@ export class WorkSpaceService {
 */
   openCollectionEditor(content, state) {
     let navigationParams = ['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework];
-    if (_.lowerCase(content.contentType) === 'course' && _.lowerCase(content.primaryCategory) === 'course') {
+    if ((_.toLower(content.contentType) === 'course' && _.toLower(content.primaryCategory) === 'course'
+    ) || _.toLower(content.contentType) === 'collection' || _.toLower(content.contentType) === 'textbook') {
       navigationParams = ['workspace/edit/', content.contentType, content.identifier, state];
     }
     if (content.status) {
@@ -367,6 +368,26 @@ export class WorkSpaceService {
         console.log(`Unable to fetch form details - ${error}`);
       }
     );
+  }
+
+  newtoggleWarning(type?: string) {
+    this.showWarning = sessionStorage.getItem('inEditor');
+    if (this.showWarning === 'true') {
+      this.listener = (event) => {
+        window.location.hash = 'no';
+        if (event.state) {
+          const alertMsg = type ? this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0040
+            : this.resourceService.messages.imsg.m0037;
+          this.browserBackEvent.emit();
+          alert(alertMsg);
+          window.location.hash = 'no';
+        }
+      };
+      window.addEventListener('popstate', this.listener, false);
+    } else {
+      window.location.hash = '';
+      window.removeEventListener('popstate', this.listener);
+    }
   }
 
 }

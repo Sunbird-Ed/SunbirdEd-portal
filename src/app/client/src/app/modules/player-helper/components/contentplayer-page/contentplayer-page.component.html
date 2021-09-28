@@ -10,5 +10,30 @@
 
     <div class="mt-8">
         <app-credits-and-licence *ngIf="contentDetails" [contentData]="contentDetails"></app-credits-and-licence>
+        <sui-accordion *ngIf="collectionData" class="styled fluid sb-accordion ui accordion content-metadeta__content">
+            <sui-accordion-panel>
+                <div title class="sb-accordion-title fnormal">
+                {{resourceService?.frmelmnts?.lbl?.collectionRelevantFor}}
+                <i class="chevron down icon ml-8"></i>
+                </div>
+                <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+                <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_boards">
+                    <span>{{resourceService?.frmelmnts?.lbl?.board}}:&nbsp;</span><span>{{ collectionData.se_boards}}</span>
+                </div>
+                <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_mediums">
+                    <span>{{resourceService?.frmelmnts?.lbl?.medium}}:&nbsp;</span><span>{{ collectionData?.se_mediums?.join(', ')}}</span>
+                </div>
+                <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_gradeLevels">
+                    <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ collectionData.se_gradeLevels}}</span>
+                </div>
+                <!-- <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.se_subjects">
+                    <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ collectionData?.se_subjects?.join(', ')}}</span>
+                </div> -->
+                <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="collectionData?.audience">
+                    <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ collectionData?.audience?.join(', ')}}</span>
+                </div>
+                </div>
+            </sui-accordion-panel>
+        </sui-accordion>
     </div>
 </div>

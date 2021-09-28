@@ -5,6 +5,7 @@
   width: calculateRem(280px) !important;
 }
 .sb-section-preference {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,6 +26,13 @@
       .header {
         font-size: calculateRem(16px);
       }
+      .preference-icon{
+        position: relative;
+        bottom: calculateRem(2px);
+        img{
+          width: calculateRem(14px);
+        }
+      }
       p, span {
         font-size:calculateRem(12px);
       }
@@ -33,6 +41,13 @@
       }
       .title {
         font-weight: bold;
+        margin-right: calculateRem(32px);
+        html[dir="rtl"] & {
+          margin-left: calculateRem(32px); 
+        }
+        @include respond-below(sm){
+         margin-right:0px;
+        }
       }
     }
     .change-preference {

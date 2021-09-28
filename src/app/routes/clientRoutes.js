@@ -16,6 +16,7 @@ const CONSTANTS = require('../helpers/constants');
 const { memoryStore } = require('../helpers/keyCloakHelper')
 const session = require('express-session');
 const { logger } = require('@project-sunbird/logger');
+const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -100,7 +101,7 @@ module.exports = (app, keycloak) => {
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
   '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
   '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*',
-   '/observation', '/observation/*','/solution','/solution/*','/questionnaire','/questionnaire/*'], 
+   '/observation', '/observation/*','/solution','/solution/*','/questionnaire','/questionnaire/*', '/uci-admin', '/uci-admin/*','/program'], 
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,
@@ -284,6 +285,10 @@ const redirectTologgedInPage = (req, res) => {
 			[`/${req.params.slug}/explore-course`]: '/learn'
 		}
 	}
+  if ((_.get(req, 'query.redirect_uri')) && (_.get(req, 'query.redirect_uri')).includes(VDNURL)){
+    res.cookie ('redirectPath', VDNURL);
+    res.cookie ('redirectTo', (_.get(req, 'query.redirect_uri')));
+  }
 	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
 		if (_.get(redirectRoutes, req.originalUrl)) {
 			const routes = _.get(redirectRoutes, req.originalUrl);

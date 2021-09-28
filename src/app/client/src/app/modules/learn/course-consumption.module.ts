@@ -27,6 +27,7 @@ import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-i
 import { NotificationModule } from '../notification/notification.module';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { PendingchangesGuard } from '@sunbird/public';
+import { GroupsModule } from '../groups';
 
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
@@ -56,7 +57,8 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
     PlayerHelperModule,
     CommonConsumptionModule,
     NotificationModule,
-    DiscussionModule
+    DiscussionModule,
+    GroupsModule
   ],
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
