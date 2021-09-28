@@ -254,6 +254,8 @@ require('./routes/uci.js')(app, keycloak) // report routes
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
+  
+require('./routes/notificationRoute.js')(app) // notification api routes
 
 require('./routes/groupRoutes.js')(app) // group api routes
 

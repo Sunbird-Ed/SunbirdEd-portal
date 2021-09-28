@@ -55,6 +55,10 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     proxyReqOpts.rejectUnauthorized = false
     proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
     proxyReqOpts.headers['connection'] = 'keep-alive';
+
+    if (srcReq.url.includes('/learner/notification/v1/feed/read/')) {
+      proxyReqOpts.headers['content-type'] = 'text/plain';
+    }
     // logger.info({
     //   URL: srcReq.url,
     //   body: reqBody.length > 500 ? "" : reqBody,
