@@ -1,59 +1,55 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
-const BASE_REPORT_URL = "/admin";
+const BASE_REPORT_URL = "/uci/admin";
 const proxy = require('express-http-proxy');
-const { discussions_middleware } = require('../helpers/environmentVariablesHelper.js');
-const jwt = require('jsonwebtoken');
-const _ = require('lodash')
-const bodyParser = require('body-parser');
-const dateFormat = require('dateformat')
+const { uci_service_base_url } = require('../helpers/environmentVariablesHelper.js');
 const { logger } = require('@project-sunbird/logger');
-const isAPIWhitelisted  = require('../helpers/apiWhiteList');
 
+// TODO: remove this hack for Local dev
+let verifyToken;
+if(process.env.sunbird_environment !== 'local'){
+    verifyToken = proxyUtils.verifyToken;
+}else{
+    verifyToken = () => (req, res, next) => {next()};
+}
 
 module.exports = function (app) {
-    app.get(`${BASE_REPORT_URL}/v1/bot/get`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/bot/search'`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/bot/pause/:botId`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/bot/start/:botId`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/bot/delete/:botId`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/bot/get/:id`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/bot/getByParam`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v1/bot/create`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v1/bot/update/:id`, proxyUtils.verifyToken(), proxyObject());
-
-    app.get(`${BASE_REPORT_URL}/v1/userSegment/get`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/userSegment/search`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v1/userSegment/create`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v1/userSegment/queryBuilder`, proxyUtils.verifyToken(), proxyObject());
-
-    app.post(`${BASE_REPORT_URL}/v1/conversationLogic/create`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v1/conversationLogic/update/:id`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/v1/conversationLogic/delete/:id`, proxyUtils.verifyToken(), proxyObject());
-
-    app.post(`${BASE_REPORT_URL}/v1/forms/upload`, proxyUtils.verifyToken(), proxyObject());
-
-    app.post(`/v1/graphql`, proxyUtils.verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/bot/get`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/bot/search'`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/bot/pause/:botId`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/bot/start/:botId`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/bot/delete/:botId`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/bot/get/:id`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/bot/getByParam`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v1/bot/create`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v1/bot/update/:id`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/userSegment/get`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/userSegment/search`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v1/userSegment/create`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v1/userSegment/queryBuilder`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v1/conversationLogic/create`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v1/conversationLogic/update/:id`, verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/v1/conversationLogic/delete/:id`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v1/forms/upload`, verifyToken(), proxyObject());
+    app.post(`/v1/graphql`, verifyToken(), proxyObject());
 };
 
 function addHeaders() {
     return function (proxyReqOpts, srcReq) {
-    //    let decoratedHeaders =  proxyUtils.decorateRequestHeaders(discussions_middleware)()
-        proxyReqOpts.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
-        return proxyReqOpts;
+       return proxyUtils.decorateRequestHeaders(uci_service_base_url)
     }
 }
 
 function proxyObject() {
-    return proxy(discussions_middleware, {
-        proxyReqOptDecorator: addHeaders(),
+    return proxy(uci_service_base_url, {
+        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(uci_service_base_url),
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
-            console.log("Request comming from :", urlParam)
+            logger.info(`[UCI] Request coming from: ${uci_service_base_url} :: ${urlParam}`);
             let query = require('url').parse(req.url).query;
             if (query) {
-                return require('url').parse(discussions_middleware + urlParam + '?' + query).path
+                return require('url').parse(uci_service_base_url + urlParam + '?' + query).path
             } else {
-                return require('url').parse(discussions_middleware + urlParam).path
+                return require('url').parse(uci_service_base_url + urlParam).path
             }
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {

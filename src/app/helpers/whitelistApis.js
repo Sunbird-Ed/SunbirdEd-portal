@@ -23,7 +23,9 @@ const ROLE = {
   PUBLIC: 'PUBLIC',
   TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
   ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
-  ANONYMOUS: 'ANONYMOUS'
+  ANONYMOUS: 'ANONYMOUS',
+  PROGRAM_MANAGER:"PROGRAM_MANAGER",
+  PROGRAM_DESIGNER: "PROGRAM_DESIGNER"
 };
 
 const API_LIST = {
@@ -707,19 +709,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    // notification apis
-    '/learner/notification/v1/feed/read/:uid': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
-    '/learner/notification/v1/feed/delete': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
-    '/learner/notification/v1/feed/update': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
+
     //certreg reg apis
     '/certreg/v1/user/search': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1660,11 +1650,11 @@ const API_LIST = {
     },
     '/report/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
     '/report/request/read/:tag': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1676,13 +1666,13 @@ const API_LIST = {
     },
     '/report/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
     '/dataset/v1/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
-    '/kendra/users/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
+    '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1761,7 +1751,80 @@ const API_LIST = {
     '/learner/framework/v1/read/ekstep_ncert_k-12': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
-    }
+    },
+    '/v1/user-extension/programsByPlatformRoles': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
+    },
+    '/v1/user-extension/solutions': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
+    },
+    // UCI Related APIs
+    "/uci/admin/v1/bot/get": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/search": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/pause/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/start/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/delete/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/getByParam": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/update/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/get": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/search": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/queryBuilder": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/update/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/delete/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/forms/upload": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1872,7 +1935,7 @@ const API_LIST = {
     '/dataset/v1/request/list/:tag',
     '/dataset/v1/request/read/:tag',
     '/report/request/read/:tag',
-    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId',
+    '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId',
     '/assessment/observationSubmissions/mlsurvey/v1/list/:id',
     '/kendra/users/mlcore/v1/targetedEntity/:id',
     '/assessment/observationSubmissions/mlsurvey/v1/create/:id',
@@ -1880,7 +1943,23 @@ const API_LIST = {
     '/assessment/observations/mlsurvey/v1/updateEntities/:id',
     '/assessment/observationSubmissions/mlsurvey/v1/update/:id',
     '/action/collection/v1/import/:id',
-    '/action/collection/v1/export/:id'
+    '/action/collection/v1/export/:id',
+    '/uci/admin/v1/bot/get',
+    '/uci/admin/v1/bot/search',
+    '/uci/admin/v1/bot/pause/:botId',
+    '/uci/admin/v1/bot/start/:botId',
+    '/uci/admin/v1/bot/delete/:botId',
+    '/uci/admin/v1/bot/getByParam',
+    '/uci/admin/v1/bot/create',
+    '/uci/admin/v1/bot/update/:id',
+    '/uci/admin/v1/userSegment/get',
+    '/uci/admin/v1/userSegment/search',
+    '/uci/admin/v1/userSegment/create',
+    '/uci/admin/v1/userSegment/queryBuilder',
+    '/uci/admin/v1/conversationLogic/create',
+    '/uci/admin/v1/conversationLogic/update/:id',
+    '/uci/admin/v1/conversationLogic/delete/:id',
+    '/uci/admin/v1/forms/upload',
   ]
 };
 module.exports = API_LIST;

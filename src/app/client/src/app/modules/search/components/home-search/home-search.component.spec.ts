@@ -2,7 +2,7 @@ import { HomeSearchComponent } from './home-search.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { SearchService, CoursesService, CoreModule, LearnerService, PlayerService, SchemaService} from '@sunbird/core';
+import { SearchService, CoursesService, CoreModule, LearnerService, PlayerService,  UserService, SchemaService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './home-search.component.spec.data';
 import { Response as contentResponse } from '../../../../modules/public/module/explore/components/explore-content/explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
@@ -144,7 +144,7 @@ describe('HomeSearchComponent', () => {
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
@@ -155,7 +155,7 @@ describe('HomeSearchComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
@@ -166,7 +166,7 @@ describe('HomeSearchComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
@@ -178,7 +178,7 @@ describe('HomeSearchComponent', () => {
     activatedRoute.changeQueryParams({board: ['NCRT']});
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
@@ -231,9 +231,7 @@ describe('HomeSearchComponent', () => {
     spyOn(courseService, 'findEnrolledCourses').and.returnValue({ onGoingBatchCount: 0, expiredBatchCount: 0 });
     spyOn(playerService, 'playContent').and.callThrough();
     const data = {
-      metaData: {
-        identifier: '123',
-      }
+      identifier: 'sample-identifier'
     };
     component.playContent({data});
     expect(playerService.playContent).toHaveBeenCalledWith(data);
@@ -252,9 +250,7 @@ describe('HomeSearchComponent', () => {
     };
     spyOn(courseService, 'findEnrolledCourses').and.returnValue(returnValue);
     const data = {
-      metaData: {
-        identifier: '123',
-      }
+      identifier: 'sample-identifier'
     };
     component.playContent({data});
   });
@@ -346,6 +342,23 @@ describe('HomeSearchComponent', () => {
     component.handleFilterChange(Response.cachedFilters);
     const res = cacheService.get('searchFilterAll');
     expect(res).toEqual(Response.cachedFilters);
+  });
+
+  it('should return view more list', () => {
+    const events = {
+      name: 'sample-name/?',
+      contents: JSON.stringify({name: 'sample-content'})
+    };
+    component.queryParams = {
+      returnTo: 'home'
+    };
+    const userServices = TestBed.get(UserService);
+    spyOn(userServices, 'loggedIn').and.returnValue(true);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    component.viewAll(events);
+    expect(events.contents).toBeTruthy();
+    expect(events.name).toBeTruthy();
   });
 
 });

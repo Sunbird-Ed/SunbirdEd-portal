@@ -162,6 +162,9 @@ export class CopyContentService {
     let url = '';
     if (contentData.mimeType === 'application/vnd.ekstep.content-collection') {
       url = `/workspace/content/edit/collection/${copiedIdentifier}/${contentData.contentType}/draft/${contentData.framework}/Draft`;
+      if ((_.toLower(contentData.contentType) !== 'lessonplan')) {
+            url = `workspace/edit/${contentData.contentType}/${copiedIdentifier}/draft/Draft`;
+      }
     } else if (contentData.mimeType === 'application/vnd.ekstep.ecml-archive') {
       url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
     } else {

@@ -82,7 +82,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.formData = formData;
-      this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+      this.globalSearchFacets = (this.queryParams && this.queryParams.searchFilters) ?
+      JSON.parse(this.queryParams.searchFilters) : _.get(this.allTabData, 'search.facets');
       this.listenLanguageChange();
       this.initFilters = true;
     }, error => {
@@ -198,7 +199,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     const pageType = _.get(this.queryParams, 'pageTitle');
     const filters: any = this.schemaService.schemaValidator({
       inputObj: this.queryParams || {}, properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'description', 'mediaType', 'contentType', 'utm_source']
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'description', 'mediaType', 'contentType', 'searchFilters', 'utm_source']
     });
     if (!filters.channel) {
       filters.channel = this.hashTagId;
@@ -253,8 +254,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       .pipe(
         mergeMap(data => {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-          const filteredContents = omit(groupBy(get(data, 'result.content'), content => {
-            return content['groupByKey'] || content['subject'] || 'Others';
+          const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
+            return (this.queryParams['se_subjects'] ? content['primaryCategory'] : content['subject']);
         }), ['undefined']);
         for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key && key.split(',').length > 1;
@@ -487,7 +488,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-  logTelemetry(content, actionId) {
+logTelemetry(content, actionId) {
     const telemetryInteractObject = {
       id: content.identifier,
       type: content.contentType,
@@ -516,4 +517,44 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
     this.telemetryService.interact(appTelemetryInteractData);
   }
+  public viewAll(event) {
+    this.logViewAllTelemetry(event);
+    const queryParams = { content: JSON.stringify(event.contents) , ...{ selectedTab: this.queryParams.returnTo, viewMore: true} };
+    const sectionUrl = '/explore' + '/view-all/' + event.name.replace(/\s/g, '-');
+    this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: {} });
+ }
+
+ public isUserLoggedIn(): boolean {
+  return this.userService && (this.userService.loggedIn || false);
 }
+
+logViewAllTelemetry(event) {
+  const telemetryData = {
+      cdata: [{
+          type: 'section',
+          id: event.name
+      }],
+      edata: {
+          id: 'view-all'
+      }
+  };
+  this.getInteractEdata(telemetryData);
+}
+
+getInteractEdata(event) {
+  const cardClickInteractData = {
+      context: {
+          cdata: event.cdata,
+          env: this.isUserLoggedIn() ? 'library' : this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+          id: get(event, 'edata.id'),
+          type: 'click',
+          pageid: this.isUserLoggedIn() ? 'library' : this.activatedRoute.snapshot.data.telemetry.pageid
+      },
+      object: get(event, 'object')
+  };
+  this.telemetryService.interact(cardClickInteractData);
+}
+}
+

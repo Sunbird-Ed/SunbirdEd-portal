@@ -162,32 +162,13 @@ describe('ProfilePageComponent', () => {
     const formservice = TestBed.get(FormService);
     spyOn(formservice, 'getFormConfig').and.callThrough();
     spyOn(component, 'getOrgDetails').and.callThrough();
-    spyOn(component, 'getContribution').and.callThrough();
     spyOn(component, 'getTrainingAttended').and.callThrough();
     component.ngOnInit();
     expect(component).toBeTruthy();
     expect(component.userProfile).toEqual(Response.userData);
     expect(component.getOrgDetails).toHaveBeenCalled();
-    expect(component.getContribution).toHaveBeenCalled();
     expect(component.getTrainingAttended).toHaveBeenCalled();
     expect(formservice.getFormConfig).toHaveBeenCalledTimes(4);
-  });
-
-  it('should call search service to get my contributions data', () => {
-    const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'searchContentByUserId').and.returnValue(of(Response.success));
-    component.getContribution();
-    expect(component.contributions).toBeDefined();
-  });
-
-  it('should not call user search service when my contributions data count is zero', () => {
-    const searchService = TestBed.get(SearchService);
-    searchService._searchedContentList = Response.zeroData.result;
-    const response = searchService.searchedContentList;
-    component.getContribution();
-    expect(response.count).toEqual(0);
-    expect(component.contributions).toBeDefined();
-    expect(component.contributions).toEqual([]);
   });
 
   it('should call play content when clicked on one of my contributions', () => {
@@ -320,7 +301,7 @@ describe('ProfilePageComponent', () => {
     spyOn(telemetryService, 'interact').and.stub();
     component.navigateToCourse(courseData);
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
-    expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
+    expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234/batch/124579954']);
   });
   it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
     component.userProfile = Response.userData;

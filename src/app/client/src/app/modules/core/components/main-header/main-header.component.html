@@ -405,6 +405,15 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.dashboard}}
           </li>
+        
+          <li class="list-item" *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission
+          [permission]='programDashboardRole' (click)="toggleSideMenu(false)" routerLink="program">
+          <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
+            </svg></i>
+            {{resourceService.frmelmnts?.lnk?.programDashboard}}
+        </li>
+
           <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false)"
             *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission [permission]='orgSetupRole'
             routerLink="org/orgType">
@@ -431,7 +440,7 @@
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#Admin-icon"></use>
               </svg></i>
-            {{resourceService.frmelmnts?.lbl?.connunicationConsole}}
+            {{resourceService.frmelmnts?.lbl?.communicationConsole}} 
           </li>
 
           <li class="list-item" role="link" appOnlineOnly (click)="toggleSideMenu(false)"

@@ -55,6 +55,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myActivityRole: Array<string>;
   orgAdminRole: Array<string>;
   orgSetupRole: Array<string>;
+  programDashboardRole: Array<string>;
   avtarMobileStyle = {
     backgroundColor: 'transparent',
     color: '#AAAAAA',
@@ -565,6 +566,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.programDashboardRole = this.config.rolesConfig.headerDropdownRoles.programDashboardRole;
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
@@ -746,8 +748,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           const successMessage = filterPipe.transform(_.get(this.resourceService, title),
             '{searchString}', isInside);
           this.showingResult = successMessage;
-          this.showingDescription = filterPipe.transform(_.get(this.resourceService, description),
-          '{searchString}', isInside) + ' ' + this.resourceService.instance;
+          this.showingDescription = description ? (filterPipe.transform(_.get(this.resourceService, description),
+          '{searchString}', isInside) + ' ' + this.resourceService.instance) : '';
         } else {
           this.showBackButton = false;
         }
