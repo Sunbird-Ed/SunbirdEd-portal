@@ -40,6 +40,15 @@ const keycloakMergeGoogleAndroid = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
   }
 })
+const keycloakGoogleIos = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_IOS_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_IOS_CLIENT.secret
+  }
+})
 
 const keycloakGoogleDesktop = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
@@ -57,6 +66,16 @@ const keycloakMergeGoogleDesktop = getKeyCloakClient({
   realm: envHelper.PORTAL_REALM,
   credentials: {
     secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
+  }
+})
+
+const keycloakMergeGoogleIos =  getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
   }
 })
 
@@ -143,6 +162,10 @@ const createSession = async (emailId, reqQuery, req, res) => {
     console.log('reqQuery.client_id', reqQuery.client_id);
     keycloakClient = keycloakGoogleDesktop;
     keycloakMergeClient = keycloakMergeGoogleDesktop;
+    scope = 'offline_access';
+  } else if(reqQuery.client_id === 'ios'){
+    keycloakClient = keycloakGoogleIos;
+    keycloakMergeClient = keycloakMergeGoogleIos;
     scope = 'offline_access';
   }
 

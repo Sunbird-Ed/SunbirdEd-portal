@@ -331,3 +331,17 @@
   }
 }
 
+.sb-preference-modal{
+ .sb-modal-header {
+   .hr-preference-line{
+    border-bottom: calculateRem(1px) solid var(--rc-FFD954);
+    width: 72%;
+    position: relative;
+    bottom: calculateRem(8px);
+   }
+   .hr-border{
+    border-bottom: calculateRem(1px) solid var(--rc-FFD954);
+   }
+ }
+}
+

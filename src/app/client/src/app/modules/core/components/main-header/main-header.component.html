@@ -389,7 +389,7 @@
             {{resourceService.frmelmnts?.lnk?.profile}}
           </li>
 
-          <li class="list-item" role="link" *ngIf="userType=='administrator'" tabindex="0" [routerLink]="['/solution/solution-listing']" (click)="toggleSideMenu(false);" >
+          <li class="list-item" role="link" *ngIf="userType=='administrator' || showReportMenu" tabindex="0" [routerLink]="['/solution/solution-listing']" (click)="toggleSideMenu(false);" >
             <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/statistics.svg#Layer_1"></use>
               </svg></i>
@@ -404,6 +404,15 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.dashboard}}
           </li>
+        
+          <li class="list-item" *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission
+          [permission]='programDashboardRole' (click)="toggleSideMenu(false)" routerLink="program">
+          <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
+            </svg></i>
+            {{resourceService.frmelmnts?.lnk?.programDashboard}}
+        </li>
+
           <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false)"
             *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission [permission]='orgSetupRole'
             routerLink="org/orgType">
@@ -423,6 +432,14 @@
                 <use xlink:href="./assets/images/sprite.svg#manage"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lbl?.manage}}
+          </li>
+
+          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
+            appPermission [permission]='orgAdminRole' routerLink="uci-admin">
+            <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#Admin-icon"></use>
+              </svg></i>
+            {{resourceService.frmelmnts?.lbl?.connunicationConsole}}
           </li>
 
           <li class="list-item" role="link" appOnlineOnly (click)="toggleSideMenu(false)"

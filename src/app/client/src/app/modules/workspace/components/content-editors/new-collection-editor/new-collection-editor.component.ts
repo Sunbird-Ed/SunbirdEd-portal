@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, ServerResponse} from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
   templateUrl: './new-collection-editor.component.html',
   styleUrls: ['./new-collection-editor.component.scss']
 })
-export class NewCollectionEditorComponent implements OnInit {
+export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public editorConfig: any;
   public deviceId: string;
   public portalVersion: string;
@@ -24,6 +24,7 @@ export class NewCollectionEditorComponent implements OnInit {
   public queryParams: object;
   public collectionDetails: any;
   public showQuestionEditor = false;
+  private browserBackEventSubscribe;
   public hierarchyConfig: any;
   public layoutType: string;
   public baseUrl: string;
@@ -51,6 +52,7 @@ export class NewCollectionEditorComponent implements OnInit {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.userProfile = this.userService.userProfile;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
+    this.disableBrowserBackButton();
     this.getDetails().pipe(
       first(),
       tap(data => {
@@ -249,7 +251,8 @@ export class NewCollectionEditorComponent implements OnInit {
       this.layoutService.initiateSwitchLayout();
       localStorage.removeItem('collectionEditorLayoutType');
     }
-    if (this.routeParams.contentStatus.toLowerCase() === 'draft') {
+    const contentStatus = this.routeParams.contentStatus.toLowerCase();
+    if (contentStatus === 'draft' || contentStatus === 'live') {
       this.retireLock();
     } else {
       this.redirectToWorkSpace();
@@ -266,6 +269,14 @@ export class NewCollectionEditorComponent implements OnInit {
     } else {
       this.navigationHelperService.navigateToWorkSpace('/workspace/content/draft/1');
     }
+  }
+
+  ngOnDestroy() {
+    if (this.browserBackEventSubscribe) {
+      this.browserBackEventSubscribe.unsubscribe();
+    }
+    sessionStorage.setItem('inEditor', 'false');
+    this.workSpaceService.newtoggleWarning();
   }
 
   setEditorConfig() {
@@ -322,11 +333,31 @@ export class NewCollectionEditorComponent implements OnInit {
     this.editorConfig.config = _.assign(this.editorConfig.config, this.hierarchyConfig);
   }
 
+  private disableBrowserBackButton() {
+    window.location.hash = 'no';
+    sessionStorage.setItem('inEditor', 'true');
+    this.workSpaceService.newtoggleWarning(this.routeParams.type);
+    this.browserBackEventSubscribe = this.workSpaceService.browserBackEvent.subscribe(() => {
+      const intractEventEdata: IInteractEventEdata = {
+        id: 'browser-back-button',
+        type: 'click',
+        pageid: 'collection-editor'
+      };
+      this.generateInteractEvent(intractEventEdata);
+    });
+  }
+
   private getEditorMode() {
     const contentStatus = this.collectionDetails.status.toLowerCase();
-    if (contentStatus === 'draft' || contentStatus === 'live') {
+    if (contentStatus === 'draft' || contentStatus === 'live' || contentStatus === 'flagdraft'
+        || contentStatus === 'unlisted') {
       return 'edit';
     }
+
+    if (contentStatus === 'flagged' || contentStatus === 'flagreview') {
+      return 'read';
+    }
+
     if (contentStatus === 'review') {
       if (this.collectionDetails.createdBy === this.userProfile.id) {
         return 'read';
@@ -335,4 +366,24 @@ export class NewCollectionEditorComponent implements OnInit {
       }
     }
   }
+
+  generateInteractEvent(intractEventEdata) {
+    if (intractEventEdata) {
+      const telemetryInteractData: any = {
+        context: {
+          env: 'collection-editor'
+        },
+        edata: intractEventEdata
+      };
+      if (this.collectionDetails) {
+        telemetryInteractData.object = {
+          id: this.collectionDetails.identifier,
+          type: this.collectionDetails.contentType || this.collectionDetails.resourceType || 'collection',
+          ver: this.collectionDetails.pkgVersion ? this.collectionDetails.pkgVersion.toString() : '1.0',
+        };
+      }
+      this.telemetryService.interact(telemetryInteractData);
+    }
+  } 
+
 }

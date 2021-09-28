@@ -12,8 +12,8 @@
 
  <!-- language dropdown -->
  <span class="mb-0" *ngIf="isLayoutAvailable()">
- <sui-select *ngIf="isLayoutAvailable()" role="combobox" aria-label="Select Language" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick"[(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
+ <sui-select *ngIf="isLayoutAvailable()" role="combobox" aria-label="Select Language" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
   <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
-    [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option" role="option"  title="{{option.accessibleText}}">
+    [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option" role="option" attr.aria-label="{{option.accessibleText}}" title="{{option.accessibleText}}">
   </sui-select-option>
 </sui-select></span>

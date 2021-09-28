@@ -86,6 +86,34 @@ export const ProfileData = {
     },
   };
 
+  export const AlertNotApplicable={
+    type: 'Not Applicable',
+    size: 'mini',
+    isClosed: true,
+    content: {
+      title: 'Update Profile',
+      body: {
+        type: 'text', // text,checkbox
+        data: 'Are you sure want to make not applicable',
+      },
+    },
+    footer: {
+      className: 'double-btn',
+      buttons: [
+        {
+          type: 'accept',
+          returnValue: true,
+          buttonText: 'proceed',
+        },
+        {
+          type: 'cancel',
+          returnValue: false,
+          buttonText: 'Go Back',
+        }
+      ],
+    },
+  };
+
   export const Entity = {
     action: 'change',
     data: {

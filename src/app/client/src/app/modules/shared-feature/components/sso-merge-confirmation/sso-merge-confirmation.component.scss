@@ -6,3 +6,8 @@
     padding-left: calculateRem(16px);
     line-height: normal;
 }
+
+.signup-background.signup-background--sso {
+    position: fixed;
+    z-index: 9999;
+}

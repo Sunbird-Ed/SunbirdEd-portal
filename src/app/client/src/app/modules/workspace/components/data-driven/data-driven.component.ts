@@ -284,8 +284,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.description = data.description ? data.description : this.description,
       requestData.createdBy = this.userService.userProfile.id,
       requestData.organisation = _.uniq(this.userService.orgNames),
-      requestData.createdFor = this.userService.userProfile.organisationIds,
-      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+      requestData.createdFor = this.userService.userProfile.organisationIds;
     if (this.framework) {
       requestData.framework = this.framework;
     }
@@ -319,6 +318,12 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     }
     if (this.primaryCategory) {
       requestData.primaryCategory = this.primaryCategory;
+    }
+
+    if (data.primaryCategory && data.primaryCategory === 'Digital Textbook') {
+      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors['textbook'];
+    } else {
+      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
     }
 
     return requestData;
@@ -359,8 +364,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const framework = this.framework;
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
-    }  else if (this.contentType === 'course') {
-      this.router.navigate(['workspace/edit/', 'Course', content.identifier, state, 'Draft']);
+    }  else if (this.contentType === 'course' || this.contentType === 'collection' || this.contentType === 'textbook') {
+      const contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+      this.router.navigate(['workspace/edit/', contentType, content.identifier, state, 'Draft']);
     } else {
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);

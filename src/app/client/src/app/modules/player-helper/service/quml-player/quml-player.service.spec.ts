@@ -78,5 +78,13 @@ describe('qumlPlayerService', () => {
     const qumlPlayerService = TestBed.get(QumlPlayerService);
     qumlPlayerService.clearQuestionMap();
   });
+  it('#getAllQuestionSet() should make API call to get the maxScore of given identifiers ', () => {
+    const qumlPlayerService = TestBed.get(QumlPlayerService);
+    spyOn(qumlPlayerService, 'getAllQuestionSet').and.callThrough();
+    qumlPlayerService.getAllQuestionSet(['do_1234','do_1235']).subscribe((data) => {
+      expect(data).toEqual({result :{ questionSet : { maxScore : '1'} }});
+    });
+    expect(qumlPlayerService.getAllQuestionSet).toHaveBeenCalledWith(['do_1234','do_1235']);
+  });
 
 });

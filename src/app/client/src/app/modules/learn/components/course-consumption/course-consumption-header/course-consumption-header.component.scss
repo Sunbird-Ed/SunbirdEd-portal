@@ -86,3 +86,16 @@
     font-size: calculateRem(14px);
   }
 }
+
+.sb-activity-dashboard-btn {
+  // background: transparent;
+  box-shadow: none;
+  color: #FFF !important;
+  font-size: 12px;
+  font-weight: bold;
+}
+@include respond-below(sm){
+  .sb-activity-dashboard-btn-content{
+    margin-bottom: 0.5rem;
+  }
+}
