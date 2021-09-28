@@ -77,7 +77,7 @@
               [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="clearSelection()"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 pt-8">
+              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               {{resourceService?.frmelmnts?.btn?.cancel}}
             </button>
 
