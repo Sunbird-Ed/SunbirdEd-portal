@@ -1,5 +1,5 @@
-const { createSession, fetchUserByEmailId, createUserWithMailId } = require('../../helpers/googleOauthHelper');
-const envHelper = require('../../helpers/environmentVariablesHelper.js');
+const { createSession, fetchUserByEmailId, createUserWithMailId } = require('../googleOauthHelper');
+const envHelper = require('../environmentVariablesHelper.js');
 const { logger } = require('@project-sunbird/logger');
 const jwksClient = require('jwks-rsa');
 const jwt = require('jsonwebtoken');
