@@ -80,7 +80,7 @@ export class AccessDiscussionComponent implements OnInit {
         object: {}
       },
       edata: {
-        pageid: "forum-click",
+        pageid: "group-details",
         type: "CLICK",
         id: "forum-click",
         duration: 0.002 
