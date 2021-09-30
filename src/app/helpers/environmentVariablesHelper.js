@@ -213,7 +213,10 @@ let envVariables = {
   },
 
   // VDN URL
-  vdnURL:env.vdnURL || ''
+  vdnURL:env.vdnURL || '',
+
+  // Add below variable for Apple Login
+  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
@@ -236,6 +239,3 @@ try {
   module.exports = envVariables;
   // console.log('errorEnv---->',envVariables);
 }
-
-// Add below variable for Apple Login
-// APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"
