@@ -156,16 +156,19 @@ export class QuestionnaireComponent
       data: payload,
     };
     this.observationService.post(paramOptions).subscribe(
-      (data) => {
+      async (data) => {
         if (payload.evidence.status === 'draft') {
           this.backOrContinue();
           return;
         }
-        this.openAlert(
+       let userResponse = await this.openAlert(
           this.resourceService.frmelmnts.lbl.successfullySubmitted
-        );
-        this.canLeave = true;
-        this.location.back();
+       );
+        if (userResponse) {
+          this.canLeave = true;
+          this.location.back();
+        }
+        
       },
       (error) => {
         this.openAlert(
@@ -228,7 +231,7 @@ export class QuestionnaireComponent
       });
       alertMetaData.footer.className = 'double-btn';
     }
-    return this.observationUtilService.showPopupAlert(alertMetaData);
+    return await this.observationUtilService.showPopupAlert(alertMetaData);
   }
 
   scrollToContent(id) {
