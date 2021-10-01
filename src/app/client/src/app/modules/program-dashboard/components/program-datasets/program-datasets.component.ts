@@ -188,7 +188,6 @@ export class DatasetsComponent implements OnInit {
         if(this.formData[solution[0].type]){
           this.reportTypes = this.formData[solution[0].type];
         } else {
-
           let program = this.programSelected;
           this.reportForm.reset();
           this.solutionSelected = $event;
