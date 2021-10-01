@@ -14,7 +14,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('DatasetsComponent', () => {
+fdescribe('DatasetsComponent', () => {
   let component: DatasetsComponent;
   let fixture: ComponentFixture<DatasetsComponent>;
 
@@ -212,6 +212,28 @@ describe('DatasetsComponent', () => {
         "datasetId": "ml-observation-status-report"
       }
     ]);
+
+
+  }));
+
+  it('should call selectSolution with survey',fakeAsync(() => {
+
+    const spy = spyOn(component, 'selectSolution').and.callThrough();
+    tick(1000);
+    component.programSelected = "5f34ec17585244939f89f90c";
+    component.formData = mockData.FormData;
+    
+    component.onDemandReportData = [];
+    const onDemandReportService = TestBed.get(OnDemandReportService);
+    spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
+    component.loadReports();
+
+    tick(1000);
+    component.solutions = mockData.solutions.result;
+    component.selectSolution("5fbb75537380505718640438");
+    expect(spy).toHaveBeenCalled();
+    expect(component.reportTypes).toEqual([]);
+  
 
   }));
 

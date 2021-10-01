@@ -64,6 +64,7 @@ export class DatasetsComponent implements OnInit {
   });
 
   programSelected: any;
+  solutionSelected: any;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -157,15 +158,17 @@ export class DatasetsComponent implements OnInit {
 
   public programSelection($event) {
 
+    this.reportForm.reset();
     let program = this.programs.filter(data => {
       if (data._id == $event) {
         return data
       }
     })
+    this.programSelected = $event;
     this.solutions = [];
     this.reportTypes = [];
+    this.onDemandReportData = [];
     this.getSolutionList(program[0]);
-
   }
 
   public selectSolution($event) {
@@ -176,13 +179,23 @@ export class DatasetsComponent implements OnInit {
           return data
         }
       });
-      this.tag = solution[0]._id;
+      this.tag = solution[0]._id+"_"+this.userId;
       this.loadReports();
       if (solution[0].isRubricDriven == true && solution[0].type == "observation") {
         let type = solution[0].type + "_with_rubric";
         this.reportTypes = this.formData[type];
       } else {
-        this.reportTypes = this.formData[solution[0].type];
+        if(this.formData[solution[0].type]){
+          this.reportTypes = this.formData[solution[0].type];
+        } else {
+
+          let program = this.programSelected;
+          this.reportForm.reset();
+          this.solutionSelected = $event;
+          this.reportForm.controls.programName.setValue(program);
+          this.reportTypes = [];
+    
+        }
       }
 
     }
