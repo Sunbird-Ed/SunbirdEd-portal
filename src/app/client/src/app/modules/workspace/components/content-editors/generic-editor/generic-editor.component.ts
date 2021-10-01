@@ -33,6 +33,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public contentDetails: any;
   public videoMaxSize: any;
   public isLargeFileUpload = false;
+  public defaultContentFileSize: any;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
 
@@ -49,7 +50,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')) ?
       (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value : 'youtube.com,youtu.be';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
-      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
+      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '150';
+      this.defaultContentFileSize = (<HTMLInputElement>document.getElementById('defaultContentFileSize')) ?
+      (<HTMLInputElement>document.getElementById('defaultContentFileSize')).value : 150;
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -221,6 +224,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.videoMaxSize = this.videoMaxSize;
+    window.config.dockDefaultFileSize = this.defaultContentFileSize;
   }
   /**
   * Re directed to the workspace on close of modal

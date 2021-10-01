@@ -178,6 +178,7 @@ function getLocals(req) {
   locals.deviceApi = envHelper.sunbird_device_api
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
+  locals.defaultContentFileSize = envHelper.sunbird_content_default_file_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
   locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
   locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant

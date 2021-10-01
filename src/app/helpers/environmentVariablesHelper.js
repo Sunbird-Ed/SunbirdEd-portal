@@ -140,7 +140,8 @@ let envVariables = {
   sunbird_azure_account_key: env.sunbird_azure_account_key,
   desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
-  sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
+  sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '150',
+  sunbird_content_default_file_size: env.sunbird_content_default_file_size || '150',
   sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
 
 
