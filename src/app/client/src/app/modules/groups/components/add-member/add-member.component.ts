@@ -216,7 +216,10 @@ export class AddMemberComponent implements OnInit, OnDestroy {
         type: 'CLICK',
         pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
       },
-      object: {}
+      object: { 
+                id: _.get(this.groupData, 'id'),
+                type: 'Group',
+                ver: '1.0' }
     };
     if (edata) {
       interactData.edata.type = edata.type;
