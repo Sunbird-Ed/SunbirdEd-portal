@@ -14,7 +14,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 
-fdescribe('DatasetsComponent', () => {
+describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
   let fixture: ComponentFixture<DatasetsComponent>;
 
