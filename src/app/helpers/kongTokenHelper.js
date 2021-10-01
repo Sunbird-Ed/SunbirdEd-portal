@@ -13,6 +13,7 @@ const { sendRequest }                       = require('./httpRequestHandler');
 const SUNBIRD_DEFAULT_TTL                   = require('./environmentVariablesHelper.js').sunbird_session_ttl;
 const SUNBIRD_ANONYMOUS_TTL                 = require('./environmentVariablesHelper.js').sunbird_anonymous_session_ttl;
 const KONG_DEVICE_REGISTER_TOKEN            = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_TOKEN;
+const KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN  = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN;
 
 const KONG_LOGGEDIN_FALLBACK_TOKEN          = require('./environmentVariablesHelper.js').sunbird_logged_default_token;
 const KONG_ANONYMOUS_FALLBACK_TOKEN         = require('./environmentVariablesHelper.js').sunbird_anonymous_default_token;
@@ -23,7 +24,7 @@ const KONG_REFRESH_TOKEN_API                = require('./environmentVariablesHel
 const KONG_LOGGEDIN_DEVICE_REGISTER_API     = require('./environmentVariablesHelper.js').sunbird_loggedin_device_register_api;
 const KONG_ANONYMOUS_DEVICE_REGISTER_API    = require('./environmentVariablesHelper.js').sunbird_anonymous_device_register_api;
 
-const BLACKLISTED_URL                       = ['/service/health', '/health'];
+const BLACKLISTED_URL                       = ['/service/health', '/health', '/assets/images'];
 const KONG_ACCESS_TOKEN                     = 'userAccessToken';
 const KONG_DEVICE_BEARER_TOKEN              = 'apiBearerToken';
 
@@ -76,7 +77,7 @@ const registerDeviceWithKong = () => {
   return async function (req, res, next) {
     // Check if URL is blacklisted; forward request in case blacklisted
     if (!unless(req)) {
-      if (KONG_DEVICE_REGISTER_TOKEN === 'true' && !getKongTokenFromSession(req)) {
+      if (KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true' && !getKongTokenFromSession(req)) {
         _log(req, 'KONG_TOKEN :: requesting device register with kong');
         generateKongToken(req).then((kongToken) => {
           let _token;
@@ -163,8 +164,8 @@ const registerDeviceWithKong = () => {
  */
 const _refreshLoginTTL = (req, res, next) => {
   if (req.session.userId) {
-    req.session.cookie.maxAge = SUNBIRD_DEFAULT_TTL;
-    req.session.cookie.expires = new Date(Date.now() + SUNBIRD_DEFAULT_TTL);
+    // req.session.cookie.maxAge = SUNBIRD_DEFAULT_TTL;
+    // req.session.cookie.expires = new Date(Date.now() + SUNBIRD_DEFAULT_TTL);
   } else {
     req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
     req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
@@ -184,7 +185,8 @@ const _refreshLoginTTL = (req, res, next) => {
  * @returns { String } Kong token from session object
  */
 const getKongTokenFromSession = (req) => {
-  return _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN);
+  return KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true' ?
+  _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN) : KONG_ANONYMOUS_FALLBACK_TOKEN;
 };
 
 /**
@@ -194,7 +196,7 @@ const getKongTokenFromSession = (req) => {
  */
 const unless = (req) => {
   const existsIndex = _.indexOf(BLACKLISTED_URL, _.get(req, 'originalUrl'));
-  return existsIndex > -1 ? true : false;
+  return (existsIndex > -1 || _.includes(_.get(req, 'originalUrl'), '/assets/images')) ? true : false;
 };
 
 /**
@@ -374,7 +376,8 @@ const generateLoggedInKongToken = (req, cb) => {
  * @returns { String } Portal bearer token
  */
 const getBearerToken = (req) => {
-  return  _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN);
+  return KONG_DEVICE_REGISTER_TOKEN === 'true' ?
+   _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN) : KONG_LOGGEDIN_FALLBACK_TOKEN;
 };
 
 /**
@@ -383,7 +386,8 @@ const getBearerToken = (req) => {
  * @returns { String } Portal x-auth token
  */
  const getAuthToken = (req) => {
-  return  _.get(req, 'session.' + KONG_ACCESS_TOKEN);
+  return KONG_DEVICE_REGISTER_TOKEN === 'true' ?
+    _.get(req, 'session.' + KONG_ACCESS_TOKEN) : req.kauth.grant.access_token.token;
 };
 
 module.exports = {

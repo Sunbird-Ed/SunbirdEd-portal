@@ -17,7 +17,6 @@ const { memoryStore } = require('../helpers/keyCloakHelper')
 const session = require('express-session');
 const { logger } = require('@project-sunbird/logger');
 const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
-const { updateSessionTTL } = require('../helpers/kongTokenHelper');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -111,7 +110,7 @@ module.exports = (app, keycloak) => {
     },
     saveUninitialized: false,
     store: memoryStore
-  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), updateSessionTTL(), indexPage(true));
+  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), indexPage(true));
 
   // all public route should also have same route prefixed with slug
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',

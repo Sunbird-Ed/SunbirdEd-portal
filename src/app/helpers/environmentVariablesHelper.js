@@ -215,6 +215,7 @@ let envVariables = {
 
   // Kong device registration and refresh token keys
   KONG_DEVICE_REGISTER_TOKEN: env.sunbird_kong_device_register || 'false',
+  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN: env.sunbird_kong_device_register_anonymous || 'false',
   KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token,
   sunbird_anonymous_session_ttl: env.sunbird_anonymous_session_ttl ? parseInt(env.sunbird_anonymous_session_ttl) : 10 * 60 * 1000,
   sunbird_default_device_token: env.sunbird_default_device_token || '',
