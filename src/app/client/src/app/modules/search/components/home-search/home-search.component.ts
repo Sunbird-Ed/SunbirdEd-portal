@@ -201,7 +201,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         mergeMap(data => {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
           const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
-            return (this.queryParams['se_subjects'] ? content['primaryCategory'] : content['subject']);
+            return ((this.queryParams['se_subjects'] && this.queryParams['se_subjects'].length > 0) ? content['primaryCategory'] :
+            (this.queryParams['key'] ? content['primaryCategory'] : content['subject']));
         }), ['undefined']);
         for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key && key.split(',').length > 1;
