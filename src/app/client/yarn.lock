@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.24":
-  version "4.3.24"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.24.tgz#c62cd8c0ae1e5d8ce61e85d9e9a5813cb4bcfc38"
-  integrity sha512-A/XoEPUfLePnDkKunw5J03dWJYpB8d7U7GO+TeD83aZ7rYXFEmHq+54h1cH92iUFrwYwXGqxBxiOAlj4YBXEJg==
+"@project-sunbird/sunbird-collection-editor-v9@4.3.25":
+  version "4.3.25"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.25.tgz#e1fb2b898c4565bed96ec39b4f32a33929a43860"
+  integrity sha512-9kSCAABkg8Z/aaVYXOFLSKM30DPJ9pDhxbgMgtCS92zxXhzWNKC0snCDwPY7qzca6KJZg2DnhgSuu/PwjHza6A==
   dependencies:
     tslib "^1.10.0"
 
