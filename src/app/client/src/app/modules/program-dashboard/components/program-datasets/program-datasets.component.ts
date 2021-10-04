@@ -193,7 +193,6 @@ export class DatasetsComponent implements OnInit {
           this.solutionSelected = $event;
           this.reportForm.controls.programName.setValue(program);
           this.reportTypes = [];
-    
         }
       }
 
