@@ -360,5 +360,4 @@ describe('HomeSearchComponent', () => {
     expect(events.contents).toBeTruthy();
     expect(events.name).toBeTruthy();
   });
-
 });
