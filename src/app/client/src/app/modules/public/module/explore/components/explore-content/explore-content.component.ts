@@ -12,7 +12,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../offline/services';
-import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach} from 'lodash-es';
+import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
 
 @Component({
   templateUrl: './explore-content.component.html',
@@ -37,7 +37,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   public facets: Array<string>;
   public facetsList: any;
   public paginationDetails: IPagination;
-  public contentList: Array<ICard> = [];
+  public contentList: Array<any> = [];
   public cardIntractEdata: IInteractEventEdata;
   public loaderMessage: ILoaderMessage;
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
@@ -291,6 +291,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             return section;
         });
         this.contentList = sections;
+        this.addHoverData();
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
@@ -313,7 +314,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-          this.addHoverData();
         this.totalCount = data.result.count;
         this.setNoResultMessage();
       }, err => {
@@ -327,12 +327,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   addHoverData() {
-    _.forEach(this.contentList, contents => {
-      if (this.contentDownloadStatus[contents.identifier]) {
-        contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
-      }
-    });
-    this.contentList = this.utilService.addHoverData(this.contentList, true);
+    each(this.contentList, (contentSection) => {
+      forEach(contentSection.contents, content => {
+          if (this.contentDownloadStatus[content.identifier]) {
+              content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+          }
+      });
+      this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
+   });
   }
   moveToTop() {
     window.scroll({
