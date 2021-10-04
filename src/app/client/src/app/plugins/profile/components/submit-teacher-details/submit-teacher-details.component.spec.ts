@@ -627,7 +627,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     });
 
     it('should be update consent if formAction is submit for catch part', () => {
-      //  arrange
+      // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.get(UserService);
