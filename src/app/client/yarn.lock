@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.22":
-  version "4.3.22"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.22.tgz#24b88570deca6ae71b410fff33032b08b2d3a3d8"
-  integrity sha512-5tjzrvVHEv1jb6U4zNz1hrHSMNzyB1d8ejGSS+DLmbQ+I3Gs/AUjJVwrTbhSqbdHs1GFthkc90j0Xyviu1a3vQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.3.25":
+  version "4.3.25"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.25.tgz#e1fb2b898c4565bed96ec39b4f32a33929a43860"
+  integrity sha512-9kSCAABkg8Z/aaVYXOFLSKM30DPJ9pDhxbgMgtCS92zxXhzWNKC0snCDwPY7qzca6KJZg2DnhgSuu/PwjHza6A==
   dependencies:
     tslib "^1.10.0"
 
@@ -1562,10 +1562,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.3.15":
-  version "4.3.15"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.15.tgz#9a7b13316dfb0cb31919fc15dfbba1cce03cb45b"
-  integrity sha512-cLHV52LWRWzRNEx2qYgegRip5eC2iefLuzp2ymiY69AgIFr8QUPEOWw3y6xuQtYG2xjzLISvgELGBUAC9L10aA==
+"@project-sunbird/sunbird-quml-player-v9@4.3.18":
+  version "4.3.18"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.18.tgz#c31d719acf9b4212dd8ae27b9dfb8b5efc219b2c"
+  integrity sha512-iXxZNX8UyTlsR24W+vJu8ZyYRgF4Uzo0F+7zBF4LmLZzsmqLhbMIyBcQwlAtowWjd6lBo1uI5ufGEhtVjcO3hA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.3.0"
 
@@ -3725,10 +3725,10 @@ common-form-elements-v9@4.2.7:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.4.tgz#251399f1bc703b111ab91c51035a90dcb82c34b1"
-  integrity sha512-Uc7FfDgGNzIMYUOj9eft09AKRZ10KWGTT0XW5oBjn/YgssReK1RAnOc9FAIGTMt0LLPGhQVraUkpq0/SjJlgLw==
+common-form-elements-web-v9@4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.5.tgz#8546e13ccab8f467dd7bf5fb64d401cf14b7c1ae"
+  integrity sha512-xf2sz72KgV5CiX0dWZKCKid67/DWvmR6Up+psWmslc5m7mqzGDimWEnQufekh94GfVtbWLR37eg0Eik49xQqFg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
