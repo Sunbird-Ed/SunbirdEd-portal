@@ -5,10 +5,7 @@ import {EventListService, EventFilterService} from 'ngtek-event-library';
 import { EventCreateService } from 'ngtek-event-library';
 import { Router } from '@angular/router';
 
-import {
-  CalendarEvent,
-  
-} from 'angular-calendar';
+import {CalendarEvent} from 'angular-calendar';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import * as MyEventLFilter from '../../interface/MyEventLFilter'
 const colors: any = {
