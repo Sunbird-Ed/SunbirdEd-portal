@@ -7,7 +7,9 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent, AllTextbooksComponent, NewCollectionEditorComponent } from './components';
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent, AllTextbooksComponent,
+  NewCollectionEditorComponent,EventCreateComponent, AllMyEventsComponent
+} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
@@ -281,6 +283,19 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }],
       hideHeaderNFooter: true
     }
+  },
+  {
+    path: 'add/event', component: EventCreateComponent, canActivate: [AuthGuard],
+    data: {
+      roles: 'workspace',
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }],
+      hideHeaderNFooter: true
+    }
+  },
+  {
+    path: 'allMyEvents', component: AllMyEventsComponent,
+    data: {
+       }
   },
   {
     path: 'content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],

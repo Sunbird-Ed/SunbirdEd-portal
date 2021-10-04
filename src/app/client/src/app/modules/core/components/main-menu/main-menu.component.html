@@ -8,7 +8,9 @@
 
   <!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
-
+		<a class="item py-8 pl-0 pr-24" *ngIf='!isDesktopApp && permissionService?.permissionAvailable' appPermission [permission]='workSpaceRole' tabindex="0" (click)="navigateToEventPage()">
+			<p> Events</p>
+		</a>
 		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/workspace')" appTelemetryInteract
 			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='!isDesktopApp && permissionService?.permissionAvailable'
 			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
@@ -28,6 +30,9 @@
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
+		<a class="item py-8 pl-0 pr-24"  appPermission  tabindex="0" (click)="navigateToEventPage()">
+            <p> Events</p>
+        </a>
   		<a class="item font-weight-bold sb-color-primary pr-10" href="{{hrefPath}}" appTelemetryInteract *ngIf="!isDesktopApp"
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}

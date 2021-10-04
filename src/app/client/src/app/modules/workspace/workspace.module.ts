@@ -17,7 +17,8 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent,
+  EventCreateComponent, AllMyEventsComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
@@ -27,6 +28,8 @@ import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor-v9';
+import { EventLibraryModule } from 'ngtek-event-library';
+import * as configData from './interfaces/urlConfig.json';
 
 
 @NgModule({
@@ -44,7 +47,9 @@ import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collecti
     OrderModule,
     PlayerHelperModule,
     ContentSearchModule,
-    CollectionEditorLibraryModule
+    CollectionEditorLibraryModule,
+    EventLibraryModule.forChild(configData)
+
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -66,7 +71,9 @@ import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collecti
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
     WorkspaceContentFilterComponent,
-    NewCollectionEditorComponent
+    NewCollectionEditorComponent,
+    EventCreateComponent,
+    AllMyEventsComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })

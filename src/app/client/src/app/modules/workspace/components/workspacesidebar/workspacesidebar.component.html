@@ -21,6 +21,11 @@
   [popupPlacement]="'right'">
        {{resourceService?.frmelmnts?.snav?.allmycontents}}
   </a>
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allmycontents-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
+  appPermission [permission]='allContentRole' class="item" (click)="redirectToCreatedEvents()"suiPopup popupText="View all your content in draft, review, published and more"
+  [popupPlacement]="'right'">
+       All My Events
+  </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('draft-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/draft') " appPermission
     [permission]='draftRole' class="item" [routerLink]="['draft',1]"  suiPopup popupText="View drafts you are working on. Submit them for review when completed"
     [popupPlacement]="'right'">

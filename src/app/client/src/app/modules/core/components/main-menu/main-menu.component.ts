@@ -175,6 +175,14 @@ export class MainMenuComponent implements OnInit {
     };
   }
 
+  navigateToEventPage() {
+    if (this.activatedRoute.snapshot.queryParams.clientId === 'android') {
+      window.location.href = '/explore-course';
+    } else {
+      this.router.navigate(['/events/list']);
+    }
+  }
+  
   getLogoutInteractEdata() {
     return {
       id: 'logout',

@@ -1,0 +1,6 @@
+<header class="sb-bg-color-primary headerClass" >
+    <button class="buttonClass" (click)="routeToCreate();">Back</button>
+</header>
+ <sb-event-create [formFieldProperties]="formFieldProperties" [userId]="userId"
+        (closeSaveForm)="cancel($event)" (navAfterSave)="navAfterSave($event);"></sb-event-create>
+<!-- thiss is working! -->

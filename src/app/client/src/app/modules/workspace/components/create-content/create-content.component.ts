@@ -72,7 +72,8 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     frameworkService: FrameworkService, permissionService: PermissionService,
     private activatedRoute: ActivatedRoute, public userService: UserService,
     public navigationhelperService: NavigationHelperService,
-    public workSpaceService: WorkSpaceService) {
+    public workSpaceService: WorkSpaceService,
+    public router: Router) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -111,5 +112,9 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
         }
       };
     });
+  }
+    
+  routeToEvent(){
+    this.router.navigate(['workspace/add/event']);
   }
 }
