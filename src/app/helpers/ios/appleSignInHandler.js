@@ -43,6 +43,7 @@ async function verifyAppleJWTToken(json, applePublicKey, res) {
     
 async function handleVerifiedUser(criticalUserDetails, req, res, json) {
         let newUserDetails = {};
+        const clientId = req.body.clientId || 'android';
         let { email, sub, iss, aud } = criticalUserDetails;
         if (
         email === json.payload.email &&
@@ -58,7 +59,7 @@ async function handleVerifiedUser(criticalUserDetails, req, res, json) {
                     newAppleUserDetails['emailId'] = email;
                     logger.info({msg: 'creating new google user'});
                     errType = 'USER_CREATE_API';
-                    newUserDetails = await createUserWithMailId(newAppleUserDetails, 'apple', req).catch(handleCreateUserError);
+                    newUserDetails = await createUserWithMailId(newAppleUserDetails, clientId, req).catch(handleCreateUserError);
                     await utils.delay(APPLE_SIGN_IN_DELAY);
                 } catch (err) {
                     logger.info({ msg: "Error while creating new user", err });
@@ -66,7 +67,7 @@ async function handleVerifiedUser(criticalUserDetails, req, res, json) {
                 } 
             }
     
-            const keyCloakToken = await createSession(email, {client_id: 'ios'}, req, res).catch(handleCreateSessionError);
+            const keyCloakToken = await createSession(email, {client_id: clientId}, req, res).catch(handleCreateSessionError);
     
             res.status(200).send({ sessionId: keyCloakToken, msg: "User Verification Succesfull" });
             return;
