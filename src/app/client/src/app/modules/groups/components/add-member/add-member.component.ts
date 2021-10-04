@@ -200,7 +200,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  setInteractData (id, extra?, Cdata?, edata?) {
+  setInteractData (id, extra?, Cdata?, edata?, obj?) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
@@ -215,11 +215,6 @@ export class AddMemberComponent implements OnInit, OnDestroy {
         id: id,
         type: 'CLICK',
         pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
-      },
-      object: { 
-        id: _.get(this.groupData, 'id'),
-        type: 'Group',
-        ver: '1.0' 
       }
     };
     if (edata) {
@@ -231,7 +226,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     if (Cdata) {
       interactData.context.cdata.push(Cdata);
     }
-
+    if (obj) {
+      interactData['object'] = obj;
+    }
     this.telemetryService.interact(interactData);
   }
 
