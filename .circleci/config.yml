@@ -11,14 +11,16 @@ jobs:
   test-cases:
     working_directory: ~/portal/src/app/client
     machine:
-      image: ubuntu-1604:202101-01
+      # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
+      image: ubuntu-2004:202010-01
     steps:
       - checkout:
           path: ~/portal
       - run: 
           name: Installing prerequisites
           command: |-
-            sudo apt-get update && sudo apt install -y libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 \
+            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6DB5542C356545CF # Adding Heroku keys, else the apt update will fail.
+            sudo apt-get update && sudo apt install -y ca-certificates libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 \
                   xvfb gtk2-engines-pixbuf \
                   xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
