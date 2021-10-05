@@ -1,4 +1,7 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+<app-landing-section
+  [noTitle]="true"
+  [layoutConfiguration]="layoutConfiguration"
+>
 </app-landing-section>
 
 <div [ngClass]="layoutConfiguration ? 'sbt-container relative9' : ''" class="main-container">
@@ -7,26 +10,30 @@
       <div class="sb-pageSection-content">
         <ng-container *ngIf="solutionList.length">
           <div>
-            <mat-tab-group>
-              <mat-tab label=" {{resourceService.frmelmnts?.lnk?.report}}">
+            <sui-tabset>
+              <div class="ui top attached tabular menu report-menu">
+                <a class="item" suiTabHeader="1"
+                  ><i class="icon chart line alternate"></i> {{resourceService.frmelmnts?.lnk?.report}}</a
+                >
+              </div>
+              <div class="ui bottom attached segment" suiTabContent="1">
                 <div class="ui bottom attached small p-0 b-0 no-bg py-24">
                   <div class="pull-left">
-                    show <select [(ngModel)]="pageSize" class="dataTables_filter search-entries"
-                      (change)="changeLimit($event)">
+                    show <select [(ngModel)]="pageSize" class="dataTables_filter search-entries" (change)="changeLimit($event)">
                       <option value="10" selected>10</option>
                       <option value="20">20</option>
                       <option value="25">25</option>
                     </select> entries
                   </div>
                   <div class="pull-right">
-                    <select [(ngModel)]="selectedEntity" class="dataTables_filter search-entity"
-                      (change)="getDataByEntity($event)">
+                    <select [(ngModel)]="selectedEntity" class="dataTables_filter search-entity" (change)="getDataByEntity($event)">
                       <option value="selected" selected disabled hidden>Entity Filter</option>
                       <option value="{{entity}}" *ngFor="let entity of filters">{{entity}}</option>
                     </select>
                   </div>
-
-                  <table datatable [dtOptions]="dtOptions" class="
+                    
+                  <table datatable [dtOptions]="dtOptions"
+                    class="
                       sb-table sb-table-hover sb-table-striped sb-table-sortable
                       width-100 table-bottom 
                     "
@@ -70,14 +77,15 @@
                     </div>
                   </div>
                 </div>
-              </mat-tab>
-            </mat-tab-group>
+                </div>
+              </div>
+            </sui-tabset>
           </div>
         </ng-container>
       </div>
     </ng-container>
 
-
+    
     <div class="twelve wide column" *ngIf="noResult">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
@@ -89,5 +97,5 @@
 
 
 <div *ngIf="showModal">
-  <app-entity-list (closeEvent)="modalClose($event)" [solution]="solution"> </app-entity-list>
+  <app-entity-list (closeEvent)="modalClose($event)"  [solution]="solution"> </app-entity-list>
 </div>
