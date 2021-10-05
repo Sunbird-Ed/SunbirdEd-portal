@@ -151,7 +151,12 @@
     "protractor": "^5.4.4",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "angular-calendar": "^0.28.26",
+    "angularx-flatpickr": "^6.6.0",
+    "bootstrap-css-only": "^4.4.1",
+    "@ng-bootstrap/ng-bootstrap": "~5.2.2",
+    "font-awesome": "^4.7.0"
   },
   "resolutions": {
     "moment": "2.22.1"
