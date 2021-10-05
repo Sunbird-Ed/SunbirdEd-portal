@@ -164,11 +164,12 @@ export class DatasetsComponent implements OnInit {
         return data
       }
     })
-    this.programSelected = $event;
+
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
     this.getSolutionList(program[0]);
+    this.reportForm.controls.programName.setValue($event);
   }
 
   public selectSolution($event) {
@@ -190,7 +191,7 @@ export class DatasetsComponent implements OnInit {
         } else {
           let program = this.programSelected;
           this.reportForm.reset();
-          this.solutionSelected = $event;
+          this.reportForm.controls.solution.setValue($event);
           this.reportForm.controls.programName.setValue(program);
           this.reportTypes = [];
         }
