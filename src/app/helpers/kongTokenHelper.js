@@ -100,7 +100,6 @@ const registerDeviceWithKong = () => {
             });
             _token = KONG_ANONYMOUS_FALLBACK_TOKEN;
             _log(req, 'KONG_TOKEN bearer_token_anonymous :: anonymous bearer token failed API for session id ' + _.get(req, 'sessionID') || 'no_key');
-            // next(new Error('api.kong.tokenManager:: Internal Server Error'));
           }
           req.session[KONG_DEVICE_BEARER_TOKEN] = _token;
           req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
@@ -130,7 +129,7 @@ const registerDeviceWithKong = () => {
           });
           _log(req, 'KONG_TOKEN bearer_token_anonymous :: anonymous bearer token failed block for session id ' + _.get(req, 'sessionID') || 'no_key');
           _log(req, 'KONG_TOKEN bearer_token_anonymous :: error stack ' + err);
-          req.session[KONG_DEVICE_BEARER_TOKEN] = _token;
+          req.session[KONG_DEVICE_BEARER_TOKEN] = KONG_ANONYMOUS_FALLBACK_TOKEN;
           req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
           req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
           req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
@@ -145,9 +144,14 @@ const registerDeviceWithKong = () => {
           });
         });
       } else {
-        let _msg = getKongTokenFromSession(req) ? 'existing token' : ' no token from session';
-        _log(req, 'KONG_TOKEN :: request using ' + _msg);
-        _refreshLoginTTL(req, res, next);
+        if (KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
+          let _msg = getKongTokenFromSession(req) ? 'existing token' : ' no token from session';
+          _log(req, 'KONG_TOKEN :: request using ' + _msg);
+          _refreshLoginTTL(req, res, next);
+        } else {
+          _log(req, 'KONG_TOKEN :: kong bearer token not called due to flag set to  ' + KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN);
+          next();
+        }
       }
     } else {
       _log(req, 'KONG_TOKEN :: URL blacklisted');
@@ -368,17 +372,49 @@ const generateLoggedInKongToken = (req, cb) => {
               }
             });
           } else {
-            cb(false);
+            _log(req, 'KONG_TOKEN bearer_token_logged_in :: non successful logged in bearer token generated failed for session id ' + _.get(req, 'sessionID') || 'no_key');
+            req.session[KONG_DEVICE_BEARER_TOKEN] = KONG_LOGGEDIN_FALLBACK_TOKEN;
+            req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
+            req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
+            req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
+            req.session.save(function (error) {
+              if (error) {
+                cb(error, null)
+              } else {
+                cb();
+              }
+            });
           }
         }).catch((error) => {
-          cb(error);
+          _log(req, 'KONG_TOKEN bearer_token_logged_in :: send request logged in bearer token generated failed for session id ' + _.get(req, 'sessionID') || 'no_key');
+          req.session[KONG_DEVICE_BEARER_TOKEN] = KONG_LOGGEDIN_FALLBACK_TOKEN;
+          req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
+          req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
+          req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
+          req.session.save(function (error) {
+            if (error) {
+              cb(error, null)
+            } else {
+              cb();
+            }
+          });
         });
       } catch (error) {
         throw new Error(error);
       }
     } else {
-      _log(req, 'KONG_TOKEN bearer_token_logged_in :: token not requested due to flag set to ' + KONG_DEVICE_REGISTER_TOKEN);
-      cb();
+      _log(req, 'KONG_TOKEN bearer_token_logged_in :: token not requested due to flag set to ' + KONG_DEVICE_REGISTER_TOKEN + ' using default fallback token');
+      req.session[KONG_DEVICE_BEARER_TOKEN] = KONG_LOGGEDIN_FALLBACK_TOKEN;
+      req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
+      req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
+      req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
+      req.session.save(function (error) {
+        if (error) {
+          cb(error, null)
+        } else {
+          cb();
+        }
+      });
     }
   } else {
     _log(req, 'KONG_TOKEN bearer_token_logged_in :: URL blacklisted');
@@ -393,8 +429,18 @@ const generateLoggedInKongToken = (req, cb) => {
  * @returns { String } Portal bearer token
  */
 const getBearerToken = (req) => {
-  return KONG_DEVICE_REGISTER_TOKEN === 'true' ?
-   _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN) : KONG_LOGGEDIN_FALLBACK_TOKEN;
+  if (KONG_DEVICE_REGISTER_TOKEN === 'false' && KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'false') {
+    return req.session.userId ? KONG_LOGGEDIN_FALLBACK_TOKEN : KONG_ANONYMOUS_FALLBACK_TOKEN;
+  }
+  else if (KONG_DEVICE_REGISTER_TOKEN === 'true' && KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'false') {
+    return req.session.userId ? _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN) : KONG_ANONYMOUS_FALLBACK_TOKEN;
+  }
+  else if (KONG_DEVICE_REGISTER_TOKEN === 'false' && KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
+    return req.session.userId ? KONG_LOGGEDIN_FALLBACK_TOKEN : _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN);
+  }
+  else {
+    return _.get(req, 'session.' + KONG_DEVICE_BEARER_TOKEN);
+  }
 };
 
 /**
