@@ -33,6 +33,7 @@ import { TitleCasePipe } from '@angular/common';
 import { NetworkStatusComponent } from './components/network-status/network-status.component';
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -43,7 +44,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule, ReactiveFormsModule, NgxDatatableModule,
     TelemetryModule,
     TranslateModule.forChild(),
-    MatTooltipModule
+    MatTooltipModule, MatTabsModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -61,7 +62,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
-    AlertModalComponent, FullPageLoaderComponent],
+    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule],
   entryComponents: [AlertModalComponent]
 })
 export class SharedModule {
