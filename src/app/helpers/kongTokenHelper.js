@@ -35,6 +35,7 @@ const generateKongToken = async (req) => {
   return new Promise((resolve, reject) => {
     try {
       var options = {
+        resolveWithFullResponse: true,
         method: 'POST',
         url: KONG_ANONYMOUS_DEVICE_REGISTER_API,
         headers: {
@@ -48,8 +49,8 @@ const generateKongToken = async (req) => {
         })
       };
       sendRequest(options).then((response) => {
-        const responseData = JSON.parse(response);
-        if (_.get(responseData, 'params.status') === 'successful') {
+        const responseData = JSON.parse(response.body);
+        if (_.get(response, 'statusCode') === 200 && _.get(responseData, 'params') && _.get(responseData, 'params.status') === 'successful') {
           _log(req, 'KONG_TOKEN bearer_token_anonymous :: anonymous bearer token generated success for session id ' + _.get(req, 'sessionID') || 'no_key');
           resolve(responseData);
         } else {
@@ -97,6 +98,7 @@ const registerDeviceWithKong = () => {
               'result': {}
             });
             _token = KONG_ANONYMOUS_FALLBACK_TOKEN;
+            _log(req, 'KONG_TOKEN bearer_token_anonymous :: anonymous bearer token failed API for session id ' + _.get(req, 'sessionID') || 'no_key');
             // next(new Error('api.kong.tokenManager:: Internal Server Error'));
           }
           req.session[KONG_DEVICE_BEARER_TOKEN] = _token;
@@ -113,7 +115,33 @@ const registerDeviceWithKong = () => {
             }
           });
         }).catch((err) => {
-          next(err);
+          logger.error({
+            'id': 'api.kong.tokenManager', 'ts': new Date(),
+            'params': {
+              'resmsgid': uuidv1(),
+              'msgid': uuidv1(),
+              'err': 'Internal Server Error',
+              'status': 'Internal Server Error',
+              'errmsg': 'Internal Server Error'
+            },
+            'responseCode': 'Internal Server Error',
+            'result': {}
+          });
+          _log(req, 'KONG_TOKEN bearer_token_anonymous :: anonymous bearer token failed block for session id ' + _.get(req, 'sessionID') || 'no_key');
+          _log(req, 'KONG_TOKEN bearer_token_anonymous :: error stack ' + err);
+          req.session[KONG_DEVICE_BEARER_TOKEN] = _token;
+          req.session['auth_redirect_uri'] = req.protocol + `://${req.get('host')}/resources?auth_callback=1`;
+          req.session.cookie.maxAge = SUNBIRD_ANONYMOUS_TTL;
+          req.session.cookie.expires = new Date(Date.now() + SUNBIRD_ANONYMOUS_TTL);
+          req.session['roles'] = [];
+          req.session.roles.push('ANONYMOUS');
+          req.session.save(function (error) {
+            if (error) {
+              next(error, null)
+            } else {
+              next();
+            }
+          });
         });
       } else {
         let _msg = getKongTokenFromSession(req) ? 'existing token' : ' no token from session';
