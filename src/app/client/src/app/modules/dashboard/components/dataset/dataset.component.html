@@ -51,33 +51,30 @@
   </div>
 
   <div>
-    <sui-accordion class="styled fluid sb-accordion">
-      <sui-accordion-panel [isOpen]="true">
-        <div title class="sb-accordion-title">
-          {{ resourceService?.frmelmnts?.lbl?.dataDictionary}}
-          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
-        </div>
-        <div content class="sb-accordion-content">
+    <mat-accordion>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ resourceService?.frmelmnts?.lbl?.dataDictionary}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="sb-accordion-content">
           <div class="sb-accordion-text">
             <div appMarkdown [input]="dataDictionary"
               *ngIf="!reportService?.isUserSuperAdmin() && dataDictionary?.length"></div>
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !dataDictionary?.length">
               {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
-            <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
-              <div class="ui top attached tabular menu">
-                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i>
-                  {{ resourceService?.frmelmnts?.cert?.lbl?.preview}}</a>
-                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
-                  {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
-              </div>
-              <div class="ui bottom attached segment" suiTabContent="1">
-                <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
-                <div class="ui warning message" *ngIf="!dataDictionary?.length">
-                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+            <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
+              <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
+                <div class="ui bottom attached segment" style="min-height: 200px; width:100%; overflow: auto;">
+                  <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
+                  <div class="ui warning message" *ngIf="!dataDictionary?.length">
+                    {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                  </div>
                 </div>
-              </div>
-              <div class="ui bottom attached segment" suiTabContent="2">
+              </mat-tab>
+              <mat-tab label="{{resourceService?.frmelmnts?.lbl?.edit}}">
                 <div ace-editor [text]="dataDictionary" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
                   [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
                   (textChanged)="onMarkdownChange($event, 'dataDictionary')"
@@ -86,56 +83,54 @@
                 <div class="sb-table-container m-0">
                   <div class="sb-table-search-header px-0">
                     <button (click)="handleMarkdownSubmission('dataDictionary')" type="button" tabindex="0"
-                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{
+                      resourceService?.frmelmnts?.lbl?.submit}}</button>
                   </div>
                 </div>
-              </div>
-            </sui-tabset>
+              </mat-tab>
+            </mat-tab-group>
           </div>
         </div>
-      </sui-accordion-panel>
+      </mat-expansion-panel>
 
-      <sui-accordion-panel [isOpen]="false">
-        <div title class="sb-accordion-title">
-          {{ resourceService?.frmelmnts?.lbl?.datasetExamples}}
-          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
-        </div>
-        <div content class="sb-accordion-content">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ resourceService?.frmelmnts?.lbl?.datasetExamples}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="sb-accordion-content">
           <div class="sb-accordion-text">
             <div appMarkdown [input]="examples" *ngIf="!reportService?.isUserSuperAdmin() && examples?.length"></div>
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !examples?.length">
               {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
-            <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
-              <div class="ui top attached tabular menu">
-                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i>
-                  {{ resourceService?.frmelmnts?.cert?.lbl?.preview}}</a>
-                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
-                  {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
-              </div>
-              <div class="ui bottom attached segment" suiTabContent="1">
-                <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
-                <div class="ui warning message" *ngIf="!examples?.length">
-                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+            <mat-tab-group *ngIf="reportService?.isUserSuperAdmin()">
+              <mat-tab label="{{ resourceService?.frmelmnts?.cert?.lbl?.preview}}">
+                <div class="ui bottom attached segment" style="min-height: 200px; width:100%; overflow: auto;">
+                  <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
+                  <div class="ui warning message" *ngIf="!examples?.length">
+                    {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                  </div>
                 </div>
-              </div>
-              <div class="ui bottom attached segment" suiTabContent="2">
+              </mat-tab>
+              <mat-tab label="{{resourceService?.frmelmnts?.lbl?.edit}}">
                 <div ace-editor [text]="examples" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
                   [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
                   (textChanged)="onMarkdownChange($event, 'examples')"
                   style="min-height: 200px; width:100%; overflow: auto;"></div>
-
                 <div class="sb-table-container m-0">
                   <div class="sb-table-search-header px-0">
                     <button (click)="handleMarkdownSubmission('examples')" type="button" tabindex="0"
-                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{
+                      resourceService?.frmelmnts?.lbl?.submit}}</button>
                   </div>
                 </div>
-              </div>
-            </sui-tabset>
+              </mat-tab>
+            </mat-tab-group>
           </div>
         </div>
-      </sui-accordion-panel>
-    </sui-accordion>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>
