@@ -14,6 +14,7 @@ const { pathToRegexp, match }  = require("path-to-regexp");
 const API_LIST          = require('./whitelistApis');
 const utils             = require('./utilityService');
 const envHelper         = require('./environmentVariablesHelper.js');
+const KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN  = require('./environmentVariablesHelper.js').KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN;
 const ROLE = {
   ORGADMIN : 'ORG_ADMIN',
   SYSADMIN : 'SYSTEM_ADMINISTRATION'
@@ -134,7 +135,9 @@ const urlChecks = {
       sessionRoles: _.get(req, 'session.roles') || 'no roles in session',
       rulesForURL: rolesForURL
     });
-    if (_.includes(rolesForURL, 'ALL') && req.session['roles'].length > 0) {
+    if (KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'false' && _.includes(rolesForURL, 'ANONYMOUS')) {
+      resolve();
+    } else if (_.includes(rolesForURL, 'ALL') && req.session['roles'].length > 0) {
       resolve();
     } else if (_.intersection(rolesForURL, req.session['roles']).length > 0) {
       resolve();
