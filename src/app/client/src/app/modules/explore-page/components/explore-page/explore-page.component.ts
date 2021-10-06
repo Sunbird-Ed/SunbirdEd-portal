@@ -138,7 +138,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getFormConfig(input = { formType: 'contentcategory', formAction: 'menubar', contentType: 'global' }): Observable<object> {
-        return this.formService.getFormConfig(input);
+       return this.formService.getFormConfig(input);
     }
 
     private _addFiltersInTheQueryParams(updatedFilters = {}) {
@@ -504,6 +504,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
                                                 section: facet,
+                                                isEnabled:facet.isEnabled,
                                                 index: facet.index
                                             });
                                         }

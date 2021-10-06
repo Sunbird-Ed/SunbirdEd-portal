@@ -254,7 +254,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       .pipe(
         mergeMap(data => {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-          const filteredContents = omit(groupBy(get(data, 'result.content'), content => {
+          const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
             return (this.queryParams['se_subjects'] ? content['primaryCategory'] : content['subject']);
         }), ['undefined']);
         for (const [key, value] of Object.entries(filteredContents)) {
