@@ -4,13 +4,13 @@ import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import { GroupsService } from './groups.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, FrameworkService, UserService, ChannelService, OrgDetailsService, TncService } from '@sunbird/core';
+import { CoreModule, FrameworkService, UserService, ChannelService, OrgDetailsService, TncService, PlayerService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ToasterService } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupMemberRole, CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
-import { groupData, modifiedActivities, groupsTnc, modified } from './groups.service.spec.data';
+import { groupData, modifiedActivities, groupsTnc, modified, notificationData } from './groups.service.spec.data';
 
 describe('GroupsService', () => {
   configureTestSuite();
@@ -30,6 +30,7 @@ describe('GroupsService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [GroupsService, ConfigService, UserService, FrameworkService, ChannelService, OrgDetailsService,
+        PlayerService, ToasterService,
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ResourceService, useValue: resourceBundle },
         TelemetryService, TncService
@@ -290,4 +291,25 @@ describe('GroupsService', () => {
     expect(accepted).toEqual(false);
   });
 
+  it('should call navigateToActivityToc()', () => {
+    const service = TestBed.get(GroupsService);
+    const playerService = TestBed.get(PlayerService);
+    spyOn(service, 'getGroupById').and.returnValue(of());
+    spyOn(service, 'groupContentsByActivityType').and.returnValue({showList:  true});
+    spyOn(playerService, 'playContent');
+    service.navigateToActivityToc('123', true, true, true);
+    service.getGroupById('123', true, true, true).subscribe((data: CsGroup) => {
+      expect(service.groupContentsByActivityType).toHaveBeenCalledWith(false,
+        {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
+        description: '', membershipType: 'invite_only'});
+      expect(playerService.playContent).toHaveBeenCalled();
+    });
+  });
+
+  it('should call navigateNotification()', () => {
+    const service = TestBed.get(GroupsService);
+    const additionalInfo = notificationData.data.action.additionalInfo;
+    const accepted = service.navigateNotification(notificationData, additionalInfo);
+    expect(accepted).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90' });
+  });
 });

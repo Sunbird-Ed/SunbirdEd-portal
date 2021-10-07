@@ -257,6 +257,8 @@ app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParse
 
 require('./routes/groupRoutes.js')(app) // group api routes
 
+require('./routes/notificationRoute.js')(app) // notification api routes
+
 require('./routes/learnerRoutes.js')(app) // learner api routes
 
 require('./routes/mlRoutes.js')(app) // observation api routes

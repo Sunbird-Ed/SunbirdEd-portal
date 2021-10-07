@@ -8,11 +8,11 @@ CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersReque
   CsGroupUpdateGroupGuidelinesRequest,
   CsGroupSupportedActivitiesFormField
 } from '@project-sunbird/client-services/services/group/interface';
-import { UserService, LearnerService, TncService } from '@sunbird/core';
-import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
+import { UserService, LearnerService, TncService, PlayerService } from '@sunbird/core';
+import { NavigationHelperService, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
+import { GROUP_DETAILS, IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models';
 
@@ -44,7 +44,9 @@ export class GroupsService {
     private router: Router,
     private configService: ConfigService,
     private learnerService: LearnerService,
-    private tncService: TncService
+    private tncService: TncService,
+    private toasterService: ToasterService,
+    private playerService: PlayerService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -229,7 +231,6 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
       interactData['object'] = obj;
     }
     this.telemetryService.interact(interactData);
-
   }
 
   getImpressionObject(routeData, url, edata?): IImpressionEventInput {
@@ -373,4 +374,32 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
   getDashletData(courseHeirarchyData, aggData) {
     return this.groupCservice.activityService.getDataForDashlets(courseHeirarchyData, aggData);
   }
+
+  navigateNotification(data, additionalInfo) {
+    const type = _.get(data, 'data.action.type');
+    if (type === 'member-added' || type === 'member-exit' || type === 'group-activity-removed') {
+      return {
+        path: `${MY_GROUPS}/${GROUP_DETAILS}/` + _.get(additionalInfo, 'group.id'),
+      };
+    }
+    if (type === 'group-activity-added') {
+      const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false
+      this.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin);
+    }
+    return {};
+  }
+
+  navigateToActivityToc(activity, groupId, isAdmin) {
+    this.getGroupById(groupId, true, true, true).subscribe((groupData: CsGroup) => {
+      const response = this.groupContentsByActivityType(false, groupData);
+      response.activities[activity.type].forEach(Selectedactivity => {
+        if (activity.id === Selectedactivity.identifier) {
+          this.playerService.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
+        }
+      })
+    }, e => {
+      this.toasterService.error('Something went wrong, please try again later')
+    });
+  }
+
 }

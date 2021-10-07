@@ -20,7 +20,7 @@ getTestBed().initTestEnvironment(
 
 // then we find all the tests.
 const filterRegExp = (tags) ? new RegExp(tags, 'g') : /\.spec\.ts$/,
-  context = require.context('./app/', true, /\.spec\.ts$/),
+  context = require.context('./app/', true, /groups.service\.spec\.ts$/),
   specFiles = context.keys().filter(path => filterRegExp.test(path));
 // and load the modules.
 specFiles.map(context);
@@ -64,6 +64,9 @@ if (!CsModule.instance.isInitialised) {
       contentServiceConfig: {
         hierarchyApiPath: '/learner/questionset/v1',
         questionListApiPath: '/api/question/v1'
+      },
+      notificationServiceConfig: {
+        apiPath: '/learner/notification/v1/feed'
       }
     }
   });
