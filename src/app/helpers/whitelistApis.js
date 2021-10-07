@@ -1766,14 +1766,15 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/v1/user-extension/programsByPlatformRoles': {
+    '/kendra/user-extension/mlcore/v1/programsByPlatformRoles': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     },
-    '/v1/user-extension/solutions': {
+    '/kendra/user-extension/mlcore/v1/solutions/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     },
+
     // UCI Related APIs
     "/uci/admin/v1/bot/get": {
       checksNeeded: ["ROLE_CHECK"],
@@ -1974,6 +1975,7 @@ const API_LIST = {
     '/uci/admin/v1/conversationLogic/update/:id',
     '/uci/admin/v1/conversationLogic/delete/:id',
     '/uci/admin/v1/forms/upload',
+    '/kendra/user-extension/mlcore/v1/solutions/:id'
   ]
 };
 module.exports = API_LIST;
