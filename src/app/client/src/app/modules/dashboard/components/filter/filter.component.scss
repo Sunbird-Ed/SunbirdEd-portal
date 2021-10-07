@@ -149,7 +149,7 @@
 .sb-prominent-filter-field {
   ::ng-deep {
     label {
-      padding-bottom: 4px;
+      padding-bottom: 2px;
       margin-bottom: 0px !important;
       margin-left: 10px !important;
     }
@@ -223,4 +223,11 @@ sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
   .modals.dimmer .ui.scrolling.modal {
     margin: 3.5rem auto auto !important;
   }
+}
+.additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+.select-container{
+  margin-top:10px;
 }

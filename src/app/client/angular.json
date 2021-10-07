@@ -75,7 +75,8 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
-              "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css"
+              "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

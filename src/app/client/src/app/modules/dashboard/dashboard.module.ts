@@ -27,6 +27,19 @@ import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
+import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
+
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatInputModule   } from "@angular/material/input";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatListModule } from "@angular/material/list";
+import { MatSelectModule } from "@angular/material/select";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 @NgModule({
   imports: [
@@ -42,11 +55,20 @@ import { DiscussionModule } from '../discussion/discussion.module';
     TelemetryModule,
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
-    DiscussionModule
+    DiscussionModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatChipsModule,
+    MatIconModule,
+    MatSelectModule,
+    MatListModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDialogModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent],
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent,MaterialAutoCompleteComponent,AutocompletePipe],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,
