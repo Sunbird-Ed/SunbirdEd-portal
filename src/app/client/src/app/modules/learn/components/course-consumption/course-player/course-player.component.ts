@@ -270,6 +270,119 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
   }
 
+  getAllContentStateRecord(valueT: any) {
+    let listMap = new Map<string, string>();
+    let prerequisiteValueMap = new Map<string, string>();
+    console.log(" ValueT :: " + valueT);
+    listMap = this.getContentStatusList(valueT);
+    prerequisiteValueMap = this.getContentList();
+
+    let prerequisiteKey: any;
+    let prerequisiteValue: any;
+    let countValue : any = 0;
+    let tempData: any;
+    console.log(" listMap " + listMap);
+    console.log(" prerequisiteValueMap " + prerequisiteValueMap);
+
+    prerequisiteValueMap.forEach((values, keys) => {
+      console.log(keys, values);
+      prerequisiteKey = keys;
+      tempData = values.split(",");
+      countValue = 0;
+      for (var i = 0; i < tempData.length; i++) {
+        console.log(i + "::" + tempData[i]);
+        prerequisiteValue = tempData[i];
+
+        listMap.forEach(function (values, keys) {
+          console.log(keys, values);
+
+          if (keys == prerequisiteValue && values == "2") {
+            // alert(prerequisiteKey + " sucess");  
+            // this.valDisable = keys;
+            // console.log(" this.valDisable :: ",this.valDisable);
+            countValue+=1;
+            console.log("prerequisiteValue Sucess count",countValue);     
+            //document.getElementById(prerequisiteKey).style.pointerEvents = "all";
+            //  console.log("prerequisiteValue Sucess");     
+            //  console.log("prerequisiteValue",this.item);       
+          } else {
+            // alert(prerequisiteKey+" fail");
+            //document.getElementById(prerequisiteKey).style.pointerEvents = "none";
+          }
+
+        });
+
+      }
+      console.log("Inside for loop ::",countValue);
+      if (tempData.length == countValue) {
+        document.getElementById(prerequisiteKey).style.pointerEvents = "all";
+        document.getElementById(prerequisiteKey+'span').innerHTML = '';
+      } else {
+        document.getElementById(prerequisiteKey).style.pointerEvents = "none";
+        document.getElementById(prerequisiteKey+'span').innerHTML = 'Please Complete Previous Unit';
+      }
+    });
+    console.log("Outside for loop ::",countValue);   
+    // if(tempData.length == countValue){
+    //   document.getElementById(prerequisiteKey).style.pointerEvents = "all";
+    // }else{
+    //   document.getElementById(prerequisiteKey).style.pointerEvents = "none";
+    // }
+  }
+
+  getContentStatusList(contentStatusData: any) {
+    //let contentStatusData : any;
+    let listMap = new Map<string, string>();
+    //contentStatusData = sessionStorage.getItem("contentStatusData");
+    console.log("contentStatusData :: " + contentStatusData);
+    contentStatusData.forEach(function (ele) {
+      listMap.set(ele.contentId, ele.status.toString());
+    });
+    return listMap;
+  }
+
+  getContentList() {
+    let tempJsonValue = ([
+
+      {
+        "name": "vk-2.8CourseWithAssessment5",
+        "identifier": "courseId",
+        "prerequisite": [
+          {
+            "do_2129493337594429441162": [
+              "do_31277365926529433615491"
+            ]
+          },
+          {
+            "do_2129505877663989761263": [
+              "do_31277365926529433615491",
+              "do_2129493337594429441162"
+            ]
+          }
+          // {"do_213323783960125440119": ["do_2133256813481410561310"]}
+        ]
+      }
+    ]);
+
+    let stringObject: any;
+    let stringObject1: any;
+    let tempVal: any;
+    let prerequisiteValueMap = new Map<string, string>();
+
+    stringObject = JSON.stringify(tempJsonValue);
+    stringObject = JSON.parse(stringObject);
+    stringObject.forEach(function (element) {
+      console.log("element ::", element);
+      tempVal = _.values(element.prerequisite);
+      tempVal.forEach(function (k) {
+        let temp1: string = Object.keys(k).toString();
+        let temp2: string = Object.values(k).toString();
+        prerequisiteValueMap.set(temp1, temp2);
+      });
+    });
+    return prerequisiteValueMap;
+  }
+
   /**
    * @since - release-3.2.10
    * @param  {object} event
@@ -346,6 +459,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentStatus = _parsedResponse.content || [];
         this._routerStateContentStatus = _parsedResponse;
         this.calculateProgress();
+        this.getAllContentStateRecord(this.contentStatus);
       }, error => {
         console.log('Content state read CSL API failed ', error);
       });
@@ -481,6 +595,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   collapsedChange(event: boolean, index: number) {
+    let prevVideoModulePer = sessionStorage.getItem("prevModulePer");
+    let tempPrevVideoModulePer = "100";
     if (event === false) {
       _.map(_.get(this.courseHierarchy, 'children'), (unit, key) => {
         unit.collapsed = key === index ? false : true;
