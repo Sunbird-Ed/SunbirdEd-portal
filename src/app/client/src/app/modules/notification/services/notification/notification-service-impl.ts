@@ -157,7 +157,7 @@ export class NotificationServiceImpl implements SbNotificationService {
     const category = _.get(event, 'data.category');
     const additionalInfo = _.get(event, 'data.action.additionalInfo');
     if (category === 'group') {
-      return {};
+      return this.groupService.navigateNotification(event, additionalInfo);;
     } else {
       if (_.get(event, 'data.action.type') === 'certificateUpdate') {
         return {
