@@ -241,7 +241,10 @@ let envVariables = {
   PORTAL_REDIS_PASSWORD: env.sunbird_redis_password,
   PORTAL_REDIS_CONNECTION_STRING: env.portal_redis_connection_string,
   // VDN URL
-  vdnURL:env.vdnURL || ''
+  vdnURL:env.vdnURL || '',
+
+  // Add below variable for Apple Login
+  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
