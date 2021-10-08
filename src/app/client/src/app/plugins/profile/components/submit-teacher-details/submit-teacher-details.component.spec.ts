@@ -641,7 +641,6 @@ describe('SubmitTeacherDetailsComponent', () => {
       spyOn(toasterService, 'error').and.callThrough();
       // act
       component.updateUserConsent(currentOrgId, previousOrgId);
-      // assert
       expect(csUserService.updateConsent).toHaveBeenCalled();
       expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
     });
