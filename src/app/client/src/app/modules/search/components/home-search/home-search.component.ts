@@ -12,7 +12,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
-import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach} from 'lodash-es';
+import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public facets: Array<string>;
   public facetsList: any;
   public paginationDetails: IPagination;
-  public contentList: Array<ICard> = [];
+  public contentList: Array<any> = [];
   public cardIntractEdata: IInteractEventEdata;
   public loaderMessage: ILoaderMessage;
   public redirectUrl;
@@ -200,8 +200,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         mergeMap(data => {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-          const filteredContents = omit(groupBy(get(data, 'result.content'), content => {
-            return (this.queryParams['se_subjects'] ? content['primaryCategory'] : content['subject']);
+          const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
+            return ((this.queryParams['se_subjects'] && this.queryParams['se_subjects'].length > 0) ? content['primaryCategory'] :
+            (this.queryParams['key'] ? content['primaryCategory'] : content['subject']));
         }), ['undefined']);
         for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key && key.split(',').length > 1;
@@ -236,6 +237,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             return section;
         });
         this.contentList = sections;
+        this.addHoverData();
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
@@ -258,7 +260,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.addHoverData();
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -393,12 +394,14 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addHoverData() {
-    _.forEach(this.contentList, contents => {
-      if (this.contentDownloadStatus[contents.identifier]) {
-          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
-      }
+    each(this.contentList, (contentSection) => {
+      forEach(contentSection.contents, content => {
+          if (this.contentDownloadStatus[content.identifier]) {
+              content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+          }
+      });
+      this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
    });
-   this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
 
   hoverActionClicked(event) {
