@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as  MyEventList from '../../interface/MyEventList';
 import * as  MyCalendarList  from '../../interface/MyCalendarList';
-import {EventListService, EventFilterService} from 'ngtek-event-library';
-import { EventCreateService } from 'ngtek-event-library';
+import {EventListService, EventFilterService, EventDetailService} from 'ngtek-event-library';
+// import { EventCreateService } from 'ngtek-event-library';
 import { Router } from '@angular/router';
 
 import {CalendarEvent} from 'angular-calendar';
@@ -39,14 +39,14 @@ export class EventViewTypeComponent implements OnInit {
   filterConfig: any;
   myEvents: any;
   isLoading: boolean = true;
-  userId: any = "1001";
-  formFieldProperties: any;
+  // userId: any = "1001";
+  // formFieldProperties: any;
   Filterdata: any;     
               
   constructor(public eventListService: EventListService,
     public eventFilterService: EventFilterService,
-    private eventCreateService: EventCreateService,
-    // private eventDetailService: EventDetailService,
+    // private eventCreateService: EventCreateService,
+    private eventDetailService: EventDetailService,
     private router: Router,) { }
 
   ngOnInit() {
@@ -56,7 +56,7 @@ export class EventViewTypeComponent implements OnInit {
     this.showEventListPage();
     this.showFilters();
     this.showCalenderEvent(MyCalendarList);
-    this.showEventCreatePage();
+    // this.showEventCreatePage();
   }
 
   showEventListPage(){
@@ -78,18 +78,18 @@ export class EventViewTypeComponent implements OnInit {
   }
 
 
-  showEventCreatePage() {
-    this.eventCreateService.getEventFormConfig().subscribe((data: any) => {
-      console.log('EventCreatedata = ',data);
-      this.formFieldProperties = data.result['form'].data.fields;
-      this.isLoading = false;
-      console.log('EventCreate = ',data.result['form'].data.fields);
-    },err=>{console.error("hi", err);}
-    )
-      // this.formFieldProperties = eventCreateFields.eventCreate.result['form'].data.fields;
-      // console.log('EventCreate.fields = ',this.formFieldProperties);
+  // showEventCreatePage() {
+  //   this.eventCreateService.getEventFormConfig().subscribe((data: any) => {
+  //     console.log('EventCreatedata = ',data);
+  //     this.formFieldProperties = data.result['form'].data.fields;
+  //     this.isLoading = false;
+  //     console.log('EventCreate = ',data.result['form'].data.fields);
+  //   },err=>{console.error("hi", err);}
+  //   )
+  //     // this.formFieldProperties = eventCreateFields.eventCreate.result['form'].data.fields;
+  //     // console.log('EventCreate.fields = ',this.formFieldProperties);
 
-  }
+  // }
 
   showCalenderEvent(MyCalendarData) {
  

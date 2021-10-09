@@ -22,7 +22,7 @@
 //     eventFilterConfigApi: "assets/api/event-filter.json"
 // };
 
-export const urlConfig = {
+ export const urlConfig = {
     // endpoint configs...!
     // URLs...!
     // eventDetailApi :  "assets/api/event-detail.json",
@@ -41,7 +41,7 @@ export const urlConfig = {
     // detail :  "https://igot-sunbird.idc.tarento.com/api/event/v4/read/",
     detail : "assets/api/event-detail.json",
     list : "assets/api/eventlist.json",
-    create: "/event/v4/create",
+    create: "/api/event/v4/create",
     update: "/event/v4/update",
     formConfig : "assets/api/event-create.json",
     enrolllist : "assets/api/enrolled-events.json",
