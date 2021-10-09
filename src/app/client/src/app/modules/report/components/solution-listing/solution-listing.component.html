@@ -94,7 +94,10 @@
     </div>
   </div>
 </div>
-
+<div *ngIf="solutionList.length">
+  <app-tnc-popup (close)="openAdminPolicyPopup(true)" [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+  </app-tnc-popup>
+</div>
 
 <div *ngIf="showModal">
   <app-entity-list (closeEvent)="modalClose($event)"  [solution]="solution"> </app-entity-list>

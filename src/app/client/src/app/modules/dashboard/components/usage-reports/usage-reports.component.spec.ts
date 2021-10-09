@@ -4,7 +4,7 @@ import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UsageService, CourseProgressService } from './../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { ToasterService, ResourceService, ReportViewerTncService } from '@sunbird/shared';
 import { UserService } from '@sunbird/core';
 import {SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
@@ -90,5 +90,18 @@ describe('UsageReportsComponent', () => {
       expect(component.reportMetaData).toBeDefined();
       expect(component.files.length).toBe(4);
       expect(component.isFileDataLoaded).toBeTruthy();
+      });
+
+      it('should get tnc details', () => {
+        const reportViewerTncService = TestBed.get(ReportViewerTncService);
+        spyOn(reportViewerTncService, 'getReportViewerTncPolicy').and.returnValue(Promise.resolve({
+          version: 'sample-version',
+          url: 'sample-url',
+          showTncPopup: true
+        }));
+        component.showTncPopup = true;
+        component.getReportViewerTncPolicy();
+        expect(reportViewerTncService.getReportViewerTncPolicy).toHaveBeenCalled();
+        expect(component.showTncPopup).toBeTruthy();
       });
 });

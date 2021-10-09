@@ -1,4 +1,5 @@
-import { ConfigService, ResourceService, LayoutService, PaginationService, IPagination, ILoaderMessage, INoResultMessage} from '@sunbird/shared';
+import { ConfigService, ResourceService, LayoutService, PaginationService, IPagination,
+  ILoaderMessage, INoResultMessage, ReportViewerTncService} from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,6 +32,9 @@ export class SolutionListingComponent implements OnInit {
   public noResultMessage: INoResultMessage;
   showLoader = true;
   noResult = false;
+  reportViewerTncVersion: string;
+  reportViewerTncUrl: string;
+  showTncPopup = false;
   constructor(
     public resourceService: ResourceService,
     private layoutService: LayoutService,
@@ -41,6 +45,7 @@ export class SolutionListingComponent implements OnInit {
     private router: Router,
     public paginationService: PaginationService,
     public configService: ConfigService,
+    private reportViewerTncService: ReportViewerTncService
   ) {
     this.config = config;
     this.paginationDetails = this.paginationService.getPager(0, 1, this.pageSize);
@@ -102,6 +107,7 @@ export class SolutionListingComponent implements OnInit {
           this.solutionList.length < data.result.count ? true : false;
           if(this.solutionList.length>0){
             this.showLoader=false;
+            this.getReportViewerTncPolicy();
           }
           else{
             this.showLoader=false;
@@ -224,6 +230,16 @@ export class SolutionListingComponent implements OnInit {
     this.layoutService.switchableLayout().subscribe((layoutConfig) => {
       if (layoutConfig != null) {
         this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
+
+  getReportViewerTncPolicy() {
+    this.reportViewerTncService.getReportViewerTncPolicy().then((tncResult) => {
+      if (tncResult) {
+        this.reportViewerTncVersion = tncResult.version;
+        this.reportViewerTncUrl = tncResult.url;
+        this.showTncPopup = tncResult.showTncPopup;
       }
     });
   }

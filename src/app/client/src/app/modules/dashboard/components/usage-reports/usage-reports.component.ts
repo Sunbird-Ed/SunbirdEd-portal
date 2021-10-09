@@ -10,7 +10,8 @@ import {
   ResourceService,
   INoResultMessage,
   NavigationHelperService,
-  LayoutService
+  LayoutService,
+  ReportViewerTncService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Subject} from 'rxjs';
@@ -41,12 +42,15 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   public courseProgressService: CourseProgressService;
   layoutConfiguration: any;
   private unsubscribe$ = new Subject<void>();
+  reportViewerTncVersion: string;
+  reportViewerTncUrl: string;
+  showTncPopup = false;
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
-    courseProgressService: CourseProgressService
+    courseProgressService: CourseProgressService, private reportViewerTncService: ReportViewerTncService
   ) {
     this.activatedRoute = activatedRoute;
     this.courseProgressService = courseProgressService;
@@ -61,6 +65,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         if (_.get(data, 'responseCode') === 'OK') {
           this.noResult = false;
           this.reportMetaData = _.get(data, 'result');
+          this.getReportViewerTncPolicy();
           if (this.reportMetaData[0]) { this.renderReport(this.reportMetaData[0]); }
         }
       }, (err) => {
@@ -242,5 +247,15 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   selectedTabChange(event) {
     const { downloadURL } = _.get(event, 'tab.textLabel');
     downloadURL && this.setDownloadUrl(downloadURL);
+  }
+
+  getReportViewerTncPolicy() {
+    this.reportViewerTncService.getReportViewerTncPolicy().then((tncResult) => {
+      if (tncResult) {
+        this.reportViewerTncVersion = tncResult.version;
+        this.reportViewerTncUrl = tncResult.url;
+        this.showTncPopup = tncResult.showTncPopup;
+      }
+    });
   }
 }
