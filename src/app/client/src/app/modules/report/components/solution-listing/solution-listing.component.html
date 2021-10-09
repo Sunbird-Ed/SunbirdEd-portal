@@ -95,7 +95,7 @@
   </div>
 </div>
 <div *ngIf="solutionList.length">
-  <app-tnc-popup (close)="openAdminPolicyPopup(true)" [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+  <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
   </app-tnc-popup>
 </div>
 

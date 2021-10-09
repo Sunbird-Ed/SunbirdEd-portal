@@ -156,7 +156,7 @@
       </div>
     </div>
     <div *ngIf="!noResult">
-      <app-tnc-popup (close)="openAdminPolicyPopup(true)" [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+      <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
       </app-tnc-popup>
     </div>
   </div>
