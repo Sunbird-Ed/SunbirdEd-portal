@@ -1,0 +1,47 @@
+/* display styles */
+
+$displays: inline-block,
+block,
+flex,
+inline-flex,
+none;
+
+@each $var in $displays {
+  .d-#{$var} {
+    display: $var !important;
+  }
+}
+
+.show {
+  @extend .d-block;
+}
+
+.hide {
+  @extend .d-none;
+}
+
+@media only screen and (max-width: 1023px) {
+
+  [class*="mobile hidden"],
+  [class*="tablet only"]:not(.mobile),
+  [class*="computer only"]:not(.mobile),
+  [class*="large screen only"]:not(.mobile),
+  [class*="widescreen only"]:not(.mobile),
+  [class*="or lower hidden"] {
+    display: none !important;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+
+  [class*="mobile only"]:not(.computer),
+  [class*="tablet only"]:not(.computer),
+  [class*="computer hidden"],
+  [class*="large screen only"]:not(.computer),
+  [class*="widescreen only"]:not(.computer),
+  [class*="or lower hidden"]:not(.tablet):not(.mobile) {
+    display: none !important;
+  }
+}
+
+/* display styles ends */

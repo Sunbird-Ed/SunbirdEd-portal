@@ -1,0 +1,32 @@
+/* Load fonts first*/
+@import "./fonts/notosans/notosans.css";
+@import "./fonts/notosans-bengali/notosansbengali.css";
+@import "./fonts/notosans-malayalam/notosansmalayalam.css";
+@import "./fonts/notosans-gurmukhi/notosansgurmukhi.css";
+@import "./fonts/notosans-devanagari/notosansdevanagari.css";
+@import "./fonts/notosans-gujarati/notosansgujarati.css";
+@import "./fonts/notosans-telugu/notosanstelugu.css";
+@import "./fonts/notosans-tamil/notosanstamil.css";
+@import "./fonts/notosans-kannada/notosanskannada.css";
+@import "./fonts/notosans-oriya/notosansoriya.css";
+@import "./fonts/noto-nastaliqurdu/notonastaliqurdu.css";
+
+
+// base structure @import "~@project-sunbird/sb-styles/assets/mixins/mixins";
+@import "./mixins/mixins";
+@import "~@project-sunbird/sb-styles/assets/variables";
+// @import "./base/base";
+@import "./layout/layout";
+@import "./semantic/semantic-overrides";
+@import "./semantic/semantic-rtl";
+@import "./vendors/vendors";
+@import "./components/components";
+@import "~@project-sunbird/sb-styles/assets/buttons";
+@import "./legacy";
+@import "./global";
+@import "./pages/sbt-dropdown";
+// @import "./themes";
+
+
+// @import '~@swimlane/ngx-datatable/src/themes/material';
+@import '~@swimlane/ngx-datatable/assets/icons.css';

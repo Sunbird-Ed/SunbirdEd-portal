@@ -1,0 +1,55 @@
+/* padding styles */
+
+$pValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 52, 56, 60, 64, 68, 72, 76, 80,
+  84, 88, 96, 192;
+
+@each $value in $pValues {
+  $basePvalue: 0.0625 * $value + rem;
+  /* padding in all direction */
+  .p-#{$value} {
+     padding:($basePvalue) !important;
+  }
+  /* padding in top direction */
+  .pt-#{$value} {
+    padding-top: $basePvalue !important;
+  }
+  /* padding in bottom direction */
+  .pb-#{$value} {
+    padding-bottom: $basePvalue !important;
+  }
+  /* padding in top and bottom direction */
+  .py-#{$value} {
+    padding-top:$basePvalue !important;
+    padding-bottom: $basePvalue !important;
+  }
+  /* padding in left and right direction */
+  .px-#{$value} {
+    padding-left:$basePvalue !important;
+    padding-right: $basePvalue !important;
+  }
+  /* padding in left direction */
+  .pl-#{$value} {
+     padding-left: $basePvalue !important;
+    html[dir="rtl"] & {
+      padding-right: $basePvalue !important;
+      padding-left: 0 !important;
+    }
+  }
+  /* padding in right direction */
+  .pr-#{$value} {
+    padding-right: $basePvalue !important;
+    html[dir="rtl"] & {
+      padding-left:$basePvalue !important;
+      padding-right: 0 !important;
+    }
+  }
+}
+
+/* Negative paddings */
+@media screen and (min-width: 768px) {
+  .px--20 {
+    padding: 0 calculateRem(-20px);
+  }
+}
+
+/* padding styles ends */

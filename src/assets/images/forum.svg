@@ -1,0 +1,13 @@
+<svg width="26px" height="24px" viewBox="0 0 26 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 9</title>
+    <g id="Discussion-Forums-_-portal" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Discussion_forum_1" transform="translate(-1207.000000, -138.000000)" stroke="#024F9D" stroke-width="1.5">
+            <g id="Group-9" transform="translate(1207.000000, 138.000000)">
+                <path d="M17.1,7.5 L17.1,17.7 C17.1,18.36 16.56,18.9 15.9,18.9 L9.9,18.9 L4.5,22.5 L4.5,18.9 L2.1,18.9 C1.44,18.9 0.9,18.36 0.9,17.7 L0.9,7.5 C0.9,6.84 1.44,6.3 2.1,6.3 L15.9,6.3 C16.56,6.3 17.1,6.84 17.1,7.5 Z" id="Stroke-1"></path>
+                <path d="M24.3,2.1 L24.3,12.3 C24.3,12.96 23.76,13.5 23.1,13.5 L20.7,13.5 L20.7,17.1 L17.1,14.7 L17.1,7.5 C17.1,6.84 16.56,6.3 15.9,6.3 L8.1,6.3 L8.1,2.1 C8.1,1.44 8.64,0.9 9.3,0.9 L23.1,0.9 C23.76,0.9 24.3,1.44 24.3,2.1 Z" id="Stroke-3"></path>
+                <line x1="4.5" y1="11.7" x2="13.5" y2="11.7" id="Stroke-5"></line>
+                <line x1="4.5" y1="15.3" x2="9.9" y2="15.3" id="Stroke-7"></line>
+            </g>
+        </g>
+    </g>
+</svg>

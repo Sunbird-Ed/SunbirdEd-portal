@@ -1,0 +1,21 @@
+@include respond-above(lg) {
+  .ui.container,.ui.grid.container {
+    width: calculateRem(1216px) !important;
+  }
+}
+
+@include respond-above(xxl) {
+  .ui.container,.ui.grid.container {
+    width: calculateRem(1524px) !important;
+  }
+}
+
+@media only screen and (max-width: 1199px) and (min-width: 768px){
+  .ui.container {
+      width: 90%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+  }
+}
+
+

@@ -1,0 +1,62 @@
+
+/* banner styles */
+
+.sb-banner {
+  padding: 1.5rem;
+  border-radius: calculateRem(4px);
+  background-color: rgba(var(--rc-rgba-primary), 0.1);
+  box-shadow: 0 calculateRem(-4px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.25);
+  &.sb-fix-bottom,
+  &.fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    z-index: 999;
+    border-radius: calculateRem(4px) calculateRem(4px) 0 0;
+  }
+}
+#sb-fix-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  z-index: 999;
+  border-radius: calculateRem(4px) calculateRem(4px) 0 0;
+}
+.sb-banner-content {
+  display: flex;
+  align-items: center;
+}
+.sb-banner-heading {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: calculateRem(18px);
+}
+.sb-banner-content-left {
+  display: flex;
+}
+[dir="ltr"] {  
+  .sb-banner-close-icon.close.icon {
+    width: 1rem;
+    margin-left: 1.5rem;
+    font-size: 1.5rem;
+  }
+  .sb-banner-content-left {
+    margin-left:auto;
+  }
+}
+[dir="rtl"] {
+  .sb-banner-close-icon.close.icon {
+    width: 1rem;
+    margin-right: 1.5rem;
+    font-size: 1.5rem;
+  }
+  .sb-banner-content-left {
+    margin-right:auto;
+  }
+}
+
+/* banner style ends */

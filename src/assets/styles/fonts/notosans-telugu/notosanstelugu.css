@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Noto Sans Telugu';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./NotoSansTelugu-Regular.eot);
+  src:
+    url(./NotoSansTelugu-Regular.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansTelugu-Regular.woff2) format('woff2'),
+    url(./NotoSansTelugu-Regular.woff) format('woff'),
+    url(./NotoSansTelugu-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans Telugu';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./NotoSansTelugu-Bold.eot);
+  src:
+    url(./NotoSansTelugu-Bold.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansTelugu-Bold.woff2) format('woff2'),
+    url(./NotoSansTelugu-Bold.woff) format('woff'),
+    url(./NotoSansTelugu-Bold.ttf) format('truetype');
+}

@@ -1,0 +1,209 @@
+/* typography styles */
+@import "./variables";
+
+$line-height-value: 1.61803398875;
+
+// Headings
+$typography: 
+h1 var(--h1-font-size) calc(var(--h1-font-size) * $line-height-value), // 32px
+h2 var(--h2-font-size) calc(var(--h2-font-size) * $line-height-value), // 28px
+h3 var(--h3-font-size) calc(var(--h3-font-size) * $line-height-value), // 24px
+h4 var(--h4-font-size) calc(var(--h4-font-size) * $line-height-value), // 20px
+h5 var(--h5-font-size) calc(var(--h5-font-size) * $line-height-value), // 16px
+h6 var(--h6-font-size) calc(var(--h6-font-size) * $line-height-value); // 14px
+
+@each $name, $font-size, $line-height in $typography {
+  #{$name}, .sb-#{$name} {
+    font-size: $font-size;
+    line-height: $line-height;
+  }
+}
+
+// Font sizes
+
+$font-size: ('medium': var(--font-size-md), 'normal': var(--font-size-normal), 'small': var(--font-size-sm), 'xsmall': var(--font-size-xs));
+
+@each $name, $size in $font-size {
+  .f#{$name} {
+    font-size: #{$size} !important;
+  }
+}
+
+
+// Font sizes in values
+
+$font-size-number: ('0-785': 0.785rem, '0-92': 0.9286rem, '1': 1rem, '1-143': 1.143rem, '1-16': 1.16rem, '1-286': 1.286rem, '1-3': 1.3rem,
+'1-429': 1.429rem, '1-5': 1.5rem, '1-7': 1.7rem, '2': 2rem, '2-5': 2.5rem, '2-57': 2.571rem, '3': 3rem, '3-5': 3.5rem);
+
+@each $num, $size in $font-size-number {
+  .fs-#{$num} {
+    font-size: $size !important;
+  }
+}
+
+// Text transform
+
+$text-transform: capitalize, uppercase, lowercase, inherit;
+
+@each $val in $text-transform {
+  .text-#{$val} {
+    text-transform: $val !important;
+  }
+}
+
+.text-sentencecase {
+  @extend .text-lowercase;
+  &::first-letter {
+    text-transform: uppercase !important;
+  }
+}
+// Font weight
+
+$font-weight: bold, normal;
+
+@each $val in $font-weight {
+  .font-weight-#{$val} {
+    font-weight: $val !important;
+  }
+}
+
+// Word break
+
+$word-break: break-word, break-all;
+
+@each $val in $word-break {
+  .#{$val} {
+    word-break: $val !important;
+  }
+}
+
+// Cursor
+
+$cursor: pointer, text;
+
+@each $val in $cursor {
+  .cursor-#{$val} {
+    cursor: $val !important;
+  }
+}
+
+// Vertical alignment
+
+$vertical-align: bottom, middle, top;
+
+@each $val in $vertical-align {
+  .va-#{$val} {
+    vertical-align: $val !important;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+p,
+.sb-para {
+  font-size: var(--p-font-size); //14px
+  line-height: calc(var(--p-font-size) * 1.61803398875); //* 1.618
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+a {
+  color: var(--primary-color);
+  &:hover {
+    color: var(--primary-color);
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+.white-space-nowrap {
+  white-space: nowrap !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+  html[dir="rtl"] & {
+    text-align: left !important;
+  }
+}
+
+.text-left {
+  text-align: left !important;
+  html[dir="rtl"] & {
+    text-align: right !important;
+  }
+}
+
+.sb-section-title,
+.sb-pageSection-title {
+  font-size: var(--h5-font-size);
+  display: inline;
+  font-weight: 600;
+  &.sb-pageSection-sentenceCase {
+    text-transform: lowercase;
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+  &.sb-pageSection-title-light {
+    color: $gray-400;
+  }
+}
+.sb-categories-title {
+  color: var(--gray-800);
+  font-size:calculateRem(18px);
+  font-weight: bold;
+}
+.sb__ellipsis {
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  &--two {
+    -webkit-line-clamp: 2;
+  }
+  &--three {
+    -webkit-line-clamp: 3;
+  }
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+.line-height-normal {
+  line-height: normal !important;
+}
+
+/* typography styles ends */
+
+.sb-modal.custom-lg-modal  .modal.large{max-width: 70.25rem !important;}
+
+.w-10{width:10% !important;max-width:10% !important;}
+.w-20{width:20% !important;max-width:20% !important;}
+.w-30{width:30% !important;max-width:30% !important;}

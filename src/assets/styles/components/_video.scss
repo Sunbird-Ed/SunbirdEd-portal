@@ -1,0 +1,100 @@
+@import "variables";
+@import "mixins/mixins";
+
+// content video
+.content-video {
+  &__player {
+    &__details {
+      align-items: center;
+      min-height: calculateRem(64px);
+      padding: calculateRem(8px);
+    }
+
+    &__title {
+      font-weight: bold;
+      color: var(--primary-400);
+      font-size: var(--h5-font-size);
+
+      &__subtitle {
+        color: var(--gray-800);
+        display: flex;
+        align-items: center;
+        font-size:  calculateRem(12px);
+        .dot-divider {
+          width: calculateRem(4px);
+          height: calculateRem(4px);
+          border-radius: 100%;
+          background-color: var(--gray-800);
+          display: inline-block;
+          margin: 0px calculateRem(8px);
+        }
+        i {
+          color: var(--yellow);
+        }
+      }
+    }
+
+    &__screenpart {
+      padding-left: calculateRem(8px);
+      .separator {
+        border-left: calculateRem(0.5px) solid var(--gray-100);
+        height: calculateRem(40px);
+        width: calculateRem(8px);
+      }
+    }
+  }
+
+  &__content {
+    overflow-y: auto;
+    padding-right: calculateRem(8px);
+    margin-right: calculateRem(-8px);
+    padding-bottom: calculateRem(8px);
+  }
+}
+
+//aspect ratio
+.aspectratio {
+  position: relative;
+  height: 0;
+  width: 100%;
+
+  &[data-ratio="16:9"] {
+    padding-top: 56.25%;
+  }
+
+  [data-ratio="4:3"] {
+    padding-top: 75%;
+  }
+
+  & > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    video,iframe {
+      width: 100%;
+      height: 100% !important;
+      // border: calculateRem(6px) solid var(--black);
+    }
+  }
+  &.player-fullscreen {
+    width: 100%;
+    height: calc(100vh - 4rem) !important;
+    position:fixed !important;
+    top:calculateRem(0px);//50px
+    left:0;
+    bottom:0; 
+    right:0;
+    border:none; 
+    margin:0;
+    padding:0; 
+    z-index:9999;
+   }
+   &.player-fullscreen iframe, &.player-fullscreen video {
+    width: 100%;
+    height: calc(100vh - 4rem) !important;
+    background:var(--white);
+ }
+}

@@ -1,0 +1,68 @@
+{
+    "id": "api.user.event.list",
+    "ver": "v1",
+    "ts": "2021-02-22 12:09:53:965+0530",
+    "params": {
+        "resmsgid": null,
+        "msgid": "2f274490-3215-4ee8-b6e4-5f96bb2383d5",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "courses": [{
+                "dateTime": 1613972575662,
+                "lastReadContentStatus": null,
+                "enrolledDate": "2021-02-22 11:12:55:662+0530",
+                "addedBy": "04b5b73b-c647-44f9-9e16-1fbd1fcc696e",
+                "contentId": "do_11322166143296307218",
+                "active": true,
+                "description": null,
+                "courseLogoUrl": null,
+                "batchId": "event_batch_id-do_11322166143296307218",
+                "userId": "871ac12e-2170-4c6c-a07d-e933c1f64259",
+                "content": {},
+                "contentStatus": {},
+                "completionPercentage": null,
+                "issuedCertificates": [],
+                "courseName": null,
+                "certificates": [],
+                "completedOn": null,
+                "leafNodesCount": null,
+                "progress": 0,
+                "certstatus": null,
+                "lastReadContentId": null,
+                "courseId": "do_1132473607185858561397",
+                "collectionId": "do_11322166143296307218",
+                "status": 0
+            },
+            {
+                "dateTime": 1613974555685,
+                "lastReadContentStatus": null,
+                "enrolledDate": "2021-02-22 11:45:55:685+0530",
+                "addedBy": "bd8a3be7-16a8-498c-bb5c-84190e126382",
+                "contentId": "do_113221678822645760114",
+                "active": true,
+                "description": null,
+                "courseLogoUrl": null,
+                "batchId": "event_batch_id-do_113221678822645760114",
+                "userId": "871ac12e-2170-4c6c-a07d-e933c1f64259",
+                "content": {},
+                "contentStatus": {},
+                "completionPercentage": null,
+                "issuedCertificates": [],
+                "courseName": null,
+                "certificates": [],
+                "completedOn": null,
+                "leafNodesCount": null,
+                "progress": 0,
+                "certstatus": null,
+                "lastReadContentId": null,
+                "courseId": "do_1132471655206666241281",
+                "collectionId": "do_113221678822645760114",
+                "status": 0
+            }
+        ]
+    }
+}

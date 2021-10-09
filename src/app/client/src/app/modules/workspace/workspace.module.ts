@@ -29,8 +29,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor-v9';
 import { EventLibraryModule } from 'ngtek-event-library';
-import * as configData from './interfaces/urlConfig.json';
-
+import  * as configData from './interfaces/urlConfig';
 
 @NgModule({
   imports: [
@@ -47,9 +46,8 @@ import * as configData from './interfaces/urlConfig.json';
     OrderModule,
     PlayerHelperModule,
     ContentSearchModule,
-    CollectionEditorLibraryModule,
-    EventLibraryModule.forChild(configData)
-
+    EventLibraryModule.forChild(configData.urlConfig),
+    CollectionEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,

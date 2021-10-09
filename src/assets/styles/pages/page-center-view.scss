@@ -1,0 +1,78 @@
+.sb-group-page-container {
+    position:fixed;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100vh;
+    z-index:999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(var(--rc-rgba-black), 0.75);
+  }
+
+  .sb-group-container {
+    position:relative;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    width:calc(100% - 48px);
+    height:calc(100vh - 48px);
+    overflow-y: auto;
+    text-align:center;
+    margin:0 auto;
+    padding: calculateRem(24px);
+    border-radius:calculateRem(8px);
+    &--sm {
+      max-width:calculateRem(480px);
+    @include respond-above(sm){
+      max-height:calculateRem(490px);
+      padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+    }
+    }
+    &--md {
+      max-width:calculateRem(720px);
+      @include respond-above(sm){
+        height:auto;
+        padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+      }
+    }
+    &--large {
+      max-width:calculateRem(1024px);
+      height:auto;
+      @include respond-above(sm){
+        padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+      }
+    }
+  }
+
+  /* can be remove, comes from CC */
+  .close {
+    width:calculateRem(32px);
+    height:calculateRem(32px);
+    border-radius:50%;
+    position:absolute;
+    right:calculateRem(8px);
+    top:calculateRem(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+  }
+  .sb-group-container__title {
+    color: var(--gray-800);
+    font-size: calculateRem(20px);
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: calculateRem(28px);
+    text-align: center;
+  }
+  .sb-group-container__img {
+    width:85%;
+  }
+  .sb-group-container__description {
+    color: var(--gray-800);
+  font-size: calculateRem(14px);
+  line-height: calculateRem(22px);
+  }

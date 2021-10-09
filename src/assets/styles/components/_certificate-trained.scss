@@ -1,0 +1,103 @@
+
+
+.list-heading {
+  padding: calculateRem(16px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: calculateRem(1px) solid var(--gray-100);
+  @include respond-below(sm) {
+    position: relative;
+    padding-right: calculateRem(8px);
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: center;
+    font-size: calculateRem(16px);
+    padding-right: calculateRem(16px);
+  }
+  label {
+    font-size: calculateRem(24px);
+  }
+}
+
+.list-items {
+  padding: calculateRem(16px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: calculateRem(0.5px) solid var(--gray-100);
+  @include respond-above(md){
+    justify-content: space-between;
+  }
+  @include respond-below(md){
+    flex-direction: column;
+    // align-items: flex-start !important;
+    &__item {
+      margin: calculateRem(8px) 0px;
+    }
+  }
+  &__item {
+    text-align: center;
+    color: var(--sb-list-items);
+    @include respond-below(md) {
+      text-align: center !important;
+    }
+    &:first-child{
+      flex: 1 1 45%;
+      text-align: left;
+      @include respond-below(xl) {
+        flex: 1 1 35%;
+      }
+      @include respond-below(sm) {
+        flex:0 0 100%;
+      }
+    }
+    &:nth-child(2){
+      flex:1 1 20%;
+    }
+    &:nth-child(3){
+      flex:1 1 20%;
+    }
+    &:nth-child(4){
+      flex:1 1 5%;
+    }
+    &:last-child {
+      text-align: right;
+      flex: 1 1 15%;
+      min-width: calculateRem(172px);
+      @include respond-below(xl) {
+        flex: 1 1 25%;
+      }
+      html[dir="rtl"] & {
+        text-align: left;
+      }
+    }
+  }
+
+  label {
+    font-size: calculateRem(16px);
+    font-weight: normal;
+    flex: 2;
+
+    @include respond-below(md) {
+      margin-bottom: calculateRem(20px) !important;
+      flex: 1 1 50%;
+      font-size: var(--font-size-base);
+    }
+  }
+  .list-date {
+    text-transform: uppercase;
+    font-size: var(--font-size-base);
+    color: var(--sb-list-data);
+  }
+  .list-items__bar {
+    @extend .flex-ai-jc-center;
+    .bar {
+      height: calculateRem(2px);
+      width: calculateRem(16px);
+      background: var(--gray-200);
+    }
+   
+  }
+}
+

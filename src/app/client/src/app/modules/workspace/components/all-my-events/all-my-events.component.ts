@@ -38,7 +38,8 @@ export class AllMyEventsComponent implements OnInit {
   isLoading: boolean =  true;
    myEvents: any;
   // p: number = 1;
-  // collection: any[];  
+  // collection: any[];
+  Filterdata: any;  
 
   constructor( 
      private eventListService:EventListService,
@@ -60,7 +61,11 @@ export class AllMyEventsComponent implements OnInit {
    * For get List of events
    */
    showEventListPage(){
-    this.eventListService.getEventList().subscribe((data:any)=>{
+    this.Filterdata = {
+      "status":["live"],
+      "objectType": "Event"
+      };
+    this.eventListService.getEventList( this.Filterdata).subscribe((data:any)=>{
        console.log("listdata = ", data.result.events);
       this.eventList = data.result.events;
       this.isLoading = false;

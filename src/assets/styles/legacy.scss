@@ -1,0 +1,1084 @@
+@import "./variables";
+@import "./mixins/mixins";
+
+.text-gray {
+  color: var( --rc-9F9F9F) !important;
+}
+.line-height-1-3 {
+  line-height: 1.3em !important;
+}
+.curriculum-content {
+  font-size: calculateRem(14px);
+  display: flex;
+  padding: calculateRem(8px) 0;
+}
+/* Semantic UI icons only applies on i tag*/
+span.icon {
+  display: inline-block;
+  opacity: 1;
+  margin: 0 0.25rem 0 0;
+  width: 1.18em;
+  height: 1em;
+  font-family: Icons;
+  font-style: normal;
+  font-weight: 400;
+  text-decoration: inherit;
+  text-align: center;
+  speak: none;
+  font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+span.icon.folder:before {
+  content: "\f07b";
+}
+span.icon.folder.outline:before {
+  content: "\f114";
+}
+span.icon.play.circle:before {
+  content: "\f144";
+}
+
+/* placeholder if content is not there */
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* TODO: need to remove font family once we add fonts in index.html file */
+.placeholder-heading {
+  align-self: center;
+  font-weight: bold;
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.disabled .title span {
+  font-weight: 500;
+}
+/*cards fonts*/
+.cardsHeading {
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+/* font used for view all and read more*/
+.cardsKnowMore {
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--primary-color);
+}
+
+/* segment card fonts*/
+.segmentCardSubDesc {
+  font-weight: 500;
+  font-size: 1.0625em;
+}
+/*course structure page fonts*/
+.courseStructureDesc {
+  font-weight: 500;
+  font-size: 0.7em;
+}
+
+/*home page fonts*/
+.ui.header.HomeAccordianHeading {
+  font-weight: bold;
+  font-size: 1.375em;
+}
+/*section heading fonts*/
+.sectionHeading {
+  font-weight: bold;
+  font-size: 1.375em;
+}
+/*show filter fonts*/
+
+.ShowFilterSubTitle {
+  font-weight: 500;
+  font-size: 0.9375em;
+  color: var(--rc-7c7b7b);
+}
+
+.opacity-1 {
+  opacity: 1 !important;
+}
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+
+.float-ContentRight {
+  float: right !important;
+}
+.right-float {
+  float: right !important;
+}
+.width-100 {
+  width: 100% !important;
+}
+.mouse-pointer {
+  cursor: pointer;
+}
+.right-floated {
+  float: right !important;
+}
+.overflowContentHorizontal {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.ui.menu {
+  font-weight: 500;
+  color: var(--gray-800);
+}
+.ui.secondary.pointing.menu {
+  border-bottom: 0;
+}
+.ui.secondary.pointing.menu .active.item {
+  border-color: var(--primary-color);
+  color: var(--gray-800);
+  font-weight: 400;
+}
+.ui.secondary.pointing.menu {
+  background: var(--white);
+  margin: 0rem;
+  justify-content: flex-start;
+}
+.searchfilterinput .ng-empty + .icon.search,
+.searchfilterinput .ng-empty + .icon.search:hover {
+  cursor: auto !important;
+  opacity: 0.3 !important;
+  pointer-events: none;
+}
+/*for the text on image in card */
+
+.rightSideSectionCards.ui.card {
+  width: 100%;
+}
+div:focus {
+  outline: none;
+}
+.ui.cards > .card > .content {
+  padding-right: 3px;
+}
+/*three stackable cards width reduced to match design*/
+/*using ~ in calc because of Less issue with clac function */
+.ui.three.cards > .card {
+  width: calc(33.33333333% - 3.3em);
+  margin-right: 0.2em;
+}
+.ui.three.cards > .card:hover {
+  transition: all 0.3s ease 0s;
+  box-shadow: 0 calculateRem(3px) calculateRem(5px) 0 rgba(var(--rc-rgba-black), 0.5);
+}
+
+/*card font size for curriculum*/
+.rightSideSectionCards.ui.card > .content > .header {
+  font-size: calculateRem(16px);
+}
+.ui.card>.extra, .ui.cards>.card>.extra{
+  font-size: calculateRem(14px);
+}
+/*text description height fixed in card*/
+i.large.icon.limitedPublishingLinkIcon {
+  margin-left: calculateRem(-4px);
+  -webkit-transform: rotate(-43deg);
+  transform: rotate(-43deg);
+  font-size: 1.8em;
+}
+.content-player {
+  position: relative;
+  width: 99.8%;
+  z-index: 11;
+}
+.ui.segment.content-player-header {
+  padding: calculateRem(5px);
+  border: gray;
+}
+.contentViewerIframeShadow {
+  width: 100%;
+  border: 0px;
+  height: 100%;
+}
+#help-video-aspect-ratio,.content-video__player {
+  // transition: all ease .3s;
+}
+/*semantic ui modal form field changes*/
+
+
+.ui.modal.ui.dropdown > .text {
+  margin-left: -1.1em;
+}
+.ui.modal.ui.multiple.dropdown > .text {
+  margin: 0;
+  line-height: 0;
+}
+.field > label {
+  color: var(--gray-800);
+  font-weight: bold;
+  line-height: normal;
+}
+.inline.fields > label {
+  color: var(--gray-800);
+}
+.ui.modal .ui.radio.checkbox .box,
+.ui.radio.checkbox label {
+  color: var(--gray-800);
+}
+.ui.modal .ui.header {
+  font-size: 1.5em;
+}
+/*it is a quick fix to make modal content scrollable need to updated with semantic libray*/
+.ui.modal .scrolling.content {
+  max-height: calc(70vh);
+  overflow: auto;
+}
+/*concept selector pop up */
+.ui.tree-picker.modal .header .ui.menu {
+  margin-top: calculateRem(-12px);
+}
+/*removing border and box-shadow for popup modal in workspace*/
+.modal .ui.segment {
+  box-shadow: none;
+  border: none;
+}
+.ui.form input:not([type]):focus {
+  border-color: var(--gray-800);
+}
+.centered.grid.no-result-container {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+.no-result-container .column img {
+  display: block;
+  height: 9em;
+  margin: auto;
+  width: 9em;
+}
+
+.no-result-container .no-result-text {
+  text-align: center;
+  padding-top: calculateRem(20px);
+  font-size: calculateRem(18px);
+  font-weight: 600;
+  color: var(--rc-7c7b7b);
+}
+.no-result-container .no-result-search-text {
+  text-align: center;
+  padding-top: calculateRem(5px);
+  font-size: calculateRem(16px);
+  color: var(--rc-7c7b7b);
+}
+.announcement-description {
+  font-weight: 500;
+  font-size: 1em;
+}
+.ui.items > .item.box {
+  box-shadow: 0 calculateRem(1px) calculateRem(2px) 0 rgba(var(--rc-rgba-gray-300), 0.15);
+  margin: 1rem 0;
+  padding: 1em 1em;
+  border-radius: 0.28571429rem;
+  border: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.15);
+}
+
+.UpReviewTableHeader {
+  font-size: 1em;
+  font-weight: 400;
+}
+.UpReviewSubHeader {
+  font-size: 0.7em;
+  opacity: 0.7;
+  font-weight: 500;
+}
+.UpReviewHeader {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.ui.tiny.image.UpReviewTinyImage {
+  height: calculateRem(40px);
+  width: calculateRem(40px);
+  max-height: calculateRem(40px);
+  max-width: calculateRem(40px);
+}
+.UpForReviewListHover:hover {
+  background-color: var(--rc-f5f5f5);
+}
+.UpForReviewStatusOrange {
+  color: var(--rc-ffb300);
+  font-size: 1.1em;
+  font-weight: 500;
+}
+.ui.upForReviewTable.table {
+  border: none;
+}
+h5.ui.header {
+  font-size: 1rem;
+}
+.searchicon.ui.icon.input input.upForReviewSearchBox {
+  width: calculateRem(450px);
+  background: var(--rc-fdfdfd);
+  border: none;
+  border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.33);
+  border-radius: 0;
+}
+.qq-uploader {
+  border: calculateRem(2px) dashed var(--gray-100);
+  max-height: calculateRem(330px);
+  overflow-y: auto;
+  min-height: calculateRem(300px);
+}
+body ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: calculateRem(6px);
+  height: calculateRem(5px);
+}
+.qq-upload-file {
+  width: calc(100% - 40px);
+}
+.qq-upload-list {
+  overflow-y: hidden;
+}
+ul {
+  list-style: none;
+}
+ul li {
+  margin-bottom: calculateRem(29px);
+  position: relative;
+}
+ul li span.text {
+  margin-right: 43%;
+}
+ul.courseStr {
+  -webkit-padding-start: 0px !important;
+}
+li.subStr {
+  height: 2em;
+  padding-top: 1%;
+  text-align: center;
+  position: relative;
+}
+li.subStr::before {
+  content: "";
+  position: absolute;
+  top: -3em;
+  left: -0.1em;
+  width: 0.1em;
+  height: 4em;
+  background: var(--rc-d4d4d5);
+  z-index: 1;
+}
+li.subStr::after {
+  content: "";
+  position: absolute;
+  top: 0.9em;
+  left: -0.1em;
+  width: 3em;
+  height: 0.1em;
+  background: var(--rc-d4d4d5);
+}
+.courseStructureHeader {
+  border-bottom: 0 solid rgba(var(--rc-rgba-gray-300), 0.15) !important;
+}
+
+.ui.styled.accordion.title {
+  margin: 0;
+  padding: 2%;
+  font-size: 1em;
+  padding: 0.75em 1em;
+  color: rgba(var(--rc-rgba-black), 0.95);
+  border-top: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.15);
+  transition: background 0.1s ease, color 0.1s ease;
+  font-size: calculateRem(20px);
+}
+.text-cencapitalize {
+  text-transform: capitalize;
+}
+.videosegment.ui.segment {
+  position: relative;
+  background: transparent;
+  box-shadow: 0 0 0;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  margin: 0;
+}
+.courseupdate {
+  color: var(--rc-7c7b7b);
+  line-height: 1.6;
+  font-size: 1em;
+  word-break: break-word;
+}
+.courseupdate a{
+  color: var(--primary-color) !important;
+}
+.courseupdate b {
+  font-weight: 400;
+}
+.courseupdate span {
+  font-weight: 600;
+  color: var(--gray-800);
+}
+.ui.styled.accordion .active.title .angle.down.icon {
+  background: 0 0;
+  color: rgba(var(--rc-rgba-black), 0.95);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.ui[class*="right ribbon"].label:after {
+  left: auto;
+  right: 0;
+  border-style: solid;
+  border-width: 0em 0em 0 0 !important;
+  border-color: transparent;
+  border-top-color: inherit;
+}
+.announcementCard-header {
+  padding: 0;
+}
+.ui.segment {
+  position: relative;
+  box-shadow: none;
+  margin: 1rem 0;
+  padding: calculateRem(20px);
+  border-radius: calculateRem(4px);
+  border: 0px solid var(--rc-d8dee2);
+}
+.serch-allresult {
+  color: var(--rc-717171);
+}
+.search-content-header {
+  background: transparent !important;
+  box-shadow: none;
+}
+.filtersearch.ui.selection.dropdown {
+  min-width: 108%;
+}
+.dropdown-content {
+  text-align: right;
+  white-space: nowrap;
+  padding: 0.5em 0;
+}
+.filter-text {
+  text-align: left;
+  vertical-align: middle;
+  line-height: 2.1;
+  white-space: nowrap;
+}
+.filter-button {
+  white-space: nowrap;
+}
+.searchfilterinput.ui.search .prompt {
+  border-radius: 0;
+}
+.searchicon.ui.icon.input input {
+  padding-right: calculateRem(6px) !important;
+  border: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.33);
+  border-radius: 0 0.28571429rem 0.28571429rem 0;
+  padding-top: 0.85em;
+}
+.searchicon.ui.icon.input i {
+  cursor: pointer;
+}
+.ui.multiple.dropdown > .text {
+  white-space: nowrap;
+}
+.ui.multiple.dropdown > .default  {
+  white-space: nowrap;
+  margin: 0.1875rem 0 0.1875rem 0 !important;
+}
+.ui.selection.dropdown{
+  line-height: calculateRem(21px);
+}
+.ui.multiple.dropdown > .search{
+  padding: 0 !important;
+}
+.filtercolmntext.ui.grid > .column:not(.row) {
+  padding-left: 1.39em;
+}
+.filtercolmntext {
+  z-index: 11;
+}
+.conceptSelector.ui.form .treepicker-parent input {
+  color: var(--rc-cdcccc);
+  font-size: calculateRem(13px);
+}
+
+.dynamic-section-card .slider .card {
+  position: relative !important;
+  background-color: transparent !important;
+  box-shadow: none;
+}
+.dynamic-section-card .slider .card .image img {
+  padding: 0 !important;
+  height: calculateRem(150px);
+}
+.dynamic-section-card .slider .card .image .header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(var(--rc-rgba-black), 0.2);
+  color: var(--white);
+  width: 100%;
+  margin: 0;
+  max-height: calculateRem(70px);
+  padding-top: calculateRem(10px);
+  padding-bottom: calculateRem(10px);
+  text-align: center;
+}
+.dynamic-section-card .slider .card .content {
+  background-color: transparent !important;
+}
+.dynamic-section-card .slider .card .extra {
+  border-top: transparent !important;
+}
+.dynamic-section-card .slider .card .extra .card-rating .active {
+  color: var(--primary-color) !important;
+  text-shadow: none !important;
+  padding-top: 0 !important;
+}
+.profilesettings {
+  text-align: right;
+}
+.profileheader.ui.items > .item > .content > .header:not(.ui) {
+  font-size: 1.6em;
+}
+.profileheader.ui.items > .item .meta:last-child {
+  color: var(--rc-fdfdfd);
+}
+
+
+/* user avatar on hover effects in profile edit page*/
+.userAvtarWrap {
+  position: relative;
+  max-height: calculateRem(150px) !important;
+  max-width: calculateRem(150px) !important;
+}
+
+/*profile image header css*/
+.header-image-profile {
+  height: calculateRem(100px) !important;
+  width: calculateRem(100px) !important;
+}
+/*profile header text css*/
+@media only screen and (max-width: 1024px) {
+  .profile-header-text {
+    padding-left: calculateRem(40px) !important;
+  }
+}
+.profileitems.ui.items > .item a.header,
+.profileitems.ui.items > .item a.header:hover {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  line-height: calculateRem(20px) !important;
+  color: var(--rc-7c7b7b) !important;
+}
+.profileitems.ui.items > .item > .content > a.header,
+.profileitems.ui.items > .item > .content > a.header:hover {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  line-height: calculateRem(20px) !important;
+  color: var(--rc-7c7b7b) !important;
+}
+.profileitems.ui.items > .item .description {
+  color: var(--rc-7c7b7b) !important;
+  font-size: 0.89em !important;
+  line-height: calculateRem(17px) !important;
+  margin-top: 0 !important;
+}
+.profileitems .item .metadata .date {
+  color: var(--rc-7c7b7b) !important;
+  font-size: 0.89em !important;
+  line-height: calculateRem(14px) !important;
+}
+
+.profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:last-child) {
+  padding: calculateRem(12px) 0;
+}
+.profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:first-child) {
+  padding: calculateRem(12px) 0;
+}
+.profileitems .ui.avatar.image {
+  width: 3em;
+  height: 3em;
+  border-radius: 0;
+}
+.profileitems.ui.items > .item .avatar img,
+.ui.items > .item img.avatar {
+  width: 3em;
+  height: 3em;
+  border-radius: 0 !important;
+}
+.iniformationcontent {
+  color: var(--rc-7c7b7b);
+}
+.searchListInfo {
+  border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.15) !important;
+}
+.ui.basic.label {
+  border: calculateRem(1px) solid var(--rc-fdfdfd);
+}
+.ui.basic.label:hover {
+  border-color: var(--primary-color) !important;
+}
+.ui.bottom.attached.tabular.menu.expand-or-minimize-btn {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 0.3em;
+  min-height: 1.28571429em;
+  margin-top: -0.1em;
+}
+.ui.bottom.attached.tabular.menu .item.expand-or-minimize-btn-pad {
+  padding: calculateRem(10px) calculateRem(10px) calculateRem(14px) calculateRem(15px);
+}
+.workspaceicon.ui.header > .icon {
+  padding-top: 0;
+  float: left;
+}
+.workspaceicon.ui.header:first-child {
+  margin-top: calculateRem(21px);
+}
+.publicmenusection.ui.vertical.menu {
+  padding: 0 0 0 calculateRem(4px);
+}
+.publicmenusection.ui.secondary.vertical.menu > .item {
+  color: var(--rc-7c7b7b);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.publicmenusection.ui.secondary.menu .active.item {
+  background: linear-gradient(270deg, rgba(var(--rc-rgba-d0d0d0), 0) 0%, var(--white) 100%);
+  border-radius: 0;
+  color: rgba(var(--rc-rgba-black), 0.95);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.publicmenusection.ui.secondary.menu a.item:hover {
+  background: linear-gradient(270deg, rgba(var(--rc-rgba-d0d0d0), 0) 0%, var(--white) 100%);
+  border-radius: 0;
+  color: rgba(var(--rc-rgba-black), 0.95);
+}
+.workspacesegment {
+  margin-top: 0px;
+}
+.workspacecontent {
+  line-height: calculateRem(45px);
+}
+.workspaceinstuction {
+  text-align: center;
+  color: var(--rc-7c7b7b);
+  font-size: calculateRem(12px);
+}
+.uploador p {
+  color: var(--rc-7c7b7b);
+  font-size: calculateRem(10px);
+}
+.iwt {
+  display: block;
+}
+.textcontent {
+  display: flex;
+  align-items: center;
+  margin: calculateRem(4px);
+  font-size: calculateRem(12px);
+}
+.textcontent i.icon {
+  font-size: 3.5em;
+  display: flex;
+  align-items: center;
+}
+.my-text {
+  font-size: 1.063em;
+  color: var(--gray-800);
+  vertical-align: middle;
+}
+.my-icon {
+  vertical-align: middle;
+}
+.wmd-input {
+  height: calculateRem(150px) !important;
+}
+.ui.items > .item > .image.userSearchImage > img {
+  min-height: calculateRem(80px);
+  max-width: calculateRem(80px);
+  max-height: calculateRem(80px);
+}
+[dir="rtl"] {
+  .ui.items > .item > .userSearchContent {
+    padding: 0 calculateRem(24px) 0 0;
+  }
+}
+.ui.items > .item.userSearchCardHover {
+  padding: calculateRem(10px);
+}
+.ui.items > .item.userSearchCardHover:hover {
+  -webkit-box-shadow: calculateRem(1px) calculateRem(6px) calculateRem(15px) calculateRem(2px) rgba(var(--rc-rgba-black), 0.15);
+  moz-box-shadow: calculateRem(1px) calculateRem(6px) calculateRem(15px) calculateRem(2px) rgba(var(--rc-rgba-black), 0.15);
+  -o-box-shadow: calculateRem(1px) calculateRem(6px) calculateRem(15px) calculateRem(2px) rgba(var(--rc-rgba-black), 0.15);
+  transition: all 0.5s;
+  z-index: 100;
+  transform: scale(1.07);
+  -webkit-transform: scale(1.02);
+  background-color: var(--white);
+  border-radius: calculateRem(5px);
+}
+.ui.divided.items > .item:first-child {
+  padding-top: calculateRem(10px) !important;
+}
+.ui.divided.items > .item:last-child {
+  padding-bottom: calculateRem(10px) !important;
+}
+.batchCardDropDown {
+  float: right;
+  font-size: calculateRem(13px) !important;
+  padding-right: calculateRem(12px);
+  font-weight: normal;
+  padding: calculateRem(8px);
+  border-radius: calculateRem(3px);
+  &:hover {
+    background-color: var(--primary-100);
+  }
+  html[dir="rtl"] &{
+    .dropdown.icon{
+      margin: 0 0.5rem 0 0;
+    }
+  }
+}
+.batchCardAlign {
+  padding: calculateRem(10px) calculateRem(15px);
+  display: flex;
+  align-items: center;
+}
+.headerBatchCard {
+  font-weight: 700;
+  font-size: 1em;
+  .header {
+    font-size: 0.9em;
+  }
+}
+.ui.attached.batchCard.button {
+  background: var(--white) !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+#batchcardList::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 calculateRem(6px) rgba(var(--rc-rgba-black), 0.3);
+  border-radius: calculateRem(10px);
+  background-color: var(--rc-f5f5f5);
+}
+#batchcardList::-webkit-scrollbar {
+  width: calculateRem(6px);
+  background-color: var(--rc-f5f5f5);
+}
+#batchcardList::-webkit-scrollbar-thumb {
+  border-radius: calculateRem(10px);
+  -webkit-box-shadow: inset 0 0 calculateRem(6px) rgba(var(--rc-rgba-black), 0.3);
+  background-color: var(--rc-d8d8d8);
+}
+.des-content {
+  color: var(--gray-800);
+  font-size: calculateRem(13px);
+  line-height: calculateRem(18px);
+  padding-top: calculateRem(12px);
+}
+#updateBatchModal.ui.modal .createbatchdropdown.ui.selection.dropdown {
+  padding-bottom: calculateRem(2px) !important;
+  padding-top: 0 !important;
+}
+#updateBatchModal.ui.modal
+  .createbatchdropdown.ui.multiple.search.dropdown
+  > input.search {
+  margin: 0 !important;
+}
+#updateBatchModal .date-calendar {
+  left: calculateRem(-10px) !important;
+}
+#updateBatchModal .date-select {
+  padding: 1em 0 1em 2em !important;
+}
+.batch-list-items .item .ui.avatar.image {
+  width: 4em;
+  height: 4em;
+}
+.member label {
+  color: var(--gray-800);
+  font-size: calculateRem(13px);
+  font-weight: bold;
+  line-height: calculateRem(14px);
+}
+.selectedBatchMeta.meta {
+  color: rgba(var(--rc-rgba-black), 0.7) !important;
+  font-size: 0.89em !important;
+  line-height: 2;
+}
+.selectedBatchContent {
+  color: rgba(var(--rc-rgba-black), 0.7) !important;
+}
+.ui.ordered.list .list > .item:before,
+ol.ui.list ol li:before {
+  margin-left: -2.5em !important;
+}
+.create-ann-header-desc {
+  font-size: 0.9em;
+  color: var(--rc-7c7b7b);
+}
+iframe.iziModal-iframe {
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999;
+  position: relative;
+  border: none;
+}
+.iziModal-wrap {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  width: 100% !important;
+  height: 100% !important;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.overflow-word-wrap {
+  overflow-wrap: break-word !important;
+}
+/* font used for view all and read more*/
+.expand-or-minimize {
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+.ui.fluid.search.dropdown .menu > .item > img {
+  width: 2.1666em;
+  vertical-align: middle;
+  height: 2.1666em;
+}
+.ui.label > img {
+  width: 2.1666em !important;
+  vertical-align: middle;
+  height: 2.1666em !important;
+}
+.secondary-text-color-sunbird {
+  color: var(--rc-7c7b7b) !important;
+}
+/*adding outline none because router link of angular is adding extra outline, */
+.remove-outline {
+  outline: none !important;
+}
+.ui.icon.input > i.icon.dialcode-search-icon:not(.link) {
+  pointer-events: auto;
+}
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  line-height: 1.4em;
+}
+.filter-title {
+  font-weight: bold;
+  font-size: 0.98em;
+}
+.ui.button .header {
+  font-weight: 600;
+  width: 100%;
+  display: inline-block;
+  font-size: 1.4em;
+  line-height: 1.35;
+}
+
+/*mobile responsive code  which we need to remove once we start writing mobile first css*/
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .ui.button .header {
+    font-size: 1em;
+  }
+  /*profile header bulk upload alignment fixes*/
+  .m-responsive-p-header-fl {
+    float: left;
+    clear: both;
+    padding-bottom: calculateRem(10px);
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 400px) {
+  .ui.HomeAccordianHeading.m-responsive-cp {
+    margin-top: calculateRem(10px);
+    font-size: 1.15em;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calculateRem(210px);
+  }
+}
+.ui.calendar .table td {
+  padding: 0.5em;
+}
+
+/* Removing body scroll when modal opens */
+.no-scroll {
+  overflow-y: hidden;
+  margin-right: calculateRem(16px);
+}
+
+/* full screen modal */
+
+.fullpage .ui.dimmer .ui.modal.fullscreen {
+  top: 0px;
+  position: fixed !important;
+  bottom: 0;
+  left: 0 !important;
+  right: 0;
+  width: 100% !important;
+  height: 100%;
+  margin: 0 !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.ui.modal .ui.header.content-header {
+  font-size: 1.3em;
+}
+.ui.fullpage.divider:not(.vertical):not(.horizontal) {
+  border-top: calculateRem(1px) solid var(--rc-d8d8d8);
+}
+
+.ui[class*="basic"].border-less.table:not(.sortable):not(.striped)
+  thead
+  tr:first-child,
+.ui[class*="basic"].border-less.table:not(.sortable):not(.striped)
+  td:first-child,
+.ui[class*="basic"].border-less.table:not(.sortable):not(.striped)
+  th:first-child {
+  padding-left: 25px;
+}
+.ui.basic.border-less.table {
+  border: 0;
+  border-top: calculateRem(1px) solid var(--rc-d8d8d8);
+  border-radius: 0;
+  font-weight: 300;
+  font-size: calculateRem(13px);
+}
+.fl {
+  float: left !important;
+}
+.fullpage .content {
+  left: 0;
+  right: 0;
+  top: 0;
+  position: relative;
+}
+
+.fullpage .scrollable.content {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  overflow: hidden;
+}
+.fullpage .actions {
+  padding: 1rem;
+  background-color: var(--rc-f9f9f9);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4.5rem;
+}
+.ui.very.basic.border-less.table {
+  border: 0;
+}
+/* temp fix for the more button which need to be removed later */
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+angular2-multiselect .select-all {
+  padding: 0;
+  border: 0;
+}
+angular2-multiselect .select-all span[hidden] {
+  display: none !important;
+}
+angular2-multiselect .arrow-up {
+  display: none;
+}
+angular2-multiselect .dropdown-list {
+  padding: 0;
+}
+angular2-multiselect .list-area {
+  box-shadow: none;
+  border-radius: 0;
+}
+/* placeholder if content is not there */
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* TODO: need to remove font family once we add fonts in index.html file */
+.placeholder-heading {
+  align-self: center;
+  font-weight: bold;
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity: 0.6;
+}
+.count {
+  position: relative;
+}
+.ui.basic.button.dial-code {
+  box-shadow: none;
+  border: calculateRem(1px) solid rgba(var(--rc-rgba-black), 0.33);
+  max-height: calculateRem(36px);
+}
+sui-multi-select.ui.selection.dropdown {
+  background: transparent;
+}
+
+.conceptSelector.ui.form .treepicker-parent input {
+  background: transparent;
+}
+.ui.list .list > .item a.header,
+.ui.list > .item a.header {
+  color: var(--primary-color) !important;
+}
+.ui.list .list > .item a.header:hover,
+.ui.list > .item a.header:hover {
+  color: var(--primary-color) !important;
+  opacity: 0.8;
+}
+i.blue.icon {
+  color: var(--primary-color) !important;
+}
+.search-content-header {
+  .ui.floated.header {
+    margin: 5px 0 0 5px !important;
+    font-size: 1.143rem !important;
+    font-weight: 600;
+  }
+}
+@media screen and (max-width: 768px) {
+  .ui.grid {
+    margin: 0 !important;
+    max-width: 100vw;
+  }
+}
+.content-filter-sort {
+  .ui.dropdown .menu {
+    right: 0;
+    left: auto;
+  }
+}
+.sbt-page-gap{
+  padding-top: calculateRem(24px);
+}

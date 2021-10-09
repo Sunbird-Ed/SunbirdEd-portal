@@ -1,0 +1,15 @@
+/* overflow styles */
+
+$value: ('auto': 'auto', 'visible': 'visible', 'hide': 'hidden', 'scroll': 'scroll');
+
+$cordinate: x, y;
+
+@each $i in $cordinate {
+  @each $key, $val in $value {
+    .o-#{$i}-#{$key} {
+      overflow-#{$i}: #{$val} !important;
+    }
+  }
+}
+
+/* overflow styles ends */

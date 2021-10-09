@@ -1,0 +1,85 @@
+/* margin styles */
+
+$mValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 50, 52, 56, 60, 64, 68, 72, 76, 80,
+  84, 88, 96, 192;
+  @each $value in $mValues {
+    $baseMvalue: 0.0625 * $value + rem;
+    /* Margin in all direction */
+    .m-#{$value} {
+      margin:$baseMvalue !important; 
+    }
+    /* Margin in top direction */
+    .mt-#{$value} {
+      margin-top:$baseMvalue !important; 
+    }
+    /* Margin in bottom direction */
+    .mb-#{$value} {
+      margin-bottom:$baseMvalue !important; 
+    }
+    /* Margin in top and bottom direction */
+    .my-#{$value} {
+      margin-top:$baseMvalue !important; 
+      margin-bottom:$baseMvalue !important; 
+    }
+    /* Margin in left and right direction */
+    .mx-#{$value} {
+      margin-left:$baseMvalue !important; 
+      margin-right:$baseMvalue !important;
+    }
+    /* Margin in left direction */
+    .ml-#{$value} {
+      margin-left:$baseMvalue !important; 
+      html[dir="rtl"] & {
+        margin-right:$baseMvalue !important;
+        margin-left: 0 !important;
+      }
+    }
+    /* Margin in right direction */
+    .mr-#{$value} {
+      margin-right:$baseMvalue !important;
+      html[dir="rtl"] & {
+        margin-left:$baseMvalue !important;
+        margin-right: 0 !important;
+      }
+    }
+  }
+  
+  .m-auto {
+     margin: 0 auto 0 auto !important;
+  }
+  .mt-auto {
+     margin-top:auto !important;
+  }
+  .mb-auto {
+    margin-bottom:auto !important;
+  }
+  .mx-auto {
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+  .my-auto {
+    margin-top:auto !important;
+    margin-bottom:auto !important;
+  }
+  .ml-auto {
+    margin-left:auto !important;
+    html[dir="rtl"] & {
+      margin-right:auto !important;
+      margin-left: 0 !important;
+    }
+  }
+  .mr-auto {
+    margin-right:auto !important;
+    html[dir="rtl"] & {
+      margin-left:auto !important;
+      margin-right: 0 !important;
+    }
+  }
+  /* Negative margins */
+  @media screen and (min-width: 768px) {
+    .mx--20 {
+      margin: 0 calculateRem(-20px) !important;
+    }
+  }
+
+  /* margin styles ends */

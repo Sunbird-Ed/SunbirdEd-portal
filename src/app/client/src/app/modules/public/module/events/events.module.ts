@@ -19,7 +19,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { EventLibraryModule } from 'ngtek-event-library';
-import  * as configData from '../../../../modules/workspace';
+import  * as configData from '../../../workspace/interfaces/urlConfig';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
@@ -44,7 +44,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     PlayerHelperModule,
     ContentSearchModule,
     CommonConsumptionModule,
-    EventLibraryModule.forChild(configData),
+    EventLibraryModule.forChild(configData.urlConfig),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
 
   ],

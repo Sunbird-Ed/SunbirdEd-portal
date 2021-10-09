@@ -1,0 +1,27 @@
+// tooltip Component
+.ui {
+    &.popup {
+      background: var(--gray);
+      border: calculateRem(1px) solid var(--gray);
+      padding: calculateRem(8px);
+  
+      .content {
+        font-size: calculateRem(12px);
+        color:  var(--gray-0); 
+        line-height: normal;
+      }
+  
+      .header {
+        font-size: calculateRem(12px);
+        color: var(--gray-200);
+      }
+  
+      .arrow {
+        background: var(--gray);
+        border: calculateRem(1px) solid var(--gray);
+        box-shadow: calculateRem(1px) calculateRem(1px) 0 0 var(--gray) !important;
+        display: none;
+      }
+    }
+  }
+

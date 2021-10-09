@@ -1,0 +1,255 @@
+@import './mixins/mixins';
+/* sb-field */
+$sb-field-margin-bottom: calculateRem(8px);
+$sb-field-disabled-background: $gray-100;
+$sb-field-disabled-border: $input-border-width solid $gray-100;
+$sb-field-disabled-opacity: 1;
+
+/* sb-input */
+$sb-input-background-color: $white-color;
+$sb-input-font-size: calculateRem(13px);
+$sb-input-line-height: calculateRem(21px);
+$sb-input-padding: calculateRem(9px);
+$sb-input-color: var(--gray-800);
+$sb-input-border-radius: calculateRem(3px);
+$sb-input-border-normal: $input-border-width solid $gray-200;
+$sb-input-border-focus: $input-border-width solid $primary-600;
+$sb-input-border-hover: $input-border-width solid $primary-300;
+$sb-input-border-error: $input-border-width solid $red-400;
+$sb-input-border-success: $input-border-width solid $secondary-200;
+
+/* sb-input label and text */
+$sb-error-text: $red-400;
+$sb-label-font-size: calculateRem(13px);
+// Dropdown
+$sb-dropdown-border-color: $gray-200;
+$sb-dropdown-border-focus: $primary-600;
+$sb-dropdown-border-hover: $primary-300;
+$sb-dropdown-min-height: calculateRem(39px);
+$sb-dropdown-border-radius: calculateRem(3px);
+$sb-dropdown-border: $input-border-width solid $sb-dropdown-border-color;
+$sb-dropdown-active-item: $gray-800;
+$sb-multi-select-dropdown-icon-font-size: calculateRem(20px);
+$sb-dropdown-label-font-size: calculateRem(12px);
+$sb-selection-dropdown-min-height: calculateRem(32px);
+$sb-selection-dropdown-padding: calculateRem(4px) calculateRem(8px);
+$sb-multiple-dropdown-label-font-size: $font-size-sm;
+$sb-multiple-dropdown-label-margin-right: calculateRem(4px);
+$sb-multiple-dropdown-text-margin: calculateRem(3px) 0 calculateRem(3px)
+  calculateRem(10px);
+$sb-multiple-dropdown-text-font-size: $font-size-sm;
+$sb-selection-line-height: calculateRem(18px);
+
+
+.sb-form {
+  position: relative;
+  max-width: 100%;
+}
+.sb-field {
+  position: relative;
+  margin-bottom: $sb-field-margin-bottom;
+  label {
+    color:var(--sbfield-label-text);
+    font-size:calculateRem(14px);
+  }
+  .sb-input-icon {
+    position: absolute;
+    top: $base-block-space;
+    right: 0;
+    display: block;
+    width: $base-block-space * 4;
+    height: $base-block-space * 4;
+    text-align: center;
+    pointer-events: none;
+  }
+  &.disabled,
+  [disabled] {
+    background-color: $sb-field-disabled-background;
+    border: $sb-field-disabled-border;
+    opacity: $sb-field-disabled-opacity;
+    pointer-events: none;
+  }
+  .ui.selection.dropdown {
+    border-radius: calculateRem(2px);
+    font-size: calculateRem(12px);
+    width: 100%;
+    min-height: $sb-selection-dropdown-min-height;
+    padding: ($base-block-space / 2) ($base-block-space * 1);
+    border-color: var(--gray-200);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    background: var(--sb-dropdown-menu-bg);
+    color: var(--sb-dropdown-menu-text);
+    .text {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      line-height: 1.5;
+      margin: 0rem;
+    }
+    .menu > .item {
+      padding: calculateRem(7px) calculateRem(5px);
+      padding: calculateRem(12px) calculateRem(10px) !important;
+      line-height: 1.4;
+      font-size: calculateRem(12px);
+      height: auto;
+    }
+  }
+  .ui.multiple.dropdown {
+    .label {
+      margin-bottom: calculateRem(4px);
+      margin-top: calculateRem(4px);
+      font-size: calculateRem(12px);
+    }
+  }
+}
+.sb-form-control {
+  background-color: $sb-input-background-color;
+  background-clip: padding-box;
+  border: calculateRem(1px) solid var(--gray-200);
+  border-radius: $sb-input-border-radius;
+  color: $sb-input-color;
+  display: block;
+  font-size: $sb-input-font-size;
+  line-height: $sb-input-line-height;
+  max-width: 100%;
+  padding: calculateRem(4px) calculateRem(8px);
+  position: relative;
+  width: 100%;
+  min-height: ($base-block-space * 4);
+  &.sb-fluid {
+    width: 100%;
+  }
+  &:focus {
+    border: $sb-input-border-focus;
+    outline: 0 !important;
+  }
+  &:hover {
+    border: $sb-input-border-hover;
+  }
+  &.is-invalid,
+  &.is-invalid:hover,
+  &.is-invalid:focus {
+    border: $sb-input-border-error;
+    padding: 0.25rem 0.5rem;
+  }
+  &.is-valid,
+  &.is-valid:hover,
+  &.is-valid:focus {
+    border: $sb-input-border-success;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+.characters-left {
+  position: absolute;
+  bottom: calculateRem(8px);
+  right: calculateRem(8px);
+  color: var(--gray-200);
+  font-size: $font-size-sm;
+  background: var(--white);
+  border-radius: calculateRem(8px);
+  html[dir="rtl"] & {
+    right: auto;
+    left: calculateRem(8px);
+  }
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical;
+}
+
+input[required],
+input.required {
+  &:before {
+    color: var(--red);
+    content: "*";
+    position: absolute;
+    margin-left: calculateRem(-15px);
+  }
+}
+
+label {
+  display: inline-block;
+  margin-bottom: $base-block-space * 1;
+  font-size: $sb-label-font-size;
+  font-weight: bold;
+}
+
+.sb-footer-license {
+  display: flex;
+  margin-bottom: $base-block-space * 1;
+  font-size: $sb-label-font-size;
+  font-weight: normal;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+small {
+  font-size: 80%;
+  font-weight: 400;
+}
+
+.sb-error-text {
+  margin-top: $base-block-space * 1;
+  color: $sb-error-text;
+}
+
+
+input:-internal-autofill-previewed,
+input:-internal-autofill-selected,
+textarea:-internal-autofill-previewed,
+textarea:-internal-autofill-selected,
+select:-internal-autofill-previewed,
+select:-internal-autofill-selected {
+  background-color: $white !important;
+}
+
+.batchAddUserForm,
+.batchUpdateForm {
+  .sb-field-group {
+    .required::after {
+      margin: -0.2em 0 0 0.2em;
+      content: "*";
+      color: var(--red-100);
+    }
+  }
+  .sb-field.ui.left.icon.input {
+    width: 100%;
+    .icon {
+      z-index: 9;
+    }
+  }
+  .d-flex.flex-w-wrap {
+    .sb-field-group {
+      flex: 1;
+    }
+  }
+}
+
+.sb-form .sb-field-group.error input,
+.sb-form .sb-field-group.error label {
+  color: var(--red-100)
+}
+.sb-form .sb-field-group.error .ui {
+  margin-bottom: calculateRem(4px) !important;
+}
+.sb-form .sb-field-group.error input {
+  background: var(--rc-fff6f6);
+  border-color: var(--red-0);
+  color: var(--red-100);
+  border-radius: "";
+  box-shadow: none;
+}
+
+.ui.search.selection.dropdown > input.search {
+  padding: calculateRem(8px) calculateRem(8px);
+}
+.ui.multiple.search.dropdown > input.search {
+  padding: 0px calculateRem(8px);
+  margin: 0px;
+}
+.sb-field .ui.multiple.search.dropdown .text {
+  line-height: normal;
+}

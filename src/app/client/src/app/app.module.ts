@@ -24,11 +24,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from 'common-form-elements-v9';
 import { EventLibraryModule } from 'ngtek-event-library';
-// import  * as configData from './modules/workspace/interfaces/urlConfig';
-import configData from './modules/workspace/interfaces/urlConfig.json';
+import  * as configData from '../environments/urlConfig';
+// import configData from './modules/workspace/interfaces/urlConfig.json';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
 @NgModule({
   declarations: [
     AppComponent
@@ -57,7 +56,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
      // ngx-translate and the loader module
      HttpClientModule,
     AppRoutingModule ,// don't add any module below this because it contains wildcard route
-    EventLibraryModule.forChild(configData),
+    EventLibraryModule.forChild(configData.urlConfig),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
 
   ],

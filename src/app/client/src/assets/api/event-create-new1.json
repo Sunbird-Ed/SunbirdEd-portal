@@ -1,0 +1,514 @@
+{
+    "id": "api.form.read",
+    "params": {
+        "resmsgid": "21e6f3da-8a7c-44cc-a6c0-4703dcc60927",
+        "msgid": "cfe90415-9aff-439f-b580-170b9189db85",
+        "status": "successful"
+    },
+    "responseCode": "OK",
+    "result": {
+        "form": {
+            "type": "content",
+            "subtype": "textbook",
+            "action": "create",
+            "component": "*",
+            "framework": "tn_k-12_5",
+            "data": {
+                "templateName": "defaultTemplate",
+                "action": "create",
+                "fields": [{
+                        "code": "name",
+                        "dataType": "text",
+                        "name": "Name",
+                        "label": "Event Name",
+                        "description": "Event Name",
+                        "editable": true,
+                        "placeholder": "Event Name",
+                        "inputType": "text",
+                        "required": true,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "class": "sb-g-col-lg-1 required"
+                        },
+                        "index": 1,
+                        "validations": [{
+                                "type": "pattern",
+                                "value": "^[a-zA-Z0-9 &]*$",
+                                "message": "Invalid Input"
+                            },
+                            {
+                                "type": "required",
+                                "value": "80",
+                                "message": "Enter Event Name"
+                            }
+                        ]
+                    },
+                    {
+                        "code": "eventType",
+                        "dataType": "text",
+                        "name": "Event Type",
+                        "label": "Event Type",
+                        "description": "Type of the event",
+                        "editable": true,
+                        "default": "",
+                        "placeholder": "Select Event Type",
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["Online", "Offline", "OnlineAndOffline"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 2
+                    },
+                    {
+                        "code": "description",
+                        "dataType": "text",
+                        "name": "Description",
+                        "label": "Description",
+                        "description": "Event Description",
+                        "editable": true,
+                        "placeholder": "Description",
+                        "inputType": "textarea",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "twelve"
+                        },
+                        "index": 3,
+                        "validations": [{
+                            "type": "regex",
+                            "value": "^[a-zA-Z0-9 &]*$",
+                            "message": "Invalid Input"
+                        }]
+                    }, {
+                        "code": "venue",
+                        "dataType": "text",
+                        "name": "Venue",
+                        "label": "Venue",
+                        "description": "Venue",
+                        "editable": true,
+                        "placeholder": "Venue",
+                        "inputType": "textarea",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "twelve"
+                        },
+                        "index": 4,
+                        "validations": [{
+                            "type": "regex",
+                            "value": "^[a-zA-Z0-9 &]*$",
+                            "message": "Invalid Input"
+                        }]
+                    },
+                    {
+                        "code": "code",
+                        "dataType": "text",
+                        "name": "Code",
+                        "label": "Code",
+                        "description": "Code",
+                        "editable": true,
+                        "placeholder": "Code",
+                        "inputType": "text",
+                        "required": true,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "class": "sb-g-col-lg-1 required"
+                        },
+                        "index": 5,
+                        "validations": [{
+                                "type": "regex",
+                                "value": "^[a-zA-Z0-9]*$",
+                                "message": "Invalid Input"
+                            },
+                            {
+                                "type": "required",
+                                "value": "80",
+                                "message": "Enter Code"
+                            }
+                        ]
+                    }, {
+                        "code": "onlineProvider",
+                        "dataType": "text",
+                        "name": "Online Provider",
+                        "label": "Online Provider",
+                        "description": "Online Provider",
+                        "editable": true,
+                        "placeholder": "E.g Zoom",
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "range": ["Zoom", "GoToMeeting", "Google Meet", "Jitsi"],
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "twelve"
+                        },
+                        "index": 6,
+                        "validations": [{
+                            "type": "regex",
+                            "value": "^[a-zA-Z0-9 &]*$",
+                            "message": "Invalid Input"
+                        }]
+                    }, {
+                        "code": "onlineProviderData",
+                        "dataType": "text",
+                        "name": "Online Provider Data",
+                        "label": "Online Provider Data",
+                        "description": "Online Provider Data",
+                        "editable": true,
+                        "placeholder": "https://meetingLink",
+                        "inputType": "text",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "twelve"
+                        },
+                        "index": 7,
+                        "validations": [{
+                            "type": "regex",
+                            "value": "^[a-zA-Z0-9 &]*$",
+                            "message": "Invalid Input"
+                        }]
+                    }, {
+                        "code": "visibility",
+                        "dataType": "text",
+                        "name": "Visibility",
+                        "label": "Visibility",
+                        "description": "Visibility",
+                        "editable": true,
+                        "placeholder": "Select Visibility",
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["Default", "Parent", "Public", "Private"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 8
+                    },{
+                        "code": "visibility-private",
+                        "dataType": "text",
+                        "name": "user",
+                        "label": "User",
+                        "description": "Select User",
+                        "editable": true,
+                        "placeholder": "Select User",
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": false,
+                        "range": ["Ashwin D", "Nagesh", "Renuka S", "Mahesh K"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        
+                        "index": 9
+                    },{
+                        "code": "visibility-parent",
+                        "dataType": "text",
+                        "name": "Usergroup",
+                        "label": "User Group",
+                        "description": "User Group",
+                        "editable": true,
+                        "placeholder": "Select User Group",
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": false,
+                        "range": ["Student-Class A", "Teacher-Class A"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 10
+                    },{
+                        "code": "audience",
+                        "dataType": "text",
+                        "name": "Audience",
+                        "label": "Audience",
+                        "description": "Audience",
+                        "editable": true,
+                        "placeholder": "Select Audience",
+                        "inputType": "nestedselect",
+                        "default": "",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["Student", "Teacher", "Administrator"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 11
+                    },
+                    {
+                        "code": "language",
+                        "dataType": "text",
+                        "name": "Language",
+                        "label": "Language",
+                        "description": "Language",
+                        "editable": true,
+                        "placeholder": "Select Language",
+                        "inputType": "nestedselect",
+                        "default": "",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali", "Odia", "Punjabi", "Tamil", "Telugu", "Urdu", "Sanskrit", "Maithili", "Munda", "Santali", "Juang", "Ho"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 12
+                    },
+                    {
+                        "code": "source",
+                        "dataType": "text",
+                        "name": "source",
+                        "label": "Source",
+                        "description": "Source",
+                        "editable": true,
+                        "placeholder": "Source",
+                        "inputType": "text",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "twelve"
+                        },
+                        "index": 13,
+                        "validations": [{
+                            "type": "regex",
+                            "value": "^[a-zA-Z0-9 &]*$",
+                            "message": "Invalid Input"
+                        }]
+                    },
+                    {
+                        "code": "keywords",
+                        "visible": true,
+                        "editable": true,
+                        "dataType": "list",
+                        "name": "Keywords",
+                        "description": "Keywords for the content",
+                        "inputType": "keywords",
+                        "label": "keywords",
+                        "placeholder": "Enter Keywords",
+                        "required": false,
+                        "index": 14,
+                        "validations": [
+                            {
+                                "type": "required",
+                                "message": "Keyword is required"
+                            }
+                        ]
+                    },
+                    {
+                        "code": "notification",
+                        "dataType": "text",
+                        "name": "Notification",
+                        "label": "Notification",
+                        "description": "Notification",
+                        "editable": true,
+                        "placeholder": "Select Notification",
+                        "inputType": "select",
+                        "default":"10 Mins Before",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["10 Mins Before","1 Hr Before","1 Day Before"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 15
+                    },
+                    {
+                        "code": "board",
+                        "dataType": "text",
+                        "name": "Board",
+                        "label": "Board",
+                        "description": "Board",
+                        "editable": true,
+                        "placeholder": "Education Board (Like MP Board, NCERT, etc)",
+                        "inputType": "select",
+                        "default": "",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["CBSE/NCERT", "State (Arunachal Pradesh)", "State (Andhra Pradesh)", "State (Assam)", "State (Bihar)", "State (Chandigarh)", "State (Chhattisgarh)", "State (Delhi)", "State (Goa)", "State (Gujarat)", "State (Haryana)", "State (Himachal Pradesh)", "State (Jammu And Kashmir)", "State (Karnataka)", "State (Maharashtra)", "State (Rajasthan)", "State (Sikkim)", "State (Tamil Nadu)", "State (Uttar Pradesh)", "UT (Andaman and Nicobar Islands)"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 16
+                    },
+                    {
+                        "code": "gradeLevel",
+                        "dataType": "text",
+                        "name": "Grade",
+                        "label": "Grade",
+                        "description": "Grade",
+                        "editable": true,
+                        "placeholder": "Grade",
+                        "inputType": "select",
+                        "default": "",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["Class 1", "Class 2", "Class 3"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 17
+                    },
+                    {
+                        "code": "medium",
+                        "dataType": "text",
+                        "name": "Medium",
+                        "label": "Medium",
+                        "description": "Medium",
+                        "editable": true,
+                        "placeholder": "Medium",
+                        "inputType": "select",
+                        "default": "",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["English", "Hindi", "Tamil"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 18
+                    },
+                    {
+                        "code": "class",
+                        "dataType": "text",
+                        "name": "Class",
+                        "label": "Class",
+                        "description": "Class",
+                        "editable": true,
+                        "placeholder": "Class",
+                        "inputType": "nestedselect",
+                        "default": "",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["Class 1", "Class 2", "Class 3"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 19
+                    },
+                    {
+                        "code": "category",
+                        "dataType": "text",
+                        "name": "Category",
+                        "label": "Category",
+                        "description": "Category",
+                        "editable": true,
+                        "placeholder": "Category",
+                        "inputType": "nestedselect",
+                        "default": "",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": ["Event", "Private Event", "Uncategories"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 20
+                    },
+                    {
+                        "code": "recurring",
+                        "dataType": "text",
+                        "name": "Recurring",
+                        "label": "Recurring",
+                        "description": "Recurring",
+                        "editable": true,                       
+                        "inputType": "checkbox",
+                        "required": false,
+                        "visible": true,                        
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 21
+                    },
+                    {
+                        "code": "typeOfRecurring",
+                        "dataType": "list",
+                        "name": "Type of Recurring",
+                        "label": "Type of Recurring",
+                        "description": "Type of Recurring",
+                        "default":"Daily",
+                        "editable": true,
+                        "placeholder": "Select Recurring",
+                        "inputType": "select",
+                        "required": true,
+                        "visible": true,                       
+                        "range": ["Daily", "Weekly on Friday", "Monthly on the last Friday","Every Weekday", "Custom"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                           
+                        },
+                        "index": 22                       
+                    },
+                    {
+                        "code": "repeatEveryRecurring",
+                        "dataType": "list",
+                        "name": "Repeat every",
+                        "label": "Repeat every",
+                        "description": "Repeat every",
+                        "editable": true,
+                        "placeholder": "Select Option",
+                        "inputType": "select",
+                        "required": false,                       
+                        "visible": true,
+                        "range": ["Day","Week","Month","Year"],
+                        "renderingHints": {
+                            "semanticColumnWidth": "three"
+                        },
+                        "index": 23
+                    },
+                    {
+                        "code": "countRepeatEveryRecurring",
+                        "dataType": "text",
+                        "editable": true,
+                        "default":"1",
+                        "inputType": "text",
+                        "required": true,
+                        "visible": true,                        
+                        "renderingHints": {
+                            "semanticColumnWidth": "three"
+                        },
+                        "index": 24
+                    },
+                    {
+                        "code": "endRecurring",
+                        "dataType": "text",
+                        "name": "End",
+                        "label": "End Recurring",
+                        "description": "End",
+                        "editable": true,                       
+                        "inputType": "checkbox",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,                        
+                        "renderingHints": {
+                            "semanticColumnWidth": "six"
+                        },
+                        "index": 25
+                    }
+                    
+                ]
+            },
+            "created_on": "2020-11-12T07:02:44.056Z",
+            "last_modified_on": "2020-11-12T07:02:59.202Z",
+            "rootOrgId": "01269878797503692810"
+        }
+    },
+    "ts": "2021-02-17T05:33:12.609Z",
+    "ver": "1.0"
+}

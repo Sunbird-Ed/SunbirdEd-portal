@@ -1,0 +1,198 @@
+// Topic Picker
+.sb-treePicker-body {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    
+    .sb-treePicker-selectionSection {
+        width: calculateRem(400px);
+        padding: calculateRem(16px);
+        border-width: 0 calculateRem(1px) 0 0;
+        border-color: var(--gray-100);
+        border-style: solid;
+        
+        .sb-search-box {
+            max-width: calculateRem(392px);
+            width: 100%;
+            margin: 0 0 calculateRem(16px) 0;
+
+            .sb-search-icon {
+                color: var(--rc-aaaaaa);
+            }
+        }
+    }
+
+    .sb-treePicker-selectedSection {
+        width: calc(100% - 400px);
+        padding: calculateRem(16px);
+        .list {
+            .node {
+                display: none;
+                &.picked {
+                    display: block;
+                }
+            }
+            .empty {
+                display: none;
+            }
+        }
+        .sb-treePicker-selected-count {
+            color: var(--secondary-100);
+        }
+    }
+
+    .tree,
+    .list {
+        .node {
+            margin: 0 0 calculateRem(8px) 0;
+            min-height: calculateRem(16px);
+
+            .head {
+                display: flex;
+                align-items: center;
+            }
+
+            .icon,
+            .name {
+                cursor: pointer;
+                vertical-align: middle;
+            }
+
+            .icon {
+                margin: 0 calculateRem(8px) 0 0;
+            }
+
+            .name {
+                color: var(--gray-400);
+            }
+
+            .disabled {
+                opacity: 0.3;
+                cursor: default;
+            }
+
+            .content {
+                display: none;
+                border-left: calculateRem(1px) dotted var(--gray-100);
+                border-right: 0;
+                margin: calculateRem(8px);
+                padding:  0 calculateRem(8px);
+            }
+
+            .sb-treePicker-searchedQuery {
+                background: var(--yellow);
+            }
+
+            .add.icon:before,
+            .minus.icon:before,
+            .checkmark:before {
+                font-size: calculateRem(10px);
+                line-height: calculateRem(11px);
+                border-radius: calculateRem(4px);
+                border: calculateRem(1px) solid var(--primary-200);
+                height: calculateRem(16px);
+                width: calculateRem(16px);
+                padding: calculateRem(2px);
+                color: var(--primary-200);
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .checkmark:before {
+                color: var(--white);
+                background: var(--secondary-100) !important;
+                border-color: var(--secondary-100);
+            }
+
+            .square {
+                color: var(--primary-200);
+                font-size: calculateRem(16px);
+            }
+
+            .square,
+            .minus,
+            .checkmark {
+                display: none;
+            }
+
+            &.opened>.head {
+
+                .name {
+                    color: var(--gray-800);
+                }
+
+                .add {
+                    display: none;
+                }
+
+                .minus {
+                    display: inline-block;
+                }
+            }
+
+            &.childless {
+                .head {
+                    .square {
+                        display: inline-block;
+                    }
+                    .add {
+                        display: none;
+                    }
+                }
+                .content{
+                    .add,
+                    .minus {
+                        display: none;
+                    }
+                }
+            }
+
+            &.picked {
+                .checkmark {
+                    display: inline-block;
+                    margin: 0 calculateRem(10px) 0 0;
+                }
+                .head .square {
+                    display: none;
+                }
+            }
+        }
+    }
+    .tree {
+        .picked {
+            .name {
+                color: var(--secondary-100);
+            }
+        }
+    }
+}
+
+@include respond-below(sm) {
+    .sb-treePicker {
+        .sb-treePicker-selectionSection {
+            width: 100%;
+            border-width: 0 0 calculateRem(1px) 0;
+        }
+        .sb-treePicker-selectedSection {
+            width: 100%;
+        }
+    }
+}
+
+[dir="rtl"] .sb-treePicker-body {
+    .sb-treePicker-selectionSection {
+        border-width: 0 0 0 calculateRem(1px);
+    }
+    .tree,
+    .list {
+        .node {
+            .icon {
+                margin: 0 0 0 calculateRem(8px);
+            }
+            .content {
+                border-left: 0;
+                border-right: calculateRem(1px) dotted var(--gray-100);
+            }
+        }
+    }
+}

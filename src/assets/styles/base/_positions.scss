@@ -1,0 +1,59 @@
+/* position styles */
+
+.relative {
+  position: relative !important;
+}
+.absolute {
+  position: absolute !important;
+}
+.fixed {
+  position:fixed !important;
+}
+
+.right-0 {
+  right: 0 !important;
+  html[dir="rtl"] & {
+    left: 0 !important;
+  }
+}
+.left-0 {
+  left: 0 !important;
+  html[dir="rtl"] & {
+    right: 0 !important;
+  }
+}
+
+.top-50 {
+  top: 50% !important;
+  transform: translateY(-50%);
+}
+
+.bottom-0 {
+  bottom: 0 !important;
+}
+.bottom-5 {
+  bottom: 5px !important;
+}
+
+.sb-sticky-bottom,
+.sb-sticky-top {
+  position: sticky;
+  z-index: 999999;
+}
+.sb-sticky-bottom {
+  bottom: 0;
+}
+.sb-sticky-top {
+  top: 0;
+}
+
+
+$zindexes: 1, 2, 9, 99, 999, 9999, 99999;
+
+@each $zindex in $zindexes {
+  .zindex-#{$zindex} {
+    z-index: #{$zindex} !important;
+  }
+}
+
+/* position styles ends */

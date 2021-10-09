@@ -41,7 +41,7 @@ export class EventViewTypeComponent implements OnInit {
   isLoading: boolean = true;
   userId: any = "1001";
   formFieldProperties: any;
-            
+  Filterdata: any;     
               
   constructor(public eventListService: EventListService,
     public eventFilterService: EventFilterService,
@@ -60,7 +60,11 @@ export class EventViewTypeComponent implements OnInit {
   }
 
   showEventListPage(){
-    this.eventListService.getEventList().subscribe((data:any)=>{
+    this.Filterdata = {
+      "status":["live"],
+      "objectType": "Event"
+      };
+    this.eventListService.getEventList( this.Filterdata).subscribe((data:any)=>{
        console.log("listdata = ", data.result.events);
       this.eventList = data.result.events;
       this.isLoading = false;

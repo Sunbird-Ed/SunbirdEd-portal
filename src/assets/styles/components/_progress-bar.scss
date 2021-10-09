@@ -1,0 +1,23 @@
+.ui.progress {
+  .bar {
+    background: var(--primary-color);
+    height: calculateRem(4px);
+    min-width: 0;
+
+    .progress {
+      display: none;
+    }
+  }
+}
+
+.ui.progress.blue .bar {
+  background-color: var(--primary-color)!important;
+}
+
+.ui.progress.success .bar {
+  background-color: var(--secondary-200) !important;
+}
+
+.ui.progress .label {
+  display: none;
+}

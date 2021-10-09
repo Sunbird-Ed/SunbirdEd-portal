@@ -1,0 +1,77 @@
+{
+    "id": "api.content.read",
+    "ver": "4.0",
+    "ts": "2021-02-22T16:54:38Z+05:30",
+    "params": {
+        "resmsgid": "403254ab-4553-4028-bd80-0ffa073b1638",
+        "msgid": null,
+        "err": null,
+        "status": "successful",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "event": {
+            "trackable": {
+                "enabled": "Yes",
+                "fixedBatch": "Yes",
+                "fixedBatchId": "event_batch_id"
+            },
+            "identifier": "do_11322182566085427211",
+            "lastStatusChangedOn": "2021-02-22T16:43:10.626+0530",
+            "audience": [
+                "Student"
+            ],
+            "code": "do_11322166143296307218",
+            "visibility": "Parent",
+            "visibility-parent": "Student-Class A",
+            "onlineProvider": "Zoom",
+            "onlineProviderData": "https://meet.google.com/nzx-xauv-syq",
+            "language": [
+                "English"
+            ],
+            "eventType": "Online",
+            "languageCode": [
+                "en"
+            ],
+            "notification":"1 Hr Before",
+            "board":"State (Tamil Nadu)",
+            "gradeLevel":"Class 1",
+            "medium":"English",
+            "class":[
+                "Class 1",
+                "Class 2"
+            ],
+            "category":[
+                "Uncategories"  
+            ],
+            "recurring":"Yes",
+            "typeOfRecurring": "Custom",
+            "repeatEveryRecurring":"Day",
+            "countRepeatEveryRecurring":"1",
+            "createdOn": "2021-02-22T16:43:10.626+0530",
+            "version": 2,
+            "objectType": "Event",
+            "versionKey": "1613992390626",
+            "registrationEndDate": "25/02/2021",
+            "leafNodesCount": 1,
+            "name": "Rome food festival",
+            "lastUpdatedOn": "2021-02-22T16:43:10.626+0530",
+            "startTime": "18:13+530",
+            "endTime": "18:14+530",
+            "startDate": "2021-03-15",
+            "endDate": "2022-03-15",
+            "contentType": "Event",
+            "status": "Live",
+            "owner": "1001",
+            "venue": {
+                "name": "Kothrud"
+
+            },
+            "dialcodes": "12345",
+            "collaborators": [{ "id": "1", "name": "Nishad" }, { "id": "2", "name": "Ninad" }],
+            "posterImage": "https://jticketingdemo.techjoomla.com/media/com_jticketing/events/images/2019011605360101.jpg",
+            "description": "So you love cooking and you are a big foodie. Be it your favorite pasta, pizza to Indian food like Pani Puri, some lip-smacking delicacies await you. Come, join us and be a part of the annual Rome food festival. This event has received large support from the Indian community in Rome and hence Indian food is a major part of this food festival."
+        }
+    }
+}

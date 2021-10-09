@@ -1,0 +1,11 @@
+@import "./container";
+@import "./grid";
+@import "./mixins/mixins";
+
+.ui.grid>.column:not(.row) {
+    padding-top: calculateRem(12px);
+    padding-bottom: calculateRem(12px);
+}
+.mg-pad {
+    padding: 0 5%;
+}
