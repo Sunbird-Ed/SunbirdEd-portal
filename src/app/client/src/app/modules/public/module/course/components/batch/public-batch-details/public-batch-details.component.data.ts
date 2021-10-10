@@ -7,6 +7,36 @@ export  const allBatchDetails = {
     'response': {
       'count': 2,
       'content': [{
+        'certTemplates': {
+          'do_2133804886798745601318': {
+            'identifier': 'do_2133804886798745601318',
+            'previewUrl': 'https://sunbirdstagingpublic.blob.core.windows.net/sunbird-content-staging/content/do_2133804886798745601318/artifact/do_2133804886798745601318_1633360434903_certificate_2021-10-04_20_43.svg',
+            'criteria': {
+              'assessment': {
+                'score': {
+                  '>=': 70
+                }
+              },
+              'enrollment': {
+                'status': 2
+              }
+            },
+            'name': 'Testing',
+            'issuer': {
+              'name': 'Gujarat Council of Educational Research and Training',
+              'url': 'https://gcert.gujarat.gov.in/gcert/'
+            },
+            'url': 'https://sunbirdstagingpublic.blob.core.windows.net/sunbird-content-staging/content/do_2133804886798745601318/artifact/do_2133804886798745601318_1633360434903_certificate_2021-10-04_20_43.svg',
+            'signatoryList': [
+              {
+                'image': '',
+                'name': 'Testing',
+                'designation': 'CEO',
+                'id': 'CEO/CEO'
+              }
+            ]
+          }
+        },
         'identifier': '01248661735846707228', 'createdFor': ['0123673542904299520', '0123673689120112640',
           'ORG_001'], 'courseAdditionalInfo': {
             'courseName': '29 course', 'leafNodesCount': '1',
@@ -22,6 +52,36 @@ export  const allBatchDetails = {
         'enrollmentType': 'invite-only', 'courseId': 'do_112470675618004992181', 'startDate': '2018-04-20',
         'status': 1
       }, {
+        'certTemplates': {
+          'do_2133804886798745601318': {
+            'identifier': 'do_2133804886798745601318',
+            'previewUrl': 'https://sunbirdstagingpublic.blob.core.windows.net/sunbird-content-staging/content/do_2133804886798745601318/artifact/do_2133804886798745601318_1633360434903_certificate_2021-10-04_20_43.svg',
+            'criteria': {
+              'assessment': {
+                'score': {
+                  '>=': 70
+                }
+              },
+              'enrollment': {
+                'status': 2
+              }
+            },
+            'name': 'Testing',
+            'issuer': {
+              'name': 'Gujarat Council of Educational Research and Training',
+              'url': 'https://gcert.gujarat.gov.in/gcert/'
+            },
+            'url': 'https://sunbirdstagingpublic.blob.core.windows.net/sunbird-content-staging/content/do_2133804886798745601318/artifact/do_2133804886798745601318_1633360434903_certificate_2021-10-04_20_43.svg',
+            'signatoryList': [
+              {
+                'image': '',
+                'name': 'Testing',
+                'designation': 'CEO',
+                'id': 'CEO/CEO'
+              }
+            ]
+          }
+        },
         'identifier': '01248661388792627227', 'createdFor': ['0123673542904299520', '0123673689120112640', 'ORG_001'],
         'courseAdditionalInfo': {
           'courseName': '29 course', 'leafNodesCount': '1', 'description': '',
