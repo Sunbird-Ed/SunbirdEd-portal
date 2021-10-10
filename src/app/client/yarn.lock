@@ -1495,9 +1495,9 @@
   integrity sha512-dtE5CGxRwivkRAjUoY/DfxJHgg9+kXRNFoaeDs28l3GFrpyW6Kha3OGbLv+aCjUrMWw3sO6fR/m/F1wmPvd1wA==
 
 "@project-sunbird/discussions-ui-v8@2.2.4":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.3.tgz#e4e8bb235011781896993fd162bcac0420a61497"
-  integrity sha512-+kafNGOqpYDUKW0PJX2aYgzkg5OxCOqW9Pb7917lAMlLNSOO/tZOFZRGiPlEi+rnRzcwvkDI4irZDtETIh2M9A==
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.4.tgz#91978ee7149f32c6b14aa3c3a1cdb9dbb0347e44"
+  integrity sha512-gyi4uA5CNN6OhsSUzP0k1AMhELQR0kO9S7KzBVwQLwhHTx7bucxFT0ZqsoKCcbIHKuWb9ig9VyHi/mkic0OqPg==
   dependencies:
     tslib "^1.9.0"
 
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.19":
-  version "4.3.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.19.tgz#961752aa53e02fea8c0195609ed471eea9218473"
-  integrity sha512-yh+X2JoC38WeRwSFMuePAmVjSSUZ2x8O0q0HPqp9JOU9Sape0iUFaLnI//ufHY3LEBqtU/QJ+THPKM0eM2aBtQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.3.20":
+  version "4.3.20"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.20.tgz#0f4a6b3a22dce1664eed8e96061cd7da9929d7f8"
+  integrity sha512-U2djDMAUah0PyYV/9ly8uLCXsejguu1Pvg1UwXGwAXhASvXnJYYxcdPoVMj4RBNNfrCTKKyQ2amSUllqJZ8VVg==
   dependencies:
     tslib "^1.10.0"
 
@@ -1605,10 +1605,8 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.1.5.tgz#9223bbd070cfed088d2522c0c865e689639410d3"
-  integrity sha512-y2T0kgZmBXLutO8dndJS4CfroV5oVlkqArOy3xQQcxuemWK5AKZvGph1pV9J1E3+mGuU26nJz30jiKXLxiEmfQ==
+"@samagra-x/uci-console@file:../../../../UCI-Console/dist/uci-console":
+  version "1.1.3"
   dependencies:
     tslib "^1.10.0"
 
