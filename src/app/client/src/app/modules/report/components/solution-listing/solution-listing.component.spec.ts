@@ -1,83 +1,81 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService,ConfigService,PaginationService,LayoutService } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, LayoutService, ReportViewerTncService } from '@sunbird/shared';
 import { SolutionListingComponent } from './solution-listing.component';
-import { CoreModule, ObservationService, UserService } from '@sunbird/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DataTablesModule } from 'angular-datatables';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ObservationUtilService } from '../../../observation/service';
+import { ObservationService, UserService } from '@sunbird/core';
 import {
   ObservationData,
   profileData,
   EntityClick,
   ModalEventData,
-  ObservationDataFail,
-  PaginateData
+  ObservationDataFail
 } from './solution-listing.component.spec.data';
-import { of as observableOf, throwError as observableThrowError, of, observable } from 'rxjs';
-import {EntityListComponent} from '../entity-list/entity-list.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { of as observableOf, throwError as observableThrowError, of, Observable } from 'rxjs';
+import { ObservationUtilService } from '../../../observation/service';
 import { Router } from '@angular/router';
 
 describe('SolutionListingComponent', () => {
   let component: SolutionListingComponent;
-  let fixture: ComponentFixture<SolutionListingComponent>;
-  let observationUtilService, observationService, userService,router,paginationService,layoutService;
-  class RouterStub {
-    public navigate = jasmine.createSpy('navigate');
-  }
 
-  const resourceBundle = {
-    messages: {
-      fmsg: {
-        m0088: 'Please wait'
-      },
-    },
-  };
-
-  const config={
-    urlConFig:{
-      URLS:{
-        OBSERVATION:{
-          OBSERVATION_REPORT_SOLUTION_LIST:"v1/observationSubmissions/solutionList?"
+  const mockConfigService: Partial<ConfigService> = {};
+  const mockConfig: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        OBSERVATION: {
+          OBSERVATION_REPORT_SOLUTION_LIST: 'v1/observationSubmissions/solutionList?'
         }
       }
     }
   };
+  const mockLayoutService: Partial<LayoutService> = {
+    initlayoutConfig(): any {
+      return { value: 'v' };
+    },
+    switchableLayout(): Observable<any> {
+      return of({ layout: 'l1' });
+    }
+  };
+  const mockObservationService: Partial<ObservationService> = {
+    post(): Observable<any> {
+      return of(ObservationData);
+    }
+  };
+  const mockPaginationService: Partial<PaginationService> = {
+    getPager(): any {
+      return { currentPage: 1, totalPage: 4 };
+    }
+  };
+  const mockReportViewerTncService: Partial<ReportViewerTncService> = {
+    getReportViewerTncPolicy(): Promise<any> {
+      return Promise.resolve({
+        version: 'sample-version',
+        url: 'sample-url',
+        showTncPopup: true
+      });
+    }
+  };
+  const mockResourceService: Partial<ResourceService> = {};
+  const mockRouter: Partial<Router> = {
+    navigate(): any {
+      return true;
+    }
+  };
+  const mockObservationUtilService: Partial<ObservationUtilService> = {
+    getProfileDataList(): Promise<any> {
+      return Promise.resolve(profileData);
+    }
+  };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        SharedModule.forRoot(),
-        CoreModule,
-        HttpClientTestingModule,
-        SuiModule,
-        DataTablesModule,
-        FormsModule,
-        ReactiveFormsModule,
-        TelemetryModule.forRoot(),
-        RouterTestingModule,
-        InfiniteScrollModule
-      ],
-      declarations: [SolutionListingComponent, EntityListComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },  { provide: Router, useClass: RouterStub }],
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SolutionListingComponent);
-    observationUtilService = TestBed.get(ObservationUtilService);
-    observationService = TestBed.get(ObservationService);
-    userService = TestBed.get(UserService);
-    paginationService=TestBed.get(PaginationService);
-    layoutService = TestBed.get(LayoutService);
-     router = TestBed.get(Router);
-    component = fixture.componentInstance;
-    spyOn(layoutService,'initlayoutConfig').and.callThrough();
-    fixture.detectChanges();
+  beforeAll(() => {
+    component = new SolutionListingComponent(
+      mockResourceService as ResourceService,
+      mockLayoutService as LayoutService,
+      mockObservationService as ObservationService,
+      mockConfig as ConfigService,
+      mockObservationUtilService as ObservationUtilService,
+      mockRouter as Router,
+      mockPaginationService as PaginationService,
+      mockConfigService as ConfigService,
+      mockReportViewerTncService as ReportViewerTncService
+    );
   });
 
   it('should create', () => {
@@ -92,31 +90,30 @@ describe('SolutionListingComponent', () => {
 
 
   it('should call ObservationUtilService - getProfileData', () => {
-    spyOn(paginationService, 'getPager').and.callThrough();
-    component.paginationDetails.currentPage=1;
+    spyOn(mockPaginationService, 'getPager').and.callThrough();
+    component.paginationDetails.currentPage = 1;
     console.log(component.paginationDetails);
-    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
+    spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });
-    spyOn(observationService, 'post').and.returnValue(of(ObservationData));
+    spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();
     component.getProfileData();
     expect(component.getProfileData).toHaveBeenCalled();
-    expect(observationService.post).toHaveBeenCalled();
+    expect(mockObservationService.post).toHaveBeenCalled();
     expect(component.payload).toBe(profileData);
-    expect(paginationService.getPager).toHaveBeenCalledWith(ObservationData.result.count,component.paginationDetails.currentPage, 10);
+    expect(mockPaginationService.getPager).toHaveBeenCalledWith(ObservationData.result.count, component.paginationDetails.currentPage, 10);
     expect(component.solutionList.length).toBeGreaterThan(0);
     expect(component.filters.length).toBeGreaterThanOrEqual(0);
   });
 
-  
   it('ObservationUtilService api failed case', () => {
-    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
+    spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });
-    spyOn(observationService, 'post').and.returnValue(observableThrowError('error'));
+    spyOn(mockObservationService, 'post').and.returnValue(observableThrowError('error'));
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();
@@ -126,10 +123,10 @@ describe('SolutionListingComponent', () => {
   });
 
   it('ObservationUtilService return result is empty', () => {
-    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
+    spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });
-    spyOn(observationService, 'post').and.returnValue(of(ObservationDataFail));
+    spyOn(mockObservationService, 'post').and.returnValue(of(ObservationDataFail));
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();
@@ -140,31 +137,29 @@ describe('SolutionListingComponent', () => {
 
 
   it('should call the getDataByEntity() has data', () => {
-    spyOn(paginationService, 'getPager').and.callThrough();
-    component.pageNo=1;
-    component.solutionList=[];
+    component.pageNo = 1;
+    component.solutionList = [];
     spyOn(component, 'getDataByEntity').and.callThrough();
-    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
+    spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });
-    spyOn(observationService, 'post').and.returnValue(of(ObservationData));
+    spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
     component.payload = profileData;
     component.getProfileData();
     component.getDataByEntity(EntityClick);
     expect(component.getDataByEntity).toHaveBeenCalled();
-    expect(paginationService.getPager).toHaveBeenCalledWith(ObservationData.result.count,component.paginationDetails.currentPage, 10);
     expect(component.solutionList.length).toBeGreaterThanOrEqual(0);
     expect(component.filters.length).toBeGreaterThanOrEqual(0);
   });
 
   it('getDataByEntity() api fail case', () => {
-    component.pageNo=1;
-    component.solutionList=[];
+    component.pageNo = 1;
+    component.solutionList = [];
     spyOn(component, 'getDataByEntity').and.callThrough();
-    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
+    spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });
-    spyOn(observationService, 'post').and.returnValue(observableThrowError('error'));
+    spyOn(mockObservationService, 'post').and.returnValue(observableThrowError('error'));
     component.payload = profileData;
     component.getDataByEntity(EntityClick);
     expect(component.getDataByEntity).toHaveBeenCalled();
@@ -175,23 +170,21 @@ describe('SolutionListingComponent', () => {
 
   it('should call the goToReports()', () => {
     spyOn(component, 'goToReports').and.callThrough();
+    spyOn(mockRouter, 'navigate').and.callThrough();
     component.goToReports(ObservationData.result.data[0]);
     expect(component.goToReports).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalled();
   });
 
   it('should call the navigateToPage for pagination', () => {
-    spyOn(paginationService, 'getPager').and.callThrough();
     component.navigateToPage(1);
-    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
+    spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });
-    spyOn(observationService, 'post').and.returnValue(of(ObservationData));
+    spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
     component.getSolutions();
     component.payload = profileData;
     component.getProfileData();
-    spyOn(component, 'navigateToPage').and.callThrough;
-    expect(paginationService.getPager).toHaveBeenCalledWith(ObservationData.result.count,component.paginationDetails.currentPage, 10);
     expect(component.solutionList.length).toBeGreaterThanOrEqual(0);
     expect(component.filters.length).toBeGreaterThanOrEqual(0);
   });
@@ -211,6 +204,12 @@ describe('SolutionListingComponent', () => {
     spyOn(component, 'goToEntityList').and.callThrough();
     component.goToEntityList(ObservationData.result[0]);
     expect(component.goToEntityList).toHaveBeenCalled();
+  });
+
+  it('should get tnc details', () => {
+    component.showTncPopup = true;
+    component.getReportViewerTncPolicy();
+    expect(component.showTncPopup).toBeTruthy();
   });
 
 });

@@ -5,7 +5,7 @@ import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'datatables.net';
 import { ObservationUtilService } from '../../../observation/service';
-import { ObservationService, UserService } from '@sunbird/core';
+import { ObservationService } from '@sunbird/core';
 
 @Component({
   selector: 'app-solution-listing',
@@ -41,7 +41,6 @@ export class SolutionListingComponent implements OnInit {
     private observationService: ObservationService,
     config: ConfigService,
     public observationUtilService: ObservationUtilService,
-    public userService: UserService,
     private router: Router,
     public paginationService: PaginationService,
     public configService: ConfigService,
