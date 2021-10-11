@@ -13,12 +13,14 @@
 //   }
 
 // }
+import{ UserService }from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {EventListService} from 'ngtek-event-library';
 // import { EventCreateService } from 'ngtek-event-library';
 // import { EventDetailService } from 'ngtek-event-library';
 import { EventFilterService } from 'ngtek-event-library';
+import { from } from 'rxjs';
 
 // import * as MyEventList from '../../interfaces/MyEventList';
 // import * as MyEventLFilter from '../../interfaces/MyEventLFilter'
@@ -39,13 +41,15 @@ export class AllMyEventsComponent implements OnInit {
    myEvents: any;
   // p: number = 1;
   // collection: any[];
-  Filterdata: any;  
+  Filterdata: any; 
+  libEventConfig:any; 
 
   constructor( 
      private eventListService:EventListService,
     // private eventCreateService: EventCreateService,
     // private eventDetailService: EventDetailService,
     // private router: Router,
+    public userService: UserService,
     private eventFilterService: EventFilterService
     ) {
     
@@ -112,4 +116,22 @@ export class AllMyEventsComponent implements OnInit {
   // console.log(myEventLFilter.myEventFilter);
   // this.filterConfig = MyEventLFilter.myEventFilter.result['form'].data.fields;
   }
+
+  setEventConfig() {
+    // tslint:disable-next-line:max-line-length
+    // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
+    this.libEventConfig = {
+      context: {
+        identifier: '',
+        channel: this.userService.channel,
+        authToken: '',
+        sid: this.userService.sessionId,
+        uid: this.userService.userid,
+        additionalCategories: 'additionalCategories',
+      },
+      config: {
+        mode: 'list'
+      }
+    };
+ }
 }

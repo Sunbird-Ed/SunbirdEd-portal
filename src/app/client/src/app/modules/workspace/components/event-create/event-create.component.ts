@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {  UserService } from '@sunbird/core';
+
 // import {EventListService} from 'ngtek-event-library';
 import { EventCreateService } from 'ngtek-event-library';
 // import { EventDetailService } from 'ngtek-event-library';
@@ -15,19 +17,19 @@ export class EventCreateComponent implements OnInit {
   // eventList : any;
   // eventItem: any;
   // tab :string= "detail";
-  userId: any = "1001";
   formFieldProperties: any;
   // filterConfig: any;
   isLoading: boolean =  true;
   // myEvents: any;
   // p: number = 1;
   // collection: any[];
+  libEventConfig:any;
 
   constructor( 
     //  private eventListService:EventListService,
     private eventCreateService: EventCreateService,
     // private eventDetailService: EventDetailService,
-    private router: Router,
+    private router: Router, private userService:UserService
     // private eventFilterService: EventFilterService
  ) { }
 
@@ -119,18 +121,23 @@ export class EventCreateComponent implements OnInit {
     this.router.navigate(['workspace/content/create']);
   }
 
-  // showFilters() {
-  //   this.eventFilterService.getFilterFormConfig().subscribe((data: any) => {
-  //     this.filterConfig = data.result['form'].data.fields;
-  //     this.isLoading = false;
-
-  //     console.log('eventfilters = ',data.result['form'].data.fields);
-  //   },
-  //   (err: any) => {
-  //     console.log('err = ', err);
-  //   });
-  // }
-  
+  setEventConfig() {
+    // tslint:disable-next-line:max-line-length
+    // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
+    this.libEventConfig = {
+      context: {
+        identifier: '',
+        channel: this.userService.channel,
+        authToken: '',
+        sid: this.userService.sessionId,
+        uid: this.userService.userid,
+        additionalCategories: 'additionalCategories',
+      },
+      config: {
+        mode: 'list'
+      }
+    };
+ }
   cancel(event){
     //this.router.navigate(['/home']);
   }

@@ -56,7 +56,7 @@
     createImage:"content/v3/create",
     // BBBGetUrl:"assets/api/BBBCreatEvent.json",
     BBBGetUrl:"event/v4/join",
-    search:"/v3/search",
+    search:"/v1/search",
     eventFormConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     eventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read"
 };

@@ -14,7 +14,9 @@
 
 
 
-
+<lib-event 
+    [libEventConfig]="libEventConfig">
+</lib-event>
 <div *ngIf="tab == 'list'">
     <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter>
     <sb-event-list [list]="eventList" [myEvents]="myEvents" (eventDetailData)="navToEventDetail($event)"></sb-event-list>
@@ -27,9 +29,9 @@
     <lib-event-calender *ngIf="events" [events]='events'></lib-event-calender>
     <br><br><br>
 
-<!--   
- <sb-event-create [formFieldProperties]="formFieldProperties" [userId]="userId"
- (closeSaveForm)="cancel($event)" (navAfterSave)="navAfterSave($event);"></sb-event-create> -->
+  
+ <sb-event-create [formFieldProperties]="formFieldProperties" 
+ (closeSaveForm)="cancel($event)" (navAfterSave)="navAfterSave($event);"></sb-event-create>
 
 
 </div>

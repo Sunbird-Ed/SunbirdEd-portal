@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import * as  MyEventList from '../../interface/MyEventList';
 import * as  MyCalendarList  from '../../interface/MyCalendarList';
-import {EventListService, EventFilterService, EventDetailService} from 'ngtek-event-library';
-// import { EventCreateService } from 'ngtek-event-library';
-import { Router } from '@angular/router';
-
+import {EventListService, EventFilterService} from 'ngtek-event-library';
+import { EventCreateService } from 'ngtek-event-library';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash-es';
+import { FrameworkService, UserService } from '@sunbird/core';
 import {CalendarEvent} from 'angular-calendar';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import * as MyEventLFilter from '../../interface/MyEventLFilter'
@@ -39,15 +40,16 @@ export class EventViewTypeComponent implements OnInit {
   filterConfig: any;
   myEvents: any;
   isLoading: boolean = true;
-  // userId: any = "1001";
-  // formFieldProperties: any;
+  userId: any = "1001";
+  formFieldProperties: any;
   Filterdata: any;     
-              
+  libEventConfig:any;            
   constructor(public eventListService: EventListService,
     public eventFilterService: EventFilterService,
-    // private eventCreateService: EventCreateService,
-    private eventDetailService: EventDetailService,
-    private router: Router,) { }
+    private eventCreateService: EventCreateService,
+    // private eventDetailService: EventDetailService,
+    private router: Router,public userService: UserService,
+    public frameworkService:FrameworkService) { }
 
   ngOnInit() {
      
@@ -56,7 +58,8 @@ export class EventViewTypeComponent implements OnInit {
     this.showEventListPage();
     this.showFilters();
     this.showCalenderEvent(MyCalendarList);
-    // this.showEventCreatePage();
+    this.showEventCreatePage();
+    this.setEventConfig();
   }
 
   showEventListPage(){
@@ -78,18 +81,18 @@ export class EventViewTypeComponent implements OnInit {
   }
 
 
-  // showEventCreatePage() {
-  //   this.eventCreateService.getEventFormConfig().subscribe((data: any) => {
-  //     console.log('EventCreatedata = ',data);
-  //     this.formFieldProperties = data.result['form'].data.fields;
-  //     this.isLoading = false;
-  //     console.log('EventCreate = ',data.result['form'].data.fields);
-  //   },err=>{console.error("hi", err);}
-  //   )
-  //     // this.formFieldProperties = eventCreateFields.eventCreate.result['form'].data.fields;
-  //     // console.log('EventCreate.fields = ',this.formFieldProperties);
+  showEventCreatePage() {
+    this.eventCreateService.getEventFormConfig().subscribe((data: any) => {
+      console.log('EventCreatedata = ',data);
+      this.formFieldProperties = data.result['form'].data.fields;
+      this.isLoading = false;
+      console.log('EventCreate = ',data.result['form'].data.fields);
+    },err=>{console.error("hi", err);}
+    )
+      // this.formFieldProperties = eventCreateFields.eventCreate.result['form'].data.fields;
+      // console.log('EventCreate.fields = ',this.formFieldProperties);
 
-  // }
+  }
 
   showCalenderEvent(MyCalendarData) {
  
@@ -137,6 +140,23 @@ export class EventViewTypeComponent implements OnInit {
   }
   }
 
+  setEventConfig() {
+    // tslint:disable-next-line:max-line-length
+    // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
+    this.libEventConfig = {
+      context: {
+        identifier: '',
+        channel: this.userService.channel,
+        authToken: '',
+        sid: this.userService.sessionId,
+        uid: this.userService.userid,
+        additionalCategories: 'additionalCategories',
+      },
+      config: {
+        mode: 'list'
+      }
+    };
+ }
 
   // Openview(view) {  
   //   if (view == 'list') {    
