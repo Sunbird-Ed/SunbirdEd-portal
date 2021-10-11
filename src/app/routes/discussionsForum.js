@@ -183,7 +183,7 @@ function checkEmail() {
 }
 
 // TODO: this token logic we have to add in middleware itself;
-function addHeaders () {
+function addHeaders() {
     return function (proxyReqOpts, srcReq) { 
         var sessionId = _.get(srcReq, 'headers.x-session-id') || _.get(srcReq, 'sessionID');
         proxyReqOpts.headers['X-Session-Id'] = sessionId;        
