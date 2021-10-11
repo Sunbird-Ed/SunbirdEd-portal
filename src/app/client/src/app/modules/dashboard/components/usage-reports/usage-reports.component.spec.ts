@@ -92,7 +92,7 @@ describe('UsageReportsComponent', () => {
       expect(component.isFileDataLoaded).toBeTruthy();
       });
 
-      it('should get tnc details', () => {
+      it('should get tnc details for report viewer', () => {
         const reportViewerTncService = TestBed.get(TncService);
         spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of({
           response: {
