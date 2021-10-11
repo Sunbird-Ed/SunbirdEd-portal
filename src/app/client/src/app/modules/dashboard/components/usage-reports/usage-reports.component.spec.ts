@@ -103,6 +103,7 @@ describe('UsageReportsComponent', () => {
             })
           }
         }));
+        spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
         component.showTncPopup = true;
         component.getReportViewerTncPolicy();
         expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
