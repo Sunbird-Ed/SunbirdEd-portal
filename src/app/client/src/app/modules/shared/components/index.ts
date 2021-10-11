@@ -25,3 +25,4 @@ export * from './system-warning/system-warning.component';
 export * from './telemetry-error-modal/telemetry-error-modal.component';
 export * from './alert-modal/alert-modal.component';
 export * from './full-page-loader/full-page-loader.component';
+export * from './modal-wrapper/modal-wrapper.component';

@@ -1097,7 +1097,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     updateProfile(event) {
-        this.frameworkModal.modal.deny();
+        this.frameworkModal && this.frameworkModal.deny();
         this.showEdit = !this.showEdit;
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {

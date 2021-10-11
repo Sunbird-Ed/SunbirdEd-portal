@@ -82,8 +82,8 @@ export class GuestProfileComponent implements OnInit {
     });
   }
 
-  updateProfile(event) {
-    this.frameworkModal.modal.deny();
+  updateProfile(event) {    
+    this.frameworkModal && this.frameworkModal.deny();
     this.showEdit = !this.showEdit;
     this.guestUser.framework = event;
 

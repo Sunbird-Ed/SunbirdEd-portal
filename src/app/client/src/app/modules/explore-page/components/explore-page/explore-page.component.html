@@ -204,7 +204,12 @@
   (modelClose)="showBatchInfo = false">
 </app-batch-info>
 
-<app-popup *ngIf="showEdit" #frameworkModal [formInput]="userPreference?.framework" [showCloseIcon]="true"
-  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"
-  (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
-</app-popup>
+
+<app-modal-wrapper #frameworkModal *ngIf="showEdit" [config]="{disableClose: false}">
+  <ng-template sbModalContent let-data>
+    <app-popup [dialogProps]="data" [formInput]="userPreference?.framework" [showCloseIcon]="true"
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true"
+      [isGuestUser]="true" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
+    </app-popup>
+  </ng-template>
+</app-modal-wrapper>
