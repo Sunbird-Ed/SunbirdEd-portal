@@ -45,10 +45,20 @@ describe('SolutionListingComponent', () => {
   };
   const mockTncService: Partial<TncService> = {
     getReportViewerTnc(): Observable<any> {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        } as any
+      return of(
+        {
+          'id': 'api',
+          'params': {
+            'status': 'success',
+          },
+          'responseCode': 'OK',
+          'result': {
+            'response': {
+              'id': 'orgAdminTnc',
+              'field': 'orgAdminTnc',
+              'value': '{"latestVersion":"v4","v4":{"url":"http://test.com/tnc.html"}}'
+            }
+          }
       }) as any;
     }
   };
@@ -90,13 +100,7 @@ describe('SolutionListingComponent', () => {
 
   it('should call ngonInit()', () => {
     spyOn(component, 'ngOnInit').and.callThrough();
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.ngOnInit();
     expect(component.ngOnInit).toHaveBeenCalled();
   });
@@ -106,13 +110,7 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(observableThrowError('error'));
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();
@@ -126,13 +124,7 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(of(ObservationDataFail));
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();
@@ -150,13 +142,7 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.payload = profileData;
     component.getProfileData();
     component.getDataByEntity(EntityClick);
@@ -173,13 +159,7 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(observableThrowError('error'));
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.payload = profileData;
     component.getDataByEntity(EntityClick);
     expect(component.getDataByEntity).toHaveBeenCalled();
@@ -191,13 +171,7 @@ describe('SolutionListingComponent', () => {
   it('should call the goToReports()', () => {
     spyOn(component, 'goToReports').and.callThrough();
     spyOn(mockRouter, 'navigate').and.callThrough();
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.goToReports(ObservationData.result.data[0]);
     expect(component.goToReports).toHaveBeenCalled();
     expect(mockRouter.navigate).toHaveBeenCalled();
@@ -209,13 +183,7 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.getSolutions();
     component.payload = profileData;
     component.getProfileData();
@@ -223,55 +191,36 @@ describe('SolutionListingComponent', () => {
     expect(component.filters.length).toBeGreaterThanOrEqual(0);
   });
 
-  // it('should call the modalClose when isRubricDriven is false', () => {
-  //   spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-  //     return of({
-  //       response: {
-  //         value: '{ "latestVersion" : "sample-version"}' as any
-  //       }
-  //     });
-  //   });
-  //   component.modalClose(ModalEventData);
-  //   spyOn(component, 'modalClose').and.callThrough();
-  // });
+  it('should call the modalClose when isRubricDriven is false', () => {
+    component.modalClose(ModalEventData);
+    spyOn(component, 'modalClose').and.callThrough();
+  });
 
   it('should get tnc details', () => {
-    spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-      return of({
-        response: {
-          value: '{ "latestVersion" : "sample-version"}' as any
-        }
-      });
-    });
+    spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
     component.showTncPopup = true;
     component.getReportViewerTncPolicy();
     expect(component.showTncPopup).toBeTruthy();
   });
 
-  // it('should call ObservationUtilService - getProfileData', () => {
-  //   spyOn(mockPaginationService, 'getPager').and.callThrough();
-  //   component.paginationDetails.currentPage = 1;
-  //   console.log(component.paginationDetails);
-  //   spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
-  //     return Promise.resolve(profileData);
-  //   });
-  //   spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
-  //   spyOn(component, 'getReportViewerTncPolicy').and.callFake(() => {
-  //     return throwError({
-  //       response: {
-  //         value: '{ "latestVersion" : "sample-version"}' as any
-  //       }
-  //     });
-  //   });
-  //   component.getSolutions();
-  //   component.payload = profileData;
-  //   spyOn(component, 'getProfileData').and.callThrough();
-  //   component.getProfileData();
-  //   expect(component.getProfileData).toHaveBeenCalled();
-  //   expect(mockObservationService.post).toHaveBeenCalled();
-  //   expect(component.payload).toBe(profileData);
-  //   expect(mockPaginationService.getPager).toHaveBeenCalledWith(ObservationData.result.count, component.paginationDetails.currentPage, 10);
-  //   expect(component.solutionList.length).toBeGreaterThan(0);
-  //   expect(component.filters.length).toBeGreaterThanOrEqual(0);
-  // });
+  it('should call ObservationUtilService - getProfileData', () => {
+    spyOn(mockPaginationService, 'getPager').and.callThrough();
+    component.paginationDetails.currentPage = 1;
+    console.log(component.paginationDetails);
+    spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
+      return Promise.resolve(profileData);
+    });
+    spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
+    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
+    component.getSolutions();
+    component.payload = profileData;
+    spyOn(component, 'getProfileData').and.callThrough();
+    component.getProfileData();
+    expect(component.getProfileData).toHaveBeenCalled();
+    expect(mockObservationService.post).toHaveBeenCalled();
+    expect(component.payload).toBe(profileData);
+    expect(mockPaginationService.getPager).toHaveBeenCalledWith(ObservationData.result.count, component.paginationDetails.currentPage, 10);
+    expect(component.solutionList.length).toBeGreaterThan(0);
+    expect(component.filters.length).toBeGreaterThanOrEqual(0);
+  });
 });

@@ -28,7 +28,7 @@ describe('UsageReportsComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [UsageReportsComponent, DataChartComponent],
-      providers: [ ToasterService, UserService, NavigationHelperService, CourseProgressService,
+      providers: [ ToasterService, UserService, NavigationHelperService, CourseProgressService, TncService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useValue: routerStub }
       ]
@@ -92,21 +92,28 @@ describe('UsageReportsComponent', () => {
       expect(component.isFileDataLoaded).toBeTruthy();
       });
 
-      // it('should get tnc details for report viewer', () => {
-      //   const reportViewerTncService = TestBed.get(TncService);
-      //   spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of({
-      //     response: {
-      //       value: JSON.stringify({
-      //         latestVersion: 'sample-version',
-      //         url: 'sample-url',
-      //         showTncPopup: true
-      //       })
-      //     }
-      //   }));
-      //   spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
-      //   component.showTncPopup = true;
-      //   component.getReportViewerTncPolicy();
-      //   expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
-      //   expect(component.showTncPopup).toBeTruthy();
-      // });
+      it('should get tnc details for report viewer', () => {
+        const reportViewerTncService = TestBed.get(TncService);
+        spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
+          {
+            'id': 'api',
+            'params': {
+              'status': 'success',
+            },
+            'responseCode': 'OK',
+            'result': {
+              'response': {
+                'id': 'orgAdminTnc',
+                'field': 'orgAdminTnc',
+                'value': '{"latestVersion":"v4","v4":{"url":"http://test.com/tnc.html"}}'
+              }
+            }
+          }
+        ));
+        spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
+        component.showTncPopup = true;
+        component.getReportViewerTncPolicy();
+        expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
+        expect(component.showTncPopup).toBeTruthy();
+      });
 });
