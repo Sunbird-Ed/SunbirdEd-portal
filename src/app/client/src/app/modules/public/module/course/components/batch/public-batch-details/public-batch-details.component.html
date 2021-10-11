@@ -62,8 +62,8 @@
       <div class="batch-details">
         <div class="mb-16">
           <ul>
-            <li *ngIf="showCompletionCertificate">{{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
-            <li *ngIf="showMeritCertificate">{{resourceService?.frmelemnts?.bltpt?.earnmcert |
+            <li *ngIf="showCompletionCertificate" class="fsmall mb-8 sb-color-gray-800">{{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
+            <li *ngIf="showMeritCertificate" class="fsmall mb-8 sb-color-gray-800">{{resourceService?.frmelemnts?.bltpt?.earnmcert |
               interpolate:'{percent}': meritCertPercent}}</li>
           </ul>
         </div>
