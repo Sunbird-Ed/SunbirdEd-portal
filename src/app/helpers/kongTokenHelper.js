@@ -24,7 +24,7 @@ const KONG_REFRESH_TOKEN_API                = require('./environmentVariablesHel
 const KONG_LOGGEDIN_DEVICE_REGISTER_API     = require('./environmentVariablesHelper.js').sunbird_loggedin_device_register_api;
 const KONG_ANONYMOUS_DEVICE_REGISTER_API    = require('./environmentVariablesHelper.js').sunbird_anonymous_device_register_api;
 
-const BLACKLISTED_URL                       = ['/service/health', '/health', '/assets/images'];
+const BLACKLISTED_URL                       = ['/service/health', '/health', '/assets/images', '/discussion'];
 const KONG_ACCESS_TOKEN                     = 'userAccessToken';
 const KONG_DEVICE_BEARER_TOKEN              = 'apiBearerToken';
 
