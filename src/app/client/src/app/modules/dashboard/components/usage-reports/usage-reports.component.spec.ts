@@ -107,7 +107,5 @@ describe('UsageReportsComponent', () => {
         component.getReportViewerTncPolicy();
         expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
         expect(component.showTncPopup).toBeTruthy();
-        expect(component.reportViewerTncVersion).toBe('sample-version');
-        expect(component.reportViewerTncUrl).toBeTruthy('sample-url');
       });
 });
