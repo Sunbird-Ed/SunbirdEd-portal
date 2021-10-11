@@ -76,6 +76,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   consentConfig: { tncLink: string; tncText: any; };
   showGlobalConsentPopUpSection = false;
   profileInfo: {};
+  isTenantChanged = false;
+  previousOrgId;
 
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
@@ -348,6 +350,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.tenantPersonaLatestFormValue = event;
     if (_.get(event, 'tenant')) {
       if (!this.selectedTenant || event.tenant !== this.selectedTenant) {
+        this.previousOrgId = this.selectedTenant;
+        this.isTenantChanged = true;
         this.selectedTenant = event.tenant;
         this.getTeacherDetailsForm();
       }
@@ -569,29 +573,64 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.getProfileInfo(declarations);
     this.updateProfile(data);
     if (this.formAction === 'submit') {
-      this.updateUserConsent(true);
+      this.updateUserConsent(declarations[0].orgId);
+    } else if (this.formAction === 'update' && this.isTenantChanged) {
+      this.updateUserConsent(declarations[1].orgId, this.previousOrgId);
     }
   }
 
-  updateUserConsent(isActive: boolean) {
-    const request: Consent = {
-      status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
-      userId: this.userService.userid,
-      consumerId: '',
-      objectId: '',
-      objectType: ''
-    };
-    request.consumerId = this.userService.channel;
-    request.objectId = this.userService.channel;
-    request.objectType = 'Organisation';
-    this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe(() => {
-        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
-      }, error => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-        console.error('Error while updating user consent', error);
-      });
+  updateUserConsent(currentOrgId, previousOrgId?) {
+    if (this.isTenantChanged) {
+      const requestFoRevoked: Consent = {
+        status: ConsentStatus.REVOKED,
+        userId: this.userService.userid,
+        consumerId: previousOrgId,
+        objectId: previousOrgId,
+        objectType: 'Organisation'
+      };
+      this.csUserService.updateConsent(requestFoRevoked, { apiPath: '/learner/user/v1' })
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe((response) => {
+         // this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+          if (response && response.consent) {
+            this.isTenantChanged = false;
+            const requestForActive: Consent = {
+              status: ConsentStatus.ACTIVE,
+              userId: this.userService.userid,
+              consumerId: currentOrgId,
+              objectId: currentOrgId,
+              objectType: 'Organisation'
+            };
+            this.csUserService.updateConsent(requestForActive, { apiPath: '/learner/user/v1' })
+              .pipe(takeUntil(this.unsubscribe))
+              .subscribe(() => {
+                this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+              }, error => {
+                this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+                console.error('Error while updating user consent', error);
+              });
+          }
+        }, error => {
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+          console.error('Error while updating user consent', error);
+        });
+    } else {
+      const request: Consent = {
+        status: ConsentStatus.ACTIVE,
+        userId: this.userService.userid,
+        consumerId: currentOrgId,
+        objectId: currentOrgId,
+        objectType: 'Organisation'
+      };
+      this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(() => {
+          this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+        }, error => {
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+          console.error('Error while updating user consent', error);
+        });
+    }
   }
 
   getProfileInfo(declarations) {
