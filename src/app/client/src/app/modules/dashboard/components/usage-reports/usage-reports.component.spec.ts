@@ -1,11 +1,11 @@
 import { mockChartData } from './usage-reports.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of as observableOf } from 'rxjs';
+import { Observable, of as observableOf, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UsageService, CourseProgressService } from './../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ToasterService, ResourceService, ReportViewerTncService } from '@sunbird/shared';
-import { UserService } from '@sunbird/core';
+import { ToasterService, ResourceService } from '@sunbird/shared';
+import { UserService, TncService } from '@sunbird/core';
 import {SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -93,15 +93,21 @@ describe('UsageReportsComponent', () => {
       });
 
       it('should get tnc details', () => {
-        const reportViewerTncService = TestBed.get(ReportViewerTncService);
-        spyOn(reportViewerTncService, 'getReportViewerTncPolicy').and.returnValue(Promise.resolve({
-          version: 'sample-version',
-          url: 'sample-url',
-          showTncPopup: true
+        const reportViewerTncService = TestBed.get(TncService);
+        spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of({
+          response: {
+            value: JSON.stringify({
+              latestVersion: 'sample-version',
+              url: 'sample-url',
+              showTncPopup: true
+            })
+          }
         }));
         component.showTncPopup = true;
         component.getReportViewerTncPolicy();
-        expect(reportViewerTncService.getReportViewerTncPolicy).toHaveBeenCalled();
+        expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
         expect(component.showTncPopup).toBeTruthy();
+        expect(component.reportViewerTncVersion).toBe('sample-version');
+        expect(component.reportViewerTncUrl).toBeTruthy('sample-url');
       });
 });

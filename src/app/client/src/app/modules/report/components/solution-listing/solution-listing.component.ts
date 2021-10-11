@@ -1,11 +1,12 @@
 import { ConfigService, ResourceService, LayoutService, PaginationService, IPagination,
-  ILoaderMessage, INoResultMessage, ReportViewerTncService} from '@sunbird/shared';
+  ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'datatables.net';
 import { ObservationUtilService } from '../../../observation/service';
-import { ObservationService } from '@sunbird/core';
+import { ObservationService, UserService, TncService } from '@sunbird/core';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-solution-listing',
@@ -35,16 +36,18 @@ export class SolutionListingComponent implements OnInit {
   reportViewerTncVersion: string;
   reportViewerTncUrl: string;
   showTncPopup = false;
+  public userProfile;
   constructor(
     public resourceService: ResourceService,
     private layoutService: LayoutService,
     private observationService: ObservationService,
     config: ConfigService,
     public observationUtilService: ObservationUtilService,
+    public userService: UserService,
     private router: Router,
     public paginationService: PaginationService,
     public configService: ConfigService,
-    private reportViewerTncService: ReportViewerTncService
+    public tncService: TncService
   ) {
     this.config = config;
     this.paginationDetails = this.paginationService.getPager(0, 1, this.pageSize);
@@ -62,6 +65,11 @@ export class SolutionListingComponent implements OnInit {
       dom: '<"pull-right">rt'
     };
     this.selectedEntity = 'selected';
+    this.userService.userData$.pipe(first()).subscribe(async (user) => {
+      if (user && user.userProfile) {
+        this.userProfile = user.userProfile;
+      }
+    });
     this.initLayout();
     this.getProfileData();
   }
@@ -234,12 +242,20 @@ export class SolutionListingComponent implements OnInit {
   }
 
   getReportViewerTncPolicy() {
-    this.reportViewerTncService.getReportViewerTncPolicy().then((tncResult) => {
-      if (tncResult) {
-        this.reportViewerTncVersion = tncResult.version;
-        this.reportViewerTncUrl = tncResult.url;
-        this.showTncPopup = tncResult.showTncPopup;
-      }
-    });
+        this.tncService.getReportViewerTnc().subscribe((data) => {
+          const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
+          if (_.get(reportViewerTncData, 'latestVersion')) {
+            this.reportViewerTncVersion = _.get(reportViewerTncData, 'latestVersion');
+            this.reportViewerTncUrl = _.get(_.get(reportViewerTncData, _.get(reportViewerTncData, 'latestVersion')), 'url');
+            this.showReportViewerTncForFirstUser();
+          }
+      });
+  }
+
+  showReportViewerTncForFirstUser() {
+    const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
+    if (!reportViewerTncObj) {
+      this.showTncPopup = true;
+    }
   }
 }

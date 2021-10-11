@@ -14,7 +14,7 @@ import {
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
-  OfflineCardService, RecaptchaService, LayoutService, ConnectionService, ReportViewerTncService
+  OfflineCardService, RecaptchaService, LayoutService, ConnectionService
 } from './services';
 import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
@@ -72,7 +72,7 @@ export class SharedModule {
       providers: [ResourceService, ConfigService, ToasterService, PaginationService, RecaptchaService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
         DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService,
-        LayoutService, TranslateStore, TitleCasePipe, ConnectionService, ReportViewerTncService]
+        LayoutService, TranslateStore, TitleCasePipe, ConnectionService]
     };
   }
 }
