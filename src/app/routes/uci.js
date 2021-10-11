@@ -1,5 +1,6 @@
 const proxyUtils = require("../proxy/proxyUtils.js");
 const BASE_REPORT_URL = "/uci/admin";
+const BASE_REPORT_URL_GRAPHQL = "/uci-api/gql";
 const proxy = require("express-http-proxy");
 const {
   uci_service_base_url,
@@ -76,7 +77,7 @@ module.exports = function (app) {
     proxyObject()
   );
   app.post(`${BASE_REPORT_URL}/v1/forms/upload`, verifyToken(), proxyObject());
-  app.post(`/v1/graphql`, verifyToken(), proxyObject());
+  app.post(`${BASE_REPORT_URL_GRAPHQL}`, verifyToken(), proxyObject());
 };
 
 function addHeaders() {
