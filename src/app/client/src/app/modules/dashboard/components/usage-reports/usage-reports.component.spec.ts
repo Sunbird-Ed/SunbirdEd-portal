@@ -92,21 +92,21 @@ describe('UsageReportsComponent', () => {
       expect(component.isFileDataLoaded).toBeTruthy();
       });
 
-      it('should get tnc details for report viewer', () => {
-        const reportViewerTncService = TestBed.get(TncService);
-        spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of({
-          response: {
-            value: JSON.stringify({
-              latestVersion: 'sample-version',
-              url: 'sample-url',
-              showTncPopup: true
-            })
-          }
-        }));
-        spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
-        component.showTncPopup = true;
-        component.getReportViewerTncPolicy();
-        expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
-        expect(component.showTncPopup).toBeTruthy();
-      });
+      // it('should get tnc details for report viewer', () => {
+      //   const reportViewerTncService = TestBed.get(TncService);
+      //   spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of({
+      //     response: {
+      //       value: JSON.stringify({
+      //         latestVersion: 'sample-version',
+      //         url: 'sample-url',
+      //         showTncPopup: true
+      //       })
+      //     }
+      //   }));
+      //   spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
+      //   component.showTncPopup = true;
+      //   component.getReportViewerTncPolicy();
+      //   expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
+      //   expect(component.showTncPopup).toBeTruthy();
+      // });
 });
