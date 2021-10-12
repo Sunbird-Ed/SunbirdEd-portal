@@ -11,7 +11,7 @@
       </a>
       <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{(data?.ribbon?.right?.name).toLowerCase() === 'selfassess' ?  resourceService?.frmelmnts?.lbl?.courseassessment : data?.ribbon?.right?.name }}</a>
       <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
-      <div class="cardImageText center aligned " suiPopup popupText="{{data.name}}" [popupPlacement]="'top left'" >
+      <div class="cardImageText center aligned " matTooltip="{{data.name}}" [matTooltipPosition]="'left'" >
         <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}
            <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 20" ></i>
         </span>
@@ -21,7 +21,7 @@
       <div class="card-component-description">
         <div *ngIf="data.description && data.description.length > 0">
           {{data.description | slice:0:40}}
-          <i class="ellipsis horizontal icon" *ngIf="data.description && data.description.length >= 40" suiPopup popupText="{{data.description}}" [popupPlacement]="'top left'"></i>
+          <i class="ellipsis horizontal icon" *ngIf="data.description && data.description.length >= 40" matTooltip="{{data.description}}" [matTooltipPosition]="'left'"></i>
         </div>
       </div>
     </div>
@@ -56,7 +56,7 @@
           </span>
         </a>
       </div>
-      <span *ngIf="data.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':data?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':data?.name}}" [popupPlacement]="'top left'">
+      <span *ngIf="data.lockInfo" matTooltip="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':data?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':data?.name}}" [matTooltipPosition]="'left'">
         <i class="lock icon large"  ></i>
       </span>
       <span *ngIf="data.rating">

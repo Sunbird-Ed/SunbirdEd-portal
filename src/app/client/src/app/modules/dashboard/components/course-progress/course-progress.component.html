@@ -27,7 +27,8 @@
             <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
               [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id" #select>
               <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
-                (click)="setBatchId(course);" tabindex="0" appTelemetryInteract [telemetryInteractObject]="interactObject"
+                (click)="setBatchId(course);" tabindex="0" appTelemetryInteract
+                [telemetryInteractObject]="interactObject"
                 [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
                 [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
               </sui-select-option>
@@ -113,12 +114,11 @@
     </div>
   </div>
 
-  <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
-    <div class="ui pointing secondary menu">
-      <a class="item" (click)="loadOndemandReports(2)" tabindex="0"
-        suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
-    </div>
-    <div class="ui segment state-report" suiTabContent="1">
+  <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab [label]="{index: 1}">
+      <ng-template mat-tab-label>
+        <span></span>
+      </ng-template>
       <div class="ui stackable grid">
         <div class="nine wide column py-0">
           <p class="fsmall mt-8 mb-0 summary-text">{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}
@@ -128,11 +128,15 @@
       </div>
       <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message" [data]="stateWiseReportData"
         [columns]="columns" [downloadCSV]="isDownloadReport"></sb-datatable>
-
-    </div>
-    <div class="ui segment detailed-report" suiTabContent="2">
+    </mat-tab>
+    <mat-tab [label]="{index: 2}">
+      <ng-template mat-tab-label>
+        <span>{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</span>
+      </ng-template>
       <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch"
         [tag]="courseId + '_'+batchId"></app-on-demand-reports>
-    </div>
-  </sui-tabset>
+    </mat-tab>
+  </mat-tab-group>
+
+
 </div>

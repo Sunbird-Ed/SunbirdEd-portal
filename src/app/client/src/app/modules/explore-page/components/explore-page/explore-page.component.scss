@@ -85,14 +85,9 @@
 
 :host {
   .banner-image {
-    border-radius: calculateRem(16px);
-    height: calculateRem(280px);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
     overflow: hidden;
+    cursor: pointer;
     @include respond-below(sm) {
-      height: calculateRem(128px);
     }
   }
 }

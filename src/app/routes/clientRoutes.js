@@ -17,7 +17,6 @@ const { memoryStore } = require('../helpers/keyCloakHelper')
 const session = require('express-session');
 const { logger } = require('@project-sunbird/logger');
 const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
-const { updateSessionTTL } = require('../helpers/kongTokenHelper');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -59,13 +58,15 @@ module.exports = (app, keycloak) => {
     next();
   });
 
-  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
+  if (process.env.sunbird_environment !== 'local') {
+    app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
     '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg', '/*.html'], compression(),
     (req, res, next) => {
       res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
       res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
       next()
-  })
+    })
+  }
 
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
@@ -81,11 +82,13 @@ module.exports = (app, keycloak) => {
     app.use(express.static(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL)))
   }
 
-  app.get('/assets/images/*', (req, res, next) => {
-    res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS)
-    res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
-    next()
-  })
+  if (process.env.sunbird_environment !== 'local') {
+    app.get('/assets/images/*', (req, res, next) => {
+      res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS)
+      res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
+      next()
+    })
+  }
 
   app.all('/play/quiz/*', playContent);
   app.all('/manage-learn/*', MLContent);
@@ -111,7 +114,7 @@ module.exports = (app, keycloak) => {
     },
     saveUninitialized: false,
     store: memoryStore
-  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), updateSessionTTL(), indexPage(true));
+  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), indexPage(true));
 
   // all public route should also have same route prefixed with slug
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',

@@ -129,9 +129,9 @@
       </div>
       <div class="sb-field-group mb-8" *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}
-          <i *ngIf="batchDetails.participants && batchDetails.participants.length >= 100" suiPopup
-            popupText="{{resourceService?.frmelmnts?.lbl?.contactStateAdminToAdd}}" [popupPlacement]="'right'"
-            [popupInverted]="true" class="sb-icon-info info-icon"></i>
+          <i *ngIf="batchDetails.participants && batchDetails.participants.length >= 100" 
+            matTooltip="{{resourceService?.frmelmnts?.lbl?.contactStateAdminToAdd}}" [matTooltipPosition]="'right'"
+            class="sb-icon-info info-icon"></i>
         </label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant"
           [ngClass]="{ 'disabled': batchDetails.status === 2 || showFormInViewMode || (batchDetails.participants && batchDetails.participants.length >= 100) }">
