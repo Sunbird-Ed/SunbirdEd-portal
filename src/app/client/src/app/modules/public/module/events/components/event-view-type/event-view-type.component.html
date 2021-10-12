@@ -1,37 +1,44 @@
-<!-- <div class="m-20 my-30">
+<div class="m-20 my-30">
     <a type="button" class="ripple w-16" (click)="Openview('list')">List
         view</a>
 
     <a type="button" class=" ripple w-20 ml-16" (click)="Openview('calender')">Calender</a>
     <hr />
-</div> -->
+</div>
 <div class="state-medium-container__medium">
     <sb-library-filters [list]="allValues" [layout]="filterLayout.SQUARE" (selectedFilter)="eventtype($event)">
     </sb-library-filters>
-
-
 </div>
-
 
 
 <lib-event 
     [libEventConfig]="libEventConfig">
 </lib-event>
 <div *ngIf="tab == 'list'">
-    <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter>
-    <sb-event-list [list]="eventList" [myEvents]="myEvents" (eventDetailData)="navToEventDetail($event)"></sb-event-list>
+
+    <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
+        *ngIf="filterConfig" 
+        [filterConfig]="filterConfig"> </sb-event-filter>
+        <div *ngIf="eventList?.length > 0 && eventList != 'undefined'" >
+            <sb-event-list 
+                [list]="eventList" 
+                [myEvents]="myEvents" 
+                (eventDetailData)="navToEventDetail($event)">
+            </sb-event-list>
+        </div>
+    <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
+    <!-- <sb-event-list *ngIf="eventList" [list]="eventList" [myEvents]="myEvents" (eventDetailData)="navToEventDetail($event)"></sb-event-list> -->
     <!-- <sb-event-list [list]="eventList" (eventDetailData)="navToEventDetail($event)"></sb-event-list> -->
 
 </div>
 
 <div *ngIf="tab == 'calender'">
-    <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter>
+    <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
+        *ngIf="filterConfig" 
+        [filterConfig]="filterConfig"> </sb-event-filter>
+    <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
     <lib-event-calender *ngIf="events" [events]='events'></lib-event-calender>
     <br><br><br>
 
   
- <sb-event-create [formFieldProperties]="formFieldProperties" 
- (closeSaveForm)="cancel($event)" (navAfterSave)="navAfterSave($event);"></sb-event-create>
-
-
 </div>

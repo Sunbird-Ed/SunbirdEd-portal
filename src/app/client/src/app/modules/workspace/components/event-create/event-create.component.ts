@@ -139,23 +139,11 @@ export class EventCreateComponent implements OnInit {
     };
  }
   cancel(event){
-    //this.router.navigate(['/home']);
+    this.router.navigate(['/workspace/content/create']);
   }
 
   navAfterSave(res){
-     alert(res.result.identifier);
-    //  this.eventDetailService.getEvent(res.result.identifier).subscribe((data: any) => {
-    //   this.eventItem = data.result.event;
-    //   this.tab = 'detail';
-    //   this.isLoading = false;
-
-
-    //   console.log(this.eventItem);
-    // },
-    //   (err: any) => {
-    //     console.log('err = ', err);
-    //   });
-   
+    this.router.navigate(['/workspace/content/create']);   
   }
 }
 

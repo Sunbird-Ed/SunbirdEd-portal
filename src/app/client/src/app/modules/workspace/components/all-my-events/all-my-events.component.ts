@@ -21,6 +21,21 @@ import {EventListService} from 'ngtek-event-library';
 // import { EventDetailService } from 'ngtek-event-library';
 import { EventFilterService } from 'ngtek-event-library';
 import { from } from 'rxjs';
+import {ToasterService}from '@sunbird/shared';
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  },
+  blue: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  },
+  yellow: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  },
+};
 
 // import * as MyEventList from '../../interfaces/MyEventList';
 // import * as MyEventLFilter from '../../interfaces/MyEventLFilter'
@@ -38,19 +53,24 @@ export class AllMyEventsComponent implements OnInit {
   // formFieldProperties: any;
   filterConfig: any;
   isLoading: boolean =  true;
-   myEvents: any;
+   myEvents: any[];
   // p: number = 1;
   // collection: any[];
   Filterdata: any; 
   libEventConfig:any; 
-
+  dates: any;
+  tommorrowDate:any;
+  todayDate:any;
+  yesterdayDate: any;
+  query: any;
   constructor( 
      private eventListService:EventListService,
     // private eventCreateService: EventCreateService,
     // private eventDetailService: EventDetailService,
     // private router: Router,
     public userService: UserService,
-    private eventFilterService: EventFilterService
+    private eventFilterService: EventFilterService,
+    private toasterService: ToasterService
     ) {
     
    }
@@ -113,8 +133,6 @@ export class AllMyEventsComponent implements OnInit {
     (err: any) => {
       console.log('err = ', err);
     });
-  // console.log(myEventLFilter.myEventFilter);
-  // this.filterConfig = MyEventLFilter.myEventFilter.result['form'].data.fields;
   }
 
   setEventConfig() {
@@ -134,4 +152,113 @@ export class AllMyEventsComponent implements OnInit {
       }
     };
  }
+
+ getFilteredData(event)
+ {
+   if(event.search)
+   {
+     this.Filterdata ={
+       "status":["live"],
+       "objectType": "Event",
+     };
+     this.query=event.target.value;
+   }
+   else if((event.filtersSelected.eventTime) && (event.filtersSelected.eventType))
+   {
+     switch (event.filtersSelected.eventTime) {
+       case "Past":
+         this.dates={ 
+           "max":this.yesterdayDate
+         }
+           break;
+       case "Upcoming":
+         this.dates={ 
+           "min":this.tommorrowDate
+         }
+           break;
+       default:
+         this.dates={ 
+           "min":this.todayDate,
+           "max":this.todayDate
+         }
+             break;
+     } 
+     this.Filterdata ={
+       "status":["live"],
+       "eventType" :event.filtersSelected.eventType,
+       "startDate":this.dates,
+       "objectType": "Event"
+     };
+   }
+   else if(event.filtersSelected.eventType)
+   {
+       this.Filterdata ={
+         "status":["live"],
+         "eventType" :event.filtersSelected.eventType,
+         "objectType": "Event"
+       };
+   }
+   else if(event.filtersSelected.eventTime)
+   { 
+       switch (event.filtersSelected.eventTime) {
+         case "Past":
+           this.dates={ 
+             "max":this.yesterdayDate
+           }
+             break;
+         case "Upcoming":
+           this.dates={ 
+             "min":this.tommorrowDate
+           }
+             break;
+         default:
+           this.dates={ 
+             "min":this.todayDate,
+             "max":this.todayDate
+           }
+         break;
+       } 
+       this.Filterdata ={
+         "status":["live"],
+         "startDate" :this.dates,
+         "objectType": "Event"
+       };
+   }
+   else
+   {
+     this.Filterdata ={
+       "status":["live"],
+       "objectType": "Event"
+     };
+   }
+
+ 
+   this.eventListService.getEventList(this.Filterdata,this.query).subscribe((data) => {
+     if (data.responseCode == "OK") 
+       {
+         this.isLoading=false;
+         this.eventList = data.result.Event;
+
+         // For calendar events
+         this.eventList = this.eventList.map(obj => ({
+         start: new Date(obj.startDate),
+         title: obj.name,
+         starttime: obj.startTime,
+         end: new Date(obj.endDate),
+         color: colors.red,
+         cssClass: obj.color,
+         status: obj.status,
+         onlineProvider: obj.onlineProvider,
+         audience: obj.audience,
+         owner: obj.owner,
+         identifier:obj.identifier,
+         }));
+       }
+     }, (err) => {
+       this.isLoading=false;
+       this.toasterService.error('Something went wrong, please try again later...');
+     
+     });
+ }
+
 }

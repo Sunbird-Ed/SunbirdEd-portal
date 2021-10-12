@@ -30,10 +30,17 @@
 export const urlConfig = {
     // endpoint configs...!
     // Live API's
-    create: "/event/v4/create",
-    update: "/event/v4/update",
-    detail :  "/event/v4/read/",
-    publish:"/event/v4/publish",
+    create: "/api/event/v4/create",
+
+    // update: "/event/v4/update",
+    update: "/api/event/v4/update",
+
+    // detail :  "/event/v4/read/",
+    detail: "/api/event/v4/read/",
+
+    // publish:"/event/v4/publish",
+    publish: "/api/event/v4/publish",
+    // publish:"/event/v4/publish",
     enrollApi: "/v1/event/enroll",
     unenrollApi: "/v1/event/unenroll",
     BBBGetUrlModerator: "/event/v4/join/moderator",
