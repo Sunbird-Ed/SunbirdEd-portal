@@ -19,7 +19,7 @@ import {
 import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import {DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe} from './pipes';
+import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe } from './pipes';
 import { CacheService } from 'ng2-cache-service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -29,9 +29,12 @@ import { AppLandingSectionComponent } from './components/app-landing-section/app
 import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { AddToGroupDirective } from './directives/add-to-group/add-to-group.directive';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import {TitleCasePipe} from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { NetworkStatusComponent } from './components/network-status/network-status.component';
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 @NgModule({
   imports: [
@@ -40,7 +43,8 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     SuiRatingModule, SuiCollapseModule,
     FormsModule, ReactiveFormsModule, NgxDatatableModule,
     TelemetryModule,
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    MatTooltipModule, MatTabsModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -58,7 +62,7 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
-    AlertModalComponent, FullPageLoaderComponent],
+    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule],
   entryComponents: [AlertModalComponent]
 })
 export class SharedModule {

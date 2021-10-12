@@ -238,4 +238,9 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   transformHTML(data: any) {
     return this.sanitizer.bypassSecurityTrustHtml(data);
   }
+
+  selectedTabChange(event) {
+    const { downloadURL } = _.get(event, 'tab.textLabel');
+    downloadURL && this.setDownloadUrl(downloadURL);
+  }
 }

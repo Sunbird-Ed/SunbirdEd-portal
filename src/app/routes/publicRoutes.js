@@ -7,7 +7,8 @@ const contentServiceBaseUrl = envHelper.CONTENT_URL
 const { logger } = require('@project-sunbird/logger');
 const proxyUtils = require('../proxy/proxyUtils.js')
 const mockData = require("./mockdata/asset.json")
-
+const session = require('express-session')
+const { memoryStore } = require('../helpers/keyCloakHelper')
 
 module.exports = function (app) {
     const proxyReqPathResolverMethod = function (req) {
@@ -24,10 +25,23 @@ module.exports = function (app) {
 
     // app.all('/api/asset/v1/upload/:id', proxyObj());
 
-    app.use('/api/*', proxy(contentProxyUrl, {
-        proxyReqPathResolver: proxyReqPathResolverMethod
-    }))
-
+    if (envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
+        app.use('/api/*', session({
+            secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+            resave: false,
+            cookie: {
+                maxAge: envHelper.sunbird_anonymous_session_ttl
+            },
+            saveUninitialized: false,
+            store: memoryStore
+        }), proxy(contentProxyUrl, {
+            proxyReqPathResolver: proxyReqPathResolverMethod
+        }))
+    } else {
+        app.use('/api/*', proxy(contentProxyUrl, {
+            proxyReqPathResolver: proxyReqPathResolverMethod
+        }))
+    }
 
 }
 
