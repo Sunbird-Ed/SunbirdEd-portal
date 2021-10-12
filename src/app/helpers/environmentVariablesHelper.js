@@ -68,7 +68,7 @@ let envVariables = {
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
  
   // generic editor content size 150 MB
-  DOCK_DEFAULT_FILE_SIZE: env.dock_default_file_size || 150,
+  SUNBIRD_DEFAULT_FILE_SIZE: env.sunbird_default_file_size || 150,
 
   // Keycloak Configuration
   KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
