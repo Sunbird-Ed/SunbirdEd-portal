@@ -29,6 +29,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public layoutType: string;
   public baseUrl: string;
   public publicStorageAccount: any;
+  public defaultFileSize: any;
   constructor(private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService, private router: Router,
@@ -46,6 +47,8 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
       this.publicStorageAccount = (<HTMLInputElement>document.getElementById('publicStorageAccount'))
       ? (<HTMLInputElement>document.getElementById('publicStorageAccount')).value : undefined;
+      this.defaultFileSize = (<HTMLInputElement>document.getElementById('dockDefaultFileSize')) ?
+      (<HTMLInputElement>document.getElementById('dockDefaultFileSize')).value : 150;
   }
 
   ngOnInit() {
@@ -321,7 +324,14 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         cloudStorageUrls : this.userService.cloudStorageUrls
       },
       config: {
-        mode: this.getEditorMode()
+        mode: this.getEditorMode(),
+        assetConfig: {
+          video: {
+            size: this.defaultFileSize,
+            sizeType: 'MB',
+            accepted: 'mp4, webm'
+          }
+    }
       }
     };
     this.editorConfig.config.showAddCollaborator = true;
