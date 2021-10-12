@@ -45,7 +45,7 @@ export const urlConfig = {
     eventFormConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     eventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     myEvents:"/v2/user/courses/list",
-    search:"/api/event/v3/search",
+    search:"/api/event/v1/search",
 
     eventListApi : "assets/api/eventlist.json",
     eventCreateApi: "https://jsonplaceholder.typicode.com/posts",
