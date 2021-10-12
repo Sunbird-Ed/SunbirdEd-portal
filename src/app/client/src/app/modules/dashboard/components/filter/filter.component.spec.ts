@@ -22,7 +22,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 
 
-fdescribe('FilterComponent', () => {
+describe('FilterComponent', () => {
   let component: FilterComponent;
   let fixture: ComponentFixture<FilterComponent>;
   const resourceServiceMockData = {
