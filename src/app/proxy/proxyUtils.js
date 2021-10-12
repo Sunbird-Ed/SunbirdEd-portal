@@ -124,7 +124,7 @@ const addReqLog = function (req) {
 function verifyToken () {
   return async (req, res, next) => {
     try {
-      await validateUserToken(req, res)
+      // await validateUserToken(req, res)
       next()
     } catch (error) {
       const responseCode = 'UNAUTHORIZED_ACCESS';

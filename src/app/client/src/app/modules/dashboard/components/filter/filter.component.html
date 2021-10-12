@@ -31,13 +31,15 @@
                
               </div>
               <div *ngIf="filter.controlType === 'select'">
-                <sui-select class="selection sb-select-searchfilter" [placeholder]="filter.displayName"
-                  [formControlName]="filter.reference">
-                  <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                    [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                    [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option">
-                  </sui-select-option>
-                </sui-select>
+              
+                  <input matInput type="text" [(ngModel)]="filterQuery" (keyup.enter)="chooseOption()" [placeholder]="filter.displayName" aria-label="Number" matInput [formControlName]="filter.reference" [matAutocomplete]="auto2">
+                  <mat-autocomplete #auto2="matAutocomplete" class = "test-class">
+                  <mat-option *ngFor="let option of getFilters(filter.options)" [value]="option">
+                  {{ option }}
+                  </mat-option>
+                  </mat-autocomplete>
+              
+              
               </div>
               <div *ngIf="filter.controlType === 'date'">
                 <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
@@ -72,8 +74,7 @@
     <span *ngIf="!checkFilterReferance(key)">
     <span
       class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
-      *ngFor="let val of selectedFilters[key]">{{val}}
-      <!-- <i class="close icon mr-0 pl-4"></i> -->
+      *ngFor="let val of getFiltersValues(selectedFilters[key])">{{val}}
     </span>
     </span>
   </div>

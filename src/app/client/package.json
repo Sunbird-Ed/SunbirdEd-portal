@@ -31,7 +31,7 @@
   "dependencies": {
     "@angular-devkit/build-angular": "0.803.24",
     "@angular/animations": "^9.1.13",
-    "@angular/cdk": "^9.2.4",
+    "@angular/cdk": "9.2.4",
     "@angular/cli": "^9.1.15",
     "@angular/common": "^9.1.13",
     "@angular/compiler": "^9.1.13",
@@ -40,7 +40,7 @@
     "@angular/forms": "^9.1.13",
     "@angular/http": "^7.2.10",
     "@angular/localize": "9.1.13",
-    "@angular/material": "9.2.4",
+    "@angular/material": "^9.2.4",
     "@angular/platform-browser": "^9.1.13",
     "@angular/platform-browser-dynamic": "^9.1.13",
     "@angular/router": "^9.1.13",

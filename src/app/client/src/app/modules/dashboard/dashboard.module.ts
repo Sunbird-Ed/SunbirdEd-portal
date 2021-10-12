@@ -39,6 +39,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 
 @NgModule({
@@ -64,7 +66,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatListModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,

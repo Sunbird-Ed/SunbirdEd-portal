@@ -1,6 +1,7 @@
 
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FilterComponent } from './filter.component';
+// import { FilterComponent } from '../';
 import { mockChartData } from './filter.component.spec.data';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -16,7 +17,12 @@ import {BrowserModule} from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
 
-describe('FilterComponent', () => {
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+
+
+fdescribe('FilterComponent', () => {
   let component: FilterComponent;
   let fixture: ComponentFixture<FilterComponent>;
   const resourceServiceMockData = {
@@ -55,6 +61,9 @@ describe('FilterComponent', () => {
       declarations: [FilterComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [BrowserAnimationsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatAutocompleteModule,
         BrowserModule,
         SuiModule, ReactiveFormsModule, TelemetryModule.forRoot(), CoreModule, NgxDaterangepickerMd.forRoot()],
       // providers:[ResourceService]
@@ -262,6 +271,24 @@ describe('FilterComponent', () => {
 
     expect(res2).toEqual([]);
 
+  }));
+
+  it('should call getSelectedData', fakeAsync(() => {
+
+    component.filterQuery = "ab";
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
+    component.ngOnInit();
+    tick(1000);
+    
+    const res= component.getFilters(["cd","ef"]);
+    tick(1000);
+    expect(res).toEqual([]);
+
+    const res2= component.getFilters(["ab","ef"]);
+    tick(1000);
+    expect(res2).toEqual(["ab"]);
+
+    
   }));
 
 
