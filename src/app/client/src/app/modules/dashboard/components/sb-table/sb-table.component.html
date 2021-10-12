@@ -1,0 +1,22 @@
+
+<button type="button" class="btn btn-outline-primary float-end alert alert-danger"
+(click)="reset()">Reset</button>
+
+<div *ngIf="load==true" class="flex-row">
+  <div role="alert" class="">
+   
+  </div>
+  <sb-dashlet  [type]="'table'" [data]="data" [config]="config" #lib>
+    <ng-template sbTemplateRef="header" let-config>
+      <button type="button" *ngFor="let option of config?.exportOptions" class="btn btn-outline-primary float-end alert alert-danger"
+      (click)="lib?.instance?.exportAs(option)">{{option | titlecase}}</button>
+  
+    </ng-template>
+
+    <!-- <ng-template sbTemplateRef="footer" let-config>
+      <div class="alert alert-danger" role="alert">
+        <span class="text-center">Dashlets Footer Content (Total Data Count :- {{config?.data?.length}} )</span>
+      </div>
+    </ng-template> -->
+  </sb-dashlet>
+</div>

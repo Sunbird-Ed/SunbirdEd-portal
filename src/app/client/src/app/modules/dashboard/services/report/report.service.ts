@@ -14,8 +14,9 @@ import { UUID } from 'angular2-uuid';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
+
 @Injectable()
-export class ReportService {
+export class ReportService  {
 
   private _superAdminSlug: string;
 
@@ -24,7 +25,7 @@ export class ReportService {
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
-    private frameworkService: FrameworkService, private profileService: ProfileService) {
+    private frameworkService: FrameworkService, private profileService: ProfileService,private dataService : DataService ) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
@@ -206,7 +207,27 @@ export class ReportService {
       const dataset = this.getTableData(data, _.get(table, 'id'));
       const tableData: any = {};
       tableData.id = tableId;
+      tableData.json = dataset.data;
       tableData.name = _.get(table, 'name') || 'Table';
+  
+      const tableVersion = _.get(table, 'isAdvanced') || false; 
+      tableData.isAdvanced = tableVersion;
+      tableData.filters = _.get(table, 'filters') || [];
+
+      tableData.filters = _.get(table, 'filters') || [];
+      tableData.columnConfig = _.get(table, 'columnConfig') || { };
+      
+      if(tableVersion==true){
+          tableData.gridConfig = {
+            bLengthChange: true,
+            lengthMenu:_.get(table, 'lengthMenu') || [25,50,100],
+            pageLength: _.get(table, 'pageLength') || 25,
+            order: _.get(table, 'order') || [1,'desc'],
+            bFilter: _.get(table, 'searchable') || false,
+            paging: _.get(table, 'paging') || false,
+        }
+      }
+
       tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
       tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
