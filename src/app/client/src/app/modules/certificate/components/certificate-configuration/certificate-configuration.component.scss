@@ -56,14 +56,11 @@
       overflow-y: auto;
       padding-right: 0.5rem;
       padding-left: 0;
-
-
       html[dir="rtl"] & {
         padding-right: 0;
         padding-left: 0.5rem;
       }
     }
-
     .certificates-label {
       font-size: calculateRem(18px);
       letter-spacing: 0;

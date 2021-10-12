@@ -10,6 +10,8 @@ import { UpdateCourseBatchComponent } from './components/batch/update-course-bat
 import { BatchRoutingModule } from './batch-routing.module';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @NgModule({
   imports: [
@@ -21,7 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TelemetryModule,
     SharedFeatureModule,
     BatchRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTooltipModule
   ],
   providers: [],
   declarations: [EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent]
