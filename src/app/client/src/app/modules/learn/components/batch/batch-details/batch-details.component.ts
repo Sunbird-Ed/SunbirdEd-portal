@@ -64,6 +64,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isExpiredBatchEditable = true;
   showBatchDetailsBeforeJoin = false;
   batchDetails: {};
+  showCertificateDetails = false;
+  showCompletionCertificate = false;
+  showMeritCertificate = false;
+  meritCertPercent = 0;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -171,6 +175,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
             this.batchList = data.result.response.content;
             this.fetchUserDetails();
             this.showBatchDetails();
+            this.ShowCertDetails();
           } else {
             this.showBatchList = true;
           }
@@ -239,6 +244,20 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchDetails = this.batchList[0];
   }
 
+  ShowCertDetails() {
+    if (this.batchList && this.batchList[0]) {
+      const batchDetails = this.batchList[0]
+      this.showCertificateDetails = _.get(batchDetails, 'certTemplates') ? true : false;
+      const certDetails = _.get(batchDetails, 'certTemplates');
+      for (var key in certDetails) {
+        const certCriteria = certDetails[key]['criteria'];
+        this.showCompletionCertificate = _.get(certCriteria, 'enrollment.status') === 2 ? true : false;
+        this.showMeritCertificate = _.get(certCriteria, 'assessment.score') ? true : false;
+        this.meritCertPercent = _.get(certCriteria, 'assessment.score.>=')
+      }
+
+    }
+  }
   getEnrolledCourseBatchDetails() {
     if (_.get(this.enrolledBatchInfo, 'participant')) {
       const participant = [];

@@ -383,6 +383,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.tenantPersonaLatestFormValue).toEqual({ persona: 'teacher', tenant: '01259339426316288054' });
     expect(component.selectedTenant).toEqual('01259339426316288054');
     expect(component.getTeacherDetailsForm).toHaveBeenCalled();
+    expect(component.isTenantChanged).toBeTruthy();
   });
 
   it('should call declarationFormValueChanges', () => {
@@ -517,6 +518,8 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.userProfile = { declaration: [] };
     component.declaredLatestFormValue = mockRes.declaredLatestFormValue;
     component.tenantPersonaLatestFormValue = mockRes.tenantPersonaLatestFormValue;
+    component.formAction = 'update';
+    component.isTenantChanged = true;
     spyOn<any>(component, 'getDeclarationReqObject');
     spyOn(component, 'getProfileInfo');
     spyOn(component, 'updateProfile');
@@ -552,5 +555,94 @@ describe('SubmitTeacherDetailsComponent', () => {
     spyOn(component, 'updateProfile');
     component.submit();
     expect(component.getProfileInfo).toHaveBeenCalled();
+  });
+
+  describe('updateUserConsent', () => {
+    it('should be revoked old ordId and update new orgId if Tenant is Changed', () => {
+      // arrange
+      const currentOrgId = 'new-sample-org-id';
+      const previousOrgId = 'old-sample-org-id';
+      const userService = TestBed.get(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      const toasterService = TestBed.get(ToasterService);
+      component.isTenantChanged = true;
+      spyOn(csUserService, 'updateConsent').and.returnValue(of({
+        'consent': {
+          'userId': 'c4cc494f-04c3-49f3-b3d5-7b1a1984abad'
+        },
+        'message': 'User Consent updated successfully.'
+      }));
+      spyOn(toasterService, 'success');
+      // act
+      component.updateUserConsent(currentOrgId, previousOrgId);
+      // assert
+      expect(csUserService.updateConsent).toHaveBeenCalledTimes(2);
+      expect(toasterService.success).toHaveBeenCalled();
+      expect(component.isTenantChanged).toBeFalsy();
+    });
+
+    it('should not revoked old ordId and update new orgId if Tenant is Changed for catch part', () => {
+      // arrange
+      const currentOrgId = 'new-sample-org-id';
+      const previousOrgId = 'old-sample-org-id';
+      const userService = TestBed.get(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      const toasterService = TestBed.get(ToasterService);
+      component.isTenantChanged = true;
+      spyOn(csUserService, 'updateConsent').and.returnValue(throwError({
+        error: 'samle-error'
+      }));
+      spyOn(toasterService, 'error').and.callThrough();
+      // act
+      component.updateUserConsent(currentOrgId, previousOrgId);
+      // assert
+      expect(csUserService.updateConsent).toHaveBeenCalled();
+      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+      expect(component.isTenantChanged).toBeTruthy();
+    });
+
+    it('should be update consent if formAction is submit', () => {
+      // arrange
+      const currentOrgId = 'new-sample-org-id';
+      const previousOrgId = 'old-sample-org-id';
+      const userService = TestBed.get(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      const toasterService = TestBed.get(ToasterService);
+      component.isTenantChanged = false;
+      spyOn(csUserService, 'updateConsent').and.returnValue(of({
+        'consent': {
+          'userId': 'c4cc494f-04c3-49f3-b3d5-7b1a1984abad'
+        },
+        'message': 'User Consent updated successfully.'
+      }));
+      spyOn(toasterService, 'success');
+      // act
+      component.updateUserConsent(currentOrgId, previousOrgId);
+      // assert
+      expect(csUserService.updateConsent).toHaveBeenCalledTimes(1);
+      expect(toasterService.success).toHaveBeenCalled();
+    });
+
+    it('should be update consent if formAction is submit for catch part', () => {
+      // arrange
+      const currentOrgId = 'new-sample-org-id';
+      const previousOrgId = 'old-sample-org-id';
+      const userService = TestBed.get(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      const toasterService = TestBed.get(ToasterService);
+      component.isTenantChanged = false;
+      spyOn(csUserService, 'updateConsent').and.returnValue(throwError({
+        error: 'samle-error'
+      }));
+      spyOn(toasterService, 'error').and.callThrough();
+      // act
+      component.updateUserConsent(currentOrgId, previousOrgId);
+      expect(csUserService.updateConsent).toHaveBeenCalled();
+      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+    });
   });
 });
