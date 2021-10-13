@@ -239,7 +239,7 @@ export class QuestionnaireComponent
     const headerOffset = 200;
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition - headerOffset;
-    window.scrollTo({
+    window.scrollBy({
       top: offsetPosition,
       behavior: 'smooth'
     });
