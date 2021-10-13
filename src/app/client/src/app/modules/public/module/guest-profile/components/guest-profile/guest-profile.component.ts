@@ -16,7 +16,6 @@ const USER_DETAILS_KEY = 'guestUserDetails';
 })
 
 export class GuestProfileComponent implements OnInit {
-  @ViewChild('frameworkModal') frameworkModal;
   avatarStyle = {
     backgroundColor: '#ffffff',
     border: '1px solid #fff',
@@ -83,8 +82,7 @@ export class GuestProfileComponent implements OnInit {
   }
 
   updateProfile(event) {    
-    this.frameworkModal && this.frameworkModal.deny();
-    this.showEdit = !this.showEdit;
+    // this.showEdit = !this.showEdit;
     this.guestUser.framework = event;
 
     if (window['TagManager']) {

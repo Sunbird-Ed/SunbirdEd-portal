@@ -24,7 +24,6 @@ import {ObservationUtilService} from '../../../observation/service'
     styleUrls: ['./explore-page.component.scss']
 })
 export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('frameworkModal') frameworkModal;
     public initFilter = false;
     public inViewLogs = [];
     public showLoader = true;
@@ -1097,8 +1096,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     updateProfile(event) {
-        this.frameworkModal && this.frameworkModal.deny();
-        this.showEdit = !this.showEdit;
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;

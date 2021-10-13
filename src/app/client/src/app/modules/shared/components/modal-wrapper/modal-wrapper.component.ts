@@ -1,4 +1,4 @@
-import { Component, ContentChild, OnInit, Directive, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ContentChild, OnInit, Directive, TemplateRef, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { UUID } from 'angular2-uuid';
 
@@ -31,7 +31,7 @@ export class ModalContentDirective {
   selector: 'app-modal-wrapper',
   template: ''
 })
-export class ModalWrapperComponent implements OnInit {
+export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   @Input() config: IMatDialogConfig;
   @ContentChild(ModalContentDirective, { static: true }) private modalContent: any;
@@ -73,6 +73,10 @@ export class ModalWrapperComponent implements OnInit {
     const config = this.getDialogConfig();
     this.modal = this.open(this.modalContent.templateRef, config);
     this.subscribeToDialogDismiss();
+  }
+
+  ngOnDestroy(){
+    this.deny();
   }
 }
 
