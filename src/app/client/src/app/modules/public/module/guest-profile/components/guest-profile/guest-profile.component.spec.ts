@@ -77,11 +77,6 @@ describe('GuestProfileComponent', () => {
   });
 
   it('should update profile for desktop', () => {
-    component.frameworkModal = {
-      modal: {
-        deny: jasmine.createSpy('deny')
-      }
-    };
     component.showEdit = true;
     const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
     component.guestUser = { framework: {} };
@@ -89,15 +84,9 @@ describe('GuestProfileComponent', () => {
     spyOn(component, 'updateGuestUser');
     component.updateProfile(event);
     expect(component.updateGuestUser).toHaveBeenCalled();
-    expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
   });
 
   it('should update profile for portal', () => {
-    component.frameworkModal = {
-      modal: {
-        deny: jasmine.createSpy('deny')
-      }
-    };
     component.showEdit = true;
     const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
     component.guestUser = { framework: {} };

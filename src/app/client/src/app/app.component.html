@@ -57,8 +57,12 @@
         </div>
       </div>
     </div>
-    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" 
-      [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true}">
+      <ng-template sbModalContent let-data>
+        <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
+          [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+      </ng-template>
+    </app-modal-wrapper>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
     <div *ngIf="showGlobalConsentPopUpSection">
