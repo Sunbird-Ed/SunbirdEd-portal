@@ -1,11 +1,11 @@
 import { mockChartData } from './usage-reports.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of as observableOf } from 'rxjs';
+import { Observable, of as observableOf, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UsageService, CourseProgressService } from './../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToasterService, ResourceService } from '@sunbird/shared';
-import { UserService } from '@sunbird/core';
+import { UserService, TncService } from '@sunbird/core';
 import {SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -28,7 +28,7 @@ describe('UsageReportsComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [UsageReportsComponent, DataChartComponent],
-      providers: [ ToasterService, UserService, NavigationHelperService, CourseProgressService,
+      providers: [ ToasterService, UserService, NavigationHelperService, CourseProgressService, TncService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useValue: routerStub }
       ]
@@ -90,5 +90,30 @@ describe('UsageReportsComponent', () => {
       expect(component.reportMetaData).toBeDefined();
       expect(component.files.length).toBe(4);
       expect(component.isFileDataLoaded).toBeTruthy();
+      });
+
+      it('should get tnc details for report viewer', () => {
+        const reportViewerTncService = TestBed.get(TncService);
+        spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
+          {
+            'id': 'api',
+            'params': {
+              'status': 'success',
+            },
+            'responseCode': 'OK',
+            'result': {
+              'response': {
+                'id': 'orgAdminTnc',
+                'field': 'orgAdminTnc',
+                'value': '{"latestVersion":"v4","v4":{"url":"http://test.com/tnc.html"}}'
+              }
+            }
+          }
+        ));
+        spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
+        component.showTncPopup = true;
+        component.getReportViewerTncPolicy();
+        expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
+        expect(component.showTncPopup).toBeTruthy();
       });
 });

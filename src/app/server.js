@@ -84,21 +84,23 @@ app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
 
-app.use(session({
-  secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
-  resave: false,
-  cookie: {
-    maxAge: envHelper.sunbird_anonymous_session_ttl
-  },
-  saveUninitialized: false,
-  store: memoryStore
-}), registerDeviceWithKong());
+if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
+  app.use(session({
+    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_anonymous_session_ttl
+    },
+    saveUninitialized: false,
+    store: memoryStore
+  }), registerDeviceWithKong());
+}
 
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*'
+  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*', '/apple/auth/*'
 ],
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -237,6 +239,8 @@ require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
 require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
 
+require('./routes/ios.js')(app, keycloak) // apple sign in routes
+
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
 
 require('./routes/refreshTokenRoutes.js')(app, keycloak) // refresh token routes
@@ -337,9 +341,10 @@ async function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
-      logger.info({ msg: `✅ Portal global API Whitelist check is set to    - ${envHelper.PORTAL_API_WHITELIST_CHECK}` })
-      logger.info({ msg: `✅ Portal global Kong device register is set to   - ${envHelper.KONG_DEVICE_REGISTER_TOKEN}` })
-      logger.info({ msg: `✅ Portal global Session storage is set to        - ${envHelper.PORTAL_SESSION_STORE_TYPE}` })
+      logger.info({ msg: `✅ Portal global API Whitelist check is set to              - ${envHelper.PORTAL_API_WHITELIST_CHECK}` })
+      logger.info({ msg: `✅ Portal global Session storage is set to                  - ${envHelper.PORTAL_SESSION_STORE_TYPE}` })
+      logger.info({ msg: `✅ Portal global Kong anonymous device register is set to   - ${envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN}` })
+      logger.info({ msg: `✅ Portal global Kong admin util is set to                  - ${envHelper.KONG_DEVICE_REGISTER_TOKEN}` })
     })
     handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;

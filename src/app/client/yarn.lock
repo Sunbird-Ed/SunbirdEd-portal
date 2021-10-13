@@ -1501,10 +1501,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.3.8":
-  version "4.3.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.8.tgz#c5da691f8a4ddbcf3cb134f8d5830dd61126375e"
-  integrity sha512-wqwDeOif0ng0rGPEauGH+xcE7wNCQdwY4BI5e2/mSVVQMGHY5x1ZWSmlhEYmnIaUtRik7AYFEpgfYUaMbaFt8A==
+"@project-sunbird/common-consumption-v9@4.3.9":
+  version "4.3.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.9.tgz#9f98ab7ccf42d8dc24185b0205071fb873db3fa3"
+  integrity sha512-2rliOzP8/fBfe3ZyHGZSseGwyzisMx7uWsvkrSA3oYJJtCZYnzSBUnv+R4C3K2x89Bf/pqDYPS2pCwW8alj94g==
 
 "@project-sunbird/discussions-ui-v8@2.2.4":
   version "2.2.4"
@@ -1541,10 +1541,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.21":
-  version "4.3.21"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.21.tgz#7567b70b8df704a6be2b595d58fccf5d960c96a4"
-  integrity sha512-IBikJnuFaoErfBWVXPF6qWQLA8vRcQL3QJS3fFrOiq0UHNuPGu8HoiR2gNwi/0TVwMcKqEL2Ijjq8BM62SGfvQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.4.2.tgz#797eea4986848e9e202be374f251bd42b3655cf4"
+  integrity sha512-+vA2EnZKcqzK2YdvIH7HW/xEWf4mEEJA0C1fZ/uNqR0xnVH2z8xxUUY9YrZg0oQmD9/JWte+rUBD4DrHLAOeNA==
   dependencies:
     tslib "^1.10.0"
 
@@ -1574,10 +1574,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.3.14":
-  version "4.3.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.14.tgz#5bc30b292a98aee207d8ea7ce533f69eb4c1c761"
-  integrity sha512-LNlOpeORzx95I6Cxjs7l7xpIifaqYDCKDhhlTI/5f+RmAeOSP0E5nAOyqqghBVwZdBV0BL9piWTv7hNrwcUOZg==
+"@project-sunbird/sunbird-quml-player-v9@4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.2.tgz#52fc05b9223bde6b52d8856c1b25285aaf2f56e6"
+  integrity sha512-GxsX0/YFBMo2LBTKx+taoxTk0z9vJyTlqGrsnJguCtTiUBVHRT+CKNFwoAKTnG66qgm0BfATYgJkJaPdTtNx2w==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.3.0"
 
@@ -1611,10 +1611,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.1.5.tgz#9223bbd070cfed088d2522c0c865e689639410d3"
-  integrity sha512-y2T0kgZmBXLutO8dndJS4CfroV5oVlkqArOy3xQQcxuemWK5AKZvGph1pV9J1E3+mGuU26nJz30jiKXLxiEmfQ==
+"@samagra-x/uci-console@1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.1.10.tgz#1a79c72b1a2ec42c39345ecd1636ca3997fd2b48"
+  integrity sha512-wABeQ9wsINqg6/of83Q81B0c8ON6KV3cJeWbHmnEhEMQQxObhoTpbY7raqNUgKM/KcQQH0sLlFvVtM7D/2Vz2w==
   dependencies:
     tslib "^1.10.0"
 
@@ -3737,10 +3737,10 @@ common-form-elements-v9@4.2.7:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.4.tgz#251399f1bc703b111ab91c51035a90dcb82c34b1"
-  integrity sha512-Uc7FfDgGNzIMYUOj9eft09AKRZ10KWGTT0XW5oBjn/YgssReK1RAnOc9FAIGTMt0LLPGhQVraUkpq0/SjJlgLw==
+common-form-elements-web-v9@4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.5.tgz#8546e13ccab8f467dd7bf5fb64d401cf14b7c1ae"
+  integrity sha512-xf2sz72KgV5CiX0dWZKCKid67/DWvmR6Up+psWmslc5m7mqzGDimWEnQufekh94GfVtbWLR37eg0Eik49xQqFg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
