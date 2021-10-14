@@ -56,7 +56,7 @@ export const urlConfig = {
     createImage: "/action/content/v3/create",
     uploadImage: "/action/content/v3/upload",
     // createImage: "https://staging-sunbird.nsdl.co.in/action/content/v3/create",
-    uploadImage:"https://staging-sunbird.nsdl.co.in/action/content/v3/upload",
+    // uploadImage:"https://staging-sunbird.nsdl.co.in/action/content/v3/upload",
 
     batchlist: "/api/course/v1/batch/list",
     createBatch: "/api/course/v1/batch/create",
