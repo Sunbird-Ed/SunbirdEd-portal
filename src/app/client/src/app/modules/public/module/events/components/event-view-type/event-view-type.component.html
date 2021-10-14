@@ -1,10 +1,10 @@
-<div class="m-20 my-30">
+<!-- <div class="m-20 my-30">
     <a type="button" class="ripple w-16" (click)="Openview('list')">List
         view</a>
 
     <a type="button" class=" ripple w-20 ml-16" (click)="Openview('calender')">Calender</a>
     <hr />
-</div>
+</div> -->
 <div class="state-medium-container__medium">
     <sb-library-filters [list]="allValues" [layout]="filterLayout.SQUARE" (selectedFilter)="eventtype($event)">
     </sb-library-filters>
@@ -40,5 +40,4 @@
     <lib-event-calender *ngIf="events" [events]='events'></lib-event-calender>
     <br><br><br>
 
-  
 </div>

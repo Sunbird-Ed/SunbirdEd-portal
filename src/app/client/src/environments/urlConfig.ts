@@ -35,11 +35,6 @@
 //     eventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read"
 // };
 
-
-
-
-
-
 export const urlConfig = {
     // endpoint configs...!
     // Live API's
@@ -58,7 +53,11 @@ export const urlConfig = {
     unenrollApi: "/v1/event/unenroll",
     BBBGetUrlModerator: "/event/v4/join/moderator",
     BBBGetUrlAttendee:"/event/v4/join/attendee",
-    createImage: "content/v3/create",
+    createImage: "/action/content/v3/create",
+    uploadImage: "/action/content/v3/upload",
+    // createImage: "https://staging-sunbird.nsdl.co.in/action/content/v3/create",
+    uploadImage:"https://staging-sunbird.nsdl.co.in/action/content/v3/upload",
+
     batchlist: "/api/course/v1/batch/list",
     createBatch: "/api/course/v1/batch/create",
     enrollUserEventList:"/v2/user/courses/list",
@@ -85,7 +84,9 @@ export const urlConfig = {
     calenderevent:"assets/api/eventlist_new.json",
     ImageSearchApi :  "assets/api/search-images.json",
     EditModeApi :  "assets/api/editmode.json",
-    
+    compositeSearch: "/action/composite/v3/search"
+    // compositeSearch : "https://staging-sunbird.nsdl.co.in/action/composite/v3/search",
+
     // BBBGetUrl:"assets/api/BBBCreatEvent.json",
     // BBBGetUrl:"event/v4/join",
     

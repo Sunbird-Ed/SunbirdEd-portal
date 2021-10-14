@@ -87,11 +87,13 @@ export class AllMyEventsComponent implements OnInit {
    showEventListPage(){
     this.Filterdata = {
       "status":["live"],
-      "objectType": "Event"
+      "objectType": "Event",
+      "owner":this.userService.userid
       };
     this.eventListService.getEventList( this.Filterdata).subscribe((data:any)=>{
-       console.log("listdata = ", data.result.events);
-      this.eventList = data.result.events;
+       console.log("listdata = ",data.result?.Event);
+       this.eventList = data.result?.Event;
+      
       this.isLoading = false;
     },err=>{console.log("here",err);}
     )
@@ -140,6 +142,7 @@ export class AllMyEventsComponent implements OnInit {
     // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
     this.libEventConfig = {
       context: {
+        user:this.userService.userProfile,
         identifier: '',
         channel: this.userService.channel,
         authToken: '',
@@ -158,8 +161,9 @@ export class AllMyEventsComponent implements OnInit {
    if(event.search)
    {
      this.Filterdata ={
-       "status":["live"],
+       "status":[],
        "objectType": "Event",
+       "owner":this.userService.userid
      };
      this.query=event.target.value;
    }

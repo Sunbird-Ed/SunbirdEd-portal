@@ -45,7 +45,7 @@ export const urlConfig = {
     unenrollApi: "/v1/event/unenroll",
     BBBGetUrlModerator: "/event/v4/join/moderator",
     BBBGetUrlAttendee:"/event/v4/join/attendee",
-    createImage: "content/v3/create",
+    createImage: "/action/concontent/v3/create",
     batchlist: "/api/course/v1/batch/list",
     createBatch: "/api/course/v1/batch/create",
     enrollUserEventList:"/v2/user/courses/list",
@@ -72,6 +72,7 @@ export const urlConfig = {
     calenderevent:"assets/api/eventlist_new.json",
     ImageSearchApi :  "assets/api/search-images.json",
     EditModeApi :  "assets/api/editmode.json",
+    compositeSearch: "/action/composite/v3/search"
     
     // BBBGetUrl:"assets/api/BBBCreatEvent.json",
     // BBBGetUrl:"event/v4/join",

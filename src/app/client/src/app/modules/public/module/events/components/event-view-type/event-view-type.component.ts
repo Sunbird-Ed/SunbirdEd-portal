@@ -141,10 +141,14 @@ export class EventViewTypeComponent implements OnInit {
   }
 
   setEventConfig() {
+    console.log("userId: userService.userProfile.userId ", this.userService.userProfile);
+   
+    console.log("userId: userService.userProfile.userId ", this.userService);
     // tslint:disable-next-line:max-line-length
     // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
     this.libEventConfig = {
       context: {
+        user:this.userService.userProfile,
         identifier: '',
         channel: this.userService.channel,
         authToken: '',
@@ -288,7 +292,8 @@ export class EventViewTypeComponent implements OnInit {
    showMyEventListPage()
    {
      let eventIds = [];
-     this.eventListService.getMyEventList(this.userId).subscribe((data:any)=>{
+
+     this.eventListService.getMyEventList(this.userService.userid).subscribe((data:any)=>{
 
        let  eventsList=  data.result.courses;
        Array.prototype.forEach.call(data.result.courses, child => {
@@ -325,6 +330,10 @@ export class EventViewTypeComponent implements OnInit {
  }
  navToEventDetail(event){
   console.log("event-------",event);
+  // this.router.navigate(['/enroll-users'], {
+    // queryParams: {
+    //   identifier: this.queryParams.identifier
+    // }
   this.router.navigate(['/events/detail'], { queryParams:  { eventId: event.identifier } });
  }
 }

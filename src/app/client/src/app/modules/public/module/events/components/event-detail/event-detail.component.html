@@ -1,3 +1,6 @@
-<sb-cover-event-detail [eventDetailItem]="eventItem"></sb-cover-event-detail>
+<lib-event 
+    [libEventConfig]="libEventConfig">
+</lib-event>
+<sb-cover-event-detail *ngIf="eventItem?.lenght>0" [eventDetailItem]="eventItem"></sb-cover-event-detail>
 <sb-join-event-button [eventDetailItem]="eventItem" [canUnenroll]="true"></sb-join-event-button>
 <sb-advance-event-detail [eventDetailItem]="eventItem"></sb-advance-event-detail>

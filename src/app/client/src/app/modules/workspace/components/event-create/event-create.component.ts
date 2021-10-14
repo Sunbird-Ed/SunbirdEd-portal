@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {  UserService } from '@sunbird/core';
-
+import * as _ from 'lodash-es';
 // import {EventListService} from 'ngtek-event-library';
 import { EventCreateService } from 'ngtek-event-library';
 // import { EventDetailService } from 'ngtek-event-library';
@@ -37,6 +37,7 @@ export class EventCreateComponent implements OnInit {
     // this.showEventListPage();
     
     // console.log("eventCreate",eventCreate.eventCreate);
+    this.setEventConfig();
     this.showEventCreatePage();
     // this.showFilters();
     // this.showMyEventListPage();
@@ -124,8 +125,12 @@ export class EventCreateComponent implements OnInit {
   setEventConfig() {
     // tslint:disable-next-line:max-line-length
     // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
-    this.libEventConfig = {
+//  let fullName = !_.isEmpty(this.userService.userProfile.lastName) ? this.userService.userProfile.firstName + ' '  + this.userService.userProfile.lastName : this.userService.userProfile.firstName;
+//  let userData = this.userService.userProfile;
+//  userData['fullName']=  fullName;
+ this.libEventConfig = {
       context: {
+        user:this.userService.userProfile,
         identifier: '',
         channel: this.userService.channel,
         authToken: '',

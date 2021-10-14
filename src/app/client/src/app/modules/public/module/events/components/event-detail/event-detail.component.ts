@@ -18,6 +18,7 @@ import { LibEventService, EventDetailService } from 'ngtek-event-library';
 // import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { FrameworkService, UserService } from '@sunbird/core';
 
 @Component({
   selector: 'app-event-detail',
@@ -32,9 +33,12 @@ export class EventDetailComponent implements OnInit {
   eventConfig: any;
   queryParams : any;
   eventDetailItem: any;
+  libEventConfig: any;
   constructor(private eventDetailService: EventDetailService ,
     private activatedRoute : ActivatedRoute,
-    private libEventService: LibEventService 
+    // private libEventService: LibEventService ,
+    public userService: UserService,
+    public frameworkService:FrameworkService
    ) { }
 
 
@@ -52,9 +56,28 @@ export class EventDetailComponent implements OnInit {
       this.queryParams = params;
       console.log( params);
     this.showEventDetailPage(params.eventId);
-    this.eventConfig = _.get(this.libEventService.eventConfig, 'context.user');
-    this.userId=this.eventConfig.id;   
+    // this.eventConfig = _.get(this.libEventService.eventConfig, 'context.user');
+    this.userId=this.userService.userid;  
+     this.setEventConfig();
   });
+}
+setEventConfig() {
+  // tslint:disable-next-line:max-line-length
+  // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
+  this.libEventConfig = {
+    context: {
+      user:this.userService.userProfile,
+      identifier: '',
+      channel: this.userService.channel,
+      authToken: '',
+      sid: this.userService.sessionId,
+      uid: this.userService.userid,
+      additionalCategories: 'additionalCategories',
+    },
+    config: {
+      mode: 'list'
+    }
+  };
 }
 
 }
