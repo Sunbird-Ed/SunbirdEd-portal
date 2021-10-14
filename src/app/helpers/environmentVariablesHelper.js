@@ -143,6 +143,9 @@ let envVariables = {
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
   sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
 
+  // generic editor question set and coleections children contents limit
+  SUNBIRD_QUESTIONSET_CHILDREN_LIMIT: env.sunbird_questionset_children_limit || 500,
+  SUNBIRD_COLLECTION_CHILDREN_LIMIT: env.sunbird_collection_children_limit || 1200,
 
   // Default Language Configuration
   sunbird_default_language: env.sunbird_portal_default_language || 'en',

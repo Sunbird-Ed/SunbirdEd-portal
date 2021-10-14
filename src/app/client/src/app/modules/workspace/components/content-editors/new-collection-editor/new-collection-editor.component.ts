@@ -29,6 +29,8 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
   public layoutType: string;
   public baseUrl: string;
   public publicStorageAccount: any;
+  public sunbirdQuestionSetChildrenLimit: any;
+  public sunbirdCollectionChildrenLimit: any;
   constructor(private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService, private router: Router,
@@ -46,6 +48,10 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
       this.publicStorageAccount = (<HTMLInputElement>document.getElementById('publicStorageAccount'))
       ? (<HTMLInputElement>document.getElementById('publicStorageAccount')).value : undefined;
+      this.sunbirdQuestionSetChildrenLimit = (<HTMLInputElement>document.getElementById('sunbirdQuestionSetChildrenLimit')) ?
+      (<HTMLInputElement>document.getElementById('sunbirdQuestionSetChildrenLimit')).value : 500;
+      this.sunbirdCollectionChildrenLimit = (<HTMLInputElement>document.getElementById('sunbirdCollectionChildrenLimit')) ?
+      (<HTMLInputElement>document.getElementById('sunbirdCollectionChildrenLimit')).value : 1200;
   }
 
   ngOnInit() {
@@ -321,7 +327,14 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         cloudStorageUrls : this.userService.cloudStorageUrls
       },
       config: {
-        mode: this.getEditorMode()
+        mode: this.getEditorMode(),
+        showCorrectionComments: false,
+        questionSet: {
+          maxQuestionsLimit: this.sunbirdQuestionSetChildrenLimit
+        },
+        collection: {
+          maxContentsLimit: this.sunbirdCollectionChildrenLimit
+        },
       }
     };
     this.editorConfig.config.showAddCollaborator = true;

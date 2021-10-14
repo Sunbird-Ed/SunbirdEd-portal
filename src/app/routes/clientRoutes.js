@@ -202,6 +202,8 @@ function getLocals(req) {
   locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
+  locals.sunbirdQuestionSetChildrenLimit = envHelper.sunbird_questionset_children_limit,
+  locals.sunbirdCollectionChildrenLimit =  envHelper.sunbird_collection_children_limit,
   locals.enableSSO = envHelper.sunbird_enable_sso;
   locals.reportsListVersion = envHelper.reportsListVersion;
   locals.baseUrl = null;
