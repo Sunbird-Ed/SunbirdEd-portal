@@ -561,6 +561,11 @@ export class SearchService {
           facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.orgname');
           facet['values'] = _.map(facet.values || [], value => ({ ...value, name: value.orgName }));
           break;
+          case 'additionalCategories':
+            facet['index'] = '71';
+            facet['label'] = this.resourceService.frmelmnts.lbl.additionalCategories;
+            facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectAdditionalCategory;
+            break;
       }
       return facet;
     });

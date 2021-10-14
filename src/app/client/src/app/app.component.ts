@@ -693,7 +693,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   closeFrameworkPopup () {
-    this.frameWorkPopUp.modal.deny();
+    this.frameWorkPopUp && this.frameWorkPopUp.deny();
     this.showFrameWorkPopUp = false;
   }
   /**

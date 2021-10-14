@@ -392,9 +392,14 @@
 </div>
 </div>
 </div>
-<app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
-  [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
-</app-popup>
+<app-modal-wrapper  #profileModal *ngIf="showEdit" [config]="{disableClose: false}">
+  <ng-template sbModalContent let-data>
+    <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)"
+      (close)="showEdit = !showEdit">
+    </app-popup>
+  </ng-template>
+</app-modal-wrapper>
 <app-update-contact-details *ngIf="showContactPopup" (close)="showContactPopup = !showContactPopup"
   [contactType]="contactType"></app-update-contact-details>
   <app-location-selection

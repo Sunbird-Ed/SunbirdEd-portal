@@ -32,4 +32,11 @@ export class TncService {
     };
     return this.learnerService.get(options);
   }
+
+  getReportViewerTnc() {
+    const options = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.REPORT_VIEWER_TNC
+    };
+    return this.learnerService.get(options);
+  }
 }

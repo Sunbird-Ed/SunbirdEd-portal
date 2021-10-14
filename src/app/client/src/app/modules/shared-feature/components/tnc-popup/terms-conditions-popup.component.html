@@ -1,5 +1,5 @@
-<sui-modal [mustScroll]="false" [isClosable]="tncUrl ? true : false" [transitionDuration]="0" [size]="'large'" class="sb-modal sb-modal-termscondition" #modal 
-(dismissed)="tncUrl ? onClose() : ''">
+<sui-modal [mustScroll]="false" [isClosable]="(tncUrl && !reportViewerTncVersion) ? true : false" [transitionDuration]="0" [size]="'large'" class="sb-modal sb-modal-termscondition" #modal 
+(dismissed)="(tncUrl && !reportViewerTncVersion) ? onClose() : ''">
 
   <!--Header-->
   <div class="sb-modal-header">

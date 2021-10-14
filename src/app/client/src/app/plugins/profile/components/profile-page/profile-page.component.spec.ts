@@ -249,7 +249,7 @@ describe('ProfilePageComponent', () => {
     const profileService = TestBed.get(ProfileService);
     const toasterService = TestBed.get(ToasterService);
     component.userProfile = Response.userProfile;
-    component.profileModal = { modal: { deny: () => { } } };
+    component.profileModal = { deny: () => { } };
     spyOn(profileService, 'updateProfile').and.returnValue(observableOf({}));
     spyOn(toasterService, 'success');
     component.updateProfile(mockFrameworkData);
@@ -263,7 +263,7 @@ describe('ProfilePageComponent', () => {
     const profileService = TestBed.get(ProfileService);
     const toasterService = TestBed.get(ToasterService);
     component.userProfile = Response.userProfile;
-    component.profileModal = { modal: { deny: () => { } } };
+    component.profileModal = { deny: () => { } };
     spyOn(toasterService, 'warning');
     spyOn(profileService, 'updateProfile').and.callFake(() => observableThrowError({}));
     component.updateProfile(mockFrameworkData);
