@@ -570,4 +570,19 @@ export class SearchService {
     return (_.lowerCase(_.get(content, 'trackable.enabled')) === 'yes'
       || (_.lowerCase(type) === _.lowerCase(this.config.appConfig.contentType.Course)));
   }
+
+  /**
+   * global User Search.
+  */
+ globalUserSearch(requestParam: SearchParam): Observable<ServerResponse> {
+  const option = {
+    url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+    data: {
+      request: {
+        filters: requestParam.filters,
+      }
+    }
+  };
+  return this.learnerService.post(option);
+}
 }
