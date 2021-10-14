@@ -435,13 +435,14 @@
             {{resourceService.frmelmnts?.lbl?.manage}}
           </li>
 
-          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
+          <!-- Remove from release 4.3 since it was not launched in 4.3. Will be reinstated in 4.4 -->
+          <!-- <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
             appPermission [permission]='orgAdminRole' routerLink="uci-admin">
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#Admin-icon"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lbl?.communicationConsole}} 
-          </li>
+          </li> -->
 
           <li class="list-item" role="link" appOnlineOnly (click)="toggleSideMenu(false)"
             [class.active]="router.isActive(routerLinks?.groups)" tabindex="0"
