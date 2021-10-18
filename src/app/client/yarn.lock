@@ -1562,10 +1562,15 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
 
-"@project-sunbird/sunbird-player-sdk-v9@4.3.0", "@project-sunbird/sunbird-player-sdk-v9@^4.2.0", "@project-sunbird/sunbird-player-sdk-v9@^4.3.0":
+"@project-sunbird/sunbird-player-sdk-v9@4.3.0", "@project-sunbird/sunbird-player-sdk-v9@^4.2.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.3.0.tgz#cbf131e5f0c08a0c2f0be1235d0a19777e998a14"
   integrity sha512-2V3dYL+nIpYKkqpLtP23TQRAh8SEDZ2vC2jRK6gpOUveAJw6UEKEfF5MZOulIpXOvDYUlMxIcorsLnYz4JAFzA==
+
+"@project-sunbird/sunbird-player-sdk-v9@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.4.1.tgz#aca31adaff97f1fb211bbd1c9d8114edcb4e6bf6"
+  integrity sha512-C4Mu3S9c2O2VpLxEp98qsOelHs+tTuUsdAwthLFoeToc1qK0Nh1pSG9P8W5Y1+rzEPD8Lde4sheCO4yDpZ5ukA==
 
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
@@ -1574,12 +1579,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.4.2":
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.2.tgz#52fc05b9223bde6b52d8856c1b25285aaf2f56e6"
-  integrity sha512-GxsX0/YFBMo2LBTKx+taoxTk0z9vJyTlqGrsnJguCtTiUBVHRT+CKNFwoAKTnG66qgm0BfATYgJkJaPdTtNx2w==
+"@project-sunbird/sunbird-quml-player-v9@4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.4.tgz#61f5740c80c0115f97a0109dad4d35e0402f69a8"
+  integrity sha512-ITbxFnfWWfnDSEs4M7vOGZJElZln5PjfzdD3LTHKUxpN9M3zIOHws6/QTEQOH5no9nyRSInHW0lamTn5L/0NDQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.3.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "^4.4.1"
 
 "@project-sunbird/sunbird-video-player-v9@4.2.4":
   version "4.2.4"
