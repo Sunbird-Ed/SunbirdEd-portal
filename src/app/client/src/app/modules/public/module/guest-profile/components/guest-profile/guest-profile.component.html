@@ -123,11 +123,14 @@
   </section>
 </div>
 </div>
-<app-popup *ngIf="showEdit" #frameworkModal [formInput]="guestUser?.framework" [showCloseIcon]="true"
-  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isGuestUser]="true"
-  (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
-</app-popup>
 
+<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false}">
+  <ng-template sbModalContent let-data>
+    <app-popup [dialogProps]="data" [formInput]="guestUser?.framework" [showCloseIcon]="true"
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isGuestUser]="true" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
+    </app-popup>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-location-selection (close)="closeEditDetailsPopup()" *ngIf="showEditUserDetailsPopup">
   <div slot="popup-sub-header">
