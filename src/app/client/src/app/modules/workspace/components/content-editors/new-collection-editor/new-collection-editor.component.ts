@@ -328,7 +328,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       },
       config: {
         mode: this.getEditorMode(),
-        showCorrectionComments: false,
         questionSet: {
           maxQuestionsLimit: this.sunbirdQuestionSetChildrenLimit
         },
