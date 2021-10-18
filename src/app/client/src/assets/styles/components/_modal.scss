@@ -370,3 +370,25 @@
     overflow: inherit;
   }
 }
+
+.sb-modal{
+  .mat-close-btn{
+    float: right;
+    border-radius: 50%;
+    box-shadow: var(--sbt-box-shadow-3px);
+    background-color: var(--white);
+    font-size: 0.875rem;
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+    outline: 0px;
+    border: 0;
+    margin: 1rem;
+    color: red;
+    span{
+      font-size: 1.6rem;
+      position: relative;
+      bottom: 2px;
+    }
+  }
+}
