@@ -186,8 +186,7 @@ function checkEmail() {
 function addHeaders() {
     return function (proxyReqOpts, srcReq) { 
         var sessionId = _.get(srcReq, 'headers.x-session-id') || _.get(srcReq, 'sessionID');
-        proxyReqOpts.headers['X-Session-Id'] = sessionId;        
-        proxyReqOpts.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
+        proxyReqOpts.headers['X-Session-Id'] = sessionId;
         return proxyReqOpts;
     }
 }
