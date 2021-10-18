@@ -22,7 +22,7 @@
     .sb-modal-content {
       min-height: 100px;
       padding: calculateRem(16px);
-      
+
       overflow-y: auto;
       background: var(--white);
     }
@@ -188,6 +188,7 @@
 
   .modals.dimmer .ui.scrolling.modal {
     position: fixed !important;
+
     @include respond-below(sm) {
       height: auto;
       max-height: 100%;
@@ -331,17 +332,41 @@
   }
 }
 
-.sb-preference-modal{
- .sb-modal-header {
-   .hr-preference-line{
-    border-bottom: calculateRem(1px) solid var(--rc-FFD954);
-    width: 72%;
-    position: relative;
-    bottom: calculateRem(8px);
-   }
-   .hr-border{
-    border-bottom: calculateRem(1px) solid var(--rc-FFD954);
-   }
- }
-}
+.sb-preference-modal {
+  .mat-close-btn {
+    float: right;
+    border-radius: 50%;
+    box-shadow: var(--sbt-box-shadow-3px);
+    background-color: var(--white);
+    font-size: 0.875rem;
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+    outline: 0px;
+    border: 0;
+    margin: 1rem;
+    color: red;
+    span{
+      font-size: 1.6rem;
+      position: relative;
+      bottom: 2px;
+    }
+  }
 
+  .sb-modal-header {
+    .hr-preference-line {
+      border-bottom: calculateRem(1px) solid var(--rc-FFD954);
+      width: 72%;
+      position: relative;
+      bottom: calculateRem(8px);
+    }
+
+    .hr-border {
+      border-bottom: calculateRem(1px) solid var(--rc-FFD954);
+    }
+  }
+
+  .mat-dialog-content {
+    overflow: inherit;
+  }
+}

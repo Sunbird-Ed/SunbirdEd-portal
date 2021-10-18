@@ -198,11 +198,14 @@ function proxyObject() {
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
             console.log("Request comming from :", urlParam)
+            const uid = req.session['nodebb_uid'];
             let query = require('url').parse(req.url).query;
             if (query) {
-                return require('url').parse(discussions_middleware + urlParam + '?' + query).path
+                const queryData = _.isEmpty(req.query._uid) ? `&_uid=${uid}` : ''
+                const path = require('url').parse(discussions_middleware + urlParam + queryData).path
+                return path
             } else {
-                return require('url').parse(discussions_middleware + urlParam).path
+                return require('url').parse(discussions_middleware + urlParam+ '?_uid='+ uid).path
             }
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
@@ -218,26 +221,22 @@ function proxyObject() {
     })
 }
 
+
 function proxyObjectForCreate() {
     return proxy(discussions_middleware, {
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
             let query = require('url').parse(req.url).query;
-            if (query) {
-                return require('url').parse(discussions_middleware + urlParam + '?' + query).path
-            } else {
-                return require('url').parse(discussions_middleware + urlParam).path
-            }
+            return require('url').parse(discussions_middleware + urlParam).path;
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
-                const nodebb_auth_token = proxyRes.headers['nodebb_auth_token'];
-                if(nodebb_auth_token) {
-                    req.session['nodebb_authorization_token'] = nodebb_auth_token;
-                    delete req.headers['nodebb_authorization_token'];
-                }
                 const data = JSON.parse(proxyResData.toString('utf8'));
+                const nodebb_uid = data.result['userId']['uid'];
+                if(nodebb_uid) {
+                    req.session['nodebb_uid'] = nodebb_uid;
+                }
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {

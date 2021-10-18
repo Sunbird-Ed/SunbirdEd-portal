@@ -1,87 +1,92 @@
 <div class="sb-modal sb-preference-modal" *ngIf="formFieldOptions.length">
-  <!--Header-->
-  <div mat-dialog-title>
-    <button aria-label="close dialog" mat-dialog-close *ngIf="showCloseIcon">
-      X
-    </button>
-    <div class="sb-modal-header" *ngIf="isPreference">
-      <div class="d-flex">
-        <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
-        <div class="hr-preference-line ml-24"></div>
-      </div>
-      <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
+  <div class="transition ui dimmer page modals active visible">
+    <div class="ui modal transition active visible normal">
+      <!--Header-->
+      <div mat-dialog-title class="mb-0">
+        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn" *ngIf="showCloseIcon">
+          <span>&times;</span>
+        </button>
+        <div class="sb-modal-header" *ngIf="isPreference">
+          <div class="d-flex">
+            <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
+            <div class="hr-preference-line ml-24"></div>
+          </div>
+          <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
         interpolate:'{instance}': instance}}</p>
-      <div class="hr-border py-8"></div>
-    </div>
-    <div class="sb-modal-header" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+          <div class="hr-border py-8"></div>
+        </div>
+        <div class="sb-modal-header" role="heading" aria-level="2">
+          {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+        </div>
+      </div>
+      <!--/Header-->
+
+      <!--Content-->
+      <mat-dialog-content class="mat-dialog-content">
+        <div class="sb-modal-content o-y-visible pb-0">
+          <form class="ui form">
+            <div *ngFor="let field of formFieldOptions">
+              <div class="required sb-field-form-group"
+                *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
+                <label>{{field.label}}
+                  <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                </label>
+                <div class="sb-field">
+                  <label class="w-100">
+                    <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
+                      [(ngModel)]="selectedOption[field.code]" [options]="options"
+                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
+                      <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
+                        [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"></sui-select-option>
+                    </sui-select>
+                  </label>
+                </div>
+              </div>
+              <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
+                [ngClass]="field.code === 'subject' ? '' : 'required'">
+                <label>{{field.label}}
+                  <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                </label>
+                <div class="sb-field">
+                  <label class="w-100">
+                    <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
+                      [(ngModel)]="selectedOption[field.code]" [options]="options"
+                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
+                      *ngIf="field.code === 'gradeLevel'">
+                      <sui-select-option *ngFor="let option of field.range" tabindex="0" [value]="option.name">
+                      </sui-select-option>
+                    </sui-multi-select>
+                    <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
+                      [(ngModel)]="selectedOption[field.code]" [options]="options"
+                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
+                      *ngIf="field.code !== 'gradeLevel'">
+                      <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
+                        [value]="option.name"></sui-select-option>
+                    </sui-multi-select>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-dialog-content>
+      <!--/Content-->
+
+      <!--Actions-->
+      <mat-dialog-actions align="end" class="mb-0">
+        <div class="sb-modal-actions">
+          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
+            [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
+            {{buttonLabel}}
+          </button>
+        </div>
+      </mat-dialog-actions>
+      <!--/Actions-->
     </div>
   </div>
-  <!--/Header-->
-
-  <!--Content-->
-  <mat-dialog-content>
-    <div class="sb-modal-content o-y-visible">
-      <form class="ui form">
-        <div *ngFor="let field of formFieldOptions">
-          <div class="required sb-field-form-group"
-            *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
-            <label>{{field.label}}
-              <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-            </label>
-            <div class="sb-field">
-              <label class="w-100">
-                <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                  [(ngModel)]="selectedOption[field.code]" [options]="options"
-                  (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
-                  <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
-                    [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"></sui-select-option>
-                </sui-select>
-              </label>
-            </div>
-          </div>
-          <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
-            [ngClass]="field.code === 'subject' ? '' : 'required'">
-            <label>{{field.label}}
-              <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-            </label>
-            <div class="sb-field">
-              <label class="w-100">
-                <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                  [(ngModel)]="selectedOption[field.code]" [options]="options"
-                  (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
-                  *ngIf="field.code === 'gradeLevel'">
-                  <sui-select-option *ngFor="let option of field.range" tabindex="0" [value]="option.name">
-                  </sui-select-option>
-                </sui-multi-select>
-                <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                  [(ngModel)]="selectedOption[field.code]" [options]="options"
-                  (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
-                  *ngIf="field.code !== 'gradeLevel'">
-                  <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
-                    [value]="option.name"></sui-select-option>
-                </sui-multi-select>
-              </label>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </mat-dialog-content>
-  <!--/Content-->
-
-  <!--Actions-->
-
-  <mat-dialog-actions align="end">
-    <div class="sb-modal-actions">
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
-        [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
-        {{buttonLabel}}
-      </button>
-    </div>
-  </mat-dialog-actions>
-  <!--/Actions-->
 </div>
+
 <div *ngIf="!formFieldOptions || !formFieldOptions.length">
   <app-loader></app-loader>
 </div>
