@@ -23,7 +23,6 @@ import { ContentManagerService } from '../../../public/module/offline/services/c
 export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
-  public showLoginModal = false;
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
   public carouselMasterData: Array<ICaraouselData> = [];
