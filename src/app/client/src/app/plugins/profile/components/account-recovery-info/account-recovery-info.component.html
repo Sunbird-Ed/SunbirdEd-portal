@@ -1,5 +1,8 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
-  appBodyScroll (dismissed)="closeModal();" #accountRecoveryModal>
+<div class="sb-modal">
+
+  <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+    <span>&times;</span>
+  </button>
 
   <!--Header-->
   <div class="sb-modal-header">
@@ -55,4 +58,4 @@
   </div>
   <!--/Actions-->
 
-</sui-modal>
+</div>
