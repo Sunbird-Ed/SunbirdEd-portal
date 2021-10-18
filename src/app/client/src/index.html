@@ -155,6 +155,12 @@
   <% if (baseUrl) { %>
     <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
   <% } %>
+  <% if (sunbirdQuestionSetChildrenLimit) { %>
+    <input type="hidden" id="sunbirdQuestionSetChildrenLimit" value="<%=sunbirdQuestionSetChildrenLimit%>" />
+  <% } %>
+  <% if (sunbirdCollectionChildrenLimit) { %>
+    <input type="hidden" id="sunbirdCollectionChildrenLimit" value="<%=sunbirdCollectionChildrenLimit%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>
