@@ -60,7 +60,7 @@ export const urlConfig = {
 
     batchlist: "/api/course/v1/batch/list",
     createBatch: "/api/course/v1/batch/create",
-    enrollUserEventList:"/v2/user/courses/list",
+    enrollUserEventList:"/api/course/v2/user/enrollment/list",
     eventFormConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     eventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     myEvents:"/v2/user/courses/list",
