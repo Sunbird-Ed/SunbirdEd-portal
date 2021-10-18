@@ -400,8 +400,14 @@
     </app-popup>
   </ng-template>
 </app-modal-wrapper>
-<app-update-contact-details *ngIf="showContactPopup" (close)="showContactPopup = !showContactPopup"
-  [contactType]="contactType"></app-update-contact-details>
+
+<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false}" (dismiss)="showContactPopup = !showContactPopup">
+  <ng-template sbModalContent let-data>
+    <app-update-contact-details [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType">
+    </app-update-contact-details>
+  </ng-template>
+</app-modal-wrapper>
+
   <app-location-selection
     (close)="onLocationModalClose()"
     *ngIf="showEditUserDetailsPopup">
