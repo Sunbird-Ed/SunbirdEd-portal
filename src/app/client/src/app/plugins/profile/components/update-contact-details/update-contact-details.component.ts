@@ -6,6 +6,7 @@ import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared
 import { Subject } from 'rxjs';
 import { ProfileService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-update-contact-details',
@@ -16,18 +17,19 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   @Input() contactType: string;
   @Output() close = new EventEmitter<any>();
+  @Input() dialogProps;
   contactTypeForm: FormGroup;
   enableSubmitBtn = false;
   showUniqueError = '';
   showForm = true;
-  @ViewChild('contactTypeModal', {static: true}) contactTypeModal;
+  // @ViewChild('contactTypeModal', {static: true}) contactTypeModal;
   otpData: any;
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public otpService: OtpService, public toasterService: ToasterService,
-    public profileService: ProfileService) { }
+    public profileService: ProfileService, private matDialog: MatDialog) { }
 
   ngOnInit() {
     this.initializeFormFields();
@@ -52,7 +54,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.contactTypeModal.deny();
+    this.closeMatDialog();
     this.close.emit();
   }
 
@@ -184,6 +186,10 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
-    this.contactTypeModal.deny();
+    this.closeMatDialog();
+  }
+  closeMatDialog() {
+    const dialogRef = this.dialogProps && this.dialogProps.id && this.matDialog.getDialogById(this.dialogProps.id);
+    dialogRef && dialogRef.close();
   }
 }
