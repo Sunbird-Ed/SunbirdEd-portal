@@ -7,7 +7,6 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
-// import { CsLibInitializerService } from '../../../../service/CsLibInitializer/cs-lib-initializer.service';
 // import { GroupsService } from '@sunbird/groups';
 
 @Injectable({
@@ -25,12 +24,8 @@ export class NotificationServiceImpl implements SbNotificationService {
     private router: Router,
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
-    // private csLibInitializerService: CsLibInitializerService,
     // private groupService: GroupsService,
   ) {
-    // if (!CsModule.instance.isInitialised) {
-    //   this.csLibInitializerService.initializeCs();
-    // }
     // creating the instance for notification service in csl
     this.NotificationCsService = CsModule.instance.notificationService;
     this.fetchNotificationList();
