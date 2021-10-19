@@ -36,12 +36,16 @@ import { MatListModule } from "@angular/material/list";
 import { MatSelectModule } from "@angular/material/select";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({
   imports: [
@@ -67,7 +71,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatButtonModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTabsModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    SharedFeatureModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,

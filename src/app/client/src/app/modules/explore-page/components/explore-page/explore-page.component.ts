@@ -24,7 +24,6 @@ import {ObservationUtilService} from '../../../observation/service'
     styleUrls: ['./explore-page.component.scss']
 })
 export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('frameworkModal') frameworkModal;
     public initFilter = false;
     public inViewLogs = [];
     public showLoader = true;
@@ -138,7 +137,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getFormConfig(input = { formType: 'contentcategory', formAction: 'menubar', contentType: 'global' }): Observable<object> {
-        return this.formService.getFormConfig(input);
+       return this.formService.getFormConfig(input);
     }
 
     private _addFiltersInTheQueryParams(updatedFilters = {}) {
@@ -504,6 +503,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
                                                 section: facet,
+                                                isEnabled:facet.isEnabled,
                                                 index: facet.index
                                             });
                                         }
@@ -1096,8 +1096,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     updateProfile(event) {
-        this.frameworkModal.modal.deny();
-        this.showEdit = !this.showEdit;
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;

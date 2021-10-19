@@ -48,3 +48,5 @@ src/desktop/node_modules
 src/desktop/chromedriverlog.txt
 
 .prettierignore
+
+**/.DS_Store

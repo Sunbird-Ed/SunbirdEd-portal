@@ -28,7 +28,7 @@ import { CacheService } from 'ng2-cache-service';
 export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() facets;
   @Input() queryParamsToOmit;
-  @Input() supportedFilterAttributes = ['se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'primaryCategory', 'mediaType'];
+  @Input() supportedFilterAttributes = ['se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'primaryCategory', 'mediaType', 'additionalCategories'];
   public filterLayout = LibraryFiltersLayout;
   public selectedMediaTypeIndex = 0;
   public selectedMediaType: string;
@@ -150,7 +150,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects'].includes(key)) {
+          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
