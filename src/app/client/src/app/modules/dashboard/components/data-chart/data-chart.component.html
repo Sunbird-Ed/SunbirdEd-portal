@@ -84,11 +84,6 @@
     </div>
   </div>
 
-
-
-
-
-
   <div class="dashboard-graph-statistics py-24" *ngIf="bigNumberCharts.length">
     <div class="graph-stat-block" *ngFor="let bigNumberChart of bigNumberCharts">
       <div class="graph-stat-label">{{bigNumberChart?.header}}</div>
@@ -109,27 +104,34 @@
   </div>
 </div>
 
-<sui-modal [mustScroll]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal sb-filter-modal"
-  (dismissed)="filterModalPopup(false)" *ngIf="filterPopup">
-  <div class="sb-filter">
-    <div class="filter-select-title mb-0 px-20 mt-20 py-0"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }} </div>
-    <div class="sb-filter__container">
-      <div class="sb-filter__content">
-        <app-filter [filterType]="filterType" [resetFilters]="resetFilters" [hideElements]="hideElements"
-          [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)"
-          [chartData]="getChartData()" [telemetryInteractObject]="telemetryInteractObject">
-        </app-filter>
+<app-modal-wrapper *ngIf="filterPopup" [config]="{disableClose: true}" (dismiss)="filterModalPopup(false)">
+  <ng-template sbModalContent>
+    <div class="sb-modal sb-filter-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-filter">
+            <div class="filter-select-title mb-0 px-20 mt-20 py-0"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }}
+            </div>
+            <div class="sb-filter__container">
+              <div class="sb-filter__content">
+                <app-filter [filterType]="filterType" [resetFilters]="resetFilters" [hideElements]="hideElements"
+                  [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)"
+                  [chartData]="getChartData()" [telemetryInteractObject]="telemetryInteractObject">
+                </app-filter>
+              </div>
+              <div class="sb-modal-actions p-0">
+                <button (click)="resetForm()" class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0">
+                  {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="sb-modal-actions p-0">
-        <button (click)="resetForm()" class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0">
-          {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters }}
-        </button>
-      </div>
-
     </div>
-
-  </div>
-</sui-modal>
-
+  </ng-template>
+</app-modal-wrapper>
 <!--  -->

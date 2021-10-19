@@ -286,11 +286,7 @@ describe('BatchDetailsComponent', () => {
 
   it('should close the join training popup on browser back button click', () => {
     component.showJoinModal = true;
-    component.batchListModal = {
-      deny: jasmine.createSpy('deny')
-    };
     component.ngOnDestroy();
-    expect(component.batchListModal.deny).toHaveBeenCalled();
   });
 
   it ('should call showcreatebatch()', () => {

@@ -1,7 +1,8 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" [appTelemetryStart]="telemetryCourseStart"
+  [appTelemetryEnd]="telemetryCourseEndEvent">
   <div *ngIf="collectionData" class="relative9" [style.display]="!showLoader ? 'block' : 'none'"
     [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
@@ -23,7 +24,8 @@
       <div class="ui container py-16">
         <div class="content-header__content">
           <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-            <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2">{{collectionData.name}}</div>
+            <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2">
+              {{collectionData.name}}</div>
             <div class="content-header__info mt-4" *ngIf="collectionTreeNodes">
               <span *ngIf="collectionTreeNodes?.data?.board">{{collectionTreeNodes?.data?.board}}</span>
               <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.medium"></span>
@@ -35,24 +37,34 @@
           <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
 
             <div *ngIf="isDesktopApp">
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0" (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" tabindex="0" (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" tabindex="0" (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
+                (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
+                (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
+                (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOAD')" tabindex="0"
+                (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
             </div>
 
-            <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0" (click)="onShareLink();sharelinkModal=true;"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+            <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0"
+              (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
             </button>
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="copyContentInteractEdata"
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
-              tabindex="0" (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0"
+              (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
             </button>
 
@@ -114,7 +126,8 @@
           class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
           [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
-            [contentDetails]="activeContent" [collectionData]="collectionData" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
+            [contentDetails]="activeContent" [collectionData]="collectionData" [isContentPresent]="isContentPresent"
+            [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
         </section>
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9"
@@ -138,11 +151,13 @@
 
           <div [hidden]="isSelectChapter" class="main-side-toc-content">
             <sb-toc-item [selectAll]="selectAll" [selectMode]="isCopyAsCourseClicked"
-              [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData" [noContentMessage]="noContentMessage"
-              (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
-              (noContent)="showNoContent($event)" (selectedItem)="handleSelectedItem($event)" appTelemetryInteract
-              [telemetryInteractEdata]="tocTelemetryInteractEdata" [telemetryInteractCdata]="tocTelemetryInteractCdata"[platform]="PlatformType.PORTAL"
-              [type]="TocCardType.TRACKABLE" [trackableDefaultImage]="'assets/images/mask-image/courses.svg'"></sb-toc-item>
+              [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
+              [noContentMessage]="noContentMessage" (tocCardClick)="tocCardClickHandler($event)"
+              [activeContent]="activeContent" (noContent)="showNoContent($event)"
+              (selectedItem)="handleSelectedItem($event)" appTelemetryInteract
+              [telemetryInteractEdata]="tocTelemetryInteractEdata" [telemetryInteractCdata]="tocTelemetryInteractCdata"
+              [platform]="PlatformType.PORTAL" [type]="TocCardType.TRACKABLE"
+              [trackableDefaultImage]="'assets/images/mask-image/courses.svg'"></sb-toc-item>
           </div>
           <div [hidden]="!isSelectChapter">
             <span>
@@ -166,55 +181,81 @@
 </div>
 
 <div *ngIf="isDesktopApp">
-  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
-  <div class="sb-modal-header">
-    {{resourceService.frmelmnts?.btn?.download}}
-  </div>
-  <div class="sb-modal-content">
-    <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
-  </div>
-  <div class="sb-modal-actions">
-    <button  class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-      (click)="downloadCollection(collectionData); showModal = !showModal;">
-      {{resourceService.frmelmnts?.btn?.download}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-      (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
-      {{resourceService.frmelmnts?.btn?.cancel}}
-    </button>
-  </div>
-  </sui-modal>
 
-  <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.delete}}
-  </div>
-  <div class="sb-modal-content">
-    <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}': collectionData?.name}}</p>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-      (click)="deleteCollection(collectionData); showDeleteModal = !showDeleteModal;">
-      {{resourceService?.frmelmnts?.lbl?.delete}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-      (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
-      {{resourceService.frmelmnts?.btn?.cancel}}
-    </button>
-  </div>
-  </sui-modal>
+  <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true}" (dismiss)="showModal = !showModal;">
+    <ng-template sbModalContent>
+      <div class="sb-modal">
+        <div class="transition ui dimmer page modals active visible">
+          <div class="ui modal transition active visible normal">
+            <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+              <span>&times;</span>
+            </button>
+            <div class="sb-modal-header">
+              {{resourceService.frmelmnts?.btn?.download}}
+            </div>
+            <div class="sb-modal-content">
+              <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
+            </div>
+            <div class="sb-modal-actions">
+              <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+                (click)="downloadCollection(collectionData); showModal = !showModal;">
+                {{resourceService.frmelmnts?.btn?.download}}
+              </button>
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+                (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
+                {{resourceService.frmelmnts?.btn?.cancel}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </app-modal-wrapper>
+
+  <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true}"
+    (dismiss)="showDeleteModal = !showDeleteModal;">
+    <ng-template sbModalContent>
+      <div class="sb-modal">
+        <div class="transition ui dimmer page modals active visible">
+          <div class="ui modal transition active visible normal">
+            <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+              <span>&times;</span>
+            </button>
+            <div class="sb-modal-header">
+              {{resourceService?.frmelmnts?.lbl?.delete}}
+            </div>
+            <div class="sb-modal-content">
+              <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}':
+                collectionData?.name}}
+              </p>
+            </div>
+            <div class="sb-modal-actions">
+              <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+                (click)="deleteCollection(collectionData); showDeleteModal = !showDeleteModal;">
+                {{resourceService?.frmelmnts?.lbl?.delete}}
+              </button>
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+                (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
+                {{resourceService.frmelmnts?.btn?.cancel}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </app-modal-wrapper>
 
   <sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
     <div class="ui active centered inline loader"></div>
-    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':collectionData?.name}}
+    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent |
+      interpolate:'{contentName}':collectionData?.name}}
     </h6>
   </sui-dimmer>
 
   <sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
     <div class="ui active centered inline loader"></div>
-    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':collectionData?.name}}
+    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent |
+      interpolate:'{contentName}':collectionData?.name}}
     </h6>
   </sui-dimmer>
 </div>

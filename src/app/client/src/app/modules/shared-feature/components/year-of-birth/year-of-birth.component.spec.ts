@@ -47,14 +47,8 @@ describe('YearOfBirthComponent', () => {
 
       return of({});
     });
-    yearOfBirthComponent.modal = {
-      deny() {
-        return;
-      }
-    };
     yearOfBirthComponent.submitYearOfBirth();
     expect(yearOfBirthComponent.selectedYearOfBirth).toBeTruthy();
-    expect(yearOfBirthComponent.modal).toBeTruthy();
   });
 
   it('should set select year', () => {
