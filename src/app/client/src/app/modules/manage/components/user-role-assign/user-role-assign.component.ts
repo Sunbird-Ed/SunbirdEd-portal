@@ -1,8 +1,10 @@
+import { getUserDetails } from './../../../workspace/components/update-batch/update-batch.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { ToasterService, ResourceService, ServerResponse } from '@sunbird/shared';
+import { ManageService } from '../../services/manage/manage.service';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-user-role-assign',
@@ -16,8 +18,10 @@ export class UserRoleAssignComponent implements OnInit {
   showCards = false;
   showAssignRole = false;
   showNoResult = false;
+  enableSubmitBtn = false;
   userRole = [];
   removeRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC'];
+  rootOrgRoles= [];
   userObj: any;
   key: string;
   allRoles: Array<RolesAndPermissions>;
@@ -25,12 +29,14 @@ export class UserRoleAssignComponent implements OnInit {
   private toasterService: ToasterService;
   private resourceService: ResourceService;
   private userService: UserService;
+  orgList = [];
 
   constructor(searchService: SearchService,
     userService: UserService,
     resourceService: ResourceService, private permissionService: PermissionService,
     toasterService: ToasterService, formBuilder: FormBuilder,
-    private router: Router) {
+    private router: Router,
+    private manageService: ManageService) {
     this.searchService = searchService;
     this.toasterService = toasterService;
     this.resourceService = resourceService;
@@ -40,24 +46,32 @@ export class UserRoleAssignComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('testing the component');
     this.removeRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC'];
     this.getAllRoles(this.removeRoles);
+    this.getOrgDetails();
   }
   initializeFormFields() {
     this.userDetailsForm = new FormGroup({
-      role : new FormControl('')
+      role: new FormControl(''),
+      orgName: new FormControl('')
     });
   }
   enableAssignRole() {
     this.showAssignRole = !this.showAssignRole ? true : false;
+  }
+  getOrgDetails() {
+    const userRoles = this.userService.UserOrgDetails;
+    for (let key in userRoles) {
+      if(key === 'ORG_ADMIN') {
+        this.orgList.push(userRoles[key]);
+      }
+   }
   }
   dismissRoleAssign() {
     this.showAssignRole = false;
   }
   goBack() {
     this.showingResults = false;
-    //this.router.navigate(['/manage']);
   }
   getAllRoles(removeRoles) {
     this.permissionService.availableRoles$.subscribe(params => {
@@ -79,7 +93,6 @@ export class UserRoleAssignComponent implements OnInit {
     this.userRole = [];
     this.searchService.globalUserSearch(searchParams).subscribe(
       (apiResponse) => {
-        
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
           this.showingResults = true;
           this.userObj = apiResponse.result.response.content[0]
@@ -96,23 +109,71 @@ export class UserRoleAssignComponent implements OnInit {
   manipulateUserObject(user) {
     _.forEach(user.roles, (role) => {
       let userObj = null;
-       if (_.findIndex(role.scope, { 'organisationId': this.userService.rootOrgId }) >= 0) {
-         this.removeRoles.push(role.role);
-         userObj = {
-           role: role.role,
-           orgName: this.userService.rootOrgName
-         }
-         _.forEach(this.allRoles, (userRole) => {
+      if (_.findIndex(role.scope, { 'organisationId': this.userService.rootOrgId }) >= 0) {
+        this.removeRoles.push(role.role);
+        userObj = {
+          role: role.role,
+          orgName: this.userService.rootOrgName
+        }
+        this.rootOrgRoles.push(role.role);
+        _.forEach(this.allRoles, (userRole) => {
           if ((userRole.role === role.role)) {
             userObj['roleName'] = userRole.roleName;
           }
         });
-        console.log('---->', userObj);
-         this.userRole.push(userObj);
-       }
-     })
-     if (this.userRole.length > 0) {
-       this.showCards = true;
-     }
+        this.userRole.push(userObj);
+      }
+    })
+    this.getAllRoles(this.removeRoles);
+    if (this.userRole.length > 0) {
+      this.showCards = true;
+    }
   }
+  onSubmitForm(){
+    this.updateProfile();
+    this.enableAssignRole();
+  }
+  updateProfile() {
+    // create school and roles data
+    const roles = !_.isEmpty(this.userDetailsForm.controls.role.value) ? this.userDetailsForm.controls.role.value : ['PUBLIC'];
+    const orgId = !_.isEmpty(this.userDetailsForm.controls.orgName.value) ? this.userDetailsForm.controls.orgName.value[0] : '';
+    const newRoles = [...roles];
+    const mainRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'SYSTEM_ADMIN'];
+    _.remove(newRoles, (role) => {
+        return _.includes(mainRoles, role);
+    });
+    const rolesAdded =  _.concat(newRoles, _.intersection(mainRoles, this.rootOrgRoles));
+    const data = { userId: this.userObj.userId, roles: this.getRolesReqBody(rolesAdded, this.rootOrgRoles, orgId) };
+    this.manageService.updateRoles(data)
+    .subscribe(
+      (apiResponse: ServerResponse) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0049);
+        // this.redirect();
+      },
+      err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0020);
+        // this.redirect();
+      }
+    );
+  }
+  getRolesReqBody(newRoles, currentRoles, orgId) {
+    const reqBody = [];
+    // Get newly added roles array comparing to existing roles
+    const newlyAddedRoles = _.difference(newRoles, currentRoles);
+    // Get deleted roles from existing roles
+    const deletedRoles = _.difference(currentRoles, newRoles);
+    // Consolidated master role array of existing and newly added roles
+    const masterRoles = [...currentRoles, ...newlyAddedRoles];
+    _.forEach(masterRoles, (role) => {
+        reqBody.push({
+          role: role,
+          operation: 'add',
+          scope: [{
+            organisationId: orgId
+          }]
+        });
+    });
+    return reqBody;
+  }
+
 }

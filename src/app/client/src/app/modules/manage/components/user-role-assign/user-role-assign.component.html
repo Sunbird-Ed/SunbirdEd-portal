@@ -65,7 +65,7 @@
                   <div class="user-workexp__header">
                     <div class="user-workexp__name mr-auto">{{item.roleName}}</div>
                     <div class="user-workexp__btn"><button
-                        class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer"><i
+                        class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer" (click)="enableAssignRole()"><i
                           class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                             <use xlink:href="assets/images/sprite.svg#edit"></use>
                           </svg></i><span>Edit</span> </button></div>
@@ -118,9 +118,18 @@
         <label>{{resourceService.frmelmnts?.lbl?.role | translate}}</label>
       </div>
       <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles" labelField="roleName"
+        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles" labelField="roleName"
           valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole | translate}}" #allroles>
           <sui-select-option *ngFor="let role of allroles.filteredOptions" [value]="role"></sui-select-option>
+        </sui-multi-select>
+        </div>
+        <div class="field">
+          <label>{{resourceService.frmelmnts?.lbl?.orgname | translate}}</label>
+        </div>
+        <div class="field">
+        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="orgName" [options]="orgList" labelField="orgName"
+          valueField="orgId" name="orgName" placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg | translate}}" #allorgName>
+          <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
         </sui-multi-select>
       </div>
     </form>

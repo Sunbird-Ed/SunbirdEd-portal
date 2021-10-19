@@ -229,7 +229,6 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
       interactData['object'] = obj;
     }
     this.telemetryService.interact(interactData);
-
   }
 
   getImpressionObject(routeData, url, edata?): IImpressionEventInput {
