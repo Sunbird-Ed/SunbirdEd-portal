@@ -52,7 +52,7 @@ export const urlConfig = {
     enrollUserEventList:"/api/course/v2/user/enrollment/list",
     eventFormConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     eventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
-    myEvents:"/v2/user/courses/list",
+    myEvents:"/api/course/v2/user/enrollment/list",
     search: "/api/event/v1/search",
 
     eventListApi : "assets/api/eventlist.json",
