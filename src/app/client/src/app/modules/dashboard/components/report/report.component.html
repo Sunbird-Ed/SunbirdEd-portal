@@ -152,7 +152,7 @@
                            <!-- </div> -->
                            </div>
                       
-                           <div class="d-flex flex-ai-center flex-jc-flex-end pr-10" *ngIf="!hideElements && currentReport?.reportMetaData?.filters">
+                           <div class="d-flex flex-ai-center flex-jc-flex-end pr-10" *ngIf="!hideElements && currentReport?.reportMetaData?.filters ">
                             <button   class="sb-btn sb-btn-normal sb-btn-outline-primary  reset-filter" (click)="resetFilter()" tabindex="0">
                             {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
                           </button>
@@ -295,13 +295,13 @@
                     
                       
                       <ng-container *ngFor="let table of currentReport.tables">
-                        <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24 px-20 table-view" [suiTabContent]="table.id">
-                          <div *ngIf="table.data && table.isAdvanced==false">>
+                        <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24 px-0 table-view" [suiTabContent]="table.id">
+                          <!-- <div *ngIf="table.data && table.isAdvanced==false">>
                             <app-data-table  [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
                             </app-data-table>
                            
-                          </div>
-                          <div *ngIf="table.data && table.isAdvanced==true">
+                          </div> -->
+                          <div *ngIf="table.data">
                             <app-sb-table [columnConfig]="table.columnConfig" [rowsData]="table.json" [gridConfig]="table.gridConfig" [filters]="table.filters">
 
                             </app-sb-table>

@@ -25,7 +25,7 @@ export class ReportService  {
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
-    private frameworkService: FrameworkService, private profileService: ProfileService,private dataService : DataService ) {
+    private frameworkService: FrameworkService, private profileService: ProfileService ) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
@@ -210,28 +210,27 @@ export class ReportService  {
       tableData.json = dataset.data;
       tableData.name = _.get(table, 'name') || 'Table';
   
-      const tableVersion = _.get(table, 'isAdvanced') || false; 
+      const tableVersion = _.get(table, 'isAdvanced') || true; 
       tableData.isAdvanced = tableVersion;
       tableData.filters = _.get(table, 'filters') || [];
-
-      tableData.filters = _.get(table, 'filters') || [];
-      tableData.columnConfig = _.get(table, 'columnConfig') || { };
       
-      if(tableVersion==true){
-          tableData.gridConfig = {
+      tableData.gridConfig = {
             bLengthChange: true,
             lengthMenu:_.get(table, 'lengthMenu') || [25,50,100],
             pageLength: _.get(table, 'pageLength') || 25,
             order: _.get(table, 'order') || [1,'desc'],
             bFilter: _.get(table, 'searchable') || false,
-            paging: _.get(table, 'paging') || false,
-        }
+            paging: _.get(table, 'paging') || true,
       }
-
+    
       tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
       tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
         hash ? this.getParameterFromHash(hash) : null);
+      
+        console.log("tableData.header",tableData.header);
+      tableData.columnConfig = _.get(table, 'columnConfig') || this.prepareColumnsConfig(tableData.header);
+
       return tableData;
     });
   }
@@ -563,6 +562,17 @@ export class ReportService  {
       result.push(report);
       return result;
     }, []);
+  }
+  public prepareColumnsConfig(columns){
+
+    let config = [];
+    columns.forEach(element => {
+      config.push({
+        "title": element,
+        "data": element
+      })
+    });
+     return config;
   }
 
 }

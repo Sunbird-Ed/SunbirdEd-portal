@@ -2,7 +2,92 @@
 @import "mixins/mixins";
 
 ::ng-deep{
-.dataTable{
-    margin: 0px !important;
+    .dataTable{
+        margin: 0px !important;
+    }
+    .dropdown-btn {
+        border: none !important;
+    }
+    .multiselect-dropdown .dropdown-btn {
+        padding: 7px 18px !important;
+        border: none !important;
+    }
+    .sb-filter-g__item {
+        border-radius: 24px;
+        min-width: 250px!important;
+        min-height: 40px!important;
+        font-size: 15px!important;
+        padding: 0px;
+        // margin-left: 20px !important;
+        // margin-right: 20px !important;
+        border: 1px solid #ccc;
+    }
+    .dropdown-list {
+       border: none !important;
+    }
+    li.multiselect-item-checkbox {
+        margin: 10px;
+    }
+    .dataTables_wrapper .dataTables_filter input {
+        background-color: #fff !important;
+        border: 1px solid #ccc !important;
+    }
+    
+    .dropdown-multiselect__caret {
+        height: 40px !important;
+       
+    }
+    .dropdown-multiselect__caret::before {
+        border-color: var(--ui-dropdown-selection-icon) transparent !important;
+        border-width: 4px 6px 0 !important;
+    }
+    .dataTables_wrapper {
+        padding-top: 30px;
+        border-top: 1px solid #ccc;
+        padding: 20px;
+    }
+    table.dataTable {
+        width: 100% !important;
+    }
+    .export-btn {
+        color: #fff !important;
+        background-color: var(--primary-400);
+    }
+    .sb-btn-normal {
+        font-weight: 500 !important;
+        font-size: 15px !important;
+    }
+    table.dataTable.no-footer {
+        overflow-x: auto;
+        width: 100% !important;
+        display: block;
+    }
+    table.dataTable th, table.dataTable td {
+        min-width: 131px !important;
+   
+    }
+    table tbody {
+        // display: block;
+        // max-height: 800px;
+        // overflow-y: scroll;
+    }
+   
+    // .reset-filter {
+    //     display: none;
+    // }
+    // .sbt-report-btns-panel-new {
+    //     display: none;
+    // }
+    .sb-filter-g {
+        grid-template-columns :repeat(auto-fill,minmax(300px,1fr)) !important;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+  
 }
+.filter-label {
+    font-size: 27px;
+    margin-left: 20px;
+    color: #024f9d;
 }

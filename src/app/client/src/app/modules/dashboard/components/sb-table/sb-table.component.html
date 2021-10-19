@@ -1,16 +1,22 @@
 
-<button type="button" class="btn btn-outline-primary float-end alert alert-danger"
-(click)="reset()">Reset</button>
+
 
 <div *ngIf="load==true" class="flex-row">
-  <div role="alert" class="">
-   
-  </div>
+  <div class="d-flex flex-ai-center flex-jc-flex-end pr-10 mb-10">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn mr-10"
+  (click)="lib.instance.exportAs('csv')">ExportAs CSV</button>
+
+  <button *ngIf="config.filters.length >0" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary  action-btn"
+  (click)="reset()">Reset Filters</button>
+</div>
+
+<div class="ml-20 mb-20" *ngIf="config.filters.length >0"> <label class="filter-label"> Choose filters to view reports </label> </div>
   <sb-dashlet  [type]="'table'" [data]="data" [config]="config" #lib>
     <ng-template sbTemplateRef="header" let-config>
-      <button type="button" *ngFor="let option of config?.exportOptions" class="btn btn-outline-primary float-end alert alert-danger"
+
+      <!-- <button type="button" *ngFor="let option of config?.exportOptions" class="btn btn-outline-primary float-end alert alert-danger"
       (click)="lib?.instance?.exportAs(option)">{{option | titlecase}}</button>
-  
+   -->
     </ng-template>
 
     <!-- <ng-template sbTemplateRef="footer" let-config>
