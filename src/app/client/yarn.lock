@@ -1501,15 +1501,15 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.3.8":
-  version "4.3.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.8.tgz#c5da691f8a4ddbcf3cb134f8d5830dd61126375e"
-  integrity sha512-wqwDeOif0ng0rGPEauGH+xcE7wNCQdwY4BI5e2/mSVVQMGHY5x1ZWSmlhEYmnIaUtRik7AYFEpgfYUaMbaFt8A==
+"@project-sunbird/common-consumption-v9@4.3.9":
+  version "4.3.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.9.tgz#9f98ab7ccf42d8dc24185b0205071fb873db3fa3"
+  integrity sha512-2rliOzP8/fBfe3ZyHGZSseGwyzisMx7uWsvkrSA3oYJJtCZYnzSBUnv+R4C3K2x89Bf/pqDYPS2pCwW8alj94g==
 
-"@project-sunbird/discussions-ui-v8@2.2.4":
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.4.tgz#91978ee7149f32c6b14aa3c3a1cdb9dbb0347e44"
-  integrity sha512-gyi4uA5CNN6OhsSUzP0k1AMhELQR0kO9S7KzBVwQLwhHTx7bucxFT0ZqsoKCcbIHKuWb9ig9VyHi/mkic0OqPg==
+"@project-sunbird/discussions-ui-v8@2.4.0-beta.1":
+  version "2.4.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.4.0-beta.1.tgz#c5af4c9e102a3f3bf4e6f900ac9475aef4391992"
+  integrity sha512-a+aMPHejVRd3d9JMVvzn247OUfZeMYVwqyaeg/zDAhjiPDdGcbyGY7EOtuYeca6z0hfE0DTCZmXuPTuRXrcunw==
   dependencies:
     tslib "^1.9.0"
 
@@ -1541,10 +1541,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.21.tgz#689fe7a22aad6ac745b584db819545747d44d664"
   integrity sha512-8a+qLOjEQfvnuxFhnzsz8GAcjQ1BEsCHFMLo6kufUHRwjsOTORpK/Orl80qWtY1jJj2/I5bSoL+l/gJsiaq1jw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.3.28":
-  version "4.3.28"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.3.28.tgz#8841cde17c5241c7c7f6cef3c594d2ca91aae3f8"
-  integrity sha512-1uoqLxfJzq77MLZCEQgrD5B/FUHQgvsWrtpkuvAiBiocKBHn1CuxH8TR9diwipL/gwb1scIvYkJLd0YnnFwgSQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.4.6":
+  version "4.4.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.4.6.tgz#05026e6acd682bd0bdf19e844dceb3734083eec4"
+  integrity sha512-DRki8s677q/EMVWLFShPLyqUDxQkY9e1g9wOMIKBmyd4OAlw/X3ztsPYFzTRAxC93ozWfL9jcRF+4pIkfKdQjQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -1562,10 +1562,15 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
 
-"@project-sunbird/sunbird-player-sdk-v9@4.3.0", "@project-sunbird/sunbird-player-sdk-v9@^4.2.0", "@project-sunbird/sunbird-player-sdk-v9@^4.3.0":
+"@project-sunbird/sunbird-player-sdk-v9@4.3.0", "@project-sunbird/sunbird-player-sdk-v9@^4.2.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.3.0.tgz#cbf131e5f0c08a0c2f0be1235d0a19777e998a14"
   integrity sha512-2V3dYL+nIpYKkqpLtP23TQRAh8SEDZ2vC2jRK6gpOUveAJw6UEKEfF5MZOulIpXOvDYUlMxIcorsLnYz4JAFzA==
+
+"@project-sunbird/sunbird-player-sdk-v9@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.4.1.tgz#aca31adaff97f1fb211bbd1c9d8114edcb4e6bf6"
+  integrity sha512-C4Mu3S9c2O2VpLxEp98qsOelHs+tTuUsdAwthLFoeToc1qK0Nh1pSG9P8W5Y1+rzEPD8Lde4sheCO4yDpZ5ukA==
 
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
@@ -1574,12 +1579,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.3.19":
-  version "4.3.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.3.19.tgz#28d6bbf1250bd45d6523efae2cd0225a88866da4"
-  integrity sha512-4/KNJyMKgD2EnPDNC/r5HxccxW6AfoXDIW0PU5+MD9NX9Plhy14qu+tCY6trvKjB2tauVtUMPLi91eIE+2Pdvw==
+"@project-sunbird/sunbird-quml-player-v9@4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.4.tgz#61f5740c80c0115f97a0109dad4d35e0402f69a8"
+  integrity sha512-ITbxFnfWWfnDSEs4M7vOGZJElZln5PjfzdD3LTHKUxpN9M3zIOHws6/QTEQOH5no9nyRSInHW0lamTn5L/0NDQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.3.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "^4.4.1"
 
 "@project-sunbird/sunbird-video-player-v9@4.2.4":
   version "4.2.4"
@@ -1611,10 +1616,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.1.5.tgz#9223bbd070cfed088d2522c0c865e689639410d3"
-  integrity sha512-y2T0kgZmBXLutO8dndJS4CfroV5oVlkqArOy3xQQcxuemWK5AKZvGph1pV9J1E3+mGuU26nJz30jiKXLxiEmfQ==
+"@samagra-x/uci-console@1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.1.10.tgz#1a79c72b1a2ec42c39345ecd1636ca3997fd2b48"
+  integrity sha512-wABeQ9wsINqg6/of83Q81B0c8ON6KV3cJeWbHmnEhEMQQxObhoTpbY7raqNUgKM/KcQQH0sLlFvVtM7D/2Vz2w==
   dependencies:
     tslib "^1.10.0"
 

@@ -31,7 +31,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
-
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({
   imports: [
@@ -51,7 +51,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatCheckboxModule,
     MatTabsModule,
     MatSlideToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    SharedFeatureModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,

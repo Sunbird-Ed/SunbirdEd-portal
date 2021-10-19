@@ -18,6 +18,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   @Input() tncUrl: string;
   @Input() showAcceptTnc: boolean;
   @Input() adminTncVersion: any;
+  @Input() reportViewerTncVersion: any;
   @Output() close = new EventEmitter<any>();
 
   /**
@@ -79,10 +80,11 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
     if (this.userService.userProfile.managedBy) {
       requestBody.request['userId'] = this.userService.userid;
     }
-    if (this.adminTncVersion) {
-      requestBody.request['version'] = this.adminTncVersion;
-      requestBody.request['tncType'] = 'orgAdminTnc';
+    if (this.adminTncVersion || this.reportViewerTncVersion) {
+      requestBody.request['version'] = this.adminTncVersion || this.reportViewerTncVersion;
+      requestBody.request['tncType'] = this.adminTncVersion ? 'orgAdminTnc' : 'reportViewerTnc';
     }
+
     this.disableContinueBtn = true;
     this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
       this.onClose();

@@ -155,6 +155,10 @@
         <app-no-result [data]="noResultMessage"></app-no-result>
       </div>
     </div>
+    <div *ngIf="!noResult">
+      <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+      </app-tnc-popup>
+    </div>
   </div>
 </div>
 

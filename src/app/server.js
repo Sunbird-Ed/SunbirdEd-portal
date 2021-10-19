@@ -100,7 +100,7 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*'
+  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*', '/apple/auth/*'
 ],
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -238,6 +238,8 @@ app.get('/user/v1/switch/:userId', bodyParser.json({ limit: '1mb' }), keycloak.p
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
 require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
+
+require('./routes/ios.js')(app, keycloak) // apple sign in routes
 
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
 

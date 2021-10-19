@@ -9,7 +9,7 @@ import {
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent,
   OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent, SbDatatableComponent,
-  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent, FullPageLoaderComponent
+  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -34,6 +34,7 @@ import { NetworkStatusComponent } from './components/network-status/network-stat
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -44,7 +45,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     FormsModule, ReactiveFormsModule, NgxDatatableModule,
     TelemetryModule,
     TranslateModule.forChild(),
-    MatTooltipModule, MatTabsModule
+    MatTooltipModule, MatTabsModule, MatDialogModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -53,7 +54,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
-    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent],
+    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
@@ -62,7 +63,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
-    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule],
+    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective],
   entryComponents: [AlertModalComponent]
 })
 export class SharedModule {
