@@ -191,7 +191,7 @@ describe('NotificationServiceImpl', () => {
 
   });
   describe('getNavigationPath()', async() => {
-    it ('should call getNavigationPath()', async () => {
+    xit ('should call getNavigationPath()', async () => {
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
 
       const resp = await service.getNavigationPath({data: notificationData});
