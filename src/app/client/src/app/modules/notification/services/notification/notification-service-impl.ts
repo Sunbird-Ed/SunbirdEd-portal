@@ -34,7 +34,7 @@ export class NotificationServiceImpl implements SbNotificationService {
     // creating the instance for notification service in csl
     this.NotificationCsService = CsModule.instance.notificationService;
     // this.NotificationCsService = NotificationService;
-    // this.fetchNotificationList();
+    this.fetchNotificationList();
   }
 
   /**

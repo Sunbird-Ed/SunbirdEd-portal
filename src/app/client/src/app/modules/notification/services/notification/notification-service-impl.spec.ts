@@ -86,11 +86,24 @@ describe('NotificationServiceImpl', () => {
       // arrage
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       spyOn(service, 'markNotificationAsRead').and.returnValue(observableOf({}));
-      notificationData.action.type = 'member-added';
+      spyOn(service, 'fetchNotificationList').and.stub();
+      const navDetails = {
+        path: 'some-path'
+      }
+      spyOn(service, 'getNavigationPath').and.returnValue(navDetails);
+      const data = {
+        data: {
+          action: {
+            type : 'member-added'
+          }
+        }
+      } as any
+      // notificationData.action.type = 'member-added';
       // act
-      await service.handleNotificationClick(notificationData);
+      await service.handleNotificationClick(data);
       // assert
       expect(service.markNotificationAsRead).toHaveBeenCalled();
+      expect(service.fetchNotificationList).toHaveBeenCalled();
     });
   });
 
