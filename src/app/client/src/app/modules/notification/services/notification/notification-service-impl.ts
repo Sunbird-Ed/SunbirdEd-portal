@@ -150,8 +150,10 @@ export class NotificationServiceImpl implements SbNotificationService {
   async getNavigationPath(event) {
     const category = _.get(event, 'data.category');
     const additionalInfo = _.get(event, 'data.action.additionalInfo');
-    if (category === 'group' || category === 'groups') {
-      // return this.groupService.navigateNotification(event, additionalInfo);
+    if (category === 'group') {
+      return {
+        path: 'my-groups/group-details/' + _.get(additionalInfo, 'group.id'),
+      };
     } else {
       if (_.get(event, 'data.action.type') === 'certificateUpdate') {
         return {

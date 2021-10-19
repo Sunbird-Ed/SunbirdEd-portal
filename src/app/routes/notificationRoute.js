@@ -27,7 +27,6 @@ function proxyObject() {
         userResDecorator: function (proxyRes, proxyResData, req, res) {
             let resData = proxyResData.toString('utf8');
             let data = resData;
-            console.log('notification service req from ===> ', req.path)
             try {
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
