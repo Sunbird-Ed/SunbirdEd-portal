@@ -15,7 +15,7 @@ let envVariables = {
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
-  uci_service_base_url: env.uci_service_base_url || "http://uci-service:9999",
+  uci_service_base_url: env.uci_service_base_url || "https://dev.sunbirded.org/api",
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
@@ -66,7 +66,9 @@ let envVariables = {
   // Telemetry Configuration
   PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 1000,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
-
+ 
+  // generic editor content size 150 MB
+  SUNBIRD_DEFAULT_FILE_SIZE: env.sunbird_default_file_size || 150,
 
   // Keycloak Configuration
   KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
@@ -215,6 +217,7 @@ let envVariables = {
 
   // Kong device registration and refresh token keys
   KONG_DEVICE_REGISTER_TOKEN: env.sunbird_kong_device_register || 'false',
+  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN: env.sunbird_kong_device_register_anonymous || 'false',
   KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token,
   sunbird_anonymous_session_ttl: env.sunbird_anonymous_session_ttl ? parseInt(env.sunbird_anonymous_session_ttl) : 10 * 60 * 1000,
   sunbird_default_device_token: env.sunbird_default_device_token || '',
@@ -240,7 +243,10 @@ let envVariables = {
   PORTAL_REDIS_PASSWORD: env.sunbird_redis_password,
   PORTAL_REDIS_CONNECTION_STRING: env.portal_redis_connection_string,
   // VDN URL
-  vdnURL:env.vdnURL || ''
+  vdnURL:env.vdnURL || '',
+
+  // Add below variable for Apple Login
+  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

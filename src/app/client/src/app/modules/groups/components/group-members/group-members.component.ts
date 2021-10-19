@@ -204,9 +204,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
    * @description - To set the telemetry Intract event data
    * @param  {} edata? - it's an object to specify the type and subtype of edata
    */
-  addTelemetry(id, extra?, edata?) {
-    this.groupsService.addTelemetry({id, extra, edata}, this.activatedRoute.snapshot, [], event, this.groupId);
+  addTelemetry(id, extra?, edata?) { 
+    this.groupsService.addTelemetry({id, extra, edata}, this.activatedRoute.snapshot, [], this.groupId);
   }
+
   showAddMember () {
     if (!this.groupData.active || !this.config.showAddMemberButton) {
       return false;

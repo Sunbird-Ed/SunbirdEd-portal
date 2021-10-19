@@ -322,7 +322,11 @@ describe('ExploreContentComponent', () => {
 
   it('should call listenLanguageChange', () => {
     component.isDesktopApp = true;
-    component.contentList = [{ name: 'test' }];
+    component.contentList = [{ name: 'test', contents: [{
+      name: 'sample-content',
+      identifier: 'd0-123'
+     }]
+   }];
     spyOn(component, 'addHoverData');
     spyOn<any>(component, 'setNoResultMessage');
     component['listenLanguageChange']();

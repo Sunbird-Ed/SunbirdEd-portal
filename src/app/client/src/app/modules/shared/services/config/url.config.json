@@ -149,7 +149,8 @@
       "FAQ_URL": "data/v1/system/settings/get/portalFaqURL",
       "TNC_LIST": "data/v1/system/settings/list",
       "ORG_ADMIN_URL": "data/v1/system/settings/get/orgAdminTnc",
-      "GROUPS_TNC": "data/v1/system/settings/get/groupsTnc"
+      "GROUPS_TNC": "data/v1/system/settings/get/groupsTnc",
+      "REPORT_VIEWER_TNC": "data/v1/system/settings/get/reportViewerTnc"
     },
     "COURSE_FRAMEWORK": {
       "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"
@@ -363,9 +364,9 @@
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",
-      "PRESIGNED_URLS": "v1/cloud-services/files/preSignedUrls",
-      "PROGRAMS_BY_PLATFORM_ROLES": "v1/user-extension/programsByPlatformRoles",
-      "SOLUTIONS_BY_PROGRAMID": "v1/user-extension/solutions"
+      "PRESIGNED_URLS": "cloud-services/mlcore/v1/files/preSignedUrls",
+      "PROGRAMS_BY_PLATFORM_ROLES": "user-extension/mlcore/v1/programsByPlatformRoles",
+      "SOLUTIONS_BY_PROGRAMID": "user-extension/mlcore/v1/solutions"
     },
     "DHITI":{
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",

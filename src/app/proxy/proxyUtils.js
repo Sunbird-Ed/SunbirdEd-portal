@@ -206,6 +206,35 @@ const addCorsHeaders =  (req, res, next) => {
     next()
   };
 }
+/**
+ * This is temporary fix given for discussion forum end points in release-4.3.0
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
+function validateUserTokenForDF (req, res, next) {
+  var token = _.get(req, 'kauth.grant.access_token.token') || req.get('x-authenticated-user-token')
+  if (!token) {
+    return Promise.reject({
+      err: 'TOKEN_MISSING',
+      errmsg: 'Required field token is missing'
+    });
+  }
+  return new Promise((resolve, reject) => {
+    apiInterceptor.validateToken(token, (err, tokenData) => {
+      if (err) {
+        reject({
+          err: 'INVALID_TOKEN',
+          errmsg: 'Access denied'
+        })
+      } else {
+        resolve()
+      }
+    })
+  });
+}
+
 module.exports.decorateRequestHeaders = decorateRequestHeaders
 module.exports.decoratePublicRequestHeaders = decoratePublicRequestHeaders
 module.exports.verifyToken = verifyToken
@@ -214,3 +243,4 @@ module.exports.handleSessionExpiry = handleSessionExpiry
 module.exports.addCorsHeaders = addCorsHeaders
 module.exports.addReqLog = addReqLog
 module.exports.overRideRequestHeaders = overRideRequestHeaders
+module.exports.validateUserTokenForDF = validateUserTokenForDF

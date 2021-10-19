@@ -74,6 +74,19 @@ export class AccessDiscussionComponent implements OnInit {
         type: this.fetchForumIdReq.type
       }
     ];
+    const event = {
+      context: {
+        cdata: this.discussionTelemetryService.contextCdata,
+        object: {}
+      },
+      edata: {
+        pageid: "group-details",
+        type: "CLICK",
+        id: "forum-click"
+      },
+      eid: 'INTERACT'
+    }
+    this.discussionTelemetryService.logTelemetryEvent(event);
     this.navigationHelperService.setNavigationUrl({ url: this.router.url });
     this.discussionCsService.createUser(createUserReq).subscribe((response) => {
       const routerData = {

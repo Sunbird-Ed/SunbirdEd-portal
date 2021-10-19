@@ -30,7 +30,7 @@
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
         <div class="ml-auto text-right mt-8">
           <button class="sb-btn sb-btn-primary sb-btn-normal px-24" (click)="goBack()">
-        close Dashboard
+        Close Dashboard
       </button>
         </div>
       </div>
@@ -74,7 +74,7 @@
                     <sui-select #programSelect labelField="name" valueField="_id" formControlName="programName"
                       [options]="programs" [(ngModel)]="programSelected" class="selection pd-10" 
                       placeholder="Select Program" (selectedOptionChange)="programSelection($event)">
-                      <sui-select-option *ngFor="let program of programSelect.filteredOptions" [value]="program">
+                      <sui-select-option *ngFor="let program of programSelect.availableOptions" [value]="program">
                       </sui-select-option>
                     </sui-select>
                   </label>
@@ -83,10 +83,10 @@
                   <div class="ml-10" *ngIf="programSelected">
                     <label class="mr-10">  {{ resourceService?.frmelmnts?.lbl?.solution }} </label>
                     <label class="sb-field">
-                    <sui-select #solutionSelect labelField="name" valueField="_id" formControlName="solution"
+                    <sui-select #solutionSelect labelField="name" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
                       [options]="solutions" class="selection pd-10"  placeholder="Select Solution"
                       (selectedOptionChange)="selectSolution($event)">
-                      <sui-select-option *ngFor="let solution of solutionSelect.filteredOptions" [value]="solution">
+                      <sui-select-option *ngFor="let solutionInfo of solutionSelect.availableOptions" [value]="solutionInfo">
                       </sui-select-option>
                     </sui-select>
                   </label>
@@ -131,7 +131,7 @@
 
                   <div class="fsmall font-weight-bold download-section-text mt-20">
                     {{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
-                  <p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenAdminNote }}</p>
+                  <p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenProgramAdminNote }}</p>
 
                   <sb-datatable [message]="message" [data]="onDemandReportData" [columns]="columns"
                     [downloadCSV]="false"  (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
@@ -157,7 +157,7 @@
     <div class="sb-field-group">
       <div class="sb-field relative">
         <div class="sb-field filterTable mx-16 mb-0">
-          <input class="sb-form-control" formControlName="password" type="text" placeholder="Enter password" aria-label="enter password">
+          <input class="sb-form-control" formControlName="password" type="text" placeholder="Enter a password to request Report" aria-label="enter password">
         </div>
       </div>
       <p class="fsmall note-text my-8 administrator-text">

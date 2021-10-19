@@ -87,19 +87,30 @@
               </div>
             </div>
             <div *ngFor="let section of facetSections">
+              <div *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && enrolledSection?.contents?.length && isUserLoggedIn()" class="sb-library-cards relative9">
+                <div class="twelve wide column relative9">
+                  <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
+                    (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)" [layoutConfiguration]="layoutConfiguration">
+                  </app-page-section>
+                </div>
+                <hr class="section-hr my-32" />
+              </div>
+
               <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
                 <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}</div>
                 <ngx-slick *ngIf="displayBanner " class="carousel banner-carousel relative9 mt-24" #slickModal="slick-modal" [config]="bannerSlideConfig">
                   <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16">
-                    <div class="sb--card sb--card--theme2 banner-image" role="link" tabindex="0" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
-                      <!-- <div class="banner-overlay"></div> -->
+                    <!-- <div class="sb--card sb--card--theme2 banner-image" role="link" tabindex="0" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
+                      <div class="banner-overlay"></div>
                       <div *ngIf="banner?.ui?.text !== ''" class="explore-text">{{banner?.ui?.text}}</div>
-                    </div>
+                    </div> -->
+                    <img [src]="banner?.ui?.background" class="w-100 banner-image" alt="{{banner?.ui?.text}}" title="{{banner?.ui?.text}}" role="link" tabindex="0" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
+                    
                   </div>
                 </ngx-slick>
               </div>
               <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0" class="section-hr my-32" />
-              <sb-pills-grid *ngIf="section?.section?.isEnabled"
+               <sb-pills-grid *ngIf="section?.section?.isEnabled"
                 [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
                 [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
@@ -109,7 +120,7 @@
                   [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)" [value]="pillData"
                   [theme]="pillData?.theme"></sb-pill-item>
               </sb-pills-grid>
-              <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
+              <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" /> 
             </div>
 
             <div *ngIf="showTargetedCategory && targetedCategory.length">
@@ -139,13 +150,7 @@
                 [showExploreContentButton]="noResultMessage?.showExploreContentButton"
                 [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
             </div>
-            <div *ngIf="getSelectedTab() === 'home' && enrolledSection?.contents?.length && isUserLoggedIn()" class="sb-library-cards relative9">
-              <div class="twelve wide column relative9">
-                <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
-                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)" [layoutConfiguration]="layoutConfiguration">
-                </app-page-section>
-              </div>
-            </div>
+            
           </div>
           <!-- Template for displaying page sections -->
 
@@ -181,29 +186,46 @@
 
 <app-offline-banner *ngIf="!isUserLoggedIn()" [slug]="userService.slug"></app-offline-banner>
  <!-- Show Modal if content has any YouTube data-->
- <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
- class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
- <div class="sb-modal-header">
-   {{resourceService.frmelmnts?.btn?.download}}
- </div>
- <div class="sb-modal-content">
-   <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
- </div>
- <div class="sb-modal-actions">
-   <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
-     {{resourceService.frmelmnts?.btn?.yes}}
-   </button>
-   <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
-     {{resourceService.frmelmnts?.btn?.cancel}}
-   </button>
- </div>
-</sui-modal>
+<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: false}" (dismiss)="showModal = !showModal">
+  <ng-template sbModalContent let-data>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-header">
+            {{resourceService.frmelmnts?.btn?.download}}
+          </div>
+          <div class="sb-modal-content">
+            <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+              (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+              {{resourceService.frmelmnts?.btn?.yes}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+              (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+              {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-batch-info *ngIf="showBatchInfo && isUserLoggedIn()" [enrolledBatchInfo]="selectedCourseBatches"
   (modelClose)="showBatchInfo = false">
 </app-batch-info>
 
-<app-popup *ngIf="showEdit" #frameworkModal [formInput]="userPreference?.framework" [showCloseIcon]="true"
-  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"
-  (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
-</app-popup>
+
+<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false}">
+  <ng-template sbModalContent let-data>
+    <app-popup [dialogProps]="data" [formInput]="userPreference?.framework" [showCloseIcon]="true"
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true"
+      [isGuestUser]="true" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
+    </app-popup>
+  </ng-template>
+</app-modal-wrapper>

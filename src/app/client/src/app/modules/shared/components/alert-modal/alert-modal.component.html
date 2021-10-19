@@ -3,7 +3,6 @@
     <i class="close inside icon" (click)="modal?.deny()"></i>
     <div class="popup-header" *ngIf="modal.context.data.content.title">
       <span>{{ modal.context.data.content.title }}</span>
-      <div class="alignRight" *ngIf="modal.context.data.isClosed==true" tabindex="0" (click)="navigatePrevious(modal.context.data)"><i class="close medium icon"></i></div>
     </div>
     <div *ngIf="modal.context.data.content.body.type == 'checkbox'" class="popup-body-checkbox">
       <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" />

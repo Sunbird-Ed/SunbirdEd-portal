@@ -60,7 +60,16 @@ export let mockData = {
                 "externalId": "71471f60-2d67-11eb-b70e-55ade5205c81",
                 "name": "Safe School Project",
                 "description": ""
-            }
+            },
+            {
+              "_id": "5fbb75537380505718640438",
+              "type": "survey",
+              "isRubricDriven": false,
+              "subType": "",
+              "externalId": "71471f60-2d67-11eb-b70e-55ade5205c82",
+              "name": "Safe School survey",
+              "description": ""
+          }
             
             
         ]

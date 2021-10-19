@@ -7,7 +7,7 @@
         <!-- <img src="{{'assets/images/default.png' | cdnprefixurl}}"> -->
         <div class="bcard-bg-image"></div>
       </div>
-      <div class="batch-content" suiPopup popupText="{{batch.name}}">
+      <div class="batch-content" matTooltip="{{batch.name}}">
         <!-- <span class="batch-content-description batch-card-ellipsis w-162">{{batch.name | slice:0:20}} -->
         <span class="batch-content-description batch-card-ellipsis w-162">{{batch.name}}
             <!-- <i class="ellipsis horizontal icon" *ngIf="batch.name && batch.name.length >= 20" ></i> -->
@@ -18,10 +18,10 @@
       <span class="mb-5 batch-card-ellipsis w-200 fs-0-92">By {{batch.userName}}</span>
       <i class="right floated unlock alternate icon fs-1-143 mr-0" *ngIf="batch.enrollmentType === 'open'">
       </i>
-      <span *ngIf="batch.courseAdditionalInfo && batch.courseAdditionalInfo.courseName" class="batch-card-ellipsis batch-course-name w-200 fs-0-92" suiPopup popupText="{{batch.courseAdditionalInfo.courseName}}">
+      <span *ngIf="batch.courseAdditionalInfo && batch.courseAdditionalInfo.courseName" class="batch-card-ellipsis batch-course-name w-200 fs-0-92" matTooltip="{{batch.courseAdditionalInfo.courseName}}">
         {{resourceService.frmelmnts.lbl.courseName}}: {{batch.courseAdditionalInfo.courseName}}
       </span>
-      <span *ngIf="batch?.courseDetails" class="batch-card-ellipsis batch-course-name w-100 fs-0-92" suiPopup popupText="{{batch?.courseDetails?.name}}">
+      <span *ngIf="batch?.courseDetails" class="batch-card-ellipsis batch-course-name w-100 fs-0-92" matTooltip="{{batch?.courseDetails?.name}}">
         {{batch?.courseDetails?.name}}
       </span>
     </div>

@@ -1321,6 +1321,9 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
+    '/apple/auth': {
+        checksNeeded: []
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: [],
@@ -1767,11 +1770,19 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/v1/user-extension/programsByPlatformRoles': {
+    '/kendra/user-extension/mlcore/v1/programsByPlatformRoles': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     },
-    '/v1/user-extension/solutions': {
+    '/kendra/user-extension/mlcore/v1/solutions/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
+    },
+    '/kendra/v1/user-extension/programsByPlatformRoles': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
+    },
+    '/kendra/v1/user-extension/solutions/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     },
@@ -1959,6 +1970,7 @@ const API_LIST = {
     '/assessment/observationSubmissions/mlsurvey/v1/update/:id',
     '/action/collection/v1/import/:id',
     '/action/collection/v1/export/:id',
+    '/kendra/v1/user-extension/solutions/:id',
     '/uci/admin/v1/bot/get',
     '/uci/admin/v1/bot/search',
     '/uci/admin/v1/bot/pause/:botId',
@@ -1975,6 +1987,7 @@ const API_LIST = {
     '/uci/admin/v1/conversationLogic/update/:id',
     '/uci/admin/v1/conversationLogic/delete/:id',
     '/uci/admin/v1/forms/upload',
+    '/kendra/user-extension/mlcore/v1/solutions/:id'
   ]
 };
 module.exports = API_LIST;
