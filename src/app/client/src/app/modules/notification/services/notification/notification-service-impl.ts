@@ -1,15 +1,14 @@
-import { UserFeedCategory, UserFeedEntry, UserFeedStatus } from '@project-sunbird/client-services/models';
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { CsModule, CsUserServiceConfig } from '@project-sunbird/client-services';
+import { CsModule } from '@project-sunbird/client-services';
 import { SbNotificationService } from 'sb-notification';
 import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
-import { CsLibInitializerService } from '../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { GroupsService } from '../../../groups/services/groups/groups.service';
+// import { CsLibInitializerService } from '../../../../service/CsLibInitializer/cs-lib-initializer.service';
+// import { GroupsService } from '@sunbird/groups';
 
 @Injectable({
   providedIn: 'root'
@@ -26,12 +25,12 @@ export class NotificationServiceImpl implements SbNotificationService {
     private router: Router,
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
-    private csLibInitializerService: CsLibInitializerService,
-    public groupService: GroupsService,
+    // private csLibInitializerService: CsLibInitializerService,
+    // private groupService: GroupsService,
   ) {
-    if (!CsModule.instance.isInitialised) {
-      this.csLibInitializerService.initializeCs();
-    }
+    // if (!CsModule.instance.isInitialised) {
+    //   this.csLibInitializerService.initializeCs();
+    // }
     // creating the instance for notification service in csl
     this.NotificationCsService = CsModule.instance.notificationService;
     this.fetchNotificationList();
@@ -156,8 +155,8 @@ export class NotificationServiceImpl implements SbNotificationService {
   async getNavigationPath(event) {
     const category = _.get(event, 'data.category');
     const additionalInfo = _.get(event, 'data.action.additionalInfo');
-    if (category === 'group') {
-      return this.groupService.navigateNotification(event, additionalInfo);;
+    if (category === 'group' || category === 'groups') {
+      // return this.groupService.navigateNotification(event, additionalInfo);
     } else {
       if (_.get(event, 'data.action.type') === 'certificateUpdate') {
         return {
