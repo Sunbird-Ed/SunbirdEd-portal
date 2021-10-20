@@ -2,6 +2,7 @@ import { YearOfBirthComponent } from './year-of-birth.component';
 import { ProfileService } from '@sunbird/profile';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import { Observable, of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('YearOfBirthComponent', () => {
   let yearOfBirthComponent: YearOfBirthComponent;
@@ -18,12 +19,14 @@ describe('YearOfBirthComponent', () => {
     }
   };
   const mockResourceService: Partial<ResourceService> = {};
+  const mockMatDialog: Partial<MatDialog> = {};
 
   beforeAll(() => {
     yearOfBirthComponent = new YearOfBirthComponent(
       mockProfileService as ProfileService,
       mockConfigService as ConfigService,
-      mockResourceService as ResourceService
+      mockResourceService as ResourceService,
+      mockMatDialog as MatDialog
     );
   });
 
@@ -47,14 +50,8 @@ describe('YearOfBirthComponent', () => {
 
       return of({});
     });
-    yearOfBirthComponent.modal = {
-      deny() {
-        return;
-      }
-    };
     yearOfBirthComponent.submitYearOfBirth();
     expect(yearOfBirthComponent.selectedYearOfBirth).toBeTruthy();
-    expect(yearOfBirthComponent.modal).toBeTruthy();
   });
 
   it('should set select year', () => {

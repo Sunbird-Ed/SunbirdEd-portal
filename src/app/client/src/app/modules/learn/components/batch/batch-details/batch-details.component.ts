@@ -49,7 +49,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
-  @ViewChild('batchListModal') batchListModal;
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;
@@ -342,9 +341,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.batchListModal && this.batchListModal.deny) {
-      this.batchListModal.deny();
-    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
