@@ -132,7 +132,9 @@ export class FilterComponent implements OnInit, OnDestroy {
         filter.options = options;
       } else {
         if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-          filter.options = options;
+          if(options.length > filter.options){
+            filter.options = options;
+          } 
         }
       }
     });
