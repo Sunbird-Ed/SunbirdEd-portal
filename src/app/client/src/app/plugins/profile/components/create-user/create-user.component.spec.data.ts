@@ -372,8 +372,7 @@ export const mockRes = {
                 'orgId':'01285019302823526477', 'orgName':'ORG_001'},
             'COURSE_CREATOR': {
                 'orgId':'01285019302823526477',  'orgName':'ORG_001'}
-        } 
-
+        }, 
         'organisationNames': ['CustROOTOrg10', 'Sunbird']
     }
 };
