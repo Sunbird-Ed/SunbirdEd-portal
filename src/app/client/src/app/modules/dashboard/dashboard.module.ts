@@ -28,8 +28,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
-import {  DashletModule } from 'sb-dashlet-v9-test';
-// import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
 
 
 @NgModule({
