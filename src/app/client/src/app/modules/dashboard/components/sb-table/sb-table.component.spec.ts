@@ -4,7 +4,6 @@ import { SbTableComponent } from './sb-table.component';
 import { mockData } from './sb-table.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
-// import { Res } from '../../services';
 
 fdescribe('SbTableComponent', () => {
   let component: SbTableComponent;

@@ -2,8 +2,6 @@ import { Component, Input, AfterViewInit, ChangeDetectorRef,ViewChild } from '@a
 import { ResourceService } from '@sunbird/shared';
 
 
-
-
 @Component({
   selector: 'app-sb-table',
   templateUrl: './sb-table.component.html',
