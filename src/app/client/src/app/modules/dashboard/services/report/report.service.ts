@@ -209,11 +209,7 @@ export class ReportService  {
       tableData.id = tableId;
       tableData.json = dataset.data;
       tableData.name = _.get(table, 'name') || 'Table';
-  
-      const tableVersion = _.get(table, 'isAdvanced') || true; 
-      tableData.isAdvanced = tableVersion;
       tableData.filters = _.get(table, 'filters') || [];
-      
       tableData.gridConfig = {
             bLengthChange: true,
             lengthMenu:_.get(table, 'lengthMenu') || [25,50,100],
@@ -222,7 +218,6 @@ export class ReportService  {
             bFilter: _.get(table, 'searchable') || false,
             paging: _.get(table, 'paging') || true,
       }
-    
       tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
       tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,

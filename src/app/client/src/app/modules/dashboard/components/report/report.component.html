@@ -127,12 +127,12 @@
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                           [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item px-0 mx-15 py-20"
-                          suiTabHeader="graph" (activate)="showExportsOption=true"
+                          suiTabHeader="graph" (activate)="showExportsOption=true;hideFilter=false"
                           (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)" tabindex="0">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                           [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
-                          (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
+                          (activate)="showExportsOption=false;hideFilter=true" *ngFor="let table of currentReport.tables"
                           (click)="setDownloadUrl(table.downloadUrl)" tabindex="0" class="item px-0 mx-15 py-20"
                           [suiTabHeader]="table.id">{{table?.name}}</a>
                         <a *ngIf="currentReport?.files?.length" appTelemetryInteract
@@ -140,11 +140,11 @@
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" class="item px-0 mx-15 py-20"
                           suiTabHeader="files">{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}</a>
                       </div>
-                      <div class="sbt-report-btns-panel-new pt-15 pb-10" *ngIf="!hideElements">
+                      <div class="sbt-report-btns-panel-new" *ngIf="!hideElements">
                        
                        
 
-                        <div  class="d-flex my-0">
+                        <div  class="d-flex my-0 pt-15 pb-10" *ngIf="!hideFilter">
                             <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0"  > 
                        
                           <!-- <div class="" *ngIf="currentReport?.reportMetaData?.filters && !hideElements"> -->
@@ -296,14 +296,8 @@
                       
                       <ng-container *ngFor="let table of currentReport.tables">
                         <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24 px-0 table-view" [suiTabContent]="table.id">
-                          <!-- <div *ngIf="table.data && table.isAdvanced==false">>
-                            <app-data-table  [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
-                            </app-data-table>
-                           
-                          </div> -->
                           <div *ngIf="table.data">
                             <app-sb-table [columnConfig]="table.columnConfig" [rowsData]="table.json" [gridConfig]="table.gridConfig" [filters]="table.filters">
-
                             </app-sb-table>
                           </div>
                           <div class="ui warning message" *ngIf="!table.data">
