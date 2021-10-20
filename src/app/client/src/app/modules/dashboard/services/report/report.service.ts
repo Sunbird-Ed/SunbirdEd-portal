@@ -207,7 +207,7 @@ export class ReportService  {
       const dataset = this.getTableData(data, _.get(table, 'id'));
       const tableData: any = {};
       tableData.id = tableId;
-      tableData.json = dataset.data;
+      tableData.data = dataset.data;
       tableData.name = _.get(table, 'name') || 'Table';
       tableData.filters = _.get(table, 'filters') || [];
       tableData.gridConfig = {
@@ -219,13 +219,9 @@ export class ReportService  {
             paging: _.get(table, 'paging') || true,
       }
       tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
-      tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
         hash ? this.getParameterFromHash(hash) : null);
-      
-      
       tableData.columnConfig = _.get(table, 'columnConfig') || this.prepareColumnsConfig(tableData.header);
-
       return tableData;
     });
   }
