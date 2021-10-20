@@ -300,7 +300,6 @@ export class EventViewTypeComponent implements OnInit {
          eventIds.push(child.courseId); 
        });
 
-       console.log('My Events : ', eventIds);
 
        if (eventsList.length != 0)
        {

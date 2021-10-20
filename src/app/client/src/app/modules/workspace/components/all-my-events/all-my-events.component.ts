@@ -1,18 +1,4 @@
-// import { Component, OnInit } from '@angular/core';
 
-// @Component({
-//   selector: 'app-all-my-events',
-//   templateUrl: './all-my-events.component.html',
-//   styleUrls: ['./all-my-events.component.scss']
-// })
-// export class AllMyEventsComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit(): void {
-//   }
-
-// }
 import{ UserService }from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -37,8 +23,6 @@ const colors: any = {
   },
 };
 
-// import * as MyEventList from '../../interfaces/MyEventList';
-// import * as MyEventLFilter from '../../interfaces/MyEventLFilter'
 @Component({
   selector: 'app-all-my-events',
   templateUrl: './all-my-events.component.html',
@@ -67,7 +51,7 @@ export class AllMyEventsComponent implements OnInit {
      private eventListService:EventListService,
     // private eventCreateService: EventCreateService,
     // private eventDetailService: EventDetailService,
-    // private router: Router,
+    private router: Router,
     public userService: UserService,
     private eventFilterService: EventFilterService,
     private toasterService: ToasterService
@@ -86,7 +70,7 @@ export class AllMyEventsComponent implements OnInit {
    */
    showEventListPage(){
     this.Filterdata = {
-      "status":["live"],
+      "status":[],
       "objectType": "Event",
       "owner":this.userService.userid
       };
@@ -117,11 +101,11 @@ export class AllMyEventsComponent implements OnInit {
    * For subscibe click action on event card
    */
    navToEventDetail(event){
-    // this.router.navigate(['workspace/add/event'], {
-    //   queryParams: {
-    //     identifier: event.identifier
-    //   }
-    // });
+    this.router.navigate(['workspace/add/event'], {
+      queryParams: {
+        identifier: event.identifier
+      }
+    });
   }
   
 
