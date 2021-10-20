@@ -6,22 +6,26 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { CoreModule } from '@sunbird/core';
-import { AvatarModule } from 'ngx-avatar';
+import { CoreModule, UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TranslateModule } from '@ngx-translate/core';
+import { ObservationUtilService } from '../../../observation/service';
+import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService } from '@sunbird/shared';
+
 describe('UserRoleAssignComponent', () => {
   configureTestSuite();
   let component: UserRoleAssignComponent;
   let fixture: ComponentFixture<UserRoleAssignComponent>;
-
+  let observationUtilService;
+  
   beforeEach(async(() => {
     
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule,
         FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TranslateModule.forRoot()],
       declarations: [ UserRoleAssignComponent ],
-      providers: [TelemetryService],
+      providers: [TelemetryService, ObservationUtilService, ConfigService, ResourceService,
+        BrowserCacheTtlService,ToasterService, UserService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
@@ -29,8 +33,11 @@ describe('UserRoleAssignComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserRoleAssignComponent);
+    observationUtilService=TestBed.get(ObservationUtilService)
     component = fixture.componentInstance;
     fixture.detectChanges();
+    const userService = TestBed.get(UserService);
+
   });
 
   it('should create', () => {

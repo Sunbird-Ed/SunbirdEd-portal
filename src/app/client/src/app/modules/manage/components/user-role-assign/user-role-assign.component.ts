@@ -1,4 +1,3 @@
-import { getUserDetails } from './../../../workspace/components/update-batch/update-batch.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
@@ -21,7 +20,7 @@ export class UserRoleAssignComponent implements OnInit {
   enableSubmitBtn = false;
   userRole = [];
   removeRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC'];
-  rootOrgRoles= [];
+  rootOrgRoles = [];
   userObj: any;
   key: string;
   allRoles: Array<RolesAndPermissions>;
@@ -30,12 +29,14 @@ export class UserRoleAssignComponent implements OnInit {
   private resourceService: ResourceService;
   private userService: UserService;
   orgList = [];
+  role = [];
+  orgName = [];
 
   constructor(searchService: SearchService,
     userService: UserService,
     resourceService: ResourceService, private permissionService: PermissionService,
     toasterService: ToasterService, formBuilder: FormBuilder,
-    private router: Router,
+    private route: Router,
     private manageService: ManageService) {
     this.searchService = searchService;
     this.toasterService = toasterService;
@@ -59,16 +60,33 @@ export class UserRoleAssignComponent implements OnInit {
   enableAssignRole() {
     this.showAssignRole = !this.showAssignRole ? true : false;
   }
-  editRole(item){
+  editRole(item) {
     console.log(item);
+    this.orgName = [];
+    this.role = [];
+    this.orgName.push(item.orgName);
+    this.role.push(item.roleName);
+    this.showAssignRole = !this.showAssignRole ? true : false;
+  }
+  deleteRole(item) {
+    const roleToDelete =[]
+    roleToDelete.push({
+      role: item.role,
+      operation: 'remove',
+      scope: [{
+        organisationId: item.orgId
+      }]
+    });
+    const data = { userId: this.userObj.userId, roles: roleToDelete };
+    this.updateRoleForUser(data);
   }
   getOrgDetails() {
     const userRoles = this.userService.UserOrgDetails;
     for (let key in userRoles) {
-      if(key === 'ORG_ADMIN') {
+      if (key === 'ORG_ADMIN') {
         this.orgList.push(userRoles[key]);
       }
-   }
+    }
   }
   dismissRoleAssign() {
     this.showAssignRole = false;
@@ -84,7 +102,6 @@ export class UserRoleAssignComponent implements OnInit {
       });
     });
   }
-
 
   onEnter(key) {
     this.key = key;
@@ -116,7 +133,8 @@ export class UserRoleAssignComponent implements OnInit {
         // this.removeRoles.push(role.role);
         userObj = {
           role: role.role,
-          orgName: this.userService.rootOrgName
+          orgName: this.userService.rootOrgName,
+          orgId: this.userService.rootOrgId
         }
         this.rootOrgRoles.push(role.role);
         _.forEach(this.allRoles, (userRole) => {
@@ -132,9 +150,26 @@ export class UserRoleAssignComponent implements OnInit {
       this.showCards = true;
     }
   }
-  onSubmitForm(){
+  onSubmitForm() {
     this.updateProfile();
     this.enableAssignRole();
+  }
+  redirect(): void {
+    this.route.navigate(['/manage'], {});
+  }
+  updateRoleForUser(data) {
+    this.manageService.updateRoles(data)
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0049);
+          this.redirect();
+          this.initializeFormFields();
+        },
+        err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0020);
+          this.redirect();
+        }
+      );
   }
   updateProfile() {
     // create school and roles data
@@ -143,41 +178,19 @@ export class UserRoleAssignComponent implements OnInit {
     const newRoles = [...roles];
     const mainRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'SYSTEM_ADMIN'];
     _.remove(newRoles, (role) => {
-        return _.includes(mainRoles, role);
+      return _.includes(mainRoles, role);
     });
-    const rolesAdded =  _.concat(newRoles, _.intersection(mainRoles, this.rootOrgRoles));
+    const rolesAdded = _.concat(newRoles, _.intersection(mainRoles, this.rootOrgRoles));
     const data = { userId: this.userObj.userId, roles: this.getRolesReqBody(rolesAdded, this.rootOrgRoles, orgId) };
-    this.manageService.updateRoles(data)
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0049);
-        // this.redirect();
-        this.initializeFormFields();
-      },
-      err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0020);
-        // this.redirect();
-      }
-    );
+    this.updateRoleForUser(data);
   }
   getRolesReqBody(newRoles, currentRoles, orgId) {
     const reqBody = [];
     // Get newly added roles array comparing to existing roles
     const newlyAddedRoles = _.difference(newRoles, currentRoles);
     // Get deleted roles from existing roles
-    const deletedRoles = _.difference(currentRoles, newRoles);
-    // Consolidated master role array of existing and newly added roles
     const masterRoles = [...currentRoles, ...newlyAddedRoles];
     _.forEach(masterRoles, (role) => {
-      if (_.indexOf(deletedRoles, role) > -1) {
-        reqBody.push({
-          role: role,
-          operation: 'remove',
-          scope: [{
-            organisationId: orgId
-          }]
-        });
-      } else {
         reqBody.push({
           role: role,
           operation: 'add',
@@ -185,7 +198,6 @@ export class UserRoleAssignComponent implements OnInit {
             organisationId: orgId
           }]
         });
-      }
     });
     return reqBody;
   }
