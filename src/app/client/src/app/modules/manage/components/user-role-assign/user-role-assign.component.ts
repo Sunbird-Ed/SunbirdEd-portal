@@ -59,6 +59,9 @@ export class UserRoleAssignComponent implements OnInit {
   enableAssignRole() {
     this.showAssignRole = !this.showAssignRole ? true : false;
   }
+  editRole(item){
+    console.log(item);
+  }
   getOrgDetails() {
     const userRoles = this.userService.UserOrgDetails;
     for (let key in userRoles) {
@@ -110,7 +113,7 @@ export class UserRoleAssignComponent implements OnInit {
     _.forEach(user.roles, (role) => {
       let userObj = null;
       if (_.findIndex(role.scope, { 'organisationId': this.userService.rootOrgId }) >= 0) {
-        this.removeRoles.push(role.role);
+        // this.removeRoles.push(role.role);
         userObj = {
           role: role.role,
           orgName: this.userService.rootOrgName
@@ -124,7 +127,7 @@ export class UserRoleAssignComponent implements OnInit {
         this.userRole.push(userObj);
       }
     })
-    this.getAllRoles(this.removeRoles);
+    //this.getAllRoles(this.removeRoles);
     if (this.userRole.length > 0) {
       this.showCards = true;
     }
@@ -149,6 +152,7 @@ export class UserRoleAssignComponent implements OnInit {
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0049);
         // this.redirect();
+        this.initializeFormFields();
       },
       err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0020);
@@ -165,6 +169,15 @@ export class UserRoleAssignComponent implements OnInit {
     // Consolidated master role array of existing and newly added roles
     const masterRoles = [...currentRoles, ...newlyAddedRoles];
     _.forEach(masterRoles, (role) => {
+      if (_.indexOf(deletedRoles, role) > -1) {
+        reqBody.push({
+          role: role,
+          operation: 'remove',
+          scope: [{
+            organisationId: orgId
+          }]
+        });
+      } else {
         reqBody.push({
           role: role,
           operation: 'add',
@@ -172,6 +185,7 @@ export class UserRoleAssignComponent implements OnInit {
             organisationId: orgId
           }]
         });
+      }
     });
     return reqBody;
   }
