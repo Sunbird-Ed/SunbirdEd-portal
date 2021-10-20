@@ -321,7 +321,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         cloudStorageUrls : this.userService.cloudStorageUrls
       },
       config: {
-        mode: this.getEditorMode()
+        mode: this.getEditorMode(),
       }
     };
     this.editorConfig.config.showAddCollaborator = true;

@@ -441,12 +441,11 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(component.skipToMainContent).toHaveBeenCalled();
   });
   it('should close framework popup', () => {
-    component.frameWorkPopUp = { modal: {
-        deny: jasmine.createSpy('deny')
-      }
+    component.frameWorkPopUp = {
+      deny: jasmine.createSpy('deny')
     };
     component.closeFrameworkPopup();
-    expect(component.frameWorkPopUp.modal.deny).toHaveBeenCalled();
+    expect(component.frameWorkPopUp.deny).toHaveBeenCalled();
     expect(component.showFrameWorkPopUp).toBe(false);
   });
 

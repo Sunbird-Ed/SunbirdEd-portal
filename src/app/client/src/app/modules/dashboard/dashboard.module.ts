@@ -30,6 +30,11 @@ import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
 import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({
   imports: [
@@ -46,7 +51,12 @@ import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
     DiscussionModule,
-    DashletModule.forRoot()
+    DashletModule.forRoot(),
+    MatCheckboxModule,
+    MatTabsModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    SharedFeatureModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,

@@ -32,6 +32,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
+  public defaultContentFileSize: any;
   public isLargeFileUpload = false;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
@@ -50,6 +51,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value : 'youtube.com,youtu.be';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
+      this.defaultContentFileSize = (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')) ?
+      (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')).value : 150;
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -221,6 +224,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.extContWhitelistedDomains = this.extContWhitelistedDomains;
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.videoMaxSize = this.videoMaxSize;
+    window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
   }
   /**
   * Re directed to the workspace on close of modal

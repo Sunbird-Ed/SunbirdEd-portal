@@ -57,8 +57,12 @@
         </div>
       </div>
     </div>
-    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" 
-      [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true}">
+      <ng-template sbModalContent let-data>
+        <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
+          [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+      </ng-template>
+    </app-modal-wrapper>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
     <div *ngIf="showGlobalConsentPopUpSection">
@@ -70,7 +74,13 @@
     <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
       [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
     
-    <app-year-of-birth *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)"></app-year-of-birth>
+  <app-modal-wrapper [config]="{disableClose: true, size: 'small'}"
+    *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
+    <ng-template sbModalContent let-data>
+      <app-year-of-birth [dialogProps]="data"></app-year-of-birth>
+    </ng-template>
+  </app-modal-wrapper>
+    
     <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
       [ngClass]="{'header-block': isFullScreenView}"></app-header>
     <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
@@ -83,23 +93,31 @@
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
-<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.sesnexrd}}
-  </div>
-  <div class="sb-modal-content">
-    <p class="ui center aligned segment">
-      {{resourceService?.frmelmnts?.lbl?.plslgn |
-          interpolate:'{instance}': instance }}
-    </p>
-  </div>
-  <div class="sb-modal-actions">
-    <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
-      {{ resourceService?.frmelmnts?.btn?.login }}
-    </button>
-  </div>
-</sui-modal>
+
+<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired" [config]="{disableClose: true, size: 'small'}">
+  <ng-template sbModalContent let-data>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.lbl?.sesnexrd}}
+          </div>
+          <div class="sb-modal-content">
+            <p class="ui center aligned segment">
+              {{resourceService?.frmelmnts?.lbl?.plslgn |
+              interpolate:'{instance}': instance }}
+            </p>
+          </div>
+          <div class="sb-modal-actions">
+            <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+              {{ resourceService?.frmelmnts?.btn?.login }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>
 
 <ng-container *ngIf="layoutConfiguration">
   <svg width="332px" height="358px" viewBox="0 0 332 358" class="sbt-theme-bg-img computer only" version="1.1"

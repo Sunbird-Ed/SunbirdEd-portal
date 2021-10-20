@@ -700,11 +700,6 @@ describe('ExplorePageComponent', () => {
     });
 
     it('should update profile for non logged in users', () => {
-      component.frameworkModal = {
-        modal: {
-          deny: jasmine.createSpy('deny')
-        }
-      };
       component.showEdit = true;
       spyOn(component, 'setUserPreferences').and.callThrough();
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
@@ -712,7 +707,6 @@ describe('ExplorePageComponent', () => {
       component.userPreference = { framework: {} };
       component.updateProfile(event);
       // expect(component.setUserPreferences).toHaveBeenCalled();
-      expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
     });
 
     it('should get selected tab', () => {
@@ -743,11 +737,6 @@ describe('ExplorePageComponent', () => {
     });
 
     it('should update profile for logged in users', () => {
-      component.frameworkModal = {
-        modal: {
-          deny: jasmine.createSpy('deny')
-        }
-      };
       component.showEdit = true;
       spyOn(component, 'setUserPreferences').and.callThrough();
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
@@ -760,7 +749,6 @@ describe('ExplorePageComponent', () => {
       component.updateProfile(event);
       expect(profileService.updateProfile).toHaveBeenCalled();
       // expect(component.setUserPreferences).toHaveBeenCalled();
-      expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
       expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0058);
     });
 
