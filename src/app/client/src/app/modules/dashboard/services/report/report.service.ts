@@ -228,7 +228,7 @@ export class ReportService  {
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
         hash ? this.getParameterFromHash(hash) : null);
       
-        console.log("tableData.header",tableData.header);
+      
       tableData.columnConfig = _.get(table, 'columnConfig') || this.prepareColumnsConfig(tableData.header);
 
       return tableData;

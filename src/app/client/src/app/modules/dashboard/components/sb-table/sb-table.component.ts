@@ -53,35 +53,23 @@ export class SbTableComponent implements AfterViewInit  {
   }
 
   exportToCsv(){
-    this.lib.instance.exportCsv({ 'strict': true }).then((csvData) => {
-      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', "csv");
-      link.click();
-    }).catch((err) => {
-      // this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-    });
+    this.lib.instance.exportAs('csv');
+    // .then((csvData) => {
+    //   const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    //   const url = URL.createObjectURL(blob);
+    //   const link = document.createElement('a');
+    //   link.setAttribute('href', url);
+    //   link.setAttribute('download', "csv");
+    //   link.click();
+    // }).catch((err) => {
+    //   // this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+    // });
 
   }
   reset(){
     
-    console.log("-------reset",this.lib.instance);
-    
     this.load=false;
-
-    // this.data = {
-    //   values:[]
-    // }
-
-    // this.lib.instance.resetFilters();
-
-    // this.data = {
-    //   values:this.rowsData
-    // }
-    // this.load=true;
-
+    this.lib.instance.resetFilters();
     this.loadTable()
     this.cdRef.detectChanges();
   }

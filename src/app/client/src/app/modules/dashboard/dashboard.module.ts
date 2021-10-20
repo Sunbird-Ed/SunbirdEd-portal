@@ -28,7 +28,8 @@ import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
-import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import {  DashletModule } from 'sb-dashlet-v9-test';
+// import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
 
 
 @NgModule({
@@ -46,7 +47,7 @@ import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
     DiscussionModule,
-    DashletModule
+    DashletModule.forRoot()
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
