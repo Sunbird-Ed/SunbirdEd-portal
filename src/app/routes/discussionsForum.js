@@ -12,25 +12,25 @@ const isAPIWhitelisted  = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
 
-    app.post(`${BASE_REPORT_URL}/forum/v2/read`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/tags`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/v2/create`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/v2/remove`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/v3/create`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/v3/category/:cid/privileges`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/v3/group/membership`,verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/v3/groups/users`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/privileges/v2/copy`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v2/read`,bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObjectForForum());
+    app.post(`${BASE_REPORT_URL}/forum/tags`,bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v2/create`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v2/remove`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v3/create`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v3/category/:cid/privileges`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v3/group/membership`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v3/groups/users`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/privileges/v2/copy`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
 
     app.get(`${BASE_REPORT_URL}/tags`, verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/tags/:tag`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/tags/list`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/tags/list`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/notifications`, verifyToken(), proxyObject());
 
     // categories apis
     app.get(`${BASE_REPORT_URL}/category/:category_id`, verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/category/list`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/category/list`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories/:cid/moderators`, verifyToken(), proxyObject());
 
     app.get(`${BASE_REPORT_URL}/user/:userslug`, verifyToken(), proxyObject())
@@ -70,44 +70,44 @@ module.exports = function (app) {
     // app.get(`${BASE_REPORT_URL}/user/admin/downvoted`, verifyToken(), proxyObject());
 
     // topics apis 
-    app.post(`${BASE_REPORT_URL}/v2/topics`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v2/topics/:tid`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v2/topics/update/:tid`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/topics`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/topics/:tid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/topics/update/:tid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/topics/:tid`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/state`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/follow`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/state`,bodyParser.json({ limit: '10mb' }),  verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/follow`,bodyParser.json({ limit: '10mb' }),  verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/topics/:tid/follow`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/tags`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/tags`,bodyParser.json({ limit: '10mb' }),  verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/topics/:tid/tags`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/pin`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/topics/:tid/pin`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/topics/:tid/pin`, verifyToken(), proxyObject());
 
     // categories apis
-    app.post(`${BASE_REPORT_URL}/v2/categories`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/categories/:cid`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/categories`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/categories/:cid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/categories/:cid`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/categories/:cid/state`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/categories/:cid/state`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/categories/:cid/state`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/categories/:cid/privileges`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/categories/:cid/privileges`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/categories/:cid/privileges`, verifyToken(), proxyObject());
 
     // groups apis 
-    app.post(`${BASE_REPORT_URL}/v2/groups`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/groups`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/groups/:slug/membership`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/groups/:slug/membership/:uid`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/groups/:slug/membership`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/groups/:slug/membership/:uid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug/membership`, verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/groups/:slug/membership/:uid`, verifyToken(), proxyObject());
 
 
     // post apis 
-    app.post(`${BASE_REPORT_URL}/v2/posts/:pid`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/posts/:pid`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid`, verifyToken(), proxyObject());
-    app.put(`${BASE_REPORT_URL}/v2/posts/:pid/state`, verifyToken(), proxyObject());
+    app.put(`${BASE_REPORT_URL}/v2/posts/:pid/state`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid/state`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v2/posts/:pid/vote`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/posts/:pid/vote`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid/vote`, verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v2/posts/:pid/bookmark`, verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/posts/:pid/bookmark`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid/bookmark`, verifyToken(), proxyObject());
 
     // util apis : not require for now
@@ -185,8 +185,8 @@ function checkEmail() {
 // TODO: this token logic we have to add in middleware itself;
 function addHeaders() {
     return function (proxyReqOpts, srcReq) { 
-    //    let decoratedHeaders =  proxyUtils.decorateRequestHeaders(discussions_middleware)()
-        proxyReqOpts.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
+        var sessionId = _.get(srcReq, 'headers.x-session-id') || _.get(srcReq, 'sessionID');
+        proxyReqOpts.headers['X-Session-Id'] = sessionId;
         return proxyReqOpts;
     }
 }
@@ -197,12 +197,43 @@ function proxyObject() {
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
             console.log("Request comming from :", urlParam)
-            let query = require('url').parse(req.url).query;
-            if (query) {
-                return require('url').parse(discussions_middleware + urlParam + '?' + query).path
+            const uid = req.session['nodebb_uid'];
+            if (!_.isEmpty(req.body)) {
+                req.body['_uid'] = uid;
+                return require('url').parse(discussions_middleware + urlParam).path;
             } else {
-                return require('url').parse(discussions_middleware + urlParam).path
+                let query = require('url').parse(req.url).query;
+                if (query) {
+                    const queryData = _.isEmpty(req.query._uid) ? `&_uid=${uid}` : ''
+                    const path = require('url').parse(discussions_middleware + urlParam + queryData).path
+                    return path
+                } else {
+                    return require('url').parse(discussions_middleware + urlParam+ '?_uid='+ uid).path
+                }
+            } 
+        },
+        userResDecorator: (proxyRes, proxyResData, req, res) => {
+            try {
+                const data = JSON.parse(proxyResData.toString('utf8'));
+                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+            } catch (err) {
+                logger.error({message: err});
+                return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
             }
+        }
+    })
+}
+
+function proxyObjectForForum() {
+    return proxy(discussions_middleware, {
+        proxyReqOptDecorator: addHeaders(),
+        proxyReqPathResolver: function (req) {
+            let urlParam = req.originalUrl;
+            console.log("Request comming from :", urlParam)
+            let query = require('url').parse(req.url).query;
+            return require('url').parse(discussions_middleware + urlParam).path
+            
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
@@ -223,20 +254,15 @@ function proxyObjectForCreate() {
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
             let query = require('url').parse(req.url).query;
-            if (query) {
-                return require('url').parse(discussions_middleware + urlParam + '?' + query).path
-            } else {
-                return require('url').parse(discussions_middleware + urlParam).path
-            }
+            return require('url').parse(discussions_middleware + urlParam).path;
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
-                const nodebb_auth_token = proxyRes.headers['nodebb_auth_token'];
-                if(nodebb_auth_token) {
-                    req.session['nodebb_authorization_token'] = nodebb_auth_token;
-                    delete req.headers['nodebb_authorization_token'];
-                }
                 const data = JSON.parse(proxyResData.toString('utf8'));
+                const nodebb_uid = data.result['userId']['uid'];
+                if(nodebb_uid) {
+                    req.session['nodebb_uid'] = nodebb_uid;
+                }
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {

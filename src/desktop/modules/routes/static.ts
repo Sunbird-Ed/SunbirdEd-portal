@@ -145,5 +145,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.enableSSO = null;
     locals.reportsListVersion = null;
     locals.publicStorageAccount = null;
+    locals.sunbirdDefaultFileSize = null;
     return locals;
   }

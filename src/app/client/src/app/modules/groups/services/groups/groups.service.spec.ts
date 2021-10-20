@@ -289,5 +289,4 @@ describe('GroupsService', () => {
     const accepted = service.isTncUpdated();
     expect(accepted).toEqual(false);
   });
-
 });

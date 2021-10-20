@@ -5,6 +5,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input, OnDestroy } 
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import * as _ from 'lodash-es';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-account-recovery-info',
   templateUrl: './account-recovery-info.component.html',
@@ -12,7 +13,7 @@ import * as _ from 'lodash-es';
 })
 export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<any>();
-  @ViewChild('accountRecoveryModal') accountRecoveryModal;
+  @Input() dialogProps;
 
   /** to take the mode of operaion (edit or add of recovery id) from profile page */
   @Input() mode: string;
@@ -35,7 +36,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     public profileService: ProfileService,
     public userService: UserService,
-    public toasterService: ToasterService) { }
+    public toasterService: ToasterService, private matDialog: MatDialog) { }
 
   ngOnInit() {
     this.contactType = 'emailId';
@@ -93,7 +94,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.accountRecoveryModal.deny();
+    this.closeMatDialog();
   }
 
   /** to initialize form fields each time when radio button will be selected/changed */
@@ -103,7 +104,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.accountRecoveryModal.deny();
+    this.closeMatDialog();
     this.close.emit();
   }
 
@@ -133,5 +134,9 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
       type: 'User',
       ver: '1.0'
     };
+  }
+  closeMatDialog() {
+    const dialogRef = this.dialogProps && this.dialogProps.id && this.matDialog.getDialogById(this.dialogProps.id);
+    dialogRef && dialogRef.close();
   }
 }
