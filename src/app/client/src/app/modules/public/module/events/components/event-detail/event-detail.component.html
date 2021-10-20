@@ -1,8 +1,9 @@
-<div class="ui container">
+<div class="box-padding"><div class="ui container">
 <lib-event 
     [libEventConfig]="libEventConfig">
 </lib-event>
 <sb-cover-event-detail *ngIf="eventItem" [eventDetailItem]="eventItem"></sb-cover-event-detail>
 <sb-join-event-button  *ngIf="eventItem"[eventDetailItem]="eventItem" [canUnenroll]="true"></sb-join-event-button>
 <sb-advance-event-detail  *ngIf="eventItem"[eventDetailItem]="eventItem"></sb-advance-event-detail>
+</div>
 </div>

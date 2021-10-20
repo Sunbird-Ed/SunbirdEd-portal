@@ -300,7 +300,6 @@ export class EventViewTypeComponent implements OnInit {
          eventIds.push(child.courseId); 
        });
 
-
        if (eventsList.length != 0)
        {
          this.Filterdata ={

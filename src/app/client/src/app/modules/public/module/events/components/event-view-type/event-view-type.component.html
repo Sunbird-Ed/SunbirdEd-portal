@@ -1,4 +1,4 @@
-<div class="m-20 my-30">
+<div class="m-20">
     <button class="ripple w-16 primary" (click)="Openview('list')">List
         view</button>
 
@@ -10,12 +10,10 @@
     </sb-library-filters>
 </div> -->
 
-
 <lib-event 
     [libEventConfig]="libEventConfig">
 </lib-event>
 <div *ngIf="tab == 'list'">
-
     <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
         *ngIf="filterConfig" 
         [filterConfig]="filterConfig"> </sb-event-filter>
@@ -26,10 +24,6 @@
                 (eventDetailData)="navToEventDetail($event)">
             </sb-event-list>
         </div>
-    <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
-    <!-- <sb-event-list *ngIf="eventList" [list]="eventList" [myEvents]="myEvents" (eventDetailData)="navToEventDetail($event)"></sb-event-list> -->
-    <!-- <sb-event-list [list]="eventList" (eventDetailData)="navToEventDetail($event)"></sb-event-list> -->
-
 </div>
 
 <div *ngIf="tab == 'calender'">
