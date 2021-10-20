@@ -24,8 +24,7 @@
                             id="unenrollFromCourse" tabindex="0" (click)="unenrollFromCourse()">
                             {{generaliseLabelService?.frmelmnts?.btn?.unenroll}}
                         </button>
-                        <button class="sb-btn sb-btn-normal sb-btn-outline-error" tabindex="0"
-                            (click)="unenrollBatch.deny();">
+                        <button class="sb-btn sb-btn-normal sb-btn-outline-error" tabindex="0" mat-dialog-close>
                             {{resourceService?.frmelmnts?.btn?.cancel}}
                         </button>
                     </div>
