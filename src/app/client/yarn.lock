@@ -1501,10 +1501,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.3.9":
-  version "4.3.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.3.9.tgz#9f98ab7ccf42d8dc24185b0205071fb873db3fa3"
-  integrity sha512-2rliOzP8/fBfe3ZyHGZSseGwyzisMx7uWsvkrSA3oYJJtCZYnzSBUnv+R4C3K2x89Bf/pqDYPS2pCwW8alj94g==
+"@project-sunbird/common-consumption-v9@4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.4.0.tgz#f3408b680079b0f09eaa197cd4e688efe5829b95"
+  integrity sha512-bnw9u9Yaj/13LS7NxkOrOX72JQj/SGtMXlyCD3l1aeV4XYwcVILRBR1+xfryeDGO+8SMrwhxNkuZkgAI8E+wUw==
 
 "@project-sunbird/discussions-ui-v8@2.4.0-beta.1":
   version "2.4.0-beta.1"
@@ -1579,10 +1579,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.4.4":
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.4.tgz#61f5740c80c0115f97a0109dad4d35e0402f69a8"
-  integrity sha512-ITbxFnfWWfnDSEs4M7vOGZJElZln5PjfzdD3LTHKUxpN9M3zIOHws6/QTEQOH5no9nyRSInHW0lamTn5L/0NDQ==
+"@project-sunbird/sunbird-quml-player-v9@4.4.6":
+  version "4.4.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.6.tgz#85907c947b3eccc34487e86010df75e1951db4c0"
+  integrity sha512-LpnFgsDudycKqQQgEwdvc0F+mCaWbMm0+YqU4UJS8ndEqKegY/K9qIVqaMv9xjSyfyreRvePOphP05svGr689Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.4.1"
 
