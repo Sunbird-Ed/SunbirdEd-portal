@@ -7,7 +7,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
-// import { GroupsService } from '@sunbird/groups';
+import { GroupNotificationWrapperService } from '../group-notification-wrapper/group-notification-wrapper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ export class NotificationServiceImpl implements SbNotificationService {
   notificationList$ = new BehaviorSubject([]);
   showNotificationModel$ = new Subject<boolean>();
   NotificationCsService: any;
+  groupCservice: any;
 
   constructor(
     private userService: UserService,
@@ -24,7 +25,7 @@ export class NotificationServiceImpl implements SbNotificationService {
     private router: Router,
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
-    // private groupService: GroupsService,
+    private groupsNotificationWrapperSvc: GroupNotificationWrapperService,
   ) {
     // creating the instance for notification service in csl
     this.NotificationCsService = CsModule.instance.notificationService;
@@ -151,9 +152,7 @@ export class NotificationServiceImpl implements SbNotificationService {
     const category = _.get(event, 'data.category');
     const additionalInfo = _.get(event, 'data.action.additionalInfo');
     if (category === 'group') {
-      return {
-        path: 'my-groups/group-details/' + _.get(additionalInfo, 'group.id'),
-      };
+      return this.groupsNotificationWrapperSvc.navigateNotification(event, additionalInfo, this.groupCservice);
     } else {
       if (_.get(event, 'data.action.type') === 'certificateUpdate') {
         return {
@@ -168,7 +167,7 @@ export class NotificationServiceImpl implements SbNotificationService {
       return {};
     }
   }
-
+  
   private async deleteNotificationData(notificationId) {
     try {
       const req = {
