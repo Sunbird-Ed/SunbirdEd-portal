@@ -28,7 +28,6 @@ export class GroupNotificationWrapperService {
    */
   navigateNotification(data, additionalInfo) {
     const type = _.get(data, 'data.action.type');
-    console.log('additional', type)
     if (type === 'member-added' || type === 'member-exit' || type === 'group-activity-removed') {
       return ({ path: `my-groups/group-details/` + _.get(additionalInfo, 'group.id') });
     }

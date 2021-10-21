@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { of } from 'rxjs';
 import {of as observableOf } from 'rxjs';
-import { MockResponse, notificationData } from './group-notification-wrapper.spec.data';
+import { groupData, MockResponse, modifiedActivities, notificationData } from './group-notification-wrapper.spec.data';
 
 import { GroupNotificationWrapperService } from './group-notification-wrapper.service';
 import { ConfigService, ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
@@ -135,13 +135,35 @@ describe('GroupNotificationWrapperService', () => {
   }));
 
   it('should navigate to resource player if content mime type is ecml', fakeAsync(() => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const router = TestBed.get(Router);
+   const router = TestBed.get(Router);
     MockResponse.contentMetadata.mimeType = 'application/vnd.ekstep.ecml-archive';
     service.playContent(MockResponse.contentMetadata);
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', MockResponse.contentMetadata.identifier]);
   }));
+
+  it('should call groupCs getById', () => {
+    const service = TestBed.get(GroupNotificationWrapperService);
+    spyOn(service['groupCservice'], 'getById');
+    service.getGroupById('123', true, true, true);
+    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123',
+    { includeMembers: true, includeActivities: true, groupActivities: true });
+  });
+  
+  it ('should return activityList and showList value', () => {
+    const service = TestBed.get(GroupNotificationWrapperService);
+    const response = service.groupContentsByActivityType(false, groupData);
+    expect(response.showList).toBe(true);
+    expect(response.activities).toEqual(modifiedActivities);
+  });
+
+  it ('should return activityList and showList value = FALSE', () => {
+    const service = TestBed.get(GroupNotificationWrapperService);
+    const response = service.groupContentsByActivityType(false, {});
+    expect(response.showList).toBe(false);
+    expect(response.activities).toEqual({});
+  });
+
 });
 
 
