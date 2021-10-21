@@ -13,7 +13,7 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
-// import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
+import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { result } from 'lodash';
 
@@ -104,7 +104,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     public generaliseLabelService: GeneraliseLabelService,
     private CourseProgressService: CourseProgressService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
-    // @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
   ) {
     this.playerOption = {
       showContentRating: true
@@ -742,7 +742,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               this.isCourseCompleted = (res.totalCount === res.completedCount);
               this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
               if (this.showCourseCompleteMessage) {
-                // this.notificationService.fetchNotificationList();
+                this.notificationService.fetchNotificationList();
               }
               this.isCourseCompletionPopupShown = this.isCourseCompleted;
             }
@@ -770,7 +770,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           this.isCourseCompleted = (_.get(this._routerStateContentStatus, 'totalCount') === _.get(this._routerStateContentStatus, 'completedCount'));
           this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
           if (this.showCourseCompleteMessage) {
-            // this.notificationService.fetchNotificationList();
+            this.notificationService.fetchNotificationList();
           }
           this.isCourseCompletionPopupShown = this.isCourseCompleted;
         }

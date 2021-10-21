@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 // import { CsGroupSupportedActivitiesFormField } from '@project-sunbird/client-services/services/group/interface';
-import { PlayerService } from '@sunbird/core';
-import { ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+// import { PlayerService } from '@sunbird/core';
+import { ToasterService, ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CsModule } from '@project-sunbird/client-services';
 // import { CsGroup } from '@project-sunbird/client-services/models';
 import * as _ from 'lodash-es';
 import { delay } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,12 @@ export class GroupNotificationWrapperService {
   groupCservice: any;
 
   constructor(
-    private playerService: PlayerService,
+    // private playerService: PlayerService,
     private toasterService: ToasterService,
     private resourceService: ResourceService,
     private configService: ConfigService,
+    public router: Router,
+     public navigationHelperService: NavigationHelperService
   ) {
     this.groupCservice = CsModule.instance.groupService;
   }
@@ -41,7 +44,8 @@ export class GroupNotificationWrapperService {
       const response = this.groupContentsByActivityType(false, groupData);
       response.activities[activity.type].forEach(Selectedactivity => {
         if (activity.id === Selectedactivity.identifier) {
-          this.playerService.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
+          // this.playerService.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
+          this.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
         }
       })
     }, e => {
@@ -93,5 +97,38 @@ export class GroupNotificationWrapperService {
       }
     });
     return activity;
+  }
+
+  playContent(content, queryParams?) {
+    this.navigationHelperService.storeResourceCloseUrl();
+    setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
+      if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection ||
+        _.get(content, 'metaData.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+          if (!content.trackable && content.primaryCategory !== 'Course') {
+            this.handleNavigation(content, false, queryParams);
+          } else {
+            const isTrackable = content.trackable && content.trackable.enabled === 'No' ? false : true;
+            this.handleNavigation(content, isTrackable, queryParams);
+          }
+      } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
+        this.router.navigate(['/resources/play/content', content.identifier]);
+      } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        this.router.navigate(['/resources/play/questionset', content.identifier]);
+      } else {
+        this.router.navigate(['/resources/play/content', content.identifier]);
+      }
+    }, 0);
+  }
+
+  handleNavigation(content, isTrackable, queryParams?) {
+    if (!isTrackable) {
+      this.router.navigate(['/resources/play/collection', content.courseId || content.identifier],
+      {queryParams: {contentType: content.contentType}});
+    } else if (content.batchId) {
+      this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId],
+        { queryParams });
+    } else {
+      this.router.navigate(['/learn/course', content.identifier], { queryParams });
+    }
   }
 }
