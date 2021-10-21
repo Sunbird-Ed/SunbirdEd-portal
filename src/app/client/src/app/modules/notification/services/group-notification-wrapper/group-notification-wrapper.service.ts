@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 // import { CsGroupSupportedActivitiesFormField } from '@project-sunbird/client-services/services/group/interface';
-// import { PlayerService } from '@sunbird/core';
+import { PlayerService } from '@sunbird/core';
 import { ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { CsModule } from '@project-sunbird/client-services';
 // import { CsGroup } from '@project-sunbird/client-services/models';
 import * as _ from 'lodash-es';
-// import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class GroupNotificationWrapperService {
   groupCservice: any;
 
   constructor(
-    // private playerService: PlayerService,
+    private playerService: PlayerService,
     private toasterService: ToasterService,
     private resourceService: ResourceService,
     private configService: ConfigService,
@@ -41,7 +41,7 @@ export class GroupNotificationWrapperService {
       const response = this.groupContentsByActivityType(false, groupData);
       response.activities[activity.type].forEach(Selectedactivity => {
         if (activity.id === Selectedactivity.identifier) {
-          // this.playerService.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
+          this.playerService.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
         }
       })
     }, e => {
