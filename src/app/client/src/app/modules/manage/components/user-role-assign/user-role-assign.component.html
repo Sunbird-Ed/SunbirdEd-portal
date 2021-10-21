@@ -125,7 +125,7 @@
       <div class="field">
         <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles" labelField="roleName"
           valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
-          <sui-select-option *ngFor="let role of allroles.filteredOptions" [value]="role"></sui-select-option>
+          <sui-select-option *ngFor="let role of allroles.filteredOptions" [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
         </sui-multi-select>
         </div>
         <div class="field">

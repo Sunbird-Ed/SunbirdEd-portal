@@ -23,6 +23,7 @@ export class UserRoleAssignComponent implements OnInit {
   rootOrgRoles = [];
   userObj: any;
   key: string;
+  userAssignedRole = [];
   allRoles: Array<RolesAndPermissions>;
   private searchService: SearchService;
   private toasterService: ToasterService;
@@ -58,14 +59,16 @@ export class UserRoleAssignComponent implements OnInit {
     });
   }
   enableAssignRole() {
+    this.orgName = [];
+    this.role = [];
     this.showAssignRole = !this.showAssignRole ? true : false;
   }
   editRole(item) {
     console.log(item);
     this.orgName = [];
     this.role = [];
-    this.orgName.push(item.orgName);
-    this.role.push(item.roleName);
+    this.orgName.push(item.orgId);
+    this.role.push(item.role);
     this.showAssignRole = !this.showAssignRole ? true : false;
   }
   deleteRole(item) {
@@ -105,6 +108,7 @@ export class UserRoleAssignComponent implements OnInit {
 
   onEnter(key) {
     this.key = key;
+    this.showingResults = false;
     const searchParams = {
       filters: {
         userName: this.key
@@ -143,6 +147,7 @@ export class UserRoleAssignComponent implements OnInit {
           }
         });
         this.userRole.push(userObj);
+        this.userAssignedRole.push(role.role);
       }
     })
     //this.getAllRoles(this.removeRoles);
@@ -155,7 +160,9 @@ export class UserRoleAssignComponent implements OnInit {
     this.enableAssignRole();
   }
   redirect(): void {
-    this.route.navigate(['/manage'], {});
+    setTimeout(() => {
+      this.onEnter(this.key);
+    },2000);
   }
   updateRoleForUser(data) {
     this.manageService.updateRoles(data)
