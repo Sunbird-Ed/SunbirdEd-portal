@@ -59,14 +59,11 @@ export class UserRoleAssignComponent implements OnInit {
     });
   }
   enableAssignRole() {
-    this.orgName = [];
-    this.role = [];
+    this.orgName, this.role = [];
     this.showAssignRole = !this.showAssignRole ? true : false;
   }
   editRole(item) {
-    console.log(item);
-    this.orgName = [];
-    this.role = [];
+    this.orgName, this.role = [];
     this.orgName.push(item.orgId);
     this.role.push(item.role);
     this.showAssignRole = !this.showAssignRole ? true : false;
