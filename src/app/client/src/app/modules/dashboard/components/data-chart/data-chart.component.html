@@ -110,11 +110,11 @@
 </div>
 
 <ng-template #filterPopUpMat >
-  <mat-dialog-actions align="left" >
+  <mat-dialog-content align="left" >
     <div class="sb-filter mb-10px">
-      <div class="filter-select-title mb-0 py-0"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }} </div> 
+     <div> <span class="filter-select-title mb-0 py-0"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }} </span> <i (click)=" closeDialog()" class="close icon ng-star-inserted"></i> </div>
       <div class="sb-filter__container">
-        <div class="sb-filter__content"  *ngIf="filterPopup">
+        <div class="sb-filter__content" >
           <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="getChartData()"
           [telemetryInteractObject]="telemetryInteractObject">
          </app-filter>
@@ -128,7 +128,7 @@
 
       </div>
     </div>
-  </mat-dialog-actions>
+  </mat-dialog-content>
 </ng-template>
  
   <!--  -->

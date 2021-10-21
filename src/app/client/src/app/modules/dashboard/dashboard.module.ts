@@ -27,18 +27,11 @@ import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
-import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
+// import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
 
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatInputModule   } from "@angular/material/input";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatListModule } from "@angular/material/list";
-import { MatSelectModule } from "@angular/material/select";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+
+// import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
+
 
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -46,6 +39,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+
 
 @NgModule({
   imports: [
@@ -62,24 +57,19 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
     DiscussionModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatChipsModule,
-    MatIconModule,
-    MatSelectModule,
-    MatListModule,
-    MatButtonModule,
     MatCheckboxModule,
-    MatDialogModule,
-    MatFormFieldModule,
     MatTabsModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    MatAutocompleteModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent,MaterialAutoCompleteComponent,AutocompletePipe],
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent,
+    // MaterialAutoCompleteComponent,
+    // AutocompletePipe
+  ],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,

@@ -295,4 +295,23 @@ sui-select.selection.ui.dropdown {
   }
 }
 
+.close {
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+  box-shadow: var(--sbt-box-shadow-3px);
+  right: .75rem!important;
+  top: .75rem!important;
+  background-color: var(--white);
+  color: red;
+  font-size: .875rem;
+  padding: 0!important;
+  margin: 0!important;
+  display: flex;
+  float: right;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: 0;
+}
 

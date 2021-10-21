@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MaterialAutoCompleteComponent } from './material-auto-complete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { AutocompletePipe } from './auto-complete-pipe'
 

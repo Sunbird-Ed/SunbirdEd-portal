@@ -85,7 +85,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartCanvas') chartCanvas;
   filterType = 'chart-filter';
   dateFilters: Array<string>;
-
+  dialogRef:any;
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
@@ -488,9 +488,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     return [{ id:this.chartConfig.id ,data: this.chartData , selectedFilters:this.currentFilters }];
   }
   openDialog() {
-    const dialogRef = this.dialog.open(this.filterPopUpMat);
-    this.filterPopup = true;
-    dialogRef.afterClosed().subscribe(result => {  
-    });
+   this.dialogRef = this.dialog.open(this.filterPopUpMat);
+  }
+  closeDialog() {
+    this.dialogRef.close();
   }
 }
