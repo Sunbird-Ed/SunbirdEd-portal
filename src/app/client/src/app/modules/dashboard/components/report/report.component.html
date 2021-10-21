@@ -287,24 +287,35 @@
   </div>
 </div>
 
-<sui-modal [mustScroll]="false" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-hawkeye-modal" #modal (dismissed)="modal.deny();close.emit()" *ngIf="reportExportInProgress">
-  <div class="sb-modal-content o-y-visible">
-    <div class="ui">
-      <div class="twelve wide column px-0 mb-30">
-        <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
+<app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true}" (dismiss)="close.emit()">
+  <ng-template sbModalContent>
+    <div class="sb-modal sb-hawkeye-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-content o-y-visible">
+            <div class="ui">
+              <div class="twelve wide column px-0 mb-30">
+                <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-confirm-popup *ngIf="showConfirmationModal" (confirmation)="handleConfirmationEvent($event)"
   [input]="confirmationPopupInput">
 </app-confirm-popup>
 
-<app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
-  (submitButtonEvent)="onAddSummary($event)" *ngIf="showSummaryModal">
-</app-add-summary-modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'large'}" *ngIf="showSummaryModal">
+  <ng-template sbModalContent let-data>
+    <app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
+      (submitButtonEvent)="onAddSummary($event)">
+    </app-add-summary-modal>
+  </ng-template>
+</app-modal-wrapper>
 
 <ng-template #commonReportActions>
   <div class="d-flex my-0">

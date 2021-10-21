@@ -1449,3 +1449,8 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 .required-asterisk {
   color: #A80011;
 }
+.mat-dialog-container{
+  box-shadow: none;
+  background: transparent;
+  overflow:hidden !important;
+}
