@@ -1,8 +1,8 @@
-import { UserService } from '@sunbird/core';
+import { UserService, OtpService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import * as _ from 'lodash-es';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +17,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
 
   /** to take the mode of operaion (edit or add of recovery id) from profile page */
   @Input() mode: string;
+  @Input() userProfile: any;
   accountRecoveryForm: FormGroup;
   enableSubmitButton = false;
 
@@ -31,16 +32,20 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}> = [];
   duplicateRecoveryId: boolean;
+  showOTPForm: boolean;
+  otpData: any;
 
   constructor(
     public resourceService: ResourceService,
     public profileService: ProfileService,
     public userService: UserService,
-    public toasterService: ToasterService, private matDialog: MatDialog) { }
+    private matDialog: MatDialog,
+    public toasterService: ToasterService,
+    public otpService: OtpService) { }
 
   ngOnInit() {
     this.contactType = 'emailId';
-    this.initializeFormFields();
+    this.validateAndEditContact();
   }
 
   /** to initialize form fields */
@@ -56,6 +61,52 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
     }
     this.handleSubmitButton();
     this.setTelemetryData();
+  }
+
+  private async validateAndEditContact() {
+    const request: any = {
+        key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
+        userId: this.userProfile.userId,
+        type: ''
+    };
+    if ((this.userProfile.email && !this.userProfile.phone) ||
+    (!this.userProfile.email && !this.userProfile.phone && this.userProfile.recoveryEmail)) {
+        request.type = 'email';
+    } else if (this.userProfile.phone || this.userProfile.recoveryPhone) {
+        request.type = 'phone';
+    }
+    this.otpData = {
+        'type': request.type,
+        'value': request.key,
+        'instructions': request.type === 'phone' ?
+          this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
+        'retryMessage': request.type === 'phone' ?
+          this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
+        'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
+          this.resourceService.frmelmnts.lbl.wrongEmailOTP
+    };
+    this.showOTPForm = true;
+
+    this.generateOTP({ request });
+  }
+
+  generateOTP(request) {
+    console.log('Request', request);
+    this.otpService.generateOTP(request).subscribe(
+      (data: ServerResponse) => {
+      },
+      (err) => {
+        const failedgenerateOTPMessage = (err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
+          (err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
+        this.toasterService.error(failedgenerateOTPMessage);
+        this.closeModal();
+      }
+    );
+  }
+
+  userVerificationSuccess() {
+    this.initializeFormFields();
+    this.showOTPForm = false;
   }
 
   /** to add/update the recovery id */
