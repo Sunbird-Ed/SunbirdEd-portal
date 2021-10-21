@@ -17,7 +17,6 @@ export class NotificationServiceImpl implements SbNotificationService {
   notificationList$ = new BehaviorSubject([]);
   showNotificationModel$ = new Subject<boolean>();
   NotificationCsService: any;
-  groupCservice: any;
 
   constructor(
     private userService: UserService,
@@ -152,7 +151,7 @@ export class NotificationServiceImpl implements SbNotificationService {
     const category = _.get(event, 'data.category');
     const additionalInfo = _.get(event, 'data.action.additionalInfo');
     if (category === 'group') {
-      return this.groupsNotificationWrapperSvc.navigateNotification(event, additionalInfo, this.groupCservice);
+      return this.groupsNotificationWrapperSvc.navigateNotification(event, additionalInfo);
     } else {
       if (_.get(event, 'data.action.type') === 'certificateUpdate') {
         return {

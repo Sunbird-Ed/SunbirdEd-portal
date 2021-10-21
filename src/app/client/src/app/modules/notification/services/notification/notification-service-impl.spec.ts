@@ -9,7 +9,6 @@ import { SbNotificationModule } from 'sb-notification';
 import { notificationData, notificationList } from './notification-service-impl.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { GroupsService } from '../../../groups';
 
 describe('NotificationServiceImpl', () => {
   configureTestSuite();
