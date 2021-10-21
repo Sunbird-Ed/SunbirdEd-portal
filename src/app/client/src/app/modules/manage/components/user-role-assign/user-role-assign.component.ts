@@ -72,7 +72,7 @@ export class UserRoleAssignComponent implements OnInit {
     this.showAssignRole = !this.showAssignRole ? true : false;
   }
   deleteRole(item) {
-    const roleToDelete =[]
+    const roleToDelete = []
     roleToDelete.push({
       role: item.role,
       operation: 'remove',
@@ -84,10 +84,12 @@ export class UserRoleAssignComponent implements OnInit {
     this.updateRoleForUser(data);
   }
   getOrgDetails() {
-    const userRoles = this.userService.UserOrgDetails;
-    for (let key in userRoles) {
-      if (key === 'ORG_ADMIN') {
-        this.orgList.push(userRoles[key]);
+    if (this.userService && this.userService.userProfile) {
+      const userRoles = this.userService.userProfile.UserOrgDetails;
+      for (let key in userRoles) {
+        if (key === 'ORG_ADMIN') {
+          this.orgList.push(userRoles[key]);
+        }
       }
     }
   }
@@ -162,7 +164,7 @@ export class UserRoleAssignComponent implements OnInit {
   redirect(): void {
     setTimeout(() => {
       this.onEnter(this.key);
-    },2000);
+    }, 2000);
   }
   updateRoleForUser(data) {
     this.manageService.updateRoles(data)
@@ -198,13 +200,13 @@ export class UserRoleAssignComponent implements OnInit {
     // Get deleted roles from existing roles
     const masterRoles = [...currentRoles, ...newlyAddedRoles];
     _.forEach(masterRoles, (role) => {
-        reqBody.push({
-          role: role,
-          operation: 'add',
-          scope: [{
-            organisationId: orgId
-          }]
-        });
+      reqBody.push({
+        role: role,
+        operation: 'add',
+        scope: [{
+          organisationId: orgId
+        }]
+      });
     });
     return reqBody;
   }
