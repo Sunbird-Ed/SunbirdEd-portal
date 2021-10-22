@@ -312,7 +312,6 @@ describe('CertificateConfigurationComponent', () => {
 
     /** Act */
     component.getCourseDetails('do_123456');
-
     /** Assert */
     component.getCourseDetails('do_123456').subscribe( data => {
       expect(component.courseDetails).toEqual(CertMockResponse.courseData.result.content);
