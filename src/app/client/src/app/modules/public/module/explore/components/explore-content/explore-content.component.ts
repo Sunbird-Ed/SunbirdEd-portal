@@ -256,7 +256,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         mergeMap(data => {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
           const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
-            return (this.queryParams['primaryCategory'] ? content['subject'] : content['primaryCategory']);
+            return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
         }), ['undefined']);
         for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key && key.split(',').length > 1;
