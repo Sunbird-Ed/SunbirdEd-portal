@@ -232,7 +232,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     const option: any = {
       filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
       fields: _.get(this.allTabData, 'search.fields'),
-      limit: _.get(this.allTabData, 'search.limit'),
+      limit: _.get(this.allTabData, 'search.limit') ?  _.get(this.allTabData, 'search.limit')
+      : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       query: this.queryParams.key,
       mode: 'soft',
@@ -255,8 +256,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         mergeMap(data => {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
           const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
-            return ((this.queryParams['se_subjects'] && this.queryParams['se_subjects'].length > 0) ? content['primaryCategory'] :
-            (this.queryParams['key'] ? content['primaryCategory'] : content['subject']));
+            return (this.queryParams['primaryCategory'] ? content['subject'] : content['primaryCategory']);
         }), ['undefined']);
         for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key && key.split(',').length > 1;
