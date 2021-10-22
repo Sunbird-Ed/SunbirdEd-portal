@@ -59,11 +59,11 @@ export class UserRoleAssignComponent implements OnInit {
     });
   }
   enableAssignRole() {
-    this.orgName, this.role = [];
+    this.orgName = []; this.role = [];
     this.showAssignRole = !this.showAssignRole ? true : false;
   }
   editRole(item) {
-    this.orgName, this.role = [];
+    this.orgName = []; this.role = [];
     this.orgName.push(item.orgId);
     this.role.push(item.role);
     this.showAssignRole = !this.showAssignRole ? true : false;
@@ -82,7 +82,7 @@ export class UserRoleAssignComponent implements OnInit {
   }
   getOrgDetails() {
     if (this.userService && this.userService.userProfile) {
-      const userRoles = this.userService.userProfile.UserOrgDetails;
+      const userRoles = this.userService.userProfile.userOrgDetails;
       for (let key in userRoles) {
         if (key === 'ORG_ADMIN') {
           this.orgList.push(userRoles[key]);
@@ -95,6 +95,7 @@ export class UserRoleAssignComponent implements OnInit {
   }
   goBack() {
     this.showingResults = false;
+    this.route.navigate(['/manage'], { queryParams: {} });
   }
   getAllRoles(removeRoles) {
     this.permissionService.availableRoles$.subscribe(params => {

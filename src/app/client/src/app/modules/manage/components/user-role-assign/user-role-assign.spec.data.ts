@@ -41,7 +41,7 @@ export const mockObject = {
     'userName': 'ntptest102',
     'rootOrgId': 'ORG_001',
     'userid': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-    'UserOrgDetails': {
+    'userOrgDetails': {
       'PUBLIC': {
         'orgId': '01285019302823526477',
         'orgName': 'ORG_001'
