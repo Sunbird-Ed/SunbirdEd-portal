@@ -808,7 +808,7 @@ const API_LIST = {
     '/action/content/v3/read/:do_id': {
       description: 'API is accessed by non logged in user',
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
