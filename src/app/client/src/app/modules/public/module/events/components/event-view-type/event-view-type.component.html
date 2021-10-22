@@ -9,11 +9,11 @@
     <sb-library-filters [list]="allValues" [layout]="filterLayout.SQUARE" (selectedFilter)="eventtype($event)">
     </sb-library-filters>
 </div> -->
-
+<ng-container>
 <lib-event 
     [libEventConfig]="libEventConfig">
 </lib-event>
-<div *ngIf="tab == 'list'">
+<div class="ui container mt-24" *ngIf="tab == 'list'">
     <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
         *ngIf="filterConfig" 
         [filterConfig]="filterConfig"> </sb-event-filter>
@@ -26,7 +26,7 @@
         </div>
 </div>
 
-<div *ngIf="tab == 'calender'">
+<div class="ui container mt-24" *ngIf="tab == 'calender'">
     <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
         *ngIf="filterConfig" 
         [filterConfig]="filterConfig"> </sb-event-filter>
@@ -34,3 +34,4 @@
     <lib-event-calender *ngIf="events" [events]='events'></lib-event-calender>
     <br><br><br>
 </div>
+</ng-container>
