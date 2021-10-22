@@ -1,6 +1,15 @@
 @import "~@project-sunbird/sb-styles/assets/variables";
 @import "./mixins/mixins";
 
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$custom-typography: mat-typography-config(
+  $font-family: 'var(--font-stack-en) !important',
+);
+
+@include angular-material-typography($custom-typography);
 :root {
   font-size: 16px;
 }
@@ -8,6 +17,7 @@
 html,
 body {
   height: 100%;
+  font-size: mat-font-size($custom-typography, body-1);
 }
 
 body {
