@@ -63,7 +63,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
     this.setTelemetryData();
   }
 
-  private async validateAndEditContact() {
+  validateAndEditContact() {
     const request: any = {
         key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
         userId: this.userProfile.userId,
