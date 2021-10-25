@@ -9,7 +9,6 @@ import { SbNotificationModule } from 'sb-notification';
 import { notificationData, notificationList } from './notification-service-impl.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { GroupsService } from '../../../groups';
 
 describe('NotificationServiceImpl', () => {
   configureTestSuite();
@@ -23,7 +22,6 @@ describe('NotificationServiceImpl', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SbNotificationModule, RouterTestingModule, TelemetryModule.forRoot()],
-      providers: [GroupsService]
     });
   });
 
@@ -191,7 +189,7 @@ describe('NotificationServiceImpl', () => {
 
   });
   describe('getNavigationPath()', async() => {
-    xit ('should call getNavigationPath()', async () => {
+    it ('should call getNavigationPath()', async () => {
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
 
       const resp = await service.getNavigationPath({data: notificationData});

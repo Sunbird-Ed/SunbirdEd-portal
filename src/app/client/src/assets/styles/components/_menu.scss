@@ -15,21 +15,21 @@
       color: var(--gray-800);
       cursor: pointer;
       &.active {
-        background: var(--primary-0);
-        border-left: calculateRem(2px) solid var(--primary-600);
-        color: var(--primary-800);
+        background: var(--sb-sidebar-menu-bg-active);
+        border-left: calculateRem(2px) solid var(--sb-sidebar-menu-border-bg);
+        color: var(--sb-sidebar-menu-text);
         font-weight: var(--font-weight-bold);
       }
       &:hover {
-        background: var(--primary-0);
-        color: var(--primary-800);
+        background: var(--sb-sidebar-menu-bg);
+        color: var(--sb-sidebar-menu-text);
       }
     }
   }
 }
 .sb-sideview-tab-container {
   padding: calculateRem(24px) calculateRem(24px);
-  background: var(--primary-0);
+  background: var(--sb-sidebar-menu-bg-active);
   min-height: calc(100vh - 288px);
 }
 
