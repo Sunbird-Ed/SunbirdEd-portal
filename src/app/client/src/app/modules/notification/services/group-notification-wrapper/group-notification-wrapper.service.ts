@@ -9,16 +9,13 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class GroupNotificationWrapperService {
-  groupCservice: any;
-
   constructor(
     private toasterService: ToasterService,
     private resourceService: ResourceService,
     private configService: ConfigService,
     public router: Router,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
   ) {
-    this.groupCservice = CsModule.instance.groupService;
   }
 
   /**
@@ -64,7 +61,8 @@ export class GroupNotificationWrapperService {
    * @param  {boolean} groupActivities?
    */
   getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean, groupActivities?: boolean) {
-    const groupData = this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
+    let groupCservice = CsModule.instance.groupService;
+    const groupData = groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
     return groupData;
   }
   /**

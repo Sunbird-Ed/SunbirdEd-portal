@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CsModule } from '@project-sunbird/client-services';
 import { SbNotificationService } from 'sb-notification';
@@ -26,9 +26,6 @@ export class NotificationServiceImpl implements SbNotificationService {
     private activatedRoute: ActivatedRoute,
     private groupsNotificationWrapperSvc: GroupNotificationWrapperService,
   ) {
-    // creating the instance for notification service in csl
-    this.NotificationCsService = CsModule.instance.notificationService;
-    this.fetchNotificationList();
   }
 
   /**
@@ -36,6 +33,8 @@ export class NotificationServiceImpl implements SbNotificationService {
    * @returns Promise
    */
    async fetchNotificationList(): Promise<any> {
+    // creating the instance for notification service in csl
+    this.NotificationCsService = CsModule.instance.notificationService;
     try {
       let notificationData: any = await this.NotificationCsService.notificationRead(_.get(this.userService, 'userid')).toPromise();
       notificationData = notificationData.feeds;

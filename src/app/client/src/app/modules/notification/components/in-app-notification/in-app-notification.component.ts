@@ -34,6 +34,9 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private connectionService: ConnectionService
   ) {
+  }
+
+  ngOnInit() {
     this.inAppNotificationConfig = {
       title: _.get(this.resourceService, 'frmelmnts.lbl.notification'),
       subTitle: _.get(this.resourceService, 'frmelmnts.lbl.newNotification'),
@@ -42,9 +45,6 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
       lessText: _.get(this.resourceService, 'frmelmnts.btn.seeLess'),
       minNotificationViewCount: 5
     };
-  }
-
-  ngOnInit() {
     this.connectionService.monitor()
     .pipe(takeUntil(this.unsubscribe$), delay(2000)).subscribe(isConnected => {
       this.isConnected = isConnected;
