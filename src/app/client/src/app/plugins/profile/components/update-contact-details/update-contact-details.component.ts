@@ -56,30 +56,32 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   }
 
   private async validateAndEditContact() {
-    const request: any = {
-        key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
-        userId: this.userProfile.userId,
-        type: ''
-    };
-    if ((this.userProfile.email && !this.userProfile.phone) ||
-    (!this.userProfile.email && !this.userProfile.phone && this.userProfile.recoveryEmail)) {
-        request.type = 'email';
-    } else if (this.userProfile.phone || this.userProfile.recoveryPhone) {
-        request.type = 'phone';
-    }
-    const otpData = {
-        'type': request.type,
-        'value': request.key,
-        'instructions': request.type === 'phone' ?
-          this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
-        'retryMessage': request.type === 'phone' ?
-          this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
-        'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
-          this.resourceService.frmelmnts.lbl.wrongEmailOTP
+    if (this.userProfile) {
+      const request: any = {
+          key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
+          userId: this.userProfile.userId,
+          type: ''
       };
-    this.verifiedUser = false;
+      if ((this.userProfile.email && !this.userProfile.phone) ||
+      (!this.userProfile.email && !this.userProfile.phone && this.userProfile.recoveryEmail)) {
+          request.type = 'email';
+      } else if (this.userProfile.phone || this.userProfile.recoveryPhone) {
+          request.type = 'phone';
+      }
+      const otpData = {
+          'type': request.type,
+          'value': request.key,
+          'instructions': request.type === 'phone' ?
+            this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
+          'retryMessage': request.type === 'phone' ?
+            this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
+          'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
+            this.resourceService.frmelmnts.lbl.wrongEmailOTP
+        };
+      this.verifiedUser = false;
 
-    this.generateOTP({ request }, otpData);
+      this.generateOTP({ request }, otpData);
+    }
   }
 
   closeModal() {

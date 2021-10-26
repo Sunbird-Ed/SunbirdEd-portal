@@ -64,30 +64,31 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   }
 
   validateAndEditContact() {
-    const request: any = {
-        key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
-        userId: this.userProfile.userId,
-        type: ''
-    };
-    if ((this.userProfile.email && !this.userProfile.phone) ||
-    (!this.userProfile.email && !this.userProfile.phone && this.userProfile.recoveryEmail)) {
-        request.type = 'email';
-    } else if (this.userProfile.phone || this.userProfile.recoveryPhone) {
-        request.type = 'phone';
+    if (this.userProfile) {
+        const request: any = {
+            key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
+            userId: this.userProfile.userId,
+            type: ''
+        };
+        if ((this.userProfile.email && !this.userProfile.phone) ||
+        (!this.userProfile.email && !this.userProfile.phone && this.userProfile.recoveryEmail)) {
+            request.type = 'email';
+        } else if (this.userProfile.phone || this.userProfile.recoveryPhone) {
+            request.type = 'phone';
+        }
+        this.otpData = {
+            'type': request.type,
+            'value': request.key,
+            'instructions': request.type === 'phone' ?
+              this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
+            'retryMessage': request.type === 'phone' ?
+              this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
+            'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
+              this.resourceService.frmelmnts.lbl.wrongEmailOTP
+        };
+        this.showOTPForm = true;
+        this.generateOTP({ request });
     }
-    this.otpData = {
-        'type': request.type,
-        'value': request.key,
-        'instructions': request.type === 'phone' ?
-          this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
-        'retryMessage': request.type === 'phone' ?
-          this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
-        'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
-          this.resourceService.frmelmnts.lbl.wrongEmailOTP
-    };
-    this.showOTPForm = true;
-
-    this.generateOTP({ request });
   }
 
   generateOTP(request) {
