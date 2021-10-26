@@ -428,6 +428,7 @@ app-workspace {
 }
 
 .sbt-theme-bg-img {
+  display:none;
   position: fixed;
   z-index: -50;
   left: calculateRem(-106px);
@@ -458,6 +459,7 @@ app-workspace {
 }
 
 .sbt-theme-right-flower {
+  display: none;
   position: fixed;
   bottom: calculateRem(48px);
   width: calculateRem(288px);
