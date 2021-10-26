@@ -49,7 +49,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
-  @ViewChild('batchListModal') batchListModal;
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;
@@ -244,21 +243,26 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchDetails = this.batchList[0];
   }
 
-  ShowCertDetails() {
-    if (this.batchList && this.batchList[0]) {
-      const batchDetails = this.batchList[0]
-      this.showCertificateDetails = _.get(batchDetails, 'certTemplates') ? true : false;
-      const certDetails = _.get(batchDetails, 'certTemplates');
-      for (var key in certDetails) {
-        const certCriteria = certDetails[key]['criteria'];
-        this.showCompletionCertificate = _.get(certCriteria, 'enrollment.status') === 2 ? true : false;
-        this.showMeritCertificate = _.get(certCriteria, 'assessment.score') ? true : false;
-        this.meritCertPercent = _.get(certCriteria, 'assessment.score.>=')
+  ShowCertDetails(isEnrolledBatch?: boolean) {
+    let batchDetails: any;
+    if (isEnrolledBatch) {
+      batchDetails = this.enrolledBatchInfo
+    } else {
+      if (this.batchList && this.batchList[0]) {
+        batchDetails = this.batchList[0];
       }
-
+    }
+    this.showCertificateDetails = _.get(batchDetails, 'certTemplates') ? true : false;
+    const certDetails = _.get(batchDetails, 'certTemplates');
+    for (var key in certDetails) {
+      const certCriteria = certDetails[key]['criteria'];
+      this.showCompletionCertificate = _.get(certCriteria, 'enrollment.status') === 2 ? true : false;
+      this.showMeritCertificate = _.get(certCriteria, 'assessment.score') ? true : false;
+      this.meritCertPercent = _.get(certCriteria, 'assessment.score.>=')
     }
   }
   getEnrolledCourseBatchDetails() {
+    this.ShowCertDetails(true);
     if (_.get(this.enrolledBatchInfo, 'participant')) {
       const participant = [];
       _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
@@ -342,9 +346,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.batchListModal && this.batchListModal.deny) {
-      this.batchListModal.deny();
-    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }

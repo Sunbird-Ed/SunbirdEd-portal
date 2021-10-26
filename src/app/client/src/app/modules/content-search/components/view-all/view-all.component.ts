@@ -118,10 +118,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   hashTagId: string;
   formAction: string;
   showFilter = false;
-  /**
-  * To show / hide login popup on click of content
-  */
-  showLoginModal = false;
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   /**
@@ -509,10 +505,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  closeModal() {
-    this.showLoginModal = false;
-  }
-
+  
   updateCardData(downloadListdata) {
     _.each(this.searchList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);

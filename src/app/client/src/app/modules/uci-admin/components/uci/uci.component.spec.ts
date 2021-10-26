@@ -67,10 +67,11 @@ describe('UciComponent', () => {
   it('should get user profile details', () => {
     const userService = TestBed.get(UserService);
     const configService = TestBed.get(ConfigService);
-    component.ngOnInit()
+    expect(component.blobUrl).toBeDefined();
+    component.ngOnInit();
     userService._userData$.next({ err: null, userProfile: userMockData.userProfile });
-    expect(component.userProfile).toEqual(userMockData.userProfile)
-    expect(component.url).toEqual(configService.urlConFig.URLS.UCI)
+    expect(component.userProfile).toEqual(userMockData.userProfile);
+    expect(component.url).toEqual(configService.urlConFig.URLS.UCI);
   });
 
 });

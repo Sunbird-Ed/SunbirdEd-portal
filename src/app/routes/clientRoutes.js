@@ -206,6 +206,7 @@ function getLocals(req) {
   locals.reportsListVersion = envHelper.reportsListVersion;
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;
+  locals.blobUrl = envHelper.sunbird_portal_cdn_blob_url;
   return locals
 }
 

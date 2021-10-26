@@ -28,7 +28,7 @@
           class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
           {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button> -->
         <label>
-          <sui-select class="selection" [placeholder]="'Select ChartType'"
+          <sui-select class="selection sbt-dropdown sbt-green" [placeholder]="'Select ChartType'"
             (selectedOptionChange)="changeChartType($event)">
             <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="setTelemetryInteractEdata('chart-type-filter')"
@@ -83,11 +83,6 @@
       </div>
     </div>
   </div>
-
-
-
-
-
 
   <div class="dashboard-graph-statistics py-24" *ngIf="bigNumberCharts.length">
     <div class="graph-stat-block" *ngFor="let bigNumberChart of bigNumberCharts">
