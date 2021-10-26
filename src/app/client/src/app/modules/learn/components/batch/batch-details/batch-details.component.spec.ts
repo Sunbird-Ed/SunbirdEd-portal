@@ -366,5 +366,13 @@ describe('BatchDetailsComponent', () => {
     expect(component.showMeritCertificate).toBeTruthy();
     expect(component.meritCertPercent).toEqual(70);
   });
+  it('should call the courseBatch details and cert details with enrolled batch',() => {
+    component.enrolledBatchInfo = allBatchDetails.result.response.content[0];
+    component.ShowCertDetails(true);
+    expect(component.showCertificateDetails).toBeTruthy();
+    expect(component.showCompletionCertificate).toBeTruthy();
+    expect(component.showMeritCertificate).toBeTruthy();
+    expect(component.meritCertPercent).toEqual(70);
+  });
 
 });

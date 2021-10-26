@@ -87,7 +87,8 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       'request': {
         'key': this.otpData.value,
         'type': this.otpData.type,
-        'otp': this.otpForm.controls.otp.value
+        'otp': this.otpForm.controls.otp.value,
+        'userId': this.userService.userid
       }
     };
     this.otpService.verifyOTP(request).subscribe(

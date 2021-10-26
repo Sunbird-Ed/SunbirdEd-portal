@@ -3,13 +3,6 @@
 
 .sb-prominent-filter-field {
   .form-control {
-    min-width: 250px;
-    width: 100%;
-    height: calculateRem(40px);
-    font-size: calculateRem(18px);
-    border: calculateRem(1px) solid var(--gray-200);
-    border-radius: calculateRem(24px);
-    padding: calculateRem(8px);
 
     &:focus {
       border: calculateRem(1px) solid var(--rc-dddddd);
@@ -148,11 +141,6 @@
 
 .sb-prominent-filter-field {
   ::ng-deep {
-    label {
-      padding-bottom: 4px;
-      margin-bottom: 0px !important;
-      margin-left: 10px !important;
-    }
     .md-drppicker {
       padding: calculateRem(16px) calculateRem(8px);
 
