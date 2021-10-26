@@ -175,7 +175,8 @@ export class AllMyEventsComponent implements OnInit {
        "status":["live"],
        "eventType" :event.filtersSelected.eventType,
        "startDate":this.dates,
-       "objectType": "Event"
+       "objectType": "Event",
+       "owner":this.userService.userid
      };
    }
    else if(event.filtersSelected.eventType)
@@ -183,7 +184,8 @@ export class AllMyEventsComponent implements OnInit {
        this.Filterdata ={
          "status":["live"],
          "eventType" :event.filtersSelected.eventType,
-         "objectType": "Event"
+         "objectType": "Event",
+         "owner":this.userService.userid
        };
    }
    else if(event.filtersSelected.eventTime)
@@ -209,14 +211,16 @@ export class AllMyEventsComponent implements OnInit {
        this.Filterdata ={
          "status":["live"],
          "startDate" :this.dates,
-         "objectType": "Event"
+         "objectType": "Event",
+         "owner":this.userService.userid
        };
    }
    else
    {
      this.Filterdata ={
        "status":["live"],
-       "objectType": "Event"
+       "objectType": "Event",
+       "owner":this.userService.userid
      };
    }
 
@@ -224,6 +228,7 @@ export class AllMyEventsComponent implements OnInit {
    this.eventListService.getEventList(this.Filterdata,this.query).subscribe((data) => {
      if (data.responseCode == "OK") 
        {
+         console.log("fffffff-------------",data);
          this.isLoading=false;
          this.eventList = data.result.Event;
 

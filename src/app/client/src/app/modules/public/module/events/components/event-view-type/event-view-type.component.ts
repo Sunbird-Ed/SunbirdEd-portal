@@ -306,7 +306,6 @@ export class EventViewTypeComponent implements OnInit {
            "status":["live"],
            "objectType": "Event",
            "identifier": eventIds
-           // "owner":this.userId
          };
 
          this.eventListService.getEventList(this.Filterdata).subscribe((data) =>{
@@ -327,7 +326,6 @@ export class EventViewTypeComponent implements OnInit {
      });
  }
  navToEventDetail(event){
-  console.log("event-------",event);
   // this.router.navigate(['/enroll-users'], {
     // queryParams: {
     //   identifier: this.queryParams.identifier
