@@ -456,7 +456,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   filterModalPopup(operator) {
 
     if (operator == false) {
-      this.filterPopup = false;
+      this.closeDialog()
       this.cdr.detectChanges();
     } else {
       if (this.currentFilters) {
@@ -466,7 +466,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
         this.chartData['selectedFilters'] = {};
       }
       this.cdr.detectChanges();
-      // this.filterPopup = true;
       this.openDialog();
     }
 
@@ -488,9 +487,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
     return [{ id:this.chartConfig.id ,data: this.chartData , selectedFilters:this.currentFilters }];
   }
   openDialog() {
-   this.dialogRef = this.dialog.open(this.filterPopUpMat);
+    if(this.filterPopUpMat){
+      this.dialogRef = this.dialog.open(this.filterPopUpMat);
+    }
   }
   closeDialog() {
-    this.dialogRef.close();
+    if(this.dialogRef){
+      this.dialogRef.close();
+    }
   }
 }

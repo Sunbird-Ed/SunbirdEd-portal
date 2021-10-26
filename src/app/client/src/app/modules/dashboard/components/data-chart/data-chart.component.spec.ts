@@ -215,18 +215,12 @@ describe('DataChartComponent', () => {
         expect(component.chartType).toEqual('bar');
     }));
 
-    it('should close popup', fakeAsync(() => {
-        component.ngOnInit();
-        tick(1000);
-        component.filterModalPopup(false);
-        expect(component.filterPopup).toEqual(false);
-    }));
-
     it('should open modal popup', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
+        component.currentFilters=[];
         component.filterModalPopup(true);
-        expect(component.filterPopup).toEqual(true);
+        expect(component.chartData['selectedFilters']).toEqual([]);
     }));
 
     it('should check checkFilterReferance', fakeAsync(() => {

@@ -27,13 +27,6 @@ import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
-// import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
-
-
-// import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
-
-
-
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -66,9 +59,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent,
-    // MaterialAutoCompleteComponent,
-    // AutocompletePipe
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent
   ],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
