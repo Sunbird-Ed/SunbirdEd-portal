@@ -13,7 +13,7 @@
           <div
             [appTelemetryImpression]="getTelemetryImpression({type: 'page-loaded', cdata: reportService?.isUserReportAdmin() ? [{id: '' + reportsList?.reportsArr?.length, type: 'CountReports'},
              {id: '' + reportsList?.datasetsArr?.length, type: 'CountDatasets'}] : [{id: '' + reportsList?.reportsArr?.length, type: 'CountReports'}]})">
-            <mat-tab-group mat-align-tabs="center">
+            <mat-tab-group mat-align-tabs="center" class="sb-mat__tab sb-mat__tab--tabinacc list-all-mat-tab">
               <mat-tab label="Reports">
                 <div class="ui bottom attached small p-0 b-0 no-bg py-24">
                   <table #all_reports class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
