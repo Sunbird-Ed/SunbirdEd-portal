@@ -351,7 +351,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     if (_.get(event, 'tenant')) {
       if (!this.selectedTenant || event.tenant !== this.selectedTenant) {
         this.previousOrgId = this.selectedTenant;
-        this.isTenantChanged = true;
+        this.isTenantChanged = this.selectedTenant ? true : false;
         this.selectedTenant = event.tenant;
         this.getTeacherDetailsForm();
       }
@@ -580,7 +580,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateUserConsent(currentOrgId, previousOrgId?) {
-    if (this.isTenantChanged) {
+    if (this.isTenantChanged && !!previousOrgId) {
       const requestFoRevoked: Consent = {
         status: ConsentStatus.REVOKED,
         userId: this.userService.userid,
