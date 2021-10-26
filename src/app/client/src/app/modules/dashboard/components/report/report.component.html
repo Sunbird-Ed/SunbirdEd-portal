@@ -170,8 +170,8 @@
                         <ng-container *ngTemplateOutlet="commonReportActions">
                         </ng-container>
                         <div *ngIf="table.data">
-                          <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
-                          </app-data-table>
+                          <app-sb-table [columnConfig]="table.columnConfig" [rowsData]="table.data" [gridConfig]="table.gridConfig" [filters]="table.filters">
+                          </app-sb-table>
                         </div>
                         <div class="ui warning message" *ngIf="!table.data">
                           {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}

@@ -29,7 +29,6 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
 import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
-
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -51,7 +50,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
     DiscussionModule,
-    DashletModule.forRoot(),
+    DashletModule,
     MatCheckboxModule,
     MatTabsModule,
     MatSlideToggleModule,
