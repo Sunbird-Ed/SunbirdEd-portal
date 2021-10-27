@@ -5,7 +5,7 @@ import { mockData } from './sb-table.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
-fdescribe('SbTableComponent', () => {
+describe('SbTableComponent', () => {
   let component: SbTableComponent;
   let fixture: ComponentFixture<SbTableComponent>;
   configureTestSuite();
@@ -15,9 +15,8 @@ fdescribe('SbTableComponent', () => {
     },
     frmelmnts: {
       lbl: {
-        reportSummary: 'Report Summary',
-        exportCsv:"export CSV",
-        filters:"reset filters",
+        exportCsv:"Export CSV",
+        filters:"Reset Filters",
         chooseFilter:"Choose filters to view reports",
 
       }
@@ -37,9 +36,8 @@ fdescribe('SbTableComponent', () => {
     fixture = TestBed.createComponent(SbTableComponent);
     component = fixture.componentInstance;
     component.rowsData = mockData.rowsData;
-    component.columnConfig = mockData.columnConfig;
-    component.filters = mockData.filters;
-
+    component.config = mockData.config;
+  
     fixture.detectChanges();
   });
 

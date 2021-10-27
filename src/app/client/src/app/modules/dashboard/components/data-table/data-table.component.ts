@@ -23,6 +23,8 @@ export class DataTableComponent implements AfterViewInit {
     ngAfterViewInit() {
         // tslint:disable-next-line:no-unused-expression
         this.rowsData && naturalSortDataTablePlugin(); // adds natural sorting plugin to dataTableExt
+
+        console.log("rowsData",this.rowsData);
         const columnDefs: any = [{
             'targets': 0,
             'render': (data) => {

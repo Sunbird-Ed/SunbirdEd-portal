@@ -9,24 +9,15 @@ import { ResourceService } from '@sunbird/shared';
 })
 export class SbTableComponent implements AfterViewInit  {
   @Input() rowsData: Array<Object>;
-  @Input() columnConfig:any;
-  @Input() filters:any;
-  @Input() gridConfig:Object;
   load:boolean=false;
   data = {};
-  config :any;
+  @Input() config :Object;
 
   constructor(private cdRef : ChangeDetectorRef, private resourceService: ResourceService) { }
   @ViewChild('lib', { static: false }) lib: any;
 
   loadTable(){
-    this.config = {
-      ...this.gridConfig,
-      filters: this.filters,
-      columnConfig:this.columnConfig,
-    }
-
-
+ 
     this.data = {
       values:this.rowsData
     }
@@ -42,8 +33,8 @@ export class SbTableComponent implements AfterViewInit  {
   }
   reset(){
     this.load=false;
-    this.lib.instance.resetFilters();
-    this.loadTable()
+    this.lib.instance.reset();
+    this.loadTable();
     this.cdRef.detectChanges();
   }
 }

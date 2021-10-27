@@ -207,22 +207,18 @@ export class ReportService  {
       const dataset = this.getTableData(data, _.get(table, 'id'));
       const tableData: any = {};
       tableData.id = tableId;
-      tableData.data = dataset.data;
       tableData.name = _.get(table, 'name') || 'Table';
-      tableData.filters = _.get(table, 'filters') || [];
-      tableData.gridConfig = {
-            bLengthChange: true,
-            lengthMenu:_.get(table, 'lengthMenu') || [25,50,100],
-            pageLength: _.get(table, 'pageLength') || 25,
-            order: _.get(table, 'order') || [1,'desc'],
-            bFilter: _.get(table, 'searchable') || false,
-            paging: _.get(table, 'paging') || true,
+      tableData.config = _.get(table, 'config') ||  false;
+      if(!tableData.config){
+        tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));   
+      } else {
+        tableData.data = dataset.data;
       }
       tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
         hash ? this.getParameterFromHash(hash) : null);
-      tableData.columnConfig = _.get(table, 'columnConfig') || this.prepareColumnsConfig(tableData.header);
       return tableData;
+
     });
   }
 
@@ -553,17 +549,6 @@ export class ReportService  {
       result.push(report);
       return result;
     }, []);
-  }
-  public prepareColumnsConfig(columns){
-
-    let config = [];
-    columns.forEach(element => {
-      config.push({
-        "title": element,
-        "data": element
-      })
-    });
-     return config;
   }
 
 }

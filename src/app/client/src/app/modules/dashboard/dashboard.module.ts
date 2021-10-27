@@ -50,7 +50,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
     DiscussionModule,
-    DashletModule,
+    DashletModule.forRoot(),
     MatCheckboxModule,
     MatTabsModule,
     MatSlideToggleModule,
