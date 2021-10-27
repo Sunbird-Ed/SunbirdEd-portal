@@ -43,10 +43,13 @@ export class AllMyEventsComponent implements OnInit {
   Filterdata: any; 
   libEventConfig:any; 
   dates: any;
-  tommorrowDate:any;
-  todayDate:any;
-  yesterdayDate: any;
+ 
   query: any;
+  today = new Date();
+  todayDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate())).slice(-2);
+  yesterdayDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate()-1)).slice(-2);
+  tommorrowDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate()+1)).slice(-2);
+
   constructor( 
      private eventListService:EventListService,
     // private eventCreateService: EventCreateService,

@@ -13,26 +13,12 @@
         <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
         <div *ngIf="eventList?.length > 0 && eventList != 'undefined'" >
           <sb-event-list 
-              [list]="eventList" 
-              [myEvents]="myEvents" 
+              [list]="eventList"
               (eventDetailData)="navToEventDetail($event)">
           </sb-event-list>
-      </div>
-        <!-- <sb-event-list *ngIf="eventList?.length > 0 && eventList != 'undefined'" [list]="eventList"[myEvents]="myEvents" (eventDetailData)="navToEventDetail($event)"></sb-event-list> -->
-      </div>
-      <!-- -------------- -->
+        </div>
+       </div>
     
-        <!-- <div class="ui container mt-24" *ngIf="tab == 'list'">
-           
-                <div *ngIf="eventList?.length > 0 && eventList != 'undefined'" >
-                    <sb-event-list 
-                        [list]="eventList" 
-                        [myEvents]="myEvents" 
-                        (eventDetailData)="navToEventDetail($event)">
-                    </sb-event-list>
-                </div>
-        </div> -->
-        <!-- ---------- -->
     </div>
     <app-browser-compatibility [showModal]="true"></app-browser-compatibility>
   </div>

@@ -46,9 +46,11 @@ export class EventViewTypeComponent implements OnInit {
   Filterdata: any;     
   libEventConfig:any; 
   dates: any;
-  tommorrowDate:any;
-  todayDate:any;
-  yesterdayDate: any;
+  today = new Date();
+  todayDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate())).slice(-2);
+  yesterdayDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate()-1)).slice(-2);
+  tommorrowDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate()+1)).slice(-2);
+
   query: any;
   constructor(public eventListService: EventListService,
     public eventFilterService: EventFilterService,
@@ -276,11 +278,19 @@ export class EventViewTypeComponent implements OnInit {
      });
  }
    Openview(view) {  
+   
+    var listProperty = document.getElementById("list");
+    var calendarProperty = document.getElementById("calendar");
+ 
     if (view == 'list') {    
       this.tab = 'list';
+      listProperty.style.backgroundColor = "#008840";
+      calendarProperty.style.backgroundColor = "#ffffff";
     } 
      else if (view == 'calender') {
       this.tab = 'calender';
+      calendarProperty.style.backgroundColor = "#008840";
+      listProperty.style.backgroundColor = "#ffffff";
       //this.router.navigate(['/calender']);
      }
     
@@ -326,10 +336,7 @@ export class EventViewTypeComponent implements OnInit {
      });
  }
  navToEventDetail(event){
-  // this.router.navigate(['/enroll-users'], {
-    // queryParams: {
-    //   identifier: this.queryParams.identifier
-    // }
-  this.router.navigate(['/events/detail'], { queryParams:  { eventId: event.identifier } });
+  this.router.navigate(['/events/detail'], 
+  { queryParams:  { eventId: event.identifier } });
  }
 }
