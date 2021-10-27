@@ -14,7 +14,7 @@ function proxyObject() {
     isAPIWhitelisted.isAllowed()
     return proxy(learnerURL, {
         limit: reqDataLimitOfContentUpload,
-        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+        proxyReqOptDecorator: addHeaders(),
         proxyReqPathResolver: function (req) {
             let urlParam = req.path.replace('/learner/', '')
             let query = require('url').parse(req.url).query
@@ -26,11 +26,10 @@ function proxyObject() {
         },
         userResDecorator: function (proxyRes, proxyResData, req, res) {
             let resData = proxyResData.toString('utf8');
-            let data = resData;
             try {
+                let data = JSON.parse(resData);
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
-
             } catch (err) {
                 console.log('error', err);
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
@@ -38,3 +37,9 @@ function proxyObject() {
         }
     });
 } 
+function addHeaders() {
+    return function (proxyReqOpts, srcReq) { 
+        proxyReqOpts.headers['content-type'] = 'text/plain';
+        return proxyReqOpts;
+    }
+}

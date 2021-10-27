@@ -1,4 +1,4 @@
-  <form [formGroup]="filtersFormGroup"  class="ui form"
+  <form [formGroup]="filtersFormGroup"  class="sb-form"
   [ngClass]="{'hide': hideElements}" *ngIf="showFilters && !hideElements">
  
   <!-- <sui-accordion class="styled fluid" [closeOthers]="false">
@@ -8,9 +8,9 @@
         {{resourceService?.frmelmnts?.lbl?.filters }}
       </div> -->
       <div content>
-        <div class="sb-prominent-filter p-0">
-          <div class="sb-prominent-filter-container pb-0">
-            <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
+        <div>
+          <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center">
+            <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
               <label>{{filter.displayName}}</label>
               <div *ngIf="filter.controlType === 'multi-select'">
                 <sui-multi-select [hasLabels]="false" class="selection sb-select-searchfilter"
@@ -34,7 +34,7 @@
               <div *ngIf="filter.controlType === 'date'">
                 <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                   [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
-                  [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="form-control" type="text"
+                  [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="sb-form-control" type="text"
                   [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
                   [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
                   [minDate]="pickerMinDate" [maxDate]="pickerMaxDate"

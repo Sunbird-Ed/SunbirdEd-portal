@@ -61,10 +61,6 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     //   did: _.get(srcReq, 'headers.x-device-id'),
     //   uid: userId ? userId : 'anonymous'
     // });
-    if (srcReq.url.includes('/learner/notification/v1/feed/read/')) {
-      proxyReqOpts.headers['content-type'] = 'text/plain';
-    }
-
     return proxyReqOpts
   }
 }
