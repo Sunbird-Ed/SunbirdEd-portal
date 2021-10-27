@@ -146,5 +146,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.reportsListVersion = null;
     locals.publicStorageAccount = null;
     locals.sunbirdDefaultFileSize = null;
+    locals.blobUrl = null;
     return locals;
   }

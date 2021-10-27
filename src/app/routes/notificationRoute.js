@@ -36,8 +36,7 @@ function proxyObject() {
             }
         }
     });
-}
-
+} 
 function addHeaders() {
     return function (proxyReqOpts, srcReq) { 
         proxyReqOpts.headers['content-type'] = 'text/plain';
