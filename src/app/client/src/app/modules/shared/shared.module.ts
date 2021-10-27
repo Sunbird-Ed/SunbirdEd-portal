@@ -35,6 +35,18 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
+import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatInputModule   } from "@angular/material/input";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatListModule } from "@angular/material/list";
+import { MatSelectModule } from "@angular/material/select";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+// import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -45,7 +57,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     FormsModule, ReactiveFormsModule, NgxDatatableModule,
     TelemetryModule,
     TranslateModule.forChild(),
-    MatTooltipModule, MatTabsModule, MatDialogModule
+    MatTooltipModule, MatTabsModule, MatDialogModule,
+    MatAutocompleteModule,MatFormFieldModule, MatInputModule,
+    MatChipsModule,MatIconModule,MatSelectModule,MatListModule,MatButtonModule,MatCheckboxModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -54,7 +68,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
-    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective],
+    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
+    AutocompletePipe,MaterialAutoCompleteComponent
+  ],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
@@ -63,7 +79,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
-    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective],
+    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
+    AutocompletePipe,MaterialAutoCompleteComponent
+  ],
   entryComponents: [AlertModalComponent]
 })
 export class SharedModule {
