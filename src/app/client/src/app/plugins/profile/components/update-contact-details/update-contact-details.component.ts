@@ -183,6 +183,9 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
           (err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
         this.toasterService.error(failedgenerateOTPMessage);
         this.enableSubmitBtn = true;
+        if (!this.verifiedUser) {
+            this.closeModal();
+        }
       }
     );
   }
