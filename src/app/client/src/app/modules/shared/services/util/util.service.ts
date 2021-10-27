@@ -483,4 +483,8 @@ export class UtilService {
   getSectionPillIcon(iconObj, pillValue) {
     return _.get(iconObj, pillValue) || _.get(iconObj, 'default');
   }
+
+  get isIos() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+  }
 }

@@ -115,6 +115,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isGuestUser = true;
   guestUserDetails;
   showYearOfBirthPopup = false;
+  public isIOS = false;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -217,6 +218,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this._document.body.classList.add('desktop-app');
