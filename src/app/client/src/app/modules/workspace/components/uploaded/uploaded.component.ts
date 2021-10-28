@@ -187,7 +187,7 @@ export class UploadedComponent extends WorkSpace implements OnInit, AfterViewIni
     };
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content && data.result.content.length > 0) {
+        if (data.result.count && !_.isEmpty(data.result.content)) {
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           const constantData = this.config.appConfig.WORKSPACE.Uploaded.constantData;

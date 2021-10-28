@@ -276,7 +276,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     };
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content && data.result.content.length > 0) {
+        if (data.result.count && !_.isEmpty(data.result.content)) {
           this.alltextbooks = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
