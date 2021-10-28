@@ -9,7 +9,6 @@ import { ResourceService } from '@sunbird/shared';
 })
 export class SbTableComponent implements AfterViewInit  {
   @Input() rowsData: Array<Object>;
-  load:boolean=false;
   data = {};
   @Input() config :Object;
 
