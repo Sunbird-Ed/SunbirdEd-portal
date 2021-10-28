@@ -9,9 +9,5 @@
 
 <div class="ml-20 mb-20" *ngIf="config.filters && config.filters.length >0"> <label class="filter-label">{{resourceService?.frmelmnts?.lbl?.chooseFilter}} </label> </div>
   <sb-dashlet  [type]="'table'" [data]="data" [config]="config" #lib>
-    <ng-template sbTemplateRef="header" let-config>
-
-    </ng-template>
-
   </sb-dashlet>
 </div>
