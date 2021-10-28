@@ -428,6 +428,7 @@ app-workspace {
 }
 
 .sbt-theme-bg-img {
+  display:none;
   position: fixed;
   z-index: -50;
   left: calculateRem(-106px);
@@ -458,6 +459,7 @@ app-workspace {
 }
 
 .sbt-theme-right-flower {
+  display: none;
   position: fixed;
   bottom: calculateRem(48px);
   width: calculateRem(288px);
@@ -1453,4 +1455,21 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   box-shadow: none;
   background: transparent;
   overflow:hidden !important;
+}
+
+// Accessible changes
+html[data-theme='Default'], [layout='joy']{
+  app-signup {
+    .sb-checkbox.sb-checkbox-primary label:before {
+      border-color: #004E8A;
+    }
+  }
+}
+
+html[data-theme='Darkmode'] {
+  app-signup {
+    .sb-checkbox.sb-checkbox-primary label:before {
+      border-color: var(--primary-color);
+    }
+  }
 }

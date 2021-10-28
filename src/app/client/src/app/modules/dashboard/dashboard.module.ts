@@ -34,6 +34,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+
 
 @NgModule({
   imports: [
@@ -55,7 +57,8 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     MatTabsModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    MatAutocompleteModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,

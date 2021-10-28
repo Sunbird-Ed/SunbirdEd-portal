@@ -189,20 +189,21 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     const option = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),
-      limit: _.get(this.allTabData, 'search.limit'),
+      limit: _.get(this.allTabData, 'search.limit') ?  _.get(this.allTabData, 'search.limit')
+      : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       offset: (this.paginationDetails.currentPage - 1) * (this.configService.appConfig.SEARCH.PAGE_LIMIT),
       query: this.queryParams.key,
       sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
       facets: this.globalSearchFacets,
-      params: this.configService.appConfig.Course.contentApiQueryParams
+      params: this.configService.appConfig.Course.contentApiQueryParams,
+      pageNumber: this.paginationDetails.currentPage
     };
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
           const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
-            return ((this.queryParams['se_subjects'] && this.queryParams['se_subjects'].length > 0) ? content['primaryCategory'] :
-            (this.queryParams['key'] ? content['primaryCategory'] : content['subject']));
+            return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
         }), ['undefined']);
         for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key && key.split(',').length > 1;
