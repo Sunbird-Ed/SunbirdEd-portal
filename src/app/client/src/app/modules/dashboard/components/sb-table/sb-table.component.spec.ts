@@ -5,7 +5,7 @@ import { mockData } from './sb-table.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
-fdescribe('SbTableComponent', () => {
+describe('SbTableComponent', () => {
   let component: SbTableComponent;
   let fixture: ComponentFixture<SbTableComponent>;
   configureTestSuite();
