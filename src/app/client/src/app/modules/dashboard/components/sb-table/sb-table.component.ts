@@ -21,7 +21,6 @@ export class SbTableComponent implements AfterViewInit  {
     this.data = {
       values:this.rowsData
     }
-    this.load =true;
     this.cdRef.detectChanges();
   }
   ngAfterViewInit() {
@@ -32,9 +31,7 @@ export class SbTableComponent implements AfterViewInit  {
     this.lib.instance.exportAs('csv');
   }
   reset(){
-    this.load=false;
     this.lib.instance.reset();
     this.loadTable();
-    this.cdRef.detectChanges();
   }
 }

@@ -5,7 +5,7 @@ import { mockData } from './sb-table.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
-describe('SbTableComponent', () => {
+fdescribe('SbTableComponent', () => {
   let component: SbTableComponent;
   let fixture: ComponentFixture<SbTableComponent>;
   configureTestSuite();
@@ -35,9 +35,6 @@ describe('SbTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SbTableComponent);
     component = fixture.componentInstance;
-    component.rowsData = mockData.rowsData;
-    component.config = mockData.config;
-  
     fixture.detectChanges();
   });
 
@@ -45,16 +42,12 @@ describe('SbTableComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should call loadTable', () => {
+
+    component.rowsData = mockData.rowsData;
+    component.config = mockData.config;
     component.loadTable();
-    expect(component.rowsData).toBe(mockData.rowsData);
-    expect(component.load).toBe(true);
-
-  });
-  it('should call reset', () => {
-    component.ngAfterViewInit();
-    expect(component.rowsData).toBe(mockData.rowsData);
-    expect(component.load).toBe(true);
-
+    expect(component.data).toEqual( { values:mockData.rowsData });
+  
   });
 
 });
