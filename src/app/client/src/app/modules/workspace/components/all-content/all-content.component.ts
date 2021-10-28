@@ -293,7 +293,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     }
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && (data.result.content.length > 0 || data.result.QuestionSet.length > 0)) {
+        if (data.result.count && ((data.result.content && data.result.content.length > 0) ||
+        (data.result.QuestionSet && data.result.QuestionSet.length > 0))) {
           if (this.isQuestionSetFilterEnabled === true && data.result.QuestionSet) {
             data.result.content = _.concat(data.result.content, data.result.QuestionSet);
           }
