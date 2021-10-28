@@ -14,8 +14,9 @@ import { UUID } from 'angular2-uuid';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
+
 @Injectable()
-export class ReportService {
+export class ReportService  {
 
   private _superAdminSlug: string;
 
@@ -207,11 +208,17 @@ export class ReportService {
       const tableData: any = {};
       tableData.id = tableId;
       tableData.name = _.get(table, 'name') || 'Table';
+      tableData.config = _.get(table, 'config') ||  false;
+      if(!tableData.config){
+        tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));   
+      } else {
+        tableData.data = dataset.data;
+      }
       tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
-      tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
         hash ? this.getParameterFromHash(hash) : null);
       return tableData;
+
     });
   }
 
