@@ -36,7 +36,6 @@ Sunbird dev has 2 parts
 		2. Node server
     
    Go to src/app/helpers/ replace environmentVariablesHelper.js
-   Get the file by sending email to devops@ekstep.org
     
 ### Installing and running Angular client
 
