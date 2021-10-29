@@ -575,7 +575,8 @@ describe('ReportService', () => {
         {
           'id': 'board_wise_devices_12',
           'columnsExpr': 'keys',
-          'valuesExpr': 'tableData'
+          'valuesExpr': 'tableData',
+          'config':false
         }],
       data: [
         {
@@ -592,7 +593,8 @@ describe('ReportService', () => {
       name: 'Table',
       header: [],
       data: [],
-      downloadUrl: ''
+      downloadUrl: '',
+      config:false
     }]);
   });
 

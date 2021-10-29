@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer, of } from 'rxjs';
@@ -16,6 +16,8 @@ import { map, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
@@ -29,6 +31,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() isUserReportAdmin = false;
   @Output() openAddSummaryModal = new EventEmitter();
   @Input() hash: string;
+
+  @ViewChild('filterPopUpMat') filterPopUpMat: TemplateRef<any>;
 
 
  public unsubscribe = new Subject<void>();
@@ -81,12 +85,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartCanvas') chartCanvas;
   filterType = 'chart-filter';
   dateFilters: Array<string>;
-
+  dialogRef:any;
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
-    private usageService: UsageService, private reportService: ReportService) {
+    private usageService: UsageService, private reportService: ReportService,private dialog: MatDialog) {
     this.alwaysShowCalendars = true;
   }
 
@@ -452,7 +456,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   filterModalPopup(operator) {
 
     if (operator == false) {
-      this.filterPopup = false;
+      this.closeDialog()
       this.cdr.detectChanges();
     } else {
       if (this.currentFilters) {
@@ -462,7 +466,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         this.chartData['selectedFilters'] = {};
       }
       this.cdr.detectChanges();
-      this.filterPopup = true;
+      this.openDialog();
     }
 
   }
@@ -481,5 +485,15 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
   getChartData(){
     return [{ id:this.chartConfig.id ,data: this.chartData , selectedFilters:this.currentFilters }];
+  }
+  openDialog() {
+    if(this.filterPopUpMat){
+      this.dialogRef = this.dialog.open(this.filterPopUpMat);
+    }
+  }
+  closeDialog() {
+    if(this.dialogRef){
+      this.dialogRef.close();
+    }
   }
 }
