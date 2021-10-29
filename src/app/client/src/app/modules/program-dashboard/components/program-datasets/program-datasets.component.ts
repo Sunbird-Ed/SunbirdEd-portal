@@ -182,6 +182,12 @@ export class DatasetsComponent implements OnInit {
       });
       this.tag = solution[0]._id+"_"+this.userId;
       this.loadReports();
+
+      let program = this.programSelected;
+      this.reportForm.reset();
+      this.reportForm.controls.solution.setValue($event);
+      this.reportForm.controls.programName.setValue(program);
+
       if (solution[0].isRubricDriven == true && solution[0].type == "observation") {
         let type = solution[0].type + "_with_rubric";
         this.reportTypes = this.formData[type];
@@ -189,10 +195,6 @@ export class DatasetsComponent implements OnInit {
         if(this.formData[solution[0].type]){
           this.reportTypes = this.formData[solution[0].type];
         } else {
-          let program = this.programSelected;
-          this.reportForm.reset();
-          this.reportForm.controls.solution.setValue($event);
-          this.reportForm.controls.programName.setValue(program);
           this.reportTypes = [];
         }
       }
