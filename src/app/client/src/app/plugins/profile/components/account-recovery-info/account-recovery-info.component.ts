@@ -79,8 +79,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
         this.otpData = {
             'type': request.type,
             'value': request.key,
-            'instructions': request.type === 'phone' ?
-              this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
+            'instructions': this.resourceService.frmelmnts.lbl.otpcontactinfo,
             'retryMessage': request.type === 'phone' ?
               this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
             'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :

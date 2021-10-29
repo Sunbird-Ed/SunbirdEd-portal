@@ -139,7 +139,9 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     const request = {
       'request': {
         'key': this.otpData.value,
-        'type': this.otpData.type
+        'type': this.otpData.type,
+        ...( this.otpData.value && this.otpData.value.match(/(([a-z]|[A-Z])+[*]+([a-z]*[A-Z]*[0-9]*)*@)|([0-9]+[*]+[0-9]*)+/g) &&
+        { 'userId': this.userService.userid })
       }
     };
     this.otpService.generateOTP(request).subscribe(
