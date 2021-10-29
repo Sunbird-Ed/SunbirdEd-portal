@@ -37,7 +37,7 @@ export class AllMyEventsComponent implements OnInit {
   // formFieldProperties: any;
   filterConfig: any;
   isLoading: boolean =  true;
-   myEvents: any[];
+  myEvents: any[];
   // p: number = 1;
   // collection: any[];
   Filterdata: any; 
