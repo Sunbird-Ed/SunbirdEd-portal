@@ -13,8 +13,8 @@ const routes: Routes = [
   {
     path: '', component: EventViewTypeComponent,  
   },
-  { path: 'list', component: EventViewTypeComponent,  },
-  { path: 'detail', component: EventDetailComponent,}
+  { path: 'published', component: EventViewTypeComponent},
+  { path: 'detail', component: EventDetailComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

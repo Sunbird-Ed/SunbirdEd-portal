@@ -40,7 +40,7 @@ const routes: Routes = [
     path: 'guest-profile', loadChildren: () => import('./module/guest-profile/guest-profile.module').then(m => m.GuestProfileModule)
   },
   {
-    path: 'events', loadChildren: () => import('./module/events/events.module').then(m => m.EventsModule)
+    path: 'explore-events', loadChildren: () => import('./module/events/events.module').then(m => m.EventsModule)
   }
 ];
 @NgModule({

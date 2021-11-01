@@ -351,7 +351,7 @@ export class EventViewTypeComponent implements OnInit {
      });
  }
  navToEventDetail(event){
-  this.router.navigate(['/events/detail'], 
+  this.router.navigate(['/explore-events/detail'], 
   { queryParams:  { eventId: event.identifier } });
  }
 }

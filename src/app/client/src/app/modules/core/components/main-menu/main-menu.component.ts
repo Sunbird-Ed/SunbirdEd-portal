@@ -179,7 +179,7 @@ export class MainMenuComponent implements OnInit {
     if (this.activatedRoute.snapshot.queryParams.clientId === 'android') {
       window.location.href = '/explore-course';
     } else {
-      this.router.navigate(['/events/list']);
+      this.router.navigate(['/explore-events/published']);
     }
   }
   

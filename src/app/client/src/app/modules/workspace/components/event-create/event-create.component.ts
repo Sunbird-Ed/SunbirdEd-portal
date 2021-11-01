@@ -148,9 +148,6 @@ export class EventCreateComponent implements OnInit {
   }
 
   navAfterSave(res){
-    this.router.navigate(['/workspace/allMyEvents']);   
+    this.router.navigate(['/workspace/content/create']);   
   }
 }
-
-
-
