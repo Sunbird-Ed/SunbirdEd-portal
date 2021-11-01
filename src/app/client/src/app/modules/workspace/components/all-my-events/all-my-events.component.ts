@@ -84,21 +84,8 @@ export class AllMyEventsComponent implements OnInit {
       this.isLoading = false;
     },err=>{console.log("here",err);}
     )
-    // this.eventList = MyEventListData.MyEventList.result.events;
   }
 
-  //  /**
-  //  * For get List of events
-  //  */
-  //   showMyEventListPage(){
-      
-  //     this.eventListService.getMyEventList(this.userId).subscribe((data:any)=>{
-  //        console.log("mylistdata = ", data.result.events);
-  //       this.myEvents = data.result.events;
-  //       this.isLoading = false;
-  //     },err=>{console.log("thissss",err);}
-  //     )
-  //   }
 
   /**
    * For subscibe click action on event card
@@ -125,8 +112,6 @@ export class AllMyEventsComponent implements OnInit {
   }
 
   setEventConfig() {
-    // tslint:disable-next-line:max-line-length
-    // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
     this.libEventConfig = {
       context: {
         user:this.userService.userProfile,

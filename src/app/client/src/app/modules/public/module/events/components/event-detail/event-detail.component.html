@@ -1,9 +1,13 @@
-<div class="box-padding"><div class="ui container">
+<!-- <div class="ui container"> -->
+    <div class="box-padding">
+        <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
 <lib-event 
     [libEventConfig]="libEventConfig">
 </lib-event>
+<div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
 <sb-cover-event-detail *ngIf="eventItem" [eventDetailItem]="eventItem"></sb-cover-event-detail>
 <sb-join-event-button  *ngIf="eventItem"[eventDetailItem]="eventItem" [canUnenroll]="true"></sb-join-event-button>
 <sb-advance-event-detail  *ngIf="eventItem"[eventDetailItem]="eventItem"></sb-advance-event-detail>
+</div>
 </div>
 </div>

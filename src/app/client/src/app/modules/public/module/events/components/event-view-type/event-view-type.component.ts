@@ -9,7 +9,7 @@ import { FrameworkService, UserService } from '@sunbird/core';
 import {CalendarEvent} from 'angular-calendar';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import * as MyEventLFilter from '../../interface/MyEventLFilter';
-import {ToasterService}from '@sunbird/shared';
+import {ToasterService,LayoutService, COLUMN_TYPE}from '@sunbird/shared';
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -55,15 +55,20 @@ export class EventViewTypeComponent implements OnInit {
   tommorrowDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate()+1)).slice(-2);
 
   query: any;
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
   constructor(public eventListService: EventListService,
     public eventFilterService: EventFilterService,
     private eventCreateService: EventCreateService,
     // private eventDetailService: EventDetailService,
     private router: Router,public userService: UserService,
-    public frameworkService:FrameworkService, public toasterService:ToasterService) { }
+    public frameworkService:FrameworkService, 
+    public toasterService:ToasterService,
+    public layoutService: LayoutService,) { }
 
   ngOnInit() {
-     
+    this.initConfiguration();
     // this.eventtype();
 
     this.showEventListPage();
@@ -73,7 +78,31 @@ export class EventViewTypeComponent implements OnInit {
     this.showCalenderEvent();
     this.setEventConfig();
   }
+  private initConfiguration() {
+    // this.defaultFilters = this.userService.defaultFrameworkFilters;
+    // if (this.utilService.isDesktopApp) {
+    //     this.setDesktopFilters(true);
+    // }
+    // this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+}
 
+redoLayout() {
+    // const contentType = _.get(this.getCurrentPageData(), 'contentType');
+    // if (this.isDesktopApp) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    // } else {
+    //     if (this.layoutConfiguration != null && (contentType !== 'home' && contentType !== 'explore')) {
+    //         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    //         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    //     } else {
+    //         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+    //         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+    //     }
+    // }
+}
   showEventListPage(){
     this.Filterdata = {
       "status":["live"],

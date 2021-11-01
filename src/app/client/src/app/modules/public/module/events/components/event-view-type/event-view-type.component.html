@@ -1,19 +1,25 @@
-<div class="m-20">
+<ng-container>
+  <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
+  <div class="m-20">
     <button class="ripple w-16 primary"id="list"   style= "color:''" (click)="Openview('list')">List
         view</button>
 
     <button class=" ripple w-16 ml-16 primary" id="calendar" style= "color:''" (click)="Openview('calender')">Calender</button>
     <hr />
 </div>
-<ng-container>
+
 <lib-event 
     [libEventConfig]="libEventConfig">
 </lib-event>
-<div class="ui container mt-24" *ngIf="tab == 'list'">
+<div class="sb-g"
+            [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
+            *ngIf="tab == 'list'">
+<div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
     <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
         *ngIf="filterConfig" 
         [filterConfig]="filterConfig"> </sb-event-filter>
-        <div *ngIf="eventList?.length > 0 && eventList != 'undefined'" >
+</div>
+        <div *ngIf="eventList?.length > 0 && eventList != 'undefined'" class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12" >
             <sb-event-list 
                 [list]="eventList" 
                 [myEvents]="myEvents" 
@@ -39,12 +45,13 @@
       </div>
 </div>
 
-<div class="ui container mt-24" *ngIf="tab == 'calender'">
+<div [ngClass]="[layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24']" *ngIf="tab == 'calender'">
     <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
         *ngIf="filterConfig" 
         [filterConfig]="filterConfig"> </sb-event-filter>
     <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
     <lib-event-calender *ngIf="events" [events]='events'></lib-event-calender>
     <br><br><br>
+</div>
 </div>
 </ng-container>

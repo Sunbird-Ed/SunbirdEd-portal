@@ -19,7 +19,7 @@ import { LibEventService, EventDetailService } from 'ngtek-event-library';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { FrameworkService, UserService } from '@sunbird/core';
-
+import {ToasterService, LayoutService, COLUMN_TYPE}from '@sunbird/shared';
 @Component({
   selector: 'app-event-detail',
   templateUrl: './event-detail.component.html',
@@ -34,11 +34,15 @@ export class EventDetailComponent implements OnInit {
   queryParams : any;
   eventDetailItem: any;
   libEventConfig: any;
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
   constructor(private eventDetailService: EventDetailService ,
     private activatedRoute : ActivatedRoute,
     // private libEventService: LibEventService ,
     public userService: UserService,
-    public frameworkService:FrameworkService
+    public frameworkService:FrameworkService,
+    public layoutService: LayoutService
    ) { }
 
 
@@ -59,6 +63,7 @@ export class EventDetailComponent implements OnInit {
     // this.eventConfig = _.get(this.libEventService.eventConfig, 'context.user');
     this.userId=this.userService.userid;  
      this.setEventConfig();
+     this.initConfiguration();
   });
 }
 setEventConfig() {
@@ -80,5 +85,30 @@ setEventConfig() {
   };
 }
 
+private initConfiguration() {
+  // this.defaultFilters = this.userService.defaultFrameworkFilters;
+  // if (this.utilService.isDesktopApp) {
+  //     this.setDesktopFilters(true);
+  // }
+  // this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
+  this.layoutConfiguration = this.layoutService.initlayoutConfig();
+  this.redoLayout();
+}
+
+redoLayout() {
+// const contentType = _.get(this.getCurrentPageData(), 'contentType');
+// if (this.isDesktopApp) {
+  this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+  this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+// } else {
+//     if (this.layoutConfiguration != null && (contentType !== 'home' && contentType !== 'explore')) {
+//         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+//         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+//     } else {
+//         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+//         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+//     }
+// }
+}
 }
 

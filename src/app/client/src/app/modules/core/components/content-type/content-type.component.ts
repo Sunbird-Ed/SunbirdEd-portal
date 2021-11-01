@@ -184,4 +184,13 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   isLayoutAvailable() {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
+  navigateToEventPage() {
+    if (this.activatedRoute.snapshot.queryParams.clientId === 'android') {
+      window.location.href = '/explore-course';
+    } else {
+      this.selectedContentType = 'events';
+      this.router.navigate(['/explore-events/published']);
+      this.selectedContentType = 'events';
+    }
+  }
 }
