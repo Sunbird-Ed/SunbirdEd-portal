@@ -46,6 +46,9 @@ export class EventViewTypeComponent implements OnInit {
   Filterdata: any;     
   libEventConfig:any; 
   dates: any;
+  EventCount: any;
+  url;
+  currentPage;
   today = new Date();
   todayDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate())).slice(-2);
   yesterdayDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate()-1)).slice(-2);
@@ -79,7 +82,7 @@ export class EventViewTypeComponent implements OnInit {
       
       this.eventListService.getEventList(this.Filterdata).subscribe((data:any)=>{
         console.log("listdata = ", data);
-      
+      this.EventCount= data.result?.count;
       this.eventList = data.result?.Event;
       console.log("listdata = ",  this.eventList, "--------------", data['result']?.Event);
       this.isLoading = false;
@@ -252,8 +255,10 @@ export class EventViewTypeComponent implements OnInit {
      if (data.responseCode == "OK") 
        {
           console.log("listdata = ", data);
+          console.log("EventCount = ", data.result.count);
       
          this.isLoading=false;
+         this.EventCount= data.result.count;
          this.eventList = data.result.Event;
 
          // For calendar events
@@ -294,6 +299,16 @@ export class EventViewTypeComponent implements OnInit {
       //this.router.navigate(['/calender']);
      }
     
+  }
+  handleEvent() {
+    // this.exploreMoreContent.emit();
+    this.url = '/explore';
+    if (this.userService.loggedIn) {
+      this.url = _.get(this.currentPage, 'loggedInUserRoute.route');
+    } else {
+      this.url = _.get(this.currentPage, 'anonumousUserRoute.route');
+    }
+    this.router.navigate([this.url], { queryParams: { selectedTab: 'all' } });
   }
 
   /**
