@@ -42,6 +42,7 @@ export const urlConfig = {
 
     // update: "/event/v4/update",
     update: "/api/event/v4/update",
+    myEventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
 
     // detail :  "/event/v4/read/",
     detail: "/api/event/v4/read/",

@@ -77,9 +77,6 @@ export class EventViewTypeComponent implements OnInit {
     // this.showCalenderEvent(MyCalendarList);
     this.showCalenderEvent();
     this.setEventConfig();
-
-    var listProperty = document.getElementById("list");
-    listProperty.style.backgroundColor = "#008840";
   }
   private initConfiguration() {
     // this.defaultFilters = this.userService.defaultFrameworkFilters;
@@ -156,7 +153,7 @@ redoLayout() {
      
   }
   showFilters() {
-      this.eventFilterService.getFilterFormConfig().subscribe((data: any) => {
+      this.eventListService.getFilterFormConfig().subscribe((data: any) => {
         this.filterConfig = data.result['form'].data.fields;
         this.isLoading = false;
   
