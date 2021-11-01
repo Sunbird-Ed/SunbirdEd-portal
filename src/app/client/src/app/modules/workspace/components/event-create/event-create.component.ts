@@ -43,68 +43,6 @@ export class EventCreateComponent implements OnInit {
     // this.showMyEventListPage();
   }
 
-  // /**
-  //  * For get List of events
-  //  */
-  //  showEventListPage(){
-  //   this.eventListService.getEventList().subscribe((data:any)=>{
-  //      console.log("listdata = ", data.result.events);
-  //     this.eventList = data.result.events;
-  //     this.isLoading = false;
-  //   })
-  // }
-
-  //  /**
-  //  * For get List of events
-  //  */
-  //   showMyEventListPage(){ 
-  //     this.eventListService.getMyEventList(this.userId).subscribe((data:any)=>{
-  //        console.log("mylistdata = ", data.result.events);
-  //       this.myEvents = data.result.events;
-  //       this.isLoading = false;
-  //     },err=>{console.log("thissss",err);}
-  //     )
-  //   }
-
-  // /**
-  //  * For subscibe click action on event card
-  //  */
-  //  navToEventDetail(event){
-  //   this.router.navigate(['/play/event-detail'], {
-  //     queryParams: {
-  //       identifier: event.identifier
-  //     }
-  //   });
-
-  //   console.log('Demo Component - ', event.identifier);
-  // }
-  
-
-  // Openview(view)
-  // {
-  //   this.isLoading = true;
-
-  //   if(view == 'list' )
-  //   {
-  //     this.tab = 'list';
-  //   }
-  //   else if(view == 'detail')
-  //   {
-  //     this.tab = 'detail';
-  //   }
-  //   else
-  //   {
-  //     // this.tab = 'form';
-  //     this.router.navigate(['/form'], {
-  //       queryParams: {
-  //         // identifier: event.identifier
-  //       }
-  //     });
-  //   }
-
-  //   this.isLoading = false;
-  // }
-
 
   showEventCreatePage() {
     this.eventCreateService.getEventFormConfig().subscribe((data: any) => {
@@ -114,9 +52,6 @@ export class EventCreateComponent implements OnInit {
       console.log('EventCreate = ',data.result['form'].data.fields);
     },err=>{console.error("hi", err);}
     )
-      // this.formFieldProperties = eventCreateFields.eventCreate.result['form'].data.fields;
-      // console.log('EventCreate.fields = ',this.formFieldProperties);
-
   }
   routeToCreate(){
     this.router.navigate(['workspace/content/create']);

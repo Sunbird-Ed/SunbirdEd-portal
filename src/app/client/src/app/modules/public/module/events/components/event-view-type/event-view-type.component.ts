@@ -77,6 +77,9 @@ export class EventViewTypeComponent implements OnInit {
     // this.showCalenderEvent(MyCalendarList);
     this.showCalenderEvent();
     this.setEventConfig();
+
+    var listProperty = document.getElementById("list");
+    listProperty.style.backgroundColor = "#008840";
   }
   private initConfiguration() {
     // this.defaultFilters = this.userService.defaultFrameworkFilters;
