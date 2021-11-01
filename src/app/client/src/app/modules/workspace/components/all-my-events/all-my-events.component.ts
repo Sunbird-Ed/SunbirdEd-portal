@@ -231,24 +231,8 @@ export class AllMyEventsComponent implements OnInit {
    this.eventListService.getEventList(this.Filterdata,this.query).subscribe((data) => {
      if (data.responseCode == "OK") 
        {
-         console.log("fffffff-------------",data);
          this.isLoading=false;
          this.eventList = data.result.Event;
-
-         // For calendar events
-         this.eventList = this.eventList.map(obj => ({
-         start: new Date(obj.startDate),
-         title: obj.name,
-         starttime: obj.startTime,
-         end: new Date(obj.endDate),
-         color: colors.red,
-         cssClass: obj.color,
-         status: obj.status,
-         onlineProvider: obj.onlineProvider,
-         audience: obj.audience,
-         owner: obj.owner,
-         identifier:obj.identifier,
-         }));
        }
      }, (err) => {
        this.isLoading=false;
