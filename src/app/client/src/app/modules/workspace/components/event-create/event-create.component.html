@@ -2,9 +2,12 @@
     [libEventConfig]="libEventConfig">
 </lib-event>
 <ng-container>
-<header class="sb-bg-color-primary headerClass" >
-    <button class="buttonClass" (click)="routeToCreate();">Back</button>
-</header>
- <sb-event-create [formFieldProperties]="formFieldProperties" 
-        (closeSaveForm)="cancel($event)" (navAfterSave)="navAfterSave($event);"></sb-event-create>
+    <div class="relative9">
+        <header class="sb-bg-color-primary headerClass" >
+            <button class="buttonClass" (click)="routeToCreate();">Back</button>
+        </header>
+        <sb-event-create [formFieldProperties]="formFieldProperties" 
+            (closeSaveForm)="cancel($event)" (navAfterSave)="navAfterSave($event);">
+        </sb-event-create>
+    </div>
 </ng-container>
