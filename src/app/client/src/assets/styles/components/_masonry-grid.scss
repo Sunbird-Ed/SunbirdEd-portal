@@ -8,9 +8,9 @@
     }
 }
 
-[dir="ltr"] .masonry-item {
-    margin: 0 calculateRem(16px) calculateRem(32px) 0;
-}
+// [dir="ltr"] .masonry-item {
+//     margin: 0 calculateRem(16px) calculateRem(32px) 0;
+// }
 
 [dir="rtl"] .masonry-item {
     margin: 0 0 calculateRem(32px) calculateRem(16px);
