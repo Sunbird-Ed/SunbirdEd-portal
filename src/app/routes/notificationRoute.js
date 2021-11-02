@@ -4,6 +4,7 @@ const learnerURL = envHelper.LEARNER_URL
 const proxy = require('express-http-proxy')
 const reqDataLimitOfContentUpload = '50mb'
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
+const { concatSeries } = require('async')
 
 module.exports = function (app) {
     app.get('/learner/notification/v1/feed/read/:userId', proxyObject());
@@ -13,7 +14,6 @@ module.exports = function (app) {
 function proxyObject() {
     isAPIWhitelisted.isAllowed()
     return proxy(learnerURL, {
-        limit: reqDataLimitOfContentUpload,
         proxyReqOptDecorator: addHeaders(),
         proxyReqPathResolver: function (req) {
             let urlParam = req.path.replace('/learner/', '')

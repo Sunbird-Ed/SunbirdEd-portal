@@ -178,7 +178,7 @@ describe('ViewAllComponent', () => {
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     component.pageNumber = 1;
     component.pager = Response.pager;
-    component.pageLimit = 20;
+    component.pageLimit = 100;
     component.pager.totalPages = 7;
     component.navigateToPage(1);
     expect(component.pageNumber).toEqual(1);
