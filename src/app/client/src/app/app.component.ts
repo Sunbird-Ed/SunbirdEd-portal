@@ -157,12 +157,24 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cacheService.removeAll();
   }
 
+  private setDynamicPageTitle() {
+    let child = this.activatedRoute.firstChild;
+    while (child.firstChild) {
+      child = child.firstChild;
+    }
+    const pageTitle = _.get(child, 'snapshot.data.pageTitle') || _.get(child, 'snapshot.data.telemetry.pageid') || _.get(this.userService, 'rootOrgName');
+    if (pageTitle) {
+      document.title = pageTitle;
+    }
+  }
+
   handleHeaderNFooter() {
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         tap((event: NavigationEnd) => this._routeData$.next(event))
       ).subscribe(data => {
+        this.setDynamicPageTitle();
         this.hideHeaderNFooter = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideHeaderNFooter') ||
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
@@ -688,7 +700,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private setPortalTitleLogo(): void {
     this.tenantService.tenantData$.subscribe(data => {
       if (!data.err) {
-        document.title = _.get(this.userService, 'rootOrgName') || _.get(data, 'tenantData.titleName');
+        // document.title = _.get(this.userService, 'rootOrgName') || _.get(data, 'tenantData.titleName');
         document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
       }
     });
