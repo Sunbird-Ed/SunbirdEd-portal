@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, SharedModule, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -15,7 +15,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { mockRes } from './user-org-management.mock.spec';
 
-
+let router: Router;
 const fakeActivatedRoute = {
   snapshot: {
     data: {
@@ -104,6 +104,7 @@ describe('UserOrgManagementComponent', () => {
   }));
 
   beforeEach(() => {
+    router = TestBed.get(Router);
     fixture = TestBed.createComponent(UserOrgManagementComponent);
     component = fixture.componentInstance;
     component.slug = 'sunbird';
@@ -293,5 +294,13 @@ describe('UserOrgManagementComponent', () => {
     spyOn(tncService, 'getAdminTnc').and.returnValue(observableOf(mockRes.tncConfigObj));
     component.getAdminPolicyTnC();
     expect(component.showAdminTnC ).toBeFalsy();
+  });
+  it('should call assignUserRole method and redirected to ', () => {
+    spyOn(component, 'assignUserRole').and.callThrough();
+    const router = TestBed.get(Router);
+    spyOn(router, 'navigate').and.callThrough();
+    component.assignUserRole();
+    expect(router.navigate).toHaveBeenCalledWith(['/manage/userRoleAssign']);
+    expect(component.assignUserRole).toHaveBeenCalled();
   });
 });

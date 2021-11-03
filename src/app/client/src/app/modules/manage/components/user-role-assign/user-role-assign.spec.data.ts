@@ -3,24 +3,99 @@ export const mockObject = {
     role: 'COURSE_MENTOR',
     orgId: '123456'
   },
+  roleList: [{
+    'roleName': 'Content Curation',
+    'role': 'CONTENT_CURATION',
+    'actions':[{
+      'id':'CONTENT_CURATION',
+      'name': 'Content Curation',
+      'urls':['','a']
+    }]
+  }, {
+    'roleName': 'Book Creator',
+    'role': 'BOOK_CREATOR',
+    'actions':[{
+      'id':'BOOK_CREATOR',
+      'name': 'Book Creator',
+      'urls':['','a']
+    }]
+  },{
+    'roleName': 'Book Reviewer',
+    'role': 'BOOK_REVIEWER',
+    'actions':[{
+      'id':'BOOK_REVIEWER',
+      'name': 'Book Reviewer',
+      'urls':['','a']
+    }]
+  }],
   userObj: {
     'id': 'api.user.read',
     'ver': 'v1',
     'ts': '2018-02-28 12:07:33:518+0000',
     'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'roles': [
+      {
+        'role': 'BOOK_REVIEWER',
+        'createdDate': null,
+        'updatedBy': '1405f334-ee59-42fc-befb-51986221881e',
+        'createdBy': '08631a74-4b94-4cf7-a818-831135248a4a',
+        'scope': [
+          {
+            'organisationId': '01269878797503692810'
+          }
+        ],
+        'updatedDate': null
+      },
+      {
+        'role': 'CONTENT_CREATOR',
+        'createdDate': null,
+        'updatedBy': '1405f334-ee59-42fc-befb-51986221881e',
+        'createdBy': '08631a74-4b94-4cf7-a818-831135248a4a',
+        'scope': [
+          {
+            'organisationId': '01269878797503692811'
+          }
+        ],
+        'updatedDate': null
+      },
+      {
+        'role': 'COURSE_MENTOR',
+        'createdDate': null,
+        'updatedBy': '1405f334-ee59-42fc-befb-51986221881e',
+        'createdBy': '08631a74-4b94-4cf7-a818-831135248a4a',
+        'scope': [
+          {
+            'organisationId': '01269878797503692811'
+          }
+        ],
+        'updatedDate': null
+      },
+      {
+        'role': 'COURSE_CREATOR',
+        'createdDate': null,
+        'updatedBy': '1405f334-ee59-42fc-befb-51986221881e',
+        'createdBy': '08631a74-4b94-4cf7-a818-831135248a4a',
+        'scope': [
+          {
+            'organisationId': '01269878797503692811'
+          }
+        ],
+        'updatedDate': null
+      }
+    ],
     'userOrgDetails': {
       'PUBLIC': {
-        'orgId': '01285019302823526477',
+        'orgId': '01269878797503692810',
         'orgName': 'ORG_001'
       },
       'COURSE_MENTOR': {
-        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+        'orgId': '01269878797503692810', 'orgName': 'ORG_001'
       },
       'COURSE_CREATOR': {
-        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+        'orgId': '01269878797503692810', 'orgName': 'ORG_001'
       },
       'ORG_ADMIN': {
-        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+        'orgId': '01269878797503692810', 'orgName': 'ORG_001'
       }
     },
   },
@@ -39,21 +114,21 @@ export const mockObject = {
     },
     'identifier': '874ed8a5-782e-4f6c-8f36-e0288455901e',
     'userName': 'ntptest102',
-    'rootOrgId': 'ORG_001',
+    'rootOrgId': '01269878797503692810',
     'userid': '874ed8a5-782e-4f6c-8f36-e0288455901e',
     'userOrgDetails': {
       'PUBLIC': {
-        'orgId': '01285019302823526477',
+        'orgId': '01269878797503692810',
         'orgName': 'ORG_001'
       },
       'COURSE_MENTOR': {
-        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+        'orgId': '01269878797503692810', 'orgName': 'ORG_001'
       },
       'COURSE_CREATOR': {
-        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+        'orgId': '01269878797503692810', 'orgName': 'ORG_001'
       },
       'ORG_ADMIN': {
-        'orgId': '01285019302823526477', 'orgName': 'ORG_001'
+        'orgId': '01269878797503692810', 'orgName': 'ORG_001'
       }
     },
   },

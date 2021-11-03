@@ -81,8 +81,8 @@ describe('UserRoleAssignComponent', () => {
     expect(component.showingResults).toBeFalsy();
   });
   it('should call getOrgDetails method', () => {
-    const userService = TestBed.get(UserService);
-    userService._userProfile = mockObject.userMockData;
+      const userService = TestBed.get(UserService);
+      userService._userProfile = mockObject.userMockData;
     spyOn(component, 'getOrgDetails').and.callThrough();
     component.getOrgDetails();
     expect(component.getOrgDetails).toHaveBeenCalled();
@@ -102,6 +102,39 @@ describe('UserRoleAssignComponent', () => {
     component.onEnter(key);
     spyOn(searchService, 'globalUserSearch').and.returnValue(observableOf(mockObject.userSearch));
     expect(component.onEnter).toHaveBeenCalled();
-    
+  });
+
+  it('should call manipulateUserObject ', () => {
+    const roleList = ['BOOK_REVIEWER'];
+    const objectToGetCreated = [{
+      'role':'BOOK_REVIEWER',
+      'orgName': 'tamilnadu',
+      'orgId': '01269878797503692810',
+      'roleName': 'Book Reviewer'
+    }]
+    component.allRoles = mockObject.roleList; 
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: mockObject.userMockData });
+    userService._rootOrgId = '01269878797503692810';
+    userService.rootOrgName = 'tamilnadu';
+    spyOn(component, 'manipulateUserObject').and.callThrough();
+    component.manipulateUserObject(mockObject.userObj);
+    expect(component.manipulateUserObject).toHaveBeenCalled();
+    expect(component.rootOrgRoles).toEqual(roleList);
+    expect(component.userRole).toEqual(objectToGetCreated);
+    expect(component.userAssignedRole).toEqual(roleList);
+    expect(component.showCards).toBeTruthy();
+  });
+  it('should call onSubmitForm ', () => {
+    component.userDetailsForm.controls['role'].setValue('PUBLIC');
+    component.userDetailsForm.controls['orgName'].setValue('tamilnadu');
+    component.userObj = mockObject.userObj;
+    spyOn(component, 'onSubmitForm').and.callThrough();
+    spyOn(component, 'updateProfile').and.callThrough();
+    spyOn(component, 'enableAssignRole').and.callThrough();
+    component.onSubmitForm();
+    expect(component.onSubmitForm).toHaveBeenCalled();
+    expect(component.updateProfile).toHaveBeenCalled();
+    expect(component.enableAssignRole).toHaveBeenCalled();
   });
 });
