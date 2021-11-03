@@ -428,7 +428,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
         behavior: 'smooth'
     });
 }
-  playContent(event, content) {
+  playContent(event, content?) {
     this.moveToTop();
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.publicPlayerService.playContent(event);
