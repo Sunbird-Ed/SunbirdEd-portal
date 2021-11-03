@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  EventViewTypeComponent, EventDetailComponent
+  EventViewTypeComponent, EventDetailComponent,EventReportComponent
 } from './components';
 import { EventRoutingModule } from './events.routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -22,7 +22,6 @@ import { EventLibraryModule } from 'ngtek-event-library';
 import  * as configData from '../../../workspace/interfaces/urlConfig';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { EventReportComponent } from './components/event-report/event-report.component';
 
 // @NgModule({
 //   declarations: [],
