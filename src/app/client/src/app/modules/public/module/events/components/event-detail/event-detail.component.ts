@@ -14,9 +14,11 @@
 
 // }
 import { Component, OnInit } from '@angular/core';
-import { LibEventService, EventDetailService } from 'ngtek-event-library';
+import { LibEventService, EventDetailService, EventService } from 'ngtek-event-library';
 // import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+// import { ActivatedRoute } from '@angular/router';
+
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { FrameworkService, UserService } from '@sunbird/core';
 import {ToasterService, LayoutService, COLUMN_TYPE}from '@sunbird/shared';
@@ -37,12 +39,14 @@ export class EventDetailComponent implements OnInit {
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
+  batchId: any;
   constructor(private eventDetailService: EventDetailService ,
     private activatedRoute : ActivatedRoute,
-    // private libEventService: LibEventService ,
+    private eventService: EventService ,
     public userService: UserService,
     public frameworkService:FrameworkService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public router: Router
    ) { }
 
 
@@ -64,6 +68,7 @@ export class EventDetailComponent implements OnInit {
     this.userId=this.userService.userid;  
      this.setEventConfig();
      this.initConfiguration();
+     this.getBatch(params.eventId);
   });
 }
 setEventConfig() {
@@ -110,5 +115,20 @@ redoLayout() {
 //     }
 // }
 }
+getBatch(identifier){
+  let filters ={
+    "courseId": identifier,
+    "enrollmentType": "open"
+    };
+    this.eventService.getBatches(filters).subscribe((res) => {
+      this.batchId = res.result.response.content[0].identifier;
+      console.log("Batch Id -", this.batchId);
+    });
+}
+navToDashbord(identifier){
+  this.router.navigate(['/explore-events/report'], 
+  { queryParams:  {  identifier: identifier,
+        batchid: this.batchId } });
+ }
 }
 

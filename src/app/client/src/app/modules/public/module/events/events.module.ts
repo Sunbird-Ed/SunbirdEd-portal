@@ -22,6 +22,7 @@ import { EventLibraryModule } from 'ngtek-event-library';
 import  * as configData from '../../../workspace/interfaces/urlConfig';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { EventReportComponent } from './components/event-report/event-report.component';
 
 // @NgModule({
 //   declarations: [],
@@ -52,7 +53,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   declarations: [
     //  PublicCourseConsumptionPageComponent, ExploreCourseComponent,
     // PublicCoursePlayerComponent, PublicBatchDetailsComponent,
-     EventViewTypeComponent, EventDetailComponent ]
+     EventViewTypeComponent, EventDetailComponent, EventReportComponent ]
 })
 export class EventsModule { 
 }

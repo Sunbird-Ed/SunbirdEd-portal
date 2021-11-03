@@ -85,7 +85,8 @@ export const urlConfig = {
     calenderevent:"assets/api/eventlist_new.json",
     ImageSearchApi :  "assets/api/search-images.json",
     EditModeApi :  "assets/api/editmode.json",
-    compositeSearch: "/action/composite/v3/search"
+    compositeSearch: "/action/composite/v3/search",
+    attendanceApi: "/api/event/v1/attendance/read"
     // compositeSearch : "https://staging-sunbird.nsdl.co.in/action/composite/v3/search",
 
     // BBBGetUrl:"assets/api/BBBCreatEvent.json",

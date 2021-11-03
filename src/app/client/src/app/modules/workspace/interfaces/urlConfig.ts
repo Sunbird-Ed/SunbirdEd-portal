@@ -46,5 +46,7 @@ export const urlConfig = {
 // export const urlConfig = {
     myEventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     uploadImage:"https://staging-sunbird.nsdl.co.in/action/content/v3/upload",
+    attendanceApi: "/api/event/v1/attendance/read",
+
 
 };
