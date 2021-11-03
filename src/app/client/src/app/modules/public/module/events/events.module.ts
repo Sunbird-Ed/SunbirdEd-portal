@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  EventViewTypeComponent, EventDetailComponent,EventReportComponent
-} from './components';
+  EventViewTypeComponent, EventDetailComponent,EventReportComponent} from './components';
 import { EventRoutingModule } from './events.routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
