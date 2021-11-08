@@ -52,7 +52,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
     DiscussionModule,
-    DashletModule.forRoot(),
+    DashletModule,
     MatCheckboxModule,
     MatTabsModule,
     MatSlideToggleModule,
