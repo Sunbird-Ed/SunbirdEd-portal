@@ -21,9 +21,13 @@
   </div>
 </div>
 
-<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
-  (close)="sharelinkModal = false; contentUtilsServiceService.contentShareEvent.emit('close')">
-</app-share-link> 
+<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: true}"
+  (dismiss)="sharelinkModal = false; contentUtilsServiceService.contentShareEvent.emit('close')">
+  <ng-template sbModalContent>
+    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
+    </app-share-link>
+  </ng-template>
+</app-modal-wrapper>
 
 <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
 class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
