@@ -91,18 +91,7 @@ function proxyObject() {
     proxyReqOptDecorator:
       proxyUtils.decorateRequestHeaders(uci_service_base_url),
     proxyReqPathResolver: function (req) {
-      let urlParam = req.originalUrl;
-      logger.info(
-        `[UCI] Request coming from: ${uci_service_base_url} :: ${urlParam}`
-      );
-      let query = require("url").parse(req.url).query;
-      if (query) {
-        return require("url").parse(
-          uci_service_base_url + urlParam + "?" + query
-        ).path;
-      } else {
-        return require("url").parse(uci_service_base_url + urlParam).path;
-      }
+      return require("url").parse(uci_service_base_url + req.originalUrl).path;
     },
     userResDecorator: (proxyRes, proxyResData, req, res) => {
       try {
