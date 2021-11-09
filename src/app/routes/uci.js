@@ -21,7 +21,7 @@ console.log("[INSIDE UCI]", process.env.sunbird_environment !== "local", {
 
 module.exports = function (app) {
   app.get(`${BASE_REPORT_URL}/v1/bot/get`, verifyToken(), proxyObject());
-  app.get(`${BASE_REPORT_URL}/v1/bot/search'`, verifyToken(), proxyObject());
+  app.get(`${BASE_REPORT_URL}/v1/bot/search`, verifyToken(), proxyObject());
   app.get(
     `${BASE_REPORT_URL}/v1/bot/pause/:botId`,
     verifyToken(),
