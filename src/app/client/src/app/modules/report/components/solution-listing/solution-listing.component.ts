@@ -239,11 +239,4 @@ export class SolutionListingComponent implements OnInit {
       }
     });
   }
-
-  showReportViewerTncForFirstUser() {
-    const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
-    if (!reportViewerTncObj) {
-      this.showTncPopup = true;
-    }
-  }
 }
