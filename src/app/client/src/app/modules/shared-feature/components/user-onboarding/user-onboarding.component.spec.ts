@@ -71,15 +71,10 @@ describe('UserOnboardingComponent', () => {
 
   it('should call locationSubmit', () => {
     const popupControlService = TestBed.get(PopupControlService);
-    component.onboardingModal = {
-      deny: () => { }
-    };
     spyOn(popupControlService, 'changePopupStatus');
-    spyOn(component.onboardingModal, 'deny');
     spyOn(component.close, 'emit');
     component.locationSubmit();
     expect(popupControlService.changePopupStatus).toHaveBeenCalledWith(true);
-    expect(component.onboardingModal.deny).toHaveBeenCalled();
     expect(component.close.emit).toHaveBeenCalled();
   });
 
