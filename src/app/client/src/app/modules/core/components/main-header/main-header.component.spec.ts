@@ -34,7 +34,7 @@ import {ObservationUtilService} from '../../../observation/service'
 const mockUserRoles = {
   userRoles: ['PUBLIC']
 };
-fdescribe('MainHeaderComponent', () => {
+describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
   let fixture: ComponentFixture<MainHeaderComponent>;
   const resourceBundle = {
