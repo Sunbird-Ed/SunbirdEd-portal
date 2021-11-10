@@ -7,10 +7,9 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui-v9';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui-v9';
 // import { PublicCourseConsumptionPageComponent,
-//   ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from '../course/components';
+// ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from '../course/components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
@@ -44,7 +43,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     CommonConsumptionModule,
     EventLibraryModule.forChild(configData.urlConfig),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
-
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [

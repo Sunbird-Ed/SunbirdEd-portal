@@ -31,8 +31,6 @@ import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collecti
 import { EventLibraryModule } from 'ngtek-event-library';
 import  * as configData from './interfaces/urlConfig';
 
-configData.urlConfig['userId'] = '999';
-console.log("configData",configData.urlConfig);
 @NgModule({
   imports: [
     CommonModule,

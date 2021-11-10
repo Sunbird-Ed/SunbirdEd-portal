@@ -1,18 +1,8 @@
-
 export const urlConfig = {
-    // endpoint configs...!
-    // Live API's
     create: "/api/event/v4/create",
-
-    // update: "/event/v4/update",
     update: "/api/event/v4/update",
-
-    // detail :  "/event/v4/read/",
     detail: "/api/event/v4/read/",
-
-    // publish:"/event/v4/publish",
     publish: "/api/event/v4/publish",
-    // publish:"/event/v4/publish",
     enrollApi: "/learner/course/v1/enrol",
     unenrollApi: "/learner/course/v1/unenrol",
     BBBGetUrlModerator: "/api/event/v4/join/moderator",
@@ -25,28 +15,19 @@ export const urlConfig = {
     eventFilterConfigApi : "/api/data/v1/form/read",
     myEvents:"/api/course/v2/user/enrollment/list",
     search: "/api/event/v1/search",
-
     eventListApi : "assets/api/eventlist.json",
     eventCreateApi: "https://jsonplaceholder.typicode.com/posts",
-    enrollListApi : "assets/api/enrolled-events.json",
-    
+    enrollListApi : "assets/api/enrolled-events.json",  
     usersApi: "assets/api/users.json",
- 
     formConfig : "assets/api/event-create.json",
     enrolllist : "assets/api/enrolled-events.json",
    enroll: "https://igot-sunbird.idc.tarento.com/v1/event/enroll",
     retire : "https://igot-sunbird.idc.tarento.com/private/event/v4/retire",
-
     calenderevent:"assets/api/eventlist_new.json",
     ImageSearchApi :  "assets/api/search-images.json",
     EditModeApi :  "assets/api/editmode.json",
     compositeSearch: "/action/composite/v3/search",
-
-// };
-// export const urlConfig = {
     myEventFilterConfigApi : "https://staging-sunbird.nsdl.co.in/api/data/v1/form/read",
     uploadImage:"https://staging-sunbird.nsdl.co.in/action/content/v3/upload",
     attendanceApi: "/api/event/v1/attendance/read",
-
-
 };

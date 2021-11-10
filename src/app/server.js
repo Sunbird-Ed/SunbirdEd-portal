@@ -247,6 +247,7 @@ require('./routes/groupRoutes.js')(app) // group api routes
 require('./routes/learnerRoutes.js')(app) // learner api routes
 
 require('./routes/mlRoutes.js')(app) // observation api routes
+require('./routes/eventsRoutes.js')(app) // observation api routes
 
 //cert-reg routes
 require('./routes/certRegRoutes.js')(app);

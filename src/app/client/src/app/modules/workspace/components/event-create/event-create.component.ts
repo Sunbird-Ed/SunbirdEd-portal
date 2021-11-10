@@ -79,7 +79,7 @@ export class EventCreateComponent implements OnInit {
     };
  }
   cancel(event){
-    this.router.navigate(['/workspace/allMyEvents']);
+    this.router.navigate(['/workspace/allmyevents']);
   }
 
   navAfterSave(res){
