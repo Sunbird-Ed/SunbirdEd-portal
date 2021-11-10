@@ -20,7 +20,8 @@ import {
   PermissionService,
   TenantService,
   CoreModule,
-  ManagedUserService, CoursesService, ElectronService
+  ManagedUserService, CoursesService, ElectronService,
+  FormService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {AnimationBuilder} from '@angular/animations';
@@ -33,7 +34,7 @@ import {ObservationUtilService} from '../../../observation/service'
 const mockUserRoles = {
   userRoles: ['PUBLIC']
 };
-describe('MainHeaderComponent', () => {
+fdescribe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
   let fixture: ComponentFixture<MainHeaderComponent>;
   const resourceBundle = {
@@ -418,6 +419,13 @@ it("should call the getFormConfigs to get form category",()=>{
   });
   component.getFormConfigs();
   expect(component.getFormConfigs).toHaveBeenCalled();
+})
+it("should call the navigateToHome method with and the formService",()=>{
+  const formService = TestBed.get(FormService);
+  spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+  spyOn(component,"navigateToHome").and.callThrough();
+  component.navigateToHome();
+  expect(component.navigateToHome).toHaveBeenCalled();
 })
 
 });
