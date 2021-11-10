@@ -32,7 +32,7 @@ describe('DashboardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DashboardComponent],
       imports: [
-        DashletModule,
+        DashletModule.forRoot(),
         HttpClientTestingModule,
         CoreModule,
         SharedModule,

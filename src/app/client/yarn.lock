@@ -1422,6 +1422,18 @@
     "@ckeditor/ckeditor5-utils" "^28.0.0"
     lodash-es "^4.17.15"
 
+"@hapi/hoek@^9.0.0":
+  version "9.2.1"
+  resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.2.1.tgz#9551142a1980503752536b5050fd99f4a7f13b17"
+  integrity sha512-gfta+H8aziZsm8pZa0vj04KO6biEiisppNgA1kbJvFrrWu9Vm7eaUEy76DIxsuTaWvti5fkJVhllWc6ZTE+Mdw==
+
+"@hapi/topo@^5.0.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-5.1.0.tgz#dc448e332c6c6e37a4dc02fd84ba8d44b9afb012"
+  integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+
 "@istanbuljs/schema@^0.1.2":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
@@ -1513,22 +1525,23 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet-v9@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.1.tgz#8a65d0d218410c90fcff7d8f2674dfdc3c0b11cc"
-  integrity sha512-cXZpHLxn8BdB6MuUC5ATnnNbnI5wX1SPwvjVkWcF5Ty97iIpSD6lIjKqzZNogEFSreZPpEjrSYrXGPyVTyd4ug==
+"@project-sunbird/sb-dashlet-v9@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.3.tgz#1f7c8b63ee2237493b61f095858166bc2d3512c5"
+  integrity sha512-hRiuvYBsl5A6AeUeZSPzvfFLi27QsxOAm7Nu5jJtTam38/Q3xXITclpMBlfhIqWAU08jbtupvRmeNjsMJSm6og==
   dependencies:
     "@types/datatables.net" "1.10.19"
     angular-datatables "9.1.0-rc1"
     chart.js "2.9.4"
     datatables.net "1.10.20"
     datatables.net-dt "1.10.20"
+    joi "17.4.0"
     jquery "3.4.1"
     jsonexport "3.2.0"
     lodash-es "4.17.21"
     ng-multiselect-dropdown "0.3.4"
     ng2-charts "2.4.2"
-    ngx-daterangepicker-material "4.0.1"
+    ngx-daterangepicker-material "5.0.0"
     tslib "^1.10.0"
 
 "@project-sunbird/sb-styles@0.0.8":
@@ -1616,10 +1629,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.1.tgz#3cca745b716403844220c65d45233f3df8a79b7e"
-  integrity sha512-CM5GeHnEJeiWpeA09gMzc7EmljcfLPlnFIrUdO6Ro/g9xLLcNZq4YuPkprBfwSfJV6hPvwXKsWdJu7+VnEeS+w==
+"@samagra-x/uci-console@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.2.tgz#05c5bf7251ce21f6f27f5009632975b536d996a2"
+  integrity sha512-m3fAZxR60dR1ciGX81o7I4QlUiT+rXVmaJ1/jNBoLoOz7ZntqJkqDcvBderkF8H7KuKkSQ0K2/FJ9jlzdnjgiw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1691,6 +1704,23 @@
     chartjs-plugin-stacked100 "^0.7.1"
     ng2-charts "^2.4.2"
     tslib "^1.10.0"
+
+"@sideway/address@^4.1.0":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.2.tgz#811b84333a335739d3969cfc434736268170cad1"
+  integrity sha512-idTz8ibqWFrPU8kMirL0CoPH/A29XOzzAzpyN3zQ4kAWnzmNfFmRaoMNN6VI8ske5M73HZyhIaW4OuSFIdM4oA==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+
+"@sideway/formula@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@sideway/formula/-/formula-3.0.0.tgz#fe158aee32e6bd5de85044be615bc08478a0a13c"
+  integrity sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==
+
+"@sideway/pinpoint@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
+  integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
 "@swimlane/ngx-datatable@16.1.1":
   version "16.1.1"
@@ -4212,7 +4242,7 @@ dateformat@^2.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.2.0.tgz#4065e2013cf9fb916ddfd82efb506ad4c6769062"
   integrity sha1-QGXiATz5+5Ft39gu+1Bq1MZ2kGI=
 
-dayjs@^1.8.26:
+dayjs@^1.10.4, dayjs@^1.8.26:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
@@ -7353,6 +7383,17 @@ jest-worker@24.9.0:
     merge-stream "^2.0.0"
     supports-color "^6.1.0"
 
+joi@17.4.0:
+  version "17.4.0"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.0.tgz#b5c2277c8519e016316e49ababd41a1908d9ef20"
+  integrity sha512-F4WiW2xaV6wc1jxete70Rw4V/VuMd6IN+a5ilZsxG4uYtUXWu2kq9W5P2dz30e7Gmw8RCbY/u/uk+dMPma9tAg==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+    "@hapi/topo" "^5.0.0"
+    "@sideway/address" "^4.1.0"
+    "@sideway/formula" "^3.0.0"
+    "@sideway/pinpoint" "^2.0.0"
+
 jquery.fancytree@^2.35.0:
   version "2.38.0"
   resolved "https://registry.yarnpkg.com/jquery.fancytree/-/jquery.fancytree-2.38.0.tgz#488520be39f0597de6c934614e17f35d0b4e248b"
@@ -8792,12 +8833,13 @@ ngx-chips@2.1.0:
     ng2-material-dropdown "0.11.0"
     tslib "^1.9.0"
 
-ngx-daterangepicker-material@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/ngx-daterangepicker-material/-/ngx-daterangepicker-material-4.0.1.tgz#788c2e32eb4717629d4a0e60a60bf8d6430d8c13"
-  integrity sha512-0gY6DGU+dgYdmoAKrIJSB9xnDqBvj91Yis3II/ZJxxMfZVTG4qMMatck6w8FzdU+CYT64ArCq+Uwa6hJRHX6Nw==
+ngx-daterangepicker-material@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-daterangepicker-material/-/ngx-daterangepicker-material-5.0.0.tgz#f50e91bb470bb01813b8569b72f3493c1782ba17"
+  integrity sha512-e654J+z3oUuult4HmKi1hMM6u0WExNh4YmpPRNFpGPPz+R57eh9TGgI2Lx+HZ5HNnHhZNjBgezm9LPspxxH38w==
   dependencies:
-    tslib "^1.10.0"
+    dayjs "^1.10.4"
+    tslib "^2.0.0"
 
 ngx-device-detector@1.3.5:
   version "1.3.5"
