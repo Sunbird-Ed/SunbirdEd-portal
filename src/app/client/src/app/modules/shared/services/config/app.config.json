@@ -109,7 +109,9 @@
         "mimeType",
         "framework",
         "contentType",
-        "trackable"
+        "trackable",
+        "batchId",
+        "courseId"
       ]
     },
     "dynamicFields": {
