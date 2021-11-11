@@ -1525,10 +1525,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet-v9@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.3.tgz#1f7c8b63ee2237493b61f095858166bc2d3512c5"
-  integrity sha512-hRiuvYBsl5A6AeUeZSPzvfFLi27QsxOAm7Nu5jJtTam38/Q3xXITclpMBlfhIqWAU08jbtupvRmeNjsMJSm6og==
+"@project-sunbird/sb-dashlet-v9@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.4.tgz#0431e3ee3b9afbf25f8683ae81f292ce905a583c"
+  integrity sha512-MH3HWAary6mGPn0yfHw1o4jXpIsl0K/BtSmFFjR4CwoyT9GNQ5GNRkwwX0Ocyc9u8WmowIVVt6fHqGIaNphfoA==
   dependencies:
     "@types/datatables.net" "1.10.19"
     angular-datatables "9.1.0-rc1"
@@ -1541,7 +1541,7 @@
     lodash-es "4.17.21"
     ng-multiselect-dropdown "0.3.4"
     ng2-charts "2.4.2"
-    ngx-daterangepicker-material "5.0.0"
+    ngx-daterangepicker-material "^4.0.1"
     tslib "^1.10.0"
 
 "@project-sunbird/sb-styles@0.0.8":
@@ -4242,7 +4242,7 @@ dateformat@^2.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.2.0.tgz#4065e2013cf9fb916ddfd82efb506ad4c6769062"
   integrity sha1-QGXiATz5+5Ft39gu+1Bq1MZ2kGI=
 
-dayjs@^1.10.4, dayjs@^1.8.26:
+dayjs@^1.8.26:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
@@ -8833,13 +8833,12 @@ ngx-chips@2.1.0:
     ng2-material-dropdown "0.11.0"
     tslib "^1.9.0"
 
-ngx-daterangepicker-material@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-daterangepicker-material/-/ngx-daterangepicker-material-5.0.0.tgz#f50e91bb470bb01813b8569b72f3493c1782ba17"
-  integrity sha512-e654J+z3oUuult4HmKi1hMM6u0WExNh4YmpPRNFpGPPz+R57eh9TGgI2Lx+HZ5HNnHhZNjBgezm9LPspxxH38w==
+ngx-daterangepicker-material@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-daterangepicker-material/-/ngx-daterangepicker-material-4.0.1.tgz#788c2e32eb4717629d4a0e60a60bf8d6430d8c13"
+  integrity sha512-0gY6DGU+dgYdmoAKrIJSB9xnDqBvj91Yis3II/ZJxxMfZVTG4qMMatck6w8FzdU+CYT64ArCq+Uwa6hJRHX6Nw==
   dependencies:
-    dayjs "^1.10.4"
-    tslib "^2.0.0"
+    tslib "^1.10.0"
 
 ngx-device-detector@1.3.5:
   version "1.3.5"
