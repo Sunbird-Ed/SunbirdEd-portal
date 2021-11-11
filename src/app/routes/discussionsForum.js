@@ -12,7 +12,7 @@ const isAPIWhitelisted  = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
 
-    app.post(`${BASE_REPORT_URL}/forum/v2/read`,bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObjectForForum());
+    app.post(`${BASE_REPORT_URL}/forum/v2/read`,bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/tags`,bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v2/create`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v2/remove`, bodyParser.json({ limit: '10mb' }), verifyToken(), proxyObject());
@@ -131,7 +131,7 @@ module.exports = function (app) {
     app.get(`${BASE_REPORT_URL}/user/username/:username`, verifyToken(), proxyObject());
 
     // TODO: add into white api and add role owner check
-    app.post(`${BASE_REPORT_URL}/user/v1/create`, isAPIWhitelisted.isAllowed(), verifyToken(), proxyObjectForCreate());
+    app.post(`${BASE_REPORT_URL}/user/v1/create`, isAPIWhitelisted.isAllowed(), verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/user/uid/:uid`, verifyToken(), proxyObject());
 }
 
@@ -190,49 +190,6 @@ function proxyObject() {
             let urlParam = req.originalUrl;
             console.log("Request comming from :", urlParam);
             return require('url').parse(discussions_middleware + urlParam).path; 
-        },
-        userResDecorator: (proxyRes, proxyResData, req, res) => {
-            try {
-                const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-            } catch (err) {
-                logger.error({message: err});
-                return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-            }
-        }
-    })
-}
-
-function proxyObjectForForum() {
-    return proxy(discussions_middleware, {
-        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
-        proxyReqPathResolver: function (req) {
-            let urlParam = req.originalUrl;
-            console.log("Request comming from :", urlParam)
-            let query = require('url').parse(req.url).query;
-            return require('url').parse(discussions_middleware + urlParam).path            
-        },
-        userResDecorator: (proxyRes, proxyResData, req, res) => {
-            try {
-                const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-            } catch (err) {
-                logger.error({message: err});
-                return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-            }
-        }
-    })
-}
-
-function proxyObjectForCreate() {
-    return proxy(discussions_middleware, {
-        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
-        proxyReqPathResolver: function (req) {
-            let urlParam = req.originalUrl;
-            let query = require('url').parse(req.url).query;
-            return require('url').parse(discussions_middleware + urlParam).path;
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
