@@ -424,23 +424,28 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
         behavior: 'smooth'
     });
 }
-  playContent(event) {
+  playContent(event, content?) {
     this.moveToTop();
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.publicPlayerService.playContent(event);
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {
-        this.handleCourseRedirection(event);
+        const batchId = _.get(content,'metaData.batchId');
+        this.handleCourseRedirection(event, batchId);
       } else {
         this.publicPlayerService.playContent(event);
       }
     }
   }
-  handleCourseRedirection({ data }) {
+  handleCourseRedirection({ data }, batchId?) {
     const { metaData } = data;
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+      return this.playerService.playContent(metaData);
+    }
+    if (batchId) {
+      metaData.batchId = batchId;
       return this.playerService.playContent(metaData);
     }
 
@@ -549,6 +554,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.totalCount = enrolledCourseCount;
       const sortedData = _.map(_.orderBy(filteredCourses, ['enrolledDate'], ['desc']), (val) => {
         const value = _.get(val, 'content');
+        value.batchId = _.get(val, 'batchId');
+        value.batch = _.get(val, 'batch');
         return value;
       });
       this.searchList = this.formatSearchresults(sortedData);
