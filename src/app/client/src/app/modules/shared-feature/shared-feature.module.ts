@@ -46,7 +46,7 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     CommonConsumptionModule,
     CommonFormElementsModule,
     LocationModule,
-    DashletModule
+    DashletModule.forRoot()
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
