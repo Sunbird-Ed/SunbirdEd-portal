@@ -446,6 +446,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (batchId) {
       metaData.batchId = batchId;
+      metaData.trackable={
+        enabled:'Yes'
+      }
       return this.playerService.playContent(metaData);
     }
 
