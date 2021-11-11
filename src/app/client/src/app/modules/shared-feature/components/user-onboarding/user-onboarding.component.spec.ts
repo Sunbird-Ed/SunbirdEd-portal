@@ -11,6 +11,8 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CacheService } from 'ng2-cache-service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 describe('UserOnboardingComponent', () => {
   let component: UserOnboardingComponent;
@@ -24,7 +26,8 @@ describe('UserOnboardingComponent', () => {
         SuiModule,
         SharedModule.forRoot(),
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        BrowserAnimationsModule
       ],
       providers: [TelemetryService, TenantService, PopupControlService, { provide: APP_BASE_HREF, useValue: 'test' }],
       schemas: [NO_ERRORS_SCHEMA]
