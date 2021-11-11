@@ -182,35 +182,14 @@ function checkEmail() {
     }
 }
 
-// TODO: this token logic we have to add in middleware itself;
-function addHeaders() {
-    return function (proxyReqOpts, srcReq) { 
-        var sessionId = _.get(srcReq, 'headers.x-session-id') || _.get(srcReq, 'sessionID');
-        proxyReqOpts.headers['X-Session-Id'] = sessionId;
-        return proxyReqOpts;
-    }
-}
 
 function proxyObject() {
     return proxy(discussions_middleware, {
-        proxyReqOptDecorator: addHeaders(),
+        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
-            console.log("Request comming from :", urlParam)
-            const uid = req.session['nodebb_uid'];
-            if (!_.isEmpty(req.body)) {
-                req.body['_uid'] = uid;
-                return require('url').parse(discussions_middleware + urlParam).path;
-            } else {
-                let query = require('url').parse(req.url).query;
-                if (query) {
-                    const queryData = _.isEmpty(req.query._uid) ? `&_uid=${uid}` : ''
-                    const path = require('url').parse(discussions_middleware + urlParam + queryData).path
-                    return path
-                } else {
-                    return require('url').parse(discussions_middleware + urlParam+ '?_uid='+ uid).path
-                }
-            } 
+            console.log("Request comming from :", urlParam);
+            return require('url').parse(discussions_middleware + urlParam).path; 
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
@@ -227,13 +206,12 @@ function proxyObject() {
 
 function proxyObjectForForum() {
     return proxy(discussions_middleware, {
-        proxyReqOptDecorator: addHeaders(),
+        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
             console.log("Request comming from :", urlParam)
             let query = require('url').parse(req.url).query;
-            return require('url').parse(discussions_middleware + urlParam).path
-            
+            return require('url').parse(discussions_middleware + urlParam).path            
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
@@ -259,10 +237,6 @@ function proxyObjectForCreate() {
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
                 const data = JSON.parse(proxyResData.toString('utf8'));
-                const nodebb_uid = data.result['userId']['uid'];
-                if(nodebb_uid) {
-                    req.session['nodebb_uid'] = nodebb_uid;
-                }
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {
