@@ -9,7 +9,7 @@ const {getUserDetailsV2} = require('../helpers/userHelper');
 
 module.exports = function (app) {
     app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/publish/:reportId/:hash`, `${BASE_REPORT_URL}/retire/:reportId`, `${BASE_REPORT_URL}/retire/:reportId/:hash`],
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
@@ -29,7 +29,7 @@ module.exports = function (app) {
         })
     )
     app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`],
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
@@ -109,7 +109,7 @@ module.exports = function (app) {
   )
   
     app.all([`${BASE_REPORT_URL}/get/:reportId/:hash`, `${BASE_REPORT_URL}/summary/*`],
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
@@ -130,35 +130,35 @@ module.exports = function (app) {
     )
 
     app.get('/courseReports/:slug/:filename',
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
         reportHelper.azureBlobStream());
 
     app.get('/course-reports/metadata',
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
         reportHelper.getLastModifiedDate);
 
     app.get(`/reports/fetch/:slug/:filename`,
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         reportHelper.azureBlobStream());
 
     app.get('/reports/:slug/:filename',
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
         reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
         reportHelper.azureBlobStream());
 
     app.get('/admin-reports/:slug/:filename',
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
             'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
         reportHelper.azureBlobStream());
 
     app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
-//         proxyUtils.verifyToken(),
+        proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
         proxy(DATASERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
