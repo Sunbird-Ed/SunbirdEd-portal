@@ -972,4 +972,15 @@ describe('CertificateConfigurationComponent', () => {
     component.layoutConfiguration = null;
     component.redoLayout();
   });
+  it('should call handleParameterChange method with event as All', () => {
+    const eventAll = 'All';
+    component.handleParameterChange(eventAll);
+    expect(component.isStateCertificate).toBeFalsy();
+  });
+  it('should call handleParameterChange method with event as teacher', () => {
+    const event = 'My state teacher';
+    component.handleParameterChange(event);
+    expect(component.isStateCertificate).toBeTruthy();
+  });
+  
 });
