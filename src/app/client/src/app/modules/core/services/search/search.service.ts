@@ -74,7 +74,7 @@ export class SearchService {
    */
   searchContentByUserId(requestParam: SearchParam, options: any = { params: {} }): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.COMPOSITE.SEARCH,
+      url: this.config.urlConFig.URLS.CONTENT.SEARCH,
       param: options.params,
       data: {
         request: {

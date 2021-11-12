@@ -79,9 +79,14 @@
     </div>
 </div>
 </div>
-<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
-    (close)="closeSharePopup('close-share-link-popup')">
-</app-share-link>
+
+<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: true}"
+  (dismiss)="closeSharePopup('close-share-link-popup')">
+  <ng-template sbModalContent>
+    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
+    </app-share-link>
+  </ng-template>
+</app-modal-wrapper>
 
 <div *ngIf="isDesktopApp">
     <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
