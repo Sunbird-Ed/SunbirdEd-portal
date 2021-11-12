@@ -1,10 +1,9 @@
-<sui-modal [mustScroll]="true" *ngIf="stage === Stage.USER_SELECTION" [isClosable]="false" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" #onboardingModal>
-
-  <app-onboarding-user-selection [tenantInfo]="tenantInfo" (userSelect)="userTypeSubmit()">
-  </app-onboarding-user-selection>
-
-</sui-modal>
+<app-modal-wrapper *ngIf="stage === Stage.USER_SELECTION" [config]="{disableClose: true}">
+  <ng-template sbModalContent>
+    <app-onboarding-user-selection [tenantInfo]="tenantInfo" (userSelect)="userTypeSubmit()">
+    </app-onboarding-user-selection>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION" [deviceProfile]="deviceProfile" [isClosable]="false"
   (close)="locationSubmit()">
