@@ -27,11 +27,13 @@
         <div *ngIf="isEnrolledCourseUpdated" class="mobile only">
           <div class="sb-no-course-found my-16 d-flex flex-ai-center">
             <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
-            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
+            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
+              courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}</div>
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 mobile only sbt-certified-course" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
+        <div class="sb-bg-color-white p-8 mb-16 mobile only sbt-certified-course"
+          *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -60,7 +62,8 @@
 
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <sb-accordion [multi]="false">
-              <sb-accordion-item [expanded]="isExpanded(index)" (collapsedChange)="collapsedChange($event, index)" [collapsed]="item?.collapsed">
+              <sb-accordion-item [expanded]="isExpanded(index)" (collapsedChange)="collapsedChange($event, index)"
+                [collapsed]="item?.collapsed">
                 <sb-accordion-header class="sb-bg-color-gray-0" (click)="isModuleExpanded = true;" tabindex="0">
                   <i class="icon-svg icon-svg--sm icon-tick mr-8" role="img" aria-label="tick-icon"
                     *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
@@ -68,7 +71,8 @@
                       <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
                     </svg>
                   </i>
-                  <div class="progress-circle progress-circle--sm mr-8" [attr.data-percentage]="item?.progress" *ngIf="enrolledCourse && item?.consumedContent > 0 && item?.consumedContent !== item?.contentCount">
+                  <div class="progress-circle progress-circle--sm mr-8" [attr.data-percentage]="item?.progress"
+                    *ngIf="enrolledCourse && item?.consumedContent > 0 && item?.consumedContent !== item?.contentCount">
                     <svg class="progress-circle__svg" viewport="0 0 2000 2000">
                       <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
                       <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
@@ -78,36 +82,40 @@
                 </sb-accordion-header>
                 <sb-accordion-body>
                   <div class="chapter-box">
-                      <div *ngIf="item;else noContent">
-                        <div
-                          *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
-                          <div class="child-content-padding">
-                            <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')"
-                              [type]="cardType" [contentStatus]="contentStatus"
-                              [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                            </sb-toc-card>
-                          </div>
-                        </div>
-                        <div *ngIf="item?.children?.length">
-                          <div *ngFor="let child of item?.children">
-                              <!-- toc card for Non Self Assess content -->
-                              <sb-toc-child-item *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'" [childData]="child" class="sb-toc-child-item"
-                                (tocCardClick)="navigateToContent($event, item, 'child-item')"
-                                [contentStatus]="contentStatus" [type]="cardType">
-                              </sb-toc-child-item>
-                              <!-- toc card for Self Assess content with Label for Best Score -->
-                              <sb-toc-child-item *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'" [childData]="child" class="sb-toc-child-item"
-                                (tocCardClick)="navigateToContent($event, item, 'child-item')"
-                                [contentStatus]="contentStatus" [type]="cardType" 
-                                [maxAttempts]="child?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                              </sb-toc-child-item>
-                          </div>
+                    <div *ngIf="item;else noContent">
+                      <div
+                        *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                        <div class="child-content-padding">
+                          <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')"
+                            [type]="cardType" [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts"
+                            [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                          </sb-toc-card>
                         </div>
                       </div>
-                      <ng-template #noContent>
-                        <div class="heading">{{noContentMessage}}</div>
-                      </ng-template>
-                 
+                      <div *ngIf="item?.children?.length">
+                        <div *ngFor="let child of item?.children">
+                          <!-- toc card for Non Self Assess content -->
+                          <sb-toc-child-item
+                            *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
+                            [childData]="child" class="sb-toc-child-item"
+                            (tocCardClick)="navigateToContent($event, item, 'child-item')"
+                            [contentStatus]="contentStatus" [type]="cardType">
+                          </sb-toc-child-item>
+                          <!-- toc card for Self Assess content with Label for Best Score -->
+                          <sb-toc-child-item
+                            *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'"
+                            [childData]="child" class="sb-toc-child-item"
+                            (tocCardClick)="navigateToContent($event, item, 'child-item')"
+                            [contentStatus]="contentStatus" [type]="cardType" [maxAttempts]="child?.maxAttempts"
+                            [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                          </sb-toc-child-item>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template #noContent>
+                      <div class="heading">{{noContentMessage}}</div>
+                    </ng-template>
+
                   </div>
                 </sb-accordion-body>
               </sb-accordion-item>
@@ -142,11 +150,13 @@
         <div *ngIf="isEnrolledCourseUpdated" class="computer only">
           <div class="sb-no-course-found my-16 d-flex flex-ai-center">
             <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
-            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
+            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
+              courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}</div>
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only  sbt-certified-course" *ngIf="enrolledCourse && certificateDescription && !certificateDescription?.isCertificate">
+        <div class="sb-bg-color-white p-8 mb-16 computer only  sbt-certified-course"
+          *ngIf="enrolledCourse && certificateDescription && !certificateDescription?.isCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -154,20 +164,25 @@
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && certificateDescription && certificateDescription?.description">
+        <div class="sb-bg-color-white p-8 mb-16 computer only"
+          *ngIf="enrolledCourse && certificateDescription && certificateDescription?.description">
           <div class="certified-course__certificate d-inline-flex flex-ai-center p-8 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+            <span
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
           <p class="fsmall px-4 pt-8"> {{certificateDescription?.description}} </p>
-      </div>
+        </div>
 
-      <!-- 2. Course Progress bar -->
-        <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup && !courseMentor">
+        <!-- 2. Course Progress bar -->
+        <div class="sb-bg-color-white certified-course__progress p-16 mb-16"
+          *ngIf="enrolledCourse && !addToGroup && !courseMentor">
           <div class="fsmall relative9 relative">
-            <div class="kabab-menu pull-right" *ngIf="progressToDisplay === 100 && showForceSync && isConnected" (click)="dropdownMenu();"></div>
+            <div class="kabab-menu pull-right" *ngIf="progressToDisplay === 100 && showForceSync && isConnected"
+              (click)="dropdownMenu();"></div>
             <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
-              <div class="d-flex flex-ai-center list p-8 w-100" (click)="forceSync()">{{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
+              <div class="d-flex flex-ai-center list p-8 w-100" (click)="forceSync()">
+                {{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
             </div>
           </div>
           <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.courseProgress}}</div>
@@ -183,7 +198,8 @@
 
         <!-- Consent to share PII  -->
         <div class="mb-16" *ngIf="showDataSettingSection && isConnected">
-          <app-global-consent-pii [collection]="courseHierarchy" [isglobalConsent]="false" [type]="courseConsent" [consentConfig]="consentConfig"></app-global-consent-pii>
+          <app-global-consent-pii [collection]="courseHierarchy" [isglobalConsent]="false" [type]="courseConsent"
+            [consentConfig]="consentConfig"></app-global-consent-pii>
         </div>
 
         <!-- Credits & License information -->
@@ -198,23 +214,27 @@
 
 <router-outlet></router-outlet>
 
-<app-modal-wrapper *ngIf="showJoinTrainingModal" [config]="{disableClose: false, size: 'small'}"
+<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" *ngIf="showJoinTrainingModal"
   (dismiss)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')">
-  <ng-template sbModalContent>
+  <ng-template sbModalContent let-data>
     <div class="sb-modal">
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible small">
           <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
             <span>&times;</span>
           </button>
+          <!--Header-->
           <div class="sb-modal-header">
             {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
           </div>
+          <!--/Header-->
+          <!--Content-->
           <div class="sb-modal-content">
             <div class="ui center aligned segment">
               <p>{{batchMessage}}</p>
             </div>
           </div>
+          <!--/Content-->
         </div>
       </div>
     </div>
@@ -229,7 +249,8 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-confirmation-popup *ngIf="showConfirmationPopup" [popupMode]="popupMode" [batchId]="createdBatchId" (close)="onPopupClose($event)"></app-confirmation-popup>
+<app-confirmation-popup *ngIf="showConfirmationPopup" [popupMode]="popupMode" [batchId]="createdBatchId"
+  (close)="onPopupClose($event)"></app-confirmation-popup>
 
 <!-- new UI -->
 <div class="sb-bg-color-gray-0 textbook-container hide">
@@ -238,7 +259,8 @@
       <div class="textbook__details d-flex flex-ai-center">
         <img src="./assets/images/book.png" class="textbook__bookimg" alt="">
         <div class="ml-8 textbook__heading">
-          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS</h5>
+          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">TN X SCIENCE EM ALL ONE MARKS
+            COLLECTIONS</h5>
           <div class="textbook__rating">
             <sui-rating class="star mini" [ngModel]="4" [maximum]="5"></sui-rating>
           </div>
@@ -248,22 +270,24 @@
     </div>
   </div>
 </div>
-<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
+<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription"
+  (close)="onCourseCompleteClose()"></app-course-completion>
 <!-- Start - Modal for Assessment attempts -->
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-    appBodyScroll #modal *ngIf="showLastAttemptsModal">
-    <div class="sb-modal-content sb-join-modal-content">
-        <div class="sb-h4 px-0 py-20">
-          {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
-        </div>
+  appBodyScroll #modal *ngIf="showLastAttemptsModal">
+  <div class="sb-modal-content sb-join-modal-content">
+    <div class="sb-h4 px-0 py-20">
+      {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
     </div>
-    <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="showLastAttemptsModal = false; _navigateToContent();">
-        {{resourceService.frmelmnts?.btn?.ok}}
-      </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showLastAttemptsModal = false;">
-        {{resourceService.frmelmnts?.btn?.cancel}}
-      </button>
-    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+      (click)="showLastAttemptsModal = false; _navigateToContent();">
+      {{resourceService.frmelmnts?.btn?.ok}}
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showLastAttemptsModal = false;">
+      {{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+  </div>
 </sui-modal>
 <!-- End - Modal for Assessment attempts -->
