@@ -92,6 +92,11 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
 
+    '/content/content/v1/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
     '/content/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.TEMP_ROLE]
