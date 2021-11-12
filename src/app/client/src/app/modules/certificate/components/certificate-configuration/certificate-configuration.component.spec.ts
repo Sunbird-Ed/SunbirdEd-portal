@@ -7,14 +7,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService,
-  InterpolatePipe } from '@sunbird/shared';
+  InterpolatePipe, SharedModule } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
 import { response as CertMockResponse } from './certificate-configuration.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-fdescribe('CertificateConfigurationComponent', () => {
+describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
   configureTestSuite();
@@ -68,8 +68,8 @@ fdescribe('CertificateConfigurationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, CoreModule,
-        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([])],
-      declarations: [ CertificateConfigurationComponent, InterpolatePipe],
+        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), SharedModule.forRoot()],
+      declarations: [ CertificateConfigurationComponent],
       providers: [
         ConfigService,
         NavigationHelperService,
