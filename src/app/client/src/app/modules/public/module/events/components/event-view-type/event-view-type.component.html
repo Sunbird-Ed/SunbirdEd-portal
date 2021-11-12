@@ -1,18 +1,10 @@
 <ng-container>
   <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
-  <!-- <div class="m-20">
-    <button class="ripple w-16 primary"id="list"   style= "color:'';cursor: pointer;
-    " (click)="Openview('list')">List view</button>
 
-    <button class="ripple w-16 ml-16 primary" id="calendar" style= "color:'';cursor: pointer;
-    " (click)="Openview('calender')">Calender</button>
-    <hr />
-  </div> -->
-
-<lib-event 
-    [libEventConfig]="libEventConfig">
-</lib-event>
-<div class="sb-g"
+  <lib-event 
+      [libEventConfig]="libEventConfig">
+  </lib-event>
+  <div class="sb-g"
       [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'"
       *ngIf="tab == 'list'">
       <div class="m-20 sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12 mt-15">
@@ -26,48 +18,47 @@
     <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
         *ngIf="filterConfig" 
         [filterConfig]="filterConfig">
-</sb-event-filter>
-</div>
+    </sb-event-filter>
+    </div>
       <div *ngIf="eventList?.length > 0 && eventList != 'undefined'" class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12" >
           <sb-event-list 
               [list]="eventList" 
               [myEvents]="myEvents" 
               (eventDetailData)="navToEventDetail($event)">
           </sb-event-list>
-      </div>
+    </div>
+  </div>
+
+  <div [ngClass]="[layoutConfiguration ? 'sbt-container sbt-page-content relative9' : 'ui container mt-24']" *ngIf="tab == 'calender'">
+    <div class="m-20 sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12 mt-15">
+        <button class="sb-btn sb-btn-normal  mb-15" id="list" [ngClass]="[tab != 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('list')">List
+            view</button>
+        <button class="sb-btn sb-btn-normal sb-btn-secondary mb-15 ml-15" id="calendar"  [ngClass]="[tab == 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('calender')">Calender</button>
+        <hr />
+    </div>
+    <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
+          *ngIf="filterConfig" 
+          [filterConfig]="filterConfig"> </sb-event-filter>
+      <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
+      <lib-event-calender *ngIf="events.length > 0" [events]='events'></lib-event-calender>
+    <br><br><br>
+  </div>
 </div>
-<div *ngIf="EventCount === 0">
-      <div class="no-content-container d-flex flex-jc-center relative9">
-        <div class="my-48 p-16 w-100">
-          <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-            <div>
-              <img alt="{{title}}" src="./assets/images/group.svg" width="90px" height="90px">
-            </div>
-            <div tabindex="0" class="fmedium board-title pt-24 font-weight-bold">No Events Found</div>
-            <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
-            <div tabindex="0" *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
-            <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
-             Explore more content
-            </button> 
+  <div *ngIf="EventCount === 0">
+    <div class="no-content-container d-flex flex-jc-center relative9">
+      <div class="my-48 p-16 w-100">
+        <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+          <div>
+            <img alt="{{title}}" src="./assets/images/group.svg" width="90px" height="90px">
           </div>
+          <div tabindex="0" class="fmedium board-title pt-24 font-weight-bold">No Events Found</div>
+          <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
+          <div tabindex="0" *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
+          <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
+            Explore more content
+          </button> 
         </div>
       </div>
-</div>
-
-<div [ngClass]="[layoutConfiguration ? 'sbt-container sbt-page-content relative9' : 'ui container mt-24']" *ngIf="tab == 'calender'">
-  <div class="m-20 sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12 mt-15">
-      <button class="sb-btn sb-btn-normal  mb-15" id="list" [ngClass]="[tab != 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('list')">List
-          view</button>
-
-      <button class="sb-btn sb-btn-normal sb-btn-secondary mb-15 ml-15" id="calendar"  [ngClass]="[tab == 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('calender')">Calender</button>
-      <hr />
+    </div>
   </div>
-  <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
-        *ngIf="filterConfig" 
-        [filterConfig]="filterConfig"> </sb-event-filter>
-    <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
-    <lib-event-calender *ngIf="events.length > 0" [events]='events'></lib-event-calender>
-   <br><br><br>
-</div>
-</div>
 </ng-container>
