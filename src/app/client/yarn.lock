@@ -1554,10 +1554,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.28.tgz#f6bc68caf335c32b04c2c555029ca8d38d85dbf1"
   integrity sha512-QSTRbop3Zqxuho3zJGLg6fwyT/NG19zXSRJbyJdHP2yQE1FlutXkdQW8WZy5VFPVLc74+qRq0VIbSoCWUW/Mzg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.4.12":
-  version "4.4.12"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.4.12.tgz#5f66f6f3815e9f9553457afb89c318f534128a38"
-  integrity sha512-HdXJ7FP1gOeu3ngi+B+NSN2wfMLBQUy/NmTMkib9uwSmpC8kKqMZT1shMCYYAEgEJNyMhKp2sSZXJjf1LwXwog==
+"@project-sunbird/sunbird-collection-editor-v9@4.4.15":
+  version "4.4.15"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.4.15.tgz#85166de14e12a63b10d4783aa06f06589b4d6c45"
+  integrity sha512-134kXE+7E5qxxvL2xsuaFomUWlNyC48k++WblBC7n1faAOPpPpJg0tclS8/5bNQ+xeNYZzk/Og/hSNK76DmVNA==
   dependencies:
     tslib "^1.10.0"
 
@@ -1629,10 +1629,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.2.tgz#05c5bf7251ce21f6f27f5009632975b536d996a2"
-  integrity sha512-m3fAZxR60dR1ciGX81o7I4QlUiT+rXVmaJ1/jNBoLoOz7ZntqJkqDcvBderkF8H7KuKkSQ0K2/FJ9jlzdnjgiw==
+"@samagra-x/uci-console@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.3.tgz#815a464302a65492b2c468cbd0cffd2e6a69567e"
+  integrity sha512-80Blm39UD5N7qnWrRDb+Nbj/2c7JUhU1KRMWLDYgp4MQ9zvSTxtZyzPFkis3eT93ke0ev7uYhQPNea2cQSrNKA==
   dependencies:
     tslib "^1.10.0"
 
