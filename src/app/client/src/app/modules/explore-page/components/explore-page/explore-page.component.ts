@@ -894,6 +894,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             if (sectionType) {
                 metaData.batchId = _.get(metaData,'metaData.batchId');
+                metaData.trackable={
+                    enabled:'Yes'
+                }
                 return this.playerService.playContent(metaData);
               }
 
