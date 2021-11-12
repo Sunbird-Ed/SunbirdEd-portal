@@ -197,22 +197,29 @@
 </div>
 
 <router-outlet></router-outlet>
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')"
-  *ngIf="showJoinTrainingModal" #joinTrainingModal>
-  <!--Header-->
-  <div class="sb-modal-header">
-    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
-  </div>
-  <!--/Header-->
-  <!--Content-->
-  <div class="sb-modal-content">
-    <div class="ui center aligned segment">
-      <p>{{batchMessage}}</p>
+
+<app-modal-wrapper *ngIf="showJoinTrainingModal" [config]="{disableClose: false, size: 'small'}"
+  (dismiss)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-header">
+            {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
+          </div>
+          <div class="sb-modal-content">
+            <div class="ui center aligned segment">
+              <p>{{batchMessage}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <!--/Content-->
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
