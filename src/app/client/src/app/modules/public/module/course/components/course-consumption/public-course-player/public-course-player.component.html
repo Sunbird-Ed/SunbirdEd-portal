@@ -134,7 +134,7 @@
   </div>
 </sui-modal>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: true}"
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
