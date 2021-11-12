@@ -93,6 +93,7 @@ const API_LIST = {
     },
 
     '/content/content/v1/search': {
+      description: 'API called to get contributions in profile page',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
