@@ -6,14 +6,15 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule } from '@sunbird/core';
-import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
+import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService,
+  InterpolatePipe } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
 import { response as CertMockResponse } from './certificate-configuration.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('CertificateConfigurationComponent', () => {
+fdescribe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
   configureTestSuite();
@@ -68,7 +69,7 @@ describe('CertificateConfigurationComponent', () => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, CoreModule,
         FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([])],
-      declarations: [ CertificateConfigurationComponent ],
+      declarations: [ CertificateConfigurationComponent, InterpolatePipe],
       providers: [
         ConfigService,
         NavigationHelperService,
