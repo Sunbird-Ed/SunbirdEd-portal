@@ -1361,6 +1361,9 @@ input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
 .contentViewerIframeShadow.player-fullscreen.content-full-video epub-viewer {
   height: calc(100% - 7rem);
 }
+.contentViewerIframeShadow.player-fullscreen.content-full-video quml-main-player .main-container {
+  height: calc(100vh - 4rem);
+}
 .notVisible {
   top: 0rem !important;
   position: relative !important;
