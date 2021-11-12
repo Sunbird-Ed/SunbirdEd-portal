@@ -15,26 +15,27 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../
 
 module.exports = function (app) {
     app.post('/event/v1/attendance/read', proxyObj());
+    console.log("+++++++++++++/event/v1/attendance/read");
 }
 function proxyObj() {
     
-    isAPIWhitelisted.isAllowed()
+    // isAPIWhitelisted.isAllowed()
     return proxy(learnerURL, {
-        limit: reqDataLimitOfContentUpload,
+        // limit: reqDataLimitOfContentUpload,
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
-        proxyReqPathResolver: function (req) {
-            let urlParam = req.path.replace('/event/', '')
-            let query = require('url').parse(req.url).query
-            if (query) {
-                return require('url').parse(learnerURL + urlParam + '?' + query).path
-            } else {
-                return require('url').parse(learnerURL + urlParam).path
-            }
-        },
+        // proxyReqPathResolver: function (req) {
+        //     let urlParam = req.path.replace('/event/', '')
+        //     let query = require('url').parse(req.url).query
+        //     if (query) {
+        //         return require('url').parse(learnerURL + urlParam + '?' + query).path
+        //     } else {
+        //         return require('url').parse(learnerURL + urlParam).path
+        //     }
+        // },
         userResDecorator: function (proxyRes, proxyResData, req, res) {
             let resData = proxyResData.toString('utf8');
             let data = JSON.parse(resData);
-            const uri = 'learner/group'
+            const uri = 'event'
             const context = {
                 env: telemtryEventConfig.URL[uri].env
             }

@@ -1,17 +1,46 @@
 <!-- <div class="ui container"> -->
-    <div class="box-padding">
-        <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
-<lib-event 
-    [libEventConfig]="libEventConfig">
-</lib-event>
-<div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
-    <sb-cover-event-detail  *ngIf="eventItem" 
-      [eventDetailItem]="eventItem"
-      (navToDashbord)="navToDashbord($event);"  >
-</sb-cover-event-detail>
-<!-- <sb-cover-event-detail *ngIf="eventItem" [eventDetailItem]="eventItem" (navToDashbord)="navToDashbord($event)" ></sb-cover-event-detail> -->
-<sb-join-event-button  *ngIf="eventItem"[eventDetailItem]="eventItem" [canUnenroll]="true"></sb-join-event-button>
-<sb-advance-event-detail  *ngIf="eventItem"[eventDetailItem]="eventItem"></sb-advance-event-detail>
-</div>
-</div>
+<div class="box-padding">
+  <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
+    <lib-event
+      [libEventConfig]="libEventConfig">
+    </lib-event>
+
+    <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
+
+      <div class="relative9">
+        <div class="ui container py-8">
+          <button
+            type="button"
+            class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+            tabindex="0"
+            (click)="navigateToEventPage()">
+              <i class="icon-svg icon-svg--xxs icon-back mr-4">
+                <svg class="icon icon-svg--primary">
+                  <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
+                </svg>
+              </i> Back
+          </button>
+        </div>
+      </div>
+
+      <sb-cover-event-detail
+        *ngIf="eventItem"
+        [eventDetailItem]="eventItem"
+        (navToDashbord)="navToDashbord($event);"  >
+      </sb-cover-event-detail>
+
+      <!-- <sb-cover-event-detail *ngIf="eventItem" [eventDetailItem]="eventItem" (navToDashbord)="navToDashbord($event)" ></sb-cover-event-detail> -->
+
+      <sb-join-event-button
+        *ngIf="eventItem"
+        [eventDetailItem]="eventItem"
+        [canUnenroll]="true">
+      </sb-join-event-button>
+
+      <sb-advance-event-detail
+        *ngIf="eventItem"
+        [eventDetailItem]="eventItem">
+      </sb-advance-event-detail>
+    </div>
+  </div>
 </div>

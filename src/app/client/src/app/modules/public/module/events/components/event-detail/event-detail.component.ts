@@ -65,7 +65,7 @@ export class EventDetailComponent implements OnInit {
       console.log( params);
     this.showEventDetailPage(params.eventId);
     // this.eventConfig = _.get(this.libEventService.eventConfig, 'context.user');
-    this.userId=this.userService.userid;  
+    this.userId=this.userService.userid;
      this.setEventConfig();
      this.initConfiguration();
      this.getBatch(params.eventId);
@@ -126,9 +126,14 @@ getBatch(identifier){
     });
 }
 navToDashbord(identifier){
-  this.router.navigate(['/explore-events/report'], 
+  this.router.navigate(['/explore-events/report'],
   { queryParams:  {  identifier: identifier,
         batchid: this.batchId } });
  }
+
+navigateToEventPage() {
+  this.router.navigate(['/explore-events/published']);
+}
+
 }
 

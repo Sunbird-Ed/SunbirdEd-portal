@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService,EventDetailService } from 'ngtek-event-library';
 import { FrameworkService, UserService } from '@sunbird/core';
-
+import {ToasterService,LayoutService, COLUMN_TYPE}from '@sunbird/shared';
 @Component({
   selector: 'app-event-report',
   templateUrl: './event-report.component.html',
@@ -17,18 +17,23 @@ export class EventReportComponent implements OnInit {
   eventUserEnrollData: any;
   libEventConfig: any;
   eventItem: any;
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
 
   isLoading: boolean =  true;
   tab :string= "list";
   p: number = 1;
 
-  constructor( private route: ActivatedRoute, 
-    private eventService: EventService, 
-    private router: Router, 
+  constructor( private route: ActivatedRoute,
+    private eventService: EventService,
+    private router: Router,
     public userService: UserService,
+    public layoutService: LayoutService,
     private eventDetailService: EventDetailService) { }
 
   ngOnInit(): void {
+    this.initConfiguration();
     // Get the url (query) params
     this.route.queryParams.subscribe((params) => {
       this.queryParams = params;
@@ -48,6 +53,17 @@ export class EventReportComponent implements OnInit {
     // this.getEnrollEventUsersList();
     this.getAttendanceDetails();
   }
+
+  private initConfiguration() {
+   this.layoutConfiguration = this.layoutService.initlayoutConfig();
+   this.redoLayout();
+  }
+
+  redoLayout() {
+    this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+  }
+
   setEventConfig() {
     // tslint:disable-next-line:max-line-length
     // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
@@ -91,7 +107,7 @@ export class EventReportComponent implements OnInit {
     var date = new Date(event),
     mnth = ("0" + (date.getMonth() + 1)).slice(-2),
     day = ("0" + date.getDate()).slice(-2);
-    
+
     var datestr = [date.getFullYear(), mnth, day].join("/");
 
     return datestr;

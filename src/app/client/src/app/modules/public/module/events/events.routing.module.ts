@@ -5,11 +5,6 @@ import {
 } from './components';
 // import { ViewAllComponent } from '@sunbird/content-search';
 const routes: Routes = [
-  // {
-  //   path: '', loadChildren: '../../../learn/learn.module#LearnModule'
-  // },
-  
-  
   {
     path: '', component: EventViewTypeComponent,  
   },

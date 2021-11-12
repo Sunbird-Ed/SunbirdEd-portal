@@ -66,8 +66,8 @@
         *ngIf="filterConfig" 
         [filterConfig]="filterConfig"> </sb-event-filter>
     <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
-    <lib-event-calender *ngIf="events" [events]='events'></lib-event-calender>
-    <br><br><br>
+    <lib-event-calender *ngIf="events.length > 0" [events]='events'></lib-event-calender>
+   <br><br><br>
 </div>
 </div>
 </ng-container>

@@ -132,7 +132,7 @@ export class AllMyEventsComponent implements OnInit {
     if(event.search)
     {
       this.Filterdata ={
-        "status":["live"],
+        "status":[""],
         "objectType": "Event",
       };
       this.query=event.target.value;

@@ -43,8 +43,8 @@ export class EventViewTypeComponent implements OnInit {
   isLoading: boolean = true;
   userId: any = "1001";
   formFieldProperties: any;
-  Filterdata: any;     
-  libEventConfig:any; 
+  Filterdata: any;
+  libEventConfig:any;
   dates: any;
   EventCount: any;
   url;
@@ -63,7 +63,7 @@ export class EventViewTypeComponent implements OnInit {
     private eventCreateService: EventCreateService,
     // private eventDetailService: EventDetailService,
     private router: Router,public userService: UserService,
-    public frameworkService:FrameworkService, 
+    public frameworkService:FrameworkService,
     public toasterService:ToasterService,
     public layoutService: LayoutService,) { }
 
@@ -108,14 +108,14 @@ redoLayout() {
       "status":["live"],
       "objectType": "Event"
       };
-      
+
       this.eventListService.getEventList(this.Filterdata).subscribe((data:any)=>{
         console.log("listdata = ", data);
       this.EventCount= data.result?.count;
       this.eventList = data.result?.Event;
       console.log("listdata = ",  this.eventList, "--------------", data['result']?.Event);
       this.isLoading = false;
-   
+
     },
       (err: any) => {
         console.log('err = ', err);
@@ -128,12 +128,12 @@ redoLayout() {
         "status":["live"],
         "objectType": "Event"
       };
-  
+
       this.eventListService.getEventList(this.Filterdata).subscribe((data: any) => {
        this.eventCalender = data.result.Event;
-  
+
        this.events = this.eventCalender.map(obj => ({
-  
+
           start: new Date(obj.startDate),
           title: obj.name,
           starttime: obj.startTime,
@@ -145,18 +145,18 @@ redoLayout() {
           audience: obj.audience,
           owner: obj.owner,
           identifier: obj.identifier,
-  
+
         }));
-  
+
       })
-    
-     
+
+
   }
   showFilters() {
       this.eventListService.getFilterFormConfig().subscribe((data: any) => {
         this.filterConfig = data.result['form'].data.fields;
         this.isLoading = false;
-  
+
         console.log('eventfilters = ',data.result['form'].data.fields);
       },
       (err: any) => {
@@ -176,7 +176,7 @@ redoLayout() {
 
   setEventConfig() {
     console.log("userId: userService.userProfile.userId ", this.userService.userProfile);
-   
+
     console.log("userId: userService.userProfile.userId ", this.userService);
     // tslint:disable-next-line:max-line-length
     // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
@@ -210,22 +210,22 @@ redoLayout() {
    {
      switch (event.filtersSelected.eventTime) {
        case "Past":
-         this.dates={ 
+         this.dates={
            "max":this.yesterdayDate
          }
            break;
        case "Upcoming":
-         this.dates={ 
+         this.dates={
            "min":this.tommorrowDate
          }
            break;
        default:
-         this.dates={ 
+         this.dates={
            "min":this.todayDate,
            "max":this.todayDate
          }
              break;
-     } 
+     }
      this.Filterdata ={
        "status":["live"],
        "eventType" :event.filtersSelected.eventType,
@@ -242,25 +242,25 @@ redoLayout() {
        };
    }
    else if(event.filtersSelected.eventTime)
-   { 
+   {
        switch (event.filtersSelected.eventTime) {
          case "Past":
-           this.dates={ 
+           this.dates={
              "max":this.yesterdayDate
            }
              break;
          case "Upcoming":
-           this.dates={ 
+           this.dates={
              "min":this.tommorrowDate
            }
              break;
          default:
-           this.dates={ 
+           this.dates={
              "min":this.todayDate,
              "max":this.todayDate
            }
          break;
-       } 
+       }
        this.Filterdata ={
          "status":["live"],
          "startDate" :this.dates,
@@ -280,17 +280,16 @@ redoLayout() {
 
    this.eventListService.getEventList(this.Filterdata,this.query).subscribe((data) => {
     console.log("listdata-filter = ", data);
-      
-     if (data.responseCode == "OK") 
+
+     if (data.responseCode == "OK")
        {
-          console.log("listdata = ", data);
-          console.log("EventCount = ", data.result.count);
-      
          this.isLoading=false;
          this.EventCount= data.result.count;
          this.eventList = data.result.Event;
 
          // For calendar events
+         if(data.result.count > 0)
+          {
          this.events = this.eventList.map(obj => ({
          start: new Date(obj.startDate),
          title: obj.name,
@@ -304,30 +303,31 @@ redoLayout() {
          owner: obj.owner,
          identifier:obj.identifier,
          }));
+        }
        }
      }, (err) => {
        this.isLoading=false;
        this.toasterService.error('Something went wrong, please try again later...');
-     
+
      });
  }
-   Openview(view) {  
-   
+   Openview(view) {
+
     var listProperty = document.getElementById("list");
     var calendarProperty = document.getElementById("calendar");
- 
-    if (view == 'list') {    
+
+    if (view == 'list') {
       this.tab = 'list';
       listProperty.style.backgroundColor = "#008840";
       calendarProperty.style.backgroundColor = "#ffffff";
-    } 
+    }
      else if (view == 'calender') {
       this.tab = 'calender';
       calendarProperty.style.backgroundColor = "#008840";
       listProperty.style.backgroundColor = "#ffffff";
       //this.router.navigate(['/calender']);
      }
-    
+
   }
   handleEvent() {
     // this.exploreMoreContent.emit();
@@ -351,7 +351,7 @@ redoLayout() {
 
        let  eventsList=  data.result.courses;
        Array.prototype.forEach.call(data.result.courses, child => {
-         eventIds.push(child.courseId); 
+         eventIds.push(child.courseId);
        });
 
        if (eventsList.length != 0)
@@ -363,7 +363,7 @@ redoLayout() {
          };
 
          this.eventListService.getEventList(this.Filterdata).subscribe((data) =>{
-           if (data.responseCode == "OK") 
+           if (data.responseCode == "OK")
              {
                this.myEvents = data.result.Event;
                console.log('My Events this.myEvents : ', this.myEvents);
@@ -380,7 +380,7 @@ redoLayout() {
      });
  }
  navToEventDetail(event){
-  this.router.navigate(['/explore-events/detail'], 
+  this.router.navigate(['/explore-events/detail'],
   { queryParams:  { eventId: event.identifier } });
  }
 }

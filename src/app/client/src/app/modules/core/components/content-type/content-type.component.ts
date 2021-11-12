@@ -104,6 +104,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   setSelectedContentType(url, queryParams, pathParams) {
     if (url.indexOf('play') >= 0) {
       this.selectedContentType = queryParams.contentType ? queryParams.contentType.toLowerCase() : null;
+    } else if (url.indexOf('explore-events') >= 0) { //@TODO - Added
+      this.selectedContentType = 'events'; //@TODO - Added
     } else if (url.indexOf('explore-course') >= 0 || url.indexOf('learn') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'course';
     } else if (url.indexOf('explore-groups') >= 0) {
