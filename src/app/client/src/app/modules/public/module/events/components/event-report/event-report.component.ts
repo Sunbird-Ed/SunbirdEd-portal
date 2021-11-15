@@ -112,4 +112,8 @@ export class EventReportComponent implements OnInit {
 
     return datestr;
   }
+  navigateToEventPage(){
+     this.router.navigate(['/explore-events/published']);
+    //  this.location.back();
+  }
 }

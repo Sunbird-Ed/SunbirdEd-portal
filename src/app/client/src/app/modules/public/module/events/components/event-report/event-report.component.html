@@ -1,6 +1,50 @@
+<!-- <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
+    <div class="sb-g"
+      [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'">
+      <div class="relative9">
+        <div class="ui container py-8">
+        <button
+            type="button"
+            class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+            tabindex="0"
+            (click)="navigateToEventPage()">
+            <i class="icon-svg icon-svg--xxs icon-back mr-4">
+                <svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
+                </svg>
+            </i> Back
+        </button>
+        </div>
+    </div>
+      <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
+            <lib-event
+                [libEventConfig]="libEventConfig">
+            </lib-event>
+            <sb-enroll-event-users
+                [eventDetailItem]="eventItem"
+                [enrollEventDetails]="eventUserEnrollData">
+            </sb-enroll-event-users>
+        </div>
+    </div>
+</div> -->
 <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
     <div class="sb-g"
       [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'">
+        <div class="relative9">
+            <div class="ui container py-8">
+            <button
+                type="button"
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+                tabindex="0"
+                (click)="navigateToEventPage()">
+                <i class="icon-svg icon-svg--xxs icon-back mr-4">
+                    <svg class="icon icon-svg--primary">
+                    <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
+                    </svg>
+                </i> Back
+            </button>
+            </div>
+        </div>
       <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
             <lib-event
                 [libEventConfig]="libEventConfig">

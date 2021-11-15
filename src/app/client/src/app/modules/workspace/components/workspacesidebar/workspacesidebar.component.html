@@ -17,7 +17,7 @@
   </a>  
 
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allmycontents-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
-  appPermission [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]" suiPopup popupText="View all your content in draft, review, published and more"
+  appPermission [permission]='allContentRole' class="item" (click)="redirectToCreatedContent();"  suiPopup popupText="View all your content in draft, review, published and more"
   [popupPlacement]="'right'">
        {{resourceService?.frmelmnts?.snav?.allmycontents}}
   </a>
