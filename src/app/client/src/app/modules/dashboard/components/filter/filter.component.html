@@ -1,4 +1,4 @@
-  <form [formGroup]="filtersFormGroup"  class="ui form"
+  <form [formGroup]="filtersFormGroup"  class="sb-form"
   [ngClass]="{'hide': hideElements}" *ngIf="showFilters && !hideElements">
  
   <!-- <sui-accordion class="styled fluid" [closeOthers]="false">
@@ -8,33 +8,35 @@
         {{resourceService?.frmelmnts?.lbl?.filters }}
       </div> -->
       <div content>
-        <div class="sb-prominent-filter p-0">
-          <div class="sb-prominent-filter-container pb-0">
-            <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
+        <div>
+          <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center">
+            <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
               <label>{{filter.displayName}}</label>
               <div *ngIf="filter.controlType === 'multi-select'">
-                <sui-multi-select [hasLabels]="false" class="selection sb-select-searchfilter"
-                  [placeholder]="filter.displayName" [formControlName]="filter.reference">
-                  <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                    [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                    [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options"
-                    [value]="option | titlecase">
-                  </sui-select-option>
-                </sui-multi-select>
+                <app-material-auto-complete name="mat-ms-auto"
+                placeholder=""
+                [dropdownList]="filter.options"
+                [selectedFilters]="getSelectedData(filter.reference)"
+                (selectionChanged)="autoCompleteChange($event,filter.reference)"
+                display-key="name"
+               ></app-material-auto-complete>
+               
               </div>
               <div *ngIf="filter.controlType === 'select'">
-                <sui-select class="selection sb-select-searchfilter" [placeholder]="filter.displayName"
-                  [formControlName]="filter.reference">
-                  <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                    [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                    [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option">
-                  </sui-select-option>
-                </sui-select>
+              
+                  <input matInput type="text" [(ngModel)]="filterQuery" (keyup.enter)="chooseOption()" [placeholder]="filter.displayName" aria-label="Number" matInput [formControlName]="filter.reference" [matAutocomplete]="auto2">
+                  <mat-autocomplete #auto2="matAutocomplete" class = "test-class">
+                  <mat-option *ngFor="let option of getFilters(filter.options)" [value]="option">
+                  {{ option }}
+                  </mat-option>
+                  </mat-autocomplete>
+              
+              
               </div>
               <div *ngIf="filter.controlType === 'date'">
                 <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                   [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
-                  [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="form-control" type="text"
+                  [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="sb-form-control" type="text"
                   [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
                   [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
                   [minDate]="pickerMinDate" [maxDate]="pickerMaxDate"
@@ -64,8 +66,7 @@
     <span *ngIf="!checkFilterReferance(key)">
     <span
       class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
-      *ngFor="let val of selectedFilters[key]">{{val}}
-      <!-- <i class="close icon mr-0 pl-4"></i> -->
+      *ngFor="let val of getFiltersValues(selectedFilters[key])">{{val}}
     </span>
     </span>
   </div>

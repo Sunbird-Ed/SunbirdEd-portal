@@ -15,7 +15,7 @@ let envVariables = {
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
-  uci_service_base_url: env.uci_service_base_url || "https://dev.sunbirded.org/api",
+  uci_service_base_url: env.uci_service_base_url || "http://kong:8000",
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
@@ -145,6 +145,9 @@ let envVariables = {
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
   sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
 
+  // generic editor question set and coleections children contents limit
+  SUNBIRD_QUESTIONSET_CHILDREN_LIMIT: env.sunbird_questionset_children_limit || 500,
+  SUNBIRD_COLLECTION_CHILDREN_LIMIT: env.sunbird_collection_children_limit || 1200,
 
   // Default Language Configuration
   sunbird_default_language: env.sunbird_portal_default_language || 'en',

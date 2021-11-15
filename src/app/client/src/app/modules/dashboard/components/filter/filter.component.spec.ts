@@ -1,6 +1,7 @@
 
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FilterComponent } from './filter.component';
+// import { FilterComponent } from '../';
 import { mockChartData } from './filter.component.spec.data';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -10,9 +11,16 @@ import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ActivatedRoute } from '@angular/router';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
 
 import { of } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
+
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+
 
 describe('FilterComponent', () => {
   let component: FilterComponent;
@@ -52,7 +60,12 @@ describe('FilterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FilterComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [SuiModule, ReactiveFormsModule, TelemetryModule.forRoot(), CoreModule, NgxDaterangepickerMd.forRoot()],
+      imports: [BrowserAnimationsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatAutocompleteModule,
+        BrowserModule,
+        SuiModule, ReactiveFormsModule, TelemetryModule.forRoot(), CoreModule, NgxDaterangepickerMd.forRoot()],
       // providers:[ResourceService]
       providers: [{ provide: ResourceService, useValue: resourceServiceMockData },
       {
@@ -221,5 +234,62 @@ describe('FilterComponent', () => {
     expect(component.filters).toEqual(mockChartData.filters);
 
   }));
+  it('should call autoCompleteChange', fakeAsync(() => {
+
+    component.filters = mockChartData.filters;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
+    component.ngOnInit();
+    tick(1000);
+    component.autoCompleteChange(["01285019302823526477"],"state")
+    tick(1000);
+    expect(component.filtersFormGroup.controls).toBeTruthy();
+
+    expect(component.selectedFilters).toEqual({
+      'state': ['01285019302823526477']
+    });
+
+  }));
+
+  it('should call getSelectedData', fakeAsync(() => {
+
+    component.filters = mockChartData.filters;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
+    component.ngOnInit();
+    tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
+    tick(1000);
+
+    const res= component.getSelectedData("state");
+    tick(1000);
+    expect(component.filtersFormGroup.controls).toBeTruthy();
+
+    expect(res).toEqual(['01285019302823526477']);
+
+    const res2= component.getSelectedData("state2");
+    tick(1000);
+    expect(component.filtersFormGroup.controls).toBeTruthy();
+
+    expect(res2).toEqual([]);
+
+  }));
+
+  it('should call getSelectedData', fakeAsync(() => {
+
+    component.filterQuery = "ab";
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
+    component.ngOnInit();
+    tick(1000);
+    
+    const res= component.getFilters(["cd","ef"]);
+    tick(1000);
+    expect(res).toEqual([]);
+
+    const res2= component.getFilters(["ab","ef"]);
+    tick(1000);
+    expect(res2).toEqual(["ab"]);
+
+    
+  }));
+
 
 });

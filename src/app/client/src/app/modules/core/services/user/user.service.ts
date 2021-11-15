@@ -360,12 +360,27 @@ export class UserService {
   private setRoleOrgMap(profile) {
     let roles = [];
     const roleOrgMap = {};
+    const roleOrgDetails = {};
     roles = _.map(profile.roles, 'role');
     roles = _.uniq(roles);
+    const orgList = profile.organisations;
     _.forEach(this._userProfile.roles, (roleObj, index) => {
       roleOrgMap[roleObj.role] = _.map(roleObj.scope, 'organisationId');
+      const roleObjScope = roleObj.scope && roleObj.scope[0];
+      roleOrgDetails[roleObj.role] = {
+        orgId : _.get(roleObjScope,'organisationId')
+      }
+      _.forEach(orgList, (org,index) => {
+        if(org.organisationId === _.get(roleObjScope,'organisationId')) {
+          roleOrgDetails[roleObj.role]['orgName'] = org.orgName;
+        }
+      })
     });
+    this._userProfile.userOrgDetails = roleOrgDetails;
     this._userProfile.roleOrgMap = roleOrgMap;
+  }
+  get UserOrgDetails() {
+    return _.cloneDeep(this._userProfile.userOrgDetails);
   }
   get RoleOrgMap() {
     return _.cloneDeep(this._userProfile.roleOrgMap);

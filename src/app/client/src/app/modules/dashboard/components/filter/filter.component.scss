@@ -3,13 +3,6 @@
 
 .sb-prominent-filter-field {
   .form-control {
-    min-width: 250px;
-    width: 100%;
-    height: calculateRem(40px);
-    font-size: calculateRem(18px);
-    border: calculateRem(1px) solid var(--gray-200);
-    border-radius: calculateRem(24px);
-    padding: calculateRem(8px);
 
     &:focus {
       border: calculateRem(1px) solid var(--rc-dddddd);
@@ -149,7 +142,7 @@
 .sb-prominent-filter-field {
   ::ng-deep {
     label {
-      padding-bottom: 4px;
+      padding-bottom: 2px;
       margin-bottom: 0px !important;
       margin-left: 10px !important;
     }
@@ -223,4 +216,11 @@ sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
   .modals.dimmer .ui.scrolling.modal {
     margin: 3.5rem auto auto !important;
   }
+}
+.additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+.select-container{
+  margin-top:10px;
 }

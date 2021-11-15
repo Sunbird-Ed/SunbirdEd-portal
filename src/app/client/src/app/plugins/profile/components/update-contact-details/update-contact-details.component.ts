@@ -16,23 +16,25 @@ import { MatDialog } from '@angular/material/dialog';
 export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   @Input() contactType: string;
+  @Input() userProfile: any;
   @Output() close = new EventEmitter<any>();
   @Input() dialogProps;
   contactTypeForm: FormGroup;
   enableSubmitBtn = false;
   showUniqueError = '';
-  showForm = true;
+  showForm = false;
   // @ViewChild('contactTypeModal', {static: true}) contactTypeModal;
   otpData: any;
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  verifiedUser = false;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public otpService: OtpService, public toasterService: ToasterService,
     public profileService: ProfileService, private matDialog: MatDialog) { }
 
   ngOnInit() {
-    this.initializeFormFields();
+    this.validateAndEditContact();
   }
 
   initializeFormFields() {
@@ -53,6 +55,34 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
   }
 
+  private async validateAndEditContact() {
+    if (this.userProfile) {
+      const request: any = {
+          key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
+          userId: this.userProfile.userId,
+          type: ''
+      };
+      if ((this.userProfile.email && !this.userProfile.phone) ||
+      (!this.userProfile.email && !this.userProfile.phone && this.userProfile.recoveryEmail)) {
+          request.type = 'email';
+      } else if (this.userProfile.phone || this.userProfile.recoveryPhone) {
+          request.type = 'phone';
+      }
+      const otpData = {
+          'type': request.type,
+          'value': request.key,
+          'instructions': this.resourceService.frmelmnts.lbl.otpcontactinfo,
+          'retryMessage': request.type === 'phone' ?
+            this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
+          'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
+            this.resourceService.frmelmnts.lbl.wrongEmailOTP
+        };
+      this.verifiedUser = false;
+
+      this.generateOTP({ request }, otpData);
+    }
+  }
+
   closeModal() {
     this.closeMatDialog();
     this.close.emit();
@@ -71,8 +101,8 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  prepareOtpData() {
-    this.otpData = {
+  prepareOtpData(otpData?) {
+    this.otpData = otpData || {
       'type': this.contactType.toString(),
       'value': this.contactType === 'phone' ?
         this.contactTypeForm.controls.phone.value.toString() : this.contactTypeForm.controls.email.value,
@@ -131,17 +161,20 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  generateOTP() {
-    const request = {
-      'request': {
-        'key': this.contactType === 'phone' ?
-          this.contactTypeForm.controls.phone.value.toString() : this.contactTypeForm.controls.email.value,
-        'type': this.contactType.toString()
-      }
-    };
+  generateOTP(request?, otpData?) {
+    if (!request) {
+      request = {
+        'request': {
+          'key': this.contactType === 'phone' ?
+            this.contactTypeForm.controls.phone.value.toString() : this.contactTypeForm.controls.email.value,
+          'type': this.contactType.toString()
+        }
+      };
+    }
+
     this.otpService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
-        this.prepareOtpData();
+        this.prepareOtpData(otpData);
         this.showForm = false;
       },
       (err) => {
@@ -149,22 +182,31 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
           (err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0051;
         this.toasterService.error(failedgenerateOTPMessage);
         this.enableSubmitBtn = true;
+        if (!this.verifiedUser) {
+            this.closeModal();
+        }
       }
     );
   }
 
   updateProfile(data) {
-    this.profileService.updateProfile(data).subscribe(res => {
-      this.closeModal();
-      const sMessage = this.contactType === 'phone' ?
-        this.resourceService.messages.smsg.m0047 : this.resourceService.messages.smsg.m0048;
-      this.toasterService.success(sMessage);
-    }, err => {
-      this.closeModal();
-      const fMessage = this.contactType === 'phone' ?
-        this.resourceService.messages.emsg.m0014 : this.resourceService.messages.emsg.m0015;
-      this.toasterService.error(fMessage);
-    });
+    if (this.verifiedUser) {
+        this.profileService.updateProfile(data).subscribe(res => {
+          this.closeModal();
+          const sMessage = this.contactType === 'phone' ?
+            this.resourceService.messages.smsg.m0047 : this.resourceService.messages.smsg.m0048;
+          this.toasterService.success(sMessage);
+        }, err => {
+          this.closeModal();
+          const fMessage = this.contactType === 'phone' ?
+            this.resourceService.messages.emsg.m0014 : this.resourceService.messages.emsg.m0015;
+          this.toasterService.error(fMessage);
+        });
+    } else {
+        this.initializeFormFields();
+        this.verifiedUser = true;
+        this.showForm = true;
+    }
   }
 
   setInteractEventData() {

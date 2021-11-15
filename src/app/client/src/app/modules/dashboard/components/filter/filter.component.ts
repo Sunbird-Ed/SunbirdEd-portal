@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
-
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-filter',
@@ -86,6 +86,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   };
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
+  @ViewChild('matAutocomplete') matAutocomplete: MatAutocomplete;
+  filterQuery:any;
 
   constructor(
     public resourceService: ResourceService,
@@ -130,7 +132,9 @@ export class FilterComponent implements OnInit, OnDestroy {
         filter.options = options;
       } else {
         if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-          filter.options = options;
+          if(options.length > filter.options){
+            filter.options = options;
+          } 
         }
       }
     });
@@ -271,6 +275,38 @@ export class FilterComponent implements OnInit, OnDestroy {
       return false;
     }
   }
+  autoCompleteChange(data,reference){    
+    let object = {};
+    if(data && data.length > 0){
+      object[reference] =data;
+    }
+    this.filtersFormGroup.controls[reference].setValue(data);
+  }
+  getSelectedData(reference){
 
+    if(this.selectedFilters && this.selectedFilters[reference]){
+      return this.selectedFilters[reference];
+    } else {
+      return [];
+    }
+  }
+
+
+  getFilters(options) {
+    if(this.filterQuery && this.filterQuery !=""){
+      return options.filter(opt =>
+        opt.toLowerCase().indexOf(this.filterQuery.toLowerCase()) === 0);
+    } else {
+      return options;
+    }
+  }
+  
+  chooseOption(): void {
+    this.matAutocomplete.options.first.select();
+  }
+
+  getFiltersValues(filter){
+   return Array.isArray(filter) ? filter : [filter];
+  }
 
 }

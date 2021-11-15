@@ -36,35 +36,36 @@ describe('NotificationServiceImpl', () => {
     it('should return the user feed notifications', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
-      spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf(notificationData));
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      spyOn(csUserService, 'getUserFeed').and.returnValue(observableOf(notificationList));
       // act
       const resp = await service.fetchNotificationList();
       // assert
-      expect(service['NotificationCsService'].notificationRead).toHaveBeenCalled();
+      expect(csUserService.getUserFeed).toHaveBeenCalled();
+      expect(resp).toEqual(notificationList as any);
     });
 
     it('should return empty array when an error is occured while fetching notificationList', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
-      spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableThrowError({ message: 'error' }));
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      spyOn(csUserService, 'getUserFeed').and.returnValue(observableThrowError({ message: 'error' }));
       // act
       const resp = await service.fetchNotificationList();
       // assert
-      expect(service['NotificationCsService'].notificationRead).toHaveBeenCalled();
+      expect(csUserService.getUserFeed).toHaveBeenCalled();
       expect(resp).toEqual([] as any);
     });
 
     it('should return empty array if the getuserfeed does not return array', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
-      spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf({}));
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      spyOn(csUserService, 'getUserFeed').and.returnValue(observableOf({}));
       // act
       const resp = await service.fetchNotificationList();
       // assert
-      expect(service['NotificationCsService'].notificationRead).toHaveBeenCalled();
+      expect(csUserService.getUserFeed).toHaveBeenCalled();
       expect(resp).toEqual([] as any);
     });
 
@@ -83,15 +84,20 @@ describe('NotificationServiceImpl', () => {
       expect(resp).toEqual(false);
     });
 
-    it('if the notification data is not empty', async () => {
+    it('should return false if the notification data is empty', async () => {
       // arrage
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(service, 'markNotificationAsRead').and.returnValue(observableOf({}));
-      notificationData.action.type = 'member-added';
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      spyOn(csUserService, 'updateUserFeedEntry').and.returnValue(observableOf({}));
+      spyOn(service, 'fetchNotificationList');
+      const data = {
+        data: notificationData
+      };
+      data.data.data.actionData.actionType = 'certificateUpdate';
       // act
-      await service.handleNotificationClick(notificationData);
+      await service.handleNotificationClick(data);
       // assert
-      expect(service.markNotificationAsRead).toHaveBeenCalled();
+      expect(service.fetchNotificationList).toHaveBeenCalled();
     });
   });
 
@@ -113,16 +119,16 @@ describe('NotificationServiceImpl', () => {
         data: notificationData
       };
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+      const csUserService = TestBed.get('CS_USER_SERVICE');
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
-      spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({ message: 'success' }));
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({ message: 'success' }));
       spyOn(service, 'fetchNotificationList');
       // act
       const resp = await service.deleteNotification(data);
       // assert
       expect(telemertyService.interact).toHaveBeenCalled();
-      expect(service['NotificationCsService'].notificationDelete).toHaveBeenCalled();
+      expect(csUserService.deleteUserFeedEntry).toHaveBeenCalled();
       expect(service.fetchNotificationList).toHaveBeenCalled();
       expect(resp).toEqual(true);
     });
@@ -133,10 +139,10 @@ describe('NotificationServiceImpl', () => {
         data: notificationData
       };
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+      const csUserService = TestBed.get('CS_USER_SERVICE');
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
-      spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableThrowError({ message: 'error' }));
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableThrowError({ message: 'error' }));
       spyOn(service, 'fetchNotificationList');
       // act
       const resp = await service.deleteNotification(data);
@@ -151,10 +157,10 @@ describe('NotificationServiceImpl', () => {
     it('should return false if the notification list is empty', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+      const csUserService = TestBed.get('CS_USER_SERVICE');
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
-      spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({message: 'success'}));
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
       spyOn(service, 'deleteNotification').and.returnValue(true);
       // act
       const resp = await service.clearAllNotifications({data: []});
@@ -165,10 +171,10 @@ describe('NotificationServiceImpl', () => {
     it('should return true when all notifications are deleted', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+      const csUserService = TestBed.get('CS_USER_SERVICE');
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
-      spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({message: 'success'}));
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
       // act
       const resp = await service.clearAllNotifications({data: notificationList});
       // assert
@@ -178,33 +184,16 @@ describe('NotificationServiceImpl', () => {
     it('should return true when all notifications are deleted', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+      const csUserService = TestBed.get('CS_USER_SERVICE');
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
-      spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableThrowError({ message: 'error' }));
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableThrowError({ message: 'error' }));
       // act
       const resp = await service.clearAllNotifications({data: notificationList});
       // assert
       expect(resp).toEqual(true);
     });
 
-  });
-  describe('getNavigationPath()', async() => {
-    it ('should call getNavigationPath()', async () => {
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-
-      const resp = await service.getNavigationPath({data: notificationData});
-
-      expect(resp).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90'});
-    })
-
-    it ('should fail call getNavigationPath()', async () => {
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-
-      const resp = await service.getNavigationPath({data: {action: {additionalInfo: {}}} });
-
-      expect(resp).toEqual({});
-    })
   });
 
 });

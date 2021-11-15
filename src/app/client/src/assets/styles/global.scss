@@ -1,6 +1,15 @@
 @import "~@project-sunbird/sb-styles/assets/variables";
 @import "./mixins/mixins";
 
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$custom-typography: mat-typography-config(
+  $font-family: 'var(--font-stack-en) !important',
+);
+
+@include angular-material-typography($custom-typography);
 :root {
   font-size: 16px;
 }
@@ -8,6 +17,7 @@
 html,
 body {
   height: 100%;
+  font-size: mat-font-size($custom-typography, body-1);
 }
 
 body {
@@ -418,6 +428,7 @@ app-workspace {
 }
 
 .sbt-theme-bg-img {
+  display:none;
   position: fixed;
   z-index: -50;
   left: calculateRem(-106px);
@@ -448,6 +459,7 @@ app-workspace {
 }
 
 .sbt-theme-right-flower {
+  display: none;
   position: fixed;
   bottom: calculateRem(48px);
   width: calculateRem(288px);
@@ -1443,4 +1455,21 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   box-shadow: none;
   background: transparent;
   overflow:hidden !important;
+}
+
+// Accessible changes
+html[data-theme='Default'], [layout='joy']{
+  app-signup {
+    .sb-checkbox.sb-checkbox-primary label:before {
+      border-color: #004E8A;
+    }
+  }
+}
+
+html[data-theme='Darkmode'] {
+  app-signup {
+    .sb-checkbox.sb-checkbox-primary label:before {
+      border-color: var(--primary-color);
+    }
+  }
 }

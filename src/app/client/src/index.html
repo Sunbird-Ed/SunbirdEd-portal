@@ -158,6 +158,15 @@
   <% if (baseUrl) { %>
     <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
   <% } %>
+  <% if (blobUrl) { %>
+    <input type="hidden" id="blobUrl" value="<%=blobUrl%>" />
+  <% } %>
+  <% if (sunbirdQuestionSetChildrenLimit) { %>
+    <input type="hidden" id="sunbirdQuestionSetChildrenLimit" value="<%=sunbirdQuestionSetChildrenLimit%>" />
+  <% } %>
+  <% if (sunbirdCollectionChildrenLimit) { %>
+    <input type="hidden" id="sunbirdCollectionChildrenLimit" value="<%=sunbirdCollectionChildrenLimit%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>

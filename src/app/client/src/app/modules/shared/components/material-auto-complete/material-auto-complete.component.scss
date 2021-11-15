@@ -1,0 +1,109 @@
+@import "variables";
+@import "mixins/mixins";
+
+
+::ng-deep {
+.mat-dpdn-autocomplete-container {
+    position: relative;
+    width: 100%;
+}
+.select-container {
+    display: flex;
+    input {
+        padding: 0;
+        outline: none;
+        font: inherit;
+    }
+}
+.dropdown-list-container {
+    // min-width: 100%;
+    // max-width: 500px;
+    position: absolute;
+    top: 5%;
+    background-color: #FFF;
+    border: 1px solid #dedede;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 2;
+    border-radius: 6px !important;
+    width: 100%;
+    mat-form-field {
+        width: 95%;
+        padding-left: 3%;
+        padding-top: 3%;
+    }
+    ul {
+        list-style-type:none;
+        padding-left: 0;
+        margin: 0px;
+        li {
+            padding: 0px;
+            margin-bottom: 0px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            div.listitem-info {
+                margin: 0px auto;
+                font-size: 12px;
+                color: #949494;
+            }
+            div.listitem-info.left {
+                padding-left: 16.5%;
+            }
+            div.listitem-info.right {
+                text-align: right;
+            }
+            mat-checkbox ::ng-deep span.mat-checkbox-label {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                max-width: 445px;
+            }
+        }
+        li:nth-child(even) {
+            background-color: rgba(0,0,0,.04);
+        }
+    }
+}
+#mat-dpdwn-autocomplete {
+  width: 95%;
+  height: 20px;
+  border: 0px 0px 1px 0px solid black;
+}
+}
+::ng-deep .mat-form-field-infix {
+    border-top: .24375em solid transparent;
+}
+::ng-deep  .mat-form-field-underline {
+    display: none;
+}
+
+::ng-deep {
+
+    .mat-form-field-label {
+        position: relative !important;
+        display: block !important;
+    }
+
+    .mat-input-element {
+        padding: 10px !important;
+        border-radius: 24px !important;
+        border: 1px solid var(--sb-dropdown-menu-text);
+    }
+    .select-container-form-field {
+        width:100% !important;
+    }
+    // .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field label { 
+
+    // }
+    .mat-checkbox-layout {
+        display: block !important;
+        text-align: left !important;
+        padding-left: 10px !important;
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-infix {
+        padding-top: 0px !important;
+    }
+    .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+        background-color: #024F9D !important
+    }
+}

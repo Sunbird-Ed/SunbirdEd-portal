@@ -86,7 +86,7 @@
     <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
     </app-install-app>
     <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
-    <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
+    <router-outlet *ngIf="isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)"></router-outlet>
   </div>
 </div>
 <div *ngIf="isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute(), 'hideBot': isFullScreenView}">
