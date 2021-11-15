@@ -310,6 +310,8 @@ export const mockData = {
       'contentType': 'course',
       'isEnabled': true,
       'isDefault': true,
+      'default': true,
+      'goToBasePath' : 'http://sunbird.com',
       'theme': {
         'baseColor': '',
         'textColor': '',
@@ -324,15 +326,15 @@ export const mockData = {
           ]
         }
       },
-      anonumousUserRoute: {
-        route: '/explore-course',
-        queryParam: 'course'
+      'anonumousUserRoute': {
+        'route': '/explore-course',
+        'queryParam': 'course'
       },
-      loggedInUserRoute: {
-        route: '/learn',
-        queryParam: 'course'
+      'loggedInUserRoute': {
+        'route': '/learn',
+        'queryParam': 'course'
       },
-      limit: 20,
+      'limit': 20,
     },
     {
       'index': 0,
@@ -419,15 +421,15 @@ export const mockData = {
           ]
         }
       },
-      anonumousUserRoute: {
-        route: '/explore',
-        queryParam: 'textbook'
+      'anonumousUserRoute': {
+        'route': '/explore',
+        'queryParam': 'textbook'
       },
-      loggedInUserRoute: {
-        route: '/resources',
-        queryParam: 'textbook'
+      'loggedInUserRoute': {
+        'route': '/resources',
+        'queryParam': 'textbook'
       },
-      limit: 100,
+      'limit': 100,
     },
     {
       'index': 2,
@@ -450,7 +452,7 @@ export const mockData = {
           ]
         }
       },
-      limit: 100
+      'limit': 100
     }
   ]
 };
