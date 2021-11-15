@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { of } from 'rxjs';
 import {of as observableOf } from 'rxjs';
-import { groupData, MockResponse, modifiedActivities, notificationData } from './group-notification-wrapper.spec.data';
+import { MockResponse, notificationData } from './group-notification-wrapper.spec.data';
 
 import { GroupNotificationWrapperService } from './group-notification-wrapper.service';
 import { ConfigService, ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
