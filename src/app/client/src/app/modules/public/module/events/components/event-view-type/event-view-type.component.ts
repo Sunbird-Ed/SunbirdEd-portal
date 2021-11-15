@@ -303,6 +303,8 @@ redoLayout() {
          owner: obj.owner,
          identifier:obj.identifier,
          }));
+        }else{
+          this.events = [];
         }
        }
      }, (err) => {
