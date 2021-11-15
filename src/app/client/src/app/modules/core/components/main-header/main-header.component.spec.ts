@@ -433,5 +433,6 @@ it("should call the navigateToHome method with and the formService",(done)=>{
   component.navigateToHome();
   expect(navigateByUrlSpy).toHaveBeenCalled();
   expect(formService.getFormConfig).toHaveBeenCalled();
+  done();
 })
 });
