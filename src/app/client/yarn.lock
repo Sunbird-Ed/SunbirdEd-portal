@@ -1507,10 +1507,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.28.tgz#f6bc68caf335c32b04c2c555029ca8d38d85dbf1"
   integrity sha512-QSTRbop3Zqxuho3zJGLg6fwyT/NG19zXSRJbyJdHP2yQE1FlutXkdQW8WZy5VFPVLc74+qRq0VIbSoCWUW/Mzg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.4.15":
-  version "4.4.15"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.4.15.tgz#85166de14e12a63b10d4783aa06f06589b4d6c45"
-  integrity sha512-134kXE+7E5qxxvL2xsuaFomUWlNyC48k++WblBC7n1faAOPpPpJg0tclS8/5bNQ+xeNYZzk/Og/hSNK76DmVNA==
+"@project-sunbird/sunbird-collection-editor-v9@4.4.16":
+  version "4.4.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.4.16.tgz#4f1d52e75cbc3fba5c697dec4b85449274e23f3e"
+  integrity sha512-rab0h89yrFC/kV5gm1mxyVt/8kSyeSF3fPYIXdPsqVtXflVBNy3LsiH6z/CnSx1K5jC+ngwURePyyJ0suT7jCg==
   dependencies:
     tslib "^1.10.0"
 
@@ -1545,10 +1545,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.4.14":
-  version "4.4.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.14.tgz#2fe13e77a2919aea8aba5f708c184cfbae4f17b9"
-  integrity sha512-2PHXaTeeGxa0BieiueaBJ7sbIkDwppFcN5F2pil+lbpgyKO/P3swVdkRbWtsm2T0WlIEYssOfBBHnl89uGLVsw==
+"@project-sunbird/sunbird-quml-player-v9@4.4.16":
+  version "4.4.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.4.16.tgz#bf171a6b593aa55429ba148f59e48b03f12a1a34"
+  integrity sha512-jDaQLtbHo3Zz2ABiMtZfEmMOUV/0ZUpQ+MaKGKKcHyR4NduiSh2Ii17Klab1mxOyDLo73trTsOEvoJ9Infs59w==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.4.4"
 
@@ -5257,7 +5257,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
