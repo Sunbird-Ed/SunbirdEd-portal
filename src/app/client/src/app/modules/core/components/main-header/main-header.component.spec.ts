@@ -435,4 +435,13 @@ it("should call the navigateToHome method with and the formService",(done)=>{
   expect(formService.getFormConfig).toHaveBeenCalled();
   done();
 })
+it('should call the onInit method', () => {
+  component.ngOnInit();
+  const data = {
+    formType:'contentcategory',
+    formAction:'menubar',
+    filterEnv:'global'
+  }
+  expect(component.baseCategoryForm).toEqual(data);
+});
 });
