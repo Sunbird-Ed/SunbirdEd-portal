@@ -422,10 +422,10 @@ it("should call the getFormConfigs to get form category",()=>{
 })
 it("should call the navigateToHome method with and the formService",(done)=>{
   const formService = TestBed.get(FormService);
-  //spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+  const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
+  spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
   component.navigateToHome();
-  //expect(formService.getFormConfig).toHaveBeenCalled();
-  done();
+  expect(navigateByUrlSpy).toHaveBeenCalled();
+  expect(formService.getFormConfig).toHaveBeenCalled();
 })
-
 });
