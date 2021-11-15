@@ -13,7 +13,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 describe('NotificationServiceImpl', () => {
   configureTestSuite();
 
-  const MockCSService = {
+  const MockCSNotificationService = {
     notificationRead() { return observableOf({}); },
     notificationDelete() { return observableOf({}); },
     notificationUpdate() { return observableOf({}); }
@@ -22,6 +22,7 @@ describe('NotificationServiceImpl', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SbNotificationModule, RouterTestingModule, TelemetryModule.forRoot()],
+      providers: [ { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }]
     });
   });
 

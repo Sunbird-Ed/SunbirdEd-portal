@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { CsModule } from '@project-sunbird/client-services';
 import { SbNotificationService } from 'sb-notification';
 import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -8,6 +7,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
 import { GroupNotificationWrapperService } from '../group-notification-wrapper/group-notification-wrapper.service';
+import { CsNotificationService } from '@project-sunbird/client-services/services/notification/interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +16,9 @@ export class NotificationServiceImpl implements SbNotificationService {
 
   notificationList$ = new BehaviorSubject([]);
   showNotificationModel$ = new Subject<boolean>();
-  NotificationCsService: any;
 
   constructor(
+    @Inject('CS_NOTIFICATION_SERVICE') private NotificationCsService: CsNotificationService,
     private userService: UserService,
     private toasterService: ToasterService,
     private router: Router,
@@ -26,8 +26,6 @@ export class NotificationServiceImpl implements SbNotificationService {
     private activatedRoute: ActivatedRoute,
     private groupsNotificationWrapperSvc: GroupNotificationWrapperService,
   ) {
-    // creating the instance for notification service in csl
-    this.NotificationCsService = CsModule.instance.notificationService;
     this.fetchNotificationList();
   }
 
@@ -42,8 +40,6 @@ export class NotificationServiceImpl implements SbNotificationService {
       if (!Array.isArray(notificationData)) {
         return [];
       }
-      notificationData
-        .sort(((a, b) => (new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())));
       this.notificationList$.next(notificationData);
       return notificationData as any[];
     } catch (e) {

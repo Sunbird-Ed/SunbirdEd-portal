@@ -56,16 +56,13 @@ describe('GroupNotificationWrapperService', () => {
 
   it('should call navigateToActivityToc()', () => {
     const service = TestBed.get(GroupNotificationWrapperService);
-    spyOn(service, 'getGroupById').and.returnValue(of());
-    spyOn(service, 'groupContentsByActivityType').and.returnValue({showList:  true});
-    spyOn(service, 'playContent');
-    service.navigateToActivityToc('123', true, true, true);
-    service.getGroupById('123', true, true, true).subscribe((data) => {
-      expect(service.groupContentsByActivityType).toHaveBeenCalledWith(false,
-        {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
-        description: '', membershipType: 'invite_only'});
-      expect(service.playContent).toHaveBeenCalled();
-    });
+    const activity = { type: 'course', id: '123'}
+    const isAdmin = false;
+    spyOn(service['groupCservice'], 'getActivityDataById');
+    spyOn(service['groupCservice'], 'getById').and.returnValue(of({}));;
+    service.navigateToActivityToc(activity,'123', isAdmin, true, true, true);
+    expect(service['groupCservice'].getById).toHaveBeenCalled();
+    expect(service['groupCservice'].getActivityDataById).toHaveBeenCalled();
   });
 
   it('should call navigateNotification()', () => {
@@ -141,28 +138,6 @@ describe('GroupNotificationWrapperService', () => {
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', MockResponse.contentMetadata.identifier]);
   }));
-
-  it('should call groupCs getById', () => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    spyOn(service['groupCservice'], 'getById');
-    service.getGroupById('123', true, true, true);
-    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123',
-    { includeMembers: true, includeActivities: true, groupActivities: true });
-  });
-  
-  it ('should return activityList and showList value', () => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const response = service.groupContentsByActivityType(false, groupData);
-    expect(response.showList).toBe(true);
-    expect(response.activities).toEqual(modifiedActivities);
-  });
-
-  it ('should return activityList and showList value = FALSE', () => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const response = service.groupContentsByActivityType(false, {});
-    expect(response.showList).toBe(false);
-    expect(response.activities).toEqual({});
-  });
 
 });
 

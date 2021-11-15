@@ -68,6 +68,11 @@ describe('MainHeaderComponent', () => {
     updateUserFeedEntry() { return of({}); },
     deleteUserFeedEntry() { return of({}); }
   };
+  const MockCSNotificationService = {
+    notificationRead() { return observableOf({}); },
+    notificationDelete() { return observableOf({}); },
+    notificationUpdate() { return observableOf({}); }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -79,7 +84,8 @@ describe('MainHeaderComponent', () => {
         PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder, ElectronService,ObservationUtilService,
-        LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
+        LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService },
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }]
     })
       .compileComponents();
   }));

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ToasterService, ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CsModule } from '@project-sunbird/client-services';
 import * as _ from 'lodash-es';
-import { delay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -12,8 +11,6 @@ export class GroupNotificationWrapperService {
   groupCservice: any;
 
   constructor(
-    private toasterService: ToasterService,
-    private resourceService: ResourceService,
     private configService: ConfigService,
     public router: Router,
     public navigationHelperService: NavigationHelperService
@@ -32,85 +29,27 @@ export class GroupNotificationWrapperService {
       return ({ path: `my-groups/group-details/` + _.get(additionalInfo, 'group.id') });
     }
     if (type === 'group-activity-added') {
-      const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false
-      this.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin);
+      const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false;
+      this.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin, true, true, true)
     }
     return {};
   }
+
   /**
    * @description - will redirect to activity toc page based on the activity type
    * @param  {} activity
    * @param  {} groupId
    * @param  {} isAdmin
    */
-  navigateToActivityToc(activity, groupId, isAdmin) {
-    this.getGroupById(groupId, true, true, true).subscribe((groupData) => {
-      const response = this.groupContentsByActivityType(false, groupData);
-      response.activities[activity.type].forEach(Selectedactivity => {
-        if (activity.id === Selectedactivity.identifier) {
-          this.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
-        }
-      })
-    }, e => {
-      this.toasterService.error('Something went wrong, please try again later')
-    });
-  }
-
-  /**
-   * @description -  To get groupData from csService
-   * @param  {string} groupId
-   * @param  {boolean} includeMembers?
-   * @param  {boolean} includeActivities?
-   * @param  {boolean} groupActivities?
-   */
-  getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean, groupActivities?: boolean) {
-    const groupData = this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
-    return groupData;
-  }
-  /**
-   * @description - To get the activity data
-   * @param  {} showList
-   * @param  {} groupData
-   */
-  groupContentsByActivityType(showList, groupData) {
-    const activitiesGrouped = _.get(groupData, 'activitiesGrouped');
-    if (activitiesGrouped) {
-
-      const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
-        activityGroup = this.getSelectedLanguageStrings(activityGroup);
-
-        acc[activityGroup.title] = activityGroup.items.map((i) => {
-          const activity = {
-            ...i.activityInfo,
-            type: i.type,
-            cardImg: _.get(i, 'activityInfo.appIcon') || this.configService.appConfig.assetsPath.book,
-          };
-          return activity;
-        });
-        showList = !showList ? Object.values(acc).length > 0 : showList;
-        return acc;
-
-      }, {});
-      Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
-      return { showList, activities: activityList };
-    }
-    return { showList, activities: activitiesGrouped || {} };
-  }
-
-  getSelectedLanguageStrings(activity) {
-    this.resourceService.languageSelected$.pipe(delay(600)).subscribe(item => {
-      if (!_.isEmpty(activity)) {
-        if (activity.translations) {
-          _.find(JSON.parse(activity.translations), (value, key) => {
-            if (item.value === key) {
-              activity.title = value;
-            }
-          });
-        }
+  navigateToActivityToc(activity, groupId, isAdmin, includeMembers?, includeActivities?, groupActivities?) {
+    this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities }).subscribe((groupData) => {
+      const Selectedactivity = this.groupCservice.getActivityDataById(groupData, activity)
+      if (Selectedactivity) {
+        this.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
       }
     });
-    return activity;
   }
+
   /**
    * @description - will do the redirection for activity toc based on activity type
    * @param  {} content
