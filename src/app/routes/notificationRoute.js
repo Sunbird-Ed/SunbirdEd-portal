@@ -37,9 +37,14 @@ function proxyObject() {
         }
     });
 } 
-function addHeaders() {
-    return function (proxyReqOpts, srcReq) { 
+/**
+ * Notification service needs header content-type as 'text/plain' as 'application/json' not supported
+ * @returns 
+ */
+ function addHeaders() {
+    return function(proxyReqOpts, srcReq) {
         proxyReqOpts.headers['content-type'] = 'text/plain';
-        return proxyReqOpts;
+        var decFunc = proxyUtils.decorateRequestHeaders(learnerURL);
+        return decFunc(proxyReqOpts, srcReq);
     }
 }
