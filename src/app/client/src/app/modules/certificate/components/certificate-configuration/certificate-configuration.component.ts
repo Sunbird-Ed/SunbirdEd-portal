@@ -59,6 +59,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   arrayValue = {};
   scoreRange: any;
   isSingleAssessment = false;
+  isStateCertificate = false;
+  instance: string;
 layoutConfiguration: any;
 FIRST_PANEL_LAYOUT;
 SECOND_PANEL_LAYOUT;
@@ -76,7 +78,10 @@ SECOND_PANEL_LAYOUT;
     private toasterService: ToasterService,
     private router: Router,
     private telemetryService: TelemetryService,
-    public layoutService: LayoutService) { }
+    public layoutService: LayoutService) { 
+      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+    }
   /**
    * @description - It will handle back button click.
    */
@@ -581,6 +586,13 @@ SECOND_PANEL_LAYOUT;
     } else {
       this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
       this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+    }
+  }
+  handleParameterChange(event) {
+    if (event === 'My state teacher') {
+      this.isStateCertificate = true;
+    } else {
+      this.isStateCertificate = false;
     }
   }
 }

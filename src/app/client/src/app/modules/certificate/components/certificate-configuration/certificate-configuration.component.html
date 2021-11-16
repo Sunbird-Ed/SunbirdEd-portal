@@ -167,13 +167,16 @@
                       <label>
                         <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
                           [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
-                          [isDisabled]="configurationMode === 'edit'" #selectRecipient>
+                          [isDisabled]="configurationMode === 'edit'" #selectRecipient (selectedOptionChange)="handleParameterChange($event)">
                           <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option">
                           </sui-select-option>
                         </sui-select>
                       </label>
                     </div>
                   </div>
+                  <label class="fnormal font-weight-normal text-left"
+                      *ngIf="isStateCertificate">{{resourceService?.frmelmnts?.intxt?.ssousers |
+                        interpolate:'{instance}': instance}}</label>
                 </div>
 
                 <hr class="mt-16 mb-24">
