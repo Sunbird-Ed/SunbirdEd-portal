@@ -1,4 +1,4 @@
-import { filter, first, takeUntil } from 'rxjs/operators';
+import { filter, first, takeUntil, tap } from 'rxjs/operators';
 import {
   UserService,
   PermissionService,
@@ -102,6 +102,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   showOfflineHelpCentre = false;
   contributeTabActive: boolean;
   showExploreComponent: boolean;
+  showMainMenuBar = true;
   showSideMenu = false;
   instance: string;
   userListToShow = [];
@@ -372,6 +373,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           const child: ActivatedRoute[] = currentRoute.children;
           child.forEach(route => {
             currentRoute = route;
+            const { menuBar: { visible = true } = {} } = currentRoute.snapshot.data;
+            this.showMainMenuBar = visible;
             if (route.snapshot.data.telemetry) {
               if (route.snapshot.data.telemetry.pageid) {
                 this.pageId = route.snapshot.data.telemetry.pageid;
@@ -762,5 +765,4 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.cacheService.remove('searchFilters');
     }
   }
-
 }
