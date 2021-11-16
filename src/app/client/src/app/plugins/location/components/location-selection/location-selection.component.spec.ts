@@ -102,6 +102,7 @@ describe('LocationSelectionComponent', () => {
         spyOn(locationSelectionComponent.close, 'emit').and.callThrough();
         // act
         locationSelectionComponent.closeModal();
+        expect(getDialogByIdSpy).toHaveBeenCalled();
         // assert
         expect(mockPopupControlService.changePopupStatus).toHaveBeenCalledWith(true);
         expect(locationSelectionComponent.close.emit).toHaveBeenCalled();
