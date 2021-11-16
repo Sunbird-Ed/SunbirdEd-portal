@@ -1476,3 +1476,25 @@ html[data-theme='Darkmode'] {
     }
   }
 }
+
+// .cdk-global-overlay-wrapper {
+//   pointer-events: auto;
+//   display: block;
+//   position: relative;
+//   overflow: auto;
+//   text-align: center;
+// }
+
+// .cdk-global-overlay-wrapper::before {
+//   content: '';
+//   display: inline-block;
+//   height: 100%;
+//   white-space: nowrap;
+// }
+
+// .cdk-overlay-pane {
+//   display: inline-block;
+//   position: relative;
+//   text-align: left;
+//   white-space: normal;
+// }
