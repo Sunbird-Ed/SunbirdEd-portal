@@ -87,7 +87,7 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*'
+  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*','/api/event/*'
 ],
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -98,6 +98,9 @@ app.all([
     saveUninitialized: false,
     store: memoryStore
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
+
+  app.all(['/api/event/*'],
+keycloak.protect())
 
 app.all('/logoff', endSession, (req, res) => {
   // Clear cookie for client (browser)
@@ -246,8 +249,9 @@ require('./routes/groupRoutes.js')(app) // group api routes
 
 require('./routes/learnerRoutes.js')(app) // learner api routes
 
+
 require('./routes/mlRoutes.js')(app) // observation api routes
-require('./routes/eventsRoutes.js')(app) // observation api routes
+
 
 //cert-reg routes
 require('./routes/certRegRoutes.js')(app);
@@ -259,6 +263,7 @@ app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHe
 }))
 
 app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], proxyUtils.addCorsHeaders, tenantHelper.getInfo) // tenant api
+require('./routes/eventsRoutes.js')(app) // observation api routes
 
 require('./routes/publicRoutes.js')(app) // public api routes
 

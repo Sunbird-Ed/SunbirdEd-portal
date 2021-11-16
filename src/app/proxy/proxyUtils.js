@@ -29,7 +29,9 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
   return function (proxyReqOpts, srcReq) {
     var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
     var sessionId = _.get(srcReq, 'headers.x-session-id') || _.get(srcReq, 'sessionID');
-    proxyReqOpts.headers['X-Session-Id'] = sessionId;
+      proxyReqOpts.headers['X-Session-Id'] = sessionId;
+
+   
     if (channel && !srcReq.get('X-Channel-Id')) {
       proxyReqOpts.headers['X-Channel-Id'] = channel
     }
@@ -41,7 +43,7 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     if(!srcReq.get('X-App-Id')){
       proxyReqOpts.headers['X-App-Id'] = appId
     }
-    if (srcReq.session.managedToken) {
+    if (srcReq.session && srcReq.session.managedToken) {
       proxyReqOpts.headers['x-authenticated-for'] = srcReq.session.managedToken
     }
 
@@ -54,7 +56,7 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     proxyReqOpts.rejectUnauthorized = false
     proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
     proxyReqOpts.headers['connection'] = 'keep-alive';
-    console.log("-----------------------");
+   
     // logger.info({
     //   URL: srcReq.url,
     //   body: reqBody.length > 500 ? "" : reqBody,

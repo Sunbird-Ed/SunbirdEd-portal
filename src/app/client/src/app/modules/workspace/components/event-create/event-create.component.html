@@ -3,9 +3,19 @@
 </lib-event>
 <ng-container>
     <div class="relative9">
-        <header class="sb-bg-color-primary headerClass" >
+        <!-- <header class="sb-bg-color-primary headerClass" >
             <button class="buttonClass" (click)="routeToCreate();">Back</button>
-        </header>
+        </header> -->
+
+    <div class="sb-bg-color-primary">
+        <div class="ui container py-15">
+            <div class="d-flex flex-ai-center sb-color-white">
+                <button class="sb-btn sb-btn-primary sb-btn-xs back-btn px-0 hover-none fs-0-92 font-weight-bold ml-20" (click)="routeToCreate();">
+                    <i aria-hidden="true" class="arrow left icon"></i> Back
+                </button>
+            </div>
+        </div>
+    </div>
         <sb-event-create [formFieldProperties]="formFieldProperties" 
             (closeSaveForm)="cancel($event)" (navAfterSave)="navAfterSave($event);">
         </sb-event-create>

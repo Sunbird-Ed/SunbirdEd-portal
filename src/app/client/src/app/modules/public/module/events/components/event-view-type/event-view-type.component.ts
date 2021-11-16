@@ -145,7 +145,7 @@ redoLayout() {
           audience: obj.audience,
           owner: obj.owner,
           identifier: obj.identifier,
-
+          appIcon: obj.appIcon,
         }));
 
       })
@@ -302,6 +302,7 @@ redoLayout() {
          audience: obj.audience,
          owner: obj.owner,
          identifier:obj.identifier,
+         appIcon: obj.appIcon,
          }));
         }else{
           this.events = [];
