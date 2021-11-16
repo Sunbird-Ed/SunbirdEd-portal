@@ -7,6 +7,7 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 import { LocationService } from '../..';
 import { LocationSelectionComponent } from './location-selection.component';
 import { of, Observable, throwError } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('LocationSelectionComponent', () => {
     let locationSelectionComponent: LocationSelectionComponent;
@@ -44,6 +45,7 @@ describe('LocationSelectionComponent', () => {
     const mockRouter: Partial<Route> = {};
     const mockUserService: Partial<UserService> = {};
     const mockOrgDetailsService: Partial<OrgDetailsService> = {};
+    const matDialogService: Partial<MatDialog> = {};
     const mockUtilsService: Partial<UtilService> = {
         updateRoleChange: () => {}
     };
@@ -60,7 +62,8 @@ describe('LocationSelectionComponent', () => {
             mockTelemetryService as TelemetryService,
             mockFormService as FormService,
             mockOrgDetailsService as OrgDetailsService,
-            mockUtilsService as UtilService
+            mockUtilsService as UtilService,
+            matDialogService as MatDialog
         );
     });
 
