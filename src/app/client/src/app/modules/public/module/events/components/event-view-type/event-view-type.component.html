@@ -45,13 +45,22 @@
     </div>
   </div>
 
-  <div [ngClass]="[layoutConfiguration ? 'sbt-container sbt-page-content relative9' : 'ui container mt-24']" *ngIf="tab == 'calender'">
+  <!-- <div [ngClass]="[layoutConfiguration ? 'sbt-container sbt-page-content relative9' : 'ui container mt-24']" *ngIf="tab == 'calender'">
     <div class="m-20 sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12 mt-15">
         <button class="sb-btn sb-btn-normal  mb-15" id="list" [ngClass]="[tab != 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('list')">List
             view</button>
         <button class="sb-btn sb-btn-normal sb-btn-secondary mb-15 ml-15" id="calendar"  [ngClass]="[tab == 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('calender')">Calender</button>
         <hr />
-    </div>
+    </div> -->
+    <div class=""
+      [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'"
+      *ngIf="tab == 'calender'">
+      <div class="m-20 sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12 mt-15">
+        <button class="sb-btn sb-btn-normal  mb-15" id="list" [ngClass]="[tab != 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('list')">List
+          view</button>
+        <button class="sb-btn sb-btn-normal sb-btn-secondary mb-15 ml-15" id="calendar"  [ngClass]="[tab == 'calender' ? 'sb-btn-secondary ':'']" (click)="Openview('calender')">Calender</button>
+        <hr />
+      </div>
     <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
     <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
           *ngIf="filterConfig" 
