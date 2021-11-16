@@ -45,7 +45,10 @@ describe('LocationSelectionComponent', () => {
     const mockRouter: Partial<Route> = {};
     const mockUserService: Partial<UserService> = {};
     const mockOrgDetailsService: Partial<OrgDetailsService> = {};
-    const matDialogService: Partial<MatDialog> = {};
+    const getDialogByIdSpy = jasmine.createSpy('getDialogById');
+    const matDialogService: Partial<MatDialog> = {
+        getDialogById: getDialogByIdSpy
+    };
     const mockUtilsService: Partial<UtilService> = {
         updateRoleChange: () => {}
     };
@@ -91,23 +94,16 @@ describe('LocationSelectionComponent', () => {
     it('should close the popup after submitting', () => {
         // arrange
         spyOn(mockPopupControlService, 'changePopupStatus').and.callThrough();
-        locationSelectionComponent.onboardingModal = {
-            deny(): any {
-                return {};
-            }
-        };
         locationSelectionComponent.close = {
             emit(): any {
                 return {};
             }
         } as any;
-        spyOn(locationSelectionComponent.onboardingModal, 'deny').and.callThrough();
         spyOn(locationSelectionComponent.close, 'emit').and.callThrough();
         // act
         locationSelectionComponent.closeModal();
         // assert
         expect(mockPopupControlService.changePopupStatus).toHaveBeenCalledWith(true);
-        expect(locationSelectionComponent.onboardingModal.deny).toHaveBeenCalled();
         expect(locationSelectionComponent.close.emit).toHaveBeenCalled();
     });
 
