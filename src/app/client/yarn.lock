@@ -1586,12 +1586,12 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.4.4"
 
-"@project-sunbird/sunbird-video-player-v9@4.2.4":
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.2.4.tgz#f7515229249ba77eb14dc5fcfc14d79b7e2ac211"
-  integrity sha512-/XQa+m/V/AobZCH/cOGqaOkr16Umf2WmU4dUr0bEhPiAt3P1PSpNw4umK4j4M9EQeq245Hn21SrwHDh3MjOSlA==
+"@project-sunbird/sunbird-video-player-v9@4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.4.2.tgz#191e48f697c76517e74f5a0a2e6becd0633e41d9"
+  integrity sha512-3JvpkhMhxssCxcd5NyzxXR/ziuilsIeJrsNaZr7zj6P/uWLuDipR6JGtDkV0Nd+XNpPh2PciQB/XXq7D4H1+yg==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "^4.4.4"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
