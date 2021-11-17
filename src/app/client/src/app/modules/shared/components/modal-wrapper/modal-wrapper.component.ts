@@ -54,7 +54,7 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
       minWidth: modalSizeToMinWidthMapping[modalSize],
       ...config,
       data: { id, ...data },
-      scrollStrategy
+      // scrollStrategy
     }
   }
 
