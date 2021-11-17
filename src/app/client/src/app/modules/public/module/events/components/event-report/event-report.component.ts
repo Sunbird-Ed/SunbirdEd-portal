@@ -86,7 +86,7 @@ export class EventReportComponent implements OnInit {
   {
     this.eventService.getAttendanceList(this.queryParams.identifier,this.queryParams.batchid).subscribe((data) => {
       // console.log(data.result.response.content);
-      this.attendanceList = data.result.response.content;
+      this.attendanceList = data.result.content;
       // this.eventService.convertDate(event.enrolledDate);
       this.getEnrollEventUsersData(this.attendanceList);
     });
