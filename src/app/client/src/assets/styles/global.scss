@@ -1483,6 +1483,9 @@ html[data-theme='Darkmode'] {
     width: 100%;
     max-width: 100% !important;
   }
+  .ui.dimmer {
+    overflow: auto;
+  }
 }
 
 // .cdk-global-overlay-wrapper {
