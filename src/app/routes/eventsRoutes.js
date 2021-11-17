@@ -22,7 +22,7 @@ module.exports = function (app) {
 // module.exports = function (app) {
   
   app.post('/api/event/v1/attendance/read', proxyObj());
-  // app.post('/api/course/v1/batch/participants/list', proxyObj());
+  app.post('/api/event/v1/attendance/webhook/bigbluebutton', proxyObj());
     
 }
 
