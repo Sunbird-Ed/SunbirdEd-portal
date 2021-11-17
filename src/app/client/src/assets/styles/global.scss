@@ -1473,3 +1473,11 @@ html[data-theme='Darkmode'] {
     }
   }
 }
+
+.cdk-overlay-container .cdk-global-overlay-wrapper {
+  overflow: auto;
+  .cdk-overlay-pane {
+    width: 100%;
+    max-width: 100% !important;
+  }
+}
