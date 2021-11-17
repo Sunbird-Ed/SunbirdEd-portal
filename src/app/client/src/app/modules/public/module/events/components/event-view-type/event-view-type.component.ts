@@ -58,6 +58,10 @@ export class EventViewTypeComponent implements OnInit {
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
+
+  eventListCount : any;
+  myEventsCount : any;
+  
   constructor(public eventListService: EventListService,
     public eventFilterService: EventFilterService,
     private eventCreateService: EventCreateService,
@@ -113,6 +117,7 @@ redoLayout() {
         console.log("listdata = ", data);
       this.EventCount= data.result?.count;
       this.eventList = data.result?.Event;
+      this.eventListCount= data.result.count;
       console.log("listdata = ",  this.eventList, "--------------", data['result']?.Event);
       this.isLoading = false;
 
@@ -286,7 +291,8 @@ redoLayout() {
          this.isLoading=false;
          this.EventCount= data.result.count;
          this.eventList = data.result.Event;
-
+         this.eventListCount= data.result.count;
+         console.log ('eventListCount======',this.eventListCount);
          // For calendar events
          if(data.result.count > 0)
           {
@@ -369,6 +375,7 @@ redoLayout() {
            if (data.responseCode == "OK")
              {
                this.myEvents = data.result.Event;
+               this.myEventsCount = data.result.count;
                console.log('My Events this.myEvents : ', this.myEvents);
              }
            }, (err) => {

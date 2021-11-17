@@ -49,7 +49,7 @@
             <lib-event
                 [libEventConfig]="libEventConfig">
             </lib-event>
-            <sb-enroll-event-users
+            <sb-enroll-event-users *ngIf="eventUserEnrollData && eventItem"
                 [eventDetailItem]="eventItem"
                 [enrollEventDetails]="eventUserEnrollData">
             </sb-enroll-event-users>
