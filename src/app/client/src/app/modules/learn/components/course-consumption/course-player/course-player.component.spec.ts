@@ -171,7 +171,8 @@ describe('CoursePlayerComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         NotificationServiceImpl,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
-        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService }
+        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }
       ],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
