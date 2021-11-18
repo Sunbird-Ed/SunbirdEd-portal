@@ -65,7 +65,7 @@
     "@project-sunbird/web-extensions": "^0.0.2",
     "@samagra-x/uci-console": "1.2.1",
     "@shikshalokam/sl-questionnaire": "0.0.11",
-    "@shikshalokam/sl-reports-library": "^1.0.5",
+    "@shikshalokam/sl-reports-library": "1.0.6",
     "@swimlane/ngx-datatable": "16.1.1",
     "@types/jquery": "3.3.31",
     "@types/jquery.fancytree": "2.7.34",
