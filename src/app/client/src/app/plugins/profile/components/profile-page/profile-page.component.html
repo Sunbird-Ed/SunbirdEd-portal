@@ -409,7 +409,7 @@
 </app-modal-wrapper>
 
   <app-location-selection
-    (close)="onLocationModalClose()"
+    (close)="onLocationModalClose($event)"
     *ngIf="showEditUserDetailsPopup">
 
     <div slot="popup-sub-header">
