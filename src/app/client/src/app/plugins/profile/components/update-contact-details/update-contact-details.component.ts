@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } 
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { UserService, OtpService } from '@sunbird/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ConfigService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { ProfileService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -28,10 +28,12 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   verifiedUser = false;
+  templateId: any = 'otpContactUpdateTemplate';
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public otpService: OtpService, public toasterService: ToasterService,
-    public profileService: ProfileService, private matDialog: MatDialog) { }
+    public profileService: ProfileService, private matDialog: MatDialog,
+    public configService: ConfigService) { }
 
   ngOnInit() {
     this.validateAndEditContact();
@@ -60,6 +62,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
       const request: any = {
           key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
           userId: this.userProfile.userId,
+          templateId: this.configService.appConfig.OTPTemplate.updateContactTemplate,
           type: ''
       };
       if ((this.userProfile.email && !this.userProfile.phone) ||
@@ -71,8 +74,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
       const otpData = {
           'type': request.type,
           'value': request.key,
-          'instructions': request.type === 'phone' ?
-            this.resourceService.frmelmnts.instn.t0083 : this.resourceService.frmelmnts.instn.t0084,
+          'instructions': this.resourceService.frmelmnts.lbl.otpcontactinfo,
           'retryMessage': request.type === 'phone' ?
             this.resourceService.frmelmnts.lbl.unableToUpdateMobile : this.resourceService.frmelmnts.lbl.unableToUpdateEmail,
           'wrongOtpMessage': request.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :

@@ -293,6 +293,28 @@
 
   <div class="pt-30">
     <div class="sb-profile-page-container" [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
+
+      <!--contributions view starts-->
+      <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
+        {{resourceService.frmelmnts.scttl.contributions}}
+        ({{totalContributions}})&#x200E;</div>
+      <div class="ui divider my-5 mobile only"></div>
+      <!--contributions computer view starts-->
+      <div class="ui segments" *ngIf="contributions && contributions.length > 0">
+        <div class="ui segment computer only">
+          <div class="fs-1-7 pl-10 font-w-bold">{{resourceService.frmelmnts.scttl.contributions}}
+            ({{totalContributions}})&#x200E;</div>
+        </div>
+        <div class="ui segment">
+          <div class="regular slider pt-10">
+            <app-page-section [section]="{ contents: contributions}" (visits)="prepareVisits($event)"
+              (playEvent)="openContent($event)"></app-page-section>
+          </div>
+        </div>
+      </div>
+      <!--contributions computer view ends-->
+      <!--contributions view ends-->
+
       <!-- tarainings attended computer view strats-->
       <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
           <div class="list-heading">

@@ -1361,6 +1361,9 @@ input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
 .contentViewerIframeShadow.player-fullscreen.content-full-video epub-viewer {
   height: calc(100% - 7rem);
 }
+.contentViewerIframeShadow.player-fullscreen.content-full-video quml-main-player .main-container {
+  height: calc(100vh - 4rem);
+}
 .notVisible {
   top: 0rem !important;
   position: relative !important;
@@ -1473,3 +1476,33 @@ html[data-theme='Darkmode'] {
     }
   }
 }
+
+.cdk-overlay-container .cdk-global-overlay-wrapper {
+  overflow: auto;
+  .cdk-overlay-pane {
+    width: 100%;
+    max-width: 100% !important;
+  }
+}
+
+// .cdk-global-overlay-wrapper {
+//   pointer-events: auto;
+//   display: block;
+//   position: relative;
+//   overflow: auto;
+//   text-align: center;
+// }
+
+// .cdk-global-overlay-wrapper::before {
+//   content: '';
+//   display: inline-block;
+//   height: 100%;
+//   white-space: nowrap;
+// }
+
+// .cdk-overlay-pane {
+//   display: inline-block;
+//   position: relative;
+//   text-align: left;
+//   white-space: normal;
+// }

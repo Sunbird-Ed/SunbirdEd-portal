@@ -1,0 +1,13 @@
+<div *ngIf="config && data" class="flex-row">
+  <div class="d-flex flex-ai-center flex-jc-flex-end pr-10 mb-10">
+    <button  type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn mr-10"
+  (click)="lib.instance.exportAs('csv')"><i class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>
+
+  <button *ngIf="config && config.filters && config.filters.length >0" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary  action-btn"
+  (click)="reset()"> {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters}} </button>
+</div>
+
+<div class="ml-20 mb-20" *ngIf="config.filters && config.filters.length >0"> <label class="filter-label">{{resourceService?.frmelmnts?.lbl?.chooseFilter}} </label> </div>
+  <sb-dashlet  [type]="'table'" [data]="data" [config]="config" #lib>
+  </sb-dashlet>
+</div>
