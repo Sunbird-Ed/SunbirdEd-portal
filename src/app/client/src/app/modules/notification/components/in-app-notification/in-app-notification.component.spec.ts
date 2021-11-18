@@ -68,7 +68,6 @@ describe('InAppNotificationComponent', () => {
         NotificationServiceImpl,
         { provide: 'SB_NOTIFICATION_SERVICE', useValue: MockNotificationServiceImpl},
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
-        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService },
         {
         provide: APP_BASE_HREF,
         useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
