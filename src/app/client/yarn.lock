@@ -10900,10 +10900,10 @@ sax@>=0.6.0, sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-sb-notification@~0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.3.tgz#ef655b6e0071c43ba2610c4f46917e16c11e0b7d"
-  integrity sha512-bRjbIrRg6WK0wg5RS84YP88pDnzaxByGhlSCUZfnsAVeLzydMUqOWm1u2LvZLUsUMCOdEby9SezVvMZ0w2CDPQ==
+sb-notification@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.1.tgz#a250c584397bf165fa56f08b4683d8f8e14a286e"
+  integrity sha512-lHgwse7WaXcYBv2hVETYlGeI7EppiPDFX53J7ifL7491q6l6yg0A5yjgAOBLbW5xri+2xW1tqVW75Ado/0Srdg==
   dependencies:
     tslib "^1.9.0"
 
