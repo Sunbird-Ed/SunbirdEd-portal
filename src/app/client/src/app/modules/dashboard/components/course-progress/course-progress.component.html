@@ -115,7 +115,7 @@
   </div>
 
   <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)">
-    <mat-tab [label]="{index: 1}">
+    <!-- <mat-tab [label]="{index: 1}">
       <ng-template mat-tab-label>
         <span></span>
       </ng-template>
@@ -128,7 +128,7 @@
       </div>
       <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message" [data]="stateWiseReportData"
         [columns]="columns" [downloadCSV]="isDownloadReport"></sb-datatable>
-    </mat-tab>
+    </mat-tab> -->
     <mat-tab [label]="{index: 2}">
       <ng-template mat-tab-label>
         <span>{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</span>
