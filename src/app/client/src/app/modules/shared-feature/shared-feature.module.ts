@@ -30,12 +30,7 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
   }
   return CsModule.instance.userService;
 };
-export const csNotificationServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
-  if (!CsModule.instance.isInitialised) {
-    csLibInitializerService.initializeCs();
-  }
-  return CsModule.instance.notificationService;
-};
+
 @NgModule({
   imports: [
     CommonModule,
@@ -54,8 +49,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     LocationModule,
     DashletModule
   ],
-  providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
-  { provide: 'CS_NOTIFICATION_SERVICE', useFactory: csNotificationServiceFactory, deps: [CsLibInitializerService] }],
+  providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent,

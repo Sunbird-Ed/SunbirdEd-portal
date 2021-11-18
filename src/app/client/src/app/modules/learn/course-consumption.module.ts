@@ -42,13 +42,6 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
   }
   return CsModule.instance.courseService;
 };
-export const csNotificationServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
-  if (!CsModule.instance.isInitialised) {
-    csLibInitializerService.initializeCs();
-  }
-  return CsModule.instance.notificationService;
-};
-
 @NgModule({
   imports: [
     CommonModule,
@@ -69,7 +62,6 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
     { provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService] },
-    { provide: 'CS_NOTIFICATION_SERVICE', useFactory: csNotificationServiceFactory, deps: [CsLibInitializerService] },
     PendingchangesGuard
   ],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
