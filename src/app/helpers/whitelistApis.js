@@ -380,8 +380,8 @@ const API_LIST = {
     //Event related APIs
 
     '/learner/course/v1/attendance/read': {
-      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC],
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR],
       OWNER_CHECK: {
         checks: [
           { entity: '__session__userId', params: [] }
@@ -389,8 +389,8 @@ const API_LIST = {
       }
     },
     '/learner/course/v1/attendance/webhook/bigbluebutton': {
-      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC],
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC,ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR],
       OWNER_CHECK: {
         checks: [
           { entity: '__session__userId', params: [] }
