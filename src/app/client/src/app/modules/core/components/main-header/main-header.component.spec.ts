@@ -88,7 +88,7 @@ describe('MainHeaderComponent', () => {
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder, ElectronService,ObservationUtilService,
         LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService },
-        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }]
+        ]
     })
       .compileComponents();
   }));
