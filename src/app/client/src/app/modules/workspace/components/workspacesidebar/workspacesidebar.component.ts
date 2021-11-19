@@ -94,6 +94,11 @@ export class WorkspacesidebarComponent implements OnInit {
    * reference of Router.
    */
   private router: Router;
+  
+  /**
+   * reference of routingUrl.
+   */
+    public routingUrl: string;
 
   /**
   * Constructor to create injected service(s) object
@@ -141,5 +146,45 @@ export class WorkspacesidebarComponent implements OnInit {
   }
   redirectToCreatedContent(){
     this.router.navigate(['workspace/content/allcontent/1']);
+  }
+
+  redirectToMenu(menu){
+    console.log(menu);
+    if(menu == 'create'){
+      this.routingUrl = '/workspace/content/create';
+    }else if(menu == 'alltextbooks'){
+      this.routingUrl = 'workspace/content/alltextbooks/1';
+    }else if(menu == 'allmyevents')
+    {
+      this.routingUrl = 'workspace/content/allmyevents';
+    }else if(menu == 'allcontent'){
+      this.routingUrl = 'workspace/content/allcontent/1';
+    }else  if(menu == 'draft'){
+      this.routingUrl = '/workspace/content/draft/1';
+    }else if(menu == 'review'){
+      this.routingUrl = '/workspace/content/review/1';
+    }else if(menu == 'published'){
+      this.routingUrl = '/workspace/content/published/1';
+    }else if(menu == 'uploaded'){
+      this.routingUrl = '/workspace/content/uploaded/1';
+    }else if(menu == 'upForReview'){
+      this.routingUrl = '/workspace/content/upForReview/1';
+    }else if(menu == 'flagreviewer'){
+      this.routingUrl = '/workspace/content/flagreviewer/1';
+    }else if(menu == 'batches'){
+      this.routingUrl = '/workspace/content/batches';
+    }else if(menu == 'batches/created'){
+      this.routingUrl = '/workspace/content/batches/created';
+    }else if(menu == 'batches/assigned'){
+      this.routingUrl = '/workspace/content/batches/assigned';
+    }else if(menu == 'flagged'){
+      this.routingUrl = '/workspace/content/flagged/1';
+    }else if(menu == 'limited-publish'){
+      this.routingUrl = '/workspace/content/limited-publish/1';
+    }else if(menu == 'collaborating-on'){
+      this.routingUrl = '/workspace/content/collaborating-on/1';
+    }
+    this.router.navigate([this.routingUrl]);
+
   }
 }

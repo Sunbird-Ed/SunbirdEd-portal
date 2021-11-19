@@ -292,7 +292,6 @@ redoLayout() {
          this.EventCount= data.result.count;
          this.eventList = data.result.Event;
          this.eventListCount= data.result.count;
-         console.log ('eventListCount======',this.eventListCount);
          // For calendar events
          if(data.result.count > 0)
           {
@@ -334,12 +333,10 @@ redoLayout() {
       this.tab = 'calender';
       calendarProperty.style.backgroundColor = "#008840";
       listProperty.style.backgroundColor = "#ffffff";
-      //this.router.navigate(['/calender']);
      }
 
   }
   handleEvent() {
-    // this.exploreMoreContent.emit();
     this.url = '/explore';
     if (this.userService.loggedIn) {
       this.url = _.get(this.currentPage, 'loggedInUserRoute.route');
@@ -380,7 +377,6 @@ redoLayout() {
              }
            }, (err) => {
              this.isLoading=false;
-            //  this.sbToastService.showIziToastMsg(err.error.result.messages[0], 'error');
            });
        }
        else

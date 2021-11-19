@@ -100,7 +100,7 @@ app.all([
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
   app.all(['/api/event/*'],
-keycloak.protect())
+   keycloak.protect())
 
 app.all('/logoff', endSession, (req, res) => {
   // Clear cookie for client (browser)

@@ -33,9 +33,9 @@
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-		<a class="item py-8 pl-0 pr-24"  appPermission  tabindex="0" (click)="navigateToEventPage()">
+		<!-- <a class="item py-8 pl-0 pr-24"  appPermission  tabindex="0" (click)="navigateToEventPage()">
             <p> Events</p>
-        </a>
+        </a> -->
   		<a class="item font-weight-bold sb-color-primary pr-10" href="{{hrefPath}}" appTelemetryInteract *ngIf="!isDesktopApp"
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}

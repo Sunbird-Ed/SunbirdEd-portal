@@ -85,23 +85,16 @@ export class EventReportComponent implements OnInit {
   getAttendanceDetails()
   {
     this.eventService.getAttendanceList(this.queryParams.identifier,this.queryParams.batchid).subscribe((data) => {
-      // console.log(data.result.response.content);
       this.attendanceList = data.result.content;
-      // this.eventService.convertDate(event.enrolledDate);
       this.getEnrollEventUsersData(this.attendanceList);
     });
   }
 
   getEnrollEventUsersData(list){
     this.attendanceList.forEach(item => {
-      // console.log("getAttendanceList Details : ", item);
       this.eventService.convertDate(item.enrolledDate);
     });
-
     this.eventUserEnrollData = this.attendanceList;
-
-    // console.log("eventUserEnrollData Details : ", this.eventUserEnrollData);
-
   }
   convert(event) {
     var date = new Date(event),
@@ -114,6 +107,5 @@ export class EventReportComponent implements OnInit {
   }
   navigateToEventPage(){
      this.router.navigate(['/explore-events/published']);
-    //  this.location.back();
   }
 }

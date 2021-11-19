@@ -60,9 +60,9 @@ export class EventCreateComponent implements OnInit {
   setEventConfig() {
     // tslint:disable-next-line:max-line-length
     // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
-//  let fullName = !_.isEmpty(this.userService.userProfile.lastName) ? this.userService.userProfile.firstName + ' '  + this.userService.userProfile.lastName : this.userService.userProfile.firstName;
-//  let userData = this.userService.userProfile;
-//  userData['fullName']=  fullName;
+    //  let fullName = !_.isEmpty(this.userService.userProfile.lastName) ? this.userService.userProfile.firstName + ' '  + this.userService.userProfile.lastName : this.userService.userProfile.firstName;
+    //  let userData = this.userService.userProfile;
+    //  userData['fullName']=  fullName;
  this.libEventConfig = {
       context: {
         user:this.userService.userProfile,
