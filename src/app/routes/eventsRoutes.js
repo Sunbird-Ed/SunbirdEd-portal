@@ -21,8 +21,8 @@ module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route
 // module.exports = function (app) {
   
-  app.post('/api/event/v1/attendance/read', proxyObj());
-  app.post('/api/event/v1/attendance/webhook/bigbluebutton', proxyObj());
+  app.post('/learner/course/v1/attendance/read', proxyObj());
+  app.post('/learner/course/v1/attendance/webhook/bigbluebutton', proxyObj());
     
 }
 

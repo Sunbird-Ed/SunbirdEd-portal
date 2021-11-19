@@ -99,7 +99,7 @@ app.all([
     store: memoryStore
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
-  app.all(['/api/event/*'],
+  app.all(['/api/course/*'],
    keycloak.protect())
 
 app.all('/logoff', endSession, (req, res) => {

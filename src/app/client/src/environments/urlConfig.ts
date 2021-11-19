@@ -10,12 +10,16 @@ export const urlConfig = {
     BBBGetUrlAttendee:"/api/event/v4/join/attendee",
     createImage: "/action/content/v3/create",
     uploadImage: "/action/content/v3/upload",
-    batchlist: "/api/course/v1/batch/list",
-    createBatch: "/api/course/v1/batch/create",
-    enrollUserEventList:"/api/course/v2/user/enrollment/list",
+    // batchlist: "/api/course/v1/batch/list",
+    // createBatch: "/api/course/v1/batch/create",
+    // enrollUserEventList:"/api/course/v2/user/enrollment/list",
+    batchlist: "/learner/course/v1/batch/list",
+    createBatch: "/learner/course/v1/batch/create",
+    enrollUserEventList:"/learner/course/v2/user/enrollment/list",
     eventFormConfigApi : "/api/data/v1/form/read",
     eventFilterConfigApi : "/api/data/v1/form/read",
-    myEvents:"/api/course/v2/user/enrollment/list",
+    myEvents:"/learner/course/v2/user/enrollment/list",
+    // myEvents:"/api/course/v2/user/enrollment/list",
     search: "/api/event/v1/search",
     eventListApi : "assets/api/eventlist.json",
     eventCreateApi: "https://jsonplaceholder.typicode.com/posts",
@@ -29,5 +33,5 @@ export const urlConfig = {
     ImageSearchApi :  "assets/api/search-images.json",
     EditModeApi :  "assets/api/editmode.json",
     compositeSearch: "/action/composite/v3/search",
-    attendanceApi: "/api/event/v1/attendance/read"    
+    attendanceApi: "/learner/course/v1/attendance/read"    
 };
