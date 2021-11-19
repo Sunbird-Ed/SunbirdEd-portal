@@ -377,6 +377,26 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
 
+    //Event related APIs
+
+    '/learner/course/v1/attendance/read': {
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/learner/course/v1/attendance/webhook/bigbluebutton': {
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
     //Batch related APIs
     '/learner/course/v1/batch/create': {
       checksNeeded: ['ROLE_CHECK'],
