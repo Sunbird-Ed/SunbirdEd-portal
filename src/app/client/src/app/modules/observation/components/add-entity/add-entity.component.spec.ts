@@ -3,13 +3,12 @@ import {
   ComponentFixture,
   TestBed
 } from '@angular/core/testing';
-import { ObservationService, KendraService, CoreModule } from '@sunbird/core';
+import { ObservationService, KendraService, CoreModule,ObservationUtilService } from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
   SharedModule,
 } from '@sunbird/shared';
-import { ObservationUtilService } from '../../service';
 import { AddEntityComponent } from './add-entity.component';
 import { configureTestSuite } from '@sunbird/test-util';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

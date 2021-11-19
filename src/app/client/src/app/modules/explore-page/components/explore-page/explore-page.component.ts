@@ -1,5 +1,5 @@
 import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService } from '@sunbird/core';
+import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService,ObservationUtilService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, ViewChild } from '@angular/core';
 import {
@@ -16,7 +16,6 @@ import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
-import {ObservationUtilService} from '../../../observation/service'
 
 @Component({
     selector: 'app-explore-page-component',

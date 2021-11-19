@@ -4,8 +4,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'datatables.net';
-import { ObservationUtilService } from '../../../observation/service';
-import { ObservationService, UserService, TncService } from '@sunbird/core';
+import { ObservationService, UserService, TncService,ObservationUtilService } from '@sunbird/core';
 import { first } from 'rxjs/operators';
 
 @Component({

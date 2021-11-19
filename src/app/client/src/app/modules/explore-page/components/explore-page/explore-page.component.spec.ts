@@ -2,7 +2,7 @@ import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, throwError, of, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, LayoutService, UtilService } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService,ObservationUtilService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -21,7 +21,6 @@ import { SegmentationTagService } from '../../../core/services/segmentation-tag/
 import { find } from 'lodash-es';
 import { result } from 'lodash';
 import {ObservationModule} from '../../../observation/observation.module';
-import {ObservationUtilService} from '../../../observation/service';
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
