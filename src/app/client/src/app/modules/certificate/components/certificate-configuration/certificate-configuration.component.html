@@ -158,7 +158,7 @@
                 </div>
 
                 <div class='ui stackable grid mt-0'>
-                  <div class="five wide column">
+                  <div class="seven wide column">
                     <div class="pt-8 pb-16 font-weight-bold fnormal text-left">
                       {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
                     <div class="d-flex flex-dc">
@@ -167,12 +167,15 @@
                       <label>
                         <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
                           [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
-                          [isDisabled]="configurationMode === 'edit'" #selectRecipient>
+                          [isDisabled]="configurationMode === 'edit'" #selectRecipient (selectedOptionChange)="handleParameterChange($event)">
                           <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option">
                           </sui-select-option>
                         </sui-select>
                       </label>
                     </div>
+                    <label class="fnormal font-weight-normal text-left"
+                      *ngIf="isStateCertificate">{{resourceService?.frmelmnts?.intxt?.ssousers |
+                        interpolate:'{instance}': instance}}</label>
                   </div>
                 </div>
 
