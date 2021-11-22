@@ -103,6 +103,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
       const dialogRef = this.matDialog.getDialogById(modalId);
       dialogRef && dialogRef.close();
     }
+    this.close.emit();
     this.popupControlService.changePopupStatus(true);
   }
 
