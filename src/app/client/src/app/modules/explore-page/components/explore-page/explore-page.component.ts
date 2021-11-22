@@ -165,6 +165,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.userProfile['firstName'] = guestUserDetails.formatedName;
                                 this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                             } else {
+                                this.userProfile = guestUserDetails;
+                                this.userProfile['firstName'] = guestUserDetails.formatedName;
                                 this.defaultFilters = this.getPersistFilters(true);
                             }
                         });
