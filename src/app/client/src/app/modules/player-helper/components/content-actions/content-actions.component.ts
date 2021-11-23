@@ -58,25 +58,26 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.telemetryEventSubscription$ = this.assessmentEvents.subscribe(telemetry => {
-        const eid = _.get(telemetry, 'detail.telemetryData.eid');
-        if(eid === 'ASSESS') {
-            if(!this.isFullScreen){
-              _.forEach(this.actionButtons, data => {
-                if (data.name === 'fullscreen') {
-                  data.isInActive = true;
-                }
-              });
-            } else {
-              _.forEach(this.fullScreenActionButtons, data => {
-                 if (data.name === 'minimize') {
-                  data.isInActive = true;
-                }
-              });
-            }
-          
-        }
+    if (this.assessmentEvents) {
+      this.telemetryEventSubscription$ = this.assessmentEvents.subscribe(telemetry => {
+          const eid = _.get(telemetry, 'detail.telemetryData.eid');
+          if(eid === 'ASSESS') {
+              if(!this.isFullScreen){
+                _.forEach(this.actionButtons, data => {
+                  if (data.name === 'fullscreen') {
+                    data.isInActive = true;
+                  }
+                });
+              } else {
+                _.forEach(this.fullScreenActionButtons, data => {
+                  if (data.name === 'minimize') {
+                    data.isInActive = true;
+                  }
+                });
+              }
+          }
       });
+    }
     this.isDesktopApp = this.utilService.isDesktopApp;
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
