@@ -1546,7 +1546,14 @@ html[layout='joy'] {
 
 @media screen and (max-width: 768px) {
   html[layout=joy] {
-    .sbt-header .sbt-container {
+    & .sbt-fluid-content-bg {
+      margin: 0;
+      border-radius: 0;
+    }
+    & .sbt-header .sbt-container {
+      padding: 0 0rem !important;
+    }
+    & .sbt-header-bar {
       padding: 0 1rem;
     }
     & .sbt-inside-page-container, .sbt-center-container {
