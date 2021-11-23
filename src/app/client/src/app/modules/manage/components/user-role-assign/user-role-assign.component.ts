@@ -35,6 +35,7 @@ export class UserRoleAssignComponent implements OnInit {
   isEditRole = false;
   showDelete = false;
   item:any;
+  instance:string;
 
   constructor(searchService: SearchService,
     userService: UserService,
@@ -51,6 +52,7 @@ export class UserRoleAssignComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.removeRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC'];
     this.getAllRoles(this.removeRoles);
     this.getOrgDetails();

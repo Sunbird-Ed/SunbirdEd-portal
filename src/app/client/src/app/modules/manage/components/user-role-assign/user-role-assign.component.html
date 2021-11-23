@@ -47,7 +47,7 @@
             <div class="user-metadata ml-32">
               <div class="user-name text-left">{{userObj.firstName}} {{userObj.lastName}}</div>
               <div class="user-info">
-                <div class="user-id">Diksha ID: {{userObj.userName}}</div>
+                <div class="user-id">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance }} : {{userObj.userName}}</div>
                 <!-- <div class="dot-separator"></div>
                 <div class="user-state">Telengana</div>
                 <div class="dot-separator"></div>
