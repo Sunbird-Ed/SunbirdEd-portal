@@ -51,6 +51,10 @@
     }
   }
 
+  .cdk-overlay-pane {
+    overflow: auto;
+  }
+
   .mat-dialog-container {
     padding: 0;
     border-radius: 4px;

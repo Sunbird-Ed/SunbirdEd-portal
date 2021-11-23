@@ -10,7 +10,7 @@
           </div>
           <div class="d-flex flex-ai-center head-tail-right-side">
             <div class="pull-right dk-top-head-ul">
-              <nav title="accessibility_links">
+              <nav title="accessibility_links" class="d-flex flex-ai-center">
                 <ul role="navigation" aria-label="accessibility links">
                   <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" tabindex="0"
@@ -113,25 +113,25 @@
 
 <app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired" [config]="{disableClose: true, size: 'small'}">
   <ng-template sbModalContent let-data>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.lbl?.sesnexrd}}
-          </div>
-          <div class="sb-modal-content">
-            <p class="ui center aligned segment">
-              {{resourceService?.frmelmnts?.lbl?.plslgn |
-              interpolate:'{instance}': instance }}
-            </p>
-          </div>
-          <div class="sb-modal-actions">
-            <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
-              {{ resourceService?.frmelmnts?.btn?.login }}
-            </button>
-          </div>
-        </div>
+    <div class="sb-mat__modal">
+
+      <div mat-dialog-title>
+        <div class="title">{{resourceService?.frmelmnts?.lbl?.sesnexrd}}</div>
       </div>
+      <mat-dialog-content>
+        <div class="sb-mat__modal__content">
+          <p>
+            {{resourceService?.frmelmnts?.lbl?.plslgn |
+                interpolate:'{instance}': instance }}
+          </p>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+          {{ resourceService?.frmelmnts?.btn?.login }}
+        </button>
+      </mat-dialog-actions>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
