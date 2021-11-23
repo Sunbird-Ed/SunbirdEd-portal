@@ -47,7 +47,7 @@
             <div class="user-metadata ml-32">
               <div class="user-name text-left">{{userObj.firstName}} {{userObj.lastName}}</div>
               <div class="user-info">
-                <div class="user-id">Diksha ID: {{userObj.userName}}</div>
+                <div class="user-id">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance }} : {{userObj.userName}}</div>
                 <!-- <div class="dot-separator"></div>
                 <div class="user-state">Telengana</div>
                 <div class="dot-separator"></div>
@@ -68,12 +68,12 @@
                         class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer" (click)="editRole(item)">
                         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                             <use xlink:href="assets/images/sprite.svg#edit"></use>
-                          </svg></i><span>Edit</span> </button></div>
+                          </svg></i><span>{{resourceService?.frmelmnts?.lbl?.edit}}</span> </button></div>
                           <div class="user-workexp__btn"><button
                             class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer" (click)="deleteRole(item)">
                             <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                                 <use xlink:href="assets/images/sprite.svg#delete"></use>
-                              </svg></i><span>Delete</span> </button></div>
+                              </svg></i><span>{{resourceService?.frmelmnts?.btn?.delete}}</span> </button></div>
                   </div>
                   <div class="user-workexp__metadata">
                     <div class="worked-from">{{item.orgName}}</div>
@@ -124,7 +124,7 @@
         <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
       </div>
       <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles" labelField="roleName"
+        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role" (selectedOptionsChange)="enableButton()" formControlName="role" [options]="allRoles" labelField="roleName"
           valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
           <sui-select-option *ngFor="let role of allroles.filteredOptions" [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
         </sui-multi-select>
@@ -133,7 +133,7 @@
           <label>{{resourceService.frmelmnts?.lbl?.orgname}}</label>
         </div>
         <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="orgName" [options]="orgList" labelField="orgName"
+        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName" (selectedOptionsChange)="enableButton()" formControlName="orgName" [options]="orgList" labelField="orgName"
           valueField="orgId" name="orgName" placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName>
           <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
         </sui-multi-select>
@@ -150,6 +150,7 @@
       [telemetryInteractEdata]="submitInteractEdata" 
       (click)="onSubmitForm()" tabindex="0"
       class="sb-btn sb-btn-normal"
+      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
     >
       {{resourceService.frmelmnts?.btn?.cancel}}
     </button>
@@ -159,6 +160,7 @@
       [telemetryInteractEdata]="submitInteractEdata" 
       (click)="onSubmitForm()" tabindex="0"
       class="sb-btn sb-btn-normal sb-btn-primary"
+      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
     >
       {{resourceService.frmelmnts?.btn?.save}}
     </button>
@@ -188,7 +190,7 @@
                   <!--Actions-->
                   <div class="sb-modal-actions">
                       <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="deleteRoleConformed()">
-                          {{resourceService?.frmelmnts?.btn?.yesl}}
+                          {{resourceService?.frmelmnts?.btn?.yes}}
                       </button>
                       <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="dismiss()" tabindex="0" mat-dialog-close>
                           {{resourceService?.frmelmnts?.btn?.cancel}}
