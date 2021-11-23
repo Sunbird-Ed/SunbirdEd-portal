@@ -74,7 +74,7 @@ export class UserRoleAssignComponent implements OnInit {
   }
   deleteRole(item) {
     this.showDelete=true
-    this.item =item;
+    this.item = item;
   }
   deleteRoleConformed() {
     const item = this.item
