@@ -20,6 +20,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() contentData;
   @Input() isFullScreen = false;
   @Output() contentDownloaded = new EventEmitter();
+  @Input() assessmentEvents;
   actionButtons = actionButtons;
   fullScreenActionButtons = fullScreenActionButtons;
   contentRatingModal = false;
@@ -40,6 +41,8 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   mimeType: string;
   subscription;
   isDesktopApp;
+  telemetryEventSubscription$: EventEmitter<object>;
+
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -55,6 +58,25 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.telemetryEventSubscription$ = this.assessmentEvents.subscribe(telemetry => {
+        const eid = _.get(telemetry, 'detail.telemetryData.eid');
+        if(eid === 'ASSESS') {
+            if(!this.isFullScreen){
+              _.forEach(this.actionButtons, data => {
+                if (data.name === 'fullscreen') {
+                  data.isInActive = true;
+                }
+              });
+            } else {
+              _.forEach(this.fullScreenActionButtons, data => {
+                 if (data.name === 'minimize') {
+                  data.isInActive = true;
+                }
+              });
+            }
+          
+        }
+      });
     this.isDesktopApp = this.utilService.isDesktopApp;
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
@@ -190,7 +212,6 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   contentPrintable() {
     // selectedContent?.model?.itemSetPreviewUrl
-   // console.log('------>', this.contentData);
     _.forEach(this.actionButtons, data => {
       if (data.name === 'print') {
         if (this.contentData.itemSetPreviewUrl) {
@@ -215,6 +236,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
       if (this.subscription.unsubscribe) {
         this.subscription.unsubscribe();
       }
+      this.telemetryEventSubscription$ && this.telemetryEventSubscription$.unsubscribe();
     }
 
   changeContentStatus() {
