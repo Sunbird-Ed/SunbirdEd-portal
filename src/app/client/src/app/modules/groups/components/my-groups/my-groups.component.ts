@@ -2,7 +2,7 @@ import { UserService, TncService } from '@sunbird/core';
 import { IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP, acceptTnc } from './../../interfaces';
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { GroupsService } from '../../services';
-import { ResourceService, LayoutService, ToasterService } from '@sunbird/shared';
+import { ResourceService, LayoutService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { Subject, combineLatest, of, BehaviorSubject } from 'rxjs';
@@ -37,7 +37,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private layoutService: LayoutService,
     private toasterService: ToasterService,
-    private tncService: TncService
+    private tncService: TncService,
+    private navigationhelperService: NavigationHelperService,
     ) { }
 
   ngOnInit() {
@@ -251,6 +252,10 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
       this.groupService.userData = _.get(data, 'result.response');
       this.getMyGroupList();
     });
+  }
+
+  goBack() {
+    this.navigationhelperService.goBack();
   }
 
   ngOnDestroy() {

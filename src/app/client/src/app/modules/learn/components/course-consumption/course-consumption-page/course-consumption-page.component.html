@@ -1,9 +1,9 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <app-course-consumption-header *ngIf="!showLoader && !showError && showAddGroup !== null"
     [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId"
     [showAddGroup]="showAddGroup" [layoutConfiguration]="layoutConfiguration"></app-course-consumption-header>
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
 <div *ngIf="showLoader" class="ui container">
     <div class="ui grid">
