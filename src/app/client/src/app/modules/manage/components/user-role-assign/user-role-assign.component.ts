@@ -32,6 +32,9 @@ export class UserRoleAssignComponent implements OnInit {
   orgList = [];
   role = [];
   orgName = [];
+  isEditRole = false;
+  showDelete = false;
+  item:any;
 
   constructor(searchService: SearchService,
     userService: UserService,
@@ -67,8 +70,14 @@ export class UserRoleAssignComponent implements OnInit {
     this.orgName.push(item.orgId);
     this.role.push(item.role);
     this.showAssignRole = !this.showAssignRole ? true : false;
+    this.isEditRole = true;
   }
   deleteRole(item) {
+    this.showDelete=true
+    this.item =item;
+  }
+  deleteRoleConformed() {
+    const item = this.item
     const roleToDelete = []
     roleToDelete.push({
       role: item.role,
@@ -79,6 +88,11 @@ export class UserRoleAssignComponent implements OnInit {
     });
     const data = { userId: this.userObj.userId, roles: roleToDelete };
     this.updateRoleForUser(data);
+    this.dismiss();
+  }
+  dismiss() {
+    this.item = {};
+    this.showDelete=false
   }
   getOrgDetails() {
     if (this.userService && this.userService.userProfile) {
@@ -92,6 +106,7 @@ export class UserRoleAssignComponent implements OnInit {
   }
   dismissRoleAssign() {
     this.showAssignRole = false;
+    this.isEditRole = false;
   }
   goBack() {
     this.showingResults = false;

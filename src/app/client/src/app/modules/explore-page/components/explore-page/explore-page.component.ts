@@ -86,12 +86,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     targetedCategorytheme:any;
     showTargetedCategory:boolean=false;
     selectedTab:any;
+    primaryBanner = [];
+    secondaryBanner = [];
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
 
     get bannerSlideConfig() {
         return cloneDeep(this.configService.appConfig.Banner.slideConfig);
+    }
+
+    get secondaryBannerSlideConfig() {
+        return cloneDeep(this.configService.appConfig.AdditionalBanner.slideConfig);
     }
 
     @HostListener('window:scroll', []) onScroll(): void {
@@ -1151,6 +1157,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             }
         });
+    
         this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
         if (this.bannerSegment ) {
             this.setBannerConfig();
@@ -1161,9 +1168,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.bannerList = this.bannerSegment.filter((value) =>
             Number(value.expiry) > Math.floor(Date.now() / 1000)
         );
+        this.primaryBanner = [];
+        this.secondaryBanner = [];
+        this.bannerList.forEach((banner) => {
+            if (banner.type === 'secondary') {
+                this.secondaryBanner.push(banner);
+              } else {
+                this.primaryBanner.push(banner);
+              }
+        });
     }
 
     navigateToSpecificLocation(data) {
+      if (data && data.data && data.data.type === 'secondary') {
+          console.log('data', data);
+       } else {
         switch (data.code) {
             case 'banner_external_url':
                 window.open(_.get(data.action, 'params.route'), '_blank');
@@ -1206,6 +1225,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.router.navigate(['explore', 1], { queryParams: params });
                 break;
         }
+      }
     }
     public moveToTop() {
         window.scroll({
