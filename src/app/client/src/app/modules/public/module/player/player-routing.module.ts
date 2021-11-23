@@ -10,9 +10,6 @@ const routes: Routes = [
             //     reuse: true,
             //     path: '/play/content'
             //   },
-            // menuBar: {
-            //     visible: false
-            // },
             telemetry: {
                 env: 'public', pageid: 'play-content', type: 'view', subtype: 'paginate'
             }
