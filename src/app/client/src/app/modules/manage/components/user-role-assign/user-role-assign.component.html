@@ -87,7 +87,7 @@
 </div>
   <!-- Admin role page end -->
 
-  <sui-modal
+<sui-modal
   [mustScroll]="true" 
   [isClosable]="true"
   [transitionDuration]="0"
@@ -115,7 +115,8 @@
   <div class="sb-modal-content o-y-visible" *ngIf="!showMainLoader">
     <div class="ui grid">
       <div class="ten wide column mb-30">
-        <span class="ui header">Add new role</span>
+        <span class="ui header" *ngIf="!isEditRole">Add new role</span>
+        <span class="ui header" *ngIf="isEditRole">Edit role</span>
       </div>
     </div>
     <form class="ui form" [formGroup]="userDetailsForm">
@@ -166,3 +167,36 @@
 
 </sui-modal>
   
+<app-modal-wrapper *ngIf="showDelete" [config]="{disableClose: true, size: 'small'}" (dismiss)="dismiss()">
+  <ng-template sbModalContent>
+      <div class="sb-modal sb-error">
+          <div class="transition ui dimmer page modals active visible">
+              <div class="ui modal transition active visible small">
+                  <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+                      <span>&times;</span>
+                  </button>
+                  <!--Header-->
+                  <div class="sb-modal-header">
+                      {{resourceService?.frmelmnts?.lbl?.delete}}
+                  </div>
+                  <!--/Header-->
+                  <!--Content-->
+                  <div class="sb-modal-content">
+                      {{resourceService?.frmelmnts?.lbl?.deleteConfirm}}
+                  </div>
+                  <!--/Content-->
+                  <!--Actions-->
+                  <div class="sb-modal-actions">
+                      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="deleteRoleConformed()">
+                          {{resourceService?.frmelmnts?.btn?.yesl}}
+                      </button>
+                      <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="dismiss()" tabindex="0" mat-dialog-close>
+                          {{resourceService?.frmelmnts?.btn?.cancel}}
+                      </button>
+                  </div>
+                  <!--/Actions-->
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</app-modal-wrapper>
