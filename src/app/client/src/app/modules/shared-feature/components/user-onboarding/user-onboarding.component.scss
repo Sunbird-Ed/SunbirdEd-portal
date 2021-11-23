@@ -17,7 +17,7 @@
 
     @include respond-above(sm) {
       border-radius: calculateRem(8px);
-      max-width: calculateRem(1008px);
+      max-width: calculateRem(800px);
       min-height: calculateRem(610px);
       height: auto;
     }

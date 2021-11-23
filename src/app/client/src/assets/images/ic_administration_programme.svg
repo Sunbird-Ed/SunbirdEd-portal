@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>CB00D26A-967A-404D-9382-58E292EEE81A</title>
+    <g id="3-Banners" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Administration--Programme">
+            <rect id="Rectangle" stroke="#979797" fill="#D8D8D8" opacity="0" x="0.5" y="0.5" width="23" height="23"></rect>
+            <g id="Group-47" transform="translate(1.000000, 2.000000)" stroke="#231F20" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                <path d="M10.518,20.0458 C7.1,18.9348 3.418,18.9348 0,20.0458 L0,5.7008 C3.418,4.5898 7.1,4.5898 10.518,5.7008 L10.518,20.0458 Z" id="Stroke-1"></path>
+                <path d="M10.518,5.701 L10.518,20.041 C11.058,19.871 11.608,19.721 12.168,19.601 C14.548,19.081 17.008,19.081 19.388,19.601 C19.948,19.721 20.498,19.871 21.038,20.041 L21.038,10.092" id="Stroke-3"></path>
+                <line x1="16.953" y1="8.55" x2="16.953" y2="6.88" id="Stroke-5"></line>
+                <line x1="16.953" y1="1.67" x2="16.953" y2="0" id="Stroke-7"></line>
+                <line x1="16.953" y1="4.28" x2="16.953" y2="4.27" id="Stroke-9"></line>
+                <line x1="14.353" y1="4.28" x2="12.683" y2="4.28" id="Stroke-11"></line>
+                <line x1="21.233" y1="4.28" x2="19.553" y2="4.28" id="Stroke-13"></line>
+                <line x1="16.963" y1="4.28" x2="16.953" y2="4.28" id="Stroke-15"></line>
+                <line x1="14.353" y1="4.28" x2="12.683" y2="4.28" id="Stroke-17"></line>
+                <line x1="21.233" y1="4.28" x2="19.553" y2="4.28" id="Stroke-19"></line>
+                <line x1="16.963" y1="4.28" x2="16.953" y2="4.28" id="Stroke-21"></line>
+                <line x1="16.963" y1="4.28" x2="16.953" y2="4.28" id="Stroke-23"></line>
+                <line x1="19.983" y1="1.25" x2="18.793" y2="2.44" id="Stroke-25"></line>
+                <line x1="15.113" y1="6.12" x2="13.933" y2="7.3" id="Stroke-27"></line>
+                <line x1="15.113" y1="2.43" x2="13.933" y2="1.25" id="Stroke-29"></line>
+                <polyline id="Stroke-31" points="19.983 7.3 18.793 6.12 18.793 6.11"></polyline>
+                <polyline id="Stroke-33" points="16.963 4.28 16.953 4.28 16.953 4.27"></polyline>
+                <path d="M19.5564,4.2759 C19.5564,5.7129 18.3914,6.8769 16.9554,6.8769 C15.5184,6.8769 14.3534,5.7129 14.3534,4.2759 C14.3534,2.8389 15.5184,1.6749 16.9554,1.6749 C18.3914,1.6749 19.5564,2.8389 19.5564,4.2759 Z" id="Stroke-35"></path>
+                <path d="M3.2644,15.7024 C4.5614,15.2814 5.9574,15.2814 7.2544,15.7024" id="Stroke-37"></path>
+                <path d="M3.2644,12.1262 C4.5614,11.7052 5.9574,11.7052 7.2544,12.1262" id="Stroke-39"></path>
+                <path d="M3.2644,8.55 C4.5614,8.129 5.9574,8.129 7.2544,8.55" id="Stroke-41"></path>
+                <path d="M13.7832,15.7024 C15.0802,15.2814 16.4762,15.2814 17.7732,15.7024" id="Stroke-43"></path>
+                <path d="M13.7832,12.1262 C15.0802,11.7052 16.4762,11.7052 17.7732,12.1262" id="Stroke-45"></path>
+            </g>
+        </g>
+    </g>
+</svg>
