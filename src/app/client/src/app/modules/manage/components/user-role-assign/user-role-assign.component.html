@@ -68,12 +68,12 @@
                         class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer" (click)="editRole(item)">
                         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                             <use xlink:href="assets/images/sprite.svg#edit"></use>
-                          </svg></i><span>Edit</span> </button></div>
+                          </svg></i><span>{{resourceService?.frmelmnts?.lbl?.edit}}</span> </button></div>
                           <div class="user-workexp__btn"><button
                             class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer" (click)="deleteRole(item)">
                             <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                                 <use xlink:href="assets/images/sprite.svg#delete"></use>
-                              </svg></i><span>Delete</span> </button></div>
+                              </svg></i><span>{{resourceService?.frmelmnts?.btn?.delete}}</span> </button></div>
                   </div>
                   <div class="user-workexp__metadata">
                     <div class="worked-from">{{item.orgName}}</div>
