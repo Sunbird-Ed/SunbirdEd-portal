@@ -23,7 +23,7 @@
     --mat-modal-content-bg: var(--sbt-compt-bg);
     --mat-modal-content-txt: var(--gray-800);
 
-    .mat-dialog-container {
+    .cdk-overlay-container .cdk-global-overlay-wrapper .mat-dialog-container {
       border-radius: 24px;
 
       .sb-mat__modal {
@@ -55,7 +55,7 @@
     overflow: auto;
   }
 
-  .mat-dialog-container {
+  .cdk-overlay-container .cdk-global-overlay-wrapper .mat-dialog-container {
     padding: 0;
     border-radius: 4px;
     overflow: hidden;
