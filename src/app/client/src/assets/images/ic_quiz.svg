@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>CC5AE071-201C-4E7C-A733-477A7D7EC4A0</title>
+    <g id="3-Banners" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="quiz">
+            <rect id="Rectangle" stroke="#979797" fill="#D8D8D8" opacity="0" x="0.5" y="0.5" width="23" height="23"></rect>
+            <g id="Group-11" transform="translate(2.000000, 1.000000)" stroke="#231F20" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                <path d="M4.2435,10.5153 C3.4605,9.4063 3.3285,7.9093 4.0325,6.6153 C4.4915,5.7723 5.2895,5.1363 6.2135,4.8783 C8.6555,4.1943 10.9065,6.0563 10.9065,8.4013 C10.9065,9.8543 10.0435,11.1213 8.8055,11.7133 C7.8215,12.1843 7.2395,13.2293 7.2395,14.3203 L7.2395,15.1173" id="Stroke-1"></path>
+                <line x1="7.24" y1="17.2437" x2="7.24" y2="17.2307" id="Stroke-3"></line>
+                <path d="M21,15.974 L21,19.5 C21,20.605 20.105,21.5 19,21.5 L2,21.5 C0.895,21.5 0,20.605 0,19.5 L0,2 C0,0.896 0.895,0 2,0 L14.32,0 L21,6.68 L21,9.346" id="Stroke-5"></path>
+                <path d="M21,6.6804 L16.32,6.6804 C15.215,6.6804 14.32,5.7854 14.32,4.6804 L14.32,0.0004 L21,6.6804 Z" id="Stroke-7"></path>
+                <polyline id="Stroke-9" points="11.6849 14.3695 13.2049 16.9805 20.9999 11.9965"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>
