@@ -4,7 +4,7 @@ import {
   ConfigService,
   ResourceService,
   ToasterService, ConnectionService,
-  IUserData, NavigationHelperService, UtilService
+  IUserData, NavigationHelperService, UtilService, LayoutService
 } from '@sunbird/shared';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
@@ -25,7 +25,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute, public courseService: CoursesService,
-              private connectionService: ConnectionService) {
+              private connectionService: ConnectionService, public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -42,7 +42,9 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   submitInteractEdata: IInteractEventEdata;
   userDataSubscription: any;
   isConnected = false;
+  layoutConfiguration: any;
   unsubscribe$ = new Subject<void>();
+  public unsubscribe = new Subject<void>();
 
   ngOnInit() {
     this.navigationhelperService.setNavigationUrl();
@@ -55,6 +57,15 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
+
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
+
   }
 
   ngOnDestroy() {
@@ -63,6 +74,10 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
+  }
+
+  goBack() {
+    this.navigationhelperService.goBack();
   }
 
   switchUser() {

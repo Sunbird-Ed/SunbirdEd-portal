@@ -1,18 +1,25 @@
 <app-landing-section [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 
 </app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [appTelemetryImpression]="telemetryImpression">
+  <div class="ui container d-flex flex-ai-center">
+    <app-back-button></app-back-button>
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap ml-16 w-100">
+      <div class="d-flex flex-dc">
+        <h4 class="mb-4 font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">{{resourceService?.frmelmnts?.lbl?.addNewMember}}</h4>
+        <div class="fsmall"></div>
+      </div>
+      <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+      </div>
+    </div>
+  </div>
+</div>
 
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-add-member relative9' : ''">
-
-<app-back-button></app-back-button>
-
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-g mt-24">
     <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
       <div class="sb-bg-color-white p-24">
-        <div class="title mb-16 text-left font-weight-bold">
-          {{resourceService?.frmelmnts?.lbl?.addNewMember}}
-        </div>
         <div class="sb-field instance-id-verify">
           <div class="d-flex flex-jc-space-between flex-ai-center">
             <div class="w-100">

@@ -149,7 +149,12 @@ export class GuestProfileComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
+
+  goBack() {
+    this.navigationHelperService.goBack();
   }
+
 }
