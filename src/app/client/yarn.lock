@@ -1466,10 +1466,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.4.3":
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.4.3.tgz#29b9c77acd6b49c6a42b0331bc82079c861e4e51"
-  integrity sha512-1vdQjqG2zU2Z/RThhKt+xCXUBu+yIkLF5d2VPPVvR5S9GZptYBpk0FKn+blg1JZJyRwxirx79US9ckm8h5lEfA==
+"@project-sunbird/common-consumption-v9@4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.2.tgz#f0abe02f70a70d4bb97a5a1469eccab4af877903"
+  integrity sha512-Nc48SOYV8CzKhxfqGvPORjZrafKYv2oPX9ON8Sd7LakuHV5adAMe1kBZTbER2sP/qfYgDyhDBG+6zaquXKom0w==
 
 "@project-sunbird/discussions-ui-v8@2.5.0-beta.1":
   version "2.5.0-beta.1"
@@ -1647,10 +1647,10 @@
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
 
-"@shikshalokam/sl-reports-library@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.5.tgz#90cc9d00f43947d27b00c79590b3c5f40160ab40"
-  integrity sha512-TPqtGlFk+yllFb/GibQacJ+2HYMKrV4BOv/pV+f3dzHqHfVBqHt67t+iG4Wue4oJUuJaWbdBLaXLmL1TAFvQgQ==
+"@shikshalokam/sl-reports-library@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.6.tgz#8f40c6f71fab48b8bd209601e882d9ce8baa5517"
+  integrity sha512-QNbs9xuC2hyL+tI3vRjG6+VkjvHkIDdpbHjtJ628PwhuipP8YHm7DvFvhOp6vIHyqNkh69zHx0BpO0ISjTC7wQ==
   dependencies:
     chart.js "^2.9.4"
     chartjs-plugin-datalabels "^0.7.0"
@@ -5253,7 +5253,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
