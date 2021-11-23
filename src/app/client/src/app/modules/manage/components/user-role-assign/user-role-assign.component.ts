@@ -223,5 +223,12 @@ export class UserRoleAssignComponent implements OnInit {
     });
     return reqBody;
   }
+  enableButton(){
+    if (!_.isEmpty(this.userDetailsForm.controls.role.value) && !_.isEmpty(this.userDetailsForm.controls.orgName.value)){
+      this.enableSubmitBtn = true;
+    } else {
+      this.enableSubmitBtn = false;
+    }
+  }
 
 }

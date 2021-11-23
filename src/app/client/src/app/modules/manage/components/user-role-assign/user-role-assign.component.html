@@ -124,7 +124,7 @@
         <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
       </div>
       <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles" labelField="roleName"
+        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role" (selectedOptionsChange)="enableButton()" formControlName="role" [options]="allRoles" labelField="roleName"
           valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
           <sui-select-option *ngFor="let role of allroles.filteredOptions" [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
         </sui-multi-select>
@@ -133,7 +133,7 @@
           <label>{{resourceService.frmelmnts?.lbl?.orgname}}</label>
         </div>
         <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="orgName" [options]="orgList" labelField="orgName"
+        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName" (selectedOptionsChange)="enableButton()" formControlName="orgName" [options]="orgList" labelField="orgName"
           valueField="orgId" name="orgName" placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName>
           <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
         </sui-multi-select>
@@ -150,6 +150,7 @@
       [telemetryInteractEdata]="submitInteractEdata" 
       (click)="onSubmitForm()" tabindex="0"
       class="sb-btn sb-btn-normal"
+      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
     >
       {{resourceService.frmelmnts?.btn?.cancel}}
     </button>
@@ -159,6 +160,7 @@
       [telemetryInteractEdata]="submitInteractEdata" 
       (click)="onSubmitForm()" tabindex="0"
       class="sb-btn sb-btn-normal sb-btn-primary"
+      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
     >
       {{resourceService.frmelmnts?.btn?.save}}
     </button>
