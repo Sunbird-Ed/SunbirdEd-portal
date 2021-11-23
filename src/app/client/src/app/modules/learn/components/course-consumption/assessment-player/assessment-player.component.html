@@ -72,9 +72,9 @@
                   (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
                   (ratingPopupClose)="onRatingPopupClose()" (selfAssessLastAttempt)="onSelfAssessLastAttempt($event)"></app-player>
               </div>
-              <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
+              <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
-              <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
+              <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
             </section>
           </div>
