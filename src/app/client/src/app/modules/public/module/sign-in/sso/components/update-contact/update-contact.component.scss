@@ -134,3 +134,15 @@ input[type="number"]::-webkit-inner-spin-button {
 .ui.radio.checkbox input:checked ~ label:after {
   background: var(--primary-400);
 }
+
+::ng-deep {
+
+  .signup-background .fullpage-background-image {
+    .sb-mat__modal__content, .sb-mat__modal__actions {
+      background: inherit;
+    }
+    .sb-mat__modal__actions {
+      border-top: none;
+    }
+  }
+}

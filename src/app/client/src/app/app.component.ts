@@ -24,7 +24,7 @@ import { SBTagModule } from 'sb-tag-manager';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: ['.header-block { display: none;}']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;

@@ -6,7 +6,8 @@ import { ISharelink, ITelemetryShare } from './../../interfaces';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 @Component({
   selector: 'app-share-link',
-  templateUrl: './share-link.component.html'
+  templateUrl: './share-link.component.html',
+  styleUrls: ['./share-link.component.scss']
 })
 export class ShareLinkComponent implements OnInit {
   /**

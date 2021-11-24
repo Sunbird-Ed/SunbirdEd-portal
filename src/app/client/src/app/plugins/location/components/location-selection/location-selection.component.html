@@ -67,7 +67,7 @@
 <app-modal-wrapper [config]="{disableClose: true, id: locationSelectionModalId}" (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
-    <div class="sb-mat__modal">
+    <div class="sb-mat__modal sb-onboard">
 
       <div mat-dialog-title class="flex-jc-center">
         <div class="sb-onboard__header">
@@ -84,7 +84,7 @@
           </div>
           <div>
             <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
-              <label class="w-100">
+              <div class="w-100">
                 <sb-form
                   *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
                   [config]="sbFormLocationSelectionDelegate.locationFormConfig"
@@ -92,7 +92,7 @@
                   (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
                   (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event)">
                 </sb-form>
-              </label>
+              </div>
             </div>
           </div>
         </div>

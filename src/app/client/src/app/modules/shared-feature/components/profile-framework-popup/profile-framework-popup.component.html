@@ -6,15 +6,6 @@
           {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
         </div>
         <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
-        <div class="sb-modal-header" *ngIf="isPreference">
-          <div class="d-flex">
-            <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
-            <div class="hr-preference-line ml-24"></div>
-          </div>
-          <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
-        interpolate:'{instance}': instance}}</p>
-          <div class="hr-border py-8"></div>
-        </div>
 
       </div>
       <!--/Header-->
@@ -22,6 +13,17 @@
       <!--Content-->
       <mat-dialog-content>
         <div class="sb-mat__modal__content">
+
+          <div *ngIf="isPreference">
+            <div class="d-flex">
+              <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
+              <div class="hr-preference-line ml-24"></div>
+            </div>
+            <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
+          interpolate:'{instance}': instance}}</p>
+            <div class="hr-border py-8"></div>
+          </div>
+
           <form class="ui form">
             <div *ngFor="let field of formFieldOptions">
               <div class="required sb-field-form-group"

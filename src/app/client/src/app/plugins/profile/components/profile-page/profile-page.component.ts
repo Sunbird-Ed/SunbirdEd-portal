@@ -377,9 +377,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userProfile.framework = data;
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
       this.profileModal && this.profileModal.deny();
-      this.showEdit = false;
+      // this.showEdit = false;
     }, err => {
-      this.showEdit = false;
+      // this.showEdit = false;
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.profileModal && this.profileModal.deny();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');

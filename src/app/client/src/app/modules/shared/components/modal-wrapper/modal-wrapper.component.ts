@@ -53,12 +53,15 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
       ...this.getDefaultConfig(),
       minWidth: modalSizeToMinWidthMapping[modalSize],
       ...config,
+      maxWidth: modalSizeToMinWidthMapping.normal,
       data: { id, ...data },
       // scrollStrategy
     }
   }
 
   private open(templateRef: TemplateRef<any>, options: MatDialogConfig): MatDialogRef<any> {
+    this.setElementStyle(document.body)('overflow', 'hidden');
+    this.setElementStyle(document.documentElement)('overflow', 'hidden');
     return this.matDialog.open(templateRef, options);
   }
 
@@ -68,6 +71,8 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   private subscribeToDialogDismiss() {
     this.modal && this.modal.afterClosed().subscribe(event => {
+      this.setElementStyle(document.body)('overflow', 'auto');
+      this.setElementStyle(document.documentElement)('overflow', 'inherit');
       this.dismiss.emit(event);
     })
   }
@@ -80,6 +85,12 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.deny();
+  }
+
+  private setElementStyle(element: HTMLElement) {
+    return (styleProperty: string, styleValue: string) => {
+      element.style[styleProperty] = styleValue
+    }
   }
 }
 
