@@ -10,7 +10,7 @@ import { CoreModule, UserService,  PermissionService, SearchService} from '@sunb
 import { TelemetryService } from '@sunbird/telemetry';
 import { TranslateModule } from '@ngx-translate/core';
 import { ObservationUtilService } from '../../../observation/service';
-import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule } from '@sunbird/shared';
 import { mockObject } from './user-role-assign.spec.data';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 
@@ -25,7 +25,7 @@ describe('UserRoleAssignComponent', () => {
     
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule,
-        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TranslateModule.forRoot()],
+        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TranslateModule.forRoot(), SharedModule.forRoot()],
       declarations: [ UserRoleAssignComponent ],
       providers: [TelemetryService, ObservationUtilService, ConfigService, ResourceService,
         BrowserCacheTtlService,ToasterService, UserService, PermissionService, SearchService],

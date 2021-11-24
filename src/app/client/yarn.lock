@@ -1471,10 +1471,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.2.tgz#f0abe02f70a70d4bb97a5a1469eccab4af877903"
   integrity sha512-Nc48SOYV8CzKhxfqGvPORjZrafKYv2oPX9ON8Sd7LakuHV5adAMe1kBZTbER2sP/qfYgDyhDBG+6zaquXKom0w==
 
-"@project-sunbird/discussions-ui-v8@2.5.0-beta.1":
-  version "2.5.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.1.tgz#66175de51b3b19f0fee872b783180df646ee9cc8"
-  integrity sha512-oCfanjOa+cU9zugzZ6FGNlRszbJ+vSFqvQpNbk75og1HHWx1rmNj054C118kMaCOKR875jOiUci03qspkk26PQ==
+"@project-sunbird/discussions-ui-v8@2.5.0-beta.2":
+  version "2.5.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
+  integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
   dependencies:
     tslib "^1.9.0"
 
