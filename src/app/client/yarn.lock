@@ -1466,10 +1466,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.4.3":
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.4.3.tgz#29b9c77acd6b49c6a42b0331bc82079c861e4e51"
-  integrity sha512-1vdQjqG2zU2Z/RThhKt+xCXUBu+yIkLF5d2VPPVvR5S9GZptYBpk0FKn+blg1JZJyRwxirx79US9ckm8h5lEfA==
+"@project-sunbird/common-consumption-v9@4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.2.tgz#f0abe02f70a70d4bb97a5a1469eccab4af877903"
+  integrity sha512-Nc48SOYV8CzKhxfqGvPORjZrafKYv2oPX9ON8Sd7LakuHV5adAMe1kBZTbER2sP/qfYgDyhDBG+6zaquXKom0w==
 
 "@project-sunbird/discussions-ui-v8@2.5.0-beta.2":
   version "2.5.0-beta.2"
@@ -1507,10 +1507,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.28.tgz#f6bc68caf335c32b04c2c555029ca8d38d85dbf1"
   integrity sha512-QSTRbop3Zqxuho3zJGLg6fwyT/NG19zXSRJbyJdHP2yQE1FlutXkdQW8WZy5VFPVLc74+qRq0VIbSoCWUW/Mzg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.3.tgz#c62ed03bc75e1336ecd3822079af8b21e6cf9cef"
-  integrity sha512-sDhYHrU1oUwZwXPGBEHMh5MjG2Eltoz4YbGCWfNYev1S3D1bk426ZDv4ZXtrBG1uzFlkVqBkNuqSEHvoqVLthg==
+"@project-sunbird/sunbird-collection-editor-v9@4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.5.tgz#9f6012f6247a8b8f1db73a6ec7916bf75b6d7e9c"
+  integrity sha512-X3khJfxLMSIrsBOeRPiK5jZn5U6g4fWhvGH++SG+ulAaaMtYeGtnqcHtNcKbkgD6Reid+zqysmAYStmZjgcvlA==
   dependencies:
     tslib "^1.10.0"
 
@@ -10907,10 +10907,10 @@ sax@>=0.6.0, sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-sb-notification@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.1.tgz#a250c584397bf165fa56f08b4683d8f8e14a286e"
-  integrity sha512-lHgwse7WaXcYBv2hVETYlGeI7EppiPDFX53J7ifL7491q6l6yg0A5yjgAOBLbW5xri+2xW1tqVW75Ado/0Srdg==
+sb-notification@~0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.3.tgz#ef655b6e0071c43ba2610c4f46917e16c11e0b7d"
+  integrity sha512-bRjbIrRg6WK0wg5RS84YP88pDnzaxByGhlSCUZfnsAVeLzydMUqOWm1u2LvZLUsUMCOdEby9SezVvMZ0w2CDPQ==
   dependencies:
     tslib "^1.9.0"
 

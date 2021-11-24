@@ -79,6 +79,7 @@ describe('AssessmentPlayerComponent', () => {
         NotificationServiceImpl, CourseProgressService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -66,6 +66,12 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this.connectionService.monitor().pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
