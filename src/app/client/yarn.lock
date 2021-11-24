@@ -1514,12 +1514,12 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.3.1.tgz#6cbd95890a610e453a224d7f7b5b40d18209e900"
-  integrity sha512-yg8NiY4KZofx/60c268OkIXvaueREQO9mZJ9RP+fmWkX2tALXW7ynTd7x5dQIHd9VAzw4EsX15Z23EcyJzGviw==
+"@project-sunbird/sunbird-epub-player-v9@4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.5.3.tgz#f4ac8fea39a065ca5691d79dab638bfc3d0b00e6"
+  integrity sha512-LmpBtqA87wkTl1dGGfHLMoQVlVlcnmKSMu6w1rv6qPDBHtDhDlbDZxFrVSfpVJIF5KuCkZoaNZP0RWVqFKTElA==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.3.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.4.4"
 
 "@project-sunbird/sunbird-pdf-player-v9@4.2.0":
   version "4.2.0"
@@ -1528,12 +1528,7 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.2.0"
 
-"@project-sunbird/sunbird-player-sdk-v9@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.3.0.tgz#cbf131e5f0c08a0c2f0be1235d0a19777e998a14"
-  integrity sha512-2V3dYL+nIpYKkqpLtP23TQRAh8SEDZ2vC2jRK6gpOUveAJw6UEKEfF5MZOulIpXOvDYUlMxIcorsLnYz4JAFzA==
-
-"@project-sunbird/sunbird-player-sdk-v9@^4.2.0", "@project-sunbird/sunbird-player-sdk-v9@^4.4.4":
+"@project-sunbird/sunbird-player-sdk-v9@4.4.4", "@project-sunbird/sunbird-player-sdk-v9@^4.2.0", "@project-sunbird/sunbird-player-sdk-v9@^4.4.4":
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.4.4.tgz#bb7579281c86664a44ec189af971262ae45e814b"
   integrity sha512-AsHyA3SUpNRcGiCTVkp4rLtuFPPIQTOHhthREHHe90g4HX+JeeaSz3FYRzZ3nLjZdNFWOJ/9Xqni00sJQcuDfQ==
