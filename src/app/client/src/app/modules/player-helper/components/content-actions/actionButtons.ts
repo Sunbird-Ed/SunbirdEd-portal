@@ -4,37 +4,51 @@ export const actionButtons: IActionButton[] = [
     {
         name: ActionButtonType.DOWNLOAD,
         label: 'Download',
-        disabled: true
+        disabled: true,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.UPDATE,
         label: 'Update',
-        disabled: true
+        disabled: true,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.SHARE,
         label: 'Share',
-        disabled: false
+        disabled: false,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.RATE,
         label: 'Rate',
-        disabled: true
+        disabled: true,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.PRINT,
         label: 'Print',
-        disabled: true
+        disabled: true,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.DELETE,
         label: 'Delete',
-        disabled: true
+        disabled: true,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.FULL_SCREEN,
         label: 'Fullscreen',
-        disabled: false
+        disabled: false,
+        isInActive: false,
+        showSeperator: true
     }
   ];
 
@@ -43,21 +57,29 @@ export const actionButtons: IActionButton[] = [
     {
         name: ActionButtonType.SHARE,
         label: 'Share',
-        disabled: false
+        disabled: false,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.RATE,
         label: 'Rate',
-        disabled: true
+        disabled: true,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.PRINT,
         label: 'Print',
-        disabled: true
+        disabled: true,
+        isInActive: false,
+        showSeperator: false
     },
     {
         name: ActionButtonType.MINIMIZE_SCREEN,
         label: 'Minimize',
-        disabled: false
+        disabled: false,
+        isInActive: false,
+        showSeperator: true
     }
   ];

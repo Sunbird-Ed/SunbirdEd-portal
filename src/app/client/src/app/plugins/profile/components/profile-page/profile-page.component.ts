@@ -397,6 +397,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
+
   setInteractEventData() {
     this.myFrameworkEditEdata = {
       id: 'profile-edit-framework',

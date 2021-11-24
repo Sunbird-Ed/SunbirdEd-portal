@@ -2,7 +2,7 @@ import { GroupEntityStatus } from '@project-sunbird/client-services/models/group
 import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, ToasterService, LayoutService } from '@sunbird/shared';
 import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IFetchForumId, EDIT_GROUP, IFetchForumConfig } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
@@ -34,7 +34,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   forumIds: Array<number> = [];
   createForumRequest: any;
   public UPDATE_GROUP = UPDATE_GROUP;
-
+  layoutConfiguration: any;
+  public unsubscribe = new Subject<void>();
     /**
    * input data to fetch forum Ids
    */
@@ -48,7 +49,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
     private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService,
-    public discussionTelemetryService: DiscussionTelemetryService, public activateRoute: ActivatedRoute) {
+    public discussionTelemetryService: DiscussionTelemetryService, public activateRoute: ActivatedRoute, public layoutService: LayoutService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
@@ -57,6 +58,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
+
     this.fetchForumIdReq = {
       type: 'group',
       identifier: [ this.groupData.id ]
@@ -74,6 +76,15 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
       this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
     });
+
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
+
   }
 
   navigateToPreviousPage() {

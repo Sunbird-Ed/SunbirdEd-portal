@@ -86,12 +86,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     targetedCategorytheme:any;
     showTargetedCategory:boolean=false;
     selectedTab:any;
+    primaryBanner = [];
+    secondaryBanner = [];
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
 
     get bannerSlideConfig() {
         return cloneDeep(this.configService.appConfig.Banner.slideConfig);
+    }
+
+    get secondaryBannerSlideConfig() {
+        return cloneDeep(this.configService.appConfig.AdditionalBanner.slideConfig);
     }
 
     @HostListener('window:scroll', []) onScroll(): void {
@@ -1151,6 +1157,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             }
         });
+    
         this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
         if (this.bannerSegment ) {
             this.setBannerConfig();
@@ -1161,6 +1168,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.bannerList = this.bannerSegment.filter((value) =>
             Number(value.expiry) > Math.floor(Date.now() / 1000)
         );
+        this.primaryBanner = [];
+        this.secondaryBanner = [];
+        this.bannerList.forEach((banner) => {
+            if (banner.type === 'secondary') {
+                this.secondaryBanner.push(banner);
+              } else {
+                this.primaryBanner.push(banner);
+              }
+        });
     }
 
     navigateToSpecificLocation(data) {
@@ -1220,7 +1236,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             env:  this.activatedRoute.snapshot.data.telemetry.env,
             cdata: [{
               id: data.code,
-              type: 'Banner'
+              type: (data.type && data.type === 'secondary') ? 'AdditionalBanner' : 'Banner'
             }]
           },
           edata: {

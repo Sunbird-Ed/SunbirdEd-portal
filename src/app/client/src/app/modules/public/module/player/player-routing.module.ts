@@ -10,9 +10,9 @@ const routes: Routes = [
             //     reuse: true,
             //     path: '/play/content'
             //   },
-            // menuBar: {
-            //     visible: false
-            // },
+            menuBar: {
+                visible: false
+            },
             telemetry: {
                 env: 'public', pageid: 'play-content', type: 'view', subtype: 'paginate'
             }
@@ -24,6 +24,10 @@ const routes: Routes = [
             //     reuse: true,
             //     path: '/play/collection'
             //   },
+
+            menuBar: {
+                visible: false
+            },
             telemetry: {
                 env: 'public', pageid: 'play-collection', type: 'view', subtype: 'paginate'
             }
@@ -32,6 +36,10 @@ const routes: Routes = [
     {
         path: 'questionset/:contentId', component: ContentPlayerComponent, canDeactivate: [PendingchangesGuard],
         data: {
+
+            menuBar: {
+                visible: false
+            },
             telemetry: {
                 env: 'public', pageid: 'play-questionset', type: 'view', subtype: 'paginate'
             }
