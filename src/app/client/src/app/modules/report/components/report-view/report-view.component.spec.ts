@@ -57,7 +57,7 @@ describe('ReportViewComponent', () => {
         SuiModule,
         SuiSelectModule,
         SuiModalModule,
-        DashletModule,
+        DashletModule.forRoot(),
         SlReportsLibraryModule,
         TranslateModule,
         HttpClientTestingModule,

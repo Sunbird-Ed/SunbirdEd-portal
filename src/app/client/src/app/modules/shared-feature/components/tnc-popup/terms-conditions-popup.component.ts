@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnDestroy, ViewChild } from '@angular/core';
-import { UserService,  TenantService} from '@sunbird/core';
+import { UserService, TenantService } from '@sunbird/core';
 import { Subscription, Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { IUserProfile, ILoaderMessage } from '@sunbird/shared';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash-es';
 import { PopupControlService } from '../../../../service/popup-control.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-tnc-popup',
@@ -14,7 +15,6 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 })
 
 export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
   @Input() tncUrl: string;
   @Input() showAcceptTnc: boolean;
   @Input() adminTncVersion: any;
@@ -40,7 +40,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService, public resourceService: ResourceService,
     public toasterService: ToasterService, public tenantService: TenantService,
-    public sanitizer: DomSanitizer, public popupControlService: PopupControlService) {
+    public sanitizer: DomSanitizer, public popupControlService: PopupControlService, private matDialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -52,7 +52,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
         (user: any) => {
           if (user && !user.err) {
             this.userProfile = user.userProfile;
-            this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.userProfile.tncLatestVersionUrl );
+            this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.userProfile.tncLatestVersionUrl);
           } else if (user.err) {
             this.toasterService.error(this.resourceService.messages.emsg.m0005);
           }
@@ -71,13 +71,13 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   /**
    * This method used to submit terms and conditions acceptance
    */
-  public onSubmitTnc() {
+  public onSubmitTnc(modalId: string) {
     const requestBody = {
       request: {
         version: _.get(this.userProfile, 'tncLatestVersion')
       }
     };
-    if (this.userService.userProfile.managedBy) {
+    if (_.get(this.userService, 'userProfile.managedBy')) {
       requestBody.request['userId'] = this.userService.userid;
     }
     if (this.adminTncVersion || this.reportViewerTncVersion) {
@@ -87,7 +87,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
 
     this.disableContinueBtn = true;
     this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
-      this.onClose();
+      this.onClose(modalId);
     }, err => {
       this.disableContinueBtn = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0085);
@@ -98,8 +98,11 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
     this.disableContinueBtn = !tncChecked;
   }
 
-  public onClose() {
-    this.modal.deny();
+  public onClose(modalId?: string) {
+    if (modalId) {
+      const dialogRef = this.matDialog.getDialogById(modalId);
+      dialogRef && dialogRef.close();
+    }
     this.close.emit();
     this.popupControlService.changePopupStatus(true);
   }

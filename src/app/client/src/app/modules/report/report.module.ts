@@ -36,7 +36,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     ReportRoutingModule,
     DataTablesModule,
     InfiniteScrollModule,
-    DashletModule,
+    DashletModule.forRoot(),
     SlReportsLibraryModule,
     MatTabsModule
   ],

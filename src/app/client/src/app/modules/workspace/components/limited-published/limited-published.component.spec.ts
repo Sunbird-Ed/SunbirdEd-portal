@@ -22,6 +22,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('LimitedPublishedComponent', () => {
   let component: LimitedPublishedComponent;
@@ -68,7 +69,7 @@ describe('LimitedPublishedComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LimitedPublishedComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),
-        TelemetryModule.forRoot(), NgInviewModule],
+        TelemetryModule.forRoot(), NgInviewModule, BrowserAnimationsModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

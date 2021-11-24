@@ -2,7 +2,7 @@ import { UserService, OtpService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
-import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import * as _ from 'lodash-es';
 import { MatDialog } from '@angular/material/dialog';
@@ -41,7 +41,8 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private matDialog: MatDialog,
     public toasterService: ToasterService,
-    public otpService: OtpService) { }
+    public otpService: OtpService,
+    private configService: ConfigService) { }
 
   ngOnInit() {
     this.contactType = 'emailId';
@@ -68,6 +69,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
         const request: any = {
             key: this.userProfile.email || this.userProfile.phone || this.userProfile.recoveryEmail,
             userId: this.userProfile.userId,
+            templateId: this.configService.appConfig.OTPTemplate.updateContactTemplate,
             type: ''
         };
         if ((this.userProfile.email && !this.userProfile.phone) ||

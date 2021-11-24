@@ -10,6 +10,7 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
 import { POPUP_LOADED, CREATE_GROUP, SELECT_CLOSE, CLOSE_ICON, SELECT_RESET } from '../../interfaces/telemetryConstants';
 import { UtilService } from '../../../shared/services/util/util.service';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-create-edit-group',
   templateUrl: './create-edit-group.component.html',
@@ -31,22 +32,23 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
   public SELECT_RESET = SELECT_RESET;
 
   constructor(public resourceService: ResourceService,
-              private toasterService: ToasterService,
-              private fb: FormBuilder,
-              public groupService: GroupsService,
-              private activatedRoute: ActivatedRoute,
-              private telemetryService: TelemetryService,
-              public router: Router,
-              public navigationHelperService: NavigationHelperService,
-              public utilService: UtilService
-    ) { }
+    private toasterService: ToasterService,
+    private fb: FormBuilder,
+    public groupService: GroupsService,
+    private activatedRoute: ActivatedRoute,
+    private telemetryService: TelemetryService,
+    public router: Router,
+    public navigationHelperService: NavigationHelperService,
+    public utilService: UtilService,
+    private matDialog: MatDialog
+  ) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.groupId = _.get(this.activatedRoute, 'parent.snapshot.params.groupId');
     this.groupId ? (this.groupService.groupData ? (this.groupDetails = this.groupService.groupData) :
-    this.groupService.goBack()) : this.groupDetails = {};
+      this.groupService.goBack()) : this.groupDetails = {};
     this.initializeForm();
 
     if (this.isDesktopApp) {
@@ -59,7 +61,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
    */
   ngAfterViewInit() {
     if (!this.groupId) {
-      this.setTelemetryImpression({type: POPUP_LOADED});
+      this.setTelemetryImpression({ type: POPUP_LOADED });
     }
   }
   private initializeForm() {
@@ -74,7 +76,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   isFieldValid(field: string) {
-    if (this.groupId) { this.groupForm.patchValue({groupToc: true}); }
+    if (this.groupId) { this.groupForm.patchValue({ groupToc: true }); }
 
     if (field === 'name') {
       this.groupForm.patchValue({ name: _.trimStart(this.groupForm.get(field).value), });
@@ -82,9 +84,9 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
     return !this.groupForm.get(field).valid && this.groupForm.get(field).dirty;
   }
 
-  onSubmitForm() {
+  onSubmitForm({ modalId }) {
     this.disableBtn = true;
-    this.addTelemetry('submit-group-form', '', { type: CREATE_GROUP} );
+    this.addTelemetry('submit-group-form', '', { type: CREATE_GROUP });
     if (this.groupForm.valid) {
       const request = _.omit(this.groupForm.value, 'groupToc');
       request.name = _.trim(request.name);
@@ -95,14 +97,14 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
         }
         this.groupService.emitCloseForm();
         this.disableBtn = false;
-        this.closeModal();
-    }, err => {
+        this.closeModal({ modalId });
+      }, err => {
         this.disableBtn = false;
         const errCode: string = _.get(err, 'response.body.params.err') || _.get(err, 'params.err');
 
         if (errCode === 'GS_CRT04') {
           this.toasterService.error(this.resourceService.messages.groups.emsg.m001);
-          this.addTelemetry('exceeded-group-max-limit', {group_count: this.groupService.groupListCount});
+          this.addTelemetry('exceeded-group-max-limit', { group_count: this.groupService.groupListCount });
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m001);
         }
@@ -111,15 +113,15 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
           const control = this.groupForm.get(field);
           control.markAsTouched({ onlySelf: true });
         });
-        this.closeModal();
+        this.closeModal({ modalId });
         this.groupService.emitCloseForm();
       });
     } else {
-      this.closeModal();
+      this.closeModal({ modalId });
     }
   }
 
-  updateGroup() {
+  updateGroup({ modalId }) {
     this.disableBtn = true;
     if (this.groupForm.valid && !_.isEmpty(_.trim(this.groupForm.value.name))) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
@@ -127,25 +129,25 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
       updatedForm.description = _.trim(updatedForm.description);
       updatedForm.status = _.get(this.groupDetails, 'status');
       this.groupService.updateGroup(this.groupId, updatedForm).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
-          this.toasterService.success(this.resourceService.messages.smsg.m003);
-          this.groupService.emitCloseForm();
-          this.closeModal();
-          this.disableBtn = false;
+        this.toasterService.success(this.resourceService.messages.smsg.m003);
+        this.groupService.emitCloseForm();
+        this.closeModal({ modalId });
+        this.disableBtn = false;
 
       }, err => {
         this.disableBtn = false;
         this.groupService.emitCloseForm();
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
-          control.patchValue({name: '', description: ''});
+          control.patchValue({ name: '', description: '' });
           control.markAsTouched({ onlySelf: true });
         });
         this.toasterService.error(this.resourceService.messages.emsg.m005);
-        this.closeModal();
+        this.closeModal({ modalId });
       });
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m005);
-      this.closeModal();
+      this.closeModal({ modalId });
     }
   }
 
@@ -153,23 +155,22 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
     this.groupForm.reset();
   }
 
-  closeModal() {
-    this.close();
+  closeModal({ modalId }) {
+    modalId && this.close(modalId);
     this.groupService.goBack();
   }
 
-  close() {
-    if (this.createGroupModal && this.createGroupModal.deny) {
-      this.createGroupModal.deny();
-    }
+  close(modalId?: string) {
+    const dialogRef = modalId && this.matDialog.getDialogById(modalId);
+    dialogRef && dialogRef.close();
   }
 
-   /**
-   * @description - To set the telemetry Intract event data
-   * @param  {} edata? - it's an object to specify the type and subtype of edata
-   */
-  addTelemetry (id, extra?, edata?) {
-    this.groupService.addTelemetry({id, extra, edata}, this.activatedRoute.snapshot, [], this.groupId);
+  /**
+  * @description - To set the telemetry Intract event data
+  * @param  {} edata? - it's an object to specify the type and subtype of edata
+  */
+  addTelemetry(id, extra?, edata?) {
+    this.groupService.addTelemetry({ id, extra, edata }, this.activatedRoute.snapshot, [], this.groupId);
   }
 
   setTelemetryImpression(edata?) {
@@ -193,10 +194,9 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
       this.telemetryImpression.edata.type = edata.type;
     }
     this.telemetryService.impression(this.telemetryImpression);
-    }
+  }
 
   ngOnDestroy() {
-    this.close();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

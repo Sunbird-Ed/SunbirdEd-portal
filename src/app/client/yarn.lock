@@ -1514,12 +1514,12 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.3.1.tgz#6cbd95890a610e453a224d7f7b5b40d18209e900"
-  integrity sha512-yg8NiY4KZofx/60c268OkIXvaueREQO9mZJ9RP+fmWkX2tALXW7ynTd7x5dQIHd9VAzw4EsX15Z23EcyJzGviw==
+"@project-sunbird/sunbird-epub-player-v9@4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.4.0.tgz#0723644d48982a68013d891a5ab33180ec16339a"
+  integrity sha512-Apx/pJnMy/s5xNwC1dRAqtvSwFjuVMzVQT2LlHfYhFAUsh8mPHMI8hVv5BAD6zdSu5exy4bCFAKKtpFiYSWuKA==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.3.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.4.4"
 
 "@project-sunbird/sunbird-pdf-player-v9@4.2.0":
   version "4.2.0"
@@ -1582,10 +1582,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.1.tgz#3cca745b716403844220c65d45233f3df8a79b7e"
-  integrity sha512-CM5GeHnEJeiWpeA09gMzc7EmljcfLPlnFIrUdO6Ro/g9xLLcNZq4YuPkprBfwSfJV6hPvwXKsWdJu7+VnEeS+w==
+"@samagra-x/uci-console@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.3.tgz#815a464302a65492b2c468cbd0cffd2e6a69567e"
+  integrity sha512-80Blm39UD5N7qnWrRDb+Nbj/2c7JUhU1KRMWLDYgp4MQ9zvSTxtZyzPFkis3eT93ke0ev7uYhQPNea2cQSrNKA==
   dependencies:
     tslib "^1.10.0"
 
@@ -8742,10 +8742,10 @@ ng2-material-dropdown@0.11.0:
   dependencies:
     tslib "^1.9.0"
 
-ng2-semantic-ui-v9@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.4.tgz#728e54d9dab1703438026dd182d942c70ee05563"
-  integrity sha512-nVzQP+lBSEWobhZX/ouNhivSe1cw/wju0fTe2Dq96eGC/iVz9gQ4McsyompGgcIIxYqRAJW+AdX0XgMhYD/uyg==
+ng2-semantic-ui-v9@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.6.tgz#08137b2610a10d8cf862cc718a22028f9f4c4ba8"
+  integrity sha512-EM+WCfwcJoI3+xyf2+5+WPTpMOn6GmXCdDhtkbAddnHEKjSkj6Ofm0ma3+3v0rcU5CzzLDlHq4hFXAVU/dcIdw==
   dependencies:
     bowser "^1.7.2"
     date-fns "2.0.0-alpha.1"
@@ -10907,10 +10907,10 @@ sax@>=0.6.0, sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-sb-notification@~0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.3.tgz#ef655b6e0071c43ba2610c4f46917e16c11e0b7d"
-  integrity sha512-bRjbIrRg6WK0wg5RS84YP88pDnzaxByGhlSCUZfnsAVeLzydMUqOWm1u2LvZLUsUMCOdEby9SezVvMZ0w2CDPQ==
+sb-notification@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.1.tgz#a250c584397bf165fa56f08b4683d8f8e14a286e"
+  integrity sha512-lHgwse7WaXcYBv2hVETYlGeI7EppiPDFX53J7ifL7491q6l6yg0A5yjgAOBLbW5xri+2xW1tqVW75Ado/0Srdg==
   dependencies:
     tslib "^1.9.0"
 
