@@ -84,7 +84,7 @@
                     <label class="mr-10">  {{ resourceService?.frmelmnts?.lbl?.solution }} </label>
                     <label class="sb-field">
                     <sui-select #solutionSelect labelField="name" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                      [options]="solutions" class="selection pd-10"  placeholder="Select Solution"
+                      [options]="solutions" class="selection pd-10"  placeholder="Select Resource"
                       (selectedOptionChange)="selectSolution($event)">
                       <sui-select-option *ngFor="let solutionInfo of solutionSelect.availableOptions" [value]="solutionInfo">
                       </sui-select-option>

@@ -6,6 +6,9 @@ const routes: Routes = [
     path: '', component: ExploreGroupComponent, data: {
       telemetry: {
         env: 'groups', pageid: 'explore-groups', type: 'view', subtype: 'paginate'
+      },
+      menuBar: {
+      visible: false
       }
     }
   }

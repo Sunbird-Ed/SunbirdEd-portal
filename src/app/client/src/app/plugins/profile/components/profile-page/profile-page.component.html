@@ -1,5 +1,28 @@
 <app-landing-section [textToDisplay]=""
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
+  <!--profile Content Header -->
+  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [ngClass]="{'header-block': isFullScreenView}">
+    <div class="ui container py-0 px-0 d-flex flex-ai-center">
+      <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+      tabindex="0">
+      <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+        </svg></i>
+     <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+    </button>
+      <div class="content-header__content w-100 ml-16">
+        <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
+          <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">My Profile</div>
+          <div class="content-header__info mt-4">
+            <span class="fnormal"></span>
+            <span class="dot-divider"></span>
+            <span class="fnormal"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <div [ngClass]="layoutConfiguration ? 'relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
@@ -409,7 +432,7 @@
 </app-modal-wrapper>
 
   <app-location-selection
-    (close)="onLocationModalClose()"
+    (close)="onLocationModalClose($event)"
     *ngIf="showEditUserDetailsPopup">
 
     <div slot="popup-sub-header">

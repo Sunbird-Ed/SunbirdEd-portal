@@ -397,6 +397,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
+
   setInteractEventData() {
     this.myFrameworkEditEdata = {
       id: 'profile-edit-framework',
@@ -617,9 +621,9 @@ private async getSubPersonaConfig(subPersonaCode: string, persona: string, userL
   return subPersonaFieldConfigOption ? subPersonaFieldConfigOption.label : undefined;
 }
 
-public onLocationModalClose() {
+public onLocationModalClose(event) {
   this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
-  this.showFullScreenLoader = true;
+  this.showFullScreenLoader = !event?.isSubmitted ? false : true;
   setTimeout(() => {
     if (this.showFullScreenLoader) {
       this.showFullScreenLoader = false;
