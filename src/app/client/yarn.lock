@@ -1471,10 +1471,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.4.3.tgz#29b9c77acd6b49c6a42b0331bc82079c861e4e51"
   integrity sha512-1vdQjqG2zU2Z/RThhKt+xCXUBu+yIkLF5d2VPPVvR5S9GZptYBpk0FKn+blg1JZJyRwxirx79US9ckm8h5lEfA==
 
-"@project-sunbird/discussions-ui-v8@2.5.0-beta.1":
-  version "2.5.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.1.tgz#66175de51b3b19f0fee872b783180df646ee9cc8"
-  integrity sha512-oCfanjOa+cU9zugzZ6FGNlRszbJ+vSFqvQpNbk75og1HHWx1rmNj054C118kMaCOKR875jOiUci03qspkk26PQ==
+"@project-sunbird/discussions-ui-v8@2.5.0-beta.2":
+  version "2.5.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
+  integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
   dependencies:
     tslib "^1.9.0"
 
@@ -1647,10 +1647,10 @@
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
 
-"@shikshalokam/sl-reports-library@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.5.tgz#90cc9d00f43947d27b00c79590b3c5f40160ab40"
-  integrity sha512-TPqtGlFk+yllFb/GibQacJ+2HYMKrV4BOv/pV+f3dzHqHfVBqHt67t+iG4Wue4oJUuJaWbdBLaXLmL1TAFvQgQ==
+"@shikshalokam/sl-reports-library@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.6.tgz#8f40c6f71fab48b8bd209601e882d9ce8baa5517"
+  integrity sha512-QNbs9xuC2hyL+tI3vRjG6+VkjvHkIDdpbHjtJ628PwhuipP8YHm7DvFvhOp6vIHyqNkh69zHx0BpO0ISjTC7wQ==
   dependencies:
     chart.js "^2.9.4"
     chartjs-plugin-datalabels "^0.7.0"
