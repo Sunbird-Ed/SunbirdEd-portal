@@ -1189,9 +1189,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     navigateToSpecificLocation(data) {
-      if (data && data.data && data.data.type === 'secondary') {
-          console.log('data', data);
-       } else {
         switch (data.code) {
             case 'banner_external_url':
                 window.open(_.get(data.action, 'params.route'), '_blank');
@@ -1234,7 +1231,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.router.navigate(['explore', 1], { queryParams: params });
                 break;
         }
-      }
     }
     public moveToTop() {
         window.scroll({
@@ -1249,7 +1245,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             env:  this.activatedRoute.snapshot.data.telemetry.env,
             cdata: [{
               id: data.code,
-              type: 'Banner'
+              type: (data.type && data.type === 'secondary') ? 'AdditionalBanner' : 'Banner'
             }]
           },
           edata: {

@@ -1514,10 +1514,10 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.4.0.tgz#0723644d48982a68013d891a5ab33180ec16339a"
-  integrity sha512-Apx/pJnMy/s5xNwC1dRAqtvSwFjuVMzVQT2LlHfYhFAUsh8mPHMI8hVv5BAD6zdSu5exy4bCFAKKtpFiYSWuKA==
+"@project-sunbird/sunbird-epub-player-v9@4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.5.3.tgz#f4ac8fea39a065ca5691d79dab638bfc3d0b00e6"
+  integrity sha512-LmpBtqA87wkTl1dGGfHLMoQVlVlcnmKSMu6w1rv6qPDBHtDhDlbDZxFrVSfpVJIF5KuCkZoaNZP0RWVqFKTElA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.4.4"
 
