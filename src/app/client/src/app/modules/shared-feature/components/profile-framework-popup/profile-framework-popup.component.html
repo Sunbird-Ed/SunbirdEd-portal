@@ -1,29 +1,29 @@
-<div class="sb-modal sb-preference-modal" *ngIf="formFieldOptions.length">
-  <div class="transition ui dimmer page modals active visible">
-    <div class="ui modal transition active visible normal">
+<div class="sb-mat__modal" *ngIf="formFieldOptions.length">
+
       <!--Header-->
-      <div mat-dialog-title class="mb-0">
-        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn" *ngIf="showCloseIcon">
-          <span>&times;</span>
-        </button>
-        <div class="sb-modal-header" *ngIf="isPreference">
-          <div class="d-flex">
-            <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
-            <div class="hr-preference-line ml-24"></div>
-          </div>
-          <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
-        interpolate:'{instance}': instance}}</p>
-          <div class="hr-border py-8"></div>
-        </div>
-        <div class="sb-modal-header" role="heading" aria-level="2">
+      <div mat-dialog-title>
+        <div class="title" role="heading" aria-level="2">
           {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
         </div>
+        <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
+
       </div>
       <!--/Header-->
 
       <!--Content-->
-      <mat-dialog-content class="mat-dialog-content">
-        <div class="sb-modal-content o-y-visible pb-0">
+      <mat-dialog-content>
+        <div class="sb-mat__modal__content">
+
+          <div *ngIf="isPreference">
+            <div class="d-flex">
+              <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
+              <div class="hr-preference-line ml-24"></div>
+            </div>
+            <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
+          interpolate:'{instance}': instance}}</p>
+            <div class="hr-border py-8"></div>
+          </div>
+
           <form class="ui form">
             <div *ngFor="let field of formFieldOptions">
               <div class="required sb-field-form-group"
@@ -73,18 +73,15 @@
       <!--/Content-->
 
       <!--Actions-->
-      <mat-dialog-actions align="end" class="mb-0">
-        <div class="sb-modal-actions">
+      <mat-dialog-actions align="end" class="mb-0 sb-mat__modal__actions">
           <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
             [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
             [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
             {{buttonLabel}}
           </button>
-        </div>
       </mat-dialog-actions>
       <!--/Actions-->
-    </div>
-  </div>
+
 </div>
 
 <div *ngIf="!formFieldOptions || !formFieldOptions.length">

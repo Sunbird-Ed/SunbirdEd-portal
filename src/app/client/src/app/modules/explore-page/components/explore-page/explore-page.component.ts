@@ -165,6 +165,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.userProfile['firstName'] = guestUserDetails.formatedName;
                                 this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                             } else {
+                                this.userProfile = guestUserDetails;
+                                this.userProfile['firstName'] = guestUserDetails.formatedName;
                                 this.defaultFilters = this.getPersistFilters(true);
                             }
                         });
@@ -892,6 +894,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
                 return this.playerService.playContent(metaData);
             }
+            if (sectionType) {
+                metaData.batchId = _.get(metaData,'metaData.batchId');
+                metaData.trackable={
+                    enabled:'Yes'
+                }
+                return this.playerService.playContent(metaData);
+              }
 
             if (onGoingBatchCount === 1) { // play course if only one open batch is present
                 metaData.batchId = _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0].batchId') : _.get(inviteOnlyBatch, 'ongoing[0].batchId');
