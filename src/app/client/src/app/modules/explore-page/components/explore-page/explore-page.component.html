@@ -110,7 +110,7 @@
                 </ngx-slick>
                 <ngx-slick  class="carousel banner-carousel relative9 mt-24" *ngIf="displayBanner && secondaryBanner.length>0" #slickModal="slick-modal" [config]="secondaryBannerSlideConfig">
                   <div ngxSlickItem *ngFor="let banner of secondaryBanner" class="banner-image">
-                    <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'" (cardClick)="navigateToSpecificLocation($event)"></sb-banner-card-hlist>
+                    <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'" (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
                   </div>
                 </ngx-slick >
               <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0" class="section-hr my-32" />
