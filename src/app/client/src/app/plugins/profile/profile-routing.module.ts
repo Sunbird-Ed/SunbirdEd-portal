@@ -14,7 +14,8 @@ const routes: Routes = [
     data: {
       menuBar: {
         visible: false
-    },
+      },
+      pageTitle: 'profile',
       telemetry: {
         env: telemetryEnv, type: 'view', mode: 'create', subtype: 'paginate', object: { type: objectType, ver: '1.0' }
       }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '' }]
@@ -25,7 +26,8 @@ const routes: Routes = [
     data: {
       menuBar: {
         visible: false
-    },
+      },
+      pageTitle: 'create-managed-user',
       telemetry: {
         env: telemetryEnv, type: 'view'
       }
@@ -36,7 +38,7 @@ const routes: Routes = [
     data: {
       menuBar: {
         visible: false
-    },
+      },
       telemetry: {
         env: telemetryEnv, pageid: 'choose-managed-user', type: 'view',
         uri: '/profile/choose-managed-user',
@@ -48,7 +50,7 @@ const routes: Routes = [
     data: {
       menuBar: {
         visible: false
-    },
+      },
       telemetry: {
         env: telemetryEnv, pageid: 'teacher-declaration', type: 'view',
         uri: '/profile/teacher-declaration',

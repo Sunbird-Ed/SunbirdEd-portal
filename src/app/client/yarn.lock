@@ -1478,7 +1478,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet-v9@^1.0.1":
+"@project-sunbird/sb-dashlet-v9@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.4.tgz#0431e3ee3b9afbf25f8683ae81f292ce905a583c"
   integrity sha512-MH3HWAary6mGPn0yfHw1o4jXpIsl0K/BtSmFFjR4CwoyT9GNQ5GNRkwwX0Ocyc9u8WmowIVVt6fHqGIaNphfoA==
@@ -1577,10 +1577,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.1.tgz#3cca745b716403844220c65d45233f3df8a79b7e"
-  integrity sha512-CM5GeHnEJeiWpeA09gMzc7EmljcfLPlnFIrUdO6Ro/g9xLLcNZq4YuPkprBfwSfJV6hPvwXKsWdJu7+VnEeS+w==
+"@samagra-x/uci-console@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.5.tgz#8205d3186c7e4e1b243de9634e0c8009b1738276"
+  integrity sha512-K0+d+mCbh3xVO7aczsFu6i/QsQAmAVmISUcoMGwGZ8WkxZDZNj7pIO1kKi8ZVAO6QlF8UjowG9W1MtAgTjyxWg==
   dependencies:
     tslib "^1.10.0"
 
@@ -8737,10 +8737,10 @@ ng2-material-dropdown@0.11.0:
   dependencies:
     tslib "^1.9.0"
 
-ng2-semantic-ui-v9@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.4.tgz#728e54d9dab1703438026dd182d942c70ee05563"
-  integrity sha512-nVzQP+lBSEWobhZX/ouNhivSe1cw/wju0fTe2Dq96eGC/iVz9gQ4McsyompGgcIIxYqRAJW+AdX0XgMhYD/uyg==
+ng2-semantic-ui-v9@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.6.tgz#08137b2610a10d8cf862cc718a22028f9f4c4ba8"
+  integrity sha512-EM+WCfwcJoI3+xyf2+5+WPTpMOn6GmXCdDhtkbAddnHEKjSkj6Ofm0ma3+3v0rcU5CzzLDlHq4hFXAVU/dcIdw==
   dependencies:
     bowser "^1.7.2"
     date-fns "2.0.0-alpha.1"
@@ -10902,7 +10902,7 @@ sax@>=0.6.0, sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-sb-notification@~0.0.3:
+sb-notification@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.3.tgz#ef655b6e0071c43ba2610c4f46917e16c11e0b7d"
   integrity sha512-bRjbIrRg6WK0wg5RS84YP88pDnzaxByGhlSCUZfnsAVeLzydMUqOWm1u2LvZLUsUMCOdEby9SezVvMZ0w2CDPQ==
