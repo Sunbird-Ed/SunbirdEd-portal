@@ -81,7 +81,7 @@
     "datatables.net-dt": "^1.10.20",
     "dayjs": "^1.8.26",
     "dom-to-image": "^2.6.0",
-    "epubjs": "^0.3.88",
+    "epubjs": "0.3.88",
     "export-to-csv": "0.2.1",
     "fine-uploader": "^5.16.2",
     "font-awesome": "4.7.0",
