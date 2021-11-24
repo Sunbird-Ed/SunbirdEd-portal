@@ -1,6 +1,10 @@
 @import "variables";
 @import "../../../../../../../assets/styles/mixins/mixins";
 
+.content-header__title {
+  color: var(--primary-400);
+  font-size: 1.125rem;
+}
 .avatar-container {
   width: calculateRem(98px);
   height: calculateRem(98px);

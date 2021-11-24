@@ -120,7 +120,7 @@ export class FrameworkService {
 
   const formRequest = {
     formType: 'config',
-    contentType: 'segmentation',
+    contentType: 'segmentation_v2',
     formAction: 'get'
   };
   return (await this.formService.getFormConfig(formRequest).toPromise() as any);
