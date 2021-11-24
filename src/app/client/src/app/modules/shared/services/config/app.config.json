@@ -444,6 +444,26 @@
       ]
     }
   },
+  "AdditionalBanner": {
+    "slickSize": 10,
+    "slideConfig": {
+      "slidesToShow": 6,
+      "slidesToScroll": 6,
+      "respondTo": "slider",
+      "dots": true,
+      "arrows": false,
+      "infinite": false,
+      "responsive": [
+        {
+          "breakpoint": 768,
+          "settings": {
+            "slidesToShow": 3,
+            "slidesToScroll": 3
+          }
+        }
+      ]
+    }
+  },
   "CoursePageSection": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"

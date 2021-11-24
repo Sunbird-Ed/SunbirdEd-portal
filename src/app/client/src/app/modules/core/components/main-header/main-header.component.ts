@@ -1,4 +1,4 @@
-import { filter, first, takeUntil } from 'rxjs/operators';
+import { filter, first, takeUntil, tap } from 'rxjs/operators';
 import {
   UserService,
   PermissionService,
@@ -42,6 +42,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     formType: 'content',
     formAction: 'search',
     filterEnv: 'resourcebundle'
+  };
+  baseCategoryForm = {
+    formType: 'contentcategory',
+    formAction: 'menubar',
+    filterEnv: 'global'
   };
   exploreButtonVisibility: string;
   queryParam: any = {};
@@ -102,6 +107,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   showOfflineHelpCentre = false;
   contributeTabActive: boolean;
   showExploreComponent: boolean;
+  showMainMenuBar = true;
   showSideMenu = false;
   instance: string;
   userListToShow = [];
@@ -315,12 +321,34 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr', 'accessibleText': 'English' }];
     });
   }
+
+  navigateByUrl(url: string){
+    window.location.href = url;
+  }
+
   navigateToHome() {
-    if (this.userService.loggedIn) {
-      window.location.href = '/resources';
-    } else {
-      window.location.href = this.userService.slug ? this.userService.slug + '/explore' : '/explore';
-    }
+    const formServiceInputParams = {
+      formType: this.baseCategoryForm.formType,
+      formAction: this.baseCategoryForm.formAction,
+      contentType: this.baseCategoryForm.filterEnv
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      const contentTypes = _.sortBy(data, 'index');
+      const defaultTab = _.find(contentTypes, ['default', true]);
+      const goToBasePath = _.get(defaultTab, 'goToBasePath');
+      if (goToBasePath) {
+        this.navigateByUrl(goToBasePath);
+      } else {
+        if (this.userService.loggedIn) {
+          this.navigateByUrl('/resources');
+        } else {
+          this.navigateByUrl(this.userService.slug ? this.userService.slug + '/explore' : '/explore');
+        }
+      }
+    }, (err: any) => {
+
+    });
+
   }
   onEnter(key) {
     this.queryParam = {};
@@ -372,6 +400,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           const child: ActivatedRoute[] = currentRoute.children;
           child.forEach(route => {
             currentRoute = route;
+            const { menuBar: { visible = true } = {} } = currentRoute.snapshot.data;
+            this.showMainMenuBar = visible;
             if (route.snapshot.data.telemetry) {
               if (route.snapshot.data.telemetry.pageid) {
                 this.pageId = route.snapshot.data.telemetry.pageid;
@@ -761,5 +791,4 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.cacheService.remove('searchFilters');
     }
   }
-
 }

@@ -20,7 +20,8 @@ import {
   PermissionService,
   TenantService,
   CoreModule,
-  ManagedUserService, CoursesService, ElectronService
+  ManagedUserService, CoursesService, ElectronService,
+  FormService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {AnimationBuilder} from '@angular/animations';
@@ -70,6 +71,11 @@ describe('MainHeaderComponent', () => {
     updateUserFeedEntry() { return of({}); },
     deleteUserFeedEntry() { return of({}); }
   };
+  const MockCSNotificationService = {
+    notificationRead() { return observableOf({}); },
+    notificationDelete() { return observableOf({}); },
+    notificationUpdate() { return observableOf({}); }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -81,7 +87,8 @@ describe('MainHeaderComponent', () => {
         PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder, ElectronService,ObservationUtilService,
-        LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
+        LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService },
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }]
     })
       .compileComponents();
   }));
@@ -419,5 +426,43 @@ it("should call the getFormConfigs to get form category",()=>{
   component.getFormConfigs();
   expect(component.getFormConfigs).toHaveBeenCalled();
 })
-
+it("should call the navigateToHome method with and the formService",(done)=>{
+  const formService = TestBed.get(FormService);
+  const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
+  spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+  component.navigateToHome();
+  expect(navigateByUrlSpy).toHaveBeenCalledWith('http://sunbird.com');
+  expect(formService.getFormConfig).toHaveBeenCalled();
+  done();
+});
+it("should call the navigateToHome method with and the formService with no goToBasePath value",(done)=>{
+  const formService = TestBed.get(FormService);
+  const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
+  spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData[1]));
+  component.navigateToHome();
+  expect(navigateByUrlSpy).toHaveBeenCalledWith('/explore');
+  expect(formService.getFormConfig).toHaveBeenCalled();
+  done();
+});
+it("should call the setUserPreference when logged in navigateToHome with resource",(done)=>{
+  const userService = TestBed.get(UserService);
+  userService._authenticated = true;
+  spyOn(userService,"loggedIn").and.returnValue(true);
+  const formService = TestBed.get(FormService);
+  const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
+  spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData[1]));
+  component.navigateToHome();
+  expect(navigateByUrlSpy).toHaveBeenCalledWith('/resources');
+  expect(formService.getFormConfig).toHaveBeenCalled();
+  done();
+});
+it('should call the onInit method', () => {
+  component.ngOnInit();
+  const data = {
+    formType:'contentcategory',
+    formAction:'menubar',
+    filterEnv:'global'
+  };
+  expect(component.baseCategoryForm).toEqual(data);
+});
 });

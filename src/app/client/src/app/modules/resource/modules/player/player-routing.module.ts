@@ -12,12 +12,18 @@ const routes: Routes = [
             //     reuse: true,
             //     path: 'resources/play/collection'
             // },
+            menuBar: {
+                visible: false
+            },
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
             telemetry: { env: telemetryEnv, pageid: 'collection-player', type: 'play' }
         }
     }, {
         path: 'collection/:collectionId/:collectionStatus', component: CollectionPlayerComponent,
         data: {
+            menuBar: {
+                visible: false
+            },
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
             telemetry: { env: telemetryEnv, pageid: 'collection-player-unlisted', type: 'play' }
         }
@@ -28,6 +34,9 @@ const routes: Routes = [
             //     reuse: true,
             //     path: 'resources/play/content'
             // },
+            menuBar: {
+                visible: false
+            },
             telemetry: {
                 env: telemetryEnv, pageid: 'content-player', type: 'play'
             }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }]
@@ -35,6 +44,9 @@ const routes: Routes = [
     }, {
         path: 'content/:contentId/:contentStatus', component: ContentPlayerComponent,
         data: {
+            menuBar: {
+                visible: false
+            },
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
             telemetry: { env: telemetryEnv, pageid: 'content-player-unlisted', type: 'play' }
         }

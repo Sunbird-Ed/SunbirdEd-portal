@@ -1,36 +1,34 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
-
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-activity-search relative9':'sb-back-header'" >
-  <app-back-button></app-back-button>
-  <div class="content-header" [appTelemetryImpression]="telemetryImpression">
-    <div class="ui container py-16">
-      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-        <div class="flex-basis-1 mr-32 activity-search">
-          <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
-            <div>{{resourceService?.frmelmnts?.lbl?.addContentType | interpolate:'{contentType}': groupAddableBlocData?.params?.contentType}}</div>
-          </div>
-          <div class="d-flex flex-jc-space-between content-header__info mt-16">
-            <div class="sb-search-box large">
-              <div class="input-div relative">
-                <i aria-hidden="true" class="search icon"></i>
-                <label for="search-for-content-group" class="hide">{{resourceService?.frmelmnts?.lbl?.TypeToSearchForContent}}</label>
-                <input class="sb-search-input" id="search-for-content-group" type="text" [(ngModel)]="searchQuery"
-                  [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
-              </div>
-              <button class="sb-btn sb-btn-normal"
-                tabindex="0" (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [appTelemetryImpression]="telemetryImpression">
+  <div class="ui container d-flex flex-ai-center">
+    <app-back-button></app-back-button>
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap ml-16 w-100">
+      <div class="d-flex flex-dc w-100">
+        <h4 class="mb-4 font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">{{resourceService?.frmelmnts?.lbl?.addContentType | interpolate:'{contentType}': groupAddableBlocData?.params?.contentType}}</h4>
+        <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons flex-jc-space-between">
+          <div class="sb-search-box large">
+            <div class="input-div relative">
+              <i aria-hidden="true" class="search icon"></i>
+              <label for="search-for-content-group" class="hide">{{resourceService?.frmelmnts?.lbl?.TypeToSearchForContent}}</label>
+              <input class="sb-search-input" id="search-for-content-group" type="text" [(ngModel)]="searchQuery"
+                [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
             </div>
-            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" tabindex="0" (click)="toggleFilter()">
-              <img class="mr-4" alt="{{resourceService?.frmelmnts?.lbl?.filterby}} icon" src="./assets/images/outline-tune.svg"
-                width="16">{{resourceService?.frmelmnts?.lbl?.filterby}}
-            </button>
+            <button class="sb-btn sb-btn-normal"
+              tabindex="0" (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
           </div>
+          <button class="sb-btn sb-btn-outline-primary sb-btn-normal" tabindex="0" (click)="toggleFilter()">
+            <img class="mr-4" alt="{{resourceService?.frmelmnts?.lbl?.filterby}} icon" src="./assets/images/outline-tune.svg"
+              width="16">{{resourceService?.frmelmnts?.lbl?.filterby}}
+          </button>
         </div>
       </div>
+ 
     </div>
   </div>
+</div>
 
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-activity-search relative9':'sb-back-header'" >
   <div [ngClass]="layoutConfiguration ? 'd-flex':'ui container'">
     <div *ngIf="showFilters" class="pr-16 flex-b">
         <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">

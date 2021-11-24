@@ -15,6 +15,7 @@ import { enrolledBatch } from './../../batch/batch-details/batch-details.compone
 import { enrolledBatchWithCertificate } from './../../batch/batch-details/batch-details.component.data';
 import { CoursePlayerComponent } from './course-player.component';
 import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged, telemetryInteractMockData, enrolledCourseMockData } from './course-player.component.mock.data';
+import { of as observableOf } from 'rxjs';
 
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
@@ -130,6 +131,11 @@ describe('CoursePlayerComponent', () => {
     getContentState() { return of({}); }
   };
 
+  const MockCSNotificationService = {
+    notificationRead() { return observableOf({}); },
+    notificationDelete() { return observableOf({}); },
+    notificationUpdate() { return observableOf({}); }
+  };
   class ActivatedRouteStub {
     paramsMock = new BehaviorSubject<any>({ courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160' });
     snapshot = {
@@ -166,6 +172,7 @@ describe('CoursePlayerComponent', () => {
         NotificationServiceImpl,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }
       ],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
