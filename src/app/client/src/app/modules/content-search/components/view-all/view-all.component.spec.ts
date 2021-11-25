@@ -288,12 +288,11 @@ describe('ViewAllComponent', () => {
 
   it('should handle close button', () => {
     component.queryParams = {
-      viewMore: true
+      selectedTab: 'all'
     };
-    const location = TestBed.get(Location);
-    spyOn(location, 'back');
+    spyOn(window.history, 'go');
     component.handleCloseButton();
-    expect(location.back).toHaveBeenCalled();
+    expect(window.history.go).toHaveBeenCalled();
   });
   describe('get the current page data', () => {
     it('from history state', done => {
