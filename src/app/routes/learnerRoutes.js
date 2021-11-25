@@ -84,6 +84,7 @@ module.exports = function (app) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
         if (urlParam.indexOf('anonymous') > -1) urlParam = urlParam.replace('anonymous/', '');
+        console.log("*************************", req);
         if (req.url.indexOf('/otp/') > 0) {
           proxyUtils.addReqLog(req);
         }
