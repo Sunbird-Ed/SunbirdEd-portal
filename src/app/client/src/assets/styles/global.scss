@@ -1483,6 +1483,15 @@ html[data-theme='Darkmode'] {
   }
 }
 
+html[layout='joy'] {
+  .sb-library-cards, .layout-library {
+    .header .title {
+      font-weight: 700 !important;
+      font-size: calculateRem(16px) !important;
+    }
+  }
+}
+
 // .cdk-overlay-container .cdk-global-overlay-wrapper {
 //   overflow: auto;
 //   .cdk-overlay-pane {
