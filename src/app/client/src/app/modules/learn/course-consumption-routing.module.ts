@@ -14,6 +14,9 @@ const routes: Routes = [
     data: {
       telemetry: {
         env: telemetryEnv, pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
+      },
+      menuBar: {
+        visible: false
       }
     }
   }, {
@@ -39,7 +42,10 @@ const routes: Routes = [
         path: ':courseId/dashboard', loadChildren: () => import('./../dashboard/dashboard.module').then(m => m.DashboardModule), canActivate: [AuthGuard],
         data: {
           roles: 'createBatchRole',
-          telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
+          telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } },
+          menuBar: {
+            visible: false
+          }
         }
       },
       {
@@ -69,6 +75,9 @@ const routes: Routes = [
         data: {
           telemetry: {
             env: telemetryEnv, pageid: 'course-player-unlisted', type: 'view', object: { ver: '1.0', type: 'batch' }
+          },
+          menuBar: {
+            visible: false
           },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         }

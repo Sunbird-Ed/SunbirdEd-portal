@@ -1482,15 +1482,24 @@ html[data-theme='Darkmode'] {
   }
 }
 
+.dot-divider {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 100%;
+  background-color: var(--gray-800);
+  display: inline-block;
+  margin: 0px 0.5rem;
+}
+
 // joy layout
 .sb-back-actionbar {
-  min-height: 5.5rem;
+  min-height: 5rem;
   background: none;
   padding: 0px;
   display: flex;
   background: var(--sbt-header-bg) !important;
   border-radius: 1.5rem 1.5rem 0 0px;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 0.5rem 1rem;
   position: relative;
   margin: 0rem 5%;
 }

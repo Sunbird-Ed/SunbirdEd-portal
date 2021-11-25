@@ -44,8 +44,10 @@
     }
     
     &__info {
-        color: var(--gray-800);
-        font-size: calculateRem(14px);
+      color: var(--gray-800);
+      font-size: 0.875rem;
+      max-height: 48px;
+      overflow-y: auto;
     }
     
     .dot-divider {
