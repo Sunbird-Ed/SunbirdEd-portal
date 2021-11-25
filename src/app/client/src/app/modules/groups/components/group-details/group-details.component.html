@@ -4,7 +4,7 @@
 <app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="toggleFtuModal(false)">
 </app-ftu-popup>
 
-<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
+<div *ngIf="groupData && !isLoader" [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
 <app-group-header class="w-100" [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup"></app-group-header>
 </div>
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details' : 'sb-back-header'">
