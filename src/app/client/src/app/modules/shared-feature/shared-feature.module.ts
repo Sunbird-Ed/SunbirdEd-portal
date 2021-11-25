@@ -52,7 +52,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     CommonConsumptionModule,
     CommonFormElementsModule,
     LocationModule,
-    DashletModule
+    DashletModule.forRoot()
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
   { provide: 'CS_NOTIFICATION_SERVICE', useFactory: csNotificationServiceFactory, deps: [CsLibInitializerService] }],

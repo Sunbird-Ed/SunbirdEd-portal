@@ -141,6 +141,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     };
   }
 
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
+
   getContent() {
     if (this.isQuestionSet) {
       this.getQuestionSetHierarchy();

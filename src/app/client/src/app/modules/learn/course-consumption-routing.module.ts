@@ -26,6 +26,9 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'course-details', type: 'view', object: { ver: '1.0', type: 'batch' }
           },
+          menuBar: {
+            visible: false
+        },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
         children: [{
@@ -46,6 +49,9 @@ const routes: Routes = [
           //   reuse: true,
           //   path: 'learn/course/play'
           // },
+          menuBar: {
+            visible: false
+        },
           telemetry: { env: telemetryEnv, pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },

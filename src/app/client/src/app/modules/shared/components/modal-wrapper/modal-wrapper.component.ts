@@ -1,6 +1,8 @@
 import { Component, ContentChild, OnInit, Directive, TemplateRef, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { UUID } from 'angular2-uuid';
+import { Overlay } from '@angular/cdk/overlay';
+
 
 const modalSizeToMinWidthMapping = {
   small: '30rem',
@@ -42,20 +44,24 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
     return { disableClose: true }
   }
 
-  constructor(private matDialog: MatDialog) { }
+  constructor(private matDialog: MatDialog, private overlay: Overlay) { }
 
   private getDialogConfig(): MatDialogConfig {
-    const { size: modalSize = 'normal', id = UUID.UUID(), data = {}, ...config } = this.config || {};
+    const { size: modalSize = 'normal', id = UUID.UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
     return {
       id,
       ...this.getDefaultConfig(),
       minWidth: modalSizeToMinWidthMapping[modalSize],
       ...config,
-      data: { id, ...data }
+      maxWidth: modalSizeToMinWidthMapping.normal,
+      data: { id, ...data },
+      // scrollStrategy
     }
   }
 
   private open(templateRef: TemplateRef<any>, options: MatDialogConfig): MatDialogRef<any> {
+    this.setElementStyle(document.body)('overflow', 'hidden');
+    this.setElementStyle(document.documentElement)('overflow', 'hidden');
     return this.matDialog.open(templateRef, options);
   }
 
@@ -65,6 +71,8 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   private subscribeToDialogDismiss() {
     this.modal && this.modal.afterClosed().subscribe(event => {
+      this.setElementStyle(document.body)('overflow', 'auto');
+      this.setElementStyle(document.documentElement)('overflow', 'inherit');
       this.dismiss.emit(event);
     })
   }
@@ -75,8 +83,14 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
     this.subscribeToDialogDismiss();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.deny();
+  }
+
+  private setElementStyle(element: HTMLElement) {
+    return (styleProperty: string, styleValue: string) => {
+      element.style[styleProperty] = styleValue
+    }
   }
 }
 

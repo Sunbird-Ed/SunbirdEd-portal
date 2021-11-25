@@ -1,11 +1,11 @@
 <div *ngIf="!loader">
   <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
-    <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
+    <div class="sb-course-details sb-g sb-g--gap24 text-left course-consumption-container">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
         <!-- Course details -->
         <div class="training-info" *ngIf="courseHierarchy">
           <h4 class="font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDetails}}</h4>
-          <div class="training-relevant my-16">
+          <div class="training-relevant mb-16">
             <h6 class="mt-0 mb-8 fsmall training-relevant__heading">
               {{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
               <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_boards">
@@ -134,6 +134,10 @@
   </div>
 </sui-modal>
 
-<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
-  (close)="closeSharePopup('close-share-link-popup')">
-</app-share-link>
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false}"
+  (dismiss)="closeSharePopup('close-share-link-popup')">
+  <ng-template sbModalContent>
+    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
+    </app-share-link>
+  </ng-template>
+</app-modal-wrapper>

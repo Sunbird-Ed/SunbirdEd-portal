@@ -11,7 +11,8 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-popup',
-  templateUrl: './profile-framework-popup.component.html'
+  templateUrl: './profile-framework-popup.component.html',
+  styleUrls: ['./profile-framework-popup.component.scss']
 })
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() showCloseIcon: boolean;

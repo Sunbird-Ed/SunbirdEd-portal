@@ -574,7 +574,7 @@ app-workspace {
   }
 
   .sb-card-grid {
-    margin-top: 24px;
+    // margin-top: 24px;
   }
 
   .content-header {
@@ -1361,6 +1361,9 @@ input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
 .contentViewerIframeShadow.player-fullscreen.content-full-video epub-viewer {
   height: calc(100% - 7rem);
 }
+.contentViewerIframeShadow.player-fullscreen.content-full-video quml-main-player .main-container {
+  height: calc(100vh - 4rem);
+}
 .notVisible {
   top: 0rem !important;
   position: relative !important;
@@ -1451,11 +1454,11 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 .required-asterisk {
   color: #A80011;
 }
-.mat-dialog-container{
-  box-shadow: none;
-  background: transparent;
-  overflow:hidden !important;
-}
+// .mat-dialog-container{
+//   box-shadow: none;
+//   background: transparent;
+//   overflow:hidden !important;
+// }
 
 // Accessible changes
 html[data-theme='Default'], [layout='joy']{
@@ -1474,10 +1477,104 @@ html[data-theme='Darkmode'] {
   }
 }
 
-.cdk-overlay-container .cdk-global-overlay-wrapper {
-  overflow: auto;
+@include respond-below(md) {
   .cdk-overlay-pane {
-    width: 100%;
-    max-width: 100% !important;
+    min-width: auto !important;
+  }
+}
+
+// joy layout
+.sb-back-actionbar {
+  min-height: 5.5rem;
+  background: none;
+  padding: 0px;
+  display: flex;
+  background: var(--sbt-header-bg) !important;
+  border-radius: 1.5rem 1.5rem 0 0px;
+  padding: 1rem 1rem 1rem 1rem;
+  position: relative;
+  margin: 0rem 5%;
+}
+.cc-player__btn-back {
+  min-height: 5.5rem;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+}
+.sbt-inside-page-container #player-area-height .aspectratio {
+  box-shadow: var(--sbt-box-shadow-6px) !important;
+  border-radius: var(--sbt-bradius-24);
+  overflow: hidden;
+}
+.sbt-inside-page-container .sb-slider-pills-container {
+  padding: 0rem 0rem !important;
+  border-radius: 1.5rem;
+  background: var(--cc-grade-pill-container-bg) !important;
+}
+
+html[layout='joy'] {
+  .content-video__player__details {
+    background: none;
+  }
+  .sb-btn-link-primary {
+    &:hover {
+      color: var(--primary-800);
+      background-color: var(--primary-100);
+    }
+  }
+  .cc-player__content-header,
+  .help-page__header {
+    background: none; //var(--sbt-compt-bg)
+  }
+  .content-video__player,
+.sbt-shadow-radius {
+  // box-shadow: var(--sbt-box-shadow-6px) !important;
+  border-radius: var(--sbt-bradius-24);
+}
+  .sbt-shadow-radius {
+    box-shadow: var(--sbt-box-shadow-6px) !important;
+      border-radius: var(--sbt-bradius-24);
+    }
+  .content-video__player__details {
+    background: none !important;
+  }
+  .cc-player__list {
+    padding: 0 1rem !important;
+    background: none !important;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html[layout=joy] {
+    .sbt-header .sbt-container {
+      padding: 0 1rem;
+    }
+    & .sbt-inside-page-container, .sbt-center-container {
+      margin-top: -1.5rem !important;
+      z-index: 2;
+      position: relative;
+      padding: 1rem !important;
+      /* background: none !important; */
+      margin-left: 0 !important;
+    }
+    & .content-video {
+      background: var(--sbt-body-bg2);
+      padding: 0rem;
+      border-radius: 16px;
+    }
+    & .sb-back-actionbar .sb-btn-link-primary {
+      align-self: baseline;
+    }
+    & .sb-back-actionbar {
+      padding-bottom: 2.5rem;
+      margin: 0 0;
+    }
+    & .content-video__player__details{
+      padding: 0.5rem;
+    }
+    & .content-metadeta {
+      background: var(--sbt-body-bg2) !important;
+    }
   }
 }
