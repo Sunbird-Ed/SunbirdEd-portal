@@ -1,6 +1,6 @@
 import { DashboardModule } from '@sunbird/dashboard';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { CoreModule, TncService} from '@sunbird/core';
+import { CoreModule, TncService, UserService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
@@ -30,7 +30,7 @@ describe('ListAllReportsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), DashboardModule],
-      providers: [ReportService, TncService, { provide: Router, useValue: routerStub }, {
+      providers: [ReportService, UserService, TncService, { provide: Router, useValue: routerStub }, {
         provide: ActivatedRoute, useValue: {
           snapshot: {
             data: {
@@ -307,5 +307,18 @@ describe('ListAllReportsComponent', () => {
     expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
     expect(component.showTncPopup).toBeTruthy();
   });
-
+  it('should get tnc details for report viewer and call the showReportViewerTncForFirstUser', () => {
+    component.userProfile = {};
+    component.showReportViewerTncForFirstUser();
+    expect(component.showTncPopup).toBeTruthy();
+  });
+  it('should get tnc details for report viewer and call the showReportViewerTncForFirstUser with userProfile project', () => {
+    component.userProfile = {
+      allTncAccepted: {
+        reportViewerTnc: { reportViewerTnc: 'accepted' }
+      }
+    };
+    component.showReportViewerTncForFirstUser();
+    expect(component.showTncPopup).toBeFalsy();
+  });
 });

@@ -369,7 +369,8 @@ export class ListAllReportsComponent implements OnInit {
         }
       });
   }
-  getReportViewerTncPolicy() {
+
+  public getReportViewerTncPolicy() {
     this.tncService.getReportViewerTnc().subscribe((data) => {
       const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
       if (_.get(reportViewerTncData, 'latestVersion')) {
@@ -378,13 +379,13 @@ export class ListAllReportsComponent implements OnInit {
         this.showReportViewerTncForFirstUser();
       }
   });
-}
+  }
 
-  showReportViewerTncForFirstUser() {
-     const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
-     if (!reportViewerTncObj) {
+  public showReportViewerTncForFirstUser() {
+    const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
+    if (!reportViewerTncObj) {
      this.showTncPopup = true;
-     }
+    }
   }
 
 }
