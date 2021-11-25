@@ -338,6 +338,15 @@ const API_LIST = {
         ]
       }
     },
+    '/learner/course/v2/user/enrollment/list/:userId': {
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.ALL],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__urlparams__userId', params: [], key: 'userId' }
+        ]
+      }
+    },
     '/learner/course/v1/enrol': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC],
