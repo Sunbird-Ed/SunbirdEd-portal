@@ -100,7 +100,6 @@ describe('SolutionListingComponent', () => {
 
   it('should call ngonInit()', () => {
     spyOn(component, 'ngOnInit').and.callThrough();
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.ngOnInit();
     expect(component.ngOnInit).toHaveBeenCalled();
   });
@@ -110,7 +109,6 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(observableThrowError('error'));
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();
@@ -124,7 +122,6 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(of(ObservationDataFail));
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();
@@ -142,7 +139,6 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.payload = profileData;
     component.getProfileData();
     component.getDataByEntity(EntityClick);
@@ -159,7 +155,6 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(observableThrowError('error'));
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.payload = profileData;
     component.getDataByEntity(EntityClick);
     expect(component.getDataByEntity).toHaveBeenCalled();
@@ -171,7 +166,6 @@ describe('SolutionListingComponent', () => {
   it('should call the goToReports()', () => {
     spyOn(component, 'goToReports').and.callThrough();
     spyOn(mockRouter, 'navigate').and.callThrough();
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.goToReports(ObservationData.result.data[0]);
     expect(component.goToReports).toHaveBeenCalled();
     expect(mockRouter.navigate).toHaveBeenCalled();
@@ -183,7 +177,6 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.getSolutions();
     component.payload = profileData;
     component.getProfileData();
@@ -196,12 +189,6 @@ describe('SolutionListingComponent', () => {
     spyOn(component, 'modalClose').and.callThrough();
   });
 
-  it('should get tnc details', () => {
-    spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
-    component.showTncPopup = true;
-    component.getReportViewerTncPolicy();
-    expect(component.showTncPopup).toBeTruthy();
-  });
 
   it('should call ObservationUtilService - getProfileData', () => {
     spyOn(mockPaginationService, 'getPager').and.callThrough();
@@ -211,7 +198,6 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     });
     spyOn(mockObservationService, 'post').and.returnValue(of(ObservationData));
-    spyOn(component, 'getReportViewerTncPolicy').and.callThrough();
     component.getSolutions();
     component.payload = profileData;
     spyOn(component, 'getProfileData').and.callThrough();

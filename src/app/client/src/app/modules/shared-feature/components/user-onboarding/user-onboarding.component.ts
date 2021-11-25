@@ -24,7 +24,6 @@ export class UserOnboardingComponent implements OnInit {
   @Input() deviceProfile: IDeviceProfile;
   @Input() isCustodianOrgUser: boolean;
   @Output() close = new EventEmitter<void>();
-  @ViewChild('onboardingModal') onboardingModal;
 
   get Stage() { return Stage; }
   stage = Stage.USER_SELECTION;
@@ -67,7 +66,6 @@ export class UserOnboardingComponent implements OnInit {
 
   locationSubmit() {
     this.popupControlService.changePopupStatus(true);
-    this.onboardingModal && this.onboardingModal.deny();
     this.close.emit();
   }
 
