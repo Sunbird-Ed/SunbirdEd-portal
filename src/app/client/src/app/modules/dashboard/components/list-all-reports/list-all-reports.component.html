@@ -28,7 +28,7 @@
               </mat-tab>
             </mat-tab-group>
           </div>
-          <div *ngIf="!noResult">
+          <div>
             <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
             </app-tnc-popup>
           </div>
