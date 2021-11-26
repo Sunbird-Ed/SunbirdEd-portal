@@ -62,7 +62,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     public playerService: PlayerService, public publicPlayerService: PublicPlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
-    private configService: ConfigService, public navigationhelperService: NavigationHelperService,
+    private configService: ConfigService,
     public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.playerOption = {
       showContentRating: true
@@ -142,7 +142,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   goBack() {
-    this.navigationhelperService.goBack();
+    this.navigationHelperService.goBack();
   }
 
   getContent() {
@@ -247,7 +247,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   ngAfterViewInit() {
-    this.pageLoadDuration = this.navigationhelperService.getPageLoadTime();
+    this.pageLoadDuration = this.navigationHelperService.getPageLoadTime();
   }
 
   setTelemetryShareData(param) {
