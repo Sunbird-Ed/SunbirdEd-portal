@@ -63,6 +63,9 @@ export class ListAllReportsComponent implements OnInit {
     );
   }
 
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
 
   private filterReportsBasedOnRoles = (reports: any[]) => {
     if (this.reportService.isUserSuperAdmin()) {

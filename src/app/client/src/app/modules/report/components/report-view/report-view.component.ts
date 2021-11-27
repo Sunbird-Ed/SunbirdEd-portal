@@ -8,7 +8,8 @@ import {
   INoResultMessage,
   ResourceService,
   ToasterService,
-  ILoaderMessage
+  ILoaderMessage,
+  NavigationHelperService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ChangeDetectorRef } from '@angular/core';
@@ -60,7 +61,8 @@ export class ReportViewComponent implements OnInit {
     private routerParam: ActivatedRoute,
     private cdref: ChangeDetectorRef,
     public toasterService: ToasterService,
-    public locations: LocationStrategy
+    public locations: LocationStrategy,
+    private navigationhelperService: NavigationHelperService,
   ) {
     this.config = config;
     this.locations.onPopState(() => {
@@ -311,6 +313,10 @@ export class ReportViewComponent implements OnInit {
   selectedTabChange(event) {
     const { tabHeader } = _.get(event, 'tab.textLabel');
     tabHeader && this.segmentChanged(tabHeader);
+  }
+
+  goBack() {
+    this.navigationhelperService.goBack();
   }
 
 }

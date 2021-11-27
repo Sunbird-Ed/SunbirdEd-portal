@@ -1,5 +1,5 @@
 import { ConfigService, ResourceService, LayoutService, PaginationService, IPagination,
-  ILoaderMessage, INoResultMessage } from '@sunbird/shared';
+  ILoaderMessage, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,6 +39,7 @@ export class SolutionListingComponent implements OnInit {
   public userProfile;
   constructor(
     public resourceService: ResourceService,
+    public navigationHelperService: NavigationHelperService,
     private layoutService: LayoutService,
     private observationService: ObservationService,
     config: ConfigService,
@@ -229,6 +230,10 @@ export class SolutionListingComponent implements OnInit {
       queryParams: state,
     });
   }
+  }
+
+  goBack() {
+    this.navigationHelperService.goBack();
   }
 
   initLayout() {
