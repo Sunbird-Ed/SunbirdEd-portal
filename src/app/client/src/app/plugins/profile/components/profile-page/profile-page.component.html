@@ -12,12 +12,7 @@
     </button>
       <div class="content-header__content w-100 ml-16">
         <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-          <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">My Profile</div>
-          <div class="content-header__info mt-4">
-            <span class="fnormal"></span>
-            <span class="dot-divider"></span>
-            <span class="fnormal"></span>
-          </div>
+          <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">{{resourceService.frmelmnts?.lnk?.profile}}</div>
         </div>
       </div>
     </div>
@@ -127,7 +122,7 @@
         </div>
         <div *ngIf="subPersona" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
           <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.subRole}} :</div>
-          <div class="fmedium ml-5 font-w-bold text-center">{{subPersona}}</div>
+          <div class="fmedium ml-5 font-w-bold text-center">{{subPersona.join(', ')}}</div>
         </div>
         <div *ngIf="userLocation?.district && userLocation?.district?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
           <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
@@ -316,6 +311,28 @@
 
   <div class="pt-30">
     <div class="sb-profile-page-container" [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
+
+      <!--contributions view starts-->
+      <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
+        {{resourceService.frmelmnts.scttl.contributions}}
+        ({{totalContributions}})&#x200E;</div>
+      <div class="ui divider my-5 mobile only"></div>
+      <!--contributions computer view starts-->
+      <div class="ui segments" *ngIf="contributions && contributions.length > 0">
+        <div class="ui segment computer only">
+          <div class="fs-1-7 pl-10 font-w-bold">{{resourceService.frmelmnts.scttl.contributions}}
+            ({{totalContributions}})&#x200E;</div>
+        </div>
+        <div class="ui segment">
+          <div class="regular slider pt-10">
+            <app-page-section [section]="{ contents: contributions}" (visits)="prepareVisits($event)"
+              (playEvent)="openContent($event)"></app-page-section>
+          </div>
+        </div>
+      </div>
+      <!--contributions computer view ends-->
+      <!--contributions view ends-->
+
       <!-- tarainings attended computer view strats-->
       <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
           <div class="list-heading">
@@ -415,11 +432,10 @@
 </div>
 </div>
 </div>
-<app-modal-wrapper  #profileModal *ngIf="showEdit" [config]="{disableClose: false}">
+<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false}" (dismiss)="showEdit = !showEdit">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
-      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)"
-      (close)="showEdit = !showEdit">
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)">
     </app-popup>
   </ng-template>
 </app-modal-wrapper>

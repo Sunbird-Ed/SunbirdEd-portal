@@ -1,10 +1,9 @@
-<sui-modal [mustScroll]="true" *ngIf="stage === Stage.USER_SELECTION" [isClosable]="false" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" #onboardingModal>
-
-  <app-onboarding-user-selection [tenantInfo]="tenantInfo" (userSelect)="userTypeSubmit()">
-  </app-onboarding-user-selection>
-
-</sui-modal>
+<app-modal-wrapper *ngIf="stage === Stage.USER_SELECTION" [config]="{disableClose: true}">
+  <ng-template sbModalContent>
+    <app-onboarding-user-selection [tenantInfo]="tenantInfo" (userSelect)="userTypeSubmit()">
+    </app-onboarding-user-selection>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION" [deviceProfile]="deviceProfile" [isClosable]="false"
   (close)="locationSubmit()">
@@ -16,6 +15,6 @@
     <p class="subtitle" role="heading" aria-level="1">{{resourceService?.messages?.imsg?.m0075}}</p>
   </div>
   <div slot="popup-footer">
-    <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
+    <p>{{resourceService?.messages?.imsg?.m0074}}</p>
   </div>
 </app-location-selection>

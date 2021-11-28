@@ -1466,10 +1466,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.2.tgz#f0abe02f70a70d4bb97a5a1469eccab4af877903"
-  integrity sha512-Nc48SOYV8CzKhxfqGvPORjZrafKYv2oPX9ON8Sd7LakuHV5adAMe1kBZTbER2sP/qfYgDyhDBG+6zaquXKom0w==
+"@project-sunbird/common-consumption-v9@4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.3.tgz#b005e94f77ff1b24d186c3ecc0eb960228242bd5"
+  integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
 "@project-sunbird/discussions-ui-v8@2.5.0-beta.2":
   version "2.5.0-beta.2"
@@ -1478,7 +1478,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet-v9@^1.0.1":
+"@project-sunbird/sb-dashlet-v9@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.4.tgz#0431e3ee3b9afbf25f8683ae81f292ce905a583c"
   integrity sha512-MH3HWAary6mGPn0yfHw1o4jXpIsl0K/BtSmFFjR4CwoyT9GNQ5GNRkwwX0Ocyc9u8WmowIVVt6fHqGIaNphfoA==
@@ -1507,10 +1507,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.28.tgz#f6bc68caf335c32b04c2c555029ca8d38d85dbf1"
   integrity sha512-QSTRbop3Zqxuho3zJGLg6fwyT/NG19zXSRJbyJdHP2yQE1FlutXkdQW8WZy5VFPVLc74+qRq0VIbSoCWUW/Mzg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.5.5":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.5.tgz#9f6012f6247a8b8f1db73a6ec7916bf75b6d7e9c"
-  integrity sha512-X3khJfxLMSIrsBOeRPiK5jZn5U6g4fWhvGH++SG+ulAaaMtYeGtnqcHtNcKbkgD6Reid+zqysmAYStmZjgcvlA==
+"@project-sunbird/sunbird-collection-editor-v9@4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.10.tgz#cc42093640c2641b0a6409313278c2257dba8227"
+  integrity sha512-/sUpwh4ijI8oAGtQoCCYG0ayN+YDsESyCt+Nh9QUQLUn5eAtuOln9X2pECE3i9K7ADjNX5nohupekjztKhsrTw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1540,10 +1540,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.0.tgz#0e4f5cbbb6732e257da0da05768f8643fa675e10"
-  integrity sha512-cIFjaI3C6HqXVlv58aQjzNn59oBcSycZuNtz/dpwpJUsHJJP9HQftCFIiOWRg6356Wsf8g2mXy+aXmMaIJEMMQ==
+"@project-sunbird/sunbird-quml-player-v9@4.5.1":
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.1.tgz#cc0e5d457745f8c93445fa5bbdcadcb01f706d1d"
+  integrity sha512-+fJA5EkZAx+b0lX+1WIjxA6/Lr+JowWIAcJvsqDDjv2F0w3AGWLEIOlqGMfwFI3FYS76x7s2s2fnkITO3Bow3Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.4.4"
 
@@ -1577,10 +1577,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.1.tgz#3cca745b716403844220c65d45233f3df8a79b7e"
-  integrity sha512-CM5GeHnEJeiWpeA09gMzc7EmljcfLPlnFIrUdO6Ro/g9xLLcNZq4YuPkprBfwSfJV6hPvwXKsWdJu7+VnEeS+w==
+"@samagra-x/uci-console@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.5.tgz#8205d3186c7e4e1b243de9634e0c8009b1738276"
+  integrity sha512-K0+d+mCbh3xVO7aczsFu6i/QsQAmAVmISUcoMGwGZ8WkxZDZNj7pIO1kKi8ZVAO6QlF8UjowG9W1MtAgTjyxWg==
   dependencies:
     tslib "^1.10.0"
 
@@ -2036,7 +2036,7 @@
     raw-loader "^4.0.2"
     uuid "^8.3.2"
 
-"@xmldom/xmldom@^0.7.2", "@xmldom/xmldom@^0.7.5":
+"@xmldom/xmldom@^0.7.2":
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
   integrity sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==
@@ -3902,7 +3902,7 @@ core-js@^2.2.0, core-js@^2.4.1:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
-core-js@^3.18.3:
+core-js@^3.6.5:
   version "3.19.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.1.tgz#f6f173cae23e73a7d88fa23b6e9da329276c6641"
   integrity sha512-Tnc7E9iKd/b/ff7GFbhwPVzJzPztGrChB8X8GLqoYGdEOG8IpLnK1xPyo3ZoO3HsK6TodJS58VGPOxA+hLHQMg==
@@ -4737,20 +4737,20 @@ ent@~2.2.0:
   resolved "https://registry.yarnpkg.com/ent/-/ent-2.2.0.tgz#e964219325a21d05f44466a2f686ed6ce5f5dd1d"
   integrity sha1-6WQhkyWiHQX0RGai9obtbOX13R0=
 
-epubjs@^0.3.88:
-  version "0.3.90"
-  resolved "https://registry.yarnpkg.com/epubjs/-/epubjs-0.3.90.tgz#d340dcf0c8235a5c93e504983057f88eec644e95"
-  integrity sha512-8S9Zi9aE3QHvkJbq1mJTfaE1++UysKxgeb2GEv3oR9PEsK+Sx3tzxs3QaRselAVPoTlP5gfLyEgp9BQIyAu8lA==
+epubjs@0.3.88:
+  version "0.3.88"
+  resolved "https://registry.yarnpkg.com/epubjs/-/epubjs-0.3.88.tgz#bc365e7e21893cf2d92717ce10927c1071275347"
+  integrity sha512-VRumULpUELYmYwzypyfbDwoSIqDp2LXOXCtY3o55o3YDW5Zm32UjtZuX/xaWFGqyZORNNMWWQ8VlMaY1djnDYg==
   dependencies:
     "@types/localforage" "0.0.34"
-    "@xmldom/xmldom" "^0.7.5"
-    core-js "^3.18.3"
+    core-js "^3.6.5"
     event-emitter "^0.3.5"
-    jszip "^3.7.1"
-    localforage "^1.10.0"
-    lodash "^4.17.21"
+    jszip "^3.4.0"
+    localforage "^1.7.3"
+    lodash "^4.17.15"
     marks-pane "^1.0.9"
     path-webpack "0.0.3"
+    xmldom "^0.3.0"
 
 err-code@^1.0.0:
   version "1.1.2"
@@ -7507,7 +7507,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jszip@^3.1.3, jszip@^3.7.1:
+jszip@^3.1.3, jszip@^3.4.0:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.7.1.tgz#bd63401221c15625a1228c556ca8a68da6fda3d9"
   integrity sha512-ghL0tz1XG9ZEmRMcEN2vt7xabrDdqHHeykgARpmZ0BiIctWxM47Vt63ZO2dnp4QYt/xJVLLy5Zv1l/xRdh2byg==
@@ -7879,7 +7879,7 @@ loader-utils@^2.0.0:
     emojis-list "^3.0.0"
     json5 "^2.1.2"
 
-localforage@*, localforage@^1.10.0:
+localforage@*, localforage@^1.7.3:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.10.0.tgz#5c465dc5f62b2807c3a84c0c6a1b1b3212781dd4"
   integrity sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==
@@ -8022,7 +8022,7 @@ lodash@^3.10.1:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.5.0:
+lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.5.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -8737,10 +8737,10 @@ ng2-material-dropdown@0.11.0:
   dependencies:
     tslib "^1.9.0"
 
-ng2-semantic-ui-v9@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.4.tgz#728e54d9dab1703438026dd182d942c70ee05563"
-  integrity sha512-nVzQP+lBSEWobhZX/ouNhivSe1cw/wju0fTe2Dq96eGC/iVz9gQ4McsyompGgcIIxYqRAJW+AdX0XgMhYD/uyg==
+ng2-semantic-ui-v9@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/ng2-semantic-ui-v9/-/ng2-semantic-ui-v9-0.0.6.tgz#08137b2610a10d8cf862cc718a22028f9f4c4ba8"
+  integrity sha512-EM+WCfwcJoI3+xyf2+5+WPTpMOn6GmXCdDhtkbAddnHEKjSkj6Ofm0ma3+3v0rcU5CzzLDlHq4hFXAVU/dcIdw==
   dependencies:
     bowser "^1.7.2"
     date-fns "2.0.0-alpha.1"
@@ -10902,7 +10902,7 @@ sax@>=0.6.0, sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-sb-notification@~0.0.3:
+sb-notification@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.3.tgz#ef655b6e0071c43ba2610c4f46917e16c11e0b7d"
   integrity sha512-bRjbIrRg6WK0wg5RS84YP88pDnzaxByGhlSCUZfnsAVeLzydMUqOWm1u2LvZLUsUMCOdEby9SezVvMZ0w2CDPQ==
@@ -13164,6 +13164,11 @@ xmldom@^0.1.22:
   version "0.1.31"
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
   integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==
+
+xmldom@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.3.0.tgz#e625457f4300b5df9c2e1ecb776147ece47f3e5a"
+  integrity sha512-z9s6k3wxE+aZHgXYxSTpGDo7BYOUfJsIRyoZiX6HTjwpwfS2wpQBQKa2fD+ShLyPkqDYo5ud7KitmLZ2Cd6r0g==
 
 xmlhttprequest-ssl@~1.5.4:
   version "1.5.5"

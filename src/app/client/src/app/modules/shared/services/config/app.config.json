@@ -109,7 +109,9 @@
         "mimeType",
         "framework",
         "contentType",
-        "trackable"
+        "trackable",
+        "batchId",
+        "courseId"
       ]
     },
     "dynamicFields": {
@@ -1472,5 +1474,8 @@
   },
   "assetsPath": {
     "book": "./assets/images/book.png"
+  },
+  "OTPTemplate": {
+      "updateContactTemplate": "otpContactUpdateTemplate"
   }
 }
