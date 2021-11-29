@@ -91,6 +91,7 @@ getBatch(identifier){
     });
 }
 navToDashbord(identifier){
+  
   this.router.navigate(['/explore-events/report'],
   { queryParams:  {  identifier: identifier,
         batchid: this.batchId } });
@@ -99,6 +100,17 @@ navToDashbord(identifier){
 navigateToEventPage() {
   this.router.navigate(['/explore-events/published']);
 }
+navToEventDetail($event)
+  { console.log("In src/event detail");
+  this.router.navigate(['/explore-events/detail'], 
+    {
+      queryParams: {
+        identifier: $event.identifier
+      }
+    });
 
+    setTimeout(function(){window.location.reload();
+    }, 2000);
+  }
 }
 
