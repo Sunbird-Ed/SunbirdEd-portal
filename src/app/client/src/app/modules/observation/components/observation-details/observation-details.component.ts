@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ObservationService } from '@sunbird/core';
+import { ObservationService,ObservationUtilService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, LayoutService, ToasterService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ObservationUtilService } from '../../service';
 import { Location } from '@angular/common';
 import {Editdata} from '../edit-submission/edit-submission.component'
 @Component({

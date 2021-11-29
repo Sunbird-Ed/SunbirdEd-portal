@@ -1,6 +1,6 @@
 import { ResourceService, ConfigService, PaginationService, LayoutService } from '@sunbird/shared';
 import { SolutionListingComponent } from './solution-listing.component';
-import { ObservationService, UserService, TncService } from '@sunbird/core';
+import { ObservationService, UserService, TncService,ObservationUtilService } from '@sunbird/core';
 import {
   ObservationData,
   profileData,
@@ -9,7 +9,6 @@ import {
   ObservationDataFail
 } from './solution-listing.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, Observable, throwError } from 'rxjs';
-import { ObservationUtilService } from '../../../observation/service';
 import { Router } from '@angular/router';
 
 describe('SolutionListingComponent', () => {

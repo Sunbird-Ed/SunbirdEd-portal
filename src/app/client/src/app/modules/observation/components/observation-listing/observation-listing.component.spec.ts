@@ -21,6 +21,7 @@ import {
   UserService,
   SchemaService,
   KendraService,
+  ObservationUtilService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -30,7 +31,6 @@ import { Response, EventData } from './observation-listing.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
-import { ObservationUtilService } from '../../service';
 import { Location } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 

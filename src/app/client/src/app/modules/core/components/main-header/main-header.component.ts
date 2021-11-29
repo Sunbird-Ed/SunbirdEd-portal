@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, CoursesService, DeviceRegisterService, ElectronService
+  ManagedUserService, CoursesService, DeviceRegisterService, ElectronService,ObservationUtilService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -24,7 +24,7 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
-import { ObservationUtilService} from '../../../observation/service'
+
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
