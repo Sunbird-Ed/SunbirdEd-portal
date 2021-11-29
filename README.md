@@ -31,6 +31,13 @@ Installing Sunbird requires two primary software components:
 - Sunbird portal or web application
 - Sunbird services stack or the backend API interface
 
+# Installing Sunbird Portal
+
+Installing Sunbird requires two primary software components:
+
+- Sunbird portal or web application
+- Sunbird services stack or the backend API interface
+
 ## Table of contents
 
 - [Prerequisites](#prerequisites)
@@ -64,6 +71,7 @@ Installing Sunbird requires two primary software components:
 | Software dependencies |  |
 | :--- | ------- |
 | **[Node](https://nodejs.org/en/download/)** | > 12.x.x (Install the latest release of LTS version) |
+| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 12.x.x (Install the latest Angular CLI version) |
 | **[yarn](https://classic.yarnpkg.com/en/)** | Latest version of yarn: `npm install --global yarn` |
 | **[nodemon](https://www.npmjs.com/package/nodemon)** | Latest version  of nodemon: `npm install -g nodemon` |
 
@@ -143,16 +151,13 @@ Installing Sunbird requires two primary software components:
 1. Sunbird portal or web application
 
     1. Run the following command in the **{PROJECT-FOLDER}/src/app/client** folder
-    2. $ nodemon
-    3. Wait for the following message before proceeding to the next step 
-        ```
-        [nodemon] clean exit - waiting for changes before restart
-        ```
+    2. $ ng build --watch=true
+    3. Wait for the build process to complete before proceeding to the next step
 
 2. Sunbird services stack or the backend API interface
 
     1. Run the following command in the **{PROJECT-FOLDER}/src/app** folder
-    2. $ node server.js
+    2. $ npm run server
 
 3. The local HTTP server is launched at `http://localhost:3000`
 
