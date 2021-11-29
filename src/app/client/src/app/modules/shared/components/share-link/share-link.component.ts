@@ -1,22 +1,19 @@
-import { IShareEventData, IShareEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, Input, EventEmitter, ElementRef, ViewChild, Output, Renderer2 } from '@angular/core';
+import { IShareEventData } from '@sunbird/telemetry';
+import { Component, OnInit, Input, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { ResourceService } from '../../services/index';
 import { IPopup } from 'ng2-semantic-ui-v9';
 import { ISharelink, ITelemetryShare } from './../../interfaces';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 @Component({
   selector: 'app-share-link',
-  templateUrl: './share-link.component.html'
+  templateUrl: './share-link.component.html',
+  styleUrls: ['./share-link.component.scss']
 })
 export class ShareLinkComponent implements OnInit {
   /**
   * position for the popup
   */
   position: string;
-  /**
-   * To show / hide modal
-  */
-  sharelinkModal = false;
   /**
   *baseUrl;
   */
@@ -35,10 +32,6 @@ export class ShareLinkComponent implements OnInit {
     type: 'click',
     pageid: this.activatedRoute.snapshot.data.telemetry.env
   };
-  /**
-  *Output for Sharelink;
-  */
-  @Output() close = new EventEmitter<any>();
   /**
   *Element Ref  for copyLinkButton;
   */
@@ -69,12 +62,6 @@ export class ShareLinkComponent implements OnInit {
     this.initializeModal();
   }
   /**
-  * popDenys
-  */
-  popDeny(pop) {
-    pop.close();
-  }
-  /**
   * initializeModal
   */
   initializeModal() {
@@ -96,10 +83,5 @@ export class ShareLinkComponent implements OnInit {
     popup.open();
     $('#copyLinkData').select();
     document.execCommand('copy');
-  }
-
-  public closeModal(contentShareModal) {
-    contentShareModal.deny();
-    this.close.emit();
   }
 }

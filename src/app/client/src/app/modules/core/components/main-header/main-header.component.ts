@@ -617,7 +617,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
-          document.title = _.get(this.userService, 'rootOrgName');
         }
       });
     } else {
