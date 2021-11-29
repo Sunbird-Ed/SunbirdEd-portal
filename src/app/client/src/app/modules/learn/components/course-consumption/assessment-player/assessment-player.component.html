@@ -79,7 +79,6 @@
         <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
       </button>
       <!-- Previous Module button -->
-      <!-- <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div> -->
       <!-- Next Module button -->
       <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn ml-auto" aria-label="next-module" *ngIf="nextModule"
         tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
