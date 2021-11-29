@@ -14,7 +14,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
-
 describe('UsageReportsComponent', () => {
   let component: UsageReportsComponent;
   let fixture: ComponentFixture<UsageReportsComponent>;
@@ -35,7 +34,6 @@ describe('UsageReportsComponent', () => {
     })
       .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(UsageReportsComponent);
     component = fixture.componentInstance;
@@ -75,7 +73,6 @@ describe('UsageReportsComponent', () => {
     component.downloadCSV('/reports/sunbird/daily_metrics.csv');
     expect(usageService.getData).toHaveBeenCalled();
     });
-
     it('should call renderFiles method ', () => {
       const usageService = TestBed.get(UsageService);
       const toasterService = TestBed.get(ToasterService);
@@ -91,7 +88,6 @@ describe('UsageReportsComponent', () => {
       expect(component.files.length).toBe(4);
       expect(component.isFileDataLoaded).toBeTruthy();
       });
-
       it('should get tnc details for report viewer', () => {
         const reportViewerTncService = TestBed.get(TncService);
         spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
@@ -115,5 +111,11 @@ describe('UsageReportsComponent', () => {
         component.getReportViewerTncPolicy();
         expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
         expect(component.showTncPopup).toBeTruthy();
+      });
+      it('should call the goBack method', () => {
+        const navigationHelperService = TestBed.get(NavigationHelperService);
+        const spy = spyOn(navigationHelperService, 'goBack');
+        component.goBack();
+        expect(spy).toHaveBeenCalled();
       });
 });
