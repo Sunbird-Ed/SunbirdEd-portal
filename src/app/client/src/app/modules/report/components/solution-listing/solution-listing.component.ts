@@ -4,8 +4,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'datatables.net';
-import { ObservationUtilService } from '../../../observation/service';
-import { ObservationService, UserService, TncService } from '@sunbird/core';
+import { ObservationService, UserService, TncService,ObservationUtilService } from '@sunbird/core';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -114,7 +113,6 @@ export class SolutionListingComponent implements OnInit {
           this.solutionList.length < data.result.count ? true : false;
           if(this.solutionList.length>0){
             this.showLoader=false;
-            this.getReportViewerTncPolicy();
           }
           else{
             this.showLoader=false;
@@ -239,23 +237,5 @@ export class SolutionListingComponent implements OnInit {
         this.layoutConfiguration = layoutConfig.layout;
       }
     });
-  }
-
-  getReportViewerTncPolicy() {
-        this.tncService.getReportViewerTnc().subscribe((data) => {
-          const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
-          if (_.get(reportViewerTncData, 'latestVersion')) {
-            this.reportViewerTncVersion = _.get(reportViewerTncData, 'latestVersion');
-            this.reportViewerTncUrl = _.get(_.get(reportViewerTncData, _.get(reportViewerTncData, 'latestVersion')), 'url');
-            this.showReportViewerTncForFirstUser();
-          }
-      });
-  }
-
-  showReportViewerTncForFirstUser() {
-    const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
-    if (!reportViewerTncObj) {
-      this.showTncPopup = true;
-    }
   }
 }

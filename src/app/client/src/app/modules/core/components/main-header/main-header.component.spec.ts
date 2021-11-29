@@ -30,7 +30,7 @@ import {CacheService} from 'ng2-cache-service';
 import {mockData} from './main-header.component.spec.data';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';
-import {ObservationUtilService} from '../../../observation/service'
+import {ObservationUtilService} from '../../services'
 const mockUserRoles = {
   userRoles: ['PUBLIC']
 };

@@ -4,7 +4,6 @@ import { QuestionnaireComponent } from './questionnaire/questionnaire.component'
 import { QuestionnaireRoutingModule } from './questionnaire-routing.module';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ObservationUtilService } from '../observation/service';
 import { CanDeactivateGuard } from './guard/can-deactivate.guard';
 import {
   SlQuestionnaireModule,
@@ -22,7 +21,6 @@ import {
     SlQuestionnaireModule,
   ],
   providers: [
-    ObservationUtilService,
     CanDeactivateGuard,
     {
       provide: SlTranslateService,

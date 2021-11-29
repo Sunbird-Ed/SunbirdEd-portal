@@ -92,6 +92,12 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
 
+    '/content/content/v1/search': {
+      description: 'API called to get contributions in profile page',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
     '/content/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.TEMP_ROLE]
@@ -425,7 +431,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL]
     },
-    '/learner/user/v2/update': {
+    '/learner/user/v3/update': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
       ROLE_CHECK: [ROLE.ALL],
       OWNER_CHECK: {
