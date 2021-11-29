@@ -1540,10 +1540,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.1":
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.1.tgz#cc0e5d457745f8c93445fa5bbdcadcb01f706d1d"
-  integrity sha512-+fJA5EkZAx+b0lX+1WIjxA6/Lr+JowWIAcJvsqDDjv2F0w3AGWLEIOlqGMfwFI3FYS76x7s2s2fnkITO3Bow3Q==
+"@project-sunbird/sunbird-quml-player-v9@4.5.4":
+  version "4.5.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.4.tgz#c4f6ecb8a2edaf76fc61fe1bed061f1b0bfc47c5"
+  integrity sha512-6HJTh5u7WGG7LAPIBVUmHf/t5GUmL9ILoqcRyzRVQess2ayJ6QCTvM1veQh3wq0k31dWKgpBSlI3ZAlm60kpUA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "^4.4.4"
 
@@ -1642,10 +1642,10 @@
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
 
-"@shikshalokam/sl-reports-library@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.6.tgz#8f40c6f71fab48b8bd209601e882d9ce8baa5517"
-  integrity sha512-QNbs9xuC2hyL+tI3vRjG6+VkjvHkIDdpbHjtJ628PwhuipP8YHm7DvFvhOp6vIHyqNkh69zHx0BpO0ISjTC7wQ==
+"@shikshalokam/sl-reports-library@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.7.tgz#8164cd522759be04dd66818f57ddd6f6ed972a5a"
+  integrity sha512-wyeUkXPaQWuGpe11VsEC5MS/3n9cuxbF6bVpcrG1OhnNKS6mFXCY4GsPsLnMyESjtvD+XRG0/ovmmJTd/9yvfg==
   dependencies:
     chart.js "^2.9.4"
     chartjs-plugin-datalabels "^0.7.0"
