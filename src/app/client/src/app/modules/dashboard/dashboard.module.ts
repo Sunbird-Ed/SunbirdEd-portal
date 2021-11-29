@@ -28,7 +28,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
-import {  DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -52,7 +52,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
     DiscussionModule,
-    DashletModule,
+    DashletModule.forRoot(),
     MatCheckboxModule,
     MatTabsModule,
     MatSlideToggleModule,

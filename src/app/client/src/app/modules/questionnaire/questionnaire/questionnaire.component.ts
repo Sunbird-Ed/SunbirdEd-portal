@@ -7,9 +7,8 @@ import {
 } from '@sunbird/shared';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ObservationService } from '@sunbird/core';
+import { ObservationService,ObservationUtilService } from '@sunbird/core';
 import { Location } from '@angular/common';
-import { ObservationUtilService } from '../../observation/service';
 import { ComponentDeactivate } from '../guard/can-deactivate.guard';
 import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from '@shikshalokam/sl-questionnaire';
 import { QuestionnaireService } from '../questionnaire.service';

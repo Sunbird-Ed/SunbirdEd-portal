@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UserService, KendraService,FormService } from '@sunbird/core';
+import { UserService} from '../user/user.service';
+import { FormService } from '../form/form.service';
+import { KendraService } from '../kendra/kendra.service';
 import { IUserData, ConfigService, ResourceService, AlertModal } from '@sunbird/shared';
 import { take } from 'rxjs/operators';
 import { SuiModalService } from 'ng2-semantic-ui-v9';

@@ -6,7 +6,8 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
-import { DELETE_POPUP, POP_DEACTIVATE} from '../../interfaces/telemetryConstants';
+import { DELETE_POPUP, POP_DEACTIVATE } from '../../interfaces/telemetryConstants';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-modal',
   templateUrl: './popup.component.html',
@@ -23,9 +24,6 @@ export class PopupComponent implements AfterViewInit {
   @Output() handleGroupTnc = new EventEmitter();
   @Output() handleEvent = new EventEmitter();
 
-  @ViewChild('modal') modal;
-  @ViewChild('tncModal') tncModal;
-
   channel: string;
   acceptTncType = acceptTnc;
   checked = false;
@@ -34,20 +32,18 @@ export class PopupComponent implements AfterViewInit {
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
-    if (this.modal) {
-      this.modal.deny();
-    } else if (this.tncModal) {
-      this.tncModal.deny();
-    }
+    this.closeDialog('groupsModal');
+    this.closeDialog('groupTncModal');
   }
 
   constructor(public resourceService: ResourceService,
-              private groupService: GroupsService,
-              public router: Router,
-              private activatedRoute: ActivatedRoute,
-              private telemetryService: TelemetryService,
-              public navigationHelperService: NavigationHelperService,
-          ) {
+    private groupService: GroupsService,
+    public router: Router,
+    private activatedRoute: ActivatedRoute,
+    private telemetryService: TelemetryService,
+    public navigationHelperService: NavigationHelperService,
+    private matDialog: MatDialog
+  ) {
     this.groupService.emitMenuVisibility('activate');
     this.channel = _.upperCase(this.resourceService.instance);
   }
@@ -57,25 +53,25 @@ export class PopupComponent implements AfterViewInit {
    */
   ngAfterViewInit() {
     if (this.name === 'delete') {
-      this.setTelemetryImpression({type: DELETE_POPUP});
+      this.setTelemetryImpression({ type: DELETE_POPUP });
     }
     if (this.name === 'deActivate') {
-      this.setTelemetryImpression({type: POP_DEACTIVATE});
+      this.setTelemetryImpression({ type: POP_DEACTIVATE });
     }
   }
 
   emitEvent(value) {
-    const event = this.handleEvent.emit({name: this.name, action: value});
-    this.modal.deny();
+    this.handleEvent.emit({ name: this.name, action: value });
+    this.closeDialog('groupsModal');
   }
 
   acceptGroupTnc() {
-    this.tncModal.deny();
-    this.handleGroupTnc.emit({type: this.type});
+    this.closeDialog('groupTncModal');
+    this.handleGroupTnc.emit({ type: this.type });
   }
 
   closeModal() {
-    this.tncModal.deny();
+    this.closeDialog('groupTncModal');
     this.handleGroupTnc.emit();
   }
 
@@ -100,5 +96,9 @@ export class PopupComponent implements AfterViewInit {
       this.telemetryImpression.edata.type = edata.type;
     }
     this.telemetryService.impression(this.telemetryImpression);
+  }
+  private closeDialog(modalId: string) {
+    const dialogRef = this.matDialog.getDialogById(modalId);
+    dialogRef && dialogRef.close();
   }
 }
