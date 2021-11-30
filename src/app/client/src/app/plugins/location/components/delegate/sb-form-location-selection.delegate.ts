@@ -17,7 +17,7 @@ type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
 
 export class SbFormLocationSelectionDelegate {
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
-    { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
+    { formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' };
   private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
     { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
 
@@ -200,13 +200,16 @@ export class SbFormLocationSelectionDelegate {
 
     if (this.shouldUserProfileLocationUpdate && this.userService.loggedIn) {
       const formValue = this.formGroup.value;
+      const profileUserTypes = [];
+      if (_.get(formValue, 'children.persona.subPersona.length')) {
+          formValue.children.persona.subPersona.forEach(element => {
+            profileUserTypes.push({type: formValue.persona, subType: element});
+          });
+      }
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
         profileLocation: locationDetails,
-        profileUserType: {
-          ...(_.get(formValue, 'persona') ? { type: _.get(formValue, 'persona') } : {} ),
-          ...(_.get(formValue, 'children.persona.subPersona') ? { subType: _.get(formValue, 'children.persona.subPersona') } : {} ),
-        },
+        profileUserTypes,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} )
       };
 
@@ -341,7 +344,17 @@ export class SbFormLocationSelectionDelegate {
             switch (personaLocationConfig.templateOptions['dataSrc']['marker']) {
               case 'SUBPERSONA_LIST': {
                 if (this.userService.loggedIn) {
-                  personaLocationConfig.default = (_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null;
+                  const defaultSubpersona = [];
+                  if (this.userService.userProfile.profileUserTypes && this.userService.userProfile.profileUserTypes.length) {
+                    this.userService.userProfile.profileUserTypes.forEach(element => {
+                      defaultSubpersona.push(element.subType);
+                    });
+                  } else {
+                    if (_.get(this.userService.userProfile.profileUserType, 'subType')) {
+                      defaultSubpersona.push(_.get(this.userService.userProfile.profileUserType, 'subType'));
+                    }
+                  }
+                  personaLocationConfig.default = defaultSubpersona;
                 }
                 break;
               }

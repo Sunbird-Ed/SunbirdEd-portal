@@ -62,7 +62,7 @@ export default (app, proxyURL) => {
 
     app.patch([
         '/learner/user/v1/update',
-        '/learner/user/v2/update',
+        '/learner/user/v3/update',
         '/learner/user/v1/declarations'
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);

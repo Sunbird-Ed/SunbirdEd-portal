@@ -1,5 +1,6 @@
 @import "variables";
 @import "mixins/mixins";
+@import 'pages/mat-modal';
 
 .sb-onboard {
   sb-form::ng-deep {

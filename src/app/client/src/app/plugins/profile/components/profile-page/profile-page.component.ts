@@ -93,7 +93,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   isDesktopApp;
   userLocation: {};
   persona: {};
-  subPersona: string;
+  subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
 
@@ -141,11 +141,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getPersonaConfig(role).then((val) => {
           this.persona = val;
         });
-        this.getSubPersonaConfig(this.userProfile.profileUserType.subType, role.toLowerCase(), this.userLocation).then((val) => {
+        const subpersonalist = [];
+        if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
+          this.userProfile.profileUserTypes.forEach(ele => {
+            subpersonalist.push(ele.subType);
+          });
+        } else {
+          subpersonalist.push(this.userProfile.profileUserType.subType);
+        }
+        this.getSubPersonaConfig(subpersonalist, role.toLowerCase(), this.userLocation).then((val) => {
           this.subPersona = val;
         });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.getOrgDetails();
+        this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
         this.getTrainingAttended();
         this.setNonCustodianUserLocation();
@@ -239,6 +248,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   getLocationDetails(locations, type) {
     const location: any = _.find(locations, { type: type });
     return location ? location.name : false;
+  }
+
+  getContribution(): void {
+    const { constantData, metaData, dynamicFields } = this.configService.appConfig.Course.otherCourse;
+      const searchParams = {
+        status: ['Live'],
+        contentType: this.configService.appConfig.WORKSPACE.contentType,
+        params: { lastUpdatedOn: 'desc' }
+      };
+      const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
+      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
+        this.contributions = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+        this.totalContributions = _.get(data, 'result.count') || 0;
+      });
   }
 
   getTrainingAttended() {
@@ -362,9 +385,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userProfile.framework = data;
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
       this.profileModal && this.profileModal.deny();
-      this.showEdit = false;
+      // this.showEdit = false;
     }, err => {
-      this.showEdit = false;
+      // this.showEdit = false;
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.profileModal && this.profileModal.deny();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
@@ -594,8 +617,8 @@ private async getPersonaConfig(persona: string) {
   return formFields.find(config => config.code === persona);
 }
 
-private async getSubPersonaConfig(subPersonaCode: string, persona: string, userLocation: any): Promise<string> {
-  if (!subPersonaCode || !persona) {
+private async getSubPersonaConfig(subPersonaList: string[], persona: string, userLocation: any): Promise<string[]> {
+  if (!subPersonaList || !persona) {
       return undefined;
   }
   let formFields;
@@ -616,9 +639,13 @@ private async getSubPersonaConfig(subPersonaCode: string, persona: string, userL
   if (!subPersonaConfig) {
       return undefined;
    }
-  const subPersonaFieldConfigOption = (subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
-              find(option => option.value === subPersonaCode);
-  return subPersonaFieldConfigOption ? subPersonaFieldConfigOption.label : undefined;
+   const subPersonaFieldConfigOption = [];
+   subPersonaList.forEach((ele) => {
+    subPersonaFieldConfigOption.push((subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
+    find(option => option.value === ele).label);
+   });
+
+  return subPersonaFieldConfigOption;
 }
 
 public onLocationModalClose(event) {
