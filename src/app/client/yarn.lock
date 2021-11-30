@@ -1471,8 +1471,8 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.3.tgz#b005e94f77ff1b24d186c3ecc0eb960228242bd5"
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
-"@project-sunbird/discussions-ui-v8@2.5.0-beta.2":
-  version "2.5.0-beta.2"
+"@project-sunbird/discussions-ui-v8@2.5.0-beta.4":
+  version "2.5.0-beta.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
   integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
   dependencies:
