@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v9';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
@@ -26,6 +26,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
 })
 export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild('modal') modal;
+  @Output() assessmentEvents = new EventEmitter<any>();
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
   batchId: string;
@@ -451,6 +452,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     this.assessmentScoreService.receiveTelemetryEvents(event);
     this.calculateProgress();
+    this.assessmentEvents.emit(event);
   }
   onQuestionScoreReviewEvents(event) {
     this.assessmentScoreService.handleReviewButtonClickEvent();
