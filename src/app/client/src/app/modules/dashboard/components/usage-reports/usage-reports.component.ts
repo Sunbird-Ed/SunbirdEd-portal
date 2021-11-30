@@ -265,6 +265,10 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   });
 }
 
+goBack() {
+  this.navigationhelperService.goBack();
+}
+
   showReportViewerTncForFirstUser() {
      const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
      if (!reportViewerTncObj) {

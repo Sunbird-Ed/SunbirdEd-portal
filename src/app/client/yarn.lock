@@ -1471,8 +1471,8 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.3.tgz#b005e94f77ff1b24d186c3ecc0eb960228242bd5"
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
-"@project-sunbird/discussions-ui-v8@2.5.0-beta.2":
-  version "2.5.0-beta.2"
+"@project-sunbird/discussions-ui-v8@2.5.0-beta.4":
+  version "2.5.0-beta.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
   integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
   dependencies:
@@ -1507,10 +1507,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.28.tgz#f6bc68caf335c32b04c2c555029ca8d38d85dbf1"
   integrity sha512-QSTRbop3Zqxuho3zJGLg6fwyT/NG19zXSRJbyJdHP2yQE1FlutXkdQW8WZy5VFPVLc74+qRq0VIbSoCWUW/Mzg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.5.10":
-  version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.10.tgz#cc42093640c2641b0a6409313278c2257dba8227"
-  integrity sha512-/sUpwh4ijI8oAGtQoCCYG0ayN+YDsESyCt+Nh9QUQLUn5eAtuOln9X2pECE3i9K7ADjNX5nohupekjztKhsrTw==
+"@project-sunbird/sunbird-collection-editor-v9@4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.12.tgz#48ab8ef69ccf7ed777736e1bf3921823deaaa090"
+  integrity sha512-AAS/idu5XVnxpfl9PhkCLpzEtOyPuWt7joTrEE7ONMtAat22EflPsU0lwLVCGQZHl6df4haM9PyZ5sLQ53NVSw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1533,6 +1533,11 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.4.4.tgz#bb7579281c86664a44ec189af971262ae45e814b"
   integrity sha512-AsHyA3SUpNRcGiCTVkp4rLtuFPPIQTOHhthREHHe90g4HX+JeeaSz3FYRzZ3nLjZdNFWOJ/9Xqni00sJQcuDfQ==
 
+"@project-sunbird/sunbird-player-sdk-v9@4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.5.0.tgz#3fb6b83acf95df44d8383f7347684daf5addaa7d"
+  integrity sha512-92AeEaX5312FQJAlGc9jgSM0fQm78xFaaUfd5+yjDnDapJeFVJltcxCfqWGqyNRf2L5AeKF6Iu9ezDliRDYAXQ==
+
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
@@ -1540,12 +1545,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.1":
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.1.tgz#cc0e5d457745f8c93445fa5bbdcadcb01f706d1d"
-  integrity sha512-+fJA5EkZAx+b0lX+1WIjxA6/Lr+JowWIAcJvsqDDjv2F0w3AGWLEIOlqGMfwFI3FYS76x7s2s2fnkITO3Bow3Q==
+"@project-sunbird/sunbird-quml-player-v9@4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.5.tgz#ad7daa8c242117b6f3c5797bef9ebdedb1ad5583"
+  integrity sha512-1JRZtaYKsIfrzuK7er3FLsXvcbl9t11XrQYPj9U8ZlIJ2ap16hdV67lBE0+TwHBcPr1M+/pUG5AX9RCAPv4f0w==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.4.4"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.5.0"
 
 "@project-sunbird/sunbird-video-player-v9@4.4.2":
   version "4.4.2"
@@ -1642,10 +1647,10 @@
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
 
-"@shikshalokam/sl-reports-library@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.6.tgz#8f40c6f71fab48b8bd209601e882d9ce8baa5517"
-  integrity sha512-QNbs9xuC2hyL+tI3vRjG6+VkjvHkIDdpbHjtJ628PwhuipP8YHm7DvFvhOp6vIHyqNkh69zHx0BpO0ISjTC7wQ==
+"@shikshalokam/sl-reports-library@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.7.tgz#8164cd522759be04dd66818f57ddd6f6ed972a5a"
+  integrity sha512-wyeUkXPaQWuGpe11VsEC5MS/3n9cuxbF6bVpcrG1OhnNKS6mFXCY4GsPsLnMyESjtvD+XRG0/ovmmJTd/9yvfg==
   dependencies:
     chart.js "^2.9.4"
     chartjs-plugin-datalabels "^0.7.0"

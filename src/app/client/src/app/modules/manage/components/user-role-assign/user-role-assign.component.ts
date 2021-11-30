@@ -148,6 +148,7 @@ export class UserRoleAssignComponent implements OnInit {
     );
   }
   manipulateUserObject(user) {
+    this.userAssignedRole = [];
     _.forEach(user.roles, (role) => {
       let userObj = null;
       if (_.findIndex(role.scope, { 'organisationId': this.userService.rootOrgId }) >= 0) {
@@ -210,11 +211,8 @@ export class UserRoleAssignComponent implements OnInit {
   }
   getRolesReqBody(newRoles, currentRoles, orgId) {
     const reqBody = [];
-    // Get newly added roles array comparing to existing roles
-    const newlyAddedRoles = _.difference(newRoles, currentRoles);
-    // Get deleted roles from existing roles
-    const masterRoles = [...currentRoles, ...newlyAddedRoles];
-    _.forEach(masterRoles, (role) => {
+    const newlyAddedRoles = newRoles;
+    _.forEach(newlyAddedRoles, (role) => {
       reqBody.push({
         role: role,
         operation: 'add',

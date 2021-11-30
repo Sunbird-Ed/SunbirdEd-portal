@@ -1,11 +1,6 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-
-</app-landing-section>
-
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-container relative9 sbt-fluid-content-bg':''">
   <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
-    <div>
-      <div>
         <div class="reports-container w-100" *ngIf="showComponent">
           <ng-container *ngIf="(report$ | async) as currentReport else loading">
             <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
@@ -288,8 +283,6 @@
             </div>
           </ng-template>
         </div>
-      </div>
-    </div>
   </div>
 </div>
 
