@@ -1491,6 +1491,25 @@ html[data-theme='Darkmode'] {
   display: inline-block;
   margin: 0px 0.5rem;
 }
+html[layout='joy'] {
+  .sb-library-cards, .layout-library {
+    .header .title {
+      font-weight: 700 !important;
+      font-size: calculateRem(16px) !important;
+    }
+  }
+}
+
+// .cdk-overlay-container .cdk-global-overlay-wrapper {
+//   overflow: auto;
+//   .cdk-overlay-pane {
+//     width: 100%;
+//     max-width: 100% !important;
+//   }
+//   .ui.dimmer {
+//     overflow: auto;
+//   }
+// }
 
 // joy layout
 .sb-back-actionbar {
