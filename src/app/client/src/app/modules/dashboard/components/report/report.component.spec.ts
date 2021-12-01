@@ -1,5 +1,5 @@
 import { DashboardModule } from '@sunbird/dashboard';
-import { UserService, CoreModule } from '@sunbird/core';
+import { UserService, CoreModule, TncService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
@@ -63,7 +63,7 @@ describe('ReportComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule, DashboardModule],
-      providers: [ToasterService, UserService, NavigationHelperService, ReportService,
+      providers: [ToasterService, UserService, TncService, NavigationHelperService, ReportService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useValue: routerStub },
         { provide: ResourceService, useValue: resourceServiceMockData }]
@@ -466,6 +466,31 @@ describe('ReportComponent', () => {
       done();
     });
     component.markdownUpdated$.next(input);
+  });
+
+  it('should get tnc details for report viewer', () => {
+    const reportViewerTncService = TestBed.get(TncService);
+    spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
+      {
+        'id': 'api',
+        'params': {
+          'status': 'success',
+        },
+        'responseCode': 'OK',
+        'result': {
+          'response': {
+            'id': 'orgAdminTnc',
+            'field': 'orgAdminTnc',
+            'value': '{"latestVersion":"v4","v4":{"url":"http://test.com/tnc.html"}}'
+          }
+        }
+      }
+    ));
+    spyOn(component, 'showReportViewerTncForFirstUser').and.returnValue(true);
+    component.showTncPopup = true;
+    component.getReportViewerTncPolicy();
+    expect(reportViewerTncService.getReportViewerTnc).toHaveBeenCalled();
+    expect(component.showTncPopup).toBeTruthy();
   });
 
 });

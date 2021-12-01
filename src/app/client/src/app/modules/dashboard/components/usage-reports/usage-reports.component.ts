@@ -58,11 +58,12 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.initLayout();
-    const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')).value;
+    const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation'))?(<HTMLInputElement>document.getElementById('reportsLocation')).value: '';
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
+        this.getReportViewerTncPolicy();
       }
     });
     this.usageService.getData(`/${reportsLocation}/${this.slug}/config.json`)
@@ -70,7 +71,6 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         if (_.get(data, 'responseCode') === 'OK') {
           this.noResult = false;
           this.reportMetaData = _.get(data, 'result');
-          this.getReportViewerTncPolicy();
           if (this.reportMetaData[0]) { this.renderReport(this.reportMetaData[0]); }
         }
       }, (err) => {
