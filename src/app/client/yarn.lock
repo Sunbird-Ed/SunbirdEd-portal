@@ -1472,7 +1472,7 @@
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
 "@project-sunbird/discussions-ui-v8@2.5.0-beta.4":
-  version "2.5.0-beta.2"
+  version "2.5.0-beta.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
   integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
   dependencies:
