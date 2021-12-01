@@ -205,6 +205,8 @@ export class SbFormLocationSelectionDelegate {
           formValue.children.persona.subPersona.forEach(element => {
             profileUserTypes.push({type: formValue.persona, subType: element});
           });
+      } else {
+        profileUserTypes.push({ type: formValue.persona });
       }
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
