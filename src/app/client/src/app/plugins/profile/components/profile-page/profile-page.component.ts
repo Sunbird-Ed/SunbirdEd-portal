@@ -144,7 +144,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         const subpersonalist = [];
         if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
           this.userProfile.profileUserTypes.forEach(ele => {
-            subpersonalist.push(ele.subType);
+            if (_.get(ele, 'subType')) {
+              subpersonalist.push(ele.subType);
+            }
           });
         } else {
           subpersonalist.push(this.userProfile.profileUserType.subType);
