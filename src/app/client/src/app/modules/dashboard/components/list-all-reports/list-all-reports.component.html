@@ -49,6 +49,10 @@
               </mat-tab>
             </mat-tab-group>
           </div>
+          <div>
+            <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+            </app-tnc-popup>
+          </div>
         </ng-container>
 
         <ng-template #noResult>
