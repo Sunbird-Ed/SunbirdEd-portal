@@ -414,7 +414,7 @@
 </div>
 </div>
 </div>
-<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false}" (dismiss)="showEdit = !showEdit">
+<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showEdit = !showEdit">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)">
@@ -422,7 +422,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false}" (dismiss)="showContactPopup = !showContactPopup">
+<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showContactPopup = !showContactPopup">
   <ng-template sbModalContent let-data>
     <app-update-contact-details [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType" [userProfile]="userProfile">
     </app-update-contact-details>
