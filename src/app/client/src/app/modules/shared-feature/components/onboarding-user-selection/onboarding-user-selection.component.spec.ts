@@ -92,7 +92,7 @@ describe('OnboardingUserSelectionComponent', () => {
     component['updateUserSelection']().subscribe(res => {
       expect(spy).toHaveBeenCalledWith({
         userId: '123',
-        profileUserType: { type: 'student' }
+        profileUserTypes: [{ type: 'student' }]
       });
       expect(userSelectSpy).toHaveBeenCalled();
       done();

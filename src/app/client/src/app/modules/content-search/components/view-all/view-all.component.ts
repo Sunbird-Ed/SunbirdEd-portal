@@ -118,6 +118,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   hashTagId: string;
   formAction: string;
   showFilter = false;
+  pageClicked = 0;
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   /**
@@ -194,16 +195,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
       takeUntil(this.unsubscribe)
     ).subscribe((response: any) => {
-      if (this.queryParams.viewMore) {
-        const contents = JSON.parse(this.queryParams.content);
-        this.showLoader = false;
-        this.totalCount = contents.length;
-        this.pager = this.paginationService.getPager(contents.length, this.pageNumber, this.pageLimit);
-        const contentList = this.formatSearchresults(contents);
-        this.searchList = contentList.slice(((this.pager.currentPage - 1) * 20), ((this.pager.currentPage * 20)));
-      } else {
-        this.getContents(response);
-      }
+      this.getContents(response);
     }, (error) => {
       this.showLoader = false;
       this.noResult = true;
@@ -385,7 +377,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(this.activatedRoute, 'snapshot.data.facets')) {
       requestParams['facets'] = this.facetsList;
     }
-
+    this.pageClicked++;
     if (this.userService.loggedIn) {
       return combineLatest(
         this.searchService.contentSearch(requestParams),
@@ -657,8 +649,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     return facetsData;
   }
   public handleCloseButton() {
-    if (this.queryParams.viewMore) {
-      this.location.back();
+    if (this.queryParams.selectedTab === 'all') {
+      window.history.go(-this.pageClicked);
     } else {
     const [path] = this.router.url.split('/view-all');
     const redirectionUrl = `/${path.toString()}`;

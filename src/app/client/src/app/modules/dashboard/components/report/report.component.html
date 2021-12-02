@@ -1,11 +1,6 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-
-</app-landing-section>
-
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-container relative9 sbt-fluid-content-bg':''">
   <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
-    <div>
-      <div>
         <div class="reports-container w-100" *ngIf="showComponent">
           <ng-container *ngIf="(report$ | async) as currentReport else loading">
             <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
@@ -31,6 +26,7 @@
                                 </span>
                               </span>
                             </div>
+                  
                             <div *ngIf="!noResult">
                               <div class="report-title"> {{ ( report?.title || currentReport?.reportMetaData?.title ||
                                 currentReport?.reportMetaData?.label ) | titlecase }}
@@ -288,11 +284,12 @@
             </div>
           </ng-template>
         </div>
-      </div>
-    </div>
   </div>
 </div>
-
+<div>
+  <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+  </app-tnc-popup>
+</div>
 <app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true}" (dismiss)="close.emit()">
   <ng-template sbModalContent>
     <div class="sb-modal sb-hawkeye-modal">

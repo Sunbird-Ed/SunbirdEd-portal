@@ -11,6 +11,9 @@ const routes: Routes = [
         component: SolutionListingComponent,
         data: {
             telemetry: { env: telemetryEnv, pageid: 'solution-listing', type: 'view' },
+            menuBar: {
+                visible: false
+              }
         }
     },
     {
@@ -18,6 +21,9 @@ const routes: Routes = [
         component: ReportViewComponent,
         data: {
             telemetry: { env: telemetryEnv, pageid: 'report-view', type: 'view' },
+            menuBar: {
+                visible: false
+              }
         }
     }
 ];

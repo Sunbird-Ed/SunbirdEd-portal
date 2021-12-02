@@ -1,4 +1,4 @@
-import { ResourceService, ConfigService, PaginationService, LayoutService } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, LayoutService, NavigationHelperService } from '@sunbird/shared';
 import { SolutionListingComponent } from './solution-listing.component';
 import { ObservationService, UserService, TncService,ObservationUtilService } from '@sunbird/core';
 import {
@@ -10,10 +10,8 @@ import {
 } from './solution-listing.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-
 describe('SolutionListingComponent', () => {
   let component: SolutionListingComponent;
-
   const mockConfigService: Partial<ConfigService> = {};
   const mockConfig: Partial<ConfigService> = {
     urlConFig: {
@@ -72,12 +70,14 @@ describe('SolutionListingComponent', () => {
       return Promise.resolve(profileData);
     }
   };
-
   const mockUserService: Partial<UserService> = {
     userData$: of({
       userProfile: {}
     }) as any
   };
+  const mockNavigationHelperService: Partial<NavigationHelperService> = {
+    goBack: () => {}
+  }
   beforeAll(() => {
     component = new SolutionListingComponent(
       mockResourceService as ResourceService,
@@ -89,20 +89,18 @@ describe('SolutionListingComponent', () => {
       mockRouter as Router,
       mockPaginationService as PaginationService,
       mockConfigService as ConfigService,
-      mockTncService as TncService
+      mockTncService as TncService,
+      mockNavigationHelperService as NavigationHelperService
     );
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
   it('should call ngonInit()', () => {
     spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     expect(component.ngOnInit).toHaveBeenCalled();
   });
-
   it('ObservationUtilService api failed case', () => {
     spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
@@ -115,7 +113,6 @@ describe('SolutionListingComponent', () => {
     expect(component.getProfileData).toHaveBeenCalled();
     expect(component.payload).toBe(profileData);
   });
-
   it('ObservationUtilService return result is empty', () => {
     spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
@@ -128,8 +125,6 @@ describe('SolutionListingComponent', () => {
     expect(component.getProfileData).toHaveBeenCalled();
     expect(component.payload).toBe(profileData);
   });
-
-
   it('should call the getDataByEntity() has data', () => {
     component.pageNo = 1;
     component.solutionList = [];
@@ -145,7 +140,6 @@ describe('SolutionListingComponent', () => {
     expect(component.solutionList.length).toBeGreaterThanOrEqual(0);
     expect(component.filters.length).toBeGreaterThanOrEqual(0);
   });
-
   it('getDataByEntity() api fail case', () => {
     component.pageNo = 1;
     component.solutionList = [];
@@ -159,9 +153,6 @@ describe('SolutionListingComponent', () => {
     expect(component.getDataByEntity).toHaveBeenCalled();
     expect(component.solutionList.length).toEqual(0);
   });
-
-
-
   it('should call the goToReports()', () => {
     spyOn(component, 'goToReports').and.callThrough();
     spyOn(mockRouter, 'navigate').and.callThrough();
@@ -169,7 +160,6 @@ describe('SolutionListingComponent', () => {
     expect(component.goToReports).toHaveBeenCalled();
     expect(mockRouter.navigate).toHaveBeenCalled();
   });
-
   it('should call the navigateToPage for pagination', () => {
     component.navigateToPage(1);
     spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
@@ -182,13 +172,10 @@ describe('SolutionListingComponent', () => {
     expect(component.solutionList.length).toBeGreaterThanOrEqual(0);
     expect(component.filters.length).toBeGreaterThanOrEqual(0);
   });
-
   it('should call the modalClose when isRubricDriven is false', () => {
     component.modalClose(ModalEventData);
     spyOn(component, 'modalClose').and.callThrough();
   });
-
-
   it('should call ObservationUtilService - getProfileData', () => {
     spyOn(mockPaginationService, 'getPager').and.callThrough();
     component.paginationDetails.currentPage = 1;

@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "4.4.0",
+    "version": "4.5.0",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
@@ -62,7 +62,7 @@
         },
         "protocols": {
             "name": "app-protocol",
-            "schemes": []
+            "schemes": ["local.sunbird.desktop"]
         }
     },
     "homepage": "https://www.sunbird.org",
