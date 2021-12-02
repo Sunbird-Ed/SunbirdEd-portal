@@ -50,7 +50,6 @@ export class EventReportComponent implements OnInit {
       console.log('err = ', err);
     });
 
-    // this.getEnrollEventUsersList();
     this.getAttendanceDetails();
   }
 
@@ -65,8 +64,6 @@ export class EventReportComponent implements OnInit {
   }
 
   setEventConfig() {
-    // tslint:disable-next-line:max-line-length
-    // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
     this.libEventConfig = {
       context: {
         user:this.userService.userProfile,
@@ -90,12 +87,12 @@ export class EventReportComponent implements OnInit {
     });
   }
 
-  getEnrollEventUsersData(list){
-    this.attendanceList.forEach(item => {
-      this.eventService.convertDate(item.enrolledDate);
-    });
-    this.eventUserEnrollData = this.attendanceList;
-  }
+  // getEnrollEventUsersData(list){
+  //   this.attendanceList.forEach(item => {
+  //     this.eventService.convertDate(item.enrolledDate);
+  //   });
+  //   this.eventUserEnrollData = this.attendanceList;
+  // }
   convert(event) {
     var date = new Date(event),
     mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -107,5 +104,23 @@ export class EventReportComponent implements OnInit {
   }
   navigateToEventPage(){
      this.router.navigate(['/explore-events/published']);
+  }
+
+  getEnrollEventUsersData(list){
+    this.attendanceList.forEach(item => {
+      console.log("getAttendanceList Details : ", item);
+      this.eventService.convertDate(item.enrolledDate);
+      if(item.duration)
+      {
+        const sec = parseInt(item.duration, 10);
+        let hours   = Math.floor(sec / 3600);
+        let minutes = Math.floor((sec - (hours * 3600)) / 60);
+        let seconds = sec - (hours * 3600) - (minutes * 60);
+        console.log(hours+'hrs'+':'+minutes + 'mins' +':'+seconds+'secs');
+        item.duration = hours+'hrs'+':'+minutes + 'mins' +':'+seconds+'secs';
+      }
+    });
+    this.eventUserEnrollData = this.attendanceList;
+     console.log("eventUserEnrollData Details : ", this.eventUserEnrollData);
   }
 }
