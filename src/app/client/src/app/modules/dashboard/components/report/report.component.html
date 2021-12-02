@@ -328,30 +328,30 @@
 </app-modal-wrapper>
 
 <ng-template #commonReportActions>
-  <div class="d-flex my-0">
+  <div class="d-flex my-0" *ngIf="!hideElements">
     <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
       <h4 class="select-filter-label"
-        *ngIf="showExportsOption && currentReport?.reportMetaData?.filters && !hideElements"> {{
+        *ngIf="showExportsOption && reportData?.reportMetaData?.filters"> {{
         resourceService?.frmelmnts?.lbl?.selectFilters }} <small> {{
           resourceService?.frmelmnts?.lbl?.selectFilterDescription }} </small> </h4>
     </div>
     <div class="d-flex flex-ai-center flex-jc-flex-end pr-10"
-      *ngIf="!hideElements && currentReport?.reportMetaData?.filters">
+      *ngIf="reportData?.reportMetaData?.filters">
       <button class="sb-btn sb-btn-normal sb-btn-outline-primary  reset-filter" (click)="resetFilter()" tabindex="0">
         {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters }}
       </button>
     </div>
-    <div class="d-flex flex-ai-center flex-jc-flex-end">
+    <div class="d-flex flex-ai-center flex-jc-flex-end" >
       <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" type="button"
-        *ngIf="currentReport?.reportMetaData?.downloadUrl && !currentReport?.files?.length"
+        *ngIf="reportData?.reportMetaData?.downloadUrl && !reportData?.files?.length"
         class="sb-left-icon-btn sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="downloadCSV()" tabindex="0"><i
           class="download icon"></i>
         {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
       <div class="sb-field mb-0 mr-8 d-flex flex-jc-flex-end">
         <label>
           <sui-select *ngIf="showExportsOption" class="selection mr-12"
-            [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
+            [ngClass]="{'ml-auto': !reportData?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
             (selectedOptionChange)="downloadReport($event)">
             <sui-select-option *ngFor="let option of exportOptions" [value]="option" appTelemetryInteract
               [telemetryInteractObject]="setTelemetryInteractObject()"
