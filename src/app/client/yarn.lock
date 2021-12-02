@@ -1472,9 +1472,9 @@
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
 "@project-sunbird/discussions-ui-v8@2.5.0-beta.4":
-  version "2.5.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
-  integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
+  version "2.5.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.4.tgz#a6bd3080aa0127cc5827d94adfb1adb705366b90"
+  integrity sha512-ju8LBX4q/a/WxbgTUScVh+0VWC2w/PllGfEJeS7h8CeVAhuecrh/eEK6zhhpwZxce0Q1E7/u3Ro1sYrzgN1TFQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -1545,10 +1545,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.5":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.5.tgz#ad7daa8c242117b6f3c5797bef9ebdedb1ad5583"
-  integrity sha512-1JRZtaYKsIfrzuK7er3FLsXvcbl9t11XrQYPj9U8ZlIJ2ap16hdV67lBE0+TwHBcPr1M+/pUG5AX9RCAPv4f0w==
+"@project-sunbird/sunbird-quml-player-v9@4.5.6":
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.6.tgz#1b855656dcd4ce171632cabecbba9bc88fa609d3"
+  integrity sha512-K5gSLW+Q+g3W6enKwjzJJWjMwcvw+prA0k1gdJsZxsn+ootFSawFRNXy1JMTvrSJFAc62c480BDau2WQMClobA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.5.0"
 
