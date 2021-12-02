@@ -1472,7 +1472,7 @@
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
 "@project-sunbird/discussions-ui-v8@2.5.0-beta.4":
-  version "2.5.0-beta.4"
+  version "2.5.0-beta.2"
   resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
   integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
   dependencies:
@@ -1502,10 +1502,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.28.tgz#f6bc68caf335c32b04c2c555029ca8d38d85dbf1"
-  integrity sha512-QSTRbop3Zqxuho3zJGLg6fwyT/NG19zXSRJbyJdHP2yQE1FlutXkdQW8WZy5VFPVLc74+qRq0VIbSoCWUW/Mzg==
+"@project-sunbird/sb-themes@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.30.tgz#19b48bec566b2087d803f666a8dc0d0a000a0aef"
+  integrity sha512-znlyL4EP2YaphxjpJLgZ3Qe2F061ZKSMKaW8akSNLWYVcClxvSInZUYwQPCxJ6hJoPS0URSF9o6BUTd+cslPMw==
 
 "@project-sunbird/sunbird-collection-editor-v9@4.5.14":
   version "4.5.14"
