@@ -29,7 +29,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor-v9';
 import { EventLibraryModule } from 'ngtek-event-library';
-import  * as configData from './interfaces/urlConfig';
+import  * as configData from '../../../environments/urlConfig';
 
 @NgModule({
   imports: [

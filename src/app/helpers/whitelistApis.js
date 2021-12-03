@@ -330,7 +330,7 @@ const API_LIST = {
       }
     },
     '/learner/course/v1/user/enrollment/list/:userId': {
-      checksNeeded: [],
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
       ROLE_CHECK: [ROLE.ALL],
       OWNER_CHECK: {
         checks: [
