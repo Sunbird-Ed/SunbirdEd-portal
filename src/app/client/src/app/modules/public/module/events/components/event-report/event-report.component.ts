@@ -116,8 +116,8 @@ export class EventReportComponent implements OnInit {
         let hours   = Math.floor(sec / 3600);
         let minutes = Math.floor((sec - (hours * 3600)) / 60);
         let seconds = sec - (hours * 3600) - (minutes * 60);
-        console.log(hours+'hrs'+':'+minutes + 'mins' +':'+seconds+'secs');
-        item.duration = hours+'hrs'+':'+minutes + 'mins' +':'+seconds+'secs';
+        console.log(hours+':'+minutes +':'+seconds);
+        item.duration = hours +':'+ minutes +':'+ seconds;
       }
     });
     this.eventUserEnrollData = this.attendanceList;
