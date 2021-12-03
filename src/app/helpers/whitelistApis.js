@@ -330,16 +330,7 @@ const API_LIST = {
       }
     },
     '/learner/course/v1/user/enrollment/list/:userId': {
-      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
-      ROLE_CHECK: [ROLE.ALL],
-      OWNER_CHECK: {
-        checks: [
-          { entity: '__urlparams__userId', params: [], key: 'userId' }
-        ]
-      }
-    },
-    '/learner/course/v2/user/enrollment/list/:userId': {
-      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL],
       OWNER_CHECK: {
         checks: [
@@ -1819,7 +1810,6 @@ const API_LIST = {
     '/learner/course/v1/hierarchy/:do_id',
     '/learner/user/v5/read/:userId',
     '/learner/course/v1/user/enrollment/list/:userId',
-    '/learner/course/v2/user/enrollment/list/:userId',
     '/learner/user/v1/feed/:userId',
     '/learner/course/v1/batch/read/:batchId',
     '/learner/dashboard/v2/progress/course/:batchId',
