@@ -138,6 +138,7 @@
               <hr
                 *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
                 class="section-hr my-32" />
+              </div>
               <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
                 [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
@@ -149,7 +150,7 @@
                   [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
               </sb-pills-grid>
               <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
-            </div>
+            
           </div>
           <div *ngIf="showTargetedCategory && targetedCategory.length">
             <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
