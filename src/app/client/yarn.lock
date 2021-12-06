@@ -1507,10 +1507,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.30.tgz#19b48bec566b2087d803f666a8dc0d0a000a0aef"
   integrity sha512-znlyL4EP2YaphxjpJLgZ3Qe2F061ZKSMKaW8akSNLWYVcClxvSInZUYwQPCxJ6hJoPS0URSF9o6BUTd+cslPMw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.5.14":
-  version "4.5.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.14.tgz#b575ecb337f662f9154604dc137e2c8d6a8054ed"
-  integrity sha512-GMjgtbM761duNhNxsEnuiIkQYegHSezvjYJZNLq2fotcn+w0GehroXLnjw4i7osAeDf0nBTBQ9mEiLPRokoV5A==
+"@project-sunbird/sunbird-collection-editor-v9@4.5.15":
+  version "4.5.15"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.15.tgz#273cb6a71a1fd91558fa80b9ba91f1f8bd4629dc"
+  integrity sha512-Nbzn/EcrVFf0DRoHRCTadT+gYjgl9vEfwaYNW7plpmpooZawAZVvCSRrrk//9QiMPKDOH8tvcXxhC4fqsopVMQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -1545,10 +1545,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.6":
-  version "4.5.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.6.tgz#1b855656dcd4ce171632cabecbba9bc88fa609d3"
-  integrity sha512-K5gSLW+Q+g3W6enKwjzJJWjMwcvw+prA0k1gdJsZxsn+ootFSawFRNXy1JMTvrSJFAc62c480BDau2WQMClobA==
+"@project-sunbird/sunbird-quml-player-v9@4.5.7":
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.7.tgz#ef52ee6b6edf1f7ac231a31a82a626948ee90052"
+  integrity sha512-KJhwUVCCRiNoVNdLrwL38nw6zOCKat2FSTuYOL0rC2WUTOpj2WeyUU9txzW7HA6WcDNY54MV8tMenboDlPPVJA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.5.0"
 
@@ -12690,7 +12690,7 @@ video.js@7.4.1:
     videojs-font "3.2.0"
     videojs-vtt.js "^0.15.3"
 
-videojs-contrib-quality-levels@^2.0.4, videojs-contrib-quality-levels@^2.1.0:
+videojs-contrib-quality-levels@2.1.0, videojs-contrib-quality-levels@^2.0.4:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/videojs-contrib-quality-levels/-/videojs-contrib-quality-levels-2.1.0.tgz#046e9e21ed01043f512b83a1916001d552457083"
   integrity sha512-dqGQGbL9AFhucxki7Zh0c3kIhH0PAPcHEh6jUdRyaFCVeOuqnJrOYs/3wNtsokDdBdRf2Du2annpu4Z2XaSZRg==
@@ -12708,7 +12708,7 @@ videojs-font@3.2.0:
   resolved "https://registry.yarnpkg.com/videojs-font/-/videojs-font-3.2.0.tgz#212c9d3f4e4ec3fa7345167d64316add35e92232"
   integrity sha512-g8vHMKK2/JGorSfqAZQUmYYNnXmfec4MLhwtEFS+mMs2IDY398GLysy6BH6K+aS1KMNu/xWZ8Sue/X/mdQPliA==
 
-videojs-http-source-selector@^1.1.6:
+videojs-http-source-selector@1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/videojs-http-source-selector/-/videojs-http-source-selector-1.1.6.tgz#073aadbea0106ba6c98d6b611094dbf8554ffa1f"
   integrity sha512-6b5MmKTT2cVnrjtdNj4z1VO91udbXkZkTYA6LlD8WN2aHlG2rqFTmtMab4NK4nlkkkbRnm3c2q2IddL3jffLmg==
