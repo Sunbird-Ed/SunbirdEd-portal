@@ -1440,6 +1440,15 @@ sunbird-epub-player .sunbird-epub-container {
     height: auto !important;
   }
 }
+.PlayerMediaQueryClass sunbird-epub-player .sunbird-epub-container div:first-child.rendition{
+  height:auto;
+}
+.PlayerMediaQueryClass .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
+  height: calc(100% - 4rem) !important;
+}
+.PlayerMediaQueryClass .sb-epub-reading-status{
+  bottom: 4.75rem !important;
+}
 .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
   height: 100% !important;
 }
