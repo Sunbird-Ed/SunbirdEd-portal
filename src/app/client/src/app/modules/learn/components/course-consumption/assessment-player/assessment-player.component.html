@@ -70,7 +70,7 @@
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
         <div class="cc-player__list px-0">
  <!-- Module Progress bar -->
- <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
+ <div class="certified-course__progress" *ngIf="totalContents > 0">
      <!-- Previous / next module buttons -->
      <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
       <!-- Previous module button -->
@@ -86,16 +86,18 @@
       </button>
       <!-- Next Module button -->
     </div>
-  <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
-  <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-  <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+    <div *ngIf="!isUnitCompleted"> 
+      <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
+      <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+      <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+    </div>
+  
+  <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
+    <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt="complete-content-image"></div>
+    <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+  </div>
 </div>
        
-
-<div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
-  <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt="complete-content-image"></div>
-  <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
-</div>
 
         <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
         <div class="side-toc-content chapter-box">
