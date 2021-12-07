@@ -119,7 +119,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.isIOSDevice) {
       _selectedYOB = parseInt(selectedBirthYear.target.value);
     }
-    this.signUpForm.enable();
+    if(this.signUpForm.get('uniqueContact').value === true){
+    } else{
+      this.signUpForm.enable();
+    }
     this.disableForm = false;
     const currentYear = new Date().getFullYear();
     this.yearOfBirth = `${_selectedYOB}`;
