@@ -279,7 +279,7 @@ select:-internal-autofill-selected {
       top: 50%;
       left: calculateRem(12px);
       transform: translateY(-50%);
-      z-index: 5;
+      z-index: 2;
       html[dir="rtl"] & {
         right: calculateRem(12px);
         left:unset;
