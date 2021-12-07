@@ -230,6 +230,12 @@ export class ReportService  {
   }
 
   private getTableData(data: { result: any, id: string }[], tableId) {
+    if (data.length === 1) {
+      const [dataSource] = data;
+      if (dataSource.id === 'default') {
+        return dataSource.result;
+      }
+    }
     return this.getDataSourceById(data, tableId) || {};
   }
 
