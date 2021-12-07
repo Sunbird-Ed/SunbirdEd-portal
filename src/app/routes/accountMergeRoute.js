@@ -115,7 +115,7 @@ module.exports = (app) => {
     logger.info({msg: 'target account logged in: getting access token ' + u2Token});
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/logout?redirect_uri=`;
     const mergeResponse = await initiateAccountMerge(_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails'),
-      u2Token).catch(err => {
+      u2Token, req).catch(err => {
         logger.error({
           msg: 'error in initiateAccountMerge',
           error: JSON.stringify(err)

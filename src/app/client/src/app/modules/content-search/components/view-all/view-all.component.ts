@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -117,10 +118,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   hashTagId: string;
   formAction: string;
   showFilter = false;
-  /**
-  * To show / hide login popup on click of content
-  */
-  showLoginModal = false;
+  pageClicked = 0;
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   /**
@@ -150,7 +148,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private location: Location) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -379,7 +377,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(this.activatedRoute, 'snapshot.data.facets')) {
       requestParams['facets'] = this.facetsList;
     }
-
+    this.pageClicked++;
     if (this.userService.loggedIn) {
       return combineLatest(
         this.searchService.contentSearch(requestParams),
@@ -418,23 +416,31 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
         behavior: 'smooth'
     });
 }
-  playContent(event) {
+  playContent(event, content?) {
     this.moveToTop();
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.publicPlayerService.playContent(event);
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {
-        this.handleCourseRedirection(event);
+        const batchId = _.get(content,'metaData.batchId');
+        this.handleCourseRedirection(event, batchId);
       } else {
         this.publicPlayerService.playContent(event);
       }
     }
   }
-  handleCourseRedirection({ data }) {
+  handleCourseRedirection({ data }, batchId?) {
     const { metaData } = data;
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+      return this.playerService.playContent(metaData);
+    }
+    if (batchId) {
+      metaData.batchId = batchId;
+      metaData.trackable={
+        enabled:'Yes'
+      }
       return this.playerService.playContent(metaData);
     }
 
@@ -499,10 +505,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  closeModal() {
-    this.showLoginModal = false;
-  }
-
+  
   updateCardData(downloadListdata) {
     _.each(this.searchList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
@@ -546,6 +549,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.totalCount = enrolledCourseCount;
       const sortedData = _.map(_.orderBy(filteredCourses, ['enrolledDate'], ['desc']), (val) => {
         const value = _.get(val, 'content');
+        value.batchId = _.get(val, 'batchId');
+        value.batch = _.get(val, 'batch');
         return value;
       });
       this.searchList = this.formatSearchresults(sortedData);
@@ -644,10 +649,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     return facetsData;
   }
   public handleCloseButton() {
+    if (this.queryParams.selectedTab === 'all') {
+      window.history.go(-this.pageClicked);
+    } else {
     const [path] = this.router.url.split('/view-all');
     const redirectionUrl = `/${path.toString()}`;
     const { selectedTab = '' } = this.queryParams || {};
     this.router.navigate([redirectionUrl], { queryParams: { selectedTab } });
+    }
   }
 
   private getFormConfig(input = { formType: 'contentcategory', formAction: 'menubar', contentType: 'global' }): Observable<object> {

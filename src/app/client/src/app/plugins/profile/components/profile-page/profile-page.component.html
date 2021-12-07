@@ -7,7 +7,7 @@
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
        <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" role="img" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
-       suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
+        matTooltip="{{resourceService.frmelmnts.lbl.stateVerified}}" [matTooltipPosition]="'right'">
        <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
          backgroundColor: '#ffffff',
          border: '1px solid #fff',
@@ -25,7 +25,7 @@
     <div class="mt-8 mb-16 d-flex flex-jc-center">
       <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
       <div class="fnormal ml-5" id="copyUser">{{userProfile.userName}}</div>
-      <div role="button" class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)" suiPopup popupText="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [popupInverted]="true" [popupPlacement]="'bottom left'">
+      <div role="button" class="ml-8 cursor-pointer" tabindex="0" (click)="copyToClipboard(userProfile.userName)" matTooltip="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [matTooltipPosition]="'left'">
         <i class="icon-svg icon-svg--xs icon-edit">
           <svg class="icon icon-svg--primary">
           <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
@@ -293,6 +293,7 @@
 
   <div class="pt-30">
     <div class="sb-profile-page-container" [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
+
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
         {{resourceService.frmelmnts.scttl.contributions}}
@@ -313,6 +314,7 @@
       </div>
       <!--contributions computer view ends-->
       <!--contributions view ends-->
+
       <!-- tarainings attended computer view strats-->
       <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
           <div class="list-heading">
@@ -412,11 +414,21 @@
 </div>
 </div>
 </div>
-<app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
-  [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
-</app-popup>
-<app-update-contact-details *ngIf="showContactPopup" (close)="showContactPopup = !showContactPopup"
-  [contactType]="contactType"></app-update-contact-details>
+<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showEdit = !showEdit">
+  <ng-template sbModalContent let-data>
+    <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)">
+    </app-popup>
+  </ng-template>
+</app-modal-wrapper>
+
+<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showContactPopup = !showContactPopup">
+  <ng-template sbModalContent let-data>
+    <app-update-contact-details [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType" [userProfile]="userProfile">
+    </app-update-contact-details>
+  </ng-template>
+</app-modal-wrapper>
+
   <app-location-selection
     (close)="onLocationModalClose()"
     *ngIf="showEditUserDetailsPopup">
@@ -426,5 +438,12 @@
     </div>
   </app-location-selection>
   <app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>
-  <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
+
+  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false}" (dismiss)="showRecoveryId = !showRecoveryId">
+    <ng-template sbModalContent let-data>
+      <app-account-recovery-info [dialogProps]="data" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"
+      [userProfile]="userProfile"></app-account-recovery-info>
+    </ng-template>
+  </app-modal-wrapper>
+
 <router-outlet></router-outlet>

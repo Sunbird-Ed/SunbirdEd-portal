@@ -26,7 +26,7 @@
                     <ng-container *ngIf="layoutConfiguration">
                         <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration"
                         appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'Content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-                        (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
+                        (cardClick)="playContent($event, content)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
                     </ng-container>
 
                 </div>
@@ -41,13 +41,13 @@
         <div class="twelve wide column right aligned py-0 mt-16" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager && pager.pages.length">
                 <div class="sb-pagination my-0">
-                <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
-                <a ahref="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
-                <a href="javascript:void(0);" role="button" aria-current="page" title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)"
+                <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
+                <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
+                <a role="button" aria-current="page" title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)"
                     class="sb-item">{{page}}</a>
-                <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)"
+                <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)"
                     class="sb-item">&gt;</a>
-                <a href="javascript:void(0);" role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)"
+                <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)"
                     class="sb-item">&raquo;</a>
                 </div>
             </div>
@@ -58,37 +58,5 @@
     </div>
 </div>
 </div>
-<sui-modal
-    [mustScroll]="true"
-    [isClosable]="true"
-    [transitionDuration]="0"
-    [size]="'small'"
-    class="sb-modal"
-    appBodyScroll tabindex="0"
-    (dismissed)="closeModal()"
-    #modal
-    *ngIf="showLoginModal">
-
-    <!--Header-->
-    <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}
-    </div>
-    <!--/Header-->
-    <!--Content-->
-    <div class="sb-modal-content">
-        <div class="ui center aligned segment">
-            <p>{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}</p>
-        </div>
-    </div>
-    <!--/Content-->
-
-    <!--Actions-->
-    <div class="sb-modal-actions">
-        <a href={{baseUrl}} class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0">
-            {{resourceService.frmelmnts?.btn?.signin}}
-        </a>
-    </div>
-    <!--/Actions-->
-</sui-modal>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
 

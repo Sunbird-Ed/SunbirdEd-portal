@@ -58,13 +58,15 @@ module.exports = (app, keycloak) => {
     next();
   });
 
-  app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
+  if (process.env.sunbird_environment !== 'local') {
+    app.get(['/dist/*.ttf', '/dist/*.woff2', '/dist/*.woff', '/dist/*.eot', '/dist/*.svg',
     '/*.ttf', '/*.woff2', '/*.woff', '/*.eot', '/*.svg', '/*.html'], compression(),
     (req, res, next) => {
       res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
       res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
       next()
-  })
+    })
+  }
 
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
 
@@ -80,11 +82,13 @@ module.exports = (app, keycloak) => {
     app.use(express.static(path.join(__dirname, '../tenant', envHelper.DEFAULT_CHANNEL)))
   }
 
-  app.get('/assets/images/*', (req, res, next) => {
-    res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS)
-    res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
-    next()
-  })
+  if (process.env.sunbird_environment !== 'local') {
+    app.get('/assets/images/*', (req, res, next) => {
+      res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS)
+      res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
+      next()
+    })
+  }
 
   app.all('/play/quiz/*', playContent);
   app.all('/manage-learn/*', MLContent);
@@ -198,9 +202,13 @@ function getLocals(req) {
   locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
+  locals.sunbirdQuestionSetChildrenLimit = envHelper.sunbird_questionset_children_limit,
+  locals.sunbirdCollectionChildrenLimit =  envHelper.sunbird_collection_children_limit,
   locals.enableSSO = envHelper.sunbird_enable_sso;
   locals.reportsListVersion = envHelper.reportsListVersion;
+  locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;
+  locals.blobUrl = envHelper.sunbird_portal_cdn_blob_url;
   return locals
 }
 

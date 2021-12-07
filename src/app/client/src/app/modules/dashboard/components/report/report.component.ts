@@ -1,11 +1,12 @@
 import { TelemetryService } from '@sunbird/telemetry';
+import { UserService, TncService } from '@sunbird/core';
 import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
 import { Observable, throwError, of, forkJoin, Subject, merge, combineLatest } from 'rxjs';
-import { mergeMap, switchMap, map, retry, catchError, tap, pluck } from 'rxjs/operators';
+import { mergeMap, switchMap, map, retry, catchError, tap, pluck, first } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
@@ -59,9 +60,14 @@ export class ReportComponent implements OnInit {
   public resetFilters: Object;
   filterType = 'report-filter';
   public reportResult: any;
+  public showExportsOption = true;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
   }
+  userProfile;
+  reportViewerTncVersion: string;
+  reportViewerTncUrl: string;
+  showTncPopup = false;
 
   private set setParametersHash(report) {
     const { hash } = this.activatedRoute.snapshot.params;
@@ -75,12 +81,18 @@ export class ReportComponent implements OnInit {
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
     private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef, private userService: UserService, public tncService: TncService
   ) { }
 
 
   ngOnInit() {
     this.initLayout();
+    this.userService.userData$.pipe(first()).subscribe(async (user) => {
+      if (user && user.userProfile) {
+        this.userProfile = user.userProfile;
+        this.getReportViewerTncPolicy();
+      }
+    });
     this.report$ = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       switchMap(params => {
         const { reportId, hash } = this.activatedRoute.snapshot.params;
@@ -157,7 +169,7 @@ export class ReportComponent implements OnInit {
                 const result: any = Object.assign({});
                 const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-                result['charts'] =  chart;
+                result['charts'] = chart;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
@@ -243,7 +255,7 @@ export class ReportComponent implements OnInit {
   private downloadReportAsPdf() {
 
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
-      scrollX:  0,
+      scrollX: 0,
       scrollY: -window.scrollY,
       scale: 2
     }).then(canvas => {
@@ -558,7 +570,7 @@ export class ReportComponent implements OnInit {
     const chartData = [];
     if (this.reportData.charts) {
       this.reportData.charts.map(chartInfo => {
-        chartData.push({ id:chartInfo.chartConfig.id ,data:chartInfo.chartData});
+        chartData.push({ id: chartInfo.chartConfig.id, data: chartInfo.chartData });
       });
     }
     return chartData;
@@ -566,9 +578,9 @@ export class ReportComponent implements OnInit {
 
   getChartData(chart) {
     const chartInfo = this.chartsReportData.charts.find(data => {
-       if (data['chartConfig']['id'] == chart['chartConfig']['id']) {
-         return true;
-       }
+      if (data['chartConfig']['id'] == chart['chartConfig']['id']) {
+        return true;
+      }
     });
     return chartInfo;
   }
@@ -576,9 +588,9 @@ export class ReportComponent implements OnInit {
     if (this.chartsReportData && this.chartsReportData.charts) {
       this.chartsReportData.charts.map(element => {
         data.chartData.forEach(chart => {
-            if(chart['id']===element['chartConfig']['id']){
-              element.chartData = chart.data;
-            }
+          if (chart['id'] === element['chartConfig']['id']) {
+            element.chartData = chart.data;
+          }
         });
         return element;
       });
@@ -592,7 +604,29 @@ export class ReportComponent implements OnInit {
 
   resetFilter() {
     this.resetFilters = { data: this.getAllChartData(), reset: true };
+  }
 
+  selectedTabChange(event) {
+    const { type, downloadURL } = _.get(event, 'tab.textLabel');
+    this.showExportsOption = ['chart', 'download'].includes(type);
+    downloadURL && this.setDownloadUrl(downloadURL);
+  }
+  getReportViewerTncPolicy() {
+    this.tncService.getReportViewerTnc().subscribe((data) => {
+      const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
+      if (_.get(reportViewerTncData, 'latestVersion')) {
+        this.reportViewerTncVersion = _.get(reportViewerTncData, 'latestVersion');
+        this.reportViewerTncUrl = _.get(_.get(reportViewerTncData, _.get(reportViewerTncData, 'latestVersion')), 'url');
+        this.showReportViewerTncForFirstUser();
+      }
+  });
+}
+
+  showReportViewerTncForFirstUser() {
+     const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
+     if (!reportViewerTncObj) {
+     this.showTncPopup = true;
+     }
   }
 }
 

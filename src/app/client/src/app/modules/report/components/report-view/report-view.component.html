@@ -53,13 +53,11 @@
                       </div>
                     </div>
                     <div class="dropdown">
-                      <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn "
-                        *ngIf="!segmentfilter">
+                      <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn " *ngIf="!segmentfilter">
                         {{this.resourceService?.frmelmnts.btn.exportAs}}
                       </button>
                       <div class="dropdown-content">
-                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
-                          (click)="download()">
+                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn" (click)="download()">
                           Pdf
                         </button>
                       </div>
@@ -72,13 +70,11 @@
             <div class="ui container" *ngIf="data">
               <div class="twelve wide column">
                 <div id="report-body" class="my-16">
-                  <sui-tabset>
-                    <div class="ui pointing secondary menu d-flex flex-ai-center sbt-report-tabs-panel px-15">
-                      <a class="item px-0 mx-15 py-20" *ngFor="let tab of tabs; let i = index" [suiTabHeader]="i"
-                        (click)="segmentChanged(tab.header)">{{ tab.header | translate}}</a>
-                    </div>
-                    <div class="report-block ui bottom attached segment p-0 b-0 no-bg my-24"
-                      *ngFor="let tab of tabs; let i = index" [suiTabContent]="i">
+                  <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
+                    <mat-tab *ngFor="let tab of tabs; let i = index" [label]="{'tabHeader': tab?.header}">
+                      <ng-template mat-tab-label>
+                        <span>{{tab.header | translate}}</span>
+                      </ng-template>
                       <div class="ui bottom p-0 b-0 no-bg graph-section" *ngIf="segmentfilter">
                         <div class="double-btn">
                           <div class="column-btn">
@@ -87,8 +83,7 @@
                                 {{this.resourceService?.frmelmnts.btn.exportAs}}
                               </button>
                               <div class="dropdown-content">
-                                <button
-                                  class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
+                                <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
                                   (click)="download()">
                                   Pdf
                                 </button>
@@ -189,7 +184,7 @@
                                         <strong>{{i+1}}) {{ data?.question }}</strong>
                                         <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
                                       </div>
-                                      <div  class="card-align">
+                                      <div class="card-align">
                                         <div *ngFor="let e of data.evidences" class="thumbnail-card">
                                           <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
                                         </div>
@@ -202,7 +197,7 @@
                                     </div>
                                   </div>
                                 </div>
-                                <div  class="card-align">
+                                <div class="card-align">
                                   <div *ngFor="let e of element.evidences" class="thumbnail-card">
                                     <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
                                   </div>
@@ -217,12 +212,11 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    <div *ngIf="!reportSections">
-                      <app-no-result [data]="noResultMessage"></app-no-result>
-                    </div>
-                  </sui-tabset>
+                    </mat-tab>
+                  </mat-tab-group>
+                  <div *ngIf="!reportSections">
+                    <app-no-result [data]="noResultMessage"></app-no-result>
+                  </div>
                 </div>
               </div>
             </div>
@@ -236,14 +230,15 @@
   </div>
   <div class="twelve wide column" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
-</div>
+  </div>
 </div>
 
 
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" [isBasic]="true"
   class="sb-modal sb-success add-entity-modal" (dismissed)="closeModal()" *ngIf="filterModal" #modal>
   <div class="sb-modal-header">
-    <h4>{{segmentValue =='Questions' ?  (resourceService?.frmelmnts?.lbl?.selectquestionfilter) : (resourceService?.frmelmnts?.lbl?.selectcriteriafilter) }}</h4>
+    <h4>{{segmentValue =='Questions' ? (resourceService?.frmelmnts?.lbl?.selectquestionfilter) :
+      (resourceService?.frmelmnts?.lbl?.selectcriteriafilter) }}</h4>
   </div>
   <div class="sb-modal-content content">
     <div *ngFor="let question of modalFilterData">

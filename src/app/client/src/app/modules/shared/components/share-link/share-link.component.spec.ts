@@ -53,15 +53,12 @@ describe('ShareLinkComponent', () => {
   });
   it('should take content share link  INPUT  ', () => {
     component.shareLink = Response.contentShare;
-    expect(component.sharelinkModal).toBeDefined();
-    expect(component.sharelinkModal).toBeFalsy();
     expect(component.shareLink).toBeDefined();
     expect(component.shareLink).toBe(Response.contentShare);
   });
   it('Should show the content share model', () => {
     spyOn(component, 'initializeModal').and.callThrough();
     component.initializeModal();
-    expect(component.sharelinkModal).toBeFalsy();
   });
   xit('Should call copyLink and copy the the link', () => {
     spyOn(component, 'copyLink').and.callThrough();

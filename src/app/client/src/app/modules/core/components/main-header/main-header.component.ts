@@ -157,6 +157,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   showingResult: string;
   userPreference:any;
   showReportMenu:boolean=false;
+  showingDescription: string;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -586,7 +587,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
-          document.title = _.get(this.userService, 'rootOrgName');
         }
       });
     } else {
@@ -732,7 +732,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   get backButton() {
-    const { isInside, returnTo } = this.activatedRoute.snapshot.queryParams;
+    const { isInside, returnTo, title, description } = this.activatedRoute.snapshot.queryParams;
     return {
       goBack: () => {
         if (returnTo) {
@@ -744,9 +744,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         if (isInside) {
           this.showBackButton = true;
           const filterPipe = new InterpolatePipe();
-          const successMessage = filterPipe.transform(_.get(this.resourceService, 'frmelmnts.lbl.showingResultsFor'),
+          const successMessage = filterPipe.transform(_.get(this.resourceService, title),
             '{searchString}', isInside);
           this.showingResult = successMessage;
+          this.showingDescription = description ? (filterPipe.transform(_.get(this.resourceService, description),
+          '{searchString}', isInside) + ' ' + this.resourceService.instance) : '';
         } else {
           this.showBackButton = false;
         }

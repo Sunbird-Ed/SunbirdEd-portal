@@ -15,6 +15,7 @@ let envVariables = {
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
+  uci_service_base_url: env.uci_service_base_url || "http://kong:8000",
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
@@ -65,7 +66,9 @@ let envVariables = {
   // Telemetry Configuration
   PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 1000,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
-
+ 
+  // generic editor content size 150 MB
+  SUNBIRD_DEFAULT_FILE_SIZE: env.sunbird_default_file_size || 150,
 
   // Keycloak Configuration
   KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
@@ -142,6 +145,9 @@ let envVariables = {
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
   sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
 
+  // generic editor question set and coleections children contents limit
+  SUNBIRD_QUESTIONSET_CHILDREN_LIMIT: env.sunbird_questionset_children_limit || 500,
+  SUNBIRD_COLLECTION_CHILDREN_LIMIT: env.sunbird_collection_children_limit || 1200,
 
   // Default Language Configuration
   sunbird_default_language: env.sunbird_portal_default_language || 'en',
@@ -212,8 +218,38 @@ let envVariables = {
     OBSERVATION_URL: ''
   },
 
+  // Kong device registration and refresh token keys
+  KONG_DEVICE_REGISTER_TOKEN: env.sunbird_kong_device_register || 'false',
+  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN: env.sunbird_kong_device_register_anonymous || 'false',
+  KONG_DEVICE_REGISTER_AUTH_TOKEN: env.sunbird_kong_device_register_token,
+  sunbird_anonymous_session_ttl: env.sunbird_anonymous_session_ttl ? parseInt(env.sunbird_anonymous_session_ttl) : 10 * 60 * 1000,
+  sunbird_default_device_token: env.sunbird_default_device_token || '',
+  // Kong endpoints
+  sunbird_anonymous_device_register_api: env.sunbird_anonymous_device_register_api || '',
+  sunbird_loggedin_device_register_api: env.sunbird_loggedin_device_register_api || '',
+  sunbird_kong_refresh_token_api: env.sunbird_kong_refresh_token_api || '',
+
+  // Device register API for anonymous users
+  sunbird_anonymous_register_token: env.sunbird_anonymous_register_token || '',
+  // Device register API for logged in users
+  sunbird_loggedin_register_token: env.sunbird_loggedin_register_token || '',
+
+  // Fallback token for device register API for `anonymous` users
+  sunbird_anonymous_default_token: env.sunbird_anonymous_default_token || '',
+  // Fallback token for device register API for `logged` users
+  sunbird_logged_default_token: env.sunbird_logged_default_token || '',
+
+  // Redis storage
+  PORTAL_REDIS_URL: env.sunbird_redis_urls,
+  PORTAL_REDIS_PORT: env.sunbird_redis_port,
+  PORTAL_REDIS_TYPE: env.sunbird_redis_type,
+  PORTAL_REDIS_PASSWORD: env.sunbird_redis_password,
+  PORTAL_REDIS_CONNECTION_STRING: env.portal_redis_connection_string,
   // VDN URL
-  vdnURL:env.vdnURL || ''
+  vdnURL:env.vdnURL || '',
+
+  // Add below variable for Apple Login
+  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

@@ -19,7 +19,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
-import { CommonFormElementsModule } from 'common-form-elements-v9';
+import { CommonFormElementsModule } from 'common-form-elements-web-v9';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashletModule } from  '@project-sunbird/sb-dashlet-v9';
@@ -46,7 +46,7 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     CommonConsumptionModule,
     CommonFormElementsModule,
     LocationModule,
-    DashletModule
+    DashletModule.forRoot()
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,

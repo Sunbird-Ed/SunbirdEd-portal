@@ -12,6 +12,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import * as _ from 'lodash-es';
+import { Location } from '@angular/common';
 
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
@@ -86,6 +87,10 @@ describe('ViewAllComponent', () => {
     const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
     const sortIntractEdata = { id: 'sort', type: 'click', pageid: 'course' };
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    component.queryParams = {
+      viewMore: true,
+      content: JSON.stringify(Response.successData.result.content[0])
+    };
      spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
@@ -153,7 +158,7 @@ describe('ViewAllComponent', () => {
     route.url = '/learn/view-all/LatestCourses/1?contentType: course';
     const event = { data: { metaData: { batchId: '0122838911932661768' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
-    component.playContent(event);
+    component.playContent(event,{});
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should call playcontent without batchId', () => {
@@ -162,7 +167,7 @@ describe('ViewAllComponent', () => {
     const playerService = TestBed.get(PlayerService);
     const event = { data: { metaData: { contentType: 'story' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
-    component.playContent(event);
+    component.playContent(event,{});
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should call navigateToPage method', () => {
@@ -173,7 +178,7 @@ describe('ViewAllComponent', () => {
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     component.pageNumber = 1;
     component.pager = Response.pager;
-    component.pageLimit = 20;
+    component.pageLimit = 100;
     component.pager.totalPages = 7;
     component.navigateToPage(1);
     expect(component.pageNumber).toEqual(1);
@@ -274,8 +279,20 @@ describe('ViewAllComponent', () => {
   it('should handle close button click', () => {
     const route = TestBed.get(Router);
     route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    component.queryParams = {
+      viewMore: false
+    };
     component.handleCloseButton();
     expect(route.navigate).toHaveBeenCalledWith(['/learn'], { queryParams: { selectedTab: '' } });
+  });
+
+  it('should handle close button', () => {
+    component.queryParams = {
+      selectedTab: 'all'
+    };
+    spyOn(window.history, 'go');
+    component.handleCloseButton();
+    expect(window.history.go).toHaveBeenCalled();
   });
   describe('get the current page data', () => {
     it('from history state', done => {

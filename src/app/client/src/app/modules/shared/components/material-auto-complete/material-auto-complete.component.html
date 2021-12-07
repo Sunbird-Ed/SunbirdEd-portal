@@ -1,0 +1,15 @@
+<div class="sb-autocomp-dropdown">
+  <mat-form-field class="sb-autocomp-dropdown__formfield">
+    <input matInput (click)="DisplayDropdown()" readonly name="selectedDpdwnInput"
+      [value]="_selectedDpdwnInput ? _selectedDpdwnInput : ''" />
+  </mat-form-field>
+  <div class="sb-autocomp-dropdown__list" *ngIf="displayDropdown">
+    <input matInput #autocompleteInput placeholder="Search" autofocus />
+    <ul>
+      <li *ngFor="let listItem of dropdownList | autocomplete: {filterKey: autocompleteInput.value}">
+        <mat-checkbox class="sb-mat__checkbox sb-mat__checkbox--primary" [checked]="isChecked(listItem)" (change)="DropdownValueSelected(listItem)">{{ listItem }}
+        </mat-checkbox>
+      </li>
+    </ul>
+  </div>
+</div>

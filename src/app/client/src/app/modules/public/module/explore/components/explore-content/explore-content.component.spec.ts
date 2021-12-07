@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../offline/services';
 import { PublicPlayerService } from '@sunbird/public';
@@ -142,6 +142,11 @@ describe('ExploreContentComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['']);
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    component.selectedFilters = {
+      se_boards: ['sample-board'],
+      se_medium: ['sample-medium'],
+      se_gardeLevel: ['sample-grade']
+    };
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
@@ -151,6 +156,11 @@ describe('ExploreContentComponent', () => {
     expect(component.contentList.length).toEqual(1);
   }));
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
+    component.selectedFilters = {
+      se_boards: ['sample-board'],
+      se_medium: ['sample-medium'],
+      se_gardeLevel: ['sample-grade']
+    };
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
@@ -214,7 +224,7 @@ describe('ExploreContentComponent', () => {
   it('should call updateDownloadStatus when updateCardData is called', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus');
-    component.contentList = Response.successData.result.content;
+   component.contentList = Response.contentList as any;
     component.updateCardData(Response.download_list);
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
   });
@@ -312,7 +322,11 @@ describe('ExploreContentComponent', () => {
 
   it('should call listenLanguageChange', () => {
     component.isDesktopApp = true;
-    component.contentList = [{ name: 'test' }];
+    component.contentList = [{ name: 'test', contents: [{
+      name: 'sample-content',
+      identifier: 'd0-123'
+     }]
+   }];
     spyOn(component, 'addHoverData');
     spyOn<any>(component, 'setNoResultMessage');
     component['listenLanguageChange']();
@@ -329,4 +343,35 @@ describe('ExploreContentComponent', () => {
     expect(component.contentList.length).toEqual(1);
   }));
 
+  it('should return group by subjects', fakeAsync(() => {
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    component.selectedFilters = {
+      se_boards: ['sample-board'],
+      se_medium: ['sample-medium'],
+      se_gardeLevel: ['sample-grade']
+    };
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    tick(100);
+    expect(component.initFilters).toBeTruthy();
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should return view more list', () => {
+    const events = {
+      name: 'sample-name/?',
+      contents: JSON.stringify({name: 'sample-content'})
+    };
+    component.queryParams = {
+      returnTo: 'home'
+    };
+    const userServices = TestBed.get(UserService);
+    spyOn(userServices, 'loggedIn').and.returnValue(true);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    component.viewAll(events);
+    expect(events.contents).toBeTruthy();
+    expect(events.name).toBeTruthy();
+  });
 });

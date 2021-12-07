@@ -14,7 +14,6 @@ import dayjs from 'dayjs';
 })
 export class BatchInfoComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal;
   @Input() enrolledBatchInfo: any;
   @Output() modelClose = new EventEmitter;
   @Output() routeChanged = new EventEmitter();
@@ -75,10 +74,10 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     return this.learnerService.post(option);
   }
   public handleResumeEvent(event) {
-    this.modal.deny();
     this.routeChanged.emit(false);
     event.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
-    event.contentType = 'Course'; // to route to course page
+    event.contentType = 'Course'; // route to course page
+    event.primaryCategory = 'Course';
     this.playerService.playContent(event);
   }
   public handleEnrollmentEndDate(batchDetails) {
@@ -107,7 +106,6 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     };
     this.learnerService.post(options).pipe(
       tap(data => {
-        this.modal.deny();
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
       }),
       delay(2000), // wait for data to sync
@@ -139,9 +137,6 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     .subscribe(({result}) => _.forEach(_.get(result, 'response.content'), user => this.userDetails[user.identifier] = user));
   }
   ngOnDestroy() {
-    if (this.modal && this.modal.deny) {
-      this.modal.deny();
-    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }

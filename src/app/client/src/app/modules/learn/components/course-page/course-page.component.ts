@@ -23,7 +23,6 @@ import { ContentManagerService } from '../../../public/module/offline/services/c
 export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
-  public showLoginModal = false;
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
   public carouselMasterData: Array<ICaraouselData> = [];
@@ -563,6 +562,10 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.coursesService.findEnrolledCourses(metaData.identifier);
 
       if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+        return this.playerService.playContent(metaData);
+      }
+      if (sectionType) {
+        metaData.batchId = _.get(metaData,'metaData.batchId');
         return this.playerService.playContent(metaData);
       }
 

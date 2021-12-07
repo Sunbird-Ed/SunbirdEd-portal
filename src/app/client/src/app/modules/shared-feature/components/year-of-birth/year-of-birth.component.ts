@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ProfileService } from '@sunbird/profile';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 
@@ -11,12 +12,13 @@ export class YearOfBirthComponent implements OnInit {
     selectedYearOfBirth: number;
     birthYearOptions: Array<number> = [];
     showYearOfBirthPopup = false;
-    @ViewChild('modal') modal;
+    @Input() dialogProps;
 
     constructor(
         private profileService: ProfileService,
         private configService: ConfigService,
-        public resourceService: ResourceService
+        public resourceService: ResourceService,
+        private matDialog: MatDialog
     ) { }
     ngOnInit() {
         this.initiateYearSelector();
@@ -26,7 +28,8 @@ export class YearOfBirthComponent implements OnInit {
         if (this.selectedYearOfBirth) {
             const req = { dob: this.selectedYearOfBirth.toString() };
             this.profileService.updateProfile(req).subscribe();
-            this.modal.deny();
+            const dialogRef = this.dialogProps && this.dialogProps.id && this.matDialog.getDialogById(this.dialogProps.id);
+            dialogRef && dialogRef.close();
         }
     }
 

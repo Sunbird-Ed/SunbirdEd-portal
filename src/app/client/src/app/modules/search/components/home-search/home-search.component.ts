@@ -12,6 +12,8 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
+import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
+
 
 @Component({
   templateUrl: './home-search.component.html'
@@ -32,7 +34,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public facets: Array<string>;
   public facetsList: any;
   public paginationDetails: IPagination;
-  public contentList: Array<ICard> = [];
+  public contentList: Array<any> = [];
   public cardIntractEdata: IInteractEventEdata;
   public loaderMessage: ILoaderMessage;
   public redirectUrl;
@@ -149,6 +151,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$))
       .subscribe(({ params, queryParams }) => {
         this.queryParams = { ...queryParams };
+        this.globalSearchFacets = (this.queryParams && this.queryParams.searchFilters) ?
+        JSON.parse(this.queryParams.searchFilters) : this.globalSearchFacets;
         this.paginationDetails.currentPage = params.pageNumber;
         this.contentList = [];
         this.fetchContents();
@@ -164,7 +168,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     filters = this.schemaService.schemaValidator({
       inputObj: filters || {},
       properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject']
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject', 'description']
     });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
@@ -185,16 +189,56 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     const option = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),
-      limit: _.get(this.allTabData, 'search.limit'),
+      limit: _.get(this.allTabData, 'search.limit') ?  _.get(this.allTabData, 'search.limit')
+      : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       offset: (this.paginationDetails.currentPage - 1) * (this.configService.appConfig.SEARCH.PAGE_LIMIT),
       query: this.queryParams.key,
       sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
       facets: this.globalSearchFacets,
-      params: this.configService.appConfig.Course.contentApiQueryParams
+      params: this.configService.appConfig.Course.contentApiQueryParams,
+      pageNumber: this.paginationDetails.currentPage
     };
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
+          const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
+          const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
+            return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
+        }), ['undefined']);
+        for (const [key, value] of Object.entries(filteredContents)) {
+            const isMultipleSubjects = key && key.split(',').length > 1;
+            if (isMultipleSubjects) {
+                const subjects = key && key.split(',');
+                subjects.forEach((subject) => {
+                    if (filteredContents[subject]) {
+                        filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+                    } else {
+                        filteredContents[subject] = value;
+                    }
+                });
+                delete filteredContents[key];
+            }
+        }
+        const sections = [];
+        for (const section in filteredContents) {
+            if (section) {
+                if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
+                    continue;
+                }
+                sections.push({
+                    name: section,
+                    contents: filteredContents[section]
+                });
+            }
+        }
+        _map(sections, (section) => {
+            forEach(section.contents, contents => {
+                contents.cardImg = contents.appIcon || 'assets/images/book.png';
+            });
+            return section;
+        });
+        this.contentList = sections;
+        this.addHoverData();
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
@@ -217,11 +261,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        const { constantData, metaData, dynamicFields } = this.configService.appConfig.HomeSearch;
-        this.contentList = _.concat(_.get(data, 'result.content') || [], _.get(data, 'result.QuestionSet') || []) || [];
-        this.contentList = _.map(this.contentList, (content: any) =>
-          this.utilService.processContent(content, constantData, dynamicFields, metaData));
-        this.addHoverData();
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -269,17 +308,17 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public playContent({ data }) {
-    const { metaData } = data;
+    const metaData = data;
     this.changeDetectorRef.detectChanges();
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
     this.coursesService.findEnrolledCourses(metaData.identifier);
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
-      return this.playerService.playContent(metaData);
+      return this.playerService.playContent(data);
     }
 
     if (onGoingBatchCount === 1) { // play course if only one open batch is present
       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
-      return this.playerService.playContent(metaData);
+      return this.playerService.playContent(data);
     }
     // else if (onGoingBatchCount === 0 && expiredBatchCount === 1){
     //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
@@ -356,12 +395,14 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addHoverData() {
-    _.forEach(this.contentList, contents => {
-      if (this.contentDownloadStatus[contents.identifier]) {
-          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
-      }
+    each(this.contentList, (contentSection) => {
+      forEach(contentSection.contents, content => {
+          if (this.contentDownloadStatus[content.identifier]) {
+              content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+          }
+      });
+      this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
    });
-   this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
 
   hoverActionClicked(event) {
@@ -523,4 +564,51 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
 
+public viewAll(event) {
+    this.logViewAllTelemetry(event);
+     const searchQueryParams: any = {};
+    searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });
+    searchQueryParams['exists'] = undefined;
+    searchQueryParams['primaryCategory'] = this.queryParams.primaryCategory ? this.queryParams.primaryCategory : [event.name];
+    this.queryParams.primaryCategory ? (searchQueryParams['subject'] = [event.name]) :
+    (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
+    searchQueryParams['selectedTab'] = 'all';
+    const sectionUrl = '/explore' + '/view-all/' + event.name.replace(/\s/g, '-');
+    this.router.navigate([sectionUrl, 1], { queryParams: searchQueryParams, state: {} });
+ }
+
+ public isUserLoggedIn(): boolean {
+  return this.userService && (this.userService.loggedIn || false);
 }
+
+logViewAllTelemetry(event) {
+  const telemetryData = {
+      cdata: [{
+          type: 'section',
+          id: event.name
+      }],
+      edata: {
+          id: 'view-all'
+      }
+  };
+  this.getInteractEdata(telemetryData);
+}
+
+getInteractEdata(event) {
+  const cardClickInteractData = {
+      context: {
+          cdata: event.cdata,
+          env: this.isUserLoggedIn() ? 'library' : this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+          id: get(event, 'edata.id'),
+          type: 'click',
+          pageid: this.isUserLoggedIn() ? 'library' : this.activatedRoute.snapshot.data.telemetry.pageid
+      },
+      object: get(event, 'object')
+  };
+  this.telemetryService.interact(cardClickInteractData);
+}
+
+}
+

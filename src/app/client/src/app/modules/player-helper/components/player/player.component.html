@@ -23,10 +23,10 @@
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-video-player>
 
-        <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig"
+        <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig" [showFullScreen]="isFullScreenView"
         (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
 
-        <quml-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [QumlPlayerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-player>
+        <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
       </div>
 </div>
 
@@ -53,10 +53,10 @@
   <sunbird-video-player *ngIf="playerType === 'video-player'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
   </sunbird-video-player>
-  <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig"
+  <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig" [showFullScreen]="isFullScreenView"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
 
-    <quml-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [QumlPlayerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-player>
+    <quml-main-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></quml-main-player>
 </div>
 </div>
 

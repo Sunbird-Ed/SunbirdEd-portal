@@ -4,12 +4,13 @@ const axios = require('axios');
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
 const { logger } = require('@project-sunbird/logger');
+const { getBearerToken, getAuthToken } = require('../helpers/kongTokenHelper')
 
 const orgAdminAsCollaborator = async function assignOrgAdminAsCollaborator(req, res, next) {
     const resourceId = req.body.request.resourceId
     const userId = req.session.userId
     if ( (req.url == '/content/lock/v1/create') && req.body.request.isRootOrgAdmin) {
-        const token =  _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+        const token =   getAuthToken(req);
         axios.get(envHelper.CONTENT_PROXY_URL +'/action/content/v3/read/' + resourceId + '?fields=collaborators,createdBy')
         .then((response) => {
             if (_.has(response.data.result.content, 'collaborators') && _.includes(response.data.result.content.collaborators, userId)) {
@@ -27,7 +28,7 @@ const orgAdminAsCollaborator = async function assignOrgAdminAsCollaborator(req, 
                         'x-msgid': uuidv1(),
                         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
                         'content-type': 'application/json',
-                        'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
+                        'Authorization': 'Bearer ' + getBearerToken(req),
                         'x-authenticated-user-token': token,
                     },
                     data: {

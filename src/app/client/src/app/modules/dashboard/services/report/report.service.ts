@@ -14,8 +14,9 @@ import { UUID } from 'angular2-uuid';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
+
 @Injectable()
-export class ReportService {
+export class ReportService  {
 
   private _superAdminSlug: string;
 
@@ -24,7 +25,7 @@ export class ReportService {
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
-    private frameworkService: FrameworkService, private profileService: ProfileService) {
+    private frameworkService: FrameworkService, private profileService: ProfileService ) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
@@ -207,11 +208,17 @@ export class ReportService {
       const tableData: any = {};
       tableData.id = tableId;
       tableData.name = _.get(table, 'name') || 'Table';
+      tableData.config = _.get(table, 'config') ||  false;
+      if(!tableData.config){
+        tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));   
+      } else {
+        tableData.data = dataset.data;
+      }
       tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
-      tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
         hash ? this.getParameterFromHash(hash) : null);
       return tableData;
+
     });
   }
 
@@ -223,6 +230,12 @@ export class ReportService {
   }
 
   private getTableData(data: { result: any, id: string }[], tableId) {
+    if (data.length === 1) {
+      const [dataSource] = data;
+      if (dataSource.id === 'default') {
+        return dataSource.result;
+      }
+    }
     return this.getDataSourceById(data, tableId) || {};
   }
 
