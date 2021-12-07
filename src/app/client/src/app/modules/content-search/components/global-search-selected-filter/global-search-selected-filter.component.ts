@@ -39,7 +39,7 @@ export class GlobalSearchSelectedFilterComponent {
       });
       this.selectedFilters.channel = channelIds;
     }
-    if(!_.get(this.selectedFilters,'selectedTab')){
+    if(!_.get(this.selectedFilters,'selectedTab') && _.get(queryFilters,'selectedTab')){
       this.selectedFilters['selectedTab'] = _.get(queryFilters,'selectedTab');
     }
     if (this.queryParamsToOmit) {
