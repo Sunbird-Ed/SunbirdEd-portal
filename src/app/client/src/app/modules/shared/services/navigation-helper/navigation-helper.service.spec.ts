@@ -160,6 +160,15 @@ describe('NavigationHelperService', () => {
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
       }));
 
+  it('should call goBack for profile page route',
+    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+        router['url'] = '/profile';
+        service.goBack();
+        expect(service.router.navigate).toHaveBeenCalledWith(['/profile']);
+      }));
+
+
   it('Should emit contentFullScreenEvent as TRUE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
     (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
       spyOn(service.contentFullScreenEvent, 'emit');
