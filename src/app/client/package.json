@@ -125,7 +125,7 @@
     "slick-carousel": "^1.8.1",
     "tree-model": "^1.0.7",
     "tslib": "^1.10.0",
-    "video.js": "7.4.1",
+    "video.js": "7.14.3",
     "videojs-contrib-quality-levels": "^2.1.0",
     "videojs-http-source-selector": "^1.1.6",
     "zone.js": "~0.10.2"
