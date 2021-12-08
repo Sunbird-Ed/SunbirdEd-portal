@@ -10,55 +10,73 @@
           </div>
           <div class="d-flex flex-ai-center head-tail-right-side">
             <div class="pull-right dk-top-head-ul">
-              <ul role="navigation" aria-label="accessibility links">
-                <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);"
-                    title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" tabindex="0" (click)="skipToMainContent()"
-                    class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a></li>
-                <li aria-hidden="true" *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
-                <li class="screen-reader-link"><a href="/screenreaderaccess.html" tabindex="0"
-                    title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a>
-                </li>
-                <li aria-hidden="true" class="mx-4">|</li>
-                <li class="mb-0">
-                  <ng-container *ngIf="userService.loggedIn">
-                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="0" href="/sitemap.html?session=true"
-                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
-                  </ng-container>
-                  <ng-container *ngIf="!userService.loggedIn">
-                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="0" href="/sitemap.html"
-                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
-                  </ng-container>
-                </li>
-                <li aria-hidden="true" class="mx-4">|</li>
-              </ul>
-              <ul>
-                <li class="fontResize-container d-flex flex-ai-center pull-right" role="navigation" aria-label="Font Size">
-                    <button type="button" [attr.aria-pressed]="false" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}" class="fontResizeBtn fontResizeBtn_A-"
+              <nav title="accessibility_links" class="d-flex flex-ai-center">
+                <ul role="navigation" aria-label="accessibility links">
+                  <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);"
+                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" tabindex="0"
+                      (click)="skipToMainContent()"
+                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a></li>
+                  <li aria-hidden="true" *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
+                  <li class="screen-reader-link"><a href="/screenreaderaccess.html" tabindex="0"
+                      title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a>
+                  </li>
+                  <li aria-hidden="true" class="mx-4">|</li>
+                  <li class="mb-0">
+                    <ng-container *ngIf="userService.loggedIn">
+                      <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="0"
+                        href="/sitemap.html?session=true"
+                        class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
+                    </ng-container>
+                    <ng-container *ngIf="!userService.loggedIn">
+                      <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="0"
+                        href="/sitemap.html"
+                        class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
+                    </ng-container>
+                  </li>
+                  <li aria-hidden="true" class="mx-4">|</li>
+                </ul>
+                <ul>
+                  <li class="fontResize-container d-flex flex-ai-center pull-right" role="navigation"
+                    aria-label="Font Size">
+                    <button type="button" [attr.aria-pressed]="false" tabindex="0"
+                      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
+                      class="fontResizeBtn fontResizeBtn_A-"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
                       (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-                    <button [attr.aria-pressed]="false" type="button" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}" class="fontResizeBtn fontResizeBtn_A"
+                    <button [attr.aria-pressed]="false" type="button" tabindex="0"
+                      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
+                      class="fontResizeBtn fontResizeBtn_A"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
                       (click)="changeFontSize('reset');" #resetFontSize>A</button>
-                    <button [attr.aria-pressed]="false" type="button" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}" class="fontResizeBtn fontResizeBtn_A+"
+                    <button [attr.aria-pressed]="false" type="button" tabindex="0"
+                      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}"
+                      class="fontResizeBtn fontResizeBtn_A+"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}"
                       (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
-                </li>
-                <li aria-hidden="true" class="mx-4">|</li>
-                <li><button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="0"
-                    title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="changeTheme()" (keydown.enter)="changeTheme();" #darkModeToggle>
-                    <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
-                      <path fill="var(--white)"
-                        d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
-                        transform="translate(-8 -8)" /></svg>
-                  </button></li>
-              </ul>
+                  </li>
+                  <li aria-hidden="true" class="mx-4">|</li>
+                  <li><button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="0"
+                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="changeTheme()"
+                      (keydown.enter)="changeTheme();" #darkModeToggle>
+                      <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+                        <path fill="var(--white)"
+                          d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+                          transform="translate(-8 -8)" />
+                      </svg>
+                    </button></li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" 
-      [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true, panelClass: 'overflow-visible'}">
+      <ng-template sbModalContent let-data>
+        <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
+          [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+      </ng-template>
+    </app-modal-wrapper>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
     <div *ngIf="showGlobalConsentPopUpSection">
@@ -70,36 +88,53 @@
     <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
       [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
     
-    <app-year-of-birth *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)"></app-year-of-birth>
+  <app-modal-wrapper [config]="{disableClose: true, size: 'small'}"
+    *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
+    <ng-template sbModalContent let-data>
+      <app-year-of-birth [dialogProps]="data"></app-year-of-birth>
+    </ng-template>
+  </app-modal-wrapper>
+    
     <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
       [ngClass]="{'header-block': isFullScreenView}"></app-header>
     <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
     </app-install-app>
     <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
-    <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
+
+    <main>
+      <router-outlet *ngIf="isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)"></router-outlet>
+    </main>
   </div>
 </div>
 <div *ngIf="isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute(), 'hideBot': isFullScreenView}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
-<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.sesnexrd}}
-  </div>
-  <div class="sb-modal-content">
-    <p class="ui center aligned segment">
-      {{resourceService?.frmelmnts?.lbl?.plslgn |
-          interpolate:'{instance}': instance }}
-    </p>
-  </div>
-  <div class="sb-modal-actions">
-    <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
-      {{ resourceService?.frmelmnts?.btn?.login }}
-    </button>
-  </div>
-</sui-modal>
+
+<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired" [config]="{disableClose: true, size: 'small'}">
+  <ng-template sbModalContent let-data>
+    <div class="sb-mat__modal">
+
+      <div mat-dialog-title>
+        <div class="title">{{resourceService?.frmelmnts?.lbl?.sesnexrd}}</div>
+      </div>
+      <mat-dialog-content>
+        <div class="sb-mat__modal__content">
+          <p>
+            {{resourceService?.frmelmnts?.lbl?.plslgn |
+                interpolate:'{instance}': instance }}
+          </p>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+          {{ resourceService?.frmelmnts?.btn?.login }}
+        </button>
+      </mat-dialog-actions>
+
+    </div>
+  </ng-template>
+</app-modal-wrapper>
 
 <ng-container *ngIf="layoutConfiguration">
   <svg width="332px" height="358px" viewBox="0 0 332 358" class="sbt-theme-bg-img computer only" version="1.1"

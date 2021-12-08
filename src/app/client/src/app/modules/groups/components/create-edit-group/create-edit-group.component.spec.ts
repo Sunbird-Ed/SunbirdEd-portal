@@ -18,6 +18,7 @@ import { GroupsService, fakeActivatedRouteWithGroupId } from '../../services';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreateEditGroupComponent', () => {
   let component: CreateEditGroupComponent;
@@ -48,7 +49,7 @@ describe('CreateEditGroupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CreateEditGroupComponent ],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, SuiModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, SuiModule, BrowserAnimationsModule],
       providers: [CacheService, { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub }, UserService,
         TelemetryService, { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId }, GroupsService,
@@ -91,7 +92,7 @@ describe('CreateEditGroupComponent', () => {
     });
     spyOn(component.groupService, 'createGroup').and.returnValue(of ({identifier: '1234', name: 'ABCD'}));
     spyOn(component['toasterService'], 'success');
-    component.onSubmitForm();
+    component.onSubmitForm({ modalId: '' });
     component.groupService.createGroup(component.groupForm.value).subscribe(group => {
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.grpcreatesuccess);
     });
@@ -106,7 +107,7 @@ describe('CreateEditGroupComponent', () => {
     spyOn(component.groupService, 'createGroup').and.returnValue(throwError ({err: ''}));
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'closeModal');
-    component.onSubmitForm();
+    component.onSubmitForm({ modalId: '' });
     component.groupService.createGroup(component.groupForm.value).subscribe(group => {}, (err) => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m001);
       expect(component.closeModal).toHaveBeenCalled();
@@ -122,7 +123,7 @@ describe('CreateEditGroupComponent', () => {
     });
     spyOn(component.groupService, 'updateGroup').and.returnValue(of ({}));
     spyOn(component['toasterService'], 'success');
-    component.updateGroup();
+    component.updateGroup({ modalId: '' });
     component.groupService.updateGroup('123', {name: 'ACD', status: GroupEntityStatus.ACTIVE}).subscribe(group => {
       expect(component.groupForm.value.name).toEqual('ACD');
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m001);
@@ -138,7 +139,7 @@ describe('CreateEditGroupComponent', () => {
     });
     spyOn(component.groupService, 'updateGroup').and.returnValue(throwError ({}));
     spyOn(component['toasterService'], 'error');
-    component.updateGroup();
+    component.updateGroup({ modalId: '' });
     component.groupService.updateGroup('123', {name: 'ACD', status: GroupEntityStatus.ACTIVE}).subscribe(group => {}, err => {
       expect(component.groupForm.value.name).not.toEqual('ACD');
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m005);
@@ -179,7 +180,7 @@ describe('CreateEditGroupComponent', () => {
     };
     spyOn(component.groupService, 'createGroup').and.returnValue(throwError (error));
     spyOn(component['toasterService'], 'error');
-    component.onSubmitForm();
+    component.onSubmitForm({ modalId: '' });
     component.groupService.createGroup(component.groupForm.value).subscribe(group => {
     }, err => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.groups.emsg.m001);

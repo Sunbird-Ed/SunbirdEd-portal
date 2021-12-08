@@ -27,7 +27,7 @@ import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
-import { FieldConfig, FieldConfigOption } from 'common-form-elements-v9';
+import { FieldConfig, FieldConfigOption } from 'common-form-elements-web-v9';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -376,12 +376,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.profileService.updateProfile({ framework: data }).subscribe(res => {
       this.userProfile.framework = data;
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
-      this.profileModal.modal.deny();
-      this.showEdit = false;
+      this.profileModal && this.profileModal.deny();
+      // this.showEdit = false;
     }, err => {
-      this.showEdit = false;
+      // this.showEdit = false;
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-      this.profileModal.modal.deny();
+      this.profileModal && this.profileModal.deny();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
     });
   }
@@ -506,6 +506,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   navigateToCourse(coursedata) {
     const courseId = _.get(coursedata, 'courseId');
+    const batchId = _.get(coursedata, 'batchId')
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
@@ -527,7 +528,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
     this.telemetryService.interact(interactData);
-    this.router.navigate([`learn/course/${courseId}`]);
+    this.router.navigate([`learn/course/${courseId}/batch/${batchId}`]);
   }
 
   toggleOtherCertific(showMore) {

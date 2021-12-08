@@ -62,6 +62,7 @@
               }
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/quml-styles/quml-carousel.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
@@ -71,6 +72,7 @@
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
               "node_modules/katex/dist/katex.min.css",
+              "./node_modules/@project-sunbird/sb-themes/themes/themes-material_UI.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
@@ -278,6 +280,7 @@
               "node_modules/leaflet/dist/leaflet.js"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "src/assets/styles/styles.scss"

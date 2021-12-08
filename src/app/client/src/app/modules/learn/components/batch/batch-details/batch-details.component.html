@@ -1,64 +1,81 @@
 <!-- Join Course Table -->
-<sui-modal *ngIf="showJoinModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #batchListModal>
-  <div class="sb-modal-header font-weight-normal">
-    {{resourceService?.frmelmnts?.lbl?.selectBatch}}
-  </div>
-  <div class="sb-modal-content" *ngIf="showAllBatchList">
-    <div class="join-batch">
-      <div class="join-batch__heading">
-        <div>{{resourceService?.frmelmnts?.lbl?.availableBatches}}</div>
-        <div>{{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
-      </div>
-      <div class="join-batch__body" *ngFor="let batch of allBatchList">
-        <div>{{batch.startDate | dateFormat}}<span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}}
-          </span></div>
-        <div *ngIf="userNames[batch.createdBy]">{{userNames[batch.createdBy].firstName}}
-          {{userNames[batch.createdBy].lastName}}</div>
-        <button class="sb-btn sb-btn-outline-secondary sb-btn-normal"
-          tabindex="0" (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
-         >{{resourceService?.frmelmnts?.lbl?.join}}</button>
+<app-modal-wrapper [config]="{disableClose: true}" (dismiss)="showJoinModal = !showJoinModal;" *ngIf="showJoinModal">
+  <ng-template sbModalContent let-data>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-header font-weight-normal">
+            {{resourceService?.frmelmnts?.lbl?.selectBatch}}
+          </div>
+          <div class="sb-modal-content" *ngIf="showAllBatchList">
+            <div class="join-batch">
+              <div class="join-batch__heading">
+                <div>{{resourceService?.frmelmnts?.lbl?.availableBatches}}</div>
+                <div>{{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
+              </div>
+              <div class="join-batch__body" *ngFor="let batch of allBatchList">
+                <div>{{batch.startDate | dateFormat}}<span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}}
+                  </span></div>
+                <div *ngIf="userNames[batch.createdBy]">{{userNames[batch.createdBy].firstName}}
+                  {{userNames[batch.createdBy].lastName}}</div>
+                <button class="sb-btn sb-btn-outline-secondary sb-btn-normal" tabindex="0"
+                  (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)">{{resourceService?.frmelmnts?.lbl?.join}}</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="showAllBatchError">
+            <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div *ngIf="showAllBatchError">
-    <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
 <!-- create batch -->
 <sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="isTrackable && viewBatch">
   <sui-accordion-panel>
-    <div role="button" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion" aria-controls="batches" title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+    <div role="button" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen"
+      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion" aria-controls="batches" title
+      class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
       <i class="chevron down icon" role="img" title="expand"></i>
     </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="batches" aria-labelledby="batches">
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="batches"
+      aria-labelledby="batches">
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
             <label>
-            <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16" [(ngModel)]="batchStatus"
-              [options]="statusOptions" valueField="value" labelField="name" #batchStatusSelect>
-              <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option" tabindex="0">
-              </sui-select-option>
-            </sui-select></label>
+              <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16"
+                [(ngModel)]="batchStatus" [options]="statusOptions" valueField="value" labelField="name"
+                #batchStatusSelect>
+                <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option"
+                  tabindex="0">
+                </sui-select-option>
+              </sui-select>
+            </label>
             <div *ngFor="let batch of batchList">
 
               <div class="sb-color-primary fmedium font-weight-bold"><i class="calendar outline icon"></i>
                 {{batch.startDate | dateFormat}}
-                <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span></div>
+                <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span>
+              </div>
               <div class="batch-details__edit d-flex flex-ai-center py-8">
                 <div *ngIf="allowBatchCreation && allowCertCreation">
                   <div *ngIf="!isCertAdded(batch)" class="sb-color-primary fnormal font-weight-bold">
-                    <a href="javascript:void(0)" tabindex="0" (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
+                    <a href="javascript:void(0)" tabindex="0"
+                      (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
                   </div>
-                  <div *ngIf="isCertAdded(batch)" class="sb-color-primary fnormal font-weight-bold"> 
-                    <a href="javascript:void(0)" tabindex="0" (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
+                  <div *ngIf="isCertAdded(batch)" class="sb-color-primary fnormal font-weight-bold">
+                    <a href="javascript:void(0)" tabindex="0"
+                      (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
                   </div>
                 </div>
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto"
-                  tabindex="0" 
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto" tabindex="0"
                   (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);"
                   [ngClass]="{'sb-btn-disabled': (!isExpiredBatchEditable && batch.status === 2)}"
                   [disabled]="(!isExpiredBatchEditable && batch.status === 2)">
@@ -88,8 +105,8 @@
           <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
         </div>
         <div class="batch-deatils__button text-right" *ngIf="isTrackable && showCreateBatchBtn">
-          <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
-            tabindex="0" (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
+          <button class="sb-btn sb-btn-primary sb-btn-normal width-100" tabindex="0"
+            (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
             *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>
         </div>
       </div>
@@ -110,22 +127,45 @@
           <div *ngIf="batchDetails?.startDate">
             <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
               {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
-            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}
+            </div>
           </div>
-          <hr class="section-hr"  *ngIf="batchDetails?.endDate"/>
+          <hr class="section-hr" *ngIf="batchDetails?.endDate" />
           <div *ngIf="batchDetails?.endDate">
             <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
               {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
             <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
           </div>
-          <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"/>
+          <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
           <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
             <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
               {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
-            <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate | dateFormat}}</div>
-            <div class="sb-label-status-error fsmall"
-            *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate |
+              dateFormat}}</div>
+            <div class="sb-label-status-error fsmall" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
+              {{resourceService?.messages?.stmsg?.m0134}}</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</sui-accordion>
+<sui-accordion *ngIf="showCertificateDetails" class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
+  <sui-accordion-panel [isOpen]="false">
+    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <span>{{resourceService?.frmelemnts?.scttl?.certques}}</span>
+      <i class="chevron down icon" role="img" title="expand"></i>
+    </div>
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+      <div class="batch-details">
+        <div class="mb-16">
+          <ul>
+            <li *ngIf="showCompletionCertificate" class="fsmall mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
+            <li *ngIf="showMeritCertificate" class="fsmall mb-8 sb-color-gray-800">
+              {{resourceService?.frmelemnts?.bltpt?.earnmcert |
+              interpolate:'{percent}': meritCertPercent}}</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -133,8 +173,10 @@
 </sui-accordion>
 
 <!-- Leave batch card -->
-<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
-  <sui-accordion-panel [isOpen]="false" [attr.aria-expanded]="!isOpen" aria-label="accordion area label" (click)="isOpen = !isOpen">
+<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion"
+  *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
+  <sui-accordion-panel [isOpen]="false" [attr.aria-expanded]="!isOpen" aria-label="accordion area label"
+    (click)="isOpen = !isOpen">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
       <i class="chevron down icon" role="img" title="expand"></i>
@@ -153,8 +195,8 @@
         <div class="batch-deatils__button text-right">
           <button
             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
-            class="sb-btn sb-btn-outline-primary sb-btn-normal"
-            tabindex="0" (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
+            class="sb-btn sb-btn-outline-primary sb-btn-normal" tabindex="0"
+            (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
             [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll}}</button>
         </div>
         <div class="batch-details__created mt-8 fsmall">
@@ -170,19 +212,27 @@
   </sui-accordion-panel>
 </sui-accordion>
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="showMessageModal = false;"
-  *ngIf="showMessageModal" #joinTrainingModal>
-  <!--Header-->
-  <div class="sb-modal-header">
-    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
-  </div>
-  <!--/Header-->
-  <!--Content-->
-  <div class="sb-modal-content">
-    <div class="ui center aligned segment">
-      <p>{{batchMessage}}</p>
+<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="showMessageModal = false;"
+  *ngIf="showMessageModal">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-header">
+            {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
+          </div>
+          <!--/Header-->
+          <!--Content-->
+          <div class="sb-modal-content">
+            <div class="ui center aligned segment">
+              <p>{{batchMessage}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <!--/Content-->
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>

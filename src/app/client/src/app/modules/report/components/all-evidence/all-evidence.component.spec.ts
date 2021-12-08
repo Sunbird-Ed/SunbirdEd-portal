@@ -4,10 +4,12 @@ import { DhitiService, CoreModule } from '@sunbird/core';
 import { SharedModule, ConfigService } from '@sunbird/shared';
 import { SuiModule, SuiModalModule } from 'ng2-semantic-ui-v9';
 import { TranslateModule } from '@ngx-translate/core';
-import { of, Observable, Subject } from 'rxjs';
+import { of } from 'rxjs';
 import {allEvidenceData} from './all-evidence.component.spec.data';
 import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 describe('AllEvidenceComponent', () => {
   let component: AllEvidenceComponent;
   let fixture: ComponentFixture<AllEvidenceComponent>;
@@ -22,6 +24,7 @@ describe('AllEvidenceComponent', () => {
         TranslateModule,
         SlReportsLibraryModule,
         HttpClientTestingModule,
+        BrowserAnimationsModule
       ],
       declarations: [AllEvidenceComponent],
       providers: [ConfigService]

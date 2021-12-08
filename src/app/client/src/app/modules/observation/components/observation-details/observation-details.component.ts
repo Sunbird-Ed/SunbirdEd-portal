@@ -211,14 +211,14 @@ export class ObservationDetailsComponent implements OnInit {
     metaData.content.title = this.resourceService.frmelmnts.btn.delete;
     metaData.size = 'mini';
     metaData.footer.buttons.push({
-      type: 'accept',
-      returnValue: true,
-      buttonText: this.resourceService.frmelmnts.btn.yes
-    });
-    metaData.footer.buttons.push({
       type: 'cancel',
       returnValue: false,
       buttonText: this.resourceService.frmelmnts.btn.no
+    });
+    metaData.footer.buttons.push({
+      type: 'accept',
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.yes
     });
     metaData.footer.className = 'double-btn';
     const returnData = await this.observationUtilService.showPopupAlert(metaData);

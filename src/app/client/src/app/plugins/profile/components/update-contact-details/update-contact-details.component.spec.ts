@@ -27,7 +27,17 @@ describe('UpdateContactDetailsComponent', () => {
       }
     },
     'frmelmnts': {
-      'lbl': {}
+      'lbl': {
+        unableToUpdateMobile: 'unableToUpdateMobile',
+        unableToUpdateEmail: 'unableToUpdateEmail',
+        wrongPhoneOTP: 'wrongPhoneOTP',
+        wrongEmailOTP: 'wrongEmailOTP'
+
+      },
+      instn: {
+          't0083': 'Could not update email address',
+          't0084': 'Could not update email address',
+      }
     }
   };
   configureTestSuite();
@@ -48,13 +58,29 @@ describe('UpdateContactDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdateContactDetailsComponent);
     component = fixture.componentInstance;
+    component.userProfile = {
+      email: 'emailid',
+      phone: '5253252321'
+    };
   });
 
+  it('should call generateOTP()', () => {
+    component.contactType = 'phone';
+    spyOn(component, 'generateOTP');
+    // spyOn(component, 'onContactValueChange');
+    // spyOn(component, 'enableSubmitButton');
+    component.ngOnInit();
+    expect(component.generateOTP).toHaveBeenCalled();
+    // expect(component.contactTypeForm.valid).toBeFalsy();
+    // expect(component.onContactValueChange).toHaveBeenCalled();
+    // expect(component.enableSubmitButton).toHaveBeenCalled();
+    // expect(component.enableSubmitBtn).toBeFalsy();
+  });
   it('should show validation error message for form', () => {
     component.contactType = 'phone';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
-    component.ngOnInit();
+    component.initializeFormFields();
     expect(component.contactTypeForm.valid).toBeFalsy();
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
@@ -64,7 +90,7 @@ describe('UpdateContactDetailsComponent', () => {
     component.contactType = 'email';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
-    component.ngOnInit();
+    component.initializeFormFields();
     let errors = {};
     const email = component.contactTypeForm.controls['email'];
     email.setValue('');
@@ -78,7 +104,7 @@ describe('UpdateContactDetailsComponent', () => {
     component.contactType = 'phone';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
-    component.ngOnInit();
+    component.initializeFormFields();
     let errors = {};
     const phone = component.contactTypeForm.controls['phone'];
     phone.setValue('');
@@ -92,7 +118,7 @@ describe('UpdateContactDetailsComponent', () => {
     component.contactType = 'phone';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
-    component.ngOnInit();
+    component.initializeFormFields();
     let errors = {};
     const phone = component.contactTypeForm.controls['phone'];
     phone.setValue('8989');
@@ -106,14 +132,14 @@ describe('UpdateContactDetailsComponent', () => {
     component.contactType = 'email';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
-    component.ngOnInit();
+    component.initializeFormFields();
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitBtn).toBeFalsy();
     expect(component.enableSubmitButton).toHaveBeenCalled();
   });
   it('set values with enabling the submit button ', () => {
     component.contactType = 'email';
-    component.ngOnInit();
+    component.initializeFormFields();
     const email = component.contactTypeForm.controls['email'];
     email.setValue('abc@gmail.com');
     const uniqueContact = component.contactTypeForm.controls['uniqueContact'];
@@ -123,17 +149,17 @@ describe('UpdateContactDetailsComponent', () => {
 
   it('should unsubscribe from all observable subscriptions', () => {
     component.contactType = 'phone';
-    component.ngOnInit();
+    component.initializeFormFields();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 
   it('should call closeModal', () => {
-    component.contactTypeModal = { deny: jasmine.createSpy('deny') };
+    // component.contactTypeModal = { deny: jasmine.createSpy('deny') };
     spyOn(component.close, 'emit');
     component.closeModal();
-    expect(component.contactTypeModal.deny).toHaveBeenCalled();
+    // expect(component.contactTypeModal.deny).toHaveBeenCalled();
     expect(component.close.emit).toHaveBeenCalled();
   });
 
@@ -158,6 +184,7 @@ describe('UpdateContactDetailsComponent', () => {
   it('should call updateProfile for contact type phone', () => {
     const profileService = TestBed.get(ProfileService);
     const toastService = TestBed.get(ToasterService);
+    component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(of({}));
     spyOn(toastService, 'success');
@@ -171,6 +198,7 @@ describe('UpdateContactDetailsComponent', () => {
   it('should call updateProfile for contact type email', () => {
     const profileService = TestBed.get(ProfileService);
     const toastService = TestBed.get(ToasterService);
+    component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(of({}));
     spyOn(toastService, 'success');
@@ -185,6 +213,7 @@ describe('UpdateContactDetailsComponent', () => {
   it('should close the modal and show appropriate message on update fail for type phone', () => {
     const profileService = TestBed.get(ProfileService);
     const toastService = TestBed.get(ToasterService);
+    component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
     spyOn(toastService, 'error');
@@ -198,6 +227,7 @@ describe('UpdateContactDetailsComponent', () => {
   it('should close the modal and show appropriate message on update fail for type email', () => {
     const profileService = TestBed.get(ProfileService);
     const toastService = TestBed.get(ToasterService);
+    component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
     spyOn(toastService, 'error');

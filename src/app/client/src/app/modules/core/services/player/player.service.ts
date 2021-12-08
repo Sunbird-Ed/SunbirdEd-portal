@@ -209,7 +209,7 @@ export class PlayerService {
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
       if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection ||
         _.get(content, 'metaData.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-          if (!content.trackable && content.contentType !== 'Course') {
+          if (!content.trackable && content.primaryCategory !== 'Course') {
             this.handleNavigation(content, false, queryParams);
           } else {
             const isTrackable = content.trackable && content.trackable.enabled === 'No' ? false : true;

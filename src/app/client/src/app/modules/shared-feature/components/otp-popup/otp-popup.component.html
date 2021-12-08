@@ -1,18 +1,12 @@
-<!--Header-->
-<div class="sb-modal-header hide">
-  &nbsp;
-</div>
-<!--/Header-->
-
 <!--Content-->
-<div class="sb-modal-content">
+<div class="sb-mat__modal__content">
   <div class="container-wrapper">
     <div class="d-flex flex-jc-center">
       <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}">
     </div>
       <div class="mt-20">
-        <p *ngIf="!disableResendButton" class="line-height-1-3 grey text text-center mb-24">{{otpData.instructions}}</p>
-        <div *ngIf="disableResendButton" class="grey text fs-1 text-center mb-30 line-height-1-3">{{otpData.retryMessage}}<br><span
+        <p *ngIf="!disableResendButton" class="line-height-1-3 grey text text-center mb-24">{{otpData?.instructions}}</p>
+        <div *ngIf="disableResendButton" class="grey text fs-1 text-center mb-30 line-height-1-3">{{otpData?.retryMessage}}<br><span
             (click)="redirectToParentComponent()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.clickHere}}</span>
           {{resourceService?.frmelmnts?.lbl?.toTryAgain}}</div>
         <div class="fs-1 font-weight-bold text-center mb-16">{{resourceService?.frmelmnts?.lbl?.enterOTP}}</div>
@@ -32,7 +26,7 @@
 <!--/Content-->
 
 <!--Actions-->
-<div class="sb-modal-actions text-center">
+<div class="sb-mat__modal__actions flex-jc-center">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
   [telemetryInteractEdata]="submitInteractEdata"
     [ngClass]="{'disabled':!enableSubmitBtn}" 

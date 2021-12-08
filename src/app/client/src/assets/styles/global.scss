@@ -1,6 +1,15 @@
 @import "~@project-sunbird/sb-styles/assets/variables";
 @import "./mixins/mixins";
 
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$custom-typography: mat-typography-config(
+  $font-family: 'var(--font-stack-en) !important',
+);
+
+@include angular-material-typography($custom-typography);
 :root {
   font-size: 16px;
 }
@@ -8,6 +17,7 @@
 html,
 body {
   height: 100%;
+  font-size: mat-font-size($custom-typography, body-1);
 }
 
 body {
@@ -418,6 +428,7 @@ app-workspace {
 }
 
 .sbt-theme-bg-img {
+  display:none;
   position: fixed;
   z-index: -50;
   left: calculateRem(-106px);
@@ -448,6 +459,7 @@ app-workspace {
 }
 
 .sbt-theme-right-flower {
+  display: none;
   position: fixed;
   bottom: calculateRem(48px);
   width: calculateRem(288px);
@@ -1349,6 +1361,9 @@ input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
 .contentViewerIframeShadow.player-fullscreen.content-full-video epub-viewer {
   height: calc(100% - 7rem);
 }
+.contentViewerIframeShadow.player-fullscreen.content-full-video quml-main-player .main-container {
+  height: calc(100vh - 4rem);
+}
 .notVisible {
   top: 0rem !important;
   position: relative !important;
@@ -1439,3 +1454,73 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 .required-asterisk {
   color: #A80011;
 }
+// .mat-dialog-container{
+//   box-shadow: none;
+//   background: transparent;
+//   overflow:hidden !important;
+// }
+
+// Accessible changes
+html[data-theme='Default'], [layout='joy']{
+  app-signup {
+    .sb-checkbox.sb-checkbox-primary label:before {
+      border-color: #004E8A;
+    }
+  }
+}
+
+html[data-theme='Darkmode'] {
+  app-signup {
+    .sb-checkbox.sb-checkbox-primary label:before {
+      border-color: var(--primary-color);
+    }
+  }
+}
+
+@include respond-below(md) {
+  .cdk-overlay-pane {
+    min-width: auto !important;
+  }
+}
+
+html[layout='joy'] {
+  .sb-library-cards, .layout-library {
+    .header .title {
+      font-weight: 700 !important;
+      font-size: calculateRem(16px) !important;
+    }
+  }
+}
+
+// .cdk-overlay-container .cdk-global-overlay-wrapper {
+//   overflow: auto;
+//   .cdk-overlay-pane {
+//     width: 100%;
+//     max-width: 100% !important;
+//   }
+//   .ui.dimmer {
+//     overflow: auto;
+//   }
+// }
+
+// .cdk-global-overlay-wrapper {
+//   pointer-events: auto;
+//   display: block;
+//   position: relative;
+//   overflow: auto;
+//   text-align: center;
+// }
+
+// .cdk-global-overlay-wrapper::before {
+//   content: '';
+//   display: inline-block;
+//   height: 100%;
+//   white-space: nowrap;
+// }
+
+// .cdk-overlay-pane {
+//   display: inline-block;
+//   position: relative;
+//   text-align: left;
+//   white-space: normal;
+// }

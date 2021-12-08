@@ -93,6 +93,7 @@ export class UtilService {
       content['subTopic'] = this.getTopicSubTopic('subTopic', data.content.topic);
       content['contentType'] = _.get(data.content, 'contentType') || '';
       content['organisation'] = _.get(data.content, 'orgDetails.orgName') || {};
+      content['primaryCategory'] = _.get(data.content, 'primaryCategory');
       content = { ...content, ..._.pick(data.content, ['subject', 'medium', 'gradeLevel']) };
     }
 
@@ -481,5 +482,9 @@ export class UtilService {
 
   getSectionPillIcon(iconObj, pillValue) {
     return _.get(iconObj, pillValue) || _.get(iconObj, 'default');
+  }
+
+  get isIos() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
   }
 }

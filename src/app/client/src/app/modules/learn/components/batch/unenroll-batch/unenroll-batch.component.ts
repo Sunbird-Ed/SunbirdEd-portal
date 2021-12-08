@@ -14,7 +14,6 @@ import { TelemetryService, IInteractEventObject, IInteractEventEdata } from '@su
   templateUrl: './unenroll-batch.component.html'
 })
 export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('unenrollBatch') unenrollBatch;
   batchId: string;
   batchDetails: any;
   showEnrollDetails = false;
@@ -57,9 +56,6 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
     });
   }
   ngOnDestroy() {
-    if (this.unenrollBatch && this.unenrollBatch.deny) {
-      this.unenrollBatch.deny();
-    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }

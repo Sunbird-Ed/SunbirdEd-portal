@@ -13,26 +13,24 @@
           <div
             [appTelemetryImpression]="getTelemetryImpression({type: 'page-loaded', cdata: reportService?.isUserReportAdmin() ? [{id: '' + reportsList?.reportsArr?.length, type: 'CountReports'},
              {id: '' + reportsList?.datasetsArr?.length, type: 'CountDatasets'}] : [{id: '' + reportsList?.reportsArr?.length, type: 'CountReports'}]})">
-            <sui-tabset>
-              <div class="ui top attached tabular menu report-menu">
-                <a class="item" suiTabHeader="1"><i class="icon chart line alternate"></i> Reports</a>
-                <a *ngIf="reportService?.isUserReportAdmin()" class="item" suiTabHeader="2"><i
-                    class="icon download alternate"></i>Datasets</a>
-              </div>
-              <div class="ui bottom attached segment" suiTabContent="1">
+            <mat-tab-group mat-align-tabs="center" class="sb-mat__tab sb-mat__tab--tabinacc list-all-mat-tab">
+              <mat-tab label="Reports">
                 <div class="ui bottom attached small p-0 b-0 no-bg py-24">
                   <table #all_reports class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
                   </table>
                 </div>
-              </div>
-
-              <div *ngIf="reportService?.isUserReportAdmin()" class="ui bottom attached segment" suiTabContent="2">
+              </mat-tab>
+              <mat-tab label="Datasets" *ngIf="reportService?.isUserReportAdmin()">
                 <div class="ui bottom attached small p-0 b-0 no-bg py-24">
                   <table #all_datasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
                   </table>
                 </div>
-              </div>
-            </sui-tabset>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <div>
+            <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+            </app-tnc-popup>
           </div>
         </ng-container>
 

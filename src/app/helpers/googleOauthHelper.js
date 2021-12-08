@@ -11,6 +11,7 @@ const dateFormat = require('dateformat')
 const {decodeToken} = require('./jwtHelper');
 const { logger } = require('@project-sunbird/logger');
 const { ProxyLogger } = require("@project-sunbird/logger/decorator");
+const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -234,7 +235,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     body: {
       params: {
         source: client_id,
-        signupType: "google"
+        signupType: client_id === "apple" ? "apple" : "google"
       },
       request: {
         firstName: accountDetails.name,
@@ -248,7 +249,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     if (data.responseCode === 'OK') {
       return data;
     } else {
-      logger.error({msg: 'googleOauthHelper: createUserWithMailId failed', additionalInfo: {data}});
+      logger.error({msg: client_id + 'OauthHelper: createUserWithMailId failed', additionalInfo: {data}});
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   })
@@ -260,7 +261,7 @@ const getHeaders = (req) => {
     'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
     'content-type': 'application/json',
     'accept': 'application/json',
-    'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+    'Authorization': 'Bearer ' + getBearerToken(req)
   }
 }
 module.exports = { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId };

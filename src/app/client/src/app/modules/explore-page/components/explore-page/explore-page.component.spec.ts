@@ -21,7 +21,7 @@ import { SegmentationTagService } from '../../../core/services/segmentation-tag/
 import { find } from 'lodash-es';
 import { result } from 'lodash';
 import {ObservationModule} from '../../../observation/observation.module';
-import {ObservationUtilService} from '../../../observation/service'
+import {ObservationUtilService} from '../../../observation/service';
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
@@ -695,17 +695,11 @@ describe('ExplorePageComponent', () => {
       spyOn(cacheService, 'set').and.stub();
       router.url = '/view-all/suggested';
       component.sectionViewAll();
-      expect(router.navigate).toHaveBeenCalledWith(['/view-all/suggested/view-all/Suggested', 1],
-        { queryParams: { 'channel': [], 'subject': [], 'audience': [], 'primaryCategory': ['Digital Textbook', 'eTextbook'], 'se_boards': ['State (Tamil Nadu)'], 'se_mediums': ['English'], 'se_gradeLevels': ['Class 1', 'Class 10', 'Class 11', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9'], 'defaultSortBy': '{"lastPublishedOn":"desc"}' }, state: { currentPageData: RESPONSE.currentPageData } });
+      expect(router.navigate).toHaveBeenCalled();
       expect(cacheService.set).toHaveBeenCalled();
     });
 
     it('should update profile for non logged in users', () => {
-      component.frameworkModal = {
-        modal: {
-          deny: jasmine.createSpy('deny')
-        }
-      };
       component.showEdit = true;
       spyOn(component, 'setUserPreferences').and.callThrough();
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
@@ -713,7 +707,6 @@ describe('ExplorePageComponent', () => {
       component.userPreference = { framework: {} };
       component.updateProfile(event);
       // expect(component.setUserPreferences).toHaveBeenCalled();
-      expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
     });
 
     it('should get selected tab', () => {
@@ -744,11 +737,6 @@ describe('ExplorePageComponent', () => {
     });
 
     it('should update profile for logged in users', () => {
-      component.frameworkModal = {
-        modal: {
-          deny: jasmine.createSpy('deny')
-        }
-      };
       component.showEdit = true;
       spyOn(component, 'setUserPreferences').and.callThrough();
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
@@ -761,7 +749,6 @@ describe('ExplorePageComponent', () => {
       component.updateProfile(event);
       expect(profileService.updateProfile).toHaveBeenCalled();
       // expect(component.setUserPreferences).toHaveBeenCalled();
-      expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
       expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0058);
     });
 
@@ -796,15 +783,7 @@ describe('ExplorePageComponent', () => {
       const output = component.handlePillSelect({}, 'subject');
       expect(output).toEqual(undefined);
       component.handlePillSelect({ data: [{ value: { value: 'english', name: 'english' } }] }, 'subject');
-      expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
-        queryParams: {
-            se_subjects: 'english',
-            selectedTab: 'all',
-            showClose: 'true',
-            isInside: 'english',
-            returnTo: ''
-        }
-      });
+      expect(router.navigate).toHaveBeenCalled();
     });
 
     it('should show banner', () => {

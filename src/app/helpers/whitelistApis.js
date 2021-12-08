@@ -22,7 +22,8 @@ const ROLE = {
   ADMIN: 'ADMIN',
   PUBLIC: 'PUBLIC',
   TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
-  ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload)
+  ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
+  ANONYMOUS: 'ANONYMOUS',
   PROGRAM_MANAGER:"PROGRAM_MANAGER",
   PROGRAM_DESIGNER: "PROGRAM_DESIGNER"
 };
@@ -87,6 +88,12 @@ const API_LIST = {
     },
 
     '/content/v1/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/content/v1/search': {
+      description: 'API called to get contributions in profile page',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -273,7 +280,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/system/settings/get/custodianOrgId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/system/settings/get/courseFrameworkId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -288,7 +296,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/system/settings/get/:slug': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/system/settings/get/googleReCaptcha': {
       checksNeeded: ['ROLE_CHECK'],
@@ -401,7 +410,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/learner/course/v1/batch/list': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/course/v1/batch/user/remove': {
       checksNeeded: ['ROLE_CHECK'],
@@ -542,24 +552,28 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/data/v1/location/search': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/location/search': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/role/read': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/certreg/v1/certs/validate': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/otp/v1/verify': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/otp/v1/generate': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/certreg/v1/certs/download': {
       checksNeeded: ['ROLE_CHECK'],
@@ -643,16 +657,20 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/questionset/v1/hierarchy/:do_id': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/user/v1/exists/email/:emailId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/user/v1/exists/phone/:phoneNumber': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/anonymous/otp/v1/generate': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/learner/data/v1/form/read': {
       checksNeeded: ['ROLE_CHECK'],
@@ -694,6 +712,20 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/group/membership/v1/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    // notification apis
+    '/learner/notification/v1/feed/read/:uid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/notification/v1/feed/delete': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/notification/v1/feed/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -795,7 +827,8 @@ const API_LIST = {
     },
     '/action/content/v3/read/:do_id': {
       description: 'API is accessed by non logged in user',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
@@ -807,7 +840,8 @@ const API_LIST = {
     },
     '/action/content/v3/hierarchy/:do_id': {
       description: 'API used to read textbook for anonymous users',
-      checksNeeded: [],
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1163,6 +1197,7 @@ const API_LIST = {
     '/action/composite/v3/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
+        ROLE.PUBLIC,
         ROLE.CONTENT_CREATOR,
         ROLE.CONTENT_REVIEWER,
         ROLE.COURSE_CREATOR,
@@ -1215,34 +1250,44 @@ const API_LIST = {
       ]
     },
     '/signup': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/collection-editor/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content-editor/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/app/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/v1/tenant/info/:tenantId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/user/session/start/:deviceId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/content/data/v1/telemetry': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/desktop/handleGauth': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/desktop/google/auth/success': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/service/health': {
       checksNeeded: []
@@ -1251,13 +1296,16 @@ const API_LIST = {
       checksNeeded: []
     },
     '/plugin/v1/form/read': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/v1/tenant/info/': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/device/register/:deviceId': {
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/user/v1/switch/:userId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1265,14 +1313,21 @@ const API_LIST = {
     },
     '/api/data/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/plugin/v1/form/update': {
       description: 'API for form update; mobile team also uses same API.',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/google/auth': {
-      checksNeeded: []
+      description: 'Google Sign in',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
+    },
+    '/apple/auth': {
+        checksNeeded: []
     },
     // discussion forum apis
     '/discussion/user/v1/create': {
@@ -1506,11 +1561,13 @@ const API_LIST = {
     },
     '/v1/sso/create/session': {
       description: 'Desktop API',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     '/api/data/v1/form/read': {
       description: 'Desktop API',
-      checksNeeded: []
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
     },
     // Question & QuestionSet API's
     '/action/questionset/v1/create': {
@@ -1638,99 +1695,47 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR,ROLE.PROGRAM_DESIGNER,ROLE.PROGRAM_MANAGER]
     },
-    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId': {
+    '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/api/v1/users/entityTypesByLocationAndRole/:stateId': {
+    '/kendra/solutions/mlcore/v1/targetedSolutions': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/v1/solutions/targetedSolutions': {
+    '/assessment/observations/mlsurvey/v1/entities': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/api/v1/solutions/targetedSolutions': {
+    '/assessment/observationSubmissions/mlsurvey/v1/list/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observations/entities': {
+    '/kendra/users/mlcore/v1/targetedEntity/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/api/v1/observations/entities': {
+    '/assessment/observations/mlsurvey/v1/searchEntities': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/list/:id': {
+    '/assessment/observationSubmissions/mlsurvey/v1/create/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/api/v1/observationSubmissions/list/:id': {
+    '/assessment/observations/mlsurvey/v1/assessment/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/v1/users/targetedEntity/:id': {
+    '/kendra/cloud-services/mlcore/v1/files/preSignedUrls': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/api/v1/users/targetedEntity/:id': {
+    '/assessment/observations/mlsurvey/v1/updateEntities/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v2/observations/searchEntities': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v2/observations/searchEntities': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v1/observationSubmissions/create/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observationSubmissions/create/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v2/observations/assessment/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v2/observations/assessment/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/kendra/v1/cloud-services/files/preSignedUrls': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/kendra/v1/api/cloud-services/files/preSignedUrls': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v1/observationSubmissions/list/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observationSubmissions/list/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v1/observations/updateEntities/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observations/updateEntities/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/v1/observationSubmissions/update/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/assessment/api/v1/observationSubmissions/update/:id': {
+    '/assessment/observationSubmissions/mlsurvey/v1/update/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1754,38 +1759,103 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/dhiti/v1/reports/fetch': {
+    '/dhiti/reports/mlreports/v1/fetch': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/dhiti/api/v1/reports/fetch': {
+    '/assessment/observationSubmissions/mlsurvey/v1/solutionList': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/solutionList': {
+    '/dhiti/observations/mlsurvey/v1/listAllEvidences': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/api/v1/observationSubmissions/solutionList': {
+    '/learner/framework/v1/read/ekstep_ncert_k-12': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/dhiti/v1/observations/listAllEvidences': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/dhiti/api/v1/observations/listAllEvidences': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
-    },
-    '/v1/user-extension/programsByPlatformRoles': {
+    '/kendra/user-extension/mlcore/v1/programsByPlatformRoles': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
     },
-    '/v1/user-extension/solutions': {
+    '/kendra/user-extension/mlcore/v1/solutions/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
-    }
+    },
+    '/kendra/v1/user-extension/programsByPlatformRoles': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
+    },
+    '/kendra/v1/user-extension/solutions/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PROGRAM_MANAGER, ROLE.PROGRAM_DESIGNER]
+    },
+    // UCI Related APIs
+    "/uci/admin/v1/bot/get": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/search": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/pause/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/start/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/delete/:botId": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/getByParam": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/bot/update/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/get": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/search": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/userSegment/queryBuilder": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/create": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/update/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/conversationLogic/delete/:id": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
+    "/uci/admin/v1/forms/upload": {
+      checksNeeded: ["ROLE_CHECK"],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1896,24 +1966,33 @@ const API_LIST = {
     '/dataset/v1/request/list/:tag',
     '/dataset/v1/request/read/:tag',
     '/report/request/read/:tag',
-    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId',
-    '/kendra/api/v1/users/entityTypesByLocationAndRole/:stateId',
-    '/assessment/v1/observationSubmissions/list/:id',
-    '/assessment/apiv1/observationSubmissions/list/:id',
-    '/kendra/v1/users/targetedEntity/:id',
-    '/kendra/api/v1/users/targetedEntity/:id',
-    '/assessment/v1/observationSubmissions/create/:id',
-    '/assessment/api/v1/observationSubmissions/create/:id',
-    '/assessment/v2/observations/assessment/:id',
-    '/assessment/api/v2/observations/assessment/:id',
-    '/assessment/v1/observationSubmissions/list/:id',
-    '/assessment/api/v1/observationSubmissions/list/:id',
-    '/assessment/v1/observations/updateEntities/:id',
-    '/assessment/api/v1/observations/updateEntities/:id',
-    '/assessment/v1/observationSubmissions/update/:id',
-    '/assessment/api/v1/observationSubmissions/update/:id',
+    '/kendra/entities/mlcore/v1/entityTypesByLocationAndRole/:stateId',
+    '/assessment/observationSubmissions/mlsurvey/v1/list/:id',
+    '/kendra/users/mlcore/v1/targetedEntity/:id',
+    '/assessment/observationSubmissions/mlsurvey/v1/create/:id',
+    '/assessment/observations/mlsurvey/v1/assessment/:id',
+    '/assessment/observations/mlsurvey/v1/updateEntities/:id',
+    '/assessment/observationSubmissions/mlsurvey/v1/update/:id',
     '/action/collection/v1/import/:id',
-    '/action/collection/v1/export/:id'
+    '/action/collection/v1/export/:id',
+    '/kendra/v1/user-extension/solutions/:id',
+    '/uci/admin/v1/bot/get',
+    '/uci/admin/v1/bot/search',
+    '/uci/admin/v1/bot/pause/:botId',
+    '/uci/admin/v1/bot/start/:botId',
+    '/uci/admin/v1/bot/delete/:botId',
+    '/uci/admin/v1/bot/getByParam',
+    '/uci/admin/v1/bot/create',
+    '/uci/admin/v1/bot/update/:id',
+    '/uci/admin/v1/userSegment/get',
+    '/uci/admin/v1/userSegment/search',
+    '/uci/admin/v1/userSegment/create',
+    '/uci/admin/v1/userSegment/queryBuilder',
+    '/uci/admin/v1/conversationLogic/create',
+    '/uci/admin/v1/conversationLogic/update/:id',
+    '/uci/admin/v1/conversationLogic/delete/:id',
+    '/uci/admin/v1/forms/upload',
+    '/kendra/user-extension/mlcore/v1/solutions/:id'
   ]
 };
 module.exports = API_LIST;

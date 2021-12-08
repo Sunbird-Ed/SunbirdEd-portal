@@ -27,6 +27,15 @@ import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
+import { SbTableComponent } from './components/sb-table/sb-table.component';
+import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+
 
 @NgModule({
   imports: [
@@ -42,11 +51,18 @@ import { DiscussionModule } from '../discussion/discussion.module';
     TelemetryModule,
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
-    DiscussionModule
+    DiscussionModule,
+    DashletModule.forRoot(),
+    MatCheckboxModule,
+    MatTabsModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    SharedFeatureModule,
+    MatAutocompleteModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent],
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent, SbTableComponent],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,

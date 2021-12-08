@@ -54,6 +54,9 @@ export class CsLibInitializerService {
               contentServiceConfig: {
                 hierarchyApiPath: '/learner/questionset/v1',
                 questionListApiPath: '/api/question/v1'
+              },
+              notificationServiceConfig: {
+                apiPath: '/learner/notification/v1/feed'
               }
           }
       },

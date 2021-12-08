@@ -7,6 +7,7 @@ import { IImpressionEventInput, IInteractEventInput, TelemetryService } from '@s
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { IDeviceProfile } from '../../../../modules/shared-feature/interfaces/deviceProfile';
 import { SbFormLocationSelectionDelegate } from '../delegate/sb-form-location-selection.delegate';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-location-selection',
@@ -17,11 +18,11 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   @Input() isClosable = true;
   @Input() deviceProfile: IDeviceProfile;
   @Output() close = new EventEmitter<void>();
-  @ViewChild('onboardingModal', { static: true }) onboardingModal;
 
   telemetryImpression: IImpressionEventInput;
 
   sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
+  public locationSelectionModalId = "location-selection";
 
   constructor(
     public resourceService: ResourceService,
@@ -35,7 +36,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     protected telemetryService: TelemetryService,
     protected formService: FormService,
     private orgDetailsService: OrgDetailsService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private matDialog: MatDialog
   ) {
     this.sbFormLocationSelectionDelegate = new SbFormLocationSelectionDelegate(
       this.userService,
@@ -79,7 +81,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   closeModal() {
-    this.onboardingModal.deny();
+    const dialogRef = this.matDialog.getDialogById(this.locationSelectionModalId);
+    dialogRef && dialogRef.close();
     this.popupControlService.changePopupStatus(true);
     this.close.emit();
   }

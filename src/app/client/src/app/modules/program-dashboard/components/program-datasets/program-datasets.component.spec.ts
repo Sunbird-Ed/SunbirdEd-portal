@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick,flush } from '@angular/core/testing';
 import { DatasetsComponent } from './program-datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { KendraService, UserService, FormService } from '@sunbird/core';
@@ -185,7 +185,7 @@ describe('DatasetsComponent', () => {
   }));
 
   it('should call selectSolution',fakeAsync(() => {
-
+    
     const spy = spyOn(component, 'selectSolution').and.callThrough();
     tick(1000);
     component.programSelected = "5f34ec17585244939f89f90c";
@@ -195,7 +195,7 @@ describe('DatasetsComponent', () => {
     const onDemandReportService = TestBed.get(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
     component.loadReports();
-
+    tick(1000);
     component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
     component.solutions = mockData.solutions.result;
     component.selectSolution("5f34ec17585244939f89f90d");
@@ -212,6 +212,29 @@ describe('DatasetsComponent', () => {
         "datasetId": "ml-observation-status-report"
       }
     ]);
+    flush();
+
+
+  }));
+
+  it('should call selectSolution with survey',fakeAsync(() => {
+
+    const spy = spyOn(component, 'selectSolution').and.callThrough();
+    tick(1000);
+    component.programSelected = "5f34ec17585244939f89f90c";
+    component.formData = mockData.FormData;
+    
+    component.onDemandReportData = [];
+    const onDemandReportService = TestBed.get(OnDemandReportService);
+    spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
+    component.loadReports();
+
+    tick(1000);
+    component.solutions = mockData.solutions.result;
+    component.selectSolution("5fbb75537380505718640438");
+    expect(spy).toHaveBeenCalled();
+    expect(component.reportTypes).toEqual([]);
+  
 
   }));
 

@@ -109,14 +109,16 @@
         "mimeType",
         "framework",
         "contentType",
-        "trackable"
+        "trackable",
+        "batchId",
+        "courseId"
       ]
     },
     "dynamicFields": {
       "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     },
-    "PAGE_LIMIT": 20
+    "PAGE_LIMIT": 100
   },
   "CourseConsumption": {
     "contentApiQueryParams": {
@@ -1169,7 +1171,7 @@
     "CREATE_LESSON": "application/vnd.ekstep.ecml-archive"
   },
   "SEARCH": {
-    "PAGE_LIMIT": 20,
+    "PAGE_LIMIT": 100,
     "SECTION_LIMIT": 3,
     "USER": {
       "DOWNLOAD_BUTTON_VISIBILITY": "FALSE"
@@ -1452,5 +1454,8 @@
   },
   "assetsPath": {
     "book": "./assets/images/book.png"
+  },
+  "OTPTemplate": {
+      "updateContactTemplate": "otpContactUpdateTemplate"
   }
 }

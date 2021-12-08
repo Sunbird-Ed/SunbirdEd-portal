@@ -51,6 +51,7 @@ const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
 const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
+const { registerDeviceWithKong } = require('./helpers/kongTokenHelper');
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -83,11 +84,24 @@ app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
 
+if(envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
+  app.use(session({
+    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_anonymous_session_ttl
+    },
+    saveUninitialized: false,
+    store: memoryStore
+  }), registerDeviceWithKong());
+}
+
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*'
+  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*','/dhiti/*', '/assessment/*','/cloudUpload/*', '/apple/auth/*',
+  '/uci/*'
 ],
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -226,6 +240,8 @@ require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
 require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
 
+require('./routes/ios.js')(app, keycloak) // apple sign in routes
+
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
 
 require('./routes/refreshTokenRoutes.js')(app, keycloak) // refresh token routes
@@ -236,11 +252,15 @@ require('./routes/reportRoutes.js')(app, keycloak) // report routes
 
 require('./routes/discussionsForum.js')(app, keycloak) // report routes
 
+require('./routes/uci.js')(app, keycloak) // report routes
+
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
 require('./routes/groupRoutes.js')(app) // group api routes
+
+require('./routes/notificationRoute.js')(app) // notification api routes
 
 require('./routes/learnerRoutes.js')(app) // learner api routes
 
@@ -322,7 +342,10 @@ async function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
-      logger.info({ msg: `Portal global API Whitelist check is set to - ${envHelper.PORTAL_API_WHITELIST_CHECK}` })
+      logger.info({ msg: `✅ Portal global API Whitelist check is set to              - ${envHelper.PORTAL_API_WHITELIST_CHECK}` })
+      logger.info({ msg: `✅ Portal global Session storage is set to                  - ${envHelper.PORTAL_SESSION_STORE_TYPE}` })
+      logger.info({ msg: `✅ Portal global Kong anonymous device register is set to   - ${envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN}` })
+      logger.info({ msg: `✅ Portal global Kong admin util is set to                  - ${envHelper.KONG_DEVICE_REGISTER_TOKEN}` })
     })
     handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;

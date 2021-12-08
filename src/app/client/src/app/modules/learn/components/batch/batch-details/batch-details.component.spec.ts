@@ -286,11 +286,7 @@ describe('BatchDetailsComponent', () => {
 
   it('should close the join training popup on browser back button click', () => {
     component.showJoinModal = true;
-    component.batchListModal = {
-      deny: jasmine.createSpy('deny')
-    };
     component.ngOnDestroy();
-    expect(component.batchListModal.deny).toHaveBeenCalled();
   });
 
   it ('should call showcreatebatch()', () => {
@@ -354,6 +350,29 @@ describe('BatchDetailsComponent', () => {
     component.enrollBatch(batch);
     component.showMessageModal = true;
     expect(component.showMessageModal).toBeTruthy();
+  });
+  it('should have the default values for some of the variables',() => {
+    expect(component.showCertificateDetails).toBeFalsy();
+    expect(component.showCompletionCertificate).toBeFalsy();
+    expect(component.showMeritCertificate).toBeFalsy();
+    expect(component.meritCertPercent).toEqual(0);
+  });
+
+  it('should call the courseBatch details and cert details',() => {
+    component.batchList = allBatchDetails.result.response.content;
+    component.ShowCertDetails();
+    expect(component.showCertificateDetails).toBeTruthy();
+    expect(component.showCompletionCertificate).toBeTruthy();
+    expect(component.showMeritCertificate).toBeTruthy();
+    expect(component.meritCertPercent).toEqual(70);
+  });
+  it('should call the courseBatch details and cert details with enrolled batch',() => {
+    component.enrolledBatchInfo = allBatchDetails.result.response.content[0];
+    component.ShowCertDetails(true);
+    expect(component.showCertificateDetails).toBeTruthy();
+    expect(component.showCompletionCertificate).toBeTruthy();
+    expect(component.showMeritCertificate).toBeTruthy();
+    expect(component.meritCertPercent).toEqual(70);
   });
 
 });

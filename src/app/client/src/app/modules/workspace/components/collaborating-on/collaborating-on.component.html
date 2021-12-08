@@ -66,7 +66,7 @@
         </i>
       </td>
       <td *ngIf="content.lockInfo">
-        <span suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+        <span matTooltip="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [matTooltipPosition]="'left'">
           <i class="lock icon large"  ></i>
         </span>
       </td>

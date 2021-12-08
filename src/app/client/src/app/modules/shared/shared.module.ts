@@ -9,7 +9,7 @@ import {
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent,
   OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent, SbDatatableComponent,
-  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent, FullPageLoaderComponent
+  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -19,7 +19,7 @@ import {
 import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import {DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe} from './pipes';
+import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe } from './pipes';
 import { CacheService } from 'ng2-cache-service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -29,9 +29,25 @@ import { AppLandingSectionComponent } from './components/app-landing-section/app
 import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { AddToGroupDirective } from './directives/add-to-group/add-to-group.directive';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import {TitleCasePipe} from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { NetworkStatusComponent } from './components/network-status/network-status.component';
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
+import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatInputModule   } from "@angular/material/input";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatListModule } from "@angular/material/list";
+import { MatSelectModule } from "@angular/material/select";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+// import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 
 @NgModule({
   imports: [
@@ -40,7 +56,10 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     SuiRatingModule, SuiCollapseModule,
     FormsModule, ReactiveFormsModule, NgxDatatableModule,
     TelemetryModule,
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    MatTooltipModule, MatTabsModule, MatDialogModule,
+    MatAutocompleteModule,MatFormFieldModule, MatInputModule,
+    MatChipsModule,MatIconModule,MatSelectModule,MatListModule,MatButtonModule,MatCheckboxModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -49,7 +68,9 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
-    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent],
+    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
+    AutocompletePipe,MaterialAutoCompleteComponent
+  ],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
@@ -58,7 +79,9 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
-    AlertModalComponent, FullPageLoaderComponent],
+    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
+    AutocompletePipe,MaterialAutoCompleteComponent
+  ],
   entryComponents: [AlertModalComponent]
 })
 export class SharedModule {
@@ -68,7 +91,7 @@ export class SharedModule {
       providers: [ResourceService, ConfigService, ToasterService, PaginationService, RecaptchaService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
         DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService,
-        LayoutService, TranslateStore, TitleCasePipe, ConnectionService]
+        TranslateStore, TitleCasePipe, ConnectionService]
     };
   }
 }

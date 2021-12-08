@@ -4,12 +4,13 @@ const certRegURL = envHelper.LEARNER_URL
 const { logger } = require('@project-sunbird/logger');
 const _ = require('lodash');
 const { logError } = require('./utilityService.js');
+const { getBearerToken, getAuthToken } = require('../helpers/kongTokenHelper')
 
-getHeaders = () => {
+getHeaders = (req = undefined) => {
   return {
     headers: {
       'content-type': 'application/json',
-      Authorization: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
+      Authorization: 'Bearer ' + getBearerToken(req),
     },
   };
 }
@@ -61,7 +62,7 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
 
 const getDistrictName = async (req, requestParams) => {
   logger.info({ msg: `getDistrictName() is called with ${JSON.stringify(requestParams)} url: ${certRegURL + 'data/v1/location/search'}` })
-  const response = await HTTPService.post(`${certRegURL + 'data/v1/location/search'}`, requestParams, getHeaders()).toPromise().catch(err => {
+  const response = await HTTPService.post(`${certRegURL + 'data/v1/location/search'}`, requestParams, getHeaders(req)).toPromise().catch(err => {
     logger.error({ msg: `Error occurred in  getLocation() error:  ${err}` });	
     });
   logger.info({ msg: `getDistrictName() is returning data ${_.get(response, 'data.result.response[0].name')}` })
@@ -70,9 +71,9 @@ const getDistrictName = async (req, requestParams) => {
 
 const getUserEnrolledCourses = async (req, courseId, userId) => {
   logger.info({ msg: `getUserEnrolledCourses() is called with userId ${userId}` });
-    const appConfig = getHeaders();
-    appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
-    const response = await HTTPService.get(`${certRegURL + 'course/v1/user/enrollment/list'}/${userId}?fields=name,contentType,pkgVersion&batchDetails=name,createdBy,certificates`, appConfig).toPromise().catch(err => {
+    const appConfig = getHeaders(req);
+    appConfig.headers['x-authenticated-user-token'] = getAuthToken(req);
+    const response = await HTTPService.get(`${certRegURL + 'course/private/v1/user/enrollment/list'}/${userId}?fields=name,contentType,pkgVersion&batchDetails=name,createdBy,certificates`, appConfig).toPromise().catch(err => {
       logger.error({ msg: `Error occurred in getBatches() while fetching course error:  ${err}` });
     });
     logger.info({msg: `returning response from getUserEnrolledCourses for userId: ${userId} Data: ${_.get(response, 'data.result.courses')}`});
@@ -102,8 +103,8 @@ const addTemplateToBatch = () => {
         const criteria = _.get(req, 'body.request.criteria') || {};
         let templateData = {};
         if (!_.isEmpty(_.get(req, 'body.request.oldTemplateId'))) {
-          const appConfig = getHeaders();
-          appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+          const appConfig = getHeaders(req);
+          appConfig.headers['x-authenticated-user-token'] = getAuthToken(req);
           const requestParams = {
                 batch: {
                   courseId: _.get(req, 'body.request.courseId'),
@@ -138,8 +139,8 @@ const addTemplateToBatch = () => {
 
 const getTemplateData = async (req, requestParams) => {
   logger.info({msg: `getTemplateData() is called with ${requestParams}`});
-  const appConfig = getHeaders();
-  appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+  const appConfig = getHeaders(req);
+  appConfig.headers['x-authenticated-user-token'] =  getAuthToken(req);
  const response = await HTTPService.post(`${certRegURL + 'org/v2/preferences/read'}`, {request: requestParams}, appConfig).toPromise();
   logger.info({msg: `returning response from getTemplateData() with data ${_.get(response, 'data')}`});
   return response;
@@ -159,8 +160,8 @@ const removeCert = () => {
         // In the request OldTemplateId is present then remove the attached old cert template
         if (!_.isEmpty(oldTemplateId)) {
           logger.info({msg: `Remove the old attached certificate ${oldTemplateId}`});
-          const appConfig = getHeaders();
-          appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+          const appConfig = getHeaders(req);
+          appConfig.headers['x-authenticated-user-token'] =  getAuthToken(req);
           const requestParams = {
                 batch: {
                   courseId: _.get(reqObj, 'batch.courseId'),

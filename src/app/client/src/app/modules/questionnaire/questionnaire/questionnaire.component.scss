@@ -3,10 +3,13 @@
 
 .sections {
   width: 80%;
-  height: auto;
+  @media only screen and (min-width: 976px) {
+    height: 60vh;
+    overflow: auto;
+  }
 }
 
-.sticky-footer{
+.sticky-footer {
   position: sticky;
   bottom: 0;
   z-index: 2;
@@ -96,4 +99,18 @@
 
 .adjust {
   margin: 15px 5px;
+}
+.sticky-block {
+  position: sticky;
+  top: 33%;
+  z-index: 9;
+
+  a {
+    color: var(--gray-800);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  a.selected {
+    color: var(--primary-color);
+  }
 }

@@ -15,6 +15,7 @@ const trampolineServerUrl = envHelper.PORTAL_AUTH_SERVER_URL
 const trampolineRealm = envHelper.PORTAL_REALM
 const trampolineSecret = envHelper.PORTAL_TRAMPOLINE_SECRET
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
+const { getBearerToken } = require('../helpers/kongTokenHelper')
 
 let keycloak = getKeyCloakClient({
   clientId: trampolineClientId,
@@ -192,7 +193,7 @@ module.exports = {
         'x-consumer-id': learnerAuthorization,
         'content-type': 'application/json',
         accept: 'application/json',
-        'Authorization': 'Bearer ' + learnerAuthorization
+        'Authorization': 'Bearer ' + getBearerToken(req)
       },
       body: { params: {}, request: { loginId: loginId } },
       json: true
@@ -233,7 +234,7 @@ module.exports = {
         id: 'id',
         'content-type': 'application/json',
         accept: 'application/json',
-        'Authorization': 'Bearer ' + learnerAuthorization
+        'Authorization': 'Bearer ' + getBearerToken(req)
       },
       body: {
         params: {},
@@ -287,7 +288,7 @@ module.exports = {
         'x-consumer-id': learnerAuthorization,
         'content-type': 'application/json',
         accept: 'application/json',
-        'Authorization': 'Bearer ' + learnerAuthorization
+        'Authorization': 'Bearer ' + getBearerToken(req)
       },
       body: { params: {}, request: { loginId: loginId } },
       json: true

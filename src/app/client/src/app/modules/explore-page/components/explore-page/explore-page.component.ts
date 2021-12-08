@@ -24,7 +24,6 @@ import {ObservationUtilService} from '../../../observation/service'
     styleUrls: ['./explore-page.component.scss']
 })
 export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('frameworkModal') frameworkModal;
     public initFilter = false;
     public inViewLogs = [];
     public showLoader = true;
@@ -138,7 +137,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getFormConfig(input = { formType: 'contentcategory', formAction: 'menubar', contentType: 'global' }): Observable<object> {
-        return this.formService.getFormConfig(input);
+       return this.formService.getFormConfig(input);
     }
 
     private _addFiltersInTheQueryParams(updatedFilters = {}) {
@@ -166,6 +165,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.userProfile['firstName'] = guestUserDetails.formatedName;
                                 this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                             } else {
+                                this.userProfile = guestUserDetails;
+                                this.userProfile['firstName'] = guestUserDetails.formatedName;
                                 this.defaultFilters = this.getPersistFilters(true);
                             }
                         });
@@ -435,7 +436,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         .pipe(
                             map((response) => {
                                 const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-                                this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
+                                this._facets$.next(request.facets ? 
+                                    this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                 this.searchResponse = get(response, 'result.content');
                                 const filteredContents = omit(groupBy(get(response, 'result.content'), content => {
                                     return content[groupByKey] || content['subject'] || 'Others';
@@ -482,7 +484,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                             name: _facet['name'] === 'tv lesson' ? 'tv classes' : _facet['name'],
                                                             value: _facet['name'],
                                                             theme: this.utilService.getRandomColor(facet.theme.colorMapping),
-                                                            type: _facet.type ? _facet.type : ''
+                                                            type: _facet.type ? _facet.type : '',
+                                                            landing: facet.landing ? facet.landing : '',
+                                                            search: facet.search
                                                         });
                                                        }
                                                     }
@@ -491,7 +495,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                         name: _facet['name'],
                                                         value: _facet['name'],
                                                         theme: this.utilService.getRandomColor(facet.theme.colorMapping),
-                                                        type: _facet.type ? _facet.type : ''
+                                                        type: _facet.type ? _facet.type : '',
+                                                        landing: facet.landing ? facet.landing : '',
+                                                        search: facet.search
                                                     });
                                                 }
                                             });
@@ -499,6 +505,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
                                                 section: facet,
+                                                isEnabled:facet.isEnabled,
                                                 index: facet.index
                                             });
                                         }
@@ -887,6 +894,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
                 return this.playerService.playContent(metaData);
             }
+            if (sectionType) {
+                metaData.batchId = _.get(metaData,'metaData.batchId');
+                metaData.trackable={
+                    enabled:'Yes'
+                }
+                return this.playerService.playContent(metaData);
+              }
 
             if (onGoingBatchCount === 1) { // play course if only one open batch is present
                 metaData.batchId = _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0].batchId') : _.get(inviteOnlyBatch, 'ongoing[0].batchId');
@@ -915,6 +929,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public viewAll(event, contentSection?) {
+        this.moveToTop();
         let searchQuery;
         if (contentSection) {
             event = { contents: event.data, count: event.data.length, name: contentSection.title };
@@ -1034,6 +1049,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         params['showClose'] = 'true';
         params['isInside'] = event.data[0].value.name;
         params['returnTo'] = contentType;
+        params['title'] = event.data[0].value.landing ? event.data[0].value.landing.title : '';
+        params['description'] = event.data[0].value.landing ? event.data[0].value.landing.description : '';
 
         const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
             const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
@@ -1046,6 +1063,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         params = paramValuesInLowerCase;
+        params['searchFilters'] = event.data[0].value.search ? JSON.stringify(event.data[0].value.search.facets) : '';
 
         if (this.isUserLoggedIn()) {
             this.router.navigate(['search/Library', 1], { queryParams: params });
@@ -1087,8 +1105,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     updateProfile(event) {
-        this.frameworkModal.modal.deny();
-        this.showEdit = !this.showEdit;
         if (this.isUserLoggedIn()) {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
@@ -1121,7 +1137,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             forEach(facet.data, _facet => {
                 _facetArray.push({
                     name: _facet['name'],
-                    value: _facet['value']
+                    value: _facet['value'],
+                    landing: facet.landing ? facet.landing : '',
+                    search: facet.search
                 });
             });
             this.facetSections.push({
@@ -1164,7 +1182,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (_.get(data.action, 'params.query')) {
                     queryParams['key'] = _.get(data.action, 'params.query');
                 }
+                const contentType = _.get(this.getCurrentPageData(), 'contentType');
+                queryParams['showClose'] = 'true';
+                queryParams['returnTo'] = contentType;
+                queryParams['isInside'] = (data.ui && data.ui.landing && data.ui.text) || '';
                 queryParams['selectedTab'] = 'all';
+                queryParams['title'] = (data.ui && data.ui.landing && data.ui.landing.title) || '';
+                queryParams['description'] = (data.ui && data.ui.landing && data.ui.landing.description) || '';
                 if (this.isUserLoggedIn()) {
                     this.router.navigate(['search/Library', 1], { queryParams: queryParams });
                 } else {
@@ -1187,6 +1211,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 const params = {};
                 params['key'] = contentId;
                 params['selectedTab'] = 'all';
+                params['text'] = data.ui.text;
                 this.router.navigate(['explore', 1], { queryParams: params });
                 break;
         }
