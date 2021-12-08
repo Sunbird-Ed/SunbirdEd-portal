@@ -370,7 +370,7 @@ export class SbFormLocationSelectionDelegate {
                     }
                     personaLocationConfig.default = defaultSubpersona;
                   } else {
-                    personaLocationConfig.default = this.userService.userProfile.profileUserType;
+                    personaLocationConfig.default = _.get(this.userService.userProfile.profileUserType, 'subType');
                   }
                 }
                 break;
