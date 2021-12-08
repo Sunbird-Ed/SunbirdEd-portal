@@ -162,7 +162,9 @@ describe('NavigationHelperService', () => {
 
   it('should call goBack for profile page route',
     inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
-      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      (service: NavigationHelperService, router) => {
+        const utilService = TestBed.get(UtilService);
+        utilService._isDesktopApp = false;
         router['url'] = '/profile';
         service.goBack();
         expect(service.router.navigate).toHaveBeenCalledWith(['/profile']);
