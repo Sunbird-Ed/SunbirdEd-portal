@@ -158,7 +158,7 @@
           <button appTelemetryInteract appOnlineOnly tabindex="0"
                   [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
                   *ngIf="!declarationDetails && isCustodianOrgUser && !userProfile.isMinor"
-                  (click)="navigate('/profile/teacher-declaration','submit')" tabindex="0"
+                  (click)="navigate('/profile/submit-declaration','submit')" tabindex="0"
                   class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
           {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
         </div>
@@ -296,7 +296,7 @@
       <div class="my-8">
         <button appTelemetryInteract appOnlineOnly
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" tabindex="0" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
-        (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
+        (click)="navigate('/profile/submit-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
 
     </div>
