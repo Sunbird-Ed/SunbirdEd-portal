@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true}">
+    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true, panelClass: 'overflow-visible'}">
       <ng-template sbModalContent let-data>
         <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
           [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>

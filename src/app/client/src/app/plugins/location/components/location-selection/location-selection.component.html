@@ -64,7 +64,7 @@
 
 
 <!-- New Pop up -->
-<app-modal-wrapper [config]="{disableClose: true, id: locationSelectionModalId}" (dismiss)="closeModal()">
+<app-modal-wrapper [config]="{disableClose: true, id: locationSelectionModalId, panelClass: 'overflow-visible'}" (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">
@@ -78,7 +78,7 @@
       </div>
 
       <mat-dialog-content>
-        <div class="sb-mat__modal__content py-0">
+        <div class="sb-mat__modal__content">
           <div>
             <ng-content select="[slot=popup-sub-header]"></ng-content>
           </div>
