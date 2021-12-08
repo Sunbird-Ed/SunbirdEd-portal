@@ -1132,6 +1132,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (window['TagManager']) {
             window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
         }
+        this.segmentationTagService.getUpdatedCommands().then(() => {
+            this.showorHideBanners();
+        });
         // this.setUserPreferences();
         // this.fetchContents$.next(this._currentPageData);
     }
@@ -1165,9 +1168,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             }
         });
-    
         this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
-        if (this.bannerSegment ) {
+        this.bannerList = [];
+        if (this.bannerSegment && this.bannerSegment.length) {
             this.setBannerConfig();
         }
     }
