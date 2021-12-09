@@ -1471,10 +1471,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.3.tgz#b005e94f77ff1b24d186c3ecc0eb960228242bd5"
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
-"@project-sunbird/discussions-ui-v8@2.5.0-beta.2":
-  version "2.5.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.2.tgz#185350582fef751e3aa8e688b9c6322255c425f3"
-  integrity sha512-gzhdDkR7Onb82opQUNyQVtHqxSxt8wR6Q05Qex4qMrYMGdA5uFov3E+2+stRhc+VkBh3tKbgKheeLSk9kEZGqA==
+"@project-sunbird/discussions-ui-v8@2.5.0-beta.5":
+  version "2.5.0-beta.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.5.tgz#33c4ae6fb8d50a0425838667fcf225e6331caf7b"
+  integrity sha512-zqxCxURLNQx5cPN+DVjgmJEcXLP/Di+8UxD3s7czNrUYM0TgqwLrTgV6Wj57Cf5BZTCRwdyPx+LfTASFBvc/YA==
   dependencies:
     tslib "^1.9.0"
 
@@ -1502,22 +1502,22 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.28.tgz#f6bc68caf335c32b04c2c555029ca8d38d85dbf1"
-  integrity sha512-QSTRbop3Zqxuho3zJGLg6fwyT/NG19zXSRJbyJdHP2yQE1FlutXkdQW8WZy5VFPVLc74+qRq0VIbSoCWUW/Mzg==
+"@project-sunbird/sb-themes@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.30.tgz#19b48bec566b2087d803f666a8dc0d0a000a0aef"
+  integrity sha512-znlyL4EP2YaphxjpJLgZ3Qe2F061ZKSMKaW8akSNLWYVcClxvSInZUYwQPCxJ6hJoPS0URSF9o6BUTd+cslPMw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.5.10":
-  version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.10.tgz#cc42093640c2641b0a6409313278c2257dba8227"
-  integrity sha512-/sUpwh4ijI8oAGtQoCCYG0ayN+YDsESyCt+Nh9QUQLUn5eAtuOln9X2pECE3i9K7ADjNX5nohupekjztKhsrTw==
+"@project-sunbird/sunbird-collection-editor-v9@4.5.18":
+  version "4.5.18"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.5.18.tgz#45c067f040d43bbd337575e380bd82c3b7d371ef"
+  integrity sha512-FO66sufU30RpMcrOcEyo/mgJ4bvnTRa5zvA6hQ0q4ihgtU5iibd5xmb+oy5Sarz8W/S/w1WT6KGhNEONXCh1qQ==
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.5.3.tgz#f4ac8fea39a065ca5691d79dab638bfc3d0b00e6"
-  integrity sha512-LmpBtqA87wkTl1dGGfHLMoQVlVlcnmKSMu6w1rv6qPDBHtDhDlbDZxFrVSfpVJIF5KuCkZoaNZP0RWVqFKTElA==
+"@project-sunbird/sunbird-epub-player-v9@4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.5.5.tgz#0b2d3ea6f6eb5f22c86bec09152ba0b7d71c6918"
+  integrity sha512-nQdzxp1v0pdfk1uGDt6UODQ+TFReATPxSd4qWNpcxGCoXN66uXARmRyjTD9eRsH7TRAR+VVqxeUmdTxwV9I2hg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.4.4"
 
@@ -1533,6 +1533,11 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.4.4.tgz#bb7579281c86664a44ec189af971262ae45e814b"
   integrity sha512-AsHyA3SUpNRcGiCTVkp4rLtuFPPIQTOHhthREHHe90g4HX+JeeaSz3FYRzZ3nLjZdNFWOJ/9Xqni00sJQcuDfQ==
 
+"@project-sunbird/sunbird-player-sdk-v9@4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.5.0.tgz#3fb6b83acf95df44d8383f7347684daf5addaa7d"
+  integrity sha512-92AeEaX5312FQJAlGc9jgSM0fQm78xFaaUfd5+yjDnDapJeFVJltcxCfqWGqyNRf2L5AeKF6Iu9ezDliRDYAXQ==
+
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
@@ -1540,12 +1545,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.1":
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.1.tgz#cc0e5d457745f8c93445fa5bbdcadcb01f706d1d"
-  integrity sha512-+fJA5EkZAx+b0lX+1WIjxA6/Lr+JowWIAcJvsqDDjv2F0w3AGWLEIOlqGMfwFI3FYS76x7s2s2fnkITO3Bow3Q==
+"@project-sunbird/sunbird-quml-player-v9@4.5.9":
+  version "4.5.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.9.tgz#22999be8000573764243bbae40d26014f8ff0702"
+  integrity sha512-w9kMMtNgYpT1W2k+qtDBP3deBBP7hvssvEKPYyp8z6h07wz3DiEOV/r7fOwKMaya8tOu0OPvGXrPmJC22cNCsQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.4.4"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.5.0"
 
 "@project-sunbird/sunbird-video-player-v9@4.4.2":
   version "4.4.2"
@@ -1642,10 +1647,10 @@
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
 
-"@shikshalokam/sl-reports-library@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.6.tgz#8f40c6f71fab48b8bd209601e882d9ce8baa5517"
-  integrity sha512-QNbs9xuC2hyL+tI3vRjG6+VkjvHkIDdpbHjtJ628PwhuipP8YHm7DvFvhOp6vIHyqNkh69zHx0BpO0ISjTC7wQ==
+"@shikshalokam/sl-reports-library@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.7.tgz#8164cd522759be04dd66818f57ddd6f6ed972a5a"
+  integrity sha512-wyeUkXPaQWuGpe11VsEC5MS/3n9cuxbF6bVpcrG1OhnNKS6mFXCY4GsPsLnMyESjtvD+XRG0/ovmmJTd/9yvfg==
   dependencies:
     chart.js "^2.9.4"
     chartjs-plugin-datalabels "^0.7.0"
@@ -12685,7 +12690,7 @@ video.js@7.4.1:
     videojs-font "3.2.0"
     videojs-vtt.js "^0.15.3"
 
-videojs-contrib-quality-levels@^2.0.4, videojs-contrib-quality-levels@^2.1.0:
+videojs-contrib-quality-levels@2.1.0, videojs-contrib-quality-levels@^2.0.4:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/videojs-contrib-quality-levels/-/videojs-contrib-quality-levels-2.1.0.tgz#046e9e21ed01043f512b83a1916001d552457083"
   integrity sha512-dqGQGbL9AFhucxki7Zh0c3kIhH0PAPcHEh6jUdRyaFCVeOuqnJrOYs/3wNtsokDdBdRf2Du2annpu4Z2XaSZRg==
@@ -12703,7 +12708,7 @@ videojs-font@3.2.0:
   resolved "https://registry.yarnpkg.com/videojs-font/-/videojs-font-3.2.0.tgz#212c9d3f4e4ec3fa7345167d64316add35e92232"
   integrity sha512-g8vHMKK2/JGorSfqAZQUmYYNnXmfec4MLhwtEFS+mMs2IDY398GLysy6BH6K+aS1KMNu/xWZ8Sue/X/mdQPliA==
 
-videojs-http-source-selector@^1.1.6:
+videojs-http-source-selector@1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/videojs-http-source-selector/-/videojs-http-source-selector-1.1.6.tgz#073aadbea0106ba6c98d6b611094dbf8554ffa1f"
   integrity sha512-6b5MmKTT2cVnrjtdNj4z1VO91udbXkZkTYA6LlD8WN2aHlG2rqFTmtMab4NK4nlkkkbRnm3c2q2IddL3jffLmg==

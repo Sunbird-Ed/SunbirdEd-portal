@@ -374,7 +374,7 @@
 .sb-modal{
   .mat-close-btn{
     float: right;
-    border-radius: 50%;
+    border-radius: 50% !important;
     box-shadow: var(--sbt-box-shadow-3px);
     background-color: var(--white);
     font-size: 0.875rem;

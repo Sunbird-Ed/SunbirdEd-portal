@@ -13,6 +13,9 @@ const routes: Routes = [
       roles: 'programDashboardRole',
       telemetry: {
         env: telemetryEnv, pageid: 'program-datasets', type: 'view'
+      },
+      menuBar: {
+        visible: false
       }
     }
   }

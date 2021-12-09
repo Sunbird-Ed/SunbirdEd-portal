@@ -141,15 +141,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getPersonaConfig(role).then((val) => {
           this.persona = val;
         });
-        const subpersonalist = [];
-        if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
-          this.userProfile.profileUserTypes.forEach(ele => {
-            subpersonalist.push(ele.subType);
-          });
-        } else {
-          subpersonalist.push(this.userProfile.profileUserType.subType);
-        }
-        this.getSubPersonaConfig(subpersonalist, role.toLowerCase(), this.userLocation).then((val) => {
+        this.getSubPersonaConfig(role.toLowerCase(), this.userLocation).then((val) => {
           this.subPersona = val;
         });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
@@ -617,8 +609,9 @@ private async getPersonaConfig(persona: string) {
   return formFields.find(config => config.code === persona);
 }
 
-private async getSubPersonaConfig(subPersonaList: string[], persona: string, userLocation: any): Promise<string[]> {
-  if (!subPersonaList || !persona) {
+private async getSubPersonaConfig(persona: string, userLocation: any): Promise<string[]> {
+  if ((!this.userProfile.profileUserTypes || !this.userProfile.profileUserTypes.length) &&
+  (!this.userProfile.profileUserType || !this.userProfile.profileUserType.subType)) {
       return undefined;
   }
   let formFields;
@@ -633,6 +626,20 @@ private async getSubPersonaConfig(subPersonaList: string[], persona: string, use
   }
 
   const personaConfig = formFields.find(formField => formField.code === 'persona');
+  const subPersonaList = [];
+  if (_.get(personaConfig, 'templateOptions.multiple')) {
+    if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
+      this.userProfile.profileUserTypes.forEach(ele => {
+        if (_.get(ele, 'subType')) {
+          subPersonaList.push(ele.subType);
+        }
+      });
+    } else {
+      subPersonaList.push(this.userProfile.profileUserType.subType);
+    }
+  } else {
+    subPersonaList.push(this.userProfile.profileUserType.subType);
+  }
 
   const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
   const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');

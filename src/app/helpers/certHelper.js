@@ -73,7 +73,7 @@ const getUserEnrolledCourses = async (req, courseId, userId) => {
   logger.info({ msg: `getUserEnrolledCourses() is called with userId ${userId}` });
     const appConfig = getHeaders(req);
     appConfig.headers['x-authenticated-user-token'] = getAuthToken(req);
-    const response = await HTTPService.get(`${certRegURL + 'course/v1/user/enrollment/list'}/${userId}?fields=name,contentType,pkgVersion&batchDetails=name,createdBy,certificates`, appConfig).toPromise().catch(err => {
+    const response = await HTTPService.get(`${certRegURL + 'course/private/v1/user/enrollment/list'}/${userId}?fields=name,contentType,pkgVersion&batchDetails=name,createdBy,certificates`, appConfig).toPromise().catch(err => {
       logger.error({ msg: `Error occurred in getBatches() while fetching course error:  ${err}` });
     });
     logger.info({msg: `returning response from getUserEnrolledCourses for userId: ${userId} Data: ${_.get(response, 'data.result.courses')}`});

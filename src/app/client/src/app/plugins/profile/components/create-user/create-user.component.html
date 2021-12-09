@@ -1,7 +1,4 @@
 <div [appTelemetryImpression]="telemetryImpression">
-  <div class="ui container py-16" *ngIf="showLoader">
-    <app-loader></app-loader>
-  </div>
     <!--profile Content Header -->
     <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [ngClass]="{'header-block': isFullScreenView}">
       <div class="ui container py-0 px-0 d-flex flex-ai-center">
@@ -15,17 +12,15 @@
         <div class="content-header__content w-100 ml-16">
           <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
             <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>
-            <div class="content-header__info mt-4">
-              <span class="fnormal"></span>
-              <span class="dot-divider"></span>
-              <span class="fnormal"></span>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
+  <div class="ui container py-16" *ngIf="showLoader">
+    <app-loader></app-loader>
+  </div>
   <div class="user-profile-box p-0" *ngIf="!showLoader">
     <div class="d-flex flex-jc-space-between py-16 px-16">
       <div role="heading" aria-level="1" class="user-profile-box__title">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>

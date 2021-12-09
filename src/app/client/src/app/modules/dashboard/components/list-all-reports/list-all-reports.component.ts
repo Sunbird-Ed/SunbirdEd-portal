@@ -1,8 +1,8 @@
-import { UserService } from '@sunbird/core';
+import { UserService, TncService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ResourceService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { catchError, mergeMap, map } from 'rxjs/operators';
+import { catchError, mergeMap, map, first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
@@ -18,10 +18,14 @@ import 'datatables.net';
 })
 export class ListAllReportsComponent implements OnInit {
   reports: any;
+  userProfile;
+  reportViewerTncVersion: string;
+  reportViewerTncUrl: string;
+  showTncPopup = false;
 
   constructor(public resourceService: ResourceService, public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService,
-    private telemetryService: TelemetryService, private layoutService: LayoutService) { }
+    private telemetryService: TelemetryService, private layoutService: LayoutService, public tncService: TncService) { }
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
@@ -46,6 +50,12 @@ export class ListAllReportsComponent implements OnInit {
 
   ngOnInit() {
     this.initLayout();
+    this.userService.userData$.pipe(first()).subscribe(async (user) => {
+      if (user && user.userProfile) {
+        this.userProfile = user.userProfile;
+        this.getReportViewerTncPolicy();
+      }
+    });
     this.reportsList$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
       mergeMap((isAuthenticated: boolean) => {
         this._isUserReportAdmin = this.reportService.isUserReportAdmin();
@@ -63,6 +73,9 @@ export class ListAllReportsComponent implements OnInit {
     );
   }
 
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
 
   private filterReportsBasedOnRoles = (reports: any[]) => {
     if (this.reportService.isUserSuperAdmin()) {
@@ -358,6 +371,24 @@ export class ListAllReportsComponent implements OnInit {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });
+  }
+
+  public getReportViewerTncPolicy() {
+    this.tncService.getReportViewerTnc().subscribe((data) => {
+      const reportViewerTncData = JSON.parse(_.get(data, 'result.response.value'));
+      if (_.get(reportViewerTncData, 'latestVersion')) {
+        this.reportViewerTncVersion = _.get(reportViewerTncData, 'latestVersion');
+        this.reportViewerTncUrl = _.get(_.get(reportViewerTncData, _.get(reportViewerTncData, 'latestVersion')), 'url');
+        this.showReportViewerTncForFirstUser();
+      }
+  });
+  }
+
+  public showReportViewerTncForFirstUser() {
+    const reportViewerTncObj = _.get(this.userProfile, 'allTncAccepted.reportViewerTnc');
+    if (!reportViewerTncObj) {
+     this.showTncPopup = true;
+    }
   }
 
 }

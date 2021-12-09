@@ -252,7 +252,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         batchDetails = this.batchList[0];
       }
     }
-    this.showCertificateDetails = _.get(batchDetails, 'certTemplates') ? true : false;
+    this.showCertificateDetails = !(_.isEmpty(_.get(batchDetails, 'certTemplates'))) ? true : false;
     const certDetails = _.get(batchDetails, 'certTemplates');
     for (var key in certDetails) {
       const certCriteria = certDetails[key]['criteria'];

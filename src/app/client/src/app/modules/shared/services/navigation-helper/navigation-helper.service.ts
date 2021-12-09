@@ -192,12 +192,17 @@ export class NavigationHelperService {
   /* Used In Desktop for navigating to back page */
   goBack() {
     const previousUrl = this.getDesktopPreviousUrl();
+    const redirectToExplore = [
+      '/profile'
+    ];
     this.history.pop();
     if (_.includes(previousUrl.url, '/search') && previousUrl.queryParams) {
       this.utilService.updateSearchKeyword(previousUrl.queryParams.key);
     }
 
-    if (previousUrl.queryParams) {
+    if (_.includes(redirectToExplore, this.router.url) && !this.utilService.isDesktopApp) {
+      this.router.navigate(['/explore']);
+    } else if (previousUrl.queryParams) {
       this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
     } else {
       this.router.navigate([previousUrl.url]);

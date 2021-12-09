@@ -87,88 +87,89 @@
 </div>
   <!-- Admin role page end -->
 
-<sui-modal
-  [mustScroll]="true" 
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'normal'"
-  class="sb-modal"
-  appBodyScroll
-  (dismissed)="dismissRoleAssign()" 
-  #modal
-  *ngIf="showAssignRole"
->
-  <!--Header-->
-  <div class="sb-modal-header" *ngIf="userDetails">
-    
-  </div>
-  <!--/Header-->
 
-   <!--Content-->
-  <div class="sb-modal-content" *ngIf="showMainLoader">
-    <div class="ui grid">
-      <div class="twelve wide column">
-        <app-loader></app-loader>
-      </div>
-    </div>
-  </div>
-  <div class="sb-modal-content o-y-visible" *ngIf="!showMainLoader">
-    <div class="ui grid">
-      <div class="ten wide column mb-30">
-        <span class="ui header" *ngIf="!isEditRole">Add new role</span>
-        <span class="ui header" *ngIf="isEditRole">Edit role</span>
-      </div>
-    </div>
-    <form class="ui form" [formGroup]="userDetailsForm">
-      <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
-      </div>
-      <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role" (selectedOptionsChange)="enableButton()" formControlName="role" [options]="allRoles" labelField="roleName"
-          valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
-          <sui-select-option *ngFor="let role of allroles.filteredOptions" [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
-        </sui-multi-select>
-        </div>
-        <div class="field">
-          <label>{{resourceService.frmelmnts?.lbl?.orgname}}</label>
-        </div>
-        <div class="field">
-        <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName" (selectedOptionsChange)="enableButton()" formControlName="orgName" [options]="orgList" labelField="orgName"
-          valueField="orgId" name="orgName" placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName>
-          <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
-        </sui-multi-select>
-      </div>
-    </form>
-  </div>
-  <!--/Content-->
   
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <button [disabled]="!enableSubmitBtn"
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="submitInteractEdata" 
-      (click)="onSubmitForm()" tabindex="0"
-      class="sb-btn sb-btn-normal"
-      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
-    >
-      {{resourceService.frmelmnts?.btn?.cancel}}
-    </button>
-    <button [disabled]="!enableSubmitBtn"
-      appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" 
-      [telemetryInteractEdata]="submitInteractEdata" 
-      (click)="onSubmitForm()" tabindex="0"
-      class="sb-btn sb-btn-normal sb-btn-primary"
-      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
-    >
-      {{resourceService.frmelmnts?.btn?.save}}
-    </button>
-  </div>
-  <!--/Actions-->
+<app-modal-wrapper *ngIf="showAssignRole" [config]="{disableClose: true, size: 'normal'}"
+  (dismiss)="dismissRoleAssign()">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <!--Header-->
+          <div class="sb-modal-header" *ngIf="userDetails">
 
-</sui-modal>
-  
+          </div>
+          <!--/Header-->
+
+          <!--Content-->
+          <div class="sb-modal-content" *ngIf="showMainLoader">
+            <div class="ui grid">
+              <div class="twelve wide column">
+                <app-loader></app-loader>
+              </div>
+            </div>
+          </div>
+          <div class="sb-modal-content o-y-visible" *ngIf="!showMainLoader">
+            <div class="ui grid">
+              <div class="ten wide column mb-30">
+                <span class="ui header" *ngIf="!isEditRole">Add new role</span>
+                <span class="ui header" *ngIf="isEditRole">Edit role</span>
+              </div>
+            </div>
+            <form class="ui form" [formGroup]="userDetailsForm">
+              <div class="field">
+                <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
+              </div>
+              <div class="field">
+                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role"
+                  (selectedOptionsChange)="enableButton()" formControlName="role" [options]="allRoles"
+                  labelField="roleName" valueField="role" name="role"
+                  placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
+                  <sui-select-option *ngFor="let role of allroles.filteredOptions"
+                    [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
+                </sui-multi-select>
+              </div>
+              <div class="field">
+                <label>{{resourceService.frmelmnts?.lbl?.orgname}}</label>
+              </div>
+              <div class="field">
+                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName"
+                  (selectedOptionsChange)="enableButton()" formControlName="orgName" [options]="orgList"
+                  labelField="orgName" valueField="orgId" name="orgName"
+                  placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName>
+                  <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
+                </sui-multi-select>
+              </div>
+            </form>
+          </div>
+          <!--/Content-->
+
+          <!--Actions-->
+          <div class="sb-modal-actions">
+            <button [disabled]="!enableSubmitBtn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"
+              (click)="onSubmitForm()" tabindex="0" class="sb-btn sb-btn-normal"
+              [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
+              {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+            <button [disabled]="!enableSubmitBtn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"
+              (click)="onSubmitForm()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary"
+              [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
+              {{resourceService.frmelmnts?.btn?.save}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--/Actions-->
+
+    </div>
+  </ng-template>
+</app-modal-wrapper>
+
 <app-modal-wrapper *ngIf="showDelete" [config]="{disableClose: true, size: 'small'}" (dismiss)="dismiss()">
   <ng-template sbModalContent>
       <div class="sb-modal sb-error">

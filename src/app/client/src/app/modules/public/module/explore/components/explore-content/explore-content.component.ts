@@ -521,10 +521,19 @@ logTelemetry(content, actionId) {
     this.telemetryService.interact(appTelemetryInteractData);
   }
   public viewAll(event) {
+    this.moveToTop();
     this.logViewAllTelemetry(event);
-    const queryParams = { content: JSON.stringify(event.contents) , ...{ selectedTab: this.queryParams.returnTo, viewMore: true} };
+    const searchQueryParams: any = {};
+    searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });
+    searchQueryParams['exists'] = undefined;
+    searchQueryParams['primaryCategory'] = this.queryParams.primaryCategory ? this.queryParams.primaryCategory : [event.name];
+    this.queryParams.primaryCategory ? (searchQueryParams['subject'] = [event.name]) :
+    (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
+    searchQueryParams['selectedTab'] = 'all';
+    searchQueryParams['visibility'] = [];
+    searchQueryParams['appliedFilters'] = true;
     const sectionUrl = '/explore' + '/view-all/' + event.name.replace(/\s/g, '-');
-    this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: {} });
+    this.router.navigate([sectionUrl, 1], { queryParams: searchQueryParams, state: {} });
  }
 
  public isUserLoggedIn(): boolean {
