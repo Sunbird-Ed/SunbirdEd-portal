@@ -1116,6 +1116,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
+                this.showorHideBanners();
             }, err => {
                 this.toasterService.warning(this.resourceService.messages.emsg.m0012);
             });
@@ -1125,6 +1126,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.userPreference.framework = event;
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+                this.showorHideBanners();
             }, err => {
                 this.toasterService.warning(_.get(this.resourceService, 'messages.emsg.m0012'));
             });
@@ -1132,9 +1134,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (window['TagManager']) {
             window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
         }
-        this.segmentationTagService.getUpdatedCommands().then(() => {
-            this.showorHideBanners();
-        });
         // this.setUserPreferences();
         // this.fetchContents$.next(this._currentPageData);
     }
