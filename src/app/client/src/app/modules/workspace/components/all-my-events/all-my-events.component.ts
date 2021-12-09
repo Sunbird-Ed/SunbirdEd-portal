@@ -23,6 +23,7 @@ const colors: any = {
   },
 };
 
+
 @Component({
   selector: 'app-all-my-events',
   templateUrl: './all-my-events.component.html',
@@ -43,7 +44,7 @@ export class AllMyEventsComponent implements OnInit {
   Filterdata: any; 
   libEventConfig:any; 
   dates: any;
- 
+  EventListCount: any;
   query: any;
   today = new Date();
   todayDate = this.today.getFullYear() + '-' + ('0' + (this.today.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.today.getDate())).slice(-2);
@@ -80,6 +81,7 @@ export class AllMyEventsComponent implements OnInit {
     this.eventListService.getEventList( this.Filterdata).subscribe((data:any)=>{
        console.log("listdata = ",data.result?.Event);
        this.eventList = data.result?.Event;
+       this.EventListCount= data.result?.count;
       
       this.isLoading = false;
     },err=>{console.log("here",err);}
@@ -283,6 +285,7 @@ export class AllMyEventsComponent implements OnInit {
         {
           this.isLoading=false;
          delete this.eventList;
+         this.EventListCount= data.result?.count;
           this.eventList = data.result.Event;
          
         }

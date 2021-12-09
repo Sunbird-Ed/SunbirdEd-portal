@@ -18,7 +18,7 @@ const reqDataLimitOfContentUpload = '50mb'
 const { logger } = require('@project-sunbird/logger');
 const {parseJson, isDateExpired, decodeNChkTime} = require('../helpers/utilityService');
 const _ = require('lodash');
-
+console.log("++++++++++++++++++++++++",learnerURL);
 module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route
 
