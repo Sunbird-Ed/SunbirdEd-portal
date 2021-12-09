@@ -366,6 +366,7 @@ describe('ExploreContentComponent', () => {
     component.queryParams = {
       returnTo: 'home'
     };
+    spyOn(component, 'moveToTop').and.stub();
     const userServices = TestBed.get(UserService);
     spyOn(userServices, 'loggedIn').and.returnValue(true);
     const telemetryService = TestBed.get(TelemetryService);
