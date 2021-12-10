@@ -58,26 +58,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
-    if (this.assessmentEvents) {
-      this.telemetryEventSubscription$ = this.assessmentEvents.subscribe(telemetry => {
-          const eid = _.get(telemetry, 'detail.telemetryData.eid');
-          if(eid === 'ASSESS') {
-              if(!this.isFullScreen){
-                _.forEach(this.actionButtons, data => {
-                  if (data.name === 'fullscreen') {
-                    data.isInActive = true;
-                  }
-                });
-              } else {
-                _.forEach(this.fullScreenActionButtons, data => {
-                  if (data.name === 'minimize') {
-                    data.isInActive = true;
-                  }
-                });
-              }
-          }
-      });
-    }
+    this.enableDisableactionButtons();
     this.isDesktopApp = this.utilService.isDesktopApp;
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
@@ -108,8 +89,44 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
   }
+  enableDisableactionButtons() {
+    if(!this.isFullScreen){
+      _.forEach(this.actionButtons, data => {
+        if (data.name === 'fullscreen') {
+          data.isInActive = false;
+        }
+      });
+      }else {
+        _.forEach(this.fullScreenActionButtons, data => {
+          if (data.name === 'minimize') {
+            data.isInActive = false;
+          }
+        });
+      }
+      if (this.assessmentEvents) {
+        this.telemetryEventSubscription$ = this.assessmentEvents.subscribe(telemetry => {
+            const eid = _.get(telemetry, 'detail.telemetryData.eid');
+            if(eid === 'ASSESS') {
+                if(!this.isFullScreen){
+                  _.forEach(this.actionButtons, data => {
+                    if (data.name === 'fullscreen') {
+                      data.isInActive = true;
+                    }
+                  });
+                } else {
+                  _.forEach(this.fullScreenActionButtons, data => {
+                    if (data.name === 'minimize') {
+                      data.isInActive = true;
+                    }
+                  });
+                }
+            }
+        });
+      }
+  };
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes.contentData);
+    this.enableDisableactionButtons();
     this.contentPrintable();
     if (this.isDesktopApp && !_.get(changes, 'contentData.firstChange')) {
       this.contentData = _.get(changes, 'contentData.currentValue');
