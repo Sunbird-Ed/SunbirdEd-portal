@@ -239,6 +239,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     /* istanbul ignore else */
     if (_.get(this.queryParams, 'key')) {
       option.query = this.queryParams.key;
+      option.filters = _.pick(filters, 'primaryCategory', 'objectType', 'status');
     }
 
     /* istanbul ignore else */
