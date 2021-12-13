@@ -1,4 +1,4 @@
-import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnChanges,ViewChild,ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-material-auto-complete',
@@ -34,6 +34,8 @@ export class MaterialAutoCompleteComponent implements OnChanges {
     this.dropDownSelectedShow();
   }
 
+  @ViewChild("autocompleteInput") searchField: ElementRef;
+
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
 
   displayDropdown = false;
@@ -52,7 +54,7 @@ export class MaterialAutoCompleteComponent implements OnChanges {
   }
   private _placeholder: string;
 
-  constructor(private _elementRef: ElementRef<HTMLElement>) {}
+  constructor(private _elementRef: ElementRef<HTMLElement>,private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnChanges() {
     if (!this.dropdownList) {
@@ -94,6 +96,11 @@ export class MaterialAutoCompleteComponent implements OnChanges {
 
   DisplayDropdown() {
     this.displayDropdown = true;
+    this.changeDetectorRef.detectChanges();
+    setTimeout(()=>{
+        this.searchField.nativeElement.focus();
+    },100)
+
   }
   isChecked(item){
 
