@@ -34,7 +34,7 @@ export class MaterialAutoCompleteComponent implements OnChanges {
     this.dropDownSelectedShow();
   }
 
-  @ViewChild("autocompleteInput", { static: false }) searchField: ElementRef;
+  @ViewChild("autocompleteInput") searchField: ElementRef;
 
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
 
