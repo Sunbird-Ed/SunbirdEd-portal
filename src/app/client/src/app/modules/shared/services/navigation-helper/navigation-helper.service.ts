@@ -200,10 +200,10 @@ export class NavigationHelperService {
       this.utilService.updateSearchKeyword(previousUrl.queryParams.key);
     }
 
-    if (previousUrl.queryParams) {
-      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
-    } else if (_.includes(redirectToExplore, this.router.url) && !this.utilService.isDesktopApp) {
+    if (_.includes(redirectToExplore, this.router.url) && !this.utilService.isDesktopApp) {
       this.router.navigate(['/explore']);
+    } else if (previousUrl.queryParams) {
+      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
     } else {
       this.router.navigate([previousUrl.url]);
     }

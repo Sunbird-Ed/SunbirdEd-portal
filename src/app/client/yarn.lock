@@ -1471,8 +1471,8 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.3.tgz#b005e94f77ff1b24d186c3ecc0eb960228242bd5"
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
-"@project-sunbird/discussions-ui-v8@2.5.0-beta.5":
-  version "2.5.0-beta.5"
+"@project-sunbird/discussions-ui-v8@2.5.0-beta.6":
+  version "2.5.0-beta.6"
   resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.5.tgz#33c4ae6fb8d50a0425838667fcf225e6331caf7b"
   integrity sha512-zqxCxURLNQx5cPN+DVjgmJEcXLP/Di+8UxD3s7czNrUYM0TgqwLrTgV6Wj57Cf5BZTCRwdyPx+LfTASFBvc/YA==
   dependencies:
@@ -1514,10 +1514,10 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.5.5":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.5.5.tgz#0b2d3ea6f6eb5f22c86bec09152ba0b7d71c6918"
-  integrity sha512-nQdzxp1v0pdfk1uGDt6UODQ+TFReATPxSd4qWNpcxGCoXN66uXARmRyjTD9eRsH7TRAR+VVqxeUmdTxwV9I2hg==
+"@project-sunbird/sunbird-epub-player-v9@4.5.6":
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.5.6.tgz#36e08cfa37809ad3e23aedb648a3f7cbcae0f766"
+  integrity sha512-fFtUY1dt7rT/Nki+CaRdT0/DrdfQli9ERTmFBa7MzqlMA8FlHbc0n6Lfs2TakHS3Utd6/BH7i5FIMPG2VxU3Bw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.4.4"
 
