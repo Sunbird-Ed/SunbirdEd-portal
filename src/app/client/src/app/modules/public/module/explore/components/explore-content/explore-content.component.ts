@@ -521,6 +521,7 @@ logTelemetry(content, actionId) {
     this.telemetryService.interact(appTelemetryInteractData);
   }
   public viewAll(event) {
+    this.moveToTop();
     this.logViewAllTelemetry(event);
     const searchQueryParams: any = {};
     searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });

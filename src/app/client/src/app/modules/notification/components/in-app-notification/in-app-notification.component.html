@@ -11,16 +11,16 @@
 <app-modal-wrapper *ngIf="showNotificationModel" [config]="{disableClose: false, size: 'small'}"
   (dismiss)="showNotificationModel=false">
   <ng-template sbModalContent let-data>
-    <div class="sb-modal sb-notification-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-content o-y-visible" tabindex="0">
-            <sb-notification tabindex="0" [notificationList]="notificationList"
-              [inAppNotificationConfig]="inAppNotificationConfig" (showMore)="handleShowMore($event)"
-              (showLess)="handleShowLess($event)"></sb-notification>
-          </div>
-        </div>
+    <div class="sb-mat__modal sb-notification-modal">
+      <div mat-dialog-title class="mb-0">
+        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
       </div>
+      <div class="sb-mat__modal__content" tabindex="0">
+        <sb-notification tabindex="0" [notificationList]="notificationList"
+          [inAppNotificationConfig]="inAppNotificationConfig" (showMore)="handleShowMore($event)"
+          (showLess)="handleShowLess($event)"></sb-notification>
+      </div>
+      <div class="sb-mat__modal__actions"></div>
     </div>
   </ng-template>
 </app-modal-wrapper>

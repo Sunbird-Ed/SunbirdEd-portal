@@ -59,8 +59,8 @@
     overflow: auto;
     width: 100%;
     height: 100%;
-    max-width: 100% !important;
     &.overflow-visible {
+      max-width: 100% !important;
       .mat-dialog-container {
         overflow: inherit;
         .mat-dialog-content {
@@ -86,6 +86,7 @@
     overflow: hidden;
     background-color: transparent;
     box-shadow: none;
+    position: relative;
 
     .mat-dialog-content {
       margin: 0;
@@ -159,6 +160,22 @@
           font-weight: 700;
         }
       }
+    }
+  }
+
+  // Notification Popup
+  .sb-mat__modal.sb-notification-modal {
+    position: absolute;
+    left: auto;
+    right: 0;
+
+    .sb-notification-container {
+      position: relative;
+    }
+
+    .sb-notification-list-items {
+      max-height: 100%;
+      overflow-y: inherit;
     }
   }
 }
