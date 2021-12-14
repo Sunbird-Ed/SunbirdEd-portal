@@ -3712,10 +3712,10 @@ common-form-elements-v9@4.5.0:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.3.5.tgz#8546e13ccab8f467dd7bf5fb64d401cf14b7c1ae"
-  integrity sha512-xf2sz72KgV5CiX0dWZKCKid67/DWvmR6Up+psWmslc5m7mqzGDimWEnQufekh94GfVtbWLR37eg0Eik49xQqFg==
+common-form-elements-web-v9@4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.5.0.tgz#f304cdc93a1d031374f73f18bd524890b68e2ece"
+  integrity sha512-r3o5qncTlFl2xWh3I+BAJVuqq0kUuvLqBOK9QC1LAsnpVP8h0y0isIZVDZYNHakCq4IgPoWaST+vox/KtEdzwg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
