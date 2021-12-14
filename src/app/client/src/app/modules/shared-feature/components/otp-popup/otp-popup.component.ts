@@ -88,7 +88,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         'key': this.otpData.value,
         'type': this.otpData.type,
         'otp': this.otpForm.controls.otp.value,
-        ...( this.otpData.value && this.otpData.value.match(/(([a-z]|[A-Z])+[*]+([a-z]*[A-Z]*[0-9]*)*@)|([0-9]+[*]+[0-9]*)+/g) &&
+        ...( this.otpData.value && this.otpData.value.match(/(([a-z]|[A-Z])+[*]{2,}([a-z]*[A-Z]*[0-9]*)*@)|([*]{2,})+/g) &&
         { 'userId': this.userService.userid })
       }
     };
