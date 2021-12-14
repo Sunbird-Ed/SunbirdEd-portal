@@ -1472,7 +1472,7 @@
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
 "@project-sunbird/discussions-ui-v8@2.5.0-beta.6":
-  version "2.5.0-beta.6"
+  version "2.5.0-beta.5"
   resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.5.tgz#33c4ae6fb8d50a0425838667fcf225e6331caf7b"
   integrity sha512-zqxCxURLNQx5cPN+DVjgmJEcXLP/Di+8UxD3s7czNrUYM0TgqwLrTgV6Wj57Cf5BZTCRwdyPx+LfTASFBvc/YA==
   dependencies:
@@ -1547,13 +1547,13 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.10":
-  version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.10.tgz#3ad0f14e1a3dac7725802343cb51c660449fadb5"
-  integrity sha512-mOQPNQwNCn5ajeR3OagpjGwHu7nZBi30IKthRdEzSfb94vQyeJVkWMxxi5SQKR2QcX6y/N+KdO48+MkePMxjMw==
+"@project-sunbird/sunbird-quml-player-v9@4.5.11":
+  version "4.5.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.11.tgz#6928762bfbce8ffd8ba7cb15fd879ecfa87c3e64"
+  integrity sha512-LjubKbW4zZ6+KGXuO+YwXKkV0IonMcWHwPr9o6yX7FEMSnP0duI3ILTJoJ90oUrY1L2Cc6E6MwRgpWtcTS2jfg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.5.1"
-    ally.js "^1.4.1"
+    ally.js "1.4.1"
 
 "@project-sunbird/sunbird-video-player-v9@4.4.2":
   version "4.4.2"
@@ -2212,7 +2212,7 @@ ajv@^6.1.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ally.js@1.4.1, ally.js@^1.4.1:
+ally.js@1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/ally.js/-/ally.js-1.4.1.tgz#9fb7e6ba58efac4ee9131cb29aa9ee3b540bcf1e"
   integrity sha1-n7fmuljvrE7pExyymqnuO1QLzx4=
