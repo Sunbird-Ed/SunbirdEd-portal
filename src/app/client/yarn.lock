@@ -1502,10 +1502,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.30":
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.30.tgz#19b48bec566b2087d803f666a8dc0d0a000a0aef"
-  integrity sha512-znlyL4EP2YaphxjpJLgZ3Qe2F061ZKSMKaW8akSNLWYVcClxvSInZUYwQPCxJ6hJoPS0URSF9o6BUTd+cslPMw==
+"@project-sunbird/sb-themes@0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.31.tgz#766ceac4e4c3499c9af5abd2f4548c1c1fc9c67d"
+  integrity sha512-8vRirEi3rZ0CdhU7a0N5B+nQ5nGuVrV6H1qCYs4VS/D8i6tV8qM1JDSJEzoXLuOTCBLpUisvBA5gjCvxLtnbmw==
 
 "@project-sunbird/sunbird-collection-editor-v9@4.5.18":
   version "4.5.18"
@@ -3703,10 +3703,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements-v9@4.2.7:
-  version "4.2.7"
-  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.2.7.tgz#dd589f9e5a56df9f3272b9d638904f79490c0857"
-  integrity sha512-MfXGbQMk1S3ptU2gkDlZUsD2Wj4gdCWDA8q+JsdepElT2Z2obLxwNh3LQuS8AfRYwQd30Ch6Z7UHU9WaYE0nug==
+common-form-elements-v9@4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.5.0.tgz#430798237a7ccf37466f8418937c99eee58fcdc7"
+  integrity sha512-nYBr5m92WIO6ZuB69JmXK/aCUBaFEvvy2AJivSLzntI44ZNjaeoYmHmZIq9cGE42RJjqZDN4whacfNUhHV7zQw==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
