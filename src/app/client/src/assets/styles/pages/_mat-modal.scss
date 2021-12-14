@@ -77,6 +77,10 @@
       max-width: 720px;
       width: 100%;
       margin: 2% auto 0 auto;
+
+      &--small {
+        max-width: 480px;
+      }
     }
   }
 
