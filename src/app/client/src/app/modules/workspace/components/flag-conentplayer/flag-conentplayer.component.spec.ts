@@ -73,6 +73,17 @@ describe('FlagConentplayerComponent', () => {
     resourceService.frmelmnts = resourceBundle.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableOf(testData.sucessRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
+    userService.guestUserProfile = {
+      name: "guest",
+      formatedName: "Guest",
+      framework: {
+        board: ["State (Tamil Nadu)"],
+        medium: ["English"],
+        gradeLevel: ["Class 4"],
+        subject: [],
+        id: "tn_k-12_5",
+      },
+    };
     component.getContent();
     fixture.detectChanges();
     expect(component.contentData).toBeDefined();
