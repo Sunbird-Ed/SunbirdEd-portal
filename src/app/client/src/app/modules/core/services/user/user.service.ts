@@ -96,7 +96,7 @@ export class UserService {
   public createManagedUser = new EventEmitter();
   public isDesktopApp = false;
   private _guestData$ = new BehaviorSubject<any>(undefined);
-  private guestUserProfile;
+  public guestUserProfile;
   public readonly guestData$: Observable<any> = this._guestData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
   /**
