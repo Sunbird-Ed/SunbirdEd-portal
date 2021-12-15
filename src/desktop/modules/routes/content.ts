@@ -262,6 +262,12 @@ export default (app, proxyURL, contentDownloadManager) => {
       app.post("/certreg/v1/certs/search", customProxy(proxyURL), (req, res) => {
           res.status(res.statusCode).send(res.body);
       });
+      app.get("/learner/questionset/v1/hierarchy/:id", customProxy(proxyURL), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+      });
+      app.get("/api/questionset/v1/read/:id", customProxy(proxyURL), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+      });
 }
 
 const enableProxy = (req) => {
