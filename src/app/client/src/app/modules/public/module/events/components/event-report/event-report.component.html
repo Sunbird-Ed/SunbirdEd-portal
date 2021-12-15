@@ -25,6 +25,23 @@
                 [eventDetailItem]="eventItem"
                 [enrollEventDetails]="eventUserEnrollData">
             </sb-enroll-event-users>
+            <div *ngIf="!eventUserEnrollData">
+                <div class="no-content-container d-flex flex-jc-center relative9">
+                    <div class="my-48 p-16 w-100">
+                    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+                        <div>
+                        <img alt="{{title}}" src="./assets/images/group.svg" width="90px" height="90px">
+                        </div>
+                        <div tabindex="0" class="fmedium board-title pt-24 font-weight-bold">No Data Found</div>
+                        <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
+                        <div tabindex="0" *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
+                        <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
+                        Explore more content
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

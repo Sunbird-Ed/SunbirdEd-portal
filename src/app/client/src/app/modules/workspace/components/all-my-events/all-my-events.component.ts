@@ -23,7 +23,6 @@ const colors: any = {
   },
 };
 
-
 @Component({
   selector: 'app-all-my-events',
   templateUrl: './all-my-events.component.html',

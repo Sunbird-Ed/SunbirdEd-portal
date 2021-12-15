@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as  MyEventList from '../../interface/MyEventList';
+import * as  myEventFilter from './event-view-type.component-filterdata';
 import * as  MyCalendarList  from '../../interface/MyCalendarList';
 import {EventListService, EventFilterService} from 'ngtek-event-library';
 import { EventCreateService } from 'ngtek-event-library';
@@ -10,6 +10,10 @@ import {CalendarEvent} from 'angular-calendar';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import * as MyEventLFilter from '../../interface/MyEventLFilter';
 import {ToasterService,LayoutService, COLUMN_TYPE}from '@sunbird/shared';
+import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
+import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
+import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
+
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -58,10 +62,17 @@ export class EventViewTypeComponent implements OnInit {
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
+  isDesktopApp = false;
+  formData: any;
+  defaultTab = 'Textbook';
+  public subscription$;
+  public unsubscribe = new Subject<void>();
+
+
 
   eventListCount : any;
   myEventsCount : any;
-  
+
   constructor(public eventListService: EventListService,
     public eventFilterService: EventFilterService,
     private eventCreateService: EventCreateService,
@@ -69,10 +80,11 @@ export class EventViewTypeComponent implements OnInit {
     private router: Router,public userService: UserService,
     public frameworkService:FrameworkService,
     public toasterService:ToasterService,
+    public activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,) { }
 
   ngOnInit() {
-    this.initConfiguration();
+    this.initLayout();
     // this.eventtype();
 
     this.showEventListPage();
@@ -82,30 +94,90 @@ export class EventViewTypeComponent implements OnInit {
     this.showCalenderEvent();
     this.setEventConfig();
   }
-  private initConfiguration() {
-    // this.defaultFilters = this.userService.defaultFrameworkFilters;
-    // if (this.utilService.isDesktopApp) {
-    //     this.setDesktopFilters(true);
-    // }
-    // this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
+
+  // private initConfiguration() {
+  //   // this.defaultFilters = this.userService.defaultFrameworkFilters;
+  //   // if (this.utilService.isDesktopApp) {
+  //   //     this.setDesktopFilters(true);
+  //   // }
+  //   // this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
+  //   this.layoutConfiguration = this.layoutService.initlayoutConfig();
+  //   this.redoLayout();
+  // }
+
+  initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
-}
+    this.layoutService.switchableLayout().
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
+  }
 
 redoLayout() {
-    // const contentType = _.get(this.getCurrentPageData(), 'contentType');
-    // if (this.isDesktopApp) {
+      if (this.layoutConfiguration != null) {
+        // Joyful Theme
         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-    // } else {
-    //     if (this.layoutConfiguration != null && (contentType !== 'home' && contentType !== 'explore')) {
-    //         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-    //         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-    //     } else {
-    //         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-    //         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-    //     }
-    // }
+        console.log('296 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
+        console.log('296 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
+
+      } else {
+          // Classic Theme
+          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+          console.log('302 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
+          console.log('302 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
+
+      }
+}
+
+// private fetchChannelData() {
+//   return forkJoin(this.getChannelId(), this.getFormConfig())
+//       .pipe(
+//           switchMap(([channelData, formConfig]) => {
+//               const { channelId, custodianOrg } = channelData;
+//               this.channelId = channelId;
+//               this.custodianOrg = custodianOrg;
+//               this.formData = formConfig;
+//               if (this.isUserLoggedIn()) {
+//                   this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
+//                   this.userProfile = this.userService.userProfile;
+//               } else {
+//                   this.userService.getGuestUser().subscribe((response) => {
+//                       const guestUserDetails: any = response;
+//                       if (guestUserDetails && !this.cacheService.exists('searchFilters')) {
+//                           this.userProfile = guestUserDetails;
+//                           this.userProfile['firstName'] = guestUserDetails.formatedName;
+//                           this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
+//                       } else {
+//                           this.defaultFilters = this.getPersistFilters(true);
+//                       }
+//                   });
+//               }
+//               this._addFiltersInTheQueryParams();
+//               return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
+//           }),
+//           tap(data => {
+//               this.initFilter = true;
+//           }, err => {
+//               this.toasterService.error(get(this.resourceService, 'frmelmnts.lbl.fetchingContentFailed'));
+//               this.navigationhelperService.goBack();
+//           })
+//       );
+// }
+
+public getPageData(input) {
+  const contentTypes = _.sortBy(this.formData, 'index');
+  // this.defaultTab = _.find(contentTypes, ['default', true]);
+  return find(this.formData, data => data.contentType === input);
+}
+
+public getCurrentPageData() {
+  return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook');
 }
   showEventListPage(){
     this.Filterdata = {
@@ -158,15 +230,16 @@ redoLayout() {
 
   }
   showFilters() {
-      this.eventListService.getFilterFormConfig().subscribe((data: any) => {
-        this.filterConfig = data.result['form'].data.fields;
-        this.isLoading = false;
+    this.filterConfig = myEventFilter.myEventFilter.result.form.data.fields;
+    //   this.eventListService.getFilterFormConfig().subscribe((data: any) => {
+    //     this.filterConfig = data.result['form'].data.fields;
+    //     this.isLoading = false;
 
-        console.log('eventfilters = ',data.result['form'].data.fields);
-      },
-      (err: any) => {
-        console.log('err = ', err);
-      });
+    //     console.log('eventfilters = ',data.result['form'].data.fields);
+    //   },
+    //   (err: any) => {
+    //     console.log('err = ', err);
+    //   });
      }
 
   eventtype($event){
