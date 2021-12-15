@@ -1547,10 +1547,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.11":
-  version "4.5.11"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.11.tgz#6928762bfbce8ffd8ba7cb15fd879ecfa87c3e64"
-  integrity sha512-LjubKbW4zZ6+KGXuO+YwXKkV0IonMcWHwPr9o6yX7FEMSnP0duI3ILTJoJ90oUrY1L2Cc6E6MwRgpWtcTS2jfg==
+"@project-sunbird/sunbird-quml-player-v9@4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.12.tgz#3c35cfc467e7e7c68f35548617eb141f2bb8e785"
+  integrity sha512-v3GTM700Pb0OY5zokjPeJPs5nlMjWytlEpiECrHzvMUz1N6+iaL+psG2rImAhEUawyZfVjBZ7ZNTaiw5GsoZEw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.5.1"
     ally.js "1.4.1"
@@ -1585,10 +1585,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.5.tgz#8205d3186c7e4e1b243de9634e0c8009b1738276"
-  integrity sha512-K0+d+mCbh3xVO7aczsFu6i/QsQAmAVmISUcoMGwGZ8WkxZDZNj7pIO1kKi8ZVAO6QlF8UjowG9W1MtAgTjyxWg==
+"@samagra-x/uci-console@1.2.6":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.6.tgz#23deeffb0742e429c9249deb53f17797779446ad"
+  integrity sha512-lb3GSUx+moUra2iFddkyzY3V8G8DXxFzo4QFqAkFbNRSsnO0yTLCGODg1KgLdTzktl7g9NlL/Zu3+w282sNrcw==
   dependencies:
     tslib "^1.10.0"
 
