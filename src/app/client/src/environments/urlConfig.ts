@@ -1,4 +1,4 @@
-export const urlConfig = {  
+export const urlConfig = {
     create: "/api/event/v4/create",
     update: "/api/event/v4/update",
     myEventFilterConfigApi : "/api/data/v1/form/read",
@@ -15,10 +15,10 @@ export const urlConfig = {
     // enrollUserEventList:"/api/course/v2/user/enrollment/list",
     batchlist: "/learner/course/v1/batch/list",
     createBatch: "/learner/course/v1/batch/create",
-    enrollUserEventList:"/api/course/v2/user/enrollment/list",
+    enrollUserEventList:"/api/course/v2/user/enrollment/list?contentType=Event",
     eventFormConfigApi : "/api/data/v1/form/read",
     eventFilterConfigApi : "/api/data/v1/form/read",
-    myEvents:"/api/course/v2/user/enrollment/list",
+    myEvents:"/api/course/v2/user/enrollment/list?contentType=Event",
     // myEvents:"/api/course/v2/user/enrollment/list",
     search: "/api/event/v1/search",
     // eventListApi : "assets/api/eventlist.json",
@@ -33,5 +33,5 @@ export const urlConfig = {
     // ImageSearchApi :  "assets/api/search-images.json",
     // EditModeApi :  "assets/api/editmode.json",
     compositeSearch: "/action/composite/v3/search",
-    attendanceApi: "/learner/course/v1/attendance/read"    
+    attendanceApi: "/learner/course/v1/attendance/read"
 };

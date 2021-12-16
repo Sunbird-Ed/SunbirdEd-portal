@@ -73,6 +73,7 @@
     "angular-datatables": "8.0.0",
     "angular-inport": "^2.0.0",
     "angular2-uuid": "1.1.1",
+    "angular8-countdown-timer": "^1.0.0",
     "angularx-flatpickr": "^6.6.0",
     "bootstrap-css-only": "^4.4.1",
     "chart.js": "2.9.4",
@@ -112,7 +113,6 @@
     "ng2-cache-service": "1.1.1",
     "ng2-charts": "2.4.2",
     "ng2-semantic-ui-v9": "0.0.4",
-    "ngtek-event-library": "^1.0.166",
     "ngx-avatar": "^3.7.0",
     "ngx-bootstrap": "^5.6.2",
     "ngx-chips": "2.1.0",
@@ -133,7 +133,7 @@
     "videojs-contrib-quality-levels": "^2.1.0",
     "videojs-http-source-selector": "^1.1.6",
     "zone.js": "~0.10.2",
-    "angular8-countdown-timer": "^1.0.0"
+    "ngtek-event-library": "^1.0.169"
   },
   "devDependencies": {
     "@angular/language-service": "^9.1.13",

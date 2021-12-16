@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as  myEventFilter from './event-view-type.component-filterdata';
+// import * as  myEventFilter from './event-view-type.component-filterdata';
 import * as  MyCalendarList  from '../../interface/MyCalendarList';
 import {EventListService, EventFilterService} from 'ngtek-event-library';
 import { EventCreateService } from 'ngtek-event-library';
@@ -230,16 +230,16 @@ public getCurrentPageData() {
 
   }
   showFilters() {
-    this.filterConfig = myEventFilter.myEventFilter.result.form.data.fields;
-    //   this.eventListService.getFilterFormConfig().subscribe((data: any) => {
-    //     this.filterConfig = data.result['form'].data.fields;
-    //     this.isLoading = false;
+    // this.filterConfig = myEventFilter.myEventFilter.result.form.data.fields;
+      this.eventListService.getFilterFormConfig().subscribe((data: any) => {
+        this.filterConfig = data.result['form'].data.fields;
+        this.isLoading = false;
 
-    //     console.log('eventfilters = ',data.result['form'].data.fields);
-    //   },
-    //   (err: any) => {
-    //     console.log('err = ', err);
-    //   });
+        console.log('eventfilters = ',data.result['form'].data.fields);
+      },
+      (err: any) => {
+        console.log('err = ', err);
+      });
      }
 
   eventtype($event){
