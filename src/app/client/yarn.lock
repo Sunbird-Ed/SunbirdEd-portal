@@ -1547,10 +1547,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.5.12":
-  version "4.5.12"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.12.tgz#3c35cfc467e7e7c68f35548617eb141f2bb8e785"
-  integrity sha512-v3GTM700Pb0OY5zokjPeJPs5nlMjWytlEpiECrHzvMUz1N6+iaL+psG2rImAhEUawyZfVjBZ7ZNTaiw5GsoZEw==
+"@project-sunbird/sunbird-quml-player-v9@4.5.13":
+  version "4.5.13"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.5.13.tgz#e25870eef322ec6eea79a79144512897e9bd1ac0"
+  integrity sha512-FXFyWr9HQMd1+tYCrwF8mDjWqEaniy5aQt8QE/lOTnayFDM5d9clDRdVEH105oV6bsnV4WX2fk/3vipC9HyH3w==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.5.1"
     ally.js "1.4.1"
