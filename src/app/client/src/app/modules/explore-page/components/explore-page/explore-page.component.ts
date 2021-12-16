@@ -437,6 +437,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         request.channelId = this.selectedFilters['channel'];
                     }
                     const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
+                    option.filters['visibility'] = option.filters['channel'] = [];
                     return this.searchService.contentSearch(option)
                         .pipe(
                             map((response) => {
