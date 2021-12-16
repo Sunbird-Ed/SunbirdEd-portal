@@ -312,7 +312,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.generaliseLabelService.getGeneraliseResourceBundle();
   // keyboard accessibility enter key click event
     document.onkeydown = function(e) {
-      if (e.keyCode === 13) { // The Enter/Return key
+      const element = document.getElementById('overlay-button') as HTMLElement;
+      if (e.keyCode === 13 && document.activeElement !== element) { // The Enter/Return key
         (document.activeElement  as HTMLElement).click();
       }
     };
