@@ -71,7 +71,18 @@ describe('PlayerComponent', () => {
     userService = TestBed.get(UserService);
     userService._authenticated = false;
     userService.loggedIn = true;
-    userService.userData$ = of({ userProfile: { firstName: 'harish', lastName: 'gangula' } });
+    userService.guestUserProfile = {
+      name: "guest",
+      formatedName: "Guest",
+      framework: {
+        board: ["State (Tamil Nadu)"],
+        medium: ["English"],
+        gradeLevel: ["Class 4"],
+        subject: [],
+        id: "tn_k-12_5",
+      },
+    };
+    userService.userData$ = of({ userProfile: { firstName: 'harish', lastName: 'gangula' },  });
     component.contentIframe = {
       nativeElement: {
         contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } },

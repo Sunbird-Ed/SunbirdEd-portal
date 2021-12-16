@@ -501,17 +501,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   public addUserDataToContext() {
-    this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
           const userProfile = user.userProfile;
           this.playerConfig.context['userData'] = {
-            firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
+            firstName: userProfile.firstName ? userProfile.firstName : 'Guest',
             lastName: userProfile.lastName ? userProfile.lastName : ''
           };
         }
       });
+    } else {
+      this.playerConfig.context.userData = {
+        firstName: this.userService.guestUserProfile.formatedName || 'Guest', 
+        lastName: ''
+      };
     }
   }
 
