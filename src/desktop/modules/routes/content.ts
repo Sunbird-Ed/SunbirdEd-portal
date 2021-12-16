@@ -268,6 +268,10 @@ export default (app, proxyURL, contentDownloadManager) => {
       app.get("/api/questionset/v1/read/:id", customProxy(proxyURL), (req, res) => {
         res.status(res.statusCode).send(res.body);
       });
+      app.post("/api/question/v1/list", customProxy(proxyURL), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+      });
+      
 }
 
 const enableProxy = (req) => {
