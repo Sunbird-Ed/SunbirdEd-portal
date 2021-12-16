@@ -78,7 +78,9 @@ export class GlobalConsentPiiComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(response => {
         if (response.consent) {
-          this.showConsentPopup = true;
+          if (this.type) {
+            this.showConsentPopup = true;
+          }
           this.removeQueryParam();
         }
       });
