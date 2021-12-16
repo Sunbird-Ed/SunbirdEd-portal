@@ -102,7 +102,7 @@
     <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
 
     <main>
-      <router-outlet *ngIf="isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)"></router-outlet>
+      <router-outlet *ngIf="isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)" (activate)="onActivate($event)"></router-outlet>
     </main>
   </div>
 </div>

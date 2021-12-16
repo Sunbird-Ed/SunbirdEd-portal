@@ -26,7 +26,7 @@ export class UserOnboardingComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   get Stage() { return Stage; }
-  stage = Stage.USER_SELECTION;
+  stage;
   tenantInfo: ITenantData;
   isIGotSlug = false;
   private unsubscribe$ = new Subject<void>();
@@ -68,11 +68,13 @@ export class UserOnboardingComponent implements OnInit {
   selectStage() {
     const loggedIn = _.get(this.userService, 'loggedIn');
     let role$: Observable<string | null>;
+
     if (!loggedIn && this.isDesktopApp()) {
       role$ = this.getRoleFromDesktopGuestUser();
     } else {
       role$ = this.getRoleFromLocalStorage();
     }
+    
     return role$.pipe(
       takeUntil(this.unsubscribe$),
       tap(userType => {
