@@ -546,6 +546,8 @@ export class AppComponent implements OnInit, OnDestroy {
             }, error => {
               this.showFrameWorkPopUp = true;
             });
+          } else {
+            this.checkLocationStatus();
           }
         } else {
           this.checkLocationStatus();
