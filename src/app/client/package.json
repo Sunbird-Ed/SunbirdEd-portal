@@ -51,7 +51,7 @@
     "@project-sunbird/ckeditor-build-font": "^1.0.8",
     "@project-sunbird/client-services": "4.5.0",
     "@project-sunbird/common-consumption-v9": "4.5.3",
-    "@project-sunbird/discussions-ui-v8": "2.5.0-beta.6",
+    "@project-sunbird/discussions-ui-v8": "2.5.0-beta.7",
     "@project-sunbird/sb-styles": "0.0.8",
     "@project-sunbird/sb-themes": "0.0.31",
     "@project-sunbird/sunbird-epub-player-v9": "4.5.6",
