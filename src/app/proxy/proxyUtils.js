@@ -252,14 +252,14 @@ function checkForValidRedirect (req, res, next) {
     if(redirectURL.includes(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN) && errorCallbackURL.includes(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN)){
       next();
     } else{
-      res.status(401)
+      res.status(301)
       res.send(respObj)
       res.end()
     }
   } else if(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN === ''){
     next()
   } else{
-      res.status(401)
+      res.status(301)
       res.send(respObj)
       res.end()
     }
