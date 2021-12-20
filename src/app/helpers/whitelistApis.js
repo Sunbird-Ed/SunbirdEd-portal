@@ -1891,7 +1891,6 @@ const API_LIST = {
     '/learner/certreg/v2/certs/download/:id',
     '/content/asset/v1/upload/:id',
     '/action/asset/v1/upload/:id',
-    '/action/asset/v1/create',
     '/action/asset/v1/read/:id',
     '/learner/get/user/sessionId/:userId',
     '/action/assessment/v3/items/read/:do_id',
