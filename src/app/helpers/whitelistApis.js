@@ -251,7 +251,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
     },
-    '/action/asset/v1/read': {
+    '/action/asset/v1/read/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
     },
@@ -1892,7 +1892,7 @@ const API_LIST = {
     '/content/asset/v1/upload/:id',
     '/action/asset/v1/upload/:id',
     '/action/asset/v1/create',
-    '/action/asset/v1/read',
+    '/action/asset/v1/read/:id',
     '/learner/get/user/sessionId/:userId',
     '/action/assessment/v3/items/read/:do_id',
     '/action/assessment/v3/items/update/:do_id',
