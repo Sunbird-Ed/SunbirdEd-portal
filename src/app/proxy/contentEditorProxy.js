@@ -266,6 +266,38 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
+  // asset create , upload and read api's 
+  app.post('/action/asset/v1/upload/:do_id',
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentServiceBaseUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+      proxyReqPathResolver: proxyReqPathResolverMethod,
+      userResDecorator: userResDecorator
+    })
+  )
+  app.post('/action/asset/v1/create',
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentServiceBaseUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+      proxyReqPathResolver: proxyReqPathResolverMethod,
+      userResDecorator: userResDecorator
+    })
+  )
+  app.get('/action/asset/v1/read/:do_id',
+  isAPIWhitelisted.isAllowed(),
+  proxy(contentServiceBaseUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  })
+)
+  // asset api's  ends
 
   app.all('/action/*',
   bodyParser.json({ limit: '50mb' }),
