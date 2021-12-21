@@ -267,7 +267,7 @@ module.exports = function (app) {
     })
   )
   // asset create , upload and read api's 
-  app.post('/action/asset/v1/upload/*',
+  app.post('/action/asset/v1/upload/:do_id',
     isAPIWhitelisted.isAllowed(),
     proxy(contentServiceBaseUrl, {
       preserveHostHdr: true,
