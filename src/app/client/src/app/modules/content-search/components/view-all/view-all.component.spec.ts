@@ -290,9 +290,10 @@ describe('ViewAllComponent', () => {
     component.queryParams = {
       selectedTab: 'all'
     };
-    spyOn(window.history, 'go');
+    const navigationhelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationhelperService, 'goBack');
     component.handleCloseButton();
-    expect(window.history.go).toHaveBeenCalled();
+    expect(navigationhelperService.goBack).toHaveBeenCalled();
   });
   describe('get the current page data', () => {
     it('from history state', done => {
