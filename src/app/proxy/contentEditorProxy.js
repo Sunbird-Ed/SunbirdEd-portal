@@ -267,7 +267,7 @@ module.exports = function (app) {
     })
   )
   // asset create , upload and read api's 
-  app.post('/action/content/v1/upload/*',
+  app.post('/action/asset/v1/upload/*',
     isAPIWhitelisted.isAllowed(),
     proxy(contentServiceBaseUrl, {
       preserveHostHdr: true,
@@ -277,7 +277,7 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
-  app.post('/action/content/v1/create',
+  app.post('/action/asset/v1/create',
     isAPIWhitelisted.isAllowed(),
     proxy(contentServiceBaseUrl, {
       preserveHostHdr: true,
@@ -287,7 +287,7 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
-  app.get('/action/content/v1/read/:do_id',
+  app.get('/action/asset/v1/read/:do_id',
   isAPIWhitelisted.isAllowed(),
   proxy(contentServiceBaseUrl, {
     preserveHostHdr: true,
