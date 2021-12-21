@@ -404,9 +404,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
-    if (this.pageClicked >= 1 && this.queryParams.selectedTab === 'all') {
-      this.navigationhelperService.popHistory();
-    }
+    // if (this.pageClicked >= 1 && this.queryParams.selectedTab === 'all') {
+    //   this.navigationhelperService.popHistory();
+    // }
     const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
     this.moveToTop();
@@ -652,6 +652,13 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public handleCloseButton() {
     if (this.queryParams.selectedTab === 'all') {
+    const previousPageUrl = this.navigationhelperService.getPreviousUrl();
+    if (!['/search/Library/', '/explore/'].some(val => previousPageUrl.url.startsWith(val)) ||
+     ['/explore/view-all/'].some(val => previousPageUrl.url.startsWith(val))) {
+      this.navigationhelperService.popHistory();
+      this.handleCloseButton();
+      return;
+    }
     this.navigationhelperService.goBack();
     } else {
     const [path] = this.router.url.split('/view-all');
