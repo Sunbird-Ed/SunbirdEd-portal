@@ -187,7 +187,6 @@ resendOtpEnablePostTimer() {
         });
       },
         (err) => {
-          console.log(err);
           this.telemetryLogEvents('sign-up', false);
           this.infoMessage = '';
           this.errorMessage = this.resourceService.messages.fmsg.m0085;
