@@ -272,7 +272,7 @@ module.exports = function (app) {
     proxy(contentServiceBaseUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
       proxyReqPathResolver: proxyReqPathResolverMethod,
       userResDecorator: userResDecorator
     })
@@ -282,7 +282,7 @@ module.exports = function (app) {
     proxy(contentServiceBaseUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
       proxyReqPathResolver: proxyReqPathResolverMethod,
       userResDecorator: userResDecorator
     })
@@ -292,7 +292,7 @@ module.exports = function (app) {
   proxy(contentServiceBaseUrl, {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod,
     userResDecorator: userResDecorator
   })
