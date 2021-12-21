@@ -221,9 +221,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     const searchQuery = _.get(this.groupAddableBlocData, 'params.searchQuery.request.filters');
     const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
-    filters = { ...filters, ...searchQuery, ...user };
     const option: any = {
-      filters: _.omit(filters, 'key'),
+      filters: _.omit({ ...filters, ...searchQuery, ...user }, 'key'),
       fields: _.get(this.allTabData, 'search.fields'),
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
@@ -239,6 +238,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     /* istanbul ignore else */
     if (_.get(this.queryParams, 'key')) {
       option.query = this.queryParams.key;
+      option.filters = { ...filters, ...searchQuery }
     }
 
     /* istanbul ignore else */

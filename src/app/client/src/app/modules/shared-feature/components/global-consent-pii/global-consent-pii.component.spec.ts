@@ -228,6 +228,7 @@ describe('GlobalConsentPiiComponent', () => {
   it('should listen to QueryParams', fakeAsync(() => {
     activatedRoute.changeQueryParams({ consent: true });
     spyOn(component, 'removeQueryParam');
+    component.type = 'course-consent';
     component.checkQueryParams();
     activatedRoute.changeQueryParams({ consent: true });
     tick(100);
