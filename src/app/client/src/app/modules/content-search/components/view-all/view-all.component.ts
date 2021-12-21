@@ -148,7 +148,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private location: Location) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private location: Location, 
+    private navigationHelperService: NavigationHelperService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -405,9 +406,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
+    this.activatedRoute.params['value']['pageClicked'] = this.pageClicked;
+   
     const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
     this.moveToTop();
+   // this.router.navigate(["/search/Library/1"], { replaceUrl: true });
   }
   public moveToTop() {
     window.scroll({
@@ -650,7 +654,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public handleCloseButton() {
     if (this.queryParams.selectedTab === 'all') {
-      window.history.go(-this.pageClicked);
+    while (this.pageClicked > 1) {
+      this.pageClicked --;
+      this.navigationHelperService.popHistory();
+    }
+    this.navigationHelperService.goBack();
     } else {
     const [path] = this.router.url.split('/view-all');
     const redirectionUrl = `/${path.toString()}`;
