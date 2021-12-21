@@ -273,7 +273,10 @@ module.exports = function (app) {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
-      proxyReqPathResolver: proxyReqPathResolverMethod,
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(contentServiceBaseUrl + originalUrl).path
+      },
       userResDecorator: userResDecorator
     })
   )
@@ -283,7 +286,10 @@ module.exports = function (app) {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
-      proxyReqPathResolver: proxyReqPathResolverMethod,
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(contentServiceBaseUrl + originalUrl).path
+      },
       userResDecorator: userResDecorator
     })
   )
@@ -293,7 +299,10 @@ module.exports = function (app) {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
-    proxyReqPathResolver: proxyReqPathResolverMethod,
+    proxyReqPathResolver: function (req) {
+      let originalUrl = req.originalUrl.replace('/action/', '')
+      return require('url').parse(contentServiceBaseUrl + originalUrl).path
+    },
     userResDecorator: userResDecorator
   })
 )
