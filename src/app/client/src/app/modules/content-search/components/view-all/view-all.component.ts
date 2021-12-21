@@ -147,8 +147,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
-    private navigationHelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -406,7 +405,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
     if (this.pageClicked >= 1 && this.queryParams.selectedTab === 'all') {
-      this.navigationHelperService.popHistory();
+      this.navigationhelperService.popHistory();
     }
     const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
@@ -653,7 +652,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public handleCloseButton() {
     if (this.queryParams.selectedTab === 'all') {
-    this.navigationHelperService.goBack();
+    this.navigationhelperService.goBack();
     } else {
     const [path] = this.router.url.split('/view-all');
     const redirectionUrl = `/${path.toString()}`;
