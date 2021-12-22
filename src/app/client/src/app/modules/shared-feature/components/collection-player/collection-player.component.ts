@@ -119,16 +119,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
-    this.mimeTypeFilters = [
-      { text: _.get(this.resourceService, 'frmelmnts.btn.all', 'All'), value: 'all' },
-      { text: _.get(this.resourceService, 'frmelmnts.btn.video', 'Video'), value: 'video' },
-      { text: _.get(this.resourceService, 'frmelmnts.btn.interactive', 'Interactive'), value: 'interactive' },
-      { text: _.get(this.resourceService, 'frmelmnts.btn.docs', 'Docs'), value: 'docs' }
-    ];
     this.activeMimeTypeFilter = ['all'];
   }
 
   ngOnInit() {
+    this.setMimeTypeFilters();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
@@ -156,7 +151,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.scrollTop();
     this.layoutService.switchableLayout().
       pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
         if (layoutConfig != null) {
@@ -356,6 +350,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.generaliseLabelService.initialize(data, item.value);
       this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+      this.setMimeTypeFilters();
     });
   }
 
@@ -831,6 +826,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }
     };
     this.telemetryService.interact(interactData);
+  }
+
+  private setMimeTypeFilters() {
+    this.mimeTypeFilters = [
+      { text: _.get(this.resourceService, 'frmelmnts.btn.all', 'All'), value: 'all' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.video', 'Video'), value: 'video' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.interactive', 'Interactive'), value: 'interactive' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.docs', 'Docs'), value: 'docs' }
+    ];
   }
 }
 

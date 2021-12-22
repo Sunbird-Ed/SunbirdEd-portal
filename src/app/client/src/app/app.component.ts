@@ -546,6 +546,8 @@ export class AppComponent implements OnInit, OnDestroy {
             }, error => {
               this.showFrameWorkPopUp = true;
             });
+          } else {
+            this.checkLocationStatus();
           }
         } else {
           this.checkLocationStatus();
@@ -949,5 +951,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.router.navigate(['mydownloads'], { queryParams: { selectedTab: 'mydownloads' } });
       }
     });
+  }
+  onActivate(event){
+    this.layoutService.scrollTop();
   }
 }

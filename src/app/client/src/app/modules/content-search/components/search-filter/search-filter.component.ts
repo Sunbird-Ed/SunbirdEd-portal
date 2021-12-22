@@ -27,8 +27,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public selectedBoard: { label: string, value: string, selectedOption: string };
   public selectedOption: { label: string, value: string, selectedOption: string };
   public optionLabel = {
-    Publisher: this.resourceService.RESOURCE_CONSUMPTION_ROOT +
-      'frmelmnts.lbl.publisher', Board: this.resourceService.RESOURCE_CONSUMPTION_ROOT + 'frmelmnts.lbl.boards'
+    Publisher: _.get(this.resourceService, 'frmelmnts.lbl.publisher'), Board: _.get(this.resourceService, 'frmelmnts.lbl.boards')
   };
   public boards: any[] = [];
   filterChangeEvent = new Subject();

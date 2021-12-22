@@ -101,7 +101,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.scrollTop();
     this.layoutService.switchableLayout().
       pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
         if (layoutConfig != null) {
