@@ -34,14 +34,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
     public navigationhelperService: NavigationHelperService,
-  ) {
-    this.subscription = this.utilService.currentRole.subscribe(async (result) => {
-      if (result) {
-        this.userType = result;
-        this.makeFormChange();
-      }
-    });
-  }
+  ) {}
 
 
   ngOnInit() {

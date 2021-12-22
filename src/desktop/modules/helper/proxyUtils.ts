@@ -27,9 +27,9 @@ export const decorateRequestHeaders = function (upstreamUrl = "") {
     if(!srcReq.get('X-App-Id')){
       proxyReqOpts.headers['X-App-Id'] = process.env.APP_VERSION
     }
-    // if (srcReq.session.managedToken) {
-    //   proxyReqOpts.headers['x-authenticated-for'] = srcReq.session.managedToken
-    // }
+    if (srcReq.session.managedToken) {
+      proxyReqOpts.headers['x-authenticated-for'] = srcReq.session.managedToken
+    }
     const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error);})
     if (userToken) {
       proxyReqOpts.headers['x-authenticated-user-token'] = userToken
