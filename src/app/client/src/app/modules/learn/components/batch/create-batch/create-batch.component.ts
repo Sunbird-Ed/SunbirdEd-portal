@@ -90,7 +90,15 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
 
-  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
+
+  get pickerMinDateForEndDate() {
+    const startDate = this.createBatchForm.controls.startDate.value as Date; 
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    if (startDate) {
+      return new Date(startDate.getTime() + oneDayMs);
+    }
+    return new Date(this.pickerMinDate.getTime() + oneDayMs);
+  }
 
   createBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
