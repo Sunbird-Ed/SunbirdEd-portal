@@ -249,7 +249,10 @@ let envVariables = {
   vdnURL:env.vdnURL || '',
 
   // Add below variable for Apple Login
-  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"
+  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys",
+
+  //Redirect and ErrorCallback domain
+  REDIRECT_ERROR_CALLBACK_DOMAIN:env.portal_redirect_error_callback_domain || ''
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

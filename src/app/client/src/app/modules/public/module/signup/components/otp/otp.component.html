@@ -10,7 +10,8 @@
 </div>
 <div class="grey text text-center my-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
-<div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-32 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
+<label *ngIf="redirecterrorMessage" class="color-danger sb-color-red text fs-1 text-center mb-8">The redirectURL/errorcallbackURL do not match the domain</label>
+<div *ngIf="showSignUpLink" class="">{{unabletoVerifyErrorMessage}}<br>  Please
   <span tabindex="0" (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
   again</div>
 <form class="sb-form borderd mb-16" [formGroup]="otpForm">
