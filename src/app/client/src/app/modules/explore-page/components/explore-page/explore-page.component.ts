@@ -976,19 +976,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     let sectionName;
     switch (_.toLower(selectedTab)) {
       case 'textbook': {
-        sectionName = _.get(this.resourceService, 'tbk.trk.frmelmnts.lbl.mytrainings');
+        sectionName = 'tbk.trk.frmelmnts.lbl.mytrainings';
         break;
       }
       case 'course': {
-        sectionName = _.get(this.resourceService, 'crs.trk.frmelmnts.lbl.mytrainings');
+        sectionName = 'crs.trk.frmelmnts.lbl.mytrainings';
         break;
       }
       case 'tvProgram': {
-        sectionName = _.get(this.resourceService, 'tvc.trk.frmelmnts.lbl.mytrainings');
+        sectionName = 'tvc.trk.frmelmnts.lbl.mytrainings';
         break;
       }
       default: {
-        sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections');
+        sectionName = 'frmelmnts.lbl.myEnrolledCollections';
       }
     }
     return sectionName;
