@@ -677,7 +677,7 @@ describe('ExplorePageComponent', () => {
     it('should get the section name based on current tab', () => {
       const currentTab = 'textbook';
       const sectionName = component['getSectionName'](currentTab);
-      expect(sectionName).toBe(resourceBundle.tbk.trk.frmelmnts.lbl.mytrainings);
+      expect(sectionName).toBe("tbk.trk.frmelmnts.lbl.mytrainings");
     });
 
     it('should redirect to sectionViewAll page with queryparams', () => {
