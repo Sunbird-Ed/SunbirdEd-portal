@@ -238,7 +238,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     /* istanbul ignore else */
     if (_.get(this.queryParams, 'key')) {
       option.query = this.queryParams.key;
-      option.filters = { ...filters, ...searchQuery }
+      option.filters =  _.omit({ ...filters, ...searchQuery }, 'key');
     }
 
     /* istanbul ignore else */
