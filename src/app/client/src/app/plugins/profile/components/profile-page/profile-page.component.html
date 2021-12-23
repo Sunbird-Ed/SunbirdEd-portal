@@ -376,7 +376,7 @@
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
-              (click)="toggleCourse(true, attendedTraining.length)" tabindex="0">{{resourceService.frmelmnts.lbl.viewmore}}<i
+              (click)="toggleCourse(true, attendedTraining.length)" tabindex="0"> +{{attendedTraining.length - 3}} {{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"

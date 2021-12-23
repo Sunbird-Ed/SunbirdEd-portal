@@ -247,7 +247,18 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
-
+    '/action/asset/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
+    },
+    '/action/asset/v1/read/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
+    },
+    '/action/asset/v1/upload/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
+    },
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1879,6 +1890,8 @@ const API_LIST = {
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
     '/content/asset/v1/upload/:id',
+    '/action/asset/v1/upload/:id',
+    '/action/asset/v1/read/:id',
     '/learner/get/user/sessionId/:userId',
     '/action/assessment/v3/items/read/:do_id',
     '/action/assessment/v3/items/update/:do_id',

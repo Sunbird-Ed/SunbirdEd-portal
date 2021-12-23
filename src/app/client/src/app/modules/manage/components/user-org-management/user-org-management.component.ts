@@ -176,7 +176,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         edata: {
           type: this.activatedRoute.snapshot.data.telemetry.type,
           pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: '/' + this.activatedRoute.snapshot.routeConfig.path,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
