@@ -286,13 +286,27 @@ describe('ViewAllComponent', () => {
     expect(route.navigate).toHaveBeenCalledWith(['/learn'], { queryParams: { selectedTab: '' } });
   });
 
+  it('should handle close button for more page', () => {
+    component.queryParams = {
+      selectedTab: 'all'
+    };
+    const navigationhelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationhelperService, 'getPreviousUrl').and.returnValue({url: 'sample'});
+    spyOn(navigationhelperService, 'popHistory');
+    spyOn(component, 'handleCloseButton');
+    component.handleCloseButton();
+  });
+
   it('should handle close button', () => {
     component.queryParams = {
       selectedTab: 'all'
     };
-    spyOn(window.history, 'go');
+    const navigationhelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationhelperService, 'getPreviousUrl').and.returnValue({url: '/explore/'});
+    spyOn(navigationhelperService, 'goBack');
     component.handleCloseButton();
-    expect(window.history.go).toHaveBeenCalled();
+    expect(navigationhelperService.getPreviousUrl).toHaveBeenCalled();
+    expect(navigationhelperService.goBack).toHaveBeenCalled();
   });
   describe('get the current page data', () => {
     it('from history state', done => {

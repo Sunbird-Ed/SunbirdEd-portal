@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '', component: UserOrgManagementComponent, canActivate: [AuthGuard], data: {
     roles: 'bulkUpload',
     telemetry: {
-      env: 'admin-dashboard', pageid: 'admin-manage-page', type: 'view'
+      env: 'admin-dashboard', pageid: 'admin-manage-page', type: 'view', uri: '/manage'
     }
   }
 },

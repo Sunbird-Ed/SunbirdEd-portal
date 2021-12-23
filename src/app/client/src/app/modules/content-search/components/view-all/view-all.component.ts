@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { Location } from '@angular/common';
 
 
 @Component({
@@ -149,7 +148,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private location: Location) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -407,6 +406,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
+    // if (this.pageClicked >= 1 && this.queryParams.selectedTab === 'all') {
+    //   this.navigationhelperService.popHistory();
+    // }
     const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
     this.moveToTop();
@@ -652,7 +654,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public handleCloseButton() {
     if (this.queryParams.selectedTab === 'all') {
-      window.history.go(-this.pageClicked);
+    const previousPageUrl = this.navigationhelperService.getPreviousUrl();
+    if (!['/search/Library/', '/explore/'].some(val => previousPageUrl.url.startsWith(val)) ||
+     ['/explore/view-all/'].some(val => previousPageUrl.url.startsWith(val))) {
+      this.navigationhelperService.popHistory();
+      this.handleCloseButton();
+      return;
+    }
+    this.navigationhelperService.goBack();
     } else {
     const [path] = this.router.url.split('/view-all');
     const redirectionUrl = `/${path.toString()}`;
