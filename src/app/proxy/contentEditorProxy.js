@@ -255,7 +255,360 @@ module.exports = function (app) {
     })
   )
   // Collection import & export API's END
-  
+
+  //Collections V4 API's start
+  app.post('/action/collection/v4/create',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.patch('/action/collection/v4/update/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.get('/action/collection/v4/read/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/collection/v4/flag/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/collection/v4/flag/accept/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.delete('/action/collection/v4/discard/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.delete('/action/collection/v4/retire/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.patch('/action/collection/v4/hierarchy/add',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.delete('/action/collection/v4/hierarchy/remove',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.patch('/action/collection/v4/hierarchy/update',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.get('/action/collection/v4/hierarchy/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/collection/v4/dialcode/link/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/collection/v4/copy/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/collection/v4/reject/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  // Collection V4 API's end
+
+  // Content v4 API's start
+  app.post('/action/content/v4/create',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.patch('/action/content/v4/update/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.get('/action/content/v4/read/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.get('/action/content/v4/private/read/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/upload/url/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/upload/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/copy/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/dialcode/link',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/import',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/flag/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/flag/accept/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.delete('/action/content/v4/discard/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.delete('/action/content/v4/retire/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/review/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.post('/action/content/v4/reject/:do_id',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+  // Content v4 API's end
+
   app.post('/action/content/v3/upload/*',
     isAPIWhitelisted.isAllowed(),
     proxy(contentProxyUrl, {
