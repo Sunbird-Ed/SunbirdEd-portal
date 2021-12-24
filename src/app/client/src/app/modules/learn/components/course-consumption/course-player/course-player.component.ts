@@ -338,7 +338,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const req: any = {
       userId: this.userService.userid,
       courseId: this.courseId,
-      contentIds: _.get(this.courseHierarchy, 'leafNodes'),
+      contentIds: this.contentIds,
       batchId: this.batchId,
       fields: fieldsArray
     };

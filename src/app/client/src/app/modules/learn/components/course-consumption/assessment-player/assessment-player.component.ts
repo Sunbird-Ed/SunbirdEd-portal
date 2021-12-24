@@ -298,7 +298,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     return {
       userId: this.userService.userid,
       courseId: this.courseId,
-      contentIds: _.get(course, 'leafNodes'),
+      contentIds: this.courseConsumptionService.parseChildren(course),
       batchId: this.batchId,
       fields: ['progress', 'score']
     };
