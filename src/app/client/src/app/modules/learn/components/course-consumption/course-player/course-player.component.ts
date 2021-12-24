@@ -124,7 +124,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
   }
+  getGeneraliseResourceBundle() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe)).subscribe(item => {
+      this.generaliseLabelService.initialize(this.courseHierarchy, item.value);
+    });
+  }
   ngOnInit() {
+    this.getGeneraliseResourceBundle();
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -134,7 +140,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
-
+    
     // Set consetnt pop up configuration here
     this.consentConfig = {
       tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
@@ -332,7 +338,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const req: any = {
       userId: this.userService.userid,
       courseId: this.courseId,
-      contentIds: this.contentIds,
+      contentIds: _.get(this.courseHierarchy, 'leafNodes'),
       batchId: this.batchId,
       fields: fieldsArray
     };

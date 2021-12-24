@@ -152,9 +152,14 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       }
       this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
-
+  getGeneraliseResourceBundle() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe)).subscribe(item => {
+      this.generaliseLabelService.initialize(this.courseHierarchy, item.value);
+    });
+  }
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.getGeneraliseResourceBundle();
     this.initLayout();
     this.subscribeToQueryParam();
     this.subscribeToContentProgressEvents().subscribe(data => { });
@@ -293,7 +298,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     return {
       userId: this.userService.userid,
       courseId: this.courseId,
-      contentIds: this.courseConsumptionService.parseChildren(course),
+      contentIds: _.get(course, 'leafNodes'),
       batchId: this.batchId,
       fields: ['progress', 'score']
     };
