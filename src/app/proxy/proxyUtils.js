@@ -229,6 +229,41 @@ function validateUserTokenForDF (req, res, next) {
     })
   });
 }
+function checkForValidRedirect (req, res, next) {
+  const url = new URL(decodeURIComponent(req.headers.referer));
+  const redirectURL = url.searchParams.get('redirect_uri');
+  const errorCallbackURL = url.searchParams.get('error_callback');
+  const responseCode = 'INVALID_REDIRECT_URI';
+  const respObj = {
+    'id': 'api.error',
+    'ver': '1.0',
+    'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+    'params': {
+      'resmsgid': uuidv1(),
+      'msgid': null,
+      'status': 'failed',
+      'err':  'INVALID_REDIRECT_URI',
+      'errmsg': 'Redirect URL or Error Callback URL do not match'
+    },
+    'responseCode': responseCode,
+    'result': {}
+  }
+  if(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN && envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN !== ''){
+    if(redirectURL.includes(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN) && errorCallbackURL.includes(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN)){
+      next();
+    } else{
+      res.status(301)
+      res.send(respObj)
+      res.end()
+    }
+  } else if(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN === ''){
+    next()
+  } else{
+      res.status(301)
+      res.send(respObj)
+      res.end()
+    }
+}
 
 module.exports.decorateRequestHeaders = decorateRequestHeaders
 module.exports.decoratePublicRequestHeaders = decoratePublicRequestHeaders
@@ -239,3 +274,4 @@ module.exports.addCorsHeaders = addCorsHeaders
 module.exports.addReqLog = addReqLog
 module.exports.overRideRequestHeaders = overRideRequestHeaders
 module.exports.validateUserTokenForDF = validateUserTokenForDF
+module.exports.checkForValidRedirect = checkForValidRedirect

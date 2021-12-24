@@ -1446,7 +1446,7 @@ sunbird-epub-player .sunbird-epub-container {
 .PlayerMediaQueryClass .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
   height: calc(100% - 4rem) !important;
 }
-.PlayerMediaQueryClass .sb-epub-reading-status{
+.PlayerMediaQueryClass .sb-epub-reading-status, .PlayerMediaQueryClass .sb-pdf-reading-status{
   bottom: 4.75rem !important;
 }
 .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{

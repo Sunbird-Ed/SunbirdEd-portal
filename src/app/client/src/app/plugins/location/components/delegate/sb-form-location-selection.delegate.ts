@@ -364,13 +364,13 @@ export class SbFormLocationSelectionDelegate {
                         defaultSubpersona.push(element.subType);
                       });
                     } else {
-                      if (_.get(this.userService.userProfile.profileUserType, 'subType')) {
-                        defaultSubpersona.push(_.get(this.userService.userProfile.profileUserType, 'subType'));
+                      if (_.get(this.userService, 'userProfile.profileUserType.subType')) {
+                        defaultSubpersona.push(_.get(this.userService, 'userProfile.profileUserType.subType'));
                       }
                     }
                     personaLocationConfig.default = defaultSubpersona;
                   } else {
-                    personaLocationConfig.default = this.userService.userProfile.profileUserType;
+                    personaLocationConfig.default = _.get(this.userService, 'userProfile.profileUserType.subType');
                   }
                 }
                 break;

@@ -5,16 +5,15 @@
   
   <ng-container *ngIf="showForm">
   
-    <!--Header-->
-    <div class="sb-modal-header" mat-dialog-title [ngSwitch]="contactType" role="heading" aria-level="2">
-      <span *ngSwitchCase="'email'">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
-      <span *ngSwitchCase="'phone'">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
-    </div>
-    <!--/Header-->
-  
     <!--Content-->
     <mat-dialog-content>
       <div class="sb-mat__modal__content">
+        <!--Header-->
+        <div class="sb-modal-header font-weight-bold fmedium" [ngSwitch]="contactType" role="heading" aria-level="2">
+          <span *ngSwitchCase="'email'">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
+          <span *ngSwitchCase="'phone'">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
+        </div>
+        <!--/Header-->
         <form class="sb-form borderd" [formGroup]="contactTypeForm">
           <div [ngSwitch]="contactType">
             <div class="sb-field-group" *ngSwitchCase="'email'">

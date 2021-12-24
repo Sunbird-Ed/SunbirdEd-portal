@@ -565,6 +565,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 public viewAll(event) {
+    this.moveToTop();
     this.logViewAllTelemetry(event);
      const searchQueryParams: any = {};
     searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });
