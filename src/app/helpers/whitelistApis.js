@@ -209,7 +209,7 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/collection/v4/hierarchy/remove': {
+    '/action/collection/v4/hierarchy/remove': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.ADMIN,
