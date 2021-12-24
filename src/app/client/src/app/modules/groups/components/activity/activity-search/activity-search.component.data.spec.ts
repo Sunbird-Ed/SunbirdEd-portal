@@ -120,5 +120,88 @@ export const activitySearchMockData = {
           'name': 'Resource'
         }
       }
+  },
+  searchReq: {
+    "request":{
+       "filters":{
+          "key":"vvn",
+          "primaryCategory":[
+             "Course"
+          ],
+          "batches.status":1,
+          "batches.enrollmentType":"open",
+          "objectType":[
+             "Content"
+          ],
+          "status":[
+             "Live"
+          ]
+       },
+       "limit":100,
+       "query":"vvn",
+       "fields":[
+          "name",
+          "appIcon",
+          "mimeType",
+          "gradeLevel",
+          "identifier",
+          "medium",
+          "pkgVersion",
+          "board",
+          "subject",
+          "resourceType",
+          "primaryCategory",
+          "contentType",
+          "channel",
+          "organisation",
+          "trackable"
+       ],
+       "mode":"soft",
+       "facets":[
+          "se_boards",
+          "se_gradeLevels",
+          "se_subjects",
+          "se_mediums",
+          "primaryCategory"
+       ],
+       "offset":0
+    }
+ },
+ searchRes: {
+  "result":{
+     "count":0,
+     "facets":[
+        {
+           "values":[
+              
+           ],
+           "name":"se_mediums"
+        },
+        {
+           "values":[
+              
+           ],
+           "name":"se_boards"
+        },
+        {
+           "values":[
+              
+           ],
+           "name":"primaryCategory"
+        },
+        {
+           "values":[
+              
+           ],
+           "name":"se_gradeLevels"
+        },
+        {
+           "values":[
+              
+           ],
+           "name":"se_subjects"
+        }
+     ]
   }
+}
 };
