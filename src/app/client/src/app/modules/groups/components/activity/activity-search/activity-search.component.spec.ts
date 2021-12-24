@@ -27,7 +27,11 @@ describe('ActivitySearchComponent', () => {
       }
     },
     'frmelmnts': {
-      'lbl': {}
+      'lbl': {
+        'group': {
+          'viewActivity': 'View activity'
+        }
+      }
     }
   };
 
