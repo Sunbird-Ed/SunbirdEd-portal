@@ -1521,12 +1521,12 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.6.2"
 
-"@project-sunbird/sunbird-pdf-player-v9@4.6.0":
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.6.0.tgz#bab630d20c04a933a95bb1f84320c6a77ee3de7c"
-  integrity sha512-mOikaf1TYkSneka2V989ckHhlEsrHU+GTmxF2E7wuf5i+9n2JrP3KuHWHSmjChUZJs7cCZ6+hiXEtBosHhmcXg==
+"@project-sunbird/sunbird-pdf-player-v9@4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.6.2.tgz#bf12cc379fc90bcf56ff2207453e16ea236a82cd"
+  integrity sha512-DNhiT2Z0WmK6hRMe9A1oWDms1gmyb0D8PKERPjBqBf0JwYY7pEKX8byriqNEtPHOcY049yr1EnTvN8VzSI7y7A==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "^4.6.1"
+    "@project-sunbird/sunbird-player-sdk-v9" "^4.6.2"
 
 "@project-sunbird/sunbird-player-sdk-v9@4.6.1", "@project-sunbird/sunbird-player-sdk-v9@^4.6.1":
   version "4.6.1"
@@ -1535,7 +1535,7 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-player-sdk-v9@4.6.2":
+"@project-sunbird/sunbird-player-sdk-v9@4.6.2", "@project-sunbird/sunbird-player-sdk-v9@^4.6.2":
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.6.2.tgz#1427b11db7ddb94bbd5a05d4203491223a0cfe5a"
   integrity sha512-M2+CB9I1kfawOheMkew4c29S+JIyQpO5/68Meis+esRheyuHhyCvzfLX44SK5i9Q1tBC5oC6f22rpX9nztnx+Q==
