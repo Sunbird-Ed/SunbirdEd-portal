@@ -128,11 +128,11 @@ export class ObservationUtilService {
         }
       }
 
-      obj['role'] =
-        profileData.value['profileUserType'] &&
-          profileData.value['profileUserType']['subType']
-          ? profileData.value['profileUserType']['subType'].toUpperCase()
-          : profileData.value['profileUserType']['type'].toUpperCase();
+      const roles = []
+      for (const userRole of profileData.value["profileUserTypes"]) {
+       userRole.subType ? roles.push(userRole.subType.toUpperCase()) : roles.push(userRole.type.toUpperCase());
+      }   
+      obj['role'] = roles.toString()
       this.dataParam = obj;
       resolve(obj);
     });
