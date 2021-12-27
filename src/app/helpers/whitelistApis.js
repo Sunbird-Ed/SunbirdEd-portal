@@ -982,7 +982,7 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/action/collection/v3/dialcode/link/:do_id': {
+    '/action/collection/v4/dialcode/link/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
@@ -990,7 +990,6 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-
     // Language service
     '/action/language/v3/list': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1941,6 +1940,20 @@ const API_LIST = {
         ROLE.CONTENT_REVIEWER,
         ROLE.BOOK_CREATOR
       ]
+    },
+    '/action/collection/v4/review/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER
+      ]
+    },
+    '/action/collection/v4/system/update/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.ORG_ADMIN
+      ]
     }
   },
   URL_PATTERN: [
@@ -1986,7 +1999,6 @@ const API_LIST = {
     '/action/dialcode/v3/read/:dialId',
     '/action/dialcode/v1/reserve/:do_id',
     '/action/dialcode/v1/process/status/:processId',
-    '/action/collection/v3/dialcode/link/:do_id',
     '/action/learning/taxonomy/domain/definition/:objType',
     '/action/meta/v3/resourcebundles/read/:lineCode',
     '/action/framework/v3/read/:frameworkId',
@@ -2082,11 +2094,14 @@ const API_LIST = {
     '/uci/admin/v1/forms/upload',
     '/kendra/user-extension/mlcore/v1/solutions/:id',
     '/action/content/v4/read/:do_id',
+    '/action/content/v4/upload/:do_id',
     '/action/collection/v4/hierarchy/:do_id',
     '/action/content/v4/review/:do_id',
     '/action/content/v4/upload/url/:do_id',
     '/action/collection/v4/reject/:do_id',
-    '/action/content/v4/upload/:do_id'
+    '/action/collection/v4/review/:do_id',
+    '/action/collection/v4/dialcode/link/:do_id',
+    '/action/collection/v4/system/update/:do_id'
   ]
 };
 module.exports = API_LIST;

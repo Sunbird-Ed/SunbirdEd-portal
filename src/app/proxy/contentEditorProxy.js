@@ -321,7 +321,27 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }));
 
-  // Collection V4 API's end
+  app.post('/action/collection/v4/review/:do_id',
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
+
+  app.patch('/action/collection/v4/system/update/:do_id',
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
+    preserveHostHdr: true,
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+    proxyReqPathResolver: proxyReqPathResolverMethod,
+    userResDecorator: userResDecorator
+  }));
 
   // Content v4 API's start
   app.post('/action/content/v4/create',
@@ -347,6 +367,7 @@ module.exports = function (app) {
   }));
 
   app.get('/action/content/v4/read/:do_id',
+  bodyParser.json({ limit: '50mb' }),
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
@@ -464,7 +485,12 @@ const userResDecorator = (proxyRes, proxyResData, req, res) => {
       if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
       else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
   } catch(err) {
-      console.log('content api user res decorator json parse error', JSON.stringify(proxyResData));
+      console.log("proxyResData error", err);
+
+      if(proxyResData && proxyResData.data) {
+        console.log("proxyResData", JSON.stringify(JSON.parse(proxyResData.data)));
+      }
+
       return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
   }
 }
