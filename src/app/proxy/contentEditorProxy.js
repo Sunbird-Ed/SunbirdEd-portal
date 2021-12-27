@@ -321,18 +321,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }));
 
-  app.patch('/action/collection/v4/review/:do_id',
-  isAPIWhitelisted.isAllowed(),
-  telemetryHelper.generateTelemetryForProxy,
-  proxy(contentProxyUrl, {
-    preserveHostHdr: true,
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
-    proxyReqPathResolver: proxyReqPathResolverMethod,
-    userResDecorator: userResDecorator
-  }));
-
-  app.patch('/action/collection/v4/read/:do_id',
+  app.post('/action/collection/v4/review/:do_id',
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {

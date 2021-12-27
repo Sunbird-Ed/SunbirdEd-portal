@@ -1941,11 +1941,6 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/action/collection/v4/read/:do_id': {
-      description: 'API is accessed by non logged in user',
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
-    },
     '/action/collection/v4/review/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -2104,7 +2099,6 @@ const API_LIST = {
     '/action/content/v4/review/:do_id',
     '/action/content/v4/upload/url/:do_id',
     '/action/collection/v4/reject/:do_id',
-    '/action/collection/v4/read/:do_id',
     '/action/collection/v4/review/:do_id',
     '/action/collection/v4/dialcode/link/:do_id',
     '/action/collection/v4/system/update/:do_id'
