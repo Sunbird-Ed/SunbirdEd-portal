@@ -675,9 +675,10 @@ describe('ExplorePageComponent', () => {
     });
 
     it('should get the section name based on current tab', () => {
-      const currentTab = 'textbook';
-      const sectionName = component['getSectionName'](currentTab);
-      expect(sectionName).toBe("tbk.trk.frmelmnts.lbl.mytrainings");
+      expect(component['getSectionName']('textbook')).toBe("tbk.trk.frmelmnts.lbl.mytrainings");
+      expect(component['getSectionName']('course')).toBe("crs.trk.frmelmnts.lbl.mytrainings");
+      expect(component['getSectionName']('tvProgram')).toBe("tvc.trk.frmelmnts.lbl.mytrainings");
+      expect(component['getSectionName']('random')).toBe("frmelmnts.lbl.myEnrolledCollections");
     });
 
     it('should redirect to sectionViewAll page with queryparams', () => {

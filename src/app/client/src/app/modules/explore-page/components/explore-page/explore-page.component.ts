@@ -983,7 +983,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         sectionName = 'crs.trk.frmelmnts.lbl.mytrainings';
         break;
       }
-      case 'tvProgram': {
+      case 'tvprogram': {
         sectionName = 'tvc.trk.frmelmnts.lbl.mytrainings';
         break;
       }
