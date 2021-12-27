@@ -196,20 +196,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
-    '/action/collection/v4/hierarchy/add': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
-    },
     '/content/v3/hierarchy/remove': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.ADMIN,
-        ROLE.CONTENT_CREATOR,
-        ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_CREATOR
-      ]
-    },
-    '/action/collection/v4/hierarchy/remove': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.ADMIN,
@@ -226,7 +213,6 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR
       ]
     },
-
     // Collection Editor
     '/action/content/v1/collaborator/update': {
       checksNeeded: ['ROLE_CHECK'],
@@ -249,14 +235,6 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/action/content/v3/review': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER,
-        ROLE.FLAG_REVIEWER
-      ]
-    },
-    '/action/content/v4/review/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER,
@@ -303,10 +281,6 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/upload': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR]
-    },
-    '/action/content/v4/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR]
     },
@@ -560,10 +534,6 @@ const API_LIST = {
     '/learner/user/v2/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ADMIN]
-    },
-    '/learner/user/v4/create': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v1/managed/create': {
       description: 'API is to create managed user',
@@ -854,14 +824,6 @@ const API_LIST = {
       ]
     },
     // Content service
-    '/action/content/v4/create': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
-      ]
-    },
     '/action/content/v3/update/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -871,11 +833,6 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/read/:do_id': {
-      description: 'API is accessed by non logged in user',
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
-    },
-    '/action/content/v4/read/:do_id': {
       description: 'API is accessed by non logged in user',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
@@ -893,25 +850,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
-    '/action/collection/v4/hierarchy/:do_id': {
-      description: 'API used to read textbook for anonymous users',
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ANONYMOUS]
-    },
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
-      ]
-    },
-    '/action/collection/v4/hierarchy/update': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.CONTENT_REVIEWER,
         ROLE.BOOK_CREATOR
       ]
     },
@@ -938,22 +881,7 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/action/content/v4/upload/url/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
-      ]
-    },
     '/action/content/v3/reject/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER
-      ]
-    },
-    '/action/collection/v4/reject/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER,
@@ -984,14 +912,6 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/upload/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
-      ]
-    },
-    '/action/content/v4/upload/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
@@ -1943,6 +1863,85 @@ const API_LIST = {
       checksNeeded: ["ROLE_CHECK"],
       ROLE_CHECK: [ROLE.ORG_ADMIN],
     },
+    '/action/content/v4/review/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER
+      ]
+    },
+    '/action/content/v4/upload': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR]
+    },
+    '/learner/user/v4/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/content/v4/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v4/read/:do_id': {
+      description: 'API is accessed by non logged in user',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR, ROLE.BOOK_REVIEWER, ROLE.CONTENT_REVIEWER, ROLE.FLAG_REVIEWER]
+    },
+    '/action/collection/v4/hierarchy/:do_id': {
+      description: 'API used to read textbook for anonymous users',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
+    },
+    '/action/collection/v4/hierarchy/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v4/upload/url/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/collection/v4/reject/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+    '/action/content/v4/upload/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/collection/v4/hierarchy/add': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
+    },
+    '/action/collection/v4/hierarchy/remove': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.ADMIN,
+        ROLE.CONTENT_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_CREATOR
+      ]
+    }
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1974,21 +1973,15 @@ const API_LIST = {
     '/action/assessment/v3/itemsets/retire/:do_id',
     '/action/content/v3/update/:do_id',
     '/action/content/v3/read/:do_id',
-    '/action/content/v4/read/:do_id',
     '/action/content/v3/hierarchy/:do_id',
-    '/action/collection/v4/hierarchy/:do_id',
     '/action/content/v3/review/:do_id',
-    '/action/content/v4/review/:do_id',
     '/action/content/v3/publish/:do_id',
     '/action/content/v3/upload/url/:do_id',
-    '/action/content/v4/upload/url/:do_id',
     '/action/content/v3/reject/:do_id',
-    '/action/collection/v4/reject/:do_id',
     '/action/content/v3/retire/:do_id',
     '/action/content/v3/flag/accept/:do_id',
     '/action/content/v3/flag/reject/:do_id',
     '/action/content/v3/upload/:do_id',
-    '/action/content/v4/upload/:do_id',
     '/action/content/v3/unlisted/publish/:contentId',
     '/action/dialcode/v3/read/:dialId',
     '/action/dialcode/v1/reserve/:do_id',
@@ -2087,7 +2080,13 @@ const API_LIST = {
     '/uci/admin/v1/conversationLogic/update/:id',
     '/uci/admin/v1/conversationLogic/delete/:id',
     '/uci/admin/v1/forms/upload',
-    '/kendra/user-extension/mlcore/v1/solutions/:id'
+    '/kendra/user-extension/mlcore/v1/solutions/:id',
+    '/action/content/v4/read/:do_id',
+    '/action/collection/v4/hierarchy/:do_id',
+    '/action/content/v4/review/:do_id',
+    '/action/content/v4/upload/url/:do_id',
+    '/action/collection/v4/reject/:do_id',
+    '/action/content/v4/upload/:do_id'
   ]
 };
 module.exports = API_LIST;
