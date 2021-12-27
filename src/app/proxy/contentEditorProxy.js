@@ -367,6 +367,7 @@ module.exports = function (app) {
   }));
 
   app.get('/action/content/v4/read/:do_id',
+  bodyParser.json({ limit: '50mb' }),
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
