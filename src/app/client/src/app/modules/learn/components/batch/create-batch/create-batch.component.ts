@@ -90,16 +90,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
 
-
-  get pickerMinDateForEndDate() {
-    const startDate = this.createBatchForm.controls.startDate.value as Date; 
-    const oneDayMs = 24 * 60 * 60 * 1000;
-    if (startDate) {
-      return new Date(startDate.getTime() + oneDayMs);
-    }
-    return new Date(this.pickerMinDate.getTime() + oneDayMs);
-  }
-
   createBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   clearButtonInteractEdata: IInteractEventEdata;
@@ -499,5 +489,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       telemetryData.context.cdata.push(cdata);
     }
     this.telemetryService.interact(telemetryData);
+  }
+
+  getPickerMinDateForEndDate() {
+    const startDate = this.createBatchForm.controls.startDate.value as Date; 
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    if (startDate) {
+      return new Date(startDate.getTime() + oneDayMs);
+    }
+    return new Date(this.pickerMinDate.getTime() + oneDayMs);
   }
 }
