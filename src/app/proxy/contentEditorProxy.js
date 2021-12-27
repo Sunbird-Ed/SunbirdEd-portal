@@ -464,7 +464,7 @@ const userResDecorator = (proxyRes, proxyResData, req, res) => {
       if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
       else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
   } catch(err) {
-      console.log('content api user res decorator json parse error', proxyResData);
+      console.log('content api user res decorator json parse error', JSON.stringify(proxyResData));
       return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
   }
 }
