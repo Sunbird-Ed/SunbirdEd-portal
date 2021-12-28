@@ -14,6 +14,9 @@ const isAPIWhitelisted = require('../helpers/apiWhiteList');
 module.exports = function (app) {
 
   const proxyReqPathResolverMethod = function (req) {
+    console.log('contentProxyUrl + req.originalUrl', contentProxyUrl + req.originalUrl);
+    console.log(require('url').parse(contentProxyUrl + req.originalUrl).path);
+
     return require('url').parse(contentProxyUrl + req.originalUrl).path
   }
   app.all('/plugins/v1/search', proxy(contentServiceBaseUrl, {
@@ -366,6 +369,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }));
 
+  /*
   app.get('/action/content/v4/read/*',
   bodyParser.json({ limit: '50mb' }),
   isAPIWhitelisted.isAllowed(),
@@ -381,6 +385,7 @@ module.exports = function (app) {
     },
     userResDecorator: userResDecorator
   }));
+*/
 
   app.post('/action/content/v4/upload/url/:do_id',
   isAPIWhitelisted.isAllowed(),
