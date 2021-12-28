@@ -17,9 +17,9 @@ type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
 
 export class SbFormLocationSelectionDelegate {
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
-    { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
+    { formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' };
   private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
-    { formType: 'config', formAction: 'get', contentType: 'userType_V2', component: 'portal' };
+    { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
 
   shouldDeviceProfileLocationUpdate = false;
   shouldUserProfileLocationUpdate = false;
