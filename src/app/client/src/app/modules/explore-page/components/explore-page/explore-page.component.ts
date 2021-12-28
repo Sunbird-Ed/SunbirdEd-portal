@@ -923,8 +923,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     logViewAllTelemetry(event) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: event.name
+                type: 'Section',
+                id: event.name.includes('NCERT') ? 'NCERT' : event.name
             }],
             edata: {
                 id: 'view-all'
