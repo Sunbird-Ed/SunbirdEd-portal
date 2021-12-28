@@ -321,7 +321,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }));
 
-  app.post('/action/collection/v4/review/:do_id',
+  app.post('/action/collection/v4/review/*',
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
@@ -366,7 +366,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }));
 
-  app.get('/action/content/v4/read/:do_id',
+  app.get('/action/content/v4/read/*',
   bodyParser.json({ limit: '50mb' }),
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
@@ -374,7 +374,11 @@ module.exports = function (app) {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
-    proxyReqPathResolver: proxyReqPathResolverMethod,
+    proxyReqPathResolver: function (req) {
+      console.log('contentProxyUrl + req.originalUrl', contentProxyUrl + req.originalUrl);
+      console.log(require('url').parse(contentProxyUrl + req.originalUrl).path);
+      return require('url').parse(contentProxyUrl + req.originalUrl).path
+    },
     userResDecorator: userResDecorator
   }));
 
@@ -389,7 +393,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }));
 
-  app.post('/action/content/v4/upload/:do_id',
+  app.post('/action/content/v4/upload/*',
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
@@ -400,7 +404,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }));
 
-  app.post('/action/content/v4/review/:do_id',
+  app.post('/action/content/v4/review/*',
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
