@@ -179,8 +179,9 @@ describe('BatchDetailsComponent', () => {
       completedCount: 1, totalCount: 1, content: [], lastPlayedContentId: 'do_112501345261985792135'};
     component.enrolledBatchInfo = {'enrollmentType': 'open'};
     component.isConnected = true;
+    component.courseHierarchy = {leafNodesCount: 1};
     component.isUnenrollDisabled();
-    expect(component.isUnenrollbtnDisabled).toBeFalsy();
+    expect(component.isUnenrollbtnDisabled).toBeTruthy();
   });
 
   it(`should allow 'Create Batch' button to be shown if the user has created to course and has necessary roles`, () => {

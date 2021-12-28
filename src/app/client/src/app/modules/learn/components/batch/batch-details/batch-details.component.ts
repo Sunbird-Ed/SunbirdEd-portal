@@ -77,13 +77,15 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   isUnenrollDisabled() {
     this.isUnenrollbtnDisabled = true;
+    let progressToDisplay = 0;
     if (this.courseProgressData) {
       this.progress = _.get(this.courseProgressData , 'progress') ? Math.round(this.courseProgressData.progress) : 0;
+      progressToDisplay = Math.floor((this.courseProgressData.completedCount / this.courseHierarchy.leafNodesCount) * 100);
     } else {
       return;
     }
     if ((!this.enrolledBatchInfo.endDate || (this.enrolledBatchInfo.endDate >= this.todayDate)) &&
-    this.enrolledBatchInfo.enrollmentType === 'open' && this.progress !== 100) {
+    this.enrolledBatchInfo.enrollmentType === 'open' && this.progress !== 100 && progressToDisplay !== 100) {
       this.isUnenrollbtnDisabled = false;
     }
     if (!this.isConnected) {
