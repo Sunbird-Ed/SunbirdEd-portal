@@ -627,8 +627,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public playContent(event, sectionName?) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: sectionName
+                type: 'Section',
+                id: sectionName.includes('NCERT') ? 'NCERT' : sectionName
             }],
             edata: {
                 id: 'content-card',
