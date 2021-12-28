@@ -489,17 +489,14 @@ module.exports = function (app) {
   }))
 }
 const userResDecorator = (proxyRes, proxyResData, req, res) => {
+  console.log("proxyResData", proxyResData);
+  console.log("proxyRes", proxyRes);
+
   try {
       const data = JSON.parse(proxyResData.toString('utf8'));
       if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
       else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
   } catch(err) {
-      console.log("proxyResData error", err);
-
-      if(proxyResData && proxyResData.data) {
-        console.log("proxyResData", JSON.stringify(JSON.parse(proxyResData.data)));
-      }
-
       return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
   }
 }
