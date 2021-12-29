@@ -40,7 +40,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private editMode: boolean;
   guestUserHashTagId;
   instance: string;
-  dialogRef: MatDialogRef<any>
+  dialogRef: MatDialogRef<any>;
+  private boardOptions;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
@@ -76,6 +77,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         }
       }), first()).subscribe(data => {
         this.formFieldOptions = data;
+        this.boardOptions = _.find(this.formFieldOptions, { code: 'board' });
       }, err => {
         this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();
@@ -241,7 +243,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         accumulator.push(current);
       } else {
         if (current.index <= field.index) { // retain options for already selected fields
-          const updateField = current.code === 'board' ? current : _.find(this.formFieldOptions, { index: current.index });
+          const updateField = current.code === 'board' ? (this.boardOptions || current) : _.find(this.formFieldOptions, { index: current.index });
           accumulator.push(updateField);
         } else { // empty filters and selection
           current.range = [];
