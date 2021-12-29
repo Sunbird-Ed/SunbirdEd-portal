@@ -112,7 +112,6 @@
     "ng2-cache-service": "1.1.1",
     "ng2-charts": "2.4.2",
     "ng2-semantic-ui-v9": "0.0.4",
-    "ngtek-event-library": "^1.0.163",
     "ngx-avatar": "^3.7.0",
     "ngx-bootstrap": "^5.6.2",
     "ngx-chips": "2.1.0",
@@ -133,8 +132,8 @@
     "videojs-contrib-quality-levels": "^2.1.0",
     "videojs-http-source-selector": "^1.1.6",
     "zone.js": "~0.10.2",
-    "angular8-countdown-timer": "^1.0.0"
-
+    "angular8-countdown-timer": "^1.0.0",
+    "ngtek-event-library": "file:ngtek-event-library-1.0.164.tgz"
   },
   "devDependencies": {
     "@angular/language-service": "^9.1.13",

@@ -329,7 +329,7 @@
             </div>
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
-            <div class="list-items" *ngIf="data.courseName">
+              <div class="list-items" *ngIf="data.content.contentType=='Course'">
               <div class="list-items__item"><a href="javascript:void(0);" tabindex="0" (click)="navigateToCourse(data)" class="sb__ellipsis mr-auto mb-0 text-left">{{data.courseName}}</a></div>
               <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{data.batch.name}}</span></div>
               <div class="list-items__item list-date" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</div>
