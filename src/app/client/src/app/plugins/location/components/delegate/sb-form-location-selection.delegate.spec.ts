@@ -496,12 +496,12 @@ describe('SbFormLocationSelectionDelegate', () => {
           ]));
         });
 
-        it('should configure closures for location options', async () => {
+        fit('should configure closures for location options', async () => {
           // arrange
           spyOnProperty(mockUserService, 'loggedIn', 'get').and.returnValue(false);
           spyOn(localStorage, 'getItem').and.returnValue('teacher');
           spyOn(mockFormService, 'getFormConfig').and.callFake((arg) => {
-            if (arg.formType === 'profileConfig') {
+            if (arg.formType === 'profileConfig_v2') {
               return of(_.cloneDeep(sampleProfileConfig));
             } else {
               return of(_.cloneDeep(sampleUserTypeConfig));
