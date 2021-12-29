@@ -25,6 +25,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public closeIntractEdata: IInteractEventEdata;
   public cardIntractEdata: IInteractEventEdata;
   public sortIntractEdata: IInteractEventEdata;
+  get = _.get;
   /**
    * To call searchService which helps to use list of courses
    */
@@ -276,7 +277,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
           this.initFilters = true;
         }
         this.showLoader = false;
-        if (this._enrolledSectionNames.some(sectionName => sectionName === this.sectionName)) {
+        const derivedSectionName = _.get(this.resourceService, this.sectionName) || this.sectionName;
+        if (this._enrolledSectionNames.some(sectionName => sectionName === derivedSectionName)) {
           this.processEnrolledCourses(_.get(response, 'enrolledCourseData'), _.get(response, 'currentPageData'));
         } else {
           if (response.contentData.result.count && response.contentData.result.content) {
