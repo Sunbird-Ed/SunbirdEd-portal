@@ -47,11 +47,11 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     private cdr: ChangeDetectorRef) {
-      // console.log(slick);
+    // console.log(slick);
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   }
   playContent(event) {
-    event.section = this.section.name;
+    event.section = this.sectionName;
     this.playEvent.emit(event);
   }
   ngOnInit() {
@@ -72,7 +72,7 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
     if (this.section) {
       this.telemetryInteractCdata = [{
         type: 'section',
-        id: _.get(this.section, 'name') || ''
+        id: this.sectionName
       }];
     }
   }
@@ -96,7 +96,7 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
       this.slideConfig['rtl'] = false;
     }
     try {
-      if (this.section.name !== this.resourceService.frmelmnts.lbl.mytrainings) {
+      if (this.sectionName !== this.resourceService.frmelmnts.lbl.mytrainings) {
         const display = JSON.parse(this.section['display']);
         if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
           this.section.name = display.name[data];
@@ -150,5 +150,9 @@ export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges() {
     this.reInitSlick();
+  }
+  get sectionName() {
+    const { name } = this.section || {};
+    return _.get(this.resourceService, name) || name || '';
   }
 }

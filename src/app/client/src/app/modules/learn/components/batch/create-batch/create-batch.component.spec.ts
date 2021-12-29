@@ -32,9 +32,9 @@ const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
     stmsg: { m0009: 'error' },
-    smsg: {m0033: 'success', m0034: 'success', m0065: 'enabled', m0066: 'disabled'},
+    smsg: { m0033: 'success', m0034: 'success', m0065: 'enabled', m0066: 'disabled' },
     fmsg: { m0052: 'error' },
-    emsg: {m0005: 'discussion forum error'}
+    emsg: { m0005: 'discussion forum error' }
   },
   frmelmnts: {
     btn: {
@@ -351,7 +351,7 @@ describe('CreateBatchComponent', () => {
     const activatedRoute = TestBed.get(ActivatedRoute);
     const telemetryData = {
       context: {
-        env:  activatedRoute.snapshot.data.telemetry.env,
+        env: activatedRoute.snapshot.data.telemetry.env,
         cdata: [{
           id: component['courseId'],
           type: 'Course'
@@ -372,4 +372,16 @@ describe('CreateBatchComponent', () => {
     });
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
   });
+  it('should set the picker min date', () => {
+    const startDate = new Date();
+    component.createBatchForm = new FormGroup({
+      startDate: new FormControl(undefined)
+    });
+    component.pickerMinDate = startDate;
+    let result = component.getPickerMinDateForEndDate();
+    expect(result).toEqual(new Date(startDate.getTime() + (24 * 60 * 60 * 1000)));
+    component.createBatchForm.controls.startDate.setValue(startDate);
+    result = component.getPickerMinDateForEndDate();
+    expect(result).toEqual(new Date(startDate.getTime() + (24 * 60 * 60 * 1000)));
+  })
 });
