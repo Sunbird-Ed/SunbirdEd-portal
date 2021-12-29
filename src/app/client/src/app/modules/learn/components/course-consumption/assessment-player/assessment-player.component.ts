@@ -76,6 +76,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   navigationObj: { event: any; id: any; };
   showPlayer = false;
   showQSExitConfirmation = false;
+  isStatusChange = false;
 
   @HostListener('window:beforeunload')
   canDeactivate() {
@@ -184,6 +185,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook')) {
       paramas['textbook'] = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
+    }
+    if (!this.isCourseCompleted) {
+      this.isStatusChange = true;
     }
     setTimeout(() => {
       if (this.batchId) {
@@ -398,8 +402,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100) ? 2 : 1,
-      progress: this.courseProgress
+      status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100
+      && !this.isStatusChange) ? 2 : 1,
+      progress: (this.courseProgress && !this.isStatusChange) ? this.courseProgress : undefined
     };
 
     // Set status to 2 if mime type is application/vnd.ekstep.h5p-archive and EID is END

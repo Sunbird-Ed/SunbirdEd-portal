@@ -63,10 +63,10 @@ describe('MlGuard', () => {
   it('should run #getProfileData() for adminstrator', async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
-        profileUserType: {
+        profileUserTypes: [{
           subType: 'deo',
           type: 'administrator',
-        },
+        }],
       },
     });
     spyOn(guard, 'canActivate').and.callThrough();
@@ -81,10 +81,10 @@ describe('MlGuard', () => {
   it('should run #getProfileData() for leader', async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
-        profileUserType: {
+        profileUserTypes: [{
           subType: 'deo',
           type: 'leader',
-        },
+        }],
       },
     });
     spyOn(guard, 'canActivate').and.callThrough();
@@ -99,10 +99,10 @@ describe('MlGuard', () => {
   it('should run #getProfileData() for teacher', async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
-        profileUserType: {
+        profileUserTypes: [{
           subType: null,
           type: 'teacher',
-        },
+        }],
       },
     });
     spyOn(guard, 'canActivate').and.callThrough();

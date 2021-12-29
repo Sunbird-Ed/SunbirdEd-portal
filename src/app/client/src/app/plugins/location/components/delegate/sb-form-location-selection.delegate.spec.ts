@@ -211,7 +211,7 @@ describe('SbFormLocationSelectionDelegate', () => {
 
           // assert
           expect(mockFormService.getFormConfig).toHaveBeenCalledWith(jasmine.objectContaining({
-            formType: 'profileConfig', contentType: 'SOME_STATE_CODE', formAction: 'get'
+            formType: 'profileConfig_v2', contentType: 'SOME_STATE_CODE', formAction: 'get'
           }));
         });
 
@@ -228,7 +228,7 @@ describe('SbFormLocationSelectionDelegate', () => {
 
           // assert
           expect(mockFormService.getFormConfig).toHaveBeenCalledWith(jasmine.objectContaining({
-            formType: 'profileConfig', contentType: 'default', formAction: 'get'
+            formType: 'profileConfig_v2', contentType: 'default', formAction: 'get'
           }));
         });
 
@@ -251,10 +251,10 @@ describe('SbFormLocationSelectionDelegate', () => {
 
           // assert
           expect((mockFormService.getFormConfig as jasmine.Spy).calls.argsFor(0)).toEqual([jasmine.objectContaining({
-            formType: 'profileConfig', contentType: 'SOME_STATE_CODE', formAction: 'get'
+            formType: 'profileConfig_v2', contentType: 'SOME_STATE_CODE', formAction: 'get'
           })]);
           expect((mockFormService.getFormConfig as jasmine.Spy).calls.argsFor(1)).toEqual([jasmine.objectContaining({
-            formType: 'profileConfig', contentType: 'default', formAction: 'get'
+            formType: 'profileConfig_v2', contentType: 'default', formAction: 'get'
           })]);
         });
       });
@@ -270,7 +270,7 @@ describe('SbFormLocationSelectionDelegate', () => {
 
           // assert
           expect(mockFormService.getFormConfig).toHaveBeenCalledWith(jasmine.objectContaining({
-            formType: 'profileConfig', contentType: 'default', formAction: 'get'
+            formType: 'profileConfig_v2', contentType: 'default', formAction: 'get'
           }));
         });
       });
@@ -449,7 +449,7 @@ describe('SbFormLocationSelectionDelegate', () => {
           spyOnProperty(mockUserService, 'loggedIn', 'get').and.returnValue(false);
           spyOn(localStorage, 'getItem').and.returnValue('teacher');
           spyOn(mockFormService, 'getFormConfig').and.callFake((arg) => {
-            if (arg.formType === 'profileConfig') {
+            if (arg.formType === 'profileConfig_v2') {
               return of(_.cloneDeep(sampleProfileConfig));
             } else {
               return of(_.cloneDeep(sampleUserTypeConfig));
@@ -496,12 +496,12 @@ describe('SbFormLocationSelectionDelegate', () => {
           ]));
         });
 
-        it('should configure closures for location options', async () => {
+        fit('should configure closures for location options', async () => {
           // arrange
           spyOnProperty(mockUserService, 'loggedIn', 'get').and.returnValue(false);
           spyOn(localStorage, 'getItem').and.returnValue('teacher');
           spyOn(mockFormService, 'getFormConfig').and.callFake((arg) => {
-            if (arg.formType === 'profileConfig') {
+            if (arg.formType === 'profileConfig_v2') {
               return of(_.cloneDeep(sampleProfileConfig));
             } else {
               return of(_.cloneDeep(sampleUserTypeConfig));
@@ -654,7 +654,7 @@ describe('SbFormLocationSelectionDelegate', () => {
         spyOn(mockFormService, 'getFormConfig').and.callFake((arg) => {
           // assert
           expect(arg).toEqual({
-            formType: 'profileConfig', contentType: 'SOME_SELECTED_STATE_CODE', formAction: 'get'
+            formType: 'profileConfig_v2', contentType: 'SOME_SELECTED_STATE_CODE', formAction: 'get'
           });
           done();
           return of([]);
