@@ -133,7 +133,7 @@
     "videojs-contrib-quality-levels": "^2.1.0",
     "videojs-http-source-selector": "^1.1.6",
     "zone.js": "~0.10.2",
-    "ngtek-event-library": "^1.0.170"
+    "ngtek-event-library": "^1.0.173"
   },
   "devDependencies": {
     "@angular/language-service": "^9.1.13",

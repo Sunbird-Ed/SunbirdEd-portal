@@ -86,24 +86,15 @@ export class EventViewTypeComponent implements OnInit {
   ngOnInit() {
     this.initLayout();
     // this.eventtype();
-
-    this.showEventListPage();
     this.showMyEventListPage();
+    // console.log('showMyEventListPage');
+    this.showEventListPage();
+// console.log('eventList - ', this.eventList);
     this.showFilters();
     // this.showCalenderEvent(MyCalendarList);
     this.showCalenderEvent();
     this.setEventConfig();
   }
-
-  // private initConfiguration() {
-  //   // this.defaultFilters = this.userService.defaultFrameworkFilters;
-  //   // if (this.utilService.isDesktopApp) {
-  //   //     this.setDesktopFilters(true);
-  //   // }
-  //   // this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
-  //   this.layoutConfiguration = this.layoutService.initlayoutConfig();
-  //   this.redoLayout();
-  // }
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -117,68 +108,34 @@ export class EventViewTypeComponent implements OnInit {
       });
   }
 
-redoLayout() {
+  redoLayout() {
       if (this.layoutConfiguration != null) {
         // Joyful Theme
         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-        console.log('296 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
-        console.log('296 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
+        // console.log('296 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
+        // console.log('296 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
 
       } else {
           // Classic Theme
           this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
           this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-          console.log('302 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
-          console.log('302 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
+          // console.log('302 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
+          // console.log('302 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
 
       }
-}
+  }
 
-// private fetchChannelData() {
-//   return forkJoin(this.getChannelId(), this.getFormConfig())
-//       .pipe(
-//           switchMap(([channelData, formConfig]) => {
-//               const { channelId, custodianOrg } = channelData;
-//               this.channelId = channelId;
-//               this.custodianOrg = custodianOrg;
-//               this.formData = formConfig;
-//               if (this.isUserLoggedIn()) {
-//                   this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
-//                   this.userProfile = this.userService.userProfile;
-//               } else {
-//                   this.userService.getGuestUser().subscribe((response) => {
-//                       const guestUserDetails: any = response;
-//                       if (guestUserDetails && !this.cacheService.exists('searchFilters')) {
-//                           this.userProfile = guestUserDetails;
-//                           this.userProfile['firstName'] = guestUserDetails.formatedName;
-//                           this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
-//                       } else {
-//                           this.defaultFilters = this.getPersistFilters(true);
-//                       }
-//                   });
-//               }
-//               this._addFiltersInTheQueryParams();
-//               return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
-//           }),
-//           tap(data => {
-//               this.initFilter = true;
-//           }, err => {
-//               this.toasterService.error(get(this.resourceService, 'frmelmnts.lbl.fetchingContentFailed'));
-//               this.navigationhelperService.goBack();
-//           })
-//       );
-// }
+  public getPageData(input) {
+    const contentTypes = _.sortBy(this.formData, 'index');
+    // this.defaultTab = _.find(contentTypes, ['default', true]);
+    return find(this.formData, data => data.contentType === input);
+  }
 
-public getPageData(input) {
-  const contentTypes = _.sortBy(this.formData, 'index');
-  // this.defaultTab = _.find(contentTypes, ['default', true]);
-  return find(this.formData, data => data.contentType === input);
-}
+  public getCurrentPageData() {
+    return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook');
+  }
 
-public getCurrentPageData() {
-  return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook');
-}
   showEventListPage(){
     this.Filterdata = {
       "status":["live"],
@@ -186,10 +143,19 @@ public getCurrentPageData() {
       };
 
       this.eventListService.getEventList(this.Filterdata).subscribe((data:any)=>{
-        console.log("listdata = ", data);
+      // console.log("listdata = ", data);
+
       this.EventCount= data.result?.count;
-      this.eventList = data.result?.Event;
       this.eventListCount= data.result.count;
+      this.eventList = data.result?.Event;
+
+      this.eventList.forEach((item, index) => {
+        var array = JSON.parse("[" + item.venue + "]");
+        this.eventList[index].venue = array[0].name;
+      });
+
+
+
       console.log("listdata = ",  this.eventList, "--------------", data['result']?.Event);
       this.isLoading = false;
 
@@ -197,65 +163,62 @@ public getCurrentPageData() {
       (err: any) => {
         console.log('err = ', err);
       });
-
   }
 
-    showCalenderEvent() {
-      this.Filterdata ={
-        "status":["live"],
-        "objectType": "Event"
-      };
+  showCalenderEvent() {
+    this.Filterdata ={
+    "status":["live"],
+    "objectType": "Event"
+    };
 
-      this.eventListService.getEventList(this.Filterdata).subscribe((data: any) => {
-       this.eventCalender = data.result.Event;
+    this.eventListService.getEventList(this.Filterdata).subscribe((data: any) => {
+      this.eventCalender = data.result.Event;
 
-       this.events = this.eventCalender.map(obj => ({
+      this.events = this.eventCalender.map(obj => ({
 
-          start: new Date(obj.startDate),
-          title: obj.name,
-          starttime: obj.startTime,
-          end: new Date(obj.endDate),
-          color: colors.red,
-          cssClass: obj.color,
-          status: obj.status,
-          onlineProvider: obj.onlineProvider,
-          audience: obj.audience,
-          owner: obj.owner,
-          identifier: obj.identifier,
-          appIcon: obj.appIcon,
-        }));
+        start: new Date(obj.startDate),
+        title: obj.name,
+        starttime: obj.startTime,
+        end: new Date(obj.endDate),
+        color: colors.red,
+        cssClass: obj.color,
+        status: obj.status,
+        onlineProvider: obj.onlineProvider,
+        audience: obj.audience,
+        owner: obj.owner,
+        identifier: obj.identifier,
+        appIcon: obj.appIcon,
+      }));
 
-      })
-
-
+    })
   }
+
   showFilters() {
     // this.filterConfig = myEventFilter.myEventFilter.result.form.data.fields;
-      this.eventListService.getFilterFormConfig().subscribe((data: any) => {
-        this.filterConfig = data.result['form'].data.fields;
-        this.isLoading = false;
+    this.eventListService.getFilterFormConfig().subscribe((data: any) => {
+      this.filterConfig = data.result['form'].data.fields;
+      this.isLoading = false;
 
-        console.log('eventfilters = ',data.result['form'].data.fields);
-      },
-      (err: any) => {
-        console.log('err = ', err);
-      });
-     }
+      // console.log('eventfilters = ',data.result['form'].data.fields);
+    },
+    (err: any) => {
+      console.log('err = ', err);
+    });
+  }
 
   eventtype($event){
-    console.log($event);
-  if($event.data.text=='ListView'){
-    this.tab = 'list';
-  }
-  else {
-    this.tab = 'calender';
-  }
+    // console.log($event);
+
+    if($event.data.text=='ListView'){
+      this.tab = 'list';
+    } else {
+      this.tab = 'calender';
+    }
   }
 
   setEventConfig() {
-    console.log("userId: userService.userProfile.userId ", this.userService.userProfile);
-
-    console.log("userId: userService.userProfile.userId ", this.userService);
+    // console.log("userId: userService.userProfile.userId ", this.userService.userProfile);
+    // console.log("userId: userService.userProfile.userId ", this.userService);
     // tslint:disable-next-line:max-line-length
     // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
     this.libEventConfig = {
@@ -272,38 +235,40 @@ public getCurrentPageData() {
         mode: 'list'
       }
     };
- }
+  }
 
- getFilteredData(event)
- {
-   if(event.search)
-   {
+ getFilteredData(event) {
+   if(event.search) {
      this.Filterdata ={
        "status":["live"],
        "objectType": "Event",
      };
+
      this.query=event.target.value;
    }
    else if((event.filtersSelected.eventTime) && (event.filtersSelected.eventType))
    {
      switch (event.filtersSelected.eventTime) {
-       case "Past":
-         this.dates={
-           "max":this.yesterdayDate
-         }
-           break;
-       case "Upcoming":
-         this.dates={
+        case "Past":
+          this.dates={
+            "max":this.yesterdayDate
+          }
+        break;
+
+        case "Upcoming":
+          this.dates={
            "min":this.tommorrowDate
-         }
-           break;
-       default:
-         this.dates={
-           "min":this.todayDate,
-           "max":this.todayDate
-         }
-             break;
+          }
+        break;
+
+        default:
+          this.dates={
+            "min":this.todayDate,
+            "max":this.todayDate
+          }
+        break;
      }
+
      this.Filterdata ={
        "status":["live"],
        "eventType" :event.filtersSelected.eventType,
@@ -357,42 +322,47 @@ public getCurrentPageData() {
    this.tab == "list" ? this.isLoading = true : this.isLoading = false;
 
    this.eventListService.getEventList(this.Filterdata,this.query).subscribe((data) => {
-    console.log("listdata-filter = ", data);
+   // console.log("listdata-filter = ", data);
 
-     if (data.responseCode == "OK")
-       {
-         this.isLoading=false;
-         this.EventCount= data.result.count;
-         this.eventList = data.result.Event;
-         this.eventListCount= data.result.count;
-         // For calendar events
-         if(data.result.count > 0)
-          {
-         this.events = this.eventList.map(obj => ({
-         start: new Date(obj.startDate),
-         title: obj.name,
-         starttime: obj.startTime,
-         end: new Date(obj.endDate),
-         color: colors.red,
-         cssClass: obj.color,
-         status: obj.status,
-         onlineProvider: obj.onlineProvider,
-         audience: obj.audience,
-         owner: obj.owner,
-         identifier:obj.identifier,
-         appIcon: obj.appIcon,
-         }));
-        }else{
+     if (data.responseCode == "OK") {
+        this.isLoading=false;
+        this.EventCount= data.result.count;
+        this.eventList = data.result.Event;
+        this.eventListCount= data.result.count;
+
+        this.eventList.forEach((item, index) => {
+          var array = JSON.parse("[" + item.venue + "]");
+          this.eventList[index].venue = array[0].name;
+         });
+
+        // For calendar events
+        if(data.result.count > 0) {
+          this.events = this.eventList.map(obj => ({
+            start: new Date(obj.startDate),
+            title: obj.name,
+            starttime: obj.startTime,
+            end: new Date(obj.endDate),
+            color: colors.red,
+            cssClass: obj.color,
+            status: obj.status,
+            onlineProvider: obj.onlineProvider,
+            audience: obj.audience,
+            owner: obj.owner,
+            identifier:obj.identifier,
+            appIcon: obj.appIcon,
+          }));
+        } else {
           this.events = [];
         }
-       }
-     }, (err) => {
+    }
+   }, (err) => {
        this.isLoading=false;
        this.toasterService.error('Something went wrong, please try again later...');
 
-     });
+   });
  }
-   Openview(view) {
+
+  Openview(view) {
 
     var listProperty = document.getElementById("list");
     var calendarProperty = document.getElementById("calendar");
@@ -401,14 +371,13 @@ public getCurrentPageData() {
       this.tab = 'list';
       listProperty.style.backgroundColor = "#008840";
       calendarProperty.style.backgroundColor = "#ffffff";
-    }
-     else if (view == 'calender') {
+    } else if (view == 'calender') {
       this.tab = 'calender';
       calendarProperty.style.backgroundColor = "#008840";
       listProperty.style.backgroundColor = "#ffffff";
-     }
-
+    }
   }
+
   handleEvent() {
     this.url = '/explore';
     if (this.userService.loggedIn) {
@@ -429,6 +398,8 @@ public getCurrentPageData() {
      this.eventListService.getMyEventList(this.userService.userid).subscribe((data:any)=>{
 
        let  eventsList=  data.result.courses;
+       console.log('My Events eventsList : ', eventsList);
+
        Array.prototype.forEach.call(data.result.courses, child => {
          eventIds.push(child.courseId);
        });
@@ -444,9 +415,14 @@ public getCurrentPageData() {
          this.eventListService.getEventList(this.Filterdata).subscribe((data) =>{
            if (data.responseCode == "OK")
              {
+              this.myEventsCount = data.result.count;
                this.myEvents = data.result.Event;
-               this.myEventsCount = data.result.count;
-               console.log('My Events this.myEvents : ', this.myEvents);
+               this.myEvents.forEach((item, index) => {
+                var array = JSON.parse("[" + item.venue + "]");
+                this.myEvents[index].venue = array[0].name;
+               });
+
+              //  console.log('My Events this.myEvents : ', this.myEvents);
              }
            }, (err) => {
              this.isLoading=false;

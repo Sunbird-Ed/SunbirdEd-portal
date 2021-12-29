@@ -1,4 +1,4 @@
-<lib-event 
+<lib-event
     [libEventConfig]="libEventConfig">
 </lib-event>
 <div class="sbt-fluid-content-bg">
@@ -7,13 +7,14 @@
         <app-workspacesidebar ></app-workspacesidebar>
       </div>
       <div class="w-100 sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12" >
-        <sb-event-filter (filterChangeEvent)="getFilteredData($event)" 
-        *ngIf="filterConfig" 
+        <sb-event-filter (filterChangeEvent)="getFilteredData($event)"
+        *ngIf="filterConfig"
         [filterConfig]="filterConfig"> </sb-event-filter>
         <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
         <div *ngIf="eventList?.length > 0 && eventList != 'undefined'" >
-          <sb-event-list 
+          <sb-event-list
               [list]="eventList"
+              [layoutConfig]="layoutConfiguration"
               (eventDetailData)="navToEventDetail($event)">
           </sb-event-list>
         </div>
@@ -30,13 +31,13 @@
               <div tabindex="0" *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
               <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
                 Explore more content
-              </button> 
+              </button>
             </div>
           </div>
         </div>
       </div>
        </div>
-    
+
     </div>
     <app-browser-compatibility [showModal]="true"></app-browser-compatibility>
   </div>
