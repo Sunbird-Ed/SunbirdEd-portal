@@ -40,7 +40,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private editMode: boolean;
   guestUserHashTagId;
   instance: string;
-  dialogRef: MatDialogRef<any>
+  dialogRef: MatDialogRef<any>;
+  private boardOptions;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
@@ -89,6 +90,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       const boardObj = _.cloneDeep(this.custodianOrgBoard);
       boardObj.range = _.sortBy(boardObj.range, 'index');
       const board = boardObj;
+      this.boardOptions = board;
       if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
         this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': this.selectedOption.board }), 'identifier');
@@ -124,6 +126,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       const boardObj = _.cloneDeep(this.custodianOrgBoard);
       boardObj.range = _.sortBy(boardObj.range, 'index');
       const board = boardObj;
+      this.boardOptions = board;
       if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
         this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': this.selectedOption.board }), 'identifier');
@@ -144,6 +147,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private getFormOptionsForOnboardedUser() {
     return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
       this._formFieldProperties = formFieldProperties;
+      this.boardOptions = _.find(formFieldProperties, { code: 'board' });
+
       if (_.get(this.selectedOption, 'board[0]')) {
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
       }
@@ -192,7 +197,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
     if (_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
       this.frameWorkId = _.get(_.find(field.range, { name: 'CBSE' }), 'identifier');
-    } else {
+    } 
+    else if (_.get(this.boardOptions, 'range.length')) {
+      this.frameWorkId = _.get(_.find(this.boardOptions.range, { name: _.get(this.selectedOption, field.code) }), 'identifier');
+    }
+    else {
       this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code) }), 'identifier');
     }
     if (this.unsubscribe) { // cancel if any previous api call in progress
@@ -241,7 +250,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         accumulator.push(current);
       } else {
         if (current.index <= field.index) { // retain options for already selected fields
-          const updateField = current.code === 'board' ? current : _.find(this.formFieldOptions, { index: current.index });
+          const updateField = current.code === 'board' ? (this.boardOptions || current) : _.find(this.formFieldOptions, { index: current.index });
           accumulator.push(updateField);
         } else { // empty filters and selection
           current.range = [];
