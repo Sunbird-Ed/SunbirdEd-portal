@@ -14,7 +14,7 @@ import {ToasterService, LayoutService, COLUMN_TYPE}from '@sunbird/shared';
 export class EventDetailComponent implements OnInit {
   eventItem: any;
   eventList: any;
- 
+
   userId: any;
   eventConfig: any;
   queryParams : any;
@@ -91,7 +91,7 @@ getBatch(identifier){
     });
 }
 navToDashbord(identifier){
-  
+
   this.router.navigate(['/explore-events/report'],
   { queryParams:  {  identifier: identifier,
         batchid: this.batchId } });
@@ -102,10 +102,10 @@ navigateToEventPage() {
 }
 navToEventDetail($event)
   { console.log("In src/event detail");
-  this.router.navigate(['/explore-events/detail'], 
+  this.router.navigate(['/explore-events/detail'],
     {
       queryParams: {
-        identifier: $event.identifier
+        eventId: $event.identifier
       }
     });
 
