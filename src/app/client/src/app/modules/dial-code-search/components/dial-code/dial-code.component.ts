@@ -465,7 +465,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
-    this.goBack();
+    if (event && this.searchResults && this.searchResults.length && this.router.url.includes('/get/dial')) {
+      this.goBack();
+    }
   }
 
 }
