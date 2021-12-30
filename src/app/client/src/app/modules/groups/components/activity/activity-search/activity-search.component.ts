@@ -21,6 +21,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { VIEW_ACTIVITY, CATEGORY_SEARCH } from '../../../interfaces/telemetryConstants';
 import { ActivityDashboardService } from '@sunbird/shared';
+import { sessionKeys } from '../../..';
 
 
 @Component({
@@ -90,6 +91,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.groupAddableBlocData = data;
+      sessionStorage.setItem(sessionKeys.GROUPADDABLEBLOCDATA, JSON.stringify((data)))
     });
     this.activityDashboardService.isActivityAdded = false; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
