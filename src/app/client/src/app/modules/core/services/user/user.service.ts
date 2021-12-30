@@ -322,6 +322,7 @@ export class UserService {
     return this.learnerService.post(options).pipe(map(
       (res: ServerResponse) => {
         this._userProfile.promptTnC = false;
+        this.getUserProfile();
       }
     ));
   }

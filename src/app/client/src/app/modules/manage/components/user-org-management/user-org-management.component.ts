@@ -398,7 +398,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   }
   openAdminPolicyPopup(closePopup?: boolean) {
     if (closePopup) {
-      this.userService.getUserProfile();
       this.showTncPopup = false;
     } else {
       this.showTncPopup = true;
