@@ -120,5 +120,131 @@ export const activitySearchMockData = {
           'name': 'Resource'
         }
       }
+  },
+  searchReq: {
+    "request": {
+        "filters": {
+     
+            "primaryCategory": [
+                "Course"
+            ],
+            "batches.status": 1,
+            "batches.enrollmentType": "open",
+            "objectType": [
+                "Content"
+            ],
+            "status": [
+                "Live"
+            ]
+        },
+        "limit": 100,
+        "query": "Testfeature",
+        "fields": [
+            "name",
+            "appIcon",
+            "mimeType",
+            "gradeLevel",
+            "identifier",
+            "medium",
+            "pkgVersion",
+            "board",
+            "subject",
+            "resourceType",
+            "primaryCategory",
+            "contentType",
+            "channel",
+            "organisation",
+            "trackable"
+        ],
+        "mode": "soft",
+        "facets": [
+            "se_boards",
+            "se_gradeLevels",
+            "se_subjects",
+            "se_mediums",
+            "primaryCategory"
+        ],
+        "offset": 0
+    }
+},
+ searchRes: {
+  "result":{
+     "count":1,
+     "content":[
+        {
+           "trackable":{
+              "enabled":"Yes",
+              "autoBatch":"No"
+           },
+           "identifier":"do_2134361594601717761503",
+           "primaryCategory":"Course",
+           "subject":[
+              "Physics"
+           ],
+           "channel":"01269878797503692810",
+           "name":"Testfeature",
+           "organisation":[
+              "MPUPS,J.C.AGRAHARAM",
+              "Tamil Nadu"
+           ],
+           "mimeType":"application/vnd.ekstep.content-collection",
+           "contentType":"Course",
+           "pkgVersion":2,
+           "objectType":"Content",
+           "resourceType":"Course",
+           "orgDetails":{
+              "email":null,
+              "orgName":"Tamil Nadu"
+           }
+        }
+     ],
+     "facets":[
+        {
+           "values":[
+              {
+                 "name":"tamil",
+                 "count":1
+              }
+           ],
+           "name":"se_mediums"
+        },
+        {
+           "values":[
+              {
+                 "name":"state (tamil nadu)",
+                 "count":1
+              }
+           ],
+           "name":"se_boards"
+        },
+        {
+           "values":[
+              {
+                 "name":"course",
+                 "count":1
+              }
+           ],
+           "name":"primaryCategory"
+        },
+        {
+           "values":[
+              {
+                 "name":"class 2",
+                 "count":1
+              }
+           ],
+           "name":"se_gradeLevels"
+        },
+        {
+           "values":[
+              {
+                 "name":"physics",
+                 "count":1
+              }
+           ],
+           "name":"se_subjects"
+        }
+     ]
   }
+}
 };

@@ -448,4 +448,16 @@ describe('DialCodeComponent', () => {
     component.ngOnInit();
     expect(component.layoutConfiguration).toEqual({data: 'data'});
   });
+
+  it('should handle browser back click for navigation', () => {
+    // arrange
+    const event = {isTrusted: true};
+    component.searchResults = [{data: 'sample'}];
+    component.router = {url: '/get/dial/SAMPLE-DIAL-CODE'} as any;
+    spyOn(component, 'goBack').and.returnValue(() => Promise.resolve(true));
+    // act
+    component.onPopState(event);
+    // assert
+    expect(component.goBack).toHaveBeenCalled();
+  });
 });

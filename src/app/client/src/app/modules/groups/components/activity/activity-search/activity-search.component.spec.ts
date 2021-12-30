@@ -27,7 +27,11 @@ describe('ActivitySearchComponent', () => {
       }
     },
     'frmelmnts': {
-      'lbl': {}
+      'lbl': {
+        'group': {
+          'viewActivity': 'View activity'
+        }
+      }
     }
   };
 
@@ -142,6 +146,18 @@ describe('ActivitySearchComponent', () => {
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
     expect(component.contentList).toEqual([]);
+  });
+
+  it('should fetch Contents on success when searching', () => {
+    component.showLoader = true;
+    component.frameworkId = 'abcd1234cd';
+    const searchService = TestBed.get(SearchService);
+    spyOn(searchService, 'contentSearch').and.returnValue(of({ result: activitySearchMockData.searchRes.result }));
+    component['fetchContents']();
+    searchService.contentSearch(activitySearchMockData.searchReq, false).subscribe(data => {
+      expect(data.result).toEqual(activitySearchMockData.searchRes.result);
+    })
+    expect(component.showLoader).toBe(false);
   });
 
   it('should fetch Contents on error', () => {
