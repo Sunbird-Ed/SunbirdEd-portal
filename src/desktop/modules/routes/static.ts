@@ -51,7 +51,7 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
             _.forIn(locals, (value, key) => {
               res.locals[key] = value;
             });
-            
+
             if(locals.userId) {
               const courseUrl = req.originalUrl.includes('/explore-course/course/');
               if (courseUrl) {
@@ -70,15 +70,15 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
       await userSDK.deleteAllLoggedInUsers().catch(error => {
         standardLog.error({ id: 'STATIC_USER_DELETE_FAILED', message: 'Unable to delete logged in user data', mid: req.headers["X-msgid"], error });
       });
-      await userSDK.deleteUserSession().catch(error => { 
+      await userSDK.deleteUserSession().catch(error => {
         standardLog.error({ id: 'STATIC_USER_SESSION_CLEAR_FAILED', message: 'Unable to clear logged in user session', mid: req.headers["X-msgid"], error });
       });
       EventManager.emit('user:switched', 'anonymous');
       res.redirect('/mydownloads?selectedTab=mydownloads')
     })
-    
+
   }
-    
+
 
   const getLocals = async (manifest) => {
     const standardLog = containerAPI.getStandardLoggerInstance();
@@ -86,14 +86,14 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
       .getSystemSDKInstance(manifest.id)
       .getDeviceId();
     const userSDK = containerAPI.getUserSdkInstance();
-    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { 
+    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => {
       standardLog.error({ id: 'STATIC_USER_SESSION_FETCH_FAILED', message: 'Unable to get the user session data', error });
     })
     const locals: any = {};
 
     if (loggedInUserSession) {
       locals.userId = loggedInUserSession.userId;
-      locals.sessionId = loggedInUserSession.userId;  
+      locals.sessionId = loggedInUserSession.userId;
     } else {
       locals.userId = null;
       locals.sessionId = null;
@@ -147,6 +147,7 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.publicStorageAccount = null;
     locals.sunbirdDefaultFileSize = null;
     locals.blobUrl = null;
+    locals.uciBotPhoneNumber = null;
     locals.sunbirdQuestionSetChildrenLimit = null;
     locals.sunbirdCollectionChildrenLimit = null;
     return locals;
