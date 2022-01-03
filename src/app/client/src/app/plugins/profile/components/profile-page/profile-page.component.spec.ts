@@ -64,7 +64,7 @@ describe('ProfilePageComponent', () => {
     getFormConfig(d) {
       if (_.isEqual(d, {formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' })) {
         return of(personaFormConfig);
-      } else if (_.isEqual(d, {formType: 'profileConfig', contentType: 'default', formAction: 'get' })) {
+      } else if (_.isEqual(d, {formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' })) {
         return of(locationConfig);
       } else if (_.isEqual(d, {
         formType: 'user',
