@@ -338,7 +338,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       return this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessMaxAttempt'));
     } else if (_.get(event, 'event.isLastAttempt') && !this._routerStateContentStatus) {
       this.showLastAttemptsModal = true;
-    } else {
+    } else if (_.get(this.navigationObj, 'event.data') && this.navigationObj?.event?.data?.identifier !== this.activeContent?.identifier) {
       this.onTocCardClick();
     }
   }
@@ -346,13 +346,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   onTocCardClick() {
     this.showPlayer = false;
     this.previousContent = _.cloneDeep(this.activeContent);
-    /* istanbul ignore else */
-    if (_.get(this.navigationObj, 'event.data')) {
-      this.activeContent = this.navigationObj.event.data;
-      this.initPlayer(_.get(this.activeContent, 'identifier'));
-      this.highlightContent();
-      this.logTelemetry(this.navigationObj.id, this.navigationObj.event.data);
-    }
+    this.activeContent = this.navigationObj.event.data;
+    this.initPlayer(_.get(this.activeContent, 'identifier'));
+    this.highlightContent();
+    this.logTelemetry(this.navigationObj.id, this.navigationObj.event.data);
   }
 
   private getContentState() {
