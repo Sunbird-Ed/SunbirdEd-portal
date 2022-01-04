@@ -6,6 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { ToasterService, ConfigService, ResourceService, LayoutService, ActivityDashboardService } from '../../../../shared/services';
+import { sessionKeys } from '../../..';
 export interface IActivity {
   name: string;
   identifier: string;
@@ -97,7 +98,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
       this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
       const options = { relativeTo: this.activateRoute, queryParams: { primaryCategory: _.get(event, 'data.primaryCategory'),
       title: activityType, mimeType: _.get(event, 'data.mimeType'), groupId: _.get(this.groupData, 'id')}};
-      this.activityDashboardService.isActivityAdded = true; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
+      sessionStorage.setItem(sessionKeys.ISACTIVITYADDED, 'true') // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
       this.playerService.playContent(_.get(event, 'data'), {groupId: _.get(this.groupData, 'id')});
   }
 

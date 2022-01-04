@@ -93,7 +93,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       this.groupAddableBlocData = data;
       sessionStorage.setItem(sessionKeys.GROUPADDABLEBLOCDATA, JSON.stringify((data)))
     });
-    this.activityDashboardService.isActivityAdded = false; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
+    sessionStorage.setItem(sessionKeys.ISACTIVITYADDED, 'false') // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
