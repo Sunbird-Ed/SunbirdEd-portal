@@ -44,10 +44,10 @@ export class GlobalSearchSelectedFilterComponent {
     }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
-      queryFilters = {...queryFilters, ...this.selectedFilters};
     }
+    queryFilters = {...queryFilters, ...this.selectedFilters};
     this.router.navigate([], {
-      queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,
+      queryParams: queryFilters,
       relativeTo: this.activatedRoute.parent
     });
   }

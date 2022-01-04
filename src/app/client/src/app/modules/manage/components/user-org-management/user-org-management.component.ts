@@ -102,7 +102,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     this.resourceService.frmelmnts.lbl.admindshheader.schools,
     this.resourceService.frmelmnts.lbl.admindshheader.teachers
     ];
-    this.userService.userData$.pipe(first()).subscribe(async (user) => {
+    this.userService.userData$.subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
         this.getAdminPolicyTnC();

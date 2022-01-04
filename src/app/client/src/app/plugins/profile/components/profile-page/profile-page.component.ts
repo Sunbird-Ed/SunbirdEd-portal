@@ -38,7 +38,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
   { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
-  { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
+  { formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' };
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
@@ -626,8 +626,13 @@ private async getSubPersonaConfig(persona: string, userLocation: any): Promise<s
   }
 
   const personaConfig = formFields.find(formField => formField.code === 'persona');
+  const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
+  const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
+  if (!subPersonaConfig) {
+      return undefined;
+   }
   const subPersonaList = [];
-  if (_.get(personaConfig, 'templateOptions.multiple')) {
+  if (_.get(subPersonaConfig, 'templateOptions.multiple')) {
     if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
       this.userProfile.profileUserTypes.forEach(ele => {
         if (_.get(ele, 'subType')) {
@@ -641,11 +646,6 @@ private async getSubPersonaConfig(persona: string, userLocation: any): Promise<s
     subPersonaList.push(this.userProfile.profileUserType.subType);
   }
 
-  const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
-  const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
-  if (!subPersonaConfig) {
-      return undefined;
-   }
    const subPersonaFieldConfigOption = [];
    subPersonaList.forEach((ele) => {
     subPersonaFieldConfigOption.push((subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
