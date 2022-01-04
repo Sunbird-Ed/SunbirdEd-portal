@@ -24,6 +24,7 @@ export class ActivityDashboardDirective implements OnInit {
   }
 
   ngOnInit() {
+    sessionStorage.setItem(sessionKeys.HIERARCHYDATA, JSON.stringify(this.hierarchyData));
     const isAdded = sessionStorage.getItem(sessionKeys.ISACTIVITYADDED) === 'true';
     (this.ref.nativeElement as HTMLButtonElement).style.display = isAdded ? 'block' : 'none';
   }

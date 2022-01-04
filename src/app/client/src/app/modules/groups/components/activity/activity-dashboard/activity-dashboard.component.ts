@@ -4,6 +4,7 @@ import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MY_GROUPS, GROUP_DETAILS } from '../../../interfaces/routerLinks';
+import { sessionKeys } from '../../..';
 
 @Component({
   selector: 'app-activity-dashboard',
@@ -28,7 +29,7 @@ export class ActivityDashboardComponent implements OnInit {
     const _routerExtras = this.router.getCurrentNavigation();
     if (_.get(_routerExtras, 'extras.state')) {
       const extras = _.get(_routerExtras, 'extras.state');
-      this.hierarchyData = extras.hierarchyData;
+      this.hierarchyData = extras.hierarchyData || JSON.parse(sessionStorage.getItem(sessionKeys.HIERARCHYDATA))
     } else {
       // if we refresh the page, the router data will be undefined so its redirect to group detail page
       this.navigateBack();
@@ -37,7 +38,7 @@ export class ActivityDashboardComponent implements OnInit {
 
   ngOnInit() {
     // if we refresh the page, the groupdata will be undefined so its redirect to group detail page
-    this.groupData = this.groupService.groupData ? this.groupService.groupData : this.navigateBack();
+    this.groupData = this.groupService.groupData ? (this.groupService.groupData || JSON.parse(sessionStorage.getItem(sessionKeys.GROUPDATA))) : this.navigateBack();
     this.getAggData();
   }
 
