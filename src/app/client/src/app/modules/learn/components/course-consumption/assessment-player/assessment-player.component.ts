@@ -388,7 +388,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     const telObject = _.get(event, 'detail.telemetryData');
     const eid = _.get(telObject, 'eid');
-    const isMimeTypeH5P = _.get(this.lastActiveContentBeforeModuleChange, 'mimeType') === "application/vnd.ekstep.h5p-archive";
+    const isMimeTypeH5P = _.get(this.activeContent, 'mimeType') === "application/vnd.ekstep.h5p-archive";
 
     /* istanbul ignore else */
     if (eid === 'END' && !isMimeTypeH5P && !this.validEndEvent(event)) {
@@ -404,8 +404,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       progress: (this.courseProgress && !this.isStatusChange) ? this.courseProgress : undefined
     };
 
-    // Set status to 2 if mime type is application/vnd.ekstep.h5p-archive and EID is END
-    if (eid === 'END' && isMimeTypeH5P && request.contentId == _.get(this.lastActiveContentBeforeModuleChange, 'identifier')) {
+    // Set status to 2 if mime type is application/vnd.ekstep.h5p-archive
+    if (isMimeTypeH5P) {
       request['status'] = 2;
     }
 

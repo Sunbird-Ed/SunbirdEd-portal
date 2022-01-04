@@ -17,7 +17,7 @@ type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
 
 export class SbFormLocationSelectionDelegate {
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
-    { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
+    { formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' };
   private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
     { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
 
@@ -361,7 +361,9 @@ export class SbFormLocationSelectionDelegate {
                     const defaultSubpersona = [];
                     if (this.userService.userProfile.profileUserTypes && this.userService.userProfile.profileUserTypes.length) {
                       this.userService.userProfile.profileUserTypes.forEach(element => {
-                        defaultSubpersona.push(element.subType);
+                        if (element.subType) {
+                          defaultSubpersona.push(element.subType);
+                        }
                       });
                     } else {
                       if (_.get(this.userService, 'userProfile.profileUserType.subType')) {
