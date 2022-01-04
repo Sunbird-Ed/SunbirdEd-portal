@@ -8721,10 +8721,10 @@ ng-recaptcha@^5.0.0:
   optionalDependencies:
     "@types/grecaptcha" "^2.0.33"
 
-ng-svg-editor@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/ng-svg-editor/-/ng-svg-editor-0.0.11.tgz#ea764d0ca61ff046e0acc021e6e9a687d4f3e253"
-  integrity sha512-Vj+I1wxV9R/71d0BVd7ARqnk+5yZT16eXzMxkLI1PjLK+GFfj7my80pw9Eg4616Gad7OuanH+MMGnmsJ0XePiQ==
+ng-svg-editor@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/ng-svg-editor/-/ng-svg-editor-0.0.15.tgz#34a52fa7c726cbbfdc05381c6fbbdb854fbb32cf"
+  integrity sha512-wwy8z2K7quXi15NnElMFagKquvNH8NIkTwHgZtUkdp0TXWXYasUKoYtXFSRLolf3o6beUfrqF41uMYRHKWs6IQ==
   dependencies:
     tslib "^2.3.0"
 

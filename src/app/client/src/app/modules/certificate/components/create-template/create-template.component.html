@@ -50,15 +50,23 @@
               <label class="preview-title mb-0 mr-auto">Edit certificate template </label>
               <button type="button" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">Cancel
               </button>
-              <button type="button" (click)="previewCertificate()" tabindex="0"
-                class="sb-btn sb-btn-normal sb-btn-primary ml-16">Save & Preview
+              <button type="button" (click)="saveUpdatedCertificate()" tabindex="0"
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.cert?.btn?.saveAsTemplate}}
+              </button>
+              <button type="button" *ngIf="previewButton == 'show'" (click)="toggleSVGPreview()" tabindex="0"
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">Preview
+              </button>
+              <button type="button" *ngIf="previewButton == 'hide'" (click)="toggleSVGPreview()" tabindex="0"
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">Edit
               </button>
             </div>
 
             <div class="cert-select-card my-16">
               <div class="d-flex flex-ai-center flex-dc cert-select-card__content">
                 <div class="d-flex flex-ai-center flex-jc-center cert-select-card__content__description">
-                  <svg-editor [svgContent]="logoHtml"></svg-editor>
+                  <div class="svgContainer">
+                    <svg-editor [svgContent]="logoHtml" [save]="save" [togglePreview]="togglePreview" [onEdit]="onEdit" (elementClicked)="elementClicked($event)"></svg-editor>
+                  </div>
                 </div>
               </div>
             </div>
@@ -69,3 +77,52 @@
     </div>
   </div>
 </div>
+
+<app-modal-wrapper *ngIf="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'text'" [config]="{disableClose: true, size: 'normal'}" (dismiss)="closeSVGInputModal()">
+  <ng-template sbModalContent>
+      <div class="sb-modal sb-error">
+          <div class="transition ui dimmer page modals active visible">
+              <div class="ui modal transition active visible small">
+                  <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+                      <span>&times;</span>
+                  </button>
+                  <!--Header-->
+                  <div class="sb-modal-header">
+                      {{resourceService?.frmelmnts?.lbl?.updateDetails}}
+                  </div>
+                  <!--/Header-->
+                  <!--Content-->
+                  <div class="sb-modal-content">
+                    <div class="image-tabs px-8">
+                
+                      <!-- Text update -->
+                      <section *ngIf="selectedSVGObject?.type === 'text'" id="content1">
+                        <div class="twelve wide column">
+                          <div class="sb-search-box m-0">
+                            <div class="input-div relative">
+                              <input autofocus class="sb-search-input" [(ngModel)]="selectedSVGObject.value" type="text" maxlength="80" />
+                            </div>
+                          </div>
+                          <small _ngcontent-nit-c26="" class="pl-4 fsmall">
+                            {{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}
+                          </small>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                  <!--/Content-->
+                  <!--Actions-->
+                  <div class="sb-modal-actions">
+                    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="updateSVGInputTag()">{{resourceService?.frmelmnts?.btn?.update}}</button>
+                    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeSVGInputModal()">
+                      {{resourceService.frmelmnts?.btn?.cancel}}
+                    </button>
+                  </div>
+                  <!--/Actions-->
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</app-modal-wrapper>
+ <browse-image-popup (assetData)="svgAssetData($event)" (close)="closeSVGInputModal()" [showUploadUserModal]="disableSVGImageModal" [showSelectImageModal]="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'image'" [logoType]="logoType" ></browse-image-popup>
+ 
