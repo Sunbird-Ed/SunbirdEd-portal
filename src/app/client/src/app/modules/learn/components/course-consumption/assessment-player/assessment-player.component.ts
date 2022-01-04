@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v9';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
@@ -77,6 +77,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   showPlayer = false;
   showQSExitConfirmation = false;
   isStatusChange = false;
+  contentRatingModal = false;
 
   @HostListener('window:beforeunload')
   canDeactivate() {
@@ -165,6 +166,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     });
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.getLanguageChangeEvent();
+    this.routerEventsChangeHandler();
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -685,6 +687,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   onRatingPopupClose() {
+    this.contentRatingModal = false;
     this.getCourseCompletionStatus(true);
   }
 
@@ -875,6 +878,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       this.showMaxAttemptsModal = true;
       this.showQSExitConfirmation = true;
     }
+  }
+  routerEventsChangeHandler() {
+    this.router.events
+      .pipe(
+        takeUntil(this.unsubscribe)
+      )
+      .subscribe(event => {
+        if (event instanceof NavigationStart) {
+          const isH5pContent = [_.get(this.playerConfig, 'metadata.mimeType'), _.get(this.activeContent, 'mimeType')].every(mimeType => mimeType === 'application/vnd.ekstep.h5p-archive');
+          if(isH5pContent) {
+            this.contentRatingModal = true;
+          }
+        }
+      })
   }
 
 }
