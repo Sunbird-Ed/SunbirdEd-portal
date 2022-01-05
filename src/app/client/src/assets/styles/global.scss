@@ -1241,6 +1241,10 @@ html[layout='joy'] {
       margin-bottom: calculateRem(8px);
     }
   }
+
+  .sb--card__img.sb--card__image-pos {
+    z-index: unset;
+  }
 }
 
 html[data-theme=Darkmode][layout='old'] {
