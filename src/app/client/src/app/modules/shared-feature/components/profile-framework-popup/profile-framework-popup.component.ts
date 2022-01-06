@@ -281,8 +281,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       contentType: 'framework',
       framework: this.frameWorkId
     };
-    let userType = localStorage.getItem('guestUserType');
-    if (this.isGuestUser && userType == "School head OR Officials") {
+    let userType = localStorage.getItem('userType');
+    if (this.isGuestUser && userType == "administrator") {
       formServiceInputParams.formAction = 'create',
       formServiceInputParams.contentType= 'admin_framework'
       delete formServiceInputParams.framework;
