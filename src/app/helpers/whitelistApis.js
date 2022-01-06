@@ -379,6 +379,26 @@ const API_LIST = {
 
     //Event related APIs
 
+    '/learner/course/v1/summary': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+
+    '/learner/event/v1/summary': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+
     '/learner/course/v1/attendance/read': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC,ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR],
