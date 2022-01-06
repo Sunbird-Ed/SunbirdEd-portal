@@ -116,7 +116,6 @@ export class AppComponent implements OnInit, OnDestroy {
   guestUserDetails;
   showYearOfBirthPopup = false;
   public isIOS = false;
-  tenantInfo;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -555,7 +554,7 @@ export class AppComponent implements OnInit, OnDestroy {
           } else {
             this.checkLocationStatus();
           }
-        } else {}
+        }
       }
     });
   }
@@ -705,10 +704,6 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   private setPortalTitleLogo(): void {
     this.tenantService.tenantData$.subscribe(data => {
-      if (_.get(data, 'tenantData')) {
-        this.tenantInfo = data.tenantData;
-        this.tenantInfo.titleName = data.tenantData.titleName || this.resourceService.instance;
-      }
       if (!data.err) {
         // document.title = _.get(this.userService, 'rootOrgName') || _.get(data, 'tenantData.titleName');
         document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
@@ -789,7 +784,6 @@ export class AppComponent implements OnInit, OnDestroy {
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
     this.showUserTypePopup=false;
-    let userType = localStorage.getItem('userType');
     this.checkFrameworkSelected();
     this.showYearOfBirthPopup = true;
     if (this.userFeed) {
