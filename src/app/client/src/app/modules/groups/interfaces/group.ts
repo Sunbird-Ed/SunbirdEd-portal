@@ -68,5 +68,6 @@ export enum acceptTnc {
 }
 
 export enum sessionKeys {
-  GROUPADDABLEBLOCDATA = 'group-addable-bloc-data'
+  GROUPADDABLEBLOCDATA = 'group-addable-bloc-data',
+  GROUPDATA = 'group-data'
 }
