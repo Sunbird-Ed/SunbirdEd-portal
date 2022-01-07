@@ -146,7 +146,7 @@
           <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
             [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"
             class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeDashboard()">
-            Close dashboard
+            {{resourceService?.frmelmnts?.btn?.closedb}}
           </button>
         </div>
       </div>
