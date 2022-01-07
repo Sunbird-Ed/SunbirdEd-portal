@@ -20,10 +20,8 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../
 module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route
 // module.exports = function (app) {
-  
   app.post('/learner/course/v1/attendance/read', proxyObj());
   app.post('/learner/course/v1/attendance/webhook/bigbluebutton', proxyObj());
-    
 }
 
 function proxyObj (){
