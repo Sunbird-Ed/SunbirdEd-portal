@@ -67,9 +67,6 @@ export class EventViewTypeComponent implements OnInit {
   defaultTab = 'Textbook';
   public subscription$;
   public unsubscribe = new Subject<void>();
-
-
-
   eventListCount : any;
   myEventsCount : any;
 

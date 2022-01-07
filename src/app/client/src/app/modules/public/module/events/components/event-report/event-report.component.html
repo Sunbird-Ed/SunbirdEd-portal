@@ -18,12 +18,15 @@
             </div>
         </div>
       <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
-            <lib-event
+        <!-- <div 
+        [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'ui container mt-24'">  -->
+        <lib-event
                 [libEventConfig]="libEventConfig">
             </lib-event>
             <sb-enroll-event-users *ngIf="eventUserEnrollData && eventItem"
                 [eventDetailItem]="eventItem"
-                [enrollEventDetails]="eventUserEnrollData">
+                [enrollEventDetails]="eventUserEnrollData"
+                (detailedReport)="navToDetailedAttendance($event)">
             </sb-enroll-event-users>
             <div *ngIf="!eventUserEnrollData">
                 <div class="no-content-container d-flex flex-jc-center relative9">
