@@ -15,7 +15,7 @@ import {
   UsageService, ReportService
 } from './services';
 import {
-  OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
+  OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,CourseSummaryComponent,EventSummaryComponent,
   DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent, ListAllReportsComponent,
   AddSummaryModalComponent, CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent,
   DatasetComponent, MapComponent, FilterComponent
@@ -27,7 +27,7 @@ import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 @NgModule({
   imports: [
     CommonModule,
@@ -42,11 +42,12 @@ import { DiscussionModule } from '../discussion/discussion.module';
     TelemetryModule,
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
-    DiscussionModule
+    DiscussionModule,
+    NgxPaginationModule
   ],
-  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
+  declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,CourseSummaryComponent,EventSummaryComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent],
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent,],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,

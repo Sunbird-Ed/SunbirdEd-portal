@@ -164,7 +164,9 @@
       "RECOMMENDED_COURSE": "recommended/courses",
       "UNENROLL_USER_COURSE": "course/v1/unenrol",
       "GET_QR_CODE_FILE": "course/v1/qrcode/download",
-      "GET_REPORTS_METADATA": "course-reports/metadata"
+      "GET_REPORTS_METADATA": "course-reports/metadata",
+      "GET_COURSE_SUMMARY_API":"course/v1/summary",
+      "GET_EVENT_SUMMARY_API":"course/event/v1/summary"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",

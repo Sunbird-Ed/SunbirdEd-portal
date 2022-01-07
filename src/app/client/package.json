@@ -134,6 +134,7 @@
     "videojs-http-source-selector": "^1.1.6",
     "zone.js": "~0.10.2",
     "ngtek-event-library": "^1.0.178"
+    "ngx-pagination": "^5.1.1"
   },
   "devDependencies": {
     "@angular/language-service": "^9.1.13",

@@ -14,3 +14,5 @@ export * from './dashboard-sidebar/dashboard-sidebar.component';
 export * from './dataset/dataset.component';
 export * from './map/map.component';
 export * from './filter/filter.component';
+export * from './event-summary/event-summary.component';
+export * from './course-summary/course-summary.component'

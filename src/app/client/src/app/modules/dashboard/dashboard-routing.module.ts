@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
   ReportComponent, ListAllReportsComponent, CourseDashboardComponent, ReIssueCertificateComponent,
-  DashboardSidebarComponent
+  DashboardSidebarComponent,CourseSummaryComponent,EventSummaryComponent
 } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'course-dashboard';
@@ -65,6 +65,24 @@ const routes: Routes = [
   },
   {
     path: 'organization', component: UsageReportsComponent, canActivate: [AuthGuard],
+    data: {
+      roles: 'dashboardRole',
+      telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
+      breadcrumbs: [{ label: 'Home', url: '/home' },
+      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+    }
+  },
+  {
+    path: 'course-summary', component: CourseSummaryComponent, canActivate: [AuthGuard],
+    data: {
+      roles: 'dashboardRole',
+      telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
+      breadcrumbs: [{ label: 'Home', url: '/home' },
+      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+    }
+  },
+  {
+    path: 'event-summary', component: EventSummaryComponent, canActivate: [AuthGuard],
     data: {
       roles: 'dashboardRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
