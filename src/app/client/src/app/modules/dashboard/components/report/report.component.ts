@@ -68,6 +68,7 @@ export class ReportComponent implements OnInit {
   reportViewerTncVersion: string;
   reportViewerTncUrl: string;
   showTncPopup = false;
+  showResetFilter = true;
 
   private set setParametersHash(report) {
     const { hash } = this.activatedRoute.snapshot.params;
@@ -607,8 +608,11 @@ export class ReportComponent implements OnInit {
   }
 
   selectedTabChange(event) {
+
     const { type, downloadURL } = _.get(event, 'tab.textLabel');
     this.showExportsOption = ['chart', 'download'].includes(type);
+    this.showResetFilter = ['chart'].includes(type);
+
     downloadURL && this.setDownloadUrl(downloadURL);
   }
   getReportViewerTncPolicy() {
