@@ -1,0 +1,65 @@
+<div class="sbt-fluid-content-bg pt-16 p-30">
+  <div class="sb-g sbt-container sbt-page-content relative9">
+    <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
+      <div>
+        <div class="sb-g sb-g--gap24 py-16">
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-8 sb-g-col-xxxl-12 relative9 sb-bg-color-gray-0 pr-20 training-relevant relative9">
+            <canvas baseChart
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [chartType]="barChartType">
+            </canvas>
+          </div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-4 sb-g-col-xxxl-4 sb-bg-color-gray-0 pl-20 pr-20 training-relevant relative9">
+            <canvas baseChart 
+              [data]="pieChartData" 
+              [labels]="pieChartLabels" 
+              [chartType]="pieChartType"
+              [options]="pieChartOptions"
+              [plugins]="pieChartPlugins"
+              [legend]="pieChartLegend">
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-jc-flex-end">
+        <button class="sb-btn sb-btn-normal sb-btn-secondary sb-btn-download my-16 relative9" (click)=getCourseReportsDataCsv();>Download CSV</button>
+      </div>
+
+      <div class="sb-table-responsive-div table-responsive relative9">
+        <div class="sb-table-container">
+          <table class="sb-table sb-table-striped sb-table-sortable sb-table-fixed sb-table-course-dashboard">
+            <thead>
+              <tr>
+                <th class="w-20">Course Name</th>
+                <th class="w-20">Course ID</th>
+                <th class="w-20">Batch Name</th>
+                <th class="">Batch Id</th>
+                <th class="">Lesson Count</th>
+                <th class="">Users Enrolled</th>
+                <th class="">Users Completed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of courseBatchesData  | paginate: { itemsPerPage: paginateLimit, currentPage: p } let i = index ">
+                <td data-label="Name">{{data.name}}</td>
+                <td data-label="Identifier">{{data.identifier}}</td>
+                <td data-label="BatchName">{{data.batchName}}</td>
+                <td data-label="BatchId">{{data.batchId}}</td>
+                <td data-label="LessonCount">{{'0'}}</td>
+                <td data-label="TotalEnrolled">{{data.totalEnrolled}}</td>
+                <td data-label="TotalCompleted">{{data.totalCompleted}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex my-24 flex-jc-flex-end">
+            <pagination-controls (pageChange)="p = $event" *ngIf="courseBatchesData">
+            </pagination-controls>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

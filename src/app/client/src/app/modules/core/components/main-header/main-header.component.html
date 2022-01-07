@@ -397,13 +397,21 @@
           </li>
 
           <li class="list-item" tabindex="0" role="link" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
-            appPermission [permission]='adminDashboard' (click)="toggleSideMenu(false)"
-            [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
-            <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
-              </svg></i>
-            {{resourceService.frmelmnts?.lnk?.dashboard}}
-          </li>
+          appPermission [permission]='adminDashboard' (click)="toggleSideMenu(false)"
+          [routerLink]="'dashBoard/course-summary'">
+          <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
+            </svg></i>
+          Course Admin Dashboard
+        </li>
+        <li class="list-item" tabindex="0" role="link" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
+        appPermission [permission]='adminDashboard' (click)="toggleSideMenu(false)"
+        [routerLink]="'dashBoard/event-summary'">
+        <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
+            <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
+          </svg></i>
+          Event Admin Dashboard
+      </li>
           <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false)"
             *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission [permission]='orgSetupRole'
             routerLink="org/orgType">
