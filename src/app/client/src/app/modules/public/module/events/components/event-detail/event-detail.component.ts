@@ -6,6 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { FrameworkService, UserService } from '@sunbird/core';
 import {ToasterService, LayoutService, COLUMN_TYPE}from '@sunbird/shared';
+import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
+import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
+
 @Component({
   selector: 'app-event-detail',
   templateUrl: './event-detail.component.html',
@@ -24,6 +27,9 @@ export class EventDetailComponent implements OnInit {
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
   batchId: any;
+  public subscription$;
+  public unsubscribe = new Subject<void>();
+
   constructor(private eventDetailService: EventDetailService ,
     private activatedRoute : ActivatedRoute,
     private eventService: EventService ,
@@ -32,7 +38,6 @@ export class EventDetailComponent implements OnInit {
     public layoutService: LayoutService,
     public router: Router
    ) { }
-
 
   showEventDetailPage(identifier) {
     this.eventDetailService.getEvent(identifier).subscribe((data: any) => {
@@ -74,6 +79,13 @@ setEventConfig() {
 private initConfiguration() {
   this.layoutConfiguration = this.layoutService.initlayoutConfig();
   this.redoLayout();
+  this.layoutService.switchableLayout().
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
 }
 
 redoLayout() {

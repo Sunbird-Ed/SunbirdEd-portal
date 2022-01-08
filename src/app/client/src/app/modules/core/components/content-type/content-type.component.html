@@ -50,7 +50,7 @@
         {{getTitle(contentType)}}
       </a>
     </ng-container>
-     <!-- @TODO - This menu need to config in form-read api  
+     <!-- @TODO - This menu need to config in form-read api
     https://staging-sunbird.nsdl.co.in/api/data/v1/form/read
     {
       "request": {
@@ -61,13 +61,13 @@
       }
     }
     -->
-    <div>
-      <a class="item item--event" 
-        *ngIf='!isDesktopApp' 
-        tabindex="0" 
+    <div *ngIf="userIsLogin">
+      <a class="item item--event"
+        *ngIf='!isDesktopApp'
+        tabindex="0"
         [ngClass]="{'active': selectedContentType === 'events'}"
         (click)="navigateToEventPage()">
-          <span class="sb-icon sb-icon--sm mr-8 sb-icon__all" 
+          <span class="sb-icon sb-icon--sm mr-8 sb-icon__all"
                 ng-reflect-ng-class="sb-icon sb-icon--sm mr-8 sb-ic">
           </span>
 			    Events

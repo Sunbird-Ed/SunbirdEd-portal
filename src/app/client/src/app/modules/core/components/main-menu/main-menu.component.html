@@ -8,7 +8,7 @@
 
   <!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
-		<a class="item py-8 pl-0 pr-24" tabindex="0" (click)="navigateToEventPage()">
+		<a class="item item--event py-8 pl-0 pr-24" tabindex="0" [class.active]="router.isActive('/explore-events')"  (click)="navigateToEventPage()">
 			<p> Events</p>
 		</a>
 		<!-- <a class="item py-8 pl-0 pr-24" tabindex="0" [routerLink]="[navigateToEventPage()]">
@@ -64,9 +64,9 @@
 				</div>
 			</div>
 			<div class="ui divider mt-0"></div>
-			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" 
+			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)"
 			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
+			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
 				(click)="showSideBar()" tabindex="0" routerLink="/profile">
@@ -93,7 +93,7 @@
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
 			<a class="item"
-				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"				
+				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"
 				[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.resources}}
@@ -104,7 +104,7 @@
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
+			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)"
 			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 
@@ -176,7 +176,7 @@
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
 			<a class="item"
-				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"				
+				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"
 				[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.resources}}
@@ -187,15 +187,15 @@
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
+			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)"
 			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
-			
+
 			</ng-container>
 		<!--/Not Logged in user-->
 	</div>
 </div>
 <!--/Mobile-->
 
-	
+
 </ng-container>

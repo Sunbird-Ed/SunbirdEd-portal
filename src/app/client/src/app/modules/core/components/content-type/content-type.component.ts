@@ -24,6 +24,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   subscription: any;
   userType: any;
   returnTo: string;
+  userIsLogin: any;
+
   constructor(
     public formService: FormService,
     public resourceService: ResourceService,
@@ -51,6 +53,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.updateSelectedContentType(data);
       });
+    this.userIsLogin = this.userService.loggedIn;
+
+    // console.log('userIsLogin - ', this.userIsLogin);
   }
 
 
