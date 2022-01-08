@@ -8,9 +8,9 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui-v9';
-// import { PublicCourseConsumptionPageComponent,
-// ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from '../course/components';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule,
+  SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiRatingModule,
+   SuiCollapseModule } from 'ng2-semantic-ui-v9';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
@@ -47,9 +47,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [
-    //  PublicCourseConsumptionPageComponent, ExploreCourseComponent,
-    // PublicCoursePlayerComponent, PublicBatchDetailsComponent,
-     EventViewTypeComponent, EventDetailComponent, EventReportComponent, DetailedUserReportComponent]
+     EventViewTypeComponent, EventDetailComponent, 
+     EventReportComponent, DetailedUserReportComponent]
 })
 export class EventsModule { 
 }
