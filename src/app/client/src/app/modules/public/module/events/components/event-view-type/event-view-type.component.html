@@ -97,7 +97,7 @@
       <!-- <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter> -->
       <!-- <lib-event-calender *ngIf="events.length > 0" [events]='events'></lib-event-calender> -->
       <div *ngIf="events?.length > 0 && events != 'undefined'" class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12" >
-        <lib-event-calender *ngIf="events.length > 0" [events]='events'></lib-event-calender>
+        <lib-event-calender *ngIf="events.length > 0" [events]='events' [layoutConfig]="layoutConfiguration"></lib-event-calender>
     </div>
       <br><br><br>
     <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12" *ngIf="EventCount === 0">

@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
-    EventViewTypeComponent, EventDetailComponent,EventReportComponent, DetailedUserReportComponent
+    EventViewTypeComponent, EventDetailComponent,EventReportComponent
 } from './components';
+import { DetailedUserReportComponent } from './components/detailed-user-report/detailed-user-report.component'
+
 // import { ViewAllComponent } from '@sunbird/content-search';
 const routes: Routes = [
   {

@@ -1,7 +1,9 @@
 
 <div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
+    <!-- <div class="sb-g"
+      [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'"> -->
     <div class="sb-g"
-      [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'">
+      [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'ui container mt-24'">
         <div class="relative9">
             <div class="ui container py-8">
             <button
@@ -17,8 +19,8 @@
             </button>
             </div>
         </div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
-        <!-- <div 
+      <!-- <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
+        <div 
         [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'ui container mt-24'">  -->
         <lib-event
                 [libEventConfig]="libEventConfig">
@@ -45,6 +47,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        <!-- </div>
+        </div> -->
     </div>
 </div>
