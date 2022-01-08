@@ -19,7 +19,7 @@
   color: var(--primary-color);
   outline: none;
 }
-.ui.menu {  
+.ui.menu {
   &.text {
     .item {
       color: var(--gray-400);
@@ -80,4 +80,9 @@
   border-color: var(--red-100) transparent var(--red-100) var(--red-100);
   position: absolute;
   right: -.625rem;
+}
+
+.ui.text.menu .active.item--event {
+  outline: none;
+  color: var(--sb-linkmenu-active-text) !important;
 }

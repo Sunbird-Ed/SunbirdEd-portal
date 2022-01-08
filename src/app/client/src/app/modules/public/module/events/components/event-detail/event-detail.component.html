@@ -6,7 +6,7 @@
     </lib-event>
 
     <!-- <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12"> -->
-    <div class="ui container">  
+    <div class="ui container">
       <div class="relative9">
         <div class="ui container py-8">
           <button
@@ -37,6 +37,7 @@
 
       <sb-advance-event-detail
         *ngIf="eventItem"
+        [layoutConfig]="layoutConfiguration"
         (eventDetailData)="navToEventDetail($event)"
         [eventDetailItem]="eventItem">
       </sb-advance-event-detail>
