@@ -1,0 +1,51 @@
+
+<div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'']">
+    <div class="sb-g"
+      [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'">
+        <div class="relative9">
+            <div class="ui container py-8">
+            <button
+                type="button"
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+                tabindex="0"
+                (click)="navigateToEventPage()">
+                <i class="icon-svg icon-svg--xxs icon-back mr-4">
+                    <svg class="icon icon-svg--primary">
+                    <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
+                    </svg>
+                </i> Back
+            </button>
+            </div>
+        </div>
+        <!-- <div 
+        [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'ui container mt-24'">  -->
+        
+      <div class="sb-g-col-xs-12 sb-g-col-md-0 sb-g-col-lg-12 sb-g-col-xxxl-12">
+            <lib-event
+                [libEventConfig]="libEventConfig">
+            </lib-event>
+<lib-user-detailed-attendance *ngIf ="userEnrollEventDetails"
+ [userEnrollEventDetails] ="userEnrollEventDetails"
+ [paginateLimit]= "paginateLimit"
+ [eventDetailItem]="eventItem" 
+></lib-user-detailed-attendance>
+<div *ngIf="!userEnrollEventDetails">
+    <div class="no-content-container d-flex flex-jc-center relative9">
+        <div class="my-48 p-16 w-100">
+        <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+            <div>
+            <img alt="{{title}}" src="./assets/images/group.svg" width="90px" height="90px">
+            </div>
+            <div tabindex="0" class="fmedium board-title pt-24 font-weight-bold">No Data Found</div>
+            <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
+            <div tabindex="0" *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
+            <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
+            Explore more content
+            </button>
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
