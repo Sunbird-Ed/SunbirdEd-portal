@@ -8,7 +8,7 @@
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
             </svg></i>
         </button>
-        <h4 class="text-capitalize" *ngIf="!showingResults">Add user roles</h4>
+        <h4 class="text-capitalize" *ngIf="!showingResults">{{resourceService?.frmelmnts?.scttl?.userrole1}}</h4>
         <div class="add-adminrole__header my-16 ml-16 d-flex" *ngIf="showingResults">Showing results for <b>"{{userObj.userName}}"</b></div>
       </div>
     </div>
@@ -151,7 +151,7 @@
           <div class="sb-modal-actions">
             <button [disabled]="!enableSubmitBtn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"
-              (click)="onSubmitForm()" tabindex="0" class="sb-btn sb-btn-normal"
+              (click)="dismissRoleAssign()" tabindex="0" class="sb-btn sb-btn-normal"
               [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
               {{resourceService.frmelmnts?.btn?.cancel}}
             </button>
