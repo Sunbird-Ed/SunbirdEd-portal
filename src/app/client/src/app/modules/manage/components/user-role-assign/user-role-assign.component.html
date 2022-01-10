@@ -151,7 +151,7 @@
           <div class="sb-modal-actions">
             <button [disabled]="!enableSubmitBtn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"
-              (click)="onSubmitForm()" tabindex="0" class="sb-btn sb-btn-normal"
+              (click)="dismissRoleAssign()" tabindex="0" class="sb-btn sb-btn-normal"
               [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
               {{resourceService.frmelmnts?.btn?.cancel}}
             </button>
