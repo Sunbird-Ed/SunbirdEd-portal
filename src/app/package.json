@@ -18,7 +18,7 @@
     "node-mocks-http": "1.8.1",
     "nyc": "14.1.1",
     "path": "0.12.7",
-    "sinon": "4.5.0",
+    "sinon": "4.5.1",
     "webpack-bundle-analyzer": "^3.7.0"
   },
   "engines": {
