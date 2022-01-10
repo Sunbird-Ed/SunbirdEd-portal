@@ -389,7 +389,7 @@ const API_LIST = {
       }
     },
 
-    '/learner/event/v1/summary': {
+    '/learner/course/event/v1/summary': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN],
       OWNER_CHECK: {
