@@ -628,7 +628,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         const telemetryData = {
             cdata: [{
                 type: 'Section',
-                id: sectionName.includes('NCERT') ? 'NCERT' : sectionName
+                id: (sectionName && sectionName.includes('NCERT')) ? 'NCERT' : sectionName
             }],
             edata: {
                 id: 'content-card',
@@ -924,7 +924,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         const telemetryData = {
             cdata: [{
                 type: 'Section',
-                id: event.name.includes('NCERT') ? 'NCERT' : event.name
+                id: (event && event.name && event.name.includes('NCERT')) ? 'NCERT' : event.name
             }],
             edata: {
                 id: 'view-all'
