@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import * as  myEventFilter from './event-view-type.component-filterdata';
-import * as  MyCalendarList  from '../../interface/MyCalendarList';
 import {EventListService, EventFilterService} from 'ngtek-event-library';
 import { EventCreateService } from 'ngtek-event-library';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +6,6 @@ import * as _ from 'lodash-es';
 import { FrameworkService, UserService } from '@sunbird/core';
 import {CalendarEvent} from 'angular-calendar';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
-import * as MyEventLFilter from '../../interface/MyEventLFilter';
 import {ToasterService,LayoutService, COLUMN_TYPE}from '@sunbird/shared';
 import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
@@ -82,13 +79,9 @@ export class EventViewTypeComponent implements OnInit {
 
   ngOnInit() {
     this.initLayout();
-    // this.eventtype();
     this.showMyEventListPage();
-    // console.log('showMyEventListPage');
     this.showEventListPage();
-// console.log('eventList - ', this.eventList);
     this.showFilters();
-    // this.showCalenderEvent(MyCalendarList);
     this.showCalenderEvent();
     this.setEventConfig();
   }
@@ -109,23 +102,16 @@ export class EventViewTypeComponent implements OnInit {
       if (this.layoutConfiguration != null) {
         // Joyful Theme
         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-        // console.log('296 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
-        // console.log('296 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
-
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);     
       } else {
           // Classic Theme
           this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
           this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-          // console.log('302 FIRST_PANEL_LAYOUT - ', this.FIRST_PANEL_LAYOUT);
-          // console.log('302 SECOND_PANEL_LAYOUT - ', this.SECOND_PANEL_LAYOUT);
-
       }
   }
 
   public getPageData(input) {
     const contentTypes = _.sortBy(this.formData, 'index');
-    // this.defaultTab = _.find(contentTypes, ['default', true]);
     return find(this.formData, data => data.contentType === input);
   }
 
@@ -140,8 +126,6 @@ export class EventViewTypeComponent implements OnInit {
       };
 
       this.eventListService.getEventList(this.Filterdata).subscribe((data:any)=>{
-      // console.log("listdata = ", data);
-
       this.EventCount= data.result?.count;
       this.eventListCount= data.result.count;
       this.eventList = data.result?.Event;
@@ -150,10 +134,6 @@ export class EventViewTypeComponent implements OnInit {
         var array = JSON.parse("[" + item.venue + "]");
         this.eventList[index].venue = array[0].name;
       });
-
-
-
-      console.log("listdata = ",  this.eventList, "--------------", data['result']?.Event);
       this.isLoading = false;
 
     },
@@ -189,14 +169,15 @@ export class EventViewTypeComponent implements OnInit {
 
     })
   }
+       // JavaScript to illustrate filter() method
+  isNotDraft( value ) {
+  return (value.code !=="eventStatus");
+}
 
   showFilters() {
-    // this.filterConfig = myEventFilter.myEventFilter.result.form.data.fields;
-    this.eventListService.getFilterFormConfig().subscribe((data: any) => {
-      this.filterConfig = data.result['form'].data.fields;
+      this.eventListService.getFilterFormConfig().subscribe((data: any) => {    
+      this.filterConfig = data.result['form'].data.fields.filter( this.isNotDraft );
       this.isLoading = false;
-
-      // console.log('eventfilters = ',data.result['form'].data.fields);
     },
     (err: any) => {
       console.log('err = ', err);
@@ -204,7 +185,6 @@ export class EventViewTypeComponent implements OnInit {
   }
 
   eventtype($event){
-    // console.log($event);
 
     if($event.data.text=='ListView'){
       this.tab = 'list';
@@ -214,11 +194,7 @@ export class EventViewTypeComponent implements OnInit {
   }
 
   setEventConfig() {
-    // console.log("userId: userService.userProfile.userId ", this.userService.userProfile);
-    // console.log("userId: userService.userProfile.userId ", this.userService);
-    // tslint:disable-next-line:max-line-length
-    // const additionalCategories = _.merge(this.frameworkService['_channelData'].contentAdditionalCategories, this.frameworkService['_channelData'].collectionAdditionalCategories) || this.config.appConfig.WORKSPACE.primaryCategory;
-    this.libEventConfig = {
+      this.libEventConfig = {
       context: {
         user:this.userService.userProfile,
         identifier: '',
@@ -319,9 +295,7 @@ export class EventViewTypeComponent implements OnInit {
    this.tab == "list" ? this.isLoading = true : this.isLoading = false;
 
    this.eventListService.getEventList(this.Filterdata,this.query).subscribe((data) => {
-   // console.log("listdata-filter = ", data);
-
-     if (data.responseCode == "OK") {
+    if (data.responseCode == "OK") {
         this.isLoading=false;
         this.EventCount= data.result.count;
         this.eventList = data.result.Event;
@@ -395,8 +369,6 @@ export class EventViewTypeComponent implements OnInit {
      this.eventListService.getMyEventList(this.userService.userid).subscribe((data:any)=>{
 
        let  eventsList=  data.result.courses;
-       console.log('My Events eventsList : ', eventsList);
-
        Array.prototype.forEach.call(data.result.courses, child => {
          eventIds.push(child.courseId);
        });
@@ -419,7 +391,6 @@ export class EventViewTypeComponent implements OnInit {
                 this.myEvents[index].venue = array[0].name;
                });
 
-              //  console.log('My Events this.myEvents : ', this.myEvents);
              }
            }, (err) => {
              this.isLoading=false;

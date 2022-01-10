@@ -6,6 +6,7 @@ import { FrameworkService, UserService } from '@sunbird/core';
 import {ToasterService,LayoutService, COLUMN_TYPE}from '@sunbird/shared';
 import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
 import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-event-report',
@@ -33,6 +34,7 @@ export class EventReportComponent implements OnInit {
     private router: Router,
     public userService: UserService,
     public layoutService: LayoutService,
+    public location:Location,
     private eventDetailService: EventDetailService) { }
 
   ngOnInit(): void {
@@ -117,9 +119,13 @@ export class EventReportComponent implements OnInit {
 
     return datestr;
   }
-  navigateToEventPage(){
-     this.router.navigate(['/explore-events/published']);
-  }
+   navigateToEventPage(){
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/explore-events/published']);
+    }
+ }
   getEnrollEventUsersData(list){
     this.attendanceList.forEach(item => {
       console.log("getAttendanceList Details : ", item);
