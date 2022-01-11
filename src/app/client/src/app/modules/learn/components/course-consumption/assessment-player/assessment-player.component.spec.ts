@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
@@ -15,7 +15,7 @@ import {
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
@@ -79,7 +79,14 @@ describe('AssessmentPlayerComponent', () => {
         NotificationServiceImpl, CourseProgressService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
-        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService },
+        {
+          provide: Router,
+          useValue: {
+            events: new BehaviorSubject(new NavigationStart(1, null)),
+            navigate: jasmine.createSpy()
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -720,4 +727,20 @@ describe('AssessmentPlayerComponent', () => {
     component.layoutConfiguration = {};
     component.layoutConfiguration = null;
   });
+  it('should show content rating popup if the mimeType is h5p', done => {
+    component.playerConfig = {
+      metadata: {
+        mimeType: 'application/vnd.ekstep.h5p-archive'
+      }
+    };
+    component.activeContent = {
+      mimeType: 'application/vnd.ekstep.h5p-archive'
+    };
+
+    expect(component.contentRatingModal).toBeFalsy();
+    component.routerEventsChangeHandler().subscribe(event => {
+      expect(component.contentRatingModal).toBeTruthy();
+      done();
+    })
+  })
 });

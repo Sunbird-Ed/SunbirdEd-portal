@@ -10,7 +10,7 @@ import { ConfigService, ResourceService, ToasterService, NavigationHelperService
   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { first, map, takeUntil } from 'rxjs/operators';
+import { first, map, takeUntil, tap } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
@@ -166,7 +166,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     });
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.getLanguageChangeEvent();
-    this.routerEventsChangeHandler();
+    this.routerEventsChangeHandler().subscribe();
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -877,18 +877,18 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
   }
   routerEventsChangeHandler() {
-    this.router.events
+    return this.router.events
       .pipe(
-        takeUntil(this.unsubscribe)
-      )
-      .subscribe(event => {
-        if (event instanceof NavigationStart) {
-          const isH5pContent = [_.get(this.playerConfig, 'metadata.mimeType'), _.get(this.activeContent, 'mimeType')].every(mimeType => mimeType === 'application/vnd.ekstep.h5p-archive');
-          if(isH5pContent) {
-            this.contentRatingModal = true;
+        takeUntil(this.unsubscribe),
+        tap(event => {
+          if (event instanceof NavigationStart) {
+            const isH5pContent = [_.get(this.playerConfig, 'metadata.mimeType'), _.get(this.activeContent, 'mimeType')].every(mimeType => mimeType === 'application/vnd.ekstep.h5p-archive');
+            if (isH5pContent) {
+              this.contentRatingModal = true;
+            }
           }
-        }
-      })
+        })
+      )
   }
 
 }
