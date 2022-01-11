@@ -284,7 +284,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.description = data.description ? data.description : this.description,
       requestData.createdBy = this.userService.userProfile.id,
       requestData.organisation = _.uniq(this.userService.orgNames),
-      requestData.createdFor = this.userService.userProfile.organisationIds;
+      requestData.createdFor = this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [];
     if (this.framework) {
       requestData.framework = this.framework;
     }
@@ -597,7 +597,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           primaryCategory: 'Practice Question Set',
           createdBy: this.userService.userProfile.id,
           // organisation: _.uniq(this.userService.orgNames),
-          createdFor: this.userService.userProfile.organisationIds,
+          createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],
           framework: this.framework,
           // creator: name,
           code: UUID.UUID()
