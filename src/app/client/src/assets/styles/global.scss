@@ -1241,6 +1241,10 @@ html[layout='joy'] {
       margin-bottom: calculateRem(8px);
     }
   }
+
+  .sb--card__img.sb--card__image-pos {
+    z-index: unset;
+  }
 }
 
 html[data-theme=Darkmode][layout='old'] {
@@ -1482,4 +1486,7 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   background-color: var(--gray-800);
   display: inline-block;
   margin: 0px 0.5rem;
+}
+.startpage__instruction .startpage__instr-desc p.text-right {
+    padding-right: 8px !important;
 }

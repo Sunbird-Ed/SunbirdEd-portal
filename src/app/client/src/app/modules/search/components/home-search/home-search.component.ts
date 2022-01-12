@@ -100,7 +100,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.initFilters = true;
     this.initLayout();
-    combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent).pipe(first()).
+    combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent).
       subscribe((data: Array<any>) => {
         this.enrolledSection = data[0];
         this.dataDrivenFilters = data[1];
@@ -570,8 +570,9 @@ public viewAll(event) {
      const searchQueryParams: any = {};
     searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });
     searchQueryParams['exists'] = undefined;
-    searchQueryParams['primaryCategory'] = this.queryParams.primaryCategory ? this.queryParams.primaryCategory : [event.name];
-    this.queryParams.primaryCategory ? (searchQueryParams['subject'] = [event.name]) :
+    searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length)
+     ? this.queryParams.primaryCategory : [event.name];
+     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
     (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
     searchQueryParams['selectedTab'] = 'all';
     searchQueryParams['visibility'] = [];

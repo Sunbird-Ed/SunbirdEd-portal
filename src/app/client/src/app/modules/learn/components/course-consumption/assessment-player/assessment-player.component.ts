@@ -76,6 +76,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   navigationObj: { event: any; id: any; };
   showPlayer = false;
   showQSExitConfirmation = false;
+  isStatusChange = false;
 
   @HostListener('window:beforeunload')
   canDeactivate() {
@@ -184,6 +185,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook')) {
       paramas['textbook'] = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
+    }
+    if (!this.isCourseCompleted) {
+      this.isStatusChange = true;
     }
     setTimeout(() => {
       if (this.batchId) {
@@ -334,7 +338,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       return this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessMaxAttempt'));
     } else if (_.get(event, 'event.isLastAttempt') && !this._routerStateContentStatus) {
       this.showLastAttemptsModal = true;
-    } else {
+    } else if (_.get(this.navigationObj, 'event.data') && this.navigationObj?.event?.data?.identifier !== this.activeContent?.identifier) {
       this.onTocCardClick();
     }
   }
@@ -342,13 +346,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   onTocCardClick() {
     this.showPlayer = false;
     this.previousContent = _.cloneDeep(this.activeContent);
-    /* istanbul ignore else */
-    if (_.get(this.navigationObj, 'event.data')) {
-      this.activeContent = this.navigationObj.event.data;
-      this.initPlayer(_.get(this.activeContent, 'identifier'));
-      this.highlightContent();
-      this.logTelemetry(this.navigationObj.id, this.navigationObj.event.data);
-    }
+    this.activeContent = this.navigationObj.event.data;
+    this.initPlayer(_.get(this.activeContent, 'identifier'));
+    this.highlightContent();
+    this.logTelemetry(this.navigationObj.id, this.navigationObj.event.data);
   }
 
   private getContentState() {
@@ -387,7 +388,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     const telObject = _.get(event, 'detail.telemetryData');
     const eid = _.get(telObject, 'eid');
-    const isMimeTypeH5P = _.get(this.lastActiveContentBeforeModuleChange, 'mimeType') === "application/vnd.ekstep.h5p-archive";
+    const isMimeTypeH5P = _.get(this.activeContent, 'mimeType') === "application/vnd.ekstep.h5p-archive";
 
     /* istanbul ignore else */
     if (eid === 'END' && !isMimeTypeH5P && !this.validEndEvent(event)) {
@@ -398,12 +399,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100) ? 2 : 1,
-      progress: this.courseProgress
+      status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100
+      && !this.isStatusChange) ? 2 : 1,
+      progress: (this.courseProgress && !this.isStatusChange) ? this.courseProgress : undefined
     };
 
-    // Set status to 2 if mime type is application/vnd.ekstep.h5p-archive and EID is END
-    if (eid === 'END' && isMimeTypeH5P && request.contentId == _.get(this.lastActiveContentBeforeModuleChange, 'identifier')) {
+    // Set status to 2 if mime type is application/vnd.ekstep.h5p-archive
+    if (isMimeTypeH5P) {
       request['status'] = 2;
     }
 

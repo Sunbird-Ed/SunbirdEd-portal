@@ -195,6 +195,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.isUserLoggedIn()) {
                     this.prepareVisits([]);
                 }
+                if (params.board[0] === 'CBSE') {
+                    params.board[0] = 'CBSE/NCERT';
+                }
                 this.queryParams = { ...params, ...queryParams };
             }));
     }
@@ -363,6 +366,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
         this.showLoader = true;
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
+        if (this.selectedFilters['board'][0] === 'CBSE/NCERT') {
+            this.selectedFilters['board'][0] = 'CBSE';
+        }
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
             const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
@@ -628,8 +634,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public playContent(event, sectionName?) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: sectionName
+                type: 'Section',
+                id: (sectionName && sectionName.includes('NCERT')) ? 'NCERT' : sectionName
             }],
             edata: {
                 id: 'content-card',
@@ -924,8 +930,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     logViewAllTelemetry(event) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: event.name
+                type: 'Section',
+                id: (event && event.name && event.name.includes('NCERT')) ? 'NCERT' : event.name
             }],
             edata: {
                 id: 'view-all'
@@ -976,19 +982,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     let sectionName;
     switch (_.toLower(selectedTab)) {
       case 'textbook': {
-        sectionName = _.get(this.resourceService, 'tbk.trk.frmelmnts.lbl.mytrainings');
+        sectionName = 'tbk.trk.frmelmnts.lbl.mytrainings';
         break;
       }
       case 'course': {
-        sectionName = _.get(this.resourceService, 'crs.trk.frmelmnts.lbl.mytrainings');
+        sectionName = 'crs.trk.frmelmnts.lbl.mytrainings';
         break;
       }
-      case 'tvProgram': {
-        sectionName = _.get(this.resourceService, 'tvc.trk.frmelmnts.lbl.mytrainings');
+      case 'tvprogram': {
+        sectionName = 'tvc.trk.frmelmnts.lbl.mytrainings';
         break;
       }
       default: {
-        sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections');
+        sectionName = 'frmelmnts.lbl.myEnrolledCollections';
       }
     }
     return sectionName;
