@@ -549,7 +549,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     forkJoin(requests).subscribe(results => {
-      this.disableSubmitBtn = false;
+      // this.disableSubmitBtn = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0034);
       this.reload();
       this.checkIssueCertificate(this.batchId, this.batchDetails);
