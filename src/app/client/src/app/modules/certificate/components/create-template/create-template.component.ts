@@ -242,8 +242,13 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     const stateLogos = this.svgData.getElementsByClassName(this.classNames.STATE_LOGOS);
     const digitalSigns = this.classNames.SIGN_LOGO.map(id => this.svgData.getElementById(id));
     // this.updateTitles();
-    // this.updateStateLogos(stateLogos);
-    // this.updateSigns(digitalSigns);
+    this.updateStateLogos(stateLogos);
+    this.updateSigns(digitalSigns);
+  }
+
+  previewUpdatedSVGCertificate() {
+    this.svgData = this.convertHtml(this.sanitizeHTML(document.getElementById('templateSvg').innerHTML));
+    this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
   }
 
   updateTitles() {
@@ -420,10 +425,7 @@ urltoFile(url, filename, mimeType) {
 
   saveUpdatedCertificate() {
     this.save.next('');
-    console.log('--- ', document.getElementById('templateSvg').innerHTML); // TODO: log!
-    this.svgData = this.convertHtml(document.getElementById('templateSvg').innerHTML);
-    console.log('svgData ', this.svgData); // TODO: log!
-    this.certificateCreation(document.getElementById('templateSvg'));
+    this.previewUpdatedSVGCertificate();
     setTimeout(() => {
       const channel = this.userService.channel;
       const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
