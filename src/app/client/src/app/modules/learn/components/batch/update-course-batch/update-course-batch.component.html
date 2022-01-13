@@ -194,6 +194,7 @@
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary"
       [ngClass]="{'sb-btn-disabled': disableSubmitBtn || showFormInViewMode}" appTelemetryInteract
+      [disabled]="disableSubmitBtn || showFormInViewMode"
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateBatchInteractEdata"
       [telemetryInteractCdata]="telemetryCdata" tabindex="0" tabindex="0" (click)="updateBatch()">
       {{resourceService?.frmelmnts?.btn?.update}}

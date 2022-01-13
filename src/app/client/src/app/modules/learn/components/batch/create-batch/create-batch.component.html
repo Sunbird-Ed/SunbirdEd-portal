@@ -174,7 +174,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" [ngClass]="{'sb-btn-disabled': !createBatchForm.valid || disableSubmitBtn}"
-      id="submitbutton" (click)="disableSubmitBtn=true;createBatch()" appTelemetryInteract
+      id="submitbutton" [disabled]="!createBatchForm.valid || disableSubmitBtn" (click)="disableSubmitBtn=true;createBatch()" appTelemetryInteract
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createBatchInteractEdata"
       [telemetryInteractCdata]="telemetryCdata">
       {{resourceService?.frmelmnts?.btn?.create}}
