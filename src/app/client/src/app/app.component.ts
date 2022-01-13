@@ -223,7 +223,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setTheme() {
     const themeColour = localStorage.getItem('layoutColour') || 'Default';
-    this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
+    if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
+      this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
+    }
     this.setSelectedThemeColour(themeColour);
     document.documentElement.setAttribute('data-theme', themeColour);
     this.layoutService.setLayoutConfig(this.layoutConfiguration);
