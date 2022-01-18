@@ -448,13 +448,14 @@ describe('SignUpComponent', () => {
       target: {
         value: currentYear - 20
       }
-    }
+    };
+    const expectedYr = String(currentYear - 20);
     component.ngOnInit();
     component.isIOSDevice = true;
     component.changeBirthYear(obj);
     const email = component.signUpForm.controls['email'];
     email.setValue('User2010@gmail.com');
-    expect(component.yearOfBirth).toEqual('2001');
+    expect(component.yearOfBirth).toEqual(expectedYr);
     expect(component.isMinor).toBe(false);
   });
 

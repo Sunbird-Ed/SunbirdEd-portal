@@ -164,13 +164,14 @@
                           <span>{{table?.name}}</span>
                         </ng-template>
                         <ng-template matTabContent>
-                          <ng-container *ngTemplateOutlet="commonReportActions">
-                          </ng-container>
+
                           <div *ngIf="table.data && table.config">
                             <app-sb-table [config]="table.config" [rowsData]="table.data">
                             </app-sb-table>
                           </div>
                           <div *ngIf="table.data && !table.config">
+                            <ng-container  *ngTemplateOutlet="commonReportActions">
+                            </ng-container>
                             <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
                             </app-data-table>
                           </div>
@@ -324,12 +325,12 @@
   <div class="d-flex my-0" *ngIf="!hideElements">
     <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
       <h4 class="select-filter-label"
-        *ngIf="showExportsOption && reportData?.reportMetaData?.filters"> {{
+        *ngIf="showExportsOption && reportData?.reportMetaData?.filters && showResetFilter"> {{
         resourceService?.frmelmnts?.lbl?.selectFilters }} <small> {{
           resourceService?.frmelmnts?.lbl?.selectFilterDescription }} </small> </h4>
     </div>
     <div class="d-flex flex-ai-center flex-jc-flex-end pr-10"
-      *ngIf="reportData?.reportMetaData?.filters">
+      *ngIf="reportData?.reportMetaData?.filters && showResetFilter">
       <button class="sb-btn sb-btn-normal sb-btn-outline-primary  reset-filter" (click)="resetFilter()" tabindex="0">
         {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters }}
       </button>

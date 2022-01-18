@@ -634,8 +634,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public playContent(event, sectionName?) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: sectionName
+                type: 'Section',
+                id: (sectionName && sectionName.includes('NCERT')) ? 'NCERT' : sectionName
             }],
             edata: {
                 id: 'content-card',
@@ -930,8 +930,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     logViewAllTelemetry(event) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: event.name
+                type: 'Section',
+                id: (event && event.name && event.name.includes('NCERT')) ? 'NCERT' : event.name
             }],
             edata: {
                 id: 'view-all'
