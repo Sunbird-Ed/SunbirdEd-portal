@@ -328,7 +328,7 @@ describe('CertificateConfigurationComponent', () => {
 
     /** Assert */
     component.getCourseDetails('do_123456').subscribe( data => { }, error => {
-      expect(component.getCourseDetails).toEqual(jasmine.objectContaining({}));
+      expect(component.getCourseDetails).toBeTruthy();
     });
   });
 
