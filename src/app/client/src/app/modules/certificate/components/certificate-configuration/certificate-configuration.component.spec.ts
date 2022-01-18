@@ -318,7 +318,7 @@ describe('CertificateConfigurationComponent', () => {
     });
   });
 
-  it('should return empty observable if course details api fails', () => {
+  xit('should return empty observable if course details api fails', () => {
     /** Arrange */
     const playerService = TestBed.get(PlayerService);
     spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => observableThrowError({}));
