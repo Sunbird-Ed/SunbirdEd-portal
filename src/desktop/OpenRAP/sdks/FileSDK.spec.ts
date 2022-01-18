@@ -23,7 +23,6 @@ describe('FileSDK', () => {
       .all([fileSDK.mkdir('test1'), fileSDK.mkdir('test2')])
       .then(() => {
         let stats1 = fs.statSync(fileSDK.getAbsPath('test1'));
-        console.log(fileSDK.getAbsPath('test1'))
         expect(stats1.isDirectory()).to.be.true;
         let stats2 = fs.statSync(fileSDK.getAbsPath('test2'));
         expect(stats2.isDirectory()).to.be.true;
@@ -84,7 +83,6 @@ describe('FileSDK', () => {
     let watcher = fileSDK.watch([Path])
     watcher
       .on('all', (event, path, details) => {
-        console.log('event', event, path)
       })
 
     setTimeout(() => {

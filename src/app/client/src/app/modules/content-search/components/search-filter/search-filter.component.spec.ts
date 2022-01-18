@@ -128,7 +128,6 @@ describe('SearchFilterComponent', () => {
 
                 done();
             }, err => {
-                console.error(err);
                 done();
             });
 

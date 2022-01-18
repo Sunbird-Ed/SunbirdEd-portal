@@ -27,14 +27,12 @@ describe('SystemSDK', () => {
             return systemSDK.getDeviceId();
         }).then(did => { 
           expect(did).to.equal(did1)
-          console.log(`did: ${did}, did1: ${did1}`); 
           done();
         })        
     })
 
     it('should get DeviceID',  (done) => {
         systemSDK.getDeviceId().then(id => {
-            console.log('deviceId: ', id);
             expect(id).to.be.string;
             done();
         }).catch(err => done(err));
