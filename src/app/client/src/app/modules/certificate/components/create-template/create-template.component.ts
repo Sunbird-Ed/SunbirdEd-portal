@@ -61,6 +61,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   queryParams: any;
   mode: any;
   onEdit: Subject<any> = new Subject();
+  refreshEditor: Subject<any> = new Subject();
   togglePreview: Subject<any> = new Subject();
   save: Subject<any> = new Subject();
   showSVGInputModal: boolean = false;
@@ -142,6 +143,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
       const svgFile = res;
       this.logoHtml = this.sanitizeHTML(svgFile);
+      this.refreshEditor.next({});
       this.previewCertificate();
     });
   }
