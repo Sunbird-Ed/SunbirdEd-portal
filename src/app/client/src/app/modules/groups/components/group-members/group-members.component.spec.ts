@@ -110,7 +110,6 @@ describe('GroupMembersComponent', () => {
   it('should create', () => {
     component.groupId = '123';
     const expectedMemberList = members.map(item => { item.isMenu = false; return item; });
-    console.log('expectedMemberList', expectedMemberList);
     component.showKebabMenu = true;
     component.config.showMemberMenu = false;
     document.body.dispatchEvent(new Event('click'));

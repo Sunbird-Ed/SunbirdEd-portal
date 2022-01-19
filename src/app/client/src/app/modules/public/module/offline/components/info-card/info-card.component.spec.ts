@@ -66,8 +66,6 @@ describe('InfoCardComponent', () => {
     component.isConnected = true;
     component.ngOnInit();
     const element = fixture.debugElement.query(By.css('.info-container__label.font-weight-bold'));
-    console.log('element', element);
-
   });
 
 });
