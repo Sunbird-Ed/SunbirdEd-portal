@@ -27,7 +27,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showCreateModal = false;
 
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
 
   private courseId: string;
   /**
@@ -195,13 +195,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       tncCheck: new FormControl(false, [Validators.requiredTrue]),
       enableDiscussions: new FormControl('false', [Validators.required])
     });
-    this.createBatchForm.valueChanges.subscribe(val => {
-      if (this.createBatchForm.status === 'VALID') {
-        this.disableSubmitBtn = false;
-      } else {
-        this.disableSubmitBtn = true;
-      }
-    });
   }
   private sortUsers(res) {
     const participantList = [];
@@ -264,7 +257,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         if (participants && participants.length > 0) {
           this.addParticipantToBatch(response.result.batchId, participants);
         } else {
-          // this.disableSubmitBtn = false; // - On success; the button will be still disabled to avoid multiple clicks
           this.toasterService.success(this.resourceService.messages.smsg.m0033);
           this.reload();
           this.checkIssueCertificate(response.result.batchId);
@@ -286,7 +278,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
-        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
         this.checkIssueCertificate(batchId);

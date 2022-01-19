@@ -257,7 +257,6 @@ class RouterStub {
     wrapper.appendChild(stateTitle);
     const wrapper2 = document.createElement('div');
     wrapper2.innerHTML = `<text class="state-title" id="stateTitle" x="420.942785" y="185" xml:space="preserve">AP</text>`;
-    // console.log(wrapper === wrapper2);
     // expect(wrapper.firstChild).toEqual(wrapper2.firstChild);
   });
 

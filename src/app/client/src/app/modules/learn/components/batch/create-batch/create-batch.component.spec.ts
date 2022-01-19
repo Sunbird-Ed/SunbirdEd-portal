@@ -23,6 +23,8 @@ import { of, throwError } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -75,7 +77,7 @@ describe('CreateBatchComponent', () => {
       declarations: [CreateBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
-        HttpClientTestingModule, LearnModule, ReactiveFormsModule],
+        HttpClientTestingModule, LearnModule, ReactiveFormsModule, BrowserAnimationsModule],
       providers: [CourseBatchService, ToasterService, ResourceService, UserService, CourseConsumptionService,
         CourseProgressService, TelemetryService, DiscussionService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
