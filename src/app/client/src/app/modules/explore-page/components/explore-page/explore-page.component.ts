@@ -1124,6 +1124,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
                 this.showorHideBanners();
+                if (window['TagManager']) {
+                    window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
+                }
             }, err => {
                 this.toasterService.warning(this.resourceService.messages.emsg.m0012);
             });
@@ -1134,12 +1137,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this.showorHideBanners();
+                if (window['TagManager']) {
+                    window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
+                }
             }, err => {
                 this.toasterService.warning(_.get(this.resourceService, 'messages.emsg.m0012'));
             });
-        }
-        if (window['TagManager']) {
-            window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
         }
         // this.setUserPreferences();
         // this.fetchContents$.next(this._currentPageData);
