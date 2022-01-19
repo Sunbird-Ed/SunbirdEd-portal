@@ -1455,10 +1455,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.5.0.tgz#948a25ef4301876e76840f9697fa21aa25ebb309"
-  integrity sha512-rMBXaizWgsGatlj6H7s125tp28CnU4st7RAwsdQivjM2LXdVMWRyfQmzU8dPyqZnIZIVYv8UpfYY68SntKAOBQ==
+"@project-sunbird/client-services@4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.5.2.tgz#5c9c9cdcf6fdad9fa7cdc3db94dfd47dac52ea95"
+  integrity sha512-Ml3EMczuPpQBYx02L4/lTFUX3ernR3sX95CUCeE0WdNRIcvUIOW6RXsMEHvHUvJXrADHAXmHINw0OQy737Rnxg==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1471,10 +1471,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.3.tgz#b005e94f77ff1b24d186c3ecc0eb960228242bd5"
   integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
 
-"@project-sunbird/discussions-ui-v8@2.5.0-beta.6":
-  version "2.5.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.6.tgz#9b2d434ae56fc8b2b968d4f11daecad7effa1d6a"
-  integrity sha512-heHV30vkdChS6QMLn4qpRbB4gc9qd0loW4XwNBZiBU7DvfSSvgOYmuulaH7FPIeY8AJ7OsITfJnpZoMTtNjU7A==
+"@project-sunbird/discussions-ui-v8@2.5.0-beta.7":
+  version "2.5.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.5.0-beta.7.tgz#b40d1726bf9fb519d37417d4a77b901038de9c0c"
+  integrity sha512-C64xH3EPfG19m21tfdF3ajBpGzo67vfzrqlUICHDyuYIQzapVo2CbbFdAOMAzODRJNjE+DLt4fclGfVl5JMa8g==
   dependencies:
     tslib "^1.9.0"
 
@@ -1585,10 +1585,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.6":
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.6.tgz#23deeffb0742e429c9249deb53f17797779446ad"
-  integrity sha512-lb3GSUx+moUra2iFddkyzY3V8G8DXxFzo4QFqAkFbNRSsnO0yTLCGODg1KgLdTzktl7g9NlL/Zu3+w282sNrcw==
+"@samagra-x/uci-console@1.2.8":
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.8.tgz#d33b578c33a36dbff7cd4aa1ff8c2815e183a42a"
+  integrity sha512-gFTEqOfoARbAGBJ0G6rC0qEoOUnO8V6C1xIsSrXIcb3R/1hGsmu436QAxtlPmdgnYFRMsuwiK0GLaHFLNTMsCg==
   dependencies:
     tslib "^1.10.0"
 
@@ -1642,10 +1642,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.11.tgz#bd81ac92ec359fd1de0fa99a33c1b9dda9bfdd75"
-  integrity sha512-jhfuqt3KX0BE3Kwg92jpwE+D1chBhA2r2TW24WioJd+63wNkoqxhW4SHFwsF1YTX+fwx8AFElRT9sVp6wNsbog==
+"@shikshalokam/sl-questionnaire@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.12.tgz#342fca9c2c0cdc5121be16cd9fa7ea66febdaa94"
+  integrity sha512-H1qYUlgNP6Sx+/9jrrPi51va8jcNhHjg1fouSkarrcS2z56FoqSvHgyUKk207hY2DvrZNN5OPq2lAR/641/7wQ==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^1.10.0"
