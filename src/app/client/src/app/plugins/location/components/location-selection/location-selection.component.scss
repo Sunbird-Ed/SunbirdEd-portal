@@ -7,13 +7,19 @@
     .sb-textbox {
       font-size: 14px;
     }
+    .caret-down{
+      z-index: 1 !important;
+    }
 
     .list-border {
       padding: 16px !important;
+      overflow-y: auto;
+      position: relative;
     }
 
     ul {
       padding: 0;
+      top: calculateRem(8px);
 
       &[disabled] {
         opacity: initial !important;
