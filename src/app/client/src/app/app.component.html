@@ -85,7 +85,7 @@
     </div>
     <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
       [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
-    <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
+    <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup"
       [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
     
   <app-modal-wrapper [config]="{disableClose: true, size: 'small'}"
