@@ -1490,3 +1490,8 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 .startpage__instruction .startpage__instr-desc p.text-right {
     padding-right: 8px !important;
 }
+[dir="rtl"] {
+  .contentViewerIframeShadow{
+    transform: translate(50%,-50%) !important;
+  }
+}
