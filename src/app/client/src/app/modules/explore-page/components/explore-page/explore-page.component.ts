@@ -87,6 +87,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedTab: any;
     primaryBanner = [];
     secondaryBanner = [];
+    Categorytheme:any;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -594,11 +595,16 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.showTargetedCategory = true;
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
-                            'iconBgColor': 'rgba(255,255,255,1)',
-                            'pillBgColor': 'rgba(255,255,255,1)'
-                        };
-                    } else {
-                        this.showTargetedCategory = false;
+                            "iconBgColor": "rgba(255,255,255,1)",
+                            "pillBgColor": "rgba(255,255,255,1)"
+                        }
+                        this.Categorytheme={
+                            "iconBgColor": "rgba(255,0,0,0)",
+                            "pillBgColor": "rgba(255,0,0,0)"
+                        }
+                    }
+                    else {
+                        this.showTargetedCategory = false
                     }
                 });
              }
@@ -1087,13 +1093,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!event || !event.data || !event.data.length) {
             return;
         }
-        const pillData = event.data[0].value;
-        if (this.isUserLoggedIn()) {
-            if (pillData.name === 'observation') {
-                this.router.navigate(['observation']);
-            }
-        } else {
-            window.location.href = '/resources';
+        let pillData = event.data[0].value;
+        if(_.isEmpty(pillData)){
+            return;
+        }
+        if(this.isUserLoggedIn()) {
+            if(pillData.name === 'observation'){
+                this.router.navigate(['observation']);      
+            } 
         }
     }
 
@@ -1122,6 +1129,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this._addFiltersInTheQueryParams(event);
                 this.showorHideBanners();
+                if (window['TagManager']) {
+                    window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
+                }
             }, err => {
                 this.toasterService.warning(this.resourceService.messages.emsg.m0012);
             });
@@ -1132,12 +1142,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.getFormConfigs();
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
                 this.showorHideBanners();
+                if (window['TagManager']) {
+                    window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
+                }
             }, err => {
                 this.toasterService.warning(_.get(this.resourceService, 'messages.emsg.m0012'));
             });
-        }
-        if (window['TagManager']) {
-            window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
         }
         // this.setUserPreferences();
         // this.fetchContents$.next(this._currentPageData);

@@ -10,6 +10,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CertificateConfigurationComponent, CertificateDetailsComponent, CreateTemplateComponent} from './components';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { BrowseImagePopupComponent } from './components/browse-image-popup/browse-image-popup.component';
+import { SvgEditorModule } from 'ng-svg-editor';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { BrowseImagePopupComponent } from './components/browse-image-popup/brows
     SuiPopupModule,
     ReactiveFormsModule,
     CommonConsumptionModule,
+    SvgEditorModule,
     SharedFeatureModule
   ]
 })

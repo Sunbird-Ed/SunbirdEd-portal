@@ -479,7 +479,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.courseProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     console.log(_.find(playerSummary, ['endpageseen', true]));
     if (_.toLower(contentType) === 'course assessment') {
-      this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ? this.courseProgress : 0;
+      this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ||
+      _.find(playerSummary, ['visitedcontentend', true]) ? this.courseProgress : 0;
     }
     return this.courseProgress;
   }
@@ -744,6 +745,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
             } else if (_.get(res, 'content.length')) {
               this.isCourseCompleted = (res.totalCount === res.completedCount);
+              if (!this.isCourseCompleted && !res.totalCount) {
+                this.isCourseCompleted = res.progress >= 100 ? true : this.isCourseCompleted;
+              }
               this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
               if (this.showCourseCompleteMessage) {
                 this.notificationService.fetchNotificationList();
