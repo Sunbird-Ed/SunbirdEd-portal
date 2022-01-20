@@ -8,12 +8,12 @@ import { ForumComponent } from './components/forum/forum.component';
 import { DiscussionUiModule, DiscussionEventsService } from '@project-sunbird/discussions-ui-v8';
 import { DiscussionTelemetryService } from '../shared/services/discussion-telemetry/discussion-telemetry.service';
 import * as _ from 'lodash-es';
-import { NavigationHelperService } from '@sunbird/shared';
+import { NavigationHelperService, SharedModule } from '@sunbird/shared';
 import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
 import { NavigationEnd, Router } from '@angular/router';
 
 @NgModule({
-  imports: [CommonModule, SuiModalModule, DiscussionUiModule],
+  imports: [CommonModule, SuiModalModule, DiscussionUiModule, SharedModule.forRoot()],
   exports: [DiscussionUiModule, AccessDiscussionComponent],
   declarations: [ForumComponent, AccessDiscussionComponent],
   providers: [DiscussionService],
