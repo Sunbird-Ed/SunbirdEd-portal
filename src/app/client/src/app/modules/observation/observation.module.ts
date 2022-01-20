@@ -19,7 +19,7 @@ import {
 } from './components';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LocationModule } from '../../plugins/location/location.module';
-import {PlayerHelperModule} from '../player-helper'
+import {PlayerHelperModule} from '../player-helper';
 
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent, SubmissionsComponent,

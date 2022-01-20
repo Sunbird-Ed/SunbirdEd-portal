@@ -36,7 +36,7 @@ describe('NotificationServiceImpl', () => {
     it('should return the user feed notifications', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf(notificationData));
       // act
       const resp = await service.fetchNotificationList();
@@ -47,7 +47,7 @@ describe('NotificationServiceImpl', () => {
     it('should return empty array when an error is occured while fetching notificationList', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableThrowError({ message: 'error' }));
       // act
       const resp = await service.fetchNotificationList();
@@ -59,7 +59,7 @@ describe('NotificationServiceImpl', () => {
     it('should return empty array if the getuserfeed does not return array', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf({}));
       // act
       const resp = await service.fetchNotificationList();
@@ -113,7 +113,7 @@ describe('NotificationServiceImpl', () => {
         data: notificationData
       };
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({ message: 'success' }));
@@ -133,7 +133,7 @@ describe('NotificationServiceImpl', () => {
         data: notificationData
       };
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableThrowError({ message: 'error' }));
@@ -151,7 +151,7 @@ describe('NotificationServiceImpl', () => {
     it('should return false if the notification list is empty', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({message: 'success'}));
@@ -165,7 +165,7 @@ describe('NotificationServiceImpl', () => {
     it('should return true when all notifications are deleted', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({message: 'success'}));
@@ -178,7 +178,7 @@ describe('NotificationServiceImpl', () => {
     it('should return true when all notifications are deleted', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-     
+
       const telemertyService = TestBed.get(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableThrowError({ message: 'error' }));
@@ -196,7 +196,7 @@ describe('NotificationServiceImpl', () => {
       const resp = await service.getNavigationPath({data: notificationData});
 
       expect(resp).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90'});
-    })
+    });
 
     it ('should fail call getNavigationPath()', async () => {
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
@@ -204,7 +204,7 @@ describe('NotificationServiceImpl', () => {
       const resp = await service.getNavigationPath({data: {action: {additionalInfo: {}}} });
 
       expect(resp).toEqual({});
-    })
+    });
   });
 
 });

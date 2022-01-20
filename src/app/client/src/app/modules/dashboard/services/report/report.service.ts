@@ -37,12 +37,12 @@ export class ReportService  {
     return this.usageService.getData(filePath).pipe(
       map(configData => {
         return {
-          loaded:true,
+          loaded: true,
           result: _.get(configData, 'result'),
           ...(id && { id })
         };
       })
-      ,catchError(error => of({ loaded:false }))
+      , catchError(error => of({ loaded: false }))
 
     );
   }
@@ -58,7 +58,7 @@ export class ReportService  {
     return forkJoin(...apiCalls).pipe(
       mergeMap(response => {
 
-        response = response.filter(function(item){ if(item ){ return item.loaded = true } });
+        response = response.filter(function(item) { if (item ) { return item.loaded = true; } });
         return this.getFileMetaData(dataSources).pipe(
           map(metadata => {
             return _.map(response, res => {
@@ -190,12 +190,12 @@ export class ReportService  {
           reportData: chartObj.chartData
         };
       }
-      if(chartObj && chartObj.chartData && chartObj.chartData.length > 0){
+      if (chartObj && chartObj.chartData && chartObj.chartData.length > 0) {
         return chartObj;
       }
-    }).filter(function(chartData){
-       if(chartData ){
-          return (chartData['chartData'] != null || chartData['chartData'] != undefined) 
+    }).filter(function(chartData) {
+       if (chartData ) {
+          return (chartData['chartData'] != null || chartData['chartData'] != undefined);
         }
       });
   }
@@ -209,8 +209,8 @@ export class ReportService  {
       tableData.id = tableId;
       tableData.name = _.get(table, 'name') || 'Table';
       tableData.config = _.get(table, 'config') ||  false;
-      if(!tableData.config){
-        tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));   
+      if (!tableData.config) {
+        tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
       } else {
         tableData.data = dataset.data;
       }

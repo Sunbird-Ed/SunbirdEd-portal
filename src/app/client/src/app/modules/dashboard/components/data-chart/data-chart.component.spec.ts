@@ -10,7 +10,7 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ReactiveFormsModule } from '@angular/forms';
 import { mockChartData } from './data-chart.component.spec.data';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { By } from '@angular/platform-browser'
+import { By } from '@angular/platform-browser';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -218,7 +218,7 @@ describe('DataChartComponent', () => {
     it('should open modal popup', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
-        component.currentFilters=[];
+        component.currentFilters = [];
         component.filterModalPopup(true);
         expect(component.chartData['selectedFilters']).toEqual([]);
     }));

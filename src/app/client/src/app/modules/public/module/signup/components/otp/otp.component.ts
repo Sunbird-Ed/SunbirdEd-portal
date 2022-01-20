@@ -46,7 +46,7 @@ export class OtpComponent implements OnInit {
   maxResendTry = 4;
   googleCaptchaSiteKey: string;
   isP2CaptchaEnabled: any;
-  redirecterrorMessage=false;
+  redirecterrorMessage = false;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService, public router: Router,

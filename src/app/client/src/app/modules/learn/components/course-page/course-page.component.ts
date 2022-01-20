@@ -565,7 +565,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.playerService.playContent(metaData);
       }
       if (sectionType) {
-        metaData.batchId = _.get(metaData,'metaData.batchId');
+        metaData.batchId = _.get(metaData, 'metaData.batchId');
         return this.playerService.playContent(metaData);
       }
 

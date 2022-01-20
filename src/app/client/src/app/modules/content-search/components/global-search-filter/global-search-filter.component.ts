@@ -41,7 +41,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   @Input() cachedFilters?: any;
-  
+
   @ViewChild('sbSearchFacetFilterComponent') searchFacetFilterComponent: any;
 
   filterFormTemplateConfig?: IFacetFilterFieldTemplateConfig[];

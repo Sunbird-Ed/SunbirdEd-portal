@@ -4,8 +4,8 @@ import { of, Observable } from 'rxjs';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { ConfigService, ResourceService, SharedModule, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import { Router, NavigationEnd, ActivatedRoute, RouterModule } from '@angular/router';
-import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission,AlertNotApplicable } from './Observation-details.component.mock.data';
-import { ObservationService,ObservationUtilService } from '@sunbird/core';
+import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission, AlertNotApplicable } from './Observation-details.component.mock.data';
+import { ObservationService, ObservationUtilService } from '@sunbird/core';
 import { EntityListComponent } from '../entity-list/entity-list.component';
 import { SubmissionsComponent } from '../submissions/submission.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -31,8 +31,8 @@ const resourceBundle = {
       delete: 'Delete',
       observeAgain: 'Observe again',
     },
-    msg:{
-      noEntityFound:"No Entity Found"
+    msg: {
+      noEntityFound: 'No Entity Found'
     },
   },
   languageSelected$: of({})
@@ -196,9 +196,9 @@ describe('ObservationDetailsComponent', () => {
     spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => Promise.resolve(ProfileData));
     component.payload = ProfileData;
     spyOn(component, 'updateSubmission').and.callThrough();
-    let event = {
-      data:"title changed",returnParams:{submissionId:'123'}
-    }
+    const event = {
+      data: 'title changed', returnParams: {submissionId: '123'}
+    };
     component.updateSubmission(event);
     component.payload.title = EventForSubmission.data.title;
     spyOn(observationService, 'post').and.returnValue(observableOf());
@@ -315,84 +315,84 @@ describe('ObservationDetailsComponent', () => {
   });
 
 
-  it("should call the markEcmNotApplicable when the modal is closed and event callback",()=>{
-    spyOn(component,"markEcmNotApplicable").and.callThrough();
-    let event={
-      action:"",
-      data:{},
-      returnParams:{
-        code:"OB"
+  it('should call the markEcmNotApplicable when the modal is closed and event callback', () => {
+    spyOn(component, 'markEcmNotApplicable').and.callThrough();
+    const event = {
+      action: '',
+      data: {},
+      returnParams: {
+        code: 'OB'
       }
-    }
-    spyOn(observationUtilService,'getProfileDataList').and.callFake(() => Promise.resolve(ProfileData));
-    spyOn(observationService,"post").and.returnValue({ subscribe: (data) => {} })
+    };
+    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => Promise.resolve(ProfileData));
+    spyOn(observationService, 'post').and.returnValue({ subscribe: (data) => {} });
     component.markEcmNotApplicable(event);
     expect(component.markEcmNotApplicable).toHaveBeenCalled();
   });
 
-  it("should call the markEcmNotApplicableRemark fro the remarks on making not applicable true",()=>{
-    spyOn(component,"markEcmNotApplicableRemark").and.callThrough();
-    let event={
-      notApplicable:true
-    }
-    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(()=>{
+  it('should call the markEcmNotApplicableRemark fro the remarks on making not applicable true', () => {
+    spyOn(component, 'markEcmNotApplicableRemark').and.callThrough();
+    const event = {
+      notApplicable: true
+    };
+    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(() => {
       return AlertMetaData;
-    })
+    });
     spyOn(observationUtilService, 'showPopupAlert').and.returnValue(Promise.resolve(true));
     component.markEcmNotApplicableRemark(event);
     expect(component.markEcmNotApplicableRemark).toHaveBeenCalled();
   });
 
-  it("should call the markEcmNotApplicableRemark fro the remarks on making not applicable false",()=>{
-    spyOn(component,"markEcmNotApplicableRemark").and.callThrough();
-    let event={
-      notApplicable:false
-    }
+  it('should call the markEcmNotApplicableRemark fro the remarks on making not applicable false', () => {
+    spyOn(component, 'markEcmNotApplicableRemark').and.callThrough();
+    const event = {
+      notApplicable: false
+    };
     component.markEcmNotApplicableRemark(event);
     expect(component.markEcmNotApplicableRemark).toHaveBeenCalled();
     expect(component.openEditModal.show).toEqual(true);
   });
 
-  it("should call the #closeEditModal() when action is submissionTitleUpdate",()=>{
-    spyOn(component,"closeEditModal").and.callThrough();
-    component.payload={
-      title:""
-    }
-    let event ={
-      data:{},
-      action:"submissionTitleUpdate",
-      returnParams:{
-        code:"OB"
+  it('should call the #closeEditModal() when action is submissionTitleUpdate', () => {
+    spyOn(component, 'closeEditModal').and.callThrough();
+    component.payload = {
+      title: ''
+    };
+    const event = {
+      data: {},
+      action: 'submissionTitleUpdate',
+      returnParams: {
+        code: 'OB'
       }
-    }
+    };
     component.closeEditModal(event);
     expect(component.closeEditModal).toHaveBeenCalled();
     expect(component.openEditModal.show).toEqual(false);
   });
 
-  it("should call the #closeEditModal() when action is markEcmNotApplicable",()=>{
-    spyOn(component,"closeEditModal").and.callThrough();
-    let event ={
-      data:{},
-      action:"markEcmNotApplicable",
-      returnParams:{
-        code:"OB"
+  it('should call the #closeEditModal() when action is markEcmNotApplicable', () => {
+    spyOn(component, 'closeEditModal').and.callThrough();
+    const event = {
+      data: {},
+      action: 'markEcmNotApplicable',
+      returnParams: {
+        code: 'OB'
       }
-    }
+    };
     component.closeEditModal(event);
     expect(component.closeEditModal).toHaveBeenCalled();
     expect(component.openEditModal.show).toEqual(false);
   });
 
-  it("should call the #deleteSubmission",()=>{
-    spyOn(component,"deleteSubmission").and.callThrough();
-    let event={}
-    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(()=>{
+  it('should call the #deleteSubmission', () => {
+    spyOn(component, 'deleteSubmission').and.callThrough();
+    const event = {};
+    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(() => {
       return AlertMetaData;
-    })
+    });
     spyOn(observationUtilService, 'showPopupAlert').and.returnValue(Promise.resolve(true));
     component.deleteSubmission(event);
     expect(component.deleteSubmission).toHaveBeenCalled();
-  })
+  });
 
 });

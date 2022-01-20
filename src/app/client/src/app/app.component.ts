@@ -960,7 +960,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
   }
-  onActivate(event){
+  onActivate(event) {
     this.layoutService.scrollTop();
   }
 }

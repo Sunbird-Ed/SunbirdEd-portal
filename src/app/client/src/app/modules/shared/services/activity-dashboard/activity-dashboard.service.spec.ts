@@ -20,5 +20,5 @@ describe('ActivityDashboardService', () => {
     service._isActivityAdded = true;
     expect(service['_isActivityAdded']).toEqual(true);
   });
-  
+
 });

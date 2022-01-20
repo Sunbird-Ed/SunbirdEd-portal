@@ -75,7 +75,7 @@ export class UserOnboardingComponent implements OnInit {
     } else {
       role$ = this.getRoleFromLocalStorage();
     }
-    
+
     return role$.pipe(
       takeUntil(this.unsubscribe$),
       tap(userType => {
@@ -92,7 +92,7 @@ export class UserOnboardingComponent implements OnInit {
     const role$ = guestUserDetails$.pipe(
       map(guestUser => _.get(guestUser, 'role')),
       catchError(_ => of(null))
-    )
+    );
     return role$;
   }
 

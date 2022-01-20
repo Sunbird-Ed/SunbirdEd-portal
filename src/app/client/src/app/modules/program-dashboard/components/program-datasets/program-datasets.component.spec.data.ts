@@ -3,129 +3,129 @@ export let mockData = {
     programs: {
         result: [
             {
-                "_id": "5f34e44681871d939950bca6",
-                "externalId": "TN-Program-1597301830708",
-                "name": "TN-Program",
-                "description": "TN01-Mantra4Change-APSWREIS School Leader Feedback",
-                "role": "PM"
+                '_id': '5f34e44681871d939950bca6',
+                'externalId': 'TN-Program-1597301830708',
+                'name': 'TN-Program',
+                'description': 'TN01-Mantra4Change-APSWREIS School Leader Feedback',
+                'role': 'PM'
             },
             {
-                "_id": "5f34ec17585244939f89f90c",
-                "externalId": "MH-Program-1597303831605",
-                "name": "MH-Program",
-                "description": "MH01-Mantra4Change-APSWREIS School Leader Feedback",
-                "role": "PM"
+                '_id': '5f34ec17585244939f89f90c',
+                'externalId': 'MH-Program-1597303831605',
+                'name': 'MH-Program',
+                'description': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',
+                'role': 'PM'
             },
             {
-                "_id": "5f75b90454670074deacf087",
-                "name": "Skilling Teachers -- Google Project",
-                "externalId": "PGM-2948-KEF-RTLBS-INDIVIDUAL_ASSESSMENT",
-                "description": "This is a type of individual assessment",
-                "role": "PM"
+                '_id': '5f75b90454670074deacf087',
+                'name': 'Skilling Teachers -- Google Project',
+                'externalId': 'PGM-2948-KEF-RTLBS-INDIVIDUAL_ASSESSMENT',
+                'description': 'This is a type of individual assessment',
+                'role': 'PM'
             },
             {
-                "_id": "5f7f262e54670074deb99bcb",
-                "externalId": "PGM_NIQSA_Self_Assessment-Feb2020",
-                "name": "NIQSA Self Assessment",
-                "description": "This tool is used to assess schools that are part of NISA on five domains of the NIQSA quality charter.",
-                "role": "PM"
+                '_id': '5f7f262e54670074deb99bcb',
+                'externalId': 'PGM_NIQSA_Self_Assessment-Feb2020',
+                'name': 'NIQSA Self Assessment',
+                'description': 'This tool is used to assess schools that are part of NISA on five domains of the NIQSA quality charter.',
+                'role': 'PM'
             }
         ]
     },
     solutions: {
         result: [
             {
-                "_id": "5f34ec17585244939f89f90d",
-                "isRubricDriven": false,
-                "externalId": "cbd074fa-dd11-11ea-a3bf-000d3af02677-OBSERVATION-TEMPLATE-1597303831612",
-                "name": "MH01-Mantra4Change-APSWREIS School Leader Feedback",
-                "description": "MH01-Mantra4Change-APSWREIS School Leader Feedback",
-                "type": "observation",
-                "subType": ""
+                '_id': '5f34ec17585244939f89f90d',
+                'isRubricDriven': false,
+                'externalId': 'cbd074fa-dd11-11ea-a3bf-000d3af02677-OBSERVATION-TEMPLATE-1597303831612',
+                'name': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',
+                'description': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',
+                'type': 'observation',
+                'subType': ''
             },
             {
-                "_id": "5fbb75537380505718640436",
-                "type": "improvementproject",
-                "isRubricDriven": false,
-                "subType": "",
-                "externalId": "7146aa30-2d67-11eb-b70e-55ade5205c81",
-                "name": "Health Awareness Project",
-                "description": ""
+                '_id': '5fbb75537380505718640436',
+                'type': 'improvementproject',
+                'isRubricDriven': false,
+                'subType': '',
+                'externalId': '7146aa30-2d67-11eb-b70e-55ade5205c81',
+                'name': 'Health Awareness Project',
+                'description': ''
             },
             {
-                "_id": "5fbb75537380505718640437",
-                "type": "improvementproject",
-                "isRubricDriven": false,
-                "subType": "",
-                "externalId": "71471f60-2d67-11eb-b70e-55ade5205c81",
-                "name": "Safe School Project",
-                "description": ""
+                '_id': '5fbb75537380505718640437',
+                'type': 'improvementproject',
+                'isRubricDriven': false,
+                'subType': '',
+                'externalId': '71471f60-2d67-11eb-b70e-55ade5205c81',
+                'name': 'Safe School Project',
+                'description': ''
             },
             {
-              "_id": "5fbb75537380505718640438",
-              "type": "survey",
-              "isRubricDriven": false,
-              "subType": "",
-              "externalId": "71471f60-2d67-11eb-b70e-55ade5205c82",
-              "name": "Safe School survey",
-              "description": ""
+              '_id': '5fbb75537380505718640438',
+              'type': 'survey',
+              'isRubricDriven': false,
+              'subType': '',
+              'externalId': '71471f60-2d67-11eb-b70e-55ade5205c82',
+              'name': 'Safe School survey',
+              'description': ''
           }
-            
-            
+
+
         ]
     },
     FormData: {
-        "improvementproject": [
+        'improvementproject': [
             {
-                "name": "Task Detail Report",
-                "encrypt": true,
-                "datasetId": "ml-improvementproject-task-detail-report"
+                'name': 'Task Detail Report',
+                'encrypt': true,
+                'datasetId': 'ml-improvementproject-task-detail-report'
             },
             {
-                "name": "Status Report",
-                "encrypt": false,
-                "datasetId": "ml-improvementproject-status-report"
+                'name': 'Status Report',
+                'encrypt': false,
+                'datasetId': 'ml-improvementproject-status-report'
             }
         ],
-        "observation": [
+        'observation': [
             {
-                "name": "Question Report",
-                "encrypt": true,
-                "datasetId": "ml-observation-question-report"
+                'name': 'Question Report',
+                'encrypt': true,
+                'datasetId': 'ml-observation-question-report'
             },
             {
-                "name": "Status Report",
-                "encrypt": false,
-                "datasetId": "ml-observation-status-report"
+                'name': 'Status Report',
+                'encrypt': false,
+                'datasetId': 'ml-observation-status-report'
             }
         ],
-        "observation_with_rubric": [
+        'observation_with_rubric': [
             {
-                "name": "Task Detail Report",
-                "encrypt": true,
-                "datasetId": "ml-observation_with_rubric-task-detail-report"
+                'name': 'Task Detail Report',
+                'encrypt': true,
+                'datasetId': 'ml-observation_with_rubric-task-detail-report'
             },
             {
-                "name": "Status Report",
-                "encrypt": false,
-                "datasetId": "ml-observation_with_rubric-status-report"
+                'name': 'Status Report',
+                'encrypt': false,
+                'datasetId': 'ml-observation_with_rubric-status-report'
             },
             {
-                "name": "Domain Criteria Report",
-                "encrypt": false,
-                "datasetId": "ml-observation_with_rubric-domain-criteria-report"
+                'name': 'Domain Criteria Report',
+                'encrypt': false,
+                'datasetId': 'ml-observation_with_rubric-domain-criteria-report'
             }
         ],
-        "assessment": [
+        'assessment': [
             {
-                "name": "Task Detail Report",
-                "encrypt": true,
-                "datasetId": "ml-assessment-task-detail-report"
+                'name': 'Task Detail Report',
+                'encrypt': true,
+                'datasetId': 'ml-assessment-task-detail-report'
             },
             {
-                "name": "Status Report",
-                "encrypt": false,
-                "datasetId": "ml-assessment-status-report"
+                'name': 'Status Report',
+                'encrypt': false,
+                'datasetId': 'ml-assessment-status-report'
             }
         ]
     },
@@ -137,7 +137,7 @@ export let mockData = {
         'rootOrgName': 'CustROOTOrg10',
         'roles': [
             'PUBLIC',
-            "PROGRAM_MANAGER"
+            'PROGRAM_MANAGER'
         ],
         'channel': 'custchannel',
         'updatedDate': null,
@@ -259,8 +259,8 @@ export let mockData = {
               'requested_channel': 'in.ekstep',
               'status': 'SUBMITTED',
               'last_updated': 1599661955303,
-              'datasetConfig':{
-                "title":"report 1",
+              'datasetConfig': {
+                'title': 'report 1',
                 'type': 'assessment-dashboard-metrics'
               },
               'request_data': {
@@ -309,8 +309,8 @@ export let mockData = {
               'requested_channel': 'in.ekstep',
               'status': 'SUBMITTED',
               'last_updated': 1599728944037,
-              'datasetConfig':{
-                "title":"report 2",
+              'datasetConfig': {
+                'title': 'report 2',
                 'type': 'assessment-dashboard-metrics',
               },
               'request_data': {
@@ -354,4 +354,4 @@ export let mockData = {
           ]
         }
       }
-}
+};

@@ -396,6 +396,6 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
       }
       this.telemetryService.interact(telemetryInteractData);
     }
-  } 
+  }
 
 }

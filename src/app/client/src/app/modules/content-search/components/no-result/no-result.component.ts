@@ -25,9 +25,9 @@ export class NoResultComponent implements OnInit {
   exploreMoreContentEdata: IInteractEventEdata;
   currentPage;
   url;
-  isConnected: boolean = true;
+  isConnected = true;
   public unsubscribe$ = new Subject<void>();
-  isDesktopApp: boolean = false;
+  isDesktopApp = false;
   constructor( public router: Router, public resourceService: ResourceService, public UtilService: UtilService,
     public ConnectionService: ConnectionService, public activatedRoute: ActivatedRoute,
     public formService: FormService,  public userService: UserService, public ToasterService: ToasterService) { }

@@ -427,7 +427,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {
-        const batchId = _.get(content,'metaData.batchId');
+        const batchId = _.get(content, 'metaData.batchId');
         this.handleCourseRedirection(event, batchId);
       } else {
         this.publicPlayerService.playContent(event);
@@ -442,9 +442,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (batchId) {
       metaData.batchId = batchId;
-      metaData.trackable={
-        enabled:'Yes'
-      }
+      metaData.trackable = {
+        enabled: 'Yes'
+      };
       return this.playerService.playContent(metaData);
     }
 
@@ -509,7 +509,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  
+
   updateCardData(downloadListdata) {
     _.each(this.searchList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);

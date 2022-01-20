@@ -404,7 +404,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     }
   }
 
-  assignUserRole(){
+  assignUserRole() {
     this.router.navigate(['/manage/userRoleAssign']);
   }
 
