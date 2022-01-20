@@ -87,6 +87,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedTab:any;
     primaryBanner = [];
     secondaryBanner = [];
+    Categorytheme:any;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -597,6 +598,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             "iconBgColor": "rgba(255,255,255,1)",
                             "pillBgColor": "rgba(255,255,255,1)"
                         }
+                        this.Categorytheme={
+                            "iconBgColor": "rgba(255,0,0,0)",
+                            "pillBgColor": "rgba(255,0,0,0)"
+                        }
                     }
                     else {
                         this.showTargetedCategory = false
@@ -1089,6 +1094,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
         let pillData = event.data[0].value;
+        if(_.isEmpty(pillData)){
+            return;
+        }
         if(this.isUserLoggedIn()) {
             if(pillData.name === 'observation'){
                 this.router.navigate(['observation']);      

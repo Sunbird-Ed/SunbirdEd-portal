@@ -24,6 +24,7 @@ export class UserOnboardingComponent implements OnInit {
   @Input() deviceProfile: IDeviceProfile;
   @Input() isCustodianOrgUser: boolean;
   @Output() close = new EventEmitter<void>();
+  @ViewChild('modal') modal;
 
   get Stage() { return Stage; }
   stage;
@@ -108,7 +109,9 @@ export class UserOnboardingComponent implements OnInit {
   }
 
   userTypeSubmit() {
-    this.stage = Stage.LOCATION_SELECTION;
+    // this.stage = Stage.LOCATION_SELECTION;
+    this.close.emit();
+    this.modal.deny();
   }
 
   locationSubmit() {
