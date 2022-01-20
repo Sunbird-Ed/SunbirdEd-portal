@@ -5276,7 +5276,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -8700,10 +8700,10 @@ ng-recaptcha@^5.0.0:
   optionalDependencies:
     "@types/grecaptcha" "^2.0.33"
 
-ng-svg-editor@^0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/ng-svg-editor/-/ng-svg-editor-0.0.15.tgz#34a52fa7c726cbbfdc05381c6fbbdb854fbb32cf"
-  integrity sha512-wwy8z2K7quXi15NnElMFagKquvNH8NIkTwHgZtUkdp0TXWXYasUKoYtXFSRLolf3o6beUfrqF41uMYRHKWs6IQ==
+ng-svg-editor@0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/ng-svg-editor/-/ng-svg-editor-0.0.21.tgz#8532d1701f4b4a199d9dad54b5cc57e14af4e799"
+  integrity sha512-RCzhajZJKTDwhpr/qz6UdnOa9yOYrHOgi24FyI1kvQkrF7jwexUTDW125CjV5UFIRdTEsXHDGVbzi16RLlka5w==
   dependencies:
     tslib "^2.3.0"
 
