@@ -238,7 +238,6 @@ class RouterStub {
     component.logoHtml = MockData.svgData.data;
     const data = { artifactUrl: 'assets/images/template-1.svg', identifier: 0 };
     component.previewCertificate();
-    expect(component.updateTitles).toHaveBeenCalled();
     expect(component.updateStateLogos).toHaveBeenCalled();
     expect(component.updateSigns).toHaveBeenCalled();
   });
@@ -381,6 +380,103 @@ class RouterStub {
     component.redoLayout();
     component.layoutConfiguration = null;
     component.redoLayout();
+  });
+
+  describe('SVG editor test cases', () => {
+
+    it('should invoke when SVG element is clicked for text', () => {
+      component.showSVGInputModal = false;
+      const e = {
+        type: 'text',
+        element: {
+          textContent: 'SVG header'
+        }
+      };
+      component.elementClicked(e);
+      expect(component.selectedSVGObject).toBeDefined();
+      expect(component.showSVGInputModal).toBeTruthy();
+      expect(component.showSVGInputModal).toEqual(true);
+      expect(component.selectedSVGObject['type']).toEqual(e.type);
+      expect(component.selectedSVGObject['value']).toEqual(e.element.textContent);
+    });
+
+    it('should close input modal from accepting user input', () => {
+      component.closeSVGInputModal();
+      expect(component.showSVGInputModal).toBeFalsy();
+    });
+  
+    it('should invoke updateSVGInputTag after input is accepted for new svg text element', () => {
+      component.showSVGInputModal = true;
+      spyOn(component.edit, 'next');
+      component.updateSVGInputTag();
+      expect(component.showSVGInputModal).toBeFalsy();
+      expect(component.edit.next).toHaveBeenCalled();
+    });
+  
+    it('should convert image URL to base64 string', () => {
+      const imageObj = {
+        url: 'http://staging.sunbirded.org/auth/resources/7.0.1/login/ntp/img/logo.png'
+      };
+      component.svgAssetData(imageObj);
+      expect(component.showSVGInputModal).toBeFalsy();
+      expect(component.selectedSVGObject).toEqual({});
+    });
+
+    it('should toggle preview and edit for buttons - for hide', () => {
+      spyOn(component.togglePreview, 'next');
+      component.toggleSVGPreview();
+      expect(component.previewButton).toEqual('hide');
+      expect(component.togglePreview.next).toHaveBeenCalled();
+    });
+
+    it('should toggle preview and edit for buttons - for show', () => {
+      component.previewButton = 'hide';
+      spyOn(component.togglePreview, 'next');
+      component.toggleSVGPreview();
+      expect(component.previewButton).toEqual('show');
+      expect(component.togglePreview.next).toHaveBeenCalled();
+    });
+
+    it('should create the certificate template with new SVG changes', fakeAsync(() => {
+      const uploadCertService = TestBed.get(UploadCertificateService);
+      component.selectedCertificate = { issuer: `{}` };
+      const elementMock = {
+        innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'
+      };
+      spyOn(component.save, 'next');
+      spyOn(document, 'getElementById').and.returnValue(elementMock)
+      spyOn(component, 'uploadTemplate');
+      spyOn(component, 'previewCertificate').and.stub();
+      spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
+      spyOn(uploadCertService, 'createCertTemplate').and.returnValue(of(MockData.create));
+      component.saveUpdatedCertificate();
+      tick(1000);
+      expect(component.disableCreateTemplate).toEqual(true);
+      expect(component.save.next).toHaveBeenCalled();
+      expect(component.uploadTemplate).toHaveBeenCalledWith(component.finalSVGurl, MockData.create.result.identifier);
+    }));
+
+    it('should not create the certificate template with new SVG changes and expect error', fakeAsync(() => {
+      spyOn(component.save, 'next');
+      const uploadCertService = TestBed.get(UploadCertificateService);
+      const toasterService = TestBed.get(ToasterService);
+      component.selectedCertificate = { issuer: `{}` };
+      const elementMock = {
+        innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'
+      };
+      spyOn(document, 'getElementById').and.returnValue(elementMock)
+      spyOn(component, 'uploadTemplate');
+      spyOn(component, 'previewCertificate').and.stub();
+      spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
+      spyOn(uploadCertService, 'createCertTemplate').and.callFake(() => throwError({}));
+      spyOn(toasterService, 'error').and.stub();
+      component.saveUpdatedCertificate();
+      fixture.detectChanges()
+      tick(1000);
+      expect(component.save.next).toHaveBeenCalled();
+      expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
+    }));
+
   });
 
 });
