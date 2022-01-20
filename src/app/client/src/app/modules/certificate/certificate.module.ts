@@ -22,7 +22,6 @@ import { SvgEditorModule } from 'ng-svg-editor';
   imports: [
     CommonModule,
     SuiModalModule,
-    SvgEditorModule,
     CertificateRoutingModule,
     FormsModule,
     SharedModule,
@@ -33,6 +32,7 @@ import { SvgEditorModule } from 'ng-svg-editor';
     SuiPopupModule,
     ReactiveFormsModule,
     CommonConsumptionModule,
+    SvgEditorModule,
     SharedFeatureModule
   ]
 })

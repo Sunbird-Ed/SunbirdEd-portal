@@ -60,7 +60,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   optionSing = 'SIGN2';
   queryParams: any;
   mode: any;
-  onEdit: Subject<any> = new Subject();
+  edit: Subject<any> = new Subject();
   refreshEditor: Subject<any> = new Subject();
   togglePreview: Subject<any> = new Subject();
   save: Subject<any> = new Subject();
@@ -369,8 +369,6 @@ urltoFile(url, filename, mimeType) {
   }
 
   elementClicked(e: any) {
-    console.log('selected element ', e); // TODO: log!
-    console.log('selected type ', e.type); // TODO: log!
     this.selectedSVGObject = {
       type: _.get(e, 'type'),
       value: _.get(e, 'element.textContent'),
@@ -381,12 +379,11 @@ urltoFile(url, filename, mimeType) {
       this.browseImage.getAssetList();
     }
     
-    console.table(this.selectedSVGObject); // TODO: log!
     this.showSVGInputModal = true;
   }
   updateSVGInputTag() {
     this.showSVGInputModal = false;
-    this.onEdit.next({
+    this.edit.next({
       element: this.selectedSVGObject.element,
       type: 'text',
       value: this.selectedSVGObject.value
@@ -400,7 +397,7 @@ urltoFile(url, filename, mimeType) {
   svgAssetData(imageObj) {
     this.getBase64FromUrl(_.get(imageObj, 'url')).then((base64String: string) => {
       this.showSVGInputModal = false;
-      this.onEdit.next({
+      this.edit.next({
         element: this.selectedSVGObject.element,
         type: 'image',
         value: base64String
@@ -431,12 +428,10 @@ urltoFile(url, filename, mimeType) {
     setTimeout(() => {
       const channel = this.userService.channel;
       const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
-      console.log('req ', request); // TODO: log!
       request.request.asset.code = 'code name';
       request.request.asset.name = 'name name'
       this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
         const assetId = _.get(response, 'result.identifier');
-        console.log('res ', response); // TODO: log!
         this.uploadTemplate(this.finalSVGurl, assetId);
       }, error => {
         this.toasterService.error('Something went wrong, please try again later');
