@@ -78,7 +78,7 @@ SECOND_PANEL_LAYOUT;
     private toasterService: ToasterService,
     private router: Router,
     private telemetryService: TelemetryService,
-    public layoutService: LayoutService) { 
+    public layoutService: LayoutService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     }

@@ -197,11 +197,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
     if (_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
       this.frameWorkId = _.get(_.find(field.range, { name: 'CBSE' }), 'identifier');
-    } 
-    else if (_.get(this.boardOptions, 'range.length')) {
+    } else if (_.get(this.boardOptions, 'range.length')) {
       this.frameWorkId = _.get(_.find(this.boardOptions.range, { name: _.get(this.selectedOption, field.code) }), 'identifier');
-    }
-    else {
+    } else {
       this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code) }), 'identifier');
     }
     if (this.unsubscribe) { // cancel if any previous api call in progress

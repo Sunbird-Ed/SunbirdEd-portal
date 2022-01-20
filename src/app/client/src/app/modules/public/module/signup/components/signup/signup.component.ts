@@ -54,7 +54,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   formInputType: string;
   isP1CaptchaEnabled: any;
   yearOfBirth: string;
-  isIOSDevice: boolean = false;
+  isIOSDevice = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -119,8 +119,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.isIOSDevice) {
       _selectedYOB = parseInt(selectedBirthYear.target.value);
     }
-    if(this.signUpForm.get('uniqueContact').value === true){
-    } else{
+    if (this.signUpForm.get('uniqueContact').value === true) {
+    } else {
       this.signUpForm.enable();
     }
     this.disableForm = false;

@@ -44,7 +44,7 @@ const fakeActivatedRoute = {
 };
 const mockUserRoles = {
   userRoles: ['PUBLIC'],
-  userOrgDetails:'testing123'
+  userOrgDetails: 'testing123'
 };
 
 describe('AppComponent', () => {
@@ -146,7 +146,7 @@ afterEach(() => {
         rootOrgId: userService.userProfile.rootOrgId,
         rootOrg: userService.userProfile.rootOrg,
         organisationIds: userService.userProfile.hashTagIds,
-        OrgDetails:userService.userProfile.userOrgDetails
+        OrgDetails: userService.userProfile.userOrgDetails
       },
       config: {
         pdata: {

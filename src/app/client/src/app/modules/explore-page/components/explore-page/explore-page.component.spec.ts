@@ -2,13 +2,13 @@ import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, throwError, of, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, LayoutService, UtilService } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService,ObservationUtilService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService, ObservationUtilService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RESPONSE,categoryData, EventPillData } from './explore-page.component.spec.data';
+import { RESPONSE, categoryData, EventPillData } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ExplorePageComponent } from './explore-page.component';
@@ -25,7 +25,7 @@ import {ObservationModule} from '../../../observation/observation.module';
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService,observationUtilService;
+  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService, observationUtilService;
   const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -68,8 +68,8 @@ describe('ExplorePageComponent', () => {
         },
         board: 'Board',
         browseBy: 'Browse by',
-        targetCategory:"Category",
-        browseOther:"Browse Other"
+        targetCategory: 'Category',
+        browseOther: 'Browse Other'
       }
     },
     tbk: {
@@ -94,10 +94,10 @@ describe('ExplorePageComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule,ObservationModule],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule, ObservationModule],
       declarations: [ExplorePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-        FormService, ProfileService, ContentManagerService, TelemetryService,ObservationUtilService,
+        FormService, ProfileService, ContentManagerService, TelemetryService, ObservationUtilService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -113,7 +113,7 @@ describe('ExplorePageComponent', () => {
     orgDetailsService = TestBed.get(OrgDetailsService);
     cacheService = TestBed.get(CacheService);
     segmentationTagService = TestBed.get(SegmentationTagService);
-    observationUtilService=TestBed.get(ObservationUtilService)
+    observationUtilService = TestBed.get(ObservationUtilService);
     sendOrgDetails = true;
     sendPageApi = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
@@ -675,10 +675,10 @@ describe('ExplorePageComponent', () => {
     });
 
     it('should get the section name based on current tab', () => {
-      expect(component['getSectionName']('textbook')).toBe("tbk.trk.frmelmnts.lbl.mytrainings");
-      expect(component['getSectionName']('course')).toBe("crs.trk.frmelmnts.lbl.mytrainings");
-      expect(component['getSectionName']('tvProgram')).toBe("tvc.trk.frmelmnts.lbl.mytrainings");
-      expect(component['getSectionName']('random')).toBe("frmelmnts.lbl.myEnrolledCollections");
+      expect(component['getSectionName']('textbook')).toBe('tbk.trk.frmelmnts.lbl.mytrainings');
+      expect(component['getSectionName']('course')).toBe('crs.trk.frmelmnts.lbl.mytrainings');
+      expect(component['getSectionName']('tvProgram')).toBe('tvc.trk.frmelmnts.lbl.mytrainings');
+      expect(component['getSectionName']('random')).toBe('frmelmnts.lbl.myEnrolledCollections');
     });
 
     it('should redirect to sectionViewAll page with queryparams', () => {
@@ -731,7 +731,7 @@ describe('ExplorePageComponent', () => {
     });
 
     it('should return category title', () => {
-      spyOn(component,"getSectionCategoryTitle").and.callThrough();
+      spyOn(component, 'getSectionCategoryTitle').and.callThrough();
       const getSectionCategoryTitle = component.getSectionCategoryTitle('frmelmnts.lbl.targetCategory');
       expect(getSectionCategoryTitle).toEqual('Browse Other Category');
     });
@@ -914,13 +914,13 @@ describe('ExplorePageComponent', () => {
     });
   });
 
-    it("should call the getFormConfigs to get form category if loggin",()=>{
-      component.selectedTab="home";
-      component.userType=undefined;
+    it('should call the getFormConfigs to get form category if loggin', () => {
+      component.selectedTab = 'home';
+      component.userType = undefined;
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
       spyOn(component, 'setUserPreferences').and.callThrough();
       userService.userData$ = observableOf({
-        profileData:{
+        profileData: {
         userProfile: {
           profileUserType: {
             subType: null,
@@ -929,83 +929,83 @@ describe('ExplorePageComponent', () => {
         },
         },
       });
-      spyOn(component,"getFormConfigs").and.callThrough();
-      component.userPreference = { framework: {id: ["tn_k-12_5"]}};
-      let data={
-        cbse:{
-          teacher:{
-            name:"observation",
-            icon:{
-              web:"assets/images/mask-image/observation.png"
+      spyOn(component, 'getFormConfigs').and.callThrough();
+      component.userPreference = { framework: {id: ['tn_k-12_5']}};
+      const data = {
+        cbse: {
+          teacher: {
+            name: 'observation',
+            icon: {
+              web: 'assets/images/mask-image/observation.png'
             }
           }
         }
-      }
+      };
       spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
         return Promise.resolve(data);
       });
-      component.showTargetedCategory=true;
+      component.showTargetedCategory = true;
       component.getFormConfigs();
       expect(component.getFormConfigs).toHaveBeenCalled();
-    })
+    });
 
-    it("should call the getFormConfigs to get form category if not login",()=>{
+    it('should call the getFormConfigs to get form category if not login', () => {
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
       spyOn(component, 'setUserPreferences').and.callThrough();
-      component.selectedTab="home";
-      component.userType=undefined;
-      spyOn(component,"getFormConfigs").and.callThrough();
-      component.userType='teacher';
-      component.userPreference = { framework: {id:"tn_k-12_5"}};
+      component.selectedTab = 'home';
+      component.userType = undefined;
+      spyOn(component, 'getFormConfigs').and.callThrough();
+      component.userType = 'teacher';
+      component.userPreference = { framework: {id: 'tn_k-12_5'}};
       spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
         return Promise.resolve(categoryData);
       });
-      component.showTargetedCategory=true;
+      component.showTargetedCategory = true;
       component.getFormConfigs();
       expect(component.getFormConfigs).toHaveBeenCalled();
-    })
+    });
 
-    it("should call the getFormConfigs to get form category if not login",()=>{
+    it('should call the getFormConfigs to get form category if not login', () => {
       spyOn(component, 'isUserLoggedIn').and.returnValue(false);
-      component.userType='teacher';
+      component.userType = 'teacher';
       spyOn(component, 'setUserPreferences').and.callThrough();
-      component.selectedTab="home";
-      spyOn(component,"getFormConfigs").and.callThrough();
-      component.userType='teacher';
-      component.userPreference = { framework: {id:"tn_k-12_5"}};
-      let data={
-        cbse:{
-          student:{
-            name:"observation",
-            icon:{
-              web:"assets/images/mask-image/observation.png"
+      component.selectedTab = 'home';
+      spyOn(component, 'getFormConfigs').and.callThrough();
+      component.userType = 'teacher';
+      component.userPreference = { framework: {id: 'tn_k-12_5'}};
+      const data = {
+        cbse: {
+          student: {
+            name: 'observation',
+            icon: {
+              web: 'assets/images/mask-image/observation.png'
             }
           }
         }
-      }
+      };
       spyOn(observationUtilService, 'browseByCategoryForm').and.callFake(() => {
         return Promise.resolve(data);
       });
-      component.showTargetedCategory=false;
+      component.showTargetedCategory = false;
       component.getFormConfigs();
       expect(component.getFormConfigs).toHaveBeenCalled();
-    })
+    });
 
-    it("should call the getFormConfigs to get form category when selected is not home",()=>{
+    it('should call the getFormConfigs to get form category when selected is not home', () => {
       spyOn(component, 'getFormConfigs').and.callThrough();
-      component.selectedTab="explore";
+      component.selectedTab = 'explore';
       component.getFormConfigs();
       expect(component.getFormConfigs).toHaveBeenCalled();
       expect(component.showTargetedCategory).toEqual(false);
-    })
+    });
 
-  it("shoulc call the handleTargetedpillSelected when the browse by category clicked",()=>{
+  it('shoulc call the handleTargetedpillSelected when the browse by category clicked', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-    spyOn(component,"handleTargetedpillSelected").and.callThrough();
+    spyOn(component, 'handleTargetedpillSelected').and.callThrough();
     const router = TestBed.get(Router);
     component.handleTargetedpillSelected(EventPillData);
     router.url = '/observation';
     expect(component.handleTargetedpillSelected).toHaveBeenCalled();
-  })
+  });
 
 });

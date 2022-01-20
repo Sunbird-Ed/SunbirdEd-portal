@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserOrgManagementComponent } from './components/user-org-management/user-org-management.component';
-import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component'
+import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
 import { AuthGuard } from '@sunbird/core';
 
 const routes: Routes = [

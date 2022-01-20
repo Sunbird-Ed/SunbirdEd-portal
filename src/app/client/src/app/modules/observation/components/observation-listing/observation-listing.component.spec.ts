@@ -129,9 +129,9 @@ describe('ObservationListingComponent', () => {
       component.showEditUserDetailsPopup = false;
       showEditUserDetailsPopup = false;
     });
-    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(()=>{
+    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(() => {
       return Response.metaData;
-    })
+    });
     spyOn(observationUtilService, 'showPopupAlert').and.returnValue(Promise.resolve(true));
     component.ngOnInit();
     expect(observationUtilService).toBeDefined();

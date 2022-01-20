@@ -1,10 +1,10 @@
 import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService,ObservationUtilService } from '@sunbird/core';
+import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService, ObservationUtilService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, ViewChild } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
-    OfflineCardService, BrowserCacheTtlService,IUserData
+    OfflineCardService, BrowserCacheTtlService, IUserData
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
@@ -79,12 +79,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     isFilterEnabled = true;
     defaultTab = 'Textbook';
     userProfile: any;
-    targetedCategory:any=[];
+    targetedCategory: any = [];
     subscription: any;
     userType: any;
-    targetedCategorytheme:any;
-    showTargetedCategory:boolean=false;
-    selectedTab:any;
+    targetedCategorytheme: any;
+    showTargetedCategory = false;
+    selectedTab: any;
     primaryBanner = [];
     secondaryBanner = [];
     get slideConfig() {
@@ -116,7 +116,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
-        private segmentationTagService: SegmentationTagService,private observationUtil: ObservationUtilService) {
+        private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         this.subscription = this.utilService.currentRole.subscribe(async (result) => {
@@ -205,9 +205,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
-        this.subscription$=this.activatedRoute.queryParams.subscribe(queryParams => {
-        this.selectedTab=queryParams.selectedTab; 
-        this.showTargetedCategory=false;   
+        this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
+        this.selectedTab = queryParams.selectedTab;
+        this.showTargetedCategory = false;
         this.getFormConfigs();
         });
         this.initConfiguration();
@@ -346,10 +346,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         /* istanbul ignore if */
         if (this.cacheService.exists('searchFilters')) {
             const _searchFilters = this.cacheService.get('searchFilters');
-            let _cacheFilters = {
+            const _cacheFilters = {
                 gradeLevel: [..._.intersection(filters['gradeLevel'], _searchFilters['gradeLevel']), ..._.difference(filters['gradeLevel'], _searchFilters['gradeLevel'])],
                 subject: [..._.intersection(filters['subject'], _searchFilters['subject']),
-                    ..._.difference(filters['subject'], _searchFilters['subject'])].map((e) => { return _.startCase(e) }),
+                    ..._.difference(filters['subject'], _searchFilters['subject'])].map((e) => _.startCase(e)),
                 medium: [..._.intersection(filters['medium'], _searchFilters['medium']), ..._.difference(filters['medium'], _searchFilters['medium'])],
                 publisher: [..._.intersection(filters['publisher'], _searchFilters['publisher']), ..._.difference(filters['publisher'], _searchFilters['publisher'])],
                 audience: [..._.intersection(filters['audience'], _searchFilters['audience']), ..._.difference(filters['audience'], _searchFilters['audience'])],
@@ -358,7 +358,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     ..._.difference(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue'])],
                 board: filters['board'],
                 selectedTab: this.getSelectedTab()
-            }
+            };
             filters = _cacheFilters;
         }
         const currentPageData = this.getCurrentPageData();
@@ -448,7 +448,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         .pipe(
                             map((response) => {
                                 const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-                                this._facets$.next(request.facets ? 
+                                this._facets$.next(request.facets ?
                                     this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                 this.searchResponse = get(response, 'result.content');
                                 const filteredContents = omit(groupBy(get(response, 'result.content'), content => {
@@ -490,7 +490,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             const _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
                                                 if (facet.filter) {
-                                                    for (let key in facet.filter) {
+                                                    for (const key in facet.filter) {
                                                        if (facet.filter[key].includes(_facet['name'])) {
                                                         _facetArray.push({
                                                             name: _facet['name'] === 'tv lesson' ? 'tv classes' : _facet['name'],
@@ -517,7 +517,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
                                                 section: facet,
-                                                isEnabled:facet.isEnabled,
+                                                isEnabled: facet.isEnabled,
                                                 index: facet.index
                                             });
                                         }
@@ -585,21 +585,20 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.observationUtil.browseByCategoryForm()
                 .then((data: any) => {
                     let currentBoard;
-                    if(this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']){
-                        currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id)
+                    if (this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']) {
+                        currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id);
                     }
-                    let currentUserType=this.userType.toLowerCase();
+                    const currentUserType = this.userType.toLowerCase();
                     if (data && data[currentBoard] &&
-                        data[currentBoard][currentUserType]) {    
-                        this.showTargetedCategory = true
+                        data[currentBoard][currentUserType]) {
+                        this.showTargetedCategory = true;
                         this.targetedCategory = data[currentBoard][currentUserType];
                         this.targetedCategorytheme = {
-                            "iconBgColor": "rgba(255,255,255,1)",
-                            "pillBgColor": "rgba(255,255,255,1)"
-                        }
-                    }
-                    else {
-                        this.showTargetedCategory = false
+                            'iconBgColor': 'rgba(255,255,255,1)',
+                            'pillBgColor': 'rgba(255,255,255,1)'
+                        };
+                    } else {
+                        this.showTargetedCategory = false;
                     }
                 });
              }
@@ -907,10 +906,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 return this.playerService.playContent(metaData);
             }
             if (sectionType) {
-                metaData.batchId = _.get(metaData,'metaData.batchId');
-                metaData.trackable={
-                    enabled:'Yes'
-                }
+                metaData.batchId = _.get(metaData, 'metaData.batchId');
+                metaData.trackable = {
+                    enabled: 'Yes'
+                };
                 return this.playerService.playContent(metaData);
               }
 
@@ -1084,19 +1083,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    handleTargetedpillSelected(event){
+    handleTargetedpillSelected(event) {
         if (!event || !event.data || !event.data.length) {
             return;
         }
-        let pillData = event.data[0].value;
-        if(this.isUserLoggedIn()) {
-            if(pillData.name === 'observation'){
-                this.router.navigate(['observation']);      
-            } 
+        const pillData = event.data[0].value;
+        if (this.isUserLoggedIn()) {
+            if (pillData.name === 'observation') {
+                this.router.navigate(['observation']);
+            }
+        } else {
+            window.location.href = '/resources';
         }
-        else{
-            window.location.href ='/resources';
-        }  
     }
 
 
@@ -1273,8 +1271,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     board: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, 'board') : _.get(_filter, 'board'),
                     gradeLevel: _.get(_filter, 'gradeLevel'),
                     medium: _.get(_filter, 'medium'),
-                    subject: _.get(_filter, 'subject').map((e) => { return _.startCase(e) })
-                }
+                    subject: _.get(_filter, 'subject').map((e) => _.startCase(e))
+                };
             }
         }
     }

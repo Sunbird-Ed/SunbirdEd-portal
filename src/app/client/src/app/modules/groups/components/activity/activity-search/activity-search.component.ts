@@ -220,7 +220,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   private fetchContents() {
-    let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+    const filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     const searchQuery = _.get(this.groupAddableBlocData, 'params.searchQuery.request.filters');
     const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
     const option: any = {

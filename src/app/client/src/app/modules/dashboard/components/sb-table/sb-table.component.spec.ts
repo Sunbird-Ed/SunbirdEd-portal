@@ -11,13 +11,13 @@ describe('SbTableComponent', () => {
   configureTestSuite();
   const resourceServiceMockData = {
     messages: {
-     
+
     },
     frmelmnts: {
       lbl: {
-        exportCsv:"Export CSV",
-        filters:"Reset Filters",
-        chooseFilter:"Choose filters to view reports",
+        exportCsv: 'Export CSV',
+        filters: 'Reset Filters',
+        chooseFilter: 'Choose filters to view reports',
 
       }
     }
@@ -46,8 +46,8 @@ describe('SbTableComponent', () => {
     component.rowsData = mockData.rowsData;
     component.config = mockData.config;
     component.loadTable();
-    expect(component.data).toEqual( { values:mockData.rowsData });
-  
+    expect(component.data).toEqual( { values: mockData.rowsData });
+
   });
 
 });

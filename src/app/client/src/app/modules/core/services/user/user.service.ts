@@ -369,13 +369,13 @@ export class UserService {
       roleOrgMap[roleObj.role] = _.map(roleObj.scope, 'organisationId');
       const roleObjScope = roleObj.scope && roleObj.scope[0];
       roleOrgDetails[roleObj.role] = {
-        orgId : _.get(roleObjScope,'organisationId')
-      }
-      _.forEach(orgList, (org,index) => {
-        if(org.organisationId === _.get(roleObjScope,'organisationId')) {
+        orgId : _.get(roleObjScope, 'organisationId')
+      };
+      _.forEach(orgList, (org, index) => {
+        if (org.organisationId === _.get(roleObjScope, 'organisationId')) {
           roleOrgDetails[roleObj.role]['orgName'] = org.orgName;
         }
-      })
+      });
     });
     this._userProfile.userOrgDetails = roleOrgDetails;
     this._userProfile.roleOrgMap = roleOrgMap;
@@ -533,7 +533,7 @@ export class UserService {
   get defaultFrameworkFilters() {
     const isUserLoggedIn = this.loggedIn || false;
     const { framework = null } = this.userProfile || {};
-    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board',"id"])) || {};
+    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
     return { board: ['CBSE'], gradeLevel: isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
   }
 }

@@ -298,7 +298,7 @@ describe('AssessmentPlayerComponent', () => {
     component.lastActiveContentBeforeModuleChange = {
       mimeType: 'application/vnd.ekstep.h5p-archive',
       identifier: '123'
-    }
+    };
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn<any>(component, 'validEndEvent').and.returnValue(true);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(throwError({}));
@@ -311,7 +311,7 @@ describe('AssessmentPlayerComponent', () => {
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalledWith(jasmine.objectContaining({
-      userId: undefined, contentId: '123', courseId: '12312433456', batchId: '121787782323', status: 1, progress: undefined 
+      userId: undefined, contentId: '123', courseId: '12312433456', batchId: '121787782323', status: 1, progress: undefined
     }));
   });
 
