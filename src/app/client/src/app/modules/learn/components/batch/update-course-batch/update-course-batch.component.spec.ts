@@ -26,6 +26,7 @@ import {
   participantList
 } from './update-course-batch.component.data';
 import { FormGroup, FormControl } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -77,7 +78,7 @@ describe('UpdateCourseBatchComponent', () => {
       declarations: [UpdateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
-        HttpClientTestingModule, LearnModule],
+        HttpClientTestingModule, LearnModule, BrowserAnimationsModule],
       providers: [ToasterService, ResourceService, UserService, TelemetryService,
         DiscussionService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
