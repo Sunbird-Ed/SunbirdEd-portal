@@ -17,6 +17,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('EnrollBatchComponent', () => {
   let component: EnrollBatchComponent;
@@ -68,7 +69,7 @@ describe('EnrollBatchComponent', () => {
       declarations: [EnrollBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule, SuiModule, LearnModule, RouterTestingModule,
-        DashboardModule, HttpClientTestingModule],
+        DashboardModule, HttpClientTestingModule, BrowserAnimationsModule],
       providers: [CourseConsumptionService, TelemetryService, CourseBatchService, CourseProgressService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: fakeResourceService },
