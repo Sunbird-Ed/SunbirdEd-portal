@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import { DiscussionService } from './../../../../discussion/services/discussion/discussion.service';
 import { MockResponseData } from './course-consumption-header.spec.data';
 import { ContentManagerService } from '../../../../public/module/offline/services/content-manager/content-manager.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const resourceServiceMockData = {
   messages: {
@@ -88,7 +89,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionHeaderComponent],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), BrowserAnimationsModule],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub }, PermissionService,
         CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub },
         TelemetryService, CopyContentService, DiscussionService, UserService],
