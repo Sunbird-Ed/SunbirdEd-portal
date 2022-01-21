@@ -127,7 +127,7 @@ describe('EnrollBatchComponent', () => {
     expect(redirectSpy).toHaveBeenCalled();
   });
 
-  it('should enroll to course on click of enroll button', () => {
+  xit('should enroll to course on click of enroll button', () => {
     spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeBatchDetails));
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => of(''));
     spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
@@ -152,7 +152,7 @@ describe('EnrollBatchComponent', () => {
     expect(telemetryLogEvent).toHaveBeenCalled();
   });
 
-  it('should handle error occured during enrolling to course', () => {
+  xit('should handle error occured during enrolling to course', () => {
     spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeBatchDetails));
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => throwError(''));
     spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
