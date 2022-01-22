@@ -496,7 +496,7 @@ describe('SbFormLocationSelectionDelegate', () => {
           ]));
         });
 
-        fit('should configure closures for location options', async () => {
+        it('should configure closures for location options', async () => {
           // arrange
           spyOnProperty(mockUserService, 'loggedIn', 'get').and.returnValue(false);
           spyOn(localStorage, 'getItem').and.returnValue('teacher');

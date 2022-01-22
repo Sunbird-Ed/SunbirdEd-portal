@@ -43,7 +43,6 @@ describe('qumlPlayerService', () => {
     spyOn(qumlPlayerService, 'getQuestionData').and.callThrough();
     qumlPlayerService.clearQuestionMap();
     qumlPlayerService.getQuestion('do_1234').subscribe((data) => {
-      console.log('data' , data);
       expect(data).toEqual({questions : [{ name : 'Question 1' }]});
     });
     expect(qumlPlayerService.getQuestionData).toHaveBeenCalledWith('do_1234');

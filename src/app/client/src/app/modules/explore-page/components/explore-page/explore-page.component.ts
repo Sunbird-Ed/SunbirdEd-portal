@@ -195,7 +195,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.isUserLoggedIn()) {
                     this.prepareVisits([]);
                 }
-                if (params.board[0] === 'CBSE') {
+                if (_.get(params, 'board') && params.board[0] === 'CBSE') {
                     params.board[0] = 'CBSE/NCERT';
                 }
                 this.queryParams = { ...params, ...queryParams };
