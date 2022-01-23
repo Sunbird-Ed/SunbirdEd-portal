@@ -90,47 +90,56 @@
   </div>
 </div>
 <!-- Upload validation status modal -->
-<sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="closeUserValidationModal()" #modal>
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.uploadingValidationStatusHeader}}
-  </div>
-  <div class="sb-modal-content">
-    <div class="m-0">
-      <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}</span>
-    </div>
-    <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
-      {{uploadButton}}
-      <input type="file" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="selectUserValidationFileInteractEdata" class="sb-btn-upload upload-btn"
-        (change)="fileChanged($event)" />
-    </div>
-    <div *ngIf="fileUpload">
-      <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
-      <label>{{fileUpload.name}}</label>
-    </div>
-    <div class="ui info message">
-      <div class="header">
-        {{resourceService?.frmelmnts?.scttl?.instructions}}
+<app-modal-wrapper *ngIf="showUploadUserModal" [config]="{disableClose: false, size: 'normal'}"
+  (dismiss)="closeUserValidationModal()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.lbl?.uploadingValidationStatusHeader}}
+          </div>
+          <div class="sb-modal-content">
+            <div class="m-0">
+              <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}</span>
+            </div>
+            <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
+              {{uploadButton}}
+              <input type="file" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                [telemetryInteractEdata]="selectUserValidationFileInteractEdata" class="sb-btn-upload upload-btn"
+                (change)="fileChanged($event)" />
+            </div>
+            <div *ngIf="fileUpload">
+              <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
+              <label>{{fileUpload.name}}</label>
+            </div>
+            <div class="ui info message">
+              <div class="header">
+                {{resourceService?.frmelmnts?.scttl?.instructions}}
+              </div>
+              <ol class="ui list">
+                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0107}} </li>
+                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0108}} </li>
+                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0109}} </li>
+                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0110}} </li>
+                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0111}} </li>
+                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0112}} </li>
+              </ol>
+            </div>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="userValidationUploadInteractEdata" [ngClass]="{'sb-btn-disabled': !fileUpload}"
+              [disabled]="disableBtn">
+              {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
+            </button>
+          </div>
+        </div>
       </div>
-      <ol class="ui list">
-        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0107}} </li>
-        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0108}} </li>
-        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0109}} </li>
-        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0110}} </li>
-        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0111}} </li>
-        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0112}} </li>
-      </ol>
     </div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract
-      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="userValidationUploadInteractEdata"
-      [ngClass]="{'sb-btn-disabled': !fileUpload}" [disabled]="disableBtn">
-      {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
-    </button>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-tnc-popup (close)="openAdminPolicyPopup(true)" [showAcceptTnc]="showTncPopup" [adminTncVersion]="adminTncVersion"
   [tncUrl]="adminTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
