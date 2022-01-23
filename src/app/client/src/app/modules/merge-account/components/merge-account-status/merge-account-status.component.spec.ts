@@ -8,7 +8,7 @@ import {ResourceService, SharedModule} from '@sunbird/shared';
 import {TenantService} from '@sunbird/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('MergeAccountStatusComponent', () => {
+describe('MergeAccountStatusComponent', () => {
   let component: MergeAccountStatusComponent;
   let fixture: ComponentFixture<MergeAccountStatusComponent>;
 
