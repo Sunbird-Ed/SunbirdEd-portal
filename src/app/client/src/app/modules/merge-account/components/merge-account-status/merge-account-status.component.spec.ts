@@ -4,10 +4,11 @@ import { configureTestSuite } from '@sunbird/test-util';
 import {MergeAccountStatusComponent} from './merge-account-status.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
-import {ResourceService} from '@sunbird/shared';
+import {ResourceService, SharedModule} from '@sunbird/shared';
 import {TenantService} from '@sunbird/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('MergeAccountStatusComponent', () => {
+fdescribe('MergeAccountStatusComponent', () => {
   let component: MergeAccountStatusComponent;
   let fixture: ComponentFixture<MergeAccountStatusComponent>;
 
@@ -20,7 +21,7 @@ describe('MergeAccountStatusComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule],
+      imports: [SuiModule, SharedModule.forRoot(), BrowserAnimationsModule],
       declarations: [MergeAccountStatusComponent],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
         {provide: TenantService, useValue: {tenantData$: observableOf('')}},
