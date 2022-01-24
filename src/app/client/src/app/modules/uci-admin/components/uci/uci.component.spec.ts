@@ -14,7 +14,7 @@ describe('UciComponent', () => {
   let baseHref;
   let component: UciComponent;
   let fixture: ComponentFixture<UciComponent>;
-  let userMockData = {
+  const userMockData = {
     'userProfile': {
       'missingFields': [],
       'updatedDate': '2018-07-09 16:07:35:977+0000',
@@ -40,7 +40,7 @@ describe('UciComponent', () => {
       'location': 'Bangaloree',
       'rootOrgAdmin': false
     }
-  }
+  };
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({

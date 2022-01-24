@@ -21,7 +21,7 @@ export class MlGuard implements CanActivate {
         && profileData.userProfile
         && profileData.userProfile['profileUserTypes']) {
         for (const subRole of profileData.userProfile['profileUserTypes']) {
-          subRoles.push(subRole.type)
+          subRoles.push(subRole.type);
         }
       }
       if (subRoles.includes('administrator') || subRoles.includes('leader') || subRoles.includes('teacher')) {

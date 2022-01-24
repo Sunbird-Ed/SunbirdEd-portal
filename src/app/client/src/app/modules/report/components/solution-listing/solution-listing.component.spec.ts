@@ -1,6 +1,6 @@
 import { ResourceService, ConfigService, PaginationService, LayoutService, NavigationHelperService } from '@sunbird/shared';
 import { SolutionListingComponent } from './solution-listing.component';
-import { ObservationService, UserService, TncService,ObservationUtilService } from '@sunbird/core';
+import { ObservationService, UserService, TncService, ObservationUtilService } from '@sunbird/core';
 import {
   ObservationData,
   profileData,
@@ -77,7 +77,7 @@ describe('SolutionListingComponent', () => {
   };
   const mockNavigationHelperService: Partial<NavigationHelperService> = {
     goBack: () => {}
-  }
+  };
   beforeAll(() => {
     component = new SolutionListingComponent(
       mockResourceService as ResourceService,
@@ -179,7 +179,6 @@ describe('SolutionListingComponent', () => {
   it('should call ObservationUtilService - getProfileData', () => {
     spyOn(mockPaginationService, 'getPager').and.callThrough();
     component.paginationDetails.currentPage = 1;
-    console.log(component.paginationDetails);
     spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });

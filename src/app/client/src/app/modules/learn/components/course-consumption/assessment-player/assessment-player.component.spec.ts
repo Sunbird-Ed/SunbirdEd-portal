@@ -262,7 +262,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.highlightContent);
   });
 
-  it('should call contentProgressEvent', () => {
+  it('should call contentProgressEvent_1', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
     component.isUnitCompleted = false;
@@ -273,7 +273,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(resp).toBe(undefined);
   });
 
-  it('should call contentProgressEvent', () => {
+  it('should call contentProgressEvent_2', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
     component.activeContent = {
@@ -289,7 +289,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
 
-  it('should call contentProgressEvent', () => {
+  it('should call contentProgressEvent_3', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
     component.activeContent = {
@@ -298,7 +298,7 @@ describe('AssessmentPlayerComponent', () => {
     component.lastActiveContentBeforeModuleChange = {
       mimeType: 'application/vnd.ekstep.h5p-archive',
       identifier: '123'
-    }
+    };
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn<any>(component, 'validEndEvent').and.returnValue(true);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(throwError({}));
@@ -311,7 +311,7 @@ describe('AssessmentPlayerComponent', () => {
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalledWith(jasmine.objectContaining({
-      status: 2
+      userId: undefined, contentId: '123', courseId: '12312433456', batchId: '121787782323', status: 1, progress: undefined
     }));
   });
 

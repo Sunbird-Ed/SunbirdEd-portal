@@ -81,7 +81,7 @@ export class GuestProfileComponent implements OnInit {
     });
   }
 
-  updateProfile(event) {    
+  updateProfile(event) {
     // this.showEdit = !this.showEdit;
     this.guestUser.framework = event;
 

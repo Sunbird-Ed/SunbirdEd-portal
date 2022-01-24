@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick,flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
 import { DatasetsComponent } from './program-datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { KendraService, UserService, FormService } from '@sunbird/core';
-import { ResourceService, SharedModule, ConfigService,OnDemandReportService } from '@sunbird/shared';
+import { ResourceService, SharedModule, ConfigService, OnDemandReportService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -28,9 +28,9 @@ describe('DatasetsComponent', () => {
 
       },
       lbl: {
-        program: "Program Name",
-        solution: "Solution Name",
-        reportType: "Report Type",
+        program: 'Program Name',
+        solution: 'Solution Name',
+        reportType: 'Report Type',
         csvDataSets: 'CSV Datasets',
         programDatasets: 'Program Datasets',
         detailsReports: 'Details Reports',
@@ -95,7 +95,7 @@ describe('DatasetsComponent', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: mockData.userProfile });
     userService._userProfile = mockData.userProfile;
-    component.userRoles= mockData.userProfile.roles;
+    component.userRoles = mockData.userProfile.roles;
     const kendraService = TestBed.get(KendraService);
     spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.programs));
     component.getProgramsList();
@@ -107,7 +107,7 @@ describe('DatasetsComponent', () => {
     const kendraService = TestBed.get(KendraService);
     component.programs = mockData.programs.result;
     spyOn(kendraService, 'get').and.returnValue(observableOf({ result: mockData.solutions.result }));
-    component.programSelection("5f34ec17585244939f89f90c");
+    component.programSelection('5f34ec17585244939f89f90c');
     expect(component.solutions).toEqual(mockData.solutions.result);
 
   });
@@ -119,11 +119,11 @@ describe('DatasetsComponent', () => {
     component.solutions = [];
     spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.solutions));
     component.getSolutionList({
-      "_id": "5f34e44681871d939950bca6",
-      "externalId": "TN-Program-1597301830708",
-      "name": "TN-Program",
-      "description": "TN01-Mantra4Change-APSWREIS School Leader Feedback",
-      "role": "PM"
+      '_id': '5f34e44681871d939950bca6',
+      'externalId': 'TN-Program-1597301830708',
+      'name': 'TN-Program',
+      'description': 'TN01-Mantra4Change-APSWREIS School Leader Feedback',
+      'role': 'PM'
     });
     expect(component.solutions).toEqual(mockData.solutions.result);
 
@@ -153,28 +153,28 @@ describe('DatasetsComponent', () => {
 
   it('should populate data as submit request succeess', () => {
     component.tag = 'mockTag';
-    component.programSelected ="5f34ec17585244939f89f90c"
+    component.programSelected = '5f34ec17585244939f89f90c';
     component.userId = 'userId';
     component.reportForm.get('reportType').setValue(['Status Report']);
     component.reportForm.get('solution').setValue(['01285019302823526477']);
     component.selectedReport =  {
-      "name": "Status Report",
-      "encrypt": false,
-      "datasetId": "ml-observation-status-report"
+      'name': 'Status Report',
+      'encrypt': false,
+      'datasetId': 'ml-observation-status-report'
     };
-    component.onDemandReportData = [{1: 'a' ,requestId:"0",dataset: 'ml-observation-status-report0',datasetConfig:{ title:"Status Report",type:"ml-observation-status-report0" } }];
+    component.onDemandReportData = [{1: 'a' , requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }];
     component.reportTypes = mockData.FormData['observation'];
     const onDemandReportService = TestBed.get(OnDemandReportService);
-    spyOn(onDemandReportService, 'submitRequest').and.returnValue(observableOf({result: {requestId:"1", datasetConfig: { title:"Status Report",type:"ml-observation-status-report" }, title:"Status Report",2: 'b', dataset: 'ml-observation-status-report'}}));
+    spyOn(onDemandReportService, 'submitRequest').and.returnValue(observableOf({result: {requestId: '1', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report' }, title: 'Status Report', 2: 'b', dataset: 'ml-observation-status-report'}}));
     component.submitRequest();
     expect(component.onDemandReportData).toEqual([{
-      requestId:"1", datasetConfig: { title:"Status Report",type:"ml-observation-status-report" 
-    }, title:"Status Report",2: 'b', dataset: 'ml-observation-status-report'
-  }, {1: 'a',requestId:"0",dataset: 'ml-observation-status-report0',datasetConfig:{ title:"Status Report",type:"ml-observation-status-report0" } }]);
+      requestId: '1', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report'
+    }, title: 'Status Report', 2: 'b', dataset: 'ml-observation-status-report'
+  }, {1: 'a', requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }]);
   });
 
 
-  
+
   it('should call getFormDetails', fakeAsync(() => {
 
     const formService = TestBed.get(FormService);
@@ -184,13 +184,13 @@ describe('DatasetsComponent', () => {
 
   }));
 
-  it('should call selectSolution',fakeAsync(() => {
-    
+  it('should call selectSolution', fakeAsync(() => {
+
     const spy = spyOn(component, 'selectSolution').and.callThrough();
     tick(1000);
-    component.programSelected = "5f34ec17585244939f89f90c";
+    component.programSelected = '5f34ec17585244939f89f90c';
     component.formData = mockData.FormData;
-    
+
     component.onDemandReportData = [];
     const onDemandReportService = TestBed.get(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
@@ -198,18 +198,18 @@ describe('DatasetsComponent', () => {
     tick(1000);
     component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
     component.solutions = mockData.solutions.result;
-    component.selectSolution("5f34ec17585244939f89f90d");
+    component.selectSolution('5f34ec17585244939f89f90d');
     expect(spy).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([
       {
-        "name": "Question Report",
-        "encrypt": true,
-        "datasetId": "ml-observation-question-report"
+        'name': 'Question Report',
+        'encrypt': true,
+        'datasetId': 'ml-observation-question-report'
       },
       {
-        "name": "Status Report",
-        "encrypt": false,
-        "datasetId": "ml-observation-status-report"
+        'name': 'Status Report',
+        'encrypt': false,
+        'datasetId': 'ml-observation-status-report'
       }
     ]);
     flush();
@@ -217,13 +217,13 @@ describe('DatasetsComponent', () => {
 
   }));
 
-  it('should call selectSolution with survey',fakeAsync(() => {
+  it('should call selectSolution with survey', fakeAsync(() => {
 
     const spy = spyOn(component, 'selectSolution').and.callThrough();
     tick(1000);
-    component.programSelected = "5f34ec17585244939f89f90c";
+    component.programSelected = '5f34ec17585244939f89f90c';
     component.formData = mockData.FormData;
-    
+
     component.onDemandReportData = [];
     const onDemandReportService = TestBed.get(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
@@ -231,10 +231,10 @@ describe('DatasetsComponent', () => {
 
     tick(1000);
     component.solutions = mockData.solutions.result;
-    component.selectSolution("5fbb75537380505718640438");
+    component.selectSolution('5fbb75537380505718640438');
     expect(spy).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([]);
-  
+
 
   }));
 

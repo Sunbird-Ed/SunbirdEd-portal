@@ -161,7 +161,7 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
   get groupData() {
     return this._groupData;
   }
-  
+
   emitCloseForm() {
     this.closeForm.emit();
   }

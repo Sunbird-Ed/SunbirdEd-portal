@@ -65,7 +65,7 @@ describe('ActivityDashboardDirective', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
         { provide: ElementRef, useValue: elementRefStub },
-        { provide: ResourceService, useValue: resourceBundleStub },],
+        { provide: ResourceService, useValue: resourceBundleStub }, ],
       schemas: [NO_ERRORS_SCHEMA]
     });
     directive = TestBed.get(ActivityDashboardDirective);
@@ -80,7 +80,7 @@ describe('ActivityDashboardDirective', () => {
   });
 
   it('should call navigateToActivityDashboard()', () => {
-    directive.hierarchyData = { identifier: '123', primaryCategory: 'Course' }
+    directive.hierarchyData = { identifier: '123', primaryCategory: 'Course' };
     spyOn(directive, 'addTelemetry').and.stub();
     directive.navigateToActivityDashboard();
     expect(directive.addTelemetry).toHaveBeenCalled();

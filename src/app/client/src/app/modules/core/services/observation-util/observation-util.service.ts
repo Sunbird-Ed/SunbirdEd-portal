@@ -40,16 +40,14 @@ export class ObservationUtilService {
         if (profileData &&
           profileData.userProfile &&
           profileData.userProfile['profileUserType'] &&
-          profileData.userProfile['profileUserType']['type'] === 'administrator')
-          {
+          profileData.userProfile['profileUserType']['type'] === 'administrator') {
           if (profileData.userProfile['profileUserType']['subType'] === null) {
             return false;
           } else {
             return true;
           }
-        }
-        else{
-          return true
+        } else {
+          return true;
         }
       })
       .catch((error) => { });
@@ -128,11 +126,11 @@ export class ObservationUtilService {
         }
       }
 
-      const roles = []
-      for (const userRole of profileData.value["profileUserTypes"]) {
+      const roles = [];
+      for (const userRole of profileData.value['profileUserTypes']) {
        userRole.subType ? roles.push(userRole.subType.toUpperCase()) : roles.push(userRole.type.toUpperCase());
-      }   
-      obj['role'] = roles.toString()
+      }
+      obj['role'] = roles.toString();
       this.dataParam = obj;
       resolve(obj);
     });
@@ -193,7 +191,7 @@ export class ObservationUtilService {
             resolve(data);
           }
         }, (error) => {
-          reject()
+          reject();
         });
     });
    }
