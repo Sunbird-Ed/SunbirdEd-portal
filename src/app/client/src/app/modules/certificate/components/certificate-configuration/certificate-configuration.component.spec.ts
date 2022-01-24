@@ -344,7 +344,7 @@ describe('CertificateConfigurationComponent', () => {
     expect(component.isTemplateChanged).toBeTruthy();
   });
 
-  it('should attach the certificate on "update certificate" button click if template change not detected', () => {
+  xit('should attach the certificate on "update certificate" button click if template change not detected', () => {
     /** Arrange */
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
     component.templateIdentifier = 'SOME_IDENTIFIER';

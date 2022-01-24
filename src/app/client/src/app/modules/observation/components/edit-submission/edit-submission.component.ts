@@ -26,7 +26,9 @@ export class EditSubmissionComponent implements OnInit {
         public location: LocationStrategy,
     ) {
         this.location.onPopState(() => {
-            this.modal.deny();
+            if(this.modal){
+                this.modal.deny();
+            }
         });
     }
     ngOnInit() {
@@ -34,11 +36,15 @@ export class EditSubmissionComponent implements OnInit {
     }
 
     closeModal() {
-        this.modal.deny();
+        if(this.modal){
+            this.modal.deny();
+        }
         this.onAction.emit({ action: this.editData.action, data: null });
     }
     submit() {
-        this.modal.approve();
+        if(this.modal){
+            this.modal.deny();
+        }
         this.onAction.emit({ action: this.editData.action, data: this.updatedValue, returnParams: this.editData.returnParams });
     }
 }
