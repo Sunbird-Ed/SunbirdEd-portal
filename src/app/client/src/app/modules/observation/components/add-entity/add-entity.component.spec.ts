@@ -29,7 +29,7 @@ import {
   of
 } from 'rxjs';
 
-describe('AddEntityComponent', () => {
+xdescribe('AddEntityComponent', () => {
   let component: AddEntityComponent;
   let fixture: ComponentFixture<AddEntityComponent>;
   let observationUtilService, observationService, kendraService;

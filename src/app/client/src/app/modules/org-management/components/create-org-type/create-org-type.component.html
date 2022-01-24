@@ -1,69 +1,50 @@
-<sui-modal
-    [mustScroll]="true" 
-    [isClosable]="true"
-    [transitionDuration]="0"
-    [size]="'normal'"
-    class="sb-modal"
-    appBodyScroll  
-    (dismissed)="redirect();"
-    #modal 
-    [appTelemetryImpression]="telemetryImpression"
-    >
+<app-modal-wrapper [config]="{disableClose: false, size: 'normal'}" (dismiss)="redirect()" #modal>
+    <ng-template sbModalContent>
+        <div class="sb-modal">
+            <div class="transition ui dimmer page modals active visible">
+                <div class="ui modal transition active visible normal" [appTelemetryImpression]="telemetryImpression">
 
-    <!--Header-->
-    <div 
-        *ngIf="createForm" 
-        class="sb-modal-header"
-    >
-        {{resourceService?.frmelmnts?.lbl?.addorgtype}}
-    </div>
-    <div 
-        *ngIf="!createForm" 
-        class="sb-modal-header">
-            {{resourceService?.frmelmnts?.lbl?.updateorgtype}}
-    </div>
-    <!--/Header-->
+                    <!--Header-->
+                    <div *ngIf="createForm" class="sb-modal-header">
+                        {{resourceService?.frmelmnts?.lbl?.addorgtype}}
+                    </div>
+                    <div *ngIf="!createForm" class="sb-modal-header">
+                        {{resourceService?.frmelmnts?.lbl?.updateorgtype}}
+                    </div>
+                    <!--/Header-->
 
-    <!--Content-->
-    <div class="sb-modal-content">
-        <div class="ui fluid icon input">
-            <input *ngIf="createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.addorgtype}}">
-            <input *ngIf="!createForm" class="form-control" [formControl]="orgName" type="text" placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
+                    <!--Content-->
+                    <div class="sb-modal-content">
+                        <div class="ui fluid icon input">
+                            <input *ngIf="createForm" class="form-control" [formControl]="orgName" type="text"
+                                placeholder="{{resourceService?.frmelmnts?.lbl?.addorgtype}}">
+                            <input *ngIf="!createForm" class="form-control" [formControl]="orgName" type="text"
+                                placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
+                        </div>
+                    </div>
+                    <!--/Content-->
+
+                    <!--Actions-->
+                    <div class="sb-modal-actions">
+                        <button class="sb-btn sb-btn-normal sb-btn-primary" *ngIf="createForm" tabindex="0"
+                            (click)="disableApproveBtn=true; addOrgType()" [class.disabled]="disabled"
+                            appTelemetryInteract [telemetryInteractEdata]="addOrganizationType">
+                            {{resourceService?.frmelmnts?.btn?.add}}
+                        </button>
+                        <button class="sb-btn sb-btn-normal sb-btn-primary" *ngIf="!createForm" tabindex="0"
+                            (click)="disableApproveBtn=true; updateOrgType()" [class.disabled]="disabled"
+                            appTelemetryInteract [telemetryInteractEdata]="updateOrganizationType">
+                            {{resourceService?.frmelmnts?.btn?.update}}
+                        </button>
+                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="modal.deny()"
+                            appTelemetryInteract [telemetryInteractEdata]="cancelModal">
+                            {{resourceService?.frmelmnts?.btn?.cancel}}
+                        </button>
+                    </div>
+                    <!--/Actions-->
+
+                </div>
+            </div>
         </div>
-    </div>
-    <!--/Content-->
-
-    <!--Actions-->
-    <div class="sb-modal-actions">
-        <button 
-            class="sb-btn sb-btn-normal sb-btn-primary"
-            *ngIf="createForm" tabindex="0"
-            (click)="disableApproveBtn=true; addOrgType()" 
-            [class.disabled]="disabled"
-            appTelemetryInteract 
-            [telemetryInteractEdata]="addOrganizationType"
-        >
-            {{resourceService?.frmelmnts?.btn?.add}}
-        </button>
-        <button
-            class="sb-btn sb-btn-normal sb-btn-primary"
-            *ngIf="!createForm" 
-            tabindex="0" (click)="disableApproveBtn=true; updateOrgType()" 
-            [class.disabled]="disabled"
-            appTelemetryInteract 
-            [telemetryInteractEdata]="updateOrganizationType"
-        >
-            {{resourceService?.frmelmnts?.btn?.update}}
-        </button>
-        <button
-            class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-            tabindex="0" (click)="modal.deny()"
-            appTelemetryInteract 
-            [telemetryInteractEdata]="cancelModal"
-        >
-            {{resourceService?.frmelmnts?.btn?.cancel}}
-        </button>
-    </div>
-    <!--/Actions-->
-
-</sui-modal>
+    </ng-template>
+</app-modal-wrapper>
