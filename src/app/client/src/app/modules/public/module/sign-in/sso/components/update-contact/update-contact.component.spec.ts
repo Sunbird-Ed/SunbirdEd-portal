@@ -14,6 +14,7 @@ import {of as observableOf, Observable, throwError as observableThrowError} from
 import {TenantService, UserService, OtpService, OrgDetailsService} from '@sunbird/core';
 import {mockUpdateContactData} from './update-contact.mock.spec.data';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { configureTestSuite } from '@sunbird/test-util';
 
@@ -32,7 +33,7 @@ describe('UpdateContactComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule, FormsModule, HttpClientTestingModule,
-        SuiModule, TelemetryModule.forRoot(), RouterTestingModule],
+        SuiModule, TelemetryModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
       declarations: [UpdateContactComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
