@@ -355,7 +355,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
-        type: content ? _.get(content, 'contentType') : 'Course',
+        type: content ? _.get(content, 'primaryCategory') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
