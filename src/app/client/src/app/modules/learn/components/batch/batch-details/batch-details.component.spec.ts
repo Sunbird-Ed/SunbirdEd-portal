@@ -352,14 +352,14 @@ describe('BatchDetailsComponent', () => {
     component.showMessageModal = true;
     expect(component.showMessageModal).toBeTruthy();
   });
-  it('should have the default values for some of the variables',() => {
+  it('should have the default values for some of the variables', () => {
     expect(component.showCertificateDetails).toBeFalsy();
     expect(component.showCompletionCertificate).toBeFalsy();
     expect(component.showMeritCertificate).toBeFalsy();
     expect(component.meritCertPercent).toEqual(0);
   });
 
-  it('should call the courseBatch details and cert details',() => {
+  it('should call the courseBatch details and cert details', () => {
     component.batchList = allBatchDetails.result.response.content;
     component.ShowCertDetails();
     expect(component.showCertificateDetails).toBeTruthy();
@@ -367,7 +367,7 @@ describe('BatchDetailsComponent', () => {
     expect(component.showMeritCertificate).toBeTruthy();
     expect(component.meritCertPercent).toEqual(70);
   });
-  it('should call the courseBatch details and cert details with enrolled batch',() => {
+  it('should call the courseBatch details and cert details with enrolled batch', () => {
     component.enrolledBatchInfo = allBatchDetails.result.response.content[0];
     component.ShowCertDetails(true);
     expect(component.showCertificateDetails).toBeTruthy();

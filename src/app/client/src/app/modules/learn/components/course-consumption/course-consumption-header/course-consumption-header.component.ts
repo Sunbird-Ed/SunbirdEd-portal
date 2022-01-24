@@ -116,7 +116,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
-  
+
   ngOnInit() {
     this.isGroupAdmin = _.get(this.groupService, 'groupData.isAdmin');
     this.isDesktopApp = this.utilService.isDesktopApp;

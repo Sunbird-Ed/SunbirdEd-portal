@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { ObservationService, KendraService,ObservationUtilService } from '@sunbird/core';
+import { ObservationService, KendraService, ObservationUtilService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import { debounceTime, map } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
@@ -37,7 +37,7 @@ export class AddEntityComponent implements OnInit {
         private kendraService: KendraService,
         public resourceService: ResourceService,
         public observationUtilService: ObservationUtilService,
-        config: ConfigService, public location: LocationStrategy,) {
+        config: ConfigService, public location: LocationStrategy, ) {
         this.config = config;
         this.location.onPopState(() => {
             this.modal.approve();

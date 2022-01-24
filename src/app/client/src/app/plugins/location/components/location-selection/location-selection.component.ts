@@ -21,8 +21,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   @ViewChild('onboardingModal', { static: true }) onboardingModal;
   telemetryImpression: IImpressionEventInput;
   sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
-  isSubmitted:boolean=false;
-  public locationSelectionModalId = "location-selection";
+  isSubmitted = false;
+  public locationSelectionModalId = 'location-selection';
 
   constructor(
     public resourceService: ResourceService,
@@ -84,7 +84,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     const dialogRef = this.matDialog.getDialogById(this.locationSelectionModalId);
     dialogRef && dialogRef.close();
     this.popupControlService.changePopupStatus(true);
-    this.close.emit({isSubmitted:this.isSubmitted});
+    this.close.emit({isSubmitted: this.isSubmitted});
   }
 
   async updateUserLocation() {
@@ -109,7 +109,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     } catch (e) {
       this.toasterService.error(this.resourceService.messages.fmsg.m0049);
     } finally {
-      this.isSubmitted=true;
+      this.isSubmitted = true;
       this.closeModal();
     }
   }

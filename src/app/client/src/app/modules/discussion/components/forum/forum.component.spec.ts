@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ForumComponent } from './forum.component';
 import { configureTestSuite } from '@sunbird/test-util';
 import { APP_BASE_HREF, Location } from '@angular/common';
@@ -29,7 +29,7 @@ describe('ForumComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ForumComponent],
-      imports: [SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
+      imports: [SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },

@@ -1,6 +1,6 @@
 import { ResourceService, ConfigService, PaginationService, LayoutService, NavigationHelperService } from '@sunbird/shared';
 import { SolutionListingComponent } from './solution-listing.component';
-import { ObservationService, UserService, TncService,ObservationUtilService } from '@sunbird/core';
+import { ObservationService, UserService, TncService, ObservationUtilService } from '@sunbird/core';
 import {
   ObservationData,
   profileData,
@@ -77,7 +77,7 @@ describe('SolutionListingComponent', () => {
   };
   const mockNavigationHelperService: Partial<NavigationHelperService> = {
     goBack: () => {}
-  }
+  };
   beforeAll(() => {
     component = new SolutionListingComponent(
       mockResourceService as ResourceService,

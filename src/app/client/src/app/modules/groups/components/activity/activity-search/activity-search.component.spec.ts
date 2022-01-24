@@ -156,7 +156,7 @@ describe('ActivitySearchComponent', () => {
     component['fetchContents']();
     searchService.contentSearch(activitySearchMockData.searchReq, false).subscribe(data => {
       expect(data.result).toEqual(activitySearchMockData.searchRes.result);
-    })
+    });
     expect(component.showLoader).toBe(false);
   });
 

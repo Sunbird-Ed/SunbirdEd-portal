@@ -17,7 +17,7 @@ import { SlickModule } from 'ngx-slick';
 import { ExplorePageComponent } from './components';
 import { ContentSectionModule } from 'content-section';
 import {ObservationModule} from '../observation/observation.module';
- 
+
 @NgModule({
   declarations: [ExplorePageComponent],
   imports: [
@@ -30,7 +30,7 @@ import {ObservationModule} from '../observation/observation.module';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule, SlickModule, ContentSectionModule,ObservationModule
+    CommonConsumptionModule, ContentSearchModule, SlickModule, ContentSectionModule, ObservationModule
   ]
 })
 export class ExplorePageModule { }

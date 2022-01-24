@@ -513,7 +513,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       });
     } else {
       this.playerConfig.context.userData = {
-        firstName: this.userService.guestUserProfile.formatedName || 'Guest', 
+        firstName: this.userService.guestUserProfile.formatedName || 'Guest',
         lastName: ''
       };
     }

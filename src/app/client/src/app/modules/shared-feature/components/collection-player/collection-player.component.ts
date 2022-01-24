@@ -137,7 +137,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.isGroupAdmin = !_.isEmpty(_.get(this.route.snapshot, 'queryParams.groupId')) && _.get(data.params, 'groupData.isAdmin');
       this.groupId = _.get(data, 'groupId') || _.get(this.route.snapshot, 'queryParams.groupId');
     });
- 
+
     if (this.isDesktopApp) {
       this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe(contentDownloadStatus => {
         this.contentDownloadStatus = contentDownloadStatus;

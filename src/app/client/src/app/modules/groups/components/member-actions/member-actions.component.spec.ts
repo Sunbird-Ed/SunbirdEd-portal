@@ -8,7 +8,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { MemberActionsComponent } from './member-actions.component';
 import { configureTestSuite } from '@sunbird/test-util';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 describe('MemberActionsComponent', () => {
   let component: MemberActionsComponent;
   let fixture: ComponentFixture<MemberActionsComponent>;
@@ -29,7 +29,7 @@ describe('MemberActionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MemberActionsComponent],
-      imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule],
+      imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule, BrowserAnimationsModule],
       providers: [TelemetryService,
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ResourceService, useValue: resourceBundle }

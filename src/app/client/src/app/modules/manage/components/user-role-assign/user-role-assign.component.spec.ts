@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { CoreModule, UserService,  PermissionService, SearchService,ObservationUtilService} from '@sunbird/core';
+import { CoreModule, UserService,  PermissionService, SearchService, ObservationUtilService} from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule } from '@sunbird/shared';
@@ -19,15 +19,15 @@ describe('UserRoleAssignComponent', () => {
   let component: UserRoleAssignComponent;
   let fixture: ComponentFixture<UserRoleAssignComponent>;
   let observationUtilService;
-  
+
   beforeEach(async(() => {
-    
+
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule,
         FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TranslateModule.forRoot(), SharedModule.forRoot()],
       declarations: [ UserRoleAssignComponent ],
       providers: [TelemetryService, ObservationUtilService, ConfigService, ResourceService,
-        BrowserCacheTtlService,ToasterService, UserService, PermissionService, SearchService],
+        BrowserCacheTtlService, ToasterService, UserService, PermissionService, SearchService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
@@ -35,7 +35,7 @@ describe('UserRoleAssignComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserRoleAssignComponent);
-    observationUtilService=TestBed.get(ObservationUtilService)
+    observationUtilService = TestBed.get(ObservationUtilService);
     component = fixture.componentInstance;
     fixture.detectChanges();
     const userService = TestBed.get(UserService);
@@ -52,13 +52,13 @@ describe('UserRoleAssignComponent', () => {
     component.deleteRole(item);
     expect(component.deleteRole).toHaveBeenCalledWith(item);
   });
-  
+
   it('should call enableAssignRole method', () => {
     spyOn(component, 'enableAssignRole').and.callThrough();
     component.enableAssignRole();
     expect(component.enableAssignRole).toHaveBeenCalled();
     expect(component.showAssignRole).toBeTruthy();
-    component.showAssignRole = true
+    component.showAssignRole = true;
     component.enableAssignRole();
     expect(component.showAssignRole).toBeFalsy();
   });
@@ -68,7 +68,7 @@ describe('UserRoleAssignComponent', () => {
     component.editRole(item);
     expect(component.editRole).toHaveBeenCalledWith(item);
     expect(component.showAssignRole).toBeTruthy();
-    component.showAssignRole = true
+    component.showAssignRole = true;
     component.editRole(item);
     expect(component.showAssignRole).toBeFalsy();
   });
@@ -87,7 +87,7 @@ describe('UserRoleAssignComponent', () => {
     expect(component.getOrgDetails).toHaveBeenCalled();
   });
   it('should call getAllRoles to get all the roles', () => {
-    const removeRole = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC']
+    const removeRole = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC'];
     const getAllRolesSpy = spyOn(component, 'getAllRoles');
     const permissionService = TestBed.get(PermissionService);
     component.getAllRoles(removeRole);
@@ -95,7 +95,7 @@ describe('UserRoleAssignComponent', () => {
     expect(getAllRolesSpy).toHaveBeenCalledTimes(1);
   });
   it('should call onEnter ', () => {
-    const key ='rajtest11936'
+    const key = 'rajtest11936';
     const searchService = TestBed.get(SearchService);
     spyOn(component, 'onEnter').and.callThrough();
     component.onEnter(key);
@@ -106,12 +106,12 @@ describe('UserRoleAssignComponent', () => {
   it('should call manipulateUserObject ', () => {
     const roleList = ['BOOK_REVIEWER'];
     const objectToGetCreated = [{
-      'role':'BOOK_REVIEWER',
+      'role': 'BOOK_REVIEWER',
       'orgName': 'tamilnadu',
       'orgId': '01269878797503692810',
       'roleName': 'Book Reviewer'
-    }]
-    component.allRoles = mockObject.roleList; 
+    }];
+    component.allRoles = mockObject.roleList;
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: mockObject.userMockData });
     userService._rootOrgId = '01269878797503692810';

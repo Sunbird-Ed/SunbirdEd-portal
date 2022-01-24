@@ -163,7 +163,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
       'context': {
         'env': 'onboarding',
         'cdata': [
-          { id: code, type: 'UserType' },     
+          { id: code, type: 'UserType' },
         ]
       },
       'object': {
@@ -177,7 +177,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
           'profile_type'
         ],
         'type': 'set-usertype',
-        'prevstate':'set-usertype',
+        'prevstate': 'set-usertype',
       }
     };
     this.telemetryService.audit(auditEventInput);

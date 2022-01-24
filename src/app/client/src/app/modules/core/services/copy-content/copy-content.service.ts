@@ -74,7 +74,7 @@ export class CopyContentService {
             return response;
           }));
         })
-      )
+      );
     }));
   }
   /**
@@ -156,7 +156,7 @@ export class CopyContentService {
           }
           return of(req);
         })
-      )
+      );
     }
   }
 
