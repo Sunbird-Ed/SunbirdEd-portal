@@ -24,6 +24,7 @@ export class UserOnboardingComponent implements OnInit {
   @Input() deviceProfile: IDeviceProfile;
   @Input() isCustodianOrgUser: boolean;
   @Output() close = new EventEmitter<void>();
+  @ViewChild('modal') modal;
 
   get Stage() { return Stage; }
   stage;
@@ -74,7 +75,7 @@ export class UserOnboardingComponent implements OnInit {
     } else {
       role$ = this.getRoleFromLocalStorage();
     }
-    
+
     return role$.pipe(
       takeUntil(this.unsubscribe$),
       tap(userType => {
@@ -91,7 +92,7 @@ export class UserOnboardingComponent implements OnInit {
     const role$ = guestUserDetails$.pipe(
       map(guestUser => _.get(guestUser, 'role')),
       catchError(_ => of(null))
-    )
+    );
     return role$;
   }
 
@@ -108,7 +109,9 @@ export class UserOnboardingComponent implements OnInit {
   }
 
   userTypeSubmit() {
-    this.stage = Stage.LOCATION_SELECTION;
+    // this.stage = Stage.LOCATION_SELECTION;
+    this.close.emit();
+    this.modal.deny();
   }
 
   locationSubmit() {

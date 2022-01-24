@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core
 import * as _ from 'lodash-es';
 import { BrowseImagePopupComponent } from './browse-image-popup.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
+import { BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService , SharedModule} from '@sunbird/shared';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { MockData } from './../create-template/create-template.component.spec.data';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
@@ -29,7 +29,7 @@ describe('BrowseImagePopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, FormsModule, CoreModule, ReactiveFormsModule, HttpClientTestingModule],
+      imports: [SuiModule, FormsModule, CoreModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule],
       providers: [
         ConfigService,
         ToasterService,

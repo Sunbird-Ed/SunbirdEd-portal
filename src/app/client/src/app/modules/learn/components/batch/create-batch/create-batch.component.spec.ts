@@ -385,5 +385,5 @@ describe('CreateBatchComponent', () => {
     component.createBatchForm.controls.startDate.setValue(startDate);
     result = component.getPickerMinDateForEndDate();
     expect(result).toEqual(new Date(startDate.getTime() + (24 * 60 * 60 * 1000)));
-  })
+  });
 });

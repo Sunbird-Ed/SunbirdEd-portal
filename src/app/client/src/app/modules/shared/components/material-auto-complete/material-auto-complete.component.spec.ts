@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick,flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
 import { MaterialAutoCompleteComponent } from './material-auto-complete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
-import { AutocompletePipe } from './auto-complete-pipe'
+import { AutocompletePipe } from './auto-complete-pipe';
 
 describe('MaterialAutoCompleteComponent', () => {
   let component: MaterialAutoCompleteComponent;
@@ -11,8 +11,8 @@ describe('MaterialAutoCompleteComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports:[],
-      declarations: [ MaterialAutoCompleteComponent,AutocompletePipe ]
+      imports: [],
+      declarations: [ MaterialAutoCompleteComponent, AutocompletePipe ]
     })
     .compileComponents();
   }));
@@ -31,24 +31,24 @@ describe('MaterialAutoCompleteComponent', () => {
 
   it('should call DropdownValueSelected ', fakeAsync(() => {
 
-    component.dropdownList = ["a","b","c"];
+    component.dropdownList = ['a', 'b', 'c'];
     component.ngOnChanges();
     tick(1000);
 
 
-    component.selected = ["a","b"];
-    component.DropdownValueSelected("c");
-    expect(component.selected).toEqual(["a","b","c"]);
+    component.selected = ['a', 'b'];
+    component.DropdownValueSelected('c');
+    expect(component.selected).toEqual(['a', 'b', 'c']);
     tick(1000);
 
-    component.selected = ["a","b"];
-    component.DropdownValueSelected("a");
-    expect(component.selected).toEqual(["b"]);
+    component.selected = ['a', 'b'];
+    component.DropdownValueSelected('a');
+    expect(component.selected).toEqual(['b']);
 
   }));
   it('should call dropDownSelectedShow ', fakeAsync(() => {
 
-    component.dropdownList = ["a","b","c"];
+    component.dropdownList = ['a', 'b', 'c'];
     component.ngOnChanges();
 
     tick(1000);
@@ -57,7 +57,7 @@ describe('MaterialAutoCompleteComponent', () => {
     expect(component.selectedDpdwnInput).toEqual('0 selections');
 
     tick(1000);
-    component.selected = ["a"];
+    component.selected = ['a'];
     component.dropDownSelectedShow();
     expect(component.selectedDpdwnInput).toEqual('1 selections');
     flush();
@@ -65,9 +65,9 @@ describe('MaterialAutoCompleteComponent', () => {
   }));
   it('should call DisplayDropdown ', fakeAsync(() => {
 
-    component.dropdownList = ["a","b","c"];
+    component.dropdownList = ['a', 'b', 'c'];
     component.ngOnChanges();
-    
+
     component.DisplayDropdown();
     tick(1000);
     expect(component.displayDropdown).toEqual(true);
@@ -75,17 +75,17 @@ describe('MaterialAutoCompleteComponent', () => {
   }));
   it('should call isChecked ', fakeAsync(() => {
 
-    component.dropdownList = ["a","b","c"];
+    component.dropdownList = ['a', 'b', 'c'];
     component.ngOnChanges();
 
     tick(1000);
-    component.selected = ["a"];
-    const res=  component.isChecked("a");
+    component.selected = ['a'];
+    const res =  component.isChecked('a');
     expect(res).toEqual(true);
 
     tick(1000);
-    component.selected = ["a"];
-    const res2 = component.isChecked("b");
+    component.selected = ['a'];
+    const res2 = component.isChecked('b');
     expect(res2).toEqual(false);
 
   }));

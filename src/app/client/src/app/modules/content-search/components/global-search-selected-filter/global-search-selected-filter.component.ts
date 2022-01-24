@@ -39,8 +39,8 @@ export class GlobalSearchSelectedFilterComponent {
       });
       this.selectedFilters.channel = channelIds;
     }
-    if(!_.get(this.selectedFilters,'selectedTab') && _.get(queryFilters,'selectedTab')){
-      this.selectedFilters['selectedTab'] = _.get(queryFilters,'selectedTab');
+    if (!_.get(this.selectedFilters, 'selectedTab') && _.get(queryFilters, 'selectedTab')) {
+      this.selectedFilters['selectedTab'] = _.get(queryFilters, 'selectedTab');
     }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);

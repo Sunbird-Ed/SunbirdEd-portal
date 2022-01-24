@@ -510,7 +510,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   navigateToCourse(coursedata) {
     const courseId = _.get(coursedata, 'courseId');
-    const batchId = _.get(coursedata, 'batchId')
+    const batchId = _.get(coursedata, 'batchId');
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),

@@ -85,12 +85,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartCanvas') chartCanvas;
   filterType = 'chart-filter';
   dateFilters: Array<string>;
-  dialogRef:any;
+  dialogRef: any;
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
-    private usageService: UsageService, private reportService: ReportService,private dialog: MatDialog) {
+    private usageService: UsageService, private reportService: ReportService, private dialog: MatDialog) {
     this.alwaysShowCalendars = true;
   }
 
@@ -99,11 +99,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
-    this.chartSummarylabel = "Add " + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
+    this.chartSummarylabel = 'Add ' + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
-   
+
     this.prepareChart();
     this.setTelemetryCdata();
     this.cdr.detectChanges();
@@ -402,16 +402,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input()
   set globalFilter(val: any) {
-    if(val && val.chartData){
-      let updatedChartData = val.chartData.filter(chart=>{
-        if(chart && chart.id){
-          if(this.chartConfig['id']==chart.id){
+    if (val && val.chartData) {
+      const updatedChartData = val.chartData.filter(chart => {
+        if (chart && chart.id) {
+          if (this.chartConfig['id'] == chart.id) {
             return chart.data;
           }
         }
       });
 
-      if(updatedChartData && updatedChartData[0] &&  updatedChartData[0].data){
+      if (updatedChartData && updatedChartData[0] &&  updatedChartData[0].data) {
         delete updatedChartData[0].data['selectedFilters'];
         this.chartData = updatedChartData[0].data;
         this.cdr.detectChanges();
@@ -456,13 +456,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
   filterModalPopup(operator) {
 
     if (operator == false) {
-      this.closeDialog()
+      this.closeDialog();
       this.cdr.detectChanges();
     } else {
       if (this.currentFilters) {
         this.chartData['selectedFilters'] = this.currentFilters;
-        this.resetFilters = { data: this.chartData,reset:true };
-      }else {
+        this.resetFilters = { data: this.chartData, reset: true };
+      } else {
         this.chartData['selectedFilters'] = {};
       }
       this.cdr.detectChanges();
@@ -483,16 +483,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
       return false;
     }
   }
-  getChartData(){
-    return [{ id:this.chartConfig.id ,data: this.chartData , selectedFilters:this.currentFilters }];
+  getChartData() {
+    return [{ id: this.chartConfig.id , data: this.chartData , selectedFilters: this.currentFilters }];
   }
   openDialog() {
-    if(this.filterPopUpMat){
+    if (this.filterPopUpMat) {
       this.dialogRef = this.dialog.open(this.filterPopUpMat);
     }
   }
   closeDialog() {
-    if(this.dialogRef){
+    if (this.dialogRef) {
       this.dialogRef.close();
     }
   }

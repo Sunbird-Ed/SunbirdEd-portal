@@ -364,15 +364,15 @@ export const mockRes = {
             'COURSE_MENTOR': ['01285019302823526477', 'ORG_001'],
             'COURSE_CREATOR': ['01285019302823526477', 'ORG_001']
         },
-        'userOrgDetails':{
+        'userOrgDetails': {
             'PUBLIC': {
-                'orgId':'01285019302823526477', 
-                'orgName':'ORG_001'},
+                'orgId': '01285019302823526477',
+                'orgName': 'ORG_001'},
             'COURSE_MENTOR': {
-                'orgId':'01285019302823526477', 'orgName':'ORG_001'},
+                'orgId': '01285019302823526477', 'orgName': 'ORG_001'},
             'COURSE_CREATOR': {
-                'orgId':'01285019302823526477',  'orgName':'ORG_001'}
-        }, 
+                'orgId': '01285019302823526477',  'orgName': 'ORG_001'}
+        },
         'organisationNames': ['CustROOTOrg10', 'Sunbird']
     }
 };

@@ -15,7 +15,7 @@ import * as _ from 'lodash-es';
 import { SuiModule, SuiSelectModule, SuiModalModule } from 'ng2-semantic-ui-v9';
 import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
 import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
-import { of,throwError as observableThrowError } from 'rxjs';
+import { of, throwError as observableThrowError } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import {

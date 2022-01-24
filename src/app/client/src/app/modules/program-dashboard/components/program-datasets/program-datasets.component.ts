@@ -28,8 +28,8 @@ export class DatasetsComponent implements OnInit {
   instance: string;
 
   @ViewChild('modal', { static: false }) modal;
-  popup: boolean = false;
-  awaitPopUp: boolean = false;
+  popup = false;
+  awaitPopUp = false;
   reportStatus = {
     'submitted': 'SUBMITTED',
     'processing': 'PROCESSING',
@@ -102,7 +102,7 @@ export class DatasetsComponent implements OnInit {
   getProgramsList() {
     const paramOptions = {
       url:
-        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
+        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES + '?role=' + this.userRoles.toString()
     };
     this.kendraService.get(paramOptions).subscribe(data => {
       if (data && data.result) {
@@ -110,7 +110,7 @@ export class DatasetsComponent implements OnInit {
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+    });
 
   }
 
@@ -118,7 +118,7 @@ export class DatasetsComponent implements OnInit {
 
     const paramOptions = {
       url:
-        this.config.urlConFig.URLS.KENDRA.SOLUTIONS_BY_PROGRAMID + "/" + program._id + "?role=" + program.role
+        this.config.urlConFig.URLS.KENDRA.SOLUTIONS_BY_PROGRAMID + '/' + program._id + '?role=' + program.role
     };
     this.kendraService.get(paramOptions).subscribe(data => {
       if (data && data.result) {
@@ -126,7 +126,7 @@ export class DatasetsComponent implements OnInit {
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+    });
 
   }
 
@@ -147,7 +147,7 @@ export class DatasetsComponent implements OnInit {
           this.userProfile = user.userProfile;
           this.userRoles = user.userProfile.userRoles;
           this.userId = user.userProfile.id;
-          
+
         }
       });
     this.initLayout();
@@ -159,11 +159,11 @@ export class DatasetsComponent implements OnInit {
   public programSelection($event) {
 
     this.reportForm.reset();
-    let program = this.programs.filter(data => {
+    const program = this.programs.filter(data => {
       if (data._id == $event) {
-        return data
+        return data;
       }
-    })
+    });
 
     this.solutions = [];
     this.reportTypes = [];
@@ -175,24 +175,24 @@ export class DatasetsComponent implements OnInit {
   public selectSolution($event) {
 
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
-      let solution = this.solutions.filter(data => {
+      const solution = this.solutions.filter(data => {
         if (data._id == $event) {
-          return data
+          return data;
         }
       });
-      this.tag = solution[0]._id+"_"+this.userId;
+      this.tag = solution[0]._id + '_' + this.userId;
       this.loadReports();
 
-      let program = this.programSelected;
+      const program = this.programSelected;
       this.reportForm.reset();
       this.reportForm.controls.solution.setValue($event);
       this.reportForm.controls.programName.setValue(program);
 
-      if (solution[0].isRubricDriven == true && solution[0].type == "observation") {
-        let type = solution[0].type + "_with_rubric";
+      if (solution[0].isRubricDriven == true && solution[0].type == 'observation') {
+        const type = solution[0].type + '_with_rubric';
         this.reportTypes = this.formData[type];
       } else {
-        if(this.formData[solution[0].type]){
+        if (this.formData[solution[0].type]) {
           this.reportTypes = this.formData[solution[0].type];
         } else {
           this.reportTypes = [];
@@ -256,17 +256,17 @@ export class DatasetsComponent implements OnInit {
     const isRequestAllowed = this.checkStatus();
     if (isRequestAllowed) {
       this.isProcessed = false;
-      let config = {
+      const config = {
         type: this.selectedReport['datasetId'],
-        params:{
+        params: {
           programId: this.programSelected,
           solutionId: this.reportForm.controls.solution.value,
         },
         title: this.selectedReport.name
-      }
-      let request = {
+      };
+      const request = {
         request: {
-          dataset:'druid-dataset',
+          dataset: 'druid-dataset',
           tag: this.tag,
           requestedBy: this.userId,
           datasetConfig: config,
@@ -274,7 +274,7 @@ export class DatasetsComponent implements OnInit {
 
         }
       };
-     
+
       if (this.selectedReport.encrypt === true) {
         request.request['encryptionKey'] = this.passwordForm.controls.password.value;
       }
@@ -286,21 +286,21 @@ export class DatasetsComponent implements OnInit {
             this.toasterService.error(error);
           } else {
 
-            if(data['result'] && data['result']['requestId']){
+            if (data['result'] && data['result']['requestId']) {
 
-            let dataFound=  this.onDemandReportData.filter(function(submittedReports){
-                 if( submittedReports['requestId']== data['result']['requestId']){
+            const dataFound =  this.onDemandReportData.filter(function(submittedReports) {
+                 if ( submittedReports['requestId'] == data['result']['requestId']) {
                   return data;
                 }
-                
+
               });
 
-              if(dataFound && dataFound.length > 0){              
+              if (dataFound && dataFound.length > 0) {
                 this.popup = false;
                 this.isProcessed = true;
                 setTimeout(() => {
                   this.isProcessed = false;
-                }, 5000)
+                }, 5000);
                 this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
                 this.passwordForm.reset();
 
@@ -314,7 +314,7 @@ export class DatasetsComponent implements OnInit {
               }
             }
           }
-        
+
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -325,7 +325,7 @@ export class DatasetsComponent implements OnInit {
       this.isProcessed = true;
       setTimeout(() => {
         this.isProcessed = false;
-      }, 5000)
+      }, 5000);
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
       this.passwordForm.reset();
     }
@@ -336,20 +336,20 @@ export class DatasetsComponent implements OnInit {
     const formServiceInputParams = {
       formType: 'program-dashboard',
       formAction: 'reportData',
-      contentType: "csv-dataset",
+      contentType: 'csv-dataset',
       component: 'portal'
     };
 
     this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
       if (formData) {
         if (this.userRoles.includes('PROGRAM_DESIGNER')) {
-          let formReportTypes = Object.keys(formData);
+          const formReportTypes = Object.keys(formData);
           formReportTypes.map(key => {
-            let filteredReportTypes = formData[key].filter(ele => {
-              if (ele.roles.includes("PROGRAM_DESIGNER")) {
-                return ele
+            const filteredReportTypes = formData[key].filter(ele => {
+              if (ele.roles.includes('PROGRAM_DESIGNER')) {
+                return ele;
               }
-            })
+            });
             formData[key] = filteredReportTypes;
           });
           this.formData = formData;
@@ -362,7 +362,7 @@ export class DatasetsComponent implements OnInit {
     });
 
   }
-  
+
   checkStatus() {
     let requestStatus = true;
     const selectedReportList = [];
@@ -374,14 +374,14 @@ export class DatasetsComponent implements OnInit {
     const sortedReportList = _.sortBy(selectedReportList, [(data) => {
       return data && data.jobStats && data.jobStats.dtJobSubmitted;
     }]);
-  
+
     const reportListData = _.last(sortedReportList) || {};
-    if (!_.isEmpty(reportListData)) { 
-      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); 
+    if (!_.isEmpty(reportListData)) {
+      const isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus);
       if (!isInProgress) {
         requestStatus = true;
       } else {
-        requestStatus = false; 
+        requestStatus = false;
       }
     }
     return requestStatus;

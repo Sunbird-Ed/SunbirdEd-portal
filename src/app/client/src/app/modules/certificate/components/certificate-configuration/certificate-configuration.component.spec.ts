@@ -498,7 +498,7 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     const certificateService  = TestBed.get(CertificateService);
     const toasterService = TestBed.get(ToasterService);
-    let errorMsg = resourceBundle.messages.emsg.m0005;
+    const errorMsg = resourceBundle.messages.emsg.m0005;
 
     /** Assert */
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({errorMsg}));
@@ -982,5 +982,5 @@ describe('CertificateConfigurationComponent', () => {
     component.handleParameterChange(event);
     expect(component.isStateCertificate).toBeTruthy();
   });
-  
+
 });

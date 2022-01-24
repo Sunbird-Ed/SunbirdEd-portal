@@ -248,7 +248,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   ShowCertDetails(isEnrolledBatch?: boolean) {
     let batchDetails: any;
     if (isEnrolledBatch) {
-      batchDetails = this.enrolledBatchInfo
+      batchDetails = this.enrolledBatchInfo;
     } else {
       if (this.batchList && this.batchList[0]) {
         batchDetails = this.batchList[0];
@@ -256,11 +256,11 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     }
     this.showCertificateDetails = !(_.isEmpty(_.get(batchDetails, 'certTemplates'))) ? true : false;
     const certDetails = _.get(batchDetails, 'certTemplates');
-    for (var key in certDetails) {
+    for (const key in certDetails) {
       const certCriteria = certDetails[key]['criteria'];
       this.showCompletionCertificate = _.get(certCriteria, 'enrollment.status') === 2 ? true : false;
       this.showMeritCertificate = _.get(certCriteria, 'assessment.score') ? true : false;
-      this.meritCertPercent = _.get(certCriteria, 'assessment.score.>=')
+      this.meritCertPercent = _.get(certCriteria, 'assessment.score.>=');
     }
   }
   getEnrolledCourseBatchDetails() {

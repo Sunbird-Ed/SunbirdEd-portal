@@ -30,7 +30,7 @@ export class GroupNotificationWrapperService {
     }
     if (type === 'group-activity-added') {
       const isAdmin = _.get(additionalInfo, 'groupRole') === 'admin' ? true : false;
-      this.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin, true, true, true)
+      this.navigateToActivityToc(additionalInfo.activity, _.get(additionalInfo, 'group.id'), isAdmin, true, true, true);
     }
     return {};
   }
@@ -43,7 +43,7 @@ export class GroupNotificationWrapperService {
    */
   navigateToActivityToc(activity, groupId, isAdmin, includeMembers?, includeActivities?, groupActivities?) {
     this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities }).subscribe((groupData) => {
-      const Selectedactivity = this.groupCservice.getActivityDataById(groupData, activity)
+      const Selectedactivity = this.groupCservice.getActivityDataById(groupData, activity);
       if (Selectedactivity) {
         this.playContent(Selectedactivity, { groupId: groupId, isAdmin: isAdmin });
       }

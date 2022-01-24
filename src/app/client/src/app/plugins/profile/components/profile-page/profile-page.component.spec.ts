@@ -530,22 +530,22 @@ describe('ProfilePageComponent', () => {
     expect(component.toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.profile.smsg.m0041);
   });
 
-  it('should close the profile popup on onLocationModalClose() called',()=>{
-    let event = {
+  it('should close the profile popup on onLocationModalClose() called', () => {
+    const event = {
       isSubmitted : false
-    }
-    component.showEditUserDetailsPopup =!component.showEditUserDetailsPopup;
+    };
+    component.showEditUserDetailsPopup = !component.showEditUserDetailsPopup;
     component.onLocationModalClose(event);
     expect(component.showFullScreenLoader).toBe(false);
-  })
+  });
 
-  it('should close the profile popup on onLocationModalClose() called when submission is true',()=>{
-    let event = {
+  it('should close the profile popup on onLocationModalClose() called when submission is true', () => {
+    const event = {
       isSubmitted : true
-    }
-    component.showEditUserDetailsPopup =!component.showEditUserDetailsPopup;
+    };
+    component.showEditUserDetailsPopup = !component.showEditUserDetailsPopup;
     component.onLocationModalClose(event);
     expect(component.showFullScreenLoader).toBe(true);
-  })
+  });
 
 });
