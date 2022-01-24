@@ -13,6 +13,7 @@ import { mockRes } from './organization-upload.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('OrganizationUploadComponent', () => {
   let component: OrganizationUploadComponent;
@@ -60,7 +61,7 @@ describe('OrganizationUploadComponent', () => {
     TestBed.configureTestingModule({
       declarations: [OrganizationUploadComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(),
-        TelemetryModule.forRoot()],
+        TelemetryModule.forRoot(), BrowserAnimationsModule],
       providers: [OrgManagementService, { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: ResourceData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
