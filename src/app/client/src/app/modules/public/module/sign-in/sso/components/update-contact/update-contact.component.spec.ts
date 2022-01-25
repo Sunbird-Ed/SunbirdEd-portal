@@ -15,7 +15,6 @@ import {TenantService, UserService, OtpService, OrgDetailsService} from '@sunbir
 import {mockUpdateContactData} from './update-contact.mock.spec.data';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UpdateContactComponent', () => {

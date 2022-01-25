@@ -62,7 +62,7 @@
                         </a>
                       </label>
                     </div>
-                    <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" #captchaRef="reCaptcha"
+                    <re-captcha *ngIf="isP1CaptchaEnabled === 'true' && googleCaptchaSiteKey" #captchaRef="reCaptcha"
                       (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}"
                       size="invisible"></re-captcha>
                     <a tabindex="0" (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>

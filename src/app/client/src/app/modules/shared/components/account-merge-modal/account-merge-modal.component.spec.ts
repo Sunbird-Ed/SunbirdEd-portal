@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui-v9';
-import {ResourceService} from '@sunbird/shared';
+import {ResourceService, SharedModule} from '@sunbird/shared';
 import {TelemetryModule} from '@sunbird/telemetry';
 import {RouterTestingModule} from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -19,7 +19,7 @@ describe('AccountMergeModalComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
+      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [AccountMergeModalComponent, InterpolatePipe],
       providers: [
         {provide: ResourceService, useValue: resourceBundle}]
