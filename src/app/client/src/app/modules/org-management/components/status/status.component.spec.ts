@@ -13,6 +13,7 @@ import { FormBuilder } from '@angular/forms';
 import { mockRes } from './status.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('StatusComponent', () => {
   let component: StatusComponent;
@@ -36,7 +37,7 @@ describe('StatusComponent', () => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(),
-        TelemetryModule.forRoot()],
+        TelemetryModule.forRoot(), BrowserAnimationsModule],
       providers: [OrgManagementService, FormBuilder,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }

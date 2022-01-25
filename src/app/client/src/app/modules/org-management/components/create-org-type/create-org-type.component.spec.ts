@@ -17,6 +17,7 @@ import {
   SharedModule, ResourceService, PaginationService, ToasterService, ServerResponse, RouterNavigationService
 } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreateOrgTypeComponent', () => {
   let component: CreateOrgTypeComponent;
@@ -45,7 +46,7 @@ describe('CreateOrgTypeComponent', () => {
       declarations: [CreateOrgTypeComponent],
       imports: [HttpClientTestingModule,
         SuiModule, RouterTestingModule, ReactiveFormsModule, FormsModule,
-        SharedModule.forRoot(), TelemetryModule.forRoot()],
+        SharedModule.forRoot(), TelemetryModule.forRoot(), BrowserAnimationsModule],
       providers: [HttpClientModule, OrgTypeService,
         PaginationService, ToasterService, ResourceService, LearnerService, RouterNavigationService,
         { provide: Router, useClass: RouterStub },

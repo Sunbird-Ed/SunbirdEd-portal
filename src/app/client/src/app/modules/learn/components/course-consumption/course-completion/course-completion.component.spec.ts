@@ -6,6 +6,7 @@ import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CourseCompletionComponent } from './course-completion.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CourseCompletionComponent', () => {
   let component: CourseCompletionComponent;
@@ -19,7 +20,7 @@ describe('CourseCompletionComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CourseCompletionComponent],
       imports: [SharedModule.forRoot(),
-        CoreModule, HttpClientTestingModule, TelemetryModule.forRoot(), SuiModule],
+        CoreModule, HttpClientTestingModule, TelemetryModule.forRoot(), SuiModule, BrowserAnimationsModule],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     })
       .compileComponents();

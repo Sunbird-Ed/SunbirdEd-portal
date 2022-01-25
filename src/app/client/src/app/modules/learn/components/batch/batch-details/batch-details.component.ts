@@ -334,7 +334,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   unenrollBatch(batch) {
     // this.courseBatchService.setEnrollToBatchDetails(batch);
     const queryParams = this.tocId ? { textbook: this.tocId } : {};
-    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams });
+    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute,
+      queryParams: {...queryParams, primaryCategory: _.get(this.courseHierarchy, 'primaryCategory')}});
   }
 
   navigateToConfigureCertificate(mode: string, batchId) {
@@ -387,7 +388,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.courseId,
-        type: content ? _.get(content, 'contentType') : 'Course',
+        type: content ? _.get(content, 'primaryCategory') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: objectRollUp ? this.courseConsumptionService.getRollUp(objectRollUp) : {}
       }

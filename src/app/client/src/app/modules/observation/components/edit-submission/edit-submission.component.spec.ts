@@ -51,7 +51,7 @@ describe('SubmissionsComponent', () => {
         spyOn(component, 'closeModal').and.callThrough();
         spyOn(component.onAction, 'emit').and.callThrough();
         component.closeModal();
-        component.modal.deny();
+        // component.modal.deny();
         component.onAction.emit({ action: 'edit', data: {} });
         expect(component.onAction.emit).toHaveBeenCalled();
         expect(component.closeModal).toHaveBeenCalled();
@@ -61,7 +61,7 @@ describe('SubmissionsComponent', () => {
         spyOn(component, 'submit').and.callThrough();
         spyOn(component.onAction, 'emit').and.callThrough();
         component.submit();
-        component.modal.approve();
+        // component.modal.approve();
         component.onAction.emit({ action: 'edit', data: Submission });
         expect(component.onAction.emit).toHaveBeenCalled();
         expect(component.submit).toHaveBeenCalled();
