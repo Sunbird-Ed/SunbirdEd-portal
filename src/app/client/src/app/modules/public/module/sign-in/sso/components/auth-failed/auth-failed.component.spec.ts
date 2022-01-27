@@ -2,10 +2,11 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui-v9';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
-import {ResourceService, InterpolatePipe} from '@sunbird/shared';
+import {ResourceService, SharedModule} from '@sunbird/shared';
 import {TenantService} from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import {AuthFailedComponent} from './auth-failed.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AuthFailedComponent', () => {
   let component: AuthFailedComponent;
@@ -20,8 +21,8 @@ describe('AuthFailedComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule],
-      declarations: [AuthFailedComponent, InterpolatePipe],
+      imports: [SuiModule, SharedModule.forRoot(), BrowserAnimationsModule],
+      declarations: [AuthFailedComponent],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
         {provide: ResourceService, useValue: resourceBundle},
         {provide: TenantService, useValue: {tenantData$: observableOf('')}}]

@@ -1,21 +1,29 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showLoginModal">
-  <div class="sb-modal-header">
-    {{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}
-  </div>
-  <div class="sb-modal-content sb-join-modal-content">
-    <div class="fsmall px-0 py-8">
-      {{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}
+<app-modal-wrapper *ngIf="showLoginModal" [config]="{disableClose: true, size: 'small'}" (dismiss)="closeLoginModal()"
+  #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-header">
+            {{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}
+          </div>
+          <div class="sb-modal-content sb-join-modal-content">
+            <div class="fsmall px-0 py-8">
+              {{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}
+            </div>
+          </div>
+          <div class="sb-modal-actions">
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="signInInteractEdata" tabindex="0"
+              (click)="setTelemetryData(); setUrlToCourse();" class="sb-btn sb-btn-normal sb-btn-primary">
+              {{resourceService.frmelmnts?.btn?.login}}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="sb-modal-actions">
-    <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="signInInteractEdata" tabindex="0" (click)="setTelemetryData(); setUrlToCourse();"
-      class="sb-btn sb-btn-normal sb-btn-primary">
-      {{resourceService.frmelmnts?.btn?.login}}
-    </a>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
 <!-- batch details -->
 <mat-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">

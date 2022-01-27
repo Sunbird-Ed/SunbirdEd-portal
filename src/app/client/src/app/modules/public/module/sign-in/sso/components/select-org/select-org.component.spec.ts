@@ -9,6 +9,7 @@ import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SelectOrgComponent', () => {
   let component: SelectOrgComponent;
@@ -27,7 +28,7 @@ describe('SelectOrgComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
-        RouterTestingModule],
+        RouterTestingModule, BrowserAnimationsModule],
       declarations: [ SelectOrgComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }]
