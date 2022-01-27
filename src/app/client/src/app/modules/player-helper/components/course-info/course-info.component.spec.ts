@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseInfoComponent } from './course-info.component';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CourseInfoComponent', () => {
   let component: CourseInfoComponent;
@@ -25,7 +26,7 @@ describe('CourseInfoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseInfoComponent],
-      imports: [SharedModule.forRoot()],
+      imports: [SharedModule.forRoot(), BrowserAnimationsModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ResourceService, useValue: resourceServiceMockData }]
     })
