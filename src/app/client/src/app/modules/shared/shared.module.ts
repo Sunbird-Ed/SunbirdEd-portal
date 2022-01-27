@@ -46,6 +46,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MaterialModule } from './modules/material/material.module';
 // import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
@@ -59,7 +60,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TranslateModule.forChild(),
     MatTooltipModule, MatTabsModule, MatDialogModule,
     MatAutocompleteModule, MatFormFieldModule, MatInputModule,
-    MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule
+    MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule, MaterialModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -80,7 +81,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
     AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe, MaterialAutoCompleteComponent
+    AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule
   ],
   entryComponents: [AlertModalComponent]
 })
