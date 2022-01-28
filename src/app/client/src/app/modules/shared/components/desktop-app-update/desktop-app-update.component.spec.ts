@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserCacheTtlService, ConfigService, ResourceService } from '@sunbird/shared';
+import { BrowserCacheTtlService, ConfigService, ResourceService} from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
@@ -8,16 +8,16 @@ import { of as observableOf, throwError } from 'rxjs';
 import { AppUpdateService } from '../../../core/services/app-update/app-update.service';
 import { DesktopAppUpdateComponent } from './desktop-app-update.component';
 import { serverRes } from './desktop-app-update.component.spec.data';
-import { ModalContentDirective } from './../modal-wrapper/modal-wrapper.component';
-
-fdescribe('DesktopAppUpdateComponent', () => {
+import { ModalWrapperComponent, ModalContentDirective } from './../modal-wrapper/modal-wrapper.component';
+import { MatDialogModule } from '@angular/material/dialog';
+describe('DesktopAppUpdateComponent', () => {
   let component: DesktopAppUpdateComponent;
   let fixture: ComponentFixture<DesktopAppUpdateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DesktopAppUpdateComponent, ModalContentDirective],
-      imports: [SuiModalModule, HttpClientTestingModule, TelemetryModule],
+      declarations: [DesktopAppUpdateComponent, ModalContentDirective, ModalWrapperComponent],
+      imports: [SuiModalModule, HttpClientTestingModule, TelemetryModule, MatDialogModule],
       providers: [ConfigService, CacheService, BrowserCacheTtlService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }]
     })
       .compileComponents();
