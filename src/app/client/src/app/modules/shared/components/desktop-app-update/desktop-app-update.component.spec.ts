@@ -8,13 +8,15 @@ import { of as observableOf, throwError } from 'rxjs';
 import { AppUpdateService } from '../../../core/services/app-update/app-update.service';
 import { DesktopAppUpdateComponent } from './desktop-app-update.component';
 import { serverRes } from './desktop-app-update.component.spec.data';
-describe('DesktopAppUpdateComponent', () => {
+import { ModalContentDirective } from './../modal-wrapper/modal-wrapper.component';
+
+fdescribe('DesktopAppUpdateComponent', () => {
   let component: DesktopAppUpdateComponent;
   let fixture: ComponentFixture<DesktopAppUpdateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DesktopAppUpdateComponent],
+      declarations: [DesktopAppUpdateComponent, ModalContentDirective],
       imports: [SuiModalModule, HttpClientTestingModule, TelemetryModule],
       providers: [ConfigService, CacheService, BrowserCacheTtlService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }]
     })

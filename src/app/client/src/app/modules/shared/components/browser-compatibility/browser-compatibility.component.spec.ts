@@ -11,6 +11,8 @@ import { Response } from './browser-compatibility.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ModalContentDirective } from './../modal-wrapper/modal-wrapper.component';
+
 describe('BrowserCompatibilityComponent', () => {
   let component: BrowserCompatibilityComponent;
   let fixture: ComponentFixture<BrowserCompatibilityComponent>;
@@ -27,7 +29,7 @@ describe('BrowserCompatibilityComponent', () => {
          }
       }),
       HttpClientTestingModule, MatDialogModule],
-      declarations: [BrowserCompatibilityComponent, CdnprefixPipe],
+      declarations: [BrowserCompatibilityComponent, CdnprefixPipe, ModalContentDirective],
       providers: [ResourceService, DeviceDetectorService, ConfigService, CacheService, BrowserCacheTtlService]
     })
       .compileComponents();
