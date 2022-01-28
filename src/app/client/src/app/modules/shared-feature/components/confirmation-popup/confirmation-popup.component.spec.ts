@@ -5,7 +5,7 @@ import { ConfirmationPopupComponent } from './confirmation-popup.component';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 
 
-fdescribe('ConfirmationPopupComponent', () => {
+describe('ConfirmationPopupComponent', () => {
   let component: ConfirmationPopupComponent;
   let fixture: ComponentFixture<ConfirmationPopupComponent>;
 
