@@ -10,7 +10,7 @@ import { CacheService } from 'ng2-cache-service';
 import { Response } from './browser-compatibility.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
-
+import { MatDialogModule } from '@angular/material/dialog';
 describe('BrowserCompatibilityComponent', () => {
   let component: BrowserCompatibilityComponent;
   let fixture: ComponentFixture<BrowserCompatibilityComponent>;
@@ -26,7 +26,7 @@ describe('BrowserCompatibilityComponent', () => {
             useClass: TranslateFakeLoader
          }
       }),
-      HttpClientTestingModule],
+      HttpClientTestingModule, MatDialogModule],
       declarations: [BrowserCompatibilityComponent, CdnprefixPipe],
       providers: [ResourceService, DeviceDetectorService, ConfigService, CacheService, BrowserCacheTtlService]
     })
