@@ -60,29 +60,46 @@
 </div>
 </div>
 <!-- information submitted modal in TEACHER Profile-->
-<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal sb-success" appBodyScroll (dismissed)="closeSuccessModal()" #modal>
-  <div class="sb-modal-header font-weight-normal">
-    {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
-  </div>
-  <div class="sb-modal-content text-center">
-    <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract 
-      [telemetryInteractEdata]="submitDetailsInteractEdata" tabindex="0" (click)="closeSuccessModal()">
-      {{resourceService?.frmelmnts?.btn?.ok}}
-    </button>
-  </div>
-</sui-modal>
+<app-modal-wrapper *ngIf="showSuccessModal" [config]="{disableClose: true, size: 'small'}"
+  (dismiss)="closeSuccessModal()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+
+          <div class="sb-modal-header font-weight-normal">
+            {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
+          </div>
+          <div class="sb-modal-content text-center">
+            <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract
+              [telemetryInteractEdata]="submitDetailsInteractEdata" tabindex="0" (click)="closeSuccessModal()">
+              {{resourceService?.frmelmnts?.btn?.ok}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>
 
 <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" *ngIf="showTncPopup">
 </app-tnc-popup>
+<app-modal-wrapper *ngIf="isOtpVerificationRequired" [config]="{disableClose: true, size: 'small'}"
+  (dismiss)="onOtpPopupClose()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
 
-<sui-modal *ngIf="isOtpVerificationRequired" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'small'" class="sb-modal sb-modal-white sb-success" appBodyScroll (dismissed)="onOtpPopupClose()" #modal>
-
-  <app-otp-popup [otpData]="otpData" [redirectToLogin]="false" (verificationSuccess)="onVerificationSuccess($event)"
-    (closeContactForm)="onOtpPopupClose()" (redirectToParent)="onOtpVerificationError($event)">
-  </app-otp-popup>
-</sui-modal>
+          <app-otp-popup [otpData]="otpData" [redirectToLogin]="false"
+            (verificationSuccess)="onVerificationSuccess($event)" (closeContactForm)="onOtpPopupClose()"
+            (redirectToParent)="onOtpVerificationError($event)">
+          </app-otp-popup>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>
