@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,7 +38,7 @@ describe('UserLocationComponent', () => {
         HttpClientTestingModule,
         TelemetryModule.forRoot(),
         RouterTestingModule,
-        SharedModule.forRoot()],
+        SharedModule.forRoot(), BrowserAnimationsModule],
       declarations: [UserLocationComponent],
       providers: [ResourceService, ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
         NavigationHelperService, DeviceDetectorService],
