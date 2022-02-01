@@ -26,14 +26,14 @@
 </app-modal-wrapper>
 
 <!-- batch details -->
-<mat-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
+<mat-accordion class="sb-mat-accordion mb-16">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <div *ngIf="batchDetails?.startDate">
@@ -63,14 +63,14 @@
   </mat-expansion-panel>
 </mat-accordion>
 
-<mat-accordion *ngIf="showCertificateDetails" class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
+<mat-accordion *ngIf="showCertificateDetails" class="sb-mat-accordion mb-16">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
         {{resourceService?.frmelemnts?.scttl?.certques}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <ul>
