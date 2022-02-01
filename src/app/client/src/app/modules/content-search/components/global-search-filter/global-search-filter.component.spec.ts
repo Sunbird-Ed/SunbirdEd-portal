@@ -52,7 +52,7 @@ describe('GlobalSearchFilterComponent', () => {
 
   it('should call ngoninit', () => {
     component.ngOnInit();
-    expect(component.selectedFilters).toEqual({ subject: ['English'] });
+    expect(component.selectedFilters).toEqual({ selectedTab: 'all' });
   });
 
   describe('on input facet changes', () => {
@@ -115,7 +115,7 @@ describe('GlobalSearchFilterComponent', () => {
     expect(component.router.navigate).toHaveBeenCalled();
   });
 
-  it('should call removeFilterSelection', () => {
+  it('should call remove Filter Selection', () => {
     component.facets = Response.facets;
     component.selectedFilters = Response.selectedFilters;
     component.removeFilterSelection({ type: 'medium', value: 'assamese' });

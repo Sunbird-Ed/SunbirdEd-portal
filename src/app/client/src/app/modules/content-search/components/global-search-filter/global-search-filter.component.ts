@@ -258,6 +258,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     if (this.searchFacetFilterComponent) {
       this.searchFacetFilterComponent.resetFilter();
     }
+    /* istanbul ignore next */
     this.router.navigate([], {
       queryParams: {
         ...(() => {

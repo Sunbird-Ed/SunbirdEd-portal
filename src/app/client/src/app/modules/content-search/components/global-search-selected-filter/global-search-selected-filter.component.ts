@@ -58,6 +58,5 @@ export class GlobalSearchSelectedFilterComponent {
     } else {
       return true;
     }
-
   }
 }

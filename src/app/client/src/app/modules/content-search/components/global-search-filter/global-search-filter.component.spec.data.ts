@@ -21,6 +21,7 @@ export const MockData = {
     ]
   },
   selectedFilterData: {
+    'selectedTab': 'all',
     'channel': [
       '01258043108936908899'
     ]
