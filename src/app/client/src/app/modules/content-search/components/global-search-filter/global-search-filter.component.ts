@@ -146,6 +146,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private fetchSelectedFilterAndFilterOption() {
+    console.log('called 1'); // TODO: log!
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$),
       map((queryParams) => {
         const queryFilters: any = {};
@@ -165,11 +166,12 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         }
         return queryFilters;
       })).subscribe(filters => {
-        this.selectedFilters = _.cloneDeep(filters);
-        /* istanbul ignore next */
-        if (this.cachedFilters) {
-          this.selectedFilters = this.cachedFilters;
+        if (this.cacheService.exists('searchFiltersAll')) {
+          this.selectedFilters = _.cloneDeep(this.cacheService.get('searchFiltersAll'));
+          console.log('from cache ===> ', this.selectedFilters); // TODO: log!
         }
+        console.log('called con'); // TODO: log!
+        // this.selectedFilters = _.cloneDeep(filters);
         this.emitFilterChangeEvent(true);
         this.hardRefreshFilter();
       }, error => {
@@ -178,6 +180,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private handleFilterChange() {
+    console.log('called 2'); // TODO: log!
     this.filterChangeEvent.pipe(
       filter(({type, event}) => {
         if (type === 'mediaType' && this.selectedMediaTypeIndex !== event.data.index) {
@@ -190,7 +193,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     });
   }
 
-  public updateRoute() {
+  public updateRoute(redirectTab = null) {
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     if (this.selectedFilters.channel) {
       const channelIds = [];
@@ -205,6 +208,14 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
       queryFilters = {...queryFilters, ...this.selectedFilters};
     }
+    console.log('queryParamsToOmit ', this.queryParamsToOmit); // TODO: log!
+    console.log('selectedFilters ', this.selectedFilters); // TODO: log!
+    if (redirectTab) {
+      this.selectedFilters['selectedTab'] = 'all';
+    }
+    console.log('selectedFilters ', this.selectedFilters); // TODO: log!
+    console.log('queryFilters ', queryFilters); // TODO: log!
+    console.log('queryFilters condition ', this.queryParamsToOmit ? 'queryFilters' : 'this.selectedFilters'); // TODO: log!
     this.router.navigate([], {
       queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,
       relativeTo: this.activatedRoute.parent
@@ -212,9 +223,13 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private emitFilterChangeEvent(skipUrlUpdate = false) {
+    console.log('emitFilterChangeEvent ', skipUrlUpdate); // TODO: log!
+    console.log('this.selectedFilters ', this.selectedFilters); // TODO: log!
     this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
     if (!skipUrlUpdate) {
       this.updateRoute();
+    } else if (this.cacheService.get('searchFiltersAll')) {
+      this.updateRoute('all');
     }
   }
 
