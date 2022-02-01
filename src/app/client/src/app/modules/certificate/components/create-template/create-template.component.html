@@ -79,7 +79,7 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'text'" [config]="{disableClose: true, size: 'normal'}" (dismiss)="closeSVGInputModal()">
+<app-modal-wrapper *ngIf="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'text'" [config]="{disableClose: true, size: 'small'}" (dismiss)="closeSVGInputModal()">
   <ng-template sbModalContent>
       <div class="sb-modal sb-error">
           <div class="transition ui dimmer page modals active visible">

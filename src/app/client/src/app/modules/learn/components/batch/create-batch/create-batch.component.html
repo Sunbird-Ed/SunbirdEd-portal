@@ -1,18 +1,21 @@
-<app-modal-wrapper *ngIf="showCreateModal" [config]="{disableClose: true, size: 'normal'}" (dismiss)="redirect()"
+<app-modal-wrapper *ngIf="showCreateModal"
+  [config]="{disableClose: true, size: 'normal', panelClass: 'overflow-visible'}" (dismiss)="redirect()"
   #createBatchModel>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
+    <div class="sb-mat__modal">
+      <div>
+        <div>
           <!--Header-->
-          <i class="close icon" tabindex="0" (click)="redirect()"></i>
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts.lbl.createnewbatch}}
+          <div mat-dialog-title class="mb-0">
+            <div class="title">
+              {{resourceService?.frmelmnts.lbl.createnewbatch}}
+            </div>
+            <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
           </div>
           <!--/Header-->
 
           <!--Content-->
-          <div class="sb-modal-content o-y-visible" [appTelemetryImpression]="telemetryImpression">
+          <div class="sb-mat__modal__content" [appTelemetryImpression]="telemetryImpression">
             <form [formGroup]="createBatchForm" class="sb-form batchAddUserForm pt-8 px-8">
               <div class="sb-color-primary font-weight-bold pb-24">Batch Details</div>
               <div class="ui stackable grid">
@@ -183,17 +186,19 @@
           <!--/Content-->
 
           <!--Actions-->
-          <div class="sb-modal-actions">
+          <div class="sb-mat__modal__actions">
+
+            <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
+              [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="createBatchForm.reset()">
+              {{resourceService?.frmelmnts?.btn?.clear}}
+            </button>
+
             <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
               [ngClass]="{'sb-btn-disabled': disableSubmitBtn}" id="submitbutton" [disabled]="disableSubmitBtn"
               (click)="createBatch()" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="createBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata">
               {{resourceService?.frmelmnts?.btn?.create}}
-            </button>
-            <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
-              [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="createBatchForm.reset()">
-              {{resourceService?.frmelmnts?.btn?.clear}}
             </button>
 
           </div>
