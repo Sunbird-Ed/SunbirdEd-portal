@@ -1,26 +1,27 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
-
 import { ConfirmPopupComponent } from './confirm-popup.component';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
-
+import { ModalWrapperComponent, ModalContentDirective } from './../modal-wrapper/modal-wrapper.component';
+import { MatDialogModule } from '@angular/material/dialog';
 describe('ConfirmPopupComponent', () => {
   let component: ConfirmPopupComponent;
   let fixture: ComponentFixture<ConfirmPopupComponent>;
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ConfirmPopupComponent],
+      declarations: [ConfirmPopupComponent, ModalWrapperComponent, ModalContentDirective],
       imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({
          loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
-      }), ],
+      }), MatDialogModule, BrowserAnimationsModule],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
     })
       .compileComponents();

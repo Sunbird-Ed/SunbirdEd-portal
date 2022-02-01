@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -43,7 +44,7 @@ describe('LoadOfflineContentComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),
-        HttpClientTestingModule],
+        HttpClientTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
