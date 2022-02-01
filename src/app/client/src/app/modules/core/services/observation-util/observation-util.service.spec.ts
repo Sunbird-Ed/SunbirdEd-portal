@@ -1,6 +1,9 @@
 import { async, fakeAsync, TestBed } from '@angular/core/testing';
 import { ObservationUtilService } from './observation-util.service';
-import { UserService, KendraService,FormService,CoreModule } from '@sunbird/core';
+import { UserService} from '../user/user.service';
+import { FormService } from '../form/form.service';
+import { KendraService } from '../kendra/kendra.service';
+import { CoreModule } from '../../core.module';
 import {
   ModalConfig,
   ModalControls,

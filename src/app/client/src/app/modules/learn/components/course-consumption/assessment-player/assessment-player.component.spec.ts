@@ -22,6 +22,7 @@ import { CourseConsumptionService } from '../../../services/course-consumption/c
 import { CourseProgressService } from '../../../services/courseProgress/course-progress.service';
 import { AssessmentPlayerComponent } from './assessment-player.component';
 import { assessmentPlayerMockData } from './assessment-player.component.data.spec';
+import { of as observableOf } from 'rxjs';
 
 describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
@@ -50,6 +51,11 @@ describe('AssessmentPlayerComponent', () => {
     deleteUserFeedEntry() { return of({}); },
     getContentState() { return of({}); }
   };
+  const MockCSNotificationService = {
+    notificationRead() { return observableOf({}); },
+    notificationDelete() { return observableOf({}); },
+    notificationUpdate() { return observableOf({}); }
+  };
 
   configureTestSuite();
   beforeEach(async(() => {
@@ -72,7 +78,8 @@ describe('AssessmentPlayerComponent', () => {
         ContentUtilsServiceService,
         NotificationServiceImpl, CourseProgressService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
-        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService }
+        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -529,4 +529,23 @@ describe('ProfilePageComponent', () => {
     component.copyToClipboard('user');
     expect(component.toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.profile.smsg.m0041);
   });
+
+  it('should close the profile popup on onLocationModalClose() called',()=>{
+    let event = {
+      isSubmitted : false
+    }
+    component.showEditUserDetailsPopup =!component.showEditUserDetailsPopup;
+    component.onLocationModalClose(event);
+    expect(component.showFullScreenLoader).toBe(false);
+  })
+
+  it('should close the profile popup on onLocationModalClose() called when submission is true',()=>{
+    let event = {
+      isSubmitted : true
+    }
+    component.showEditUserDetailsPopup =!component.showEditUserDetailsPopup;
+    component.onLocationModalClose(event);
+    expect(component.showFullScreenLoader).toBe(true);
+  })
+
 });

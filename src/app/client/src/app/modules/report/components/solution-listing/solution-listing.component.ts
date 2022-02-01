@@ -1,11 +1,10 @@
 import { ConfigService, ResourceService, LayoutService, PaginationService, IPagination,
-  ILoaderMessage, INoResultMessage } from '@sunbird/shared';
+  ILoaderMessage, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'datatables.net';
-import { ObservationUtilService } from '../../../observation/service';
-import { ObservationService, UserService, TncService } from '@sunbird/core';
+import { ObservationService, UserService, TncService,ObservationUtilService } from '@sunbird/core';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -47,7 +46,8 @@ export class SolutionListingComponent implements OnInit {
     private router: Router,
     public paginationService: PaginationService,
     public configService: ConfigService,
-    public tncService: TncService
+    public tncService: TncService,
+    public navigationHelperService: NavigationHelperService
   ) {
     this.config = config;
     this.paginationDetails = this.paginationService.getPager(0, 1, this.pageSize);
@@ -82,6 +82,10 @@ export class SolutionListingComponent implements OnInit {
       },
       (error) => {}
     );
+  }
+
+  goBack(){
+    this.navigationHelperService.goBack();
   }
 
   getSolutions() {

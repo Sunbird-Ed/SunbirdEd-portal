@@ -38,17 +38,23 @@
 <app-add-activity *ngIf="!showLoader && ((activityList | json) === '{}')"></app-add-activity>
 
 <!-- Remove Activity from the group -->
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
-<div class="sb-modal-header">
-  {{resourceService?.frmelmnts?.lbl?.removeActivity}} ?
-</div>
-<div class="sb-modal-content">
-  <p> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
-</div>
-<div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-error" tabindex="0"
-    (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
-</div>
-
-</sui-modal>
+<app-modal-wrapper *ngIf="showModal" #modal [config]="{disableClose: true, size: 'small'}">
+  <ng-template sbModalContent let-data>
+    <div class="sb-mat__modal">
+      <div mat-dialog-title>
+        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.removeActivity}}</div>
+        <button type="button" aria-label="close dialog" class="close-btn" 
+        (click)="removeActivity()" mat-dialog-close tabindex="0"></button>
+      </div>
+      <mat-dialog-content>
+        <div class="sb-mat__modal__content">
+          <p tabindex="0"> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-error mb-16" tabindex="0"
+        (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
+      </mat-dialog-actions>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

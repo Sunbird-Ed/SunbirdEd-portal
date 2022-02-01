@@ -2,28 +2,32 @@
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <!-- welcome screen -->
   <app-explore-ftu-popup *ngIf="showWelcomePopup" (close)="showFtuPopup(false)"></app-explore-ftu-popup>
-
-  <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-groups-login sbt-fluid-content-bg pt-24' : ''"> 
-<!-- login screen -->
-<div class="content-header sb-bg-color-white relative9" [ngClass]="layoutConfiguration ? 'mt-0' : ''" [appTelemetryImpression]="telemetryImpression">
-  <div class="ui container py-16">
-    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-      <div class="flex-basis-1 mr-32">
-        <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
-            <div>{{resourceService?.frmelmnts?.tab?.mygroups}}</div>
+<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [appTelemetryImpression]="telemetryImpression">
+    <div class="ui container d-flex flex-ai-center">
+      <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+    tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.btn?.back}}”><i
+        class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+        </svg></i><span>{{resourceService?.frmelmnts?.btn?.back}}</span> </button>
+      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap ml-16 w-100">
+        <div class="d-flex flex-dc ml-8">
+          <h4 class="mb-4 font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">{{resourceService?.frmelmnts?.tab?.mygroups}}</h4>
+          <div class="fsmall"></div>
         </div>
-      </div>
-      <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" aria-label="showFtuPopup" type="button" tabindex="0" (click)="showFtuPopup(true);addTelemetry('group-info')">
-          <i class="icon-svg icon-svg--sm icon-info"><svg class="icon icon-svg--primary">
-            <use xlink:href="./assets/images/sprite.svg#info"></use>
-          </svg></i>
-        </button>
+        <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" aria-label="showFtuPopup" type="button" tabindex="0" (click)="showFtuPopup(true);addTelemetry('group-info')">
+            <i class="icon-svg icon-svg--sm icon-info"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#info"></use>
+            </svg></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
+  
+  <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-groups-login sbt-fluid-content-bg pt-24' : ''"> 
+<!-- login screen -->
 <div class="flex-ai-jc-center mt-48 sb-group-container sb-group-container--sm">
    <!-- content comes from CC -->
    <img alt="{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}" src="./assets/images/mygroups.svg" width="220">

@@ -227,7 +227,7 @@ select:-internal-autofill-selected {
   .sb-search-input {
     width: 100%;
     font-size: var(--font-size-sm);
-    min-height: calculateRem(40px);
+    min-height: calculateRem(48px);
     border: 0;
     outline: 0;
     padding: calculateRem(4px) calculateRem(88px) calculateRem(4px) calculateRem(40px);
@@ -279,7 +279,7 @@ select:-internal-autofill-selected {
       top: 50%;
       left: calculateRem(12px);
       transform: translateY(-50%);
-      z-index: 5;
+      z-index: 2;
       html[dir="rtl"] & {
         right: calculateRem(12px);
         left:unset;

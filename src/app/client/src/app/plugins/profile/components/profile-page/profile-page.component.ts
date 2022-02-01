@@ -93,7 +93,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   isDesktopApp;
   userLocation: {};
   persona: {};
-  subPersona: string;
+  subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
 
@@ -141,7 +141,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getPersonaConfig(role).then((val) => {
           this.persona = val;
         });
-        this.getSubPersonaConfig(this.userProfile.profileUserType.subType, role.toLowerCase(), this.userLocation).then((val) => {
+        this.getSubPersonaConfig(role.toLowerCase(), this.userLocation).then((val) => {
           this.subPersona = val;
         });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
@@ -412,6 +412,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
+
   setInteractEventData() {
     this.myFrameworkEditEdata = {
       id: 'profile-edit-framework',
@@ -605,8 +609,9 @@ private async getPersonaConfig(persona: string) {
   return formFields.find(config => config.code === persona);
 }
 
-private async getSubPersonaConfig(subPersonaCode: string, persona: string, userLocation: any): Promise<string> {
-  if (!subPersonaCode || !persona) {
+private async getSubPersonaConfig(persona: string, userLocation: any): Promise<string[]> {
+  if ((!this.userProfile.profileUserTypes || !this.userProfile.profileUserTypes.length) &&
+  (!this.userProfile.profileUserType || !this.userProfile.profileUserType.subType)) {
       return undefined;
   }
   let formFields;
@@ -621,20 +626,38 @@ private async getSubPersonaConfig(subPersonaCode: string, persona: string, userL
   }
 
   const personaConfig = formFields.find(formField => formField.code === 'persona');
+  const subPersonaList = [];
+  if (_.get(personaConfig, 'templateOptions.multiple')) {
+    if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
+      this.userProfile.profileUserTypes.forEach(ele => {
+        if (_.get(ele, 'subType')) {
+          subPersonaList.push(ele.subType);
+        }
+      });
+    } else {
+      subPersonaList.push(this.userProfile.profileUserType.subType);
+    }
+  } else {
+    subPersonaList.push(this.userProfile.profileUserType.subType);
+  }
 
   const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
   const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
   if (!subPersonaConfig) {
       return undefined;
    }
-  const subPersonaFieldConfigOption = (subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
-              find(option => option.value === subPersonaCode);
-  return subPersonaFieldConfigOption ? subPersonaFieldConfigOption.label : undefined;
+   const subPersonaFieldConfigOption = [];
+   subPersonaList.forEach((ele) => {
+    subPersonaFieldConfigOption.push((subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
+    find(option => option.value === ele).label);
+   });
+
+  return subPersonaFieldConfigOption;
 }
 
-public onLocationModalClose() {
+public onLocationModalClose(event) {
   this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
-  this.showFullScreenLoader = true;
+  this.showFullScreenLoader = !event?.isSubmitted ? false : true;
   setTimeout(() => {
     if (this.showFullScreenLoader) {
       this.showFullScreenLoader = false;

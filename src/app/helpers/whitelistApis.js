@@ -431,7 +431,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL]
     },
-    '/learner/user/v2/update': {
+    '/learner/user/v3/update': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
       ROLE_CHECK: [ROLE.ALL],
       OWNER_CHECK: {

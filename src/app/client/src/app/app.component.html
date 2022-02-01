@@ -113,13 +113,13 @@
 
 <app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired" [config]="{disableClose: true, size: 'small'}">
   <ng-template sbModalContent let-data>
-    <div class="sb-mat__modal">
+    <div class="sb-mat__modal sb-mat__modal--small">
 
       <div mat-dialog-title>
         <div class="title">{{resourceService?.frmelmnts?.lbl?.sesnexrd}}</div>
       </div>
       <mat-dialog-content>
-        <div class="sb-mat__modal__content">
+        <div class="sb-mat__modal__content d-flex flex-ai-center text-center flex-jc-center p-24">
           <p>
             {{resourceService?.frmelmnts?.lbl?.plslgn |
                 interpolate:'{instance}': instance }}

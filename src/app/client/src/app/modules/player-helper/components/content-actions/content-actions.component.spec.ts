@@ -15,7 +15,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { APP_BASE_HREF } from '@angular/common';
-import { actionButtons } from './actionButtons';
+import { actionButtons, fullScreenActionButtons } from './actionButtons';
 
 
 describe('ContentActionsComponent', () => {
@@ -273,6 +273,30 @@ describe('ContentActionsComponent', () => {
       return e.label === 'Fullscreen';
     });
     expect(fullScreenObj.disabled).toBeTruthy();
+  });
+
+  it('shoud see if a telemetry ASSESS event is sent then update the fullscreen to disabled', () => {
+    const obj = {detail:{telemetryData:{eid:'ASSESS'}}};
+    component.assessmentEvents=of(obj);
+    component.isFullScreen = false;
+    component.actionButtons = actionButtons;
+    component.ngOnInit();
+    const fullScreenObj = component.actionButtons.find((e) => {
+      return e.name === 'fullscreen';
+    });
+    expect(fullScreenObj.isInActive).toBeTruthy();
+  });
+
+  it('shoud see if a telemetry ASSESS event is sent then update the minimise to disabled', () => {
+    const obj = {detail:{telemetryData:{eid:'ASSESS'}}};
+    component.assessmentEvents=of(obj);
+    component.isFullScreen = true;
+    component.fullScreenActionButtons = fullScreenActionButtons;
+    component.ngOnInit();
+    const fullScreenObj = component.fullScreenActionButtons.find((e) => {
+      return e.name === 'minimize';
+    });
+    expect(fullScreenObj.isInActive).toBeTruthy();
   });
 
 });

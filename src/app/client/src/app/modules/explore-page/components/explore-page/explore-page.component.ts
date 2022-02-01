@@ -1,5 +1,5 @@
 import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService } from '@sunbird/core';
+import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService,ObservationUtilService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, ViewChild } from '@angular/core';
 import {
@@ -16,7 +16,6 @@ import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
-import {ObservationUtilService} from '../../../observation/service'
 
 @Component({
     selector: 'app-explore-page-component',
@@ -86,12 +85,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     targetedCategorytheme:any;
     showTargetedCategory:boolean=false;
     selectedTab:any;
+    primaryBanner = [];
+    secondaryBanner = [];
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
 
     get bannerSlideConfig() {
         return cloneDeep(this.configService.appConfig.Banner.slideConfig);
+    }
+
+    get secondaryBannerSlideConfig() {
+        return cloneDeep(this.configService.appConfig.AdditionalBanner.slideConfig);
     }
 
     @HostListener('window:scroll', []) onScroll(): void {
@@ -622,8 +627,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public playContent(event, sectionName?) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: sectionName
+                type: 'Section',
+                id: (sectionName && sectionName.includes('NCERT')) ? 'NCERT' : sectionName
             }],
             edata: {
                 id: 'content-card',
@@ -918,8 +923,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     logViewAllTelemetry(event) {
         const telemetryData = {
             cdata: [{
-                type: 'section',
-                id: event.name
+                type: 'Section',
+                id: (event && event.name && event.name.includes('NCERT')) ? 'NCERT' : event.name
             }],
             edata: {
                 id: 'view-all'
@@ -1160,6 +1165,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             }
         });
+    
         this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
         if (this.bannerSegment ) {
             this.setBannerConfig();
@@ -1170,6 +1176,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.bannerList = this.bannerSegment.filter((value) =>
             Number(value.expiry) > Math.floor(Date.now() / 1000)
         );
+        this.primaryBanner = [];
+        this.secondaryBanner = [];
+        this.bannerList.forEach((banner) => {
+            if (banner.type === 'secondary') {
+                this.secondaryBanner.push(banner);
+              } else {
+                this.primaryBanner.push(banner);
+              }
+        });
     }
 
     navigateToSpecificLocation(data) {
@@ -1229,7 +1244,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             env:  this.activatedRoute.snapshot.data.telemetry.env,
             cdata: [{
               id: data.code,
-              type: 'Banner'
+              type: (data.type && data.type === 'secondary') ? 'AdditionalBanner' : 'Banner'
             }]
           },
           edata: {

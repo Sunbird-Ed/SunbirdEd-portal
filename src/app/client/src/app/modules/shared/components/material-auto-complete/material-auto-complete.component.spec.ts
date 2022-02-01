@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick,flush } from '@angular/core/testing';
 import { MaterialAutoCompleteComponent } from './material-auto-complete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -60,15 +60,16 @@ describe('MaterialAutoCompleteComponent', () => {
     component.selected = ["a"];
     component.dropDownSelectedShow();
     expect(component.selectedDpdwnInput).toEqual('1 selections');
+    flush();
 
   }));
   it('should call DisplayDropdown ', fakeAsync(() => {
 
     component.dropdownList = ["a","b","c"];
     component.ngOnChanges();
-
-    tick(1000);
+    
     component.DisplayDropdown();
+    tick(1000);
     expect(component.displayDropdown).toEqual(true);
 
   }));

@@ -27,6 +27,7 @@ import {
 } from './report-view.component.spec.data';
 import { AllEvidenceComponent } from '../all-evidence/all-evidence.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 
 describe('ReportViewComponent', () => {
@@ -61,6 +62,7 @@ describe('ReportViewComponent', () => {
         SlReportsLibraryModule,
         TranslateModule,
         HttpClientTestingModule,
+        RouterTestingModule
       ],
       providers: [
         ConfigService,

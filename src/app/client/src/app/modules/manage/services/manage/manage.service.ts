@@ -68,5 +68,19 @@ export class ManageService {
         })
       );
   }
+  updateRoles(requestParam) {
+    const option = {
+      url: this.configService.urlConFig.URLS.ADMIN.UPDATE_USER_ORG_ROLES,
+      data: {
+          'request': {
+            'userId': requestParam.userId,
+            'organisationId': requestParam.orgId,
+            'roles': requestParam.roles
+          }
+        }
+    };
+
+    return this.learnerService.post(option);
+  }
 
 }
