@@ -167,8 +167,9 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       })).subscribe(filters => {
         if (this.cacheService.exists('searchFiltersAll')) {
           this.selectedFilters = _.cloneDeep(this.cacheService.get('searchFiltersAll'));
+        } else {
+          this.selectedFilters = _.cloneDeep(filters);
         }
-        // this.selectedFilters = _.cloneDeep(filters);
         this.emitFilterChangeEvent(true);
         this.hardRefreshFilter();
       }, error => {

@@ -51,4 +51,13 @@ export class GlobalSearchSelectedFilterComponent {
       relativeTo: this.activatedRoute.parent
     });
   }
+
+  showLabel() {
+    if(Object.keys(this.selectedFilters).length == 1 && _.get(this.selectedFilters, 'selectedTab') == 'all') {
+      return false
+    } else {
+      return true;
+    }
+
+  }
 }
