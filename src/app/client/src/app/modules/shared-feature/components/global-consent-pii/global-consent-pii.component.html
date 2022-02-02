@@ -1,14 +1,11 @@
-<sui-accordion class="styled fluid sb-accordion ui accordion sb-new-theme-accordion" *ngIf="showSettingsPage">
-  <sui-accordion-panel>
-
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between" role="button" tabindex="0"
-      (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen"
-      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.dataSetting}} accordion" aria-controls="dataSetting">
-      <span>{{resourceService?.frmelmnts?.lbl?.dataSetting}}</span>
-      <i class="chevron down icon" aria-hidden="true" role="img" title="expand"></i>
-    </div>
-
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="dataSetting"
+<mat-accordion class="styled fluid sb-accordion ui accordion sb-new-theme-accordion" *ngIf="showSettingsPage">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+        {{resourceService?.frmelmnts?.lbl?.dataSetting}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="dataSetting"
       aria-labelledby="dataSetting">
       <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
         <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
@@ -46,8 +43,8 @@
           (click)="saveConsent()">{{resourceService?.frmelmnts?.btn?.save}}</button>
       </div>
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
 
 
 <app-modal-wrapper *ngIf="showConsentPopup" [config]="{disableClose: true, size: 'normal'}"
