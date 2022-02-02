@@ -179,7 +179,6 @@ describe('SolutionListingComponent', () => {
   it('should call ObservationUtilService - getProfileData', () => {
     spyOn(mockPaginationService, 'getPager').and.callThrough();
     component.paginationDetails.currentPage = 1;
-    console.log(component.paginationDetails);
     spyOn(mockObservationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });

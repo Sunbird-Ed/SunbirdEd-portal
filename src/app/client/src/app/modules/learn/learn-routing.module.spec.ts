@@ -47,6 +47,8 @@ describe('Redirect Router tests', () => {
       .then(() => {
         expect(location.path()).toBe('/learn/redirect');
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        // console.log(e);
+      });
   }));
 });

@@ -16,7 +16,6 @@ const mockDataBaseSDK = {
   find: (db_name, query) => {
     const matchedRows = [];
     for(let log of this.data){
-      // console.log('mockDataBaseSDK.find loop', query.selector.createdOn['$gte'], log.createdOn, query.selector.createdOn['$lte'], matchedRows.length);
       if(query.selector.createdOn['$gte'] <= log.createdOn && query.selector.createdOn['$lte'] >= log.createdOn){
         matchedRows.push(log);
       }
