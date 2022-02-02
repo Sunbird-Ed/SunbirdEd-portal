@@ -63,7 +63,8 @@ export class AddToGroupDirective implements OnInit {
         (this.ref.nativeElement as HTMLButtonElement).style.display = data ? 'block' : 'none';
       });
     }
-    (this.ref.nativeElement as HTMLButtonElement).style.display = sessionStorage.getItem(sessionKeys.ISACTIVITYADDED) === 'true' ? 'none' : 'block';
+    (this.ref.nativeElement as HTMLButtonElement).style.display = this.activityDashboardService.isActivityAdded ? 'none' : 'block';
+    
   }
 
   addActivityToGroup() {

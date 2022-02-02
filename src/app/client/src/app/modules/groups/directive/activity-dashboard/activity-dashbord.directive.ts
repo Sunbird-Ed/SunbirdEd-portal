@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { ACTIVITY_DASHBOARD, GROUP_DETAILS, MY_GROUPS } from '../../interfaces';
 import { GroupsService } from '../../services/groups/groups.service';
 import { ActivityDashboardService } from '../../../shared/services/activity-dashboard/activity-dashboard.service';
-import { sessionKeys } from '../../../../modules/groups';
 
 @Directive({
   selector: '[appActivityDashboard]'
@@ -24,8 +23,7 @@ export class ActivityDashboardDirective implements OnInit {
   }
 
   ngOnInit() {
-    sessionStorage.setItem(sessionKeys.HIERARCHYDATA, JSON.stringify(this.hierarchyData));
-    const isAdded = sessionStorage.getItem(sessionKeys.ISACTIVITYADDED) === 'true';
+    const isAdded = this.activityDashboardService.isActivityAdded;
     (this.ref.nativeElement as HTMLButtonElement).style.display = isAdded ? 'block' : 'none';
   }
   /**
