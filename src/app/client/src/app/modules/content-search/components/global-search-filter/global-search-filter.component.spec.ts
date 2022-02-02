@@ -52,8 +52,7 @@ describe('GlobalSearchFilterComponent', () => {
 
   it('should call ngoninit', () => {
     component.ngOnInit();
-    console.log('checkhere 1 ', component.selectedFilters); // TODO: log!
-    expect(component.selectedFilters).toEqual({ selectedTab: 'all' });
+    expect(component.selectedFilters).toEqual({ subject: ['English']  });
   });
 
   describe('on input facet changes', () => {
@@ -120,7 +119,6 @@ describe('GlobalSearchFilterComponent', () => {
     component.facets = Response.facets;
     component.selectedFilters = Response.selectedFilters;
     component.removeFilterSelection({ type: 'medium', value: 'assamese' });
-    console.log('checkhere 2 ', component.selectedFilters); // TODO: log!
     expect(component.selectedFilters).toEqual(Response.filterChange.filters);
   });
 
@@ -128,7 +126,6 @@ describe('GlobalSearchFilterComponent', () => {
     component.selectedFilters = MockData.selectedFilters;
     component.facets = MockData.facets;
     component.updateRoute();
-    console.log('checkhere 3 ', component.selectedFilters); // TODO: log!
     expect(component.selectedFilters).toEqual(MockData.selectedFilterData);
   });
 
