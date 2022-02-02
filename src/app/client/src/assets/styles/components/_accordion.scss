@@ -229,4 +229,15 @@
   &__content{
     background: transparent;
   }
+  &.sbt-filter-accordion {
+    .mat-expansion-panel {
+        overflow: inherit;
+        background: transparent;
+        box-shadow: none;
+    }
+    .mat-expansion-panel-header {height:auto !important;}
+    .mat-expansion-panel-header .mat-expansion-indicator {display: none;}
+    .mat-expansion-panel-body {padding:0 0;}
+    .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {background:none;}
+  }
 }

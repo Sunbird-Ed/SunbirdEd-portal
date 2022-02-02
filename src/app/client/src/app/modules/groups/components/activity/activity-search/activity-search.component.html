@@ -30,12 +30,11 @@
 
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-activity-search relative9':'sb-back-header'" >
   <div [ngClass]="layoutConfiguration ? 'd-flex':'ui container'">
-    <div *ngIf="showFilters" class="pr-16 flex-b">
+    <div *ngIf="showFilters" class="flex-b" [ngClass]="layoutConfiguration ? '':'pr-16'">
         <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
         </app-global-search-filter>
     </div>
-    <div class="flex-basis-1">
-    <div class="mt-24">
+    <div class="flex-basis-1" [ngClass]="layoutConfiguration ? '':'mt-24'">
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
           <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title">
@@ -93,7 +92,6 @@
           </div>
         </div>
       </div>
-    </div>
     </div>
   
   </div>
