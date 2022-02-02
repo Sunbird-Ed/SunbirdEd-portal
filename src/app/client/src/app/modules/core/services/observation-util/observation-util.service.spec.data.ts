@@ -393,6 +393,7 @@ export const ResponseData = {
     organisationIds: ["0126796199493140480", "01275630081776844834397"],
     hashTagIds: ["0126796199493140480", "01275630081776844834397"],
     roleOrgMap: {},
+    userOrgDetails:{},
   },
 };
 

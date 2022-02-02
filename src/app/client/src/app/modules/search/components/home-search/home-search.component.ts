@@ -565,6 +565,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 public viewAll(event) {
+    this.moveToTop();
     this.logViewAllTelemetry(event);
      const searchQueryParams: any = {};
     searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });
@@ -573,6 +574,8 @@ public viewAll(event) {
     this.queryParams.primaryCategory ? (searchQueryParams['subject'] = [event.name]) :
     (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
     searchQueryParams['selectedTab'] = 'all';
+    searchQueryParams['visibility'] = [];
+    searchQueryParams['appliedFilters'] = true;
     const sectionUrl = '/explore' + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: searchQueryParams, state: {} });
  }

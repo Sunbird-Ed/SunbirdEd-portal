@@ -7,21 +7,20 @@
   </div>
   <div class="notification-count" *ngIf="notificationCount">{{notificationCount}}</div>
 </div>
-<sui-modal
-  [mustScroll]="true" 
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'small'"
-  class="sb-modal sb-notification-modal"
-  appBodyScroll
-  (dismissed)="showNotificationModel=false" 
-  *ngIf="showNotificationModel">
-  <div>
-    <sb-notification
-    [notificationList]="notificationList"
-    [inAppNotificationConfig]="inAppNotificationConfig"
-    (showMore)="handleShowMore($event)"
-    (showLess)="handleShowLess($event)"
-    ></sb-notification>
-  </div>
-</sui-modal>
+
+<app-modal-wrapper *ngIf="showNotificationModel" [config]="{disableClose: false, size: 'small'}"
+  (dismiss)="showNotificationModel=false">
+  <ng-template sbModalContent let-data>
+    <div class="sb-mat__modal sb-notification-modal">
+      <div mat-dialog-title class="mb-0">
+        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+      </div>
+      <div class="sb-mat__modal__content" tabindex="0">
+        <sb-notification tabindex="0" [notificationList]="notificationList"
+          [inAppNotificationConfig]="inAppNotificationConfig" (showMore)="handleShowMore($event)"
+          (showLess)="handleShowLess($event)"></sb-notification>
+      </div>
+      <div class="sb-mat__modal__actions"></div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

@@ -22,7 +22,8 @@ import {
   ISort,
   OrgDetailsService,
   SchemaService,
-  KendraService
+  KendraService,
+  ObservationUtilService
 } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
 import {
@@ -51,7 +52,6 @@ import {
 } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
-import { ObservationUtilService } from '../../service';
 import {Location} from '@angular/common';
 
 @Component({

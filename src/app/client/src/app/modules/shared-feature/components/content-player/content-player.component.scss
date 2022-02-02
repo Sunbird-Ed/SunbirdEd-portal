@@ -24,7 +24,7 @@
 }
 
 .content-header {
-  background: var(--rc-FAFAFA);
+  // background: var(--rc-FAFAFA);
   min-height: calculateRem(80px);
   background-color: var(--rc-FAFAFA);
   box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
@@ -44,8 +44,10 @@
     }
     
     &__info {
-        color: var(--gray-800);
-        font-size: calculateRem(14px);
+      color: var(--gray-800);
+      font-size: 0.875rem;
+      max-height: 48px;
+      overflow-y: auto;
     }
     
     .dot-divider {

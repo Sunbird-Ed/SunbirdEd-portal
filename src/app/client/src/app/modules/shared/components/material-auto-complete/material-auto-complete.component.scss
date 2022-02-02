@@ -87,4 +87,14 @@
   html[data-theme="Darkmode"] .sb-mat__checkbox.sb-mat__checkbox--primary .mat-checkbox-frame {
     border-color: #ccc;
   }
+  .sb-autocomp-dropdown__list {
+    top: 0px !important;
+  }
+  .sb-autocomp-dropdown__list ul {
+    list-style: none !important
+  }
+  .sb-autocomp-dropdown .mat-form-field {
+    height: 2.5rem !important;
+  }
 }
+

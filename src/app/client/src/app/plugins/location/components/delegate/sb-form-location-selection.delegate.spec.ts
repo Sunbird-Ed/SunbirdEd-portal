@@ -202,7 +202,8 @@ describe('SbFormLocationSelectionDelegate', () => {
           spyOnProperty(mockUserService, 'loggedIn', 'get').and.returnValue(true);
           spyOn(mockFormService, 'getFormConfig').and.returnValue(of([]));
           spyOnProperty(mockUserService, 'userProfile', 'get').and.returnValue({
-            userLocations: [ { type: 'state', code: 'SOME_STATE_CODE', id: 'SOME_STATE_ID' } ]
+            userLocations: [ { type: 'state', code: 'SOME_STATE_CODE', id: 'SOME_STATE_ID' } ],
+            profileUserTypes: [{type: 'sample-type', subType: 'sample-subtype'}]
           });
 
           // act
@@ -733,10 +734,12 @@ describe('SbFormLocationSelectionDelegate', () => {
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
           userId: 'SOME_USER_ID',
           profileLocation: [
-            jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
-            jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
+            {code: 'SOME_SELECTED_STATE_CODE', name: 'SOME_SELECTED_STATE_NAME',
+            id: 'SOME_SELECTED_STATE_ID', type: 'state'},
+            {code: 'SOME_SELECTED_DISTRICT_CODE',  name: 'SOME_SELECTED_DISTRICT_NAME',
+            id: 'SOME_SELECTED_DISTRICT_ID', type: 'district'}
           ],
-          profileUserType: {}
+          profileUserTypes: [{type: undefined}]
         });
       });
 
@@ -747,7 +750,7 @@ describe('SbFormLocationSelectionDelegate', () => {
           'persona': new FormControl('SOME_SELECTED_PERSONA'),
           'children': new FormGroup({
             'persona': new FormGroup({
-              'subPersona': new FormControl('SOME_SELECTED_SUB_PERSONA'),
+              'subPersona': new FormControl(['SOME_SELECTED_SUB_PERSONA']),
               'state': new FormControl({
                 code: 'SOME_SELECTED_STATE_CODE',
                 name: 'SOME_SELECTED_STATE_NAME',
@@ -774,16 +777,18 @@ describe('SbFormLocationSelectionDelegate', () => {
 
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
-          firstName: 'SOME_ENTERED_NAME',
-          profileUserType: {
-            type: 'SOME_SELECTED_PERSONA',
-            subType: 'SOME_SELECTED_SUB_PERSONA'
-          },
           userId: 'SOME_USER_ID',
           profileLocation: [
-            jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
-            jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
-          ]
+            {code: 'SOME_SELECTED_STATE_CODE', name: 'SOME_SELECTED_STATE_NAME',
+            id: 'SOME_SELECTED_STATE_ID', type: 'state'},
+            {code: 'SOME_SELECTED_DISTRICT_CODE',  name: 'SOME_SELECTED_DISTRICT_NAME',
+            id: 'SOME_SELECTED_DISTRICT_ID', type: 'district'}
+          ],
+          profileUserTypes: [{
+            type: 'SOME_SELECTED_PERSONA',
+            subType: 'SOME_SELECTED_SUB_PERSONA'
+          }],
+          firstName: 'SOME_ENTERED_NAME',
         });
       });
     });

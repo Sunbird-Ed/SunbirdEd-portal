@@ -14,14 +14,13 @@ import {
   ProfileData,
 } from './questionnaire.component.mock';
 import { LayoutService, ResourceService, ConfigService } from '@sunbird/shared';
-import { ObservationUtilService } from '../../observation/service';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
 import { APP_BASE_HREF } from '@angular/common';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
-import { ObservationService } from '@sunbird/core';
+import { ObservationService,ObservationUtilService } from '@sunbird/core';
 import {SlQuestionnaireService} from '@shikshalokam/sl-questionnaire'
 import { QuestionnaireService } from '../questionnaire.service';
 import { ToasterService } from '../../shared';

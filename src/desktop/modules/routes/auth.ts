@@ -43,6 +43,7 @@ export default (app, proxyURL) => {
 
     app.get([
         "/learner/user/v1/feed/:userId", 
+        "/learner/notification/v1/feed/read/:id",
         "/learner/certreg/v2/certs/download/:id"
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
@@ -56,13 +57,18 @@ export default (app, proxyURL) => {
         res.status(res.statusCode).send(res.body);
     });
 
+    app.post("/learner/notification/v1/feed/delete", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+   
     app.patch("/learner/user/v1/feed/update", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
     });
 
     app.patch([
         '/learner/user/v1/update',
-        '/learner/user/v2/update',
+        '/learner/user/v3/update',
+        "/learner/notification/v1/feed/update",
         '/learner/user/v1/declarations'
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);

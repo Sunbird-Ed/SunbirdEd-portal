@@ -17,11 +17,11 @@ import { MatDialog } from '@angular/material/dialog';
 export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() isClosable = true;
   @Input() deviceProfile: IDeviceProfile;
-  @Output() close = new EventEmitter<void>();
-
+  @Output() close = new EventEmitter<any>();
+  @ViewChild('onboardingModal', { static: true }) onboardingModal;
   telemetryImpression: IImpressionEventInput;
-
   sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
+  isSubmitted:boolean=false;
   public locationSelectionModalId = "location-selection";
 
   constructor(
@@ -84,7 +84,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     const dialogRef = this.matDialog.getDialogById(this.locationSelectionModalId);
     dialogRef && dialogRef.close();
     this.popupControlService.changePopupStatus(true);
-    this.close.emit();
+    this.close.emit({isSubmitted:this.isSubmitted});
   }
 
   async updateUserLocation() {
@@ -109,6 +109,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     } catch (e) {
       this.toasterService.error(this.resourceService.messages.fmsg.m0049);
     } finally {
+      this.isSubmitted=true;
       this.closeModal();
     }
   }

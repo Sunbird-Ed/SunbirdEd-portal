@@ -22,6 +22,9 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'course-stats', uri: '/dashboard/course-stats',
             type: 'view', object: { ver: '1.0', type: 'course' }
+          },
+          menuBar: {
+            visible: false
           }
         }
       },
@@ -32,6 +35,9 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'batches', uri: '/dashboard/batches',
             type: 'view', object: { ver: '1.0', type: 'course' }
+          },
+          menuBar: {
+            visible: false
           }
         }
       },
@@ -42,6 +48,9 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'certificates', uri: '/dashboard/certificates',
             type: 'view', object: { ver: '1.0', type: 'course' }
+          },
+          menuBar: {
+            visible: false
           }
         }
       },
@@ -68,6 +77,9 @@ const routes: Routes = [
     data: {
       roles: 'dashboardRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
+      menuBar: {
+        visible: false
+      },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
@@ -76,6 +88,9 @@ const routes: Routes = [
     path: 'organization/creation/:id/:timePeriod', component: OrganisationComponent,
     data: {
       telemetry: { env: 'profile', pageid: 'org-admin-dashboard', type: 'view' },
+      menuBar: {
+        visible: false
+      },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
     }
@@ -83,7 +98,10 @@ const routes: Routes = [
   {
     path: 'reports', component: ListAllReportsComponent, data: {
       roles: 'reportViewerRole',
-      telemetry: { env: 'reports', pageid: 'reports-list', type: 'view' }
+      telemetry: { env: 'reports', pageid: 'reports-list', type: 'view' },
+      menuBar: {
+        visible: false
+      }
     }
   },
   {

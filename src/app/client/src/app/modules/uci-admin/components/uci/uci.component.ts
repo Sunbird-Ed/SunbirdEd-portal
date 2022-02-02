@@ -12,11 +12,14 @@ export class UciComponent implements OnInit {
   public userProfile: any;
   public url;
   public blobUrl;
+  public uciBotPhoneNumber;
 
   constructor(public userService: UserService,
               private config: ConfigService) {
     this.blobUrl = (<HTMLInputElement>document.getElementById('blobUrl'))
       ? (<HTMLInputElement>document.getElementById('blobUrl')).value : '';
+    this.uciBotPhoneNumber = (<HTMLInputElement>document.getElementById('uciBotPhoneNumber'))
+      ? (<HTMLInputElement>document.getElementById('uciBotPhoneNumber')).value : '';
   }
 
   ngOnInit(): void {

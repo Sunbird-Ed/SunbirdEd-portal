@@ -4,14 +4,15 @@
 <app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="toggleFtuModal(false)">
 </app-ftu-popup>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : 'sb-back-header'">
+<div *ngIf="groupData && !isLoader" [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
+<app-group-header class="w-100" [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup"></app-group-header>
+</div>
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details' : 'sb-back-header'">
 
 <div class="ui container" *ngIf="isLoader" > 
   <app-loader></app-loader>
 </div>
-
 <div *ngIf="groupData && !isLoader" [appTelemetryImpression]="telemetryImpression">
-  <app-group-header [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24 sbt-sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 ">

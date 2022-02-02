@@ -574,7 +574,7 @@ app-workspace {
   }
 
   .sb-card-grid {
-    margin-top: 24px;
+    // margin-top: 24px;
   }
 
   .content-header {
@@ -1290,11 +1290,6 @@ html[data-theme='Darkmode'][layout='joy'] {}
   }
 }
 
-//desktop
-.sb-desktop-filter-section .status-container__title {
-  max-width: 100% !important;
-}
-
 @media screen and (min-width:1024px) and (max-width:1199px) {
   *[lang="ta"] {
     .sb-desktop-header-list-items {
@@ -1327,6 +1322,11 @@ html[data-theme='Darkmode'][layout='joy'] {}
       }
     }
   }
+}
+
+//desktop
+.sb-desktop-filter-section .status-container__title {
+  max-width: 100% !important;
 }
 
 @include respond-above(sm) {
@@ -1440,6 +1440,15 @@ sunbird-epub-player .sunbird-epub-container {
     height: auto !important;
   }
 }
+.PlayerMediaQueryClass sunbird-epub-player .sunbird-epub-container div:first-child.rendition{
+  height:auto;
+}
+.PlayerMediaQueryClass .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
+  height: calc(100% - 4rem) !important;
+}
+.PlayerMediaQueryClass .sb-epub-reading-status, .PlayerMediaQueryClass .sb-pdf-reading-status{
+  bottom: 4.75rem !important;
+}
 .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
   height: 100% !important;
 }
@@ -1460,67 +1469,17 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 //   overflow:hidden !important;
 // }
 
-// Accessible changes
-html[data-theme='Default'], [layout='joy']{
-  app-signup {
-    .sb-checkbox.sb-checkbox-primary label:before {
-      border-color: #004E8A;
-    }
-  }
-}
-
-html[data-theme='Darkmode'] {
-  app-signup {
-    .sb-checkbox.sb-checkbox-primary label:before {
-      border-color: var(--primary-color);
-    }
-  }
-}
-
-@include respond-below(md) {
-  .cdk-overlay-pane {
-    min-width: auto !important;
-  }
-}
-
-html[layout='joy'] {
-  .sb-library-cards, .layout-library {
-    .header .title {
-      font-weight: 700 !important;
-      font-size: calculateRem(16px) !important;
-    }
-  }
-}
-
-// .cdk-overlay-container .cdk-global-overlay-wrapper {
-//   overflow: auto;
+// @include respond-below(md) {
 //   .cdk-overlay-pane {
-//     width: 100%;
-//     max-width: 100% !important;
-//   }
-//   .ui.dimmer {
-//     overflow: auto;
+//     min-width: auto !important;
 //   }
 // }
 
-// .cdk-global-overlay-wrapper {
-//   pointer-events: auto;
-//   display: block;
-//   position: relative;
-//   overflow: auto;
-//   text-align: center;
-// }
-
-// .cdk-global-overlay-wrapper::before {
-//   content: '';
-//   display: inline-block;
-//   height: 100%;
-//   white-space: nowrap;
-// }
-
-// .cdk-overlay-pane {
-//   display: inline-block;
-//   position: relative;
-//   text-align: left;
-//   white-space: normal;
-// }
+.dot-divider {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 100%;
+  background-color: var(--gray-800);
+  display: inline-block;
+  margin: 0px 0.5rem;
+}

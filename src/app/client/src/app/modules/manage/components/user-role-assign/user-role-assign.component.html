@@ -1,0 +1,205 @@
+<!-- Admin role page -->
+<div class="relative9 sbt-inside-page-container">
+    <div class="sbt-header-menu-bar">
+      <div class="ui container d-flex flex-ai-center">
+        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round" *ngIf="showingResults" type="button" (click)="goBack()">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4">
+            <svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+            </svg></i>
+        </button>
+        <h4 class="text-capitalize" *ngIf="!showingResults">Add user roles</h4>
+        <div class="add-adminrole__header my-16 ml-16 d-flex" *ngIf="showingResults">Showing results for <b>"{{userObj.userName}}"</b></div>
+      </div>
+    </div>
+  
+    <div class="ui container">
+        <div *ngIf="!showingResults">
+            <div class="ui stackable grid sb-admin-search-container">
+                <div class="six wide column">
+                <div class="sb-search-box no-btn mb-16">
+                    <div class="input-div relative">
+                    <input class="sb-search-input" id="search-within-group" type="text" placeholder="Search user by DIKSHA ID" 
+                    (keyup.enter)="onEnter(key)" [(ngModel)]="key">
+                    <i aria-hidden="true" class="search icon" (click)="onEnter(key)"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+        
+            <div class="no-result-container d-flex flex-dc flex-jc-center p-24 sb-bg-color-white">
+                <div class="d-flex flex-dc flex-jc-center flex-ai-center" *ngIf="showNoResult">
+                <div>
+                    <img height="125px" width="150px" src="./assets/images/erroricon.png">
+                </div>
+                <div class="my-8 text-center no-result-text">No User found</div>
+                </div>
+            </div>
+        </div>
+  
+    <div class="add-adminrole" *ngIf="showingResults">
+        <div class="add-adminrole__content">
+          <div class="user-details mb-16">
+            <div class="user-img ml-16">
+                <ngx-avatar class="my-avatar" [style]="customStyle" [size]="80" initialsSize="1" [textSizeRatio]="2" name="{{userObj.firstName}} ">
+                </ngx-avatar>
+            </div>
+            <div class="user-metadata ml-32">
+              <div class="user-name text-left">{{userObj.firstName}} {{userObj.lastName}}</div>
+              <div class="user-info">
+                <div class="user-id">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance }} : {{userObj.userName}}</div>
+                <!-- <div class="dot-separator"></div>
+                <div class="user-state">Telengana</div>
+                <div class="dot-separator"></div>
+                <div class="user-state">Hyderabad</div> -->
+              </div>
+            </div>
+          </div>
+          <div class="btn-container ml-24 d-flex">
+            <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn" (click)="enableAssignRole()">+ ADD NEW ROLE</button>
+          </div>
+          <div class="user-workexp-container" *ngIf="!showCards"></div>
+          <div class="user-workexp-container" *ngIf="showCards">
+              <div class="user-workexp-card" *ngFor="let item of userRole">
+                <div class="user-workexp">
+                  <div class="user-workexp__header">
+                    <div class="user-workexp__name mr-auto">{{item.roleName}}</div>
+                    <div class="user-workexp__btn"><button
+                        class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer" (click)="editRole(item)">
+                        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                            <use xlink:href="assets/images/sprite.svg#edit"></use>
+                          </svg></i><span>{{resourceService?.frmelmnts?.lbl?.edit}}</span> </button></div>
+                          <div class="user-workexp__btn"><button
+                            class="sb-btn sb-btn-xs sb-btn-link-primary sb-left-icon-btn cursor-pointer" (click)="deleteRole(item)">
+                            <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                                <use xlink:href="assets/images/sprite.svg#delete"></use>
+                              </svg></i><span>{{resourceService?.frmelmnts?.btn?.delete}}</span> </button></div>
+                  </div>
+                  <div class="user-workexp__metadata">
+                    <div class="worked-from">{{item.orgName}}</div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+</div>
+  <!-- Admin role page end -->
+
+
+  
+<app-modal-wrapper *ngIf="showAssignRole" [config]="{disableClose: true, size: 'normal'}"
+  (dismiss)="dismissRoleAssign()">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <!--Header-->
+          <div class="sb-modal-header" *ngIf="userDetails">
+
+          </div>
+          <!--/Header-->
+
+          <!--Content-->
+          <div class="sb-modal-content" *ngIf="showMainLoader">
+            <div class="ui grid">
+              <div class="twelve wide column">
+                <app-loader></app-loader>
+              </div>
+            </div>
+          </div>
+          <div class="sb-modal-content o-y-visible" *ngIf="!showMainLoader">
+            <div class="ui grid">
+              <div class="ten wide column mb-30">
+                <span class="ui header" *ngIf="!isEditRole">Add new role</span>
+                <span class="ui header" *ngIf="isEditRole">Edit role</span>
+              </div>
+            </div>
+            <form class="ui form" [formGroup]="userDetailsForm">
+              <div class="field">
+                <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
+              </div>
+              <div class="field">
+                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="role"
+                  (selectedOptionsChange)="enableButton()" formControlName="role" [options]="allRoles"
+                  labelField="roleName" valueField="role" name="role"
+                  placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
+                  <sui-select-option *ngFor="let role of allroles.filteredOptions"
+                    [ngClass]="{disabled: userAssignedRole.includes(role.role)}" [value]="role"></sui-select-option>
+                </sui-multi-select>
+              </div>
+              <div class="field">
+                <label>{{resourceService.frmelmnts?.lbl?.orgname}}</label>
+              </div>
+              <div class="field">
+                <sui-multi-select [isSearchable]="false" class="selection" [(ngModel)]="orgName"
+                  (selectedOptionsChange)="enableButton()" formControlName="orgName" [options]="orgList"
+                  labelField="orgName" valueField="orgId" name="orgName"
+                  placeholder="{{resourceService?.frmelmnts?.lbl?.dashboardselectorg}}" #allorgName>
+                  <sui-select-option *ngFor="let org of allorgName.filteredOptions" [value]="org"></sui-select-option>
+                </sui-multi-select>
+              </div>
+            </form>
+          </div>
+          <!--/Content-->
+
+          <!--Actions-->
+          <div class="sb-modal-actions">
+            <button [disabled]="!enableSubmitBtn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"
+              (click)="onSubmitForm()" tabindex="0" class="sb-btn sb-btn-normal"
+              [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
+              {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+            <button [disabled]="!enableSubmitBtn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"
+              (click)="onSubmitForm()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary"
+              [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
+              {{resourceService.frmelmnts?.btn?.save}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--/Actions-->
+
+    </div>
+  </ng-template>
+</app-modal-wrapper>
+
+<app-modal-wrapper *ngIf="showDelete" [config]="{disableClose: true, size: 'small'}" (dismiss)="dismiss()">
+  <ng-template sbModalContent>
+      <div class="sb-modal sb-error">
+          <div class="transition ui dimmer page modals active visible">
+              <div class="ui modal transition active visible small">
+                  <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+                      <span>&times;</span>
+                  </button>
+                  <!--Header-->
+                  <div class="sb-modal-header">
+                      {{resourceService?.frmelmnts?.lbl?.delete}}
+                  </div>
+                  <!--/Header-->
+                  <!--Content-->
+                  <div class="sb-modal-content">
+                      {{resourceService?.frmelmnts?.lbl?.deleteConfirm}}
+                  </div>
+                  <!--/Content-->
+                  <!--Actions-->
+                  <div class="sb-modal-actions">
+                      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="deleteRoleConformed()">
+                          {{resourceService?.frmelmnts?.btn?.yes}}
+                      </button>
+                      <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="dismiss()" tabindex="0" mat-dialog-close>
+                          {{resourceService?.frmelmnts?.btn?.cancel}}
+                      </button>
+                  </div>
+                  <!--/Actions-->
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</app-modal-wrapper>

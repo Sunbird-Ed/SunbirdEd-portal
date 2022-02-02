@@ -66,7 +66,7 @@ let envVariables = {
   // Telemetry Configuration
   PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 1000,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
- 
+
   // generic editor content size 150 MB
   SUNBIRD_DEFAULT_FILE_SIZE: env.sunbird_default_file_size || 150,
 
@@ -249,7 +249,13 @@ let envVariables = {
   vdnURL:env.vdnURL || '',
 
   // Add below variable for Apple Login
-  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys"
+  APPLE_SIGNIN_KEY_URL: "https://appleid.apple.com/auth/keys",
+
+  //Redirect and ErrorCallback domain
+  REDIRECT_ERROR_CALLBACK_DOMAIN:env.portal_redirect_error_callback_domain || '',
+
+  // UCI
+  sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
