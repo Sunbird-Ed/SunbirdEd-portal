@@ -47,7 +47,7 @@ describe('GlobalSearchSelectedFilterComponent', () => {
     component.facets = Response.facets;
     component.selectedFilters = Response.selectedFilters;
     component.removeFilterSelection({type: 'medium', value: 'assamese'});
-    expect(component.selectedFilters).toEqual(Response.filterChange.filters);
+    expect(component.selectedFilters).toEqual(Response.removedFilters.filters);
   });
 
 
@@ -56,6 +56,18 @@ describe('GlobalSearchSelectedFilterComponent', () => {
     component.facets = Response.facetsData;
     component.updateRoute();
     expect(component.selectedFilters).toEqual(Response.selectedFilterData);
+  });
+
+  it('should return false for showing label', () => {
+    component.selectedFilters = {selectedTab: 'all'};
+    const res = component.showLabel();
+    expect(res).toBeFalsy();
+  });
+
+  it('should return false for showing label', () => {
+    component.selectedFilters = { se_boards: ['sunbird'], selectedTab: 'all' };
+    const res = component.showLabel();
+    expect(res).toBeTruthy();
   });
 
 });

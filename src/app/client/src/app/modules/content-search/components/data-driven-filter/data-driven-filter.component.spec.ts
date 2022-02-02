@@ -13,6 +13,7 @@ import { CoreModule, FrameworkService, FormService, UserService, PublicDataServi
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DataDrivenFilterComponent', () => {
   let component: DataDrivenFilterComponent;
@@ -45,7 +46,7 @@ describe('DataDrivenFilterComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), BrowserAnimationsModule],
       declarations: [DataDrivenFilterComponent],
       providers: [ConfigService, CacheService, ResourceService,
         { provide: Router, useClass: RouterStub },
