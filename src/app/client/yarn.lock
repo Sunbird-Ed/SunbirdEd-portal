@@ -1518,10 +1518,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.34.tgz#79ea288f43c4963bf81c48cc81ca89bf5922b198"
   integrity sha512-3u53H1O7v1NpLUF2ZD8J7AfU3ar0gGq+YjWrxByyf53K4jZbZY9xW2FsymX/fxbnCyXYStJMf7g40NOOKs0ueg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.6.10":
-  version "4.6.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.6.10.tgz#5e91bbdb5a2bafb747170cadda4531cc9aaf1b30"
-  integrity sha512-oV001kOqKoiV5jqBzyev7mfI1Yo4NENvjPdUe3+M6NJIcbhEGmAMiopGfa1cvp74B4EHuquqOnJgEtx4Dd9nbw==
+"@project-sunbird/sunbird-collection-editor-v9@4.6.20":
+  version "4.6.20"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.6.20.tgz#77df046913e8a2d6e93fcdce8e5be0b5253e7c00"
+  integrity sha512-RyFLWr1lpbJUnVeVzCvxsN+pv9JYo7Cb+PpROU93yROa5NP3/BW37RiLkTv9qxHRkZRuO6x81i6KHJUs2v7RiQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -5276,7 +5276,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
