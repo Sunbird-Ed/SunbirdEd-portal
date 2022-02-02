@@ -474,7 +474,7 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-          <li class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
+          <li  *ngIf="showSwitchTheme" class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
@@ -540,7 +540,7 @@
                 </svg></i>
               {{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
             </li>
-            <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);switchLayout()">
+            <li  *ngIf="showSwitchTheme" class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);switchLayout()">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
                 </svg></i>
