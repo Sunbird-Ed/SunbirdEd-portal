@@ -28,7 +28,7 @@
                 </sb-library-filters>
             </div>
         </div>
-
+​
         <div class="sb-bg-color-white sb-global-filter-section">
             <div class="ui container">
                 <div class="d-flex flex-ai-center flex-w-wrap">
@@ -50,9 +50,9 @@
                             </label>
                         </div>
                     </div>
-
+​
                     <div *ngIf="allValues?.publisher?.length" class="state-medium-container__separator"> </div>
-
+​
                     <div *ngIf="allValues?.publisher?.length" class="state-medium-container__dropdown">
                         <div class="sb-field mb-0"><label>
                                 <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
@@ -71,10 +71,10 @@
                             </label>
                         </div>
                     </div>
-
+​
                     <div *ngIf="allValues?.audience?.length" class="state-medium-container__separator"> </div>
-
-
+​
+​
                     <div *ngIf="allValues?.audience?.length" class="state-medium-container__dropdown">
                         <div class="sb-field mb-0"><label>
                                 <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
@@ -99,28 +99,24 @@
                         | translate}}
                     </button>
                 </div>
-
+​
             </div>
         </div>
-
+​
     </div>
 </ng-container>
-
 <div *ngIf="isLayoutAvailable()" class="sbt-filter" tabindex="-1">
-
-    <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
-        <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-        <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
-    </div>
-    <div class="sbt-filter-switcher-container cursor-pointer computer only">
-        <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-        <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
-    </div>
-    <mat-accordion class="sbt-filter-accordion">
+​<mat-accordion class="sb-mat-accordion sbt-filter-accordion">
         <mat-expansion-panel [expanded]="isOpen">
             <mat-expansion-panel-header>
-                <mat-panel-title>
-                </mat-panel-title>
+                <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
+                    <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+                    <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
+                </div>
+                <div class="sbt-filter-switcher-container cursor-pointer computer only">
+                    <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+                    <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
+                </div>
             </mat-expansion-panel-header>
             <ng-container>
                 <div [hidden]="!((boards.length || emptyBoard) && refresh)" class="sbt-filter-bar mr-16 pl-24">
@@ -142,14 +138,14 @@
                     <div class="fsmall my-8 text-left filter-pref-text" tabindex="0">
                         {{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
                     <div class="sbt-filter-scrollable pr-24">
-
+​
                         <ng-container *ngIf="filterFormTemplateConfig && refreshSearchFilterComponent">
                             <sb-search-framework-filter [frameworkAssociations]="allValues"
                                 [frameworkCategoryFilterFieldTemplateConfig]="filterFormTemplateConfig"
                                 [baseSearchFilter]="defaultFilters" #sbSearchFrameworkFilterComponent>
                             </sb-search-framework-filter>
                         </ng-container>
-
+​
                     </div>
                 </div>
             </ng-container>
