@@ -1518,10 +1518,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.36.tgz#af0f36535e288b7d98a8e8d653be6e2bd60a097b"
   integrity sha512-7OVEPI9i3QKSJljOtI7lnnqpVqMl4ePoFhNPmv1tPNS/jpxGwhxITjlYXlEKrW6SbFdGIrSEoqeTJ1u2lCK1iQ==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.7.6":
-  version "4.7.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.6.tgz#94da14039e3857d44cdab064b522ddeb8331080b"
-  integrity sha512-EfSFyP1e15vm7MH3NWh/Ty/E04KE/SA0HEz0hyE27NPgsgn0yrzioPkAJ1YVYvY7Skr+6KfYPy2xJTR7o8w4Qw==
+"@project-sunbird/sunbird-collection-editor-v9@4.7.7":
+  version "4.7.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.7.tgz#c7a7d455776e912bf5037184aca0f50eeeb9b90c"
+  integrity sha512-GCMur6Smfvt8RzqMwMpomcDpnGodYG1XaiWweZBJeyvVBJJC20pFwr1OtebgLxYxJ1hbQ31FcPRbnT3cjc/nQw==
   dependencies:
     tslib "^1.10.0"
 
