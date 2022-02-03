@@ -1,7 +1,7 @@
 <ng-container *ngIf="!layoutConfiguration">
   <div class="sb-prominent-filter pb-8 px-16" *ngIf="showFilters">
     <div class="ui container">
-      <mat-accordion>
+      <mat-accordion class="sb-mat-accordion mb-16">
         <mat-expansion-panel [expanded]="accordionDefaultOpen">
           <mat-expansion-panel-header *ngIf="isShowFilterLabel" (click)="accordionDefaultOpen = !accordionDefaultOpen">
             <mat-panel-title class="sb-data-driven-filter-header" appTelemetryInteract
@@ -9,7 +9,7 @@
               {{resourceService.frmelmnts?.lbl?.filters}}
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div>
+          <div class="sb-mat-accordion__content">
             <!--Selected Filters list-->
             <div class="mb-16" *ngIf="filtersDetails && formInputData && showSearchedParam">
               <ng-container *ngFor="let field of filtersDetails">
@@ -109,9 +109,9 @@
       <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
       <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters}}</div>
     </div>
-    <mat-accordion class="sbt-filter-accordion">
+    <mat-accordion class="sb-mat-accordion mb-16 sbt-filter-accordion">
       <mat-expansion-panel [expanded]="isOpen">
-        <div class="sbt-filter-bar mr-16 pl-24" tabindex="0">
+        <div class="sb-mat-accordion__content sbt-filter-bar mr-16 pl-24" tabindex="0">
           <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
             <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
               (click)="resetFilters()" tabindex="0" appTelemetryInteract
