@@ -164,6 +164,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   userPreference: any;
   showReportMenu = false;
   showingDescription: string;
+  showSwitchTheme = false
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -324,7 +325,25 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   navigateByUrl(url: string) {
     window.location.href = url;
   }
-
+  switchToNewTheme(){
+    const formServiceInputParams = {
+      formType: this.baseCategoryForm.formType,
+      formAction: this.baseCategoryForm.formAction,
+      contentType: this.baseCategoryForm.filterEnv
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      const layoutType = localStorage.getItem('layoutType') || '';
+      const contentTypes = _.sortBy(data, 'index');
+      const defaultTab = _.find(contentTypes, ['default', true]);
+      const isOldThemeDisabled = _.get(defaultTab, 'isOldThemeDisabled');
+      if (!isOldThemeDisabled) {
+        this.showSwitchTheme = true;
+      }
+      if(isOldThemeDisabled && layoutType !== 'joy') {
+        this.layoutService.initiateSwitchLayout();
+      }
+    })
+  }
   navigateToHome() {
     const formServiceInputParams = {
       formType: this.baseCategoryForm.formType,
@@ -347,8 +366,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }, (err: any) => {
 
     });
-
-  }
+    }
   onEnter(key) {
     this.queryParam = {};
     if (key && key.length) {
@@ -634,6 +652,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
+    this.switchToNewTheme();
   }
 
   checkFullScreenView() {

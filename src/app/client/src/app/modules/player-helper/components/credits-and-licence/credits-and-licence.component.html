@@ -10,14 +10,14 @@
 </div>
 
 
-<mat-accordion class="styled fluid sb-accordion">
+<mat-accordion class="sb-mat-accordion mb-16">
   <mat-expansion-panel>
     <mat-expansion-panel-header class="sb-accordion-title fnormal" role="button" tabindex="0">
       <mat-panel-title>
         {{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8" role="region" id="aboutTheContent"
+    <div content class="sb-mat-accordion__content" role="region" id="aboutTheContent"
       aria-labelledby="aboutTheContent">
       <div class="py-8" *ngIf="contentData?.author">
         <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.author}}</div>

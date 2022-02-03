@@ -162,7 +162,7 @@ select:-internal-autofill-selected {
   display: flex;
   align-items: center;
   border-radius: calculateRem(28px);
-  margin:-1.5rem calculateRem(0px) calculateRem(16px);
+  // margin:-1.5rem calculateRem(0px) calculateRem(16px);
   @include respond-above(sm) {
     margin:0 calculateRem(24px);
   }

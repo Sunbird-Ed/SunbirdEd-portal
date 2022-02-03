@@ -1,17 +1,17 @@
 <ng-container *ngIf="facets && layoutConfiguration">
   <div class="sbt-filter">
-    <div class="sbt-filter-overlay"></div>
-    <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
-      <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-      <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
-    </div>
-    <div class="sbt-filter-switcher-container cursor-pointer computer only">
-      <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-      <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
-    </div>
-    <mat-accordion class="sbt-filter-accordion">
+    <mat-accordion class="sb-mat-accordion sbt-filter-accordion">
       <mat-expansion-panel [expanded]="isOpen">
         <mat-expansion-panel-header>
+          <div class="sbt-filter-overlay"></div>
+          <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
+            <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+            <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
+          </div>
+          <div class="sbt-filter-switcher-container cursor-pointer computer only">
+            <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+            <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
+          </div>
         </mat-expansion-panel-header>
         <ng-container>
           <div class="sbt-filter-bar mr-16 pl-24">
@@ -44,10 +44,9 @@
     </mat-accordion>
   </div>
 </ng-container>
-
-
+​
 <ng-container *ngIf="facets && !layoutConfiguration">
-  <div class="sb-prominent-filter pb-8 px-16">
+  <div class="sb-prominent-filter p-0 mt-8">
     <div class="ui container">
       <mat-accordion>
         <mat-expansion-panel>

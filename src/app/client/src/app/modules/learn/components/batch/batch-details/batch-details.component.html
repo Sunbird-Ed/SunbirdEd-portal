@@ -36,14 +36,14 @@
 </app-modal-wrapper>
 
 <!-- create batch -->
-<mat-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="isTrackable && viewBatch">
+<mat-accordion class="sb-mat-accordion mb-16" *ngIf="isTrackable && viewBatch">
   <mat-expansion-panel>
     <mat-expansion-panel-header tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion" aria-controls="batches">
-      <mat-panel-title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
         {{resourceService?.frmelmnts?.lbl?.batches}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="batches" aria-labelledby="batches">
+    <div class="sb-mat-accordion__content" role="region" id="batches" aria-labelledby="batches">
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
@@ -113,14 +113,14 @@
 </mat-accordion>
 
 <!-- batch details -->
-<mat-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="showBatchDetailsBeforeJoin">
+<mat-accordion class="sb-mat-accordion mb-16" *ngIf="showBatchDetailsBeforeJoin">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <div *ngIf="batchDetails?.startDate">
@@ -149,14 +149,14 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-<mat-accordion *ngIf="showCertificateDetails" class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
+<mat-accordion *ngIf="showCertificateDetails" class="sb-mat-accordion mb-16">
   <mat-expansion-panel>
-    <mat-expansion-panel-header title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+    <mat-expansion-panel-header title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
       <mat-panel-title>
         <span>{{resourceService?.frmelemnts?.scttl?.certques}}</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <ul>
@@ -173,15 +173,15 @@
 </mat-accordion>
 
 <!-- Leave batch card -->
-<mat-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion"
+<mat-accordion class="sb-mat-accordion mb-16"
   *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
         {{resourceService.frmelmnts.lbl.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <div class="batch-details__name sb-color-primary font-weight-bold fmedium">
