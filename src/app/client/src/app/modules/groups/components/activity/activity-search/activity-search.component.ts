@@ -21,7 +21,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { VIEW_ACTIVITY, CATEGORY_SEARCH } from '../../../interfaces/telemetryConstants';
 import { ActivityDashboardService } from '@sunbird/shared';
-import { sessionKeys } from '../../..';
+import { sessionKeys } from '../../../interfaces/group';
 
 
 @Component({
