@@ -1,29 +1,34 @@
 <app-modal-wrapper [config]="{disableClose: true, size: 'small'}" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <i class="close icon" aria-hidden="true" tabindex="0" (click)="closeModal()"></i>
-          <div class="course-complete sb-bg-white p-32">
-            <div class="course-complete-content">
-              <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
-              <div class="course-complete-data font-weight-bold">
-                <div class="title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
-                <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
-              </div>
+    <div class="sb-mat__modal">
+
+      <div mat-dialog-title class="mb-0">
+        <div class="title"></div>
+        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+      </div>
+
+      <div class="sb-mat__modal__content">
+        <div class="course-complete sb-bg-white p-32">
+          <div class="course-complete-content">
+            <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
+            <div class="course-complete-data font-weight-bold">
+              <div class="title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
+              <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
             </div>
-            <div class="course-complete-para mt-32"
-              *ngIf="certificateDescription && !certificateDescription?.isCertificate">
-              <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</p>
-            </div>
-            <div class="course-complete-para mt-32"
-              *ngIf="certificateDescription && certificateDescription?.description">
-              <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
-              <p class="fsmall mb-0">{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
-            </div>
+          </div>
+          <div class="course-complete-para mt-32"
+            *ngIf="certificateDescription && !certificateDescription?.isCertificate">
+            <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</p>
+          </div>
+          <div class="course-complete-para mt-32" *ngIf="certificateDescription && certificateDescription?.description">
+            <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
+            <p class="fsmall mb-0">{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
           </div>
         </div>
       </div>
+
+      <div class="sb-mat__modal__actions"></div>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
