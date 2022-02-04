@@ -1,13 +1,13 @@
-<mat-accordion class="styled fluid sb-single-pannel-accordion sb-content-manager-panel sb-desktop-content-manager"
+<mat-accordion class="sb-mat-accordion styled fluid sb-single-pannel-accordion sb-content-manager-panel sb-desktop-content-manager"
   [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true, 'hide': visibility === false}"
   *ngIf="contentResponse?.length">
   <mat-expansion-panel [expanded]="isOpen" (click)="getContentList()">
     <mat-expansion-panel-header>
-      <mat-panel-title appTelemetryInteract [telemetryInteractEdata]="getTelemetryInteractData()">
+      <mat-panel-title class="sb-mat-accordion__title" appTelemetryInteract [telemetryInteractEdata]="getTelemetryInteractData()">
         {{resourceService?.frmelmnts?.lbl?.contentManager}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div *ngIf="contentResponse">
+    <div *ngIf="contentResponse" class="sb-mat-accordion__content">
       <div class="sb-single-pannel-accordion-list-item flex-ai-center text-left"
         *ngFor="let data of contentResponse | orderBy:'createdOn': true">
         <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
