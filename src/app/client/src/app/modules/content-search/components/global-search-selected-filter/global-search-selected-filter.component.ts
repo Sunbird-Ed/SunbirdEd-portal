@@ -53,7 +53,7 @@ export class GlobalSearchSelectedFilterComponent {
   }
 
   showLabel() {
-    if(Object.keys(this.selectedFilters).length == 1 && _.get(this.selectedFilters, 'selectedTab') == 'all') {
+    if((Object.keys(this.selectedFilters).length == 0) || (Object.keys(this.selectedFilters).length == 1 && _.get(this.selectedFilters, 'selectedTab') == 'all')) {
       return false
     } else {
       return true;

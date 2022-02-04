@@ -165,9 +165,13 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         }
         return queryFilters;
       })).subscribe(filters => {
-        if (this.cacheService.exists('searchFiltersAll')) {
+        if (_.get(filters, 'key')) {
+          this.cacheService.remove('searchFiltersAll');
+        }
+        if (this.cacheService.exists('searchFiltersAll') && !_.get(filters, 'key')) {
           this.selectedFilters = _.cloneDeep(this.cacheService.get('searchFiltersAll'));
         } else {
+          this.cacheService.remove('searchFiltersAll');
           this.selectedFilters = _.cloneDeep(filters);
         }
         this.emitFilterChangeEvent(true);
@@ -218,7 +222,9 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
     if (!skipUrlUpdate) {
       this.updateRoute();
-    } else if (this.cacheService.get('searchFiltersAll')) {
+    } else if (this.cacheService.get('searchFiltersAll') && !_.get(this.selectedFilters, 'key')) {
+      this.updateRoute();
+    } else if (_.get(this.selectedFilters, 'key')) {
       this.updateRoute();
     }
   }
@@ -254,6 +260,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onSearchFacetFilterReset() {
+    this.cacheService.remove('searchFiltersAll');
     /* istanbul ignore else */
     if (this.searchFacetFilterComponent) {
       this.searchFacetFilterComponent.resetFilter();
