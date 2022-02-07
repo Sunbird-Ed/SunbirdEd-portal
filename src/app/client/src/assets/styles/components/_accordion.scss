@@ -228,6 +228,7 @@
   }
   &__content{
     background: transparent;
+    color:var(--gray-800);
   }
   &.sbt-filter-accordion {
     .mat-expansion-panel {

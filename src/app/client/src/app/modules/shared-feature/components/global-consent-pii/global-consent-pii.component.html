@@ -1,11 +1,11 @@
-<mat-accordion class="styled fluid sb-accordion ui accordion sb-new-theme-accordion" *ngIf="showSettingsPage">
+<mat-accordion class="sb-mat-accordion mb-16" *ngIf="showSettingsPage">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title class="sb-mat-accordion__title">
         {{resourceService?.frmelmnts?.lbl?.dataSetting}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="dataSetting"
+    <div class="sb-mat-accordion__content" role="region" id="dataSetting"
       aria-labelledby="dataSetting">
       <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
         <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
