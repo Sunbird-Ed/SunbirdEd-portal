@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@sunbird/core';
-import { CertificateDetailsComponent, CertificateConfigurationComponent, CreateTemplateComponent} from './components';
+import { CertificateDetailsComponent, CertificateConfigurationComponent, CreateTemplateComponent, SvgEditorComponent} from './components';
 
 const routes: Routes = [
   {
@@ -16,6 +16,16 @@ const routes: Routes = [
   },
   {
     path: 'configure/create-template', component: CreateTemplateComponent, canActivate: [AuthGuard],
+    data: {
+      telemetry: {
+        env: 'certs', pageid: 'certificate-create-template', type: 'view', subtype: 'paginate', ver: '1.0'
+      },
+      roles: 'createBatchRole',
+      hideHeaderNFooter: false
+    }
+  },
+  {
+    path: 'configure/create-certificate-template', component: SvgEditorComponent, canActivate: [AuthGuard],
     data: {
       telemetry: {
         env: 'certs', pageid: 'certificate-create-template', type: 'view', subtype: 'paginate', ver: '1.0'
