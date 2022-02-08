@@ -1,11 +1,11 @@
-<mat-accordion class="styled fluid sb-accordion ui accordion sb-new-theme-accordion" *ngIf="showSettingsPage">
+<mat-accordion class="sb-mat-accordion mb-16" *ngIf="showSettingsPage">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title class="sb-mat-accordion__title">
         {{resourceService?.frmelmnts?.lbl?.dataSetting}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="dataSetting"
+    <div class="sb-mat-accordion__content" role="region" id="dataSetting"
       aria-labelledby="dataSetting">
       <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
         <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
@@ -46,19 +46,19 @@
   </mat-expansion-panel>
 </mat-accordion>
 
-<app-modal-wrapper *ngIf="showConsentPopup" [config]="{disableClose: true, size: 'normal'}"
+<app-modal-wrapper *ngIf="showConsentPopup" [config]="{disableClose: true, size: 'normal', panelClass: 'overflow-visible'}"
   (dismiss)="showConsentPopup = false;" #profileDetailsModal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
+    <div class="sb-mat__modal">
+
           <!--Header-->
-          <div class="sb-modal-header lineHeight-normal">
-            {{resourceService?.frmelmnts?.lbl?.profileDetails}}
+          <div mat-dialog-title class="mb-0 px-16">
+            <div class="title">{{resourceService?.frmelmnts?.lbl?.profileDetails}}</div>
           </div>
           <!--/Header-->
+
           <!--Content-->
-          <div class="sb-modal-content d-flex flex-dc o-y-visible lineHeight-normal">
+          <div class="sb-mat__modal__content d-flex flex-dc o-y-visible lineHeight-normal">
             <div class="profile-fields">
               <div class="d-flex mb-16 fnormal">
                 <label
@@ -134,21 +134,20 @@
           </div>
           <!--/Content-->
           <!--Actions-->
-          <div class="sb-modal-actions">
-            <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
-              class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)"
-              *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
+          <div class="sb-mat__modal__actions">
             <button class="sb-btn  sb-btn-normal sb-btn-outline-primary text-uppercase" tabindex="0"
               (click)="updateUserConsent(false)"
               *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
             <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
-              class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)"
+              class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
               *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+            <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
+            class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
+            *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
           </div>
           <!--/Actions-->
 
-        </div>
-      </div>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
