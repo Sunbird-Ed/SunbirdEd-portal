@@ -1597,10 +1597,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.12":
-  version "1.2.12"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.12.tgz#4362a2f9c19457e59decaa0b1f834693d23e6f58"
-  integrity sha512-SkXy9bHxHbVQUi4hVQwcJ8PS2i8nUcldNImpO4tlGDdNwyQd2yUkReWyDYALjI0NrZ8r4Jehy/Xp7zp679YQag==
+"@samagra-x/uci-console@1.2.13":
+  version "1.2.13"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.13.tgz#6ff59f58b99df765c5b0a5c3d8929165d97d9506"
+  integrity sha512-FCji7YqsQgLxXvdIt+0bBvl4u+phA0wthwtc2dT4u2AA4TMs3CCnGbNLZfP8NydXWKX8jfK9q1P1XhlHj8XZFA==
   dependencies:
     tslib "^1.10.0"
 
