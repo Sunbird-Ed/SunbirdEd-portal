@@ -276,8 +276,8 @@ describe('ContentActionsComponent', () => {
   });
 
   it('shoud see if a telemetry ASSESS event is sent then update the fullscreen to disabled', () => {
-    const obj = {detail:{telemetryData:{eid:'ASSESS'}}};
-    component.assessmentEvents=of(obj);
+    const obj = {detail: {telemetryData: {eid: 'ASSESS'}}};
+    component.assessmentEvents = of(obj);
     component.isFullScreen = false;
     component.actionButtons = actionButtons;
     component.ngOnInit();
@@ -288,8 +288,8 @@ describe('ContentActionsComponent', () => {
   });
 
   it('shoud see if a telemetry ASSESS event is sent then update the minimise to disabled', () => {
-    const obj = {detail:{telemetryData:{eid:'ASSESS'}}};
-    component.assessmentEvents=of(obj);
+    const obj = {detail: {telemetryData: {eid: 'ASSESS'}}};
+    component.assessmentEvents = of(obj);
     component.isFullScreen = true;
     component.fullScreenActionButtons = fullScreenActionButtons;
     component.ngOnInit();

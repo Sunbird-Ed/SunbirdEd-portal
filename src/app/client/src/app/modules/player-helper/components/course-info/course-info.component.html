@@ -1,10 +1,15 @@
-<sui-accordion class="styled fluid sb-accordion sb-new-theme-accordion">
-  <sui-accordion-panel [isOpen]="false" [attr.aria-expanded]="isOpen" (click)="isOpen = !isOpen">
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}} accordion" aria-controls="creditsLicenceInfo">
-      <span>{{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}}</span>
-      <i class="chevron down icon" role="img" title="expand"></i>
-    </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8"  role="region" id="creditsLicenceInfo" aria-labelledby="creditsLicenceInfo">
+<mat-accordion class="sb-mat-accordion mb-16">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title tabindex="0" title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between"
+        [attr.aria-expanded]="isOpen"
+        attr.aria-label="{{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}} accordion"
+        aria-controls="creditsLicenceInfo">
+        <span>{{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}}</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div content class="sb-mat-accordion__content" role="region" id="creditsLicenceInfo"
+      aria-labelledby="creditsLicenceInfo">
       <div class="pb-24" *ngIf="courseHierarchy?.author">
         <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
           {{resourceService?.frmelmnts?.lbl?.author}}</div>
@@ -16,7 +21,8 @@
         <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.creator}}</div>
       </div>
       <div class="pb-24">
-        <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
+        <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+          {{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
         <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.organisation?.join(', ')}}
         </div>
         <div *ngIf="courseHierarchy?.orgDetails?.email" class="content-metadeta__text  fnormal sb-color-gray-400"><a
@@ -57,8 +63,8 @@
         </span>
       </div>
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
 
 <app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal"
   (close)="showContentCreditsModal = false"></app-content-credits>

@@ -28,7 +28,7 @@
             <div *ngFor="let field of formFieldOptions">
               <div class="required sb-field-form-group"
                 *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
-                <label>{{field.label}}
+                <label> {{resourceService?.frmelmnts?.lbl?.boards}}
                   <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                 </label>
                 <div class="sb-field">
@@ -44,7 +44,7 @@
               </div>
               <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
                 [ngClass]="field.code === 'subject' ? '' : 'required'">
-                <label>{{field.label}}
+                <label>{{getTranslatedLabel(field?.translation) || field?.label}}
                   <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                 </label>
                 <div class="sb-field">

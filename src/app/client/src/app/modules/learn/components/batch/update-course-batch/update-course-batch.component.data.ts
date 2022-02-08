@@ -69,17 +69,17 @@ export const getUserList = {
           'subject': [],
           'roles': [
             {
-              "role": "COURSE_MENTOR",
-              "createdDate": null,
-              "updatedBy": null,
-              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
-              "scope": [
+              'role': 'COURSE_MENTOR',
+              'createdDate': null,
+              'updatedBy': null,
+              'createdBy': '58a11351-2333-463f-bee1-19d820ce8c30',
+              'scope': [
                 {
-                  "organisationId": "0124065033550888960"
+                  'organisationId': '0124065033550888960'
                 }
               ],
-              "updatedDate": null,
-              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+              'updatedDate': null,
+              'userId': '58a11351-2333-463f-bee1-19d820ce8c30'
             }
           ],
           'channel': null,
@@ -317,17 +317,17 @@ export const getUserDetails = {
           'subject': [],
           'roles': [
             {
-              "role": "COURSE_MENTOR",
-              "createdDate": null,
-              "updatedBy": null,
-              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
-              "scope": [
+              'role': 'COURSE_MENTOR',
+              'createdDate': null,
+              'updatedBy': null,
+              'createdBy': '58a11351-2333-463f-bee1-19d820ce8c30',
+              'scope': [
                 {
-                  "organisationId": "0124065033550888960"
+                  'organisationId': '0124065033550888960'
                 }
               ],
-              "updatedDate": null,
-              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+              'updatedDate': null,
+              'userId': '58a11351-2333-463f-bee1-19d820ce8c30'
             }
           ],
           'language': [],
@@ -414,17 +414,17 @@ export const getUserDetails = {
           ],
           'roles': [
             {
-              "role": "COURSE_MENTOR",
-              "createdDate": null,
-              "updatedBy": null,
-              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
-              "scope": [
+              'role': 'COURSE_MENTOR',
+              'createdDate': null,
+              'updatedBy': null,
+              'createdBy': '58a11351-2333-463f-bee1-19d820ce8c30',
+              'scope': [
                 {
-                  "organisationId": "0124065033550888960"
+                  'organisationId': '0124065033550888960'
                 }
               ],
-              "updatedDate": null,
-              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+              'updatedDate': null,
+              'userId': '58a11351-2333-463f-bee1-19d820ce8c30'
             }
           ],
           'channel': null,

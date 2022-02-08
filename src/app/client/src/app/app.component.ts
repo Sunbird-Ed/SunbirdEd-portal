@@ -223,7 +223,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setTheme() {
     const themeColour = localStorage.getItem('layoutColour') || 'Default';
-    this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
+    if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
+      this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
+    }
     this.setSelectedThemeColour(themeColour);
     document.documentElement.setAttribute('data-theme', themeColour);
     this.layoutService.setLayoutConfig(this.layoutConfiguration);
@@ -410,6 +412,12 @@ export class AppComponent implements OnInit, OnDestroy {
                userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
             } else {
               userType = localStorage.getItem('userType');
+              if(!this.showUserTypePopup && this.isLocationConfirmed){
+                this.checkFrameworkSelected();
+              }
+              if(!this.isLocationConfirmed){
+                this.showUserTypePopup = true
+              }
             }
             this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : !userType;
           // }
@@ -494,11 +502,11 @@ export class AppComponent implements OnInit, OnDestroy {
             this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.nonCustodianTC') };
             this.showGlobalConsentPopUpSection = true;
           } else {
-            this.checkFrameworkSelected();
+            this.checkLocationStatus();
           }
         });
       } else {
-        this.checkFrameworkSelected();
+        this.checkLocationStatus();
       }
     }
   }
@@ -535,7 +543,6 @@ export class AppComponent implements OnInit, OnDestroy {
       const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
       if (frameWorkPopUp) {
         this.showFrameWorkPopUp = false;
-        this.checkLocationStatus();
       } else {
         if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
           this.showFrameWorkPopUp = true;
@@ -550,8 +557,6 @@ export class AppComponent implements OnInit, OnDestroy {
           } else {
             this.checkLocationStatus();
           }
-        } else {
-          this.checkLocationStatus();
         }
       }
     });
@@ -781,6 +786,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
+    this.showUserTypePopup=false;
+    this.checkFrameworkSelected();
     this.showYearOfBirthPopup = true;
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
@@ -953,7 +960,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
   }
-  onActivate(event){
+  onActivate(event) {
     this.layoutService.scrollTop();
   }
 }

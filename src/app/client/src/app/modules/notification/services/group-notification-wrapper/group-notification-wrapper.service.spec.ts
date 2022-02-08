@@ -56,11 +56,11 @@ describe('GroupNotificationWrapperService', () => {
 
   it('should call navigateToActivityToc()', () => {
     const service = TestBed.get(GroupNotificationWrapperService);
-    const activity = { type: 'course', id: '123'}
+    const activity = { type: 'course', id: '123'};
     const isAdmin = false;
     spyOn(service['groupCservice'], 'getActivityDataById');
-    spyOn(service['groupCservice'], 'getById').and.returnValue(of({}));;
-    service.navigateToActivityToc(activity,'123', isAdmin, true, true, true);
+    spyOn(service['groupCservice'], 'getById').and.returnValue(of({}));
+    service.navigateToActivityToc(activity, '123', isAdmin, true, true, true);
     expect(service['groupCservice'].getById).toHaveBeenCalled();
     expect(service['groupCservice'].getActivityDataById).toHaveBeenCalled();
   });
@@ -71,7 +71,7 @@ describe('GroupNotificationWrapperService', () => {
     const accepted = service.navigateNotification(notificationData, additionalInfo);
     expect(accepted).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90' });
   });
-  
+
   it('should navigate to course player if trackable object is not available', fakeAsync(() => {
     const service = TestBed.get(GroupNotificationWrapperService);
     const router = TestBed.get(Router);

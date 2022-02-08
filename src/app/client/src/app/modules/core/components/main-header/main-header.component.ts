@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, CoursesService, DeviceRegisterService, ElectronService,ObservationUtilService
+  ManagedUserService, CoursesService, DeviceRegisterService, ElectronService, ObservationUtilService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -161,9 +161,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   userType: any;
   showBackButton: boolean;
   showingResult: string;
-  userPreference:any;
-  showReportMenu:boolean=false;
+  userPreference: any;
+  showReportMenu = false;
   showingDescription: string;
+  showSwitchTheme = false
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -172,7 +173,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
-    private connectionService: ConnectionService, public electronService: ElectronService,private observationUtilService:ObservationUtilService) {
+    private connectionService: ConnectionService, public electronService: ElectronService, private observationUtilService: ObservationUtilService) {
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
@@ -197,7 +198,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
         this.userType = result;
-        if(this.userType!='adminstrator'){
+        if (this.userType != 'adminstrator') {
           this.setUserPreferences();
           }
       } else {
@@ -205,7 +206,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.userService.userData$.subscribe((profileData: IUserData) => {
             if (_.get(profileData, 'userProfile.profileUserType.type')) {
               this.userType = profileData.userProfile['profileUserType']['type'];
-              if(this.userType!='adminstrator'){
+              if (this.userType != 'adminstrator') {
                 this.setUserPreferences();
                 }
             }
@@ -219,16 +220,15 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.observationUtilService.browseByCategoryForm()
       .then((data: any) => {
         let currentBoard;
-        if(this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']){
-            currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id)
+        if (this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']) {
+            currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id);
         }
-        let currentUserType=this.userType.toLowerCase();
+        const currentUserType = this.userType.toLowerCase();
         if (data && data[currentBoard] &&
           data[currentBoard][currentUserType]) {
-            this.showReportMenu=true;
-        }
-        else{
-          this.showReportMenu=false;
+            this.showReportMenu = true;
+        } else {
+          this.showReportMenu = false;
         }
       });
   }
@@ -322,10 +322,28 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  navigateByUrl(url: string){
+  navigateByUrl(url: string) {
     window.location.href = url;
   }
-
+  switchToNewTheme(){
+    const formServiceInputParams = {
+      formType: this.baseCategoryForm.formType,
+      formAction: this.baseCategoryForm.formAction,
+      contentType: this.baseCategoryForm.filterEnv
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      const layoutType = localStorage.getItem('layoutType') || '';
+      const contentTypes = _.sortBy(data, 'index');
+      const defaultTab = _.find(contentTypes, ['default', true]);
+      const isOldThemeDisabled = _.get(defaultTab, 'isOldThemeDisabled');
+      if (!isOldThemeDisabled) {
+        this.showSwitchTheme = true;
+      }
+      if(isOldThemeDisabled && layoutType !== 'joy') {
+        this.layoutService.initiateSwitchLayout();
+      }
+    })
+  }
   navigateToHome() {
     const formServiceInputParams = {
       formType: this.baseCategoryForm.formType,
@@ -348,8 +366,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }, (err: any) => {
 
     });
-
-  }
+    }
   onEnter(key) {
     this.queryParam = {};
     if (key && key.length) {
@@ -635,6 +652,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
+    this.switchToNewTheme();
   }
 
   checkFullScreenView() {

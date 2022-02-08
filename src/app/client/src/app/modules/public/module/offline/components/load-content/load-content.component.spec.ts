@@ -8,6 +8,7 @@ import * as _ from 'lodash-es';
 import { LoadContentComponent } from './load-content.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ElectronDialogService } from '../../services';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('LoadContentComponent', () => {
   let component: LoadContentComponent;
@@ -38,7 +39,7 @@ describe('LoadContentComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ LoadContentComponent ],
       imports: [ SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),
-    HttpClientTestingModule ],
+    HttpClientTestingModule, BrowserAnimationsModule ],
     providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
       { provide: ResourceService, useValue: resourceBundle }]
     })

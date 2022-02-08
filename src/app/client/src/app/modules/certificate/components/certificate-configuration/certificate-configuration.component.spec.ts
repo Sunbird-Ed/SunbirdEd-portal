@@ -344,7 +344,7 @@ describe('CertificateConfigurationComponent', () => {
     expect(component.isTemplateChanged).toBeTruthy();
   });
 
-  it('should attach the certificate on "update certificate" button click if template change not detected', () => {
+  xit('should attach the certificate on "update certificate" button click if template change not detected', () => {
     /** Arrange */
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
     component.templateIdentifier = 'SOME_IDENTIFIER';
@@ -498,7 +498,7 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     const certificateService  = TestBed.get(CertificateService);
     const toasterService = TestBed.get(ToasterService);
-    let errorMsg = resourceBundle.messages.emsg.m0005;
+    const errorMsg = resourceBundle.messages.emsg.m0005;
 
     /** Assert */
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({errorMsg}));
@@ -982,5 +982,5 @@ describe('CertificateConfigurationComponent', () => {
     component.handleParameterChange(event);
     expect(component.isStateCertificate).toBeTruthy();
   });
-  
+
 });

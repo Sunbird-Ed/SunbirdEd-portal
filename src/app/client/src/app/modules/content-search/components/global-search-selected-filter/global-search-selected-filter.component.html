@@ -1,6 +1,6 @@
-<div class="sbt-applied-filters-titlefle text-left mt-24" *ngIf="(selectedFilters | json) != '{}'">
+<div class="sbt-applied-filters-titlefle text-left mt-24" *ngIf="showLabel()">
   {{ resourceService?.frmelmnts?.lbl?.appliedFilters}}</div>
-<div *ngIf="(selectedFilters | json) != '{}'" class="d-flex flex-ai-center mb-24 flex-w-wrap">
+<div *ngIf="showLabel()" class="d-flex flex-ai-center mb-24 flex-w-wrap">
 
   <ng-container *ngFor="let facet of facets | sortBy:'index':'asc'">
     <div class="d-flex flex-ai-center pr-8">

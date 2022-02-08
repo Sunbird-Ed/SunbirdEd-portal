@@ -24,8 +24,8 @@
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "engines": {
-    "node": ">=12.16.1",
-    "npm": "6.13.4"
+    "node": ">=14.19.0",
+    "npm": ">=6.14.16"
   },
   "private": true,
   "dependencies": {
@@ -53,17 +53,17 @@
     "@project-sunbird/common-consumption-v9": "4.5.3",
     "@project-sunbird/discussions-ui-v8": "2.6.0-beta.2",
     "@project-sunbird/sb-styles": "0.0.8",
-    "@project-sunbird/sb-themes": "0.0.34",
+    "@project-sunbird/sb-themes": "0.0.36",
     "@project-sunbird/sunbird-epub-player-v9": "4.6.1",
     "@project-sunbird/sb-dashlet-v9": "^1.0.4",
-    "@project-sunbird/sunbird-collection-editor-v9": "4.6.10",
+    "@project-sunbird/sunbird-collection-editor-v9": "4.7.7",
     "@project-sunbird/sunbird-pdf-player-v9": "^4.6.3",
     "@project-sunbird/sunbird-question-editor": "0.0.9",
-    "@project-sunbird/sunbird-quml-player-v9": "^4.6.5",
+    "@project-sunbird/sunbird-quml-player-v9": "4.7.3",
     "@project-sunbird/sunbird-video-player-v9": "^4.6.1",
     "@project-sunbird/telemetry-sdk": "0.0.29",
     "@project-sunbird/web-extensions": "^0.0.2",
-    "@samagra-x/uci-console": "1.2.8",
+    "@samagra-x/uci-console": "1.2.12",
     "@shikshalokam/sl-questionnaire": "0.0.12",
     "@shikshalokam/sl-reports-library": "^1.0.7",
     "@swimlane/ngx-datatable": "16.1.1",
@@ -106,6 +106,7 @@
     "moment": "2.29.1",
     "moment-duration-format": "2.3.2",
     "ng-recaptcha": "^5.0.0",
+    "ng-svg-editor": "0.0.21",
     "ng2-ace-editor": "0.3.9",
     "ng2-cache-service": "1.1.1",
     "ng2-charts": "2.4.2",

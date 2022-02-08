@@ -331,7 +331,7 @@ describe('HomeSearchComponent', () => {
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
   });
-  
+
   xit('should call get filters for cached filters', () => {
     spyOn(cacheService, 'get').and.returnValue(Response.cachedFilters);
     spyOn(cacheService, 'exists').and.returnValue(true);

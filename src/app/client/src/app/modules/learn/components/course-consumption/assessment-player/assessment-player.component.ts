@@ -25,6 +25,41 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   styleUrls: ['./assessment-player.component.scss']
 })
 export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+
+  constructor(
+    public resourceService: ResourceService,
+    private activatedRoute: ActivatedRoute,
+    private courseConsumptionService: CourseConsumptionService,
+    private configService: ConfigService,
+    private courseBatchService: CourseBatchService,
+    private toasterService: ToasterService,
+    private location: Location,
+    private playerService: PlayerService,
+    private publicPlayerService: PublicPlayerService,
+    private userService: UserService,
+    private assessmentScoreService: AssessmentScoreService,
+    private navigationHelperService: NavigationHelperService,
+    private router: Router,
+    private contentUtilsServiceService: ContentUtilsServiceService,
+    private telemetryService: TelemetryService,
+    private layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService,
+    private CourseProgressService: CourseProgressService,
+    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
+  ) {
+    this.playerOption = {
+      showContentRating: true
+    };
+    // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
+    const _routerExtras = this.router.getCurrentNavigation();
+    if (_.get(_routerExtras, 'extras.state')) {
+      this.isRouterExtrasAvailable = true;
+      this._routerStateContentStatus = _.get(_routerExtras, 'extras.state.contentStatus');
+      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content') ?
+        _.get(_routerExtras, 'extras.state.contentStatus.content') : [];
+    }
+  }
   @ViewChild('modal') modal;
   @Output() assessmentEvents = new EventEmitter<any>();
   private unsubscribe = new Subject<void>();
@@ -77,48 +112,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   showPlayer = false;
   showQSExitConfirmation = false;
   isStatusChange = false;
+  lastActiveContentBeforeModuleChange;
 
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
     // returning false will show a confirm dialog before navigating away
     return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showQSExitConfirmation ? false : true;
-  }
-  lastActiveContentBeforeModuleChange;
-
-  constructor(
-    public resourceService: ResourceService,
-    private activatedRoute: ActivatedRoute,
-    private courseConsumptionService: CourseConsumptionService,
-    private configService: ConfigService,
-    private courseBatchService: CourseBatchService,
-    private toasterService: ToasterService,
-    private location: Location,
-    private playerService: PlayerService,
-    private publicPlayerService: PublicPlayerService,
-    private userService: UserService,
-    private assessmentScoreService: AssessmentScoreService,
-    private navigationHelperService: NavigationHelperService,
-    private router: Router,
-    private contentUtilsServiceService: ContentUtilsServiceService,
-    private telemetryService: TelemetryService,
-    private layoutService: LayoutService,
-    public generaliseLabelService: GeneraliseLabelService,
-    private CourseProgressService: CourseProgressService,
-    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
-    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
-  ) {
-    this.playerOption = {
-      showContentRating: true
-    };
-    // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
-    const _routerExtras = this.router.getCurrentNavigation();
-    if (_.get(_routerExtras, 'extras.state')) {
-      this.isRouterExtrasAvailable = true;
-      this._routerStateContentStatus = _.get(_routerExtras, 'extras.state.contentStatus');
-      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content') ?
-        _.get(_routerExtras, 'extras.state.contentStatus.content') : [];
-    }
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
@@ -388,7 +388,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     const telObject = _.get(event, 'detail.telemetryData');
     const eid = _.get(telObject, 'eid');
-    const isMimeTypeH5P = _.get(this.activeContent, 'mimeType') === "application/vnd.ekstep.h5p-archive";
+    const isMimeTypeH5P = _.get(this.activeContent, 'mimeType') === 'application/vnd.ekstep.h5p-archive';
 
     /* istanbul ignore else */
     if (eid === 'END' && !isMimeTypeH5P && !this.validEndEvent(event)) {
@@ -479,7 +479,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.courseProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     console.log(_.find(playerSummary, ['endpageseen', true]));
     if (_.toLower(contentType) === 'course assessment') {
-      this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ? this.courseProgress : 0;
+      this.courseProgress = _.find(playerSummary, ['endpageseen', true]) ||
+      _.find(playerSummary, ['visitedcontentend', true]) ? this.courseProgress : 0;
     }
     return this.courseProgress;
   }
@@ -744,6 +745,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
               this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
             } else if (_.get(res, 'content.length')) {
               this.isCourseCompleted = (res.totalCount === res.completedCount);
+              if (!this.isCourseCompleted && !res.totalCount) {
+                this.isCourseCompleted = res.progress >= 100 ? true : this.isCourseCompleted;
+              }
               this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
               if (this.showCourseCompleteMessage) {
                 this.notificationService.fetchNotificationList();

@@ -483,7 +483,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getPickerMinDateForEndDate() {
-    const startDate = this.createBatchForm.controls.startDate.value as Date; 
+    const startDate = this.createBatchForm.controls.startDate.value as Date;
     const oneDayMs = 24 * 60 * 60 * 1000;
     if (startDate) {
       return new Date(startDate.getTime() + oneDayMs);

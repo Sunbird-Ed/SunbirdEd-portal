@@ -16,7 +16,7 @@ import { UserDeleteComponent } from './user-delete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-delete.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('UserDeleteComponent', () => {
   let component: UserDeleteComponent;
@@ -42,7 +42,7 @@ describe('UserDeleteComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
       declarations: [UserDeleteComponent],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,

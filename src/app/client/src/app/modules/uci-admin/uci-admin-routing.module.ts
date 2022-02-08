@@ -4,10 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../core/guard';
 
 const routes: Routes = [
-  { 
-    path: '', 
-    component: UciComponent, 
-    canActivate: [AuthGuard], 
+  {
+    path: '',
+    component: UciComponent,
+    canActivate: [AuthGuard],
     data: {
       roles: 'uciAdmin',
       telemetry: {

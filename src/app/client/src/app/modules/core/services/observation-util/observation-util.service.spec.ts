@@ -14,7 +14,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
-import { ConfigService, ResourceService, IUserData,SharedModule,BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserData, SharedModule, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { APP_BASE_HREF } from '@angular/common';
 import { Router } from '@angular/router';
@@ -37,7 +37,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 describe('ObservationUtilService', () => {
   let baseHref, kendraService, userService, modalService;
   let service: ObservationUtilService;
-  let requiredFields, data, allFieldsPresent, originalTimeout,formService;
+  let requiredFields, data, allFieldsPresent, originalTimeout, formService;
   let mockModalRef: SuiModalService;
 
   const fakeModalService = {
@@ -59,7 +59,7 @@ describe('ObservationUtilService', () => {
         { provide: Router },
         { provide: ResourceService },
       ],
-      imports: [HttpClientTestingModule, SuiModalModule,CoreModule],
+      imports: [HttpClientTestingModule, SuiModalModule, CoreModule],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
   );
@@ -77,8 +77,8 @@ describe('ObservationUtilService', () => {
   });
 
   it('should run #getProfileData() for administrator', async (done) => {
-    ResponseData.userProfile.profileUserType.type="administrator";
-    ResponseData.userProfile.profileUserType.subType="deo";
+    ResponseData.userProfile.profileUserType.type = 'administrator';
+    ResponseData.userProfile.profileUserType.subType = 'deo';
     userService.userData$ = observableOf(ResponseData);
     spyOn(service, 'getProfileData').and.callThrough();
     const value = await service.getProfileData();
@@ -90,8 +90,8 @@ describe('ObservationUtilService', () => {
   });
 
   it('should run #getProfileData() for administrator subtype null', async (done) => {
-    ResponseData.userProfile.profileUserType.type="administrator";
-    ResponseData.userProfile.profileUserType.subType=null;
+    ResponseData.userProfile.profileUserType.type = 'administrator';
+    ResponseData.userProfile.profileUserType.subType = null;
     userService.userData$ = of(ResponseData);
     spyOn(service, 'getProfileData').and.callThrough();
     const value = await service.getProfileData();
@@ -103,8 +103,8 @@ describe('ObservationUtilService', () => {
   });
 
   it('should run #getProfileData() for administrator subtype not null', async (done) => {
-    ResponseData.userProfile.profileUserType.type="administrator";
-    ResponseData.userProfile.profileUserType.subType="deo";
+    ResponseData.userProfile.profileUserType.type = 'administrator';
+    ResponseData.userProfile.profileUserType.subType = 'deo';
     userService.userData$ = of(ResponseData);
     spyOn(service, 'getProfileData').and.callThrough();
     const value = await service.getProfileData();
@@ -117,8 +117,8 @@ describe('ObservationUtilService', () => {
 
 
   it('should run #getProfileData() for teacher', async (done) => {
-    ResponseData.userProfile.profileUserType.type="teacher";
-    ResponseData.userProfile.profileUserType.subType=null;
+    ResponseData.userProfile.profileUserType.type = 'teacher';
+    ResponseData.userProfile.profileUserType.subType = null;
     userService.userData$ = observableOf(ResponseData);
     spyOn(service, 'getProfileData').and.callThrough();
     const value = await service.getProfileData();
@@ -130,9 +130,9 @@ describe('ObservationUtilService', () => {
   });
 
 
-  it('should run #getProfileData() on error',() => {
+  it('should run #getProfileData() on error', () => {
     spyOn(service, 'getProfileData').and.callThrough();
-    spyOn(userService,"userData$").and.returnValue(observableThrowError("error"))
+    spyOn(userService, 'userData$').and.returnValue(observableThrowError('error'));
   });
 
   it('should run #getProfileDataList()', async () => {
@@ -276,18 +276,18 @@ describe('ObservationUtilService', () => {
     service.getAlertMetaData();
   });
 
-it('should call the browse by category browseByCategoryForm on api success',()=>{
+it('should call the browse by category browseByCategoryForm on api success', () => {
   spyOn(service, 'browseByCategoryForm').and.callThrough();
   spyOn(formService, 'getFormConfig').and.returnValue(of(categoryData));
   service.browseByCategoryForm();
   expect(service.browseByCategoryForm).toHaveBeenCalled();
-})
+});
 
-it('should call the browse by category browseByCategoryForm on api fail',()=>{
+it('should call the browse by category browseByCategoryForm on api fail', () => {
   spyOn(service, 'browseByCategoryForm').and.callThrough();
   spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError('error'));
   service.browseByCategoryForm();
   expect(service.browseByCategoryForm).toHaveBeenCalled();
-})
+});
 
 });

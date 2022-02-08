@@ -68,8 +68,9 @@ describe('UserOnboardingComponent', () => {
   });
 
   it('should call userTypeSubmit', () => {
+    spyOn(component.close, 'emit');
     component.userTypeSubmit();
-    expect(component.stage).toBe(Stage.LOCATION_SELECTION);
+    expect(component.close.emit).toHaveBeenCalled();
   });
 
   it('should call locationSubmit', () => {

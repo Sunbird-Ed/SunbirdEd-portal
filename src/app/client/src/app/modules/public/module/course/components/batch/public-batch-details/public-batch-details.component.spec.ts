@@ -13,6 +13,7 @@ import { UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -48,7 +49,7 @@ describe('PublicBatchDetailsComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule, BrowserAnimationsModule],
       declarations: [PublicBatchDetailsComponent],
       providers: [CourseBatchService, UserService, TelemetryService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -139,14 +140,14 @@ describe('PublicBatchDetailsComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalled();
     expect(component.showLoginModal).toBeFalsy();
   });
-  it('should have the default values for some of the variables',() => {
+  it('should have the default values for some of the variables', () => {
     expect(component.showCertificateDetails).toBeFalsy();
     expect(component.showCompletionCertificate).toBeFalsy();
     expect(component.showMeritCertificate).toBeFalsy();
     expect(component.meritCertPercent).toEqual(0);
   });
 
-  it('should call the courseBatch details and cert details',() => {
+  it('should call the courseBatch details and cert details', () => {
     component.batchList = allBatchDetails.result.response.content;
     component.ShowCertDetails();
     expect(component.showCertificateDetails).toBeTruthy();

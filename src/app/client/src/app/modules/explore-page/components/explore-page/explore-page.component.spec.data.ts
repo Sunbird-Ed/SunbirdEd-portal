@@ -1932,7 +1932,7 @@ export const RESPONSE = {
             'Class 10'
           ],
           'medium': [
-            
+
           ]
         }
       },
@@ -1963,13 +1963,13 @@ export const RESPONSE = {
         ],
         'filters': {
           'channel': [
-            
+
           ],
           'subject': [
-            
+
           ],
           'audience': [
-            
+
           ],
           'primaryCategory': [
             'Digital Textbook',
@@ -1977,13 +1977,13 @@ export const RESPONSE = {
             'Course'
           ],
           'board': [
-            
+
           ],
           'medium': [
-            
+
           ],
           'gradeLevel': [
-            
+
           ]
         }
       },
@@ -2135,13 +2135,13 @@ export const RESPONSE = {
               'request': {
                 'filters': {
                   'channel': [
-                    
+
                   ],
                   'subject': [
-                    
+
                   ],
                   'audience': [
-                    
+
                   ],
                   'primaryCategory': [
                     'Digital Textbook'
@@ -2204,7 +2204,7 @@ export const RESPONSE = {
             'url': '',
             'method': '',
             'req': {
-              
+
             },
             'params': '',
             'contextKey': 'res.facet.subject'
@@ -2277,7 +2277,7 @@ export const RESPONSE = {
             'url': '',
             'method': '',
             'req': {
-              
+
             },
             'params': '',
             'contextKey': 'res.facet.primaryCategory'
@@ -2338,7 +2338,7 @@ export const RESPONSE = {
             'url': '',
             'method': '',
             'req': {
-              
+
             },
             'params': '',
             'contextKey': 'res.facet.medium'
@@ -3404,13 +3404,13 @@ export const categoryData = {
     teacher: [{
       name: 'observation',
       icon: {
-        web:'assets/images/mask-image/observation_category.png' 
+        web: 'assets/images/mask-image/observation_category.png'
       }
     }]
   }
 };
 
-export const EventPillData={
+export const EventPillData = {
   event: {
       'isTrusted': true
   },
