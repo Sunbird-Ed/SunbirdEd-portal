@@ -5,9 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('FrameworkCatLabelTranslatePipe', () => {
-
+    configureTestSuite()
     beforeEach(async(() => {
-        configureTestSuite()
         TestBed.configureTestingModule({
             declarations: [FrameworkCatLabelTranslatePipe],
             imports: [SharedModule.forRoot(), HttpClientTestingModule],
