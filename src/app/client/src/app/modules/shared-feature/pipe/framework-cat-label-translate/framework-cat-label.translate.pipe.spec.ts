@@ -1,29 +1,31 @@
-import { } from 'jasmine';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { FrameworkCatLabelTranslatePipe } from './framework-cat-label-translate.pipe';
 import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
-beforeEach(async(() => {
-    TestBed.configureTestingModule({
-        declarations: [FrameworkCatLabelTranslatePipe],
-        imports: [SharedModule.forRoot(), HttpClientTestingModule],
-        providers: [
-            {
-                provide: ResourceService, useValue: {
-                    frmelmnts: {
-                        lbl: {
-                            boards: 'boards'
+describe('FrameworkCatLabelTranslatePipe', () => {
+
+    beforeEach(async(() => {
+        configureTestSuite()
+        TestBed.configureTestingModule({
+            declarations: [FrameworkCatLabelTranslatePipe],
+            imports: [SharedModule.forRoot(), HttpClientTestingModule],
+            providers: [
+                {
+                    provide: ResourceService, useValue: {
+                        frmelmnts: {
+                            lbl: {
+                                boards: 'boards'
+                            }
                         }
                     }
                 }
-            }
-        ]
-    })
-        .compileComponents();
-}));
+            ]
+        })
+            .compileComponents();
+    }));
 
-describe('FrameworkCatLabelTranslatePipe', () => {
     describe('#transform', () => {
         it('Should tranform category label', () => {
             const resourceService = TestBed.get(ResourceService);
