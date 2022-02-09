@@ -44,7 +44,6 @@ export class BrowseImagePopupComponent implements OnInit {
 
   ngOnInit() {
     // this.getAssetList();
-    console.log('enableUploadSignature ', this.enableUploadSignature); // TODO: log!
   }
 
   getAssetList() {
