@@ -82,10 +82,10 @@
               </button>
             </div>
            <div class="d-flex flex-ai-center relative">
-             <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="browseImages()">
+             <button class="sb-btn sb-btn-normal sb-btn-primary mr-8" tabindex="0" (click)="browseImages()">
                {{resourceService.frmelmnts?.lbl?.uploadAndUse}}
              </button>
-             <button *ngIf="enableUploadSignature" class="sb-btn sb-btn-normal sb-btn-primary mr-16" tabindex="1" (click)="showUploadSignature()">
+             <button *ngIf="enableUploadSignature" class="sb-btn sb-btn-normal sb-btn-primary" tabindex="1" (click)="showUploadSignature()">
                {{resourceService.frmelmnts?.lbl?.uploadSignature}}
               </button>
            </div>
