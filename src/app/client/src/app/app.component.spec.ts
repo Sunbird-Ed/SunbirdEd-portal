@@ -47,7 +47,7 @@ const mockUserRoles = {
   userOrgDetails: 'testing123'
 };
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let telemetryService;
