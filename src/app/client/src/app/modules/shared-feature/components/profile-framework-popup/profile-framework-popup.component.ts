@@ -282,7 +282,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     let userType = localStorage.getItem('userType');
     if (this.isGuestUser && userType == "administrator") {
       formServiceInputParams.formAction = 'create',
-      formServiceInputParams.contentType= 'admin_framework'
+        formServiceInputParams.contentType = 'admin_framework'
       delete formServiceInputParams.framework;
     }
     const hashTagId = this.isGuestUser ? this.guestUserHashTagId : _.get(this.userService, 'hashTagId');
@@ -359,9 +359,4 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       ver: '1.0'
     };
   }
-
-  getTranslatedLabel(labelKey) {
-    return _.get(this.resourceService, labelKey);
-  }
-
 }

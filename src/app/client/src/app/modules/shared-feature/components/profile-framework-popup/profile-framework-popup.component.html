@@ -1,86 +1,86 @@
 <div class="sb-mat__modal" *ngIf="formFieldOptions.length">
 
-      <!--Header-->
-      <div mat-dialog-title>
-        <div class="title" role="heading" aria-level="2">
-          {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+  <!--Header-->
+  <div mat-dialog-title>
+    <div class="title" role="heading" aria-level="2">
+      {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+    </div>
+    <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
+
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <mat-dialog-content>
+    <div class="sb-mat__modal__content">
+
+      <div *ngIf="isPreference">
+        <div class="d-flex">
+          <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
+          <div class="hr-preference-line ml-24"></div>
         </div>
-        <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
-
-      </div>
-      <!--/Header-->
-
-      <!--Content-->
-      <mat-dialog-content>
-        <div class="sb-mat__modal__content">
-
-          <div *ngIf="isPreference">
-            <div class="d-flex">
-              <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
-              <div class="hr-preference-line ml-24"></div>
-            </div>
-            <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
+        <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
           interpolate:'{instance}': instance}}</p>
-            <div class="hr-border py-8"></div>
-          </div>
+        <div class="hr-border py-8"></div>
+      </div>
 
-          <form class="ui form">
-            <div *ngFor="let field of formFieldOptions">
-              <div class="required sb-field-form-group"
-                *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
-                <label> {{resourceService?.frmelmnts?.lbl?.boards}}
-                  <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-                </label>
-                <div class="sb-field">
-                  <label class="w-100">
-                    <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                      [(ngModel)]="selectedOption[field.code]" [options]="options"
-                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
-                      <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
-                        [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"></sui-select-option>
-                    </sui-select>
-                  </label>
-                </div>
-              </div>
-              <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
-                [ngClass]="field.code === 'subject' ? '' : 'required'">
-                <label>{{getTranslatedLabel(field?.translation) || field?.label}}
-                  <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-                </label>
-                <div class="sb-field">
-                  <label class="w-100">
-                    <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                      [(ngModel)]="selectedOption[field.code]" [options]="options"
-                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
-                      *ngIf="field.code === 'gradeLevel'">
-                      <sui-select-option *ngFor="let option of field.range" tabindex="0" [value]="option.name">
-                      </sui-select-option>
-                    </sui-multi-select>
-                    <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                      [(ngModel)]="selectedOption[field.code]" [options]="options"
-                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
-                      *ngIf="field.code !== 'gradeLevel'">
-                      <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
-                        [value]="option.name"></sui-select-option>
-                    </sui-multi-select>
-                  </label>
-                </div>
-              </div>
+      <form class="ui form">
+        <div *ngFor="let field of formFieldOptions">
+          <div class="required sb-field-form-group"
+            *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
+            <label> {{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
+              <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+            </label>
+            <div class="sb-field">
+              <label class="w-100">
+                <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
+                  [(ngModel)]="selectedOption[field.code]" [options]="options"
+                  (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
+                  <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
+                    [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"></sui-select-option>
+                </sui-select>
+              </label>
             </div>
-          </form>
+          </div>
+          <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
+            [ngClass]="field.code === 'subject' ? '' : 'required'">
+            <label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
+              <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+            </label>
+            <div class="sb-field">
+              <label class="w-100">
+                <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
+                  [(ngModel)]="selectedOption[field.code]" [options]="options"
+                  (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
+                  *ngIf="field.code === 'gradeLevel'">
+                  <sui-select-option *ngFor="let option of field.range" tabindex="0" [value]="option.name">
+                  </sui-select-option>
+                </sui-multi-select>
+                <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
+                  [(ngModel)]="selectedOption[field.code]" [options]="options"
+                  (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
+                  *ngIf="field.code !== 'gradeLevel'">
+                  <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
+                    [value]="option.name"></sui-select-option>
+                </sui-multi-select>
+              </label>
+            </div>
+          </div>
         </div>
-      </mat-dialog-content>
-      <!--/Content-->
+      </form>
+    </div>
+  </mat-dialog-content>
+  <!--/Content-->
 
-      <!--Actions-->
-      <mat-dialog-actions align="end" class="mb-0 sb-mat__modal__actions">
-          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
-            [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
-            {{buttonLabel}}
-          </button>
-      </mat-dialog-actions>
-      <!--/Actions-->
+  <!--Actions-->
+  <mat-dialog-actions align="end" class="mb-0 sb-mat__modal__actions">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
+      [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
+      {{buttonLabel}}
+    </button>
+  </mat-dialog-actions>
+  <!--/Actions-->
 
 </div>
 
