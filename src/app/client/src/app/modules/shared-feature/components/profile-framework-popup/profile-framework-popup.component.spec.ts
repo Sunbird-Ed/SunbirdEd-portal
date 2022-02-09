@@ -13,7 +13,7 @@ import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { FrameworkCatLabelTranslatePipe } from '../../pipe/framework-cat-label-translate/framework-cat-label-translate.pipe';
 
-fdescribe('ProfileFrameworkPopupComponent', () => {
+describe('ProfileFrameworkPopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;
   let fixture: ComponentFixture<ProfileFrameworkPopupComponent>;
   let channelService, formService, cacheService, userService, publicDataService, orgDetailsService, toasterService, router;
