@@ -45,9 +45,8 @@
                 <svg class="icon icon-svg--primary">
                   <use xlink:href="assets/images/sprite.svg#question_on_play"></use>
                 </svg></i>
-              <label class="preview-title mb-0 mr-auto">Edit certificate template </label>
-              <button type="button" (click)="back()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">Cancel
-              </button>
+              <label class="preview-title mb-0 mr-auto">{{resourceService?.frmelmnts?.lbl?.editCertificateTitle}}</label>
+              <button type="button" (click)="back()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
               <!-- <button type="button" (click)="saveUpdatedCertificate()" tabindex="0"
                 class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.cert?.btn?.saveAsTemplate}}
               </button>
@@ -58,8 +57,7 @@
                 class="sb-btn sb-btn-normal sb-btn-primary ml-16">Edit
               </button> -->
               <button type="button" (click)="previewAndSave()" tabindex="0"
-                class="sb-btn sb-btn-normal sb-btn-primary ml-16">Save and Preview
-              </button>
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.lbl?.saveAndPreview}}</button>
             </div>
 
             <div class="cert-select-card my-16">
@@ -126,7 +124,7 @@
       </div>
   </ng-template>
 </app-modal-wrapper>
- <browse-image-popup (assetData)="svgAssetData($event)" (close)="closeSVGInputModal()" [showUploadUserModal]="disableSVGImageModal" [showSelectImageModal]="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'image'" [logoType]="logoType" ></browse-image-popup>
+ <browse-image-popup [enableUploadSignature]="true" (assetData)="svgAssetData($event)" (close)="closeSVGInputModal()" [showUploadUserModal]="disableSVGImageModal" [showSelectImageModal]="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'image'" [logoType]="logoType" ></browse-image-popup>
  
 
  <app-modal-wrapper [config]="{disableClose: true, size: 'large'}" (dismiss)="closeSaveAndPreview()" *ngIf="saveAndPreview">
