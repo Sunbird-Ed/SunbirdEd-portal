@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { CreateTemplateComponent } from './create-template.component';
+import { SvgEditorComponent } from './svg-editor.component';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
@@ -9,16 +9,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
-import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
+import { CertConfigModel } from '../../models/cert-config-model/cert-config-model';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { of, throwError, observable } from 'rxjs';
-import { MockData } from './create-template.component.spec.data';
+import { MockData } from './svg-editor.component.spec.data';
 import dayjs from 'dayjs';
 
-describe('CreateTemplateComponent', () => {
-  let component: CreateTemplateComponent;
-  let fixture: ComponentFixture<CreateTemplateComponent>;
+describe('SvgEditorComponent', () => {
+  let component: SvgEditorComponent;
+  let fixture: ComponentFixture<SvgEditorComponent>;
   configureTestSuite();
 
   const resourceBundle = {
@@ -63,7 +63,7 @@ class RouterStub {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, CoreModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]) ],
-      declarations: [ CreateTemplateComponent ],
+      declarations: [ SvgEditorComponent ],
       providers: [
         ConfigService,
         NavigationHelperService,
@@ -83,7 +83,7 @@ class RouterStub {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateTemplateComponent);
+    fixture = TestBed.createComponent(SvgEditorComponent);
     component = fixture.componentInstance;
     component.defaultCertificates = [
       { artifactUrl: 'assets/images/template-1.svg', identifier: 0 },
@@ -238,7 +238,6 @@ class RouterStub {
     component.logoHtml = MockData.svgData.data;
     const data = { artifactUrl: 'assets/images/template-1.svg', identifier: 0 };
     component.previewCertificate();
-    expect(component.updateTitles).toHaveBeenCalled();
     expect(component.updateStateLogos).toHaveBeenCalled();
     expect(component.updateSigns).toHaveBeenCalled();
   });
@@ -330,12 +329,154 @@ class RouterStub {
     expect(component.createTemplateForm.controls.authoritySignature_0.touched).toEqual(true);
 
   });
+  // it('should remove the selected logo', () => {
+  //   component.certLogos = [
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '456'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ];
+  //   component.removeLogo(1);
+  //   expect(component.certLogos).toEqual([
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ]);
+  // });
+
+  // it('should remove the selected sign', () => {
+  //   component.certSigns = [
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '456'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ];
+  //   component.removeSigns(1);
+  //   expect(component.certSigns).toEqual([
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ]);
+  // });
 
   it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.redoLayout();
     component.layoutConfiguration = null;
     component.redoLayout();
+  });
+
+  describe('SVG editor test cases', () => {
+
+    it('should invoke when SVG element is clicked for text', () => {
+      component.showSVGInputModal = false;
+      const e = {
+        type: 'text',
+        element: {
+          textContent: 'SVG header'
+        }
+      };
+      component.elementClicked(e);
+      expect(component.selectedSVGObject).toBeDefined();
+      expect(component.showSVGInputModal).toBeTruthy();
+      expect(component.showSVGInputModal).toEqual(true);
+      expect(component.selectedSVGObject['type']).toEqual(e.type);
+      expect(component.selectedSVGObject['value']).toEqual(e.element.textContent);
+    });
+
+    it('should close input modal from accepting user input', () => {
+      component.closeSVGInputModal();
+      expect(component.showSVGInputModal).toBeFalsy();
+    });
+  
+    it('should invoke updateSVGInputTag after input is accepted for new svg text element', () => {
+      component.showSVGInputModal = true;
+      spyOn(component.edit, 'next');
+      component.updateSVGInputTag();
+      expect(component.showSVGInputModal).toBeFalsy();
+      expect(component.edit.next).toHaveBeenCalled();
+    });
+  
+    it('should convert image URL to base64 string', () => {
+      const imageObj = {
+        url: 'http://staging.sunbirded.org/auth/resources/7.0.1/login/ntp/img/logo.png'
+      };
+      component.svgAssetData(imageObj);
+      expect(component.showSVGInputModal).toBeFalsy();
+      expect(component.selectedSVGObject).toEqual({});
+    });
+
+    it('should toggle preview and edit for buttons - for hide', () => {
+      spyOn(component.togglePreview, 'next');
+      component.toggleSVGPreview();
+      expect(component.previewButton).toEqual('hide');
+      expect(component.togglePreview.next).toHaveBeenCalled();
+    });
+
+    it('should toggle preview and edit for buttons - for show', () => {
+      component.previewButton = 'hide';
+      spyOn(component.togglePreview, 'next');
+      component.toggleSVGPreview();
+      expect(component.previewButton).toEqual('show');
+      expect(component.togglePreview.next).toHaveBeenCalled();
+    });
+
+    it('should create the certificate template with new SVG changes', fakeAsync(() => {
+      const uploadCertService = TestBed.get(UploadCertificateService);
+      component.selectedCertificate = { issuer: `{}` };
+      const elementMock = {
+        innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'
+      };
+      spyOn(component.save, 'next');
+      spyOn(document, 'getElementById').and.returnValue(elementMock)
+      spyOn(component, 'uploadTemplate');
+      spyOn(component, 'previewCertificate').and.stub();
+      spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
+      spyOn(uploadCertService, 'createCertTemplate').and.returnValue(of(MockData.create));
+      component.saveUpdatedCertificate();
+      tick(1000);
+      expect(component.disableCreateTemplate).toEqual(true);
+      expect(component.save.next).toHaveBeenCalled();
+      expect(component.uploadTemplate).toHaveBeenCalledWith(component.finalSVGurl, MockData.create.result.identifier);
+    }));
+
+    it('should not create the certificate template with new SVG changes and expect error', fakeAsync(() => {
+      spyOn(component.save, 'next');
+      const uploadCertService = TestBed.get(UploadCertificateService);
+      const toasterService = TestBed.get(ToasterService);
+      component.selectedCertificate = { issuer: `{}` };
+      const elementMock = {
+        innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'
+      };
+      spyOn(document, 'getElementById').and.returnValue(elementMock)
+      spyOn(component, 'uploadTemplate');
+      spyOn(component, 'previewCertificate').and.stub();
+      spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
+      spyOn(uploadCertService, 'createCertTemplate').and.callFake(() => throwError({}));
+      spyOn(toasterService, 'error').and.stub();
+      component.saveUpdatedCertificate();
+      fixture.detectChanges()
+      tick(1000);
+      expect(component.save.next).toHaveBeenCalled();
+      expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
+    }));
+
   });
 
 });

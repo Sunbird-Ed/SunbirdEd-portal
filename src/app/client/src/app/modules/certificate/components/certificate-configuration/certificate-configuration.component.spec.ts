@@ -186,6 +186,7 @@ describe('CertificateConfigurationComponent', () => {
     spyOn(component, 'getCourseDetails').and.returnValue(observableOf(CertMockResponse.courseData));
     spyOn(component, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchData));
     spyOn(component, 'getTemplateList').and.returnValue(observableOf(CertMockResponse.certTemplateListData));
+    spyOn(component, 'getCertificateFormData').and.returnValue(observableOf(CertMockResponse.certificateFormData));
 
     /* Act */
     component.ngOnInit();
