@@ -11,7 +11,7 @@ import { throwError, of } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
-
+import { FrameworkCatLabelTranslatePipe } from '../../pipe/framework-label-translate/framework-label-translate.pipe';
 describe('ProfileFrameworkPopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;
   let fixture: ComponentFixture<ProfileFrameworkPopupComponent>;
@@ -30,13 +30,12 @@ describe('ProfileFrameworkPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
-      declarations: [ProfileFrameworkPopupComponent],
+      declarations: [ProfileFrameworkPopupComponent, FrameworkCatLabelTranslatePipe],
       providers: [CacheService, { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileFrameworkPopupComponent);
     component = fixture.componentInstance;
@@ -173,20 +172,16 @@ describe('ProfileFrameworkPopupComponent', () => {
     expect(component['editMode']).toBeDefined();
     expect(component['editMode']).toBeTruthy();
   });
-
   it('should set the editMode to false if profile framework is launched for a new user', () => {
     component.formInput = {};
     component.ngOnInit();
     expect(component['editMode']).toBeDefined();
     expect(component['editMode']).toBeFalsy();
   });
-
   describe('enable/disable submit button based on required fields in form API', () => {
-
     beforeEach(() => {
       component['_formFieldProperties'] = Response.formWithoutBoard;
     });
-
     it('should enable submit button if board value is not there in framework', () => {
       component.selectedOption = {
         gradeLevel: ['Class 2'],
@@ -268,4 +263,16 @@ describe('ProfileFrameworkPopupComponent', () => {
     });
   });
 });
+Collapse
+
+
+
+
+
+
+
+
+
+
+
 
