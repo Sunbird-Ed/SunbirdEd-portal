@@ -359,9 +359,4 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       ver: '1.0'
     };
   }
-
-  getTranslatedLabel(labelKey) {
-    return _.get(this.resourceService, labelKey);
-  }
-
 }
