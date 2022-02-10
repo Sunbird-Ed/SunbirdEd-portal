@@ -23,6 +23,7 @@ import { CommonFormElementsModule } from 'common-form-elements-web-v9';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashletModule } from  '@project-sunbird/sb-dashlet-v9';
+import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -62,7 +63,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent,
-     CollectionPlayerComponent, YearOfBirthComponent, DashboardComponent
+     CollectionPlayerComponent, YearOfBirthComponent, DashboardComponent,FrameworkCatLabelTranslatePipe
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,

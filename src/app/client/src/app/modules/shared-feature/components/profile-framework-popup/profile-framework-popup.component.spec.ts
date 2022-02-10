@@ -11,6 +11,7 @@ import { throwError, of } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { FrameworkCatLabelTranslatePipe } from '../../pipe/framework-label-translate/framework-label-translate.pipe';
 
 describe('ProfileFrameworkPopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;
@@ -30,7 +31,7 @@ describe('ProfileFrameworkPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
-      declarations: [ProfileFrameworkPopupComponent],
+      declarations: [ProfileFrameworkPopupComponent, FrameworkCatLabelTranslatePipe],
       providers: [CacheService, { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]
