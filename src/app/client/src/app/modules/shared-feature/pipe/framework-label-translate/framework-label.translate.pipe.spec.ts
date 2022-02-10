@@ -1,5 +1,5 @@
 import { ResourceService, SharedModule } from '@sunbird/shared';
-import { FrameworkCatLabelTranslatePipe } from './framework-cat-label-translate.pipe';
+import { FrameworkCatLabelTranslatePipe } from './framework-label-translate.pipe';
 import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';

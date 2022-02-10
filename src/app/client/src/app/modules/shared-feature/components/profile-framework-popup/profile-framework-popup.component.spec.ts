@@ -11,7 +11,7 @@ import { throwError, of } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
-import { FrameworkCatLabelTranslatePipe } from '../../pipe/framework-cat-label-translate/framework-cat-label-translate.pipe';
+import { FrameworkCatLabelTranslatePipe } from '../../pipe/framework-label-translate/framework-label-translate.pipe';
 
 describe('ProfileFrameworkPopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;

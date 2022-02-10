@@ -23,7 +23,7 @@ import { CommonFormElementsModule } from 'common-form-elements-web-v9';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashletModule } from  '@project-sunbird/sb-dashlet-v9';
-import { FrameworkCatLabelTranslatePipe } from './pipe/framework-cat-label-translate/framework-cat-label-translate.pipe';
+import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
