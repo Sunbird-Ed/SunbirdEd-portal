@@ -263,16 +263,3 @@ describe('ProfileFrameworkPopupComponent', () => {
     });
   });
 });
-Collapse
-
-
-
-
-
-
-
-
-
-
-
-
