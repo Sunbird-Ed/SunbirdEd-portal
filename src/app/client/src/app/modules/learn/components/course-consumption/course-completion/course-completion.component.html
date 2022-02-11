@@ -1,13 +1,9 @@
 <app-modal-wrapper [config]="{disableClose: true, size: 'small'}" #modal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal">
-
-      <div mat-dialog-title class="mb-0">
-        <div class="title"></div>
+    <div class="sb-mat__modal sb-mat__modal--small sb-mat__modal--course-complete">
+      
+      <div class="sb-mat__modal__content p-0">
         <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-      </div>
-
-      <div class="sb-mat__modal__content">
         <div class="course-complete sb-bg-white p-32">
           <div class="course-complete-content">
             <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
@@ -26,8 +22,6 @@
           </div>
         </div>
       </div>
-
-      <div class="sb-mat__modal__actions"></div>
 
     </div>
   </ng-template>
