@@ -248,20 +248,28 @@ function checkForValidRedirect (req, res, next) {
     'responseCode': responseCode,
     'result': {}
   }
+  logger.info({ msg: 'redirectURL ---->', redirectURL });
+  logger.info({ msg: 'errorCallbackURL ---->', errorCallbackURL });
   if (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN && envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN !== '') {
     const whiteListDomain = (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN).split(',');
+    logger.info({ msg: 'whiteListDomain ---->', whiteListDomain });
     if (whiteListDomain.includes(redirectURL) && !errorCallbackURL) {
+      logger.info({ msg: 'inside the redirect URL flow ---->', errorCallbackURL });
       next();
     } else if (whiteListDomain.includes(errorCallbackURL)) {
+      logger.info({ msg: 'inside the error callback URL flow ---->', errorCallbackURL });
       next();
     } else {
+      logger.info({ msg: 'inside the Else 1 flow ----> TEST 1', });
       res.status(301)
       res.send(respObj)
       res.end()
     }
   } else if (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN === '') {
+    logger.info({ msg: 'inside the Else if flow ----> TEST 2', });
     next()
   } else {
+    logger.info({ msg: 'inside the Else 2 flow ----> TEST 3', });
     res.status(301)
     res.send(respObj)
     res.end()
