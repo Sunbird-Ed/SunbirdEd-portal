@@ -229,7 +229,7 @@ function validateUserTokenForDF (req, res, next) {
     })
   });
 }
-function checkForValidRedirect (req, res, next) {
+function checkForValidRedirect(req, res, next) {
   const url = new URL(decodeURIComponent(req.headers.referer));
   const redirectURL_fromQuery = url.searchParams.get('redirect_uri');
   const redirectURL_generated = (new URL(redirectURL_fromQuery));
@@ -238,8 +238,8 @@ function checkForValidRedirect (req, res, next) {
   let errorCallbackURL_generated = null;
   let errorCallbackURL = null;
   if (errorCallbackURL_fromQuery) {
-     errorCallbackURL_generated = (new URL(errorCallbackURL_fromQuery));
-     errorCallbackURL = errorCallbackURL_generated.protocol + '//' + errorCallbackURL_generated.hostname;
+    errorCallbackURL_generated = (new URL(errorCallbackURL_fromQuery));
+    errorCallbackURL = errorCallbackURL_generated.protocol + '//' + errorCallbackURL_generated.hostname;
   }
   const responseCode = 'INVALID_REDIRECT_URI';
   const respObj = {
@@ -250,34 +250,26 @@ function checkForValidRedirect (req, res, next) {
       'resmsgid': uuidv1(),
       'msgid': null,
       'status': 'failed',
-      'err':  'INVALID_REDIRECT_URI',
+      'err': 'INVALID_REDIRECT_URI',
       'errmsg': 'Redirect URL or Error Callback URL do not match'
     },
     'responseCode': responseCode,
     'result': {}
   }
-  logger.info({ msg: 'redirectURL ---->', redirectURL });
-  logger.info({ msg: 'errorCallbackURL ---->', errorCallbackURL });
   if (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN && envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN !== '') {
     const whiteListDomain = (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN).split(',');
-    logger.info({ msg: 'whiteListDomain ---->', whiteListDomain });
     if (whiteListDomain.includes(redirectURL) && !errorCallbackURL) {
-      logger.info({ msg: 'inside the redirect URL flow ---->', errorCallbackURL });
       next();
     } else if (whiteListDomain.includes(errorCallbackURL)) {
-      logger.info({ msg: 'inside the error callback URL flow ---->', errorCallbackURL });
       next();
     } else {
-      logger.info({ msg: 'inside the Else 1 flow ----> TEST 1', });
       res.status(301)
       res.send(respObj)
       res.end()
     }
   } else if (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN === '') {
-    logger.info({ msg: 'inside the Else if flow ----> TEST 2', });
     next()
   } else {
-    logger.info({ msg: 'inside the Else 2 flow ----> TEST 3', });
     res.status(301)
     res.send(respObj)
     res.end()
