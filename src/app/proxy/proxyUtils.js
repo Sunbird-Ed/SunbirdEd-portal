@@ -248,21 +248,24 @@ function checkForValidRedirect (req, res, next) {
     'responseCode': responseCode,
     'result': {}
   }
-  if(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN && envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN !== ''){
-    if(redirectURL.includes(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN) && errorCallbackURL.includes(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN)){
+  if (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN && envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN !== '') {
+    const whiteListDomain = (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN).split(',');
+    if (whiteListDomain.includes(redirectURL) && !errorCallbackURL) {
       next();
-    } else{
+    } else if (whiteListDomain.includes(errorCallbackURL)) {
+      next();
+    } else {
       res.status(301)
       res.send(respObj)
       res.end()
     }
-  } else if(envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN === ''){
+  } else if (envHelper.REDIRECT_ERROR_CALLBACK_DOMAIN === '') {
     next()
-  } else{
-      res.status(301)
-      res.send(respObj)
-      res.end()
-    }
+  } else {
+    res.status(301)
+    res.send(respObj)
+    res.end()
+  }
 }
 
 module.exports.decorateRequestHeaders = decorateRequestHeaders
