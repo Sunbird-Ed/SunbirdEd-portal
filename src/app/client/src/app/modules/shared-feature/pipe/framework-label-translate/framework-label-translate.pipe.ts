@@ -18,7 +18,7 @@ export class FrameworkCatLabelTranslatePipe implements PipeTransform {
   }
 
   private mappingProxy = new Proxy(this._mapping, {
-    get(target, key) {
+    get: (target, key) => {
       return get(this.resourceService, key) || (key in target ? target[key] : key);
     }
   })
