@@ -231,8 +231,16 @@ function validateUserTokenForDF (req, res, next) {
 }
 function checkForValidRedirect (req, res, next) {
   const url = new URL(decodeURIComponent(req.headers.referer));
-  const redirectURL = url.searchParams.get('redirect_uri');
-  const errorCallbackURL = url.searchParams.get('error_callback');
+  const redirectURL_fromQuery = url.searchParams.get('redirect_uri');
+  const redirectURL_generated = (new URL(redirectURL_fromQuery));
+  const redirectURL = redirectURL_generated.protocol + '//' + redirectURL_generated.hostname;
+  const errorCallbackURL_fromQuery = url.searchParams.get('error_callback');
+  let errorCallbackURL_generated = null;
+  let errorCallbackURL = null;
+  if (errorCallbackURL_fromQuery) {
+     errorCallbackURL_generated = (new URL(errorCallbackURL_fromQuery));
+     errorCallbackURL = errorCallbackURL_generated.protocol + '//' + errorCallbackURL_generated.hostname;
+  }
   const responseCode = 'INVALID_REDIRECT_URI';
   const respObj = {
     'id': 'api.error',
