@@ -105,7 +105,7 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
         }
       })
       return _.get(data, 'result.response')
-    } else if (data.responseCode === 400 && data.err === 'UOS_USRRED0042') {
+    } else if (data.responseCode === 400 || _.get(data, 'params.err') === 'UOS_USRRED0042') {
         logger.info({msg: 'sso fetching user failed and new user has to be created error code is UOS_USRRED0042',
         additionalInfo: {
           result: data
