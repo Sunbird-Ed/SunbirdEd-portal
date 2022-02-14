@@ -41,5 +41,13 @@ describe('FrameworkCatLabelTranslatePipe', () => {
             expect(transformedResult).toBeDefined();
             expect(transformedResult).toBe('random');
         });
+
+        it('Should return translation if translation key is passed', () => {
+            const resourceService = TestBed.get(ResourceService);
+            const pipe = new FrameworkCatLabelTranslatePipe(resourceService);
+            const transformedResult = pipe.transform('frmelmnts.lbl.boards');
+            expect(transformedResult).toBeDefined();
+            expect(transformedResult).toBe('boards');
+        });
     });
 });

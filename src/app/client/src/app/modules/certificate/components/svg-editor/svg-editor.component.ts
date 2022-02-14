@@ -432,14 +432,15 @@ urltoFile(url, filename, mimeType) {
   }
 
   saveUpdatedCertificate() {
+    const certificateCodeName = _.get(this.queryParams, 'courseId') + '_' + _.get(this.queryParams, 'batchId').toString();
     this.svgData = null;
     this.save.next('');
     this.previewUpdatedSVGCertificate();
     setTimeout(() => {
       const channel = this.userService.channel;
       const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
-      request.request.asset.code = 'code name';
-      request.request.asset.name = 'name name'
+      request.request.asset.code = certificateCodeName;
+      request.request.asset.name = certificateCodeName;
       this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
         const assetId = _.get(response, 'result.identifier');
         this.uploadTemplate(this.finalSVGurl, assetId);
@@ -458,5 +459,6 @@ urltoFile(url, filename, mimeType) {
   closeSaveAndPreview() {
     this.toggleSVGPreview();
     this.saveAndPreview = false;
+    this.userConsent = false;
   }
 }
