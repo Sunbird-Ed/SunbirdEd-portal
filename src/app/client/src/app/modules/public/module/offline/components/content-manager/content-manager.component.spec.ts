@@ -64,7 +64,7 @@ describe('ContentManagerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentManagerComponent);
     component = fixture.componentInstance;
-    contentManagerService = TestBed.get(ContentManagerService);
+    contentManagerService = TestBed.inject(ContentManagerService);
     fixture.detectChanges();
   });
 

@@ -393,7 +393,7 @@ describe('NewCollectionEditorComponent', () => {
   });
 
   it('Should disable browser back button', fakeAsync(() => {
-    const workSpaceService = TestBed.get(WorkSpaceService);
+    const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'browserBackEvent').and.returnValue(observableOf({}));
     spyOn(workSpaceService, 'newtoggleWarning').and.callThrough();
     spyOn(component, 'generateInteractEvent').and.callThrough();

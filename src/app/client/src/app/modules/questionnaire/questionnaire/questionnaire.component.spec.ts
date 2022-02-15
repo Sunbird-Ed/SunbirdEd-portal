@@ -187,7 +187,7 @@ describe('QuestionaireComponent', () => {
     spyOn(component, 'openAlert').and.callThrough();
     component.submitEvidence(Payload);
     expect(component.submitEvidence).toHaveBeenCalled();
-    expect(component.openAlert).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.failedToSave);
+    expect(component.openAlert).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.submissionFailed);
     // expect(observationService.post).toHaveBeenCalled();
   });
 

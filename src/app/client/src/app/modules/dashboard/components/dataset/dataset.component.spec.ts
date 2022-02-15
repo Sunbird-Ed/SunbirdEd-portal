@@ -66,7 +66,7 @@ describe('DatasetComponent', () => {
 
   it('should set markdown data', () => {
     component['setMarkdowns']();
-    expect(component.dataDictionary).toBe(`# Dataset Examples Markdown`);
+    expect(component.dataDictionary).toBe('');
     expect(component.examples).toBe('');
   });
 

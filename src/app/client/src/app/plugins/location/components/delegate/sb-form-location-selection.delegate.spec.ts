@@ -739,7 +739,8 @@ describe('SbFormLocationSelectionDelegate', () => {
             {code: 'SOME_SELECTED_DISTRICT_CODE',  name: 'SOME_SELECTED_DISTRICT_NAME',
             id: 'SOME_SELECTED_DISTRICT_ID', type: 'district'}
           ],
-          profileUserTypes: [{type: undefined}]
+          profileUserTypes: [{type: 'SOME_SELECTED_PERSONA', subType: 'SOME_SELECTED_SUB_PERSONA'}],
+          firstName: 'SOME_ENTERED_NAME'
         });
       });
 
