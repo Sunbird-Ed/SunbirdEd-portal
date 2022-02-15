@@ -98,6 +98,11 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
   }
   logger.info({msg:'sso fetch user with external id', additionalInfo:{options: options}})
   return request(options).then(data => {
+    logger.info({msg: 'Testing to see the data that will be sent back by the api--->',
+        additionalInfo: {
+          result: data
+          }
+    })
     if (data.responseCode === 'OK') {
       logger.info({msg: 'sso fetching user',
       additionalInfo: {
