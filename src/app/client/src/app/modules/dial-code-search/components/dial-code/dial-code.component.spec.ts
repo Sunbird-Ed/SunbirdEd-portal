@@ -147,21 +147,21 @@ describe('DialCodeComponent', () => {
     });
   });
 
-  it('Dial code search API call should generate telemetry interact event', () => {
-    component['processDialCode']({ dialCode: '123' }).subscribe(() => {
-      expect(component.showSelectChapter).toBeFalsy();
-      expect(this.telemetryService.interact).toHaveBeenCalled();
-      expect(this.telemetryService.interact).toHaveBeenCalledWith({
-        context: { env: 'get', cdata: [] },
-        edata: {
-          id: 'search-dial-success',
-          type: 'view',
-          subtype: 'auto',
-          pageid: 'get-dial'
-        }
-      });
-    });
-  });
+  // it('Dial code search API call should generate telemetry interact event', () => {
+  //   component['processDialCode']({ dialCode: '123' }).subscribe(() => {
+  //     expect(component.showSelectChapter).toBeFalsy();
+  //     expect(this.telemetryService.interact).toHaveBeenCalled();
+  //     expect(this.telemetryService.interact).toHaveBeenCalledWith({
+  //       context: { env: 'get', cdata: [] },
+  //       edata: {
+  //         id: 'search-dial-success',
+  //         type: 'view',
+  //         subtype: 'auto',
+  //         pageid: 'get-dial'
+  //       }
+  //     });
+  //   });
+  // });
 
   it('should return appropriate message on no contents', () => {
     spyOn<any>(component, 'processDialCode').and.returnValue(observableOf([]));
