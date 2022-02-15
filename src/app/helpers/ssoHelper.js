@@ -98,11 +98,7 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
   }
   logger.info({msg:'sso fetch user with external id', additionalInfo:{options: options}})
   return request(options).then(data => {
-    logger.info({msg: 'Testing to see the data that will be sent back by the api--->',
-        additionalInfo: {
-          result: data
-          }
-    })
+    
     if (data.responseCode === 'OK') {
       logger.info({msg: 'sso fetching user',
       additionalInfo: {
@@ -110,13 +106,6 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
         }
       })
       return _.get(data, 'result.response')
-    } else if (data.responseCode === 400 || _.get(data, 'params.err') === 'UOS_USRRED0042') {
-        logger.info({msg: 'sso fetching user failed and new user has to be created error code is UOS_USRRED0042',
-        additionalInfo: {
-          result: data
-          }
-        })
-        return _.get(data, 'result.response');
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
@@ -314,7 +303,13 @@ const getHeaders = (req) => {
   }
 }
 const handleGetUserByIdError = (error) => {
-  if (['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND'].includes(_.get(error, 'error.params.err')) || ['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND'].includes(_.get(error, 'error.params.status'))) {
+  logger.info({msg: 'Error Happened and the error is --->',
+      additionalInfo: {
+        result: error
+        }
+      })
+  if (['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0042'].includes(_.get(error, 'error.params.err')) || 
+  ['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0042'].includes(_.get(error, 'error.params.status'))) {
     return {};
   }
   throw error.error || error.message || error;
