@@ -152,7 +152,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
         filter.options = (_.sortBy(_.uniq(
-          _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
+          _.map(chartData, (data) => (data && data[filter.reference]) ? data[filter.reference].toLowerCase() : ''
           )))).filter(Boolean);
 
       });
