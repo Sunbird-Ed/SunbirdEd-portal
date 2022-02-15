@@ -24,7 +24,7 @@
           <div class="required sb-field-form-group"
             *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
             <label> {{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
-              <span class="mr-8 sb-color-red"> * </span>
+              <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
             </label>
             <div class="sb-field">
               <label class="w-100">
