@@ -76,7 +76,7 @@ describe('SearchComponent', () => {
   });
   it('should hide users search from dropdown if loggedin user is not rootorgadmin', ( ) => {
     const userService:any = TestBed.inject(UserService);
-    const resourceService = TestBed.inject(ResourceService);
+    const resourceService:any = TestBed.inject(ResourceService);
     const route = TestBed.inject(Router);
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile as any});
     resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
@@ -86,7 +86,7 @@ describe('SearchComponent', () => {
   });
   it('should show users search from dropdown if loggedin user is rootorgadmin', ( ) => {
     const userService:any = TestBed.inject(UserService);
-    const resourceService = TestBed.inject(ResourceService);
+    const resourceService:any = TestBed.inject(ResourceService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = true;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile as any });
     resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });

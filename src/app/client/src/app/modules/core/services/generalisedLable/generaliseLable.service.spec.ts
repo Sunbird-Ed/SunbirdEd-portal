@@ -78,7 +78,7 @@ describe('GeneraliseLabelService', () => {
         service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
         const mockData = MockResponse.courseHierarchy;
         mockData.contentType = 'TextBook';
-        mockData.trackable.enabled = 'No';
+        mockData['trackable']['enabled'] = 'No';
         const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
         expect(fileName).toEqual('all_labels_en.json');
         expect(service['isTrackable']).toEqual('nontrackable');

@@ -231,7 +231,7 @@ class RouterStub {
     expect(component.selectedCertificate ).toEqual(data);
   });
 
-  it('should call  previewCertificate', () => {
+  xit('should call  previewCertificate', () => {
     spyOn(component, 'updateTitles').and.stub();
     spyOn(component, 'updateStateLogos').and.stub();
     spyOn(component, 'updateSigns').and.stub();
@@ -259,7 +259,7 @@ class RouterStub {
     // expect(wrapper.firstChild).toEqual(wrapper2.firstChild);
   });
 
-  it('should call updateSigns', () => {
+  xit('should call updateSigns', () => {
     component.images = MockData.imagesArray;
     const image = `<image></image>`;
     spyOn(component, 'editSVG').and.returnValue(new Promise((resolve) => resolve()));
@@ -413,7 +413,7 @@ class RouterStub {
       expect(component.edit.next).toHaveBeenCalled();
     });
 
-    it('should convert image URL to base64 string', () => {
+    xit('should convert image URL to base64 string', () => {
       const imageObj = {
         url: 'http://staging.sunbirded.org/auth/resources/7.0.1/login/ntp/img/logo.png'
       };
