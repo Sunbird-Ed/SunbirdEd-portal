@@ -38,7 +38,7 @@ describe('SchemaService', () => {
     spyOn(formService, 'getFormConfig').and.returnValue(of([{ id: 'content', schema: { properties: ['name'] } }]));
     schemaService.fetchSchemas().subscribe(res => {
       expect(res).toBeDefined();
-      const schema = schemaService.getSchema('content');
+      const schema:any = schemaService.getSchema('content');
       expect(schema).toBeDefined();
       expect(schema.properties).toEqual(['name']);
       done();

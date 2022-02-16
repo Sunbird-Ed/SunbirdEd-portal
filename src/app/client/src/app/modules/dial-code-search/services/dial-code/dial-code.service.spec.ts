@@ -46,7 +46,7 @@ describe('DialCodeService', () => {
     it('should return dial search results for logged In', () => {
       const service: DialCodeService = TestBed.inject(DialCodeService);
       const userService:any = TestBed.inject(UserService);
-      const publicDataService = TestBed.inject(PublicDataService);
+      const publicDataService:any = TestBed.inject(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
         board: 'CBSE'
@@ -68,7 +68,7 @@ describe('DialCodeService', () => {
     it('should return dial search results for Not logged In', () => {
       const service: DialCodeService = TestBed.inject(DialCodeService);
       const userService:any = TestBed.inject(UserService);
-      const publicDataService = TestBed.inject(PublicDataService);
+      const publicDataService:any = TestBed.inject(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
       spyOn(publicDataService, 'post').and.returnValue(of({result: {
@@ -119,7 +119,7 @@ describe('DialCodeService', () => {
       const dialCodeService = TestBed.inject(DialCodeService);
       spyOn(dialCodeService, 'getAllPlayableContent').and.callThrough();
       const results = dialCodeService.filterDialSearchResults(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
-      results.subscribe(res => {
+      results.subscribe((res:any) => {
         expect(res).toBeDefined();
         expect(res.collection).toBeDefined();
         expect(res.contents).toBeDefined();
@@ -145,14 +145,14 @@ describe('DialCodeService', () => {
 
     it('should return collection heirarchy', () => {
       const dialCodeService = TestBed.inject(DialCodeService);
-      const playerService = TestBed.inject(PlayerService);
+      const playerService:any = TestBed.inject(PlayerService);
       spyOn(playerService, 'getCollectionHierarchy').and.returnValue(of(mockData.courseHierarchApiResponse));
       dialCodeService.getCollectionHierarchy('do_21289679356020326415198')
         .subscribe(result => {
           expect(result).toBeDefined();
           expect(playerService.getCollectionHierarchy).toHaveBeenCalled();
           expect(playerService.getCollectionHierarchy).toHaveBeenCalledWith('do_21289679356020326415198', undefined);
-          expect(result).toEqual(mockData.courseHierarchApiResponse.result.content);
+          expect(result).toEqual(mockData.courseHierarchApiResponse.result.content as any);
         });
     });
 

@@ -25,7 +25,7 @@ const  reportStatus = {
   it('should get report list', () => {
     const mockData = {test: 'ok'};
     const headers = {headers: {'Content-Type': 'application/json'}};
-    const http = TestBed.inject(HttpClient, HttpHeaders);
+    const http = TestBed.inject(HttpClient, HttpHeaders as any);
     spyOn(http, 'get').and.returnValue(of(mockData));
     const service: OnDemandReportService = TestBed.inject(OnDemandReportService);
     service.getReportList('tag').subscribe((data) => {
@@ -38,7 +38,7 @@ const  reportStatus = {
   it('should get report read', () => {
     const mockData = {test: 'ok'};
     const headers = {headers: {'Content-Type': 'application/json'}};
-    const http = TestBed.inject(HttpClient, HttpHeaders);
+    const http = TestBed.inject(HttpClient, HttpHeaders as any);
     spyOn(http, 'get').and.returnValue(of(mockData));
     const service: OnDemandReportService = TestBed.inject(OnDemandReportService);
     service.getReport('tag', 'requestId').subscribe((data) => {
@@ -50,7 +50,7 @@ const  reportStatus = {
   });
   it('should submit report', () => {
     const mockData = {test: 'ok'};
-    const http = TestBed.inject(HttpClient, HttpHeaders);
+    const http = TestBed.inject(HttpClient, HttpHeaders as any);
     spyOn(http, 'post').and.returnValue(of(mockData));
     const service: OnDemandReportService = TestBed.inject(OnDemandReportService);
     service.submitRequest({}).subscribe((data) => {
@@ -62,7 +62,7 @@ const  reportStatus = {
 
   it('should get summary reports', () => {
     const mockData = {test: 'ok'};
-    const http = TestBed.inject(HttpClient, HttpHeaders);
+    const http = TestBed.inject(HttpClient, HttpHeaders as any);
     spyOn(http, 'post').and.returnValue(of(mockData));
     const service: OnDemandReportService = TestBed.inject(OnDemandReportService);
     service.submitRequest({}).subscribe((data) => {

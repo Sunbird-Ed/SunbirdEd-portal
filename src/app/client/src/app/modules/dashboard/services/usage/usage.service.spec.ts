@@ -36,7 +36,7 @@ describe('UsageService', () => {
       spyOn(http, 'get').and.returnValue(of({ result: '123' }));
       const result = usageService.getData('https://dev.sunbirded.org/explore');
       expect(http.get).toHaveBeenCalled();
-      result.subscribe(res => {
+      result.subscribe((res:any) => {
         expect(res).toBeDefined();
         expect(res).toEqual({
           responseCode: 'OK',
@@ -51,7 +51,7 @@ describe('UsageService', () => {
       spyOn(http, 'get').and.returnValue(of({ data: '123' }));
       const result = usageService.getData('https://dev.sunbirded.org/explore');
       expect(http.get).toHaveBeenCalled();
-      result.subscribe(res => {
+      result.subscribe((res:any) => {
         expect(res).toBeDefined();
         expect(res).toEqual({
           responseCode: 'OK',
