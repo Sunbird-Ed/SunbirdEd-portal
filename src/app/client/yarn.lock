@@ -1560,10 +1560,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.7.3":
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.7.3.tgz#271b90312a8b47b0f5d09f2dc5f4e51971087b26"
-  integrity sha512-+oVdRvtA7ZvVDmE4lQ/pmpMvfSoYxkjANQ0jhvxRNHrJI9JaeoIfs4sacjC6FE8zGysB4cL5rcaEGtFwR4sjYw==
+"@project-sunbird/sunbird-quml-player-v9@4.7.4":
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.7.4.tgz#bf844ec8451c7b69a6833e6dd7f94d0c8d5ec2da"
+  integrity sha512-ep2uowenArO8IIz++aLID/dCQlTCmpDaIgPtELN91wWbvUDhGIIl12MaCPXjsLA3ASXSNMR2bugQdg8hhFT93Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.6.4"
 
