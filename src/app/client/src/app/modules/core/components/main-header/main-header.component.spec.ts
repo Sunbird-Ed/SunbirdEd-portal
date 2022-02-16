@@ -103,8 +103,8 @@ describe('MainHeaderComponent', () => {
 
   it('should subscribe to user service', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
-    const userService = TestBed.inject(UserService);
-    const learnerService = TestBed.inject(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService:any = TestBed.inject(LearnerService);
     userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     userService._authenticated = true;
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
@@ -115,7 +115,7 @@ describe('MainHeaderComponent', () => {
 
   xit('Should subscribe to tenant service and update logo and tenant name', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
-    const service = TestBed.inject(TenantService);
+    const service:any = TestBed.inject(TenantService);
     spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
     component.ngOnInit();
@@ -132,7 +132,7 @@ describe('MainHeaderComponent', () => {
 
   it('Should update the logo on initialization', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
-    const service = TestBed.inject(TenantService);
+    const service:any = TestBed.inject(TenantService);
     spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
     component.ngOnInit();
@@ -147,11 +147,11 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should not fetch managed user list as user is not logged in', () => {
-    const userService = TestBed.inject(UserService);
-    const learnerService = TestBed.inject(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService:any = TestBed.inject(LearnerService);
     userService._authenticated = false;
     spyOn(learnerService, 'getWithHeaders');
-    const managedUserService = TestBed.inject(ManagedUserService);
+    const managedUserService:any = TestBed.inject(ManagedUserService);
     spyOn(managedUserService, 'fetchManagedUserList');
     component.ngOnInit();
     expect(component.userListToShow).toEqual([]);
@@ -159,7 +159,7 @@ describe('MainHeaderComponent', () => {
   });
 
   it('Should call getCacheLanguage if user is not login and cache exits', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const cacheService = TestBed.inject(CacheService);
     cacheService.set('portalLanguage', 'hi', { maxAge: 10 * 60 });
     userService._authenticated = false;
@@ -168,7 +168,7 @@ describe('MainHeaderComponent', () => {
   });
 
   it('Should call getCacheLanguage if user is not login and cache not exits', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const cacheService = TestBed.inject(CacheService);
     cacheService.set('portalLanguage', null);
     userService._authenticated = false;
@@ -177,9 +177,9 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should fetch managed user list on init if user logged in', () => {
-    const userService = TestBed.inject(UserService);
-    const learnerService = TestBed.inject(LearnerService);
-    const managedUserService = TestBed.inject(ManagedUserService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService:any = TestBed.inject(LearnerService);
+    const managedUserService:any = TestBed.inject(ManagedUserService);
     userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     userService._authenticated = true;
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
@@ -193,16 +193,16 @@ describe('MainHeaderComponent', () => {
   });
 
   xit('should not fetch managed user list on init as api errored', () => {
-    const userService = TestBed.inject(UserService);
-    const learnerService = TestBed.inject(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService:any = TestBed.inject(LearnerService);
     userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     userService._authenticated = true;
     const userData = mockData.userReadApiResponse;
     userData.result.response['managedBy'] = 'mock managed by id';
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(userData));
     userService.initialize(true);
-    const managedUserService = TestBed.inject(ManagedUserService);
-    const toasterService = TestBed.inject(ToasterService);
+    const managedUserService:any = TestBed.inject(ManagedUserService);
+    const toasterService:any = TestBed.inject(ToasterService);
     managedUserService.fetchManagedUserList();
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockData.userList));
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableThrowError({}));
@@ -213,7 +213,7 @@ describe('MainHeaderComponent', () => {
 
   it('should turn on the side menu', () => {
     component.showSideMenu = false;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._authenticated = true;
     spyOn(component, 'fetchManagedUsers');
     component.toggleSideMenu(true);
@@ -223,7 +223,7 @@ describe('MainHeaderComponent', () => {
 
   it('should not turn on the side menu', () => {
     component.showSideMenu = true;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOn(component, 'fetchManagedUsers');
     userService._authenticated = false;
     component.toggleSideMenu(false);
@@ -232,9 +232,9 @@ describe('MainHeaderComponent', () => {
   });
 
   xit('should switch selected user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._authenticated = true;
-    const telemetryService = TestBed.inject(TelemetryService);
+    const telemetryService:any = TestBed.inject(TelemetryService);
     spyOn(document, 'getElementById').and.callFake((id) => {
       if (id === 'buildNumber') {
         return {value: '1.1.12.0'};
@@ -247,14 +247,14 @@ describe('MainHeaderComponent', () => {
       }
       return {value: 'mock Id'};
     });
-    const learnerService = TestBed.inject(LearnerService);
-    const utilsService = TestBed.inject(UtilService);
-    const coursesService = TestBed.inject(CoursesService);
+    const learnerService:any = TestBed.inject(LearnerService);
+    const utilsService:any = TestBed.inject(UtilService);
+    const coursesService:any = TestBed.inject(CoursesService);
     spyOn(utilsService, 'redirect').and.callFake(() => {
     });
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
-    const managedUserService = TestBed.inject(ManagedUserService);
+    const managedUserService:any = TestBed.inject(ManagedUserService);
     spyOn(telemetryService, 'initialize');
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.switchUser({data: {data: mockData.selectedUser}});
@@ -288,7 +288,7 @@ describe('MainHeaderComponent', () => {
 
   it('should set telemetry data on init', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
-    const service = TestBed.inject(TenantService);
+    const service:any = TestBed.inject(TenantService);
     spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
     service.getTenantInfo('Sunbird');
     component.ngOnInit();
@@ -304,7 +304,7 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should tell is layout is available', () => {
-    const layoutService = TestBed.inject(LayoutService);
+    const layoutService:any = TestBed.inject(LayoutService);
     spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
     const layoutData = component.isLayoutAvailable();
     expect(layoutData).toBe(true);
@@ -312,7 +312,7 @@ describe('MainHeaderComponent', () => {
 
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
-    const navigationHelperService = TestBed.inject(NavigationHelperService);
+    const navigationHelperService:any = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: false}));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
@@ -321,7 +321,7 @@ describe('MainHeaderComponent', () => {
 
   it('should make isFullScreenView to true', () => {
     component.isFullScreenView = false;
-    const navigationHelperService = TestBed.inject(NavigationHelperService);
+    const navigationHelperService:any = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: true}));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
@@ -338,8 +338,8 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should switch layout and generate telemetry for classic', () => {
-    const layoutService = TestBed.inject(LayoutService);
-    const telemetryService = TestBed.inject(TelemetryService);
+    const layoutService:any = TestBed.inject(LayoutService);
+    const telemetryService:any = TestBed.inject(TelemetryService);
     component.layoutConfiguration = null;
     spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
     });
@@ -356,8 +356,8 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should switch layout and generate telemetry for joy', () => {
-    const layoutService = TestBed.inject(LayoutService);
-    const telemetryService = TestBed.inject(TelemetryService);
+    const layoutService:any = TestBed.inject(LayoutService);
+    const telemetryService:any = TestBed.inject(TelemetryService);
     component.layoutConfiguration = {options: 'option1'};
     spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
     });
@@ -368,14 +368,14 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should call login method for desktop app', () => {
-    const electronService = TestBed.inject(ElectronService);
+    const electronService:any = TestBed.inject(ElectronService);
     spyOn(electronService, 'get').and.returnValue(observableOf({status: 'success'}));
     component.doLogin();
     expect(electronService.get).toHaveBeenCalled();
   });
 
   it('should call getGuestUser for desktop app', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._guestUserProfile = { name: 'test' };
     userService._guestData$.next({ userProfile: { name: 'test' } });
     component.getGuestUser();
@@ -393,7 +393,7 @@ describe('MainHeaderComponent', () => {
   });
 
 it('should call the setUserPreference when logged in ', () => {
-  const userService = TestBed.inject(UserService);
+  const userService:any = TestBed.inject(UserService);
   userService._authenticated = true;
   spyOn(userService, 'loggedIn').and.returnValue(true);
   spyOn(component, 'setUserPreferences').and.callThrough();
@@ -405,7 +405,7 @@ it('should call the setUserPreference when logged in ', () => {
 });
 
 it('should call the setUserPreference when not loggin', () => {
-  const userService = TestBed.inject(UserService);
+  const userService:any = TestBed.inject(UserService);
   userService._authenticated = false;
   spyOn(userService, 'loggedIn').and.returnValue(false);
   spyOn(component, 'setUserPreferences').and.callThrough();
@@ -428,7 +428,7 @@ it('should call the getFormConfigs to get form category', () => {
   expect(component.getFormConfigs).toHaveBeenCalled();
 });
 it('should call the navigateToHome method with and the formService', (done) => {
-  const formService = TestBed.inject(FormService);
+  const formService:any = TestBed.inject(FormService);
   const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
   spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
   component.navigateToHome();
@@ -437,7 +437,7 @@ it('should call the navigateToHome method with and the formService', (done) => {
   done();
 });
 it('should call the navigateToHome method with and the formService with no goToBasePath value', (done) => {
-  const formService = TestBed.inject(FormService);
+  const formService:any = TestBed.inject(FormService);
   const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
   spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData[1]));
   component.navigateToHome();
@@ -446,10 +446,10 @@ it('should call the navigateToHome method with and the formService with no goToB
   done();
 });
 it('should call the setUserPreference when logged in navigateToHome with resource', (done) => {
-  const userService = TestBed.inject(UserService);
+  const userService:any = TestBed.inject(UserService);
   userService._authenticated = true;
   spyOn(userService, 'loggedIn').and.returnValue(true);
-  const formService = TestBed.inject(FormService);
+  const formService:any = TestBed.inject(FormService);
   const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
   spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData[1]));
   component.navigateToHome();

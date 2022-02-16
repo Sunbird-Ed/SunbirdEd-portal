@@ -23,7 +23,7 @@ describe('CopyContentService', () => {
 
   it('should make copy api call and get success response', inject([CopyContentService, ContentService],
     (service: CopyContentService, contentService: ContentService) => {
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userProfile = testData.mockRes.userData;
       spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.successResponse));
       service.copyContent(testData.mockRes.contentData).subscribe(
@@ -35,8 +35,8 @@ describe('CopyContentService', () => {
 
   it('should copy textbook as a course', inject([], () => {
     const service = TestBed.inject(CopyContentService);
-    const userService = TestBed.inject(UserService);
-    const contentService = TestBed.inject(ContentService);
+    const userService:any = TestBed.inject(UserService);
+    const contentService:any = TestBed.inject(ContentService);
     const contentData = testData.mockRes.copyCourseContentData;
     userService._userProfile = testData.mockRes.userData;
     const userData = userService._userProfile;
@@ -76,7 +76,7 @@ describe('CopyContentService', () => {
   }));
 
   it('should call the formatData', inject([], () => {
-    const service = TestBed.inject(CopyContentService);
+    const service:any = TestBed.inject(CopyContentService);
     const router = TestBed.inject(Router);
     spyOn(service, 'formatData');
     service.formatData();
@@ -84,7 +84,7 @@ describe('CopyContentService', () => {
   }));
 
   it('should call the redirectToEditor', inject([], () => {
-    const service = TestBed.inject(CopyContentService);
+    const service:any = TestBed.inject(CopyContentService);
     const router = TestBed.inject(Router);
     spyOn(service, 'redirectToEditor');
     service.redirectToEditor();
