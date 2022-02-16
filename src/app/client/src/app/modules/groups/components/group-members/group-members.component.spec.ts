@@ -180,7 +180,7 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call addMember', () => {
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     component.addMember();
     expect(router.navigate).toHaveBeenCalled();
   });
@@ -211,8 +211,8 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call promoteMember', () => {
-    const groupsService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupsService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     const data = {
       userId: 'abcd-pqrs',
       name: 'John'
@@ -226,8 +226,8 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call promoteMember on error', () => {
-    const groupsService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupsService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     const data = {
       userId: 'abcd-pqrs',
       name: 'John'
@@ -240,8 +240,8 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call removeMember', () => {
-    const groupsService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupsService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     const data = {
       userId: 'abcd-pqrs',
       name: 'John'
@@ -255,8 +255,8 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call removeMember error', () => {
-    const groupsService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupsService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     const data = {
       userId: 'abcd-pqrs',
       name: 'John'
@@ -269,8 +269,8 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call dismissRole', () => {
-    const groupsService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupsService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     const data = {
       userId: 'abcd-pqrs',
       name: 'John'
@@ -284,8 +284,8 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call dismissRole error', () => {
-    const groupsService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupsService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     const data = {
       userId: 'abcd-pqrs',
       name: 'John'

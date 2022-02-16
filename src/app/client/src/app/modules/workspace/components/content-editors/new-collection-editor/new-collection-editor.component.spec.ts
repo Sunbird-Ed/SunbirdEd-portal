@@ -242,7 +242,7 @@ describe('NewCollectionEditorComponent', () => {
     expect(component['routeParams']).toBeDefined();
     component.redirectToWorkSpace();
     expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/allcontent/1');
-    const activatedRoute = TestBed.get(ActivatedRoute);
+    const activatedRoute = TestBed.inject(ActivatedRoute);
     activatedRoute.snapshot.params = {state: 'collaborating-on'};
     component.ngOnInit();
     expect(component['routeParams']).toBeDefined();
@@ -385,7 +385,7 @@ describe('NewCollectionEditorComponent', () => {
   });
 
   it('Should generate interact telemetry event', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.callThrough();
     component.collectionDetails = mockRes.successResult.result.content;
     component['generateInteractEvent']({});

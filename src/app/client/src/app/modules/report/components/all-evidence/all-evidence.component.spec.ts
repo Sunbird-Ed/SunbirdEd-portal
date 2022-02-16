@@ -34,7 +34,7 @@ describe('AllEvidenceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AllEvidenceComponent);
     component = fixture.componentInstance;
-    dhitiService = TestBed.get(DhitiService);
+    dhitiService = TestBed.inject(DhitiService);
     fixture.detectChanges();
   });
 

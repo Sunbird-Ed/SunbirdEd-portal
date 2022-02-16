@@ -92,7 +92,7 @@ describe('InAppNotificationComponent', () => {
   });
 
   it('should call ngOnInit', fakeAsync(() => {
-    const connectionService = TestBed.get(ConnectionService);
+    const connectionService = TestBed.inject(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(of(true));
     spyOn(component, 'fetchNotificationList');
     component.ngOnInit();
@@ -106,7 +106,7 @@ describe('InAppNotificationComponent', () => {
 
     it('should generate the interact telemetry event with cdata empty', () => {
       // arrange
-      const telemetryService: TelemetryService = TestBed.get(TelemetryService);
+      const telemetryService: TelemetryService = TestBed.inject(TelemetryService);
       const data = {
         context: {
           env: 'main-header',
@@ -132,7 +132,7 @@ describe('InAppNotificationComponent', () => {
 
     it('should fetch the notification list and get unread notification count', (done) => {
       // arrange
-      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const notificationService: NotificationServiceImpl = TestBed.inject(NotificationServiceImpl);
       notificationService.showNotificationModel$.next(false);
       notificationService.notificationList$.next(notificationList);
       // act
@@ -146,7 +146,7 @@ describe('InAppNotificationComponent', () => {
 
     it('should fetch the notification list and the list is empty', (done) => {
       // arrange
-      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const notificationService: NotificationServiceImpl = TestBed.inject(NotificationServiceImpl);
       notificationService.showNotificationModel$.next(true);
       notificationService.notificationList$.next([]);
       // act

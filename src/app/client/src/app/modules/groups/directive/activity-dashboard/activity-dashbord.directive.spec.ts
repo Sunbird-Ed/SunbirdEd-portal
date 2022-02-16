@@ -68,11 +68,11 @@ describe('ActivityDashboardDirective', () => {
         { provide: ResourceService, useValue: resourceBundleStub }, ],
       schemas: [NO_ERRORS_SCHEMA]
     });
-    directive = TestBed.get(ActivityDashboardDirective);
+    directive = TestBed.inject(ActivityDashboardDirective);
   });
 
   it('should call addTelemetry', () => {
-    const groupService = TestBed.get(GroupsService);
+    const groupService = TestBed.inject(GroupsService);
     spyOn(groupService, 'addTelemetry');
     directive.addTelemetry('activity-detail', [], { query: 'test' }, {});
     expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'activity-detail', extra: { query: 'test' } },

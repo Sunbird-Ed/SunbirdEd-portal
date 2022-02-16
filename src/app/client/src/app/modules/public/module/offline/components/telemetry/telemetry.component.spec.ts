@@ -124,7 +124,7 @@ describe('TelemetryComponent', () => {
     expect(component.setTelemetrySyncStatus).toHaveBeenCalledWith(data);
   });
   it('should call syncTelemetry and show no internet toaster message', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
     component.isConnected = false;
@@ -135,7 +135,7 @@ describe('TelemetryComponent', () => {
     expect(component.setSyncTelemetry).toHaveBeenCalledWith();
   });
   it('should call syncTelemetry and throw error while syncing', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
     component.isConnected = true;
@@ -161,7 +161,7 @@ describe('TelemetryComponent', () => {
     expect(component.setSyncTelemetry).toHaveBeenCalledWith();
   });
   it('should call syncTelemetry and sync successfuly', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     component.isConnected = true;
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');

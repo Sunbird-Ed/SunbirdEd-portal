@@ -78,14 +78,14 @@ describe('CreateUserComponent', () => {
   }));
 
   beforeEach(() => {
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(CreateUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should call ngOnInit', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'setNavigationUrl');
     spyOn(component, 'getFormDetails');
     component.ngOnInit();
@@ -95,7 +95,7 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call getFormDetails with success', () => {
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.formData));
     spyOn(component, 'initializeFormFields');
     component.getFormDetails();
@@ -104,9 +104,9 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call getFormDetails with error', () => {
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError({}));
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.getFormDetails();
     expect(component.showLoader).toBeFalsy();
@@ -114,8 +114,8 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call onSubmitForm with success', () => {
-    const userService = TestBed.get(UserService);
-    const managedUserService = TestBed.get(ManagedUserService);
+    const userService = TestBed.inject(UserService);
+    const managedUserService = TestBed.inject(ManagedUserService);
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
     spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     spyOn(managedUserService, 'updateUserList');
@@ -130,9 +130,9 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call onSubmitForm with error', () => {
-    const userService = TestBed.get(UserService);
-    const toasterService = TestBed.get(ToasterService);
-    const managedUserService = TestBed.get(ManagedUserService);
+    const userService = TestBed.inject(UserService);
+    const toasterService = TestBed.inject(ToasterService);
+    const managedUserService = TestBed.inject(ManagedUserService);
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
     spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
@@ -145,9 +145,9 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call onSubmitForm with error', () => {
-    const userService = TestBed.get(UserService);
-    const toasterService = TestBed.get(ToasterService);
-    const managedUserService = TestBed.get(ManagedUserService);
+    const userService = TestBed.inject(UserService);
+    const toasterService = TestBed.inject(ToasterService);
+    const managedUserService = TestBed.inject(ManagedUserService);
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
     spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
@@ -169,15 +169,15 @@ describe('CreateUserComponent', () => {
   });
 
   it('should redirect to profile page on cancel', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToLastUrl');
     component.onCancel();
     expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
   it('should throw error as max user creation limit excees', () => {
-    const userService = TestBed.get(UserService);
-    const toasterService = TestBed.get(ToasterService);
-    const managedUserService = TestBed.get(ManagedUserService);
+    const userService = TestBed.inject(UserService);
+    const toasterService = TestBed.inject(ToasterService);
+    const managedUserService = TestBed.inject(ManagedUserService);
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
     spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;

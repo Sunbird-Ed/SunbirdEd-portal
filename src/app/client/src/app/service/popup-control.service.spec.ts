@@ -6,12 +6,12 @@ describe('PopupControlService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should create PopupControlService', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
+    const service: PopupControlService = TestBed.inject(PopupControlService);
     expect(service).toBeTruthy();
   });
 
   it('should change the status of checkPopupStatus to true by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
+    const service: PopupControlService = TestBed.inject(PopupControlService);
     spyOn(service, 'changePopupStatus').and.callThrough();
     service.changePopupStatus(true);
     const popupStatus = service.checkPopupStatus;
@@ -21,7 +21,7 @@ describe('PopupControlService', () => {
   });
 
   it('should change the status of checkPopupStatus to false by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
+    const service: PopupControlService = TestBed.inject(PopupControlService);
     spyOn(service, 'changePopupStatus').and.callThrough();
     service.changePopupStatus(false);
     const popupStatus = service.checkPopupStatus;

@@ -60,21 +60,21 @@ describe('ValidateTeacherIdentifierPopupComponent', () => {
   });
 
   it('should call verifyExtId() with action as accept and should show error for invalid ext. id ', () => {
-    const userService = TestBed.get(UserService);
+    const userService = TestBed.inject(UserService);
     spyOn(userService, 'userMigrate').and.callFake(() => observableThrowError(mockUserData.migrateErrorResponseWithAttemptCount));
     component.verifyExtId('accept');
     expect(component.showError).toBe(true);
   });
 
   it('should call verifyExtId() with action as accept and should show error after trying twice ', () => {
-    const userService = TestBed.get(UserService);
+    const userService = TestBed.inject(UserService);
     spyOn(userService, 'userMigrate').and.callFake(() => (observableThrowError(mockUserData.migrateErrorResponse)));
     component.verifyExtId('accept');
     expect(component.extIdFailed).toBe(true);
   });
 
   it('should call verifyExtId() with action as accept with correct ext. id ', () => {
-    const userService = TestBed.get(UserService);
+    const userService = TestBed.inject(UserService);
     spyOn(userService, 'userMigrate').and.returnValue(observableOf(mockUserData.migrateSuccessResponse));
     component.verifyExtId('accept');
     expect(component.extIdVerified).toBe(true);

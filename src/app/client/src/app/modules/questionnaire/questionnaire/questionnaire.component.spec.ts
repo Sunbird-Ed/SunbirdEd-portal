@@ -135,10 +135,10 @@ describe('QuestionaireComponent', () => {
     fixture = TestBed.createComponent(QuestionnaireComponent);
     component = fixture.componentInstance;
     component.queryParams = '';
-    observationService = TestBed.get(ObservationService);
-    observationUtilService = TestBed.get(ObservationUtilService);
-    slQService = TestBed.get(SlQuestionnaireService);
-    questionnaireService = TestBed.get(QuestionnaireService);
+    observationService = TestBed.inject(ObservationService);
+    observationUtilService = TestBed.inject(ObservationUtilService);
+    slQService = TestBed.inject(SlQuestionnaireService);
+    questionnaireService = TestBed.inject(QuestionnaireService);
     component.queryParams = {
       observationId: '60af3cc30258ca7ed1fab9d1',
       entityId: '5fd098e2e049735a86b748ac',

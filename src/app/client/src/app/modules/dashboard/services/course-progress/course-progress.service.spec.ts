@@ -19,8 +19,8 @@ describe('CourseProgressService', () => {
   });
 
   it('should call batch API', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const learnerService = TestBed.get(LearnerService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.getMyBatchesList));
     const params = {
       data: {
@@ -41,8 +41,8 @@ describe('CourseProgressService', () => {
   });
 
   it('should call get Dashboard API', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const learnerService = TestBed.get(LearnerService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.courseProgressData.getBatchDetails));
     const params = {
       data: {
@@ -63,8 +63,8 @@ describe('CourseProgressService', () => {
   });
 
   it('should call Download API', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const learnerService = TestBed.get(LearnerService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'post').and.returnValue(observableOf(testData.mockRes.downloadDashboardReport.getSuccessData));
     const params = {
       data: {
@@ -80,9 +80,9 @@ describe('CourseProgressService', () => {
   });
 
   it('should call get report metadata API', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const usageService = TestBed.get(UsageService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
+    const usageService = TestBed.inject(UsageService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     spyOn(usageService, 'getData').and.returnValue(observableOf(testData.mockRes.reportsLastUpdatedDateMock));
     const params = {
@@ -99,7 +99,7 @@ describe('CourseProgressService', () => {
     );
   });
   it('should call parseDasboardResponse method', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
     const data = {
         series: [{}]
       };

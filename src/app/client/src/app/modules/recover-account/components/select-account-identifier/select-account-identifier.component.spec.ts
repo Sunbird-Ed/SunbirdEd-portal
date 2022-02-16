@@ -76,7 +76,7 @@ describe('SelectAccountIdentifierComponent', () => {
   });
 
   it('should call handleGenerateOtp()', () => {
-    const recoverAccountService = TestBed.get(RecoverAccountService);
+    const recoverAccountService = TestBed.inject(RecoverAccountService);
     spyOn(recoverAccountService, 'generateOTP').and.returnValue(of({}));
     spyOn(component, 'navigateToNextStep').and.callThrough();
     component.handleGenerateOtp();

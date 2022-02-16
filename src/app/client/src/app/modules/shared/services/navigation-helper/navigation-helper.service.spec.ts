@@ -163,7 +163,7 @@ describe('NavigationHelperService', () => {
   it('should call goBack for profile page route',
     inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
       (service: NavigationHelperService, router) => {
-        const utilService = TestBed.get(UtilService);
+        const utilService = TestBed.inject(UtilService);
         utilService._isDesktopApp = false;
         router['url'] = '/profile';
         service.goBack();

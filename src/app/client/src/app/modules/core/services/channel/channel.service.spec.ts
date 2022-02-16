@@ -24,8 +24,8 @@ describe('ChannelService', () => {
     expect(service).toBeTruthy();
   }));
   it('Get a channel data', () => {
-    const service = TestBed.get(ChannelService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const service = TestBed.inject(ChannelService);
+    const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(serverRes.successData));
     service.getFrameWork('01246944855007232011').subscribe(
       apiResponse => {
@@ -34,8 +34,8 @@ describe('ChannelService', () => {
     );
   });
   it(' should throw error Get a channel data', () => {
-    const service = TestBed.get(ChannelService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const service = TestBed.inject(ChannelService);
+    const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => throwError({}));
     service.getFrameWork('01246944855007232011').subscribe(
       apiResponse => {

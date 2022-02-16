@@ -80,10 +80,10 @@ describe('ChooseUserComponent', () => {
   });
 
   it('should fetch managed user list on init', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    const managedUserService = TestBed.get(ManagedUserService);
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const userService = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
+    const managedUserService = TestBed.inject(ManagedUserService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'setNavigationUrl');
     const userData = mockData.userReadApiResponse;
     userService._authenticated = true;
@@ -100,10 +100,10 @@ describe('ChooseUserComponent', () => {
   });
 
   it('should not fetch managed user list on init', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    const managedUserService = TestBed.get(ManagedUserService);
-    const toasterService = TestBed.get(ToasterService);
+    const userService = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
+    const managedUserService = TestBed.inject(ManagedUserService);
+    const toasterService = TestBed.inject(ToasterService);
     const userData = mockData.userReadApiResponse;
     userService._authenticated = true;
     userData.result.response['managedBy'] = 'mock managed by id';
@@ -134,7 +134,7 @@ describe('ChooseUserComponent', () => {
   });
 
   it('should navigate', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToLastUrl');
     component.closeSwitchUser();
     expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
@@ -142,7 +142,7 @@ describe('ChooseUserComponent', () => {
 
   it('should switch selected user', () => {
     component.selectedUser = mockData.selectedUser;
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(document, 'getElementById').and.callFake((id) => {
       if (id === 'buildNumber') {
         return {value: '1.1.12.0'};
@@ -155,13 +155,13 @@ describe('ChooseUserComponent', () => {
       }
       return {value: 'mock Id'};
     });
-    const utilService = TestBed.get(UtilService);
-    const learnerService = TestBed.get(LearnerService);
+    const utilService = TestBed.inject(UtilService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf({
         result: {response: mockData.userProfile}
       }
     ));
-    const managedUserService = TestBed.get(ManagedUserService);
+    const managedUserService = TestBed.inject(ManagedUserService);
     spyOn(telemetryService, 'initialize');
     spyOn(utilService, 'redirect').and.callFake(() => {
     });

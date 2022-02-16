@@ -53,13 +53,13 @@ describe('GetComponent', () => {
   });
 
   it('should generate Telemetry Impression event onLoad', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'impression');
     expect(telemetryService.impression).toBeTruthy();
   });
 
   it('should not navigate to dialcode search when input field is empty or only spaces', () => {
-    const route = TestBed.get(Router);
+    const route = TestBed.inject(Router);
     spyOn(component, 'navigateToSearch');
     component.searchKeyword = ' ';
     component.navigateToSearch();
@@ -68,7 +68,7 @@ describe('GetComponent', () => {
   });
 
   it('should navigate to dialcode search when user enters data', () => {
-    const route = TestBed.get(Router);
+    const route = TestBed.inject(Router);
     component.searchKeyword = 'test';
     component.navigateToSearch();
     fixture.detectChanges();

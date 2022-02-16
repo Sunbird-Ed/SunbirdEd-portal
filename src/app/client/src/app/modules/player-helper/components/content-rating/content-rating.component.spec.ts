@@ -44,7 +44,7 @@ describe('ContentRatingComponent', () => {
     });
     fixture = TestBed.createComponent(ContentRatingComponent);
     component = fixture.componentInstance;
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     const formServiceInputParams = {
       formType: 'contentfeedback',
       formAction: 'get',
@@ -99,8 +99,8 @@ describe('ContentRatingComponent', () => {
   });
 
   it('should call submit and generate the feedback event ', () => {
-    const telemetryService = TestBed.get(TelemetryService);
-    const toasterService = TestBed.get(ToasterService);
+    const telemetryService = TestBed.inject(TelemetryService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(component, 'submit').and.callThrough();
     spyOn(telemetryService, 'feedback').and.callThrough();
     component.contentRating = 4;

@@ -35,10 +35,10 @@ describe('UserRoleAssignComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserRoleAssignComponent);
-    observationUtilService = TestBed.get(ObservationUtilService);
+    observationUtilService = TestBed.inject(ObservationUtilService);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    const userService = TestBed.get(UserService);
+    const userService = TestBed.inject(UserService);
 
   });
 
@@ -80,7 +80,7 @@ describe('UserRoleAssignComponent', () => {
     expect(component.showingResults).toBeFalsy();
   });
   it('should call getOrgDetails method', () => {
-      const userService = TestBed.get(UserService);
+      const userService = TestBed.inject(UserService);
       userService._userProfile = mockObject.userMockData;
     spyOn(component, 'getOrgDetails').and.callThrough();
     component.getOrgDetails();
@@ -89,14 +89,14 @@ describe('UserRoleAssignComponent', () => {
   it('should call getAllRoles to get all the roles', () => {
     const removeRole = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC'];
     const getAllRolesSpy = spyOn(component, 'getAllRoles');
-    const permissionService = TestBed.get(PermissionService);
+    const permissionService = TestBed.inject(PermissionService);
     component.getAllRoles(removeRole);
     expect(getAllRolesSpy).toHaveBeenCalled();
     expect(getAllRolesSpy).toHaveBeenCalledTimes(1);
   });
   it('should call onEnter ', () => {
     const key = 'rajtest11936';
-    const searchService = TestBed.get(SearchService);
+    const searchService = TestBed.inject(SearchService);
     spyOn(component, 'onEnter').and.callThrough();
     component.onEnter(key);
     spyOn(searchService, 'globalUserSearch').and.returnValue(observableOf(mockObject.userSearch));
@@ -112,7 +112,7 @@ describe('UserRoleAssignComponent', () => {
       'roleName': 'Book Reviewer'
     }];
     component.allRoles = mockObject.roleList;
-    const userService = TestBed.get(UserService);
+    const userService = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: mockObject.userMockData });
     userService._rootOrgId = '01269878797503692810';
     userService.rootOrgName = 'tamilnadu';

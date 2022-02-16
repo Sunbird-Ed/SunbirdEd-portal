@@ -49,7 +49,7 @@ describe('ListAllReportsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ListAllReportsComponent);
     component = fixture.componentInstance;
-    reportService = TestBed.get(ReportService);
+    reportService = TestBed.inject(ReportService);
     fixture.detectChanges();
   });
 
@@ -129,12 +129,12 @@ describe('ListAllReportsComponent', () => {
   it('should config datatable whenever table is rendered into dom', () => {
     spyOn(component, 'prepareTable');
     component.reports = [[], []];
-    component.inputTag = TestBed.get(ElementRef);
+    component.inputTag = TestBed.inject(ElementRef);
     expect(component.prepareTable).toHaveBeenCalled();
   });
 
   it('should route to report details page', () => {
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     component.rowClickEventHandler('report_id');
     expect(router.navigate).toHaveBeenCalled();
@@ -270,7 +270,7 @@ describe('ListAllReportsComponent', () => {
   it('should config datasets tables', () => {
     spyOn(component, 'prepareTable');
     const reports = component.reports = [[{ type: 'report' }], [{ type: 'dataset', status: 'live' }, { type: 'dataset', status: 'draft' }]];
-    const element = TestBed.get(ElementRef);
+    const element = TestBed.inject(ElementRef);
     component.datasetTable = element;
     expect(component.prepareTable).toHaveBeenCalledWith(element.nativeElement, reports[1]);
   });
@@ -279,12 +279,12 @@ describe('ListAllReportsComponent', () => {
     spyOn(component, 'prepareTable');
     spyOn(reportService, 'isUserReportAdmin').and.returnValue(true);
     const reports = component.reports = [[{ type: 'report' }], [{ type: 'dataset', status: 'live' }, { type: 'dataset', status: 'draft' }]];
-    const element = TestBed.get(ElementRef);
+    const element = TestBed.inject(ElementRef);
     component.datasetTable = element;
     expect(component.prepareTable).toHaveBeenCalledWith(element.nativeElement, [{ type: 'dataset', status: 'live' }]);
   });
   it('should get tnc details for report viewer', () => {
-    const reportViewerTncService = TestBed.get(TncService);
+    const reportViewerTncService = TestBed.inject(TncService);
     spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
       {
         'id': 'api',

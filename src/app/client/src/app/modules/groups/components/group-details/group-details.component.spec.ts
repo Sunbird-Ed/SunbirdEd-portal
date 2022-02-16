@@ -73,7 +73,7 @@ describe('GroupDetailsComponent', () => {
   });
 
   it('should get group data', () => {
-    const groupService = TestBed.get(GroupsService);
+    const groupService = TestBed.inject(GroupsService);
     component['groupId'] = '123';
     spyOn(groupService, 'getGroupById').and.returnValue(of());
     spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
@@ -102,7 +102,7 @@ describe('GroupDetailsComponent', () => {
 
   it('should call handleNextClick', () => {
     component.groupData = (GroupDetailsData.groupData) as {} as CsGroup;
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     component.navigateToAddActivity();
     expect(router.navigate).toHaveBeenCalledWith(['add-activity-content-types'], {
       relativeTo: fakeActivatedRoute,

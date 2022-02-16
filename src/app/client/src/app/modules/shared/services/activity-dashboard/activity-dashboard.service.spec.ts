@@ -16,7 +16,7 @@ describe('ActivityDashboardService', () => {
   });
 
   it ('should set isActivityAdded', () => {
-    const service = TestBed.get(ActivityDashboardService);
+    const service = TestBed.inject(ActivityDashboardService);
     service._isActivityAdded = true;
     expect(service['_isActivityAdded']).toEqual(true);
   });

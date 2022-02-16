@@ -14,7 +14,7 @@ describe('TelemetryImpressionDirective', () => {
     });
   });
   it('should take input and generate the telemetry impression event', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     const directive = new TelemetryImpressionDirective(telemetryService);
     spyOn(telemetryService, 'impression').and.callFake(() => observableOf(eventData.inputData));
     directive.appTelemetryImpression = eventData.inputData;

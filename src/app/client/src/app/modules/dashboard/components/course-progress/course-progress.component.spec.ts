@@ -199,7 +199,7 @@ describe('CourseProgressComponent', () => {
 
   it('should download course progress report on click of progress report', fakeAsync(() => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
-    const usageService = TestBed.get(UsageService);
+    const usageService = TestBed.inject(UsageService);
     spyOn(usageService, 'getData').and.returnValue(observableOf(testData.mockUserData.courseProgressReportMock));
     spyOn<any>(component, 'downloadCourseReport').and.callThrough();
     spyOn(window, 'open');
@@ -213,7 +213,7 @@ describe('CourseProgressComponent', () => {
 
   it('should show toaster error message when download course progress report fails', inject([ToasterService], (toasterService) => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
-    const usageService = TestBed.get(UsageService);
+    const usageService = TestBed.inject(UsageService);
     spyOn(usageService, 'getData').and.returnValue(observableThrowError(''));
     spyOn(toasterService, 'error');
     spyOn<any>(component, 'downloadCourseReport').and.callThrough();
@@ -223,7 +223,7 @@ describe('CourseProgressComponent', () => {
 
   xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
-    const courseProgressService = TestBed.get(CourseProgressService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
     spyOn(toasterService, 'error');
     spyOn(courseProgressService, 'downloadDashboardData').and.returnValue(observableOf(testData.mockUserData.assessmentReportDownloadMock));
     spyOn<any>(component, 'downloadCourseReport').and.callThrough();
@@ -264,22 +264,22 @@ describe('CourseProgressComponent', () => {
   it ( 'should call getFormData as a COURSE_CREATOR', () => {
     component.userRoles = ['CONTENT_CREATOR'];
     component.selectedTab = 2;
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
     component.getFormData();
     expect(component.reportTypes).toEqual(testData.mockUserData.reportTypes);
   });
   it ( 'should call getFormData as a COURSE_MENTOR', () => {
     component.userRoles = ['COURSE_MENTOR'];
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
     component.getFormData();
     expect(component.reportTypes).toEqual(testData.mockUserData.reportTypesMentor);
   });
   it ( 'should call getFormData error case ', () => {
     component.userRoles = ['COURSE_MENTOR'];
-    const toasterService = TestBed.get(ToasterService);
-    const formService = TestBed.get(FormService);
+    const toasterService = TestBed.inject(ToasterService);
+    const formService = TestBed.inject(FormService);
     spyOn(toasterService, 'error').and.stub();
     spyOn(formService, 'getFormConfig' ).and.returnValue(observableThrowError('error'));
     component.getFormData();

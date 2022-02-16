@@ -54,8 +54,8 @@ describe('FlagConentplayerComponent', () => {
   });
 
   it('should throw error if content api throws error', () => {
-    const playerService = TestBed.get(PlayerService);
-    const resourceService = TestBed.get(ResourceService);
+    const playerService = TestBed.inject(PlayerService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableThrowError(testData.errorRes));
@@ -66,9 +66,9 @@ describe('FlagConentplayerComponent', () => {
   });
 
   it('should call  content api and return content data', () => {
-    const playerService = TestBed.get(PlayerService);
-    const userService = TestBed.get(UserService);
-    const resourceService = TestBed.get(ResourceService);
+    const playerService = TestBed.inject(PlayerService);
+    const userService = TestBed.inject(UserService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableOf(testData.sucessRes));
@@ -92,10 +92,10 @@ describe('FlagConentplayerComponent', () => {
   });
 
   it('should call discardContentFlag api', () => {
-    const playerService = TestBed.get(PlayerService);
-    const contentService = TestBed.get(ContentService);
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
+    const playerService = TestBed.inject(PlayerService);
+    const contentService = TestBed.inject(ContentService);
+    const resourceService = TestBed.inject(ResourceService);
+    const toasterService = TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     const requestData = {
       'request': {}

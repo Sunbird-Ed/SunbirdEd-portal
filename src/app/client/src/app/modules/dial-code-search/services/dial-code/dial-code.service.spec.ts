@@ -16,7 +16,7 @@ describe('DialCodeService', () => {
   }));
 
   it('should be created', () => {
-    const service: DialCodeService = TestBed.get(DialCodeService);
+    const service: DialCodeService = TestBed.inject(DialCodeService);
     expect(service).toBeTruthy();
   });
 
@@ -37,16 +37,16 @@ describe('DialCodeService', () => {
           }
         }
       };
-      const service: DialCodeService = TestBed.get(DialCodeService);
+      const service: DialCodeService = TestBed.inject(DialCodeService);
       spyOn(service, 'getRequest').and.returnValue(funresponse);
       const res = service.getRequest('K2W1G4');
       expect(res).toBeTruthy();
     });
 
     it('should return dial search results for logged In', () => {
-      const service: DialCodeService = TestBed.get(DialCodeService);
-      const userService = TestBed.get(UserService);
-      const publicDataService = TestBed.get(PublicDataService);
+      const service: DialCodeService = TestBed.inject(DialCodeService);
+      const userService = TestBed.inject(UserService);
+      const publicDataService = TestBed.inject(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
         board: 'CBSE'
@@ -66,9 +66,9 @@ describe('DialCodeService', () => {
     });
 
     it('should return dial search results for Not logged In', () => {
-      const service: DialCodeService = TestBed.get(DialCodeService);
-      const userService = TestBed.get(UserService);
-      const publicDataService = TestBed.get(PublicDataService);
+      const service: DialCodeService = TestBed.inject(DialCodeService);
+      const userService = TestBed.inject(UserService);
+      const publicDataService = TestBed.inject(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
       spyOn(publicDataService, 'post').and.returnValue(of({result: {
@@ -86,7 +86,7 @@ describe('DialCodeService', () => {
     });
 
     it('Get request should return request body', () => {
-      const userService = TestBed.get(UserService);
+      const userService = TestBed.inject(UserService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
         board: 'CBSE'
@@ -105,7 +105,7 @@ describe('DialCodeService', () => {
           }
         }
       };
-      const service: DialCodeService = TestBed.get(DialCodeService);
+      const service: DialCodeService = TestBed.inject(DialCodeService);
       const requestBody = service.getRequest('K2W1G4');
       expect(requestBody).toBeDefined();
       expect(requestBody).toEqual(optionMock);
@@ -116,7 +116,7 @@ describe('DialCodeService', () => {
   describe('filterDialSearchResults function', () => {
 
     it('should return collections and contents from dial search results ', () => {
-      const dialCodeService = TestBed.get(DialCodeService);
+      const dialCodeService = TestBed.inject(DialCodeService);
       spyOn(dialCodeService, 'getAllPlayableContent').and.callThrough();
       const results = dialCodeService.filterDialSearchResults(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
       results.subscribe(res => {
@@ -131,7 +131,7 @@ describe('DialCodeService', () => {
   describe('parseCollection function', () => {
 
     it('should return contents from a collection', () => {
-      const dialCodeService = TestBed.get(DialCodeService);
+      const dialCodeService = TestBed.inject(DialCodeService);
       const result = dialCodeService.parseCollection(mockData.courseHierarchApiResponse.result.content);
         expect(result).toBeDefined();
         expect(result.length).toBeTruthy();
@@ -144,8 +144,8 @@ describe('DialCodeService', () => {
   describe('getCollectionHierarchy function', () => {
 
     it('should return collection heirarchy', () => {
-      const dialCodeService = TestBed.get(DialCodeService);
-      const playerService = TestBed.get(PlayerService);
+      const dialCodeService = TestBed.inject(DialCodeService);
+      const playerService = TestBed.inject(PlayerService);
       spyOn(playerService, 'getCollectionHierarchy').and.returnValue(of(mockData.courseHierarchApiResponse));
       dialCodeService.getCollectionHierarchy('do_21289679356020326415198')
         .subscribe(result => {
@@ -161,7 +161,7 @@ describe('DialCodeService', () => {
   describe('groupCollections function', () => {
 
     it('should group contents based on their content type', () => {
-      const dialCodeService = TestBed.get(DialCodeService);
+      const dialCodeService = TestBed.inject(DialCodeService);
       const result = dialCodeService.groupCollections(mockData.dialCodeSearchApiResponse.result.response.sections[0].collections);
       expect(result).toEqual(mockData.groupedCollection);
       expect(result).toBeDefined();
@@ -174,8 +174,8 @@ describe('DialCodeService', () => {
     let dialCodeService: DialCodeService, playerService: PlayerService;
 
     beforeEach(() => {
-      dialCodeService = TestBed.get(DialCodeService);
-      playerService = TestBed.get(PlayerService);
+      dialCodeService = TestBed.inject(DialCodeService);
+      playerService = TestBed.inject(PlayerService);
       spyOn(dialCodeService, 'getCollectionHierarchy').and.callThrough();
     });
 

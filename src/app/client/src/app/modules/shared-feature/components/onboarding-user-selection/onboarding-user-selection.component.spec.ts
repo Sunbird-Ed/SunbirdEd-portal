@@ -76,8 +76,8 @@ describe('OnboardingUserSelectionComponent', () => {
   });
 
   it('should update the userType selection in the user profile if user is logged in ', done => {
-    const userService = TestBed.get(UserService);
-    const profileService = TestBed.get(ProfileService);
+    const userService = TestBed.inject(UserService);
+    const profileService = TestBed.inject(ProfileService);
     component.guestList = component['prepareGuestList'](mockData.formData);
     component.selectedUserType = component.guestList[1];
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);

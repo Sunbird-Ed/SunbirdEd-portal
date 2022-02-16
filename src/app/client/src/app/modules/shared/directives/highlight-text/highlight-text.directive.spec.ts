@@ -33,7 +33,7 @@ describe('HighlightTextDirective', () => {
         { provide: ResourceService, useClass: ResourceServiceStub }
       ]
     });
-    highlightTextDirective = TestBed.get(HighlightTextDirective);
+    highlightTextDirective = TestBed.inject(HighlightTextDirective);
   });
 
   it('can load instance', () => {
@@ -56,7 +56,7 @@ describe('HighlightTextDirective', () => {
   });
 
   it('should call detectLanguageChange', () => {
-    const resourceService = TestBed.get(ResourceService);
+    const resourceService = TestBed.inject(ResourceService);
     highlightTextDirective.config = { resourcePath: 'frmelmnts.lbl.forSearch', key: 'demo', value: 'sample' };
     resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
     spyOn(highlightTextDirective, 'highlightText');

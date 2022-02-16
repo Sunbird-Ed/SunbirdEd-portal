@@ -62,14 +62,14 @@ describe('GuestProfileComponent', () => {
   });
 
   it('should fetch Guest User', () => {
-    const userService = TestBed.get(UserService);
+    const userService = TestBed.inject(UserService);
     spyOn(userService, 'getGuestUser').and.returnValue(of({ result: { name: 'Guest' } }));
     component.getGuestUser();
     expect(userService.getGuestUser).toHaveBeenCalled();
   });
 
   it('should call getLocation', () => {
-    const deviceRegisterService = TestBed.get(DeviceRegisterService);
+    const deviceRegisterService = TestBed.inject(DeviceRegisterService);
     spyOn(deviceRegisterService, 'fetchDeviceProfile').and.returnValue(of({ result: { ipLocation: {}, userDeclaredLocation: {} } }));
     component.getLocation();
     expect(deviceRegisterService.fetchDeviceProfile).toHaveBeenCalled();
@@ -102,7 +102,7 @@ describe('GuestProfileComponent', () => {
       name: 'Guest',
       framework: { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] }
     };
-    const userService = TestBed.get(UserService);
+    const userService = TestBed.inject(UserService);
     spyOn(component, 'getGuestUser');
     spyOn(userService, 'updateAnonymousUserDetails').and.returnValue(of({}));
     component.updateGuestUser(user);

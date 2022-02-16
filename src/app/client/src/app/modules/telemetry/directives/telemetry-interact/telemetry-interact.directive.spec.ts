@@ -58,7 +58,7 @@ describe('TelemetryInteractDirective', () => {
     });
 
     it('Click event', () => {
-      const telemetryService = TestBed.get(TelemetryService);
+      const telemetryService = TestBed.inject(TelemetryService);
       fixture.detectChanges();
       inputEl.click();
       spyOn(component.appTelemetryInteract.telemetryService, 'interact').and.callThrough();

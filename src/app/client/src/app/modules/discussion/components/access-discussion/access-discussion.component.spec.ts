@@ -69,7 +69,7 @@ describe('AccessDiscussionComponent', () => {
 
   it('should show error toast if fetch forum id api fails', () => {
     /** Arrange */
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component['discussionCsService'], 'getForumIds').and.callFake(() => throwError({}));
 
@@ -82,7 +82,7 @@ describe('AccessDiscussionComponent', () => {
 
   it('should navigate to Discussion forum landing page', () => {
     /** Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'setNavigationUrl').and.stub();
     spyOn(component['discussionCsService'], 'createUser').and.callThrough();
     spyOn(component.routerData, 'emit').and.returnValue(MockResponseData.emitData);
@@ -98,8 +98,8 @@ describe('AccessDiscussionComponent', () => {
 
   it('should throw error if the register-user api fails', () => {
     /** Arrange */
-    const toasterService = TestBed.get(ToasterService);
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const toasterService = TestBed.inject(ToasterService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'setNavigationUrl').and.stub();
     spyOn(component['discussionCsService'], 'createUser').and.callFake(() => throwError({}));
     spyOn(toasterService, 'error').and.stub();

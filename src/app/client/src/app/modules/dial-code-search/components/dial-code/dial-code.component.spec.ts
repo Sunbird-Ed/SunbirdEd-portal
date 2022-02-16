@@ -99,19 +99,19 @@ describe('DialCodeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DialCodeComponent);
     component = fixture.componentInstance;
-    searchService = TestBed.get(SearchService);
-    utilService = TestBed.get(UtilService);
-    config = TestBed.get(ConfigService);
-    router = TestBed.get(Router);
+    searchService = TestBed.inject(SearchService);
+    utilService = TestBed.inject(UtilService);
+    config = TestBed.inject(ConfigService);
+    router = TestBed.inject(Router);
     constantData = config.appConfig.GetPage.constantData;
     metaData = config.appConfig.GetPage.metaData;
     dynamicFields = config.appConfig.GetPage.dynamicFields;
-    navigationHelperService = TestBed.get(NavigationHelperService);
-    dialCodeService = TestBed.get(DialCodeService);
-    activatedRoute = TestBed.get(ActivatedRoute);
-    userService = TestBed.get(UserService);
-    toasterService = TestBed.get(ToasterService);
-    telemetryService = TestBed.get(TelemetryService);
+    navigationHelperService = TestBed.inject(NavigationHelperService);
+    dialCodeService = TestBed.inject(DialCodeService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    userService = TestBed.inject(UserService);
+    toasterService = TestBed.inject(ToasterService);
+    telemetryService = TestBed.inject(TelemetryService);
     spyOn<any>(component, 'processTextBook').and.callThrough();
     spyOn<any>(component, 'initialize').and.callThrough();
     spyOn<any>(component, 'handleMobilePopupBanner').and.callThrough();
@@ -342,15 +342,15 @@ describe('DialCodeComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/explore']);
   });
   it('should play content', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const publicPlayerService = TestBed.inject(PublicPlayerService);
     spyOn(publicPlayerService, 'playContent');
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
     component.playCourse({ section: {}, data: {} });
     expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
   it('should play content from explore page, while logged in', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    const coursesService = TestBed.get(CoursesService);
+    const publicPlayerService = TestBed.inject(PublicPlayerService);
+    const coursesService = TestBed.inject(CoursesService);
     spyOn(publicPlayerService, 'playContent');
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
@@ -358,8 +358,8 @@ describe('DialCodeComponent', () => {
     expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
   it('should play content from explore page, while logged in', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    const coursesService = TestBed.get(CoursesService);
+    const publicPlayerService = TestBed.inject(PublicPlayerService);
+    const coursesService = TestBed.inject(CoursesService);
     spyOn(publicPlayerService, 'playContent');
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
@@ -367,9 +367,9 @@ describe('DialCodeComponent', () => {
     expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
   it('should play content from explore page, while logged in, for onGoingBatch', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    const coursesService = TestBed.get(CoursesService);
-    const playerService = TestBed.get(PlayerService);
+    const publicPlayerService = TestBed.inject(PublicPlayerService);
+    const coursesService = TestBed.inject(CoursesService);
+    const playerService = TestBed.inject(PlayerService);
     const returnValue = {
       onGoingBatchCount: 1,
       expiredBatchCount: 0,
@@ -386,9 +386,9 @@ describe('DialCodeComponent', () => {
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should play content from explore page, while logged in, non enrolled user', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    const coursesService = TestBed.get(CoursesService);
-    const playerService = TestBed.get(PlayerService);
+    const publicPlayerService = TestBed.inject(PublicPlayerService);
+    const coursesService = TestBed.inject(CoursesService);
+    const playerService = TestBed.inject(PlayerService);
     const returnValue = {
       onGoingBatchCount: 0,
       expiredBatchCount: 0,
@@ -443,7 +443,7 @@ describe('DialCodeComponent', () => {
   });
 
   it('should call init layout on component intilization for old layout', () => {
-    const layoutService = TestBed.get(LayoutService);
+    const layoutService = TestBed.inject(LayoutService);
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: {data: 'data'}}));
     component.ngOnInit();
     expect(component.layoutConfiguration).toEqual({data: 'data'});

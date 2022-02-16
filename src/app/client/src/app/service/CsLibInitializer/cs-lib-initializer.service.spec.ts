@@ -14,13 +14,13 @@ describe('CsLibInitializerService', () => {
   }));
 
   it('should create CsLibInitializerService', () => {
-    const service: CsLibInitializerService = TestBed.get(CsLibInitializerService);
+    const service: CsLibInitializerService = TestBed.inject(CsLibInitializerService);
     expect(service).toBeTruthy();
   });
 
   it('should initialize CsModule', () => {
-    const service: CsLibInitializerService = TestBed.get(CsLibInitializerService);
-    const userService = TestBed.get(UserService);
+    const service: CsLibInitializerService = TestBed.inject(CsLibInitializerService);
+    const userService = TestBed.inject(UserService);
     userService['_userData$'].next({ err: null, userProfile: {} });
     spyOn(document, 'getElementById').and.returnValue({value: '123'});
     CsModule.instance['_isInitialised'] = false;

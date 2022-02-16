@@ -30,15 +30,15 @@ describe('ProfileBadgeComponent', () => {
   });
 
   it('should call getBadgeData method', () => {
-    const userService = TestBed.get(UserService);
-    const badgeService = TestBed.get(BadgesService);
+    const userService = TestBed.inject(UserService);
+    const badgeService = TestBed.inject(BadgesService);
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
     spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => observableOf(mockRes.badgeList));
     component.ngOnInit();
     expect(component.badgeArray[0]).toEqual(mockRes.badgeList);
   });
   it('should call toggle method with limit greater than 4', () => {
-    const badgeService = TestBed.get(BadgesService);
+    const badgeService = TestBed.inject(BadgesService);
     const limit = true;
     component.badgeArray = [];
     component.badgeArray.length = 5;

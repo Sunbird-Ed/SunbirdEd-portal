@@ -125,12 +125,12 @@ describe('LibraryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LibraryComponent);
     component = fixture.componentInstance;
-    const connectionService = TestBed.get(ConnectionService);
+    const connectionService = TestBed.inject(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(observableOf(true));
 
-    userService = TestBed.get(UserService);
-    searchService = TestBed.get(SearchService);
-    orgDetailsService = TestBed.get(OrgDetailsService);
+    userService = TestBed.inject(UserService);
+    searchService = TestBed.inject(SearchService);
+    orgDetailsService = TestBed.inject(OrgDetailsService);
     sendOrgDetails = true;
     sendSearchResult = true;
     sendFormResult = true;
@@ -218,7 +218,7 @@ describe('LibraryComponent', () => {
 
   it('should call fetchContents and return undefined', () => {
     sendSearchResult = false;
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.fetchContents();
     expect(component.showLoader).toBeFalsy();
@@ -253,19 +253,19 @@ describe('LibraryComponent', () => {
     fixture.destroy();
   });
   it('should not showCpuLoadWarning when cpuload is less than 90 ', () => {
-    const systemInfoService = TestBed.get(SystemInfoService);
+    const systemInfoService = TestBed.inject(SystemInfoService);
     spyOn(systemInfoService, 'getSystemInfo').and.returnValue(observableOf(response.systemInfo1));
     component.ngOnInit();
     expect(component.showCpuLoadWarning).toBeFalsy();
   });
   it('should  showCpuLoadWarning when cpuload is more than 90', () => {
-    const systemInfoService1 = TestBed.get(SystemInfoService);
+    const systemInfoService1 = TestBed.inject(SystemInfoService);
     spyOn(systemInfoService1, 'getSystemInfo').and.returnValue(observableOf(response.systemInfo));
     component.ngOnInit();
     expect(component.showCpuLoadWarning).toBeTruthy();
   });
   it('should handle system info error ', () => {
-    const systemInfoService1 = TestBed.get(SystemInfoService);
+    const systemInfoService1 = TestBed.inject(SystemInfoService);
     spyOn(systemInfoService1, 'getSystemInfo').and.returnValue(throwError(response.systemInfoError));
     component.ngOnInit();
     expect(component.showCpuLoadWarning).toBeFalsy();
@@ -278,7 +278,7 @@ describe('LibraryComponent', () => {
 
   it('should fetch current page data ', () => {
     sendFormResult = false;
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.fetchCurrentPageData();
     expect(toasterService.error).toHaveBeenCalled();
@@ -287,7 +287,7 @@ describe('LibraryComponent', () => {
   it('should redo layout on render', () => {
     component.layoutConfiguration = null;
     spyOn<any>(component, 'redoLayout').and.callThrough();
-    const layoutService = TestBed.get(LayoutService);
+    const layoutService = TestBed.inject(LayoutService);
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }));
     component.initLayout();
     expect(component.layoutConfiguration).toEqual({});
@@ -297,7 +297,7 @@ describe('LibraryComponent', () => {
   it('should redo layout on render when layoutConfiguration is null', () => {
     component.layoutConfiguration = null;
     spyOn<any>(component, 'redoLayout').and.callThrough();
-    const layoutService = TestBed.get(LayoutService);
+    const layoutService = TestBed.inject(LayoutService);
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({}));
     component.initLayout();
     expect(component['redoLayout']).toHaveBeenCalled();
@@ -310,8 +310,8 @@ describe('LibraryComponent', () => {
   });
 
   it('should fetch content after content manager complete event', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
-    const route = TestBed.get(Router);
+    const contentManagerService = TestBed.inject(ContentManagerService);
+    const route = TestBed.inject(Router);
     route.url = '/mydownloads?selectedTab=mydownloads';
     spyOn(component, 'fetchContents');
     component.ngOnInit();
@@ -331,21 +331,21 @@ describe('LibraryComponent', () => {
   });
 
   it('should call exportContent with success', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService = TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'exportContent').and.returnValue(of({}));
     component.exportContent('123');
     expect(component.showExportLoader).toBeFalsy();
   });
 
   it('should call exportContent with error', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService = TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'exportContent').and.returnValue(throwError({ error: { responseCode: 'ERROR' } }));
     component.exportContent('123');
     expect(component.showExportLoader).toBeFalsy();
   });
 
   it('should call playContent', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const publicPlayerService = TestBed.inject(PublicPlayerService);
     spyOn(publicPlayerService, 'playContent');
     component.playContent({});
     expect(publicPlayerService.playContent).toHaveBeenCalled();
@@ -368,15 +368,15 @@ describe('LibraryComponent', () => {
   });
 
   it('should call download content with success ', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService = TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
   });
 
   it('should call download content with error ', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
-    const toasterService = TestBed.get(ToasterService);
+    const contentManagerService = TestBed.inject(ContentManagerService);
+    const toasterService = TestBed.inject(ToasterService);
     component.pageSections = [];
     spyOn(toasterService, 'error');
     spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
@@ -386,7 +386,7 @@ describe('LibraryComponent', () => {
   });
 
   it('should call navigateToMyDownloads', () => {
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     component.navigateToMyDownloads();
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   });

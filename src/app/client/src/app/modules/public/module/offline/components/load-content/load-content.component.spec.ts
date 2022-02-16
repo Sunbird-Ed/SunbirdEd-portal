@@ -54,7 +54,7 @@ describe('LoadContentComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    const connectionService = TestBed.get(ConnectionService);
+    const connectionService = TestBed.inject(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(of(true));
     spyOn(component, 'addFontWeight');
     spyOn(component, 'setTelemetryData');
@@ -70,7 +70,7 @@ describe('LoadContentComponent', () => {
 
 
   it('should call showContentImportDialog', () => {
-    const electronDialogService = TestBed.get(ElectronDialogService);
+    const electronDialogService = TestBed.inject(ElectronDialogService);
     spyOn(electronDialogService, 'showContentImportDialog');
     component.openImportContentDialog();
     expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();

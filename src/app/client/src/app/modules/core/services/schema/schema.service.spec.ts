@@ -14,12 +14,12 @@ describe('SchemaService', () => {
   }));
 
   it('should be created', () => {
-    const service: SchemaService = TestBed.get(SchemaService);
+    const service: SchemaService = TestBed.inject(SchemaService);
     expect(service).toBeTruthy();
   });
 
   it('should validate against the schema', () => {
-    const schemaService = TestBed.get(SchemaService);
+    const schemaService = TestBed.inject(SchemaService);
     const input = {
       inputObj: {
         name: 'sunbird', env: 'sunbird', keyToOmit: 2, xssTestString: '<script>alert(2)</script>',
@@ -33,8 +33,8 @@ describe('SchemaService', () => {
   });
 
   it('should fetch schemas', done => {
-    const schemaService = TestBed.get(SchemaService);
-    const formService = TestBed.get(FormService);
+    const schemaService = TestBed.inject(SchemaService);
+    const formService = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(of([{ id: 'content', schema: { properties: ['name'] } }]));
     schemaService.fetchSchemas().subscribe(res => {
       expect(res).toBeDefined();

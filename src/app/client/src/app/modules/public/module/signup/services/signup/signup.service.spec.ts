@@ -32,14 +32,14 @@ describe('SignupService', () => {
   });
 
   it('sign up service should be created', inject([SignupService], (service: SignupService) => {
-    const signupService = TestBed.get(SignupService);
-    const learnerService = TestBed.get(LearnerService);
+    const signupService = TestBed.inject(SignupService);
+    const learnerService = TestBed.inject(LearnerService);
     expect(service).toBeTruthy();
   }));
 
   it('should call generate API for anonymous', () => {
-    const signupService = TestBed.get(SignupService);
-    const learnerService = TestBed.get(LearnerService);
+    const signupService = TestBed.inject(SignupService);
+    const learnerService = TestBed.inject(LearnerService);
     const params = { 'request': { 'key': '1242142', 'type': 'phone' } };
     spyOn(learnerService, 'post').and.returnValue(observableOf(generateOtpData));
     signupService.generateOTPforAnonymousUser(params, 'G-cjkdjflsfkja');

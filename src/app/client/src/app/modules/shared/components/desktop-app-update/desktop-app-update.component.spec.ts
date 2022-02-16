@@ -40,7 +40,7 @@ describe('DesktopAppUpdateComponent', () => {
   });
 
   it('should call app update service', () => {
-    const appUpdateService = TestBed.get(AppUpdateService);
+    const appUpdateService = TestBed.inject(AppUpdateService);
     spyOn(appUpdateService, 'checkForAppUpdate').and.returnValue(observableOf(serverRes.app_update));
     spyOn(component, 'setTelemetry');
     component.checkForAppUpdate();
@@ -51,14 +51,14 @@ describe('DesktopAppUpdateComponent', () => {
   });
 
   it('should throw error', () => {
-    const appUpdateService = TestBed.get(AppUpdateService);
+    const appUpdateService = TestBed.inject(AppUpdateService);
     spyOn(appUpdateService, 'checkForAppUpdate').and.returnValue(throwError(serverRes.error));
     component.checkForAppUpdate();
     expect(component.isUpdateAvailable).toBeFalsy();
   });
 
   it('should call app update service', () => {
-    const appUpdateService = TestBed.get(AppUpdateService);
+    const appUpdateService = TestBed.inject(AppUpdateService);
     spyOn(appUpdateService, 'checkForAppUpdate').and.returnValue(observableOf(serverRes.app_not_update));
     component.checkForAppUpdate();
     expect(component.appUpdateService.checkForAppUpdate).toHaveBeenCalled();

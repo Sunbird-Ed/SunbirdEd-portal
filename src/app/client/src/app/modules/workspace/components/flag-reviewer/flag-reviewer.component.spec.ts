@@ -88,8 +88,8 @@ describe('FlagReviewerComponent', () => {
     component = fixture.componentInstance;
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
@@ -100,8 +100,8 @@ describe('FlagReviewerComponent', () => {
   }));
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
@@ -113,8 +113,8 @@ describe('FlagReviewerComponent', () => {
   }));
   // if result count is 0
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
     userService._userData$.next({ err: null, userProfile: mockUserRoles });

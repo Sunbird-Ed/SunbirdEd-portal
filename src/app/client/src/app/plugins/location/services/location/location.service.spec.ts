@@ -20,7 +20,7 @@ describe('LocationService', () => {
   }));
 
   it('should be created', () => {
-    const service: LocationService = TestBed.get(LocationService);
+    const service: LocationService = TestBed.inject(LocationService);
     expect(service).toBeTruthy();
   });
 });

@@ -21,7 +21,7 @@ describe('ElectronDialogService', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [ElectronDialogService, DataService, PublicDataService, { provide: ConfigService, useValue: mockConfigService }]
     });
-    service = TestBed.get(ElectronDialogService);
+    service = TestBed.inject(ElectronDialogService);
   });
   it('should be created', () => {
     expect(service).toBeTruthy();

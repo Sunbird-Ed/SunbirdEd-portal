@@ -54,7 +54,7 @@ describe('CourseCompletionComponent', () => {
   });
 
   it('should call logInteractTelemetry', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.logInteractTelemetry();
     expect(telemetryService.interact).toHaveBeenCalled();

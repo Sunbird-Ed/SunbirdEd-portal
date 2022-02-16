@@ -83,8 +83,8 @@ describe('ActivityDashboardComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActivityDashboardComponent);
-    activatedRoute = TestBed.get(ActivatedRoute);
-    router = TestBed.get(Router);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    router = TestBed.inject(Router);
     component = fixture.componentInstance;
     component.hierarchyData = courseHierarchy.result.content;
     component.activity = activityData;
@@ -122,7 +122,7 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call getAggData() success', () => {
     const activityDatas = { id: _.get(courseHierarchy.result.content, 'identifier'), type: 'Course' };
-    const groupService = TestBed.get(GroupsService);
+    const groupService = TestBed.inject(GroupsService);
     component.groupData = groupInfo;
     spyOn(groupService, 'getActivity').and.returnValue(of(activityData));
     component.getAggData();
@@ -134,8 +134,8 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call getAggData() fail', () => {
     const activityDatas = { id: _.get(courseHierarchy.result.content, 'identifier'), type: 'Course' };
-    const groupService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     component.groupData = groupInfo;
     spyOn(toasterService, 'error');
     spyOn(component, 'navigateBack').and.returnValue(true);
@@ -149,7 +149,7 @@ describe('ActivityDashboardComponent', () => {
   });
 
   it('should get data for dashlet library', () => {
-    const groupService = TestBed.get(GroupsService);
+    const groupService = TestBed.inject(GroupsService);
     spyOn(groupService, 'getDashletData').and.returnValue(of(dashletData));
     component.getDashletData();
     groupService.getDashletData(courseHierarchy.result.content, activityData).subscribe(data => {
@@ -158,8 +158,8 @@ describe('ActivityDashboardComponent', () => {
   });
 
   it('should fail while getting the data for dashlet library', () => {
-    const toasterService = TestBed.get(ToasterService);
-    const groupService = TestBed.get(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
+    const groupService = TestBed.inject(GroupsService);
     spyOn(toasterService, 'error');
     spyOn(component, 'navigateBack').and.returnValue(true);
     spyOn(groupService, 'getDashletData').and.returnValue(throwError({ err: '' }));
@@ -171,14 +171,14 @@ describe('ActivityDashboardComponent', () => {
   });
 
   it('should call navigateBack()', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.navigateBack();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
 
   it('should call addTelemetry', () => {
-    const groupService = TestBed.get(GroupsService);
+    const groupService = TestBed.inject(GroupsService);
     spyOn(groupService, 'addTelemetry');
     component.addTelemetry();
     expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'download-csv', extra: {} },

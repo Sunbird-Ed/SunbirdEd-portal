@@ -79,42 +79,42 @@ describe('MainFooterComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(MainFooterComponent);
         component = fixture.componentInstance;
-        userService = TestBed.get(UserService);
+        userService = TestBed.inject(UserService);
         spyOn(component, 'footerAlign'); // new line to be added
-        tenantService = TestBed.get(TenantService);
+        tenantService = TestBed.inject(TenantService);
         fixture.detectChanges();
     });
 
     it('should redirect to diksha app with UTM params if dialcode avaiable', () => {
-        TestBed.get(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
+        TestBed.inject(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-            TestBed.get(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
+            TestBed.inject(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
 
     });
 
     it('should redirect to diksha app with UTM params if dialcode is not avaiable', () => {
-        TestBed.get(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
-        TestBed.get(ActivatedRoute).queryParams = of({ dialCode: '' });
+        TestBed.inject(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
+        TestBed.inject(ActivatedRoute).queryParams = of({ dialCode: '' });
         fixture.detectChanges();
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         const spy = spyOn(component, 'redirect');
         component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-            TestBed.get(ResourceService).instance + '-sunbird&utm_medium=get&utm_campaign=redirection');
+            TestBed.inject(ResourceService).instance + '-sunbird&utm_medium=get&utm_campaign=redirection');
     });
 
     it('should redirect to diksha app without UTM params if not avaiable', () => {
-        TestBed.get(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = false;
+        TestBed.inject(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = false;
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-            TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
+            TestBed.inject(ResourceService).instance + '-sunbird&utm_medium=');
     });
 
     it('should redirect to diksha app without UTM params if not avaiable', () => {
@@ -131,8 +131,8 @@ describe('MainFooterComponent', () => {
     });
     it('should make isFullScreenView to FALSE', () => {
         component.isFullScreenView = true;
-        const navigationHelperService = TestBed.get(NavigationHelperService);
-        const utilService = TestBed.get(UtilService);
+        const navigationHelperService = TestBed.inject(NavigationHelperService);
+        const utilService = TestBed.inject(UtilService);
         utilService._isDesktopApp = true;
         spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: false }));
         spyOn(component, 'getBaseUrl');
@@ -144,7 +144,7 @@ describe('MainFooterComponent', () => {
 
     it('should make isFullScreenView to TRUE', () => {
         component.isFullScreenView = false;
-        const navigationHelperService = TestBed.get(NavigationHelperService);
+        const navigationHelperService = TestBed.inject(NavigationHelperService);
         spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: true }));
         component.ngOnInit();
         navigationHelperService.emitFullScreenEvent(true);
@@ -161,7 +161,7 @@ describe('MainFooterComponent', () => {
     });
 
     it('should call getBaseUrl', () => {
-        const utilService = TestBed.get(UtilService);
+        const utilService = TestBed.inject(UtilService);
         spyOn(utilService, 'getAppBaseUrl');
         component.getBaseUrl();
         expect(utilService.getAppBaseUrl).toHaveBeenCalled();

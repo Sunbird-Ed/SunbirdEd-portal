@@ -106,7 +106,7 @@ class RouterStub {
   });
 
   it('on init', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'setNavigationUrl').and.stub();
     component.ngOnInit();
     expect(navigationHelperService.setNavigationUrl).toHaveBeenCalled();
@@ -139,7 +139,7 @@ class RouterStub {
   });
 
   it('should create the certificate template with all the form values', fakeAsync(() => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
+    const uploadCertService = TestBed.inject(UploadCertificateService);
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
       stateName: new FormControl('Gujrat'),
@@ -162,8 +162,8 @@ class RouterStub {
   }));
 
   it('should not create the certificate template with all the form values', fakeAsync(() => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
-    const toasterService = TestBed.get(ToasterService);
+    const uploadCertService = TestBed.inject(UploadCertificateService);
+    const toasterService = TestBed.inject(ToasterService);
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
       stateName: new FormControl('Gujrat'),
@@ -185,9 +185,9 @@ class RouterStub {
   }));
 
   it('should upload the final certificate svg image', () => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    const toasterService = TestBed.get(ToasterService);
+    const uploadCertService = TestBed.inject(UploadCertificateService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success').and.stub();
     spyOn(navigationHelperService, 'navigateToLastUrl').and.stub();
     spyOn(uploadCertService, 'storeAsset').and.returnValue(of({}));
@@ -197,8 +197,8 @@ class RouterStub {
   });
 
   it('should not upload the final certificate svg image', () => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
-    const toasterService = TestBed.get(ToasterService);
+    const uploadCertService = TestBed.inject(UploadCertificateService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.stub();
     spyOn(uploadCertService, 'storeAsset').and.callFake(() => throwError({}));
     component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
@@ -269,7 +269,7 @@ class RouterStub {
   });
 
   it('should call updateStateLogos', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.stub();
     component.svgData = new DOMParser().parseFromString(MockData.svgData.data, 'text/html');
     component.images = MockData.imagesArray;
@@ -305,7 +305,7 @@ class RouterStub {
   });
 
   it('should call getDefaultTemplates', () => {
-  const uploadService = TestBed.get(UploadCertificateService);
+  const uploadService = TestBed.inject(UploadCertificateService);
   spyOn(uploadService, 'getCertificates').and.returnValue(of(MockData.defaultCerts));
   spyOn(component, 'getSVGTemplate').and.stub();
   component.getDefaultTemplates();
@@ -438,7 +438,7 @@ class RouterStub {
     });
 
     it('should create the certificate template with new SVG changes', fakeAsync(() => {
-      const uploadCertService = TestBed.get(UploadCertificateService);
+      const uploadCertService = TestBed.inject(UploadCertificateService);
       component.selectedCertificate = { issuer: `{}` };
       const elementMock = {
         innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'
@@ -458,8 +458,8 @@ class RouterStub {
 
     it('should not create the certificate template with new SVG changes and expect error', fakeAsync(() => {
       spyOn(component.save, 'next');
-      const uploadCertService = TestBed.get(UploadCertificateService);
-      const toasterService = TestBed.get(ToasterService);
+      const uploadCertService = TestBed.inject(UploadCertificateService);
+      const toasterService = TestBed.inject(ToasterService);
       component.selectedCertificate = { issuer: `{}` };
       const elementMock = {
         innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'

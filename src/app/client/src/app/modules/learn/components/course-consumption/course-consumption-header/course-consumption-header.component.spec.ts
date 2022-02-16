@@ -110,10 +110,10 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it(`should enable resume button if course is not flagged, batch status is not "0" and courseProgressData obtained from courseProgressService`, () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const permissionService = TestBed.get(PermissionService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseConsumptionService = TestBed.inject(CourseConsumptionService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
+    const permissionService = TestBed.inject(PermissionService);
+    const resourceService = TestBed.inject(ResourceService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
@@ -133,12 +133,12 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
     spyOn(courseConsumptionService.updateContentConsumedStatus, 'emit');
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
@@ -154,10 +154,10 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should not enable resume button if batchId is not present', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const courseConsumptionService = TestBed.inject(CourseConsumptionService);
+    const courseProgressService = TestBed.inject(CourseProgressService);
+    const resourceService = TestBed.inject(ResourceService);
+    const activatedRouteStub = TestBed.inject(ActivatedRoute);
     activatedRouteStub.changeFirstChildParams({ courseId: 'do_212347136096788480178' });
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
     resourceService.messages = resourceServiceMockData.messages;
@@ -226,7 +226,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should call onShareLink', () => {
-    const contentUtilsServiceService = TestBed.get(ContentUtilsServiceService);
+    const contentUtilsServiceService = TestBed.inject(ContentUtilsServiceService);
     spyOn(contentUtilsServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/learn');
     spyOn(component, 'setTelemetryShareData');
     component.onShareLink();
@@ -235,8 +235,8 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should emit event to launch the player', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const coursesService = TestBed.get(CoursesService);
+    const courseConsumptionService = TestBed.inject(CourseConsumptionService);
+    const coursesService = TestBed.inject(CoursesService);
     spyOn(courseConsumptionService.launchPlayer, 'emit');
     spyOn(coursesService, 'setExtContentMsg');
     component.resumeCourse();
@@ -272,7 +272,7 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should show error if copy content fails', () => {
     component.resourceService.messages = resourceServiceMockData.messages;
-    const copycontentService = TestBed.get(CopyContentService);
+    const copycontentService = TestBed.inject(CopyContentService);
     spyOn(copycontentService, 'copyContent').and.returnValue(throwError({ content: {} }));
     spyOn(component.toasterService, 'error');
     let content: ContentData;
@@ -283,32 +283,32 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should call goBack and return to learn page', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const router = TestBed.get(Router);
+    const courseConsumptionService = TestBed.inject(CourseConsumptionService);
+    const router = TestBed.inject(Router);
     courseConsumptionService.coursePagePreviousUrl = { url: '/learn' };
     component.goBack();
     expect(router.navigate).toHaveBeenCalledWith(['/learn']);
   });
 
   it('should call goBack and return to learn page while previousPageUrl is undefined', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const router = TestBed.get(Router);
+    const courseConsumptionService = TestBed.inject(CourseConsumptionService);
+    const router = TestBed.inject(Router);
     courseConsumptionService.coursePagePreviousUrl = '';
     component.goBack();
     expect(router.navigate).toHaveBeenCalledWith(['/resources'], { queryParams: { selectedTab: 'course' }});
   });
 
   it('should call goBack and return to previous page with query params', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const router = TestBed.get(Router);
+    const courseConsumptionService = TestBed.inject(CourseConsumptionService);
+    const router = TestBed.inject(Router);
     courseConsumptionService.coursePagePreviousUrl = { url: '/search/Courses/1', queryParams: { key: 'misc course' } };
     component.goBack();
     expect(router.navigate).toHaveBeenCalledWith(['/search/Courses/1'], { queryParams: { key: 'misc course' } });
   });
 
   it('should call logTelemetry', () => {
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const telemetryService = TestBed.get(TelemetryService);
+    const activatedRouteStub = TestBed.inject(ActivatedRoute);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.callThrough();
     activatedRouteStub['snapshot'] = {
       params: [{
@@ -326,8 +326,8 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should close share popup and log interact telemetry', () => {
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const telemetryService = TestBed.get(TelemetryService);
+    const activatedRouteStub = TestBed.inject(ActivatedRoute);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.callThrough();
     activatedRouteStub['snapshot'] = {
       params: [{
@@ -398,7 +398,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should check isYoutubeContentPresent', () => {
-    const offlineCardService = TestBed.get(OfflineCardService);
+    const offlineCardService = TestBed.inject(OfflineCardService);
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     spyOn(component, 'downloadCollection').and.returnValue(MockResponseData.contentHeaderData.collectionData);
@@ -409,7 +409,7 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should call updateCollection and successfuly update collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'updateContent').and.returnValue(of(MockResponseData.contentHeaderData.updateCollection.success));
     component.updateCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.showUpdate).toBeFalsy();
@@ -417,7 +417,7 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should call updateCollection and error while updating collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'updateContent').and.returnValue(throwError(MockResponseData.contentHeaderData.updateCollection.error));
     component.updateCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.isConnected).toBeTruthy();
@@ -428,7 +428,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   it('should call exportCollection and successfuly export collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.showExportLoader = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'exportContent').and.returnValue(of(MockResponseData.contentHeaderData.exportCollection.success));
     component.exportCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.showExportLoader).toBeFalsy();
@@ -438,14 +438,14 @@ describe('CourseConsumptionHeaderComponent', () => {
   it('should call exportCollection and error while  exporting collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.showExportLoader = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'exportContent').and.returnValue(throwError(MockResponseData.contentHeaderData.exportCollection.error));
     component.exportCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.showExportLoader).toBeFalsy();
     expect(component.toasterService.error(resourceServiceMockData.messages.fmsg.m0091));
   });
   it('should check isYoutubeContentPresent', () => {
-    const offlineCardService = TestBed.get(OfflineCardService);
+    const offlineCardService = TestBed.inject(OfflineCardService);
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     spyOn(component, 'downloadCollection').and.returnValue(MockResponseData.contentHeaderData.collectionData);
@@ -457,7 +457,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.contentManagerService.downloadContentId = MockResponseData.contentHeaderData.collectionData.result.content.identifier;
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.disableDelete = false;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(of(MockResponseData.contentHeaderData.downloadCollection.success));
     component.downloadCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
@@ -467,7 +467,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.contentManagerService.downloadContentId = MockResponseData.contentHeaderData.collectionData.result.content.identifier;
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.disableDelete = false;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(throwError(MockResponseData.contentHeaderData.downloadCollection.downloadError));
     component.downloadCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
@@ -476,7 +476,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
   it('should call delete collection and successfuly delete collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(of(MockResponseData.contentHeaderData.deleteCollection.success));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.toasterService.success(resourceServiceMockData.messages.stmsg.desktop.deleteTextbookSuccessMessage));
@@ -484,7 +484,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   it('should call delete collection and error while deleting collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.disableDelete = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.inject(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(MockResponseData.contentHeaderData.deleteCollection.error));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.disableDelete).toBeFalsy();

@@ -65,11 +65,11 @@ describe('ObservationUtilService', () => {
   );
 
   beforeEach(() => {
-    service = TestBed.get(ObservationUtilService);
-    userService = TestBed.get(UserService);
-    kendraService = TestBed.get(KendraService);
-    modalService = TestBed.get(SuiModalService);
-    formService = TestBed.get(FormService);
+    service = TestBed.inject(ObservationUtilService);
+    userService = TestBed.inject(UserService);
+    kendraService = TestBed.inject(KendraService);
+    modalService = TestBed.inject(SuiModalService);
+    formService = TestBed.inject(FormService);
   });
 
   it('should be created', () => {

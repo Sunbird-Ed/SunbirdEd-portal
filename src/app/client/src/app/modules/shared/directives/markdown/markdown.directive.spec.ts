@@ -16,7 +16,7 @@ describe('MarkdownDirective', () => {
                 { provide: ElementRef, useValue: elementRefStub }
             ]
         });
-        markdownDirective = TestBed.get(MarkdownDirective);
+        markdownDirective = TestBed.inject(MarkdownDirective);
     });
 
     it('can load instance', () => {

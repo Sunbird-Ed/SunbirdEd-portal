@@ -23,7 +23,7 @@ describe('CopyContentService', () => {
 
   it('should make copy api call and get success response', inject([CopyContentService, ContentService],
     (service: CopyContentService, contentService: ContentService) => {
-      const userService = TestBed.get(UserService);
+      const userService = TestBed.inject(UserService);
       userService._userProfile = testData.mockRes.userData;
       spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.successResponse));
       service.copyContent(testData.mockRes.contentData).subscribe(
@@ -34,9 +34,9 @@ describe('CopyContentService', () => {
     }));
 
   it('should copy textbook as a course', inject([], () => {
-    const service = TestBed.get(CopyContentService);
-    const userService = TestBed.get(UserService);
-    const contentService = TestBed.get(ContentService);
+    const service = TestBed.inject(CopyContentService);
+    const userService = TestBed.inject(UserService);
+    const contentService = TestBed.inject(ContentService);
     const contentData = testData.mockRes.copyCourseContentData;
     userService._userProfile = testData.mockRes.userData;
     const userData = userService._userProfile;
@@ -68,24 +68,24 @@ describe('CopyContentService', () => {
   }));
 
   it('should open collection editor when a textbook is copied as a course', inject([], () => {
-    const service = TestBed.get(CopyContentService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(CopyContentService);
+    const router = TestBed.inject(Router);
     const url = `/workspace/content/edit/collection/do_11302157861002444811/Course/draft/NCFCOPY/Draft`;
     service.openCollectionEditor('NCFCOPY', 'do_11302157861002444811');
     expect(router.navigate).toHaveBeenCalledWith([url]);
   }));
 
   it('should call the formatData', inject([], () => {
-    const service = TestBed.get(CopyContentService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(CopyContentService);
+    const router = TestBed.inject(Router);
     spyOn(service, 'formatData');
     service.formatData();
     expect(service.formatData).toHaveBeenCalled();
   }));
 
   it('should call the redirectToEditor', inject([], () => {
-    const service = TestBed.get(CopyContentService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(CopyContentService);
+    const router = TestBed.inject(Router);
     spyOn(service, 'redirectToEditor');
     service.redirectToEditor();
     expect(service.redirectToEditor).toHaveBeenCalled();

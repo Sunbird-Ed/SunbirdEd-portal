@@ -14,12 +14,12 @@ describe('CertRegService', () => {
   }));
 
   it('should be created', () => {
-    const service: CertRegService = TestBed.get(CertRegService);
+    const service: CertRegService = TestBed.inject(CertRegService);
     expect(service).toBeTruthy();
   });
 
   it('should fetch all quiz certificates', () => {
-    const certRegService: CertRegService = TestBed.get(CertRegService);
+    const certRegService: CertRegService = TestBed.inject(CertRegService);
     spyOn(certRegService, 'post').and.returnValue(observableOf({}));
     const params = {
       'request': {
@@ -37,7 +37,7 @@ describe('CertRegService', () => {
   });
 
   it('should fetch all certificates', () => {
-    const certRegService: CertRegService = TestBed.get(CertRegService);
+    const certRegService: CertRegService = TestBed.inject(CertRegService);
     spyOn(certRegService, 'post').and.returnValue(observableOf({}));
     const params = {
       'request': {
@@ -56,7 +56,7 @@ describe('CertRegService', () => {
   });
 
   it('should fetch all user certificates', () => {
-    const certRegService: CertRegService = TestBed.get(CertRegService);
+    const certRegService: CertRegService = TestBed.inject(CertRegService);
     spyOn(certRegService, 'post').and.returnValue(observableOf({}));
     const params = {
       request: {
@@ -73,7 +73,7 @@ describe('CertRegService', () => {
   });
 
   it('should re issue user certificate', () => {
-    const certRegService: CertRegService = TestBed.get(CertRegService);
+    const certRegService: CertRegService = TestBed.inject(CertRegService);
     spyOn(certRegService, 'post').and.returnValue(observableOf({}));
     const params = {
       request: {
@@ -88,7 +88,7 @@ describe('CertRegService', () => {
   });
 
   it('should attach certificate to a batch', () => {
-    const certRegService: CertRegService = TestBed.get(CertRegService);
+    const certRegService: CertRegService = TestBed.inject(CertRegService);
     spyOn(certRegService, 'patch').and.returnValue(observableOf(mockResponseData.addCertificateMockResponse));
     const params = {
       request: {
@@ -113,7 +113,7 @@ describe('CertRegService', () => {
 
   it('should return the status of re-issue criteria as true if the status of the batch is 2', () => {
     /** Arrange */
-    const certRegService: CertRegService = TestBed.get(CertRegService);
+    const certRegService: CertRegService = TestBed.inject(CertRegService);
 
     /** Act */
     certRegService.checkCriteria(mockResponseData.batches);

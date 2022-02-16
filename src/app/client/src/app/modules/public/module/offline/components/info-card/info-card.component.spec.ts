@@ -44,7 +44,7 @@ describe('InfoCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    const connectionService = TestBed.get(ConnectionService);
+    const connectionService = TestBed.inject(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(of(true));
     component.ngOnInit();
     expect(connectionService.monitor).toHaveBeenCalled();

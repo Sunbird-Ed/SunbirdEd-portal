@@ -42,7 +42,7 @@ describe('ForumComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ForumComponent);
     component = fixture.componentInstance;
-    location = TestBed.get(Location);
+    location = TestBed.inject(Location);
     fixture.detectChanges();
   });
 
@@ -54,7 +54,7 @@ describe('ForumComponent', () => {
   });
 
   it('should assign discussionUrl = "discussionUrl"', () => {
-    const sanitizer = TestBed.get(DomSanitizer);
+    const sanitizer = TestBed.inject(DomSanitizer);
     spyOn(component['learnerService'], 'get').and.returnValue(of ( {id: 'iv: 133 ? id: 12333'}));
     spyOnProperty(component['userService'], 'userProfile').and.returnValue( {userid: '123'});
     component.getDiscussionUrl();

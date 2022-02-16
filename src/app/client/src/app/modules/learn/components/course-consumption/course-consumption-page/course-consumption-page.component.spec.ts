@@ -84,14 +84,14 @@ describe('CourseConsumptionPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseConsumptionPageComponent);
     component = fixture.componentInstance;
-    activatedRouteStub = TestBed.get(ActivatedRoute);
-    courseService = TestBed.get(CoursesService);
-    toasterService = TestBed.get(ToasterService);
-    courseConsumptionService = TestBed.get(CourseConsumptionService);
-    courseBatchService = TestBed.get(CourseBatchService);
-    learnerService = TestBed.get(LearnerService);
-    navigationHelperService = TestBed.get(NavigationHelperService);
-    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    activatedRouteStub = TestBed.inject(ActivatedRoute);
+    courseService = TestBed.inject(CoursesService);
+    toasterService = TestBed.inject(ToasterService);
+    courseConsumptionService = TestBed.inject(CourseConsumptionService);
+    courseBatchService = TestBed.inject(CourseBatchService);
+    learnerService = TestBed.inject(LearnerService);
+    navigationHelperService = TestBed.inject(NavigationHelperService);
+    generaliseLabelService = TestBed.inject(GeneraliseLabelService);
     spyOn(generaliseLabelService, 'initialize').and.returnValue('');
     spyOn(navigationHelperService, 'navigateToResource').and.returnValue('');
     spyOn(toasterService, 'error').and.returnValue('');

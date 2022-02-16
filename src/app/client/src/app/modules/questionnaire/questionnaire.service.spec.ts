@@ -31,8 +31,8 @@ describe('QuestionnaireService', () => {
     })
   );
   beforeEach(() => {
-    service = TestBed.get(QuestionnaireService);
-    kendraService = TestBed.get(KendraService);
+    service = TestBed.inject(QuestionnaireService);
+    kendraService = TestBed.inject(KendraService);
   });
 
   it('should be created', () => {

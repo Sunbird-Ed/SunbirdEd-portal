@@ -91,7 +91,7 @@ describe('AddActivityContentTypesComponent', () => {
 
   it('should set the necessary group data from query params', () => {
     /** Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'setNavigationUrl').and.stub();
     spyOn(component, 'fetchActivityList').and.stub();
 
@@ -119,7 +119,7 @@ describe('AddActivityContentTypesComponent', () => {
 
   xit('Should fetch all the supported activities', () => {
     /** Arrange */
-    const groupService = TestBed.get(GroupsService);
+    const groupService = TestBed.inject(GroupsService);
     spyOn(groupService, 'getSupportedActivityList').and.returnValue(observableOf(AddActivityContentTypesData.listData));
 
     /** Act */
@@ -131,8 +131,8 @@ describe('AddActivityContentTypesComponent', () => {
 
   it('should show error toast message if fetch activity list api fails', () => {
     /** Arrange */
-    const groupService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
+    const groupService = TestBed.inject(GroupsService);
+    const toasterService = TestBed.inject(ToasterService);
     spyOn(groupService, 'getSupportedActivityList').and.callFake(() => throwError({}));
     spyOn(toasterService, 'error');
 
@@ -148,8 +148,8 @@ describe('AddActivityContentTypesComponent', () => {
     /** Arrange */
     const cardData = AddActivityContentTypesData.mockCardData;
     const csGroupAddableBloc = CsGroupAddableBloc.instance;
-    const router = TestBed.get(Router);
-    const groupService = TestBed.get(GroupsService);
+    const router = TestBed.inject(Router);
+    const groupService = TestBed.inject(GroupsService);
     spyOn(csGroupAddableBloc, 'updateState');
     spyOnProperty(groupService, 'groupData').and.returnValue(AddActivityContentTypesData.groupData);
     /** Act */
@@ -170,8 +170,8 @@ describe('AddActivityContentTypesComponent', () => {
 
   it('should trigger interact event', () => {
     /** Arrange */
-    const groupService = TestBed.get(GroupsService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const groupService = TestBed.inject(GroupsService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOnProperty(groupService, 'groupData').and.returnValue(AddActivityContentTypesData.groupData);
     const interactData = {
       context: {
@@ -199,9 +199,9 @@ describe('AddActivityContentTypesComponent', () => {
 
   it('should trigger impression event', () => {
     /** Arrange */
-    const groupService = TestBed.get(GroupsService);
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const groupService = TestBed.inject(GroupsService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOnProperty(groupService, 'groupData').and.returnValue(AddActivityContentTypesData.groupData);
     spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(10);
     spyOn(telemetryService, 'impression').and.stub();
