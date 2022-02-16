@@ -23,7 +23,7 @@ describe('qumlPlayerService', () => {
 
   it('#getQuestion() should return empty obj when questionId not passed', () => {
     const qumlPlayerService = TestBed.inject(QumlPlayerService);
-    qumlPlayerService.getQuestion().subscribe((data) => {
+    qumlPlayerService.getQuestion('').subscribe((data) => {
         expect(data).toEqual({});
     });
   });

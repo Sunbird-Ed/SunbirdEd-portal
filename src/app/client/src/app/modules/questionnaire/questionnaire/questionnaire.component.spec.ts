@@ -51,7 +51,7 @@ describe('QuestionaireComponent', () => {
     },
     languageSelected$: of({}),
   };
-  let observationService = {
+  let observationService:any = {
     post: () => of(),
     delete: () => of(),
   };

@@ -35,9 +35,9 @@ describe('PublicPlayerService', () => {
 
   it('should return content details', () => {
     const playerService = TestBed.inject(PublicPlayerService);
-    const contentService = TestBed.inject(ContentService);
+    const contentService:any = TestBed.inject(ContentService);
     spyOn(contentService, 'get').and.returnValue(observableOf(serverRes.successResult));
-    playerService.getContent();
+    playerService.getContent('');
     playerService.getContent(serverRes.successResult.result.content.identifier).subscribe((data) => {
       expect(data).toBeTruthy();
       expect(playerService.contentData).toBeTruthy();
@@ -65,7 +65,7 @@ describe('PublicPlayerService', () => {
 
   it('should call player updateDownloadStatus()', () => {
     const playerService = TestBed.inject(PublicPlayerService);
-    const resourceService = TestBed.inject(ResourceService);
+    const resourceService:any = TestBed.inject(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
     playerService.updateDownloadStatus(serverRes.download_list, serverRes.successResult.result.content);
     expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0143);
@@ -125,7 +125,7 @@ describe('PublicPlayerService', () => {
 
   it('should get collection hierarchy', () => {
     const playerService = TestBed.inject(PublicPlayerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValues(of(serverRes.collectionHierarchy));
     playerService.getCollectionHierarchy('123').subscribe((res) => {
       expect(playerService.collectionData).toBeDefined();
