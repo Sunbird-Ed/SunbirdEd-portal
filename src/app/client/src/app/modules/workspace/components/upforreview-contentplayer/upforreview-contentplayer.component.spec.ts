@@ -55,7 +55,7 @@ describe('UpforreviewContentplayerComponent', () => {
 
   it('should throw error if content api throws error', () => {
     const playerService = TestBed.inject(PlayerService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
@@ -69,7 +69,7 @@ describe('UpforreviewContentplayerComponent', () => {
 
   it('should call  content api and return content data', () => {
     const playerService = TestBed.inject(PlayerService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;

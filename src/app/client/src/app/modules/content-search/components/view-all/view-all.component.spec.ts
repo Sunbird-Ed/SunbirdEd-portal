@@ -86,7 +86,7 @@ describe('ViewAllComponent', () => {
     const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
     const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
     const sortIntractEdata = { id: 'sort', type: 'click', pageid: 'course' };
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses as any});
     component.queryParams = {
       viewMore: true,
       content: JSON.stringify(Response.successData.result.content[0])
@@ -128,7 +128,7 @@ describe('ViewAllComponent', () => {
     const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
     const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
     const sortIntractEdata = { id: 'sort', type: 'click', pageid: 'course' };
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses as any});
      spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
@@ -213,7 +213,7 @@ describe('ViewAllComponent', () => {
       'contentData': Response.successData,
       'currentPageData': { contentType: 'Course', search: {filters: {primaryCategory: []}}}
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     spyOn<any>(component, 'formatSearchresults').and.stub();
     component.getContents(Response.paramsData);
     expect(component.showLoader).toBeFalsy();
@@ -232,7 +232,7 @@ describe('ViewAllComponent', () => {
       'enrolledCourseData': Response.enrolledCourseData,
       'contentData': Response.successData
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     spyOn<any>(component, 'formatSearchresults').and.stub();
     spyOn(pagenationService, 'getPager').and.stub();
     component.getContents(Response.paramsData);
@@ -254,7 +254,7 @@ describe('ViewAllComponent', () => {
       'enrolledCourseData': Response.enrolledCourseData,
       'contentData': { 'result': { 'content': [], 'count': 0 } }
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     component.getContents(Response.paramsData);
     expect(component.noResult).toBeTruthy();
     expect(component.noResultMessage).toEqual(noResultMessages);
@@ -271,7 +271,7 @@ describe('ViewAllComponent', () => {
       'enrolledCourseData': { ' enrolledCourses': [] },
       'contentData': { 'result': { 'content': [], 'count': 0 } }
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     component.getContents(Response.paramsData);
     expect(component.noResult).toBeTruthy();
     expect(component.noResultMessage).toEqual(noResultMessages);
