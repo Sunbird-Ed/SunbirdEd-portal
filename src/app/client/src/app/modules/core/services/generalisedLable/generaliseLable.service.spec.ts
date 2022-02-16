@@ -91,6 +91,6 @@ describe('GeneraliseLabelService', () => {
         mockData.contentType = 'Course';
         const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
         expect(fileName).toEqual('all_labels_en.json');
-        expect(service['isTrackable']).toEqual('nontrackable');
+        expect(service['isTrackable']).toEqual('trackable');
     });
 });
