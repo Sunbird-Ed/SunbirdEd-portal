@@ -1466,10 +1466,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.5.0.tgz#948a25ef4301876e76840f9697fa21aa25ebb309"
-  integrity sha512-rMBXaizWgsGatlj6H7s125tp28CnU4st7RAwsdQivjM2LXdVMWRyfQmzU8dPyqZnIZIVYv8UpfYY68SntKAOBQ==
+"@project-sunbird/client-services@4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.6.2.tgz#097b8fe0879f5afa37c9f00fdd67d5469fedc020"
+  integrity sha512-TxPNS/fe74d52en4QHtiRaYRDrk8Q4ZlU0HqVcssA15ygZsqPo5sFaAwx6HJkE2LV2rApjoeJGE/mSXNPWDRFQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1477,10 +1477,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.5.3.tgz#b005e94f77ff1b24d186c3ecc0eb960228242bd5"
-  integrity sha512-rV/7BD7AwJdqsyVlbYfmf5A7wOX6yJyVL4LTWjyLvJ12TZ5QTNTmJ3HYK6bpGdZ1+MpfDU8hI+Uv/r4yD2V7vA==
+"@project-sunbird/common-consumption-v9@4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.7.0.tgz#c9cce4a3c559932b14450258186b6c326aca6eb1"
+  integrity sha512-ORBAlAQMhxhmPFdheLhJ9mnQtS8BXGpelEyEZbWHthwOBnWgDrZtn3i8oVfP2dpAhwqI6fstEZfZSeHgXbNvSg==
 
 "@project-sunbird/discussions-ui-v8@2.6.0-beta.2":
   version "2.6.0-beta.2"
@@ -1513,15 +1513,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.33":
-  version "0.0.33"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.33.tgz#48b3b06b3a2a7aaf95537fc80a69c588d09937c3"
-  integrity sha512-J5Hmm8uxDTUQel1Y6cThGdIYjcX8cEFvO1zIrSMmIqC6c4IXMhf7zhN7HHXCNvxe/foKjQ158sDPfJFhLeI3oA==
+"@project-sunbird/sb-themes@0.0.36":
+  version "0.0.36"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.36.tgz#af0f36535e288b7d98a8e8d653be6e2bd60a097b"
+  integrity sha512-7OVEPI9i3QKSJljOtI7lnnqpVqMl4ePoFhNPmv1tPNS/jpxGwhxITjlYXlEKrW6SbFdGIrSEoqeTJ1u2lCK1iQ==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.7.6":
-  version "4.7.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.6.tgz#94da14039e3857d44cdab064b522ddeb8331080b"
-  integrity sha512-EfSFyP1e15vm7MH3NWh/Ty/E04KE/SA0HEz0hyE27NPgsgn0yrzioPkAJ1YVYvY7Skr+6KfYPy2xJTR7o8w4Qw==
+"@project-sunbird/sunbird-collection-editor-v9@4.7.11":
+  version "4.7.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.11.tgz#570253004221272bdcef51dc67894dfa63a6fa9c"
+  integrity sha512-sORCMVJTe8LHJ3mRr2TV4bXk5scZA+rcf8AeASnhSGBQvof7CiafMSF++V5x7eUUUR6HbEqL0/rVx72XZ7568g==
   dependencies:
     tslib "^1.10.0"
 
@@ -1597,10 +1597,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.2.8":
-  version "1.2.8"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.8.tgz#d33b578c33a36dbff7cd4aa1ff8c2815e183a42a"
-  integrity sha512-gFTEqOfoARbAGBJ0G6rC0qEoOUnO8V6C1xIsSrXIcb3R/1hGsmu436QAxtlPmdgnYFRMsuwiK0GLaHFLNTMsCg==
+"@samagra-x/uci-console@1.2.13":
+  version "1.2.13"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.2.13.tgz#6ff59f58b99df765c5b0a5c3d8929165d97d9506"
+  integrity sha512-FCji7YqsQgLxXvdIt+0bBvl4u+phA0wthwtc2dT4u2AA4TMs3CCnGbNLZfP8NydXWKX8jfK9q1P1XhlHj8XZFA==
   dependencies:
     tslib "^1.10.0"
 
@@ -8700,10 +8700,10 @@ ng-recaptcha@^5.0.0:
   optionalDependencies:
     "@types/grecaptcha" "^2.0.33"
 
-ng-svg-editor@0.0.21:
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/ng-svg-editor/-/ng-svg-editor-0.0.21.tgz#8532d1701f4b4a199d9dad54b5cc57e14af4e799"
-  integrity sha512-RCzhajZJKTDwhpr/qz6UdnOa9yOYrHOgi24FyI1kvQkrF7jwexUTDW125CjV5UFIRdTEsXHDGVbzi16RLlka5w==
+ng-svg-editor@0.0.24:
+  version "0.0.24"
+  resolved "https://registry.yarnpkg.com/ng-svg-editor/-/ng-svg-editor-0.0.24.tgz#00af3b8fe6afbc3a8d1c5beca32fe197b64d2d1e"
+  integrity sha512-3gmHuM/0Nh279tHi1sYoWPRpMZSEpaGunqQQtwL3a500IYKvvxOwlaZkx9eBg2s5goG13t7xeU7yoRe01kdVsw==
   dependencies:
     tslib "^2.3.0"
 

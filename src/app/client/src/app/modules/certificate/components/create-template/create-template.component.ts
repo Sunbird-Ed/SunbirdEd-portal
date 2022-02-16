@@ -60,15 +60,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   optionSing = 'SIGN2';
   queryParams: any;
   mode: any;
-  edit: Subject<any> = new Subject();
-  refreshEditor: Subject<any> = new Subject();
-  togglePreview: Subject<any> = new Subject();
-  save: Subject<any> = new Subject();
-  showSVGInputModal: boolean = false;
-  disableSVGImageModal: boolean = false;
-  selectedSVGObject: any = {};
-  showPreviewButton: boolean = true;
-  previewButton: string = 'show';
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public userService: UserService,
@@ -143,7 +134,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
       const svgFile = res;
       this.logoHtml = this.sanitizeHTML(svgFile);
-      this.refreshEditor.next({});
       this.previewCertificate();
     });
   }
@@ -243,14 +233,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.svgData = this.convertHtml(this.logoHtml);
     const stateLogos = this.svgData.getElementsByClassName(this.classNames.STATE_LOGOS);
     const digitalSigns = this.classNames.SIGN_LOGO.map(id => this.svgData.getElementById(id));
-    // this.updateTitles();
+    this.updateTitles();
     this.updateStateLogos(stateLogos);
     this.updateSigns(digitalSigns);
-  }
-
-  previewUpdatedSVGCertificate() {
-    this.svgData = this.convertHtml(this.sanitizeHTML(document.getElementById('templateSvg').innerHTML));
-    this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
   }
 
   updateTitles() {
@@ -366,76 +351,5 @@ urltoFile(url, filename, mimeType) {
       this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
       this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
-  }
-
-  elementClicked(e: any) {
-    this.selectedSVGObject = {
-      type: _.get(e, 'type'),
-      value: _.get(e, 'element.textContent'),
-      element: e.element
-    };
-    if (e.type === 'image') {
-      this.logoType = {type: 'LOGO', index: 0,  key:'LOGO1'};
-      this.browseImage.getAssetList();
-    }
-    
-    this.showSVGInputModal = true;
-  }
-  updateSVGInputTag() {
-    this.showSVGInputModal = false;
-    this.edit.next({
-      element: this.selectedSVGObject.element,
-      type: 'text',
-      value: this.selectedSVGObject.value
-    });
-    this.selectedSVGObject = {};
-  }
-  closeSVGInputModal() {
-    this.showSVGInputModal = false;
-  }
-
-  svgAssetData(imageObj) {
-    this.getBase64FromUrl(_.get(imageObj, 'url')).then((base64String: string) => {
-      this.showSVGInputModal = false;
-      this.edit.next({
-        element: this.selectedSVGObject.element,
-        type: 'image',
-        value: base64String
-      });
-      this.selectedSVGObject = {};
-    });
-  }
-  getBase64FromUrl = async (url) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      }
-    });
-  }
-  toggleSVGPreview() {
-    this.previewButton = this.previewButton == 'show' ? 'hide' : 'show';
-    this.togglePreview.next(this.previewButton);
-  }
-
-  saveUpdatedCertificate() {
-    this.save.next('');
-    this.previewUpdatedSVGCertificate();
-    setTimeout(() => {
-      const channel = this.userService.channel;
-      const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
-      request.request.asset.code = 'code name';
-      request.request.asset.name = 'name name'
-      this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
-        const assetId = _.get(response, 'result.identifier');
-        this.uploadTemplate(this.finalSVGurl, assetId);
-      }, error => {
-        this.toasterService.error('Something went wrong, please try again later');
-      });
-    }, 1000);
   }
 }

@@ -53,7 +53,7 @@ export class AddToGroupDirective implements OnInit {
 
   ngOnInit() {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      // this.groupAddableBlocData = data || JSON.parse(sessionStorage.getItem(sessionKeys.GROUPADDABLEBLOCDATA));
+      this.groupAddableBlocData = data; //|| JSON.parse(sessionStorage.getItem(sessionKeys.GROUPADDABLEBLOCDATA));
     });
     if (CsGroupAddableBloc.instance.initialised) {
       CsGroupAddableBloc.instance.state$.pipe(

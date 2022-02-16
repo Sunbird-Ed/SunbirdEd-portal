@@ -1,5 +1,5 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ValidateTeacherIdentifierPopupComponent } from './validate-teacher-identifier-popup.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
@@ -31,7 +31,7 @@ describe('ValidateTeacherIdentifierPopupComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ValidateTeacherIdentifierPopupComponent],
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
-        HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), RouterTestingModule],
+        HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
       providers: [ToasterService, ResourceService, { provide: UserService, useValue: mockUserService }]
     })
       .compileComponents();

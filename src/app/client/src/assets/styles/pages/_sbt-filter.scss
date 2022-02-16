@@ -210,6 +210,7 @@
       justify-content: center;
       box-shadow: var(--sbt-box-shadow-3px);
       border-radius: calculateRem(20px);
+      color: var(--primary-400);
 
       html[dir="rtl"] & {
         right: calculateRem(24px);
@@ -254,11 +255,14 @@
     top: 0px;
     right: 0;
     left: 0;
-    width: calc(100% - 8px);
-    height: calc(100% - 8px);
+    width: 100%;
+    height: 100%;
     z-index: 9999;
     margin: 0;
-    border-radius: calculateRem(24px);
+
+    @include respond-above(sm) {
+      border-radius: calculateRem(24px);
+    }
 
     @include respond-between(sm, md) {
       position: absolute;

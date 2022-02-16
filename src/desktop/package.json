@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "4.6.0",
+    "version": "4.7.0",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
@@ -128,6 +128,7 @@
     "keywords": [],
     "license": "MIT",
     "engines": {
-        "node": ">=12.17.0"
+        "node": ">=14.19.0",
+        "npm": ">=6.14.16"
     }
 }

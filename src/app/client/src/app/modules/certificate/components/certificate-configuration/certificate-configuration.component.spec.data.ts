@@ -353,6 +353,32 @@ export const response = {
     'userName': 'ntptest102',
     'rootOrgId': 'ORG_001',
     'userid': '874ed8a5-782e-4f6c-8f36-e0288455901e'
+  },
+  certificateFormData: {
+    'id': 'api.form.read',
+    'params': {
+      'resmsgid': '9337d13b-7e06-4f74-9b07-f30e4f862d15',
+      'msgid': '2da7164b-5756-4a90-81cf-81e038f80077',
+      'status': 'successful'
+    },
+    'responseCode': 'OK',
+    'result': {
+      'form': {
+        'type': 'certificate',
+        'subtype': 'course',
+        'action': 'certificatecreate',
+        'component': 'portal',
+        'framework': '*',
+        'data': {
+          'enableSVGEditor': true
+        },
+        'created_on': '2022-02-04T10:05:54.499Z',
+        'last_modified_on': null,
+        'rootOrgId': '*'
+      }
+    },
+    'ts': '2022-02-08T12:27:14.173Z',
+    'ver': '1.0'
   }
 };
 

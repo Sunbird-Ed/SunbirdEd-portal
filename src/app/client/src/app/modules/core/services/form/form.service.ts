@@ -42,7 +42,7 @@ export class FormService {
     * @param {formAction} content form action type
     * @param {selectedContent} content selected content type
     */
-  getFormConfig(formInputParams, hashTagId?: string): Observable<any> {
+  getFormConfig(formInputParams, hashTagId?: string, responseKey = 'data.fields'): Observable<any> {
     const channelOptions: any = {
       url: this.configService.urlConFig.URLS.dataDrivenForms.READ,
       data: {
@@ -69,8 +69,9 @@ export class FormService {
       }
       return this.publicDataService.post(channelOptions).pipe(map(
         (formConfig: ServerResponse) => {
-          this.setForm(formKey, formConfig.result.form.data.fields);
-          return formConfig.result.form.data.fields;
+          const result = _.get(formConfig.result.form, responseKey)
+          this.setForm(formKey, result);
+          return result;
         }));
     }
   }

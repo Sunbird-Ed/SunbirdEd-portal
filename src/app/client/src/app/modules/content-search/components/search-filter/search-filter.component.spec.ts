@@ -18,6 +18,7 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-tran
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 describe('SearchFilterComponent', () => {
@@ -66,7 +67,7 @@ describe('SearchFilterComponent', () => {
                         provide: TranslateLoader,
                         useClass: TranslateFakeLoader
                     }
-                }),
+                }), BrowserAnimationsModule,
                 SuiModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot()],
             providers: [ContentSearchService,
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
@@ -117,7 +118,7 @@ describe('SearchFilterComponent', () => {
         const returnData = component.getInteractEdata();
         expect(returnData).toEqual({
             'id': 'reset-filter', 'type': 'click',
-            'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook'} }
+            'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook' } }
         });
     });
     it('should update selectedFilters from queryParams', done => {

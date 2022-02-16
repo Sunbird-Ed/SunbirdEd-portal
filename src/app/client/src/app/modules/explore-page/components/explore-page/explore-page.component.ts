@@ -260,7 +260,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (err) { return enrolledSection; }
                     const enrolledContentPredicate = course => {
                         const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
-                        return pagePrimaryCategories.some(category => _.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(contentType) === _.toLower(pageContentType));
+                        return pagePrimaryCategories.some(category =>
+                             (_.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(category) === _.toLower(contentType))) ||
+                              (_.toLower(contentType) === _.toLower(pageContentType));
                     };
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
                     filteredCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);

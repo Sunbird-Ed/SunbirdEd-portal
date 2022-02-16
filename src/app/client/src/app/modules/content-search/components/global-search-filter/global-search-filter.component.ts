@@ -165,10 +165,14 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         }
         return queryFilters;
       })).subscribe(filters => {
-        this.selectedFilters = _.cloneDeep(filters);
-        /* istanbul ignore next */
-        if (this.cachedFilters) {
-          this.selectedFilters = this.cachedFilters;
+        if (_.get(filters, 'key')) {
+          this.cacheService.remove('searchFiltersAll');
+        }
+        if (this.cacheService.exists('searchFiltersAll') && !_.get(filters, 'key')) {
+          this.selectedFilters = _.cloneDeep(this.cacheService.get('searchFiltersAll'));
+        } else {
+          this.cacheService.remove('searchFiltersAll');
+          this.selectedFilters = _.cloneDeep(filters);
         }
         this.emitFilterChangeEvent(true);
         this.hardRefreshFilter();
@@ -205,8 +209,11 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
       queryFilters = {...queryFilters, ...this.selectedFilters};
     }
+    if (this.cacheService.get('searchFiltersAll')) {
+      this.selectedFilters['selectedTab'] = 'all';
+    }
     this.router.navigate([], {
-      queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,
+      queryParams: this.queryParamsToOmit ? queryFilters : { ...queryFilters, ...this.selectedFilters },
       relativeTo: this.activatedRoute.parent
     });
   }
@@ -214,6 +221,10 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   private emitFilterChangeEvent(skipUrlUpdate = false) {
     this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
     if (!skipUrlUpdate) {
+      this.updateRoute();
+    } else if (this.cacheService.get('searchFiltersAll') && !_.get(this.selectedFilters, 'key')) {
+      this.updateRoute();
+    } else if (_.get(this.selectedFilters, 'key')) {
       this.updateRoute();
     }
   }
@@ -249,10 +260,12 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onSearchFacetFilterReset() {
+    this.cacheService.remove('searchFiltersAll');
     /* istanbul ignore else */
     if (this.searchFacetFilterComponent) {
       this.searchFacetFilterComponent.resetFilter();
     }
+    /* istanbul ignore next */
     this.router.navigate([], {
       queryParams: {
         ...(() => {

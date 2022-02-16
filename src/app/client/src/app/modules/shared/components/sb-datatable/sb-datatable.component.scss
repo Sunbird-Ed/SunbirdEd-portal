@@ -87,14 +87,6 @@
       }
     }
 
-  ::ng-deep {
-    .ui.dropdown>.text {
-      display: inline-block;
-      transition: none;
-      position: relative;
-      top: calculateRem(4px);
-    }
-}
 
 .filterTable{
   z-index: 9999;
@@ -115,10 +107,7 @@
 .ngx-datatable.scroll-vertical .datatable-body{
   height: 200px !important;
 }
-.ngx-datatable.fixed-header .datatable-header {
-  background-color: var(--primary-100) !important;
- 
-}
+
 .ngx-datatable.material .datatable-header .datatable-header-cell{
   background-color: transparent !important;
 }

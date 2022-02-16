@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ContentManagerInfoPopUpComponent', () => {
   let component: ContentManagerInfoPopUpComponent;
@@ -16,7 +17,8 @@ describe('ContentManagerInfoPopUpComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentManagerInfoPopUpComponent],
-      imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot(), RouterModule.forRoot([])],
+      imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot(), RouterModule.forRoot([]),
+      BrowserAnimationsModule],
       providers: [
         ResourceService
       ],
