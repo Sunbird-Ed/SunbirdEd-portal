@@ -76,7 +76,7 @@ describe('ViewAllComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     const searchService = TestBed.inject(SearchService);
     const route = TestBed.inject(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    route['url'] = 'learn/view-all/LatestCourses/1?contentType: course';
     const queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
@@ -118,7 +118,7 @@ describe('ViewAllComponent', () => {
     const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const route = TestBed.inject(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    route['url'] = 'learn/view-all/LatestCourses/1?contentType: course';
     const queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
@@ -155,7 +155,7 @@ describe('ViewAllComponent', () => {
   it('should call playcontent with batchId', () => {
     const playerService = TestBed.inject(PlayerService);
     const route = TestBed.inject(Router);
-    route.url = '/learn/view-all/LatestCourses/1?contentType: course';
+    route['url'] = '/learn/view-all/LatestCourses/1?contentType: course';
     const event = { data: { metaData: { batchId: '0122838911932661768' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
     component.playContent(event, {});
@@ -163,7 +163,7 @@ describe('ViewAllComponent', () => {
   });
   it('should call playcontent without batchId', () => {
     const route = TestBed.inject(Router);
-    route.url = '/learn/view-all/LatestCourses/1?contentType: course';
+    route['url'] = '/learn/view-all/LatestCourses/1?contentType: course';
     const playerService = TestBed.inject(PlayerService);
     const event = { data: { metaData: { contentType: 'story' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
@@ -173,7 +173,7 @@ describe('ViewAllComponent', () => {
   it('should call navigateToPage method', () => {
     const configService = TestBed.inject(ConfigService);
     const route = TestBed.inject(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    route['url'] = 'learn/view-all/LatestCourses/1?contentType: course';
     component.queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     component.pageNumber = 1;
@@ -278,7 +278,7 @@ describe('ViewAllComponent', () => {
   });
   it('should handle close button click', () => {
     const route = TestBed.inject(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    route['url'] = 'learn/view-all/LatestCourses/1?contentType: course';
     component.queryParams = {
       viewMore: false
     };

@@ -135,7 +135,7 @@ describe('BatchListComponent', () => {
     (route) => {
       const userService = TestBed.inject(UserService);
       const learnerService = TestBed.inject(LearnerService);
-      route.url = '/workspace/content/batches/view-all/Ongoing-Batches/1?status=0';
+      route['url'] = '/workspace/content/batches/view-all/Ongoing-Batches/1?status=0';
       spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userSuccess.success));
       userService._userProfile = testData.userSuccess.success;
       userService._userProfile.roleOrgMap = roleOrgMap;

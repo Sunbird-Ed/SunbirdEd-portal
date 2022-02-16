@@ -50,7 +50,7 @@ describe('SystemWarningComponent', () => {
 
   it('should not show the warning for either CPU or RAM', () => {
     const systemInfoService = TestBed.inject(SystemInfoService);
-    systemInfoService.info = { result: { availableMemory: 5600000, cpuLoad: 92 } };
+    systemInfoService['info'] = { result: { availableMemory: 5600000, cpuLoad: 92 } };
     component['getSystemInfo']();
     expect(component.showCpuLoadWarning).toBe(true);
     expect(component.showMinimumRAMWarning).toBe(true);
@@ -59,7 +59,7 @@ describe('SystemWarningComponent', () => {
   it('should not show the warning for either CPU or RAM, when API return error', () => {
     const systemInfoService = TestBed.inject(SystemInfoService);
     spyOn(systemInfoService, 'getSystemInfo').and.returnValue(throwError({}));
-    systemInfoService.info = { result: { availableMemory: 5600000, cpuLoad: 50 } };
+    systemInfoService['info'] = { result: { availableMemory: 5600000, cpuLoad: 50 } };
     component['getSystemInfo']();
     expect(systemInfoService.getSystemInfo).toHaveBeenCalled();
     expect(component.showCpuLoadWarning).toBe(false);

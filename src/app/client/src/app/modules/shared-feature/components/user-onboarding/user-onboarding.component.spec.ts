@@ -59,7 +59,7 @@ describe('UserOnboardingComponent', () => {
     const cacheService = TestBed.inject(CacheService);
     spyOn(cacheService, 'get').and.returnValue({ slug: 'SUNBIRD' });
     const tenantData = { 'appLogo': '/appLogo.png', 'favicon': '/favicon.ico', 'logo': '/logo.png', 'titleName': 'SUNBIRD' };
-    tenantService._tenantData$.next({ err: null, tenantData: tenantData });
+    tenantService._tenantData$.next({ err: null, tenantData: tenantData as any });
     tenantService.slugForIgot = 'SUNBIRD';
     component.ngOnInit();
     expect(component.tenantInfo.titleName).toEqual('SUNBIRD');

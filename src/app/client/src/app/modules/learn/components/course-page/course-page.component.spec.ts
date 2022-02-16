@@ -499,7 +499,7 @@ describe('CoursePageComponent', () => {
         };
         spyOn(component, 'playContent');
         const route = TestBed.inject(Router);
-        route.url = '/course-page?selectedTab=course-page';
+        route['url'] = '/course-page?selectedTab=course-page';
         component.hoverActionClicked(event);
         expect(component.playContent).toHaveBeenCalled();
     });

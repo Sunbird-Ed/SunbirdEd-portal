@@ -21,11 +21,11 @@ export class TenantService extends DataService {
   /**
    * BehaviorSubject containing tenant data.
    */
-  private _tenantData$ = new BehaviorSubject<ITenantInfo>(undefined);
+  _tenantData$ = new BehaviorSubject<ITenantInfo>(undefined);
   /**
    * BehaviorSubject containing tenant settings data.
    */
-  private _tenantSettings$ = new BehaviorSubject<ITenantSettings>(undefined);
+  _tenantSettings$ = new BehaviorSubject<ITenantSettings>(undefined);
   /**
    * Read only observable containing tenant data.
    */

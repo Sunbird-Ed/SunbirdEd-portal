@@ -302,7 +302,7 @@ describe('HomeSearchComponent', () => {
     };
     contentResponse.hoverActionsData['data'] = contentResponse.hoverActionsData.content;
     const route = TestBed.inject(Router);
-    route.url = '/explore-page?selectedTab=explore-page';
+    route['url'] = '/explore-page?selectedTab=explore-page';
     spyOn(component, 'logTelemetry').and.callThrough();
     spyOn(component, 'playContent');
     component.hoverActionClicked(contentResponse.hoverActionsData);

@@ -19,7 +19,7 @@ export class OrgDetailsService {
   timeDiff: any;
   custodianOrgDetails: any;
 
-  private _orgDetails$ = new BehaviorSubject<any>(undefined);
+  _orgDetails$ = new BehaviorSubject<any>(undefined);
   /**
    * Contains root org id
    */
@@ -28,7 +28,7 @@ export class OrgDetailsService {
   public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable()
   .pipe(skipWhile(data => data === undefined || data === null));
 
-  private _custodianOrg$: Observable<any> = this.getCustodianOrg().pipe(shareReplay(1));
+  _custodianOrg$: Observable<any> = this.getCustodianOrg().pipe(shareReplay(1));
 
   constructor(public configService: ConfigService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService,

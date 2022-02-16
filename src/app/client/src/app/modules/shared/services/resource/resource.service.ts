@@ -48,7 +48,7 @@ export class ResourceService {
    */
   private _instance: string;
   // Observable navItem source
-  private _languageSelected = new BehaviorSubject<any>({});
+  _languageSelected = new BehaviorSubject<any>({});
   // Observable navItem stream
   languageSelected$ = this._languageSelected.asObservable();
 
