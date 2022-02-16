@@ -28,7 +28,7 @@ describe('ChannelService', () => {
     const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(serverRes.successData));
     service.getFrameWork('01246944855007232011').subscribe(
-      apiResponse => {
+      (apiResponse:any) => {
         expect(apiResponse).toBe(serverRes.successData.result.channel);
       }
     );
@@ -38,7 +38,7 @@ describe('ChannelService', () => {
     const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => throwError({}));
     service.getFrameWork('01246944855007232011').subscribe(
-      apiResponse => {
+      (apiResponse:any) => {
         expect(apiResponse).toBe(serverRes.noResultData);
       }
     );

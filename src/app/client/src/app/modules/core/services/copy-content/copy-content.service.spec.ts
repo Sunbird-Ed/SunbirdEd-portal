@@ -27,7 +27,7 @@ describe('CopyContentService', () => {
       userService._userProfile = testData.mockRes.userData;
       spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.successResponse));
       service.copyContent(testData.mockRes.contentData).subscribe(
-        apiResponse => {
+        (apiResponse:any) => {
           expect(apiResponse.responseCode).toBe('OK');
         }
       );

@@ -33,20 +33,20 @@ describe('OrgDetailsService', () => {
 
   it('Get a channel id', () => {
     const service = TestBed.inject(OrgDetailsService);
-    const contentService = TestBed.inject(ContentService);
+    const contentService:any = TestBed.inject(ContentService);
     spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.successData));
     service.getOrgDetails('ap').subscribe(
-      apiResponse => {
+      (apiResponse:any) => {
         expect(apiResponse).toBe(serverRes.successData.result.response.content[0]);
       }
     );
   });
   it('Get a org details', () => {
     const service = TestBed.inject(OrgDetailsService);
-    const contentService = TestBed.inject(ContentService);
+    const contentService:any = TestBed.inject(ContentService);
     spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.orgDetails));
     service.searchOrg().subscribe(
-      apiResponse => {
+      (apiResponse:any) => {
         expect(apiResponse).toBe(serverRes.orgDetails.result.response);
       }
     );
@@ -64,7 +64,7 @@ describe('OrgDetailsService', () => {
     const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.orgDetails));
     service.getOrgDetails('ap').subscribe(
-      apiResponse => {
+      (apiResponse:any) => {
         expect(service.orgDetails).toBe(serverRes.orgDetails.result.response.content[0]);
       }
     );
@@ -76,7 +76,7 @@ describe('OrgDetailsService', () => {
     spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.noResultData));
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(serverRes.orgDetails));
     service.getOrgDetails('ap').subscribe(
-      apiResponse => {
+      (apiResponse:any) => {
         expect(service.orgDetails).toBe(serverRes.orgDetails.result.response.content[0]);
       }
     );
@@ -88,7 +88,7 @@ describe('OrgDetailsService', () => {
     spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.noResultData));
     spyOn(publicDataService, 'post').and.callFake(() => throwError({}));
     service.getOrgDetails('ap').subscribe(
-      apiResponse => { }, err => {
+      (apiResponse:any) => { }, err => {
         expect(err).toEqual({});
       }
     );
@@ -125,7 +125,7 @@ describe('OrgDetailsService', () => {
   });
 
   it('Call getCustodianOrgDetails', () => {
-    const service = TestBed.inject(OrgDetailsService);
+    const service:any = TestBed.inject(OrgDetailsService);
     service._custodianOrg$ = {};
     const returnValue = service.getCustodianOrgDetails();
     expect(returnValue).toEqual({});
