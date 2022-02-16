@@ -26,7 +26,7 @@ describe('CopyContentService', () => {
       const userService:any = TestBed.inject(UserService);
       userService._userProfile = testData.mockRes.userData;
       spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.successResponse));
-      service.copyContent(testData.mockRes.contentData).subscribe(
+      service.copyContent(testData.mockRes.contentData as any).subscribe(
         (apiResponse:any) => {
           expect(apiResponse.responseCode).toBe('OK');
         }
@@ -37,7 +37,7 @@ describe('CopyContentService', () => {
     const service = TestBed.inject(CopyContentService);
     const userService:any = TestBed.inject(UserService);
     const contentService:any = TestBed.inject(ContentService);
-    const contentData = testData.mockRes.copyCourseContentData;
+    const contentData = testData.mockRes.copyCourseContentData as any;
     userService._userProfile = testData.mockRes.userData;
     const userData = userService._userProfile;
     const params = {
@@ -62,7 +62,7 @@ describe('CopyContentService', () => {
     };
     spyOn(service, 'openCollectionEditor').and.stub();
     spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.copyContentSuccess));
-    service.copyAsCourse(contentData).subscribe( (response) => {
+    service.copyAsCourse(contentData as any).subscribe( (response) => {
       expect(service['openCollectionEditor']).toHaveBeenCalledWith('NCFCOPY', 'do_11302157861002444811');
     });
   }));

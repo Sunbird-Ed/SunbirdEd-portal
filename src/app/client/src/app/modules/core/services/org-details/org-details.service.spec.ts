@@ -121,7 +121,7 @@ describe('OrgDetailsService', () => {
     const service = TestBed.inject(OrgDetailsService);
     service.orgInfo = {};
     const returnValue = service.getOrg();
-    expect(returnValue).toEqual({});
+    expect(returnValue).toEqual({} as any);
   });
 
   it('Call getCustodianOrgDetails', () => {
