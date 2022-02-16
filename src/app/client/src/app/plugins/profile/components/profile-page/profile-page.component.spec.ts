@@ -430,7 +430,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates };
-    const courseCService = TestBed.inject('CS_COURSE_SERVICE');
+    const courseCService = TestBed.inject('CS_COURSE_SERVICE' as any);
     const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success');
     spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: '<svg></svg>' }));
@@ -442,7 +442,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates, certificates: Response.pdfCertificate };
-    const courseCService = TestBed.inject('CS_COURSE_SERVICE');
+    const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
     const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success');
     spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
@@ -453,7 +453,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates };
-    const courseCService = TestBed.inject('CS_COURSE_SERVICE');
+    const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
     const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
@@ -464,7 +464,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call downloadCert with SVG format on error', () => {
     const course = { issuedCertificates: Response.svgCertificates };
-    const courseCService = TestBed.inject('CS_COURSE_SERVICE');
+    const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
     spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(throwError({}));
     spyOn(component, 'downloadPdfCertificate');
     component.downloadCert(course);
