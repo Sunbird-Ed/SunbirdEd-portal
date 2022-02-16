@@ -90,7 +90,7 @@ describe('FlaggedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
-    userService._userProfile = mockroleOrgMap;
+    userService['_userProfile' as any] = mockroleOrgMap;
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     component.fetchFlaggedContents(9, 1);
     fixture.detectChanges();
@@ -101,7 +101,7 @@ describe('FlaggedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
-    userService._userProfile = mockroleOrgMap;
+    userService['_userProfile' as any] = mockroleOrgMap;
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fetchFlaggedContents(9, 1);
@@ -113,7 +113,7 @@ describe('FlaggedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
-    userService._userProfile = mockroleOrgMap;
+    userService['_userProfile' as any] = mockroleOrgMap;
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
     component.fetchFlaggedContents(9, 1);
     fixture.detectChanges();
@@ -125,7 +125,7 @@ describe('FlaggedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
-    userService._userProfile = mockroleOrgMap;
+    userService['_userProfile' as any] = mockroleOrgMap;
     component.pager = Response.pager;
     component.pager.totalPages = 8;
     component.navigateToPage(1);
@@ -137,7 +137,7 @@ describe('FlaggedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
-    userService._userProfile = mockroleOrgMap;
+    userService['_userProfile' as any] = mockroleOrgMap;
     component.pager = Response.pager;
     component.pager.totalPages = 0;
     component.navigateToPage(0);
@@ -148,7 +148,7 @@ describe('FlaggedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
-    userService._userProfile = mockroleOrgMap;
+    userService['_userProfile' as any] = mockroleOrgMap;
     const content = { data: { metaData: { 'mimeType': 'application/vnd.ekstep.ecml-archive', 'identifier': 'do_112485749070602240134' } } };
     component.contentClick(content);
   }));

@@ -155,7 +155,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call user service', () => {
     const resourceService = TestBed.inject(ResourceService);
-    resourceService.frelmnts = resourceBundle.frmelmnts;
+    resourceService['frmelmnts' as any] = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
     const userService = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
@@ -209,7 +209,7 @@ describe('ProfilePageComponent', () => {
 
   it('should display root org location if org location is empty', () => {
     const resourceService = TestBed.inject(ResourceService);
-    resourceService.frelmnts = resourceBundle.frmelmnts;
+    resourceService['frmelmnts' as any] = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
     const userService = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
@@ -433,7 +433,7 @@ describe('ProfilePageComponent', () => {
     const courseCService = TestBed.inject('CS_COURSE_SERVICE' as any);
     const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success');
-    spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: '<svg></svg>' }));
+    spyOn<any>(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: '<svg></svg>' }));
     spyOn(component['certDownloadAsPdf'], 'download');
     component.downloadCert(course);
     expect(component['certDownloadAsPdf'].download).toHaveBeenCalled();
@@ -445,7 +445,7 @@ describe('ProfilePageComponent', () => {
     const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
     const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success');
-    spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
+    spyOn<any>(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
     spyOn(component, 'downloadPdfCertificate');
     component.downloadCert(course);
     expect(component.downloadPdfCertificate).toHaveBeenCalled();
@@ -456,7 +456,7 @@ describe('ProfilePageComponent', () => {
     const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
     const toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
-    spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
+    spyOn<any>(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
     spyOn(component, 'downloadPdfCertificate');
     component.downloadCert(course);
     expect(toasterService.error).toHaveBeenCalled();
@@ -465,7 +465,7 @@ describe('ProfilePageComponent', () => {
   it('should call downloadCert with SVG format on error', () => {
     const course = { issuedCertificates: Response.svgCertificates };
     const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
-    spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(throwError({}));
+    spyOn<any>(courseCService, 'getSignedCourseCertificate').and.returnValue(throwError({}));
     spyOn(component, 'downloadPdfCertificate');
     component.downloadCert(course);
     expect(component.downloadPdfCertificate).toHaveBeenCalled();

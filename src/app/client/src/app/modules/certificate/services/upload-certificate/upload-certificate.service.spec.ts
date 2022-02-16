@@ -128,7 +128,7 @@ describe('UploadCertificateService', () => {
     const contentService = TestBed.inject(ContentService);
     spyOn(contentService, 'post').and.returnValue(of({}));
     spyOnProperty(userService, 'channel').and.returnValue('in.ekstep');
-    service.createAsset( {
+    service.createAsset({
       assetCaption: 'picture1',
       creator: 'ekstep',
       creatorId: '123456'

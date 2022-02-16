@@ -21,7 +21,7 @@ describe('ContentBadgeService', () => {
     const service = TestBed.inject(ContentBadgeService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'post').and.callFake(() => observableOf(mockResponse.successResponse));
-    service.addBadge().subscribe((apiResponse) => {
+    service.addBadge({}).subscribe((apiResponse) => {
       expect(apiResponse.responseCode).toBe('OK');
     });
     expect(service).toBeTruthy();
