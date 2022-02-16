@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
-import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService, IUserProfile } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TermsAndConditionsPopupComponent } from './terms-conditions-popup.component';
@@ -73,7 +73,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     userService._userProfile = { 'organisations': ['01229679766115942443'],
     'tncLatestVersionUrl' : 'https://preprodall.blob.core.net/termsandcond/demo.html'
   };
-    userService._userData$.next({ err: null, userProfile: mockUserData });
+    userService._userData$.next({ err: null, userProfile: mockUserData as IUserProfile});
     tenantService._tenantData$.next({ err: null, tenantData: tNcMockResponse.tenantMockData });
     component.ngOnInit();
   });
@@ -86,7 +86,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     const resourceService = TestBed.inject(ResourceService);
     spyOn(toasterService, 'error').and.callThrough();
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
-    userService._userData$.next({ err: 'error', userProfile: mockUserData });
+    userService._userData$.next({ err: 'error', userProfile: mockUserData as IUserProfile});
     tenantService._tenantData$.next({ err: null, tenantData: tNcMockResponse.tenantMockData });
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
@@ -104,7 +104,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     component.disableContinueBtn = true;
     const userService = TestBed.inject(UserService);
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
-    userService._userData$.next({ err: null, userProfile: mockUserData });
+    userService._userData$.next({ err: null, userProfile: mockUserData as IUserProfile});
     spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf({}));
     spyOn(component, 'onClose').and.callThrough();
     component.onSubmitTnc('');
@@ -118,7 +118,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     userData.result.response['managedBy'] = 'mock iD';
     userService._userProfile = userData.result.response;
     userService.setUserId('mock iD');
-    userService._userData$.next({err: null, userProfile: userData});
+    userService._userData$.next({err: null, userProfile: userData as IUserProfile});
     spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf({}));
     spyOn(component, 'onClose').and.callThrough();
     component.onSubmitTnc('');
@@ -133,7 +133,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     const resourceService = TestBed.inject(ResourceService);
     const toasterService = TestBed.inject(ToasterService);
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
-    userService._userData$.next({ err: null, userProfile: mockUserData });
+    userService._userData$.next({ err: null, userProfile: mockUserData as IUserProfile});
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(userService, 'acceptTermsAndConditions').and.callFake(() => observableThrowError({}));
     component.onSubmitTnc('');

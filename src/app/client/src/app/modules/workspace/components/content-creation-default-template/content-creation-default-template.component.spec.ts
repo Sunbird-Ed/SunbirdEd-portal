@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { EditorService, WorkSpaceService } from './../../services';
-import { ResourceService, SharedModule } from '@sunbird/shared';
+import { ResourceService, SharedModule, IUserProfile } from '@sunbird/shared';
 import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from './content-creation-default-template.component';
@@ -87,7 +87,7 @@ describe('DefaultTemplateComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     component.ngOnInit();
-    userService._userData$.next({ err: null, userProfile: mockData.userSuccess });
+    userService._userData$.next({ err: null, userProfile: mockData.userSuccess as IUserProfile });
     expect(component.userProfile).toBeDefined();
   });
   it('should call ngAfterViewInit', () => {

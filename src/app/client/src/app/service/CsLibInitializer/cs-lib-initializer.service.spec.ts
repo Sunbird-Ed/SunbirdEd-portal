@@ -6,7 +6,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('CsLibInitializerService', () => {
+fdescribe('CsLibInitializerService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     providers: [CsLibInitializerService],

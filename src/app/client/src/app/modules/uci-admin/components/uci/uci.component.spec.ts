@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UciComponent } from './uci.component';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, IUserProfile } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF } from '@angular/common';
@@ -69,7 +69,7 @@ describe('UciComponent', () => {
     const configService = TestBed.inject(ConfigService);
     expect(component.blobUrl).toBeDefined();
     component.ngOnInit();
-    userService._userData$.next({ err: null, userProfile: userMockData.userProfile });
+    userService._userData$.next({ err: null, userProfile: userMockData.userProfile as IUserProfile });
     expect(component.userProfile).toEqual(userMockData.userProfile);
     expect(component.url).toEqual(configService.urlConFig.URLS.UCI);
   });

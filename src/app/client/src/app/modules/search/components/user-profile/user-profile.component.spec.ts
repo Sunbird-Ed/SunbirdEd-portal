@@ -6,7 +6,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
     SharedModule, ServerResponse, PaginationService, ResourceService,
-    ConfigService, ToasterService, INoResultMessage, RouterNavigationService
+    ConfigService, ToasterService, INoResultMessage, RouterNavigationService, IUserProfile
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService, BadgesService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -102,7 +102,7 @@ describe('UserProfileComponent', () => {
     it('should call populateUserProfile', () => {
         const userService = TestBed.inject(UserService);
         spyOn(component, 'populateUserProfile').and.callThrough();
-        userService._userData$.next({ err: null, userProfile: Response.userProfile });
+        userService._userData$.next({ err: null, userProfile: Response.userProfile as IUserProfile });
         fixture.detectChanges();
         expect(component.populateUserProfile).toHaveBeenCalled();
     });

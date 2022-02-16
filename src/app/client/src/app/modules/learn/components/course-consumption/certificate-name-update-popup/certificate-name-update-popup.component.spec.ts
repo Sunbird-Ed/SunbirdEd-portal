@@ -4,7 +4,7 @@ import { CertificateNameUpdatePopupComponent } from './certificate-name-update-p
 import { configureTestSuite } from '@sunbird/test-util';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
+import { SharedModule, BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService, IUserProfile } from '@sunbird/shared';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CacheService } from 'ng2-cache-service';
@@ -82,7 +82,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
 
   it('should disable continue button on profile update call', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
     userService._userProfile = CertMockResponse.userMockData;
     component.updateProfileName();
     expect(component.disableContinueBtn).toEqual(true);
@@ -90,7 +90,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
 
   it('should hide the profile update popup on profile update call', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
     userService._userProfile = CertMockResponse.userMockData;
 
     const profileService = TestBed.inject(ProfileService);
@@ -101,7 +101,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
 
   it('should enabled disabled continue button on error of profile update call', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
     userService._userProfile = CertMockResponse.userMockData;
 
     const profileService = TestBed.inject(ProfileService);

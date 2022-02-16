@@ -8,7 +8,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { EditorService, WorkSpaceService } from './../../services';
-import { ResourceService, SharedModule, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { ResourceService, SharedModule, NavigationHelperService, ToasterService, IUserProfile } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { mockFrameworkData } from './data-driven.component.spec.data';
@@ -172,7 +172,7 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     componentParent.targetFramework = 'nit_k-12';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -193,7 +193,7 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     componentParent.targetFramework = 'nit_k-12';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
@@ -216,7 +216,7 @@ describe('DataDrivenComponent', () => {
     componentParent.contentType = 'course';
     componentParent.targetFramework = 'nit_k-12';
     componentParent.primaryCategory = 'course';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     componentParent.fetchFrameworkMetaData();
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -237,7 +237,7 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -255,7 +255,7 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'assessment';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -273,7 +273,7 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
@@ -335,7 +335,7 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
@@ -359,7 +359,7 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -800,7 +800,7 @@ describe('DataDrivenComponent', () => {
   it('#generateQuestionSetData() should return valid metadata', () => {
     const userService = TestBed.inject(UserService);
     componentParent.framework = 'NCERT';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};
     const res = componentParent.generateQuestionSetData();
     expect(Object.keys(res)).toContain('questionset');

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angul
 import { DatasetsComponent } from './program-datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { KendraService, UserService, FormService } from '@sunbird/core';
-import { ResourceService, SharedModule, ConfigService, OnDemandReportService } from '@sunbird/shared';
+import { ResourceService, SharedModule, ConfigService, OnDemandReportService, IUserProfile } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -93,7 +93,7 @@ describe('DatasetsComponent', () => {
 
   it('should fetch programsList', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
+    userService._userData$.next({ err: null, userProfile: mockData.userProfile as IUserProfile});
     userService._userProfile = mockData.userProfile;
     component.userRoles = mockData.userProfile.roles;
     const kendraService = TestBed.inject(KendraService);

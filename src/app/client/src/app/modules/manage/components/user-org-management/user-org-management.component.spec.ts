@@ -4,7 +4,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, SharedModule, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, SharedModule, ToasterService, NavigationHelperService, IUserProfile } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserOrgManagementComponent } from './user-org-management.component';
@@ -185,7 +185,7 @@ describe('UserOrgManagementComponent', () => {
     spyOn(window, 'open');
     component.slug = 'sunbird';
     // component.userJSON = 'user';
-    userService._userData$.next({ err: null, userProfile: { rootOrg: { channel: 'MOCKCHANNEL' } } });
+    userService._userData$.next({ err: null, userProfile: { rootOrg: { channel: 'MOCKCHANNEL' } } as IUserProfile });
     component.fetchDeclaredUserDetails();
     expect(component.userDeclaredDetailsUrl).toBe('signedUrl');
   });

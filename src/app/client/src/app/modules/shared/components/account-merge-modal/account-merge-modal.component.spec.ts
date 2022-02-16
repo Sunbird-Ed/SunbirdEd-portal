@@ -22,7 +22,7 @@ describe('AccountMergeModalComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule, MatDialogModule, 
+      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule, MatDialogModule,
         BrowserAnimationsModule],
       declarations: [AccountMergeModalComponent, InterpolatePipe, ModalWrapperComponent, ModalContentDirective],
       providers: [

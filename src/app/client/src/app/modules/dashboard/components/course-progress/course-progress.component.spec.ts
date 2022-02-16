@@ -14,7 +14,7 @@ import {ContentService, UserService, LearnerService, CoreModule, FormService} fr
 import { By } from '@angular/platform-browser';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
-  ToasterService, ServerResponse
+  ToasterService, ServerResponse, IUserProfile
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { FormsModule } from '@angular/forms';
@@ -94,7 +94,7 @@ describe('CourseProgressComponent', () => {
 
   it('should call userservice, call populateBatchData()', inject([UserService, CourseProgressService],
     (userService, courseService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchRes));
       component.populateBatchData();
@@ -104,7 +104,7 @@ describe('CourseProgressComponent', () => {
 
   it('should call userservice, call populateBatchData() with zero count', inject([UserService, CourseProgressService],
     (userService, courseService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchResZero));
       component.populateBatchData();
@@ -114,7 +114,7 @@ describe('CourseProgressComponent', () => {
 
   it('should call userservice, call populateBatchData() with count One', inject([UserService, CourseProgressService],
     (userService, courseService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchResOne));
       component.populateBatchData();
@@ -125,7 +125,7 @@ describe('CourseProgressComponent', () => {
   it('should call collectioneditor with error data', inject([CourseProgressService, UserService, ResourceService, ToasterService],
     (courseService, userService, resourceService, toasterService) => {
       resourceService.messages = resourceBundle.messages;
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
@@ -134,14 +134,14 @@ describe('CourseProgressComponent', () => {
     }));
 
   it('on selection of courseId call setBatchId()', inject([UserService], (userService) => {
-    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
     fixture.detectChanges();
     component.setBatchId(testData.mockUserData.getBatchResZero);
     expect(component.queryParams.batchIdentifier).toEqual(testData.mockUserData.getBatchResZero.id);
   }));
 
   it('on selection of timeperiod call setTimePeriod()', inject([UserService], (userService) => {
-    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
     fixture.detectChanges();
     component.setTimePeriod('7d');
     expect(component.queryParams.timePeriod).toEqual('7d');
@@ -149,7 +149,7 @@ describe('CourseProgressComponent', () => {
 
   it('spy on downloadDashboardData()', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
       fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData')
         .and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
@@ -159,7 +159,7 @@ describe('CourseProgressComponent', () => {
 
   xit('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
       fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
@@ -187,7 +187,7 @@ describe('CourseProgressComponent', () => {
       component.queryParams = { batchIdentifier: '0124963192947507200' };
       component.pager = testData.mockUserData.pager;
       component.pager.totalPages = 8;
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
+      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData as IUserProfile });
       fixture.detectChanges();
       spyOn(courseService, 'getBatches').and.returnValue(observableOf(testData.mockUserData.getBatchRes));
       component.populateBatchData();

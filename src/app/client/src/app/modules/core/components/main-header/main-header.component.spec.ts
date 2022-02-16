@@ -104,7 +104,7 @@ describe('MainHeaderComponent', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     userService._authenticated = true;
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
@@ -179,7 +179,7 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     const managedUserService = TestBed.inject(ManagedUserService);
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     userService._authenticated = true;
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     userService.initialize(true);
@@ -194,7 +194,7 @@ describe('MainHeaderComponent', () => {
   xit('should not fetch managed user list on init as api errored', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     userService._authenticated = true;
     const userData = mockData.userReadApiResponse;
     userData.result.response['managedBy'] = 'mock managed by id';

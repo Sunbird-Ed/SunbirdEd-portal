@@ -4,7 +4,7 @@ import { FlagReviewerComponent } from './flag-reviewer.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -92,7 +92,7 @@ describe('FlagReviewerComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     component.fecthFlagReviewerContent(9, 1, bothParams);
     fixture.detectChanges();
@@ -104,7 +104,7 @@ describe('FlagReviewerComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fecthFlagReviewerContent(9, 1, bothParams);
@@ -117,7 +117,7 @@ describe('FlagReviewerComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
     component.fecthFlagReviewerContent(9, 1, bothParams);
     fixture.detectChanges();

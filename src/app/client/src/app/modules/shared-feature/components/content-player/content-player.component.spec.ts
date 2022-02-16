@@ -2,7 +2,7 @@ import { throwError as observableThrowError, of as observableOf, Observable, of 
 import { mockUserData } from '../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService, IUserProfile } from '@sunbird/shared';
 import { CoreModule, UserService, PlayerService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -90,7 +90,7 @@ describe('ContentPlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
-    userService._userData$.next({ err: null, userProfile: mockUserData });
+    userService._userData$.next({ err: null, userProfile: mockUserData as IUserProfile });
     component.ngOnInit();
     expect(component.showLoader).toBeTruthy();
   });

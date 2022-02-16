@@ -4,7 +4,7 @@ import { UpForReviewComponent } from './up-for-review.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -95,7 +95,7 @@ describe('UpForReviewComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();
@@ -107,7 +107,7 @@ describe('UpForReviewComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fecthUpForReviewContent(9, 1, bothParams);
@@ -120,7 +120,7 @@ describe('UpForReviewComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();
@@ -138,7 +138,7 @@ describe('UpForReviewComponent', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
     const ContentType = [
@@ -159,7 +159,7 @@ describe('UpForReviewComponent', () => {
       const learnerService = TestBed.inject(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
-      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
       const sortByOption = 'Created On';
       const queryParams = {subject: [ 'english', 'odia' ], sortType: 'asc', sort_by: 'Created On'};
       component.queryParams = queryParams;
@@ -176,7 +176,7 @@ describe('UpForReviewComponent', () => {
       const learnerService = TestBed.inject(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
-      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
       component.pager = Response.pager;
       component.pager.totalPages = 0;
       component.navigateToPage(3);
@@ -190,7 +190,7 @@ describe('UpForReviewComponent', () => {
       const learnerService = TestBed.inject(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
-      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.upforReviewContentData);
       component.state = 'upForReview';
@@ -204,7 +204,7 @@ describe('UpForReviewComponent', () => {
     };
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    userService._userData$.next({ err: null, userProfile: BookReviewer as IUserProfile});
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
     const ContentType = ['Digital Textbook'];
@@ -219,7 +219,7 @@ describe('UpForReviewComponent', () => {
     };
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    userService._userData$.next({ err: null, userProfile: BookReviewer as IUserProfile});
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
     expect(returnContentType).toBeDefined();
@@ -233,7 +233,7 @@ describe('UpForReviewComponent', () => {
     };
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    userService._userData$.next({ err: null, userProfile: BookReviewer as IUserProfile});
     component.ngOnInit();
     fixture.detectChanges();
     spyOn(component, 'fecthUpForReviewContent').and.callThrough();

@@ -1,5 +1,5 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ConfigService, UtilService, IUserProfile } from '@sunbird/shared';
 import {
   CoreModule, UserService, SearchService, PlayerService, LearnerService,
   CoursesService, CertRegService, OrgDetailsService, FormService
@@ -158,7 +158,7 @@ describe('ProfilePageComponent', () => {
     resourceService.frelmnts = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: Response.userData });
+    userService._userData$.next({ err: null, userProfile: Response.userData as IUserProfile});
     const formservice = TestBed.inject(FormService);
     spyOn(formservice, 'getFormConfig').and.callThrough();
     spyOn(component, 'getOrgDetails').and.callThrough();
@@ -212,7 +212,7 @@ describe('ProfilePageComponent', () => {
     resourceService.frelmnts = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: Response.userData });
+    userService._userData$.next({ err: null, userProfile: Response.userData as IUserProfile});
     spyOn(component, 'getOrgDetails').and.callThrough();
     component.ngOnInit();
     expect(component).toBeTruthy();
@@ -371,7 +371,7 @@ describe('ProfilePageComponent', () => {
 
   it('should check user is custodian user of not', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: Response.userData });
+    userService._userData$.next({ err: null, userProfile: Response.userData as IUserProfile});
     const orgDetailsService = TestBed.inject(OrgDetailsService);
     spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(observableOf({ result: { response: { value: '0126684405' } } }));
     component.ngOnInit();
@@ -399,7 +399,7 @@ describe('ProfilePageComponent', () => {
 
   it('should not show self declared information if declaration is not available', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: Response.userData });
+    userService._userData$.next({ err: null, userProfile: Response.userData as IUserProfile});
     spyOn(component, 'getSelfDeclaredDetails').and.callThrough();
     component.ngOnInit();
     expect(component.declarationDetails).toBeDefined();
@@ -408,7 +408,7 @@ describe('ProfilePageComponent', () => {
 
   it('should get self declared details', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: Response.userData });
+    userService._userData$.next({ err: null, userProfile: Response.userData as IUserProfile});
     const profileService = TestBed.inject(ProfileService);
     spyOn(profileService, 'getPersonaTenantForm').and.returnValue(observableOf(Response.personaTenantValues));
     spyOn(profileService, 'getSelfDeclarationForm').and.returnValue(observableOf(Response.declarationFormValues));

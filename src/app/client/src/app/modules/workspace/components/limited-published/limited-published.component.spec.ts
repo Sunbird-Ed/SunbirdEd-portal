@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angu
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LimitedPublishedComponent } from './limited-published.component';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -100,7 +100,7 @@ describe('LimitedPublishedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
-    userService._userData$.next({ err: null, userProfile: mockUserData.success });
+    userService._userData$.next({ err: null, userProfile: mockUserData.success as IUserProfile});
     userService._userProfile = mockUserData.success;
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     spyOn(component, 'search').and.callThrough();

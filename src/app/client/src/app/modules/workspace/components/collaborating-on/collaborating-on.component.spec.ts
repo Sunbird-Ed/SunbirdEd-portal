@@ -3,7 +3,7 @@ import { CollaboratingOnComponent } from './collaborating-on.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -158,7 +158,7 @@ describe('CollaboratingOnComponent', () => {
     (workSpaceService, route, http) => {
       spyOn(document, 'getElementById').and.returnValue('true');
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: Response.userData });
+      userService._userData$.next({ err: null, userProfile: Response.userData as IUserProfile});
       spyOn(component, 'contentClick').and.callThrough();
       fixture.detectChanges();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);

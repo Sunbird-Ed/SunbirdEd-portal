@@ -1,7 +1,7 @@
 import { Observable, of, throwError } from 'rxjs';
 import {
   ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
-  BrowserCacheTtlService, LayoutService
+  BrowserCacheTtlService, LayoutService, IUserData, IUserProfile
 } from '@sunbird/shared';
 import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
   PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
@@ -134,7 +134,7 @@ afterEach(() => {
     const learnerService = TestBed.inject(LearnerService);
     const publicDataService = TestBed.inject(PublicDataService);
     const tenantService = TestBed.inject(TenantService);
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile });
     userService._authenticated = true;
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));

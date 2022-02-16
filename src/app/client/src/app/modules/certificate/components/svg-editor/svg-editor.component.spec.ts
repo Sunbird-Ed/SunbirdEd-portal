@@ -404,7 +404,7 @@ class RouterStub {
       component.closeSVGInputModal();
       expect(component.showSVGInputModal).toBeFalsy();
     });
-  
+
     it('should invoke updateSVGInputTag after input is accepted for new svg text element', () => {
       component.showSVGInputModal = true;
       spyOn(component.edit, 'next');
@@ -412,7 +412,7 @@ class RouterStub {
       expect(component.showSVGInputModal).toBeFalsy();
       expect(component.edit.next).toHaveBeenCalled();
     });
-  
+
     it('should convert image URL to base64 string', () => {
       const imageObj = {
         url: 'http://staging.sunbirded.org/auth/resources/7.0.1/login/ntp/img/logo.png'
@@ -444,7 +444,7 @@ class RouterStub {
         innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'
       };
       spyOn(component.save, 'next');
-      spyOn(document, 'getElementById').and.returnValue(elementMock)
+      spyOn(document, 'getElementById').and.returnValue(elementMock);
       spyOn(component, 'uploadTemplate');
       spyOn(component, 'previewCertificate').and.stub();
       spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
@@ -464,14 +464,14 @@ class RouterStub {
       const elementMock = {
         innerHTML: '<svg height="30" width="200"><text x="0" y="15" fill="red">Sample SVG String</text></svg>'
       };
-      spyOn(document, 'getElementById').and.returnValue(elementMock)
+      spyOn(document, 'getElementById').and.returnValue(elementMock);
       spyOn(component, 'uploadTemplate');
       spyOn(component, 'previewCertificate').and.stub();
       spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
       spyOn(uploadCertService, 'createCertTemplate').and.callFake(() => throwError({}));
       spyOn(toasterService, 'error').and.stub();
       component.saveUpdatedCertificate();
-      fixture.detectChanges()
+      fixture.detectChanges();
       tick(1000);
       expect(component.save.next).toHaveBeenCalled();
       expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');

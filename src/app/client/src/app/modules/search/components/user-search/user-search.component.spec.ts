@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, INoResultMessage
+  ConfigService, ToasterService, INoResultMessage, IUserProfile
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService, CoreModule, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { UserSearchService } from './../../services';
@@ -159,7 +159,7 @@ describe('UserSearchComponent', () => {
   it('should subscribe user profile and call populateUserSearch', () => {
     component.searchList = Response.successData.result.response.content;
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: Response.userProfile });
+    userService._userData$.next({ err: null, userProfile: Response.userProfile as IUserProfile});
     spyOn(component, 'populateUserSearch').and.callThrough();
     fixture.detectChanges();
     expect(component.populateUserSearch).toHaveBeenCalled();

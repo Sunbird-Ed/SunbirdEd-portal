@@ -9,7 +9,7 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule, UserService,  PermissionService, SearchService, ObservationUtilService} from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TranslateModule } from '@ngx-translate/core';
-import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule, IUserProfile } from '@sunbird/shared';
 import { mockObject } from './user-role-assign.spec.data';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 
@@ -113,7 +113,7 @@ describe('UserRoleAssignComponent', () => {
     }];
     component.allRoles = mockObject.roleList;
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: mockObject.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockObject.userMockData as IUserProfile });
     userService._rootOrgId = '01269878797503692810';
     userService.rootOrgName = 'tamilnadu';
     spyOn(component, 'manipulateUserObject').and.callThrough();

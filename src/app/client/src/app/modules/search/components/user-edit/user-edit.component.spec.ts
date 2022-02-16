@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, RouterNavigationService
+  ConfigService, ToasterService, RouterNavigationService, IUserProfile
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService, PermissionService, RolesAndPermissions } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
@@ -248,7 +248,7 @@ describe('UserEditComponent', () => {
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
     component.selectedOrgUserRoles = Response.successData.result.response.organisations[0].roles;
-    userService._userData$.next({ err: null, userProfile: Response.userdata });
+    userService._userData$.next({ err: null, userProfile: Response.userdata as IUserProfile });
     component.userDetailsForm.controls['role'].setValue('PUBLIC');
     const modalHeader = fixture.debugElement.query(By.css('.sb-modal-header'));
     expect(modalHeader).toBeNull();

@@ -78,7 +78,7 @@ describe('SearchComponent', () => {
     const userService = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     const route = TestBed.inject(Router);
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile as IUserProfile});
     resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
     component.searchDropdownValues = ['All', 'Courses', 'Library'];
     component.ngOnInit();
@@ -88,7 +88,7 @@ describe('SearchComponent', () => {
     const userService = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = true;
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile as IUserProfile });
     resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
     component.searchDisplayValueMappers = {
       'All': 'all',
@@ -103,14 +103,14 @@ describe('SearchComponent', () => {
   xit('search dropdown selected value should be ALL when non rootorgadmin user lands to profile page', ( ) => {
     const userService = TestBed.inject(UserService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = false;
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile as IUserProfile });
     component.ngOnInit();
     expect(component.selectedOption).toEqual('All');
   });
   xit('search dropdown selected value should be Users when rootorgadmin user lands to profile page', ( ) => {
     const userService = TestBed.inject(UserService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = true;
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile as IUserProfile});
     component.ngOnInit();
     expect(component.selectedOption).toEqual('Users');
   });

@@ -3,7 +3,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { mockPermissionRes } from './permission.mock.spec.data';
 import { mockUserData } from './../user/user.mock.spec.data';
 import { TestBed } from '@angular/core/testing';
-import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService, IUserProfile } from '@sunbird/shared';
 import { PermissionService } from './permission.service';
 import { LearnerService, UserService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -45,7 +45,7 @@ describe('PermissionService', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile });
     expect(permissionService.userRoles.length).toBeGreaterThan(0);
     expect(permissionService.userRoles).toContain('PUBLIC');
   });
@@ -55,7 +55,7 @@ describe('PermissionService', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile});
     expect(permissionService.permissionAvailable).toBeTruthy();
   });
 
@@ -81,7 +81,7 @@ describe('PermissionService', () => {
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     spyOn(toasterService, 'error').and.returnValue(true);
     permissionService.initialize();
-    userService._userData$.next({ err: {responseCode: 'CLIENT_ERROR'}, userProfile: mockUserRoles });
+    userService._userData$.next({ err: {responseCode: 'CLIENT_ERROR'}, userProfile: mockUserRoles as IUserProfile});
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later...');
   });
 
@@ -91,7 +91,7 @@ describe('PermissionService', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile });
     const validPermission = permissionService.checkRolesPermissions(['PUBLIC']);
     expect(validPermission).toBeTruthy();
   });
@@ -102,7 +102,7 @@ describe('PermissionService', () => {
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as IUserProfile });
     const validPermission = permissionService.checkRolesPermissions(['ADMIN']);
     expect(validPermission).toBeFalsy();
   });

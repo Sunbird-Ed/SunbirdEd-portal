@@ -5,7 +5,7 @@ import { UserService, CoreModule, BadgesService } from '@sunbird/core';
 import { ProfileBadgeComponent } from './profile-badge.component';
 import { mockRes } from './profile-badge.component.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, IUserProfile } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
@@ -32,7 +32,7 @@ describe('ProfileBadgeComponent', () => {
   it('should call getBadgeData method', () => {
     const userService = TestBed.inject(UserService);
     const badgeService = TestBed.inject(BadgesService);
-    userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile });
+    userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile as IUserProfile });
     spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => observableOf(mockRes.badgeList));
     component.ngOnInit();
     expect(component.badgeArray[0]).toEqual(mockRes.badgeList);

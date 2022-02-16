@@ -9,7 +9,7 @@ import { ProfileService } from '@sunbird/profile';
 import {
   BrowserCacheTtlService, ConfigService,
   NavigationHelperService, ResourceService,
-  SharedModule, ToasterService
+  SharedModule, ToasterService, IUserProfile
 } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -122,7 +122,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'impression');
     spyOn(component, 'setTelemetryData');
-    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
     component.ngOnInit();
     expect(telemetryService.impression).toHaveBeenCalled();
     expect(component.setTelemetryData).toHaveBeenCalled();
@@ -242,7 +242,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
     spyOn(telemetryService, 'impression');
-    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.validationType['declared-email'].isVerified).toBe(false);
@@ -563,11 +563,11 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.inject('CS_USER_SERVICE');
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = true;
-      spyOn(csUserService, 'updateConsent').and.returnValue(of({
+      spyOn<any>(csUserService, 'updateConsent').and.returnValue(of({
         'consent': {
           'userId': 'c4cc494f-04c3-49f3-b3d5-7b1a1984abad'
         },
@@ -587,8 +587,8 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.inject('CS_USER_SERVICE');
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = true;
       spyOn(csUserService, 'updateConsent').and.returnValue(throwError({
@@ -608,8 +608,8 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.inject('CS_USER_SERVICE');
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = false;
       spyOn(csUserService, 'updateConsent').and.returnValue(of({
@@ -631,8 +631,8 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.inject('CS_USER_SERVICE');
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = false;
       spyOn(csUserService, 'updateConsent').and.returnValue(throwError({

@@ -7,7 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService,
-  InterpolatePipe, SharedModule } from '@sunbird/shared';
+  InterpolatePipe, SharedModule, IUserProfile } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
@@ -215,7 +215,7 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     const userService = TestBed.inject(UserService);
     const certificateService  = TestBed.inject(CertificateService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile });
     userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableOf(CertMockResponse.certRulesData));
 
@@ -260,7 +260,7 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     const userService = TestBed.inject(UserService);
     const certificateService  = TestBed.inject(CertificateService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
     userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableThrowError({}));
 
@@ -555,7 +555,7 @@ describe('CertificateConfigurationComponent', () => {
     const userService = TestBed.inject(UserService);
     const certificateService  = TestBed.inject(CertificateService);
     const toasterService = TestBed.inject(ToasterService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
     userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
