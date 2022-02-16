@@ -229,7 +229,7 @@ describe('CoursePageComponent', () => {
     it('should redo layout on render', done => {
         component.layoutConfiguration = null;
         spyOn<any>(component, 'redoLayout').and.callThrough();
-        const layoutService = TestBed.inject(LayoutService);
+        const layoutService:any = TestBed.inject(LayoutService);
         spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }));
         component['initLayout']().subscribe(res => {
             expect(component.layoutConfiguration).toEqual({});
@@ -252,7 +252,7 @@ describe('CoursePageComponent', () => {
         const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
         spyOn(component, 'viewAll').and.callThrough();
         spyOn(cacheService, 'set').and.stub();
-       route['url' as any] = '/explore-course?selectedTab=course';
+        router['url' as any] = '/explore-course?selectedTab=course';
         component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
         expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
             { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined } });
@@ -260,7 +260,7 @@ describe('CoursePageComponent', () => {
     });
 
     it('should call play content method', () => {
-        const publicPlayerService = TestBed.inject(PublicPlayerService);
+        const publicPlayerService:any = TestBed.inject(PublicPlayerService);
         spyOn(publicPlayerService, 'playContent').and.callThrough();
         const event = {
             data: {
@@ -334,7 +334,7 @@ describe('CoursePageComponent', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
         const userService:any = TestBed.inject(UserService);
         const router = TestBed.inject(Router);
-       route['url' as any] = '/learn';
+        router['url' as any] = '/learn';
         const eventData = Response.viewAllEventData;
         userService._userProfile = Response.userData;
         const searchQueryParams = {
