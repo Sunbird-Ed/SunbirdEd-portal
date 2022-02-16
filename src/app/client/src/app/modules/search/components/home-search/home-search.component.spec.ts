@@ -226,8 +226,8 @@ describe('HomeSearchComponent', () => {
   }));
 
   it('should playContent without batch id', () => {
-    const courseService = TestBed.inject(CoursesService);
-    const playerService = TestBed.inject(PlayerService);
+    const courseService:any = TestBed.inject(CoursesService);
+    const playerService:any = TestBed.inject(PlayerService);
     spyOn(courseService, 'findEnrolledCourses').and.returnValue({ onGoingBatchCount: 0, expiredBatchCount: 0 });
     spyOn(playerService, 'playContent').and.callThrough();
     const data = {
@@ -238,8 +238,8 @@ describe('HomeSearchComponent', () => {
   });
 
   it('should playContent for on going batch with batch id', () => {
-    const courseService = TestBed.inject(CoursesService);
-    const playerService = TestBed.inject(PlayerService);
+    const courseService:any = TestBed.inject(CoursesService);
+    const playerService:any = TestBed.inject(PlayerService);
     const returnValue = {
       onGoingBatchCount: 1,
       expiredBatchCount: 0,
@@ -258,7 +258,7 @@ describe('HomeSearchComponent', () => {
   it('should call navigateToPage method', () => {
     component.paginationDetails.totalPages = 20;
     const router = TestBed.inject(Router);
-   route['url' as any] = '/search/Courses/1?key=SB-194&selectedTab=all';
+    router['url' as any] = '/search/Courses/1?key=SB-194&selectedTab=all';
     spyOn(window, 'scroll');
     component.navigateToPage(2);
     expect(router.navigate).toHaveBeenCalled();
@@ -356,9 +356,9 @@ describe('HomeSearchComponent', () => {
       returnTo: 'home'
     };
     spyOn(component, 'moveToTop').and.stub();
-    const userServices = TestBed.inject(UserService);
+    const userServices:any = TestBed.inject(UserService);
     spyOn(userServices, 'loggedIn').and.returnValue(true);
-    const telemetryService = TestBed.inject(TelemetryService);
+    const telemetryService:any = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.stub();
     component.viewAll(events);
     expect(events.contents).toBeTruthy();

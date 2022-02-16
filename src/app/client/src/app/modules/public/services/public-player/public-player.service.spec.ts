@@ -34,7 +34,7 @@ describe('PublicPlayerService', () => {
   });
 
   it('should return content details', () => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const contentService:any = TestBed.inject(ContentService);
     spyOn(contentService, 'get').and.returnValue(observableOf(serverRes.successResult));
     playerService.getContent('');
@@ -48,7 +48,7 @@ describe('PublicPlayerService', () => {
     expect(playerService).toBeTruthy();
   });
   it('should return player config without courseId', () => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const userService:any = TestBed.inject(UserService);
     userService._anonymousSid = UUID.UUID();
     userService._userid = 'anonymous';
@@ -64,7 +64,7 @@ describe('PublicPlayerService', () => {
   });
 
   it('should call player updateDownloadStatus()', () => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const resourceService:any = TestBed.inject(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
     playerService.updateDownloadStatus(serverRes.download_list, serverRes.successResult.result.content);
@@ -72,7 +72,7 @@ describe('PublicPlayerService', () => {
   });
 
   it('should navigate to course player if collection does not has trackable object and content type is course', fakeAsync(() => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     spyOn(playerService, 'handleNavigation').and.callThrough();
     playerService.playContent(contentMockData);
@@ -81,7 +81,7 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     const mockData = contentMockData;
     spyOn(playerService, 'handleNavigation').and.callThrough();
@@ -93,7 +93,7 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     contentMockData.data['trackable'] = { 'enabled': 'No' };
     playerService.playContent(contentMockData);
@@ -103,7 +103,7 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to course player if collection is trackable', fakeAsync(() => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     spyOn(playerService, 'handleNavigation').and.callThrough();
     contentMockData.data['trackable'] = { 'enabled': 'Yes' };
@@ -113,7 +113,7 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to resource player if content mime type is not collection', fakeAsync(() => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     contentMockData.data['mimeType'] = 'pdf';
     spyOn(playerService, 'handleNavigation').and.callThrough();
@@ -124,7 +124,7 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should get collection hierarchy', () => {
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValues(of(serverRes.collectionHierarchy));
     playerService.getCollectionHierarchy('123').subscribe((res) => {

@@ -149,7 +149,7 @@ describe('UserEditComponent', () => {
   });
 
   xit('should call search api for populateOrgName', () => {
-    const searchService = TestBed.inject(SearchService);
+    const searchService:any = TestBed.inject(SearchService);
     const options = {
       orgid: [
         '0123164136298905609',
@@ -263,7 +263,7 @@ describe('UserEditComponent', () => {
   });
 
   it('should call getBlock', () => {
-    const profileService = TestBed.inject(ProfileService);
+    const profileService:any = TestBed.inject(ProfileService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     component.userDetails = Response.userData.result.response;
@@ -275,7 +275,7 @@ describe('UserEditComponent', () => {
 
   it('should call getBlock error case', () => {
     component.userDetails = Response.userData.result.response;
-    const profileService = TestBed.inject(ProfileService);
+    const profileService:any = TestBed.inject(ProfileService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     component.initializeFormFields();
@@ -290,7 +290,7 @@ describe('UserEditComponent', () => {
   });
   it('should call getSchool', () => {
     component.userDetails = Response.userData.result.response;
-    const orgDetailsService = TestBed.inject(OrgDetailsService);
+    const orgDetailsService:any = TestBed.inject(OrgDetailsService);
     component.initializeFormFields();
     spyOn(orgDetailsService, 'fetchOrgs').and.returnValue(observableOf(Response.orgDetails));
     component.getSchool('37809706-8f0e-4009-bf67-87bf04f220fa');
@@ -298,7 +298,7 @@ describe('UserEditComponent', () => {
   });
 
   it('should call getSchool error case', () => {
-    const orgDetailsService = TestBed.inject(OrgDetailsService);
+    const orgDetailsService:any = TestBed.inject(OrgDetailsService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(component, 'redirect');
@@ -309,7 +309,7 @@ describe('UserEditComponent', () => {
     expect(component.redirect).toHaveBeenCalled();
   });
   it('should call getDistrict', () => {
-    const profileService = TestBed.inject(ProfileService);
+    const profileService:any = TestBed.inject(ProfileService);
     component.userDetails = Response.userData.result.response;
     component.stateId = '1';
     component.initializeFormFields();
@@ -318,7 +318,7 @@ describe('UserEditComponent', () => {
     expect(component.showMainLoader).toBeFalsy();
   });
   it('should call getDistrict error case', () => {
-    const profileService = TestBed.inject(ProfileService);
+    const profileService:any = TestBed.inject(ProfileService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(component, 'redirect');
