@@ -100,6 +100,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
           return this.getUpdatedFilters(board, true);
         }));
       } else {
+        let userType = localStorage.getItem('userType');
+        userType == "administrator" ? board.required = true  : null;
         const fieldOptions = [board,
           { code: 'medium', label: 'Medium', index: 2 },
           { code: 'gradeLevel', label: 'Class', index: 3 },
