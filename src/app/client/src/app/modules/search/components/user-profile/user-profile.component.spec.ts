@@ -102,7 +102,7 @@ describe('UserProfileComponent', () => {
     it('should call populateUserProfile', () => {
         const userService = TestBed.inject(UserService);
         spyOn(component, 'populateUserProfile').and.callThrough();
-        userService._userData$.next({ err: null, userProfile: Response.userProfile as IUserProfile });
+        userService._userData$.next({ err: null, userProfile: Response.userProfile as any });
         fixture.detectChanges();
         expect(component.populateUserProfile).toHaveBeenCalled();
     });

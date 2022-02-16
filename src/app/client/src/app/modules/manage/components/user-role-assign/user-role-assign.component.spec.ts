@@ -113,7 +113,7 @@ describe('UserRoleAssignComponent', () => {
     }];
     component.allRoles = mockObject.roleList;
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: mockObject.userMockData as IUserProfile });
+    userService._userData$.next({ err: null, userProfile: mockObject.userMockData as any });
     userService._rootOrgId = '01269878797503692810';
     userService.rootOrgName = 'tamilnadu';
     spyOn(component, 'manipulateUserObject').and.callThrough();

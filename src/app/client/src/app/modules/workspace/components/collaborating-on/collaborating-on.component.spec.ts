@@ -158,7 +158,7 @@ describe('CollaboratingOnComponent', () => {
     (workSpaceService, route, http) => {
       spyOn(document, 'getElementById').and.returnValue('true');
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: Response.userData as IUserProfile});
+      userService._userData$.next({ err: null, userProfile: Response.userData as any});
       spyOn(component, 'contentClick').and.callThrough();
       fixture.detectChanges();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);

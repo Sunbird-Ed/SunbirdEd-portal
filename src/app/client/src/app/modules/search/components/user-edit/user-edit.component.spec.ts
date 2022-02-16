@@ -248,7 +248,7 @@ describe('UserEditComponent', () => {
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
     component.selectedOrgUserRoles = Response.successData.result.response.organisations[0].roles;
-    userService._userData$.next({ err: null, userProfile: Response.userdata as IUserProfile });
+    userService._userData$.next({ err: null, userProfile: Response.userdata as any });
     component.userDetailsForm.controls['role'].setValue('PUBLIC');
     const modalHeader = fixture.debugElement.query(By.css('.sb-modal-header'));
     expect(modalHeader).toBeNull();

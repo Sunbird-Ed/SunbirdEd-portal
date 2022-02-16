@@ -69,7 +69,7 @@ describe('UciComponent', () => {
     const configService = TestBed.inject(ConfigService);
     expect(component.blobUrl).toBeDefined();
     component.ngOnInit();
-    userService._userData$.next({ err: null, userProfile: userMockData.userProfile as IUserProfile });
+    userService._userData$.next({ err: null, userProfile: userMockData.userProfile as any });
     expect(component.userProfile).toEqual(userMockData.userProfile);
     expect(component.url).toEqual(configService.urlConFig.URLS.UCI);
   });

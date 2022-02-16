@@ -93,7 +93,7 @@ describe('DatasetsComponent', () => {
 
   it('should fetch programsList', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: mockData.userProfile as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockData.userProfile as any});
     userService._userProfile = mockData.userProfile;
     component.userRoles = mockData.userProfile.roles;
     const kendraService = TestBed.inject(KendraService);

@@ -194,7 +194,7 @@ export class UserService {
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
-        this._userData$.next({ err: err, userProfile: this._userProfile });
+        this._userData$.next({ err: err, userProfile: this._userProfile as any });
       }
     );
   }
@@ -266,7 +266,7 @@ export class UserService {
     this._hashTagId = _.get(this._userProfile, 'rootOrg.hashTagId');
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
-    this._userData$.next({ err: null, userProfile: this._userProfile });
+    this._userData$.next({ err: null, userProfile: this._userProfile as any });
     this.rootOrgName = _.get(this._userProfile, 'rootOrg.orgName');
 
     // Storing profile details of stroger credentials user in cache

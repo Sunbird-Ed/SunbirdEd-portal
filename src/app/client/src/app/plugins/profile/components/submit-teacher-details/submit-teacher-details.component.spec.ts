@@ -122,7 +122,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'impression');
     spyOn(component, 'setTelemetryData');
-    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
     component.ngOnInit();
     expect(telemetryService.impression).toHaveBeenCalled();
     expect(component.setTelemetryData).toHaveBeenCalled();
@@ -242,7 +242,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
     spyOn(telemetryService, 'impression');
-    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.validationType['declared-email'].isVerified).toBe(false);
@@ -563,7 +563,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = true;
@@ -587,7 +587,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = true;
@@ -608,7 +608,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = false;
@@ -631,7 +631,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
       const userService = TestBed.inject(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as IUserProfile});
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService = TestBed.inject(ToasterService);
       component.isTenantChanged = false;

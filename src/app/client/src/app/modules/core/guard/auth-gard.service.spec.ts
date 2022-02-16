@@ -92,7 +92,7 @@ describe('AuthGardService', () => {
     it('should return true if user has rootOrgAdmin role', () => {
         const userService = TestBed.inject(UserService);
         const authservice = TestBed.inject(AuthGuard);
-        userService['_userData$'].next({ err: null, userProfile: {} });
+        userService['_userData$'].next({ err: null, userProfile: {} as any });
         spyOnProperty(userService, 'userProfile', 'get').and.returnValue({rootOrgAdmin: true});
         authservice.getPermission('rootOrgAdmin').subscribe((data) => {
             expect(data).toBeTruthy();
@@ -104,7 +104,7 @@ describe('AuthGardService', () => {
         const toasterService = TestBed.inject(ToasterService);
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
         spyOn(toasterService, 'warning').and.returnValue(true);
-        userService['_userData$'].next({ err: null, userProfile: {} });
+        userService['_userData$'].next({ err: null, userProfile: {} as any});
         spyOnProperty(userService, 'userProfile', 'get').and.returnValue({rootOrgAdmin: false});
         authservice.getPermission('rootOrgAdmin').subscribe((data) => {
             expect(data).toBeFalsy();

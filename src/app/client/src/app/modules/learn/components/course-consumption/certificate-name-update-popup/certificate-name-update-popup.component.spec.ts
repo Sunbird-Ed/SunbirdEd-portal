@@ -82,7 +82,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
 
   it('should disable continue button on profile update call', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as any});
     userService._userProfile = CertMockResponse.userMockData;
     component.updateProfileName();
     expect(component.disableContinueBtn).toEqual(true);
@@ -90,7 +90,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
 
   it('should hide the profile update popup on profile update call', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as any});
     userService._userProfile = CertMockResponse.userMockData;
 
     const profileService = TestBed.inject(ProfileService);
@@ -101,7 +101,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
 
   it('should enabled disabled continue button on error of profile update call', () => {
     const userService = TestBed.inject(UserService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as any});
     userService._userProfile = CertMockResponse.userMockData;
 
     const profileService = TestBed.inject(ProfileService);

@@ -100,7 +100,7 @@ describe('LimitedPublishedComponent', () => {
     const userService = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
-    userService._userData$.next({ err: null, userProfile: mockUserData.success as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockUserData.success as any});
     userService._userProfile = mockUserData.success;
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     spyOn(component, 'search').and.callThrough();

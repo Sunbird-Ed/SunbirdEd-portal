@@ -81,7 +81,7 @@ describe('PermissionService', () => {
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     spyOn(toasterService, 'error').and.returnValue(true);
     permissionService.initialize();
-    userService._userData$.next({ err: {responseCode: 'CLIENT_ERROR'}, userProfile: mockUserRoles as IUserProfile});
+    userService._userData$.next({ err: {responseCode: 'CLIENT_ERROR'}, userProfile: mockUserRoles as any});
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later...');
   });
 

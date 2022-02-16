@@ -90,7 +90,7 @@ describe('ContentPlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
-    userService._userData$.next({ err: null, userProfile: mockUserData as IUserProfile });
+    userService._userData$.next({ err: null, userProfile: mockUserData as any });
     component.ngOnInit();
     expect(component.showLoader).toBeTruthy();
   });

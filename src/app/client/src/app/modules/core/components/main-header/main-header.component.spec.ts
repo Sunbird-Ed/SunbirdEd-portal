@@ -12,7 +12,8 @@ import {
   BrowserCacheTtlService,
   UtilService,
   LayoutService,
-  NavigationHelperService
+  NavigationHelperService,
+  IUserProfile
 } from '@sunbird/shared';
 import {
   UserService,
