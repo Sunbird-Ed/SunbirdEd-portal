@@ -98,7 +98,7 @@ describe('FaqComponent', () => {
   it('should call ngOnInit', () => {
     const faqService = TestBed.inject(FaqService);
     const httpService = TestBed.inject(HttpClient);
-    httpService.get.and.returnValue(of(FaqData));
+    spyOn(httpService, 'get').and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -112,7 +112,7 @@ describe('FaqComponent', () => {
     component.faqData = FaqData;
     const faqService = TestBed.inject(FaqService);
     const httpService = TestBed.inject(HttpClient);
-    httpService.get.and.returnValue(of(FaqData));
+    spyOn(httpService, 'get').and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -123,7 +123,7 @@ describe('FaqComponent', () => {
   it('should call ngOnInit and get 404 for getting faq json file', () => {
     const faqService = TestBed.inject(FaqService);
     const httpService = TestBed.inject(HttpClient);
-    httpService.get.and.returnValue(of(FaqData));
+    spyOn(httpService, 'get').and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -138,7 +138,7 @@ describe('FaqComponent', () => {
   });
 
   it('should call logInteractEvent', () => {
-    const telemetryService = TestBed.inject(TelemetryService);
+    const telemetryService:any = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.logInteractEvent({ data: '' }, 'toggle-clicked');
     expect(telemetryService.interact).toHaveBeenCalled();
@@ -150,7 +150,7 @@ describe('FaqComponent', () => {
   });
 
   it('should call getDesktopFAQ on success', () => {
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValue(of({ result: FaqData }));
     component['getDesktopFAQ']('hi');
     expect(component.showLoader).toBe(false);
@@ -159,7 +159,7 @@ describe('FaqComponent', () => {
   });
 
   it('call ngOnInit for desktopApp', () => {
-    const utilService = TestBed.inject(UtilService);
+    const utilService:any = TestBed.inject(UtilService);
     utilService.changePlatform();
     spyOn<any>(component, 'getDesktopFAQ');
     component.ngOnInit();
@@ -304,7 +304,7 @@ describe('FaqComponent', () => {
 
     it('should do api call to enable debug Mode', () => {
       const httpService = TestBed.inject(HttpClient);
-      httpService.get.and.returnValue(of({ enabled: true }));
+      spyOn(httpService, 'get').and.returnValue(of({ enabled: true }));
       spyOn<any>(component, 'getDebugTimeInterval').and.returnValue(Promise.resolve('10'));
       component.enableDebugMode({});
       expect(component['getDebugTimeInterval']).toHaveBeenCalled();
@@ -312,7 +312,7 @@ describe('FaqComponent', () => {
 
     it('should do api call to enable debug Mode, with error', () => {
       const httpService = TestBed.inject(HttpClient);
-      httpService.get.and.returnValue(throwError({}));
+      spyOn(httpService, 'get').and.returnValue(of(throwError({})));
       spyOn<any>(component, 'getDebugTimeInterval').and.returnValue(Promise.resolve('10'));
       component.enableDebugMode({});
       expect(component['getDebugTimeInterval']).toHaveBeenCalled();
