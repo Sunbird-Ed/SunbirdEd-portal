@@ -131,7 +131,7 @@ describe('ExplorePageComponent', () => {
   });
   xit('should get channel id if slug is not available', done => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(false);
-    const formService = TestBed.inject(FormService);
+    const formService:any = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     const contentSearchService = TestBed.inject(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = '';
@@ -145,7 +145,7 @@ describe('ExplorePageComponent', () => {
 
   xit('should get channel id if slug is available', done => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(false);
-    const formService = TestBed.inject(FormService);
+    const formService:any = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     spyOn(localStorage, 'getItem').and.returnValue('{\'framework\':{\'board\':\'CBSE\'}}');
     const contentSearchService = TestBed.inject(ContentSearchService);
@@ -173,7 +173,7 @@ describe('ExplorePageComponent', () => {
   });
 
   it('should fetch the filters and set to default values', () => {
-    const formService = TestBed.inject(FormService);
+    const formService:any = TestBed.inject(FormService);
     component.formData = RESPONSE.formData;
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     const fetchContentsSpy = spyOn<any>(component['fetchContents$'], 'next');
@@ -213,7 +213,7 @@ describe('ExplorePageComponent', () => {
   });
 
   it('should play content', () => {
-    const publicPlayerService = TestBed.inject(PublicPlayerService);
+    const publicPlayerService:any = TestBed.inject(PublicPlayerService);
     spyOn<any>(publicPlayerService, 'playContent');
     spyOn(component, 'getInteractEdata');
     component.playContent(RESPONSE.playContentEvent, 'test');
@@ -279,8 +279,8 @@ describe('ExplorePageComponent', () => {
 
   it('should open course-details page with the enrolled batch when user is loggedIn', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-    const coursesService = TestBed.inject(CoursesService);
-    const playerService = TestBed.inject(PlayerService);
+    const coursesService:any = TestBed.inject(CoursesService);
+    const playerService:any = TestBed.inject(PlayerService);
     spyOn(playerService, 'playContent');
     spyOn(coursesService, 'findEnrolledCourses').and.returnValue({
       onGoingBatchCount: 1, expiredBatchCount: 0, openBatch: {
@@ -294,8 +294,8 @@ describe('ExplorePageComponent', () => {
 
   it('should open course-details page with the invited batch', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-    const coursesService = TestBed.inject(CoursesService);
-    const playerService = TestBed.inject(PlayerService);
+    const coursesService:any = TestBed.inject(CoursesService);
+    const playerService:any = TestBed.inject(PlayerService);
     spyOn(playerService, 'playContent');
     spyOn(coursesService, 'findEnrolledCourses').and.returnValue({
       onGoingBatchCount: 1, expiredBatchCount: 0, openBatch: { ongoing: [] }, inviteOnlyBatch: { ongoing: [{ batchId: 15332323 }] }
@@ -307,8 +307,8 @@ describe('ExplorePageComponent', () => {
 
   it('Should show error message when multiple ongoing batches are present', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-    const coursesService = TestBed.inject(CoursesService);
-    const playerService = TestBed.inject(PlayerService);
+    const coursesService:any = TestBed.inject(CoursesService);
+    const playerService:any = TestBed.inject(PlayerService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(playerService, 'playContent');
     spyOn(toasterService, 'error');
@@ -356,7 +356,7 @@ describe('ExplorePageComponent', () => {
   });
 
   it('should set no Result message ', () => {
-    const activatedRoute = TestBed.inject(ActivatedRoute);
+    const activatedRoute:any = TestBed.inject(ActivatedRoute);
     activatedRoute.changeSnapshotQueryParams({ subject: ['English'], key: 'test', selectedTab: 'all' });
     component['setNoResultMessage']();
     expect(component.noResultMessage).toEqual({
@@ -368,7 +368,7 @@ describe('ExplorePageComponent', () => {
   });
 
   it('should init layout and call redoLayout method', done => {
-    const layoutService = TestBed.inject(LayoutService);
+    const layoutService:any = TestBed.inject(LayoutService);
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }));
     spyOn(component, 'redoLayout');
     component['initLayout']().subscribe(res => {
@@ -445,7 +445,7 @@ describe('ExplorePageComponent', () => {
   it('should call addHoverData', () => {
     component.contentDownloadStatus = { 'do_id': true };
     component.pageSections = [{ name: 'English', contents: [{ identifier: 'do_id' }] }];
-    const utilService = TestBed.inject(UtilService);
+    const utilService:any = TestBed.inject(UtilService);
     spyOn(utilService, 'addHoverData');
     component.addHoverData();
     expect(utilService.addHoverData).toHaveBeenCalled();
@@ -487,8 +487,8 @@ describe('ExplorePageComponent', () => {
   });
 
   it('should call initConfiguration', () => {
-    const layoutService = TestBed.inject(LayoutService);
-    const utilService = TestBed.inject(UtilService);
+    const layoutService:any = TestBed.inject(LayoutService);
+    const utilService:any = TestBed.inject(UtilService);
     const userService:any = TestBed.inject(UserService);
     userService.anonymousUserPreference = {
       framework: {
@@ -545,8 +545,8 @@ describe('ExplorePageComponent', () => {
   });
 
   it('should fetch enrolled courses for logged in users', done => {
-    const utilService = TestBed.inject(UtilService);
-    const coursesService = TestBed.inject(CoursesService);
+    const utilService:any = TestBed.inject(UtilService);
+    const coursesService:any = TestBed.inject(CoursesService);
     spyOn(utilService, 'processContent').and.callThrough();
     spyOn(component, 'getCurrentPageData').and.returnValue({ contentType: 'course', filter: { isEnabled: false } });
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
@@ -567,7 +567,7 @@ describe('ExplorePageComponent', () => {
     spyOn(component, 'viewAll').and.callThrough();
     spyOn(component, 'getCurrentPageData').and.returnValue({});
     spyOn(cacheService, 'set').and.stub();
-   route['url' as any] = '/explore-course?selectedTab=course';
+    router['url' as any] = '/explore-course?selectedTab=course';
     component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
     expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
       { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined, isContentSection: false
@@ -629,7 +629,7 @@ describe('ExplorePageComponent', () => {
       });
 
       it('with 0 expired and ongoing batches', () => {
-        const courseService = TestBed.inject(CoursesService);
+        const courseService:any = TestBed.inject(CoursesService);
         spyOn(courseService, 'findEnrolledCourses').and.returnValue({
           onGoingBatchCount: 2,
           expiredBatchCount: 0
@@ -640,7 +640,7 @@ describe('ExplorePageComponent', () => {
       });
 
       it('with 1 ongoing batches', () => {
-        const courseService = TestBed.inject(CoursesService);
+        const courseService:any = TestBed.inject(CoursesService);
         spyOn(courseService, 'findEnrolledCourses').and.returnValue({
           onGoingBatchCount: 1,
           expiredBatchCount: 0,
@@ -652,7 +652,7 @@ describe('ExplorePageComponent', () => {
       });
 
       it('with 1 expired batches', () => {
-        const courseService = TestBed.inject(CoursesService);
+        const courseService:any = TestBed.inject(CoursesService);
         spyOn(courseService, 'findEnrolledCourses').and.returnValue({
           onGoingBatchCount: 0,
           expiredBatchCount: 1,
@@ -693,7 +693,7 @@ describe('ExplorePageComponent', () => {
       };
       component.queryParams = { id: 'sunbird', 'se_boards': ['State (Tamil Nadu)'] };
       spyOn(cacheService, 'set').and.stub();
-     route['url' as any] = '/view-all/suggested';
+      router['url' as any] = '/view-all/suggested';
       component.sectionViewAll();
       expect(router.navigate).toHaveBeenCalled();
       expect(cacheService.set).toHaveBeenCalled();
@@ -710,7 +710,7 @@ describe('ExplorePageComponent', () => {
     });
 
     it('should get selected tab', () => {
-      const activatedRoute = TestBed.inject(ActivatedRoute);
+      const activatedRoute:any = TestBed.inject(ActivatedRoute);
       activatedRoute.changeSnapshotQueryParams({ subject: ['English'], key: 'test', selectedTab: 'explore' });
       const selectedTab = component.getSelectedTab();
       expect(selectedTab).toEqual('explore');
@@ -740,7 +740,7 @@ describe('ExplorePageComponent', () => {
       component.showEdit = true;
       spyOn(component, 'setUserPreferences').and.callThrough();
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-      const profileService = TestBed.inject(ProfileService);
+      const profileService:any = TestBed.inject(ProfileService);
       spyOn(profileService, 'updateProfile').and.returnValue(of({}));
       const toasterService:any = TestBed.inject(ToasterService);
       spyOn(toasterService, 'success');
@@ -754,7 +754,7 @@ describe('ExplorePageComponent', () => {
 
     it('should fetch contents with section', done => {
       sendPageApi = false;
-      const utilService = TestBed.inject(UtilService);
+      const utilService:any = TestBed.inject(UtilService);
       spyOn(component, 'redoLayout');
       spyOn(utilService, 'processCourseFacetData').and.returnValue({primaryCategory: [{name: 'etextbook', count: 3}]});
       component['fetchContents']().subscribe(res => {
@@ -823,9 +823,9 @@ describe('ExplorePageComponent', () => {
           },
           'expiry': '1653031067'
       };
-      const telemetryService = TestBed.inject(TelemetryService);
+      const telemetryService:any = TestBed.inject(TelemetryService);
       spyOn(telemetryService, 'interact');
-      const activatedRoute = TestBed.inject(ActivatedRoute);
+      const activatedRoute:any = TestBed.inject(ActivatedRoute);
       const telemetryData = {
         context: {
           env:  activatedRoute.snapshot.data.telemetry.env,
@@ -1004,7 +1004,7 @@ describe('ExplorePageComponent', () => {
     spyOn(component, 'handleTargetedpillSelected').and.callThrough();
     const router = TestBed.inject(Router);
     component.handleTargetedpillSelected(EventPillData);
-   route['url' as any] = '/observation';
+    router['url' as any] = '/observation';
     expect(component.handleTargetedpillSelected).toHaveBeenCalled();
   });
 

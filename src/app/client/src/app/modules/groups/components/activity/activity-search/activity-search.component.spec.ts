@@ -141,7 +141,7 @@ describe('ActivitySearchComponent', () => {
   it('should fetch Contents on success', () => {
     component.showLoader = true;
     component.frameworkId = 'abcd1234cd';
-    const searchService = TestBed.inject(SearchService);
+    const searchService:any = TestBed.inject(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(of({ result: { content: [] } }));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
@@ -151,7 +151,7 @@ describe('ActivitySearchComponent', () => {
   it('should fetch Contents on success when searching', () => {
     component.showLoader = true;
     component.frameworkId = 'abcd1234cd';
-    const searchService = TestBed.inject(SearchService);
+    const searchService:any = TestBed.inject(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(of({ result: activitySearchMockData.searchRes.result }));
     component['fetchContents']();
     searchService.contentSearch(activitySearchMockData.searchReq, false).subscribe(data => {
@@ -162,7 +162,7 @@ describe('ActivitySearchComponent', () => {
 
   it('should fetch Contents on error', () => {
     component.showLoader = true;
-    const searchService = TestBed.inject(SearchService);
+    const searchService:any = TestBed.inject(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
@@ -172,7 +172,7 @@ describe('ActivitySearchComponent', () => {
   it('should call navigateToPage method', () => {
     component.paginationDetails.totalPages = 20;
     const router = TestBed.inject(Router);
-   route['url' as any] = 'my-groups/group-details/6085532b-5f7b-4a8a-ae8c-c268fd40c371/add-activity-to-group/courses/1';
+      router['url' as any] = 'my-groups/group-details/6085532b-5f7b-4a8a-ae8c-c268fd40c371/add-activity-to-group/courses/1';
     spyOn(window, 'scroll');
     component.navigateToPage(2);
     expect(router.navigate).toHaveBeenCalled();
@@ -206,7 +206,7 @@ describe('ActivitySearchComponent', () => {
 
   it('should search the courses if the search is not blank string', () => {
     const router = TestBed.inject(Router);
-   route['url' as any] = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
+    router['url' as any] = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = 'english';
     spyOn(component, 'addTelemetry');
     component.search();
@@ -216,7 +216,7 @@ describe('ActivitySearchComponent', () => {
 
   it('should not search the courses if the search is blank string', () => {
     const router = TestBed.inject(Router);
-   route['url' as any] = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
+    router['url' as any] = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = '';
     component.search();
     expect(router.navigate).toHaveBeenCalled();
