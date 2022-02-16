@@ -80,7 +80,7 @@ describe('ChooseUserComponent', () => {
   });
 
   it('should fetch managed user list on init', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     const managedUserService = TestBed.inject(ManagedUserService);
     const navigationHelperService = TestBed.inject(NavigationHelperService);
@@ -100,10 +100,10 @@ describe('ChooseUserComponent', () => {
   });
 
   it('should not fetch managed user list on init', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     const managedUserService = TestBed.inject(ManagedUserService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const userData = mockData.userReadApiResponse;
     userService._authenticated = true;
     userData.result.response['managedBy'] = 'mock managed by id';

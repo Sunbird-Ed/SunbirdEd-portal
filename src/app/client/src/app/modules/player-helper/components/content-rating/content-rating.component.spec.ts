@@ -100,7 +100,7 @@ describe('ContentRatingComponent', () => {
 
   it('should call submit and generate the feedback event ', () => {
     const telemetryService = TestBed.inject(TelemetryService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'submit').and.callThrough();
     spyOn(telemetryService, 'feedback').and.callThrough();
     component.contentRating = 4;

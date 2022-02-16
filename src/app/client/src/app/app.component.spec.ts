@@ -476,7 +476,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
     component.isGuestUser = false;
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
     component.updateFrameWork(event);
     expect(profileService.updateProfile).toHaveBeenCalled();
@@ -505,7 +505,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   });
   it('should call notifyNetworkChange', () => {
     const connectionService = TestBed.inject(ConnectionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'info');
     spyOn(connectionService, 'monitor').and.returnValue(of(true));
     component.notifyNetworkChange();
@@ -515,7 +515,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   it('should navigate to my download page if network is not available', () => {
     const connectionService = TestBed.inject(ConnectionService);
     const router = TestBed.inject(Router);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'info');
     spyOn(connectionService, 'monitor').and.returnValue(of(false));
     component.notifyNetworkChange();

@@ -158,7 +158,7 @@ describe('UserSearchComponent', () => {
 
   it('should subscribe user profile and call populateUserSearch', () => {
     component.searchList = Response.successData.result.response.content;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userProfile as any});
     spyOn(component, 'populateUserSearch').and.callThrough();
     fixture.detectChanges();

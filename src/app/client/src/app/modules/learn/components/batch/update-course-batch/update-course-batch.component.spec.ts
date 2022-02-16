@@ -120,8 +120,8 @@ describe('UpdateCourseBatchComponent', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
-    const userService = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
     const activatedRoute = TestBed.inject(ActivatedRoute);
     userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
     resourceService.messages = resourceServiceMockData.messages;
@@ -139,9 +139,9 @@ describe('UpdateCourseBatchComponent', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const activatedRoute = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -166,9 +166,9 @@ describe('UpdateCourseBatchComponent', () => {
   xit('should update batch and show success message if api return success', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -195,9 +195,9 @@ describe('UpdateCourseBatchComponent', () => {
   xit('should update batch and show error message if api fails', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -292,9 +292,9 @@ describe('UpdateCourseBatchComponent', () => {
   it('should update batch if batch has enrollmentend date and show success message', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -324,9 +324,9 @@ describe('UpdateCourseBatchComponent', () => {
  it('should update batch min enrollmentend date should be todays date and show success message', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -442,7 +442,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   it('should show error while fetching participant or mentors list', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableThrowError({}));
     component['getUserList']('', 'mentors');
@@ -491,7 +491,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   it('should enabled discussion options', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
     component.createForumRequest = MockResponseData.forumConfig[0];
@@ -502,7 +502,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   it('should disabled discussion options if forum id exists', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.forumIds = MockResponseData.fetchForumResponse.result;
     spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
@@ -512,7 +512,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   it('when DF is disabled and forum id does not exists, the DF API should not call', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.forumIds = [];
     spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
@@ -523,7 +523,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   it('should show error in create forum request failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error');
     component.createForumRequest = MockResponseData.forumConfig[0];
@@ -534,7 +534,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   it('should show error in fetch forum ids request failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error');
     component.fetchForumConfig();

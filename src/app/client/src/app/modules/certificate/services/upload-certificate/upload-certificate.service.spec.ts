@@ -91,7 +91,7 @@ describe('UploadCertificateService', () => {
       }
     };
     const service = TestBed.inject(UploadCertificateService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOnProperty(userService, 'channel').and.returnValue('12345');
     const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.returnValue(of({}));
@@ -124,7 +124,7 @@ describe('UploadCertificateService', () => {
       }
     };
     const service = TestBed.inject(UploadCertificateService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const contentService = TestBed.inject(ContentService);
     spyOn(contentService, 'post').and.returnValue(of({}));
     spyOnProperty(userService, 'channel').and.returnValue('in.ekstep');
@@ -159,7 +159,7 @@ describe('UploadCertificateService', () => {
     const service = TestBed.inject(UploadCertificateService);
     const contentService = TestBed.inject(ContentService);
     spyOn(contentService, 'post').and.returnValue(of({}));
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOnProperty(userService, 'channel').and.returnValue('12345');
     service.getCertificates(body);
     const data = {

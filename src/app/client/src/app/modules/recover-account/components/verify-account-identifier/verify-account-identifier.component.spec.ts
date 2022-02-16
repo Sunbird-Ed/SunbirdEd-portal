@@ -86,7 +86,7 @@ describe('VerifyAccountIdentifierComponent', () => {
   });
 
   it('should show toaster error message as otp is wrong', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => {
     });
     component.handleError({error: {result: {remainingAttempt: 1}}});
@@ -115,7 +115,7 @@ describe('VerifyAccountIdentifierComponent', () => {
 
     it('should call handleResendOtp error case', () => {
       const recoverAccountService = TestBed.inject(RecoverAccountService);
-      const toasterService = TestBed.inject(ToasterService);
+      const toasterService:any = TestBed.inject(ToasterService);
       spyOn(toasterService, 'success').and.callFake(() => {
       });
       spyOn(component, 'resendOtpEnablePostTimer');

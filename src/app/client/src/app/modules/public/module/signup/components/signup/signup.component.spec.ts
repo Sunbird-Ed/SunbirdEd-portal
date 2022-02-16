@@ -265,7 +265,7 @@ describe('SignUpComponent', () => {
 
   it('should not fetch tnc configuration and throw error', () => {
     const tncService = TestBed.inject(TncService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     spyOn(toasterService, 'error').and.callThrough();
@@ -278,7 +278,7 @@ describe('SignUpComponent', () => {
   it('should fetch tnc configuration and throw error as cannot parse data', () => {
     const tncService = TestBed.inject(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfigIncorrectData));
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);

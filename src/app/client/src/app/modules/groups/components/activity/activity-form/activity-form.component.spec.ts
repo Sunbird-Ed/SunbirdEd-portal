@@ -85,7 +85,7 @@ describe('ActivityFormComponent', () => {
 
   it('should get getFormDetails on error', () => {
     const formService = TestBed.inject(FormService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(formService, 'getFormConfig').and.returnValue(throwError({}));
     component['getFormDetails']();

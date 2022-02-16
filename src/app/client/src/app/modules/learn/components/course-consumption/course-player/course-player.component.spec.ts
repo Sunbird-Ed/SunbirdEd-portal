@@ -341,7 +341,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
     const activatedRouteStub = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userid = 'testUser';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
@@ -361,7 +361,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
     const activatedRouteStub = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userid = 'testUser2';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
@@ -381,7 +381,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
     const activatedRouteStub = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const permissionService = TestBed.inject(PermissionService);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
@@ -404,7 +404,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
     const activatedRouteStub = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const permissionService = TestBed.inject(PermissionService);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
@@ -445,7 +445,7 @@ describe('CoursePlayerComponent', () => {
   });
   it('should not display error message if content id is not available in queryparams', () => {
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const activatedRouteStub = TestBed.inject(ActivatedRoute);
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     activatedRouteStub.queryParams = of({});
@@ -514,7 +514,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
     const activatedRouteStub = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userid = 'testUser2';
     component['courseId'] = 'do_212347136096788480178';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
@@ -538,7 +538,7 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const resourceService = TestBed.inject(ResourceService);
     const activatedRouteStub = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     userService._userid = 'testUser2';
@@ -865,7 +865,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should show consent PII section', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userid = 'testUser1';
     userService._userProfile = {isMinor: false};
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -877,7 +877,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should now show consent PII section', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userid = 'testUser1';
     userService._userProfile = {isMinor: true};
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;

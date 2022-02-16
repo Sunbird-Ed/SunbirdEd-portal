@@ -83,7 +83,7 @@ describe('DataDrivenComponent', () => {
     componentParent = fixtureParent.componentInstance;
     fixtureChild = TestBed.createComponent(DefaultTemplateComponent);
     componentChild = fixtureChild.componentInstance;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService['userOrgDetails$' as any] = observableOf({});
     // navigationHelperService = TestBed.inject('NavigationHelperService');
     fixtureParent.detectChanges();
@@ -108,7 +108,7 @@ describe('DataDrivenComponent', () => {
 
   it('should not router to QuestionSet editor', () => {
     const router = TestBed.inject(Router);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const service = TestBed.inject(FrameworkService);
     const workSpaceService = TestBed.inject(WorkSpaceService);
@@ -164,7 +164,7 @@ describe('DataDrivenComponent', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     const workSpaceService = TestBed.inject(WorkSpaceService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
@@ -186,7 +186,7 @@ describe('DataDrivenComponent', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
@@ -208,7 +208,7 @@ describe('DataDrivenComponent', () => {
     const state = 'draft';
     const type = 'Course';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
@@ -231,7 +231,7 @@ describe('DataDrivenComponent', () => {
   it('should router to contentEditor editor ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
@@ -249,7 +249,7 @@ describe('DataDrivenComponent', () => {
   it('should router to contentEditor editor ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'testAssessment'};
     componentParent.formData = componentChild;
@@ -267,7 +267,7 @@ describe('DataDrivenComponent', () => {
   it('should not router to contentEditor editer ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
@@ -287,7 +287,7 @@ describe('DataDrivenComponent', () => {
   it('should call getFormConfig', () => {
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
     componentParent.categoryMasterList = mockFrameworkData.frameworkSuccess;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = {};
     spyOn(componentParent, 'getFormConfig').and.callThrough();
     componentParent.getFormConfig();
@@ -327,9 +327,9 @@ describe('DataDrivenComponent', () => {
   it('should thow  editor service api error when contentType is studymaterial  ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
@@ -351,9 +351,9 @@ describe('DataDrivenComponent', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.inject(Router);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
@@ -387,7 +387,7 @@ describe('DataDrivenComponent', () => {
 
   it('should throw error if channel read api fails', () => {
     const frameworkService = TestBed.inject(FrameworkService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(frameworkService, 'getChannel').and.callFake(() => observableThrowError({}));
     componentParent.ngOnInit();
@@ -411,7 +411,7 @@ describe('DataDrivenComponent', () => {
 
   it('selectFramework() function should categoryDefinition api throw error', () => {
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
@@ -448,7 +448,7 @@ describe('DataDrivenComponent', () => {
   it('#selectFramework() - getFrameworkDataByType() function call returns count 0', () => {
     spyOn(componentParent, 'setTargetFramework').and.stub();
     const workSpaceService = TestBed.inject(WorkSpaceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
@@ -463,7 +463,7 @@ describe('DataDrivenComponent', () => {
     const resourceService = TestBed.inject(ResourceService);
     spyOn(componentParent, 'setTargetFramework').and.stub();
     const workSpaceService = TestBed.inject(WorkSpaceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
@@ -550,7 +550,7 @@ describe('DataDrivenComponent', () => {
         }
       }
     };
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.orgFWType = ['K-12', 'TPD'];
     componentParent.setTargetFramework(
@@ -639,7 +639,7 @@ describe('DataDrivenComponent', () => {
   });
 
   it('#setTargetFramework() - should throw config error if framework is set incorrectly', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.setTargetFramework(
       _.get(mockFrameworkData, 'successCategory'),
@@ -710,7 +710,7 @@ describe('DataDrivenComponent', () => {
   });
 
   it('#setTargetFramework() - should throw error getFrameworkDataByType() api return empty Framework', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({'result': {}}));
     componentParent.setTargetFramework(
@@ -731,7 +731,7 @@ describe('DataDrivenComponent', () => {
   });
 
   it('#setTargetFramework() - should getFrameworkDataByType() throw error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
     componentParent.setTargetFramework(
@@ -798,7 +798,7 @@ describe('DataDrivenComponent', () => {
   });
 
   it('#generateQuestionSetData() should return valid metadata', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     componentParent.framework = 'NCERT';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
     userService._userProfile = {};

@@ -332,7 +332,7 @@ describe('CoursePageComponent', () => {
     });
     it('should redirect to view-all page for logged in user', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-        const userService = TestBed.inject(UserService);
+        const userService:any = TestBed.inject(UserService);
         const router = TestBed.inject(Router);
        route['url' as any] = '/learn';
         const eventData = Response.viewAllEventData;

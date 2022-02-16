@@ -163,7 +163,7 @@ class RouterStub {
 
   it('should not create the certificate template with all the form values', fakeAsync(() => {
     const uploadCertService = TestBed.inject(UploadCertificateService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
       stateName: new FormControl('Gujrat'),
@@ -187,7 +187,7 @@ class RouterStub {
   it('should upload the final certificate svg image', () => {
     const uploadCertService = TestBed.inject(UploadCertificateService);
     const navigationHelperService = TestBed.inject(NavigationHelperService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success').and.stub();
     spyOn(navigationHelperService, 'navigateToLastUrl').and.stub();
     spyOn(uploadCertService, 'storeAsset').and.returnValue(of({}));
@@ -198,7 +198,7 @@ class RouterStub {
 
   it('should not upload the final certificate svg image', () => {
     const uploadCertService = TestBed.inject(UploadCertificateService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.stub();
     spyOn(uploadCertService, 'storeAsset').and.callFake(() => throwError({}));
     component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
@@ -270,7 +270,7 @@ class RouterStub {
   });
 
   it('should call updateStateLogos', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.stub();
     component.svgData = new DOMParser().parseFromString(MockData.svgData.data, 'text/html');
     component.images = MockData.imagesArray;

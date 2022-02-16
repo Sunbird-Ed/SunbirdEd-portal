@@ -20,7 +20,7 @@ fdescribe('CsLibInitializerService', () => {
 
   it('should initialize CsModule', () => {
     const service: CsLibInitializerService = TestBed.inject(CsLibInitializerService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService['_userData$'].next({ err: null, userProfile: {} as any });
     spyOn(document, 'getElementById').and.returnValue({value: '123'});
     CsModule.instance['_isInitialised'] = false;

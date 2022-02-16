@@ -112,8 +112,8 @@ describe('CreateBatchComponent', () => {
   it('should create batch and show success message if api return success', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
-    const userService = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(getUserList));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
@@ -133,8 +133,8 @@ describe('CreateBatchComponent', () => {
   it('should create batch and show error message if api fails', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
-    const userService = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(getUserList));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
@@ -155,8 +155,8 @@ describe('CreateBatchComponent', () => {
   it('should create batch with enrollment date and return success message ', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
-    const toasterService = TestBed.inject(ToasterService);
-    const userService = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(getUserList));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.
@@ -236,7 +236,7 @@ describe('CreateBatchComponent', () => {
 
   it('should call addParticipantToBatch', () => {
     const batchService = TestBed.inject(CourseBatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(batchService, 'addUsersToBatch').and.returnValue(of({}));
     spyOn(toasterService, 'success');
     spyOn<any>(component, 'reload');
@@ -248,7 +248,7 @@ describe('CreateBatchComponent', () => {
 
   it('should call addParticipantToBatch, on error', () => {
     const batchService = TestBed.inject(CourseBatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(batchService, 'addUsersToBatch').and.returnValue(throwError({ params: {}, error: { params: { errmsg: 'error' } } }));
     spyOn(toasterService, 'error');
     component['addParticipantToBatch'](2323212121, ['userId1', 'userId2']);
@@ -258,7 +258,7 @@ describe('CreateBatchComponent', () => {
 
   it('should call addParticipantToBatch, on error', () => {
     const batchService = TestBed.inject(CourseBatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(batchService, 'addUsersToBatch').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
     component['addParticipantToBatch'](2323212121, ['userId1', 'userId2']);
@@ -275,7 +275,7 @@ describe('CreateBatchComponent', () => {
 
   it('should show error if form config not there', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error');
     component.fetchForumConfig();
@@ -295,7 +295,7 @@ describe('CreateBatchComponent', () => {
 
   it('should enabled discussion forum and log telemetry if formconfig available', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
     component.createForumRequest = {
@@ -318,7 +318,7 @@ describe('CreateBatchComponent', () => {
 
   it('should show error if create forum failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
     component.createForumRequest = {
@@ -340,7 +340,7 @@ describe('CreateBatchComponent', () => {
   });
 
   it('should show error if formconfig not available', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.stub();
     component.createForumRequest = undefined;
     component.enableDiscussionForum('SOME_BATCH_ID');

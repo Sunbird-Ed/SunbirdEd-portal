@@ -62,7 +62,7 @@ describe('UsageReportsComponent', () => {
   });
   it('should call downloadCSV method ', () => {
     const usageService = TestBed.inject(UsageService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.slug = 'sunbird';
     spyOn(document, 'getElementById').and.returnValue('sunbird');
     spyOn(usageService, 'getData').and.returnValue(observableOf(mockChartData.configData));
@@ -75,7 +75,7 @@ describe('UsageReportsComponent', () => {
     });
     it('should call renderFiles method ', () => {
       const usageService = TestBed.inject(UsageService);
-      const toasterService = TestBed.inject(ToasterService);
+      const toasterService:any = TestBed.inject(ToasterService);
       component.slug = 'sunbird';
       spyOn(document, 'getElementById').and.returnValue('sunbird');
       spyOn(usageService, 'getData').and.returnValue(observableOf(mockChartData.configData));

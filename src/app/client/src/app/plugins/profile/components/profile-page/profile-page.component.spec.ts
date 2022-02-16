@@ -157,7 +157,7 @@ describe('ProfilePageComponent', () => {
     const resourceService = TestBed.inject(ResourceService);
     resourceService['frmelmnts' as any] = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
     const formservice = TestBed.inject(FormService);
     spyOn(formservice, 'getFormConfig').and.callThrough();
@@ -211,7 +211,7 @@ describe('ProfilePageComponent', () => {
     const resourceService = TestBed.inject(ResourceService);
     resourceService['frmelmnts' as any] = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
     spyOn(component, 'getOrgDetails').and.callThrough();
     component.ngOnInit();
@@ -266,7 +266,7 @@ describe('ProfilePageComponent', () => {
   it('should update framework successfully', () => {
     const mockFrameworkData = Response.frameworkUpdateData;
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.userProfile = Response.userProfile;
     component.profileModal = { deny: () => { } };
     spyOn(profileService, 'updateProfile').and.returnValue(observableOf({}));
@@ -280,7 +280,7 @@ describe('ProfilePageComponent', () => {
   it('should show error if update framework id failed', () => {
     const mockFrameworkData = Response.frameworkUpdateData;
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.userProfile = Response.userProfile;
     component.profileModal = { deny: () => { } };
     spyOn(toasterService, 'warning');
@@ -370,7 +370,7 @@ describe('ProfilePageComponent', () => {
 
 
   it('should check user is custodian user of not', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
     const orgDetailsService = TestBed.inject(OrgDetailsService);
     spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(observableOf({ result: { response: { value: '0126684405' } } }));
@@ -398,7 +398,7 @@ describe('ProfilePageComponent', () => {
   });
 
   it('should not show self declared information if declaration is not available', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
     spyOn(component, 'getSelfDeclaredDetails').and.callThrough();
     component.ngOnInit();
@@ -407,7 +407,7 @@ describe('ProfilePageComponent', () => {
   });
 
   it('should get self declared details', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
     const profileService = TestBed.inject(ProfileService);
     spyOn(profileService, 'getPersonaTenantForm').and.returnValue(observableOf(Response.personaTenantValues));
@@ -431,7 +431,7 @@ describe('ProfilePageComponent', () => {
   it('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates };
     const courseCService = TestBed.inject('CS_COURSE_SERVICE' as any);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success');
     spyOn<any>(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: '<svg></svg>' }));
     spyOn(component['certDownloadAsPdf'], 'download');
@@ -443,7 +443,7 @@ describe('ProfilePageComponent', () => {
   it('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates, certificates: Response.pdfCertificate };
     const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success');
     spyOn<any>(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
     spyOn(component, 'downloadPdfCertificate');
@@ -454,7 +454,7 @@ describe('ProfilePageComponent', () => {
   it('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates };
     const courseCService = TestBed.inject('CS_COURSE_SERVICE'  as any);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn<any>(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
     spyOn(component, 'downloadPdfCertificate');
@@ -473,7 +473,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call downloadCert', () => {
     const certificates = Response.pdfCertificate;
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'success');
     spyOn(component, 'downloadPdfCertificate');
     component.downloadCert({ certificates });
@@ -482,7 +482,7 @@ describe('ProfilePageComponent', () => {
   });
 
   it('should show error toast message', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.downloadCert({});
     expect(toasterService.error).toHaveBeenCalledWith('No data available to download');
@@ -497,7 +497,7 @@ describe('ProfilePageComponent', () => {
 
   it('should call downloadPdfCertificate and does not return signedPdfUrl', () => {
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resp = Response.v1DownloadCertResponse;
     resp.result.signedUrl = '';
     spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
@@ -509,7 +509,7 @@ describe('ProfilePageComponent', () => {
 
   it('should handle error while downloading certificate', () => {
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(profileService, 'downloadCertificates').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
     component.downloadPdfCertificate(Response.pdfCertificate[0]);
@@ -518,7 +518,7 @@ describe('ProfilePageComponent', () => {
   });
 
   it('should show error toast message', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.downloadPdfCertificate({});
     expect(toasterService.error).toHaveBeenCalledWith('No data available to download');

@@ -87,7 +87,7 @@ describe('FlaggedComponent', () => {
     component = fixture.componentInstance;
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService['_userProfile' as any] = mockroleOrgMap;
@@ -98,7 +98,7 @@ describe('FlaggedComponent', () => {
   }));
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService['_userProfile' as any] = mockroleOrgMap;
@@ -110,7 +110,7 @@ describe('FlaggedComponent', () => {
   }));
   // if result count is 0
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService['_userProfile' as any] = mockroleOrgMap;
@@ -122,7 +122,7 @@ describe('FlaggedComponent', () => {
 
   it('should call setpage method and set proper page number ', inject([SearchService, Router], (searchService,
     route) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService['_userProfile' as any] = mockroleOrgMap;
@@ -134,7 +134,7 @@ describe('FlaggedComponent', () => {
 
   it('should call setpage method and set  page number zero and return it  ', inject([SearchService, Router], (searchService,
     route) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService['_userProfile' as any] = mockroleOrgMap;
@@ -145,7 +145,7 @@ describe('FlaggedComponent', () => {
 
   it('should call contentClick method and open content player  ', inject([SearchService, Router], (searchService,
     route) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService['_userProfile' as any] = mockroleOrgMap;

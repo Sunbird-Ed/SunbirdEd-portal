@@ -193,7 +193,7 @@ describe('ActivityListComponent', () => {
   it('should throw error on removeActivity', () => {
     component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0];
     spyOn(component['groupService'], 'removeActivities').and.returnValue(throwError ({}));
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.removeActivity();
     component['groupService'].removeActivities('4130b072-fb0a-453b-a07b-4c93812c741b',
@@ -207,7 +207,7 @@ describe('ActivityListComponent', () => {
     component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0];
     component.activityList = mockActivityList.activityList;
     spyOn(component['groupService'], 'removeActivities').and.returnValue(of ({}));
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'toggleModal');
     spyOn(toasterService, 'success');
     component.removeActivity();

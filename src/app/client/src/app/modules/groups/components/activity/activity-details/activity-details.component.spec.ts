@@ -155,8 +155,8 @@ describe('ActivityDetailsComponent', () => {
 
   it('should call validateUser', () => {
     const group = { members: [{ userId: '123', role: 'member' }, { userId: '457', role: 'member' }] };
-    const userService = TestBed.inject(UserService);
-    const toasterService = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const groupService = TestBed.inject(GroupsService);
     userService.setUserId('123');
     spyOn(toasterService, 'warning');

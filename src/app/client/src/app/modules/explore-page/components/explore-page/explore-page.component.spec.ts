@@ -309,7 +309,7 @@ describe('ExplorePageComponent', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
     const coursesService = TestBed.inject(CoursesService);
     const playerService = TestBed.inject(PlayerService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(playerService, 'playContent');
     spyOn(toasterService, 'error');
     spyOn(coursesService, 'findEnrolledCourses').and.returnValue({
@@ -489,7 +489,7 @@ describe('ExplorePageComponent', () => {
   it('should call initConfiguration', () => {
     const layoutService = TestBed.inject(LayoutService);
     const utilService = TestBed.inject(UtilService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService.anonymousUserPreference = {
       framework: {
         'id': '01268904781886259221',
@@ -742,7 +742,7 @@ describe('ExplorePageComponent', () => {
       spyOn(component, 'isUserLoggedIn').and.returnValue(true);
       const profileService = TestBed.inject(ProfileService);
       spyOn(profileService, 'updateProfile').and.returnValue(of({}));
-      const toasterService = TestBed.inject(ToasterService);
+      const toasterService:any = TestBed.inject(ToasterService);
       spyOn(toasterService, 'success');
       const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
       component.userPreference = { framework: {} };

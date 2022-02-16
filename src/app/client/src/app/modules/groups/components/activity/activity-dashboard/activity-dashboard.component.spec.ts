@@ -135,7 +135,7 @@ describe('ActivityDashboardComponent', () => {
   it('should call getAggData() fail', () => {
     const activityDatas = { id: _.get(courseHierarchy.result.content, 'identifier'), type: 'Course' };
     const groupService = TestBed.inject(GroupsService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.groupData = groupInfo;
     spyOn(toasterService, 'error');
     spyOn(component, 'navigateBack').and.returnValue(true);
@@ -158,7 +158,7 @@ describe('ActivityDashboardComponent', () => {
   });
 
   it('should fail while getting the data for dashlet library', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const groupService = TestBed.inject(GroupsService);
     spyOn(toasterService, 'error');
     spyOn(component, 'navigateBack').and.returnValue(true);
@@ -171,7 +171,7 @@ describe('ActivityDashboardComponent', () => {
   });
 
   it('should call navigateBack()', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.navigateBack();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);

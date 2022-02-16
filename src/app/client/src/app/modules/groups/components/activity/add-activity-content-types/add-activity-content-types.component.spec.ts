@@ -132,7 +132,7 @@ describe('AddActivityContentTypesComponent', () => {
   it('should show error toast message if fetch activity list api fails', () => {
     /** Arrange */
     const groupService = TestBed.inject(GroupsService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(groupService, 'getSupportedActivityList').and.callFake(() => throwError({}));
     spyOn(toasterService, 'error');
 

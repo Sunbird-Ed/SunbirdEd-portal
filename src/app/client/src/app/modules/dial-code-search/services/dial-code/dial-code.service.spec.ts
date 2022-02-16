@@ -45,7 +45,7 @@ describe('DialCodeService', () => {
 
     it('should return dial search results for logged In', () => {
       const service: DialCodeService = TestBed.inject(DialCodeService);
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       const publicDataService = TestBed.inject(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
@@ -67,7 +67,7 @@ describe('DialCodeService', () => {
 
     it('should return dial search results for Not logged In', () => {
       const service: DialCodeService = TestBed.inject(DialCodeService);
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       const publicDataService = TestBed.inject(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
@@ -86,7 +86,7 @@ describe('DialCodeService', () => {
     });
 
     it('Get request should return request body', () => {
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
         board: 'CBSE'

@@ -69,7 +69,7 @@ describe('AccessDiscussionComponent', () => {
 
   it('should show error toast if fetch forum id api fails', () => {
     /** Arrange */
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component['discussionCsService'], 'getForumIds').and.callFake(() => throwError({}));
 
@@ -98,7 +98,7 @@ describe('AccessDiscussionComponent', () => {
 
   it('should throw error if the register-user api fails', () => {
     /** Arrange */
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'setNavigationUrl').and.stub();
     spyOn(component['discussionCsService'], 'createUser').and.callFake(() => throwError({}));

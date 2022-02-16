@@ -278,7 +278,7 @@ describe('CourseProgressComponent', () => {
   });
   it ( 'should call getFormData error case ', () => {
     component.userRoles = ['COURSE_MENTOR'];
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const formService = TestBed.inject(FormService);
     spyOn(toasterService, 'error').and.stub();
     spyOn(formService, 'getFormConfig' ).and.returnValue(observableThrowError('error'));

@@ -98,7 +98,7 @@ describe('OrganizationUploadComponent', () => {
   });
   it('should call uploadOrg method and return error response', () => {
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const orgManagementService = TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorResponse));
@@ -126,7 +126,7 @@ describe('OrganizationUploadComponent', () => {
   });
   it('should call uploadOrg method and return error response with message for empty file', () => {
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const orgManagementService = TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorForEmpty));
@@ -137,7 +137,7 @@ describe('OrganizationUploadComponent', () => {
   });
   it('should call uploadOrg method and return error response with message of multiple lines', () => {
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const orgManagementService = TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorFormultipleLines));
@@ -148,7 +148,7 @@ describe('OrganizationUploadComponent', () => {
   });
   it('should call uploadOrg method and return 502 error then show default error ', () => {
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const orgManagementService = TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.noErrorMessage));

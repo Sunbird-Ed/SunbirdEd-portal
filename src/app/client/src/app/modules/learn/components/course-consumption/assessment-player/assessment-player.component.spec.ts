@@ -142,7 +142,7 @@ describe('AssessmentPlayerComponent', () => {
 
   xit('should call subscribeToQueryParam, on error', fakeAsync(() => {
     component.batchId = '0130272832104038409';
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'goBack');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
@@ -217,7 +217,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call initPlayer on error', () => {
     component.collectionId = 'do_11287204084174028818';
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
@@ -604,7 +604,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onSelfAssessLastAttempt last attempt', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const event = {
       'data': 'renderer:selfassess:lastattempt'
@@ -614,7 +614,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onSelfAssessLastAttempt max attempt exceeded', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const event = {
       'data': 'renderer:maxLimitExceeded'
@@ -652,7 +652,7 @@ describe('AssessmentPlayerComponent', () => {
     }));
     component.activeContent = assessmentPlayerMockData.lastAttemptContent;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
@@ -662,7 +662,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call getCourseCompletionStatus for self assess course', () => {
     component.isCourseCompleted = false;
     component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'getContentStateRequest').and.returnValue(of({
       userId: 'asas-saa12-asas-12',

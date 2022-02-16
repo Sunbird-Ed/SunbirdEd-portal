@@ -218,7 +218,7 @@ describe('LibraryComponent', () => {
 
   it('should call fetchContents and return undefined', () => {
     sendSearchResult = false;
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.fetchContents();
     expect(component.showLoader).toBeFalsy();
@@ -278,7 +278,7 @@ describe('LibraryComponent', () => {
 
   it('should fetch current page data ', () => {
     sendFormResult = false;
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.fetchCurrentPageData();
     expect(toasterService.error).toHaveBeenCalled();
@@ -376,7 +376,7 @@ describe('LibraryComponent', () => {
 
   it('should call download content with error ', () => {
     const contentManagerService = TestBed.inject(ContentManagerService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.pageSections = [];
     spyOn(toasterService, 'error');
     spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));

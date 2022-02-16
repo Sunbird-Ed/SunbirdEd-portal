@@ -87,7 +87,7 @@ describe('UserProfileComponent', () => {
 
     it('should call search api and get error', () => {
         const searchService = TestBed.inject(UserSearchService);
-        const toasterService = TestBed.inject(ToasterService);
+        const toasterService:any = TestBed.inject(ToasterService);
         const resourceService = TestBed.inject(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(searchService, 'getUserById').and.callFake(() => observableThrowError(Response.errorData));
@@ -100,7 +100,7 @@ describe('UserProfileComponent', () => {
     });
 
     it('should call populateUserProfile', () => {
-        const userService = TestBed.inject(UserService);
+        const userService:any = TestBed.inject(UserService);
         spyOn(component, 'populateUserProfile').and.callThrough();
         userService._userData$.next({ err: null, userProfile: Response.userProfile as any });
         fixture.detectChanges();
@@ -147,7 +147,7 @@ describe('UserProfileComponent', () => {
 
     it('should call submitEndorsement and get success response from learner service', () => {
         const learnerService = TestBed.inject(LearnerService);
-        const toasterService = TestBed.inject(ToasterService);
+        const toasterService:any = TestBed.inject(ToasterService);
         const resourceService = TestBed.inject(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(toasterService, 'success').and.callThrough();
@@ -161,7 +161,7 @@ describe('UserProfileComponent', () => {
 
     it('should call submitEndorsement and get error response from learner service', () => {
         const learnerService = TestBed.inject(LearnerService);
-        const toasterService = TestBed.inject(ToasterService);
+        const toasterService:any = TestBed.inject(ToasterService);
         const resourceService = TestBed.inject(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(toasterService, 'error').and.callThrough();

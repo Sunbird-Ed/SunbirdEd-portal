@@ -97,7 +97,7 @@ describe('LimitedPublishedComponent', () => {
   }));
 
   it('should check offset is passing for search api ', inject([SearchService], (searchService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
     userService._userData$.next({ err: null, userProfile: mockUserData.success as any});

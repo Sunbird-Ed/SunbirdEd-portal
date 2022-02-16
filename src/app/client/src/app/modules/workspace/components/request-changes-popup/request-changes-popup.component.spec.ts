@@ -136,7 +136,7 @@ describe('RequestChangesPopupComponent', () => {
     expect(component.rejectCheckListData).toBeDefined();
   });
   it('should call closeModalAfterError and makes expected calls', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     toasterService.error(resourceBundle.messages.emsg);
     fixture.detectChanges();
@@ -179,7 +179,7 @@ describe('RequestChangesPopupComponent', () => {
     component.closeUrl =  {url: '/workspace/content/upForReview/content/do_11256352025089638413'};
     const contentService = TestBed.inject(ContentService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     spyOn(contentService, 'post').and.callFake(() => observableOf(successResponse));
     spyOn(toasterService, 'success').and.callThrough();
@@ -191,7 +191,7 @@ describe('RequestChangesPopupComponent', () => {
     component.showModal = true;
     const contentService = TestBed.inject(ContentService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     spyOn(contentService, 'post').and.callFake(() => observableThrowError(errorResponse));
     spyOn(toasterService, 'error').and.callThrough();

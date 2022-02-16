@@ -69,7 +69,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
 
   it('should call  content api and return content data', fakeAsync(() => {
     const playerService = TestBed.inject(PlayerService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;

@@ -97,7 +97,7 @@ describe('UserEditComponent', () => {
   });
 
   it('should fetch logged in user details on component init', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     (userService as any)._userData$.next({ err: null, userProfile: Response.userData.result.response });
     const getLoggedInUserDetailsSpy = spyOn(component, 'getLoggedInUserDetails').and.callThrough();
     const getAllRolesSpy = spyOn(component, 'getAllRoles');
@@ -111,8 +111,8 @@ describe('UserEditComponent', () => {
   });
 
   it('should redirect when fetching logged in user details fails', () => {
-    const userService = TestBed.inject(UserService);
-    const toasterService = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
     (userService as any)._userData$.next({ err: 'ok', userProfile: null });
     const getLoggedInUserDetailsSpy = spyOn(component, 'getLoggedInUserDetails').and.callThrough();
     const getAllRolesSpy = spyOn(component, 'getAllRoles');
@@ -130,7 +130,7 @@ describe('UserEditComponent', () => {
   });
 
   it('should call ngOnInit method to get all roles', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const searchService = TestBed.inject(UserSearchService);
     const searchServiceSpy = spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     (userService as any)._userData$.next({ err: null, userProfile: Response.userData.result.response });
@@ -217,7 +217,7 @@ describe('UserEditComponent', () => {
   });
   xit('should call updateRoles and make api call', () => {
     const userSearchService = TestBed.inject(UserSearchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(userSearchService, 'updateRoles').and.callFake(() => observableOf(Response.rolesSuccessData));
     const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
     component.allRoles = [];
@@ -230,7 +230,7 @@ describe('UserEditComponent', () => {
   });
   xit('should call updateRoles method and make api call and return error', () => {
     const userSearchService = TestBed.inject(UserSearchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(userSearchService, 'updateRoles').and.callFake(() => observableThrowError(Response.rolesFailureData));
     const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
     component.allRoles = [];
@@ -243,7 +243,7 @@ describe('UserEditComponent', () => {
   });
   it('should not  show user name in modal header', () => {
     const searchService = TestBed.inject(UserSearchService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
@@ -264,7 +264,7 @@ describe('UserEditComponent', () => {
 
   it('should call getBlock', () => {
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     component.userDetails = Response.userData.result.response;
     component.initializeFormFields();
@@ -276,7 +276,7 @@ describe('UserEditComponent', () => {
   it('should call getBlock error case', () => {
     component.userDetails = Response.userData.result.response;
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     component.initializeFormFields();
     spyOn(profileService, 'getUserLocation').and.returnValue(observableThrowError('sorry'));
@@ -299,7 +299,7 @@ describe('UserEditComponent', () => {
 
   it('should call getSchool error case', () => {
     const orgDetailsService = TestBed.inject(OrgDetailsService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(component, 'redirect');
     component.initializeFormFields();
@@ -319,7 +319,7 @@ describe('UserEditComponent', () => {
   });
   it('should call getDistrict error case', () => {
     const profileService = TestBed.inject(ProfileService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(component, 'redirect');
     component.stateId = '1';
@@ -345,7 +345,7 @@ describe('UserEditComponent', () => {
       ts: '20-01-2020',
       ver: '3'
     };
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const userSearchService = TestBed.inject(UserSearchService);
     spyOn(toasterService, 'success').and.callFake(() => { });
     spyOn(userSearchService, 'updateRoles').and.returnValue(observableOf(serverResponse));
@@ -356,7 +356,7 @@ describe('UserEditComponent', () => {
     expect(toasterService.success).toHaveBeenCalledWith('User updated successfully');
   });
   it('should call updateProfile error case', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const userSearchService = TestBed.inject(UserSearchService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(userSearchService, 'updateRoles').and.returnValue(observableThrowError('sorry'));

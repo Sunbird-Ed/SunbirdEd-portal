@@ -41,7 +41,7 @@ describe('PermissionService', () => {
   });
   it('should subscribe to user service', () => {
     const permissionService = TestBed.inject(PermissionService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();
@@ -51,7 +51,7 @@ describe('PermissionService', () => {
   });
   it('should set permissionAvailable flag to true when permission and user roles are available', () => {
     const permissionService = TestBed.inject(PermissionService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();
@@ -62,8 +62,8 @@ describe('PermissionService', () => {
 
   xit('should throw toaster error message when permission api fails', () => { // removed role read api
     const permissionService = TestBed.inject(PermissionService);
-    const userService = TestBed.inject(UserService);
-    const toasterService = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockPermissionRes.error));
     spyOn(toasterService, 'error').and.returnValue(true);
@@ -73,8 +73,8 @@ describe('PermissionService', () => {
 
   it('should throw toaster error message when userService api fails', () => {
     const permissionService = TestBed.inject(PermissionService);
-    const userService = TestBed.inject(UserService);
-    const toasterService = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const learnerService = TestBed.inject(LearnerService);
     const resourceService: ResourceService = TestBed.inject(ResourceService);
     resourceService.messages = mockResource;
@@ -87,7 +87,7 @@ describe('PermissionService', () => {
 
   it('should validate permission to true', () => {
     const permissionService = TestBed.inject(PermissionService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();
@@ -98,7 +98,7 @@ describe('PermissionService', () => {
 
   it('should validate permission to false', () => {
     const permissionService = TestBed.inject(PermissionService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
     permissionService.initialize();

@@ -111,8 +111,8 @@ describe('UpdateBatchComponent', () => {
   it('should navigate to parent page if fetching batch details fails', () => {
     const batchService = TestBed.inject(BatchService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
-    const userService = TestBed.inject(UserService);
+    const toasterService:any = TestBed.inject(ToasterService);
+    const userService:any = TestBed.inject(UserService);
     const activatedRoute = TestBed.inject(ActivatedRoute);
     userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
     resourceService.messages = resourceServiceMockData.messages;
@@ -127,9 +127,9 @@ describe('UpdateBatchComponent', () => {
   it('should navigate to parent page if fetching user details fails', () => {
     const batchService = TestBed.inject(BatchService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const activatedRoute = TestBed.inject(ActivatedRoute);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userid = 'b2479136-8608-41c0-b3b1-283f38c338d';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -154,9 +154,9 @@ describe('UpdateBatchComponent', () => {
   });
   it('should update batch and show success message if api return success', () => {
     const batchService = TestBed.inject(BatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -179,9 +179,9 @@ describe('UpdateBatchComponent', () => {
   });
   it('should update batch and show error message if api fails', () => {
     const batchService = TestBed.inject(BatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userProfile = { organisationIds: [] };
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -277,7 +277,7 @@ describe('UpdateBatchComponent', () => {
 
   it('should call updateParticipantsToBatch', () => {
     const batchService = TestBed.inject(BatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(batchService, 'addUsersToBatch').and.returnValue(of({}));
     spyOn(toasterService, 'success');
     spyOn<any>(component, 'reload');
@@ -289,7 +289,7 @@ describe('UpdateBatchComponent', () => {
 
   it('should call updateParticipantsToBatch, on error', () => {
     const batchService = TestBed.inject(BatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(batchService, 'addUsersToBatch').and.returnValue(throwError({ params: {}, error: { params: { errmsg: 'error' } } }));
     spyOn(toasterService, 'error');
     component['updateParticipantsToBatch'](2323212121, ['userId1', 'userId2']);
@@ -299,7 +299,7 @@ describe('UpdateBatchComponent', () => {
 
   it('should call updateParticipantsToBatch, on error', () => {
     const batchService = TestBed.inject(BatchService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(batchService, 'addUsersToBatch').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
     component['updateParticipantsToBatch'](2323212121, ['userId1', 'userId2']);

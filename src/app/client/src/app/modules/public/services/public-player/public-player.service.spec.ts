@@ -49,7 +49,7 @@ describe('PublicPlayerService', () => {
   });
   it('should return player config without courseId', () => {
     const playerService = TestBed.inject(PublicPlayerService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._anonymousSid = UUID.UUID();
     userService._userid = 'anonymous';
     userService._channel = 'in.ekstep';

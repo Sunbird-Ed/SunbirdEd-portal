@@ -185,7 +185,7 @@ describe('BatchDetailsComponent', () => {
   });
 
   it(`should allow 'Create Batch' button to be shown if the user has created to course and has necessary roles`, () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const permissionService = TestBed.inject(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
@@ -234,7 +234,7 @@ describe('BatchDetailsComponent', () => {
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const permissionService = TestBed.inject(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);

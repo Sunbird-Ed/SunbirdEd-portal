@@ -15,14 +15,14 @@ describe('userService', () => {
     });
   });
   it('should fetch user profile details', inject([UserService], (service: UserService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     expect(userService._userProfile).toBeDefined();
   }));
   it('should emit user profile data on success', inject([UserService], (service: UserService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
@@ -31,7 +31,7 @@ describe('userService', () => {
     });
   }));
   it('should emit error on api failure', inject([UserService], (service: UserService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableThrowError(mockUserData.error));
     userService.initialize(true);
@@ -40,7 +40,7 @@ describe('userService', () => {
     });
   }));
   it('should return userProfile when userProfile get method is called', inject([UserService], (service: UserService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
@@ -48,14 +48,14 @@ describe('userService', () => {
     expect(userProfile).toBeDefined();
   }));
   it('should set rootOrgAdmin to true', inject([UserService], (service: UserService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.rootOrgSuccess));
     userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeTruthy();
   }));
   it('should set rootOrgAdmin to false', inject([UserService], (service: UserService) => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
@@ -63,7 +63,7 @@ describe('userService', () => {
   }));
 
   it('should fetch userFeed Data', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(mockUserData.feedSuccessResponse);
     userService.getFeedData();
@@ -71,7 +71,7 @@ describe('userService', () => {
     expect(learnerService.get).toHaveBeenCalledWith(url);
   });
   it('should call registerUser method', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'post').and.returnValue(of(mockUserData.registerSuccess));
     const reqData = { 'request': { 'firstName': 'test', 'managedBy': '5488df8f-2090-4735-a767-ad0588bf7659', 'locationIds': [] } };
@@ -83,7 +83,7 @@ describe('userService', () => {
     });
   });
   it('should migrate custodian user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     const params = {
       'request': {
@@ -101,49 +101,49 @@ describe('userService', () => {
   });
 
   it('should call getAnonymousUserPreference', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValue(of({ result: { board: 'CBSE' } }));
     userService.getAnonymousUserPreference();
     expect(publicDataService.get).toHaveBeenCalled();
   });
   it('should call updateAnonymousUserDetails', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.returnValue(of({ result: { board: 'CBSE' } }));
     userService.updateAnonymousUserDetails();
     expect(publicDataService.post).toHaveBeenCalled();
   });
   it('should call createAnonymousUser', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const publicDataService = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.returnValue(of({ result: { board: 'CBSE' } }));
     userService.createAnonymousUser();
     expect(publicDataService.post).toHaveBeenCalled();
   });
   it('should call createGuestUser', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService.isDesktopApp = true;
     spyOn(userService, 'createAnonymousUser').and.returnValue(of({}));
     userService.createGuestUser();
     expect(userService.createAnonymousUser).toHaveBeenCalled();
   });
   it('should call createGuestUser for portal', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService.isDesktopApp = false;
     spyOn(userService, 'getGuestUser').and.returnValue(of({}));
     const resp = userService.createGuestUser({});
     expect(userService.getGuestUser).toHaveBeenCalled();
   });
   it('should call updateGuestUser for desktop', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService.isDesktopApp = true;
     spyOn(userService, 'updateAnonymousUserDetails');
     userService.updateGuestUser({ _id: 'abcd', name: 'Guest' });
     expect(userService.updateAnonymousUserDetails).toHaveBeenCalled();
   });
   it('should call updateGuestUser for portal', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService.isDesktopApp = false;
     spyOn(userService, 'getGuestUser').and.returnValue(of({}));
     userService.updateGuestUser({ _id: 'abcd', name: 'Guest' });

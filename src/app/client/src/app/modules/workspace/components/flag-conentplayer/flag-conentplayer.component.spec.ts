@@ -67,7 +67,7 @@ describe('FlagConentplayerComponent', () => {
 
   it('should call  content api and return content data', () => {
     const playerService = TestBed.inject(PlayerService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
@@ -95,7 +95,7 @@ describe('FlagConentplayerComponent', () => {
     const playerService = TestBed.inject(PlayerService);
     const contentService = TestBed.inject(ContentService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     const requestData = {
       'request': {}

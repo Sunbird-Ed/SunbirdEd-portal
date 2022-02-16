@@ -66,14 +66,14 @@ describe('NoResultComponent', () => {
     component['formData']();
   });
    it('should call the handleEvent method for non-loggedin user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
     component.currentPage = {'anonumousUserRoute': {'route': '/explore/1', 'queryParam': 'all'}, 'loggedInUserRoute': {'route': '/search/Library/1', 'queryParam': 'all'}};
     component.handleEvent();
     expect(component.url).toEqual('/explore/1');
   });
   it('should call the handleEvent method for loggedin user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
     component.currentPage = {'anonumousUserRoute': {'route': '/explore/1', 'queryParam': 'all'}, 'loggedInUserRoute': {'route': '/search/Library/1', 'queryParam': 'all'}};
     component.handleEvent();

@@ -118,7 +118,7 @@ describe('SubmitTeacherDetailsComponent', () => {
   it('should call ngOnInit', () => {
     const tncService = TestBed.inject(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'impression');
     spyOn(component, 'setTelemetryData');
@@ -238,7 +238,7 @@ describe('SubmitTeacherDetailsComponent', () => {
 
   it('should set form data and user profile email from user profile', () => {
     const tncService = TestBed.inject(TncService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const telemetryService = TestBed.inject(TelemetryService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
     spyOn(telemetryService, 'impression');
@@ -562,7 +562,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService: any = TestBed.inject(ToasterService);
@@ -586,7 +586,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService: any = TestBed.inject(ToasterService);
@@ -607,7 +607,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService: any = TestBed.inject(ToasterService);
@@ -630,7 +630,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
       const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
       const toasterService: any = TestBed.inject(ToasterService);

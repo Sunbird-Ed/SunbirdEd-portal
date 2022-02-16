@@ -253,7 +253,7 @@ describe('CertificateConfigurationComponent', () => {
 
     const certRegService = TestBed.inject(CertRegService);
     const certificateService  = TestBed.inject(CertificateService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
@@ -275,7 +275,7 @@ describe('CertificateConfigurationComponent', () => {
 
     const certRegService = TestBed.inject(CertRegService);
     const certificateService  = TestBed.inject(CertificateService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
@@ -335,7 +335,7 @@ describe('CertificateConfigurationComponent', () => {
   it('should show an error toast message if preference api fails', () => {
     /** Arrange */
     const certificateService  = TestBed.inject(CertificateService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const errorMsg = resourceBundle.messages.emsg.m0005;
 
     /** Assert */
@@ -357,7 +357,7 @@ describe('CertificateConfigurationComponent', () => {
 
     const certRegService = TestBed.inject(CertRegService);
     const certificateService  = TestBed.inject(CertificateService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.callFake(() => observableThrowError({}));
@@ -376,7 +376,7 @@ describe('CertificateConfigurationComponent', () => {
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
     const certRegService = TestBed.inject(CertRegService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
@@ -389,9 +389,9 @@ describe('CertificateConfigurationComponent', () => {
 
   it('should show an error toast message if preference api fails', () => {
     /** Arrange */
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const certificateService  = TestBed.inject(CertificateService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as any});
     userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
@@ -411,7 +411,7 @@ describe('CertificateConfigurationComponent', () => {
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
     const certRegService = TestBed.inject(CertRegService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();

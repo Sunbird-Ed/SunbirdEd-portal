@@ -122,7 +122,7 @@ describe('PublishedPopupComponent', () => {
     component.showModal = true;
     const contentService = TestBed.inject(ContentService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     spyOn(contentService, 'post').and.callFake(() => observableOf(successResponse));
     spyOn(toasterService, 'success').and.callThrough();
@@ -135,7 +135,7 @@ describe('PublishedPopupComponent', () => {
     component.showModal = true;
     const contentService = TestBed.inject(ContentService);
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     spyOn(contentService, 'post').and.callFake(() => observableThrowError(errorResponse));
     spyOn(toasterService, 'error').and.callThrough();
@@ -157,7 +157,7 @@ describe('PublishedPopupComponent', () => {
     expect(component.isDisabled).toBe(false);
   });
   it('should call closeModalAfterError and makes expected calls', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     toasterService.error(resourceBundle.messages.emsg.m0005);
     fixture.detectChanges();

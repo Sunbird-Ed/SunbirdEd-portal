@@ -111,7 +111,7 @@ describe('MapComponent', () => {
   });
 
   it('should handle error if unknow state or country is passed', done => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const findRecordInConfigMappingSpy = spyOn<any>(component, 'findRecordInConfigMapping').and.callThrough();
     const input = {

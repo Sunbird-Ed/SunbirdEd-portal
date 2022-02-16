@@ -129,7 +129,7 @@ describe('ReviewCommentsComponent', () => {
   });
 
   it('should fetch comments list on ngOnInit and sort it if api returns data', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     const reviewCommentsService = TestBed.inject(ReviewCommentsService);
     component.contentData = contentData;
@@ -141,7 +141,7 @@ describe('ReviewCommentsComponent', () => {
 
   it('should fetch comments list on ngOnInit and throw error if api fails', () => {
     const reviewCommentsService = TestBed.inject(ReviewCommentsService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'true');
     component.contentData = contentData;
     spyOn(reviewCommentsService, 'getComments').and.returnValue(throwError(commentList));
@@ -153,7 +153,7 @@ describe('ReviewCommentsComponent', () => {
 
   it('should make create comment api and save data if api returns success', () => {
     const reviewCommentsService = TestBed.inject(ReviewCommentsService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'true');
     component.contentData = contentData;
     component.stageId = 'hhhh';
@@ -167,7 +167,7 @@ describe('ReviewCommentsComponent', () => {
 
   it('should make create comment api and throw error if api fails', () => {
     const reviewCommentsService = TestBed.inject(ReviewCommentsService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'true');
     component.contentData = contentData;
     component.stageId = 'hhhh';
@@ -181,7 +181,7 @@ describe('ReviewCommentsComponent', () => {
 
   it('should not make create comment api call if stageId is not present', () => {
     const reviewCommentsService = TestBed.inject(ReviewCommentsService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => 'true');
     component.contentData = contentData;
     spyOn(reviewCommentsService, 'createComment').and.returnValue(throwError(commentList));

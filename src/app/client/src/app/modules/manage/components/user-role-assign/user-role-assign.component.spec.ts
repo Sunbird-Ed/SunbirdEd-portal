@@ -38,7 +38,7 @@ describe('UserRoleAssignComponent', () => {
     observationUtilService = TestBed.inject(ObservationUtilService);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
 
   });
 
@@ -80,7 +80,7 @@ describe('UserRoleAssignComponent', () => {
     expect(component.showingResults).toBeFalsy();
   });
   it('should call getOrgDetails method', () => {
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userProfile = mockObject.userMockData;
     spyOn(component, 'getOrgDetails').and.callThrough();
     component.getOrgDetails();
@@ -112,7 +112,7 @@ describe('UserRoleAssignComponent', () => {
       'roleName': 'Book Reviewer'
     }];
     component.allRoles = mockObject.roleList;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: mockObject.userMockData as any });
     userService._rootOrgId = '01269878797503692810';
     userService.rootOrgName = 'tamilnadu';

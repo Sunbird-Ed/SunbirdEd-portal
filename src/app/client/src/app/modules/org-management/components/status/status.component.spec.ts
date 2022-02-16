@@ -61,7 +61,7 @@ describe('StatusComponent', () => {
   it('should call organization management service and get success status based on given processId', () => {
     const resourceService = TestBed.inject(ResourceService);
     const orgManagementService = TestBed.inject(OrgManagementService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.successResponse));
     spyOn(toasterService, 'success').and.callThrough();
@@ -74,7 +74,7 @@ describe('StatusComponent', () => {
   it('should call organization management service and get success status and show error if status is not COMPLETED', () => {
     const resourceService = TestBed.inject(ResourceService);
     const orgManagementService = TestBed.inject(OrgManagementService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.successResponseWithStatusInprogress));
     spyOn(toasterService, 'info').and.callThrough();
@@ -87,7 +87,7 @@ describe('StatusComponent', () => {
     const resourceService = TestBed.inject(ResourceService);
     const orgManagementService = TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.failureResponse));
     spyOn(toasterService, 'info').and.callThrough();
     const processId = '012465880638177280660';
@@ -113,7 +113,7 @@ describe('StatusComponent', () => {
   });
   it('should call getBulkUploadStatus method and pass else condition if processId contains only whiteSpaces', () => {
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const orgManagementService = TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.errorResponse));

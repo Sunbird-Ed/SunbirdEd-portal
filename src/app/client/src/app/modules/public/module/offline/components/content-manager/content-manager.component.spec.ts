@@ -181,7 +181,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call pauseDownloadContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'pauseDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -198,7 +198,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call resumeDownloadContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'resumeDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -215,7 +215,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call cancelDownloadContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'cancelDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -232,7 +232,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call retryDownloadContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'retryDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -249,7 +249,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call pauseImportContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'pauseImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -266,7 +266,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call resumeImportContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'resumeImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -283,7 +283,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call cancelImportContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'cancelImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -300,7 +300,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call retryImportContent and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'retryImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -339,7 +339,7 @@ describe('ContentManagerComponent', () => {
   it('should call close modal ', () => {
     component.handledFailedList = response.failedList;
     contentManagerService = TestBed.inject(ContentManagerService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
     component.isWindows = true;
     spyOn(contentManagerService, 'changeContentLocation').and.returnValue(observableOf({}));
@@ -370,7 +370,7 @@ describe('ContentManagerComponent', () => {
   it('should call close modal, should handle error ', () => {
     component.handledFailedList = response.failedList;
     contentManagerService = TestBed.inject(ContentManagerService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.isWindows = true;
     spyOn(contentManagerService, 'changeContentLocation').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.returnValue(resourceMockData.messages.stmsg.contentLocationChanged);

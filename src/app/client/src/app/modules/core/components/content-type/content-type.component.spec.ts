@@ -74,7 +74,7 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should fetch title for logged in user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const router = TestBed.inject(Router);
     userService._authenticated = true;
     component.showContentType({
@@ -96,7 +96,7 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should fetch title for non logged in user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const router = TestBed.inject(Router);
     userService._authenticated = false;
     component.showContentType({
@@ -175,7 +175,7 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toBe('tv');
   });
   it('should fetch title for non logged in user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const router = TestBed.inject(Router);
     userService._authenticated = false;
     component.showContentType({
@@ -195,7 +195,7 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toEqual('all');
   });
   it('should fetch title for logged in user', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const router = TestBed.inject(Router);
     userService._authenticated = true;
     component.showContentType({

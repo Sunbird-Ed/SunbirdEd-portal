@@ -66,7 +66,7 @@ describe('ViewOrgTypeComponent', () => {
     });
 
     it('populateOrgType should return error', () => {
-        const toasterService = TestBed.inject(ToasterService);
+        const toasterService:any = TestBed.inject(ToasterService);
         spyOn(toasterService, 'error').and.callThrough();
         const resourceService = TestBed.inject(ResourceService);
         resourceService.messages = mockRes.resourceBundle.messages;

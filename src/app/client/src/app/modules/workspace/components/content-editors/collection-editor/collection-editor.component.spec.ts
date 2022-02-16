@@ -177,7 +177,7 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('should pass user selected board in the context for courses', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     component['userProfile'] = userService.userProfile;
     component['routeParams'] = {type: 'course'};
     component['setWindowContext']();

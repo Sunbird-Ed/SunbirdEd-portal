@@ -30,7 +30,7 @@ describe('ProfileBadgeComponent', () => {
   });
 
   it('should call getBadgeData method', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const badgeService = TestBed.inject(BadgesService);
     userService._userData$.next({ err: null, userProfile: mockRes.data.userProfile as any });
     spyOn(badgeService, 'getDetailedBadgeAssertions').and.callFake(() => observableOf(mockRes.badgeList));

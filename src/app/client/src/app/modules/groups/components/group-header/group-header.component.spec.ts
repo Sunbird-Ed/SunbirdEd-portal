@@ -339,7 +339,7 @@ describe('GroupHeaderComponent', () => {
   it('should show error toast if fetch forum id api fails', () => {
     /** Arrange */
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(discussionService, 'getForumIds').and.callFake(() => throwError({}));
 
@@ -353,7 +353,7 @@ describe('GroupHeaderComponent', () => {
   it('should call enableDiscussionForum() when enable the discussion forum icon', () => {
     /** Arrange */
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
     spyOn(toasterService, 'success').and.stub();
     /** Act */
@@ -379,7 +379,7 @@ describe('GroupHeaderComponent', () => {
  it('should call disableDiscussionForum() when disable the discussion forum icon', () => {
     /** Arrange */
     const discussionService = TestBed.inject(DiscussionService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.disableDiscussionForum));
     spyOn(toasterService, 'success');
     /** Act */
@@ -392,7 +392,7 @@ describe('GroupHeaderComponent', () => {
  it('should throw error if the removeForum api fails', () => {
       /** Arrange */
       const discussionService = TestBed.inject(DiscussionService);
-      const toasterService = TestBed.inject(ToasterService);
+      const toasterService:any = TestBed.inject(ToasterService);
       spyOn(toasterService, 'error');
       spyOn(discussionService, 'removeForum').and.callFake(() => throwError({}));
       /** Act */

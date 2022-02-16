@@ -65,7 +65,7 @@ describe('ProfileService', () => {
   it('should call declarations method', () => {
     const learnerService = TestBed.inject(LearnerService);
     const profileService = TestBed.inject(ProfileService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOn(learnerService, 'patch').and.returnValue(observableOf(mockRes.successData));
     spyOn(userService, 'getUserProfile').and.callThrough();
     const request = {

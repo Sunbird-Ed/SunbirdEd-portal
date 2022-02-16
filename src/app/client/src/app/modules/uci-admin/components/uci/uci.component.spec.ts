@@ -65,7 +65,7 @@ describe('UciComponent', () => {
   });
 
   it('should get user profile details', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const configService = TestBed.inject(ConfigService);
     expect(component.blobUrl).toBeDefined();
     component.ngOnInit();

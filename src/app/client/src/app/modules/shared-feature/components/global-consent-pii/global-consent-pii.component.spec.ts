@@ -81,7 +81,7 @@ describe('GlobalConsentPiiComponent', () => {
   });
 
   it('should set user Information', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService['_userProfile' as any] = MockData.userProfile;
     component.collection = MockData.collection;
     spyOn(component, 'getUserConsent');
@@ -101,7 +101,7 @@ describe('GlobalConsentPiiComponent', () => {
 
   it('should not fetch tnc configuration and throw error', () => {
     const tncService = TestBed.inject(TncService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(tncService, 'getTncConfig').and.returnValue(throwError(MockData.tncConfig));
     component.fetchTncData();
@@ -111,7 +111,7 @@ describe('GlobalConsentPiiComponent', () => {
   it('should fetch tnc configuration and throw error as cannot parse data', () => {
     const tncService = TestBed.inject(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(of(MockData.tncConfigIncorrectData));
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.fetchTncData();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
@@ -159,7 +159,7 @@ describe('GlobalConsentPiiComponent', () => {
   });
 
   it('should get getUserConsent', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService['_userProfile' as any] = MockData.userProfile;
     component.collection = MockData.collection;
     const csUserService = TestBed.inject('CS_USER_SERVICE');
@@ -171,7 +171,7 @@ describe('GlobalConsentPiiComponent', () => {
   });
 
   it('should not get getUserConsent', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const toastService = TestBed.inject(ToasterService);
     userService['_userProfile' as any] = MockData.userProfile;
     component.collection = MockData.collection;
@@ -184,7 +184,7 @@ describe('GlobalConsentPiiComponent', () => {
   });
 
   it('should not get getUserConsent and with error 404', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const toastService = TestBed.inject(ToasterService);
     userService['_userProfile' as any] = MockData.userProfile;
     component.collection = MockData.collection;
@@ -196,7 +196,7 @@ describe('GlobalConsentPiiComponent', () => {
     expect(component.showConsentPopup).toBe(true);
   });
   it('should update User Consent', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const toastService = TestBed.inject(ToasterService);
     userService['_userProfile' as any] = MockData.userProfile;
     component.collection = MockData.collection;
@@ -212,7 +212,7 @@ describe('GlobalConsentPiiComponent', () => {
   });
 
   it('should not update User Consent', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const toastService = TestBed.inject(ToasterService);
     userService['_userProfile' as any] = MockData.userProfile;
     component.collection = MockData.collection;

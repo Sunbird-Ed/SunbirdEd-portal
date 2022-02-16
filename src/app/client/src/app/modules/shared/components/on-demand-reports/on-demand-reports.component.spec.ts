@@ -71,7 +71,7 @@ describe('OnDemandReportsComponent', () => {
       batchId: 'batchId'
     };
     const onDemandReportService = TestBed.inject(OnDemandReportService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
     component.loadReports('do_21310064620881510413775_01310067114129817611');
@@ -80,7 +80,7 @@ describe('OnDemandReportsComponent', () => {
   it('should throw error if not onDownloadLinkFail', () => {
     component.tag = 'mockTag';
     const onDemandReportService = TestBed.inject(OnDemandReportService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(onDemandReportService, 'getReport').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
     component.onDownloadLinkFail({tag: 'mockTag', requestId: 'mockId'});
@@ -89,7 +89,7 @@ describe('OnDemandReportsComponent', () => {
   it('should not throw error on onDownloadLinkFail', () => {
     component.tag = 'mockTag';
     const onDemandReportService = TestBed.inject(OnDemandReportService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(onDemandReportService, 'getReport').and.returnValue(of({}));
     spyOn(toasterService, 'error').and.callThrough();
     component.onDownloadLinkFail({tag: 'mockTag', requestId: 'mockId'});
@@ -104,7 +104,7 @@ describe('OnDemandReportsComponent', () => {
     component.userId = 'userId';
     component.selectedReport = {jobId: 'jobId'};
     const onDemandReportService = TestBed.inject(OnDemandReportService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(onDemandReportService, 'submitRequest').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
     component.submitRequest();
@@ -120,7 +120,7 @@ describe('OnDemandReportsComponent', () => {
     component.onDemandReportData = [{1: 'a'}];
     component.reportTypes = MockData.reportTypes;
     const onDemandReportService = TestBed.inject(OnDemandReportService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(onDemandReportService, 'submitRequest').and.returnValue(of({result: {2: 'b', dataset: 'response-exhaust'}}));
     spyOn(toasterService, 'error').and.callThrough();
     component.submitRequest();
@@ -140,7 +140,7 @@ describe('OnDemandReportsComponent', () => {
     component.onDemandReportData = [{1: 'a'}];
     component.reportTypes = MockData.reportTypes;
     const onDemandReportService = TestBed.inject(OnDemandReportService);
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(onDemandReportService, 'submitRequest').and.returnValue(of(MockData.mockSubmitReqData));
     spyOn(toasterService, 'error').and.callThrough();
     component.submitRequest();

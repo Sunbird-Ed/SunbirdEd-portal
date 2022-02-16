@@ -90,7 +90,7 @@ describe('AddToGroupDirective', () => {
 
   it('should not add activity to the group if it is already been added', () => {
     /** Arrange */
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     directive.identifier = 'do_1130958935577886721105';
     spyOn(directive, 'sendInteractData').and.stub();
     directive.groupAddableBlocData = {
@@ -116,7 +116,7 @@ describe('AddToGroupDirective', () => {
 
   it('should add activity to the group if it is not added', () => {
     /** Arrange */
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     directive.identifier = 'do_12345';
     spyOn(directive, 'sendInteractData').and.stub();
     directive.groupAddableBlocData = {
@@ -143,7 +143,7 @@ describe('AddToGroupDirective', () => {
 
   it('should show a toaster message if add activity api fail', () => {
     /** Arrange */
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     directive.identifier = 'do_12345';
     spyOn(directive, 'sendInteractData').and.stub();
     directive.groupAddableBlocData = {

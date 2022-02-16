@@ -76,7 +76,7 @@ describe('OtpPopupComponent', () => {
   });
 
   it('call verifyOTP and get error', () => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => {
     });
     component.otpData = {'wrongOtpMessage': 'test'};

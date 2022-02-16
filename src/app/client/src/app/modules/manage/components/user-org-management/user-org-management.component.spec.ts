@@ -178,7 +178,7 @@ describe('UserOrgManagementComponent', () => {
 
   it('should fetch submit teacher details csv', () => {
     const manageService = TestBed.inject(ManageService);
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     spyOn(manageService, 'getData').and.returnValue(of({
       result: { signedUrl: 'signedUrl' }
     }));

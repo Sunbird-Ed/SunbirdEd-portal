@@ -93,7 +93,7 @@ describe('BatchPageSectionComponent', () => {
   });
 
   it('should call get page api and return result', inject([], () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const searchService = TestBed.inject(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(observableOf(testData.courseDetails));
     pageApiService = TestBed.inject(PageApiService);

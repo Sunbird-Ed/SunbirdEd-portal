@@ -95,7 +95,7 @@ describe('GlobalSearchFilterComponent', () => {
   it('should reset filters', () => {
     const utilService = TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     userService.anonymousUserPreference = {
       framework: {
         'id': '01268904781886259221',

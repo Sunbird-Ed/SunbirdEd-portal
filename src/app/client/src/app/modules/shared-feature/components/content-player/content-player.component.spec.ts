@@ -81,7 +81,7 @@ describe('ContentPlayerComponent', () => {
   });
 
   it('should config content player if content status is "Live"', () => {
-    const userService = TestBed.inject(UserService);
+    const userService:any = TestBed.inject(UserService);
     const playerService = TestBed.inject(PlayerService);
     const resourceService = TestBed.inject(ResourceService);
     const windowScrollService = TestBed.inject(WindowScrollService);

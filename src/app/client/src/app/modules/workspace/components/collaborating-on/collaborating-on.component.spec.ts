@@ -90,7 +90,7 @@ describe('CollaboratingOnComponent', () => {
   }));
 
   it('should throw error', inject([SearchService], (searchService) => {
-    const toasterService = TestBed.inject(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
     fixture.detectChanges();
@@ -157,7 +157,7 @@ describe('CollaboratingOnComponent', () => {
   it('should open  editor on edit icon click when status is not processing  ', inject([WorkSpaceService, Router],
     (workSpaceService, route, http) => {
       spyOn(document, 'getElementById').and.returnValue('true');
-      const userService = TestBed.inject(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userData$.next({ err: null, userProfile: Response.userData as any});
       spyOn(component, 'contentClick').and.callThrough();
       fixture.detectChanges();
