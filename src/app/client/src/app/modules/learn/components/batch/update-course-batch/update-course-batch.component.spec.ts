@@ -541,7 +541,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
   });
 
-  afterAll(() => {
-    TestBed.resetTestingModule();
-  });
+  // afterAll(() => {
+  //   TestBed.resetTestingModule();
+  // });
 });
