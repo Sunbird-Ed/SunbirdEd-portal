@@ -34,7 +34,7 @@ describe('TenantService', () => {
   it('should call get tenant config', () => {
     const service = TestBed.inject(TenantService);
     spyOn(service, 'get').and.returnValue(response.defaultTenant);
-    const res = service.get({});
+    const res = service.get({} as any);
     expect(res as any).toEqual(response.defaultTenant);
   });
 

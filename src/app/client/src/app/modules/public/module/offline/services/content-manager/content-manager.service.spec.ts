@@ -46,7 +46,7 @@ describe('ContentManagerService', () => {
   it('should make getalldownloads API call', () => {
 
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     expect(service).toBeTruthy();
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.downloadListStatus));
     const apiRes = service.getContentList();
@@ -57,7 +57,7 @@ describe('ContentManagerService', () => {
   it('should make download API call', () => {
 
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     expect(service).toBeTruthy();
     const params = {
       downloadContentId: '/do_312522408518803456214665',
@@ -70,14 +70,14 @@ describe('ContentManagerService', () => {
 
   xit('should make export API call', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.callFake(() => observableOf(response.exportSuccess));
     expect(publicDataService.get).toHaveBeenCalled();
   });
 
   it('should get same data ', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     const params = {
       downloadContentId: '/do_312522408518803456214665',
       request: {}
@@ -91,7 +91,7 @@ describe('ContentManagerService', () => {
 
   it('Updating data should be successful', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     const params = {
       updateContentId: '/domain_66675',
       request: {}
@@ -105,7 +105,7 @@ describe('ContentManagerService', () => {
 
   it('should call resumeImportContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.resumeImportContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -116,7 +116,7 @@ describe('ContentManagerService', () => {
 
   it('should call cancelImportContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.cancelImportContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -124,7 +124,7 @@ describe('ContentManagerService', () => {
 
   it('should call pauseImportContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.pauseImportContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -132,7 +132,7 @@ describe('ContentManagerService', () => {
 
   it('should call retryImportContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.retryImportContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -140,7 +140,7 @@ describe('ContentManagerService', () => {
 
   it('should call resumeDownloadContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.resumeDownloadContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -148,7 +148,7 @@ describe('ContentManagerService', () => {
 
   it('should call cancelDownloadContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.cancelDownloadContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -156,7 +156,7 @@ describe('ContentManagerService', () => {
 
   it('should call pauseDownloadContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.pauseDownloadContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -164,7 +164,7 @@ describe('ContentManagerService', () => {
 
   it('should call retryDownloadContent', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.retryDownloadContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
@@ -172,7 +172,7 @@ describe('ContentManagerService', () => {
 
   it('should show popup message on failure of download', async () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     service.failedContentName = 'testContent';
 
     const error = {
@@ -231,7 +231,7 @@ describe('ContentManagerService', () => {
   it('should call changeContentLocation', () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
     const configService = TestBed.inject(ConfigService);
-    const publicDataService = TestBed.inject(PublicDataService);
+    const publicDataService:any = TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post');
     service.changeContentLocation({});
     expect(publicDataService.post).toHaveBeenCalled();

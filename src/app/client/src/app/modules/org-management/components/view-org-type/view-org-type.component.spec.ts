@@ -57,7 +57,7 @@ describe('ViewOrgTypeComponent', () => {
     });
 
     it('populateOrgType should return success', () => {
-        const learnerService = TestBed.inject(LearnerService);
+        const learnerService:any = TestBed.inject(LearnerService);
         spyOn(learnerService, 'get').and.returnValue(observableOf(mockRes.orgTypeSuccess));
         component.populateOrgType();
         expect(component.orgTypes[0].name).toBe('Test org type');
@@ -68,9 +68,9 @@ describe('ViewOrgTypeComponent', () => {
     it('populateOrgType should return error', () => {
         const toasterService:any = TestBed.inject(ToasterService);
         spyOn(toasterService, 'error').and.callThrough();
-        const resourceService = TestBed.inject(ResourceService);
+        const resourceService:any = TestBed.inject(ResourceService);
         resourceService.messages = mockRes.resourceBundle.messages;
-        const learnerService = TestBed.inject(LearnerService);
+        const learnerService:any = TestBed.inject(LearnerService);
         spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockRes.orgTypeError));
         component.populateOrgType();
         expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0005);
@@ -79,7 +79,7 @@ describe('ViewOrgTypeComponent', () => {
 
 
     it('should call orgTypeUpdateEvent emitter', () => {
-        const orgTypeService = TestBed.inject(OrgTypeService);
+        const orgTypeService:any = TestBed.inject(OrgTypeService);
         component.orgTypes = mockRes.orgTypeSuccess.result.response;
         orgTypeService.orgTypeUpdateEvent.emit();
         spyOn(orgTypeService, 'orgTypeUpdateEvent').and.callFake(() =>

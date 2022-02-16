@@ -22,7 +22,7 @@ describe('ManageService', () => {
 
   describe('getData method ', () => {
     it('should call the api', () => {
-      const http = TestBed.inject(HttpClient, HttpHeaders);
+      const http = TestBed.inject(HttpClient, HttpHeaders as any);
       const manageService = TestBed.inject(ManageService);
       spyOn(http, 'get').and.returnValue(of({ test: 'ok' }));
       manageService.getData('sunbird', 'a.txt');

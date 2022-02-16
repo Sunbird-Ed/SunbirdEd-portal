@@ -62,7 +62,7 @@ describe('ContentPlayerComponent', () => {
   });
 
   it('should call ngOnInit', () => {
-    const activateRoute = TestBed.inject(ActivatedRoute);
+    const activateRoute:any = TestBed.inject(ActivatedRoute);
     activateRoute.snapshot.queryParams = {
       contentType: 'course', l1Parent: '1234'
     };
@@ -75,7 +75,7 @@ describe('ContentPlayerComponent', () => {
   });
 
   it('should get contentId from route params', () => {
-    const activateRoute = TestBed.inject(ActivatedRoute);
+    const activateRoute:any = TestBed.inject(ActivatedRoute);
     spyOn(component, 'getContent').and.callThrough();
     component.getContentIdFromRoute();
     activateRoute.params.contentId = '123';
@@ -119,14 +119,14 @@ describe('ContentPlayerComponent', () => {
   });
 
   it('should call logTelemetry', () => {
-    const telemetryService = TestBed.inject(TelemetryService);
+    const telemetryService:any = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.logTelemetry('do_3434223');
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 
   it('should navigate back to previously accessed page', () => {
-    const navigationHelperService = TestBed.inject(NavigationHelperService);
+    const navigationHelperService:any = TestBed.inject(NavigationHelperService);
     spyOn(component, 'logTelemetry');
     spyOn(navigationHelperService, 'goBack');
     component.goBack();
@@ -144,7 +144,7 @@ describe('ContentPlayerComponent', () => {
 
   it('should get content and check conetent is not deleted for desktop app', () => {
     component.isDesktopApp = true;
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     spyOn(playerService, 'getContent').and.returnValue(of(resourceData.content));
     spyOn(component, 'getContentConfigDetails');
     spyOn(component.isContentDeleted, 'next');
@@ -155,7 +155,7 @@ describe('ContentPlayerComponent', () => {
 
   it('should get content and check conetent is deleted for desktop app', () => {
     component.isDesktopApp = true;
-    const playerService = TestBed.inject(PublicPlayerService);
+    const playerService:any = TestBed.inject(PublicPlayerService);
     spyOn(playerService, 'getContent').and.returnValue(throwError({}));
     spyOn(component.isContentDeleted, 'next');
     component.getContent();
@@ -167,7 +167,7 @@ describe('ContentPlayerComponent', () => {
     component.isConnected = true;
     component.isDesktopApp = true;
     const router = TestBed.inject(Router);
-   route['url' as any] = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
+    router['url' as any] = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
     spyOn(component.isContentDeleted, 'next');
     spyOn(component.deletedContent, 'emit');
     component.checkContentDeleted('do_121121');
@@ -197,7 +197,7 @@ describe('ContentPlayerComponent', () => {
   });
 
   it('should call initLayout', () => {
-    const layoutService = TestBed.inject(LayoutService);
+    const layoutService:any = TestBed.inject(LayoutService);
     spyOn(layoutService, 'initlayoutConfig').and.returnValue({ 'source': '', 'name': 'newLayout', 'options': '' });
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: '' }));
     component.initLayout();
@@ -207,7 +207,7 @@ describe('ContentPlayerComponent', () => {
   it('should call setTelemetryData', () => {
     component.dialCode = 'PQRCTS';
     const router = TestBed.inject(Router);
-   route['url' as any] = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
+    router['url' as any] = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
     component.contentDetails = { identifier: 'do_123343432', contentType: 'Resource', pkgVersion: 2 };
     component.tocPage = false;
     component.setTelemetryData();
@@ -215,8 +215,8 @@ describe('ContentPlayerComponent', () => {
   });
 
   it('should logTelemetry with defalut value', () => {
-    const telemetryService = TestBed.inject(TelemetryService);
-    const activateRoute = TestBed.inject(ActivatedRoute);
+    const telemetryService:any = TestBed.inject(TelemetryService);
+    const activateRoute:any = TestBed.inject(ActivatedRoute);
     delete activateRoute.snapshot.data.telemetry;
     spyOn(telemetryService, 'interact');
     component.logTelemetry('do_3434223');
