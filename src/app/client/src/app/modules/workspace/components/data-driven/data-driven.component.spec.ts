@@ -84,7 +84,7 @@ describe('DataDrivenComponent', () => {
     fixtureChild = TestBed.createComponent(DefaultTemplateComponent);
     componentChild = fixtureChild.componentInstance;
     const userService = TestBed.inject(UserService);
-    userService['userOrgDetails$'] = observableOf({});
+    userService['userOrgDetails$' as any] = observableOf({});
     // navigationHelperService = TestBed.inject('NavigationHelperService');
     fixtureParent.detectChanges();
   });
@@ -94,8 +94,8 @@ describe('DataDrivenComponent', () => {
     const service = TestBed.inject(FrameworkService);
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'createQuestionSet').and.returnValue(observableOf({result: {identifier: 'do_2124708548063559681134'}}));
-    service._frameWorkData$ = mockFrameworkData.frameworkData;
-    service._frameworkData$.next({
+    service['_frameWorkData$' as any] = mockFrameworkData.frameworkData;
+    service['_frameWorkData$' as any].next({
       err: null, framework: mockFrameworkData.success.framework,
       frameworkdata: mockFrameworkData.frameworkData
     });
@@ -113,8 +113,8 @@ describe('DataDrivenComponent', () => {
     const service = TestBed.inject(FrameworkService);
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'createQuestionSet').and.returnValue(observableThrowError({}));
-    service._frameWorkData$ = mockFrameworkData.frameworkData;
-    service._frameworkData$.next({
+    service['_frameWorkData$' as any] = mockFrameworkData.frameworkData;
+    service['_frameWorkData$' as any].next({
       err: null, framework: mockFrameworkData.success.framework,
       frameworkdata: mockFrameworkData.frameworkData
     });
@@ -137,8 +137,8 @@ describe('DataDrivenComponent', () => {
       contentType: 'textbook',
       framework: 'textbook'
     };
-    service._frameWorkData$ = mockFrameworkData.frameworkData;
-    service._frameworkData$.next({
+    service['_frameWorkData$' as any] = mockFrameworkData.frameworkData;
+    service['_frameWorkData$' as any].next({
       err: null, framework: mockFrameworkData.success.framework,
       frameworkdata: mockFrameworkData.frameworkData
     });
@@ -151,8 +151,8 @@ describe('DataDrivenComponent', () => {
     const service = TestBed.inject(FrameworkService);
     const cacheService = TestBed.inject(CacheService);
     const contentService = TestBed.inject(ContentService);
-    service._frameWorkData$ = mockFrameworkData.frameworkError;
-    service._frameworkData$.next({
+    service['_frameWorkData$' as any] = mockFrameworkData.frameworkError;
+    service['_frameWorkData$' as any].next({
       err: mockFrameworkData.frameworkError.err,
       framework: mockFrameworkData.frameworkError.framework, frameworkdata: mockFrameworkData.frameworkError.frameworkdata
     });
