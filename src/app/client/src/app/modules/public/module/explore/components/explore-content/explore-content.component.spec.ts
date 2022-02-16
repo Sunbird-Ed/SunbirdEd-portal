@@ -272,7 +272,7 @@ describe('ExploreContentComponent', () => {
     };
     Response.hoverActionsData['data'] = Response.hoverActionsData.content;
     const route = TestBed.inject(Router);
-    route['url'] = '/explore-page?selectedTab=explore-page';
+    route['url' as any] = '/explore-page?selectedTab=explore-page';
     spyOn(component, 'logTelemetry').and.callThrough();
     spyOn(component, 'playContent');
     component.hoverActionClicked(Response.hoverActionsData);

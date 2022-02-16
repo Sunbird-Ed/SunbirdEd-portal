@@ -312,7 +312,7 @@ describe('LibraryComponent', () => {
   it('should fetch content after content manager complete event', () => {
     const contentManagerService = TestBed.inject(ContentManagerService);
     const route = TestBed.inject(Router);
-    route['url'] = '/mydownloads?selectedTab=mydownloads';
+    route['url' as any] = '/mydownloads?selectedTab=mydownloads';
     spyOn(component, 'fetchContents');
     component.ngOnInit();
     contentManagerService.completeEvent.emit();

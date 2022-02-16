@@ -172,7 +172,7 @@ describe('ActivitySearchComponent', () => {
   it('should call navigateToPage method', () => {
     component.paginationDetails.totalPages = 20;
     const router = TestBed.inject(Router);
-    router.url = 'my-groups/group-details/6085532b-5f7b-4a8a-ae8c-c268fd40c371/add-activity-to-group/courses/1';
+   route['url' as any] = 'my-groups/group-details/6085532b-5f7b-4a8a-ae8c-c268fd40c371/add-activity-to-group/courses/1';
     spyOn(window, 'scroll');
     component.navigateToPage(2);
     expect(router.navigate).toHaveBeenCalled();
@@ -206,7 +206,7 @@ describe('ActivitySearchComponent', () => {
 
   it('should search the courses if the search is not blank string', () => {
     const router = TestBed.inject(Router);
-    router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
+   route['url' as any] = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = 'english';
     spyOn(component, 'addTelemetry');
     component.search();
@@ -216,7 +216,7 @@ describe('ActivitySearchComponent', () => {
 
   it('should not search the courses if the search is blank string', () => {
     const router = TestBed.inject(Router);
-    router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
+   route['url' as any] = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = '';
     component.search();
     expect(router.navigate).toHaveBeenCalled();

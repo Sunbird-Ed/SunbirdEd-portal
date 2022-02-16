@@ -258,7 +258,7 @@ describe('HomeSearchComponent', () => {
   it('should call navigateToPage method', () => {
     component.paginationDetails.totalPages = 20;
     const router = TestBed.inject(Router);
-    router.url = '/search/Courses/1?key=SB-194&selectedTab=all';
+   route['url' as any] = '/search/Courses/1?key=SB-194&selectedTab=all';
     spyOn(window, 'scroll');
     component.navigateToPage(2);
     expect(router.navigate).toHaveBeenCalled();
@@ -302,7 +302,7 @@ describe('HomeSearchComponent', () => {
     };
     contentResponse.hoverActionsData['data'] = contentResponse.hoverActionsData.content;
     const route = TestBed.inject(Router);
-    route['url'] = '/explore-page?selectedTab=explore-page';
+    route['url' as any] = '/explore-page?selectedTab=explore-page';
     spyOn(component, 'logTelemetry').and.callThrough();
     spyOn(component, 'playContent');
     component.hoverActionClicked(contentResponse.hoverActionsData);

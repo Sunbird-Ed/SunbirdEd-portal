@@ -252,7 +252,7 @@ describe('CoursePageComponent', () => {
         const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
         spyOn(component, 'viewAll').and.callThrough();
         spyOn(cacheService, 'set').and.stub();
-        router.url = '/explore-course?selectedTab=course';
+       route['url' as any] = '/explore-course?selectedTab=course';
         component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
         expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
             { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined } });
@@ -334,7 +334,7 @@ describe('CoursePageComponent', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
         const userService = TestBed.inject(UserService);
         const router = TestBed.inject(Router);
-        router.url = '/learn';
+       route['url' as any] = '/learn';
         const eventData = Response.viewAllEventData;
         userService._userProfile = Response.userData;
         const searchQueryParams = {
@@ -499,7 +499,7 @@ describe('CoursePageComponent', () => {
         };
         spyOn(component, 'playContent');
         const route = TestBed.inject(Router);
-        route['url'] = '/course-page?selectedTab=course-page';
+        route['url' as any] = '/course-page?selectedTab=course-page';
         component.hoverActionClicked(event);
         expect(component.playContent).toHaveBeenCalled();
     });

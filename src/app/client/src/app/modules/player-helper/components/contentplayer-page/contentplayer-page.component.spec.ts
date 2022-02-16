@@ -167,7 +167,7 @@ describe('ContentPlayerComponent', () => {
     component.isConnected = true;
     component.isDesktopApp = true;
     const router = TestBed.inject(Router);
-    router.url = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
+   route['url' as any] = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
     spyOn(component.isContentDeleted, 'next');
     spyOn(component.deletedContent, 'emit');
     component.checkContentDeleted('do_121121');
@@ -207,7 +207,7 @@ describe('ContentPlayerComponent', () => {
   it('should call setTelemetryData', () => {
     component.dialCode = 'PQRCTS';
     const router = TestBed.inject(Router);
-    router.url = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
+   route['url' as any] = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
     component.contentDetails = { identifier: 'do_123343432', contentType: 'Resource', pkgVersion: 2 };
     component.tocPage = false;
     component.setTelemetryData();

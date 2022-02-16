@@ -412,7 +412,7 @@ describe('ExplorePageComponent', () => {
     };
     RESPONSE.hoverActionsData['data'] = RESPONSE.hoverActionsData.content;
     const route = TestBed.inject(Router);
-    route['url'] = '/explore-page?selectedTab=explore-page';
+    route['url' as any] = '/explore-page?selectedTab=explore-page';
     spyOn(component, 'logTelemetry').and.callThrough();
     spyOn(component, 'playContent');
     component.hoverActionClicked(RESPONSE.hoverActionsData);
@@ -567,7 +567,7 @@ describe('ExplorePageComponent', () => {
     spyOn(component, 'viewAll').and.callThrough();
     spyOn(component, 'getCurrentPageData').and.returnValue({});
     spyOn(cacheService, 'set').and.stub();
-    router.url = '/explore-course?selectedTab=course';
+   route['url' as any] = '/explore-course?selectedTab=course';
     component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
     expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
       { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined, isContentSection: false
@@ -693,7 +693,7 @@ describe('ExplorePageComponent', () => {
       };
       component.queryParams = { id: 'sunbird', 'se_boards': ['State (Tamil Nadu)'] };
       spyOn(cacheService, 'set').and.stub();
-      router.url = '/view-all/suggested';
+     route['url' as any] = '/view-all/suggested';
       component.sectionViewAll();
       expect(router.navigate).toHaveBeenCalled();
       expect(cacheService.set).toHaveBeenCalled();
@@ -1004,7 +1004,7 @@ describe('ExplorePageComponent', () => {
     spyOn(component, 'handleTargetedpillSelected').and.callThrough();
     const router = TestBed.inject(Router);
     component.handleTargetedpillSelected(EventPillData);
-    router.url = '/observation';
+   route['url' as any] = '/observation';
     expect(component.handleTargetedpillSelected).toHaveBeenCalled();
   });
 
