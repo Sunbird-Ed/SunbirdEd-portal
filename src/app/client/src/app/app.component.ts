@@ -416,10 +416,12 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.checkFrameworkSelected();
               }
               if(!this.isLocationConfirmed){
-                this.showUserTypePopup = true
-              }
+                this.zone.run(() => {
+                  this.showUserTypePopup = true
+                  })              
+                }
             }
-            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : !userType;
+            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : this.showUserTypePopup;
           // }
         }
       });

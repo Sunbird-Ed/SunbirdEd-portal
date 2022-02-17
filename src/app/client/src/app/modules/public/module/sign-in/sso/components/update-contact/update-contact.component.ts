@@ -70,8 +70,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     this.setTenantInfo();
   }
   ngAfterViewInit () {
-    this.handleFormChangeEvent();
     setTimeout(() => {
+      this.handleFormChangeEvent();
       this.telemetryImpression = {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env,

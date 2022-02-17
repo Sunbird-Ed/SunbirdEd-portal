@@ -1,3 +1,9 @@
+/**
+ * Description
+ * Certificate creation component using inline SVG Editor
+ * @since release-4.7.0
+ */
+
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -6,16 +12,16 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService, CertRegService } from '@sunbird/core';
 import { ToasterService, ResourceService, NavigationHelperService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
+import { CertConfigModel } from '../../models/cert-config-model/cert-config-model';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
 import {ActivatedRoute} from '@angular/router';
 import dayjs from 'dayjs';
 @Component({
-  selector: 'app-create-template',
-  templateUrl: './create-template.component.html',
-  styleUrls: ['./create-template.component.scss']
+  selector: 'app-svg-editor',
+  templateUrl: './svg-editor.component.html',
+  styleUrls: ['./svg-editor.component.scss']
 })
-export class CreateTemplateComponent implements OnInit, OnDestroy {
+export class SvgEditorComponent implements OnInit, OnDestroy {
 
   @ViewChild(BrowseImagePopupComponent)
   public browseImage: BrowseImagePopupComponent;
@@ -60,6 +66,18 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   optionSing = 'SIGN2';
   queryParams: any;
   mode: any;
+  edit: Subject<any> = new Subject();
+  refreshEditor: Subject<any> = new Subject();
+  togglePreview: Subject<any> = new Subject();
+  save: Subject<any> = new Subject();
+  showSVGInputModal: boolean = false;
+  disableSVGImageModal: boolean = false;
+  selectedSVGObject: any = {};
+  showPreviewButton: boolean = true;
+  previewButton: string = 'show';
+  saveAndPreview: boolean = false;
+  userConsent: boolean = false;
+  previewSvgData: any;
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public userService: UserService,
@@ -134,6 +152,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
       const svgFile = res;
       this.logoHtml = this.sanitizeHTML(svgFile);
+      this.refreshEditor.next({});
       this.previewCertificate();
     });
   }
@@ -233,9 +252,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.svgData = this.convertHtml(this.logoHtml);
     const stateLogos = this.svgData.getElementsByClassName(this.classNames.STATE_LOGOS);
     const digitalSigns = this.classNames.SIGN_LOGO.map(id => this.svgData.getElementById(id));
-    this.updateTitles();
+    // this.updateTitles();
     this.updateStateLogos(stateLogos);
     this.updateSigns(digitalSigns);
+  }
+
+  previewUpdatedSVGCertificate() {
+    this.svgData = this.convertHtml(this.sanitizeHTML(document.getElementById('templateSvg').innerHTML));
+    this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
   }
 
   updateTitles() {
@@ -351,5 +375,90 @@ urltoFile(url, filename, mimeType) {
       this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
       this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
+  }
+
+  elementClicked(e: any) {
+    this.selectedSVGObject = {
+      type: _.get(e, 'type'),
+      value: _.get(e, 'element.textContent'),
+      element: e.element
+    };
+    if (e.type === 'image') {
+      this.logoType = {type: 'LOGO', index: 0,  key:'LOGO1'};
+      this.browseImage.getAssetList();
+    }
+    
+    this.showSVGInputModal = true;
+  }
+  updateSVGInputTag() {
+    this.showSVGInputModal = false;
+    this.edit.next({
+      element: this.selectedSVGObject.element,
+      type: 'text',
+      value: this.selectedSVGObject.value
+    });
+    this.selectedSVGObject = {};
+  }
+  closeSVGInputModal() {
+    this.showSVGInputModal = false;
+  }
+
+  svgAssetData(imageObj) {
+    this.getBase64FromUrl(_.get(imageObj, 'url')).then((base64String: string) => {
+      this.showSVGInputModal = false;
+      this.edit.next({
+        element: this.selectedSVGObject.element,
+        type: 'image',
+        value: base64String
+      });
+      this.selectedSVGObject = {};
+    });
+  }
+  getBase64FromUrl = async (url) => {
+    const data = await fetch(url);
+    const blob = await data.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        resolve(base64data);
+      }
+    });
+  }
+  toggleSVGPreview() {
+    this.previewButton = this.previewButton == 'show' ? 'hide' : 'show';
+    this.togglePreview.next(this.previewButton);
+  }
+
+  saveUpdatedCertificate() {
+    const certificateCodeName = _.get(this.queryParams, 'courseId') + '_' + _.get(this.queryParams, 'batchId').toString();
+    this.svgData = null;
+    this.save.next('');
+    this.previewUpdatedSVGCertificate();
+    setTimeout(() => {
+      const channel = this.userService.channel;
+      const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
+      request.request.asset.code = certificateCodeName;
+      request.request.asset.name = certificateCodeName;
+      this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
+        const assetId = _.get(response, 'result.identifier');
+        this.uploadTemplate(this.finalSVGurl, assetId);
+      }, error => {
+        this.toasterService.error('Something went wrong, please try again later');
+      });
+    }, 1000);
+  }
+
+  previewAndSave() {
+    this.toggleSVGPreview();
+    this.saveAndPreview = true;
+    this.previewSvgData = this.sanitizeHTML(document.getElementById('templateSvg').innerHTML);
+  }
+
+  closeSaveAndPreview() {
+    this.toggleSVGPreview();
+    this.saveAndPreview = false;
+    this.userConsent = false;
   }
 }

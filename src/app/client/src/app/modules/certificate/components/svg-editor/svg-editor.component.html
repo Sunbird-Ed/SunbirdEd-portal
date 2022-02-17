@@ -1,0 +1,172 @@
+<!-- @since - release-4.7.0 -->
+<!-- SVG Editor for Certificate Creation -->
+<!-- New Certificate layout -->
+
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container py-16' : ''">
+
+  <div class="sb-bg-color-white py-8 relative9 cc-player__content-header cc-player__border-fix">
+    <div class="ui container">
+      <div class="d-flex flex-ai-center flex-jc-space-between">
+        <button (click)="back()" tabindex="0"
+          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
+          type="button">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4">
+            <svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+            </svg></i>
+          {{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="certificate-container relative9">
+    <div class="ui container">
+      <div class='sb-g mt-16'>
+        <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-12">
+          <div class="certificate-content">
+            <label class="fmedium my-8">{{resourceService?.frmelmnts?.cert?.lbl?.layout}}</label>
+            <div class="mt-16">
+              <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card"
+                [ngClass]="selectedCertificate?.identifier === certificate?.identifier ? 'active' : ''">
+                <div class="cert-img-sb-card__content d-flex flex-ai-center flex-jc-center" alt="certificate template">
+                  <img (click)="chooseCertificate(certificate)" tabindex="0" [src]="certificate?.artifactUrl"
+                    alt="certificate template" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+          <div>
+            <div class="d-flex flex-ai-center">
+              <i class="icon-svg icon-svg--md icon-back mr-16">
+                <svg class="icon icon-svg--primary">
+                  <use xlink:href="assets/images/sprite.svg#question_on_play"></use>
+                </svg></i>
+              <label class="preview-title mb-0 mr-auto">{{resourceService?.frmelmnts?.lbl?.editCertificateTitle}}</label>
+              <button type="button" (click)="back()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
+              <!-- <button type="button" (click)="saveUpdatedCertificate()" tabindex="0"
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.cert?.btn?.saveAsTemplate}}
+              </button>
+              <button type="button" *ngIf="previewButton == 'show'" (click)="toggleSVGPreview()" tabindex="0"
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">Preview
+              </button>
+              <button type="button" *ngIf="previewButton == 'hide'" (click)="toggleSVGPreview()" tabindex="0"
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">Edit
+              </button> -->
+              <button type="button" (click)="previewAndSave()" tabindex="0"
+                class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.lbl?.saveAndPreview}}</button>
+            </div>
+
+            <div class="cert-select-card my-16">
+              <div class="d-flex flex-ai-center flex-dc cert-select-card__content">
+                <div class="d-flex flex-ai-center flex-jc-center cert-select-card__content__description">
+                  <div class="svgContainer">
+                    <svg-editor [svgContent]="logoHtml" [save]="save" [togglePreview]="togglePreview"
+                     [edit]="edit" (elementClicked)="elementClicked($event)" [refreshEditor]="refreshEditor"></svg-editor>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-wrapper *ngIf="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'text'" [config]="{disableClose: true, size: 'small'}" (dismiss)="closeSVGInputModal()">
+  <ng-template sbModalContent>
+      <div class="sb-modal sb-error">
+          <div class="transition ui dimmer page modals active visible">
+              <div class="ui modal transition active visible small">
+                  <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+                      <span>&times;</span>
+                  </button>
+                  <!--Header-->
+                  <div class="sb-modal-header">
+                      {{resourceService?.frmelmnts?.lbl?.updateDetails}}
+                  </div>
+                  <!--/Header-->
+                  <!--Content-->
+                  <div class="sb-modal-content">
+                    <div class="image-tabs px-8">
+                
+                      <!-- Text update -->
+                      <section *ngIf="selectedSVGObject?.type === 'text'" id="content1">
+                        <div class="twelve wide column">
+                          <div class="sb-search-box m-0">
+                            <div class="input-div relative">
+                              <input autofocus class="sb-search-input" [(ngModel)]="selectedSVGObject.value" type="text" maxlength="80" />
+                            </div>
+                          </div>
+                          <small _ngcontent-nit-c26="" class="pl-4 fsmall">
+                            {{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}
+                          </small>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                  <!--/Content-->
+                  <!--Actions-->
+                  <div class="sb-modal-actions">
+                    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="updateSVGInputTag()">{{resourceService?.frmelmnts?.btn?.update}}</button>
+                    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeSVGInputModal()">
+                      {{resourceService.frmelmnts?.btn?.cancel}}
+                    </button>
+                  </div>
+                  <!--/Actions-->
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</app-modal-wrapper>
+ <browse-image-popup [enableUploadSignature]="true" (assetData)="svgAssetData($event)" (close)="closeSVGInputModal()" [showUploadUserModal]="disableSVGImageModal" [showSelectImageModal]="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'image'" [logoType]="logoType" ></browse-image-popup>
+ 
+
+ <app-modal-wrapper [config]="{disableClose: true, size: 'large'}" (dismiss)="closeSaveAndPreview()" *ngIf="saveAndPreview">
+  <ng-template sbModalContent>
+    <div class="sb-modal sb-error">
+        <div class="transition ui dimmer page modals active visible">
+            <div class="ui modal sb-bg-color-white  transition active visible large">
+                <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+                    <span>&times;</span>
+                </button>
+                <!--Header-->
+                <div class="sb-modal-header sb-bg-color-white ">
+                    {{resourceService?.frmelmnts?.lbl?.certPreview}}
+                </div>
+                <!--/Header-->
+                <!--Content-->
+                <div class="sb-modal-content sb-bg-color-white ">
+                  <div class="image-tabs px-8">
+                    <div [innerHTML]="previewSvgData"></div>
+                  </div>
+                </div>
+                <!--/Content-->
+                <!--Actions-->
+                <div class="sb-modal-actions sb-bg-color-white ">
+                  <div class='ui stackable d-flex flex-jc-space-between mt-0'>
+                    <!-- <div class="twelve wide column"> -->
+                      <div class="">
+                        <div class="sb-checkbox sb-checkbox-secondary pt-24">
+                          <input [checked]="userConsent" (change)="userConsent = !userConsent" value="true" type="checkbox" id="check2" name="selected">
+                          <label for="check2" class="text-left fsmall">{{resourceService?.frmelmnts?.cert?.intxt?.confrmtion}}</label>
+                        </div>
+                      </div>
+                      <div class="">
+                        <button [disabled]="!userConsent" [ngClass]="{'sb-btn-disabled': !userConsent }" class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="saveUpdatedCertificate()">{{resourceService?.frmelmnts?.cert?.btn?.saveAsTemplate}}</button>
+                      </div>
+                    <!-- </div> -->
+                  </div>
+                 
+                </div>
+                <!--/Actions-->
+            </div>
+        </div>
+    </div>
+</ng-template>
+ </app-modal-wrapper>

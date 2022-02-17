@@ -124,19 +124,19 @@
   <app-modal-wrapper *ngIf="showJoinTrainingModal" [config]="{disableClose: true, size: 'small'}"
     (dismiss)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" #joinTrainingModal>
     <ng-template sbModalContent>
-      <div class="sb-modal">
-        <div class="transition ui dimmer page modals active visible">
-          <div class="ui modal transition active visible small">
-            <div class="sb-modal-header">
-              {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
-            </div>
-            <div class="sb-modal-content">
-              <div class="ui center aligned segment">
-                <p>{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
-              </div>
-            </div>
+      <div class="sb-mat__modal sb-mat__modal--small">
+        <div mat-dialog-title class="mb-0">
+          <div class="title">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</div>
+          <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+        </div>
+
+        <div class="sb-mat__modal__content d-flex flex-ai-center flex-jc-center">
+          <div>
+            <p>{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
           </div>
         </div>
+
+        <div class="sb-mat__modal__actions"></div>
       </div>
     </ng-template>
   </app-modal-wrapper>

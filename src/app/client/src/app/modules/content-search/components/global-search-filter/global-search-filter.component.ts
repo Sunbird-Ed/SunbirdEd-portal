@@ -213,7 +213,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       this.selectedFilters['selectedTab'] = 'all';
     }
     this.router.navigate([], {
-      queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,
+      queryParams: this.queryParamsToOmit ? queryFilters : { ...queryFilters, ...this.selectedFilters },
       relativeTo: this.activatedRoute.parent
     });
   }
