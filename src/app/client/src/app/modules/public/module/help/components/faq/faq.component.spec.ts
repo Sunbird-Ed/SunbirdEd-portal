@@ -83,12 +83,12 @@ describe('FaqComponent', () => {
     location = TestBed.inject(Location);
     fixture = TestBed.createComponent(FaqComponent);
     component = fixture.componentInstance;
-    spyOn(component['http'], 'get').and.callFake(() => {
-      if (!component.defaultToEnglish) {
-        return throwError({ status: 404 });
-      }
-      return of({});
-    });
+    // spyOn(component['http'], 'get').and.callFake(() => {
+    //   if (!component.defaultToEnglish) {
+    //     return throwError({ status: 404 });
+    //   }
+    //   return of({});
+    // });
   });
 
   it('should create', () => {
