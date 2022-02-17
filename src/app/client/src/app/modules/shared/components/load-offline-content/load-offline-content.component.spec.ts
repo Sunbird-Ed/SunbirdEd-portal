@@ -11,7 +11,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ElectronService } from '../../../core/services/electron/electron.service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('LoadOfflineContentComponent', () => {
+xdescribe('LoadOfflineContentComponent', () => {
   let component: LoadOfflineContentComponent;
   let fixture: ComponentFixture<LoadOfflineContentComponent>;
   class FakeActivatedRoute {

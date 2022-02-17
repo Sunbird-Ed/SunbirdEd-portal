@@ -17,7 +17,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('UpdateContactComponent', () => {
+xdescribe('UpdateContactComponent', () => {
   let component: UpdateContactComponent;
   let fixture: ComponentFixture<UpdateContactComponent>;
   const fakeActivatedRoute = {
