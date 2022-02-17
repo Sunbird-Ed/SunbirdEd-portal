@@ -1,9 +1,13 @@
-<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeModal(contentCreditsModal)"
+<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="closeModal(contentCreditsModal)"
   #contentCreditsModal>
   <ng-template sbModalContent>
     <div class="sb-modal">
+      
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible small">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
           <!--Header-->
           <div class="sb-modal-header">
             {{resourceService?.frmelmnts?.lbl?.credits | uppercase}}
