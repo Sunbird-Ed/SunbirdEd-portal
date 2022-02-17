@@ -54,6 +54,9 @@ const routes: Routes = [
     {
         path: 'questionset/:contentId', component: ContentPlayerComponent, canDeactivate: [PendingchangesGuard],
         data: {
+             menuBar: {
+                visible: false
+            },
             telemetry: {
                 env: telemetryEnv, pageid: 'quml-player', type: 'play'
             }
