@@ -154,6 +154,9 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
+        if(_.get(queryParams,'ignoreSavedFilter')){
+          queryFilters['ignoreSavedFilter'] = queryParams.ignoreSavedFilter;
+        }
         if (queryParams.selectedTab) {
           queryFilters['selectedTab'] = queryParams.selectedTab;
         }
@@ -165,14 +168,19 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         }
         return queryFilters;
       })).subscribe(filters => {
-        if (_.get(filters, 'key')) {
+        if (_.get(filters, 'key') && _.get(filters, 'ignoreSavedFilter') !== 'true') {
           this.cacheService.remove('searchFiltersAll');
         }
-        if (this.cacheService.exists('searchFiltersAll') && !_.get(filters, 'key')) {
+        if (this.cacheService.exists('searchFiltersAll') && !_.get(filters, 'key') &&
+        _.get(filters, 'ignoreSavedFilter') !== 'true') {
           this.selectedFilters = _.cloneDeep(this.cacheService.get('searchFiltersAll'));
         } else {
-          this.cacheService.remove('searchFiltersAll');
-          this.selectedFilters = _.cloneDeep(filters);
+          if( _.get(filters, 'ignoreSavedFilter') === 'true'){
+
+          } else{
+            this.cacheService.remove('searchFiltersAll');
+            this.selectedFilters = _.cloneDeep(filters);
+          }
         }
         this.emitFilterChangeEvent(true);
         this.hardRefreshFilter();

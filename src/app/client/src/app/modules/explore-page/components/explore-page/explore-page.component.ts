@@ -249,7 +249,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 tap(({ enrolledCourses, err }) => {
                     this.enrolledCourses = this.enrolledSection = [];
-
+                    const sortingField = (get(this.getCurrentPageData(), 'sortingField'))?
+                    (get(this.getCurrentPageData(), 'sortingField')) : 'enrolledDate';
+                    const sortingOrder = (get(this.getCurrentPageData(), 'sortingOrder'))?
+                    (get(this.getCurrentPageData(), 'sortingOrder')) : 'desc';
                     const enrolledSection = {
                         name: this.getSectionName(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')),
                         length: 0,
@@ -265,8 +268,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                               (_.toLower(contentType) === _.toLower(pageContentType));
                     };
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
-                    filteredCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);
-                    this.enrolledCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);
+                    filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
+                    this.enrolledCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     enrolledSection.contents = _.map(filteredCourses, content => {
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
@@ -1070,6 +1073,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         params['returnTo'] = contentType;
         params['title'] = event.data[0].value.landing ? event.data[0].value.landing.title : '';
         params['description'] = event.data[0].value.landing ? event.data[0].value.landing.description : '';
+        params['ignoreSavedFilter'] = true;
 
         const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
             const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
