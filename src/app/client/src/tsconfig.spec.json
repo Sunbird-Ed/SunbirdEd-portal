@@ -82,6 +82,36 @@
       "node"
     ]
   },
+  "exclude": [
+    // "app/modules/badging/**/*.spec.ts",
+    // "app/modules/certificate/**/*.spec.ts",
+    // "app/modules/content-search/**/*.spec.ts",
+    // "app/modules/core/**/*.spec.ts",
+    //  "app/modules/shared/**/*.spec.ts",
+    "app/modules/dashboard/**/*.spec.ts",
+    "app/modules/dial-code-search/**/*.spec.ts",
+    "app/modules/discussion/**/*.spec.ts",
+    "app/modules/explore-page/**/*.spec.ts",
+    "app/modules/groups/**/*.spec.ts",
+    "app/modules/learn/**/*.spec.ts",
+    "app/modules/manage/**/*.spec.ts",
+    "app/modules/merge-account/**/*.spec.ts",
+    "app/modules/notification/**/*.spec.ts",
+    "app/modules/org-management/**/*.spec.ts",
+    // "app/modules/player-helper/**/*.spec.ts",
+    "app/modules/program-dashboard/**/*.spec.ts",
+    "app/modules/public/**/*.spec.ts",
+    "app/modules/questionnaire/**/*.spec.ts",
+    "app/modules/recover-account/**/*.spec.ts",
+    "app/modules/resource/**/*.spec.ts",
+    "app/modules/search/**/*.spec.ts",
+    "app/modules/shared-feature/**/*.spec.ts",
+    "app/modules/telemetry/**/*.spec.ts",
+    // "app/modules/workspace/**/*.spec.ts",
+    "app/modules/observation/**/*.spec.ts",
+    "app/modules/report/**/*.spec.ts",
+    "app/modules/uci-admin/**/*.spec.ts"
+  ],
   "files": [
     "test.ts",
     "polyfills.ts"
