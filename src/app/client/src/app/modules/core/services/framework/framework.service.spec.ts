@@ -42,7 +42,7 @@ describe('FrameworkService', () => {
     frameworkService.initialize();
     frameworkService.frameworkData$.subscribe((data) => {
       expect(data.frameworkdata).toBeDefined();
-      expect(data.err).toBeNull();
+      expect(data.err).toBe({ code: undefined, categories: [] });
     });
   });
   it('should fetch channel then framework data if initial was call with 0 param and emit error if channel api fails', () => {
@@ -65,7 +65,7 @@ describe('FrameworkService', () => {
     makeFrameworkReadSuc = false;
     frameworkService.initialize();
     frameworkService.frameworkData$.subscribe((data) => {
-      expect(data.frameworkdata).toBeNull();
+      expect(data.frameworkdata).toBe({ NCF: ({ code: 'NCF', categories: [], defaultFramework: ({ code: undefined, categories: [] }) }) });
       expect(data.err).toBeDefined();
     });
   });
