@@ -57,8 +57,8 @@ xdescribe('ContentPlayerComponent', () => {
 
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
-    const navigationHelperService = TestBed.inject(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: false}));
+    const navigationHelperService:any = TestBed.inject(NavigationHelperService);
+    spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(observableOf({data: false}));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
     expect(component.isFullScreenView).toBe(false);
@@ -66,8 +66,8 @@ xdescribe('ContentPlayerComponent', () => {
 
   it('should make isFullScreenView to true', () => {
     component.isFullScreenView = false;
-    const navigationHelperService = TestBed.inject(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: true}));
+    const navigationHelperService: any = TestBed.inject(NavigationHelperService);
+    spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(observableOf({data: true}));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
     expect(component.isFullScreenView).toBe(true);
@@ -79,7 +79,7 @@ xdescribe('ContentPlayerComponent', () => {
   });
 
   it('should emit deleteContent when content is deleted ', () => {
-    const utilService = TestBed.inject(UtilService);
+    const utilService:any = TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
     const contentManagerService = TestBed.inject(ContentManagerService);
     spyOn(component, 'deleteContent');
