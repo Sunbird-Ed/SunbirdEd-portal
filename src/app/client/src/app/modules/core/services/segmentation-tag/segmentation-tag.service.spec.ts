@@ -11,14 +11,17 @@ import { SegmentationTagService } from './segmentation-tag.service';
 describe('SegmentationTagService', () => {
   let frameworkService: FrameworkService;
   let service: SegmentationTagService;
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CacheService]
     });
+    
+  });
+  beforeEach(() => {
     frameworkService = TestBed.inject(FrameworkService);
     service = TestBed.inject(SegmentationTagService);
-  });
+  })
 
   it('should be created', () => {
     expect(service).toBeTruthy();

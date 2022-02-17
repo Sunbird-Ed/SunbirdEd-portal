@@ -48,7 +48,7 @@ describe('VerifyAccountIdentifierComponent', () => {
     }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [VerifyAccountIdentifierComponent],
       schemas: [NO_ERRORS_SCHEMA],

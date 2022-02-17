@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('BatchCardComponent', () => {
+xdescribe('BatchCardComponent', () => {
   let component: BatchCardComponent;
   let fixture: ComponentFixture<BatchCardComponent>;
   const resourceBundle = {
@@ -36,7 +36,7 @@ describe('BatchCardComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],

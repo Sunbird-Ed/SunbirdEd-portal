@@ -19,7 +19,7 @@ describe('NotificationServiceImpl', () => {
     notificationUpdate() { return observableOf({}); }
   };
 
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SbNotificationModule, RouterTestingModule, TelemetryModule.forRoot()],
       providers: [ {provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }]

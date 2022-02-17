@@ -9,7 +9,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {Location} from '@project-sunbird/client-services/models/location';
 import {ServerResponse} from '@sunbird/shared';
 
-describe('SbFormLocationSelectionDelegate', () => {
+xdescribe('SbFormLocationSelectionDelegate', () => {
   let sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
   const mockUserService: Partial<UserService> = {
     get userid(): string {

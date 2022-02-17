@@ -7,7 +7,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublicDataService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [PublicDataService, ConfigService, HttpClient, DataService]

@@ -12,7 +12,7 @@ import { ProfileService } from '@sunbird/profile';
 import { from, of } from 'rxjs';
 import { UserService } from '@sunbird/core';
 
-describe('OnboardingUserSelectionComponent', () => {
+xdescribe('OnboardingUserSelectionComponent', () => {
   let component: OnboardingUserSelectionComponent;
   let fixture: ComponentFixture<OnboardingUserSelectionComponent>;
 
@@ -26,7 +26,7 @@ describe('OnboardingUserSelectionComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnboardingUserSelectionComponent],
       imports: [

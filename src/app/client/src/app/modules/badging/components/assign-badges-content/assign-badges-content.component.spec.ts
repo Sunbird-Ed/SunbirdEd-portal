@@ -20,7 +20,7 @@ describe('AssignBadgesContentComponent', () => {
     'params': observableOf({ collectionId: 'Test_Textbook2_8907797' })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [AssignBadgesContentComponent],
       imports: [SuiModule, CoreModule, SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],

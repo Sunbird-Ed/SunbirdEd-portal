@@ -28,7 +28,7 @@ describe('FtuPopupComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FtuPopupComponent ],
       imports: [HttpClientModule, SlickModule, SuiModalModule, SharedModule.forRoot(), RouterTestingModule],

@@ -11,7 +11,7 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-tran
 
 describe('ResourceService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, TranslateModule.forRoot({
                   loader: {

@@ -8,7 +8,7 @@ describe('AddActivityComponent', () => {
   let fixture: ComponentFixture<AddActivityComponent>;
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddActivityComponent ]
     })

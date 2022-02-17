@@ -69,7 +69,7 @@ describe('BatchListComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchListComponent],
       schemas: [NO_ERRORS_SCHEMA],

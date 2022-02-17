@@ -7,7 +7,7 @@ import {eventData} from './telemetry-impression.directive.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('TelemetryImpressionDirective', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryImpressionDirective],
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]

@@ -41,7 +41,7 @@ describe('UpdateContactDetailsComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModalModule, TelemetryModule.forRoot()],

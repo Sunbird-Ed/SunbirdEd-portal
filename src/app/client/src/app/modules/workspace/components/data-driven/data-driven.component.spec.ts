@@ -17,7 +17,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 
-describe('DataDrivenComponent', () => {
+xdescribe('DataDrivenComponent', () => {
   let componentParent: DataDrivenComponent;
   let fixtureParent: ComponentFixture<DataDrivenComponent>;
   let componentChild: DefaultTemplateComponent;
@@ -64,7 +64,7 @@ describe('DataDrivenComponent', () => {
     })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot()],

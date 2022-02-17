@@ -15,7 +15,7 @@ import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe
 import {InterpolatePipe} from '../../pipes/interpolate/interpolate.pipe';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 
-describe('OnDemandReportsComponent', () => {
+xdescribe('OnDemandReportsComponent', () => {
   const resourceBundle = {
     'messages': {
       'fmsg': {m0004: 'm0004'},
@@ -26,7 +26,7 @@ describe('OnDemandReportsComponent', () => {
   };
   let component: OnDemandReportsComponent;
   let fixture: ComponentFixture<OnDemandReportsComponent>;
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe, InterpolatePipe],
       imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule,

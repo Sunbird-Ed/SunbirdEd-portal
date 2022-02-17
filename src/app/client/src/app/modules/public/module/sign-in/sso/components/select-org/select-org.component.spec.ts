@@ -25,7 +25,7 @@ describe('SelectOrgComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
         RouterTestingModule, BrowserAnimationsModule],

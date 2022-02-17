@@ -44,7 +44,7 @@ describe('RedirectComponent', () => {
   }
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [RedirectComponent],
       imports: [

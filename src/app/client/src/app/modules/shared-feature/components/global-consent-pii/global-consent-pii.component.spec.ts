@@ -52,7 +52,7 @@ describe('GlobalConsentPiiComponent', () => {
     navigate: jasmine.createSpy('navigate')
   };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [GlobalConsentPiiComponent],

@@ -9,7 +9,7 @@ describe('CurriculumCardComponent', () => {
   let component: CurriculumCardComponent;
   let fixture: ComponentFixture<CurriculumCardComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [ CurriculumCardComponent ]

@@ -15,7 +15,7 @@ describe('ContentPlayerComponent', () => {
   let component: ContentChapterlistComponent;
   let fixture: ComponentFixture<ContentChapterlistComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentChapterlistComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],

@@ -6,7 +6,7 @@ import { TestBed } from '@angular/core/testing';
 import { ElementRef, Renderer2 } from '@angular/core';
 import { of } from 'rxjs';
 
-describe('TelemetryEventsDirective', () => {
+xdescribe('TelemetryEventsDirective', () => {
   let telDirective: TelemetryEventsDirective;
 
   configureTestSuite();
@@ -25,7 +25,7 @@ describe('TelemetryEventsDirective', () => {
     }
   };
 
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [ ],
       providers: [

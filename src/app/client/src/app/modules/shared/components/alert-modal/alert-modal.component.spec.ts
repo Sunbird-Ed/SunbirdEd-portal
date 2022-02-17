@@ -16,7 +16,7 @@ interface IAlertModalContext {
   data: any;
 }
 
-describe('AlertModalComponent', () => {
+xdescribe('AlertModalComponent', () => {
   let component: AlertModalComponent;
   let fixture: ComponentFixture<AlertModalComponent>;
   let alertModal;
@@ -30,7 +30,7 @@ describe('AlertModalComponent', () => {
     context: modalContext,
   };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

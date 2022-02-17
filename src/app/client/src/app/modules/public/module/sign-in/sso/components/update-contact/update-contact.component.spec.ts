@@ -29,7 +29,7 @@ describe('UpdateContactComponent', () => {
     getUserByKey: observableOf(mockUpdateContactData.userData)
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule, FormsModule, HttpClientTestingModule,
         SuiModule, TelemetryModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],

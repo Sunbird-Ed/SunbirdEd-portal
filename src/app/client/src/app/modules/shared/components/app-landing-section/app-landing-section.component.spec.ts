@@ -17,7 +17,7 @@ describe('AppLandingSectionComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientModule, SharedModule.forRoot(), TranslateModule.forRoot({
          loader: {

@@ -656,7 +656,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   checkFullScreenView() {
-    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+    this.navigationHelperService.contentFullScreenEvent?.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
   }

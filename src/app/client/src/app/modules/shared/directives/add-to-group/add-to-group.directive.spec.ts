@@ -15,7 +15,7 @@ import * as _ from 'lodash-es';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 
-describe('AddToGroupDirective', () => {
+xdescribe('AddToGroupDirective', () => {
   let directive: AddToGroupDirective;
   configureTestSuite();
 
@@ -60,7 +60,7 @@ describe('AddToGroupDirective', () => {
     }
   };
 
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [ ],
       providers: [

@@ -20,13 +20,13 @@ class MockElementRef {
   nativeElement: {};
 }
 
-describe('ListAllReportsComponent', () => {
+xdescribe('ListAllReportsComponent', () => {
   let component: ListAllReportsComponent;
   let fixture: ComponentFixture<ListAllReportsComponent>;
   const routerStub = { navigate: () => Promise.resolve(true) };
   let reportService: ReportService;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), DashboardModule],

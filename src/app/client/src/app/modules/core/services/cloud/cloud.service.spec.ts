@@ -6,7 +6,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { CloudService} from './cloud.service';
 describe('CloudService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [CloudService, ConfigService, HttpClient]

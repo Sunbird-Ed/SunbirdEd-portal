@@ -10,11 +10,11 @@ import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
-describe('DialCodeCardComponent', () => {
+xdescribe('DialCodeCardComponent', () => {
   let component: DialCodeCardComponent;
   let fixture: ComponentFixture<DialCodeCardComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

@@ -10,7 +10,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 describe('ContentDirectionDirective', () => {
   let contentDirectionDirective: ContentDirectionDirective;
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     const configServiceStub = { appConfig: { mediumCode: {'english': 'en'} } };
     const elementRefStub = { nativeElement: { 'lang': 'en', 'dir': 'ltr'} };
     const renderer2Stub = { setAttribute: () => ({}) };

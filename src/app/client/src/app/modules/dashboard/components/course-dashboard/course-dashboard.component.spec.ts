@@ -44,7 +44,7 @@ describe('CourseDashboardComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseDashboardComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],

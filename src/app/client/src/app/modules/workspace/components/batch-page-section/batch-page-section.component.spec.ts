@@ -19,7 +19,7 @@ import { NgInviewModule } from 'angular-inport';
 import { PageApiService } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('BatchPageSectionComponent', () => {
+xdescribe('BatchPageSectionComponent', () => {
   let component: BatchPageSectionComponent;
   let fixture: ComponentFixture<BatchPageSectionComponent>;
   let childcomponent: BatchCardComponent;
@@ -69,7 +69,7 @@ describe('BatchPageSectionComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchPageSectionComponent],
       schemas: [NO_ERRORS_SCHEMA],

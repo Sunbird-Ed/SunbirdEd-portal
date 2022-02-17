@@ -57,7 +57,7 @@ describe('PublicCoursePlayerComponent', () => {
   let fixture: ComponentFixture<PublicCoursePlayerComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, generaliseLabelService;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [PublicCoursePlayerComponent],

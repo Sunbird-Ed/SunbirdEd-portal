@@ -32,7 +32,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
   }
 };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CertificateNameUpdatePopupComponent ],
       imports: [

@@ -10,13 +10,13 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OrgTypeService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       providers: [OrgTypeService]
     });
   });
 
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [OrgTypeService, LearnerService, ConfigService]

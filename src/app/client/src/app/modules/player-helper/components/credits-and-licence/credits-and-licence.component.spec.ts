@@ -24,7 +24,7 @@ describe('CreditsAndLicenceComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreditsAndLicenceComponent],
       imports: [CommonConsumptionModule, BrowserAnimationsModule, SharedModule.forRoot()],

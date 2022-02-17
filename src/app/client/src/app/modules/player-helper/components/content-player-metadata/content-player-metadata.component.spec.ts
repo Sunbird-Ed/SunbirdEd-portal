@@ -11,7 +11,7 @@ describe('ContentPlayerMetadataComponent', () => {
   let component: ContentPlayerMetadataComponent;
   let fixture: ComponentFixture<ContentPlayerMetadataComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule],
       declarations: [ContentPlayerMetadataComponent],

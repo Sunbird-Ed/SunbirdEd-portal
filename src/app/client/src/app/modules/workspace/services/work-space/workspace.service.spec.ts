@@ -20,7 +20,7 @@ describe('WorkSpaceService', () => {
     'params': observableOf({ pageNumber: '1' }),
   };
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule, CoreModule, SharedModule.forRoot()],
       providers: [WorkSpaceService, CacheService,

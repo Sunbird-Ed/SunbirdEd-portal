@@ -13,7 +13,7 @@ describe('ConfirmPopupComponent', () => {
   let component: ConfirmPopupComponent;
   let fixture: ComponentFixture<ConfirmPopupComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPopupComponent, ModalWrapperComponent, ModalContentDirective],
       imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({

@@ -69,7 +69,7 @@ describe('CourseConsumptionPageComponent', () => {
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService,
   navigationHelperService, generaliseLabelService;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot()],
       declarations: [ CourseConsumptionPageComponent ],

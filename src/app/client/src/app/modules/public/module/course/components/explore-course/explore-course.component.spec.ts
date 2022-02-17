@@ -53,7 +53,7 @@ describe('ExploreCourseComponent', () => {
     public changeParams(params) { this.paramsMock.next(params); }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreCourseComponent],

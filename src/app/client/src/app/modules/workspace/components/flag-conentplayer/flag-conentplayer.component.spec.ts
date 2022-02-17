@@ -34,7 +34,7 @@ describe('FlagConentplayerComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlagConentplayerComponent],
       imports: [HttpClientTestingModule,

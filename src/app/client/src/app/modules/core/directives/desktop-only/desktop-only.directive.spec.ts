@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
 class TestComponent {
 }
 
-describe('DesktopOnlyDirective', () => {
+xdescribe('DesktopOnlyDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       declarations: [
         TestComponent,

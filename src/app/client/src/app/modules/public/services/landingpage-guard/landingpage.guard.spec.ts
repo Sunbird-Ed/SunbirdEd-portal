@@ -8,7 +8,7 @@ describe('LandingpageGuard', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       providers: [LandingpageGuard, { provide: Router, useClass: RouterStub }]
     });

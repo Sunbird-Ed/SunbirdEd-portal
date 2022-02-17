@@ -11,7 +11,7 @@ import {ResourceService} from '../../services/resource/resource.service';
 import {of as observableOf} from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 
-describe('SbDatatableComponent', () => {
+xdescribe('SbDatatableComponent', () => {
   let component: SbDatatableComponent;
   let fixture: ComponentFixture<SbDatatableComponent>;
 
@@ -23,7 +23,7 @@ describe('SbDatatableComponent', () => {
     },
   };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [SbDatatableComponent, FilterPipe, SbDataTablePipe],
       imports: [FormsModule],

@@ -18,7 +18,7 @@ class RouterStub {
 
 describe('RouterNavigationService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       providers: [
         RouterNavigationService,

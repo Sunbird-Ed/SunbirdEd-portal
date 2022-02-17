@@ -16,7 +16,7 @@ describe('MapComponent', () => {
 
   configureTestSuite();
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, DashboardModule, RouterTestingModule, TelemetryModule.forRoot()],

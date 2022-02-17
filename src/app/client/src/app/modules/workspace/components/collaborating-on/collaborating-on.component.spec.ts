@@ -57,7 +57,7 @@ describe('CollaboratingOnComponent', () => {
   };
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollaboratingOnComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, OrderModule, CoreModule, TelemetryModule.forRoot(), SharedModule.forRoot()],

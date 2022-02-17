@@ -46,7 +46,7 @@ describe('CreateEditGroupComponent', () => {
     url = 'browse';
   }
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CreateEditGroupComponent ],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, SuiModule, BrowserAnimationsModule],

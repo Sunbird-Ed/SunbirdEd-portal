@@ -21,7 +21,7 @@ describe('TenantService', () => {
     }
   };
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [TenantService, ConfigService,

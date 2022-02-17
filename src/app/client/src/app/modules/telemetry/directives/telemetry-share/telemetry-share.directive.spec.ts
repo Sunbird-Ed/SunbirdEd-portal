@@ -30,7 +30,7 @@ const fakeActivatedRoute = {
             },
           };
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryShareDirective],
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry},

@@ -13,7 +13,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 const testData = mockData.mockRes;
 describe('CoursesService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: []

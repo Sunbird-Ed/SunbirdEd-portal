@@ -22,7 +22,7 @@ describe('UsageReportsComponent', () => {
   };
   const routerStub = { url: '/dashBoard/organization' };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],

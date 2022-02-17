@@ -24,7 +24,7 @@ describe('SignupService', () => {
     }
   };
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [SignupService, ConfigService, LearnerService]

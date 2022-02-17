@@ -34,7 +34,7 @@ import {
 } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-describe('ObservationUtilService', () => {
+xdescribe('ObservationUtilService', () => {
   let baseHref, kendraService, userService, modalService;
   let service: ObservationUtilService;
   let requiredFields, data, allFieldsPresent, originalTimeout, formService;

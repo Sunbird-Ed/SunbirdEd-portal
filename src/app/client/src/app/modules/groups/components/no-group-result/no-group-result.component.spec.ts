@@ -6,7 +6,7 @@ describe('NoGroupResultComponent', () => {
   let component: NoGroupResultComponent;
   let fixture: ComponentFixture<NoGroupResultComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ NoGroupResultComponent ]
     })

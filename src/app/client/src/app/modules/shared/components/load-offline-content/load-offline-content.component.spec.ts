@@ -40,7 +40,7 @@ describe('LoadOfflineContentComponent', () => {
     instance: 'tenant'
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),

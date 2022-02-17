@@ -7,7 +7,7 @@ import { KendraService } from './kendra.service';
 
 describe('ObservationService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [KendraService, ConfigService, HttpClient]

@@ -52,7 +52,7 @@ describe('CourseConsumptionService', () => {
     url = jasmine.createSpy('url');
   }
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       providers: [CourseConsumptionService, CourseProgressService, PlayerService,

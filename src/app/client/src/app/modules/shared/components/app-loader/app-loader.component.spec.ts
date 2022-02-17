@@ -12,7 +12,7 @@ describe('AppLoaderComponent', () => {
   let component: AppLoaderComponent;
   let fixture: ComponentFixture<AppLoaderComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

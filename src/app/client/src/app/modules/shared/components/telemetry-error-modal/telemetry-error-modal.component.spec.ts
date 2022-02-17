@@ -14,7 +14,7 @@ describe('TelemetryErrorModalComponent', () => {
 
   configureTestSuite();
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ TelemetryErrorModalComponent ],
       imports: [SuiModule],

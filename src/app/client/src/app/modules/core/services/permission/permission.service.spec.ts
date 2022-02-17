@@ -19,7 +19,7 @@ const mockResource = {
 };
 describe('PermissionService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, TranslateModule.forRoot({
                   loader: {

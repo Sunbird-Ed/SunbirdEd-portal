@@ -5,14 +5,14 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { By } from '@angular/platform-browser';
 
-describe('CertPreviewPopupComponent', () => {
+xdescribe('CertPreviewPopupComponent', () => {
   let component: CertPreviewPopupComponent;
   let fixture: ComponentFixture<CertPreviewPopupComponent>;
 
   const resourceBundle = {
   };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SharedModule.forRoot(), BrowserAnimationsModule],
       declarations: [ CertPreviewPopupComponent ],

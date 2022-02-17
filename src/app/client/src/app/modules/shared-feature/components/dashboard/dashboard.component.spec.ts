@@ -10,7 +10,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('DashboardComponent', () => {
+xdescribe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let activatedRoute;
@@ -28,7 +28,7 @@ describe('DashboardComponent', () => {
     messages: { fmsg: { m0085: 'Fetching CSV failed, please try again later...' } }
   };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [DashboardComponent],
       imports: [

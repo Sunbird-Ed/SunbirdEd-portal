@@ -286,7 +286,7 @@ export class SvgEditorComponent implements OnInit, OnDestroy {
   updateSigns(stateLogos) {
     const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'SIGN');
     this.editSVG(logosArray, stateLogos).then(res => {
-      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
+      //this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
     });
   }
 

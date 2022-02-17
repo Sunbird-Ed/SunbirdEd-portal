@@ -35,7 +35,7 @@ describe('DefaultTemplateComponent', () => {
     'url': observableOf({ 'path': 'textbook' })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],
       declarations: [ DefaultTemplateComponent ],

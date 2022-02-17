@@ -60,7 +60,7 @@ class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, CoreModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]) ],
       declarations: [ CreateTemplateComponent ],

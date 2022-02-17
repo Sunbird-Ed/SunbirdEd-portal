@@ -14,7 +14,7 @@ import { PublicDataService, UserService } from '@sunbird/core';
 
 describe('UploadCertificateService', () => {
   configureTestSuite();
-  beforeEach(() => TestBed.configureTestingModule({
+  beforeAll(() => TestBed.configureTestingModule({
     imports: [CoreModule, HttpClientTestingModule],
     providers: [
       ConfigService,

@@ -19,7 +19,7 @@ describe('UserOnboardingComponent', () => {
   let fixture: ComponentFixture<UserOnboardingComponent>;
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserOnboardingComponent],
       imports: [

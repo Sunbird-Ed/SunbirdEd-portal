@@ -19,7 +19,7 @@ import {
   throwError,
 } from 'rxjs';
 
-describe('MlGuard', () => {
+xdescribe('MlGuard', () => {
   let baseHref, guard;
   let toastService, userService;
   class RouterStub {
@@ -32,7 +32,7 @@ describe('MlGuard', () => {
       },
     },
   };
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       providers: [
         MlGuard,

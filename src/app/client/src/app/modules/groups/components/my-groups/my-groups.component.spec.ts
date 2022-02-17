@@ -16,7 +16,7 @@ import { mockGroupList, tncData } from './my-groups.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { APP_BASE_HREF } from '@angular/common';
 import { GroupEntityStatus, GroupMembershipType } from '@project-sunbird/client-services/models';
-describe('MyGroupsComponent', () => {
+xdescribe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
   let fixture: ComponentFixture<MyGroupsComponent>;
 
@@ -35,7 +35,7 @@ describe('MyGroupsComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],

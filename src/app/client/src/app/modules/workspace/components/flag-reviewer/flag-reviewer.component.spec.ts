@@ -67,7 +67,7 @@ describe('FlagReviewerComponent', () => {
     userRoles: ['PUBLIC']
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlagReviewerComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],

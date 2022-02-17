@@ -12,7 +12,7 @@ import { ContentTypeComponent } from './content-type.component';
 import { mockData } from './content-type.component.spec.data';
 import { OnlineOnlyDirective } from '../../directives/online-only/online-only.directive';
 
-describe('ContentTypeComponent', () => {
+xdescribe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
   let fixture: ComponentFixture<ContentTypeComponent>;
 
@@ -35,7 +35,7 @@ describe('ContentTypeComponent', () => {
       },
     }
   };
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [ContentTypeComponent, OnlineOnlyDirective, InterpolatePipe],

@@ -20,7 +20,7 @@ describe('BrowserCompatibilityComponent', () => {
     browser: 'chrome'
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, TranslateModule.forRoot({
          loader: {

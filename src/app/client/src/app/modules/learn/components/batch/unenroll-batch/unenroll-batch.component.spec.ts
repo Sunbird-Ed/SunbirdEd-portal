@@ -59,7 +59,7 @@ describe('UnEnrollBatchComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [UnEnrollBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],

@@ -26,7 +26,7 @@ describe('ForumComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ForumComponent],
       imports: [SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule, BrowserAnimationsModule],

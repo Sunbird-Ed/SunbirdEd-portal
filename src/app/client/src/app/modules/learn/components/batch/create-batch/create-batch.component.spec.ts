@@ -66,11 +66,11 @@ const fakeActivatedRoute = {
   }
 };
 
-describe('CreateBatchComponent', () => {
+xdescribe('CreateBatchComponent', () => {
   let component: CreateBatchComponent;
   let fixture: ComponentFixture<CreateBatchComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     TestBed.configureTestingModule({

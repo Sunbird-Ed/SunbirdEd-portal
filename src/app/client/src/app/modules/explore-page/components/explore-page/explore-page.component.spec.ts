@@ -92,7 +92,7 @@ describe('ExplorePageComponent', () => {
     public changeSnapshotQueryParams(queryParams) { this.snapshot.queryParams = queryParams; }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule, ObservationModule],
       declarations: [ExplorePageComponent],

@@ -8,7 +8,7 @@ import { mockData } from './dial-code.service.spec.data';
 import { of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('DialCodeService', () => {
+xdescribe('DialCodeService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],

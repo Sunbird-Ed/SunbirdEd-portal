@@ -10,7 +10,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ElectronDialogService } from '../../services';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('LoadContentComponent', () => {
+xdescribe('LoadContentComponent', () => {
   let component: LoadContentComponent;
   let fixture: ComponentFixture<LoadContentComponent>;
   class FakeActivatedRoute {
@@ -35,7 +35,7 @@ describe('LoadContentComponent', () => {
     },
     instance: 'tenant'
   };
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LoadContentComponent ],
       imports: [ SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),

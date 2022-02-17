@@ -14,7 +14,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CourseProgressService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CourseProgressService]

@@ -20,7 +20,7 @@ describe('UserRoleAssignComponent', () => {
   let fixture: ComponentFixture<UserRoleAssignComponent>;
   let observationUtilService;
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
 
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule,

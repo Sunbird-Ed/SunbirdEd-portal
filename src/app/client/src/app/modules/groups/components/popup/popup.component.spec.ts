@@ -24,7 +24,7 @@ describe('PopupComponent', () => {
     url: '/';
   }
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [PopupComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientTestingModule, FormsModule, BrowserAnimationsModule],

@@ -20,7 +20,7 @@ class TestComponent {
   }
 }
 
-describe('OnlineOnlyDirective', () => {
+xdescribe('OnlineOnlyDirective', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -34,7 +34,7 @@ describe('OnlineOnlyDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       declarations: [
         TestComponent,

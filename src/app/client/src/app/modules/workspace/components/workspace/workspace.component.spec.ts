@@ -15,7 +15,7 @@ describe('WorkspaceComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspaceComponent ],
       schemas: [NO_ERRORS_SCHEMA],

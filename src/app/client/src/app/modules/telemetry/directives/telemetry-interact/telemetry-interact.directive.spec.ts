@@ -40,7 +40,7 @@ class TestDirectiveComponent {
   constructor() {
   }
 }
-describe('TelemetryInteractDirective', () => {
+xdescribe('TelemetryInteractDirective', () => {
     let component: TestDirectiveComponent;
     let fixture: ComponentFixture<TestDirectiveComponent>;
     let inputEl: HTMLElement;

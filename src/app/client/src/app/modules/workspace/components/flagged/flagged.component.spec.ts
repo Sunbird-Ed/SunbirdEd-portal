@@ -66,7 +66,7 @@ describe('FlaggedComponent', () => {
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlaggedComponent],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(),

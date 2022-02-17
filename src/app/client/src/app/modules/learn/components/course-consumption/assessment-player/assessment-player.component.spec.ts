@@ -58,7 +58,7 @@ describe('AssessmentPlayerComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [AssessmentPlayerComponent],
       imports: [

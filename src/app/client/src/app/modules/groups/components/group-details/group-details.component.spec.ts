@@ -38,7 +38,7 @@ describe('GroupDetailsComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupDetailsComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule, SuiModalModule, TelemetryModule],

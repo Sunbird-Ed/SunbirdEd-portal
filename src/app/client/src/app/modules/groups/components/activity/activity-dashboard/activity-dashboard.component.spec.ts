@@ -13,7 +13,7 @@ import { courseHierarchy, activityData, dashletData, groupInfo } from './activit
 import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
 
-describe('ActivityDashboardComponent', () => {
+xdescribe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
   let fixture: ComponentFixture<ActivityDashboardComponent>;
   let activatedRoute;
@@ -59,7 +59,7 @@ describe('ActivityDashboardComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityDashboardComponent],
       imports: [

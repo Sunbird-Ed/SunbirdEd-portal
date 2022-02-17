@@ -22,7 +22,7 @@ describe('SbTableComponent', () => {
       }
     }
   };
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SbTableComponent ],
       schemas: [NO_ERRORS_SCHEMA],

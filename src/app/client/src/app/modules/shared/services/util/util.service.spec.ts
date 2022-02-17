@@ -45,7 +45,7 @@ const resourceBundle = {
 
 describe('UtilService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       providers: [UtilService, { provide: ResourceService, useValue: resourceBundle }, ToasterService]
     });

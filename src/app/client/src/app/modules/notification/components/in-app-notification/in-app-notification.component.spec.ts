@@ -60,7 +60,7 @@ describe('InAppNotificationComponent', () => {
     notificationUpdate() { return observableOf({}); }
   };
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [InAppNotificationComponent],
       imports: [SuiModule, SuiModalModule, SharedModule.forRoot(), CommonConsumptionModule, HttpClientTestingModule, TelemetryModule.forRoot(), SbNotificationModule],
