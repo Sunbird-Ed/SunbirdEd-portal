@@ -134,7 +134,7 @@ describe('MainFooterComponent', () => {
         const navigationHelperService = TestBed.inject(NavigationHelperService);
         const utilService = TestBed.inject(UtilService);
         utilService._isDesktopApp = true;
-        spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: false }));
+        spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(of({ data: false}));
         spyOn(component, 'getBaseUrl');
         component.ngOnInit();
         navigationHelperService.emitFullScreenEvent(false);
@@ -145,7 +145,7 @@ describe('MainFooterComponent', () => {
     it('should make isFullScreenView to TRUE', () => {
         component.isFullScreenView = false;
         const navigationHelperService = TestBed.inject(NavigationHelperService);
-        spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: true }));
+        spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(of({ data: false}));
         component.ngOnInit();
         navigationHelperService.emitFullScreenEvent(true);
         expect(component.isFullScreenView).toBe(true);
