@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 class TestComponent {
 }
 
-xdescribe('DesktopOnlyDirective', () => {
+describe('DesktopOnlyDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
   beforeEach(() => {

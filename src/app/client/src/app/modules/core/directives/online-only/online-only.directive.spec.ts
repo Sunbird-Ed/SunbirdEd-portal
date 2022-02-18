@@ -20,7 +20,7 @@ class TestComponent {
   }
 }
 
-xdescribe('OnlineOnlyDirective', () => {
+describe('OnlineOnlyDirective', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
