@@ -19,7 +19,7 @@ class TestComponent {
     this.clickCount = ++this.clickCount; // increment clickCount
   }
 }
-//Stage1.1
+//Stage1
 describe('OnlineOnlyDirective', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
