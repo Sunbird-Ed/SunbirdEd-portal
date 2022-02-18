@@ -58,7 +58,7 @@ describe('ReportComponent', () => {
     languageSelected$: of({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
@@ -76,6 +76,11 @@ describe('ReportComponent', () => {
     component = fixture.componentInstance;
     reportService = TestBed.inject(ReportService);
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    TestBed.resetTestingModule();
   });
 
   it('should create', () => {
@@ -309,8 +314,9 @@ describe('ReportComponent', () => {
     spyOn(reportService, 'isUserSuperAdmin').and.returnValue(false);
     spyOn(reportService, 'isReportParameterized').and.returnValue(true);
     spyOn(reportService, 'getParametersHash').and.returnValue('123');
-    delete mockReportObj.hashed_val;
-    component['setParametersHash'] = mockReportObj;
+    const clonedReportObj = {...mockReportObj};
+    delete clonedReportObj.hashed_val;
+    component['setParametersHash'] = clonedReportObj;
     expect(component['hash']).toBe('123');
     expect(reportService.getParametersHash).toHaveBeenCalled();
   });
@@ -382,12 +388,12 @@ describe('ReportComponent', () => {
     component.reportData = {
       charts: [{
         chartData: chartData,
-        chartConfig : { id: 'chartId' }
+        chartConfig: { id: 'chartId' }
       }
-    ]
+      ]
     };
     const data = component.getAllChartData();
-    expect(data).toEqual([{ data: chartData, id: 'chartId'}]);
+    expect(data).toEqual([{ data: chartData, id: 'chartId' }]);
   }));
 
   it('should get chart data', fakeAsync(() => {
@@ -395,18 +401,18 @@ describe('ReportComponent', () => {
     tick(1000);
     component.chartsReportData = {
       charts: [{
-          chartConfig : {
-            id: 123
-          }
+        chartConfig: {
+          id: 123
+        }
       }]
     };
     const data = component.getChartData({
-        chartConfig : {
-          id: 123
-        }
+      chartConfig: {
+        id: 123
+      }
     });
     expect(data).toEqual({
-      chartConfig : {
+      chartConfig: {
         id: 123
       }
     });
@@ -435,12 +441,12 @@ describe('ReportComponent', () => {
     component.reportData = {
       charts: [{
         chartData: chartData,
-        chartConfig : { id: 'chartId' }
+        chartConfig: { id: 'chartId' }
       }
-    ]
+      ]
     };
     component.resetFilter();
-    expect(component.resetFilters).toEqual({ data: [ { id: 'chartId', data: chartData }], reset: true });
+    expect(component.resetFilters).toEqual({ data: [{ id: 'chartId', data: chartData }], reset: true });
 
   }));
 
