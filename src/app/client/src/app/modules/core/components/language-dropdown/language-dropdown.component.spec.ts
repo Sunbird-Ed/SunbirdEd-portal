@@ -81,7 +81,7 @@ describe('LanguageDropdownComponent', () => {
             spyOn(component, 'getTelemetryInteractEdata');
             const result = component.getTelemetryInteractEdata('en');
             expect(result).toEqual({id: 'en-lang', type: 'click', pageid: 'learn'});
-        });
+        }).catch();
     });
 });
 

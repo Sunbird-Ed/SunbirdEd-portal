@@ -79,8 +79,8 @@ xdescribe('PublicPlayerService', () => {
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(['explore-course/course', contentMockData.data.identifier], { queryParams: undefined });
   }));
-
-  it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
+  //TODO
+  xit('should navigate to collection player if collection is not trackable', fakeAsync(() => {
     const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     const mockData = contentMockData;
@@ -91,8 +91,8 @@ xdescribe('PublicPlayerService', () => {
     expect(router.navigate).toHaveBeenCalledWith(
       ['play/collection', contentMockData.data.identifier], {queryParams: {contentType: contentMockData.data.contentType}});
   }));
-
-  it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
+  //TODO
+  xit('should navigate to collection player if collection is not trackable', fakeAsync(() => {
     const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     contentMockData.data['trackable'] = { 'enabled': 'No' };
