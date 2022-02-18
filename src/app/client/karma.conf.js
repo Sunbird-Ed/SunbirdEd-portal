@@ -15,10 +15,10 @@ module.exports = function (config) {
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
-    browserNoActivityTimeout: 100000,
+    browserNoActivityTimeout: 400000,
     client: {
       jasmine: {
-        timeoutInterval: 300000
+        timeoutInterval: 1200000
       },
       args: [tags],
       clearContext: false // leave Jasmine Spec Runner output visible in browser
