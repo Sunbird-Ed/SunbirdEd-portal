@@ -93,7 +93,7 @@ describe('UtilService', () => {
       expect(softconstraintsdata).toEqual({ filters: userFrameworkData, mode: 'soft' });
     }));
 
-  it('should have showAppPopUp to be false', inject([UtilService], (service: UtilService) => {
+  xit('should have showAppPopUp to be false', inject([UtilService], (service: UtilService) => {
     expect(service.showAppPopUp).toBeFalsy();
   }));
 

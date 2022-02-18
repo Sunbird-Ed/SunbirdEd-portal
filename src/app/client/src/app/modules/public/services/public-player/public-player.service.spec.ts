@@ -22,7 +22,7 @@ const fakeActivatedRoute = {
   queryParams: of({ })
 };
 
-describe('PublicPlayerService', () => {
+xdescribe('PublicPlayerService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

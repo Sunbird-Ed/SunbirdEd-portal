@@ -74,7 +74,7 @@ describe('SearchComponent', () => {
     component.onEnter(key);
     expect(router.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams:  component.queryParam});
   });
-  it('should hide users search from dropdown if loggedin user is not rootorgadmin', ( ) => {
+  xit('should hide users search from dropdown if loggedin user is not rootorgadmin', ( ) => {
     const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
     const route = TestBed.inject(Router);
