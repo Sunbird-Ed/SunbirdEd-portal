@@ -22,6 +22,7 @@ const fakeActivatedRoute = {
     }
   }
 };
+//Stage1
 describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
   let fixture: ComponentFixture<PageSectionComponent>;

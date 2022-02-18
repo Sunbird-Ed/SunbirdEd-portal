@@ -11,7 +11,7 @@ import { mockResponse } from './content-badge.component.spec.data';
 import { ContentBadgeService } from './../../services';
 import * as _ from 'lodash-es';
 import { configureTestSuite } from '@sunbird/test-util';
-
+//Stage1
 describe('ContentBadgeComponent', () => {
   let component: ContentBadgeComponent;
   let fixture: ComponentFixture<ContentBadgeComponent>;

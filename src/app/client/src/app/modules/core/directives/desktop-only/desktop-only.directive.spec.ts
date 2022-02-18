@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 })
 class TestComponent {
 }
-
+//Stage1
 describe('DesktopOnlyDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
