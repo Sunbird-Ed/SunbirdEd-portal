@@ -74,7 +74,7 @@ describe('LanguageDropdownComponent', () => {
         component.ngOnInit();
         expect(component.selectedLanguage).toBe('en');
     }));
-    it('should get the interact edata for telemetry', () => {
+    xit('should get the interact edata for telemetry', () => {
         const route = TestBed.inject(Router);
         route.navigate(['learn?selectedTab=course'])
         .then(() => {
