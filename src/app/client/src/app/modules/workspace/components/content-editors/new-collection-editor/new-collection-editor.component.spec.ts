@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, BrowserCacheTtlService, LayoutService } from '@sunbird/shared';
 import { UserService, PublicDataService, ContentService, FrameworkService, CoreModule } from '@sunbird/core';
@@ -394,15 +394,15 @@ describe('NewCollectionEditorComponent', () => {
 
   it('Should disable browser back button', fakeAsync(() => {
     const workSpaceService = TestBed.inject(WorkSpaceService);
-    spyOn(workSpaceService, 'browserBackEvent').and.returnValue(observableOf({}));
+    workSpaceService.browserBackEvent = new EventEmitter();
     spyOn(workSpaceService, 'newtoggleWarning').and.callThrough();
     spyOn(component, 'generateInteractEvent').and.callThrough();
     component.collectionDetails = mockRes.successResult.result.content;
     component['routeParams'] = {type: 'Course'};
     component['disableBrowserBackButton']();
-    expect(workSpaceService.newtoggleWarning).toHaveBeenCalledWith('Course');
-    workSpaceService.browserBackEvent.emit();
+    workSpaceService.browserBackEvent.emit(true);
     tick(1000);
+    expect(workSpaceService.newtoggleWarning).toHaveBeenCalledWith('Course');
     expect(component.generateInteractEvent).toHaveBeenCalled();
   }));
 
