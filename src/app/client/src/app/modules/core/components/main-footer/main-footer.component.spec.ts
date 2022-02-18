@@ -1,7 +1,7 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { ActivatedRoute } from '@angular/router';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ResourceService, ConfigService, SharedModule, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { MainFooterComponent } from './main-footer.component';
@@ -64,7 +64,7 @@ describe('MainFooterComponent', () => {
         }
     };
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [],
             providers: [CacheService, ConfigService, NavigationHelperService, UtilService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }, {
@@ -76,6 +76,11 @@ describe('MainFooterComponent', () => {
             .compileComponents();
     }));
 
+    afterEach(() => {
+        fixture.destroy();
+        TestBed.resetTestingModule();
+    });
+
     beforeEach(() => {
         fixture = TestBed.createComponent(MainFooterComponent);
         component = fixture.componentInstance;
@@ -85,37 +90,40 @@ describe('MainFooterComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should redirect to diksha app with UTM params if dialcode avaiable', () => {
+    it('should redirect to diksha app with UTM params if dialcode avaiable', fakeAsync(() => {
         TestBed.inject(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToMobileApp();
+        tick(50);
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
             TestBed.inject(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
 
-    });
+    }));
 
-    it('should redirect to diksha app with UTM params if dialcode is not avaiable', () => {
+    it('should redirect to diksha app with UTM params if dialcode is not avaiable', fakeAsync(() => {
         TestBed.inject(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
         TestBed.inject(ActivatedRoute).queryParams = of({ dialCode: '' });
         fixture.detectChanges();
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         const spy = spyOn(component, 'redirect');
         component.redirectToMobileApp();
+        tick(50);
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
             TestBed.inject(ResourceService).instance + '-sunbird&utm_medium=get&utm_campaign=redirection');
-    });
+    }));
 
-    it('should redirect to diksha app without UTM params if not avaiable', () => {
+    it('should redirect to diksha app without UTM params if not avaiable', fakeAsync(() => {
         TestBed.inject(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = false;
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToMobileApp();
+        tick(50);
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
             TestBed.inject(ResourceService).instance + '-sunbird&utm_medium=');
-    });
+    }));
 
     it('should redirect to diksha app without UTM params if not avaiable', () => {
         component.layoutConfiguration = {};
