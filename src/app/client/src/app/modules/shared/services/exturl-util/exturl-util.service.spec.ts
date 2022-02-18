@@ -36,3 +36,4 @@ describe('External Url UtilsService', () => {
             // expect(window.open).toHaveBeenCalledWith('/learn/redirect', '_blank');
         }));
 });
+
