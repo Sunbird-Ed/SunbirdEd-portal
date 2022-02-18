@@ -60,7 +60,7 @@ describe('UpdateBatchComponent', () => {
   let fixture: ComponentFixture<UpdateBatchComponent>;
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],

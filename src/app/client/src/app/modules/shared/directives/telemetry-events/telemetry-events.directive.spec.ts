@@ -25,7 +25,7 @@ xdescribe('TelemetryEventsDirective', () => {
     }
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ ],
       providers: [

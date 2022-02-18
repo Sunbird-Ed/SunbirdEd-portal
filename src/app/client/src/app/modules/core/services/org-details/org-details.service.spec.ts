@@ -16,7 +16,7 @@ describe('OrgDetailsService', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [LearnerService, PublicDataService, OrgDetailsService, { provide: Router, useClass: RouterStub }]

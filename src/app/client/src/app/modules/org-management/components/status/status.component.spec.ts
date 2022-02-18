@@ -33,7 +33,7 @@ describe('StatusComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(),

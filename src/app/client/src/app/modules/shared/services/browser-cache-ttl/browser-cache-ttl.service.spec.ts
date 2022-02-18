@@ -4,7 +4,7 @@ import { BrowserCacheTtlService } from './browser-cache-ttl.service';
 
 describe('BrowserCacheTtlService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [BrowserCacheTtlService]
     });

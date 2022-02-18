@@ -14,7 +14,7 @@ xdescribe('AllEvidenceComponent', () => {
   let component: AllEvidenceComponent;
   let fixture: ComponentFixture<AllEvidenceComponent>;
   let dhitiService;
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,

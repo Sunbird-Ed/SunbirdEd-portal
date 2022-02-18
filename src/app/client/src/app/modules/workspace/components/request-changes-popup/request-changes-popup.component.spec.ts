@@ -84,7 +84,7 @@ xdescribe('RequestChangesPopupComponent', () => {
     getPreviousUrl: () => ({})
 };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],
       declarations: [RequestChangesPopupComponent],

@@ -78,7 +78,7 @@ describe('CollectionPlayerComponent', () => {
     languageSelected$: of({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule, TelemetryModule.forRoot()],

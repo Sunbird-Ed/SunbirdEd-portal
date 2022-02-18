@@ -100,7 +100,7 @@ xdescribe('QuestionaireComponent', () => {
       this.snapshot.queryParams = queryParams;
     }
   }
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         SuiModalModule,

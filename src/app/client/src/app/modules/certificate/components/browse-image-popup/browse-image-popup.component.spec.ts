@@ -27,7 +27,7 @@ xdescribe('BrowseImagePopupComponent', () => {
     }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, FormsModule, CoreModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule],
       providers: [

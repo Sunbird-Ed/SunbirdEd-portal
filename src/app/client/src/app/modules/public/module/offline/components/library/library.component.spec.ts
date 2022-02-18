@@ -86,7 +86,7 @@ describe('LibraryComponent', () => {
     public changeParams(params) { this.paramsMock.next(params); }
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         LibraryComponent

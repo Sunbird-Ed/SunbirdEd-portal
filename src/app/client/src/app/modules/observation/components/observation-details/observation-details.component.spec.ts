@@ -70,7 +70,7 @@ xdescribe('ObservationDetailsComponent', () => {
     delete: () => of()
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), SuiModule, InfiniteScrollModule, RouterTestingModule, FormsModule, HttpClientTestingModule, RouterModule.forRoot([])],
       declarations: [ObservationDetailsComponent, EntityListComponent, SubmissionsComponent, EditSubmissionComponent, AddEntityComponent],

@@ -37,7 +37,7 @@ xdescribe('GroupNotificationWrapperService', () => {
     queryParams: observableOf({ })
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
       providers: [GroupNotificationWrapperService, ConfigService, ResourceService, ToasterService,

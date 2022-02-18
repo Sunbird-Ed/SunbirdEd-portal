@@ -13,7 +13,7 @@ describe('ProfileBadgeComponent', () => {
   let component: ProfileBadgeComponent;
   let fixture: ComponentFixture<ProfileBadgeComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule],
       declarations: [ProfileBadgeComponent],

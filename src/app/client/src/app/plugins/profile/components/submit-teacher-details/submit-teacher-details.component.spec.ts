@@ -82,7 +82,7 @@ xdescribe('SubmitTeacherDetailsComponent', () => {
   };
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,

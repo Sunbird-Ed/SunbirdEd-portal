@@ -15,7 +15,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OrganisationService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [OrganisationService, LearnerService, DashboardUtilsService, ConfigService]

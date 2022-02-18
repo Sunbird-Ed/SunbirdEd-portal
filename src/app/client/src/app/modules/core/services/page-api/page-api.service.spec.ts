@@ -11,7 +11,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 xdescribe('PageApiService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule],
       providers: [PageApiService, ConfigService, LearnerService, CacheService, BrowserCacheTtlService, PublicDataService]

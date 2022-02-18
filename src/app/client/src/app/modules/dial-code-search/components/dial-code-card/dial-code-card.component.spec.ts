@@ -14,7 +14,7 @@ xdescribe('DialCodeCardComponent', () => {
   let component: DialCodeCardComponent;
   let fixture: ComponentFixture<DialCodeCardComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

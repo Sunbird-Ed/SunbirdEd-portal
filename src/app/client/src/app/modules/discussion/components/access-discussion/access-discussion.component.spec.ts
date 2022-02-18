@@ -28,7 +28,7 @@ describe('AccessDiscussionComponent', () => {
 
   configureTestSuite();
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccessDiscussionComponent],
       imports: [SharedModule.forRoot(), RouterModule.forRoot([]), HttpClientTestingModule, HttpClientModule, RouterTestingModule],

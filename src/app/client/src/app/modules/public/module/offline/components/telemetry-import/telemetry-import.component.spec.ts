@@ -26,7 +26,7 @@ xdescribe('TelemetryImportComponent', () => {
       }
     };
   }
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryImportComponent],
       imports: [TelemetryModule.forRoot(), FileSizeModule, SharedModule.forRoot(), HttpClientTestingModule],

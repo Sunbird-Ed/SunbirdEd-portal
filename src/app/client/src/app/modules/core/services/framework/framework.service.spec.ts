@@ -13,7 +13,7 @@ describe('FrameworkService', () => {
   let mockFrameworkCategories: Array<any> = [];
   let makeChannelReadSuc, makeFrameworkReadSuc  = true;
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CacheService]

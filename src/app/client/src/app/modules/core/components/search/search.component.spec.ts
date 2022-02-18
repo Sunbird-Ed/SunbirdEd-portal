@@ -35,7 +35,7 @@ describe('SearchComponent', () => {
     });
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(),

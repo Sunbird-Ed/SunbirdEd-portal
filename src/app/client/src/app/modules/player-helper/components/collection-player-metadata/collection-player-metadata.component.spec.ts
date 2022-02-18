@@ -19,7 +19,7 @@ describe('CollectionPlayerMetadataComponent', () => {
     'params': observableOf({ collectionId: 'LP_FT_TextBook2' })
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerMetadataComponent, DateFormatPipe, InterpolatePipe],
       imports: [HttpClientTestingModule, RouterTestingModule, TranslateModule.forRoot({

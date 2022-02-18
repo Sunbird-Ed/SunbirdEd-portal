@@ -8,7 +8,7 @@ const testData = <any>mockData.mockRes;
 
 describe('LineChartService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LineChartService]
     });

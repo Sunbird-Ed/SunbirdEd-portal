@@ -15,7 +15,7 @@ import { ToasterService } from '@sunbird/shared';
 xdescribe('QuestionnaireService', () => {
   let baseHref, kendraService;
   let service: QuestionnaireService;
-  beforeAll(() =>
+  beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [
         HttpClient,

@@ -69,7 +69,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   let fixture: ComponentFixture<PublicCourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, navigationHelperService;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [PublicCourseConsumptionPageComponent],

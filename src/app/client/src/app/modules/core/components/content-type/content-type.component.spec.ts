@@ -35,7 +35,7 @@ xdescribe('ContentTypeComponent', () => {
       },
     }
   };
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [ContentTypeComponent, OnlineOnlyDirective, InterpolatePipe],

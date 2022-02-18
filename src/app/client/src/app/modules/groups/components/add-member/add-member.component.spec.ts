@@ -51,7 +51,7 @@ describe('AddMemberComponent', () => {
     url: '/my-groups';
   }
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddMemberComponent ],
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, TelemetryModule, RecaptchaModule],

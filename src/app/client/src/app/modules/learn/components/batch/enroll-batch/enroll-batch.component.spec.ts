@@ -64,7 +64,7 @@ describe('EnrollBatchComponent', () => {
     url: 'http://localhost:3000/learn/course/do_2131140513216512001688/enroll/batch/01311408513794867224?autoEnroll=true',
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EnrollBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],

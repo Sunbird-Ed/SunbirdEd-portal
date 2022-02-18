@@ -23,7 +23,7 @@ describe('CourseInfoComponent', () => {
   };
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseInfoComponent],
       imports: [SharedModule.forRoot(), BrowserAnimationsModule],

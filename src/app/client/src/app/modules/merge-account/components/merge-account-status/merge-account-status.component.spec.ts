@@ -19,7 +19,7 @@ describe('MergeAccountStatusComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SharedModule.forRoot(), BrowserAnimationsModule],
       declarations: [MergeAccountStatusComponent],

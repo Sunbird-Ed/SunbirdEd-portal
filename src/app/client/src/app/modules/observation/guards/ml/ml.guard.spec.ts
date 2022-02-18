@@ -32,7 +32,7 @@ xdescribe('MlGuard', () => {
       },
     },
   };
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         MlGuard,

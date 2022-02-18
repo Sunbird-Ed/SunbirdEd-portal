@@ -33,7 +33,7 @@ xdescribe('TelemetryComponent', () => {
 
 
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ TelemetryComponent ],
       imports: [ TelemetryModule.forRoot(), FileSizeModule, SharedModule.forRoot(), HttpClientTestingModule],

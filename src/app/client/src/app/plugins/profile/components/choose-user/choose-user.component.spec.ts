@@ -53,7 +53,7 @@ describe('ChooseUserComponent', () => {
     };
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, TelemetryModule, HttpClientTestingModule, SharedModule.forRoot(),
         CommonConsumptionModule],

@@ -8,7 +8,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('FaqService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [FaqService, ConfigService, LearnerService]

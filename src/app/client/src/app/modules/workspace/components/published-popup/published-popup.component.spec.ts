@@ -69,7 +69,7 @@ describe('PublishedPopupComponent', () => {
     }, 'responseCode': 'CLIENT_ERROR', 'result': {}
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],
       declarations: [PublishedPopupComponent],

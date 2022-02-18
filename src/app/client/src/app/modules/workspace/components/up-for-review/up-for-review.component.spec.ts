@@ -70,7 +70,7 @@ describe('UpForReviewComponent', () => {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpForReviewComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],

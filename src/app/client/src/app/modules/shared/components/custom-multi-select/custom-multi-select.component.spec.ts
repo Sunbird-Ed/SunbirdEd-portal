@@ -21,7 +21,7 @@ describe('CustomMultiSelectComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, SuiModule],
       declarations: [ SortByPipe, CustomMultiSelectComponent ],

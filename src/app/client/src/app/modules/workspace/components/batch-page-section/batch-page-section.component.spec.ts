@@ -69,7 +69,7 @@ xdescribe('BatchPageSectionComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchPageSectionComponent],
       schemas: [NO_ERRORS_SCHEMA],

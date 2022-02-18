@@ -129,7 +129,7 @@ xdescribe('ProfilePageComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule, NgInviewModule, SlickModule],

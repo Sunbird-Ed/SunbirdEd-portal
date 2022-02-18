@@ -40,7 +40,7 @@ describe('UserDeleteComponent', () => {
     'params': observableOf({ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' })
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
       declarations: [UserDeleteComponent],

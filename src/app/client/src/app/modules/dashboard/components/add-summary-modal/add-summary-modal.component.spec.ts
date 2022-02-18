@@ -11,7 +11,7 @@ describe('AddSummaryModalComponent', () => {
   let component: AddSummaryModalComponent;
   let fixture: ComponentFixture<AddSummaryModalComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddSummaryModalComponent],
       imports: [SuiModule, ReactiveFormsModule, SharedModule.forRoot()]

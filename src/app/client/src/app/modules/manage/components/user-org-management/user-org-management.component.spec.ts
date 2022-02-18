@@ -78,7 +78,7 @@ xdescribe('UserOrgManagementComponent', () => {
   let component: UserOrgManagementComponent;
   let fixture: ComponentFixture<UserOrgManagementComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

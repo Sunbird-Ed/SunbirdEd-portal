@@ -42,7 +42,7 @@ describe('UciComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UciComponent ],
       schemas: [NO_ERRORS_SCHEMA],

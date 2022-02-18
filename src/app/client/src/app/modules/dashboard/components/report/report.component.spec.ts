@@ -2,7 +2,7 @@ import { DashboardModule } from '@sunbird/dashboard';
 import { UserService, CoreModule, TncService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ReportComponent } from './report.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -58,7 +58,7 @@ describe('ReportComponent', () => {
     languageSelected$: of({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
@@ -68,14 +68,17 @@ describe('ReportComponent', () => {
         { provide: Router, useValue: routerStub },
         { provide: ResourceService, useValue: resourceServiceMockData }]
     })
-      .compileComponents();
+      .compileComponents().then(() => {
+        fixture = TestBed.createComponent(ReportComponent);
+        component = fixture.componentInstance;
+        reportService = TestBed.inject(ReportService);
+        fixture.detectChanges();
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ReportComponent);
-    component = fixture.componentInstance;
-    reportService = TestBed.inject(ReportService);
-    fixture.detectChanges();
+  afterEach(() => {
+    fixture.destroy();
+    TestBed.resetTestingModule();
   });
 
   afterEach(() => {

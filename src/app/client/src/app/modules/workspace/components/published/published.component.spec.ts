@@ -57,7 +57,7 @@ xdescribe('PublishedComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublishedComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, SuiModule , CoreModule, SharedModule.forRoot(),

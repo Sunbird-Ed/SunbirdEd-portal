@@ -38,7 +38,7 @@ describe('CurriculumCoursesComponent', () => {
     url = jasmine.createSpy('url');
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CurriculumCoursesComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

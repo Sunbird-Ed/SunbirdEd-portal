@@ -13,7 +13,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ChannelService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [ChannelService]

@@ -40,7 +40,7 @@ describe('DatasetsComponent', () => {
   };
   configureTestSuite();
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,

@@ -22,7 +22,7 @@ describe('MainMenuComponent', () => {
   class FakeActivatedRoute {
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
       providers: [HttpClient, ResourceService, ConfigService, UserService, LayoutService, TelemetryService,

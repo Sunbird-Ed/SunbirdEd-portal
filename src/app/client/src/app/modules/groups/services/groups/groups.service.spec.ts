@@ -26,7 +26,7 @@ xdescribe('GroupsService', () => {
     }
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [GroupsService, ConfigService, UserService, FrameworkService, ChannelService, OrgDetailsService,

@@ -9,7 +9,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('RecoverAccountService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [RecoverAccountService]

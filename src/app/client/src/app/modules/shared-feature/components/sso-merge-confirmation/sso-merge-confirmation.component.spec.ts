@@ -25,7 +25,7 @@ describe('SsoMergeConfirmationComponent', () => {
   }
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, TelemetryModule.forRoot()],
       declarations: [SsoMergeConfirmationComponent, InterpolatePipe],

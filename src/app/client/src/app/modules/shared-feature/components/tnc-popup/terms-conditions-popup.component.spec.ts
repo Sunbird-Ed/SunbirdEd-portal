@@ -41,7 +41,7 @@ xdescribe('TermsAndConditionsPopupComponent', () => {
   };
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), SuiModule, CoreModule],

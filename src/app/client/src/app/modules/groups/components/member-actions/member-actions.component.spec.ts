@@ -26,7 +26,7 @@ describe('MemberActionsComponent', () => {
     }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MemberActionsComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule, BrowserAnimationsModule],

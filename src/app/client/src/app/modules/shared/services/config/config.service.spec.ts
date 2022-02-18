@@ -4,7 +4,7 @@ import { ConfigService } from './config.service';
 
 describe('ConfigService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ConfigService]
     });

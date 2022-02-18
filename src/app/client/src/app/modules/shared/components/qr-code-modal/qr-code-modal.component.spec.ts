@@ -25,7 +25,7 @@ xdescribe('QrCodeModalComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, RouterTestingModule, HttpClientModule, TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ConfigService, { provide: Router, useClass: RouterStub },

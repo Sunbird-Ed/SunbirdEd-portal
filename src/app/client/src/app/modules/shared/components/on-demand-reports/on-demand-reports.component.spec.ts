@@ -26,7 +26,7 @@ xdescribe('OnDemandReportsComponent', () => {
   };
   let component: OnDemandReportsComponent;
   let fixture: ComponentFixture<OnDemandReportsComponent>;
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe, InterpolatePipe],
       imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule,

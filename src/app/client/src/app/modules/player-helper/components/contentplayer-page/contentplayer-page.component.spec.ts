@@ -38,7 +38,7 @@ xdescribe('ContentPlayerComponent', () => {
   let fixture: ComponentFixture<ContentPlayerPageComponent>;
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentPlayerPageComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],

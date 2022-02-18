@@ -7,7 +7,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ExtPlugin', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [ExtPluginService, ConfigService, HttpClient, DataService]

@@ -18,7 +18,7 @@ xdescribe('HighlightTextDirective', () => {
     languageSelected$ = this._languageSelected.asObservable();
     frmelmnts = { lbl: { forSearch: 'this is demo text' } };
   }
-  beforeAll(() => {
+  beforeEach(() => {
     const elementRefStub = { nativeElement: { 'lang': 'en', 'dir': 'ltr' } };
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot({

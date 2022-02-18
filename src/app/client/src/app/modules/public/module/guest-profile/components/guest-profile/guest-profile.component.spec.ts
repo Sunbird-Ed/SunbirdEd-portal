@@ -38,7 +38,7 @@ describe('GuestProfileComponent', () => {
   };
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GuestProfileComponent],
       imports: [

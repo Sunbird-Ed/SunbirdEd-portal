@@ -31,7 +31,7 @@ describe('CommingSoonComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule, HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [CommingSoonComponent],

@@ -8,7 +8,7 @@ import { of as observableOf, of, throwError as observableThrowError } from 'rxjs
 import { mockUserData } from './user.mock.spec.data';
 describe('userService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [UserService, ConfigService, LearnerService]

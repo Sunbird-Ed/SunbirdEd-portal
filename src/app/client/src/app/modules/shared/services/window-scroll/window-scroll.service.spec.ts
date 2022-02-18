@@ -19,7 +19,7 @@ const fakeActivatedRoute = {
 };
 describe('WindowScrollService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [ WindowScrollService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },

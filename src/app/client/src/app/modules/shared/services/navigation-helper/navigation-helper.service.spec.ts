@@ -31,7 +31,7 @@ class UtilServiceMock {
 }
 xdescribe('NavigationHelperService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot()],
       providers: [NavigationHelperService,

@@ -52,7 +52,7 @@ xdescribe('ActivityDashboardDirective', () => {
   };
 
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterModule, SharedModule, HttpClientTestingModule, RouterTestingModule, TelemetryModule, CoreModule],
       providers: [ActivityDashboardDirective, ActivityDashboardService,

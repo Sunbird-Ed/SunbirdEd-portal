@@ -39,7 +39,7 @@ describe('DashboardSidebarComponent', () => {
     }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DashboardSidebarComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, CoreModule, RouterTestingModule.withRoutes([])],

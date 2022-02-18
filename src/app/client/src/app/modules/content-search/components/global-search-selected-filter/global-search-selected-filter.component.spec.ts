@@ -30,7 +30,7 @@ describe('GlobalSearchSelectedFilterComponent', () => {
     };
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [GlobalSearchSelectedFilterComponent],

@@ -16,7 +16,7 @@ xdescribe('CourseCompletionComponent', () => {
     snapshot: { data: { telemetry: { env: 'Course', pageid: 'course-player' } } }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseCompletionComponent],
       imports: [SharedModule.forRoot(),

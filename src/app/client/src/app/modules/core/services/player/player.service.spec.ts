@@ -21,7 +21,7 @@ const fakeActivatedRoute = {
 };
 xdescribe('PlayerService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [ NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },

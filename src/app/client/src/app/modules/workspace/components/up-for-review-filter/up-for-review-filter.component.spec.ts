@@ -23,7 +23,7 @@ describe('UpforReviewFilterComponent', () => {
     'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UpforReviewFilterComponent ],
       imports: [HttpClientTestingModule, SharedModule.forRoot()],

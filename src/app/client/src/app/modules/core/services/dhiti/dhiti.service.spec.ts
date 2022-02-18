@@ -7,7 +7,7 @@ import { DhitiService } from './dhiti.service';
 xdescribe('DhitiService', () => {
   let service: DhitiService;
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [DhitiService, ConfigService, HttpClient]
