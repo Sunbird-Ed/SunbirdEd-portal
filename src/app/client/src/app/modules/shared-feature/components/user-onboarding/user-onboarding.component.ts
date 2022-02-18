@@ -31,6 +31,7 @@ export class UserOnboardingComponent implements OnInit {
   tenantInfo: ITenantData;
   isIGotSlug = false;
   private unsubscribe$ = new Subject<void>();
+  isGuestUser: boolean;
 
   constructor(
     public resourceService: ResourceService,
@@ -68,6 +69,7 @@ export class UserOnboardingComponent implements OnInit {
 
   selectStage() {
     const loggedIn = _.get(this.userService, 'loggedIn');
+    this.isGuestUser = !loggedIn;
     let role$: Observable<string | null>;
 
     if (!loggedIn && this.isDesktopApp()) {
@@ -109,9 +111,13 @@ export class UserOnboardingComponent implements OnInit {
   }
 
   userTypeSubmit() {
-    // this.stage = Stage.LOCATION_SELECTION;
-    this.close.emit();
-    this.modal.deny();
+    if(this.isGuestUser) {
+      this.close.emit();
+      this.modal.deny();
+    } else {
+      this.stage = Stage.LOCATION_SELECTION;
+    }
+
   }
 
   locationSubmit() {

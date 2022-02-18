@@ -125,7 +125,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
     _.forEach(this.filters, filter => {
       const options = (_.sortBy(_.uniq(
-        _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
+        _.map(chartData, (data) => (data && data[filter.reference]) ? data[filter.reference].toLowerCase() : ''
         )))).filter(Boolean);
 
       if (!filterKeys.includes(filter.reference)) {
@@ -152,7 +152,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
         filter.options = (_.sortBy(_.uniq(
-          _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
+          _.map(chartData, (data) => (data && data[filter.reference]) ? data[filter.reference].toLowerCase() : ''
           )))).filter(Boolean);
 
       });
@@ -228,7 +228,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
         const result: Array<{}> = _.filter(chart.data, data => {
             return _.every(this.selectedFilters, (filterValues, key) => {
-              if (data[key]) {
+              if (data && data[key]) {
                 return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
               }
             });
