@@ -12,7 +12,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { RecaptchaModule } from 'ng-recaptcha';
 
-describe('SelectAccountIdentifierComponent', () => {
+xdescribe('SelectAccountIdentifierComponent', () => {
   let component: SelectAccountIdentifierComponent;
   let fixture: ComponentFixture<SelectAccountIdentifierComponent>;
   class RouterStub {
