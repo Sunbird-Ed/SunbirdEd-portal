@@ -35,7 +35,7 @@ xdescribe('MyGroupsComponent', () => {
     url: '/my-groups';
   }
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],

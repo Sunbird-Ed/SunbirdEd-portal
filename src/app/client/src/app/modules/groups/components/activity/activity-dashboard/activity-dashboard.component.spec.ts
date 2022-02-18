@@ -59,7 +59,7 @@ xdescribe('ActivityDashboardComponent', () => {
     }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityDashboardComponent],
       imports: [

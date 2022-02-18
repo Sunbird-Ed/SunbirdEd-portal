@@ -20,7 +20,7 @@ describe('PermissionDirective', () => {
   let component: TestWrapperComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, TranslateModule.forRoot({
          loader: {

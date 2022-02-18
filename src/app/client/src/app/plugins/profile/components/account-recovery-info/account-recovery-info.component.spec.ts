@@ -44,7 +44,7 @@ describe('AccountRecoveryInfoComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot() , RouterTestingModule],

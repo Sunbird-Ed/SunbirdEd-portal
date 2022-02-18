@@ -54,7 +54,7 @@ xdescribe('PlayerComponent', () => {
   let fixture: ComponentFixture<PlayerComponent>;
   let userService;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],

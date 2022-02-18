@@ -28,7 +28,7 @@ xdescribe('SelectOptionGroupComponent', () => {
     }]
   }];
   const event = {label: 'Publisher', selectedOption: '012519677821', value: 'channel'};
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, ReactiveFormsModule,
         TranslateModule.forRoot({

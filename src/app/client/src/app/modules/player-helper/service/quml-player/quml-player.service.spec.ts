@@ -9,7 +9,7 @@ import { ConfigService, SharedModule } from '@sunbird/shared';
 import { QumlPlayerService } from './quml-player.service';
 describe('qumlPlayerService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterModule.forRoot([])],
       providers: [QumlPlayerService, ConfigService]

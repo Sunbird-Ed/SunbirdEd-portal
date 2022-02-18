@@ -59,7 +59,7 @@ xdescribe('ReIssueCertificateComponent', () => {
     instance: 'sunbird'
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReIssueCertificateComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, SuiModalModule,

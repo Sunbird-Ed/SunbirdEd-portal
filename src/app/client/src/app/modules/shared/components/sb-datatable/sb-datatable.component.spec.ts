@@ -23,7 +23,7 @@ xdescribe('SbDatatableComponent', () => {
     },
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SbDatatableComponent, FilterPipe, SbDataTablePipe],
       imports: [FormsModule],

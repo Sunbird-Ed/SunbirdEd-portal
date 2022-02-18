@@ -27,7 +27,7 @@ describe('ValidateTeacherIdentifierPopupComponent', () => {
   let component: ValidateTeacherIdentifierPopupComponent;
   let fixture: ComponentFixture<ValidateTeacherIdentifierPopupComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ValidateTeacherIdentifierPopupComponent],
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,

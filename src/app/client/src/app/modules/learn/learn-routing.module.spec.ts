@@ -17,7 +17,7 @@ describe('Redirect Router tests', () => {
   ];
   configureTestSuite();
   // setup
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes),

@@ -62,7 +62,7 @@ describe('SignUpComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],

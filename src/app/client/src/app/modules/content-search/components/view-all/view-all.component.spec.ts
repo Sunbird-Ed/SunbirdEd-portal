@@ -53,7 +53,7 @@ describe('ViewAllComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],

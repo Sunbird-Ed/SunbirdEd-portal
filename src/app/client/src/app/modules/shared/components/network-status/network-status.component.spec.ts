@@ -14,7 +14,7 @@ describe('NetworkStatusComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
       providers: [ResourceService, ConnectionService, { provide: Router, useClass: RouterStub }]

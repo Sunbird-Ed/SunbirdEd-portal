@@ -47,7 +47,7 @@ describe('RecoverAccountComponent', () => {
     }
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RecoverAccountComponent],
       schemas: [NO_ERRORS_SCHEMA],

@@ -9,7 +9,7 @@ describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
   let fixture: ComponentFixture<LandingPageComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, SharedModule.forRoot()],
       declarations: [LandingPageComponent],

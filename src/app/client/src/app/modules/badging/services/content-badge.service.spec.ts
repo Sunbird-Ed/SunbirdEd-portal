@@ -10,7 +10,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ContentBadgeService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), HttpClientTestingModule],
       providers: [ContentBadgeService]

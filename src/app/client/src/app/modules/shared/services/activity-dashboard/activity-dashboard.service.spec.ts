@@ -6,7 +6,7 @@ import { ActivityDashboardService } from './activity-dashboard.service';
 xdescribe('ActivityDashboardService', () => {
   let service: ActivityDashboardService;
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(ActivityDashboardService);
   });

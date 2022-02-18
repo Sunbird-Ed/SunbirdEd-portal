@@ -17,7 +17,7 @@ describe('ElectronDialogService', () => {
     }
   };
   
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [ElectronDialogService, DataService, PublicDataService, { provide: ConfigService, useValue: mockConfigService }]
@@ -30,7 +30,7 @@ describe('ElectronDialogService', () => {
   });
   it('should call showContentLocationChangePopup', () => {
 
-    spyOn(service, 'post').and.returnValue(of({ name: 'test' }));
+    spyOn<any>(service, 'post').and.returnValue(of({ name: 'test' }));
     const resp = service.showContentLocationChangePopup().subscribe((data) => {
       expect(data).toBeDefined();
       expect(data).toBeTruthy();
@@ -41,7 +41,7 @@ describe('ElectronDialogService', () => {
   });
 
   it('should call showContentExportDialog', () => {
-    spyOn(service, 'get');
+    spyOn<any>(service, 'get');
     service.showContentExportDialog();
     expect(service['get']).toHaveBeenCalled();
   });

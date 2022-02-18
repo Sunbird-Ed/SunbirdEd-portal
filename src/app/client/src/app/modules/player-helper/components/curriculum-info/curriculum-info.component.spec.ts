@@ -21,7 +21,7 @@ describe('CurriculumInfoComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CurriculumInfoComponent],
       providers: [{ provide: ResourceService, useValue: resourceServiceMockData }]

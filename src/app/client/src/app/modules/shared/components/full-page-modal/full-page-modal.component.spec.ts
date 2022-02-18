@@ -9,7 +9,7 @@ describe('FullPageModalComponent', () => {
   let component: FullPageModalComponent;
   let fixture: ComponentFixture<FullPageModalComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, MatDialogModule, BrowserAnimationsModule],
       declarations: [ FullPageModalComponent, ModalWrapperComponent, ModalContentDirective]

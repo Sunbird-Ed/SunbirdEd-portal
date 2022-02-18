@@ -22,7 +22,7 @@ xdescribe('CardComponent', () => {
   class FakeActivatedRoute {
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

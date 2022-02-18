@@ -14,7 +14,7 @@ xdescribe('DesktopAppUpdateComponent', () => {
   let component: DesktopAppUpdateComponent;
   let fixture: ComponentFixture<DesktopAppUpdateComponent>;
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DesktopAppUpdateComponent, ModalContentDirective, ModalWrapperComponent],
       imports: [SuiModalModule, HttpClientTestingModule, TelemetryModule, MatDialogModule],

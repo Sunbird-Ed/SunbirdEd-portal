@@ -17,7 +17,7 @@ describe('NoResultComponent', () => {
     languageSelected$: of({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ SharedModule.forRoot() ],
       providers: [ ResourceService,

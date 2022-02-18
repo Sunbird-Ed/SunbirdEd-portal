@@ -50,7 +50,7 @@ xdescribe('ReportViewComponent', () => {
       },
     },
   };
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,

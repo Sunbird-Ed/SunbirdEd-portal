@@ -71,7 +71,7 @@ describe('AppComponent', () => {
     languageSelected$: of({ value: 'en', dir: 'ltr' })
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         RouterTestingModule, TranslateModule.forRoot()],

@@ -65,7 +65,7 @@ xdescribe('CertificateConfigurationComponent', () => {
     }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, CoreModule,
         FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), SharedModule.forRoot()],

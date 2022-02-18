@@ -9,7 +9,7 @@ import { mockRes } from './profile.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('ProfileService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [ProfileService]

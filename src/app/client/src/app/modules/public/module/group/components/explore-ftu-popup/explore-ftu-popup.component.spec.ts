@@ -29,7 +29,7 @@ describe('ExploreFtuPopupComponent', () => {
         }
     }
   };
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreFtuPopupComponent ],
       imports: [HttpClientModule, SharedModule.forRoot(), TelemetryModule, RouterTestingModule],

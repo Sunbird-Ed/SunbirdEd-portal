@@ -26,7 +26,7 @@ xdescribe('OnboardingUserSelectionComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnboardingUserSelectionComponent],
       imports: [

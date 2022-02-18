@@ -53,7 +53,7 @@ xdescribe('GroupMembersComponent', () => {
   };
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupMembersComponent],
       imports: [SharedModule.forRoot(),

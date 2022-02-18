@@ -24,7 +24,7 @@ const fakeActivatedRoute = {
 
 describe('PublicPlayerService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule],
       providers: [PublicPlayerService, NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },

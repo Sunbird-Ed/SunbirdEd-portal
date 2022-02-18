@@ -8,7 +8,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import {eventData} from './telemetry-end.directive.spec.data';
 describe('TelemetryStartDirective', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryEndDirective],
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]

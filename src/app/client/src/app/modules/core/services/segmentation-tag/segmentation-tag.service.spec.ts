@@ -11,7 +11,7 @@ import { SegmentationTagService } from './segmentation-tag.service';
 xdescribe('SegmentationTagService', () => {
   let frameworkService: FrameworkService;
   let service: SegmentationTagService;
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CacheService]

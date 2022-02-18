@@ -71,7 +71,7 @@ xdescribe('ActivitySearchComponent', () => {
   }
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivitySearchComponent],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),

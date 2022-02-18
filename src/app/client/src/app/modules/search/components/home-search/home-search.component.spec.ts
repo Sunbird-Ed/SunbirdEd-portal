@@ -57,7 +57,7 @@ describe('HomeSearchComponent', () => {
     public changeParams(params) { this.paramsMock.next(params); }
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [HomeSearchComponent],

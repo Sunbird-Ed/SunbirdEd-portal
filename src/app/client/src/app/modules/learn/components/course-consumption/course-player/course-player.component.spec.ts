@@ -162,7 +162,7 @@ describe('CoursePlayerComponent', () => {
     }
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CoursePlayerComponent],
       providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService, AssessmentScoreService,

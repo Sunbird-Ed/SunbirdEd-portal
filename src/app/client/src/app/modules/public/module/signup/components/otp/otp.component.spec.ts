@@ -34,7 +34,7 @@ describe('OtpComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OtpComponent, InterpolatePipe],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RecaptchaModule,

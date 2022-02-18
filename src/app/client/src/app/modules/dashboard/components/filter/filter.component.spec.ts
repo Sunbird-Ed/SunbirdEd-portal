@@ -56,7 +56,7 @@ describe('FilterComponent', () => {
   };
   configureTestSuite();
   const formBuilder: FormBuilder = new FormBuilder();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FilterComponent],
       schemas: [NO_ERRORS_SCHEMA],

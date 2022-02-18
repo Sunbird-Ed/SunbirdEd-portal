@@ -46,7 +46,7 @@ describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
   let fixture: ComponentFixture<CollectionEditorComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
       imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],

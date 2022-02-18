@@ -8,7 +8,7 @@ xdescribe('MaterialAutoCompleteComponent', () => {
   let component: MaterialAutoCompleteComponent;
   let fixture: ComponentFixture<MaterialAutoCompleteComponent>;
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       imports: [],

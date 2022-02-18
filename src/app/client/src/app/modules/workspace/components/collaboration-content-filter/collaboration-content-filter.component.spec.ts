@@ -24,7 +24,7 @@ describe('CollaborationContentFilterComponent', () => {
     'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollaborationContentFilterComponent ],
       imports: [HttpClientTestingModule, SharedModule.forRoot()],

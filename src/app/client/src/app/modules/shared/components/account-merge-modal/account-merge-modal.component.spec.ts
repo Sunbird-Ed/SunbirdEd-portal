@@ -20,7 +20,7 @@ describe('AccountMergeModalComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule, MatDialogModule,
         BrowserAnimationsModule],

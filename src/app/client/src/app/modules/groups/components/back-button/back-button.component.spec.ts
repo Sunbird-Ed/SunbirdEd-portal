@@ -14,7 +14,7 @@ describe('BackButtonComponent', () => {
   let fixture: ComponentFixture<BackButtonComponent>;
   configureTestSuite();
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BackButtonComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot()],

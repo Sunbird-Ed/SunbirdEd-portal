@@ -26,7 +26,7 @@ xdescribe('ListAllReportsComponent', () => {
   const routerStub = { navigate: () => Promise.resolve(true) };
   let reportService: ReportService;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), DashboardModule],

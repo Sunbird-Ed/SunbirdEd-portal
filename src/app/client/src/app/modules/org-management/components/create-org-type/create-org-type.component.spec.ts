@@ -41,7 +41,7 @@ describe('CreateOrgTypeComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateOrgTypeComponent],
       imports: [HttpClientTestingModule,

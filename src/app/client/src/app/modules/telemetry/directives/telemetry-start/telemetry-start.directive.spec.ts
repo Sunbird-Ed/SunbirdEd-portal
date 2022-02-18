@@ -9,7 +9,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TelemetryStartDirective', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryStartDirective],
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]

@@ -32,7 +32,7 @@ describe('UpforreviewContentplayerComponent', () => {
   }
 };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UpforreviewContentplayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],

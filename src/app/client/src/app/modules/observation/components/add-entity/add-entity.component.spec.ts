@@ -40,7 +40,7 @@ xdescribe('AddEntityComponent', () => {
   const resourceBundle = {};
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

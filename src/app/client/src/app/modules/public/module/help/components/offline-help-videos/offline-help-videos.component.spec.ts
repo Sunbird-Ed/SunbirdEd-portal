@@ -13,7 +13,7 @@ xdescribe('OfflineHelpVideosComponent', () => {
   let component: OfflineHelpVideosComponent;
   let fixture: ComponentFixture<OfflineHelpVideosComponent>;
   let resourceServiceStub;
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     const fakeActivatedRoute = {
       snapshot: {
         data: {

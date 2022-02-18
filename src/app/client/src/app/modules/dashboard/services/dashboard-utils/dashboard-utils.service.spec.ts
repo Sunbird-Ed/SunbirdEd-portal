@@ -3,7 +3,7 @@ import { DashboardUtilsService } from './dashboard-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('DashboardUtilsService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DashboardUtilsService]
     });

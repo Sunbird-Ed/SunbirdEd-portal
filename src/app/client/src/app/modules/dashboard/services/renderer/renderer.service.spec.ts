@@ -4,7 +4,7 @@ import { LineChartService } from './../chartjs';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('RendererService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [RendererService, LineChartService]
     });

@@ -30,7 +30,7 @@ xdescribe('AlertModalComponent', () => {
     context: modalContext,
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

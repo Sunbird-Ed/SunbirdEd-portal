@@ -63,7 +63,7 @@ xdescribe('DraftComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),

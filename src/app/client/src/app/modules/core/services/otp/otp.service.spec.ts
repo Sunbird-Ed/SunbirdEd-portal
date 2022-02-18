@@ -9,7 +9,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OtpService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [ConfigService, LearnerService]

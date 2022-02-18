@@ -57,7 +57,7 @@ describe('OrganizationUploadComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationUploadComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(),

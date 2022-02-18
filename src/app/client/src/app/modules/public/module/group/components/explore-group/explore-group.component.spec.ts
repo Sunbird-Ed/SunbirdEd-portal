@@ -34,7 +34,7 @@ describe('ExploreGroupComponent', () => {
     }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreGroupComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, RouterTestingModule],

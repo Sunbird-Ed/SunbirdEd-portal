@@ -73,7 +73,7 @@ xdescribe('UpdateCourseBatchComponent', () => {
   let component: UpdateCourseBatchComponent;
   let fixture: ComponentFixture<UpdateCourseBatchComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpdateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],

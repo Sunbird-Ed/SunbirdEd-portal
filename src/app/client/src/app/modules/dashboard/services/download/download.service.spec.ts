@@ -13,7 +13,7 @@ const testData = mockData.mockRes;
 
 describe('DownloadService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [DownloadService, LearnerService, DashboardUtilsService, ConfigService]

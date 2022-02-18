@@ -52,7 +52,7 @@ xdescribe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [BatchDetailsComponent],

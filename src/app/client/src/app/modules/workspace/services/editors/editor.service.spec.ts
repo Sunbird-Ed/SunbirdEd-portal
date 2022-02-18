@@ -13,7 +13,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('EditorService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule,
         CoreModule, SharedModule.forRoot()],

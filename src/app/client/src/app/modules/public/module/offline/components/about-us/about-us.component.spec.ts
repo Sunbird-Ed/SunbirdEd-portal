@@ -28,7 +28,7 @@ xdescribe('AboutUsComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AboutUsComponent],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), HttpClientTestingModule, SuiModalModule],

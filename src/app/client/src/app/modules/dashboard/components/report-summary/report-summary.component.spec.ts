@@ -13,7 +13,7 @@ describe('ReportSummaryComponent', () => {
   let component: ReportSummaryComponent;
   let fixture: ComponentFixture<ReportSummaryComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
       providers: [ReportService],

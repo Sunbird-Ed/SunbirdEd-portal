@@ -34,7 +34,7 @@ xdescribe('OnlineOnlyDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         TestComponent,

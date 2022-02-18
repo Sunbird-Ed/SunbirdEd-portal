@@ -28,7 +28,7 @@ xdescribe('DashboardComponent', () => {
     messages: { fmsg: { m0085: 'Fetching CSV failed, please try again later...' } }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DashboardComponent],
       imports: [

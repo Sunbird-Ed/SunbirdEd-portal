@@ -41,7 +41,7 @@ xdescribe('DatasetComponent', () => {
     }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), DashboardModule, RouterTestingModule, BrowserAnimationsModule],
       providers: [

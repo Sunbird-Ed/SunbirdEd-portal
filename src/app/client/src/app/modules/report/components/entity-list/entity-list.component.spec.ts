@@ -32,7 +32,7 @@ xdescribe('EntityListComponent', () => {
   };
 
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModalModule, SharedModule, CoreModule, InfiniteScrollModule],
       declarations: [ EntityListComponent ],

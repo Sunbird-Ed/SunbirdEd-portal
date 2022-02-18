@@ -13,7 +13,7 @@ describe('ContentCreditsComponent', () => {
   let component: ContentCreditsComponent;
   let fixture: ComponentFixture<ContentCreditsComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

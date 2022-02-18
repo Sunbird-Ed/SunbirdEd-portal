@@ -89,7 +89,7 @@ xdescribe('ObservationListingComponent', () => {
     languageSelected$: of({}),
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

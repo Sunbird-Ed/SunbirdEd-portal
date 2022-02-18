@@ -47,7 +47,7 @@ describe('PublicBatchDetailsComponent', () => {
   let component: PublicBatchDetailsComponent;
   let fixture: ComponentFixture<PublicBatchDetailsComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule, BrowserAnimationsModule],
       declarations: [PublicBatchDetailsComponent],

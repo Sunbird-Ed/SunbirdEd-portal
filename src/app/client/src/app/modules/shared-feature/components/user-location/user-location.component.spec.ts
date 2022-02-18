@@ -28,7 +28,7 @@ describe('UserLocationComponent', () => {
   let configService;
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,

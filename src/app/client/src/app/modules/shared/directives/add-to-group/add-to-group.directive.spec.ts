@@ -60,7 +60,7 @@ xdescribe('AddToGroupDirective', () => {
     }
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ ],
       providers: [

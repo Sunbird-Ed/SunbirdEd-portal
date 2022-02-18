@@ -37,7 +37,7 @@ xdescribe('OfflineApplicationDownloadComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [OfflineApplicationDownloadComponent, InterpolatePipe],

@@ -35,7 +35,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ReviewsubmissionsContentplayerComponent],

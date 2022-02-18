@@ -44,7 +44,7 @@ xdescribe('ContentManagerComponent', () => {
     loggedIn: true;
   }
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
         RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule],

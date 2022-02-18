@@ -12,7 +12,7 @@ xdescribe('CertPreviewPopupComponent', () => {
   const resourceBundle = {
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SharedModule.forRoot(), BrowserAnimationsModule],
       declarations: [ CertPreviewPopupComponent ],

@@ -16,7 +16,7 @@ xdescribe('ContentRatingComponent', () => {
   let component: ContentRatingComponent;
   let fixture: ComponentFixture<ContentRatingComponent>;
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     const resourceServiceStub = {
       languageSelected$: of({}),
       messages: {

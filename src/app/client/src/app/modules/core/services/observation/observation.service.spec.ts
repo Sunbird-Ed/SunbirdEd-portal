@@ -7,7 +7,7 @@ import { SuiModalModule, SuiModalService } from 'ng2-semantic-ui-v9';
 
 xdescribe('ObservationService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, SuiModalModule],
       providers: [ObservationService, ConfigService, HttpClient, SuiModalService]

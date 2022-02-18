@@ -16,7 +16,7 @@ describe('FancyTreeComponent', () => {
     }
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FancyTreeComponent ],
       providers: [ { provide: ActivatedRoute, useValue: fakeActivatedRoute } ]

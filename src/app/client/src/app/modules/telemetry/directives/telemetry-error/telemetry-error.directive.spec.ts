@@ -7,7 +7,7 @@ import {eventData} from './telemetry-error.dircetive.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('TelemetryErrorDirective', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryErrorDirective],
       providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}]

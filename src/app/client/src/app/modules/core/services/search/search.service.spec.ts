@@ -28,7 +28,7 @@ describe('SearchService', () => {
   };
   const sendSearchResult = true;
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
       providers: [SearchService, ContentService, UserService, LearnerService, ConfigService, PublicDataService,

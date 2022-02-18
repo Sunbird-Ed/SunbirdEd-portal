@@ -78,7 +78,7 @@ xdescribe('MainHeaderComponent', () => {
     notificationUpdate() { return observableOf({}); }
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), RouterTestingModule, CommonConsumptionModule],

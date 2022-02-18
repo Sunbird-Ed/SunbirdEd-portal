@@ -86,7 +86,7 @@ xdescribe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionHeaderComponent],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), BrowserAnimationsModule],

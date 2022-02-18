@@ -60,7 +60,7 @@ xdescribe('AddActivityContentTypesComponent', () => {
     })
   };
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [AddActivityContentTypesComponent],

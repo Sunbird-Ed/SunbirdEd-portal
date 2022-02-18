@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 
 describe('ManageService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ManageService, HttpClient],
       imports: [HttpClientTestingModule, SharedModule.forRoot()]

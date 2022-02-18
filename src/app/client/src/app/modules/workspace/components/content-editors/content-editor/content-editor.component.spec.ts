@@ -38,7 +38,7 @@ describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
   let fixture: ComponentFixture<ContentEditorComponent>;
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],
       imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],

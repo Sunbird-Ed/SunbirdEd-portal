@@ -11,7 +11,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BatchService', () => {
   configureTestSuite();
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CourseBatchService]

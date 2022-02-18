@@ -46,7 +46,7 @@ describe('OrganisationComponent', () => {
   const consumptionDataset = 'consumption';
   const dashboardBaseUrl = 'dashBoard/organization';
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganisationComponent],
       imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],

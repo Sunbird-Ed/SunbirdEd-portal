@@ -44,7 +44,7 @@ describe('DataDrivenFilterComponent', () => {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), BrowserAnimationsModule],
       declarations: [DataDrivenFilterComponent],

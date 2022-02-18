@@ -35,7 +35,7 @@ xdescribe('LoadContentComponent', () => {
     },
     instance: 'tenant'
   };
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LoadContentComponent ],
       imports: [ SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),

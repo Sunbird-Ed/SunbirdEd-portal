@@ -32,7 +32,7 @@ xdescribe('CanDeactivateGuard', () => {
       },
     },
   };
-  beforeAll(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [],
       providers: [

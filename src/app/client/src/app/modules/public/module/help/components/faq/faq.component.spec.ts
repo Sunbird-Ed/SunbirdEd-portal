@@ -65,7 +65,7 @@ describe('FaqComponent', () => {
   }
 
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [FaqComponent],

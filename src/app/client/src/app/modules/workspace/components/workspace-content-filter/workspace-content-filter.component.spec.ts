@@ -23,7 +23,7 @@ describe('WorkspaceContentFilterComponent', () => {
     'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
   configureTestSuite();
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspaceContentFilterComponent ],
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
