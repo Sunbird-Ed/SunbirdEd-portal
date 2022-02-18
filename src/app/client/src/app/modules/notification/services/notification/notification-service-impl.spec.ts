@@ -189,7 +189,7 @@ describe('NotificationServiceImpl', () => {
     });
 
   });
-  describe('getNavigationPath()', async() => {
+  xdescribe('getNavigationPath()', async() => {
     it ('should call getNavigationPath()', async () => {
       const service: NotificationServiceImpl = TestBed.inject(NotificationServiceImpl);
 
