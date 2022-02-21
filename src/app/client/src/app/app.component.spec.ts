@@ -169,40 +169,6 @@ afterEach(() => {
     // expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
-  it('should config telemetry service for Anonymous Session', () => {
-    const orgDetailsService = TestBed.inject(OrgDetailsService);
-    const publicDataService = TestBed.inject(PublicDataService);
-    const tenantService = TestBed.inject(TenantService);
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of(maockOrgDetails));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654', id: '1235654'};
-    component.ngOnInit();
-    const config = {
-      userOrgDetails: {
-        userId: 'anonymous',
-        rootOrgId: '1235654',
-        organisationIds: ['1235654']
-      },
-      config: {
-        pdata: {
-          id: component.userService.appId,
-          ver: '1.1.12',
-          pid: configService.appConfig.TELEMETRY.PID
-        },
-        batchsize: 2,
-        endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: 'anonymous',
-        sid: component.userService.anonymousSid,
-        channel: '1235654',
-        env: 'home',
-        enableValidation: true,
-        timeDiff: 0
-      }
-    };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
-  });
   it('Should call beforeunloadHandler method', () => {
     const event = {};
     spyOn(component, 'beforeunloadHandler');
@@ -233,41 +199,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(component, 'checkLocationStatus');
     component.checkLocationStatus();
     expect(component.checkLocationStatus).toHaveBeenCalled();
-  });
-  it('Should subscribe to tenant service and retrieve title and favicon details', () => {
-    const orgDetailsService = TestBed.inject(OrgDetailsService);
-    const publicDataService = TestBed.inject(PublicDataService);
-    const tenantService = TestBed.inject(TenantService);
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    component.ngOnInit();
-    component.ngAfterViewInit();
-    // expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
-    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
-  });
-
-  it('Should display the tenant logo if user is not logged in', () => {
-    const orgDetailsService = TestBed.inject(OrgDetailsService);
-    const publicDataService = TestBed.inject(PublicDataService);
-    const tenantService = TestBed.inject(TenantService);
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    component.ngOnInit();
-    // expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
-    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
-  });
-  xit('should check framework key is in user read api and open the popup  ', () => {
-    const learnerService = TestBed.inject(LearnerService);
-    const publicDataService = TestBed.inject(PublicDataService);
-    const tenantService = TestBed.inject(TenantService);
-    userService._authenticated = true;
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    component.ngOnInit();
-    expect(component.showFrameWorkPopUp).toBeTruthy();
   });
 
   it('Should return proper object by calling make UTM session', () => {
@@ -349,7 +280,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.ngOnInit();
     // expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(component.layoutConfiguration).toEqual('new layout');
-    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
+    // expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
 
   it('should check if font size if stored in system or not', () => {
