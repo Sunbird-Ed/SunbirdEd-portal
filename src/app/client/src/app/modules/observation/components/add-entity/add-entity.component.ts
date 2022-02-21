@@ -44,13 +44,6 @@ export class AddEntityComponent implements OnInit {
          });
     }
     ngOnInit() {
-        const searchBox = document.getElementById('entitySearch');
-        const keyup$ = fromEvent(searchBox, 'keyup');
-        keyup$.pipe(
-            map((i: any) => i.currentTarget.value),
-            debounceTime(500)
-        )
-            .subscribe((text: string) => this.searchEntity());
         this.getProfileData();
     }
     getProfileData() {
@@ -60,7 +53,6 @@ export class AddEntityComponent implements OnInit {
         });
     }
     public closeModal() {
-        this.modal.approve();
         this.showDownloadModal = false;
         this.closeEvent.emit();
     }
