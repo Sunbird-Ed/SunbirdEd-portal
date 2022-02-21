@@ -14,6 +14,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 describe('GetComponent', () => {
   let component: GetComponent;
   let fixture: ComponentFixture<GetComponent>;
+  let router: Router;
   const fakeActivatedRoute = {
     'params': observableOf(),
     'queryParams': observableOf(),
@@ -59,20 +60,20 @@ describe('GetComponent', () => {
   });
 
   it('should not navigate to dialcode search when input field is empty or only spaces', () => {
-    const route = spyOn(route, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
+    spyOn(router, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
     spyOn(component, 'navigateToSearch');
     component.searchKeyword = ' ';
     component.navigateToSearch();
     fixture.detectChanges();
-    expect(route.navigate).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 
   it('should navigate to dialcode search when user enters data', () => {
-    const route = spyOn(route, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
+    spyOn(router, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
     component.searchKeyword = 'test';
     component.navigateToSearch();
     fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['/get/dial', component.searchKeyword]);
+    expect(router.navigate).toHaveBeenCalledWith(['/get/dial', component.searchKeyword]);
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
