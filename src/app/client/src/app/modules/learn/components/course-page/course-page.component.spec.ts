@@ -12,7 +12,7 @@ import { Response } from './course-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { configureTestSuite, allowUnsafeMultipleDone } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 describe('CoursePageComponent', () => {
@@ -157,15 +157,15 @@ describe('CoursePageComponent', () => {
         component.getFilters({ filters: [] });
         expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
     });
-    it('should fetch hashTagId from API and filter details from data driven filter component', done => {
+    it('should fetch hashTagId from API and filter details from data driven filter component', allowUnsafeMultipleDone(done => {
         component['getOrgDetails']().subscribe(res => {
             expect(orgDetailsService.getOrgDetails).toHaveBeenCalled();
             expect(component.hashTagId).toBe('123');
             done();
         });
 
-    });
-    it('should navigate to landing page if fetching org details fails and data driven filter do not returned data', done => {
+    }));
+    it('should navigate to landing page if fetching org details fails and data driven filter do not returned data', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'getOrgDetails').and.returnValue(of({}));
         spyOn<any>(component, 'getFrameWork').and.returnValue(of({}));
@@ -180,7 +180,7 @@ describe('CoursePageComponent', () => {
                 expect(component.pageSections).toEqual([]);
                 done();
             });
-    });
+    }));
     xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
         spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
             return of(Response.orgSearch);
@@ -226,7 +226,7 @@ describe('CoursePageComponent', () => {
         component.ngOnDestroy();
         expect(component.unsubscribe$.complete).toHaveBeenCalled();
     });
-    it('should redo layout on render', done => {
+    it('should redo layout on render', allowUnsafeMultipleDone(done => {
         component.layoutConfiguration = null;
         spyOn<any>(component, 'redoLayout').and.callThrough();
         const layoutService:any = TestBed.inject(LayoutService);
@@ -236,16 +236,16 @@ describe('CoursePageComponent', () => {
             expect(component['redoLayout']).toHaveBeenCalled();
             done();
         });
+    }));
 
-    });
-    it('should getFormData', done => {
-        component['getFormData']().subscribe(res => {
+    it('should getFormData', allowUnsafeMultipleDone(done => {
+        component['getFormData']().subscribe(allowUnsafeMultipleDone(res => {
             expect(formService.getFormConfig).toHaveBeenCalled();
             expect(formService.getFormConfig).toHaveBeenCalledWith({ formType: 'contentcategory', formAction: 'menubar', contentType: 'global' });
             expect(component.formData).toBeDefined();
             done();
-        });
-    });
+        }));
+    }));
 
     it('should redirect to viewall page with queryparams', () => {
         const router = TestBed.inject(Router);
@@ -304,7 +304,7 @@ describe('CoursePageComponent', () => {
         expect(pageApiService.getPageData).toHaveBeenCalledWith(option);
     });
 
-    it('should change the title for My-training on language change', done => {
+    it('should change the title for My-training on language change', allowUnsafeMultipleDone(done => {
         component.enrolledSection = {
             name: 'sample'
         };
@@ -326,7 +326,7 @@ describe('CoursePageComponent', () => {
             expect();
             done();
         });
-    });
+    }));
     it('should get processed facets data', () => {
         const facetsData = component.updateFacetsData(Response.facetsList);
         expect(facetsData).toEqual(Response.updatedFacetsList);
@@ -359,7 +359,7 @@ describe('CoursePageComponent', () => {
         expect(cacheService.set).toHaveBeenCalledWith('viewAllQuery', searchQueryParams, { maxAge: 600 });
     });
 
-    it('should fetch enrolled courses for logged in users', done => {
+    it('should fetch enrolled courses for logged in users', allowUnsafeMultipleDone(done => {
         spyOn(utilService, 'processContent').and.callThrough();
         component['fetchEnrolledCoursesSection']().subscribe(res => {
             expect(utilService.processContent).toHaveBeenCalled();
@@ -367,7 +367,7 @@ describe('CoursePageComponent', () => {
             done();
         });
         coursesService['_enrolledCourseData$'].next({ enrolledCourses: Response.enrolledCourses, err: null });
-    });
+    }));
 
     it('should prepare Carousel Data for non loggedIn user', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
@@ -396,7 +396,7 @@ describe('CoursePageComponent', () => {
         expect(result).toEqual([input[0].name]);
     });
 
-    xit('should prepare option for loggedIn user', done => {
+    xit('should prepare option for loggedIn user', allowUnsafeMultipleDone(done => {
         component.formData = [
             { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
         ];
@@ -410,9 +410,9 @@ describe('CoursePageComponent', () => {
             expect(res).toEqual(Response.buildOptionRespForNonLoggedInUser);
             done();
         });
-    });
+    }));
 
-    it('should prepare option for non loggedIn user', done => {
+    it('should prepare option for non loggedIn user', allowUnsafeMultipleDone(done => {
         component.formData = [
             { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
         ];
@@ -424,9 +424,9 @@ describe('CoursePageComponent', () => {
             expect(getCourseSectionDetailsSpy).toHaveBeenCalled();
             done();
         });
-    });
+    }));
 
-    it('should fetch page Data', done => {
+    it('should fetch page Data', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
@@ -440,9 +440,9 @@ describe('CoursePageComponent', () => {
                 expect(component.carouselMasterData).toBeDefined();
                 done();
             });
-    });
+    }));
 
-    it('should fetch page Data based on search API', done => {
+    it('should fetch page Data based on search API', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(component, 'processOrgData').and.callFake(function () { return {}; });
@@ -464,9 +464,9 @@ describe('CoursePageComponent', () => {
                 expect(component.addHoverData).toHaveBeenCalled();
                 done();
             });
-    });
+    }));
 
-    it('should fetch page Data based on else block', done => {
+    it('should fetch page Data based on else block', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(component, 'fetchCourses').and.callFake(function () { return {}; });
@@ -478,14 +478,14 @@ describe('CoursePageComponent', () => {
         component['fetchPageData'](Response.buildOptionRespForFetchCourse);
         expect(component['fetchCourses']).toHaveBeenCalled();
         done();
-    });
+    }));
 
-    it('should merge two filter object', done => {
+    it('should merge two filter object', allowUnsafeMultipleDone(done => {
         const filters = { gradeLevel: ['Class 1'] };
         const res = component.getSearchFilters(filters);
         expect(res).toBeDefined();
         done();
-    });
+    }));
 
     it('should call hoverActionClicked for Open ', () => {
         const event = {
