@@ -76,6 +76,8 @@ describe('UserRoleAssignComponent', () => {
   it('should call dismissRoleAssign and goBack method', () => {
     component.dismissRoleAssign();
     expect(component.showAssignRole).toBeFalsy();
+    const router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
     component.goBack();
     expect(component.showingResults).toBeFalsy();
   });
