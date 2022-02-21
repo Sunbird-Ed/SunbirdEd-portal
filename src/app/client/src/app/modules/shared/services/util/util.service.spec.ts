@@ -234,7 +234,7 @@ describe('UtilService', () => {
   it('should not parse data and throw error', inject([UtilService, ResourceService],
     (service: UtilService, resourceService: ResourceService) => {
       try {
-        service.parseJson('data');
+        service.parseJson({'data':''});
       } catch (e) {
         expect(e).toEqual(new Error('ERROR_PARSING_STRING'));
       }
