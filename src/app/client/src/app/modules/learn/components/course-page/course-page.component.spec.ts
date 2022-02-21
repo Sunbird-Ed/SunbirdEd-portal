@@ -1,6 +1,6 @@
 import { CoursePageComponent } from '././course-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, UtilService, LayoutService } from '@sunbird/shared';
 import { PageApiService, OrgDetailsService, CoreModule, FormService, UserService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -73,7 +73,7 @@ describe('CoursePageComponent', () => {
         public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     }
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
             declarations: [CoursePageComponent],

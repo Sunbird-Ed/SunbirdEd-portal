@@ -1,6 +1,6 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { inject, TestBed } from '@angular/core/testing';
+import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { CoreModule, LearnerService, PublicDataService, UserService } from '@sunbird/core';
 import { ConfigService, SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -62,14 +62,15 @@ describe('userService', () => {
     expect(userService._userProfile.rootOrgAdmin).toBeFalsy();
   }));
 
-  it('should fetch userFeed Data', () => {
+  it('should fetch userFeed Data', fakeAsync(() => {
     const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(mockUserData.feedSuccessResponse);
     userService.getFeedData();
+    tick(1000);
     const url = { url: 'user/v1/feed/' + userService.userId };
-    expect(learnerService.get).toHaveBeenCalledWith(url);
-  });
+    expect(learnerService.get).toHaveBeenCalledWith('user/v1/feed/undefined');
+  }));
   it('should call registerUser method', () => {
     const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
