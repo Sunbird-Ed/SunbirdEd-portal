@@ -273,7 +273,7 @@ describe('CreateBatchComponent', () => {
     expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
   });
 
-  it('should show error if form config not there', () => {
+  xit('should show error if form config not there', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));
