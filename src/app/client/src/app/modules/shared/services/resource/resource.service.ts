@@ -67,7 +67,7 @@ export class ResourceService {
       this.config = config;
       this.baseUrl = this.config.urlConFig.URLS.RESOURCEBUNDLES_PREFIX;
       try {
-        this._instance = (<HTMLInputElement>document.getElementById('instance')).value;
+        this._instance = document.getElementById('instance')?(<HTMLInputElement>document.getElementById('instance')).value:'';
       } catch (error) {
       }
       ResourceService.singletonInstance = this;
