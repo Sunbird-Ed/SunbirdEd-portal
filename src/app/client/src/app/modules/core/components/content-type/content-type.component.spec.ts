@@ -12,7 +12,7 @@ import { ContentTypeComponent } from './content-type.component';
 import { mockData } from './content-type.component.spec.data';
 import { OnlineOnlyDirective } from '../../directives/online-only/online-only.directive';
 
-xdescribe('ContentTypeComponent', () => {
+describe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
   let fixture: ComponentFixture<ContentTypeComponent>;
 
