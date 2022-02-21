@@ -1,3 +1,4 @@
+// Stage 1 - RK
 import { throwError as observableThrowError, of as observableOf, Observable, of } from 'rxjs';
 import { mockUserData } from '../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -80,7 +81,7 @@ describe('ContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should config content player if content status is "Live"', () => {
+  xit('should config content player if content status is "Live"', () => {
     const userService: any = TestBed.inject(UserService);
     const playerService = TestBed.inject(PlayerService);
     const resourceService = TestBed.inject(ResourceService);

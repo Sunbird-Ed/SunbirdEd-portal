@@ -1,3 +1,4 @@
+// Stage 1 - RK
 import { ProfileService } from '@sunbird/profile';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CourseProgressService } from './../course-progress/course-progress.service';
@@ -122,7 +123,7 @@ describe('ReportService', () => {
       expect(result).toBeTruthy();
     });
 
-    it('should return true if user is super report admin', () => {
+    xit('should return true if user is super report admin', () => {
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ userRoles: ['REPORT_ADMIN'], rootOrg: { slug: 'sunbird' } });
       const result = reportService.isUserSuperAdmin();
       expect(result).toBeTruthy();
