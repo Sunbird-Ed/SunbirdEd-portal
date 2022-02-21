@@ -14,7 +14,7 @@ import { throwError as observableThrowError, of as observableOf, Observable } fr
 import { RecaptchaModule } from 'ng-recaptcha';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('OtpComponent', () => {
+describe('OtpComponent', () => {
   let component: OtpComponent;
   let fixture: ComponentFixture<OtpComponent>;
   const fakeActivatedRoute = {
