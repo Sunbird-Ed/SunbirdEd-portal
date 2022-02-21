@@ -1,7 +1,6 @@
 
 .ui.dropdown.selection {
     padding: 0.5rem 0.75rem !important;
-    z-index: 1;
 }
 
 .li-item {
@@ -26,6 +25,10 @@
     .sb-modal-actions {
         justify-content: center;
     } 
+
+    .ui.selection.dropdown.active,.ui.selection.dropdown.visible{
+        z-index:9 !important
+    }
   
     
 }
