@@ -25,6 +25,10 @@
     .sb-modal-actions {
         justify-content: center;
     } 
+
+    .ui.selection.dropdown.active,.ui.selection.dropdown.visible{
+        z-index:9 !important
+    }
   
     
 }
