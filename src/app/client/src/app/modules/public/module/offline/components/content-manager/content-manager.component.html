@@ -1,6 +1,6 @@
-<mat-accordion class="sb-mat-accordion styled fluid sb-single-pannel-accordion sb-content-manager-panel sb-desktop-content-manager"
+<mat-accordion class="sb-mat-accordion sb-desktop-content-manager"
   [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true, 'hide': visibility === false}"
-  *ngIf="contentResponse?.length">
+  *ngIf="contentResponse?.length"> 
   <mat-expansion-panel [expanded]="isOpen" (click)="getContentList()">
     <mat-expansion-panel-header>
       <mat-panel-title class="sb-mat-accordion__title" appTelemetryInteract [telemetryInteractEdata]="getTelemetryInteractData()">
