@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
@@ -29,7 +29,7 @@ describe('GetComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [ GetComponent ],
@@ -59,7 +59,7 @@ describe('GetComponent', () => {
   });
 
   it('should not navigate to dialcode search when input field is empty or only spaces', () => {
-    const route = TestBed.inject(Router);
+    const route = spyOn(route, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
     spyOn(component, 'navigateToSearch');
     component.searchKeyword = ' ';
     component.navigateToSearch();
@@ -68,7 +68,7 @@ describe('GetComponent', () => {
   });
 
   it('should navigate to dialcode search when user enters data', () => {
-    const route = TestBed.inject(Router);
+    const route = spyOn(route, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
     component.searchKeyword = 'test';
     component.navigateToSearch();
     fixture.detectChanges();
