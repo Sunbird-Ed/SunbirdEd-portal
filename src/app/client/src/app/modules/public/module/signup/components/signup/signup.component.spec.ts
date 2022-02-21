@@ -54,7 +54,7 @@ const resourceBundle = {
   getResource() { }
 };
 
-xdescribe('SignUpComponent', () => {
+describe('SignUpComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
 
