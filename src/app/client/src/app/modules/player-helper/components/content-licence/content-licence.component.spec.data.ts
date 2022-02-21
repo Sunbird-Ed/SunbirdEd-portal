@@ -346,7 +346,7 @@ export const contentInformation = {
             }
         ],
         'contentEncoding': 'gzip',
-        'mimeTypesCount': '{\'application/vnd.ekstep.ecml-archive\':4}',
+        'mimeTypesCount': '{"application/vnd.ekstep.ecml-archive":4}',
         'contentType': 'Collection',
         'sYS_INTERNAL_LAST_UPDATED_ON': '2017-09-26T11:45:01.830+0000',
         'lastUpdatedBy': '73f3d379-9bcf-4363-a38d-33d69b26586f',

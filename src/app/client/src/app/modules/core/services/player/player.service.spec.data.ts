@@ -195,7 +195,7 @@ export const MockResponse = {
                 'appId': 'dev.sunbird.portal',
                 'contentEncoding': 'gzip',
                 'lockKey': '8d11f1c0-97bf-4555-81d5-ed7bdcb920d8',
-                'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'video/mp4\':1}',
+                'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"video/mp4":1}',
                 'totalCompressedSize': 416488,
                 'contentType': 'Course',
                 'identifier': 'do_112832377710125056110',

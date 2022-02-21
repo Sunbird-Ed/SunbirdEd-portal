@@ -261,7 +261,8 @@ describe('CoursePageComponent', () => {
 
     it('should call play content method', () => {
         const publicPlayerService:any = TestBed.inject(PublicPlayerService);
-        spyOn(publicPlayerService, 'playContent').and.callThrough();
+        spyOn(publicPlayerService, 'playContent');
+        spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         const event = {
             data: {
                 metaData: {
