@@ -125,9 +125,9 @@ export class UserService {
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
     try {
-      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      this._userid = document.getElementById('userId')?(<HTMLInputElement>document.getElementById('userId')).value:'';
       DataService.userId = this._userid;
-      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      this._sessionId = document.getElementById('sessionId')?(<HTMLInputElement>document.getElementById('sessionId')).value:'';
       DataService.sessionId = this._sessionId;
       this._authenticated = true;
     } catch (error) {
@@ -136,8 +136,8 @@ export class UserService {
       DataService.sessionId = this._anonymousSid;
     }
     try {
-      this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
-      this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
+      this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value:'';
+      this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
     } catch (error) {
     }
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
