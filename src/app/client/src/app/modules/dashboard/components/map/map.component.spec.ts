@@ -10,7 +10,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { of, throwError } from 'rxjs';
 import { geoJSONDataMock } from './map.component.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
-fdescribe('MapComponent', () => {
+describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
 

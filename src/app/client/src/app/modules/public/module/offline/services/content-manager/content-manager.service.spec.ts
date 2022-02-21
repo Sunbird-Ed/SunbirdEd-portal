@@ -23,6 +23,7 @@ describe('ContentManagerService', () => {
     },
     messages: {
       fmsg: { m0097: 'Something went wrong' },
+      smsg: { m0053: 'Download Initiated' },
       stmsg: { contentLocationChanged: 'Content location changed successfully, try to download content now.' }
     }
   };
