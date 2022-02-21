@@ -14,7 +14,7 @@ import { of as observableOf, throwError as observableThrowError, of } from 'rxjs
 import { response as CertMockResponse } from './certificate-configuration.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('CertificateConfigurationComponent', () => {
+describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
   configureTestSuite();
