@@ -11,8 +11,8 @@ import { CoreModule } from '@sunbird/core';
 import { GroupsModule } from '../../../groups';
 import { GroupsService } from '../../services';
 import { ActivityDashboardDirective } from './activity-dashbord.directive';
-
-xdescribe('ActivityDashboardDirective', () => {
+//STAGE1 -->RS
+describe('ActivityDashboardDirective', () => {
   let directive: ActivityDashboardDirective;
 
   class RouterStub {

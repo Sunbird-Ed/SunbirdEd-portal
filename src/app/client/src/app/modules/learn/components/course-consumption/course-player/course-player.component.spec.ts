@@ -109,8 +109,8 @@ describe('CoursePlayerComponent', () => {
       emsg: {
          m0005: 'error',
          m0003: `The Course doesn't have any open batches`,
-         m009: `The course's batch is available from {startDate}`,
-         m008 : `The batch's enrollment date {endDate} is crossed`
+         m0009: `The course's batch is available from {startDate}`,
+         m0008 : `The batch's enrollment date {endDate} is crossed`
          }
     },
     frmelmnts: {
@@ -798,7 +798,7 @@ describe('CoursePlayerComponent', () => {
       startDate: '2045-12-25',
       status: 1
     }];
-    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch[0]['startDate']);
+    const message = (resourceServiceMockData?.messages?.emsg?.m009).replace('{startDate}', batch[0]['startDate']);
     expect(component.validateBatchDate(batch)).toBe(message);
   });
 
@@ -813,7 +813,7 @@ describe('CoursePlayerComponent', () => {
       startDate: '2020-01-25',
       status: 1
     }];
-    const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
+    const message = (resourceServiceMockData?.messages?.emsg?.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
     expect( component.validateBatchDate(batch)).toBe(message);
   });
 
@@ -898,7 +898,7 @@ describe('CoursePlayerComponent', () => {
       startDate: '2020-01-25',
       status: 1
     }];
-    const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
+    const message = (resourceServiceMockData?.messages?.emsg?.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
     expect( component.validateBatchDate(batch)).toBe(message);
   });
 

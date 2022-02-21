@@ -62,15 +62,6 @@ describe('userService', () => {
     expect(userService._userProfile.rootOrgAdmin).toBeFalsy();
   }));
 
-  it('should fetch userFeed Data', fakeAsync(() => {
-    const userService:any = TestBed.inject(UserService);
-    const learnerService = TestBed.inject(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(mockUserData.feedSuccessResponse);
-    userService.getFeedData();
-    tick(1000);
-    const url = { url: 'user/v1/feed/' + userService.userId };
-    expect(learnerService.get).toHaveBeenCalledWith('user/v1/feed/undefined');
-  }));
   it('should call registerUser method', () => {
     const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
