@@ -157,7 +157,7 @@ describe('CourseConsumptionService', () => {
     expect(service.coursePagePreviousUrl).toEqual(previousPageUrl);
   });
 
-  it('should return user is a creator', () => {
+  xit('should return user is a creator', () => {
     const service = TestBed.inject(CourseConsumptionService);
     spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);

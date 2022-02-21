@@ -68,6 +68,7 @@ describe('UserOnboardingComponent', () => {
   });
 
   it('should call userTypeSubmit', () => {
+    component.isGuestUser = true;
     spyOn(component.close, 'emit');
     component.userTypeSubmit();
     expect(component.close.emit).toHaveBeenCalled();

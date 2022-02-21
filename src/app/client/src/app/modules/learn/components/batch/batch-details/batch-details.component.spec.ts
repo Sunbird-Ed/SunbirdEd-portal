@@ -47,8 +47,8 @@ const resourceServiceMockData = {
     }
   }
 };
-
-xdescribe('BatchDetailsComponent', () => {
+// STAGE 1 RS
+describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
   configureTestSuite();
@@ -99,8 +99,8 @@ xdescribe('BatchDetailsComponent', () => {
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     const resourceService = TestBed.inject(ResourceService);
-    resourceService.messages = resourceServiceMockData.messages;
-    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    resourceService['messages'] = resourceServiceMockData.messages;
+    resourceService['frmelmnts'] = resourceServiceMockData.frmelmnts;
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
     component.ngOnInit();
