@@ -310,9 +310,9 @@ describe('AssessmentPlayerComponent', () => {
     fixture.detectChanges();
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-    // expect(courseConsumptionService.updateContentsState).toHaveBeenCalledWith(jasmine.objectContaining({
+    /* expect(courseConsumptionService.updateContentsState).toHaveBeenCalledWith(jasmine.objectContaining({
       userId: undefined, contentId: '123', courseId: '12312433456', batchId: '121787782323', status: 1, progress: undefined
-    }));
+    }));*/
   });
 
   it('should not update content state if, batch id is not present', () => {
