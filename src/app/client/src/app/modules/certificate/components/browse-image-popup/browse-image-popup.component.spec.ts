@@ -12,7 +12,7 @@ import { UploadCertificateService } from '../../services/upload-certificate/uplo
 import { of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('BrowseImagePopupComponent', () => {
+describe('BrowseImagePopupComponent', () => {
   let component: BrowseImagePopupComponent;
   let fixture: ComponentFixture<BrowseImagePopupComponent>;
   configureTestSuite();

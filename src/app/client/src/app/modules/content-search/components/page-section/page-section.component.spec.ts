@@ -23,7 +23,7 @@ const fakeActivatedRoute = {
   }
 };
 
-xdescribe('PageSectionComponent', () => {
+describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
   let fixture: ComponentFixture<PageSectionComponent>;
   configureTestSuite();
