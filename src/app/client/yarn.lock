@@ -1518,10 +1518,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.38.tgz#86ebd5d1336b7f8625b24035e244f979ad2375b0"
   integrity sha512-uO6Xdo9JT80bFgtu7SMJzuH5Qj2GgP2PTepTK6vbZ+eUvlrP2abwSgeSNWYRNyXUTMBzkouvuy5OW862/ZoNng==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.7.16":
-  version "4.7.16"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.16.tgz#09bdcfc1601f923db5aa2f41111b2eecb42a3a14"
-  integrity sha512-igI0Ito/pb7IeXMcof13sJhxKtkSParVABmoY7CiOyjDf6iFus+0i/zppscDUXgzZ6vkDCy14xsd65KHC03brw==
+"@project-sunbird/sunbird-collection-editor-v9@4.7.18":
+  version "4.7.18"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.18.tgz#9173da431d1b4b7d0126a3f4237ee2394e209cec"
+  integrity sha512-CQd/DmgmCvK7RcyGeYImwSUFniLxgITDE/XqOt2aZlwITsx2rEcKUAIWFhcDkzC5N4cb4T9L8n4qs7iJ3NOC+w==
   dependencies:
     tslib "^1.10.0"
 
@@ -3719,10 +3719,10 @@ common-form-elements-v9@4.5.0:
     moment "^2.29.1"
     tslib "^1.10.0"
 
-common-form-elements-web-v9@4.7.1:
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.7.1.tgz#72d1858158084df25d251107830e5d3c4bd348e3"
-  integrity sha512-oPbAWs1D4gimUp2NyIkzBtm5A+98O1po9f9+NP7JE6D90DHd4lH4gjCeSld9OH9Rw24hCd/o5fPCLKirQMiVYw==
+common-form-elements-web-v9@4.7.2:
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/common-form-elements-web-v9/-/common-form-elements-web-v9-4.7.2.tgz#a29070c587d0488f2778d91fbe1c52cd1eff2516"
+  integrity sha512-MsH0QLghlZZpN/z27iCgGQckUecSoBhGDIzIuVKqsIBPEVqVqktDtuHl2Mxiv9XWAhZa31IVM0shVoAWVX8LDg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
