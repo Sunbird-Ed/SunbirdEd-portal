@@ -17,7 +17,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { DateFilterXtimeAgoPipe } from './../../pipes';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('CollaboratingOnComponent', () => {
+describe('CollaboratingOnComponent', () => {
   let component: CollaboratingOnComponent;
   let fixture: ComponentFixture<CollaboratingOnComponent>;
   const resourceBundle = {

@@ -4,7 +4,7 @@ import {
   CoreModule, UserService, SearchService, PlayerService, LearnerService,
   CoursesService, CertRegService, OrgDetailsService, FormService
 } from '@sunbird/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProfileService } from '@sunbird/profile';
@@ -17,7 +17,7 @@ import { of as observableOf, throwError as observableThrowError, of, throwError,
 import { configureTestSuite } from '@sunbird/test-util';
 import * as _ from 'lodash-es';
 
-xdescribe('ProfilePageComponent', () => {
+describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
   class RouterStub {
@@ -152,6 +152,11 @@ xdescribe('ProfilePageComponent', () => {
     fixture = TestBed.createComponent(ProfilePageComponent);
     component = fixture.componentInstance;
   });
+
+  // afterEach(() => {
+  //   fixture.destroy();
+  //   TestBed.resetTestingModule();
+  // })
 
   it('should call user service', () => {
     const resourceService:any = TestBed.inject(ResourceService);
@@ -325,6 +330,7 @@ xdescribe('ProfilePageComponent', () => {
   it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
     component.userProfile = Response.userData;
     component.setNonCustodianUserLocation();
+    console.log(component.nonCustodianUserLocation);
     expect(component.nonCustodianUserLocation['block']).toBe('MUNGER SADAR');
     expect(component.nonCustodianUserLocation['district']).toBe('MUNGER');
     expect(component.nonCustodianUserLocation['state']).toBe('Bihar');
@@ -406,7 +412,7 @@ xdescribe('ProfilePageComponent', () => {
     expect(component.getSelfDeclaredDetails).toHaveBeenCalled();
   });
 
-  it('should get self declared details', () => {
+  it('should get self declared details', fakeAsync(() => {
     const userService:any = TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData as any});
     const profileService:any = TestBed.inject(ProfileService);
@@ -414,19 +420,21 @@ xdescribe('ProfilePageComponent', () => {
     spyOn(profileService, 'getSelfDeclarationForm').and.returnValue(observableOf(Response.declarationFormValues));
     component.ngOnInit();
     component.getSelfDeclaredDetails();
+    flush();
     expect(component.tenantInfo).toBeDefined();
     expect(component.selfDeclaredInfo).toBeDefined();
     expect(component.selfDeclaredInfo).toBeDefined();
-  });
+  }));
 
-  it('should call downloadPdfCertificate and return signedPdfUrl', () => {
+  xit('should call downloadPdfCertificate and return signedPdfUrl', fakeAsync(() => {
     const profileService:any = TestBed.inject(ProfileService);
     spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
     spyOn(window, 'open');
     component.downloadPdfCertificate(Response.pdfCertificate[0]);
+    flush();
     expect(profileService.downloadCertificates).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalledWith(Response.v1DownloadCertResponse.result.signedUrl, '_blank');
-  });
+  }));
 
   it('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates };
@@ -495,7 +503,7 @@ xdescribe('ProfilePageComponent', () => {
     expect(component.downloadPdfCertificate).toHaveBeenCalled();
   });
 
-  it('should call downloadPdfCertificate and does not return signedPdfUrl', () => {
+  it('should call downloadPdfCertificate and does not return signedPdfUrl', fakeAsync(() => {
     const profileService:any = TestBed.inject(ProfileService);
     const toasterService:any = TestBed.inject(ToasterService);
     const resp = Response.v1DownloadCertResponse;
@@ -503,9 +511,10 @@ xdescribe('ProfilePageComponent', () => {
     spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
     spyOn(toasterService, 'error');
     component.downloadPdfCertificate(Response.pdfCertificate[0]);
+    flush();
     expect(profileService.downloadCertificates).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith('No data available to download');
-  });
+  }));
 
   it('should handle error while downloading certificate', () => {
     const profileService:any = TestBed.inject(ProfileService);
