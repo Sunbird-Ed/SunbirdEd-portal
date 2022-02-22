@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RecoverAccountService } from './../../services';
 import { IdentifyAccountComponent } from './identify-account.component';
 import { CoreModule } from '@sunbird/core';
@@ -15,7 +15,7 @@ import { By } from '@angular/platform-browser';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('IdentifyAccountComponent', () => {
+describe('IdentifyAccountComponent', () => {
   let component: IdentifyAccountComponent;
   let fixture: ComponentFixture<IdentifyAccountComponent>;
   class RouterStub {
@@ -59,7 +59,7 @@ xdescribe('IdentifyAccountComponent', () => {
     }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IdentifyAccountComponent],
       schemas: [NO_ERRORS_SCHEMA],

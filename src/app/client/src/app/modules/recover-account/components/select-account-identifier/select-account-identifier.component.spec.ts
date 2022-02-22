@@ -1,5 +1,5 @@
 import { SelectAccountIdentifierComponent } from './select-account-identifier.component';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RecoverAccountService } from './../../services';
 import { CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -12,7 +12,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { RecaptchaModule } from 'ng-recaptcha';
 
-xdescribe('SelectAccountIdentifierComponent', () => {
+describe('SelectAccountIdentifierComponent', () => {
   let component: SelectAccountIdentifierComponent;
   let fixture: ComponentFixture<SelectAccountIdentifierComponent>;
   class RouterStub {
@@ -48,7 +48,7 @@ xdescribe('SelectAccountIdentifierComponent', () => {
     }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SelectAccountIdentifierComponent],
       schemas: [NO_ERRORS_SCHEMA],

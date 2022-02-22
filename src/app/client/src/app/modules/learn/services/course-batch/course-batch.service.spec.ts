@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, ComponentFixture } from '@angular/core/testing';
 
 import { CourseBatchService } from './course-batch.service';
 
@@ -10,6 +10,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BatchService', () => {
+  let component: CourseBatchService;
+  let fixture: ComponentFixture<CourseBatchService>;
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,4 +19,10 @@ describe('BatchService', () => {
       providers: [CourseBatchService]
     });
   });
+
+  it('should create CourseBatchService', () => {
+    const service: CourseBatchService = TestBed.inject(CourseBatchService);
+    expect(service).toBeTruthy();
+  });
+
 });
