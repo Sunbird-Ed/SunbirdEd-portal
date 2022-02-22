@@ -279,14 +279,14 @@ xdescribe('ObservationUtilService', () => {
 it('should call the browse by category browseByCategoryForm on api success', () => {
   spyOn(service, 'browseByCategoryForm').and.callThrough();
   spyOn(formService, 'getFormConfig').and.returnValue(of(categoryData));
-  service.browseByCategoryForm();
+  service.browseByCategoryForm().then((done: DoneFn) => {done();});
   expect(service.browseByCategoryForm).toHaveBeenCalled();
 });
 
 it('should call the browse by category browseByCategoryForm on api fail', () => {
   spyOn(service, 'browseByCategoryForm').and.callThrough();
   spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError('error'));
-  service.browseByCategoryForm();
+  service.browseByCategoryForm().then((done: DoneFn) => {done();});
   expect(service.browseByCategoryForm).toHaveBeenCalled();
 });
 

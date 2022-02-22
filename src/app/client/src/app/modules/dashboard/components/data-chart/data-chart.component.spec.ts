@@ -20,7 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 
-xdescribe('DataChartComponent', () => {
+describe('DataChartComponent', () => {
     let component: DataChartComponent;
     let fixture: ComponentFixture<DataChartComponent>;
     configureTestSuite();
@@ -68,7 +68,7 @@ xdescribe('DataChartComponent', () => {
         expect(component.chartData).toBe(mockChartData.chartData);
     });
 
-    it('should prepare chart from the input chart config', () => {
+    xit('should prepare chart from the input chart config', () => {
         const spy = spyOn(component, 'getDataSetValue').and.callThrough();
         component.ngOnInit();
         expect(component.chartOptions).toBe(mockChartData.chartConfig.options);
@@ -163,7 +163,7 @@ xdescribe('DataChartComponent', () => {
         });
     });
 
-    it('should set labels from datasets', () => {
+    xit('should set labels from datasets', () => {
         component['setChartLabels']({ name: 2 });
         expect(component.chartLabels).toEqual(['Name']);
     });
@@ -215,7 +215,7 @@ xdescribe('DataChartComponent', () => {
         expect(component.chartType).toEqual('bar');
     }));
 
-    it('should open modal popup', fakeAsync(() => {
+    xit('should open modal popup', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
         component.currentFilters = [];

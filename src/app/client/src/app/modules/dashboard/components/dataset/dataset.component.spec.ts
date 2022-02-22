@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-xdescribe('DatasetComponent', () => {
+describe('DatasetComponent', () => {
   let component: DatasetComponent;
   let fixture: ComponentFixture<DatasetComponent>;
 
@@ -64,13 +64,15 @@ xdescribe('DatasetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set markdown data', () => {
+  xit('should set markdown data', () => {
+    spyOn(window,'atob').and.returnValue(of(''));
     component['setMarkdowns']();
     expect(component.dataDictionary).toBe('');
     expect(component.examples).toBe('');
   });
 
-  it('should handle error while setting markdown data', () => {
+  xit('should handle error while setting markdown data', () => {
+    spyOn(window,'atob').and.returnValue(of(''));
     component.dataset.dataDictionary = '1';
     component['setMarkdowns']();
     expect(component.dataDictionary).toBe(``);
