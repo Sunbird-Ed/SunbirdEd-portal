@@ -308,8 +308,8 @@ const handleGetUserByIdError = (error) => {
         result: error
         }
       })
-  if (['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0042'].includes(_.get(error, 'error.params.err')) || 
-  ['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0042'].includes(_.get(error, 'error.params.status'))) {
+  if (['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0013'].includes(_.get(error, 'error.params.err')) || 
+  ['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0013'].includes(_.get(error, 'error.params.status'))) {
     return {};
   }
   throw error.error || error.message || error;
