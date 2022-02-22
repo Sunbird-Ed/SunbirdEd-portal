@@ -21,8 +21,12 @@ export const configureTestSuite = () => {
     });
 
     afterAll(() => {
+      try{
         TestBed.resetTestingModule = originReset;
         TestBed.resetTestingModule();
+      } catch(err) {
+        console.error(err);
+      }  
     });
   };
 

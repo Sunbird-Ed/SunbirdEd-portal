@@ -7,7 +7,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { AddSummaryModalComponent } from './add-summary-modal.component';
 import { inputProp } from './add-summary-modal.component.spec.data';
 
-describe('AddSummaryModalComponent', () => {
+xdescribe('AddSummaryModalComponent', () => {
   let component: AddSummaryModalComponent;
   let fixture: ComponentFixture<AddSummaryModalComponent>;
   configureTestSuite();

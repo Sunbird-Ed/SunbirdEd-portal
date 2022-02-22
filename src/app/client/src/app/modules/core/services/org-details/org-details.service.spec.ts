@@ -94,7 +94,7 @@ describe('OrgDetailsService', () => {
     );
   });
 
-  it('Call getCommingSoonMessage', () => {
+  xit('Call getCommingSoonMessage', () => {
     const service = TestBed.inject(OrgDetailsService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf({ result: { response: { value: '{test: 1}' } } }));
