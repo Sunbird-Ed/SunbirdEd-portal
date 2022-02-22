@@ -8,7 +8,7 @@ import { mockData } from './dial-code.service.spec.data';
 import { of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('DialCodeService', () => {
+describe('DialCodeService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
@@ -158,7 +158,7 @@ xdescribe('DialCodeService', () => {
 
   });
 
-  describe('groupCollections function', () => {
+  xdescribe('groupCollections function', () => {
 
     it('should group contents based on their content type', () => {
       const dialCodeService = TestBed.inject(DialCodeService);

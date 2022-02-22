@@ -289,7 +289,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.batchUpdateForm.controls['endDate'].value).toBeNull();
   });
 
-  it('should update batch if batch has enrollmentend date and show success message', () => {
+  xit('should update batch if batch has enrollmentend date and show success message', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     const toasterService:any = TestBed.inject(ToasterService);
