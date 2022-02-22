@@ -287,6 +287,11 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         config.size = 'small';
         config.transitionDuration = 0;
         config.mustScroll = true;
+        setTimeout(() => {
+            let element = document.getElementsByTagName('sui-modal');
+            if(element && element.length > 0)
+              element[0].className = 'sb-modal';
+          }, 200);
         this.modalService
             .open(config)
             .onApprove(result => {

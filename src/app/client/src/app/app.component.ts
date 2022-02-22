@@ -410,7 +410,7 @@ export class AppComponent implements OnInit, OnDestroy {
             let userType;
             if (this.isDesktopApp && this.isGuestUser) {
                userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
-            } else {
+            } else if(this.isGuestUser) {
               userType = localStorage.getItem('userType');
               if(!this.showUserTypePopup && this.isLocationConfirmed){
                 this.checkFrameworkSelected();
@@ -420,6 +420,8 @@ export class AppComponent implements OnInit, OnDestroy {
                   this.showUserTypePopup = true
                   })              
                 }
+            } else {
+              userType = localStorage.getItem('userType');
             }
             this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : this.showUserTypePopup;
           // }
@@ -504,11 +506,11 @@ export class AppComponent implements OnInit, OnDestroy {
             this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.nonCustodianTC') };
             this.showGlobalConsentPopUpSection = true;
           } else {
-            this.checkLocationStatus();
+            this.isGuestUser ? this.checkLocationStatus() : this.checkFrameworkSelected();
           }
         });
       } else {
-        this.checkLocationStatus();
+        this.isGuestUser ? this.checkLocationStatus() : this.checkFrameworkSelected();
       }
     }
   }
@@ -545,6 +547,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
       if (frameWorkPopUp) {
         this.showFrameWorkPopUp = false;
+        !this.isGuestUser ? this.checkLocationStatus() : null;
       } else {
         if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
           this.showFrameWorkPopUp = true;
@@ -559,6 +562,8 @@ export class AppComponent implements OnInit, OnDestroy {
           } else {
             this.checkLocationStatus();
           }
+        } else {
+          this.checkLocationStatus();
         }
       }
     });
@@ -788,8 +793,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
-    this.showUserTypePopup=false;
-    this.checkFrameworkSelected();
+    if( this.isGuestUser){
+      this.showUserTypePopup=false;
+      this.checkFrameworkSelected();
+    }
     this.showYearOfBirthPopup = true;
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
