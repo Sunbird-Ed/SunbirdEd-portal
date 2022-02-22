@@ -15,7 +15,7 @@ import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 
 
-xdescribe('BatchInfoComponent', () => {
+describe('BatchInfoComponent', () => {
   let component: BatchInfoComponent;
   let fixture: ComponentFixture<BatchInfoComponent>;
   const resourceBundle = {
@@ -89,10 +89,10 @@ xdescribe('BatchInfoComponent', () => {
   expect(component['learnerService'].post).toHaveBeenCalledWith(option);
   });
 
-  xit('should call playcontent()', () => {
+  it('should call playcontent()', () => {
    spyOn(component.playerService, 'playContent');
    component.handleResumeEvent({});
-   expect(component.playerService.playContent).toHaveBeenCalledWith({mimeType: 'application/vnd.ekstep.content-collection', contentType: 'Course'});
+   expect(component.playerService.playContent).toHaveBeenCalledWith({mimeType: 'application/vnd.ekstep.content-collection', contentType: 'Course', primaryCategory: 'Course'});
   });
 
 
