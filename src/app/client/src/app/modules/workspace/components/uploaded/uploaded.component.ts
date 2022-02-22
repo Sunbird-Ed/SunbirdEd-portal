@@ -240,7 +240,7 @@ export class UploadedComponent extends WorkSpace implements OnInit, AfterViewIni
       let element = document.getElementsByTagName('sui-modal');
       if(element && element.length > 0)
         element[0].className = 'sb-modal';
-    }, 200);
+    }, 10);
     this.modalService
       .open(config)
       .onApprove(result => {
