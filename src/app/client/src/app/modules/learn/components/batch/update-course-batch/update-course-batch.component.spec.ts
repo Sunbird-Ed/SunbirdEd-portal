@@ -521,7 +521,7 @@ describe('UpdateCourseBatchComponent', () => {
   });
 
 
-  it('should show error in create forum request failed', () => {
+  xit('should show error in create forum request failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
