@@ -4,7 +4,7 @@ import { ConfigService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { DhitiService } from './dhiti.service';
 
-xdescribe('DhitiService', () => {
+describe('DhitiService', () => {
   let service: DhitiService;
 
   beforeEach(() => {

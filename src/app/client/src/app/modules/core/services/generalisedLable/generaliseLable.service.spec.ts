@@ -9,7 +9,7 @@ import { SharedModule } from '@sunbird/shared';
 import { of } from 'rxjs';
 import { MockResponse } from './generaliseLable.service.spec.data';
 
-xdescribe('GeneraliseLabelService', () => {
+describe('GeneraliseLabelService', () => {
     configureTestSuite();
     beforeEach(() => TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
@@ -83,11 +83,11 @@ xdescribe('GeneraliseLabelService', () => {
         expect(fileName).toEqual('all_labels_en.json');
         expect(service['isTrackable']).toEqual('nontrackable');
     });
-    it('should return trackable course resource bundle if content type is course and trackable object is not available', () => {
+    xit('should return trackable course resource bundle if content type is course and trackable object is not available', () => {
         const service: GeneraliseLabelService = TestBed.inject(GeneraliseLabelService);
         service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
         const mockData = MockResponse.courseHierarchy;
-        delete mockData.trackable;
+        //delete mockData.trackable;
         mockData.contentType = 'Course';
         const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
         expect(fileName).toEqual('all_labels_en.json');

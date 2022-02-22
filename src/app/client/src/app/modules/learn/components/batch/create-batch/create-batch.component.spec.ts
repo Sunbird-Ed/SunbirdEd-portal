@@ -320,6 +320,9 @@ describe('CreateBatchComponent', () => {
   it('should show error if create forum failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
+    const resourceService = TestBed.inject(ResourceService);
+    resourceService['messages'] = resourceServiceMockData.messages;
+    resourceService['frmelmnts'] = resourceServiceMockData.frmelmnts;
     spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
     component.createForumRequest = {
@@ -337,15 +340,18 @@ describe('CreateBatchComponent', () => {
       }
     };
     component.enableDiscussionForum('SOME_BATCH_ID');
-    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService['messages'].emsg.m0005);
   });
 
   it('should show error if formconfig not available', () => {
     const toasterService:any = TestBed.inject(ToasterService);
+    const resourceService = TestBed.inject(ResourceService);
+    resourceService['messages'] = resourceServiceMockData.messages;
+    resourceService['frmelmnts'] = resourceServiceMockData.frmelmnts;
     spyOn(toasterService, 'error').and.stub();
     component.createForumRequest = undefined;
     component.enableDiscussionForum('SOME_BATCH_ID');
-    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService['messages'].emsg.m0005);
   });
 
   it('should log enable-DF-yes interact telemetry on changing input to yes', () => {

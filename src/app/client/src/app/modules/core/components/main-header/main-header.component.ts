@@ -175,8 +175,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
     private connectionService: ConnectionService, public electronService: ElectronService, private observationUtilService: ObservationUtilService) {
     try {
-      this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
-      this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
+      this.exploreButtonVisibility = document.getElementById('exploreButtonVisibility')?(<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value:'true';
+      this.reportsListVersion = document.getElementById('reportsListVersion')?(<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType:'v1';
     } catch (error) {
       this.exploreButtonVisibility = 'false';
       this.reportsListVersion = 'v1';
@@ -622,7 +622,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.getGuestUser();
     this.checkFullScreenView();
     try {
-      this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
+      this.helpLinkVisibility = document.getElementById('helpLinkVisibility')?(<HTMLInputElement>document.getElementById('helpLinkVisibility')).value:'false';
     } catch (error) {
       this.helpLinkVisibility = 'false';
     }
