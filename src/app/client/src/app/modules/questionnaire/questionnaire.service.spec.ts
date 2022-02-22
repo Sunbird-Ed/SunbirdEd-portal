@@ -12,7 +12,7 @@ import * as _ from 'lodash-es';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { ToasterService } from '@sunbird/shared';
 
-xdescribe('QuestionnaireService', () => {
+describe('QuestionnaireService', () => {
   let baseHref, kendraService;
   let service: QuestionnaireService;
   beforeEach(() =>

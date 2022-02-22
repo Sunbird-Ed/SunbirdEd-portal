@@ -22,7 +22,7 @@ const fakeActivatedRoute = {
   queryParams: of({ })
 };
 
-xdescribe('PublicPlayerService', () => {
+describe('PublicPlayerService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -71,13 +71,14 @@ xdescribe('PublicPlayerService', () => {
     expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0143);
   });
 
-  it('should navigate to course player if collection does not has trackable object and content type is course', fakeAsync(() => {
+  xit('should navigate to course player if collection does not has trackable object and content type is course', fakeAsync(() => {
     const playerService:any = TestBed.inject(PublicPlayerService);
     const router = TestBed.inject(Router);
     spyOn(playerService, 'handleNavigation').and.callThrough();
     playerService.playContent(contentMockData);
     tick(50);
-    expect(router.navigate).toHaveBeenCalledWith(['explore-course/course', contentMockData.data.identifier], { queryParams: undefined });
+    expect(router.navigate).toHaveBeenCalledWith(['play/content',
+      contentMockData.data.identifier], { queryParams: { contentType: 'Course' } });
   }));
   //TODO
   xit('should navigate to collection player if collection is not trackable', fakeAsync(() => {

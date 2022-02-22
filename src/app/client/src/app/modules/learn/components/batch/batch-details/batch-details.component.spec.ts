@@ -280,9 +280,9 @@ describe('BatchDetailsComponent', () => {
 
   it('should call logTelemetry', () => {
     const telemetryService = TestBed.inject(TelemetryService);
-    spyOn(telemetryService, 'interact');
+    spyOn<any>(telemetryService, 'interact');
     component.logTelemetry('buttonId');
-    expect(telemetryService.interact).toHaveBeenCalled();
+    expect(telemetryService['interact']).toHaveBeenCalled();
   });
 
   it('should close the join training popup on browser back button click', () => {

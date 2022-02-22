@@ -148,35 +148,37 @@ export class QuestionnaireComponent
   }
 
   submitEvidence(payload) {
-    const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
-        `${this.assessmentInfo.assessment.submissionId}`,
-      data: payload,
-    };
-    this.observationService.post(paramOptions).subscribe(
-      async (data) => {
-        if (payload.evidence.status === 'draft') {
-          this.backOrContinue();
-          return;
+    if (this.assessmentInfo) {
+      const paramOptions = {
+        url:
+          this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
+          `${this.assessmentInfo?.assessment?.submissionId}`,
+        data: payload,
+      };
+      this.observationService.post(paramOptions).subscribe(
+        async (data) => {
+          if (payload.evidence.status === 'draft') {
+            this.backOrContinue();
+            return;
+          }
+         const userResponse = await this.openAlert(
+            this.resourceService.frmelmnts.lbl.successfullySubmitted
+         );
+          if (userResponse) {
+            this.canLeave = true;
+            this.location.back();
+          }
+  
+        },
+        (error) => {
+          this.openAlert(
+            payload.evidence.status === 'draft'
+              ? this.resourceService.frmelmnts.lbl.failedToSave
+              : this.resourceService.frmelmnts.lbl.submissionFailed
+          );
         }
-       const userResponse = await this.openAlert(
-          this.resourceService.frmelmnts.lbl.successfullySubmitted
-       );
-        if (userResponse) {
-          this.canLeave = true;
-          this.location.back();
-        }
-
-      },
-      (error) => {
-        this.openAlert(
-          payload.evidence.status === 'draft'
-            ? this.resourceService.frmelmnts.lbl.failedToSave
-            : this.resourceService.frmelmnts.lbl.submissionFailed
-        );
-      }
-    );
+      );
+    }
   }
 
   async backOrContinue() {
