@@ -13,7 +13,7 @@ import { mockActivityList } from './activity-list.component.data.spec';
 import { GroupsService } from '../../../services/groups/groups.service';
 import * as _ from 'lodash-es';
 
-xdescribe('ActivityListComponent', () => {
+describe('ActivityListComponent', () => {
   let component: ActivityListComponent;
   let fixture: ComponentFixture<ActivityListComponent>;
   let router;

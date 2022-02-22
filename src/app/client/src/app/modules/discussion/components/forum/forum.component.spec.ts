@@ -12,7 +12,7 @@ import { APP_BASE_HREF, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 
-xdescribe('ForumComponent', () => {
+describe('ForumComponent', () => {
   let component: ForumComponent;
   let fixture: ComponentFixture<ForumComponent>;
 
