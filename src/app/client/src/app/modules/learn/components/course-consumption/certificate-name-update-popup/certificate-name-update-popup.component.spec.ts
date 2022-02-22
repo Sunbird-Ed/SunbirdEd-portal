@@ -14,8 +14,10 @@ import { response as CertMockResponse } from './certificate-name-update-popup.co
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-xdescribe('CertificateNameUpdatePopupComponent', () => {
+// STAGE 1 RS
+describe('CertificateNameUpdatePopupComponent', () => {
   let component: CertificateNameUpdatePopupComponent;
   let fixture: ComponentFixture<CertificateNameUpdatePopupComponent>;
   configureTestSuite();
@@ -43,7 +45,8 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
         SuiModule,
         CoreModule,
         RouterTestingModule,
-        TelemetryModule
+        TelemetryModule,
+        BrowserAnimationsModule
       ],
       providers: [
         BrowserCacheTtlService,

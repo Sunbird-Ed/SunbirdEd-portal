@@ -68,8 +68,8 @@ const fakeActivatedRoute = {
       }
     }
 };
-
-xdescribe('UpdateCourseBatchComponent', () => {
+// STAGE 1 RS
+describe('UpdateCourseBatchComponent', () => {
   let component: UpdateCourseBatchComponent;
   let fixture: ComponentFixture<UpdateCourseBatchComponent>;
   configureTestSuite();
@@ -443,7 +443,7 @@ xdescribe('UpdateCourseBatchComponent', () => {
   it('should show error while fetching participant or mentors list', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const toasterService:any = TestBed.inject(ToasterService);
-    spyOn(toasterService, 'error');
+    spyOn(toasterService, 'error').and.callThrough();
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableThrowError({}));
     component['getUserList']('', 'mentors');
     expect(toasterService.error).toHaveBeenCalledWith('error');
@@ -525,7 +525,7 @@ xdescribe('UpdateCourseBatchComponent', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
-    spyOn(toasterService, 'error');
+    spyOn(toasterService, 'error').and.callThrough();
     component.createForumRequest = MockResponseData.forumConfig[0];
     component.callCreateDiscussion = true;
     component.enableDiscussionForum();
@@ -536,7 +536,7 @@ xdescribe('UpdateCourseBatchComponent', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));
-    spyOn(toasterService, 'error');
+    spyOn(toasterService, 'error').and.callThrough();
     component.fetchForumConfig();
     expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
   });

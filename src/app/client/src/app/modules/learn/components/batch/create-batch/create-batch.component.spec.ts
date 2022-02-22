@@ -239,7 +239,7 @@ describe('CreateBatchComponent', () => {
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(batchService, 'addUsersToBatch').and.returnValue(of({}));
     spyOn(toasterService, 'success');
-    spyOn<any>(component, 'reload');
+    spyOn<any>(component, 'reload').and.callThrough();
     component['addParticipantToBatch'](2323212121, ['userId1', 'userId2']);
     expect(component.disableSubmitBtn).toBe(false);
     // expect(toasterService.success).toHaveBeenCalledWith('success');
