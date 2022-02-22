@@ -202,7 +202,6 @@ export class WorkSpaceService {
           const alertMsg = type ? this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0039
             : this.resourceService.messages.imsg.m0037;
           this.browserBackEvent.emit();
-          alert(alertMsg);
           window.location.hash = 'no';
         }
       };
@@ -379,7 +378,6 @@ export class WorkSpaceService {
           const alertMsg = type ? this.resourceService?.messages?.imsg?.m0038 + ' ' + type + ', ' + this.resourceService?.messages?.imsg?.m0040
             : this.resourceService?.messages?.imsg?.m0037;
           this.browserBackEvent.emit();
-          alert(alertMsg);
           window.location.hash = 'no';
         }
       };

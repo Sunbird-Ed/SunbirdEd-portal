@@ -24,7 +24,7 @@ import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-xdescribe('LimitedPublishedComponent', () => {
+describe('LimitedPublishedComponent', () => {
   let component: LimitedPublishedComponent;
   let fixture: ComponentFixture<LimitedPublishedComponent>;
   const fakeActivatedRoute = {
@@ -96,7 +96,7 @@ xdescribe('LimitedPublishedComponent', () => {
     expect(component.showLoader).toBeFalsy();
   }));
 
-  it('should check offset is passing for search api ', inject([SearchService], (searchService) => {
+  it('should check offset is passing for search api ', fakeAsync(inject([SearchService], (searchService) => {
     const userService:any = TestBed.inject(UserService);
     const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
@@ -111,7 +111,7 @@ xdescribe('LimitedPublishedComponent', () => {
     'status': [
       'Unlisted'
     ],
-    'createdBy': userService._userProfile.userid,
+    'createdBy': userService.userid,
     'primaryCategory': [
       'Course',
       'Digital Textbook',
@@ -132,10 +132,11 @@ xdescribe('LimitedPublishedComponent', () => {
     }
     };
     component.fetchLimitedPublished(1, 1);
+    tick(100);
     expect(component.search).toHaveBeenCalledWith(searchParams);
     expect(component.limitedPublishList).toBeDefined();
     expect(component.showLoader).toBeFalsy();
-  }));
+  })));
 
   it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountZero));
