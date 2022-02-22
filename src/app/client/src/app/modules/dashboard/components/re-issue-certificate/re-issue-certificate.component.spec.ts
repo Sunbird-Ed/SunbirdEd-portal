@@ -12,7 +12,7 @@ import { of, throwError } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { CertRegService } from '@sunbird/core';
-
+//Stage2
 describe('ReIssueCertificateComponent', () => {
   let component: ReIssueCertificateComponent;
   let fixture: ComponentFixture<ReIssueCertificateComponent>;
