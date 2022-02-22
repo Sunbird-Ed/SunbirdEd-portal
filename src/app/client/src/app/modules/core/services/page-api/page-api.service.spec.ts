@@ -9,7 +9,7 @@ import { CacheService } from 'ng2-cache-service';
 import { testData } from './page-api.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('PageApiService', () => {
+describe('PageApiService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
