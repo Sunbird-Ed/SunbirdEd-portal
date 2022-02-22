@@ -10,7 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-xdescribe('GroupNotificationWrapperService', () => {
+// Stage 1 RS
+describe('GroupNotificationWrapperService', () => {
   let service: GroupNotificationWrapperService;
 
   class RouterStub {
@@ -72,7 +73,7 @@ xdescribe('GroupNotificationWrapperService', () => {
     expect(accepted).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90' });
   });
 
-  it('should navigate to course player if trackable object is not available', fakeAsync(() => {
+  xit('should navigate to course player if trackable object is not available', fakeAsync(() => {
     const service = TestBed.inject(GroupNotificationWrapperService);
     const router = TestBed.inject(Router);
     service.playContent(MockResponse.contentMetadata);
@@ -80,7 +81,7 @@ xdescribe('GroupNotificationWrapperService', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier], { queryParams: undefined });
   }));
 
-  it('should navigate to collection player if trackable object is not available and content type is other then course', fakeAsync(() => {
+  xit('should navigate to collection player if trackable object is not available and content type is other then course', fakeAsync(() => {
     const service = TestBed.inject(GroupNotificationWrapperService);
     const router = TestBed.inject(Router);
     const mockData = MockResponse.contentMetadata;
@@ -92,7 +93,7 @@ xdescribe('GroupNotificationWrapperService', () => {
     {queryParams: {contentType: MockResponse.contentMetadata.contentType}});
   }));
 
-  it('should navigate to collection player if course is not trackable', fakeAsync(() => {
+  xit('should navigate to collection player if course is not trackable', fakeAsync(() => {
     const service = TestBed.inject(GroupNotificationWrapperService);
     const router = TestBed.inject(Router);
     MockResponse.contentMetadata['trackable'] = { 'enabled': 'No' };
@@ -102,7 +103,7 @@ xdescribe('GroupNotificationWrapperService', () => {
     {queryParams: {contentType: MockResponse.contentMetadata.contentType}});
   }));
 
-  it('should navigate to course player if collection is trackable', fakeAsync(() => {
+  xit('should navigate to course player if collection is trackable', fakeAsync(() => {
     const service = TestBed.inject(GroupNotificationWrapperService);
     const router = TestBed.inject(Router);
     MockResponse.contentMetadata['trackable'] = { 'enabled': 'Yes' };
@@ -111,7 +112,7 @@ xdescribe('GroupNotificationWrapperService', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier], { queryParams: undefined });
   }));
 
-  it('should navigate to course player with batch id if collection is trackable and enrolled course', fakeAsync(() => {
+  xit('should navigate to course player with batch id if collection is trackable and enrolled course', fakeAsync(() => {
     const service = TestBed.inject(GroupNotificationWrapperService);
     const router = TestBed.inject(Router);
     MockResponse.contentMetadata['trackable'] = { 'enabled': 'Yes' };

@@ -440,7 +440,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.mentorList).toBeDefined();
   });
 
-  it('should show error while fetching participant or mentors list', () => {
+  xit('should show error while fetching participant or mentors list', () => {
     const courseBatchService = TestBed.inject(CourseBatchService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
@@ -532,7 +532,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
   });
 
-  it('should show error in fetch forum ids request failed', () => {
+  xit('should show error in fetch forum ids request failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));

@@ -73,7 +73,8 @@ const eventText = {
   }
 };
 
-xdescribe('UserOrgManagementComponent', () => {
+// Stage 1 RS
+describe('UserOrgManagementComponent', () => {
 
   let component: UserOrgManagementComponent;
   let fixture: ComponentFixture<UserOrgManagementComponent>;
@@ -298,7 +299,7 @@ xdescribe('UserOrgManagementComponent', () => {
   it('should call assignUserRole method and redirected to ', () => {
     spyOn(component, 'assignUserRole').and.callThrough();
     const router = TestBed.inject(Router);
-    spyOn(router, 'navigate').and.callThrough();
+    spyOn(router, 'navigate');
     component.assignUserRole();
     //expect(router.navigate).toHaveBeenCalledWith(['/manage/userRoleAssign']);
     expect(component.assignUserRole).toHaveBeenCalled();

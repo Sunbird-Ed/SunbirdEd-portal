@@ -8,7 +8,8 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CourseCompletionComponent } from './course-completion.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-xdescribe('CourseCompletionComponent', () => {
+// Stage 1 RS
+describe('CourseCompletionComponent', () => {
   let component: CourseCompletionComponent;
   let fixture: ComponentFixture<CourseCompletionComponent>;
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
