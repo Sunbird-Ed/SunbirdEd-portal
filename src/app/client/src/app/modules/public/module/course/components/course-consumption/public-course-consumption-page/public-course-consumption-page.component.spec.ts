@@ -21,7 +21,9 @@ const resourceServiceMockData = {
       m0009: 'error', activityAddFail: 'Unable to add activity, please try again',
       desktop: {
         deleteCourseSuccessMessage: 'Course deleted successfully'
-      }
+      },
+      m0140: 'success',
+      m0138: 'error'
     },
     etmsg: {
       desktop: {

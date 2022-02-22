@@ -420,7 +420,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     }
   }
   updateCollection(collection) {
-    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    collection['downloadStatus'] = this.resourceService?.messages?.stmsg?.m0140;
     this.logTelemetry('update-collection');
     const request = {
       contentId: collection.identifier
@@ -430,7 +430,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.showUpdate = false;
     }, (err) => {
       this.showUpdate = true;
-      const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', collection.name) :
+      const errorMessage = !this.isConnected ? _.replace(this.resourceService?.messages?.smsg?.m0056, '{contentName}', collection.name) :
         this.resourceService.messages.fmsg.m0096;
       this.toasterService.error(errorMessage);
     });
@@ -463,7 +463,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   downloadCollection(collection) {
     this.showDownloadLoader = true;
     this.disableDelete = false;
-    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    collection['downloadStatus'] = this.resourceService?.messages?.stmsg?.m0140;
     this.logTelemetry('download-collection');
     this.contentManagerService.downloadContentId = collection.identifier;
     this.contentManagerService.downloadContentData = collection;
@@ -472,16 +472,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.contentManagerService.downloadContentId = '';
       this.contentManagerService.downloadContentData = {};
       this.showDownloadLoader = false;
-      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+      collection['downloadStatus'] = this.resourceService?.messages?.stmsg?.m0140;
     }, error => {
       this.disableDelete = true;
       this.showDownloadLoader = false;
       this.contentManagerService.downloadContentId = '';
       this.contentManagerService.downloadContentData = {};
       this.contentManagerService.failedContentName = '';
-      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+      collection['downloadStatus'] = this.resourceService?.messages?.stmsg?.m0138;
       if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        this.toasterService.error(this.resourceService?.messages?.fmsg?.m0090);
           }
     });
   }
@@ -497,7 +497,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.goBack();
     }, err => {
       this.disableDelete = false;
-      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteCourseErrorMessage);
+      this.toasterService.error(this.resourceService?.messages?.etmsg?.desktop?.deleteCourseErrorMessage);
     });
   }
    /**
@@ -542,7 +542,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       },
       (err: ServerResponse) => {
         this.showError = true;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        this.toasterService.error(this.resourceService?.messages?.fmsg?.m0004);
       });
   }
 }

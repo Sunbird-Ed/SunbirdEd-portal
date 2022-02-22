@@ -15,7 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { notificationList } from './in-app-notification.component.spec.data';
 import { SbNotificationModule } from 'sb-notification';
 
-xdescribe('InAppNotificationComponent', () => {
+// Stage 1 RS
+describe('InAppNotificationComponent', () => {
   let component: InAppNotificationComponent;
   let fixture: ComponentFixture<InAppNotificationComponent>;
 

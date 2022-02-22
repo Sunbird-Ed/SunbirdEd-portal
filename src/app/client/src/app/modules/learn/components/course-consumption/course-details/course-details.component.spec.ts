@@ -3,7 +3,8 @@ import { CourseDetailsComponent } from './course-details.component';
 import { ResourceService } from '@sunbird/shared';
 import { GeneraliseLabelService } from '@sunbird/core';
 
-xdescribe('CourseDetailsComponent', () => {
+// Stage 1 RS
+describe('CourseDetailsComponent', () => {
   let component: CourseDetailsComponent;
   let fixture: ComponentFixture<CourseDetailsComponent>;
 
