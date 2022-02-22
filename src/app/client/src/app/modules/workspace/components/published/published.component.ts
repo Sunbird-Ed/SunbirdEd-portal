@@ -335,7 +335,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         let element = document.getElementsByTagName('sui-modal');
         if(element && element.length > 0)
           element[0].className = 'sb-modal';
-      }, 200);
+      }, 10);
       this.showCollectionLoader = false;
     } else {
       this.workSpaceService.navigateToContent(param.data.metaData, this.state);

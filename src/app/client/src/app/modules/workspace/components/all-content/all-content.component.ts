@@ -336,7 +336,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       let element = document.getElementsByTagName('sui-modal');
       if(element && element.length > 0)
         element[0].className = 'sb-modal';
-    }, 200);
+    }, 10);
   }
 
   /**
