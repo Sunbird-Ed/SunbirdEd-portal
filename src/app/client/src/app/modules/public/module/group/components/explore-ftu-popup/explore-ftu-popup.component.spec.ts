@@ -1,7 +1,7 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { ExploreFtuPopupComponent } from './explore-ftu-popup.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -29,7 +29,7 @@ describe('ExploreFtuPopupComponent', () => {
         }
     }
   };
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreFtuPopupComponent ],
       imports: [HttpClientModule, SharedModule.forRoot(), TelemetryModule, RouterTestingModule],
@@ -38,21 +38,19 @@ describe('ExploreFtuPopupComponent', () => {
         TelemetryService,
       ]
     })
-    .compileComponents();
+    .compileComponents().then(() => {
+      fixture = TestBed.createComponent(ExploreFtuPopupComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ExploreFtuPopupComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
+  it('should create', fakeAsync(() => {
     expect(component).toBeTruthy();
     spyOn(component['close'], 'emit');
     component.userVisited();
     expect(component['close'].emit).toHaveBeenCalled();
-  });
+  }));
 
   it('should call interact() ', () => {
     spyOn(component['telemetryService'], 'interact');
