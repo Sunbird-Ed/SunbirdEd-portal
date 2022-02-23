@@ -15,7 +15,7 @@ import {
   ObservationData
 } from '../solution-listing/solution-listing.component.spec.data';
 
-describe('EntityListComponent', () => {
+xdescribe('EntityListComponent', () => {
   let component: EntityListComponent;
   let fixture: ComponentFixture<EntityListComponent>;
   let element;
