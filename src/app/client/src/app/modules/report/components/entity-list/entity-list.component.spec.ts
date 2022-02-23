@@ -1,3 +1,4 @@
+// Stage 1 dummy commit
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EntityListComponent } from './entity-list.component';
