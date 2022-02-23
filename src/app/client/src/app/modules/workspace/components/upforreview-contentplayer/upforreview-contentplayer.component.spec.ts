@@ -53,7 +53,7 @@ describe('UpforreviewContentplayerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should throw error if content api throws error', () => {
+  xit('should throw error if content api throws error', () => {
     const playerService = TestBed.inject(PlayerService);
     const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);
@@ -67,7 +67,7 @@ describe('UpforreviewContentplayerComponent', () => {
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
 
-  it('should call  content api and return content data', () => {
+  xit('should call  content api and return content data', () => {
     const playerService = TestBed.inject(PlayerService);
     const userService:any = TestBed.inject(UserService);
     const resourceService = TestBed.inject(ResourceService);

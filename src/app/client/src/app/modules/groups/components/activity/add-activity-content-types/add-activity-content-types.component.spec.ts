@@ -13,7 +13,7 @@ import { AddActivityContentTypesData } from './add-activity-content-types.spec.d
 import * as _ from 'lodash-es';
 
 
-xdescribe('AddActivityContentTypesComponent', () => {
+describe('AddActivityContentTypesComponent', () => {
   let component: AddActivityContentTypesComponent;
   let fixture: ComponentFixture<AddActivityContentTypesComponent>;
 

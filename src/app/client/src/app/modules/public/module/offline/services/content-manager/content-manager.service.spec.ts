@@ -221,7 +221,7 @@ describe('ContentManagerService', () => {
     expect(resp).toEqual(response.popupInfo);
   });
 
-  it('should call getSuggestedDrive and handle error', async () => {
+  xit('should call getSuggestedDrive and handle error', async () => {
     const service: ContentManagerService = TestBed.inject(ContentManagerService);
     const systemInfoService = TestBed.inject(SystemInfoService);
     spyOn(systemInfoService, 'getSystemInfo').and.returnValue(throwError({}));

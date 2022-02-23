@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fakeActivatedRoute } from '../../services/groups/groups.service.spec.data';
 import { APP_BASE_HREF } from '@angular/common';
 
-xdescribe('FtuPopupComponent', () => {
+describe('FtuPopupComponent', () => {
   let component: FtuPopupComponent;
   let fixture: ComponentFixture<FtuPopupComponent>;
   configureTestSuite();
