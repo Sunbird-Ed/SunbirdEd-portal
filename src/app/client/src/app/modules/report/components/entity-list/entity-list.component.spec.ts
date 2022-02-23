@@ -87,3 +87,4 @@ xdescribe('EntityListComponent', () => {
     expect(component.submit).toHaveBeenCalled();
   });
 });
+
