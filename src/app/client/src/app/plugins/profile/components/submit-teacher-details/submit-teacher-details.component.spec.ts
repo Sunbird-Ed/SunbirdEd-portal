@@ -20,7 +20,7 @@ import { of as observableOf, of, Subject, throwError } from 'rxjs';
 import { SubmitTeacherDetailsComponent } from './submit-teacher-details.component';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 
-xdescribe('SubmitTeacherDetailsComponent', () => {
+describe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
   let fixture: ComponentFixture<SubmitTeacherDetailsComponent>;
   const fakeActivatedRoute = {

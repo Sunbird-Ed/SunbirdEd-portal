@@ -100,6 +100,7 @@ xdescribe('FlagConentplayerComponent', () => {
     const requestData = {
       'request': {}
     };
+    spyOn(component, 'close');
     spyOn(contentService, 'post').and.callFake(() => observableOf(testData.sucessRes));
     component.discardContentFlag();
     fixture.detectChanges();

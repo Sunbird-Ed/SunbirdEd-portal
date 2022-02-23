@@ -110,11 +110,4 @@ describe('CertificateDetailsComponent', () => {
     component.navigateToCoursesPage();
     expect(component.navigateToCoursesPage).toHaveBeenCalled();
   });
-
-  it('should play the content', () => {
-    component.showVideoThumbnail = false;
-    const playerService = TestBed.inject(PublicPlayerService);
-    spyOn(playerService, 'getContent').and.returnValue(observableOf(validateCertMockResponse.getContentResponse));
-    component.playContent('do_112831862871203840114');
-  });
 });

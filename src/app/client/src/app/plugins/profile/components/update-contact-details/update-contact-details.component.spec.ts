@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreModule, OtpService } from '@sunbird/core';
 import { ProfileService } from '@sunbird/profile';
@@ -11,7 +11,7 @@ import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { of, throwError } from 'rxjs';
 import { UpdateContactDetailsComponent } from './update-contact-details.component';
 
-xdescribe('UpdateContactDetailsComponent', () => {
+describe('UpdateContactDetailsComponent', () => {
   let component: UpdateContactDetailsComponent;
   let fixture: ComponentFixture<UpdateContactDetailsComponent>;
 
@@ -64,18 +64,19 @@ xdescribe('UpdateContactDetailsComponent', () => {
     };
   });
 
-  it('should call generateOTP()', () => {
+  it('should call generateOTP()',fakeAsync(() => {
     component.contactType = 'phone';
     spyOn(component, 'generateOTP');
     // spyOn(component, 'onContactValueChange');
     // spyOn(component, 'enableSubmitButton');
     component.ngOnInit();
+    flush();
     expect(component.generateOTP).toHaveBeenCalled();
     // expect(component.contactTypeForm.valid).toBeFalsy();
     // expect(component.onContactValueChange).toHaveBeenCalled();
     // expect(component.enableSubmitButton).toHaveBeenCalled();
     // expect(component.enableSubmitBtn).toBeFalsy();
-  });
+  }));
   it('should show validation error message for form', () => {
     component.contactType = 'phone';
     spyOn(component, 'onContactValueChange');
@@ -86,11 +87,12 @@ xdescribe('UpdateContactDetailsComponent', () => {
     expect(component.enableSubmitButton).toHaveBeenCalled();
     expect(component.enableSubmitBtn).toBeFalsy();
   });
-  it('should show validation error message for email', () => {
+  it('should show validation error message for email', fakeAsync(() => {
     component.contactType = 'email';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
     component.initializeFormFields();
+    flush();
     let errors = {};
     const email = component.contactTypeForm.controls['email'];
     email.setValue('');
@@ -99,12 +101,13 @@ xdescribe('UpdateContactDetailsComponent', () => {
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
     expect(component.enableSubmitBtn).toBeFalsy();
-  });
-  it('should show validation error message for phone', () => {
+  }));
+  it('should show validation error message for phone', fakeAsync(() => {
     component.contactType = 'phone';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
     component.initializeFormFields();
+    flush();
     let errors = {};
     const phone = component.contactTypeForm.controls['phone'];
     phone.setValue('');
@@ -113,7 +116,7 @@ xdescribe('UpdateContactDetailsComponent', () => {
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
     expect(component.enableSubmitBtn).toBeFalsy();
-  });
+  }));
   it('should show pattern match error message for phone', () => {
     component.contactType = 'phone';
     spyOn(component, 'onContactValueChange');
@@ -128,15 +131,16 @@ xdescribe('UpdateContactDetailsComponent', () => {
     expect(component.enableSubmitButton).toHaveBeenCalled();
     expect(component.enableSubmitBtn).toBeFalsy();
   });
-  it('should call onContactValueChange method', () => {
+  it('should call onContactValueChange method', fakeAsync(() => {
     component.contactType = 'email';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
     component.initializeFormFields();
+    flush();
     expect(component.onContactValueChange).toHaveBeenCalled();
     expect(component.enableSubmitBtn).toBeFalsy();
     expect(component.enableSubmitButton).toHaveBeenCalled();
-  });
+  }));
   it('set values with enabling the submit button ', () => {
     component.contactType = 'email';
     component.initializeFormFields();
@@ -210,7 +214,7 @@ xdescribe('UpdateContactDetailsComponent', () => {
   });
 
 
-  it('should close the modal and show appropriate message on update fail for type phone', () => {
+  it('should close the modal and show appropriate message on update fail for type phone', fakeAsync(() => {
     const profileService = TestBed.inject(ProfileService);
     const toastService = TestBed.inject(ToasterService);
     component.verifiedUser = true;
@@ -219,12 +223,13 @@ xdescribe('UpdateContactDetailsComponent', () => {
     spyOn(toastService, 'error');
     component.contactType = 'phone';
     component.updateProfile({});
+    flush();
     expect(component.closeModal).toHaveBeenCalled();
     expect(profileService.updateProfile).toHaveBeenCalled();
     expect(toastService.error).toHaveBeenCalledWith('Could not update mobile number');
-  });
+  }));
 
-  it('should close the modal and show appropriate message on update fail for type email', () => {
+  it('should close the modal and show appropriate message on update fail for type email', fakeAsync(() => {
     const profileService = TestBed.inject(ProfileService);
     const toastService = TestBed.inject(ToasterService);
     component.verifiedUser = true;
@@ -233,10 +238,11 @@ xdescribe('UpdateContactDetailsComponent', () => {
     spyOn(toastService, 'error');
     component.contactType = 'email';
     component.updateProfile({});
+    flush();
     expect(component.closeModal).toHaveBeenCalled();
     expect(profileService.updateProfile).toHaveBeenCalled();
     expect(toastService.error).toHaveBeenCalledWith('Could not update email address');
-  });
+  }));
 
   it('should call generateOTP', () => {
     component.contactTypeForm = new FormGroup({
