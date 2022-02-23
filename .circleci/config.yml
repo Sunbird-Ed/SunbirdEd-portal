@@ -40,23 +40,23 @@ jobs:
           key: dependency-cache-portal-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: ng lint and building
-          command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
+      #- run:
+       #   name: ng lint and building
+       #   command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
-          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
-      - run:
-          name: install sonar scanner
-          command: |
-            cd /tmp
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-            unzip || sudo apt install unzip -y
-            unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-            cd -
-      - run:
-         name: run sonar scanner
-         command: 'cd ~/portal && /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner'
+          command: 'NODE_OPTIONS=--max-old-space-size=6144 npm run test-coverage | tee /tmp/logs/test_cases.log'
+      # - run:
+      #     name: install sonar scanner
+      #     command: |
+      #       cd /tmp
+      #       wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+      #       unzip || sudo apt install unzip -y
+      #       unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+      #       cd -
+      # - run:
+      #    name: run sonar scanner
+      #    command: 'cd ~/portal && /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner'
 workflows:
   version: 2
   build_and_test:
