@@ -15,7 +15,7 @@ import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('TermsAndConditionsPopupComponent', () => {
+describe('TermsAndConditionsPopupComponent', () => {
   let component: TermsAndConditionsPopupComponent;
   let fixture: ComponentFixture<TermsAndConditionsPopupComponent>;
 

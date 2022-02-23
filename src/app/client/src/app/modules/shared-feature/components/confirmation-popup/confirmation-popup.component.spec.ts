@@ -5,7 +5,7 @@ import { ConfirmationPopupComponent } from './confirmation-popup.component';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 
 
-xdescribe('ConfirmationPopupComponent', () => {
+describe('ConfirmationPopupComponent', () => {
   let component: ConfirmationPopupComponent;
   let fixture: ComponentFixture<ConfirmationPopupComponent>;
 
@@ -61,7 +61,7 @@ xdescribe('ConfirmationPopupComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
   });
 
-  xit('Should emit an empty event on close of the modal ', () => {
+  it('Should emit an empty event on close of the modal ', () => {
     spyOn(component.close, 'emit');
     component.closeModal();
     expect(component.close.emit).toHaveBeenCalled();

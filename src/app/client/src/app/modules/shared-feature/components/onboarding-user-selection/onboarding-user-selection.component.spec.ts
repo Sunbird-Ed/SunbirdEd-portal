@@ -12,7 +12,7 @@ import { ProfileService } from '@sunbird/profile';
 import { from, of } from 'rxjs';
 import { UserService } from '@sunbird/core';
 
-xdescribe('OnboardingUserSelectionComponent', () => {
+describe('OnboardingUserSelectionComponent', () => {
   let component: OnboardingUserSelectionComponent;
   let fixture: ComponentFixture<OnboardingUserSelectionComponent>;
 
@@ -68,6 +68,8 @@ xdescribe('OnboardingUserSelectionComponent', () => {
   it('should call submit', () => {
     component.guestList = component['prepareGuestList'](mockData.formData);
     component.selectedUserType = component.guestList[1];
+    const userService:any = TestBed.inject(UserService);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
     spyOn(localStorage, 'setItem');
     spyOn(component.userSelect, 'emit');
     component.submit();
