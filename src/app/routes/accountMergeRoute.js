@@ -127,6 +127,8 @@ module.exports = (app) => {
       let query = '?status=error&merge_type=manual&redirect_uri=' + _mergeRedirectURL;
       if (_.get(err, 'error.params.status') === 'ACCOUNT_NOT_FOUND') {
         query = query + '&error_type=account_not_found';
+      } else if (_.get(err, 'error.params.status') === 'FAILED' && _.get(err, 'error.params.err') === 'UOS_USRMRG0045') {
+        query = query + '&error_type=account_not_found';
       }
       delete req.session.mergeAccountInfo;
       const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
