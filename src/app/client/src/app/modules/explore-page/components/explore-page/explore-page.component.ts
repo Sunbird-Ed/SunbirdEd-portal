@@ -355,7 +355,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const _cacheFilters = {
                 gradeLevel: [..._.intersection(filters['gradeLevel'], _searchFilters['gradeLevel']), ..._.difference(filters['gradeLevel'], _searchFilters['gradeLevel'])],
                 subject: [..._.intersection(filters['subject'], _searchFilters['subject']),
-                    ..._.difference(filters['subject'], _searchFilters['subject'])].map((e) => _.startCase(e)),
+                    ..._.difference(filters['subject'], _searchFilters['subject'])],
                 medium: [..._.intersection(filters['medium'], _searchFilters['medium']), ..._.difference(filters['medium'], _searchFilters['medium'])],
                 publisher: [..._.intersection(filters['publisher'], _searchFilters['publisher']), ..._.difference(filters['publisher'], _searchFilters['publisher'])],
                 audience: [..._.intersection(filters['audience'], _searchFilters['audience']), ..._.difference(filters['audience'], _searchFilters['audience'])],
@@ -1287,7 +1287,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     board: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, 'board') : _.get(_filter, 'board'),
                     gradeLevel: _.get(_filter, 'gradeLevel'),
                     medium: _.get(_filter, 'medium'),
-                    subject: _.get(_filter, 'subject').map((e) => _.startCase(e))
+                    subject: _.get(_filter, 'subject')
                 };
             }
         }
