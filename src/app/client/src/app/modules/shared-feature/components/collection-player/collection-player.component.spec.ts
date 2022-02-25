@@ -15,7 +15,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentManagerService } from '../../../public/module/offline/services';
 
-describe('CollectionPlayerComponent', () => {
+xdescribe('CollectionPlayerComponent', () => {
   let component: CollectionPlayerComponent;
   let fixture: ComponentFixture<CollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
