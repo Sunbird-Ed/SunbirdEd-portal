@@ -33,6 +33,12 @@ module.exports = function (config) {
       },
     ],
     browserNoActivityTimeout: 500000,
+    // The `disconnectTolerance` value represents the maximum number of tries a browser will attempt in
+    // the case of a disconnection. Usually, any disconnection is considered a failure, but this option
+    // allows you to define a tolerance level when there is a flaky network link
+    // between the Karma server and the browsers.
+    browserDisconnectTolerance: 5,
+    transports: ['websocket', 'polling'],
     client: {
       jasmine: {
         timeoutInterval: 1500000
