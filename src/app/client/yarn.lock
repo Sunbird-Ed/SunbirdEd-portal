@@ -1546,7 +1546,14 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-player-sdk-v9@4.6.4", "@project-sunbird/sunbird-player-sdk-v9@^4.6.3", "@project-sunbird/sunbird-player-sdk-v9@^4.6.4":
+"@project-sunbird/sunbird-player-sdk-v9@4.8.0":
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.8.0.tgz#edd7d24f90311ad48f47907b86d2a3d96d1cd81a"
+  integrity sha512-8qj3Gg027eT6dqLw9iPGJ1GApoytvnglHSOb7p5E0lwZH+pneGh1iESP0avX98klg5CkHn0Sh+V/m4tP0/f4Gw==
+  dependencies:
+    ally.js "1.4.1"
+
+"@project-sunbird/sunbird-player-sdk-v9@^4.6.3", "@project-sunbird/sunbird-player-sdk-v9@^4.6.4":
   version "4.6.4"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.6.4.tgz#48c4f32150a3f7110965ee26de55c072161cb66f"
   integrity sha512-pxAVFewcRrXxckAUk4f49hDh8DKmUxI5kZZA1+9NVfDO8w7E1cfC0zcvbfu1fP1u26qUA06wCR+O7Tn7FdNwMw==
@@ -1560,12 +1567,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.7.4":
-  version "4.7.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.7.4.tgz#bf844ec8451c7b69a6833e6dd7f94d0c8d5ec2da"
-  integrity sha512-ep2uowenArO8IIz++aLID/dCQlTCmpDaIgPtELN91wWbvUDhGIIl12MaCPXjsLA3ASXSNMR2bugQdg8hhFT93Q==
+"@project-sunbird/sunbird-quml-player-v9@4.8.1":
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.8.1.tgz#e13ac5404368c0b51f1455af07294cfc60add613"
+  integrity sha512-BKtyJoqcc3rqNUK3pmQguYG+qIcea2LVIKaCOojHQi7MFCEVdiVXl0pw6hUKtEZ4DSKPsvjqdWoRSkT/RTg9Bw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.6.4"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.8.0"
 
 "@project-sunbird/sunbird-video-player-v9@^4.6.1":
   version "4.6.1"
