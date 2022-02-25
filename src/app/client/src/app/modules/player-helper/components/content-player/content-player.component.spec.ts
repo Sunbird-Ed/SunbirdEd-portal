@@ -7,7 +7,7 @@ import {SharedModule, ResourceService, ToasterService, NavigationHelperService, 
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { playerData } from './content-player.component.spec.data';
-import {of as observableOf, Subject} from 'rxjs';
+import {of as observableOf, of, Subject} from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 
@@ -58,7 +58,7 @@ describe('ContentPlayerComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(observableOf({data: false}));
+    spyOn(navigationHelperService.contentFullScreenEvent, 'pipe').and.returnValue(of(false));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
     expect(component.isFullScreenView).toBe(false);
@@ -67,7 +67,7 @@ describe('ContentPlayerComponent', () => {
   it('should make isFullScreenView to true', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(observableOf({data: true}));
+    spyOn(navigationHelperService.contentFullScreenEvent, 'pipe').and.returnValue(of(true));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
     expect(component.isFullScreenView).toBe(true);

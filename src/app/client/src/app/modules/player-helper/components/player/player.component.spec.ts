@@ -255,7 +255,7 @@ describe('PlayerComponent', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
     expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
+    spyOn(navigationHelperService.contentFullScreenEvent, 'pipe').and.returnValue(of(true));
     component.ngOnInit();
     navigationHelperService.contentFullScreenEvent.emit(true);
     expect(component.isFullScreenView).toBeTruthy();
@@ -273,7 +273,7 @@ describe('PlayerComponent', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
     expect(component.isFullScreenView).toBeTruthy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
+    spyOn(navigationHelperService.contentFullScreenEvent, 'pipe').and.returnValue(of(false));
     component.ngOnInit();
     navigationHelperService.contentFullScreenEvent.emit(false);
     expect(component.isFullScreenView).toBeFalsy();
