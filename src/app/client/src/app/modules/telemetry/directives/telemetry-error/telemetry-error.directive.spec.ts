@@ -14,7 +14,7 @@ describe('TelemetryErrorDirective', () => {
     });
   });
   it('should take input and generate the telemetry  error event ', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     const directive = new TelemetryErrorDirective(telemetryService);
     spyOn(telemetryService, 'error').and.callFake(() => observableOf(eventData.inputData));
     directive.appTelemetryError = eventData.inputData;

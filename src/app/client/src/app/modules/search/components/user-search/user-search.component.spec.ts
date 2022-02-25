@@ -81,8 +81,8 @@ describe('UserSearchComponent', () => {
   });
 
   it('should call search api for populateUserSearch', () => {
-    const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
+    const searchService= <any> TestBed.inject(SearchService);
+    const learnerService= <any> TestBed.inject(LearnerService);
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.successData));
     component.populateUserSearch();
@@ -93,8 +93,8 @@ describe('UserSearchComponent', () => {
   });
 
   it('should call search api for populateUserSearch and get empty result', () => {
-    const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
+    const searchService= <any> TestBed.inject(SearchService);
+    const learnerService= <any> TestBed.inject(LearnerService);
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.emptySuccessData));
     fixture.detectChanges();
@@ -104,8 +104,8 @@ describe('UserSearchComponent', () => {
   });
 
   it('should throw error when searchService api is not called', () => {
-    const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
+    const searchService= <any> TestBed.inject(SearchService);
+    const learnerService= <any> TestBed.inject(LearnerService);
     component.queryParams = mockQueryParma;
     component.searchList = Response.successData.result.response.content;
     component.userProfile = {orgRoleMap: [], rootOrgAdmin: true};
@@ -158,7 +158,7 @@ describe('UserSearchComponent', () => {
 
   it('should subscribe user profile and call populateUserSearch', () => {
     component.searchList = Response.successData.result.response.content;
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userProfile });
     spyOn(component, 'populateUserSearch').and.callThrough();
     fixture.detectChanges();

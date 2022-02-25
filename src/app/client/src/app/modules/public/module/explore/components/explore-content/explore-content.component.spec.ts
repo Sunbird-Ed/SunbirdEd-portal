@@ -85,12 +85,12 @@ describe('ExploreContentComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ExploreContentComponent);
     component = fixture.componentInstance;
-    toasterService = TestBed.get(ToasterService);
-    userService = TestBed.get(UserService);
-    searchService = TestBed.get(SearchService);
-    orgDetailsService = TestBed.get(OrgDetailsService);
-    activatedRoute = TestBed.get(ActivatedRoute);
-    schemaService = TestBed.get(SchemaService);
+    toasterService= <any> TestBed.inject(ToasterService);
+    userService= <any> TestBed.inject(UserService);
+    searchService= <any> TestBed.inject(SearchService);
+    orgDetailsService= <any> TestBed.inject(OrgDetailsService);
+    activatedRoute= <any> TestBed.inject(ActivatedRoute);
+    schemaService= <any> TestBed.inject(SchemaService);
     sendOrgDetails = true;
     sendSearchResult = true;
     sendFormResult = true;
@@ -222,7 +222,7 @@ describe('ExploreContentComponent', () => {
 
 
   it('should call updateDownloadStatus when updateCardData is called', () => {
-    const playerService = TestBed.get(PublicPlayerService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus');
    component.contentList = Response.contentList as any;
     component.updateCardData(Response.download_list);
@@ -271,7 +271,7 @@ describe('ExploreContentComponent', () => {
       'disabled': false
     };
     Response.hoverActionsData['data'] = Response.hoverActionsData.content;
-    const route = TestBed.get(Router);
+    const route= <any> TestBed.inject(Router);
     route.url = '/explore-page?selectedTab=explore-page';
     spyOn(component, 'logTelemetry').and.callThrough();
     spyOn(component, 'playContent');
@@ -282,7 +282,7 @@ describe('ExploreContentComponent', () => {
   });
 
   it('should call download content with success ', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
@@ -306,7 +306,7 @@ describe('ExploreContentComponent', () => {
   });
 
   it('should call download content with error ', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
     component.ngOnInit();
     component.downloadContent('123');
@@ -314,7 +314,7 @@ describe('ExploreContentComponent', () => {
   });
 
   it('should call playContent', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const publicPlayerService= <any> TestBed.inject(PublicPlayerService);
     spyOn(publicPlayerService, 'playContent');
     component.playContent({});
     expect(publicPlayerService.playContent).toHaveBeenCalled();
@@ -335,7 +335,7 @@ describe('ExploreContentComponent', () => {
   });
 
   it('should fetch content and remove course from facets for desktop app', fakeAsync(() => {
-    const utilService = TestBed.get(UtilService);
+    const utilService= <any> TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
@@ -344,7 +344,7 @@ describe('ExploreContentComponent', () => {
   }));
 
   it('should return group by subjects', fakeAsync(() => {
-    const utilService = TestBed.get(UtilService);
+    const utilService= <any> TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
     component.selectedFilters = {
       se_boards: ['sample-board'],
@@ -367,9 +367,9 @@ describe('ExploreContentComponent', () => {
       returnTo: 'home'
     };
     spyOn(component, 'moveToTop').and.stub();
-    const userServices = TestBed.get(UserService);
+    const userServices= <any> TestBed.inject(UserService);
     spyOn(userServices, 'loggedIn').and.returnValue(true);
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.stub();
     component.viewAll(events);
     expect(events.contents).toBeTruthy();

@@ -46,11 +46,11 @@ describe('AuthGardService', () => {
                           }
                         })]
         });
-        resourceService = TestBed.get(ResourceService);
+        resourceService= <any> TestBed.inject(ResourceService);
         resourceService.messages = {imsg: {m0035: 'Navigating to home'}};
     });
     it('be able to hit route when user is logged in', () => {
-        const authservice = TestBed.get(AuthGuard);
+        const authservice= <any> TestBed.inject(AuthGuard);
         const snapshotroute = {
             url: [
                 {
@@ -64,22 +64,22 @@ describe('AuthGardService', () => {
     });
 
     it('canLoad should return false if user not logged in', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
+        const userService= <any> TestBed.inject(UserService);
+        const authservice= <any> TestBed.inject(AuthGuard);
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
         expect(authservice.canLoad()).toBeFalsy();
     });
 
     it('canLoad should return true if user is logged in', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
+        const userService= <any> TestBed.inject(UserService);
+        const authservice= <any> TestBed.inject(AuthGuard);
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
         expect(authservice.canLoad()).toBeTruthy();
     });
     it('should navigate to home', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
+        const userService= <any> TestBed.inject(UserService);
+        const authservice= <any> TestBed.inject(AuthGuard);
+        const toasterService= <any> TestBed.inject(ToasterService);
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
         spyOn(toasterService, 'warning').and.returnValue(true);
         authservice.navigateToHome({
@@ -90,8 +90,8 @@ describe('AuthGardService', () => {
         expect(toasterService.warning).toHaveBeenCalled();
     });
     it('should return true if user has rootOrgAdmin role', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
+        const userService= <any> TestBed.inject(UserService);
+        const authservice= <any> TestBed.inject(AuthGuard);
         userService['_userData$'].next({ err: null, userProfile: {} });
         spyOnProperty(userService, 'userProfile', 'get').and.returnValue({rootOrgAdmin: true});
         authservice.getPermission('rootOrgAdmin').subscribe((data) => {
@@ -99,9 +99,9 @@ describe('AuthGardService', () => {
         });
     });
     it('should navigate to home if role is rootOrgAdmin and user dosnt have rootOrgAdmin role', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
+        const userService= <any> TestBed.inject(UserService);
+        const authservice= <any> TestBed.inject(AuthGuard);
+        const toasterService= <any> TestBed.inject(ToasterService);
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
         spyOn(toasterService, 'warning').and.returnValue(true);
         userService['_userData$'].next({ err: null, userProfile: {} });
@@ -113,9 +113,9 @@ describe('AuthGardService', () => {
         });
     });
     it('should navigate to home if permission is not fetched or error occurred while fetching permission', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
+        const permissionService= <any> TestBed.inject(PermissionService);
+        const authservice= <any> TestBed.inject(AuthGuard);
+        const toasterService= <any> TestBed.inject(ToasterService);
         spyOn(toasterService, 'warning').and.returnValue(true);
         permissionService['permissionAvailable$'].next('error');
         authservice.getPermission('creator').subscribe((data) => {
@@ -125,9 +125,9 @@ describe('AuthGardService', () => {
         });
     });
     it('should navigate to home if passed role is not configured in config service', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
+        const permissionService= <any> TestBed.inject(PermissionService);
+        const authservice= <any> TestBed.inject(AuthGuard);
+        const toasterService= <any> TestBed.inject(ToasterService);
         spyOn(toasterService, 'warning').and.returnValue(true);
         permissionService['permissionAvailable$'].next('success');
         authservice.getPermission('unknown_role').subscribe((data) => {
@@ -137,9 +137,9 @@ describe('AuthGardService', () => {
         });
     });
     it('should navigate to home if user dosnt have proper role', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
+        const permissionService= <any> TestBed.inject(PermissionService);
+        const authservice= <any> TestBed.inject(AuthGuard);
+        const toasterService= <any> TestBed.inject(ToasterService);
         spyOn(toasterService, 'warning').and.returnValue(true);
         permissionService['permissionAvailable$'].next('success');
         authservice.getPermission('announcement').subscribe((data) => {
@@ -149,9 +149,9 @@ describe('AuthGardService', () => {
         });
     });
     it('should return true if user has propper role', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
+        const permissionService= <any> TestBed.inject(PermissionService);
+        const authservice= <any> TestBed.inject(AuthGuard);
+        const toasterService= <any> TestBed.inject(ToasterService);
         spyOn(toasterService, 'warning').and.returnValue(true);
         permissionService['permissionAvailable$'].next('success');
         spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);

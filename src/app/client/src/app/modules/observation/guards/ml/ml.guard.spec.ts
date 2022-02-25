@@ -50,9 +50,9 @@ describe('MlGuard', () => {
   });
 
   beforeEach(() => {
-    guard = TestBed.get(MlGuard);
-    userService = TestBed.get(UserService);
-    toastService = TestBed.get(ToasterService);
+    guard= <any> TestBed.inject(MlGuard);
+    userService= <any> TestBed.inject(UserService);
+    toastService= <any> TestBed.inject(ToasterService);
   });
 
   it('should call the canActivate', inject([MlGuard], (guard: MlGuard) => {

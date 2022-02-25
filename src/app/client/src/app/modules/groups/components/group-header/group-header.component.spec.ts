@@ -215,8 +215,8 @@ describe('GroupHeaderComponent', () => {
   });
 
   it('should call leaveGroup on success', () => {
-    const groupService = TestBed.get(GroupsService);
-    const toastService = TestBed.get(ToasterService);
+    const groupService= <any> TestBed.inject(GroupsService);
+    const toastService= <any> TestBed.inject(ToasterService);
     groupService.isCurrentUserCreator = false;
     spyOn(toastService, 'success');
     spyOn(groupService, 'removeMembers').and.returnValue(of({}));
@@ -227,8 +227,8 @@ describe('GroupHeaderComponent', () => {
   });
 
   it('should call leaveGroup on error', () => {
-    const groupService = TestBed.get(GroupsService);
-    const toastService = TestBed.get(ToasterService);
+    const groupService= <any> TestBed.inject(GroupsService);
+    const toastService= <any> TestBed.inject(ToasterService);
     groupService.isCurrentUserCreator = false;
     spyOn(toastService, 'error');
     spyOn(groupService, 'removeMembers').and.returnValue(throwError({}));
@@ -326,7 +326,7 @@ describe('GroupHeaderComponent', () => {
 
   it('should fetch all the forumIds attached to a group', () => {
     /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
+    const discussionService= <any> TestBed.inject(DiscussionService);
     spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
 
     /** Act */
@@ -338,8 +338,8 @@ describe('GroupHeaderComponent', () => {
 
   it('should show error toast if fetch forum id api fails', () => {
     /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
-    const toasterService = TestBed.get(ToasterService);
+    const discussionService= <any> TestBed.inject(DiscussionService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(discussionService, 'getForumIds').and.callFake(() => throwError({}));
 
@@ -352,8 +352,8 @@ describe('GroupHeaderComponent', () => {
 
   it('should call enableDiscussionForum() when enable the discussion forum icon', () => {
     /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
-    const toasterService = TestBed.get(ToasterService);
+    const discussionService= <any> TestBed.inject(DiscussionService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
     spyOn(toasterService, 'success').and.stub();
     /** Act */
@@ -365,7 +365,7 @@ describe('GroupHeaderComponent', () => {
  });
  it('should throw error if the createForum api fails', () => {
    /** Arrange */
-   const discussionService = TestBed.get(DiscussionService);
+   const discussionService= <any> TestBed.inject(DiscussionService);
    spyOn(discussionService, 'createForum').and.callFake(() => throwError({}));
    spyOn(component['toasterService'], 'error');
 
@@ -378,8 +378,8 @@ describe('GroupHeaderComponent', () => {
 });
  it('should call disableDiscussionForum() when disable the discussion forum icon', () => {
     /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
-    const toasterService = TestBed.get(ToasterService);
+    const discussionService= <any> TestBed.inject(DiscussionService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.disableDiscussionForum));
     spyOn(toasterService, 'success');
     /** Act */
@@ -391,8 +391,8 @@ describe('GroupHeaderComponent', () => {
  });
  it('should throw error if the removeForum api fails', () => {
       /** Arrange */
-      const discussionService = TestBed.get(DiscussionService);
-      const toasterService = TestBed.get(ToasterService);
+      const discussionService= <any> TestBed.inject(DiscussionService);
+      const toasterService= <any> TestBed.inject(ToasterService);
       spyOn(toasterService, 'error');
       spyOn(discussionService, 'removeForum').and.callFake(() => throwError({}));
       /** Act */
@@ -404,7 +404,7 @@ describe('GroupHeaderComponent', () => {
 
     it('should fetch the config for create forum', () => {
       /** Arrange */
-      const discussionService = TestBed.get(DiscussionService);
+      const discussionService= <any> TestBed.inject(DiscussionService);
       spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
 
       /** Act */

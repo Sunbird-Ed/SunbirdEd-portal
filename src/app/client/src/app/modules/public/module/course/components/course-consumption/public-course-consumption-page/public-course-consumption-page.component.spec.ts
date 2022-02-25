@@ -84,11 +84,11 @@ describe('PublicCourseConsumptionPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicCourseConsumptionPageComponent);
     component = fixture.componentInstance;
-    activatedRouteStub = TestBed.get(ActivatedRoute);
-    courseService = TestBed.get(CoursesService);
-    toasterService = TestBed.get(ToasterService);
-    courseConsumptionService = TestBed.get(CourseConsumptionService);
-    navigationHelperService = TestBed.get(NavigationHelperService);
+    activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
+    courseService= <any> TestBed.inject(CoursesService);
+    toasterService= <any> TestBed.inject(ToasterService);
+    courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToResource').and.returnValue('');
     spyOn(toasterService, 'error').and.returnValue('');
   });
@@ -122,7 +122,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   });
 
   it('should call closeSharePopup', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.closeSharePopup('do_121214221212');
     expect(component.sharelinkModal).toBe(false);
@@ -130,7 +130,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   });
 
   it('should call logTelemetry', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.logTelemetry('do_121214221212');
     expect(telemetryService.interact).toHaveBeenCalled();
@@ -153,7 +153,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   });
 
   it('should check isYoutubeContentPresent', () => {
-    const offlineCardService = TestBed.get(OfflineCardService);
+    const offlineCardService= <any> TestBed.inject(OfflineCardService);
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     spyOn(component, 'downloadCollection').and.returnValue(MockResponseData.contentHeaderData.collectionData);
@@ -164,7 +164,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
 
   it('should call updateCollection and successfuly update collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'updateContent').and.returnValue(of(MockResponseData.contentHeaderData.updateCollection.success));
     component.updateCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.showUpdate).toBeFalsy();
@@ -173,7 +173,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   it('should call updateCollection and error while updating collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.isConnected = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'updateContent').and.returnValue(throwError(MockResponseData.contentHeaderData.updateCollection.error));
     component.updateCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.isConnected).toBeTruthy();
@@ -184,7 +184,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   it('should call exportCollection and successfuly export collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.showExportLoader = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'exportContent').and.returnValue(of(MockResponseData.contentHeaderData.exportCollection.success));
     component.exportCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.showExportLoader).toBeFalsy();
@@ -194,14 +194,14 @@ describe('PublicCourseConsumptionPageComponent', () => {
   it('should call exportCollection and error while  exporting collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.showExportLoader = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'exportContent').and.returnValue(throwError(MockResponseData.contentHeaderData.exportCollection.error));
     component.exportCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.showExportLoader).toBeFalsy();
     expect(component.toasterService.error(resourceServiceMockData.messages.fmsg.m0091));
   });
   it('should check isYoutubeContentPresent', () => {
-    const offlineCardService = TestBed.get(OfflineCardService);
+    const offlineCardService= <any> TestBed.inject(OfflineCardService);
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     spyOn(component, 'downloadCollection').and.returnValue(MockResponseData.contentHeaderData.collectionData);
@@ -213,7 +213,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     component['contentManagerService'].downloadContentId = MockResponseData.contentHeaderData.collectionData.result.content.identifier;
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.disableDelete = false;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(of(MockResponseData.contentHeaderData.downloadCollection.success));
     component.downloadCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component['contentManagerService'].downloadContentId).toEqual('');
@@ -223,7 +223,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     component['contentManagerService'].downloadContentId = MockResponseData.contentHeaderData.collectionData.result.content.identifier;
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.disableDelete = false;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(throwError(MockResponseData.contentHeaderData.downloadCollection.downloadError));
     component.downloadCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component['contentManagerService'].downloadContentId).toEqual('');
@@ -232,7 +232,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   });
   it('should call delete collection and successfuly delete collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(of(MockResponseData.contentHeaderData.deleteCollection.success));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.toasterService.success(resourceServiceMockData.messages.stmsg.desktop.deleteCourseSuccessMessage));
@@ -240,7 +240,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   it('should call delete collection and error while deleting collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
     component.disableDelete = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(MockResponseData.contentHeaderData.deleteCollection.error));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.disableDelete).toBeFalsy();

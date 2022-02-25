@@ -82,7 +82,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
   });
 
   it('should disable continue button on profile update call', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
     userService._userProfile = CertMockResponse.userMockData;
     component.updateProfileName();
@@ -90,22 +90,22 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
   });
 
   it('should hide the profile update popup on profile update call', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
     userService._userProfile = CertMockResponse.userMockData;
 
-    const profileService = TestBed.get(ProfileService);
+    const profileService= <any> TestBed.inject(ProfileService);
     spyOn(profileService, 'updateProfile').and.returnValue(of({}));
     component.updateProfileName();
     expect(profileService.updateProfile).toHaveBeenCalledWith({firstName: 'Gourav', lastName: 'More'});
   });
 
   it('should enabled disabled continue button on error of profile update call', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
     userService._userProfile = CertMockResponse.userMockData;
 
-    const profileService = TestBed.get(ProfileService);
+    const profileService= <any> TestBed.inject(ProfileService);
     spyOn(profileService, 'updateProfile').and.callFake(() => observableThrowError({'error': 'error'}));
     component.updateProfileName();
     expect(component.disableContinueBtn).toEqual(false);

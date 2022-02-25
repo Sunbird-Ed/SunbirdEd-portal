@@ -15,14 +15,14 @@ describe('CertificateService', () => {
   }));
 
   it('should be created', () => {
-    const service: CertificateService = TestBed.get(CertificateService);
+    const service: CertificateService= <any> TestBed.inject(CertificateService);
     expect(service).toBeTruthy();
   });
 
   it('should call validateCertificate API', inject([],
     () => {
-      const certificateService = TestBed.get(CertificateService);
-      const learnerService = TestBed.get(LearnerService);
+      const certificateService= <any> TestBed.inject(CertificateService);
+      const learnerService= <any> TestBed.inject(LearnerService);
       const params = {'request': { 'certId': '123456', 'accessCode': 'QWERTY', 'verifySignature': 'true' }};
       spyOn(learnerService, 'post').and.returnValue(observableOf(mockResponseData.validateCertificateCodeData));
       certificateService.validateCertificate(params);
@@ -32,8 +32,8 @@ describe('CertificateService', () => {
 
     it('should call preference read API', inject([],
       () => {
-        const certificateService = TestBed.get(CertificateService);
-        const learnerService = TestBed.get(LearnerService);
+        const certificateService= <any> TestBed.inject(CertificateService);
+        const learnerService= <any> TestBed.inject(LearnerService);
         const params = {'request': { orgId: 'sunbird', key: 'certRules' }};
         spyOn(learnerService, 'post').and.returnValue(observableOf(mockResponseData.preferenceReadAPiResponse));
         certificateService.fetchCertificatePreferences(params);
@@ -43,8 +43,8 @@ describe('CertificateService', () => {
 
     it('should fetch batch details', inject([],
       () => {
-        const certificateService = TestBed.get(CertificateService);
-        const learnerService = TestBed.get(LearnerService);
+        const certificateService= <any> TestBed.inject(CertificateService);
+        const learnerService= <any> TestBed.inject(LearnerService);
         spyOn(learnerService, 'get').and.returnValue(observableOf(mockResponseData.batchDetailsApiResponse));
         certificateService.getBatchDetails('123456');
         const options = { url: 'course/v1/batch/read/123456' };

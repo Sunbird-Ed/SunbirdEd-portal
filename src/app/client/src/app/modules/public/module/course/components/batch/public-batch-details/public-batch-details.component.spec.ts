@@ -64,7 +64,7 @@ describe('PublicBatchDetailsComponent', () => {
   });
 
   it('should fetch only open batchs of course by courseid', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
@@ -83,10 +83,10 @@ describe('PublicBatchDetailsComponent', () => {
     expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should throw error when fetching all batch details fails', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    const resourceService = TestBed.get(ResourceService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
@@ -103,9 +103,9 @@ describe('PublicBatchDetailsComponent', () => {
     expect(component.showError).toBeTruthy();
   });
   it('should show login modal if user is not loggedin on click of enroll button', () => {
-      const courseBatchService = TestBed.get(CourseBatchService);
+      const courseBatchService= <any> TestBed.inject(CourseBatchService);
       spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
-      const userService = TestBed.get(UserService);
+      const userService= <any> TestBed.inject(UserService);
       component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
       component.ngOnInit();
       component.enrollBatch(component.batchList[0].identifier);
@@ -113,10 +113,10 @@ describe('PublicBatchDetailsComponent', () => {
   });
 
   it('should navigate to enroll course if user is loggedin', () => {
-      const courseBatchService = TestBed.get(CourseBatchService);
-      const route = TestBed.get(Router);
+      const courseBatchService= <any> TestBed.inject(CourseBatchService);
+      const route= <any> TestBed.inject(Router);
       spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
-      const userService = TestBed.get(UserService);
+      const userService= <any> TestBed.inject(UserService);
       userService._authenticated = true;
       component.courseId = 'do_1125083286221291521153';
       component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
@@ -126,10 +126,10 @@ describe('PublicBatchDetailsComponent', () => {
   });
 
   it('should log telemetry event when user close login popup', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
-    const userService = TestBed.get(UserService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const userService= <any> TestBed.inject(UserService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     component.courseId = 'do_1125083286221291521153';

@@ -184,8 +184,8 @@ describe('CoursePlayerComponent', () => {
     fixture = TestBed.createComponent(CoursePlayerComponent);
     component = fixture.componentInstance;
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    contentUtilsServiceService = TestBed.get(ContentUtilsServiceService);
-    const generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    contentUtilsServiceService= <any> TestBed.inject(ContentUtilsServiceService);
+    const generaliseLabelService= <any> TestBed.inject(GeneraliseLabelService);
     generaliseLabelService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.showLastAttemptsModal = false;
   });
@@ -196,10 +196,10 @@ describe('CoursePlayerComponent', () => {
 
 
   it('should fetch certificate description', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatchWithCertificate.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     resourceService.messages = resourceServiceMockData.messages;
@@ -212,10 +212,10 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should fetch courseHierarchy from courseConsumptionService', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     resourceService.messages = resourceServiceMockData.messages;
@@ -228,13 +228,13 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const courseBatchService = TestBed.get(CourseBatchService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -244,12 +244,12 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should get content state if course is enrolled', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -260,12 +260,12 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should not play the content obtained from url if enrolled course and course is flagged', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').
@@ -280,12 +280,12 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentTitle).toBeUndefined();
   });
   it('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -300,13 +300,13 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should play content if course status is unlisted', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178', courseStatus: 'Unlisted' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
@@ -319,13 +319,13 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should not play content if course is not enrolled', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
@@ -338,15 +338,15 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should play content for course creator', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
+    const userService= <any> TestBed.inject(UserService);
     userService._userid = 'testUser';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
@@ -358,15 +358,15 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
   });
   it('should not play content if his not course creator', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
+    const userService= <any> TestBed.inject(UserService);
     userService._userid = 'testUser2';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
@@ -378,15 +378,15 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
   });
   it('should play content for course mentor', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
-    const permissionService = TestBed.get(PermissionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
+    const userService= <any> TestBed.inject(UserService);
+    const permissionService= <any> TestBed.inject(PermissionService);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -401,15 +401,15 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
   });
   it('should not play content if not course mentor', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
-    const permissionService = TestBed.get(PermissionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
+    const userService= <any> TestBed.inject(UserService);
+    const permissionService= <any> TestBed.inject(PermissionService);
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -424,12 +424,12 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
   });
   it('should not play the content enrolled batch status is 0', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     enrolledBatch.result.response.status = 0;
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
@@ -444,9 +444,9 @@ describe('CoursePlayerComponent', () => {
     enrolledBatch.result.response.status = 1;
   });
   it('should not display error message if content id is not available in queryparams', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const toasterService = TestBed.get(ToasterService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     activatedRouteStub.queryParams = of({});
     activatedRouteStub.changeParams({ courseStatus: 'Unlisted' });
@@ -458,7 +458,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should not make update contentState api call if the content is youTube and progress is greater than 20%', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     const contentData = { model: { mimeType: 'video/x-youtube' } };
     const telemetryEvent = {
       detail: {
@@ -475,7 +475,7 @@ describe('CoursePlayerComponent', () => {
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
   it('should not make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     const contentData = { model: { mimeType: 'video/mp4' } };
     const telemetryEvent = {
       detail: {
@@ -493,7 +493,7 @@ describe('CoursePlayerComponent', () => {
   });
   it('should not make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100',
     () => {
-      const courseConsumptionService = TestBed.get(CourseConsumptionService);
+      const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
       const contentData = { model: { mimeType: 'application/vnd.ekstep.eclm-archive' } };
       const playerDestroyData = { contentId: '123' };
       const telemetryEvent = {
@@ -511,16 +511,16 @@ describe('CoursePlayerComponent', () => {
       expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
     });
   it('should show join training popup if course is unenrolled and try to play content', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
+    const userService= <any> TestBed.inject(UserService);
     userService._userid = 'testUser2';
     component['courseId'] = 'do_212347136096788480178';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(courseConsumptionService.updateContentConsumedStatus, 'subscribe').and.callThrough();
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
@@ -536,17 +536,17 @@ describe('CoursePlayerComponent', () => {
   });
   //  OLD XIT
  xit('should log telemetry on click of close icon on join training popup ', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const resourceService = TestBed.get(ResourceService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    const userService = TestBed.get(UserService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
+    const userService= <any> TestBed.inject(UserService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     userService._userid = 'testUser2';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
@@ -573,7 +573,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should call getContentState', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
+    const courseProgressService= <any> TestBed.inject(CourseProgressService);
     spyOn(courseProgressService, 'getContentState').and.returnValue(of({}));
     component['getContentState']();
   });
@@ -586,7 +586,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should subscribe to updateContentConsumedStatus', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService.updateContentConsumedStatus, 'subscribe');
     component.ngOnInit();
     courseConsumptionService.updateContentConsumedStatus.emit({ courseHierarchy: {} });
@@ -617,7 +617,7 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '023214178121';
     component.enrolledCourse = true;
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_11287204084174028818']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
@@ -637,7 +637,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should call shareUnitLink', () => {
-    const contentUtilServiceService = TestBed.get(ContentUtilsServiceService);
+    const contentUtilServiceService= <any> TestBed.inject(ContentUtilsServiceService);
     spyOn(contentUtilServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/explore-course/course/do_1130314965721088001129');
     spyOn(component, 'setTelemetryShareData');
     component.shareUnitLink({ identifier: 'do_23823253221' });
@@ -660,7 +660,7 @@ describe('CoursePlayerComponent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.telemetryCdata = [{ id: '22321244', type: 'CourseBatch' }];
     component['courseId'] = assessmentPlayerMockData.courseHierarchy.identifier;
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.closeSharePopup('close-share-link-popup');
     expect(component.shareLinkModal).toBe(false);
@@ -685,7 +685,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should show course last updated on warning message', () => {
-    const courseService = TestBed.get(CoursesService);
+    const courseService= <any> TestBed.inject(CoursesService);
     spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component['courseId'] = 'do_212347136096788480178';
@@ -695,7 +695,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should not show course last updated on warning message if course is not enrolled', () => {
-    const courseService = TestBed.get(CoursesService);
+    const courseService= <any> TestBed.inject(CoursesService);
     spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component['courseId'] = 'do_212347136096788480178';
@@ -705,8 +705,8 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should show course completion message when course progress is 100', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const courseProgressService= <any> TestBed.inject(CourseProgressService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
     activatedRouteStub.snapshot.queryParams = { showCourseCompleteMessage: 'true' };
     component.ngOnInit();
     courseProgressService.courseProgressData.emit({progress: 100});
@@ -714,8 +714,8 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should not show course completion message when course progress is less than 100', () => {
-    const courseProgressService = TestBed.get(CourseProgressService);
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const courseProgressService= <any> TestBed.inject(CourseProgressService);
+    const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
     activatedRouteStub.snapshot.queryParams = { showCourseCompleteMessage: 'true' };
     component.ngOnInit();
     courseProgressService.courseProgressData.emit({progress: 90});
@@ -757,7 +757,7 @@ describe('CoursePlayerComponent', () => {
 
   it('should navigate to cert-configuration page', () => {
     component['courseId'] = 'do_123456';
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     component.navigateToConfigureCertificate('add', '123456');
     expect(router.navigate).toHaveBeenCalledWith(['/certs/configure/certificate'], {
       queryParams: {
@@ -768,7 +768,7 @@ describe('CoursePlayerComponent', () => {
     });
   });
   it('shold call navigateToPlayerPage case 1', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     spyOn(component, 'validateBatchDate').and.stub();
     component.enrolledCourse = false;
@@ -779,7 +779,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('shold call navigateToPlayerPage case 2', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     spyOn(component, 'validateBatchDate').and.stub();
     component.enrolledCourse = false;
@@ -839,7 +839,7 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '023214178121';
     component.enrolledCourse = true;
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_112832506508320768123']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
@@ -849,7 +849,7 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '023214178121';
     component.enrolledCourse = true;
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_1128325065083207681123']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
@@ -867,7 +867,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should show consent PII section', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     userService._userid = 'testUser1';
     userService._userProfile = {isMinor: false};
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -879,7 +879,7 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should now show consent PII section', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     userService._userid = 'testUser1';
     userService._userProfile = {isMinor: true};
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -924,7 +924,7 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '023214178121';
     component.enrolledCourse = true;
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_112832506508320768123']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
@@ -934,7 +934,7 @@ describe('CoursePlayerComponent', () => {
     component.batchId = '023214178121';
     component.enrolledCourse = true;
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_1128325065083207681123']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });

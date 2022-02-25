@@ -50,7 +50,7 @@ describe('DashboardComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
-    activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute= <any> TestBed.inject(ActivatedRoute);
     component = fixture.componentInstance;
     component.dashletData = MockDashletData;
     fixture.detectChanges();

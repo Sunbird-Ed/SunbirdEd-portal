@@ -242,7 +242,7 @@ describe('NewCollectionEditorComponent', () => {
     expect(component['routeParams']).toBeDefined();
     component.redirectToWorkSpace();
     expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/allcontent/1');
-    const activatedRoute = TestBed.get(ActivatedRoute);
+    const activatedRoute= <any> TestBed.inject(ActivatedRoute);
     activatedRoute.snapshot.params = {state: 'collaborating-on'};
     component.ngOnInit();
     expect(component['routeParams']).toBeDefined();
@@ -385,7 +385,7 @@ describe('NewCollectionEditorComponent', () => {
   });
 
   it('Should generate interact telemetry event', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.callThrough();
     component.collectionDetails = mockRes.successResult.result.content;
     component['generateInteractEvent']({});
@@ -394,7 +394,7 @@ describe('NewCollectionEditorComponent', () => {
 
   // TODO
   xit('Should disable browser back button', fakeAsync(() => {
-    const workSpaceService = TestBed.get(WorkSpaceService);
+    const workSpaceService= <any> TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'browserBackEvent').and.returnValue(observableOf({}));
     spyOn(workSpaceService, 'newtoggleWarning').and.callThrough();
     spyOn(component, 'generateInteractEvent').and.callThrough();

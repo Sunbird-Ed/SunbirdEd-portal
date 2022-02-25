@@ -85,7 +85,7 @@ describe('ActivityDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ActivityDetailsComponent);
     component = fixture.componentInstance;
-    activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute= <any> TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
   });
 
@@ -113,7 +113,7 @@ describe('ActivityDetailsComponent', () => {
 
   it('should fetch activity', () => {
     component.groupId = 'abcd12343';
-    const groupService = TestBed.get(GroupsService);
+    const groupService= <any> TestBed.inject(GroupsService);
     spyOn(component, 'getContent').and.stub();
     spyOn(component, 'checkForNestedCourses').and.stub();
     spyOn(groupService, 'getGroupById').and.returnValue(of({ groupName: 'name', groupDescription: 'description' }));
@@ -155,9 +155,9 @@ describe('ActivityDetailsComponent', () => {
 
   it('should call validateUser', () => {
     const group = { members: [{ userId: '123', role: 'member' }, { userId: '457', role: 'member' }] };
-    const userService = TestBed.get(UserService);
-    const toasterService = TestBed.get(ToasterService);
-    const groupService = TestBed.get(GroupsService);
+    const userService= <any> TestBed.inject(UserService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const groupService= <any> TestBed.inject(GroupsService);
     userService.setUserId('123');
     spyOn(toasterService, 'warning');
     spyOn(groupService, 'goBack');
@@ -167,7 +167,7 @@ describe('ActivityDetailsComponent', () => {
   });
 
   it('should call addTelemetry', () => {
-    const groupService = TestBed.get(GroupsService);
+    const groupService= <any> TestBed.inject(GroupsService);
     component.groupId = '123';
     spyOn(groupService, 'addTelemetry');
     component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' }, {});

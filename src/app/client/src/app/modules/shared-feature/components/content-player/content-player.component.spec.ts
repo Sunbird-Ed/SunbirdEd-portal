@@ -81,10 +81,10 @@ describe('ContentPlayerComponent', () => {
   });
 
   it('should config content player if content status is "Live"', () => {
-    const userService = TestBed.get(UserService);
-    const playerService = TestBed.get(PlayerService);
-    const resourceService = TestBed.get(ResourceService);
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const userService= <any> TestBed.inject(UserService);
+    const playerService= <any> TestBed.inject(PlayerService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;

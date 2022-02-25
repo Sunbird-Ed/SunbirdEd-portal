@@ -59,7 +59,7 @@ describe('CertificateDetailsComponent', () => {
 
   it('should verify the certificate', () => {
     component.loader = true;
-    const certificateService = TestBed.get(CertificateService);
+    const certificateService= <any> TestBed.inject(CertificateService);
     spyOn(certificateService, 'validateCertificate').and.returnValue(observableOf(validateCertMockResponse.successResponse));
     const certData = validateCertMockResponse.successResponse;
     component.certificateVerify();
@@ -71,7 +71,7 @@ describe('CertificateDetailsComponent', () => {
 
   it('should process the video url if it is present inside response, no need to call hierarchy api', () => {
     component.loader = true;
-    const certificateService = TestBed.get(CertificateService);
+    const certificateService= <any> TestBed.inject(CertificateService);
     spyOn(certificateService, 'validateCertificate').and.returnValue(observableOf(validateCertMockResponse.successResponse));
     spyOn(component, 'processVideoUrl');
     const certData = validateCertMockResponse.successResponse;
@@ -81,7 +81,7 @@ describe('CertificateDetailsComponent', () => {
 
   it('should not verify the certificate', () => {
     component.loader = true;
-    const certificateService = TestBed.get(CertificateService);
+    const certificateService= <any> TestBed.inject(CertificateService);
     spyOn(certificateService, 'validateCertificate').and.callFake(() => observableThrowError(validateCertMockResponse.errorRespone));
     const certData = validateCertMockResponse.errorRespone;
     component.certificateVerify();
@@ -91,7 +91,7 @@ describe('CertificateDetailsComponent', () => {
   });
 
   it('should get content id', () => {
-    const playerService = TestBed.get(PublicPlayerService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(validateCertMockResponse.getCourseIdResponse));
     component.watchVideoLink = validateCertMockResponse.getCourseIdResponse.result.content.certVideoUrl;
     component.getCourseVideoUrl('do_1126972203209768961327');
@@ -113,7 +113,7 @@ describe('CertificateDetailsComponent', () => {
 
   it('should play the content', () => {
     component.showVideoThumbnail = false;
-    const playerService = TestBed.get(PublicPlayerService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
     spyOn(playerService, 'getContent').and.returnValue(observableOf(validateCertMockResponse.getContentResponse));
     component.playContent('do_112831862871203840114');
   });

@@ -64,7 +64,7 @@ describe('ContentManagerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentManagerComponent);
     component = fixture.componentInstance;
-    contentManagerService = TestBed.get(ContentManagerService);
+    contentManagerService= <any> TestBed.inject(ContentManagerService);
     fixture.detectChanges();
   });
 
@@ -181,7 +181,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call pauseDownloadContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'pauseDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -198,7 +198,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call resumeDownloadContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'resumeDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -215,7 +215,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call cancelDownloadContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'cancelDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -232,7 +232,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call retryDownloadContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'retryDownloadContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -249,7 +249,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call pauseImportContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'pauseImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -266,7 +266,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call resumeImportContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'resumeImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -283,7 +283,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call cancelImportContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'cancelImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -300,7 +300,7 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call retryImportContent and get error', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.returnValue(throwError(resourceMockData.messages.fmsg.m0097));
     spyOn(contentManagerService, 'retryImportContent').and.returnValue(throwError('Error'));
     spyOn(component.apiCallSubject, 'next');
@@ -313,7 +313,7 @@ describe('ContentManagerComponent', () => {
       failedContentName: response.listToShow,
       isWindows: true
     };
-    contentManagerService = TestBed.get(ContentManagerService);
+    contentManagerService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'getSuggestedDrive').and.returnValue(popupInfo);
     component.handledFailedList = [];
     await component.handleInsufficientMemoryError(response.allContentList);
@@ -338,9 +338,9 @@ describe('ContentManagerComponent', () => {
   });
   it('should call close modal ', () => {
     component.handledFailedList = response.failedList;
-    contentManagerService = TestBed.get(ContentManagerService);
-    const toasterService = TestBed.get(ToasterService);
-    const resourceService = TestBed.get(ResourceService);
+    contentManagerService= <any> TestBed.inject(ContentManagerService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     component.isWindows = true;
     spyOn(contentManagerService, 'changeContentLocation').and.returnValue(observableOf({}));
     spyOn(toasterService, 'success').and.returnValue(resourceMockData.messages.stmsg.contentLocationChanged);
@@ -369,8 +369,8 @@ describe('ContentManagerComponent', () => {
 
   it('should call close modal, should handle error ', () => {
     component.handledFailedList = response.failedList;
-    contentManagerService = TestBed.get(ContentManagerService);
-    const toasterService = TestBed.get(ToasterService);
+    contentManagerService= <any> TestBed.inject(ContentManagerService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     component.isWindows = true;
     spyOn(contentManagerService, 'changeContentLocation').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.returnValue(resourceMockData.messages.stmsg.contentLocationChanged);
@@ -415,21 +415,21 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call logTelemetry', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     component.logTelemetry(response.logInputData);
     expect(telemetryService.log).toHaveBeenCalled();
   });
 
   it('should hide content manger when player is fullscreen mode for desktop', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     component.ngOnInit();
     navigationHelperService.handleCMvisibility.emit(true);
     expect(component.visibility).toBeFalsy();
   });
 
   it('should show content manger when player exit from fullscreen mode for desktop', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     component.ngOnInit();
     navigationHelperService.handleCMvisibility.emit(false);
     expect(component.visibility).toBeTruthy();

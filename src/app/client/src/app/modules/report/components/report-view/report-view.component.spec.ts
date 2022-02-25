@@ -95,8 +95,8 @@ xdescribe('ReportViewComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportViewComponent);
-    dhitiService = TestBed.get(DhitiService);
-    location = TestBed.get(Location);
+    dhitiService= <any> TestBed.inject(DhitiService);
+    location= <any> TestBed.inject(Location);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

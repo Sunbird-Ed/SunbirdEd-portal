@@ -34,8 +34,8 @@ describe('PublicPlayerService', () => {
   });
 
   it('should return content details', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const contentService = TestBed.get(ContentService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const contentService= <any> TestBed.inject(ContentService);
     spyOn(contentService, 'get').and.returnValue(observableOf(serverRes.successResult));
     playerService.getContent();
     playerService.getContent(serverRes.successResult.result.content.identifier).subscribe((data) => {
@@ -48,8 +48,8 @@ describe('PublicPlayerService', () => {
     expect(playerService).toBeTruthy();
   });
   it('should return player config without courseId', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const userService = TestBed.get(UserService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const userService= <any> TestBed.inject(UserService);
     userService._anonymousSid = UUID.UUID();
     userService._userId = 'anonymous';
     userService._channel = 'in.ekstep';
@@ -64,16 +64,16 @@ describe('PublicPlayerService', () => {
   });
 
   it('should call player updateDownloadStatus()', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const resourceService = TestBed.get(ResourceService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
     playerService.updateDownloadStatus(serverRes.download_list, serverRes.successResult.result.content);
     expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0143);
   });
 
   it('should navigate to course player if collection does not has trackable object and content type is course', fakeAsync(() => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const router = TestBed.get(Router);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const router= <any> TestBed.inject(Router);
     spyOn(playerService, 'handleNavigation').and.callThrough();
     playerService.playContent(contentMockData);
     tick(50);
@@ -81,8 +81,8 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const router = TestBed.get(Router);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const router= <any> TestBed.inject(Router);
     const mockData = contentMockData;
     spyOn(playerService, 'handleNavigation').and.callThrough();
     mockData.data.contentType = 'TextBook';
@@ -93,8 +93,8 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const router = TestBed.get(Router);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const router= <any> TestBed.inject(Router);
     contentMockData.data['trackable'] = { 'enabled': 'No' };
     playerService.playContent(contentMockData);
     tick(50);
@@ -103,8 +103,8 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to course player if collection is trackable', fakeAsync(() => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const router = TestBed.get(Router);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const router= <any> TestBed.inject(Router);
     spyOn(playerService, 'handleNavigation').and.callThrough();
     contentMockData.data['trackable'] = { 'enabled': 'Yes' };
     playerService.playContent(contentMockData);
@@ -113,8 +113,8 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should navigate to resource player if content mime type is not collection', fakeAsync(() => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const router = TestBed.get(Router);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const router= <any> TestBed.inject(Router);
     contentMockData.data['mimeType'] = 'pdf';
     spyOn(playerService, 'handleNavigation').and.callThrough();
     playerService.playContent(contentMockData);
@@ -124,8 +124,8 @@ describe('PublicPlayerService', () => {
   }));
 
   it('should get collection hierarchy', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const publicDataService= <any> TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValues(of(serverRes.collectionHierarchy));
     playerService.getCollectionHierarchy('123').subscribe((res) => {
       expect(playerService.collectionData).toBeDefined();

@@ -60,7 +60,7 @@ describe('CourseDashboardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseDashboardComponent);
     component = fixture.componentInstance;
-    courseProgressService = TestBed.get(CourseProgressService);
+    courseProgressService= <any> TestBed.inject(CourseProgressService);
     fixture.detectChanges();
   });
 

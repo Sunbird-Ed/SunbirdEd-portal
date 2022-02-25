@@ -87,15 +87,15 @@ describe('CoursePageComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(CoursePageComponent);
         component = fixture.componentInstance;
-        toasterService = TestBed.get(ToasterService);
-        formService = TestBed.get(FormService);
-        pageApiService = TestBed.get(PageApiService);
-        orgDetailsService = TestBed.get(OrgDetailsService);
-        utilService = TestBed.get(UtilService);
-        cacheService = TestBed.get(CacheService);
-        coursesService = TestBed.get(CoursesService);
-        searchService = TestBed.get(SearchService);
-        activatedRouteStub = TestBed.get(ActivatedRoute);
+        toasterService= <any> TestBed.inject(ToasterService);
+        formService= <any> TestBed.inject(FormService);
+        pageApiService= <any> TestBed.inject(PageApiService);
+        orgDetailsService= <any> TestBed.inject(OrgDetailsService);
+        utilService= <any> TestBed.inject(UtilService);
+        cacheService= <any> TestBed.inject(CacheService);
+        coursesService= <any> TestBed.inject(CoursesService);
+        searchService= <any> TestBed.inject(SearchService);
+        activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
         sendOrgDetails = true;
         sendPageApi = true;
         sendFormApi = true;
@@ -232,7 +232,7 @@ describe('CoursePageComponent', () => {
     it('should redo layout on render', done => {
         component.layoutConfiguration = null;
         spyOn<any>(component, 'redoLayout').and.callThrough();
-        const layoutService = TestBed.get(LayoutService);
+        const layoutService= <any> TestBed.inject(LayoutService);
         spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }));
         component['initLayout']().subscribe(res => {
             expect(component.layoutConfiguration).toEqual({});
@@ -251,7 +251,7 @@ describe('CoursePageComponent', () => {
     });
 
     it('should redirect to viewall page with queryparams', () => {
-        const router = TestBed.get(Router);
+        const router= <any> TestBed.inject(Router);
         const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
         spyOn(component, 'viewAll').and.callThrough();
         spyOn(cacheService, 'set').and.stub();
@@ -263,7 +263,7 @@ describe('CoursePageComponent', () => {
     });
 
     it('should call play content method', () => {
-        const publicPlayerService = TestBed.get(PublicPlayerService);
+        const publicPlayerService= <any> TestBed.inject(PublicPlayerService);
         spyOn(publicPlayerService, 'playContent').and.callThrough();
         const event = {
             data: {
@@ -336,8 +336,8 @@ describe('CoursePageComponent', () => {
     });
     it('should redirect to view-all page for logged in user', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-        const userService = TestBed.get(UserService);
-        const router = TestBed.get(Router);
+        const userService= <any> TestBed.inject(UserService);
+        const router= <any> TestBed.inject(Router);
         router.url = '/learn';
         const eventData = Response.viewAllEventData;
         userService._userProfile = Response.userData;
@@ -503,7 +503,7 @@ describe('CoursePageComponent', () => {
             }
         };
         spyOn(component, 'playContent');
-        const route = TestBed.get(Router);
+        const route= <any> TestBed.inject(Router);
         route.url = '/course-page?selectedTab=course-page';
         component.hoverActionClicked(event);
         expect(component.playContent).toHaveBeenCalled();
@@ -526,7 +526,7 @@ describe('CoursePageComponent', () => {
     });
 
     it('should call download content with success ', () => {
-        const contentManagerService = TestBed.get(ContentManagerService);
+        const contentManagerService= <any> TestBed.inject(ContentManagerService);
         component.pageSections = Response.pageSections;
         spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
         component.downloadContent('123');

@@ -49,7 +49,7 @@ describe('AboutUsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    const appUpdateService = TestBed.get(AppUpdateService);
+    const appUpdateService= <any> TestBed.inject(AppUpdateService);
     spyOn(appUpdateService, 'getAppInfo').and.returnValue(of(appInfoResponse.appInfo));
     component.ngOnInit();
     expect(appUpdateService.getAppInfo).toHaveBeenCalled();
@@ -78,7 +78,7 @@ describe('AboutUsComponent', () => {
 
   it('should call telemetry Data', () => {
     spyOn(component, 'setTelemetryData');
-    const appUpdateService = TestBed.get(AppUpdateService);
+    const appUpdateService= <any> TestBed.inject(AppUpdateService);
     spyOn(appUpdateService, 'getAppInfo').and.returnValue(of(appInfoResponse.appInfo));
     component.getAppInfo();
     expect(component.setTelemetryData).toHaveBeenCalled();

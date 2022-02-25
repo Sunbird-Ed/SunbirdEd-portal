@@ -22,7 +22,7 @@ describe('ConnectionService', () => {
   }));
 
   it('to make the connection status true', () => {
-    const service: ConnectionService = TestBed.get(ConnectionService);
+    const service: ConnectionService= <any> TestBed.inject(ConnectionService);
     expect(service).toBeTruthy();
     const mockConnectionStatus = true;
     const mockObservable = observableOf(mockConnectionStatus);
@@ -32,7 +32,7 @@ describe('ConnectionService', () => {
     });
   });
   it('to make the connection status false ', () => {
-    const service: ConnectionService = TestBed.get(ConnectionService);
+    const service: ConnectionService= <any> TestBed.inject(ConnectionService);
     const mockConnectionStatus = false;
     const mockObservable = observableOf(mockConnectionStatus);
     spyOn(service, 'monitor').and.returnValue(mockObservable);
@@ -42,7 +42,7 @@ describe('ConnectionService', () => {
   });
 
   it('should call monitor', () => {
-    const service: ConnectionService = TestBed.get(ConnectionService);
+    const service: ConnectionService= <any> TestBed.inject(ConnectionService);
     service['connectionMonitor'] = of(true);
     const monitor = service.monitor();
     monitor.subscribe((data) => {

@@ -51,8 +51,8 @@ describe('SearchComponent', () => {
     .compileComponents();
   }));
   beforeEach(() => {
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
+    router= <any> TestBed.inject(Router);
+    location= <any> TestBed.inject(Location);
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     component.layoutConfiguration = {};
@@ -75,9 +75,9 @@ describe('SearchComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams:  component.queryParam});
   });
   it('should hide users search from dropdown if loggedin user is not rootorgadmin', ( ) => {
-    const userService = TestBed.get(UserService);
-    const resourceService = TestBed.get(ResourceService);
-    const route = TestBed.get(Router);
+    const userService= <any> TestBed.inject(UserService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const route= <any> TestBed.inject(Router);
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
     resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
     component.searchDropdownValues = ['All', 'Courses', 'Library'];
@@ -85,8 +85,8 @@ describe('SearchComponent', () => {
     expect(component.searchDropdownValues).not.toContain('Users');
   });
   it('should show users search from dropdown if loggedin user is rootorgadmin', ( ) => {
-    const userService = TestBed.get(UserService);
-    const resourceService = TestBed.get(ResourceService);
+    const userService= <any> TestBed.inject(UserService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = true;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
     resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
@@ -102,7 +102,7 @@ describe('SearchComponent', () => {
   });
   //  OLD XIT
  xit('search dropdown selected value should be ALL when non rootorgadmin user lands to profile page', ( ) => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = false;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
     component.ngOnInit();
@@ -110,7 +110,7 @@ describe('SearchComponent', () => {
   });
   //  OLD XIT
  xit('search dropdown selected value should be Users when rootorgadmin user lands to profile page', ( ) => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = true;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
     component.ngOnInit();

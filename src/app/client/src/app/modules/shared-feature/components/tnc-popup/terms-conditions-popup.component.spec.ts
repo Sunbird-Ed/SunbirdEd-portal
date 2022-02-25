@@ -68,8 +68,8 @@ describe('TermsAndConditionsPopupComponent', () => {
 
   it('should get the user data', () => {
     component.tncUrl = '';
-    const userService = TestBed.get(UserService);
-    const tenantService = TestBed.get(TenantService);
+    const userService= <any> TestBed.inject(UserService);
+    const tenantService= <any> TestBed.inject(TenantService);
     userService._userProfile = { 'organisations': ['01229679766115942443'],
     'tncLatestVersionUrl' : 'https://preprodall.blob.core.net/termsandcond/demo.html'
   };
@@ -80,10 +80,10 @@ describe('TermsAndConditionsPopupComponent', () => {
 
   it('should get error toast message if user data gives error', () => {
     component.tncUrl = '';
-    const userService = TestBed.get(UserService);
-    const tenantService = TestBed.get(TenantService);
-    const toasterService = TestBed.get(ToasterService);
-    const resourceService = TestBed.get(ResourceService);
+    const userService= <any> TestBed.inject(UserService);
+    const tenantService= <any> TestBed.inject(TenantService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     spyOn(toasterService, 'error').and.callThrough();
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: 'error', userProfile: mockUserData });
@@ -102,7 +102,7 @@ describe('TermsAndConditionsPopupComponent', () => {
 
   it('should call acceptTermsAndConditions api', () => {
     component.disableContinueBtn = true;
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
     spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf({}));
@@ -113,7 +113,7 @@ describe('TermsAndConditionsPopupComponent', () => {
 
   it('should send user id as managed user is active for tnc accept', () => {
     component.disableContinueBtn = true;
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     const userData = mockUserData.success;
     userData.result.response['managedBy'] = 'mock iD';
     userService._userProfile = userData.result.response;
@@ -129,9 +129,9 @@ describe('TermsAndConditionsPopupComponent', () => {
 
   it('should not call acceptTermsAndConditions api', () => {
     component.disableContinueBtn = true;
-    const userService = TestBed.get(UserService);
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
+    const userService= <any> TestBed.inject(UserService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
     spyOn(toasterService, 'error').and.callThrough();

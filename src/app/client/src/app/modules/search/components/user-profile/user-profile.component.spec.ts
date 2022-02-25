@@ -75,9 +75,9 @@ describe('UserProfileComponent', () => {
     });
 
     it('should call search api and get success', () => {
-        const searchService = TestBed.get(UserSearchService);
-        const learnerService = TestBed.get(LearnerService);
-        const resourceService = TestBed.get(ResourceService);
+        const searchService= <any> TestBed.inject(UserSearchService);
+        const learnerService= <any> TestBed.inject(LearnerService);
+        const resourceService= <any> TestBed.inject(ResourceService);
         spyOn(searchService, 'getUserById').and.callFake(() => observableOf(Response.successData));
         component.populateUserProfile();
         fixture.detectChanges();
@@ -86,9 +86,9 @@ describe('UserProfileComponent', () => {
     });
 
     it('should call search api and get error', () => {
-        const searchService = TestBed.get(UserSearchService);
-        const toasterService = TestBed.get(ToasterService);
-        const resourceService = TestBed.get(ResourceService);
+        const searchService= <any> TestBed.inject(UserSearchService);
+        const toasterService= <any> TestBed.inject(ToasterService);
+        const resourceService= <any> TestBed.inject(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(searchService, 'getUserById').and.callFake(() => observableThrowError(Response.errorData));
         spyOn(toasterService, 'error').and.callThrough();
@@ -100,7 +100,7 @@ describe('UserProfileComponent', () => {
     });
 
     it('should call populateUserProfile', () => {
-        const userService = TestBed.get(UserService);
+        const userService= <any> TestBed.inject(UserService);
         spyOn(component, 'populateUserProfile').and.callThrough();
         userService._userData$.next({ err: null, userProfile: Response.userProfile });
         fixture.detectChanges();
@@ -131,7 +131,7 @@ describe('UserProfileComponent', () => {
     });
 
     it('should call populateBadgeDescription', () => {
-        const badgesService = TestBed.get(BadgesService);
+        const badgesService= <any> TestBed.inject(BadgesService);
         spyOn(badgesService, 'getDetailedBadgeAssertions').and.callFake(() => observableOf(true));
         fixture.detectChanges();
         component.userDetails = Response.successData.result.response;
@@ -146,9 +146,9 @@ describe('UserProfileComponent', () => {
     });
 
     it('should call submitEndorsement and get success response from learner service', () => {
-        const learnerService = TestBed.get(LearnerService);
-        const toasterService = TestBed.get(ToasterService);
-        const resourceService = TestBed.get(ResourceService);
+        const learnerService= <any> TestBed.inject(LearnerService);
+        const toasterService= <any> TestBed.inject(ToasterService);
+        const resourceService= <any> TestBed.inject(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(toasterService, 'success').and.callThrough();
         spyOn(learnerService, 'post').and.callFake(() => observableOf(Response.skillSuccess));
@@ -160,9 +160,9 @@ describe('UserProfileComponent', () => {
     });
 
     it('should call submitEndorsement and get error response from learner service', () => {
-        const learnerService = TestBed.get(LearnerService);
-        const toasterService = TestBed.get(ToasterService);
-        const resourceService = TestBed.get(ResourceService);
+        const learnerService= <any> TestBed.inject(LearnerService);
+        const toasterService= <any> TestBed.inject(ToasterService);
+        const resourceService= <any> TestBed.inject(ResourceService);
         resourceService.messages = Response.resourceBundle.messages;
         spyOn(toasterService, 'error').and.callThrough();
         spyOn(learnerService, 'post').and.callFake(() => observableThrowError(Response.skillError));

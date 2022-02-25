@@ -25,8 +25,8 @@ describe('Redirect Router tests', () => {
       ],
       declarations: [RedirectComponent]
     });
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
+    router= <any> TestBed.inject(Router);
+    location= <any> TestBed.inject(Location);
     router.initialNavigation();
   });
 

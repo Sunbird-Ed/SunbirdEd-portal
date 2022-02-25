@@ -8,7 +8,7 @@ describe('ActionService', () => {
 
   //  OLD XIT
  xit('should be created', () => {
-    const service: ActionService = TestBed.get(ActionService);
+    const service: ActionService= <any> TestBed.inject(ActionService);
     expect(service).toBeTruthy();
   });
 });

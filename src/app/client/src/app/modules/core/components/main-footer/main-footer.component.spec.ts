@@ -79,9 +79,9 @@ describe('MainFooterComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(MainFooterComponent);
         component = fixture.componentInstance;
-        userService = TestBed.get(UserService);
+        userService= <any> TestBed.inject(UserService);
         spyOn(component, 'footerAlign'); // new line to be added
-        tenantService = TestBed.get(TenantService);
+        tenantService= <any> TestBed.inject(TenantService);
         fixture.detectChanges();
     });
 
@@ -131,8 +131,8 @@ describe('MainFooterComponent', () => {
     });
     it('should make isFullScreenView to FALSE', () => {
         component.isFullScreenView = true;
-        const navigationHelperService = TestBed.get(NavigationHelperService);
-        const utilService = TestBed.get(UtilService);
+        const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
+        const utilService= <any> TestBed.inject(UtilService);
         utilService._isDesktopApp = true;
         spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(of({ data: false}));
         spyOn(component, 'getBaseUrl');
@@ -144,7 +144,7 @@ describe('MainFooterComponent', () => {
 
     it('should make isFullScreenView to TRUE', () => {
         component.isFullScreenView = false;
-        const navigationHelperService = TestBed.get(NavigationHelperService);
+        const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
         spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(of({ data: false}));
         component.ngOnInit();
         navigationHelperService.emitFullScreenEvent(true);
@@ -161,7 +161,7 @@ describe('MainFooterComponent', () => {
     });
 
     it('should call getBaseUrl', () => {
-        const utilService = TestBed.get(UtilService);
+        const utilService= <any> TestBed.inject(UtilService);
         spyOn(utilService, 'getAppBaseUrl');
         component.getBaseUrl();
         expect(utilService.getAppBaseUrl).toHaveBeenCalled();
