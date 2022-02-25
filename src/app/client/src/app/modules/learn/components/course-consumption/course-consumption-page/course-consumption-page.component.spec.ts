@@ -97,7 +97,8 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(toasterService, 'error').and.returnValue('');
     activatedRouteStub.snapshot.firstChild.params = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
   });
-  xit('should navigate to enroll course page if batch and autoEnroll available in queryParams', () => {
+  //  OLD XIT
+ xit('should navigate to enroll course page if batch and autoEnroll available in queryParams', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178', batchId: ''};
     activatedRouteStub.snapshot.queryParams = {batch: 'do_112498388508524544160', autoEnroll: 'true'};
     spyOn(learnerService, 'get').and.returnValue(of({}));
@@ -111,7 +112,8 @@ describe('CourseConsumptionPageComponent', () => {
     };
     expect(component.router.navigate).toHaveBeenCalledWith(routedURL, reqParams);
   });
-  xit('should refresh component with updated batch details when user selects another batch', () => {
+  //  OLD XIT
+ xit('should refresh component with updated batch details when user selects another batch', () => {
     const spy = spyOn<any>(component['fetchEnrolledCourses$'], 'next');
     component.refreshComponent(true);
     expect(spy).toHaveBeenCalled();

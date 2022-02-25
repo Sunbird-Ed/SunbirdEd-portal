@@ -147,7 +147,8 @@ describe('DialCodeComponent', () => {
     });
   });
 
-  // xit('Dial code search API call should generate telemetry interact event', () => {
+  // //  OLD XIT
+ xit('Dial code search API call should generate telemetry interact event', () => {
   //   component['processDialCode']({ dialCode: '123' }).subscribe(() => {
   //     expect(component.showSelectChapter).toBeFalsy();
   //     expect(this?.telemetryService.interact).toHaveBeenCalled();

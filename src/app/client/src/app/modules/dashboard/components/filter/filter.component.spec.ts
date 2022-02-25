@@ -204,7 +204,8 @@ describe('FilterComponent', () => {
   }));
 
 
-  xit('should set the dateRange', fakeAsync(() => {
+  //  OLD XIT
+ xit('should set the dateRange', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
     component.getDateRange({

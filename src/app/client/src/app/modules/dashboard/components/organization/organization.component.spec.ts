@@ -97,7 +97,8 @@ describe('OrganisationComponent', () => {
       expect(component.myOrganizations.length).not.toBeUndefined();
       expect(component.myOrganizations.length).toEqual(1);
     }));
-    xit('should call validateIdentifier method when  org details 1 ', inject([SearchService], (searchService) => {
+    //  OLD XIT
+ xit('should call validateIdentifier method when  org details 1 ', inject([SearchService], (searchService) => {
     spyOn(searchService, 'getOrganisationDetails').and.callFake(() => observableOf(testData.orgDetailsSuccess));
     spyOn(component, 'validateIdentifier').and.callThrough();
     component.getOrgDetails(['01229679766115942443']);
@@ -248,7 +249,8 @@ describe('OrganisationComponent', () => {
     expect(component.disabledClass).toEqual(false);
   }));
 
-  xit('should open dashboard directly if only 1 organisation exist', inject([Router, SearchService, UserService],
+  //  OLD XIT
+ xit('should open dashboard directly if only 1 organisation exist', inject([Router, SearchService, UserService],
     (router, searchService, userService) => {
       userService._userProfile = { 'organisationIds': ['01229679766115942443'] };
       searchService._searchedOrganisationList = testData.orgDetailsSuccess.result.response;

@@ -181,7 +181,8 @@ describe('CoursePageComponent', () => {
                 done();
             });
     });
-    xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
+    //  OLD XIT
+ xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
         spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
             return of(Response.orgSearch);
         });
@@ -195,7 +196,8 @@ describe('CoursePageComponent', () => {
         expect(component.carouselMasterData.length).toEqual(1);
         expect(component['getLanguageChange']).toHaveBeenCalled();
     });
-    xit('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
+    //  OLD XIT
+ xit('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
         sendFormApi = false;
         spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
             return of(Response.orgSearch);
@@ -208,7 +210,8 @@ describe('CoursePageComponent', () => {
         expect(component.showLoader).toBeFalsy();
         expect(component.carouselMasterData.length).toEqual(1);
     });
-    xit('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
+    //  OLD XIT
+ xit('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
         sendPageApi = false;
         spyOn(toasterService, 'error').and.callFake(() => { });
         component.ngOnInit();
@@ -288,7 +291,8 @@ describe('CoursePageComponent', () => {
     });
 
 
-    xit('should add audience type in fetch page data request body', () => {
+    //  OLD XIT
+ xit('should add audience type in fetch page data request body', () => {
         spyOn(localStorage, 'getItem').and.returnValue('teacher');
         component.queryParams = { sort_by: 'name', sortType: 'desc' };
         // component['fetchPageData']();
@@ -395,7 +399,8 @@ describe('CoursePageComponent', () => {
         expect(result).toEqual([input[0].name]);
     });
 
-    xit('should prepare option for loggedIn user', done => {
+    //  OLD XIT
+ xit('should prepare option for loggedIn user', done => {
         component.formData = [
             { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
         ];

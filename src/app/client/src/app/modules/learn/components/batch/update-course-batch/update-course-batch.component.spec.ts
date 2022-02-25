@@ -163,7 +163,8 @@ describe('UpdateCourseBatchComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('error');
     expect(component.router.navigate).toHaveBeenCalledWith(['./'], {relativeTo: activatedRoute.parent});
   });
-  xit('should update batch and show success message if api return success', () => {
+  //  OLD XIT
+ xit('should update batch and show success message if api return success', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
@@ -192,7 +193,8 @@ describe('UpdateCourseBatchComponent', () => {
     component.updateBatch();
     expect(toasterService.success).toHaveBeenCalledWith('success');
   });
-  xit('should update batch and show error message if api fails', () => {
+  //  OLD XIT
+ xit('should update batch and show error message if api fails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);

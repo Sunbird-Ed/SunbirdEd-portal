@@ -100,21 +100,24 @@ describe('SearchComponent', () => {
     component.ngOnInit();
     expect(component.searchDropdownValues).toContain('Users');
   });
-  xit('search dropdown selected value should be ALL when non rootorgadmin user lands to profile page', ( ) => {
+  //  OLD XIT
+ xit('search dropdown selected value should be ALL when non rootorgadmin user lands to profile page', ( ) => {
     const userService = TestBed.get(UserService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = false;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
     component.ngOnInit();
     expect(component.selectedOption).toEqual('All');
   });
-  xit('search dropdown selected value should be Users when rootorgadmin user lands to profile page', ( ) => {
+  //  OLD XIT
+ xit('search dropdown selected value should be Users when rootorgadmin user lands to profile page', ( ) => {
     const userService = TestBed.get(UserService);
     mockResponse.userMockData.userProfile.rootOrgAdmin = true;
     userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
     component.ngOnInit();
     expect(component.selectedOption).toEqual('Users');
   });
-  xit('should call search redo layout', () => {
+  //  OLD XIT
+ xit('should call search redo layout', () => {
     component.isLayoutAvailable();
     expect(component).toBeTruthy();
   });

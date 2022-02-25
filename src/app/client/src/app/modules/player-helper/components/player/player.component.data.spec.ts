@@ -66,7 +66,8 @@ export const playerData = {
       'sideMenu': {
         'showShare': true,
         'showDownload': true,
-        'showExit': false
+        'showE//  OLD XIT
+ xit': false
       }
     },
     'metadata': {

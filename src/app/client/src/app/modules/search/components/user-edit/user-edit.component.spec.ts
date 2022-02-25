@@ -148,7 +148,8 @@ describe('UserEditComponent', () => {
     expect(component.selectedSchoolId).toBe('0124226794392862720');
   });
 
-  xit('should call search api for populateOrgName', () => {
+  //  OLD XIT
+ xit('should call search api for populateOrgName', () => {
     const searchService = TestBed.get(SearchService);
     const options = {
       orgid: [
@@ -190,7 +191,8 @@ describe('UserEditComponent', () => {
       }
     );
   });
-  xit('should call editRoles method', () => {
+  //  OLD XIT
+ xit('should call editRoles method', () => {
     component.selectedOrgUserRoles = ['CONTENT_CREATOR', 'BOOK_CREATOR'];
     const roles = ['CONTENT_CREATOR', 'BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
     const event = {
@@ -199,7 +201,8 @@ describe('UserEditComponent', () => {
     // component.editRoles('CONTENT_CREATOR', roles, event);
     expect(component.selectedOrgUserRolesNew).not.toBeUndefined();
   });
-  xit('should call editRoles method when already assigned role is checked', () => {
+  //  OLD XIT
+ xit('should call editRoles method when already assigned role is checked', () => {
     const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
     const event = {
       target: { checked: true }
@@ -207,7 +210,8 @@ describe('UserEditComponent', () => {
     // component.editRoles('CONTENT_CREATOR', roles, event);
     expect(component.selectedOrgUserRolesNew).toEqual(['CONTENT_CREATOR']);
   });
-  xit('should call editRoles method when event checked is false', () => {
+  //  OLD XIT
+ xit('should call editRoles method when event checked is false', () => {
     const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
     const event = {
       target: { checked: false }
@@ -215,7 +219,8 @@ describe('UserEditComponent', () => {
     // component.editRoles('CONTENT_CREATOR', roles, event);
     expect(component.selectedOrgUserRolesNew).not.toEqual('CONTENT_CREATOR');
   });
-  xit('should call updateRoles and make api call', () => {
+  //  OLD XIT
+ xit('should call updateRoles and make api call', () => {
     const userSearchService = TestBed.get(UserSearchService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(userSearchService, 'updateRoles').and.callFake(() => observableOf(Response.rolesSuccessData));
@@ -228,7 +233,8 @@ describe('UserEditComponent', () => {
     expect(component.redirect).toHaveBeenCalled();
     expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0028);
   });
-  xit('should call updateRoles method and make api call and return error', () => {
+  //  OLD XIT
+ xit('should call updateRoles method and make api call and return error', () => {
     const userSearchService = TestBed.get(UserSearchService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(userSearchService, 'updateRoles').and.callFake(() => observableThrowError(Response.rolesFailureData));

@@ -19,7 +19,8 @@ describe('NoGroupResultComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  //  OLD XIT
+ xit('should create', () => {
     expect(component).toBeTruthy();
   });
 });

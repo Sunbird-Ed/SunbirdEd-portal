@@ -82,7 +82,8 @@ describe('OrganizationUploadComponent', () => {
     component.redirectUrl = '/profile';
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
-  xit('should call openImageBrowser method', () => {
+  //  OLD XIT
+ xit('should call openImageBrowser method', () => {
     let inputEl: DebugElement;
     inputEl = fixture.debugElement.query(By.css('inputbtn'));
     inputEl.triggerEventHandler('click', null);

@@ -42,7 +42,8 @@ describe('TelemetryErrorModalComponent', () => {
     expect(component.telemetryEventsArr).toEqual(telemetryService.telemetryEvents);
   });
 
-  xit('should open telemetry events popup on telemetry button click', () => {
+  //  OLD XIT
+ xit('should open telemetry events popup on telemetry button click', () => {
     const buttonElement = fixture.debugElement.query(By.css('#telemetry-btn'));
     buttonElement.triggerEventHandler('click', null);
     fixture.detectChanges();

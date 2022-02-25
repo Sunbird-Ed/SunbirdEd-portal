@@ -173,7 +173,8 @@ describe('PlayerComponent', () => {
       expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
     }));
 
-    xit('should rotate player ms browser', fakeAsync(() => {
+    //  OLD XIT
+ xit('should rotate player ms browser', fakeAsync(() => {
       mockDomElement.requestFullscreen = undefined;
       mockDomElement.mozRequestFullScreen = undefined;
       mockDomElement.webkitRequestFullscreen = undefined;
@@ -194,7 +195,8 @@ describe('PlayerComponent', () => {
     });
 
     it('should close player fullscreen for mozilla browser', () => {
-      document['exitFullscreen'] = undefined;
+      document['e//  OLD XIT
+ xitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
@@ -202,19 +204,24 @@ describe('PlayerComponent', () => {
     });
 
     it('should close player fullscreen for webkit browser ', () => {
-      document['exitFullscreen'] = undefined;
+      document['e//  OLD XIT
+ xitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
-      document['webkitExitFullscreen'] = () => { };
+      document['webkitE//  OLD XIT
+ xitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
     });
 
     it('should close player fullscreen for ms browser ', () => {
-      document['exitFullscreen'] = undefined;
+      document['e//  OLD XIT
+ xitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
-      document['webkitExitFullscreen'] = undefined;
-      document['msExitFullscreen'] = () => { };
+      document['webkitE//  OLD XIT
+ xitFullscreen'] = undefined;
+      document['msE//  OLD XIT
+ xitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -334,7 +341,8 @@ describe('PlayerComponent', () => {
     expect(component.selfAssessLastAttempt.emit).toHaveBeenCalled();
   });
 
-  xit('should call loadPlayer', () => {
+  //  OLD XIT
+ xit('should call loadPlayer', () => {
     const formService = TestBed.get(FormService);
     component.isMobileOrTab = true;
     component.playerConfig = playerConfig;
@@ -346,7 +354,8 @@ describe('PlayerComponent', () => {
     expect(component.loadDefaultPlayer).toHaveBeenCalled();
   });
 
-  xit('should call loadPlayer with CDN url', () => {
+  //  OLD XIT
+ xit('should call loadPlayer with CDN url', () => {
     const formService = TestBed.get(FormService);
     component.playerConfig = playerConfig;
     component.isMobileOrTab = false;
@@ -383,7 +392,8 @@ describe('PlayerComponent', () => {
     expect(navigationHelperService.handleContentManagerOnFullscreen).toHaveBeenCalledWith(true);
   });
 
-  it('should show content manger when exit from fullscreen mode for desktop', () => {
+  it('should show content manger when e//  OLD XIT
+ xit from fullscreen mode for desktop', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');

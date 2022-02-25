@@ -43,7 +43,8 @@ describe('QrCodeModalComponent', () => {
 
 
 
-  xit('should call onSubmit method and naviagte to search results page', inject([Router],
+  //  OLD XIT
+ xit('should call onSubmit method and naviagte to search results page', inject([Router],
     (route) => {
       const dialcode = '51u4e';
       spyOn(component, 'onSubmit').and.callThrough();
@@ -73,7 +74,8 @@ describe('QrCodeModalComponent', () => {
     };
     expect(component.closeDialCodeInteractEdata).toEqual(mockSetInteractEventData);
   });
-  xit('should call closeModal method and emit the event  ', () => {
+  //  OLD XIT
+ xit('should call closeModal method and emit the event  ', () => {
     const modal = fixture.debugElement.nativeElement.querySelector('i');
     spyOn(component, 'closeModal').and.callThrough();
     spyOn(component.closeQrModal, 'emit');

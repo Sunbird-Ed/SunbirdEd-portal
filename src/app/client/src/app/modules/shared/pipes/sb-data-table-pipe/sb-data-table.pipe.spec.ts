@@ -15,7 +15,8 @@ describe('SbDataTablePipe', () => {
     expect(result).toBe('');
   });
 
-  xit('should format date', () => {
+  //  OLD XIT
+ xit('should format date', () => {
     const pipe = new SbDataTablePipe();
     expect(pipe).toBeTruthy();
     const result = pipe.transform('1599728944037', 'date');

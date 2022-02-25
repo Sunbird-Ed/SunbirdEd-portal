@@ -42,7 +42,8 @@ describe('NavigationHelperService', () => {
     });
   });
 
-  xit('should navigate to default route',
+  //  OLD XIT
+ xit('should navigate to default route',
     inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
       (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
         service.navigateToLastUrl();

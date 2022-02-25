@@ -534,7 +534,8 @@ describe('CoursePlayerComponent', () => {
     courseConsumptionService.updateContentConsumedStatus.emit({ courseHierarchy: {} });
     expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
-  xit('should log telemetry on click of close icon on join training popup ', () => {
+  //  OLD XIT
+ xit('should log telemetry on click of close icon on join training popup ', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -592,7 +593,8 @@ describe('CoursePlayerComponent', () => {
     expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
 
-  xit('should call navigateToContent', () => {
+  //  OLD XIT
+ xit('should call navigateToContent', () => {
     spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;

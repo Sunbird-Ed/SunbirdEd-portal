@@ -106,7 +106,8 @@ describe('IdentifyAccountComponent', () => {
     expect(component.nameNotExist).toBe(true);
   });
 
-  xit('should fail recaptcha validation failed', () => {
+  //  OLD XIT
+ xit('should fail recaptcha validation failed', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
     const recaptchaService = TestBed.get(RecaptchaService);
     const telemetryService = TestBed.get(TelemetryService);

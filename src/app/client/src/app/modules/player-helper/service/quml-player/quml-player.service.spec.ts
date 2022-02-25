@@ -38,7 +38,8 @@ describe('qumlPlayerService', () => {
     expect(qumlPlayerService.getQuestionData).toHaveBeenCalledWith('do_1234');
   });
 
-  xit('#getQuestion() should make API call if it does not find a questionId in the questionMap', () => {
+  //  OLD XIT
+ xit('#getQuestion() should make API call if it does not find a questionId in the questionMap', () => {
     const qumlPlayerService = TestBed.get(QumlPlayerService);
     spyOn(qumlPlayerService, 'getQuestionData').and.callThrough();
     qumlPlayerService.clearQuestionMap();
@@ -48,7 +49,8 @@ describe('qumlPlayerService', () => {
     expect(qumlPlayerService.getQuestionData).toHaveBeenCalledWith('do_1234');
   });
 
-  xit('#getQuestions() should fetch the question list', () => {
+  //  OLD XIT
+ xit('#getQuestions() should fetch the question list', () => {
     const qumlPlayerService = TestBed.get(QumlPlayerService);
     qumlPlayerService.getQuestions(['do_123']);
   });

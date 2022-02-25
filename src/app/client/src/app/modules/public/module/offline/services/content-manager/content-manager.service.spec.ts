@@ -68,7 +68,8 @@ describe('ContentManagerService', () => {
     expect(publicDataService.post).toHaveBeenCalled();
   });
 
-  xit('should make export API call', () => {
+  //  OLD XIT
+ xit('should make export API call', () => {
     const service: ContentManagerService = TestBed.get(ContentManagerService);
     const publicDataService = TestBed.get(PublicDataService);
     spyOn(publicDataService, 'get').and.callFake(() => observableOf(response.exportSuccess));

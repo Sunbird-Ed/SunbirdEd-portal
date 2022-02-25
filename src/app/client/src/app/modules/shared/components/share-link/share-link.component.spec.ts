@@ -44,7 +44,8 @@ describe('ShareLinkComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('Should initializeModal', () => {
+  //  OLD XIT
+ xit('Should initializeModal', () => {
     spyOn(component, 'initializeModal').and.callThrough();
     component.ngOnInit();
     expect(component.initializeModal).toHaveBeenCalled();
@@ -60,7 +61,8 @@ describe('ShareLinkComponent', () => {
     spyOn(component, 'initializeModal').and.callThrough();
     component.initializeModal();
   });
-  xit('Should call copyLink and copy the the link', () => {
+  //  OLD XIT
+ xit('Should call copyLink and copy the the link', () => {
     spyOn(component, 'copyLink').and.callThrough();
     spyOn(document, 'execCommand').and.callThrough();
     fixture.whenStable().then(() => {

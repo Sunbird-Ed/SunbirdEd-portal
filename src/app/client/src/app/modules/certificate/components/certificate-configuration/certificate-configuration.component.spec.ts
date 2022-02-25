@@ -211,7 +211,8 @@ describe('CertificateConfigurationComponent', () => {
   //   expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   // });
 
-  xit('should fetch the drop-down values for "Certificate type" and "Issue to" from preference api', () => {
+  //  OLD XIT
+ xit('should fetch the drop-down values for "Certificate type" and "Issue to" from preference api', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
@@ -256,7 +257,8 @@ describe('CertificateConfigurationComponent', () => {
     ]);
   });
 
-  xit('should return empty observable if preference api fails to fetch cert template list', () => {
+  //  OLD XIT
+ xit('should return empty observable if preference api fails to fetch cert template list', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
@@ -273,7 +275,8 @@ describe('CertificateConfigurationComponent', () => {
     });
   });
 
-  xit(`should fetch batch details and get the drop-down values if
+  //  OLD XIT
+ xit(`should fetch batch details and get the drop-down values if
         "certificate_template" object does not exist on the batch details `, () => {
     /** Arrange */
     const certificateService  = TestBed.get(CertificateService);
@@ -290,7 +293,8 @@ describe('CertificateConfigurationComponent', () => {
     });
   });
 
-  xit(`should fetch batch details and process the certificate details if "certificate_template" exists on the batch details `, () => {
+  //  OLD XIT
+ xit(`should fetch batch details and process the certificate details if "certificate_template" exists on the batch details `, () => {
     /** Arrange */
     const certificateService  = TestBed.get(CertificateService);
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
@@ -307,7 +311,8 @@ describe('CertificateConfigurationComponent', () => {
     });
   });
 
-  xit('should fetch the course details', () => {
+  //  OLD XIT
+ xit('should fetch the course details', () => {
     /** Arrange */
     const playerService = TestBed.get(PlayerService);
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(CertMockResponse.courseData));
@@ -319,7 +324,8 @@ describe('CertificateConfigurationComponent', () => {
     });
   });
 
-  xit('should return empty observable if course details api fails', () => {
+  //  OLD XIT
+ xit('should return empty observable if course details api fails', () => {
     /** Arrange */
     const playerService = TestBed.get(PlayerService);
     spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => observableThrowError({}));
@@ -333,7 +339,8 @@ describe('CertificateConfigurationComponent', () => {
     });
   });
 
-  xit('should show template change modal on "update certificate" button click if template change detected', () => {
+  //  OLD XIT
+ xit('should show template change modal on "update certificate" button click if template change detected', () => {
     /** Arrange */
     component.selectedTemplate = {name: 'SOME_IDENTIFIER'};
     component.templateIdentifier = 'SOME_OTHER_IDENTIFIER';
@@ -345,7 +352,8 @@ describe('CertificateConfigurationComponent', () => {
     expect(component.isTemplateChanged).toBeTruthy();
   });
 
-  xit('should attach the certificate on "update certificate" button click if template change not detected', () => {
+  //  OLD XIT
+ xit('should attach the certificate on "update certificate" button click if template change not detected', () => {
     /** Arrange */
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
     component.templateIdentifier = 'SOME_IDENTIFIER';
@@ -643,7 +651,8 @@ describe('CertificateConfigurationComponent', () => {
     expect(component.sendInteractData).toHaveBeenCalledWith({id: 'edit-certificate'});
   });
 
-  xit('should process the criteria to get the drop-down values', () => {
+  //  OLD XIT
+ xit('should process the criteria to get the drop-down values', () => {
     /** Arrange */
     const mockCriteria = {
       'user': {

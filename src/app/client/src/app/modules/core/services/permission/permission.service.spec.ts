@@ -31,7 +31,8 @@ describe('PermissionService', () => {
         BrowserCacheTtlService]
     });
   });
-  xit('should fetch permission', () => { // removed role read api call
+  //  OLD XIT
+ xit('should fetch permission', () => { // removed role read api call
     const permissionService = TestBed.get(PermissionService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
@@ -60,7 +61,8 @@ describe('PermissionService', () => {
   });
 
 
-  xit('should throw toaster error message when permission api fails', () => { // removed role read api
+  //  OLD XIT
+ xit('should throw toaster error message when permission api fails', () => { // removed role read api
     const permissionService = TestBed.get(PermissionService);
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);

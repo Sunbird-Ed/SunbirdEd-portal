@@ -17,7 +17,8 @@ describe('PageApiService', () => {
       providers: [PageApiService, ConfigService, LearnerService, CacheService, BrowserCacheTtlService, PublicDataService]
     });
   });
-  xit('should be created', inject([PageApiService, LearnerService], (service: PageApiService,
+  //  OLD XIT
+ xit('should be created', inject([PageApiService, LearnerService], (service: PageApiService,
     learnerService: LearnerService, publicDataService: PublicDataService) => {
     const param = { source: 'web', name: 'Resource', filters: {}, sort_by: { 'lastUpdatedOn': 'desc' } };
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(testData.successData));

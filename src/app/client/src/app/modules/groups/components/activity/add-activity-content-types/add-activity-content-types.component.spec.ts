@@ -117,7 +117,8 @@ describe('AddActivityContentTypesComponent', () => {
 
   });
 
-  xit('Should fetch all the supported activities', () => {
+  //  OLD XIT
+ xit('Should fetch all the supported activities', () => {
     /** Arrange */
     const groupService = TestBed.get(GroupsService);
     spyOn(groupService, 'getSupportedActivityList').and.returnValue(observableOf(AddActivityContentTypesData.listData));

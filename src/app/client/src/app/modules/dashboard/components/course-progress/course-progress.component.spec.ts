@@ -157,7 +157,8 @@ describe('CourseProgressComponent', () => {
       expect(component.showDownloadModal).toEqual(false);
     }));
 
-  xit('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
+  //  OLD XIT
+ xit('spy on downloadDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
@@ -221,7 +222,8 @@ describe('CourseProgressComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
-  xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
+  //  OLD XIT
+ xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const courseProgressService = TestBed.get(CourseProgressService);
     spyOn(toasterService, 'error');

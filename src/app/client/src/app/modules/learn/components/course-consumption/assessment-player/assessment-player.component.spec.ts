@@ -140,7 +140,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['setTelemetryCourseImpression']).toHaveBeenCalled();
   });
 
-  xit('should call subscribeToQueryParam, on error', fakeAsync(() => {
+  //  OLD XIT
+ xit('should call subscribeToQueryParam, on error', fakeAsync(() => {
     component.batchId = '0130272832104038409';
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
@@ -168,7 +169,8 @@ describe('AssessmentPlayerComponent', () => {
     component['subscribeToQueryParam']();
     expect(component['setTelemetryCourseImpression']).toHaveBeenCalled();
   });
-  xit('should call subscribeToQueryParam, when no bachID present', () => {
+  //  OLD XIT
+ xit('should call subscribeToQueryParam, when no bachID present', () => {
     const playerService = TestBed.get(PlayerService);
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue({
       result: {
@@ -183,7 +185,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['getCollectionInfo']).toHaveBeenCalled();
   });
 
-  xit('should setActiveContent when its single content', () => {
+  //  OLD XIT
+ xit('should setActiveContent when its single content', () => {
     component.courseHierarchy = assessmentPlayerMockData.activeContent;
     spyOn<any>(component, 'getContentState');
     spyOn<any>(component, 'initPlayer');
@@ -199,7 +202,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(resp).toEqual(undefined);
   });
 
-  xit('should call initPlayer success', () => {
+  //  OLD XIT
+ xit('should call initPlayer success', () => {
     component.collectionId = 'do_11287204084174028818';
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of({}));
@@ -482,7 +486,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
 
-  xit('should call navigateToPlayerPage', () => {
+  //  OLD XIT
+ xit('should call navigateToPlayerPage', () => {
     spyOn(component['router'], 'navigate');
     component.batchId = 'do_1130272760359813121209';
     component.courseId = 'do_1130272760359485441199';
@@ -494,13 +499,15 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
   });
 
-  xit('should call onCourseCompleteClose', () => {
+  //  OLD XIT
+ xit('should call onCourseCompleteClose', () => {
     fixture.detectChanges();
     component.onCourseCompleteClose();
     expect(component.showCourseCompleteMessage).toBe(false);
   });
 
-  xit('should call highlightContent', () => {
+  //  OLD XIT
+ xit('should call highlightContent', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.activeContent = {
       identifier: 'do_112832506508320768123'
@@ -510,14 +517,16 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.contentStatus).toBeDefined();
   });
 
-  xit('should call calculateProgress for single content and isUnitCompleted=true', () => {
+  //  OLD XIT
+ xit('should call calculateProgress for single content and isUnitCompleted=true', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
     fixture.detectChanges();
     component.calculateProgress();
     expect(component.isUnitCompleted).toEqual(true);
   });
 
-  xit('should call calculateProgress for single content', () => {
+  //  OLD XIT
+ xit('should call calculateProgress for single content', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
     component.courseHierarchy.identifier = 'do_1130272760292638721197';
     fixture.detectChanges();
@@ -590,7 +599,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.contentStatus[4]['score'].length).toEqual(1);
   });
 
-  xit('should call setActiveContent', () => {
+  //  OLD XIT
+ xit('should call setActiveContent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'flattenDeep').and.returnValue([assessmentPlayerMockData.activeContent]);

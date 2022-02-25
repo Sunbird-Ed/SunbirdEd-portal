@@ -128,7 +128,8 @@ describe('HomeSearchComponent', () => {
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.enrolledSection.contents.length).toEqual(0);
   });
-  xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+  //  OLD XIT
+ xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
     component.handleFilterChange([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -332,7 +333,8 @@ describe('HomeSearchComponent', () => {
     expect(component.showDownloadLoader).toBeFalsy();
   });
 
-  xit('should call get filters for cached filters', () => {
+  //  OLD XIT
+ xit('should call get filters for cached filters', () => {
     spyOn(cacheService, 'get').and.returnValue(Response.cachedFilters);
     spyOn(cacheService, 'exists').and.returnValue(true);
     component.handleFilterChange(Response.cachedFilters);

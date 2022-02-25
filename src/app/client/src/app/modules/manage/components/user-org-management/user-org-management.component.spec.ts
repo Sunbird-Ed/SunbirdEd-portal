@@ -161,7 +161,8 @@ describe('UserOrgManagementComponent', () => {
     expect(component.geoSummary).toBeDefined();
   });
 
-  xit('should download csv file', () => {
+  //  OLD XIT
+ xit('should download csv file', () => {
     const manageService = TestBed.get(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({
       result: {

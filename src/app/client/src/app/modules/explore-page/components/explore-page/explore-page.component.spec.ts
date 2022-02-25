@@ -129,7 +129,8 @@ describe('ExplorePageComponent', () => {
       return of(RESPONSE.searchResult);
     });
   });
-  xit('should get channel id if slug is not available', done => {
+  //  OLD XIT
+ xit('should get channel id if slug is not available', done => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(false);
     const formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
@@ -143,7 +144,8 @@ describe('ExplorePageComponent', () => {
     });
   });
 
-  xit('should get channel id if slug is available', done => {
+  //  OLD XIT
+ xit('should get channel id if slug is available', done => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(false);
     const formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
@@ -334,7 +336,8 @@ describe('ExplorePageComponent', () => {
     expect(fetchContentsSpy).toHaveBeenCalled();
   });
 
-  xit('should call the getFilter Method and set audience type as filters', () => {
+  //  OLD XIT
+ xit('should call the getFilter Method and set audience type as filters', () => {
     const data = {
       filters: {},
       status: 'NotFetching'

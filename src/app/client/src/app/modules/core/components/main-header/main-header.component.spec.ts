@@ -112,7 +112,8 @@ describe('MainHeaderComponent', () => {
     expect(component.userProfile).toBeTruthy();
   });
 
-  xit('Should subscribe to tenant service and update logo and tenant name', () => {
+  //  OLD XIT
+ xit('Should subscribe to tenant service and update logo and tenant name', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
     const service = TestBed.get(TenantService);
     spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
@@ -157,7 +158,8 @@ describe('MainHeaderComponent', () => {
     expect(managedUserService.fetchManagedUserList).not.toHaveBeenCalled();
   });
 
-  it('Should call getCacheLanguage if user is not login and cache exits', () => {
+  it('Should call getCacheLanguage if user is not login and cache e//  OLD XIT
+ xits', () => {
     const userService = TestBed.get(UserService);
     const cacheService = TestBed.get(CacheService);
     cacheService.set('portalLanguage', 'hi', { maxAge: 10 * 60 });
@@ -166,7 +168,8 @@ describe('MainHeaderComponent', () => {
     expect(cacheService.exists('portalLanguage')).toEqual(true);
   });
 
-  it('Should call getCacheLanguage if user is not login and cache not exits', () => {
+  it('Should call getCacheLanguage if user is not login and cache not e//  OLD XIT
+ xits', () => {
     const userService = TestBed.get(UserService);
     const cacheService = TestBed.get(CacheService);
     cacheService.set('portalLanguage', null);
@@ -191,7 +194,8 @@ describe('MainHeaderComponent', () => {
     expect(component.totalUsersCount).toEqual(1);
   });
 
-  xit('should not fetch managed user list on init as api errored', () => {
+  //  OLD XIT
+ xit('should not fetch managed user list on init as api errored', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
@@ -230,7 +234,8 @@ describe('MainHeaderComponent', () => {
     expect(component.fetchManagedUsers).not.toHaveBeenCalled();
   });
 
-  xit('should switch selected user', () => {
+  //  OLD XIT
+ xit('should switch selected user', () => {
     const userService = TestBed.get(UserService);
     userService._authenticated = true;
     const telemetryService = TestBed.get(TelemetryService);

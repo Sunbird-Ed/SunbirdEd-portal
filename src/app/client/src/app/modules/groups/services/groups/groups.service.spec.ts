@@ -95,7 +95,8 @@ describe('GroupsService', () => {
   });
 
 
-  xit('should call getActivity', () => {
+  //  OLD XIT
+ xit('should call getActivity', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service.groupCservice, 'getActivity').and.callThrough();
     service.getActivity('123', { id: 'do_233433y4234324', type: 'Course' });

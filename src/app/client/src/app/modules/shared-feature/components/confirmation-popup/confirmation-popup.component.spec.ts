@@ -54,14 +54,16 @@ describe('ConfirmationPopupComponent', () => {
     expect(component.confirmationModal.deny).toHaveBeenCalled();
   });
 
-  xit('should call "closeModal()" on click of "close" button on the popup', () => {
+  //  OLD XIT
+ xit('should call "closeModal()" on click of "close" button on the popup', () => {
     spyOn(component, 'closeModal').and.stub();
     const buttonElement = fixture.nativeElement.querySelector('#close-modal-btn');
     buttonElement.click();
     expect(component.closeModal).toHaveBeenCalled();
   });
 
-  xit('Should emit an empty event on close of the modal ', () => {
+  //  OLD XIT
+ xit('Should emit an empty event on close of the modal ', () => {
     spyOn(component.close, 'emit');
     component.closeModal();
     expect(component.close.emit).toHaveBeenCalled();
@@ -83,7 +85,8 @@ describe('ConfirmationPopupComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
   });
 
-  xit('should call "navigateToAddCertificate" on click of "Add certificate" button on the popup', () => {
+  //  OLD XIT
+ xit('should call "navigateToAddCertificate" on click of "Add certificate" button on the popup', () => {
     spyOn(component, 'navigateToAddCertificate').and.stub();
     const buttonElement = fixture.nativeElement.querySelector('#add-certificate');
     buttonElement.click();
