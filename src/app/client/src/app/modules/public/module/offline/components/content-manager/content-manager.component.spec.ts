@@ -81,7 +81,7 @@ describe('ContentManagerComponent', () => {
       isWindows: true,
       drives: windowsDrives
     });
-    spyOn(contentService, 'downloadEvent').and.returnValue(observableOf('Download started'));
+    spyOn(contentService.downloadEvent,'pipe').and.returnValue(observableOf('Download started'));
     spyOn(component.apiCallSubject, 'next');
     component.unHandledFailedList = [];
     component.ngOnInit();

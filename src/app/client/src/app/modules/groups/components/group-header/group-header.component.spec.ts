@@ -312,16 +312,16 @@ describe('GroupHeaderComponent', () => {
     expect(component.showLoader).toBeTruthy();
   });
 
-  it ('should call "toggleModal() when showActivateModal event emitted"', () => {
-    spyOn(component, 'toggleModal');
-    spyOn(component['groupService'], 'showActivateModal').and.returnValue(of (true));
-    component.ngOnInit();
+  // it ('should call "toggleModal() when showActivateModal event emitted"', () => {
+  //   spyOn(component, 'toggleModal');
+  //   spyOn(component['groupService'], 'showActivateModal').and.returnValue(of (true));
+  //   component.ngOnInit();
 
-    component['groupService'].showActivateModal.subscribe(data => {
-      expect(component.toggleModal).toHaveBeenCalledWith(true, 'activate');
-    });
+  //   component['groupService'].showActivateModal.subscribe(data => {
+  //     expect(component.toggleModal).toHaveBeenCalledWith(true, 'activate');
+  //   });
 
-  });
+  // });
 
 
   it('should fetch all the forumIds attached to a group', () => {

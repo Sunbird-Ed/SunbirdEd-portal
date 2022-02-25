@@ -86,6 +86,10 @@ describe('ActivityListComponent', () => {
     component.activityList = mockActivityList.groupData.activitiesGrouped;
     fixture.detectChanges();
   });
+  afterEach(() => {
+    spyOn(component, 'ngOnDestroy').and.callFake(() => { });
+    fixture.destroy();
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
