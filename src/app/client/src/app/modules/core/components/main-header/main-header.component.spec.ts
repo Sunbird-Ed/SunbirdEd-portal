@@ -158,8 +158,7 @@ describe('MainHeaderComponent', () => {
     expect(managedUserService.fetchManagedUserList).not.toHaveBeenCalled();
   });
 
-  it('Should call getCacheLanguage if user is not login and cache e//  OLD XIT
- xits', () => {
+  it('Should call getCacheLanguage if user is not login and cache exits', () => {
     const userService = TestBed.get(UserService);
     const cacheService = TestBed.get(CacheService);
     cacheService.set('portalLanguage', 'hi', { maxAge: 10 * 60 });
@@ -168,8 +167,7 @@ describe('MainHeaderComponent', () => {
     expect(cacheService.exists('portalLanguage')).toEqual(true);
   });
 
-  it('Should call getCacheLanguage if user is not login and cache not e//  OLD XIT
- xits', () => {
+  it('Should call getCacheLanguage if user is not login and cache not exits', () => {
     const userService = TestBed.get(UserService);
     const cacheService = TestBed.get(CacheService);
     cacheService.set('portalLanguage', null);

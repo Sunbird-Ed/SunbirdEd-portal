@@ -66,13 +66,11 @@ describe('ContentPlayerComponent', () => {
     activateRoute.snapshot.queryParams = {
       contentType: 'course', l1Parent: '1234'
     };
-    spyOn(component, 'setPageE//  OLD XIT
- xitTelemtry').and.callThrough();
+    spyOn(component, 'setPageExitTelemtry').and.callThrough();
     component.telemetryImpression = { context: { env: 'content' }, edata: { type: 'play', uri: '/resources/play/content/do_2130404918568960001454', 'pageid': 'content-player' } };
     component.ngOnInit();
     expect(component.contentType).toEqual('course');
-    expect(component.setPageE//  OLD XIT
- xitTelemtry).toHaveBeenCalled();
+    expect(component.setPageExitTelemtry).toHaveBeenCalled();
     expect(component.objectRollUp).toBeDefined();
   });
 
@@ -115,10 +113,8 @@ describe('ContentPlayerComponent', () => {
       pkgVersion: 2
     };
     component.telemetryImpression = { context: { env: 'content' }, edata: { type: 'play', uri: '/resources/play/content/do_2130404918568960001454', 'pageid': 'content-player' } };
-    component.setPageE//  OLD XIT
- xitTelemtry();
-    expect(component.telemetryImpression.edata.subtype).toEqual('pagee//  OLD XIT
- xit');
+    component.setPageExitTelemtry();
+    expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
     expect(component.telemetryImpression).toBeDefined();
   });
 

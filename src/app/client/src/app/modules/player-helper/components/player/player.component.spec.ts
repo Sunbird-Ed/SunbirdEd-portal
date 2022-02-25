@@ -195,8 +195,7 @@ describe('PlayerComponent', () => {
     });
 
     it('should close player fullscreen for mozilla browser', () => {
-      document['e//  OLD XIT
- xitFullscreen'] = undefined;
+      document['exitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
@@ -204,24 +203,19 @@ describe('PlayerComponent', () => {
     });
 
     it('should close player fullscreen for webkit browser ', () => {
-      document['e//  OLD XIT
- xitFullscreen'] = undefined;
+      document['exitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
-      document['webkitE//  OLD XIT
- xitFullscreen'] = () => { };
+      document['webkitExitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
     });
 
     it('should close player fullscreen for ms browser ', () => {
-      document['e//  OLD XIT
- xitFullscreen'] = undefined;
+      document['exitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
-      document['webkitE//  OLD XIT
- xitFullscreen'] = undefined;
-      document['msE//  OLD XIT
- xitFullscreen'] = () => { };
+      document['webkitExitFullscreen'] = undefined;
+      document['msExitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -392,8 +386,7 @@ describe('PlayerComponent', () => {
     expect(navigationHelperService.handleContentManagerOnFullscreen).toHaveBeenCalledWith(true);
   });
 
-  it('should show content manger when e//  OLD XIT
- xit from fullscreen mode for desktop', () => {
+  it('should show content manger when exit from fullscreen mode for desktop', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');

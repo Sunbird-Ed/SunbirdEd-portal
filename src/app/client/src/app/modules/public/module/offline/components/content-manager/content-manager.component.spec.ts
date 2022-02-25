@@ -428,8 +428,7 @@ describe('ContentManagerComponent', () => {
     expect(component.visibility).toBeFalsy();
   });
 
-  it('should show content manger when player e//  OLD XIT
- xit from fullscreen mode for desktop', () => {
+  it('should show content manger when player exit from fullscreen mode for desktop', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
     component.ngOnInit();
     navigationHelperService.handleCMvisibility.emit(false);
