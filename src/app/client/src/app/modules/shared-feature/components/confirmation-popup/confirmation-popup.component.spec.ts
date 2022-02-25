@@ -101,7 +101,8 @@ describe('ConfirmationPopupComponent', () => {
     expect(component.confirmationModal.deny).toHaveBeenCalled();
   });
 
-  it('should emit an event on click of "Add certificate" button', () => {
+  //  OLD XIT
+  xit('should emit an event on click of "Add certificate" button', () => {
     component.batchId = 'SOME_BATCH_ID';
     spyOn(component.close, 'emit');
     const mockObj = {mode: 'add-certificates', batchId: component.batchId};
