@@ -103,10 +103,12 @@ export default class Content {
                 logger.debug(`ReqId = "${req.headers['X-msgid']}": Call isUpdateRequired()`)
                 if (this.isUpdateRequired(content, req)) {
                     logger.debug(`ReqId = "${req.headers['X-msgid']}": Call checkForUpdate() to check whether update is required for content: `, _.get(content, 'identifier'));
-                    content = await this.checkForUpdates(content, req)
+                    content = await this.checkForUpdates(content, req);
+                    content = _.has(content, 'streamingUrl') ? _.omit(content, 'streamingUrl') : content;
                     resObj['content'] = content;
                     return res.send(Response.success('api.content.read', resObj, req));
                 } else {
+                    content = _.has(content, 'streamingUrl') ? _.omit(content, 'streamingUrl') : content;
                     resObj['content'] = content;
                     return res.send(Response.success('api.content.read', resObj, req));
                 }
