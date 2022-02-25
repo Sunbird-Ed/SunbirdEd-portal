@@ -59,12 +59,12 @@ describe('DataDrivenFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DataDrivenFilterComponent);
     component = fixture.componentInstance;
-    frameworkService = TestBed.get(FrameworkService);
-    formService = TestBed.get(FormService);
-    cacheService = TestBed.get(CacheService);
-    userService = TestBed.get(UserService);
-    resourceService = TestBed.get(ResourceService);
-    publicDataService = TestBed.get(PublicDataService);
+    frameworkService= <any> TestBed.inject(FrameworkService);
+    formService= <any> TestBed.inject(FormService);
+    cacheService= <any> TestBed.inject(CacheService);
+    userService= <any> TestBed.inject(UserService);
+    resourceService= <any> TestBed.inject(ResourceService);
+    publicDataService= <any> TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.callFake((options) => {
       if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
         return of({result: {channel: {defaultFramework: mockFrameworkInput}}});

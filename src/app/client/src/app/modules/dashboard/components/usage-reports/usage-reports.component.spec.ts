@@ -48,7 +48,7 @@ describe('UsageReportsComponent', () => {
     expect(component.isTableDataLoaded).toEqual(false);
   });
   it('makes expected calls of ngOnInit and render the report ', () => {
-    const usageService = TestBed.get(UsageService);
+    const usageService= <any> TestBed.inject(UsageService);
     component.slug = 'sunbird';
     spyOn(document, 'getElementById').and.returnValue('sunbird');
     spyOn(component, 'renderReport').and.callThrough();
@@ -61,8 +61,8 @@ describe('UsageReportsComponent', () => {
     expect(component.chartData.length).toBe(6);
   });
   it('should call downloadCSV method ', () => {
-    const usageService = TestBed.get(UsageService);
-    const toasterService = TestBed.get(ToasterService);
+    const usageService= <any> TestBed.inject(UsageService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     component.slug = 'sunbird';
     spyOn(document, 'getElementById').and.returnValue('sunbird');
     spyOn(usageService, 'getData').and.returnValue(observableOf(mockChartData.configData));
@@ -74,8 +74,8 @@ describe('UsageReportsComponent', () => {
     expect(usageService.getData).toHaveBeenCalled();
     });
     it('should call renderFiles method ', () => {
-      const usageService = TestBed.get(UsageService);
-      const toasterService = TestBed.get(ToasterService);
+      const usageService= <any> TestBed.inject(UsageService);
+      const toasterService= <any> TestBed.inject(ToasterService);
       component.slug = 'sunbird';
       spyOn(document, 'getElementById').and.returnValue('sunbird');
       spyOn(usageService, 'getData').and.returnValue(observableOf(mockChartData.configData));
@@ -89,7 +89,7 @@ describe('UsageReportsComponent', () => {
       expect(component.isFileDataLoaded).toBeTruthy();
       });
       it('should get tnc details for report viewer', () => {
-        const reportViewerTncService = TestBed.get(TncService);
+        const reportViewerTncService= <any> TestBed.inject(TncService);
         spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
           {
             'id': 'api',
@@ -113,7 +113,7 @@ describe('UsageReportsComponent', () => {
         expect(component.showTncPopup).toBeTruthy();
       });
       it('should call the goBack method', () => {
-        const navigationHelperService = TestBed.get(NavigationHelperService);
+        const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
         const spy = spyOn(navigationHelperService, 'goBack');
         component.goBack();
         expect(spy).toHaveBeenCalled();

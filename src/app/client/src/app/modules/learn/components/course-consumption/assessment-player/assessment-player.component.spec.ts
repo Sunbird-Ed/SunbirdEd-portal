@@ -143,7 +143,7 @@ describe('AssessmentPlayerComponent', () => {
   //  OLD XIT
  xit('should call subscribeToQueryParam, on error', fakeAsync(() => {
     component.batchId = '0130272832104038409';
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'goBack');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
@@ -157,7 +157,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call subscribeToQueryParam, and get collection', () => {
     component.isParentCourse = false;
-    const playerService = TestBed.get(PlayerService);
+    const playerService= <any> TestBed.inject(PlayerService);
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue({ result: { content: assessmentPlayerMockData.activeContent } });
     spyOn<any>(component, 'setTelemetryCourseImpression');
     spyOn(component, 'setActiveContent');
@@ -171,7 +171,7 @@ describe('AssessmentPlayerComponent', () => {
   });
   //  OLD XIT
  xit('should call subscribeToQueryParam, when no bachID present', () => {
-    const playerService = TestBed.get(PlayerService);
+    const playerService= <any> TestBed.inject(PlayerService);
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue({
       result: {
         content: assessmentPlayerMockData.courseHierarchy
@@ -205,7 +205,7 @@ describe('AssessmentPlayerComponent', () => {
   //  OLD XIT
  xit('should call initPlayer success', () => {
     component.collectionId = 'do_11287204084174028818';
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of({}));
     spyOn<any>(component, 'setTelemetryContentImpression');
     fixture.detectChanges();
@@ -221,8 +221,8 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call initPlayer on error', () => {
     component.collectionId = 'do_11287204084174028818';
-    const toasterService = TestBed.get(ToasterService);
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
     component.contentStatus = assessmentPlayerMockData.contentStatus;
@@ -253,7 +253,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call getContentState', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_123232']);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of({ content: [] }));
     spyOn(component, 'calculateProgress');
@@ -283,7 +283,7 @@ describe('AssessmentPlayerComponent', () => {
     component.activeContent = {
       contentType: 'Course'
     };
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn<any>(component, 'validEndEvent').and.returnValue(true);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({ content: {} }));
     const event = { detail: { telemetryData: { eid: 'END' } } };
@@ -303,7 +303,7 @@ describe('AssessmentPlayerComponent', () => {
       mimeType: 'application/vnd.ekstep.h5p-archive',
       identifier: '123'
     };
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn<any>(component, 'validEndEvent').and.returnValue(true);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(throwError({}));
     const event = {
@@ -334,7 +334,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should  proceed further if batch status is 1 inside contentProgressEvent()', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     component.batchId = '11259794895';
     component.enrolledBatchInfo = { status: 1 };
     spyOn<any>(component, 'validEndEvent').and.returnValues(100);
@@ -350,7 +350,7 @@ describe('AssessmentPlayerComponent', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 2 };
     component.contentStatus = assessmentPlayerMockData.contentStatus;
-    const assessmentScoreService = TestBed.get(AssessmentScoreService);
+    const assessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     spyOn(assessmentScoreService, 'receiveTelemetryEvents').and.stub();
     spyOn(component, 'calculateProgress').and.stub();
     fixture.detectChanges();
@@ -360,7 +360,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onAssessmentEvents', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 1 };
-    const assessmentScoreService = TestBed.get(AssessmentScoreService);
+    const assessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     spyOn(assessmentScoreService, 'receiveTelemetryEvents');
     spyOn(component, 'calculateProgress');
     fixture.detectChanges();
@@ -370,7 +370,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onQuestionScoreSubmitEvents', () => {
-    const assessmentScoreService = TestBed.get(AssessmentScoreService);
+    const assessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     spyOn(assessmentScoreService, 'handleSubmitButtonClickEvent');
     spyOn(component, 'contentProgressEvent');
     fixture.detectChanges();
@@ -443,7 +443,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call logAuditEvent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.activeContent = assessmentPlayerMockData.activeContent;
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     component.batchId = '121787782323';
     component['isUnit'] = true;
     component.courseId = assessmentPlayerMockData.courseHierarchy.identifier;
@@ -455,7 +455,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService.contentFullScreenEvent,'pipe').and.returnValue(of({ data: false}));
     fixture.detectChanges();
     component.ngOnInit();
@@ -465,7 +465,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService.contentFullScreenEvent, 'pipe').and.returnValue(of({ data: true }));
     fixture.detectChanges();
     component.ngOnInit();
@@ -535,8 +535,8 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call getCollectionInfo', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of({}));
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of({}));
     component['activeContent'] = { contentType: 'SelfAssess', identifier: 'do_2334343' };
@@ -583,9 +583,9 @@ describe('AssessmentPlayerComponent', () => {
         { identifier: 'do_2121', status: 2 }, { identifier: 'do_2334343', status: 2 }, { identifier: 'do_45454', status: 2 }
       ]
     };
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
-    const courseProgressService = TestBed.get(CourseProgressService);
+    const courseProgressService= <any> TestBed.inject(CourseProgressService);
     spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({ }, { }) {
       return assessmentPlayerMockData.contentProgressReqData;
     });
@@ -602,7 +602,7 @@ describe('AssessmentPlayerComponent', () => {
   //  OLD XIT
  xit('should call setActiveContent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'flattenDeep').and.returnValue([assessmentPlayerMockData.activeContent]);
     spyOn<any>(component, 'getContentState');
     spyOn<any>(component, 'initPlayer');
@@ -614,7 +614,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onSelfAssessLastAttempt last attempt', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const event = {
       'data': 'renderer:selfassess:lastattempt'
@@ -624,7 +624,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onSelfAssessLastAttempt max attempt exceeded', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const event = {
       'data': 'renderer:maxLimitExceeded'
@@ -662,7 +662,7 @@ describe('AssessmentPlayerComponent', () => {
     }));
     component.activeContent = assessmentPlayerMockData.lastAttemptContent;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
@@ -672,7 +672,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call getCourseCompletionStatus for self assess course', () => {
     component.isCourseCompleted = false;
     component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'getContentStateRequest').and.returnValue(of({
       userId: 'asas-saa12-asas-12',
@@ -686,9 +686,9 @@ describe('AssessmentPlayerComponent', () => {
         { identifier: 'do_2121', status: 2 }, { identifier: 'do_2334343', status: 2 }, { identifier: 'do_45454', status: 2 }
       ]
     };
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
-    const courseProgressService = TestBed.get(CourseProgressService);
+    const courseProgressService= <any> TestBed.inject(CourseProgressService);
     spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({ }, { }) {
       return assessmentPlayerMockData.contentProgressReqData;
     });
@@ -714,9 +714,9 @@ describe('AssessmentPlayerComponent', () => {
         { identifier: 'do_2121', status: 2 }, { identifier: 'do_2334343', status: 2 }, { identifier: 'do_45454', status: 2 }
       ]
     };
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const courseConsumptionService= <any> TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
-    const courseProgressService = TestBed.get(CourseProgressService);
+    const courseProgressService= <any> TestBed.inject(CourseProgressService);
     spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({ }, { }) {
       return assessmentPlayerMockData.contentProgressReqData;
     });

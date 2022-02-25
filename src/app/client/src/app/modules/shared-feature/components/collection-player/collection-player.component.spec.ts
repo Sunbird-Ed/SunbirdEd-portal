@@ -103,7 +103,7 @@ describe('CollectionPlayerComponent', () => {
       type: 'click',
       pageid: 'collection-player'
     };
-    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    generaliseLabelService= <any> TestBed.inject(GeneraliseLabelService);
     spyOn(generaliseLabelService, 'initialize').and.returnValue('');
   });
 
@@ -112,7 +112,7 @@ describe('CollectionPlayerComponent', () => {
   });
 
   it('should create', () => {
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     expect(component).toBeTruthy();
     expect(component.showPlayer).toBeFalsy();
@@ -123,8 +123,8 @@ describe('CollectionPlayerComponent', () => {
   });
 
   it('should get content based on route/query params', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
@@ -132,10 +132,10 @@ describe('CollectionPlayerComponent', () => {
   });
 
   it('should call closeContentPlayer method', fakeAsync(() => {
-    const windowScrollService = TestBed.get(WindowScrollService);
+    const windowScrollService= <any> TestBed.inject(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
-    const router = TestBed.get(Router);
-    const route = TestBed.get(ActivatedRoute);
+    const router= <any> TestBed.inject(Router);
+    const route= <any> TestBed.inject(ActivatedRoute);
     const navigation = {
       queryParams: {
         dialCode: '61U24C'
@@ -154,7 +154,7 @@ describe('CollectionPlayerComponent', () => {
       url: '/play/collection/do_11287198635947622412',
     };
     spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     expect(router.navigate).toBeDefined(['/']);
   });
 
@@ -165,7 +165,7 @@ describe('CollectionPlayerComponent', () => {
       queryParams: { key: 'collection' }
     };
     spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     expect(router.navigate).toBeDefined([previousUrl.searchUrl, previousUrl.queryParams]);
   });
 
@@ -175,7 +175,7 @@ describe('CollectionPlayerComponent', () => {
       otherUrl: '/browse/play/collection/do_3123405048187617282365',
     };
     spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     expect(router.navigate).toBeDefined([previousUrl.otherUrl]);
   });
 
@@ -186,7 +186,7 @@ describe('CollectionPlayerComponent', () => {
   });
 
   it('should call onShareLink', () => {
-    const contentUtilsService = TestBed.get(ContentUtilsServiceService);
+    const contentUtilsService= <any> TestBed.inject(ContentUtilsServiceService);
     component['collectionId'] = 'do_23242';
     spyOn(contentUtilsService, 'getPublicShareUrl').and.returnValue('someURL');
     spyOn(component, 'setTelemetryShareData');
@@ -252,10 +252,10 @@ describe('CollectionPlayerComponent', () => {
 
   it('should call closeCollectionPlayer and navigate backt to previous url', () => {
     component.dialCode = undefined;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToPreviousUrl');
     component.closeCollectionPlayer();
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     expect(router.navigate).toHaveBeenCalledWith(['/explore'], { queryParams: { selectedTab: 'textbook' } });
   });
 
@@ -290,9 +290,9 @@ describe('CollectionPlayerComponent', () => {
   it('should init content manager and connection service for desktop only', () => {
     component.collectionData = contentHeaderData.collectionData.result.content;
     component.contentDownloadStatus =  { [contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED'};
-    const utilService = TestBed.get(UtilService);
+    const utilService= <any> TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]));
     spyOn(component, 'checkDownloadStatus');
     component.ngOnInit();
@@ -307,7 +307,7 @@ describe('CollectionPlayerComponent', () => {
     expect(status).toBeTruthy();
   });
   it('should check checkDownloadStatus', () => {
-    const playerService = TestBed.get(PublicPlayerService);
+    const playerService= <any> TestBed.inject(PublicPlayerService);
     component.collectionData = contentHeaderData.collectionData.result.content;
     component.contentDownloadStatus =  { [contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED'};
     component.checkDownloadStatus();
@@ -316,14 +316,14 @@ describe('CollectionPlayerComponent', () => {
   });
   it('should call updateCollection and successfuly update collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'updateContent').and.returnValue(of(contentHeaderData.updateCollection.success));
     component.updateCollection(contentHeaderData.collectionData);
     expect(component.showUpdate).toBeFalsy();
   });
   it('should call updateCollection and error while updating collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'updateContent').and.returnValue(throwError(contentHeaderData.updateCollection.error));
     component.updateCollection(contentHeaderData.collectionData);
     expect(component.isConnected).toBeTruthy();
@@ -333,7 +333,7 @@ describe('CollectionPlayerComponent', () => {
   it('should call exportCollection and successfuly export collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
     component.showExportLoader = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'exportContent').and.returnValue(of(contentHeaderData.exportCollection.success));
     component.exportCollection(contentHeaderData.collectionData);
     expect(component.showExportLoader).toBeFalsy();
@@ -343,14 +343,14 @@ describe('CollectionPlayerComponent', () => {
   it('should call exportCollection and error while  exporting collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
     component.showExportLoader = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'exportContent').and.returnValue(throwError(contentHeaderData.exportCollection.error));
     component.exportCollection(contentHeaderData.collectionData);
     expect(component.showExportLoader).toBeFalsy();
     expect(component.toasterService.error(resourceBundle.messages.fmsg.m0091));
   });
   it('should check isYoutubeContentPresent', () => {
-    const offlineCardService = TestBed.get(OfflineCardService);
+    const offlineCardService= <any> TestBed.inject(OfflineCardService);
     component.collectionData = contentHeaderData.collectionData;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     spyOn(component, 'downloadCollection').and.returnValue(contentHeaderData.collectionData);
@@ -362,7 +362,7 @@ describe('CollectionPlayerComponent', () => {
     component.contentManagerService.downloadContentId = contentHeaderData.collectionData.result.content.identifier;
     component.collectionData = contentHeaderData.collectionData;
     component.disableDelete = false;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(of(contentHeaderData.downloadCollection.success));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
@@ -372,7 +372,7 @@ describe('CollectionPlayerComponent', () => {
     component.contentManagerService.downloadContentId = contentHeaderData.collectionData.result.content.identifier;
     component.collectionData = contentHeaderData.collectionData;
     component.disableDelete = false;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(throwError(contentHeaderData.downloadCollection.downloadError));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
@@ -381,7 +381,7 @@ describe('CollectionPlayerComponent', () => {
   });
   it('should call delete collection and successfuly delete collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(of(contentHeaderData.deleteCollection.success));
     component.deleteCollection(contentHeaderData.collectionData);
     expect(component.toasterService.success(resourceBundle.messages.stmsg.desktop.deleteTextbookSuccessMessage));
@@ -389,7 +389,7 @@ describe('CollectionPlayerComponent', () => {
   it('should call delete collection and error while deleting collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
     component.disableDelete = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(contentHeaderData.deleteCollection.error));
     component.deleteCollection(contentHeaderData.collectionData);
     expect(component.disableDelete).toBeFalsy();

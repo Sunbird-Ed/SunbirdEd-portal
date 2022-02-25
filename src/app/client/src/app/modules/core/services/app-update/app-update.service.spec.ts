@@ -13,12 +13,12 @@ describe('AppUpdateService', () => {
   }));
 
   it('should be created', () => {
-    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    const service: AppUpdateService= <any> TestBed.inject(AppUpdateService);
     expect(service).toBeTruthy();
   });
 
   it('app-update should send the response', () => {
-    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    const service: AppUpdateService= <any> TestBed.inject(AppUpdateService);
     spyOn(service, 'get').and.returnValue(observableOf(serverRes.app_update));
     service.checkForAppUpdate().subscribe(response => {
       expect(response).toBe(serverRes.app_update);
@@ -27,7 +27,7 @@ describe('AppUpdateService', () => {
   });
 
   it('app-update should throw error', () => {
-    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    const service: AppUpdateService= <any> TestBed.inject(AppUpdateService);
     spyOn(service, 'get').and.returnValue(throwError(serverRes.error));
     service.checkForAppUpdate().subscribe(data => { }, err => {
       expect(err).toBe(serverRes.error);
@@ -36,7 +36,7 @@ describe('AppUpdateService', () => {
   });
 
   it('should get app info failure case', () => {
-    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    const service: AppUpdateService= <any> TestBed.inject(AppUpdateService);
     spyOn(service, 'get').and.returnValue(throwError(serverRes.appInfoFailureCase));
     service.getAppInfo().subscribe(data => { }, err => {
       expect(err).toEqual(serverRes.appInfoFailureCase);
@@ -45,7 +45,7 @@ describe('AppUpdateService', () => {
   });
 
   it('should get app info data', () => {
-    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    const service: AppUpdateService= <any> TestBed.inject(AppUpdateService);
     spyOn(service, 'get').and.returnValue(observableOf(serverRes.appInfoSuccess));
     service.getAppInfo().subscribe(data => {
       expect(data).toEqual(serverRes.appInfoSuccess);

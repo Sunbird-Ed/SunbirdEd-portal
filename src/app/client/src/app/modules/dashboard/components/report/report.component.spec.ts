@@ -74,7 +74,7 @@ describe('ReportComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportComponent);
     component = fixture.componentInstance;
-    reportService = TestBed.get(ReportService);
+    reportService= <any> TestBed.inject(ReportService);
     fixture.detectChanges();
   });
 
@@ -469,7 +469,7 @@ describe('ReportComponent', () => {
   });
 
   it('should get tnc details for report viewer', () => {
-    const reportViewerTncService = TestBed.get(TncService);
+    const reportViewerTncService= <any> TestBed.inject(TncService);
     spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
       {
         'id': 'api',

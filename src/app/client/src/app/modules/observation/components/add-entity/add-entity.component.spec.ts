@@ -62,9 +62,9 @@ xdescribe('AddEntityComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddEntityComponent);
     component = fixture.componentInstance;
-    observationUtilService = TestBed.get(ObservationUtilService);
-    observationService = TestBed.get(ObservationService);
-    kendraService = TestBed.get(KendraService);
+    observationUtilService= <any> TestBed.inject(ObservationUtilService);
+    observationService= <any> TestBed.inject(ObservationService);
+    kendraService= <any> TestBed.inject(KendraService);
     component.searchQuery = '';
     component.payload = {};
   });

@@ -47,7 +47,7 @@ describe('CommingSoonComponent', () => {
   });
 
   it('should set custom comming soon message from api response', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const orgDetailsService= <any> TestBed.inject(OrgDetailsService);
     spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(commonMessageApiResp));
     orgDetailsService._rootOrgId = 'b00bc992ef25f1a9a8d63291e20efc8d';
     component.ngOnInit();
@@ -55,7 +55,7 @@ describe('CommingSoonComponent', () => {
   });
 
   it('should show default comming soon message if custom comming soon doesnt exists', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const orgDetailsService= <any> TestBed.inject(OrgDetailsService);
     orgDetailsService._rootOrgId = 'org_002';
     spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf({}));
     component.ngOnInit();

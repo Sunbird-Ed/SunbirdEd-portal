@@ -61,19 +61,19 @@ describe('NoResultComponent', () => {
       { 'index': 0, 'contentType': 'all', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
       { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
     ];
-    formService = TestBed.get(FormService);
+    formService= <any> TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(of(response));
     component['formData']();
   });
    it('should call the handleEvent method for non-loggedin user', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
     component.currentPage = {'anonumousUserRoute': {'route': '/explore/1', 'queryParam': 'all'}, 'loggedInUserRoute': {'route': '/search/Library/1', 'queryParam': 'all'}};
     component.handleEvent();
     expect(component.url).toEqual('/explore/1');
   });
   it('should call the handleEvent method for loggedin user', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
     component.currentPage = {'anonumousUserRoute': {'route': '/explore/1', 'queryParam': 'all'}, 'loggedInUserRoute': {'route': '/search/Library/1', 'queryParam': 'all'}};
     component.handleEvent();

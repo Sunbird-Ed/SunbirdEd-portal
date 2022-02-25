@@ -27,7 +27,7 @@ describe('FrameworkCatLabelTranslatePipe', () => {
 
     describe('#transform', () => {
         it('Should tranform category label', () => {
-            const resourceService = TestBed.get(ResourceService);
+            const resourceService= <any> TestBed.inject(ResourceService);
             const pipe = new FrameworkCatLabelTranslatePipe(resourceService);
             const transformedResult = pipe.transform('board');
             expect(transformedResult).toBeDefined();
@@ -35,7 +35,7 @@ describe('FrameworkCatLabelTranslatePipe', () => {
         });
 
         it('Should return the label if translation is not available', () => {
-            const resourceService = TestBed.get(ResourceService);
+            const resourceService= <any> TestBed.inject(ResourceService);
             const pipe = new FrameworkCatLabelTranslatePipe(resourceService);
             const transformedResult = pipe.transform('random');
             expect(transformedResult).toBeDefined();
@@ -43,7 +43,7 @@ describe('FrameworkCatLabelTranslatePipe', () => {
         });
 
         it('Should return translation if translation key is passed', () => {
-            const resourceService = TestBed.get(ResourceService);
+            const resourceService= <any> TestBed.inject(ResourceService);
             const pipe = new FrameworkCatLabelTranslatePipe(resourceService);
             const transformedResult = pipe.transform('frmelmnts.lbl.boards');
             expect(transformedResult).toBeDefined();

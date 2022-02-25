@@ -34,7 +34,7 @@ describe('TelemetryErrorModalComponent', () => {
   });
 
   it('should not show any elements by default ', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     telemetryService.telemetryEvents = [telemetryEventMock];
 
     component.ngOnInit();

@@ -22,15 +22,15 @@ describe('ContentDirectionDirective', () => {
         { provide: Renderer2, useValue: renderer2Stub }
       ]
     });
-    contentDirectionDirective = TestBed.get(ContentDirectionDirective);
+    contentDirectionDirective= <any> TestBed.inject(ContentDirectionDirective);
   });
   it('can load instance', () => {
     expect(contentDirectionDirective).toBeTruthy();
   });
   describe('ngAfterViewInit', () => {
     it('should take input and set  attribute  ', () => {
-      const renderer2: Renderer2 = TestBed.get(Renderer2);
-      const cacheService: CacheService = TestBed.get(CacheService);
+      const renderer2: Renderer2= <any> TestBed.inject(Renderer2);
+      const cacheService: CacheService= <any> TestBed.inject(CacheService);
       contentDirectionDirective.data = mockRes.data;
       cacheService.set('resourcebundlesearch', mockRes.cachedResourcebundleSearch.value , { maxAge: 10 * 60});
       spyOn(renderer2, 'setAttribute').and.callThrough();

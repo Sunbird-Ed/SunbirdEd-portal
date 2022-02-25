@@ -68,8 +68,8 @@ describe('CourseConsumptionService', () => {
   }));
 
   it('should not call api to get course hierarchy if data exists', () => {
-    const service = TestBed.get(CourseConsumptionService);
-    const playerService = TestBed.get(PlayerService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
+    const playerService= <any> TestBed.inject(PlayerService);
     service.courseHierarchy = courseHierarchyGetMockResponse.result.content;
     spyOn(service, 'getCourseHierarchy').and.callThrough();
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(courseHierarchyGetMockResponse));
@@ -78,8 +78,8 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should call api to get course hierarchy if data not exists', () => {
-    const service = TestBed.get(CourseConsumptionService);
-    const playerService = TestBed.get(PlayerService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
+    const playerService= <any> TestBed.inject(PlayerService);
     spyOn(service, 'getCourseHierarchy').and.callThrough();
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(courseHierarchyGetMockResponse));
     service.getCourseHierarchy('do_212347136096788480178');
@@ -87,18 +87,18 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should call flattenDeep', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     const response = service.flattenDeep(courseConsumptionServiceMockData.contents);
     expect(response.length).toBe(2);
   });
 
   it('should call parseChildren', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     const response = service.parseChildren(courseConsumptionServiceMockData.courseHierarchy);
     expect(response).toEqual(courseConsumptionServiceMockData.parseChildrenResult);
   });
   it(`Show throw error with msg The course doesn't have any open batches and emit enableCourseEntrollment as false event`, () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOn(service['toasterService'], 'error');
     spyOn(service['enableCourseEntrollment'], 'emit');
     service.getAllOpenBatches({content: [], count: 0});
@@ -107,14 +107,14 @@ describe('CourseConsumptionService', () => {
   });
 
   it(`Show emit enableCourseEntrollment as true event`, () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOn(service['enableCourseEntrollment'], 'emit');
     service.getAllOpenBatches({ content: [{ enrollmentType: 'open' }], count: 1 });
     expect(service['enableCourseEntrollment'].emit).toHaveBeenCalledWith(true);
   });
 
   it('should call setPreviousAndNextModule and check only next module is defined', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
     const collectionId = 'do_1130272760359813121209';
     const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
@@ -123,7 +123,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should call setPreviousAndNextModule and check both prev/next module is defined', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
     const collectionId = 'do_1130272760359567361201';
     const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
@@ -132,7 +132,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should call setPreviousAndNextModule and check only prev module is defined', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
     const collectionId = 'do_1130272760359567361207';
     const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
@@ -141,16 +141,16 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should set course page previous url', () => {
-    const service = TestBed.get(CourseConsumptionService);
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
+    const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/learn' });
     service.setCoursePagePreviousUrl();
     expect(service.coursePagePreviousUrl).toEqual({ url: '/learn' });
   });
 
   it('should return course page previous url', () => {
-    const service = TestBed.get(CourseConsumptionService);
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
+    const navigationHelperService= <any> TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/learn' });
     service.setCoursePagePreviousUrl();
     const previousPageUrl = service.getCoursePagePreviousUrl;
@@ -158,7 +158,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should return user is a creator', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
     const response = service.canCreateBatch(courseConsumptionServiceMockData.courseHierarchy);
@@ -166,7 +166,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should return  user is not a creator', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99');
     spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(false);
     const response = service.canCreateBatch(courseConsumptionServiceMockData.courseHierarchy);
@@ -174,7 +174,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should return user can viewdashboard', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
     spyOn(service, 'canCreateBatch').and.returnValue(true);
@@ -183,7 +183,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should return  user can not viewdashboard', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99');
     spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(false);
     spyOn(service, 'canCreateBatch').and.returnValue(false);
@@ -192,7 +192,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should return user can  addcert', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
     spyOn(service, 'canCreateBatch').and.returnValue(true);
@@ -201,7 +201,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should return  user can not addcert', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99');
     spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(false);
     spyOn(service, 'canCreateBatch').and.returnValue(false);
@@ -210,14 +210,14 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should enable trackable', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'yes';
     const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
     expect(response).toEqual(true);
   });
 
   it('should disable trackable', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'no';
     courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
     const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
@@ -225,7 +225,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should enable "certificate creation"', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOn(service, 'canCreateBatch').and.returnValue(true);
     spyOn(service, 'isTrackableCollection').and.returnValue(true);
     courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'yes';
@@ -238,7 +238,7 @@ describe('CourseConsumptionService', () => {
   });
 
   it('should disable "certificate creation"', () => {
-    const service = TestBed.get(CourseConsumptionService);
+    const service= <any> TestBed.inject(CourseConsumptionService);
     spyOn(service, 'canCreateBatch').and.returnValue(true);
     spyOn(service, 'isTrackableCollection').and.returnValue(true);
     courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'Yes';

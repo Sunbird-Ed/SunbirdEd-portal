@@ -144,7 +144,7 @@ describe('PublishedComponent', () => {
   });
 
   it('should navigate to given pageNumber along with the filter if added', () => {
-    const route = TestBed.get(Router);
+    const route= <any> TestBed.inject(Router);
     spyOn(route, 'navigate').and.stub();
     component.pager = testData.pager;
     const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
@@ -157,7 +157,7 @@ describe('PublishedComponent', () => {
   });
 
   it('should call isPublishedCourse and showCourseQRCodeBtn should be true', () => {
-    const searchService = TestBed.get(SearchService);
+    const searchService= <any> TestBed.inject(SearchService);
     spyOn(searchService, 'compositeSearch').and.returnValue(observableOf(mockData.mockRes.searchSuccess));
     component.isPublishedCourse();
     expect(component.showCourseQRCodeBtn).toBeTruthy();
@@ -165,7 +165,7 @@ describe('PublishedComponent', () => {
 
   it('should call getCourseQRCsv', () => {
     const returnData = { result: { fileUrl: 'test'}};
-    const coursesService = TestBed.get(CoursesService);
+    const coursesService= <any> TestBed.inject(CoursesService);
     spyOn(window, 'open');
     spyOn(coursesService, 'getQRCodeFile').and.returnValue(observableOf(returnData));
     component.getCourseQRCsv();

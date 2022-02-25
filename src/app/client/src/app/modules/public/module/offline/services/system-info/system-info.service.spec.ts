@@ -14,8 +14,8 @@ describe('SystemInfoService', () => {
   }));
 
   it('should be created', () => {
-    const service: SystemInfoService = TestBed.get(SystemInfoService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const service: SystemInfoService= <any> TestBed.inject(SystemInfoService);
+    const publicDataService= <any> TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValue(of(systemInfoData));
     const sysInfo = service.getSystemInfo();
     expect(service).toBeTruthy();

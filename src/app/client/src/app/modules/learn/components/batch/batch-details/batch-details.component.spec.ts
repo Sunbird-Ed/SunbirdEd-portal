@@ -69,7 +69,7 @@ describe('BatchDetailsComponent', () => {
 
   });
   it('should fetch only open batch of course if course is not enrolled and user is not mentor', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
@@ -94,11 +94,11 @@ describe('BatchDetailsComponent', () => {
     expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should throw error when fetching all batch details fails', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
-    const resourceService = TestBed.get(ResourceService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
@@ -116,8 +116,8 @@ describe('BatchDetailsComponent', () => {
     expect(component.showError).toBeTruthy();
   });
   it('should fetch all batch of course if course is not enrolled and user is mentor', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    const permissionService = TestBed.get(PermissionService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
+    const permissionService= <any> TestBed.inject(PermissionService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
@@ -142,16 +142,16 @@ describe('BatchDetailsComponent', () => {
     expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should navigate to update batch route', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    const route = TestBed.get(Router);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
+    const route= <any> TestBed.inject(Router);
     spyOn(courseBatchService, 'setUpdateBatchDetails');
     component.batchUpdate({ identifier: '123', enrollmentType: 'open' });
     expect(route.navigate).toHaveBeenCalledWith(['update/batch', '123'],
       { queryParams: { enrollmentType: 'open' }, relativeTo: component.activatedRoute });
   });
   it('should navigate to enroll route', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    const route = TestBed.get(Router);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
+    const route= <any> TestBed.inject(Router);
     spyOn(courseBatchService, 'setEnrollToBatchDetails');
     component.enrollBatch({identifier: '123'});
     const routeQueryParams = {
@@ -161,8 +161,8 @@ describe('BatchDetailsComponent', () => {
     expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], routeQueryParams);
   });
   it('should navigate to create batch', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    const route = TestBed.get(Router);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
+    const route= <any> TestBed.inject(Router);
     component.createBatch();
     expect(route.navigate).toHaveBeenCalledWith(['create/batch'], {relativeTo: component.activatedRoute});
   });
@@ -185,8 +185,8 @@ describe('BatchDetailsComponent', () => {
   });
 
   it(`should allow 'Create Batch' button to be shown if the user has created to course and has necessary roles`, () => {
-    const userService = TestBed.get(UserService);
-    const permissionService = TestBed.get(PermissionService);
+    const userService= <any> TestBed.inject(UserService);
+    const permissionService= <any> TestBed.inject(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
@@ -234,8 +234,8 @@ describe('BatchDetailsComponent', () => {
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
-    const userService = TestBed.get(UserService);
-    const permissionService = TestBed.get(PermissionService);
+    const userService= <any> TestBed.inject(UserService);
+    const permissionService= <any> TestBed.inject(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
@@ -247,7 +247,7 @@ describe('BatchDetailsComponent', () => {
   });
 
   it('should call getJoinCourseBatchDetails and get success', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
@@ -269,7 +269,7 @@ describe('BatchDetailsComponent', () => {
     expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should call getJoinCourseBatchDetails and get error', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
@@ -279,7 +279,7 @@ describe('BatchDetailsComponent', () => {
   });
 
   it('should call logTelemetry', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.logTelemetry('buttonId');
     expect(telemetryService.interact).toHaveBeenCalled();
@@ -304,7 +304,7 @@ describe('BatchDetailsComponent', () => {
 
 
   it('should call getJoinCourseBatchDetails', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
+    const courseBatchService= <any> TestBed.inject(CourseBatchService);
     const batchList = allBatchDetailsWithFeactureBatch.result.response.content[0];
     spyOn(component, 'enrollBatch').and.stub();
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(of(allBatchDetailsWithFeactureBatch));

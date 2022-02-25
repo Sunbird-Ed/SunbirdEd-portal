@@ -181,7 +181,7 @@ describe('DraftComponent', () => {
           eventName: 'onImage'
         }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
       };
-      const userService = TestBed.get(UserService);
+      const userService= <any> TestBed.inject(UserService);
       userService._userProfile = {};
       component.contentClick(params);
       expect(component.pageNumber).toEqual(1);

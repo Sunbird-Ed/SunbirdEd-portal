@@ -84,8 +84,8 @@ describe('DefaultTemplateComponent', () => {
     component.getAssociations(key, range, callback);
   });
   it('should emit user profile data oninit', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService= <any> TestBed.inject(UserService);
+    const learnerService= <any> TestBed.inject(LearnerService);
     component.ngOnInit();
     userService._userData$.next({ err: null, userProfile: mockData.userSuccess });
     expect(component.userProfile).toBeDefined();

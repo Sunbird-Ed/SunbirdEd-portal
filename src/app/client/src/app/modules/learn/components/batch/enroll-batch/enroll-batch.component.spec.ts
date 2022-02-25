@@ -82,10 +82,10 @@ describe('EnrollBatchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EnrollBatchComponent);
     component = fixture.componentInstance;
-    courseBatchService = TestBed.get(CourseBatchService);
-    toasterService = TestBed.get(ToasterService);
-    coursesService = TestBed.get(CoursesService);
-    router = TestBed.get(Router);
+    courseBatchService= <any> TestBed.inject(CourseBatchService);
+    toasterService= <any> TestBed.inject(ToasterService);
+    coursesService= <any> TestBed.inject(CoursesService);
+    router= <any> TestBed.inject(Router);
   });
 
   it('should fetch details using the batch id', () => {
@@ -219,21 +219,21 @@ describe('EnrollBatchComponent', () => {
       identifier: '01278712683697766417',
       courseId: 'do_2127871108662804481320',
     };
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'audit');
     component.logAuditEvent();
     expect(telemetryService.audit).toHaveBeenCalled();
   });
 
   it('should call redirect', () => {
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     spyOn(router, 'navigate');
     component.redirect();
     expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should log telemetry events', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     component.telemetryLogEvents(true);
     expect(telemetryService.log).toHaveBeenCalled();

@@ -78,7 +78,7 @@ describe('DatasetComponent', () => {
   });
 
   it('should fetch dataset, by default last 7 days', done => {
-    const datasetService = TestBed.get(DatasetService);
+    const datasetService= <any> TestBed.inject(DatasetService);
     spyOn(datasetService, 'getDataSet').and.returnValue(of({ files: [], periodWiseFiles: {} }));
     component['getDataset']({
       from: dayjs('2020-12-01'),

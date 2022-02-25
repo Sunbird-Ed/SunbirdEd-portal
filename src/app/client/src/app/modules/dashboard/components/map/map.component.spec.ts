@@ -50,7 +50,7 @@ describe('MapComponent', () => {
   });
 
   it('should get geoJSON file', done => {
-    const reportService = TestBed.get(ReportService);
+    const reportService= <any> TestBed.inject(ReportService);
     spyOn(reportService, 'fetchDataSource').and.returnValue(of({ result: {} }));
     component['getGeoJSONFile']({ fileName: 'sampleFile.json' })
       .subscribe(res => {
@@ -66,7 +66,7 @@ describe('MapComponent', () => {
         data: [123]
       }
     };
-    const reportService = TestBed.get(ReportService);
+    const reportService= <any> TestBed.inject(ReportService);
     spyOn(reportService, 'fetchDataSource').and.returnValue(of({ result: {} }));
     component['getDataSourceData']()
       .subscribe(res => {
@@ -79,7 +79,7 @@ describe('MapComponent', () => {
 
   it('should download reportData if reportData is not present and reportLoc is present in the configuration', done => {
     component.mapData = { reportLoc: '/reports/fetch/sunbird/sample.json' };
-    const reportService = TestBed.get(ReportService);
+    const reportService= <any> TestBed.inject(ReportService);
     spyOn(reportService, 'fetchDataSource').and.returnValue(of({ result: { data: {} } }));
     component['getDataSourceData']()
       .subscribe(res => {
@@ -111,7 +111,7 @@ describe('MapComponent', () => {
   });
 
   it('should handle error if unknow state or country is passed', done => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const findRecordInConfigMappingSpy = spyOn<any>(component, 'findRecordInConfigMapping').and.callThrough();
     const input = {

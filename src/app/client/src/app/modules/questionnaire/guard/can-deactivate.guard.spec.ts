@@ -41,8 +41,8 @@ describe('CanDeactivateGuard', () => {
         { provide: ResourceService, useValue: resourceBundle },
       ],
     });
-    service = TestBed.get(CanDeactivateGuard);
-    mockComponent = TestBed.get(MockComponent);
+    service= <any> TestBed.inject(CanDeactivateGuard);
+    mockComponent= <any> TestBed.inject(MockComponent);
   });
 
   it('expect service to instantiate', () => {

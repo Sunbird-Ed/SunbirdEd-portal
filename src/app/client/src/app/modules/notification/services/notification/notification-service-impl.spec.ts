@@ -27,7 +27,7 @@ describe('NotificationServiceImpl', () => {
   });
 
   it('should create NotificationServiceImpl', () => {
-    const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+    const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
     expect(service).toBeTruthy();
   });
 
@@ -35,7 +35,7 @@ describe('NotificationServiceImpl', () => {
 
     it('should return the user feed notifications', async () => {
       // arrange
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
       spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf(notificationData));
       // act
@@ -46,7 +46,7 @@ describe('NotificationServiceImpl', () => {
 
     it('should return empty array when an error is occured while fetching notificationList', async () => {
       // arrange
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
       spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableThrowError({ message: 'error' }));
       // act
@@ -58,7 +58,7 @@ describe('NotificationServiceImpl', () => {
 
     it('should return empty array if the getuserfeed does not return array', async () => {
       // arrange
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
       spyOn(service['NotificationCsService'], 'notificationRead').and.returnValue(observableOf({}));
       // act
@@ -73,7 +73,7 @@ describe('NotificationServiceImpl', () => {
   describe('handleNotificationClick', () => {
     it('should return false if the notification data is empty', async () => {
       // arrage
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
       const data = {
         // data: notificationData
       };
@@ -85,7 +85,7 @@ describe('NotificationServiceImpl', () => {
 
     it('if the notification data is not empty', async () => {
       // arrage
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
       spyOn(service, 'markNotificationAsRead').and.returnValue(observableOf({}));
       notificationData.action.type = 'member-added';
       // act
@@ -100,7 +100,7 @@ describe('NotificationServiceImpl', () => {
     it('should return false when notification data is empty', async () => {
       // arrange
       const data = {};
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
       // act
       const resp = await service.deleteNotification(data);
       // assert
@@ -112,9 +112,9 @@ describe('NotificationServiceImpl', () => {
       const data = {
         data: notificationData
       };
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
-      const telemertyService = TestBed.get(TelemetryService);
+      const telemertyService= <any> TestBed.inject(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({ message: 'success' }));
       spyOn(service, 'fetchNotificationList');
@@ -132,9 +132,9 @@ describe('NotificationServiceImpl', () => {
       const data = {
         data: notificationData
       };
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
-      const telemertyService = TestBed.get(TelemetryService);
+      const telemertyService= <any> TestBed.inject(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableThrowError({ message: 'error' }));
       spyOn(service, 'fetchNotificationList');
@@ -150,9 +150,9 @@ describe('NotificationServiceImpl', () => {
 
     it('should return false if the notification list is empty', async () => {
       // arrange
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
-      const telemertyService = TestBed.get(TelemetryService);
+      const telemertyService= <any> TestBed.inject(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({message: 'success'}));
       spyOn(service, 'deleteNotification').and.returnValue(true);
@@ -164,9 +164,9 @@ describe('NotificationServiceImpl', () => {
 
     it('should return true when all notifications are deleted', async () => {
       // arrange
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
-      const telemertyService = TestBed.get(TelemetryService);
+      const telemertyService= <any> TestBed.inject(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableOf({message: 'success'}));
       // act
@@ -177,9 +177,9 @@ describe('NotificationServiceImpl', () => {
 
     it('should return true when all notifications are deleted', async () => {
       // arrange
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
-      const telemertyService = TestBed.get(TelemetryService);
+      const telemertyService= <any> TestBed.inject(TelemetryService);
       spyOn(telemertyService, 'interact');
       spyOn(service['NotificationCsService'], 'notificationDelete').and.returnValue(observableThrowError({ message: 'error' }));
       // act
@@ -191,7 +191,7 @@ describe('NotificationServiceImpl', () => {
   });
   describe('getNavigationPath()', async() => {
     it ('should call getNavigationPath()', async () => {
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
       const resp = await service.getNavigationPath({data: notificationData});
 
@@ -199,7 +199,7 @@ describe('NotificationServiceImpl', () => {
     });
 
     it ('should fail call getNavigationPath()', async () => {
-      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const service: NotificationServiceImpl= <any> TestBed.inject(NotificationServiceImpl);
 
       const resp = await service.getNavigationPath({data: {action: {additionalInfo: {}}} });
 

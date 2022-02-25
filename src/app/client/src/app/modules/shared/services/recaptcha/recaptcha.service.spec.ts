@@ -14,9 +14,9 @@ describe('RecaptchaService', () => {
   }));
 
   it('should be created', () => {
-    const service: RecaptchaService = TestBed.get(RecaptchaService);
-    const http = TestBed.get(HttpClient);
-    const configService = TestBed.get(ConfigService);
+    const service: RecaptchaService= <any> TestBed.inject(RecaptchaService);
+    const http= <any> TestBed.inject(HttpClient);
+    const configService= <any> TestBed.inject(ConfigService);
     spyOn(http, 'get').and.returnValue(of({result: '123'}));
     expect(service).toBeTruthy();
   });

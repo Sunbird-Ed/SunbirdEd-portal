@@ -31,7 +31,7 @@ describe('DiscussionTelemetryService', () => {
   }));
 
   it('should be created', () => {
-    const service: DiscussionTelemetryService = TestBed.get(DiscussionTelemetryService);
+    const service: DiscussionTelemetryService= <any> TestBed.inject(DiscussionTelemetryService);
     expect(service).toBeTruthy();
   });
 

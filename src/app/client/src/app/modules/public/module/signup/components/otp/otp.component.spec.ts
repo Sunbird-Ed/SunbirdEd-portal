@@ -53,7 +53,7 @@ describe('OtpComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OtpComponent);
     component = fixture.componentInstance;
-    const fb = TestBed.get(FormBuilder);
+    const fb= <any> TestBed.inject(FormBuilder);
     component.signUpdata = fb.group({
       name: ['test'],
       password: ['test1234'],
@@ -72,9 +72,9 @@ describe('OtpComponent', () => {
   });
 
   it('should verify the OTP and call createUser()', () => {
-    const resourceService = TestBed.get(ResourceService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     component.mode = 'phone';
-    const signupService = TestBed.get(SignupService);
+    const signupService= <any> TestBed.inject(SignupService);
     resourceService.frmelmnts = OtpComponentMockResponse.resourceBundle.frmelmnts;
     spyOn(signupService, 'verifyOTP').and.returnValue(observableOf(OtpComponentMockResponse.verifyOtpSuccessResponse));
     spyOn(component, 'createUser').and.callThrough();
@@ -87,9 +87,9 @@ describe('OtpComponent', () => {
 
   it('should not verify the OTP', () => {
     component.disableResendButton = true;
-    const resourceService = TestBed.get(ResourceService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     component.mode = 'phone';
-    const signupService = TestBed.get(SignupService);
+    const signupService= <any> TestBed.inject(SignupService);
     resourceService.frmelmnts = OtpComponentMockResponse.resourceBundle.frmelmnts;
     resourceService.messages = OtpComponentMockResponse.resourceBundle.messages;
     spyOn(signupService, 'verifyOTP').and.callFake(() => observableThrowError(OtpComponentMockResponse.verifyOtpErrorResponse));
@@ -99,14 +99,14 @@ describe('OtpComponent', () => {
   });
 
   it('it should resend otp', () => {
-    const signupService = TestBed.get(SignupService);
+    const signupService= <any> TestBed.inject(SignupService);
     spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
     component.resendOTP();
     expect(component.errorMessage).toBe('');
   });
 
   it('it should resend otp with minor user', () => {
-    const signupService = TestBed.get(SignupService);
+    const signupService= <any> TestBed.inject(SignupService);
     component.isMinor = true;
     spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
     const contactType = component.signUpdata.controls['contactType'];
@@ -120,7 +120,7 @@ describe('OtpComponent', () => {
 
   it('it should throw error for resend the otp for minor user', () => {
     component.errorMessage = OtpComponentMockResponse.resourceBundle.messages.fmsg.m0085;
-    const signupService = TestBed.get(SignupService);
+    const signupService= <any> TestBed.inject(SignupService);
     spyOn(signupService, 'generateOTP').and.callFake(() => observableThrowError(OtpComponentMockResponse.verifyOtpErrorResponse));
     component.resendOTP();
     expect(component.errorMessage).toBe('There was a technical error. Try again.');
@@ -128,7 +128,7 @@ describe('OtpComponent', () => {
 
   it('it should not resend the otp', () => {
     component.errorMessage = OtpComponentMockResponse.resourceBundle.messages.fmsg.m0085;
-    const signupService = TestBed.get(SignupService);
+    const signupService= <any> TestBed.inject(SignupService);
     component.isMinor = false;
     const contactType = component.signUpdata.controls['contactType'];
     contactType.setValue('phone');
@@ -141,8 +141,8 @@ describe('OtpComponent', () => {
   });
 
   it('it should not create new user as create user api failed', () => {
-    const signupService = TestBed.get(SignupService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const signupService= <any> TestBed.inject(SignupService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     spyOn(signupService, 'createUserV3').and.returnValue(observableThrowError(OtpComponentMockResponse.createUserErrorResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableOf(OtpComponentMockResponse.tncAcceptResponse));
@@ -158,8 +158,8 @@ describe('OtpComponent', () => {
 
   it('it should redirect to sign page as tnc api failed but user created', () => {
     spyOn(component, 'redirectToSignPage');
-    const signupService = TestBed.get(SignupService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const signupService= <any> TestBed.inject(SignupService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     spyOn(signupService, 'createUserV3').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableThrowError(OtpComponentMockResponse.tncAcceptResponse));
@@ -173,8 +173,8 @@ describe('OtpComponent', () => {
 
 
   it('it should create new user', () => {
-    const signupService = TestBed.get(SignupService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const signupService= <any> TestBed.inject(SignupService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     spyOn(component, 'redirectToSignPage');
     spyOn(signupService, 'createUserV3').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));

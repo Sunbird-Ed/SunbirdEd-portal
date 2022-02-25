@@ -18,10 +18,10 @@ describe('FrameworkService', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CacheService]
     });
-    cacheService = TestBed.get(CacheService);
-    userService = TestBed.get(UserService);
-    publicDataService = TestBed.get(PublicDataService);
-    frameworkService = TestBed.get(FrameworkService);
+    cacheService= <any> TestBed.inject(CacheService);
+    userService= <any> TestBed.inject(UserService);
+    publicDataService= <any> TestBed.inject(PublicDataService);
+    frameworkService= <any> TestBed.inject(FrameworkService);
     spyOn(cacheService, 'get').and.returnValue(undefined);
     spyOn(publicDataService, 'get').and.callFake((options) => {
       if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {

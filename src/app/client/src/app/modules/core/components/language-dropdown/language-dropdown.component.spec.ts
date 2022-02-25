@@ -62,8 +62,8 @@ describe('LanguageDropdownComponent', () => {
     });
 
     it('On language change', () => {
-        const utilService = TestBed.get(UtilService);
-        const cacheService = TestBed.get(CacheService);
+        const utilService= <any> TestBed.inject(UtilService);
+        const cacheService= <any> TestBed.inject(CacheService);
         spyOn(utilService, 'emitLanguageChangeEvent');
         cacheService.set('portalLanguage', 'en', { maxAge: 10 * 60 });
         component.onLanguageChange('en');
@@ -75,7 +75,7 @@ describe('LanguageDropdownComponent', () => {
         expect(component.selectedLanguage).toBe('en');
     }));
     it('should get the interact edata for telemetry', () => {
-        const route = TestBed.get(Router);
+        const route= <any> TestBed.inject(Router);
         route.navigate(['learn?selectedTab=course'])
         .then(() => {
             spyOn(component, 'getTelemetryInteractEdata');

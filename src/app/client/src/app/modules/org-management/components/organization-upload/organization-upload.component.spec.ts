@@ -76,7 +76,7 @@ describe('OrganizationUploadComponent', () => {
     fixture.detectChanges();
   });
   it('should call redirect', () => {
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     component.redirect();
     fixture.detectChanges();
     component.redirectUrl = '/profile';
@@ -91,16 +91,16 @@ describe('OrganizationUploadComponent', () => {
     fixture.detectChanges();
   });
   it('should  call uploadOrg method and return success response with process id', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableOf(mockRes.successResponse));
     component.uploadOrg(mockRes.validfile);
   });
   it('should call uploadOrg method and return error response', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorResponse));
     spyOn(toasterService, 'error').and.callThrough();
@@ -109,7 +109,7 @@ describe('OrganizationUploadComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnSingelLine);
   });
   it('should not call uploadOrg method', () => {
-    const resourceService = TestBed.get(ResourceService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = mockRes.resourceBundle.messages;
     component.uploadOrg(mockRes.errorfile);
   });
@@ -126,9 +126,9 @@ describe('OrganizationUploadComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
   it('should call uploadOrg method and return error response with message for empty file', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorForEmpty));
     spyOn(toasterService, 'error').and.callThrough();
@@ -137,9 +137,9 @@ describe('OrganizationUploadComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.emptyFiles);
   });
   it('should call uploadOrg method and return error response with message of multiple lines', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.errorFormultipleLines));
     spyOn(toasterService, 'error').and.callThrough();
@@ -148,9 +148,9 @@ describe('OrganizationUploadComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(mockRes.toasterMessage.invalidColumnMultipleLines);
   });
   it('should call uploadOrg method and return 502 error then show default error ', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'bulkOrgUpload').and.callFake(() => observableThrowError(mockRes.noErrorMessage));
     spyOn(toasterService, 'error').and.callThrough();

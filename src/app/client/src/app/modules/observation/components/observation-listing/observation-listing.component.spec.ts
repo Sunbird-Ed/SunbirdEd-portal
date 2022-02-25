@@ -113,9 +113,9 @@ describe('ObservationListingComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ObservationListingComponent);
     component = fixture.componentInstance;
-    toasterService = TestBed.get(ToasterService);
-    observationUtilService = TestBed.get(ObservationUtilService);
-    kendraService = TestBed.get(KendraService);
+    toasterService= <any> TestBed.inject(ToasterService);
+    observationUtilService= <any> TestBed.inject(ObservationUtilService);
+    kendraService= <any> TestBed.inject(KendraService);
   });
 
   it('should create', () => {
@@ -204,7 +204,7 @@ describe('ObservationListingComponent', () => {
 
   it('Should navigate to  back if profile not updated', () => {
     component.back();
-    const location: Location = TestBed.get(Location);
+    const location: Location= <any> TestBed.inject(Location);
     expect(location.path()).toBe('');
   });
 

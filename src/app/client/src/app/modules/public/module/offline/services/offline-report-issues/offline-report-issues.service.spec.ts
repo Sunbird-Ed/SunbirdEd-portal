@@ -14,7 +14,7 @@ describe('OfflineReportIssuesService', () => {
   }));
 
   it('should be call report other issue method and successfully raise ticket case', () => {
-    const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
+    const service: OfflineReportIssuesService= <any> TestBed.inject(OfflineReportIssuesService);
     const params = {
       email: 'sample@emal.com',
       description: 'sample description'
@@ -26,7 +26,7 @@ describe('OfflineReportIssuesService', () => {
 
   });
   it('should be call report other issue method and error while submiting raise ticket case', () => {
-    const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
+    const service: OfflineReportIssuesService= <any> TestBed.inject(OfflineReportIssuesService);
     const params = {
       email: 'sample@emal.com',
       description: 'sample description'

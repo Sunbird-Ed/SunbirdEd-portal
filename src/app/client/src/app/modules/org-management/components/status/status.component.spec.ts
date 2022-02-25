@@ -52,16 +52,16 @@ describe('StatusComponent', () => {
     fixture.detectChanges();
   });
   it('should call redirect', () => {
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     spyOn(component, 'redirect').and.callThrough();
     component.redirect();
     fixture.detectChanges();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
   it('should call organization management service and get success status based on given processId', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const orgManagementService = TestBed.get(OrgManagementService);
-    const toasterService = TestBed.get(ToasterService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.successResponse));
     spyOn(toasterService, 'success').and.callThrough();
@@ -72,9 +72,9 @@ describe('StatusComponent', () => {
     expect(component.statusResponse).toEqual(mockRes.successResponse.result.response[0]);
   });
   it('should call organization management service and get success status and show error if status is not COMPLETED', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const orgManagementService = TestBed.get(OrgManagementService);
-    const toasterService = TestBed.get(ToasterService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.successResponseWithStatusInprogress));
     spyOn(toasterService, 'info').and.callThrough();
@@ -84,10 +84,10 @@ describe('StatusComponent', () => {
     expect(toasterService.info).toHaveBeenCalledWith(mockRes.resourceBundle.messages.imsg.m0040);
   });
   it('should call organization management service and get failure status based on given processId', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.failureResponse));
     spyOn(toasterService, 'info').and.callThrough();
     const processId = '012465880638177280660';
@@ -112,9 +112,9 @@ describe('StatusComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
   it('should call getBulkUploadStatus method and pass else condition if processId contains only whiteSpaces', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    const orgManagementService = TestBed.get(OrgManagementService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const orgManagementService= <any> TestBed.inject(OrgManagementService);
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(orgManagementService, 'getBulkUploadStatus').and.callFake(() => observableOf(mockRes.errorResponse));
     const processId = '  ';

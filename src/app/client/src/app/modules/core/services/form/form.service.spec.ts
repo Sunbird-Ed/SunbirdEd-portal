@@ -17,8 +17,8 @@ import { configureTestSuite } from '@sunbird/test-util';
     });
 
     it('should fetch content creation form details', () => {
-      const service = TestBed.get(FormService);
-      const contentService = TestBed.get(ContentService);
+      const service= <any> TestBed.inject(FormService);
+      const contentService= <any> TestBed.inject(ContentService);
       const content = 'textbook';
       const type = 'textbook';
       const action = 'textbook';
@@ -28,8 +28,8 @@ import { configureTestSuite } from '@sunbird/test-util';
       expect(service).toBeTruthy();
     });
     it('should emit error on api failure', () => {
-      const service = TestBed.get(FormService);
-      const contentService = TestBed.get(ContentService);
+      const service= <any> TestBed.inject(FormService);
+      const contentService= <any> TestBed.inject(ContentService);
       const content = 'textbook';
       const type = 'textbook';
       const action = 'textbook';

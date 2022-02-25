@@ -49,14 +49,14 @@ describe('TelemetryImportComponent', () => {
   });
 
   it('should call getImportedFilesList', () => {
-    const telemetryActionsService = TestBed.get(TelemetryActionsService);
+    const telemetryActionsService= <any> TestBed.inject(TelemetryActionsService);
     spyOn(component.apiCallSubject, 'next');
     spyOn(telemetryActionsService, 'telemetryImportList').and.returnValue(of(telemetryData.importList));
     component.ngOnInit();
     expect(component.apiCallSubject.next).toHaveBeenCalled();
   });
   it('should call openImportTelemetryDialog', () => {
-    const electronDialogService = TestBed.get(ElectronDialogService);
+    const electronDialogService= <any> TestBed.inject(ElectronDialogService);
     spyOn(electronDialogService, 'showTelemetryImportDialog');
     spyOn(component, 'setImportTelemetry');
     component.openImportTelemetryDialog();
@@ -64,7 +64,7 @@ describe('TelemetryImportComponent', () => {
     expect(electronDialogService.showTelemetryImportDialog).toHaveBeenCalled();
   });
   it('should call reTryTelemetryImport and success case', () => {
-    const telemetryActionsService = TestBed.get(TelemetryActionsService);
+    const telemetryActionsService= <any> TestBed.inject(TelemetryActionsService);
     spyOn(component, 'setRetryImportTelemetry');
     spyOn(component.apiCallSubject, 'next');
     spyOn(telemetryActionsService, 'reTryTelemetryImport').and.returnValue(of(telemetryData.retrySuccess));
@@ -73,7 +73,7 @@ describe('TelemetryImportComponent', () => {
     expect(component.setRetryImportTelemetry).toHaveBeenCalledWith(telemetryData.filedetails);
   });
   it('should call reTryTelemetryImport and error case', () => {
-    const telemetryActionsService = TestBed.get(TelemetryActionsService);
+    const telemetryActionsService= <any> TestBed.inject(TelemetryActionsService);
     spyOn(component, 'setRetryImportTelemetry');
     spyOn(component.apiCallSubject, 'next');
     spyOn(component.toasterService, 'error');

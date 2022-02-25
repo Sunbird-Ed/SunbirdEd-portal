@@ -37,7 +37,7 @@ describe('TelemetryEventsDirective', () => {
         { provide: ElementRef, useValue: elementRefStub }
       ]
     });
-    telDirective = TestBed.get(TelemetryEventsDirective);
+    telDirective= <any> TestBed.inject(TelemetryEventsDirective);
   });
 
   it('should create an instance', () => {
@@ -64,7 +64,7 @@ describe('TelemetryEventsDirective', () => {
   });
 
   it('should add the ERROR telemetry event to the telemetry events array', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'telemetryEvents');
     telemetryService.telemetryEvents = [];
     telDirective.telemetryEventHandler({'detail': telemetryEventMock});
@@ -72,7 +72,7 @@ describe('TelemetryEventsDirective', () => {
   });
 
   it('should avoid duplicate telemetry events to the telemetry events array', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'telemetryEvents');
     telemetryService.telemetryEvents = [];
 
@@ -84,7 +84,7 @@ describe('TelemetryEventsDirective', () => {
   });
 
   it('should append ERROR telemetry events to the telemetry events array', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'telemetryEvents');
     telemetryService.telemetryEvents = [];
 
@@ -100,7 +100,7 @@ describe('TelemetryEventsDirective', () => {
   });
 
   it('should ignore any other telemetry events other than ERROR event', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'telemetryEvents');
     telemetryService.telemetryEvents = [];
     const interactEvent = telemetryEventMock;

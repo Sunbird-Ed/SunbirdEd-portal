@@ -89,7 +89,7 @@ describe('ContentActionsComponent', () => {
 
   it('should check isYoutubeContentPresent', () => {
     component.isDesktopApp = true;
-    const offlineCardService = TestBed.get(OfflineCardService);
+    const offlineCardService= <any> TestBed.inject(OfflineCardService);
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     spyOn(component, 'downloadContent').and.returnValue(actionsData.contentData);
     component.isYoutubeContentPresent(actionsData.contentData);
@@ -233,7 +233,7 @@ describe('ContentActionsComponent', () => {
 
   it('should call exportContent and error while  exporting content ', () => {
     component.isDesktopApp = true;
-    const contentService = TestBed.get(ContentManagerService);
+    const contentService= <any> TestBed.inject(ContentManagerService);
     spyOn(contentService, 'exportContent').and.returnValue(throwError(actionsData.exportContent.error));
     spyOn(component.toasterService, 'error');
     component.contentData = actionsData.contentData;
@@ -245,7 +245,7 @@ describe('ContentActionsComponent', () => {
   });
 
   it('should call log telemetry ', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService= <any> TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.logTelemetry('delete-content',  actionsData.contentData );
     expect(telemetryService.interact).toHaveBeenCalled();
@@ -253,10 +253,10 @@ describe('ContentActionsComponent', () => {
 
   it('should listen for content download status and call changeContentstatus', () => {
     component.isDesktopApp = true;
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService= <any> TestBed.inject(ContentManagerService);
     component.contentDownloadStatus =  { ['do_1234']: 'COMPLETED'};
     spyOn(component, 'changeContentStatus');
-    const utilService = TestBed.get(UtilService);
+    const utilService= <any> TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
     spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]));
     component.ngOnInit();

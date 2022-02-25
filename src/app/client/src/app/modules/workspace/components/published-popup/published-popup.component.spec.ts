@@ -89,9 +89,9 @@ describe('PublishedPopupComponent', () => {
   });
 
   it('should initialize the component expected calls for getCheckListConfig  ', () => {
-    const workspaceservice = TestBed.get(WorkSpaceService);
+    const workspaceservice= <any> TestBed.inject(WorkSpaceService);
     component.contentId = fakeActivatedRoute.parent.params['contentId'];
-    const resourceService = TestBed.get(ResourceService);
+    const resourceService= <any> TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
     const navigationHelperService: NavigationHelperService = fixture.debugElement.injector.get(NavigationHelperService);
     spyOn(workspaceservice, 'getFormData').and.callFake(() => observableOf(mockRes.publishedChecklist));
@@ -120,9 +120,9 @@ describe('PublishedPopupComponent', () => {
 
   it('should call reject api and get success', () => {
     component.showModal = true;
-    const contentService = TestBed.get(ContentService);
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
+    const contentService= <any> TestBed.inject(ContentService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     spyOn(contentService, 'post').and.callFake(() => observableOf(successResponse));
     spyOn(toasterService, 'success').and.callThrough();
@@ -133,9 +133,9 @@ describe('PublishedPopupComponent', () => {
 
   it('should call reject api and get error', () => {
     component.showModal = true;
-    const contentService = TestBed.get(ContentService);
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
+    const contentService= <any> TestBed.inject(ContentService);
+    const resourceService= <any> TestBed.inject(ResourceService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     resourceService.messages = resourceBundle.messages;
     spyOn(contentService, 'post').and.callFake(() => observableThrowError(errorResponse));
     spyOn(toasterService, 'error').and.callThrough();
@@ -157,7 +157,7 @@ describe('PublishedPopupComponent', () => {
     expect(component.isDisabled).toBe(false);
   });
   it('should call closeModalAfterError and makes expected calls', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     toasterService.error(resourceBundle.messages.emsg.m0005);
     fixture.detectChanges();

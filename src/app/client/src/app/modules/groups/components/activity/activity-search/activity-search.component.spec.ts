@@ -92,7 +92,7 @@ xdescribe('ActivitySearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ActivitySearchComponent);
     component = fixture.componentInstance;
-    formService = TestBed.get(FormService);
+    formService= <any> TestBed.inject(FormService);
     sendFormApi = true;
     spyOn(formService, 'getFormConfig').and.callFake((options) => {
       if (sendFormApi) {
@@ -141,7 +141,7 @@ xdescribe('ActivitySearchComponent', () => {
   it('should fetch Contents on success', () => {
     component.showLoader = true;
     component.frameworkId = 'abcd1234cd';
-    const searchService = TestBed.get(SearchService);
+    const searchService= <any> TestBed.inject(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(of({ result: { content: [] } }));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
@@ -151,7 +151,7 @@ xdescribe('ActivitySearchComponent', () => {
   it('should fetch Contents on success when searching', () => {
     component.showLoader = true;
     component.frameworkId = 'abcd1234cd';
-    const searchService = TestBed.get(SearchService);
+    const searchService= <any> TestBed.inject(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(of({ result: activitySearchMockData.searchRes.result }));
     component['fetchContents']();
     searchService.contentSearch(activitySearchMockData.searchReq, false).subscribe(data => {
@@ -162,7 +162,7 @@ xdescribe('ActivitySearchComponent', () => {
 
   it('should fetch Contents on error', () => {
     component.showLoader = true;
-    const searchService = TestBed.get(SearchService);
+    const searchService= <any> TestBed.inject(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
@@ -171,7 +171,7 @@ xdescribe('ActivitySearchComponent', () => {
 
   it('should call navigateToPage method', () => {
     component.paginationDetails.totalPages = 20;
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     router.url = 'my-groups/group-details/6085532b-5f7b-4a8a-ae8c-c268fd40c371/add-activity-to-group/courses/1';
     spyOn(window, 'scroll');
     component.navigateToPage(2);
@@ -199,13 +199,13 @@ xdescribe('ActivitySearchComponent', () => {
   });
 
   it('should not navigate to new page', () => {
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     component['navigateToPage'](1);
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
   it('should search the courses if the search is not blank string', () => {
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = 'english';
     spyOn(component, 'addTelemetry');
@@ -215,7 +215,7 @@ xdescribe('ActivitySearchComponent', () => {
   });
 
   it('should not search the courses if the search is blank string', () => {
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = '';
     component.search();
@@ -224,7 +224,7 @@ xdescribe('ActivitySearchComponent', () => {
 
   it('should navigate to resource page if contentType is non-trackable and mime type is not collection', () => {
     spyOn(component, 'addTelemetry');
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     const event = activitySearchMockData.eventDataForResource;
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
@@ -236,7 +236,7 @@ xdescribe('ActivitySearchComponent', () => {
   it('should navigate to resource page if contentType is trackable and mime type is collection', () => {
     spyOn(component, 'addTelemetry');
     spyOn(component['csGroupAddableBloc'], 'updateState');
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     const event = activitySearchMockData.eventDataForCourse;
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
@@ -249,7 +249,7 @@ xdescribe('ActivitySearchComponent', () => {
 
   it('should navigate to resource page if contentType is non-trackable and mime type is collection', () => {
     spyOn(component, 'addTelemetry');
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     const event = activitySearchMockData.eventDataForTextbook;
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);

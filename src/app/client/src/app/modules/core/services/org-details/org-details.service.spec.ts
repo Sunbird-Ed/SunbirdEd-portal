@@ -32,8 +32,8 @@ describe('OrgDetailsService', () => {
   });
 
   it('Get a channel id', () => {
-    const service = TestBed.get(OrgDetailsService);
-    const contentService = TestBed.get(ContentService);
+    const service= <any> TestBed.inject(OrgDetailsService);
+    const contentService= <any> TestBed.inject(ContentService);
     spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.successData));
     service.getOrgDetails('ap').subscribe(
       apiResponse => {
@@ -42,8 +42,8 @@ describe('OrgDetailsService', () => {
     );
   });
   it('Get a org details', () => {
-    const service = TestBed.get(OrgDetailsService);
-    const contentService = TestBed.get(ContentService);
+    const service= <any> TestBed.inject(OrgDetailsService);
+    const contentService= <any> TestBed.inject(ContentService);
     spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.orgDetails));
     service.searchOrg().subscribe(
       apiResponse => {
@@ -60,8 +60,8 @@ describe('OrgDetailsService', () => {
     }));
 
   it('Get a org details with org count', () => {
-    const service = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const service= <any> TestBed.inject(OrgDetailsService);
+    const publicDataService= <any> TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.orgDetails));
     service.getOrgDetails('ap').subscribe(
       apiResponse => {
@@ -71,8 +71,8 @@ describe('OrgDetailsService', () => {
   });
 
   it('Get a org details with out org count', () => {
-    const service = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const service= <any> TestBed.inject(OrgDetailsService);
+    const publicDataService= <any> TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.noResultData));
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(serverRes.orgDetails));
     service.getOrgDetails('ap').subscribe(
@@ -83,8 +83,8 @@ describe('OrgDetailsService', () => {
   });
 
   it('Get a org details with out org count and throw error', () => {
-    const service = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const service= <any> TestBed.inject(OrgDetailsService);
+    const publicDataService= <any> TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.noResultData));
     spyOn(publicDataService, 'post').and.callFake(() => throwError({}));
     service.getOrgDetails('ap').subscribe(
@@ -95,8 +95,8 @@ describe('OrgDetailsService', () => {
   });
 
   it('Call getCommingSoonMessage', () => {
-    const service = TestBed.get(OrgDetailsService);
-    const learnerService = TestBed.get(LearnerService);
+    const service= <any> TestBed.inject(OrgDetailsService);
+    const learnerService= <any> TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf({ result: { response: { value: '{test: 1}' } } }));
     service.getCommingSoonMessage(['1', '2']).subscribe((data) => {
       expect(data).toEqual({});
@@ -104,36 +104,36 @@ describe('OrgDetailsService', () => {
   });
 
   it('Call getCommingSoonMessageObj', () => {
-    const service = TestBed.get(OrgDetailsService);
+    const service= <any> TestBed.inject(OrgDetailsService);
     const returnValue = service.getCommingSoonMessageObj([{ rootOrgId: '1' }], ['1', '2']);
     expect(returnValue).toEqual({ rootOrgId: '1' });
   });
 
   it('Call setOrgDetailsToRequestHeaders', () => {
-    const service = TestBed.get(OrgDetailsService);
+    const service= <any> TestBed.inject(OrgDetailsService);
     service.orgDetails = { id: '12345' };
-    const learnerService = TestBed.get(LearnerService);
+    const learnerService= <any> TestBed.inject(LearnerService);
     service.setOrgDetailsToRequestHeaders();
     expect(learnerService.rootOrgId).toEqual('12345');
   });
 
   it('Call getOrg', () => {
-    const service = TestBed.get(OrgDetailsService);
+    const service= <any> TestBed.inject(OrgDetailsService);
     service.orgInfo = {};
     const returnValue = service.getOrg();
     expect(returnValue).toEqual({});
   });
 
   it('Call getCustodianOrgDetails', () => {
-    const service = TestBed.get(OrgDetailsService);
+    const service= <any> TestBed.inject(OrgDetailsService);
     service._custodianOrg$ = {};
     const returnValue = service.getCustodianOrgDetails();
     expect(returnValue).toEqual({});
   });
 
   it('Call fetchOrgs', () => {
-    const service = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const service= <any> TestBed.inject(OrgDetailsService);
+    const publicDataService= <any> TestBed.inject(PublicDataService);
     spyOn(publicDataService, 'post').and.returnValue(observableOf(serverRes.orgDetails));
     service.fetchOrgs({}).subscribe((data) => {
       expect(publicDataService.post).toHaveBeenCalled();

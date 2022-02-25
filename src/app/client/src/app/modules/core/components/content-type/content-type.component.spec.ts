@@ -67,15 +67,15 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should tell is layout is available', () => {
-    const layoutService = TestBed.get(LayoutService);
+    const layoutService= <any> TestBed.inject(LayoutService);
     spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
     const layoutData = component.isLayoutAvailable();
     expect(layoutData).toBe(true);
   });
 
   it('should fetch title for logged in user', () => {
-    const userService = TestBed.get(UserService);
-    const router = TestBed.get(Router);
+    const userService= <any> TestBed.inject(UserService);
+    const router= <any> TestBed.inject(Router);
     userService._authenticated = true;
     component.showContentType({
       loggedInUserRoute: { route: '/course', queryParam: 'course' },
@@ -86,9 +86,9 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should inint the component', () => {
-    const formService = TestBed.get(FormService);
+    const formService= <any> TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
-    const utilService = TestBed.get(UtilService);
+    const utilService= <any> TestBed.inject(UtilService);
     utilService._isDesktopApp = false;
     component.ngOnInit();
     expect(component.contentTypes).toEqual(mockData.formData);
@@ -96,8 +96,8 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should fetch title for non logged in user', () => {
-    const userService = TestBed.get(UserService);
-    const router = TestBed.get(Router);
+    const userService= <any> TestBed.inject(UserService);
+    const router= <any> TestBed.inject(Router);
     userService._authenticated = false;
     component.showContentType({
       anonumousUserRoute: { route: '/explore-course', queryParam: 'course' },
@@ -175,8 +175,8 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toBe('tv');
   });
   it('should fetch title for non logged in user', () => {
-    const userService = TestBed.get(UserService);
-    const router = TestBed.get(Router);
+    const userService= <any> TestBed.inject(UserService);
+    const router= <any> TestBed.inject(Router);
     userService._authenticated = false;
     component.showContentType({
       anonumousUserRoute: { route: '/explore', queryParam: 'textbook' },
@@ -186,7 +186,7 @@ describe('ContentTypeComponent', () => {
       ['/explore'], { queryParams: { selectedTab: 'textbook' } });
   });
   it('should set conent type as all when updateSelectedContentType trigger with unknown content type', () => {
-    const layoutService = TestBed.get(LayoutService);
+    const layoutService= <any> TestBed.inject(LayoutService);
     component.contentTypes = mockData.formData;
     spyOn(component, 'updateSelectedContentType').and.callThrough();
     component.ngOnInit();
@@ -195,8 +195,8 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toEqual('all');
   });
   it('should fetch title for logged in user', () => {
-    const userService = TestBed.get(UserService);
-    const router = TestBed.get(Router);
+    const userService= <any> TestBed.inject(UserService);
+    const router= <any> TestBed.inject(Router);
     userService._authenticated = true;
     component.showContentType({
       loggedInUserRoute: { route: '/resource', queryParam: 'textbook' },
@@ -206,7 +206,7 @@ describe('ContentTypeComponent', () => {
       ['/resource'], { queryParams: { selectedTab: 'textbook' } });
   });
   it('should set selected conent type when updateSelectedContentType trigger', () => {
-    const layoutService = TestBed.get(LayoutService);
+    const layoutService= <any> TestBed.inject(LayoutService);
     component.contentTypes = mockData.formData;
     spyOn(component, 'updateSelectedContentType').and.callThrough();
     component.ngOnInit();

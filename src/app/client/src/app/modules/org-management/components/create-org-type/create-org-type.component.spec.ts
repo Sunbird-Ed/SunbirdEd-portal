@@ -64,7 +64,7 @@ describe('CreateOrgTypeComponent', () => {
 
   it('should call add api and get success response', inject([OrgTypeService, RouterNavigationService, ToasterService],
     (orgTypeService, routerNavigationService, toasterService) => {
-      const resourceService = TestBed.get(ResourceService);
+      const resourceService= <any> TestBed.inject(ResourceService);
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(orgTypeService, 'addOrgType').and.callFake(() => observableOf(mockRes.orgTypeAddSuccess));
@@ -76,7 +76,7 @@ describe('CreateOrgTypeComponent', () => {
 
   it('should call add api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
     (orgTypeService, routerNavigationService, toasterService) => {
-      const resourceService = TestBed.get(ResourceService);
+      const resourceService= <any> TestBed.inject(ResourceService);
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
       spyOn(orgTypeService, 'addOrgType').and.callFake(() => observableThrowError(mockRes.orgTypeAddError));
@@ -88,7 +88,7 @@ describe('CreateOrgTypeComponent', () => {
 
   it('should call update api and get success response', inject([OrgTypeService, RouterNavigationService, ToasterService],
     (orgTypeService, routerNavigationService, toasterService) => {
-      const resourceService = TestBed.get(ResourceService);
+      const resourceService= <any> TestBed.inject(ResourceService);
       component.orgName = new FormControl('test');
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
@@ -101,7 +101,7 @@ describe('CreateOrgTypeComponent', () => {
 
   it('should call update api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
     (orgTypeService, routerNavigationService, toasterService) => {
-      const resourceService = TestBed.get(ResourceService);
+      const resourceService= <any> TestBed.inject(ResourceService);
       component.orgName = new FormControl('test');
       resourceService.messages = mockRes.resourceBundle.messages;
       spyOn(routerNavigationService, 'navigateToParentUrl').and.returnValue(undefined);
@@ -121,7 +121,7 @@ describe('CreateOrgTypeComponent', () => {
 
   it('When page is create', inject([OrgTypeService],
     (orgTypeService) => {
-      const activatedRouteStub = TestBed.get(ActivatedRoute);
+      const activatedRouteStub= <any> TestBed.inject(ActivatedRoute);
       activatedRouteStub.changeUrl('create');
       fixture.detectChanges();
       expect(component.createForm).toEqual(true);

@@ -16,12 +16,12 @@ describe('AssessmentScoreService', () => {
   }));
 
   it('should be created', () => {
-    const service: AssessmentScoreService = TestBed.get(AssessmentScoreService);
+    const service: AssessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     expect(service).toBeTruthy();
   });
 
   it('should call init', () => {
-    const service: AssessmentScoreService = TestBed.get(AssessmentScoreService);
+    const service: AssessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     const params = {
       batchDetails: 'batchDetails',
       courseDetails: 'courseDetails',
@@ -36,7 +36,7 @@ describe('AssessmentScoreService', () => {
   });
 
   it('should call receiveTelemetryEvents', () => {
-    const service: AssessmentScoreService = TestBed.get(AssessmentScoreService);
+    const service: AssessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     const params = {
       detail: {
         telemetryData: {
@@ -55,7 +55,7 @@ describe('AssessmentScoreService', () => {
   });
 
   it('should call updateAssessmentScore', () => {
-    const service: AssessmentScoreService = TestBed.get(AssessmentScoreService);
+    const service: AssessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     const params = {};
     spyOn<any>(service, 'updateAssessmentScore').and.callThrough();
     spyOn(service['courseProgressService'], 'sendAssessment').and.callThrough();
@@ -64,7 +64,7 @@ describe('AssessmentScoreService', () => {
   });
 
   it('should call handleSubmitButtonClickEvent', () => {
-    const service: AssessmentScoreService = TestBed.get(AssessmentScoreService);
+    const service: AssessmentScoreService= <any> TestBed.inject(AssessmentScoreService);
     service['initialized'] = true;
     service['_startEvent'] = 'START';
     spyOn<any>(service, 'processAssessEvents').and.callThrough();

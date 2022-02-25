@@ -104,7 +104,7 @@ describe('UserOrgManagementComponent', () => {
   }));
 
   beforeEach(() => {
-    router = TestBed.get(Router);
+    router= <any> TestBed.inject(Router);
     fixture = TestBed.createComponent(UserOrgManagementComponent);
     component = fixture.componentInstance;
     component.slug = 'sunbird';
@@ -143,7 +143,7 @@ describe('UserOrgManagementComponent', () => {
 
 
   it('should fetch geo json', () => {
-    const manageService = TestBed.get(ManageService);
+    const manageService= <any> TestBed.inject(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
     component.slug = 'sunbird';
     // component.userJSON = 'user.json';
@@ -153,7 +153,7 @@ describe('UserOrgManagementComponent', () => {
 
 
   it('should fetch geo summary', () => {
-    const manageService = TestBed.get(ManageService);
+    const manageService= <any> TestBed.inject(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
     component.slug = 'sunbird';
     // component.userJSON = 'user.json';
@@ -163,7 +163,7 @@ describe('UserOrgManagementComponent', () => {
 
   //  OLD XIT
  xit('should download csv file', () => {
-    const manageService = TestBed.get(ManageService);
+    const manageService= <any> TestBed.inject(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({
       result: {
         signedUrl: 'a'
@@ -178,8 +178,8 @@ describe('UserOrgManagementComponent', () => {
   });
 
   it('should fetch submit teacher details csv', () => {
-    const manageService = TestBed.get(ManageService);
-    const userService = TestBed.get(UserService);
+    const manageService= <any> TestBed.inject(ManageService);
+    const userService= <any> TestBed.inject(UserService);
     spyOn(manageService, 'getData').and.returnValue(of({
       result: { signedUrl: 'signedUrl' }
     }));
@@ -192,7 +192,7 @@ describe('UserOrgManagementComponent', () => {
   });
 
   it('should download file', () => {
-    const manageService = TestBed.get(ManageService);
+    const manageService= <any> TestBed.inject(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({
       result: {
         signedUrl: 'a'
@@ -219,7 +219,7 @@ describe('UserOrgManagementComponent', () => {
   });
   it('should call interact telemetry while closing upload user validation status modal', () => {
     spyOn(component.telemetryService, 'interact');
-    const activatedRoute = TestBed.get(ActivatedRoute);
+    const activatedRoute= <any> TestBed.inject(ActivatedRoute);
     const interactData = {
       context: {
         env: activatedRoute.snapshot.data.telemetry.env,
@@ -274,7 +274,7 @@ describe('UserOrgManagementComponent', () => {
   });
 
   it('should download csv file', () => {
-    const manageService = TestBed.get(ManageService);
+    const manageService= <any> TestBed.inject(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({
       result: {
         signedUrl: 'blob.com/signedURL'
@@ -285,20 +285,20 @@ describe('UserOrgManagementComponent', () => {
     expect(window.open).toHaveBeenCalled();
   });
   it('should call the getAdminPolicyTnC method', () => {
-    const tncService = TestBed.get(TncService);
+    const tncService= <any> TestBed.inject(TncService);
     spyOn(tncService, 'getAdminTnc').and.returnValue(observableOf(mockRes.tncConfig));
     component.getAdminPolicyTnC();
     expect(component.showAdminTnC ).toBeTruthy();
   });
   it('should call the getAdminPolicyTnC method with out data', () => {
-    const tncService = TestBed.get(TncService);
+    const tncService= <any> TestBed.inject(TncService);
     spyOn(tncService, 'getAdminTnc').and.returnValue(observableOf(mockRes.tncConfigObj));
     component.getAdminPolicyTnC();
     expect(component.showAdminTnC ).toBeFalsy();
   });
   it('should call assignUserRole method and redirected to ', () => {
     spyOn(component, 'assignUserRole').and.callThrough();
-    const router = TestBed.get(Router);
+    const router= <any> TestBed.inject(Router);
     spyOn(router, 'navigate').and.callThrough();
     component.assignUserRole();
     expect(router.navigate).toHaveBeenCalledWith(['/manage/userRoleAssign']);

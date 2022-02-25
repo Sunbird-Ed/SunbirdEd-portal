@@ -97,7 +97,7 @@ describe('UserEditComponent', () => {
   });
 
   it('should fetch logged in user details on component init', () => {
-    const userService = TestBed.get(UserService);
+    const userService= <any> TestBed.inject(UserService);
     (userService as any)._userData$.next({ err: null, userProfile: Response.userData.result.response });
     const getLoggedInUserDetailsSpy = spyOn(component, 'getLoggedInUserDetails').and.callThrough();
     const getAllRolesSpy = spyOn(component, 'getAllRoles');
@@ -111,8 +111,8 @@ describe('UserEditComponent', () => {
   });
 
   it('should redirect when fetching logged in user details fails', () => {
-    const userService = TestBed.get(UserService);
-    const toasterService = TestBed.get(ToasterService);
+    const userService= <any> TestBed.inject(UserService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     (userService as any)._userData$.next({ err: 'ok', userProfile: null });
     const getLoggedInUserDetailsSpy = spyOn(component, 'getLoggedInUserDetails').and.callThrough();
     const getAllRolesSpy = spyOn(component, 'getAllRoles');
@@ -130,8 +130,8 @@ describe('UserEditComponent', () => {
   });
 
   it('should call ngOnInit method to get all roles', () => {
-    const userService = TestBed.get(UserService);
-    const searchService = TestBed.get(UserSearchService);
+    const userService= <any> TestBed.inject(UserService);
+    const searchService= <any> TestBed.inject(UserSearchService);
     const searchServiceSpy = spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     (userService as any)._userData$.next({ err: null, userProfile: Response.userData.result.response });
     component.ngOnInit();
@@ -150,7 +150,7 @@ describe('UserEditComponent', () => {
 
   //  OLD XIT
  xit('should call search api for populateOrgName', () => {
-    const searchService = TestBed.get(SearchService);
+    const searchService= <any> TestBed.inject(SearchService);
     const options = {
       orgid: [
         '0123164136298905609',
@@ -168,7 +168,7 @@ describe('UserEditComponent', () => {
     fixture.detectChanges();
   });
   it('should call search api', () => {
-    const searchService = TestBed.get(UserSearchService);
+    const searchService= <any> TestBed.inject(UserSearchService);
     spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
@@ -176,13 +176,13 @@ describe('UserEditComponent', () => {
     expect(component.userDetails).toBeDefined();
   });
   it('should throw error when searchService api is not called', () => {
-    const searchService = TestBed.get(UserSearchService);
+    const searchService= <any> TestBed.inject(UserSearchService);
     spyOn(searchService, 'getUserByIdV5').and.callFake(() => observableThrowError({}));
     component.populateUserDetails();
     expect(component.userDetails).toBeUndefined();
   });
   it('should call UserSearchService api for deleteUser', () => {
-    const searchService = TestBed.get(UserSearchService);
+    const searchService= <any> TestBed.inject(UserSearchService);
     const option = { userId: '6d4da241-a31b-4041-bbdb-dd3a898b3f85' };
     searchService.deleteUser(option.userId).subscribe(
       apiResponse => {
@@ -221,8 +221,8 @@ describe('UserEditComponent', () => {
   });
   //  OLD XIT
  xit('should call updateRoles and make api call', () => {
-    const userSearchService = TestBed.get(UserSearchService);
-    const toasterService = TestBed.get(ToasterService);
+    const userSearchService= <any> TestBed.inject(UserSearchService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(userSearchService, 'updateRoles').and.callFake(() => observableOf(Response.rolesSuccessData));
     const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
     component.allRoles = [];
@@ -235,8 +235,8 @@ describe('UserEditComponent', () => {
   });
   //  OLD XIT
  xit('should call updateRoles method and make api call and return error', () => {
-    const userSearchService = TestBed.get(UserSearchService);
-    const toasterService = TestBed.get(ToasterService);
+    const userSearchService= <any> TestBed.inject(UserSearchService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(userSearchService, 'updateRoles').and.callFake(() => observableThrowError(Response.rolesFailureData));
     const roles = ['BOOK_CREATOR', 'ANNOUNCEMENT_SENDER', 'OFFICIAL_TEXTBOOK_BADGE_ISSUER', 'PUBLIC'];
     component.allRoles = [];
@@ -248,8 +248,8 @@ describe('UserEditComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
   it('should not  show user name in modal header', () => {
-    const searchService = TestBed.get(UserSearchService);
-    const userService = TestBed.get(UserService);
+    const searchService= <any> TestBed.inject(UserSearchService);
+    const userService= <any> TestBed.inject(UserService);
     spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     component.selectedOrgId = Response.successData.result.response.organisations[0].organisationId;
@@ -261,7 +261,7 @@ describe('UserEditComponent', () => {
   });
 
   it('should show roles from all the organizations', () => {
-    const searchService = TestBed.get(UserSearchService);
+    const searchService= <any> TestBed.inject(UserSearchService);
     spyOn(searchService, 'getUserByIdV5').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     expect(component.selectedOrgUserRoles).toContain('REPORT_ADMIN');
@@ -269,8 +269,8 @@ describe('UserEditComponent', () => {
   });
 
   it('should call getBlock', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
+    const profileService= <any> TestBed.inject(ProfileService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     component.userDetails = Response.userData.result.response;
     component.initializeFormFields();
@@ -281,8 +281,8 @@ describe('UserEditComponent', () => {
 
   it('should call getBlock error case', () => {
     component.userDetails = Response.userData.result.response;
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
+    const profileService= <any> TestBed.inject(ProfileService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     component.initializeFormFields();
     spyOn(profileService, 'getUserLocation').and.returnValue(observableThrowError('sorry'));
@@ -296,7 +296,7 @@ describe('UserEditComponent', () => {
   });
   it('should call getSchool', () => {
     component.userDetails = Response.userData.result.response;
-    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const orgDetailsService= <any> TestBed.inject(OrgDetailsService);
     component.initializeFormFields();
     spyOn(orgDetailsService, 'fetchOrgs').and.returnValue(observableOf(Response.orgDetails));
     component.getSchool('37809706-8f0e-4009-bf67-87bf04f220fa');
@@ -304,8 +304,8 @@ describe('UserEditComponent', () => {
   });
 
   it('should call getSchool error case', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const toasterService = TestBed.get(ToasterService);
+    const orgDetailsService= <any> TestBed.inject(OrgDetailsService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(component, 'redirect');
     component.initializeFormFields();
@@ -315,7 +315,7 @@ describe('UserEditComponent', () => {
     expect(component.redirect).toHaveBeenCalled();
   });
   it('should call getDistrict', () => {
-    const profileService = TestBed.get(ProfileService);
+    const profileService= <any> TestBed.inject(ProfileService);
     component.userDetails = Response.userData.result.response;
     component.stateId = '1';
     component.initializeFormFields();
@@ -324,8 +324,8 @@ describe('UserEditComponent', () => {
     expect(component.showMainLoader).toBeFalsy();
   });
   it('should call getDistrict error case', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
+    const profileService= <any> TestBed.inject(ProfileService);
+    const toasterService= <any> TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(component, 'redirect');
     component.stateId = '1';
@@ -351,8 +351,8 @@ describe('UserEditComponent', () => {
       ts: '20-01-2020',
       ver: '3'
     };
-    const toasterService = TestBed.get(ToasterService);
-    const userSearchService = TestBed.get(UserSearchService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const userSearchService= <any> TestBed.inject(UserSearchService);
     spyOn(toasterService, 'success').and.callFake(() => { });
     spyOn(userSearchService, 'updateRoles').and.returnValue(observableOf(serverResponse));
     component.userDetails = Response.userData;
@@ -362,8 +362,8 @@ describe('UserEditComponent', () => {
     expect(toasterService.success).toHaveBeenCalledWith('User updated successfully');
   });
   it('should call updateProfile error case', () => {
-    const toasterService = TestBed.get(ToasterService);
-    const userSearchService = TestBed.get(UserSearchService);
+    const toasterService= <any> TestBed.inject(ToasterService);
+    const userSearchService= <any> TestBed.inject(UserSearchService);
     spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(userSearchService, 'updateRoles').and.returnValue(observableThrowError('sorry'));
     component.userDetails = Response.userData;

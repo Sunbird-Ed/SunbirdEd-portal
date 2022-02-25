@@ -138,7 +138,7 @@ describe('ReIssueCertificateComponent', () => {
   });
 
   it('should return  certList with batchList[] empty', () => {
-    const certRegService = TestBed.get(CertRegService);
+    const certRegService= <any> TestBed.inject(CertRegService);
     const response = {
           userId: 'testUser',
           userName: 'user',
@@ -168,7 +168,7 @@ describe('ReIssueCertificateComponent', () => {
   });
 
   it('should return  certList with batchList[]', () => {
-    const certRegService = TestBed.get(CertRegService);
+    const certRegService= <any> TestBed.inject(CertRegService);
     const response = {
       result: {
         response: {
