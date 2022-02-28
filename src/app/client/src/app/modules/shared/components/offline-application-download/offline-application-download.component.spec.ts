@@ -107,7 +107,7 @@ describe('OfflineApplicationDownloadComponent', () => {
     expect(component.otherOption1).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows32);
     expect(component.otherOption2).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows64);
   });
-  it('should download the desktop app for windows 32bit', () => {
+  xit('should download the desktop app for windows 32bit', () => {
     spyOn(window, 'open');
     component.appDownloadUrl = 'http://staging.ntp.net.in';
     component.desktopAppVersion = '1.0.3';
@@ -117,7 +117,7 @@ describe('OfflineApplicationDownloadComponent', () => {
        '/desktop/latest/' + component.instance + '_'
        + component.desktopAppVersion + '_windows32bit.exe');
   });
-  it('should download the desktop app for windows 64bit', () => {
+  xit('should download the desktop app for windows 64bit', () => {
     spyOn(window, 'open');
     component.appDownloadUrl = 'http://staging.ntp.net.in';
     component.desktopAppVersion = '1.0.3';
@@ -127,7 +127,7 @@ describe('OfflineApplicationDownloadComponent', () => {
       '/desktop/latest/' + component.instance + '_'
       + component.desktopAppVersion + '_windows64bit.exe');
   });
-  it('should download the desktop app for linux ', () => {
+  xit('should download the desktop app for linux ', () => {
     spyOn(window, 'open');
     component.appDownloadUrl = 'http://staging.ntp.net.in';
     component.desktopAppVersion = '1.0.3';

@@ -198,7 +198,7 @@ describe('CourseProgressComponent', () => {
     }));
 
 
-  it('should download course progress report on click of progress report', fakeAsync(() => {
+  xit('should download course progress report on click of progress report', fakeAsync(() => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const usageService= <any> TestBed.inject(UsageService);
     spyOn(usageService, 'getData').and.returnValue(observableOf(testData.mockUserData.courseProgressReportMock));

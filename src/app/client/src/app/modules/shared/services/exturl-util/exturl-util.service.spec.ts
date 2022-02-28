@@ -28,7 +28,7 @@ xdescribe('External Url UtilsService', () => {
         expect(service).toBeDefined();
     }));
 
-    it('should open preview link in newtab for mimeType x-url',
+    xit('should open preview link in newtab for mimeType x-url',
         inject([Router, ExternalUrlPreviewService], (router, service) => {
             service.generateRedirectUrl(MockResponse.ServerResponse, '9dvdkjlsds2423423', 'do_1125110622654464001294', '293482034290999');
             const windowSpy = spyOn(window, 'open');

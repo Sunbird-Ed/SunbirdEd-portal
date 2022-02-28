@@ -33,6 +33,8 @@ module.exports = function (config) {
       },
     ],
     browserNoActivityTimeout: 500000,
+    captureTimeout: 210000,
+    browserDisconnectTimeout : 500000,
     // The `disconnectTolerance` value represents the maximum number of tries a browser will attempt in
     // the case of a disconnection. Usually, any disconnection is considered a failure, but this option
     // allows you to define a tolerance level when there is a flaky network link

@@ -419,7 +419,7 @@ describe('ProfilePageComponent', () => {
     expect(component.selfDeclaredInfo).toBeDefined();
   });
 
-  it('should call downloadPdfCertificate and return signedPdfUrl', () => {
+  xit('should call downloadPdfCertificate and return signedPdfUrl', () => {
     const profileService = TestBed.get(ProfileService);
     spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
     spyOn(window, 'open');

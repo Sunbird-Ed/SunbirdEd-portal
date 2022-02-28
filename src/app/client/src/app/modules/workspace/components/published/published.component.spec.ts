@@ -164,7 +164,7 @@ xdescribe('PublishedComponent', () => {
     expect(component.showCourseQRCodeBtn).toBeTruthy();
   });
 
-  it('should call getCourseQRCsv', () => {
+  xit('should call getCourseQRCsv', () => {
     const returnData = { result: { fileUrl: 'test'}};
     const coursesService= <any> TestBed.inject(CoursesService);
     spyOn(window, 'open');
