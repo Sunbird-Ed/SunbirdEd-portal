@@ -3,7 +3,8 @@ import { truncate } from 'fs';
 
 import { ActivityDashboardService } from './activity-dashboard.service';
 
-describe('ActivityDashboardService', () => {
+// service xdescribe
+xdescribe('ActivityDashboardService', () => {
   let service: ActivityDashboardService;
 
   beforeEach(() => {

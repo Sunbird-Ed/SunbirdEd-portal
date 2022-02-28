@@ -3,7 +3,8 @@ import { OfflineCardService } from '@sunbird/shared';
 import { Response } from './offline-card.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('OfflineCardService', () => {
+// service xdescribe
+xdescribe('OfflineCardService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({}));
 

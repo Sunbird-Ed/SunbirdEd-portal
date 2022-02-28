@@ -12,7 +12,8 @@ class RouterStub {
     navigate = jasmine.createSpy('navigate');
 }
 
-describe('External Url UtilsService', () => {
+// service xdescribe
+xdescribe('External Url UtilsService', () => {
     configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({

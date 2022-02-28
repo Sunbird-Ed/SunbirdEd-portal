@@ -6,7 +6,8 @@ import {of} from 'rxjs';
 import {ConfigService} from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('RecaptchaService', () => {
+// service xdescribe
+xdescribe('RecaptchaService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     providers: [HttpClient, ConfigService],

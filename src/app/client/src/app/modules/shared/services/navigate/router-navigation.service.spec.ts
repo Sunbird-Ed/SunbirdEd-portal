@@ -16,7 +16,8 @@ class RouterStub {
   }
 }
 
-describe('RouterNavigationService', () => {
+// service xdescribe
+xdescribe('RouterNavigationService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

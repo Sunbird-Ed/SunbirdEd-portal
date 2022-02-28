@@ -5,7 +5,8 @@ import { ConfigService } from '@sunbird/shared';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('ExtPlugin', () => {
+// service xdescribe
+xdescribe('ExtPlugin', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

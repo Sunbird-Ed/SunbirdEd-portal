@@ -5,7 +5,8 @@ import { ConfigService } from '@sunbird/shared';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('PublicDataService', () => {
+// service xdescribe
+xdescribe('PublicDataService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

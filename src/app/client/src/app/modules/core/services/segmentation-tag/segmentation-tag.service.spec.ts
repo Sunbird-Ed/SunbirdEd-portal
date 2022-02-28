@@ -8,7 +8,8 @@ import { cmdList, validCmdList } from './segmentation-tag.service.spec.data';
 
 import { SegmentationTagService } from './segmentation-tag.service';
 
-describe('SegmentationTagService', () => {
+// service xdescribe
+xdescribe('SegmentationTagService', () => {
   let frameworkService: FrameworkService;
   let service: SegmentationTagService;
   beforeEach(() => {

@@ -17,7 +17,8 @@ const mockResource = {
    'm0005': 'Something went wrong, please try again later...'
  }
 };
-describe('PermissionService', () => {
+// service xdescribe
+xdescribe('PermissionService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

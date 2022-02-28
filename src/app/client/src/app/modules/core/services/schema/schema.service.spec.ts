@@ -7,7 +7,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormService } from '../form/form.service';
 import { of } from 'rxjs';
 
-describe('SchemaService', () => {
+// service xdescribe
+xdescribe('SchemaService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [CoreModule, SharedModule.forRoot(), HttpClientTestingModule]

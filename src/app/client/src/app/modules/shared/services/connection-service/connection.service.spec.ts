@@ -4,7 +4,8 @@ import { of as observableOf, of } from 'rxjs';
 import { ToasterService, ResourceService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
-describe('ConnectionService', () => {
+// service xdescribe
+xdescribe('ConnectionService', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = 'explore-course/course/do_213129030425993216112';

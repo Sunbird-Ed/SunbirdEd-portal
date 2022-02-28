@@ -17,7 +17,8 @@ const fakeActivatedRoute = {
   },
   queryParams: observableOf({ })
 };
-describe('WindowScrollService', () => {
+// service xdescribe
+xdescribe('WindowScrollService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
