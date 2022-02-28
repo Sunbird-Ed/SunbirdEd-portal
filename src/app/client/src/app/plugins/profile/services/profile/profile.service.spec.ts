@@ -7,7 +7,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, LearnerService, UserService, FormService } from '@sunbird/core';
 import { mockRes } from './profile.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
-describe('ProfileService', () => {
+// service xdescribe
+xdescribe('ProfileService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

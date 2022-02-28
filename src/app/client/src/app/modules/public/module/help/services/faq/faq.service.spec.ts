@@ -6,7 +6,8 @@ import { LearnerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('FaqService', () => {
+// service xdescribe
+xdescribe('FaqService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

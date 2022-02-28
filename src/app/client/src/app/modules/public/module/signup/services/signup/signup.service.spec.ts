@@ -6,7 +6,8 @@ import {LearnerService, UserService} from '@sunbird/core';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('SignupService', () => {
+// service xdescribe
+xdescribe('SignupService', () => {
   const generateOtpData = {
     'id': 'api.otp.generate',
     'ver': 'v1',

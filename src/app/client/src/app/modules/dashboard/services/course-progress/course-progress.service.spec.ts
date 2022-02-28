@@ -9,7 +9,8 @@ import { TelemetryService } from '@sunbird/telemetry';
 import * as testData from './course-progress.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('CourseProgressService', () => {
+// service xdescribe
+xdescribe('CourseProgressService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

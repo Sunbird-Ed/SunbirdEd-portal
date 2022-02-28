@@ -6,7 +6,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { ManageService } from './manage.service';
 import { of } from 'rxjs';
 
-describe('ManageService', () => {
+// service xdescribe
+xdescribe('ManageService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,7 +21,8 @@ describe('ManageService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getData method ', () => {
+  // service xdescribe
+xdescribe('getData method ', () => {
     it('should call the api', () => {
       const http= <any> TestBed.inject(HttpClient, <any> HttpHeaders);
       const manageService= <any> TestBed.inject(ManageService);

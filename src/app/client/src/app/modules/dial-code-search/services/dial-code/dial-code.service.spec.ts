@@ -8,7 +8,8 @@ import { mockData } from './dial-code.service.spec.data';
 import { of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('DialCodeService', () => {
+// service xdescribe
+xdescribe('DialCodeService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
@@ -20,7 +21,8 @@ describe('DialCodeService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('searchDialCodeAssemble function', () => {
+  // service xdescribe
+xdescribe('searchDialCodeAssemble function', () => {
 
     it('should return the request object for dial code', () => {
       const funresponse = {
@@ -113,7 +115,8 @@ describe('DialCodeService', () => {
 
   });
 
-  describe('filterDialSearchResults function', () => {
+  // service xdescribe
+xdescribe('filterDialSearchResults function', () => {
 
     it('should return collections and contents from dial search results ', () => {
       const dialCodeService= <any> TestBed.inject(DialCodeService);
@@ -128,7 +131,8 @@ describe('DialCodeService', () => {
     });
   });
 
-  describe('parseCollection function', () => {
+  // service xdescribe
+xdescribe('parseCollection function', () => {
 
     it('should return contents from a collection', () => {
       const dialCodeService= <any> TestBed.inject(DialCodeService);
@@ -141,7 +145,8 @@ describe('DialCodeService', () => {
 
   });
 
-  describe('getCollectionHierarchy function', () => {
+  // service xdescribe
+xdescribe('getCollectionHierarchy function', () => {
 
     it('should return collection heirarchy', () => {
       const dialCodeService= <any> TestBed.inject(DialCodeService);
@@ -158,7 +163,8 @@ describe('DialCodeService', () => {
 
   });
 
-  describe('groupCollections function', () => {
+  // service xdescribe
+xdescribe('groupCollections function', () => {
 
     it('should group contents based on their content type', () => {
       const dialCodeService= <any> TestBed.inject(DialCodeService);
@@ -169,7 +175,8 @@ describe('DialCodeService', () => {
 
   });
 
-  describe('getAllPlayableContent function', () => {
+  // service xdescribe
+xdescribe('getAllPlayableContent function', () => {
 
     let dialCodeService: DialCodeService, playerService: PlayerService;
 

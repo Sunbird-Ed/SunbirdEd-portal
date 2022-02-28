@@ -13,7 +13,8 @@ import * as mockData from './course-consumption.service.spec.data';
 const testData = <any>mockData.mockRes;
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('CourseConsumptionService', () => {
+// service xdescribe
+xdescribe('CourseConsumptionService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

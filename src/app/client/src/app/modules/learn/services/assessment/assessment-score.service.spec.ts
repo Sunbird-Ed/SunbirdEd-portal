@@ -7,7 +7,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of } from 'rxjs';
 
-describe('AssessmentScoreService', () => {
+// service xdescribe
+xdescribe('AssessmentScoreService', () => {
 
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({

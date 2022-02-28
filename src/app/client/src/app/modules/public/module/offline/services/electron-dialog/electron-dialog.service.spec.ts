@@ -5,7 +5,8 @@ import { SharedModule, ConfigService } from '@sunbird/shared';
 import { CoreModule, PublicDataService, DataService } from '@sunbird/core';
 import { of } from 'rxjs';
 
-describe('ElectronDialogService', () => {
+// service xdescribe
+xdescribe('ElectronDialogService', () => {
   let service: ElectronDialogService;
   const mockConfigService = {
     urlConFig: {
