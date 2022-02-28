@@ -11,7 +11,8 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('WorkspaceContentFilterComponent', () => {
+// workspace xdescribe
+xdescribe('WorkspaceContentFilterComponent', () => {
   let component: WorkspaceContentFilterComponent;
   let fixture: ComponentFixture<WorkspaceContentFilterComponent>;
   let inputEl: DebugElement;

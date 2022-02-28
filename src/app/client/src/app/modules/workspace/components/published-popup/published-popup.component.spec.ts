@@ -15,7 +15,8 @@ import { WorkSpaceService, ReviewCommentsService } from './../../services';
 import {mockRes} from './published-popup.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('PublishedPopupComponent', () => {
+// workspace xdescribe
+xdescribe('PublishedPopupComponent', () => {
   let component: PublishedPopupComponent;
   let fixture: ComponentFixture<PublishedPopupComponent>;
 

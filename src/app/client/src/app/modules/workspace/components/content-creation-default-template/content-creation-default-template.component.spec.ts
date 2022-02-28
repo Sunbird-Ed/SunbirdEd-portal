@@ -13,7 +13,8 @@ import { DefaultTemplateComponent } from './content-creation-default-template.co
 import { mockData } from './content-creation-default-template.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('DefaultTemplateComponent', () => {
+// workspace xdescribe
+xdescribe('DefaultTemplateComponent', () => {
   let component: DefaultTemplateComponent;
   let fixture: ComponentFixture<DefaultTemplateComponent>;
   class RouterStub {

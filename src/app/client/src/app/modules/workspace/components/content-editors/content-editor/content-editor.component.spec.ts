@@ -34,7 +34,8 @@ class NavigationHelperServiceStub {
 const mockUserService = {
   userOrgDetails$ : observableOf({}),
   userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
-describe('ContentEditorComponent', () => {
+// workspace xdescribe
+xdescribe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
   let fixture: ComponentFixture<ContentEditorComponent>;
   configureTestSuite();

@@ -55,7 +55,8 @@ const resourceBundle = {
   },
   languageSelected$: observableOf({})
 };
-describe('ReviewSubmissionsComponent', () => {
+// workspace xdescribe
+xdescribe('ReviewSubmissionsComponent', () => {
   let component: ReviewSubmissionsComponent;
   let fixture: ComponentFixture<ReviewSubmissionsComponent>;
   configureTestSuite();

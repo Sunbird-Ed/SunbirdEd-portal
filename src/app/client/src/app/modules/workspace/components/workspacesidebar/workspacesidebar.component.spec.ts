@@ -8,7 +8,8 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import { WorkSpaceService } from './../../services';
 
-describe('WorkspacesidebarComponent', () => {
+// workspace xdescribe
+xdescribe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;
   configureTestSuite();

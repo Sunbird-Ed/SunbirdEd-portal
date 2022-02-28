@@ -16,7 +16,8 @@ import { CoreModule } from '@sunbird/core';
 import { DateFilterXtimeAgoPipe } from './../../pipes';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('FlagReviewerComponent', () => {
+// workspace xdescribe
+xdescribe('FlagReviewerComponent', () => {
   let component: FlagReviewerComponent;
   let fixture: ComponentFixture<FlagReviewerComponent>;
   const resourceBundle = {

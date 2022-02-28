@@ -13,7 +13,8 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
-describe('ReviewsubmissionsContentplayerComponent', () => {
+// workspace xdescribe
+xdescribe('ReviewsubmissionsContentplayerComponent', () => {
   let component: ReviewsubmissionsContentplayerComponent;
   let fixture: ComponentFixture<ReviewsubmissionsContentplayerComponent>;
   let originalTimeout;

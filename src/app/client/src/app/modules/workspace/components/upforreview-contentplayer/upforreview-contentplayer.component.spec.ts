@@ -13,7 +13,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
-describe('UpforreviewContentplayerComponent', () => {
+// workspace xdescribe
+xdescribe('UpforreviewContentplayerComponent', () => {
   let component: UpforreviewContentplayerComponent;
   let fixture: ComponentFixture<UpforreviewContentplayerComponent>;
   const resourceBundle = {

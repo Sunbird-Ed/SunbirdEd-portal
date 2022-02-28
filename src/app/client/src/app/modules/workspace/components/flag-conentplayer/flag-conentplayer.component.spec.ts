@@ -13,7 +13,8 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
-describe('FlagConentplayerComponent', () => {
+// workspace xdescribe
+xdescribe('FlagConentplayerComponent', () => {
   let component: FlagConentplayerComponent;
   let fixture: ComponentFixture<FlagConentplayerComponent>;
   const resourceBundle = {

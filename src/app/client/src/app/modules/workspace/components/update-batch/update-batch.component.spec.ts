@@ -55,7 +55,8 @@ const fakeActivatedRoute = {
   }
 };
 
-describe('UpdateBatchComponent', () => {
+// workspace xdescribe
+xdescribe('UpdateBatchComponent', () => {
   let component: UpdateBatchComponent;
   let fixture: ComponentFixture<UpdateBatchComponent>;
 
