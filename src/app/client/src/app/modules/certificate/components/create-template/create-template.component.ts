@@ -255,7 +255,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   updateStateLogos(stateLogos) {
     const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'LOGO');
     this.editSVG(logosArray, stateLogos).then(res => {
-      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
+      this.certificateCreation(this.svgData?.getElementsByTagName('svg')[0]);
     });
   }
 

@@ -594,7 +594,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']) {
                         currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id);
                     }
-                    const currentUserType = this.userType.toLowerCase();
+                    const currentUserType = this.userType?.toLowerCase();
                     if (data && data[currentBoard] &&
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;

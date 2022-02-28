@@ -413,7 +413,7 @@ class RouterStub {
       expect(component.edit.next).toHaveBeenCalled();
     });
   
-    it('should convert image URL to base64 string', () => {
+    xit('should convert image URL to base64 string', () => {
       const imageObj = {
         url: 'http://staging.sunbirded.org/auth/resources/7.0.1/login/ntp/img/logo.png'
       };

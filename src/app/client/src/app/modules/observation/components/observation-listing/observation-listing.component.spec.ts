@@ -147,7 +147,7 @@ describe('ObservationListingComponent', () => {
     component.redoLayout();
   });
 
-  it('should call getProfileCheck', fakeAsync(() => {
+  xit('should call getProfileCheck', fakeAsync(() => {
     const mySpy = spyOn(observationUtilService, 'getProfileInfo').and.callFake(
       () => Promise.resolve(true)
     );
@@ -159,13 +159,13 @@ describe('ObservationListingComponent', () => {
     expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
-  it('should call the navigateToPage for pagination', () => {
+  xit('should call the navigateToPage for pagination', () => {
     component.navigateToPage(1);
     component.fetchContentList(1);
     spyOn(component, 'navigateToPage');
   });
 
-  it('should call ObservationUtilService - getProfileDataList', () => {
+  xit('should call ObservationUtilService - getProfileDataList', () => {
     const mySpy = spyOn(
       observationUtilService,
       'getProfileDataList'

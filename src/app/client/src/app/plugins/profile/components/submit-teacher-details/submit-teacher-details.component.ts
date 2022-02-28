@@ -590,7 +590,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     if (this.formAction === 'submit') {
       this.updateUserConsent(declarations[0].orgId);
     } else if (this.formAction === 'update' && this.isTenantChanged) {
-      this.updateUserConsent(declarations[1].orgId, this.previousOrgId);
+      this.updateUserConsent(declarations[1]?.orgId, this.previousOrgId);
     }
   }
 
