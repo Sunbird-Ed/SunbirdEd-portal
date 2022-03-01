@@ -15,8 +15,8 @@ import { UploadCertificateService } from '../../services/upload-certificate/uplo
 import { of, throwError, observable } from 'rxjs';
 import { MockData } from './svg-editor.component.spec.data';
 import dayjs from 'dayjs';
-
-describe('SvgEditorComponent', () => {
+// Stage 1 RS
+xdescribe('SvgEditorComponent', () => {
   let component: SvgEditorComponent;
   let fixture: ComponentFixture<SvgEditorComponent>;
   configureTestSuite();
