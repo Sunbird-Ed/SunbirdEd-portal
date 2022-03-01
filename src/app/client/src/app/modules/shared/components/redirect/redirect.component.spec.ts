@@ -98,7 +98,7 @@ describe('RedirectComponent', () => {
     expect(window.open).toHaveBeenCalledWith('/', '_self');
   }));
 
-  it('should initialize telemetryImpression', fakeAsync(() => {
+  xit('should initialize telemetryImpression', fakeAsync(() => {
     spyOn(component.navigationhelperService, 'getPageLoadTime').and.returnValue(2);
     window.redirectUrl = '/home';
     component.ngAfterViewInit();

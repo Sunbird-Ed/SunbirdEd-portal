@@ -148,7 +148,7 @@ xdescribe('CollectionPlayerComponent', () => {
     expect(component.showPlayer).toBeFalsy();
   }));
 
-  it('should call closeCollectionPlayer method when you open collections previously from content manager ', () => {
+  xit('should call closeCollectionPlayer method when you open collections previously from content manager ', () => {
     spyOn(component, 'closeCollectionPlayer');
     const previousUrl = {
       url: '/play/collection/do_11287198635947622412',
@@ -158,7 +158,7 @@ xdescribe('CollectionPlayerComponent', () => {
     expect(router.navigate).toBeDefined(['/']);
   });
 
-  it('should call closeCollectionPlayer method when you open  collection previously from search', () => {
+  xit('should call closeCollectionPlayer method when you open  collection previously from search', () => {
     spyOn(component, 'closeCollectionPlayer');
     const previousUrl = {
       searchUrl: '/search',
@@ -169,7 +169,7 @@ xdescribe('CollectionPlayerComponent', () => {
     expect(router.navigate).toBeDefined([previousUrl.searchUrl, previousUrl.queryParams]);
   });
 
-  it('should call closeCollectionPlayer method and navigate to previous url ', () => {
+  xit('should call closeCollectionPlayer method and navigate to previous url ', () => {
     spyOn(component, 'closeCollectionPlayer');
     const previousUrl = {
       otherUrl: '/browse/play/collection/do_3123405048187617282365',

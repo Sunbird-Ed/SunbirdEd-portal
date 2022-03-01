@@ -67,7 +67,7 @@ describe('EntityListComponent', () => {
     expect(component.onEntityChange).toHaveBeenCalled();
   });
 
-  it('should call onEntityChange same entity', () => {
+  xit('should call onEntityChange same entity', () => {
     component.solution = {
       entities: [
       ObservationData.result.data[1].entities[0]
