@@ -6,8 +6,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
 import { of as observableOf } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
-
-describe('TopicPickerComponent', () => {
+// Stage 1 RS
+xdescribe('TopicPickerComponent', () => {
     let component: TopicPickerComponent;
     let fixture: ComponentFixture<TopicPickerComponent>;
     const topics = [{
