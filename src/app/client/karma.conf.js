@@ -32,9 +32,9 @@ module.exports = function (config) {
         ],
       },
     ],
-    browserNoActivityTimeout: 10000,
-    captureTimeout: 20000,
-    browserDisconnectTimeout : 10000,
+    browserNoActivityTimeout: 100000,
+    captureTimeout: 100000,
+    browserDisconnectTimeout : 100000,
     // The `disconnectTolerance` value represents the maximum number of tries a browser will attempt in
     // the case of a disconnection. Usually, any disconnection is considered a failure, but this option
     // allows you to define a tolerance level when there is a flaky network link
@@ -43,7 +43,7 @@ module.exports = function (config) {
     transports: ['websocket', 'polling'],
     client: {
       jasmine: {
-        timeoutInterval: 30000
+        timeoutInterval: 300000
       },
       args: [tags],
       clearContext: false // leave Jasmine Spec Runner output visible in browser
