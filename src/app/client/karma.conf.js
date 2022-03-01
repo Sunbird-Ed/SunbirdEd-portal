@@ -32,18 +32,18 @@ module.exports = function (config) {
         ],
       },
     ],
-    browserNoActivityTimeout: 500000,
-    captureTimeout: 210000,
-    browserDisconnectTimeout : 500000,
+    browserNoActivityTimeout: 100000,
+    // captureTimeout: 210000,
+    browserDisconnectTimeout : 200000,
     // The `disconnectTolerance` value represents the maximum number of tries a browser will attempt in
     // the case of a disconnection. Usually, any disconnection is considered a failure, but this option
     // allows you to define a tolerance level when there is a flaky network link
     // between the Karma server and the browsers.
-    browserDisconnectTolerance: 5,
+    browserDisconnectTolerance: 2,
     transports: ['websocket', 'polling'],
     client: {
       jasmine: {
-        timeoutInterval: 1500000
+        timeoutInterval: 300000
       },
       args: [tags],
       clearContext: false // leave Jasmine Spec Runner output visible in browser
