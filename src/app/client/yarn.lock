@@ -1502,17 +1502,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-<<<<<<< HEAD
 "@project-sunbird/common-consumption-v9@4.7.1":
   version "4.7.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.7.1.tgz#998c04b540501a2607a50b4f5f6dd37a80e7166f"
   integrity sha512-F04nX6kjGjGk6FipDUjL90aFnbqQivaXRuRpSKWiQJAGZM3D/VXrix6VHLi/4Vaw3XgHbd5NfAQJ7UCSvYXkGw==
-=======
-"@project-sunbird/common-consumption-v9@4.7.0":
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.7.0.tgz#c9cce4a3c559932b14450258186b6c326aca6eb1"
-  integrity sha512-ORBAlAQMhxhmPFdheLhJ9mnQtS8BXGpelEyEZbWHthwOBnWgDrZtn3i8oVfP2dpAhwqI6fstEZfZSeHgXbNvSg==
->>>>>>> upstream/release-4.6.0
 
 "@project-sunbird/discussions-ui-v8@2.6.0-beta.2":
   version "2.6.0-beta.2"
@@ -1550,17 +1543,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.38.tgz#86ebd5d1336b7f8625b24035e244f979ad2375b0"
   integrity sha512-uO6Xdo9JT80bFgtu7SMJzuH5Qj2GgP2PTepTK6vbZ+eUvlrP2abwSgeSNWYRNyXUTMBzkouvuy5OW862/ZoNng==
 
-<<<<<<< HEAD
 "@project-sunbird/sunbird-collection-editor-v9@4.7.18":
   version "4.7.18"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.18.tgz#9173da431d1b4b7d0126a3f4237ee2394e209cec"
   integrity sha512-CQd/DmgmCvK7RcyGeYImwSUFniLxgITDE/XqOt2aZlwITsx2rEcKUAIWFhcDkzC5N4cb4T9L8n4qs7iJ3NOC+w==
-=======
-"@project-sunbird/sunbird-collection-editor-v9@4.6.23":
-  version "4.6.23"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.6.23.tgz#c7fa7bcf7113b8baf0daded53972d8ff1fb74d16"
-  integrity sha512-a/Ovuomq2d7YmJa6mnNKcHETmWA8S2yI2lW1eDm2umVJBCok/0IQcSyMv8wEVgxrtDv5xuXn/yMDNEvJZ6MLuQ==
->>>>>>> upstream/release-4.6.0
   dependencies:
     tslib "^1.10.0"
 
