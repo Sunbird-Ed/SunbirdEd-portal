@@ -1,6 +1,6 @@
 
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataDrivenComponent } from './data-driven.component';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
@@ -16,9 +16,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-
-// Old One
-xdescribe('DataDrivenComponent', () => {
+describe('DataDrivenComponent', () => {
   let componentParent: DataDrivenComponent;
   let fixtureParent: ComponentFixture<DataDrivenComponent>;
   let componentChild: DefaultTemplateComponent;
@@ -30,8 +28,8 @@ xdescribe('DataDrivenComponent', () => {
     'messages': {
       'emsg': {
         'm0005': 'api failed, please try again',
-        'm0024' : 'Unable to get category defination details, please try again later...',
-        'm0025' : 'Unable to get framework details, please try again later...'
+        'm0024': 'Unable to get category defination details, please try again later...',
+        'm0025': 'Unable to get framework details, please try again later...'
       },
       'stmsg': {
         'm0018': 'We are fetching content...',
@@ -41,7 +39,7 @@ xdescribe('DataDrivenComponent', () => {
       'fmsg': {
         'm0078': 'Creating content failed. Please login again to create content.',
         'm0010': 'Creating collection failed. Please login again to create collection.',
-        'm0102' : 'Creating QuestionSet failed. Please login again to create QuestionSet...',
+        'm0102': 'Creating QuestionSet failed. Please login again to create QuestionSet...',
       }
     }
   };
@@ -84,88 +82,60 @@ xdescribe('DataDrivenComponent', () => {
     componentParent = fixtureParent.componentInstance;
     fixtureChild = TestBed.createComponent(DefaultTemplateComponent);
     componentChild = fixtureChild.componentInstance;
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     userService['userOrgDetails$' as any] = observableOf({});
     // navigationHelperService = TestBed.inject('NavigationHelperService');
     fixtureParent.detectChanges();
   });
 
-  it('should router to QuestionSet editor', () => {
+  afterEach(() => {
+    fixtureParent.destroy();
+    fixtureChild.destroy();
+    TestBed.resetTestingModule();
+  })
+
+  it('should router to QuestionSet editor', fakeAsync(() => {
     const router = TestBed.inject(Router);
-    const service = TestBed.inject(FrameworkService);
+    const service: any = TestBed.inject(FrameworkService);
     const workSpaceService = TestBed.inject(WorkSpaceService);
-    spyOn(workSpaceService, 'createQuestionSet').and.returnValue(observableOf({result: {identifier: 'do_2124708548063559681134'}}));
-    service['_frameWorkData$' as any] = mockFrameworkData.frameworkData;
-    service['_frameWorkData$' as any].next({
+    spyOn(workSpaceService, 'createQuestionSet').and.returnValue(observableOf({ result: { identifier: 'do_2124708548063559681134' } }));
+    service.frameworkData$ = observableOf({
       err: null, framework: mockFrameworkData.success.framework,
       frameworkdata: mockFrameworkData.frameworkData
     });
     componentParent.contentType = 'questionset';
-    spyOn(componentParent, 'generateQuestionSetData').and.callFake(() => {});
+    spyOn(componentParent, 'generateQuestionSetData').and.callFake(() => { });
     componentParent.fetchFrameworkMetaData();
+    flush();
     expect(router.navigate).toHaveBeenCalledWith(
       ['workspace/edit/', 'QuestionSet', 'do_2124708548063559681134', 'allcontent', 'Draft']);
-  });
+  }));
 
-  it('should not router to QuestionSet editor', () => {
+  it('should not router to QuestionSet editor', fakeAsync(() => {
     const router = TestBed.inject(Router);
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
-    const service = TestBed.inject(FrameworkService);
+    const service: any = TestBed.inject(FrameworkService);
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'createQuestionSet').and.returnValue(observableThrowError({}));
-    service['_frameWorkData$' as any] = mockFrameworkData.frameworkData;
-    service['_frameWorkData$' as any].next({
+    service.frameworkData$ = observableOf({
       err: null, framework: mockFrameworkData.success.framework,
       frameworkdata: mockFrameworkData.frameworkData
     });
     componentParent.contentType = 'questionset';
-    spyOn(componentParent, 'generateQuestionSetData').and.callFake(() => {});
+    spyOn(componentParent, 'generateQuestionSetData').and.callFake(() => { });
     componentParent.fetchFrameworkMetaData();
+    flush();
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['workspace/edit/', 'QuestionSet', 'do_2124708548063559681134', 'allcontent', 'Draft']);
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0102);
-  });
-
-  it('should fetch framework details', () => {
-    const service = TestBed.inject(FrameworkService);
-    const cacheService = TestBed.inject(CacheService);
-    const contentService = TestBed.inject(ContentService);
-    const formService = TestBed.inject(FormService);
-    const formServiceInputParams = {
-      formType: 'textbook',
-      formAction: 'textbook',
-      contentType: 'textbook',
-      framework: 'textbook'
-    };
-    service['_frameWorkData$' as any] = mockFrameworkData.frameworkData;
-    service['_frameWorkData$' as any].next({
-      err: null, framework: mockFrameworkData.success.framework,
-      frameworkdata: mockFrameworkData.frameworkData
-    });
-    componentParent.isCachedDataExists = true;
-    componentParent.formFieldProperties = mockFrameworkData.formSuccess.fields;
-    componentParent.fetchFrameworkMetaData();
-    formService.getFormConfig(formServiceInputParams);
-  });
-  it('should throw error', () => {
-    const service = TestBed.inject(FrameworkService);
-    const cacheService = TestBed.inject(CacheService);
-    const contentService = TestBed.inject(ContentService);
-    service['_frameWorkData$' as any] = mockFrameworkData.frameworkError;
-    service['_frameWorkData$' as any].next({
-      err: mockFrameworkData.frameworkError.err,
-      framework: mockFrameworkData.frameworkError.framework, frameworkdata: mockFrameworkData.frameworkError.frameworkdata
-    });
-    componentParent.formFieldProperties = mockFrameworkData.formSuccess.fields;
-    componentParent.fetchFrameworkMetaData();
-  });
+  }));
 
   it('should router to collection editor ', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     const workSpaceService = TestBed.inject(WorkSpaceService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
@@ -173,7 +143,7 @@ xdescribe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     componentParent.targetFramework = 'nit_k-12';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -187,14 +157,14 @@ xdescribe('DataDrivenComponent', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     componentParent.targetFramework = 'nit_k-12';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
@@ -209,7 +179,7 @@ xdescribe('DataDrivenComponent', () => {
     const state = 'draft';
     const type = 'Course';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
@@ -217,7 +187,7 @@ xdescribe('DataDrivenComponent', () => {
     componentParent.contentType = 'course';
     componentParent.targetFramework = 'nit_k-12';
     componentParent.primaryCategory = 'course';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     componentParent.fetchFrameworkMetaData();
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -232,13 +202,13 @@ xdescribe('DataDrivenComponent', () => {
   it('should router to contentEditor editor ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -250,13 +220,13 @@ xdescribe('DataDrivenComponent', () => {
   it('should router to contentEditor editor ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
-    componentChild.formInputData = { name: 'testAssessment'};
+    componentChild.formInputData = { name: 'testAssessment' };
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'assessment';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -268,13 +238,13 @@ xdescribe('DataDrivenComponent', () => {
   it('should not router to contentEditor editer ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
@@ -288,7 +258,7 @@ xdescribe('DataDrivenComponent', () => {
   it('should call getFormConfig', () => {
     componentParent.formFieldProperties = mockFrameworkData.formSuccess;
     componentParent.categoryMasterList = mockFrameworkData.frameworkSuccess;
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     userService._userProfile = {};
     spyOn(componentParent, 'getFormConfig').and.callThrough();
     componentParent.getFormConfig();
@@ -328,15 +298,15 @@ xdescribe('DataDrivenComponent', () => {
   it('should thow  editor service api error when contentType is studymaterial  ', () => {
     const state = 'draft';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
@@ -352,15 +322,15 @@ xdescribe('DataDrivenComponent', () => {
     const state = 'draft';
     const type = 'TextBook';
     const router = TestBed.inject(Router);
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const editorService = TestBed.inject(EditorService);
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     const resourceService = TestBed.inject(ResourceService);
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -377,27 +347,40 @@ xdescribe('DataDrivenComponent', () => {
     expect(componentParent.description).toBe('Enter description for TextBook');
   });
 
-  it('should fetch frameworks from channel-read api and set for the associated popup cards based on queryParams', () => {
+  it('should fetch frameworks from channel-read api and set for the associated popup cards based on queryParams', fakeAsync(() => {
+    const userService: any = TestBed.inject(UserService);
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
+    userService._userProfile = {};
     const frameworkService = TestBed.inject(FrameworkService);
+    const activatedRoute = TestBed.inject(ActivatedRoute);
+    activatedRoute.queryParams = observableOf({ showFrameworkSelection: true });
     spyOn<any>(componentParent, 'selectFramework').and.stub();
     spyOn(frameworkService, 'getChannel').and.returnValue(observableOf(mockFrameworkData.channelData));
     componentParent.ngOnInit();
+    flush();
     expect(componentParent.selectFramework).toHaveBeenCalled();
     expect(componentParent.userChannelData).toBeDefined();
-  });
+  }));
 
-  it('should throw error if channel read api fails', () => {
+  it('should throw error if channel read api fails', fakeAsync(() => {
+    const userService: any = TestBed.inject(UserService);
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
+    userService._userProfile = {};
+    const activatedRoute = TestBed.inject(ActivatedRoute);
+    activatedRoute.queryParams = observableOf({ showFrameworkSelection: true });
     const frameworkService = TestBed.inject(FrameworkService);
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
+    spyOn(componentParent, 'checkForPreviousRouteForRedirect');
     spyOn(toasterService, 'error');
     spyOn(frameworkService, 'getChannel').and.callFake(() => observableThrowError({}));
     componentParent.ngOnInit();
+    flush();
     expect(toasterService.error).toHaveBeenCalledWith('api failed, please try again');
-  });
+  }));
 
   it('should fetch form config metadata if framework selection popup does not appear', () => {
     const activatedRoute = TestBed.inject(ActivatedRoute);
-    activatedRoute.queryParams = observableOf({showFrameworkSelection: false});
+    activatedRoute.queryParams = observableOf({ showFrameworkSelection: false });
     spyOn<any>(componentParent, 'fetchFrameworkMetaData').and.stub();
     componentParent.ngOnInit();
     expect(componentParent.fetchFrameworkMetaData).toHaveBeenCalled();
@@ -412,7 +395,7 @@ xdescribe('DataDrivenComponent', () => {
 
   it('selectFramework() function should categoryDefinition api throw error', () => {
     const resourceService = TestBed.inject(ResourceService);
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
@@ -449,7 +432,7 @@ xdescribe('DataDrivenComponent', () => {
   it('#selectFramework() - getFrameworkDataByType() function call returns count 0', () => {
     spyOn(componentParent, 'setTargetFramework').and.stub();
     const workSpaceService = TestBed.inject(WorkSpaceService);
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
@@ -457,14 +440,14 @@ xdescribe('DataDrivenComponent', () => {
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByTypeCountZero));
     componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
-   });
+  });
 
 
-   it('#selectFramework() - getFrameworkDataByType() function should throw error', () => {
+  it('#selectFramework() - getFrameworkDataByType() function should throw error', () => {
     const resourceService = TestBed.inject(ResourceService);
     spyOn(componentParent, 'setTargetFramework').and.stub();
     const workSpaceService = TestBed.inject(WorkSpaceService);
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
@@ -472,13 +455,13 @@ xdescribe('DataDrivenComponent', () => {
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
     componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
-   });
+  });
 
-   it('#selectFramework() - function should fetch categoryDefinition with schema configured with framework identifiers', () => {
+  it('#selectFramework() - function should fetch categoryDefinition with schema configured with framework identifiers', () => {
     spyOn(componentParent, 'setTargetFramework').and.stub();
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and
-    .returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionSchemaFrameworkData));
+      .returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionSchemaFrameworkData));
     componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
     componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
@@ -490,7 +473,7 @@ xdescribe('DataDrivenComponent', () => {
     spyOn(componentParent, 'setTargetFramework').and.stub();
     const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and
-    .returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
+      .returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
     componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelDataWithFrameworkSameAsCategoryDefinition');
     componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
@@ -505,7 +488,7 @@ xdescribe('DataDrivenComponent', () => {
       'nit_k-12',
       ['K-12', 'TPD'],
       [
-      {
+        {
           'name': 'nit_k-12',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_k-12',
@@ -513,8 +496,8 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'K-12'
-      },
-      {
+        },
+        {
           'name': 'nit_tpd',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_tpd',
@@ -522,7 +505,7 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'TPD'
-      }]
+        }]
     );
     expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
@@ -551,7 +534,7 @@ xdescribe('DataDrivenComponent', () => {
         }
       }
     };
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.orgFWType = ['K-12', 'TPD'];
     componentParent.setTargetFramework(
@@ -559,7 +542,7 @@ xdescribe('DataDrivenComponent', () => {
       undefined,
       ['K-12', 'TPD'],
       [
-      {
+        {
           'name': 'nit_k-12',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_k-12',
@@ -567,8 +550,8 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'K-12'
-      },
-      {
+        },
+        {
           'name': 'nit_tpd',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_tpd',
@@ -576,7 +559,7 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'TPD'
-      }]
+        }]
     );
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
   });
@@ -588,7 +571,7 @@ xdescribe('DataDrivenComponent', () => {
       ['nit_k-12'],
       ['K-12', 'TPD'],
       [
-      {
+        {
           'name': 'nit_k-12',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_k-12',
@@ -596,8 +579,8 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'K-12'
-      },
-      {
+        },
+        {
           'name': 'nit_tpd',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_tpd',
@@ -605,7 +588,7 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'TPD'
-      }]
+        }]
     );
     expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
@@ -617,7 +600,7 @@ xdescribe('DataDrivenComponent', () => {
       undefined,
       ['K-12', 'TPD'],
       [
-      {
+        {
           'name': 'nit_k-12',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_k-12',
@@ -625,8 +608,8 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'K-12'
-      },
-      {
+        },
+        {
           'name': 'nit_tpd',
           'relation': 'hasSequenceMember',
           'identifier': 'nit_tpd',
@@ -634,35 +617,35 @@ xdescribe('DataDrivenComponent', () => {
           'objectType': 'Framework',
           'status': 'Live',
           'type': 'TPD'
-      }]
+        }]
     );
     expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
   it('#setTargetFramework() - should throw config error if framework is set incorrectly', () => {
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     componentParent.setTargetFramework(
       _.get(mockFrameworkData, 'successCategory'),
       undefined,
       ['K-12', 'TPD'],
       [{
-          'name': 'nit_k-12',
-          'relation': 'hasSequenceMember',
-          'identifier': 'nit_k-12',
-          'description': 'nit_k-12 Framework',
-          'objectType': 'Framework',
-          'status': 'Live',
-          'type': 'K-12'
+        'name': 'nit_k-12',
+        'relation': 'hasSequenceMember',
+        'identifier': 'nit_k-12',
+        'description': 'nit_k-12 Framework',
+        'objectType': 'Framework',
+        'status': 'Live',
+        'type': 'K-12'
       },
       {
-          'name': 'nit_tpd',
-          'relation': 'hasSequenceMember',
-          'identifier': 'nit_tpd',
-          'description': 'nit_tpd Framework',
-          'objectType': 'Framework',
-          'status': 'Live',
-          'type': 'TPD'
+        'name': 'nit_tpd',
+        'relation': 'hasSequenceMember',
+        'identifier': 'nit_tpd',
+        'description': 'nit_tpd Framework',
+        'objectType': 'Framework',
+        'status': 'Live',
+        'type': 'TPD'
       }]
     );
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
@@ -677,13 +660,13 @@ xdescribe('DataDrivenComponent', () => {
       undefined,
       ['TPD'],
       [{
-          'name': 'nit_k-12',
-          'relation': 'hasSequenceMember',
-          'identifier': 'nit_k-12',
-          'description': 'nit_k-12 Framework',
-          'objectType': 'Framework',
-          'status': 'Live',
-          'type': 'K-12'
+        'name': 'nit_k-12',
+        'relation': 'hasSequenceMember',
+        'identifier': 'nit_k-12',
+        'description': 'nit_k-12 Framework',
+        'objectType': 'Framework',
+        'status': 'Live',
+        'type': 'K-12'
       }]
     );
     expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
@@ -698,41 +681,41 @@ xdescribe('DataDrivenComponent', () => {
       undefined,
       undefined,
       [{
-          'name': 'nit_k-12',
-          'relation': 'hasSequenceMember',
-          'identifier': 'nit_k-12',
-          'description': 'nit_k-12 Framework',
-          'objectType': 'Framework',
-          'status': 'Live',
-          'type': 'K-12'
+        'name': 'nit_k-12',
+        'relation': 'hasSequenceMember',
+        'identifier': 'nit_k-12',
+        'description': 'nit_k-12 Framework',
+        'objectType': 'Framework',
+        'status': 'Live',
+        'type': 'K-12'
       }]
     );
     expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
   it('#setTargetFramework() - should throw error getFrameworkDataByType() api return empty Framework', () => {
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({'result': {}}));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({ 'result': {} }));
     componentParent.setTargetFramework(
       mockFrameworkData.objectCategoryDefinitionFrameworkData,
       undefined,
       ['TPD'],
       [{
-          'name': 'nit_k-12',
-          'relation': 'hasSequenceMember',
-          'identifier': 'nit_k-12',
-          'description': 'nit_k-12 Framework',
-          'objectType': 'Framework',
-          'status': 'Live',
-          'type': 'K-12'
+        'name': 'nit_k-12',
+        'relation': 'hasSequenceMember',
+        'identifier': 'nit_k-12',
+        'description': 'nit_k-12 Framework',
+        'objectType': 'Framework',
+        'status': 'Live',
+        'type': 'K-12'
       }]
     );
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
   });
 
   it('#setTargetFramework() - should getFrameworkDataByType() throw error', () => {
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
     componentParent.setTargetFramework(
@@ -740,13 +723,13 @@ xdescribe('DataDrivenComponent', () => {
       undefined,
       ['TPD'],
       [{
-          'name': 'nit_k-12',
-          'relation': 'hasSequenceMember',
-          'identifier': 'nit_k-12',
-          'description': 'nit_k-12 Framework',
-          'objectType': 'Framework',
-          'status': 'Live',
-          'type': 'K-12'
+        'name': 'nit_k-12',
+        'relation': 'hasSequenceMember',
+        'identifier': 'nit_k-12',
+        'description': 'nit_k-12 Framework',
+        'objectType': 'Framework',
+        'status': 'Live',
+        'type': 'K-12'
       }]
     );
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
@@ -799,9 +782,9 @@ xdescribe('DataDrivenComponent', () => {
   });
 
   it('#generateQuestionSetData() should return valid metadata', () => {
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     componentParent.framework = 'NCERT';
-    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile});
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData as IUserProfile });
     userService._userProfile = {};
     const res = componentParent.generateQuestionSetData();
     expect(Object.keys(res)).toContain('questionset');
