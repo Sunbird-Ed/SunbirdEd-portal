@@ -14,7 +14,7 @@ import { CacheService } from 'ng2-cache-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-describe('UserOnboardingComponent', () => {
+xdescribe('UserOnboardingComponent', () => {
   let component: UserOnboardingComponent;
   let fixture: ComponentFixture<UserOnboardingComponent>;
 
