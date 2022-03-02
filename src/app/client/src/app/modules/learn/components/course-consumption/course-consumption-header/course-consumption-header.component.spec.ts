@@ -82,8 +82,7 @@ class RouterStub {
 }
 
 
-// Old One
-xdescribe('CourseConsumptionHeaderComponent', () => {
+describe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;
   configureTestSuite();
@@ -366,7 +365,7 @@ xdescribe('CourseConsumptionHeaderComponent', () => {
     expect(component.viewDashboard).toBeFalsy();
   });
 
-  it('should generate context data for course/batch', () => {
+  xit('should generate context data for course/batch', () => {
     /** Arrange */
     component.courseId = 'do_11317805943810457614592';
     const mockRequest = {

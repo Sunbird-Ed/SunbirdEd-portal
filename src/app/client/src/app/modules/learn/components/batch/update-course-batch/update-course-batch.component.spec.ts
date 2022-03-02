@@ -69,8 +69,7 @@ const fakeActivatedRoute = {
     }
 };
 
-// Old One
-xdescribe('UpdateCourseBatchComponent', () => {
+describe('UpdateCourseBatchComponent', () => {
   let component: UpdateCourseBatchComponent;
   let fixture: ComponentFixture<UpdateCourseBatchComponent>;
   configureTestSuite();
