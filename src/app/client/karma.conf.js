@@ -40,7 +40,10 @@ module.exports = function (config) {
     // allows you to define a tolerance level when there is a flaky network link
     // between the Karma server and the browsers.
     browserDisconnectTolerance: 2,
-    transports: ['websocket', 'polling'],
+    flags: [
+      '--disable-gpu',
+      '--no-sandbox'
+    ],
     client: {
       jasmine: {
         timeoutInterval: 300000
