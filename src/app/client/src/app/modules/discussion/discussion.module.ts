@@ -11,6 +11,8 @@ import * as _ from 'lodash-es';
 import { NavigationHelperService, SharedModule } from '@sunbird/shared';
 import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
 import { NavigationEnd, Router } from '@angular/router';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
 @NgModule({
   imports: [CommonModule, SuiModalModule, DiscussionUiModule, SharedModule.forRoot()],
@@ -23,8 +25,12 @@ export class DiscussionModule {
     private discussionEvents: DiscussionEventsService,
     private discussionTelemetryService: DiscussionTelemetryService,
     private navigationHelperService: NavigationHelperService,
-    private router: Router
+    private router: Router,
+    private csLibInitializerService: CsLibInitializerService
   ) {
+    if (!CsModule.instance.isInitialised) {
+      this.csLibInitializerService.initializeCs();
+    }
     this.discussionEvents.telemetryEvent.subscribe((event) => {
       this.discussionTelemetryService.logTelemetryEvent(event);
     });
