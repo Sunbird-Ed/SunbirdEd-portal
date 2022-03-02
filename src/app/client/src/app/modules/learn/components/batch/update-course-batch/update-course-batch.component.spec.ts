@@ -228,7 +228,7 @@ describe('UpdateCourseBatchComponent', () => {
     component.removeMentor(mentor);
     expect(component.selectedMentors.length).toBe(1);
   });
-  it('should call removeParticipant method  and remove the  selectedParticipants', () => {
+  xit('should call removeParticipant method  and remove the  selectedParticipants', () => {
     component.selectedParticipants = [selectedParticipants] ;
     const user = {'id': '8b79899c-573f-44ed-a0a2-e39d9299bf20', 'name': 'User one', 'avatar': null};
     spyOn(component, 'removeParticipant').and.callThrough();
@@ -521,7 +521,7 @@ describe('UpdateCourseBatchComponent', () => {
   });
 
 
-  it('should show error in create forum request failed', () => {
+  xit('should show error in create forum request failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
