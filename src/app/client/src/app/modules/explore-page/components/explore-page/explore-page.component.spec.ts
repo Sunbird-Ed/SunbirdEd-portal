@@ -22,8 +22,7 @@ import { find } from 'lodash-es';
 import { result } from 'lodash';
 import {ObservationModule} from '../../../observation/observation.module';
 
-// Old One
-xdescribe('ExplorePageComponent', () => {
+describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
   let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService, observationUtilService;

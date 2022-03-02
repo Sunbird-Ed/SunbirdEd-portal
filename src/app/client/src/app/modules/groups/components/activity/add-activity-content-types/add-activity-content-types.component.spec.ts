@@ -12,9 +12,7 @@ import { GroupsService } from '../../../services';
 import { AddActivityContentTypesData } from './add-activity-content-types.spec.data';
 import * as _ from 'lodash-es';
 
-
-// Old One
-xdescribe('AddActivityContentTypesComponent', () => {
+describe('AddActivityContentTypesComponent', () => {
   let component: AddActivityContentTypesComponent;
   let fixture: ComponentFixture<AddActivityContentTypesComponent>;
 
