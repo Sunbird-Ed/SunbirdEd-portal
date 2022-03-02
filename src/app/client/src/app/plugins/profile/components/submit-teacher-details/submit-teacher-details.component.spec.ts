@@ -20,6 +20,7 @@ import { of as observableOf, of, Subject, throwError } from 'rxjs';
 import { SubmitTeacherDetailsComponent } from './submit-teacher-details.component';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 
+// Old One
 xdescribe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
   let fixture: ComponentFixture<SubmitTeacherDetailsComponent>;

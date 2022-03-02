@@ -8,6 +8,7 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CourseCompletionComponent } from './course-completion.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// Old One
 xdescribe('CourseCompletionComponent', () => {
   let component: CourseCompletionComponent;
   let fixture: ComponentFixture<CourseCompletionComponent>;

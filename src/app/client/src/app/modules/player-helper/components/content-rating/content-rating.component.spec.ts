@@ -11,6 +11,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { mockData } from './content-rating.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
+// Old One
 xdescribe('ContentRatingComponent', () => {
 
   let component: ContentRatingComponent;

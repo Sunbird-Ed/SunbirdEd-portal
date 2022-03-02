@@ -8,6 +8,7 @@ import { mockData } from './dial-code.service.spec.data';
 import { of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
+// Old One
 xdescribe('DialCodeService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
@@ -20,7 +21,8 @@ xdescribe('DialCodeService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('searchDialCodeAssemble function', () => {
+  // NEW xdescribe
+xdescribe('searchDialCodeAssemble function', () => {
 
     it('should return the request object for dial code', () => {
       const funresponse = {
@@ -113,7 +115,8 @@ xdescribe('DialCodeService', () => {
 
   });
 
-  describe('filterDialSearchResults function', () => {
+  // NEW xdescribe
+xdescribe('filterDialSearchResults function', () => {
 
     it('should return collections and contents from dial search results ', () => {
       const dialCodeService = TestBed.inject(DialCodeService);
@@ -128,7 +131,8 @@ xdescribe('DialCodeService', () => {
     });
   });
 
-  describe('parseCollection function', () => {
+  // NEW xdescribe
+xdescribe('parseCollection function', () => {
 
     it('should return contents from a collection', () => {
       const dialCodeService = TestBed.inject(DialCodeService);
@@ -141,7 +145,8 @@ xdescribe('DialCodeService', () => {
 
   });
 
-  describe('getCollectionHierarchy function', () => {
+  // NEW xdescribe
+xdescribe('getCollectionHierarchy function', () => {
 
     it('should return collection heirarchy', () => {
       const dialCodeService = TestBed.inject(DialCodeService);
@@ -158,7 +163,8 @@ xdescribe('DialCodeService', () => {
 
   });
 
-  describe('groupCollections function', () => {
+  // NEW xdescribe
+xdescribe('groupCollections function', () => {
 
     it('should group contents based on their content type', () => {
       const dialCodeService = TestBed.inject(DialCodeService);
@@ -169,7 +175,8 @@ xdescribe('DialCodeService', () => {
 
   });
 
-  describe('getAllPlayableContent function', () => {
+  // NEW xdescribe
+xdescribe('getAllPlayableContent function', () => {
 
     let dialCodeService: DialCodeService, playerService: PlayerService;
 

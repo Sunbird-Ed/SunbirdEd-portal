@@ -6,7 +6,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('ContentSearchService', () => {
+// NEW xdescribe
+xdescribe('ContentSearchService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],

@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// Old One
 xdescribe('ContentManagerInfoPopUpComponent', () => {
   let component: ContentManagerInfoPopUpComponent;
   let fixture: ComponentFixture<ContentManagerInfoPopUpComponent>;

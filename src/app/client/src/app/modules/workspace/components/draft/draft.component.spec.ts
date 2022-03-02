@@ -22,6 +22,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
+// Old One
 xdescribe('DraftComponent', () => {
   let component: DraftComponent;
   let fixture: ComponentFixture<DraftComponent>;

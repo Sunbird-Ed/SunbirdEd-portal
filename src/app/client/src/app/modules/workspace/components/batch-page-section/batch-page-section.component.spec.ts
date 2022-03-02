@@ -19,6 +19,7 @@ import { NgInviewModule } from 'angular-inport';
 import { PageApiService } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
+// Old One
 xdescribe('BatchPageSectionComponent', () => {
   let component: BatchPageSectionComponent;
   let fixture: ComponentFixture<BatchPageSectionComponent>;

@@ -19,6 +19,7 @@ import { GroupsService } from '../../services/groups/groups.service';
 import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
 import { MockResponseData } from './group-header.spec.data';
 
+// Old One
 xdescribe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
   let fixture: ComponentFixture<GroupHeaderComponent>;

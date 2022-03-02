@@ -6,7 +6,8 @@ import { of as observableOf, throwError } from 'rxjs';
 import { AppUpdateService } from './app-update.service';
 import { serverRes } from './app-update.service.spec.data';
 
-describe('AppUpdateService', () => {
+// NEW xdescribe
+xdescribe('AppUpdateService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
     providers: [ConfigService, HttpClient]

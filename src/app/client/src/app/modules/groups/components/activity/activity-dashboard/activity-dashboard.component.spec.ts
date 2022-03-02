@@ -13,6 +13,7 @@ import { courseHierarchy, activityData, dashletData, groupInfo } from './activit
 import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
 
+// Old One
 xdescribe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
   let fixture: ComponentFixture<ActivityDashboardComponent>;

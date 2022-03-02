@@ -9,7 +9,8 @@ import {mockRes} from './resource.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
-describe('ResourceService', () => {
+// NEW xdescribe
+xdescribe('ResourceService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

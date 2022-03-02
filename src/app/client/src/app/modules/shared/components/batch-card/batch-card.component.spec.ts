@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
+// Old One
 xdescribe('BatchCardComponent', () => {
   let component: BatchCardComponent;
   let fixture: ComponentFixture<BatchCardComponent>;

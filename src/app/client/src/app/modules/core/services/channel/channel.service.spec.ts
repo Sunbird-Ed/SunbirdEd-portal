@@ -11,7 +11,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { PublicDataService } from './../public-data/public-data.service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('ChannelService', () => {
+// NEW xdescribe
+xdescribe('ChannelService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

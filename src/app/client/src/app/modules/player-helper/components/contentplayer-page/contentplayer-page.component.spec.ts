@@ -33,6 +33,7 @@ class RouterStub {
     observer.complete();
   });
 }
+// Old One
 xdescribe('ContentPlayerComponent', () => {
   let component: ContentPlayerPageComponent;
   let fixture: ComponentFixture<ContentPlayerPageComponent>;

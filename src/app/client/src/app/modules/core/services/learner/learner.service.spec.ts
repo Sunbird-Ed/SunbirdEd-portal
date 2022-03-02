@@ -4,7 +4,8 @@ import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from './learner.service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('LearnerService', () => {
+// NEW xdescribe
+xdescribe('LearnerService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

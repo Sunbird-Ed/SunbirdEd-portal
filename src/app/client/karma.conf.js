@@ -15,7 +15,13 @@ module.exports = function (config) {
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
-    browserNoActivityTimeout: 400000,
+    browserDisconnectTimeout: 10000,
+    browserDisconnectTolerance: 3,
+    browserNoActivityTimeout: 100000,
+    flags: [
+      '--disable-gpu',
+      '--no-sandbox'
+  ],
     client: {
       jasmine: {
         timeoutInterval: 1200000

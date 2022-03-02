@@ -6,7 +6,8 @@ import { ConfigService, SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of as observableOf, of, throwError as observableThrowError } from 'rxjs';
 import { mockUserData } from './user.mock.spec.data';
-describe('userService', () => {
+// NEW xdescribe
+xdescribe('userService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

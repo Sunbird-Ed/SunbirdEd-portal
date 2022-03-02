@@ -8,7 +8,8 @@ import { ConfigService } from '@sunbird/shared';
 import { mockRes } from './org-type.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('OrgTypeService', () => {
+// NEW xdescribe
+xdescribe('OrgTypeService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

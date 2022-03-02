@@ -11,6 +11,7 @@ import { telemetryData } from './telemetry-import.component.spec.data';
 import { TelemetryActionsService } from './../../../offline/services';
 import { ElectronDialogService } from '../../../offline/services';
 
+// Old One
 xdescribe('TelemetryImportComponent', () => {
   let component: TelemetryImportComponent;
   let fixture: ComponentFixture<TelemetryImportComponent>;

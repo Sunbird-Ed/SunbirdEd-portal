@@ -9,6 +9,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryComponent } from './telemetry.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+// Old One
 xdescribe('TelemetryComponent', () => {
   let component: TelemetryComponent;
   let fixture: ComponentFixture<TelemetryComponent>;

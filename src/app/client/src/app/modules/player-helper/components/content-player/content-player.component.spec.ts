@@ -11,6 +11,7 @@ import {of as observableOf, Subject} from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 
+// Old One
 xdescribe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;

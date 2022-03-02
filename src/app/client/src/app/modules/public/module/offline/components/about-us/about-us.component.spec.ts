@@ -11,6 +11,7 @@ import { AppUpdateService } from '../../../../../core/services/app-update/app-up
 import { AboutUsComponent } from './about-us.component';
 import { appInfoResponse } from './about-us.component.spec.data';
 
+// Old One
 xdescribe('AboutUsComponent', () => {
   let component: AboutUsComponent;
   let fixture: ComponentFixture<AboutUsComponent>;

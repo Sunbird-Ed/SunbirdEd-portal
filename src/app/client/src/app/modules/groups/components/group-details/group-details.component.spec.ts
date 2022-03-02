@@ -16,6 +16,7 @@ import { GroupDetailsData } from './group-details.component.spec.data';
 import * as _ from 'lodash-es';
 import { CsGroup, GroupMembershipType } from '@project-sunbird/client-services/models';
 
+// Old One
 xdescribe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
   let fixture: ComponentFixture<GroupDetailsComponent>;

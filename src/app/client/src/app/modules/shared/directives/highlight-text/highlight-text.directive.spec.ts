@@ -10,6 +10,7 @@ import { BrowserCacheTtlService } from '../../services';
 import { HighlightTextDirective } from './highlight-text.directive';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
+// Old One
 xdescribe('HighlightTextDirective', () => {
   let highlightTextDirective: HighlightTextDirective;
   configureTestSuite();

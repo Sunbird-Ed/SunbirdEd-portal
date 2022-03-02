@@ -7,7 +7,8 @@ import { testData } from './otp.service.spec.data';
 import { OtpService } from './otp.service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('OtpService', () => {
+// NEW xdescribe
+xdescribe('OtpService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

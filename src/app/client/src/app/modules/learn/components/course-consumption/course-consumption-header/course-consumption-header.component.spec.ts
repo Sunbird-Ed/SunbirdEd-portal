@@ -82,6 +82,7 @@ class RouterStub {
 }
 
 
+// Old One
 xdescribe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;

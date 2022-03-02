@@ -9,6 +9,7 @@ import { QrCodeModalComponent } from './qr-code-modal.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
+// Old One
 xdescribe('QrCodeModalComponent', () => {
   let component: QrCodeModalComponent;
   let fixture: ComponentFixture<QrCodeModalComponent>;

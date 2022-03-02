@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../../../core/services/user/user.service';
 
 
+// Old One
 xdescribe('ContentManagerComponent', () => {
   let component: ContentManagerComponent;
   let fixture: ComponentFixture<ContentManagerComponent>;

@@ -10,6 +10,7 @@ import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
+// Old One
 xdescribe('DialCodeCardComponent', () => {
   let component: DialCodeCardComponent;
   let fixture: ComponentFixture<DialCodeCardComponent>;

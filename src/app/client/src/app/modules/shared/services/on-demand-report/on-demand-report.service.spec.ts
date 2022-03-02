@@ -6,7 +6,8 @@ import {configureTestSuite} from '@sunbird/test-util';
 import {ConfigService} from '../config/config.service';
 import {OnDemandReportService} from './on-demand-report.service';
 
-describe('OnDemandReportService', () => {
+// NEW xdescribe
+xdescribe('OnDemandReportService', () => {
 const  reportStatus = {
     'submitted': 'SUBMITTED',
     'processing': 'PROCESSING',

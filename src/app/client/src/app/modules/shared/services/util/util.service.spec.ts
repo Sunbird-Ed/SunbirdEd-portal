@@ -43,7 +43,8 @@ const resourceBundle = {
   }
 };
 
-describe('UtilService', () => {
+// NEW xdescribe
+xdescribe('UtilService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

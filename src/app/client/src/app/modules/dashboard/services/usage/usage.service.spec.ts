@@ -5,7 +5,8 @@ import { UsageService } from './usage.service';
 import { HttpClient } from '@angular/common/http';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('UsageService', () => {
+// NEW xdescribe
+xdescribe('UsageService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,7 +20,8 @@ describe('UsageService', () => {
   }));
 
 
-  describe('getData method ', () => {
+  // NEW xdescribe
+xdescribe('getData method ', () => {
     it('should call the api', () => {
       const http = TestBed.inject(HttpClient);
       const usageService = TestBed.inject(UsageService);

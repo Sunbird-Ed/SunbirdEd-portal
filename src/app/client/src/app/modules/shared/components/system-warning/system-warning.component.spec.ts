@@ -5,6 +5,7 @@ import { ResourceService } from '../../services/resource/resource.service';
 import { SystemInfoService } from '../../../public/module/offline/services/system-info/system-info.service';
 import { of, throwError } from 'rxjs';
 
+// Old One
 xdescribe('SystemWarningComponent', () => {
   let component: SystemWarningComponent;
   let fixture: ComponentFixture<SystemWarningComponent>;
