@@ -316,6 +316,7 @@ describe('CreateBatchComponent', () => {
     component.enableDiscussionForum('SOME_BATCH_ID');
     expect(discussionService.createForum).toHaveBeenCalled();
   });
+  
 
   it('should show error if create forum failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
