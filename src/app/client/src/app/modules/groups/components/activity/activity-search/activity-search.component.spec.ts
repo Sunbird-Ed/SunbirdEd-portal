@@ -15,7 +15,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { CourseConsumptionService } from '@sunbird/learn';
 
-describe('ActivitySearchComponent', () => {
+xdescribe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
   let fixture: ComponentFixture<ActivitySearchComponent>;
   let formService, sendFormApi;
