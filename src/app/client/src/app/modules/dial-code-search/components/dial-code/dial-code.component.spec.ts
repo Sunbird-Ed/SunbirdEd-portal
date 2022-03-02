@@ -21,7 +21,7 @@ import { DialCodeService } from '../../services/dial-code/dial-code.service';
 import { DialCodeComponent } from './dial-code.component';
 import { Response } from './dial-code.component.spec.data';
 
-describe('DialCodeComponent', () => {
+xdescribe('DialCodeComponent', () => {
   let component: DialCodeComponent;
   let fixture: ComponentFixture<DialCodeComponent>;
   let navigationHelperService: any;
