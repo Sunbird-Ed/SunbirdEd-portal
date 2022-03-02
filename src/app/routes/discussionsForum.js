@@ -193,7 +193,7 @@ function addHeaders() {
 
 function proxyObject() {
     return proxy(discussions_middleware, {
-        proxyReqOptDecorator: addHeaders(),
+        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
             console.log("Request comming from :", urlParam)
@@ -227,7 +227,7 @@ function proxyObject() {
 
 function proxyObjectForForum() {
     return proxy(discussions_middleware, {
-        proxyReqOptDecorator: addHeaders(),
+        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
             console.log("Request comming from :", urlParam)
