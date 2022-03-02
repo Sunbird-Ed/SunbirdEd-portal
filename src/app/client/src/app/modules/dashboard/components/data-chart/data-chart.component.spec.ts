@@ -19,7 +19,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule} from '@angular/platform-browser/animations';
 
-describe('DataChartComponent', () => {
+// Stage 1
+xdescribe('DataChartComponent', () => {
     let component: DataChartComponent;
     let fixture: ComponentFixture<DataChartComponent>;
     configureTestSuite();

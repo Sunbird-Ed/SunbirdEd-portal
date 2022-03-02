@@ -20,7 +20,8 @@ class MockElementRef {
   nativeElement: {};
 }
 
-describe('ListAllReportsComponent', () => {
+// Stage 1
+xdescribe('ListAllReportsComponent', () => {
   let component: ListAllReportsComponent;
   let fixture: ComponentFixture<ListAllReportsComponent>;
   const routerStub = { navigate: () => Promise.resolve(true) };
