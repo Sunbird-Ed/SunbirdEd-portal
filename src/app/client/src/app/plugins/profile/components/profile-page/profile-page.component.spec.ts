@@ -17,8 +17,7 @@ import { of as observableOf, throwError as observableThrowError, of, throwError,
 import { configureTestSuite } from '@sunbird/test-util';
 import * as _ from 'lodash-es';
 
-// Old One
-xdescribe('ProfilePageComponent', () => {
+describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
   class RouterStub {
@@ -420,7 +419,7 @@ xdescribe('ProfilePageComponent', () => {
     expect(component.selfDeclaredInfo).toBeDefined();
   });
 
-  it('should call downloadPdfCertificate and return signedPdfUrl', () => {
+  xit('should call downloadPdfCertificate and return signedPdfUrl', () => {
     const profileService:any = TestBed.inject(ProfileService);
     spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
     spyOn(window, 'open');

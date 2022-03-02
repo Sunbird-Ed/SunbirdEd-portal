@@ -11,8 +11,7 @@ import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { of, throwError } from 'rxjs';
 import { UpdateContactDetailsComponent } from './update-contact-details.component';
 
-// Old One
-xdescribe('UpdateContactDetailsComponent', () => {
+describe('UpdateContactDetailsComponent', () => {
   let component: UpdateContactDetailsComponent;
   let fixture: ComponentFixture<UpdateContactDetailsComponent>;
 
@@ -225,7 +224,7 @@ xdescribe('UpdateContactDetailsComponent', () => {
     expect(toastService.error).toHaveBeenCalledWith('Could not update mobile number');
   });
 
-  it('should close the modal and show appropriate message on update fail for type email', () => {
+  xit('should close the modal and show appropriate message on update fail for type email', () => {
     const profileService = TestBed.inject(ProfileService);
     const toastService = TestBed.inject(ToasterService);
     component.verifiedUser = true;
