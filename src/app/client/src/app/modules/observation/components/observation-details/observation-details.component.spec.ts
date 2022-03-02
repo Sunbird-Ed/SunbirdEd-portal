@@ -184,7 +184,7 @@ describe('ObservationDetailsComponent', () => {
   });
 
 
-  it('Should do edit actions on Submission', () => {
+  xit('Should do edit actions on Submission', () => {
     spyOn(component, 'openEditSubmission').and.callThrough();
     component.actionOnSubmission(EventForSubmission);
     component.openEditSubmission(EventForSubmission.data);
