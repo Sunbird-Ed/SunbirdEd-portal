@@ -317,7 +317,6 @@ describe('CreateBatchComponent', () => {
     expect(discussionService.createForum).toHaveBeenCalled();
   });
   
-
   it('should show error if create forum failed', () => {
     const discussionService = TestBed.inject(DiscussionService);
     const toasterService:any = TestBed.inject(ToasterService);
