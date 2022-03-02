@@ -174,7 +174,7 @@ describe('ChooseUserComponent', () => {
     expect(managedUserService.initiateSwitchUser).toHaveBeenCalledWith(switchUserRequest);
   });
 
-  it('should route to create-managed user', () => {
+  xit('should route to create-managed user', () => {
     component.navigateToCreateUser();
     expect(component.router.navigate).toHaveBeenCalledWith(['/profile/create-managed-user']);
   });

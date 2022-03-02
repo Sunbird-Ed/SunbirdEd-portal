@@ -63,7 +63,7 @@ module.exports = function (config) {
     },
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['ChromeHeadless'],
     customLaunchers: {
@@ -77,7 +77,9 @@ module.exports = function (config) {
           '--remote-debugging-port=9222',
           '--proxy-server=direct://',
           '--proxy-bypass-list=*',
-          '--max_old_space_size=4096'
+          '--max_old_space_size=4096',
+          '--disable-dev-shm-usage',
+          '--disable-software-rasterizer'
         ]
       }
     },
