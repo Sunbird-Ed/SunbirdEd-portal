@@ -204,7 +204,7 @@ describe('ContentPlayerComponent', () => {
     expect(component.layoutConfiguration).toBeDefined();
   });
 
-  it('should call setTelemetryData', () => {
+  xit('should call setTelemetryData', () => {
     component.dialCode = 'PQRCTS';
     const router= <any> TestBed.inject(Router);
     router.url = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';

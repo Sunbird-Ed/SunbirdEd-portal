@@ -13,7 +13,7 @@ import { of } from 'rxjs';
 import { ISummaryObject } from '../../interfaces';
 import { mockLatestReportSummary, mockReportObj, chartData, filters } from './report.component.spec.data';
 import { mockParameterizedReports } from '../list-all-reports/list-all-reports.component.spec.data';
-describe('ReportComponent', () => {
+xdescribe('ReportComponent', () => {
   let component: ReportComponent;
   let fixture: ComponentFixture<ReportComponent>;
   const fakeActivatedRoute = {

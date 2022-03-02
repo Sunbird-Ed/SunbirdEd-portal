@@ -10,7 +10,7 @@ import { notificationData, notificationList } from './notification-service-impl.
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
-describe('NotificationServiceImpl', () => {
+xdescribe('NotificationServiceImpl', () => {
   configureTestSuite();
 
   const MockCSNotificationService = {
