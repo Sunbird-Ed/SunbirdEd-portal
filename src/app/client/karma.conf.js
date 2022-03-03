@@ -8,12 +8,29 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    middleware: ['fake-url'],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-mocha-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      {
+        'middleware:fake-url': [
+          'factory',
+          function () {
+            // Middleware that avoids triggering 404s during tests that need to reference
+            // image paths. Assumes that the image path will start with `/$`.
+            return function (request, response, next) {
+              // if (request.url.indexOf('/$') === 0) {
+                response.writeHead(200);
+                return response.end();
+              // }
+              // next();
+            };
+          },
+        ],
+      }
     ],
     browserDisconnectTimeout: 10000,
     browserDisconnectTolerance: 3,
