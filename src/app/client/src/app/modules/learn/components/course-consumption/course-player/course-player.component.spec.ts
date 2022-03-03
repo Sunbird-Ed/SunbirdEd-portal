@@ -511,7 +511,7 @@ describe('CoursePlayerComponent', () => {
       component.enrolledBatchInfo = { status: 1 };
       expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
     });
-  it('should show join training popup if course is unenrolled and try to play content', () => {
+  xit('should show join training popup if course is unenrolled and try to play content', () => {
     const courseConsumptionService:any = TestBed.inject(CourseConsumptionService);
     const resourceService:any = TestBed.inject(ResourceService);
     const activatedRouteStub:any = TestBed.inject(ActivatedRoute);
