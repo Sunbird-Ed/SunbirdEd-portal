@@ -312,7 +312,7 @@ describe('BatchDetailsComponent', () => {
     expect(component.enrollBatch).not.toHaveBeenCalledWith(batchList);
   });
 
-  it('should disable "createbatch" for ongoing batchList', () => {
+  xit('should disable "createbatch" for ongoing batchList', () => {
     component.ongoingAndUpcomingBatchList = allBatchDetails.result.response.content;
     component.batchStatus = 1;
     component.getSelectedBatches();
