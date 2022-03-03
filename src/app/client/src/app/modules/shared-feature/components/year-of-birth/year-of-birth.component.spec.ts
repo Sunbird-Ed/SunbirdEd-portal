@@ -21,7 +21,7 @@ describe('YearOfBirthComponent', () => {
   const mockResourceService: Partial<ResourceService> = {};
   const mockMatDialog: Partial<MatDialog> = {};
 
-  beforeAll(() => {
+  beforeEach(() => {
     yearOfBirthComponent = new YearOfBirthComponent(
       mockProfileService as ProfileService,
       mockConfigService as ConfigService,

@@ -78,7 +78,7 @@ describe('SolutionListingComponent', () => {
   const mockNavigationHelperService: Partial<NavigationHelperService> = {
     goBack: () => {}
   };
-  beforeAll(() => {
+  beforeEach(() => {
     component = new SolutionListingComponent(
       mockResourceService as ResourceService,
       mockLayoutService as LayoutService,

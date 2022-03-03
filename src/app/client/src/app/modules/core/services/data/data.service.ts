@@ -207,8 +207,8 @@ export class DataService {
       'X-Session-ID': DataService.sessionId
     };
     try {
-      this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
-      this.appId = (<HTMLInputElement>document.getElementById('appId')).value;
+      this.deviceId = document.getElementById('deviceId')?(<HTMLInputElement>document.getElementById('deviceId')).value:'';
+      this.appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value:'';
     } catch (err) { }
     if (this.deviceId) {
       default_headers['X-Device-ID'] = this.deviceId;

@@ -4,7 +4,7 @@ import { UpForReviewComponent } from './up-for-review.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -91,11 +91,11 @@ describe('UpForReviewComponent', () => {
     component = fixture.componentInstance;
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as any});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();
@@ -103,11 +103,11 @@ describe('UpForReviewComponent', () => {
   }));
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as any});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
     component.fecthUpForReviewContent(9, 1, bothParams);
@@ -116,11 +116,11 @@ describe('UpForReviewComponent', () => {
   }));
   // if result count is 0
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as any});
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
     component.fecthUpForReviewContent(9, 1, bothParams);
     fixture.detectChanges();
@@ -134,11 +134,11 @@ describe('UpForReviewComponent', () => {
     expect(component.inviewLogs).toBeDefined();
   });
   it('should call getContentType and return contentType based on orgrole', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
+    userService._userData$.next({ err: null, userProfile: mockUserRoles as any});
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
     const ContentType = [
@@ -155,11 +155,11 @@ describe('UpForReviewComponent', () => {
   }));
   it('should call setpage method and set proper page number', inject([ConfigService, Router],
     (configService, route) => {
-      const userService = TestBed.get(UserService);
-      const learnerService = TestBed.get(LearnerService);
+      const userService:any = TestBed.inject(UserService);
+      const learnerService = TestBed.inject(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
-      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      userService._userData$.next({ err: null, userProfile: mockUserRoles as any});
       const sortByOption = 'Created On';
       const queryParams = {subject: [ 'english', 'odia' ], sortType: 'asc', sort_by: 'Created On'};
       component.queryParams = queryParams;
@@ -172,11 +172,11 @@ describe('UpForReviewComponent', () => {
 
   it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {
-       const userService = TestBed.get(UserService);
-      const learnerService = TestBed.get(LearnerService);
+       const userService:any = TestBed.inject(UserService);
+      const learnerService = TestBed.inject(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
-      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      userService._userData$.next({ err: null, userProfile: mockUserRoles as any});
       component.pager = Response.pager;
       component.pager.totalPages = 0;
       component.navigateToPage(3);
@@ -186,54 +186,54 @@ describe('UpForReviewComponent', () => {
 
   it('should open contentplayer  on list click   ', inject([WorkSpaceService, Router],
     (workSpaceService, route, http) => {
-      const userService = TestBed.get(UserService);
-      const learnerService = TestBed.get(LearnerService);
+      const userService:any = TestBed.inject(UserService);
+      const learnerService = TestBed.inject(LearnerService);
       spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
       userService._userProfile = mockroleOrgMap;
-      userService._userData$.next({ err: null, userProfile: mockUserRoles });
+      userService._userData$.next({ err: null, userProfile: mockUserRoles as any});
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.upforReviewContentData);
       component.state = 'upForReview';
       expect(route.navigate).toHaveBeenCalledWith(['workspace/content/upForReview/content', 'do_1125083103747932161150']);
   }));
   it('should call getContentType and return contentType of TextBook based on orgrole', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     const BookReviewer = {
       userRoles: ['PUBLIC', 'BOOK_REVIEWER']
     };
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    userService._userData$.next({ err: null, userProfile: BookReviewer as any});
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
     const ContentType = ['Digital Textbook'];
     expect(returnContentType).toEqual(ContentType);
   }));
    it('should call getContentType and set all contentType  based on orgrole', inject([SearchService], (searchService) => {
-    const configservice  = TestBed.get(ConfigService);
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const configservice  = TestBed.inject(ConfigService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     const BookReviewer = {
       userRoles: ['PUBLIC', 'BOOK_REVIEWER', 'CONTENT_REVIEWER']
     };
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    userService._userData$.next({ err: null, userProfile: BookReviewer as any});
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
     expect(returnContentType).toBeDefined();
   }));
   it('should check contentType is passing when send it from query param', inject([SearchService], (searchService) => {
-    const configservice  = TestBed.get(ConfigService);
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const configservice  = TestBed.inject(ConfigService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     const BookReviewer = {
       userRoles: ['PUBLIC', 'BOOK_REVIEWER', 'CONTENT_REVIEWER']
     };
     spyOn(learnerService, 'get').and.returnValue(observableOf(Response.userSuccess.success));
     userService._userProfile = mockroleOrgMap;
-    userService._userData$.next({ err: null, userProfile: BookReviewer });
+    userService._userData$.next({ err: null, userProfile: BookReviewer as any});
     component.ngOnInit();
     fixture.detectChanges();
     spyOn(component, 'fecthUpForReviewContent').and.callThrough();

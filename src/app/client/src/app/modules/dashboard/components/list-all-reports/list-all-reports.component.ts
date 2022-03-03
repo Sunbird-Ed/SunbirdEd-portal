@@ -33,13 +33,13 @@ export class ListAllReportsComponent implements OnInit {
   layoutConfiguration: any;
 
 
-  @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
+  @ViewChild('allReports') set inputTag(element: ElementRef | null) {
     if (!element) { return; }
     const [reports, ] = this.reports;
     this.prepareTable(element.nativeElement, reports);
   }
 
-  @ViewChild('all_datasets') set datasetTable(element: ElementRef | null) {
+  @ViewChild('allDatasets') set datasetTable(element: ElementRef | null) {
     if (!element) { return; }
     let [, datasets] = this.reports;
     if (this.reportService.isUserReportAdmin() && !this.reportService.isUserSuperAdmin()) {

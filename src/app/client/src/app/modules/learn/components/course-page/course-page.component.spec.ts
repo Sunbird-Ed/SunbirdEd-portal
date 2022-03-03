@@ -1,6 +1,6 @@
 import { CoursePageComponent } from '././course-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, UtilService, LayoutService } from '@sunbird/shared';
 import { PageApiService, OrgDetailsService, CoreModule, FormService, UserService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -12,7 +12,7 @@ import { Response } from './course-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { configureTestSuite, allowUnsafeMultipleDone } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 describe('CoursePageComponent', () => {
@@ -73,7 +73,7 @@ describe('CoursePageComponent', () => {
         public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     }
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
             declarations: [CoursePageComponent],
@@ -87,15 +87,15 @@ describe('CoursePageComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(CoursePageComponent);
         component = fixture.componentInstance;
-        toasterService = TestBed.get(ToasterService);
-        formService = TestBed.get(FormService);
-        pageApiService = TestBed.get(PageApiService);
-        orgDetailsService = TestBed.get(OrgDetailsService);
-        utilService = TestBed.get(UtilService);
-        cacheService = TestBed.get(CacheService);
-        coursesService = TestBed.get(CoursesService);
-        searchService = TestBed.get(SearchService);
-        activatedRouteStub = TestBed.get(ActivatedRoute);
+        toasterService = TestBed.inject(ToasterService);
+        formService = TestBed.inject(FormService);
+        pageApiService = TestBed.inject(PageApiService);
+        orgDetailsService = TestBed.inject(OrgDetailsService);
+        utilService = TestBed.inject(UtilService);
+        cacheService = TestBed.inject(CacheService);
+        coursesService = TestBed.inject(CoursesService);
+        searchService = TestBed.inject(SearchService);
+        activatedRouteStub = TestBed.inject(ActivatedRoute);
         sendOrgDetails = true;
         sendPageApi = true;
         sendFormApi = true;
@@ -157,15 +157,15 @@ describe('CoursePageComponent', () => {
         component.getFilters({ filters: [] });
         expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
     });
-    it('should fetch hashTagId from API and filter details from data driven filter component', done => {
+    it('should fetch hashTagId from API and filter details from data driven filter component', allowUnsafeMultipleDone(done => {
         component['getOrgDetails']().subscribe(res => {
             expect(orgDetailsService.getOrgDetails).toHaveBeenCalled();
             expect(component.hashTagId).toBe('123');
             done();
         });
 
-    });
-    it('should navigate to landing page if fetching org details fails and data driven filter do not returned data', done => {
+    }));
+    it('should navigate to landing page if fetching org details fails and data driven filter do not returned data', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'getOrgDetails').and.returnValue(of({}));
         spyOn<any>(component, 'getFrameWork').and.returnValue(of({}));
@@ -180,7 +180,7 @@ describe('CoursePageComponent', () => {
                 expect(component.pageSections).toEqual([]);
                 done();
             });
-    });
+    }));
     xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
         spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
             return of(Response.orgSearch);
@@ -226,33 +226,33 @@ describe('CoursePageComponent', () => {
         component.ngOnDestroy();
         expect(component.unsubscribe$.complete).toHaveBeenCalled();
     });
-    it('should redo layout on render', done => {
+    it('should redo layout on render', allowUnsafeMultipleDone(done => {
         component.layoutConfiguration = null;
         spyOn<any>(component, 'redoLayout').and.callThrough();
-        const layoutService = TestBed.get(LayoutService);
+        const layoutService:any = TestBed.inject(LayoutService);
         spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }));
         component['initLayout']().subscribe(res => {
             expect(component.layoutConfiguration).toEqual({});
             expect(component['redoLayout']).toHaveBeenCalled();
             done();
         });
+    }));
 
-    });
-    it('should getFormData', done => {
-        component['getFormData']().subscribe(res => {
+    it('should getFormData', allowUnsafeMultipleDone(done => {
+        component['getFormData']().subscribe(allowUnsafeMultipleDone(res => {
             expect(formService.getFormConfig).toHaveBeenCalled();
             expect(formService.getFormConfig).toHaveBeenCalledWith({ formType: 'contentcategory', formAction: 'menubar', contentType: 'global' });
             expect(component.formData).toBeDefined();
             done();
-        });
-    });
+        }));
+    }));
 
     it('should redirect to viewall page with queryparams', () => {
-        const router = TestBed.get(Router);
+        const router = TestBed.inject(Router);
         const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
         spyOn(component, 'viewAll').and.callThrough();
         spyOn(cacheService, 'set').and.stub();
-        router.url = '/explore-course?selectedTab=course';
+        router['url' as any] = '/explore-course?selectedTab=course';
         component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
         expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
             { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined } });
@@ -260,8 +260,9 @@ describe('CoursePageComponent', () => {
     });
 
     it('should call play content method', () => {
-        const publicPlayerService = TestBed.get(PublicPlayerService);
-        spyOn(publicPlayerService, 'playContent').and.callThrough();
+        const publicPlayerService:any = TestBed.inject(PublicPlayerService);
+        spyOn(publicPlayerService, 'playContent');
+        spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         const event = {
             data: {
                 metaData: {
@@ -303,7 +304,7 @@ describe('CoursePageComponent', () => {
         expect(pageApiService.getPageData).toHaveBeenCalledWith(option);
     });
 
-    it('should change the title for My-training on language change', done => {
+    it('should change the title for My-training on language change', allowUnsafeMultipleDone(done => {
         component.enrolledSection = {
             name: 'sample'
         };
@@ -325,16 +326,16 @@ describe('CoursePageComponent', () => {
             expect();
             done();
         });
-    });
+    }));
     it('should get processed facets data', () => {
         const facetsData = component.updateFacetsData(Response.facetsList);
         expect(facetsData).toEqual(Response.updatedFacetsList);
     });
     it('should redirect to view-all page for logged in user', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-        const userService = TestBed.get(UserService);
-        const router = TestBed.get(Router);
-        router.url = '/learn';
+        const userService:any = TestBed.inject(UserService);
+        const router = TestBed.inject(Router);
+        router['url' as any] = '/learn';
         const eventData = Response.viewAllEventData;
         userService._userProfile = Response.userData;
         const searchQueryParams = {
@@ -358,7 +359,7 @@ describe('CoursePageComponent', () => {
         expect(cacheService.set).toHaveBeenCalledWith('viewAllQuery', searchQueryParams, { maxAge: 600 });
     });
 
-    it('should fetch enrolled courses for logged in users', done => {
+    it('should fetch enrolled courses for logged in users', allowUnsafeMultipleDone(done => {
         spyOn(utilService, 'processContent').and.callThrough();
         component['fetchEnrolledCoursesSection']().subscribe(res => {
             expect(utilService.processContent).toHaveBeenCalled();
@@ -366,7 +367,7 @@ describe('CoursePageComponent', () => {
             done();
         });
         coursesService['_enrolledCourseData$'].next({ enrolledCourses: Response.enrolledCourses, err: null });
-    });
+    }));
 
     it('should prepare Carousel Data for non loggedIn user', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
@@ -395,7 +396,7 @@ describe('CoursePageComponent', () => {
         expect(result).toEqual([input[0].name]);
     });
 
-    xit('should prepare option for loggedIn user', done => {
+    xit('should prepare option for loggedIn user', allowUnsafeMultipleDone(done => {
         component.formData = [
             { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
         ];
@@ -409,9 +410,9 @@ describe('CoursePageComponent', () => {
             expect(res).toEqual(Response.buildOptionRespForNonLoggedInUser);
             done();
         });
-    });
+    }));
 
-    it('should prepare option for non loggedIn user', done => {
+    it('should prepare option for non loggedIn user', allowUnsafeMultipleDone(done => {
         component.formData = [
             { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
         ];
@@ -423,9 +424,9 @@ describe('CoursePageComponent', () => {
             expect(getCourseSectionDetailsSpy).toHaveBeenCalled();
             done();
         });
-    });
+    }));
 
-    it('should fetch page Data', done => {
+    it('should fetch page Data', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
@@ -439,9 +440,9 @@ describe('CoursePageComponent', () => {
                 expect(component.carouselMasterData).toBeDefined();
                 done();
             });
-    });
+    }));
 
-    it('should fetch page Data based on search API', done => {
+    it('should fetch page Data based on search API', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(component, 'processOrgData').and.callFake(function () { return {}; });
@@ -463,9 +464,9 @@ describe('CoursePageComponent', () => {
                 expect(component.addHoverData).toHaveBeenCalled();
                 done();
             });
-    });
+    }));
 
-    it('should fetch page Data based on else block', done => {
+    it('should fetch page Data based on else block', allowUnsafeMultipleDone(done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(component, 'fetchCourses').and.callFake(function () { return {}; });
@@ -477,14 +478,14 @@ describe('CoursePageComponent', () => {
         component['fetchPageData'](Response.buildOptionRespForFetchCourse);
         expect(component['fetchCourses']).toHaveBeenCalled();
         done();
-    });
+    }));
 
-    it('should merge two filter object', done => {
+    it('should merge two filter object', allowUnsafeMultipleDone(done => {
         const filters = { gradeLevel: ['Class 1'] };
         const res = component.getSearchFilters(filters);
         expect(res).toBeDefined();
         done();
-    });
+    }));
 
     it('should call hoverActionClicked for Open ', () => {
         const event = {
@@ -498,8 +499,8 @@ describe('CoursePageComponent', () => {
             }
         };
         spyOn(component, 'playContent');
-        const route = TestBed.get(Router);
-        route.url = '/course-page?selectedTab=course-page';
+        const route = TestBed.inject(Router);
+        route['url' as any] = '/course-page?selectedTab=course-page';
         component.hoverActionClicked(event);
         expect(component.playContent).toHaveBeenCalled();
     });
@@ -521,7 +522,7 @@ describe('CoursePageComponent', () => {
     });
 
     it('should call download content with success ', () => {
-        const contentManagerService = TestBed.get(ContentManagerService);
+        const contentManagerService = TestBed.inject(ContentManagerService);
         component.pageSections = Response.pageSections;
         spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
         component.downloadContent('123');

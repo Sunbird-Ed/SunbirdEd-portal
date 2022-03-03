@@ -21,7 +21,7 @@ export class SearchService {
   /**
    * Contains searched content list
    */
-  private _searchedContentList: any;
+  _searchedContentList: any;
   /**
    * Contains searched organization list
    */

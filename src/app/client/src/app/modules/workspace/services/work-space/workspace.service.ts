@@ -376,8 +376,8 @@ export class WorkSpaceService {
       this.listener = (event) => {
         window.location.hash = 'no';
         if (event.state) {
-          const alertMsg = type ? this.resourceService.messages.imsg.m0038 + ' ' + type + ', ' + this.resourceService.messages.imsg.m0040
-            : this.resourceService.messages.imsg.m0037;
+          const alertMsg = type ? this.resourceService?.messages?.imsg?.m0038 + ' ' + type + ', ' + this.resourceService?.messages?.imsg?.m0040
+            : this.resourceService?.messages?.imsg?.m0037;
           this.browserBackEvent.emit();
           alert(alertMsg);
           window.location.hash = 'no';

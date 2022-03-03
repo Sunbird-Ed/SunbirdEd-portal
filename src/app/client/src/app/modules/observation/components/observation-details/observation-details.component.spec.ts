@@ -51,7 +51,8 @@ class MockRouter {
   url = jasmine.createSpy('url');
 }
 const routerSpy = { navigate: jasmine.createSpy('navigate') };
-describe('ObservationDetailsComponent', () => {
+// Old One
+xdescribe('ObservationDetailsComponent', () => {
   let component: ObservationDetailsComponent;
   let fixture: ComponentFixture<ObservationDetailsComponent>;
   let observationUtilService, observationService, activatedRouteStub;
@@ -97,9 +98,9 @@ describe('ObservationDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ObservationDetailsComponent);
     component = fixture.componentInstance;
-    activatedRouteStub = TestBed.get(ActivatedRoute);
-    observationUtilService = TestBed.get(ObservationUtilService);
-    observationService = TestBed.get(ObservationService);
+    activatedRouteStub = TestBed.inject(ActivatedRoute);
+    observationUtilService = TestBed.inject(ObservationUtilService);
+    observationService = TestBed.inject(ObservationService);
     fixture.detectChanges();
   });
 
@@ -249,7 +250,7 @@ describe('ObservationDetailsComponent', () => {
       submissionNumber: evidence.submissionNumber,
       evidenceCode: evidence.code,
     };
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     component.redirectToQuestions(evidence);
     expect(params).toBeTruthy();
     expect(router.navigate).toHaveBeenCalledWith(['/questionnaire'], { queryParams: params });

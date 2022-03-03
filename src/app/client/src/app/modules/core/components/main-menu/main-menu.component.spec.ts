@@ -54,8 +54,8 @@ describe('MainMenuComponent', () => {
   });
 
   it('should switch layout and generate telemetry for classic', () => {
-    const layoutService = TestBed.get(LayoutService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const layoutService = TestBed.inject(LayoutService);
+    const telemetryService = TestBed.inject(TelemetryService);
     component.layoutConfiguration = null;
     spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
     });
@@ -66,8 +66,8 @@ describe('MainMenuComponent', () => {
   });
 
   it('should switch layout and generate telemetry for joy', () => {
-    const layoutService = TestBed.get(LayoutService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const layoutService = TestBed.inject(LayoutService);
+    const telemetryService = TestBed.inject(TelemetryService);
     component.layoutConfiguration = {options: 'option1'};
     spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
     });

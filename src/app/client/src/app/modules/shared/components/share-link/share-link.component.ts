@@ -66,7 +66,7 @@ export class ShareLinkComponent implements OnInit {
   */
   initializeModal() {
     setTimeout(() => {
-      this.copyLinkButton.nativeElement.click();
+      this.copyLinkButton && this.copyLinkButton.nativeElement.click();
     }, 300);
     this.telemetryShare = {
       type: 'Link',

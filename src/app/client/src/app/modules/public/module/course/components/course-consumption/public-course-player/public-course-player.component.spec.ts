@@ -72,12 +72,12 @@ describe('PublicCoursePlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicCoursePlayerComponent);
     component = fixture.componentInstance;
-    activatedRouteStub = TestBed.get(ActivatedRoute);
-    courseService = TestBed.get(CoursesService);
-    toasterService = TestBed.get(ToasterService);
-    courseConsumptionService = TestBed.get(CourseConsumptionService);
+    activatedRouteStub = TestBed.inject(ActivatedRoute);
+    courseService = TestBed.inject(CoursesService);
+    toasterService = TestBed.inject(ToasterService);
+    courseConsumptionService = TestBed.inject(CourseConsumptionService);
     spyOn(toasterService, 'error').and.returnValue('');
-    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    generaliseLabelService = TestBed.inject(GeneraliseLabelService);
     spyOn(generaliseLabelService, 'initialize').and.returnValue('');
   });
   it('should fetch course details on page load', () => {
@@ -119,7 +119,7 @@ describe('PublicCoursePlayerComponent', () => {
 
 
   it('should call shareUnitLink', () => {
-    const contentUtilServiceService = TestBed.get(ContentUtilsServiceService);
+    const contentUtilServiceService = TestBed.inject(ContentUtilsServiceService);
     spyOn(contentUtilServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/explore-course/course/do_1130314965721088001129');
     spyOn(component, 'setTelemetryShareData');
     component.shareUnitLink({ identifier: 'do_23823253221' });
@@ -141,7 +141,7 @@ describe('PublicCoursePlayerComponent', () => {
   it('should close the popup and generate telemetry', () => {
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component['courseId'] = CourseHierarchyGetMockResponse.result.content.identifier;
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.closeSharePopup('close-share-link-popup');
     expect(component.shareLinkModal).toBe(false);

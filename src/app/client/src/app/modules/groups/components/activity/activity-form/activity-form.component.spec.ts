@@ -75,7 +75,7 @@ describe('ActivityFormComponent', () => {
       { 'index': 0, 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['Course'] } },
       { 'index': 1, 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
     ];
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     spyOn(component, 'chooseActivity');
     spyOn(formService, 'getFormConfig').and.returnValue(of(response));
     component['getFormDetails']();
@@ -84,8 +84,8 @@ describe('ActivityFormComponent', () => {
   });
 
   it('should get getFormDetails on error', () => {
-    const formService = TestBed.get(FormService);
-    const toasterService = TestBed.get(ToasterService);
+    const formService = TestBed.inject(FormService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(formService, 'getFormConfig').and.returnValue(throwError({}));
     component['getFormDetails']();

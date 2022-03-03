@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angu
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LimitedPublishedComponent } from './limited-published.component';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -24,7 +24,8 @@ import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('LimitedPublishedComponent', () => {
+// Old One
+xdescribe('LimitedPublishedComponent', () => {
   let component: LimitedPublishedComponent;
   let fixture: ComponentFixture<LimitedPublishedComponent>;
   const fakeActivatedRoute = {
@@ -97,10 +98,10 @@ describe('LimitedPublishedComponent', () => {
   }));
 
   it('should check offset is passing for search api ', inject([SearchService], (searchService) => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
+    const userService:any = TestBed.inject(UserService);
+    const learnerService = TestBed.inject(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockUserData.success));
-    userService._userData$.next({ err: null, userProfile: mockUserData.success });
+    userService._userData$.next({ err: null, userProfile: mockUserData.success as any});
     userService._userProfile = mockUserData.success;
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     spyOn(component, 'search').and.callThrough();

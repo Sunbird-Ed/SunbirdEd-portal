@@ -9,7 +9,7 @@ import { ProfileService } from '@sunbird/profile';
 import {
   BrowserCacheTtlService, ConfigService,
   NavigationHelperService, ResourceService,
-  SharedModule, ToasterService
+  SharedModule, ToasterService, IUserProfile
 } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -20,7 +20,8 @@ import { of as observableOf, of, Subject, throwError } from 'rxjs';
 import { SubmitTeacherDetailsComponent } from './submit-teacher-details.component';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 
-describe('SubmitTeacherDetailsComponent', () => {
+// Old One
+xdescribe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
   let fixture: ComponentFixture<SubmitTeacherDetailsComponent>;
   const fakeActivatedRoute = {
@@ -116,13 +117,13 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should call ngOnInit', () => {
-    const tncService = TestBed.get(TncService);
+    const tncService = TestBed.inject(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
-    const userService = TestBed.get(UserService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const userService:any = TestBed.inject(UserService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'impression');
     spyOn(component, 'setTelemetryData');
-    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
     component.ngOnInit();
     expect(telemetryService.impression).toHaveBeenCalled();
     expect(component.setTelemetryData).toHaveBeenCalled();
@@ -145,7 +146,7 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should fetch tnc configuration', () => {
-    const tncService = TestBed.get(TncService);
+    const tncService = TestBed.inject(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
     component.fetchTncData();
     expect(component.tncLatestVersion).toEqual('v4');
@@ -153,8 +154,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should not fetch tnc configuration and throw error', () => {
-    const tncService = TestBed.get(TncService);
-    const toasterService = TestBed.get(ToasterService);
+    const tncService = TestBed.inject(TncService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(tncService, 'getTncConfig').and.returnValue(throwError(mockRes.tncConfig));
     component.fetchTncData();
@@ -162,9 +163,9 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should fetch tnc configuration and throw error as cannot parse data', () => {
-    const tncService = TestBed.get(TncService);
+    const tncService = TestBed.inject(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfigIncorrectData));
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.fetchTncData();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
@@ -201,7 +202,7 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should generate otp for email', () => {
-    const otpService = TestBed.get(OtpService);
+    const otpService = TestBed.inject(OtpService);
     spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockRes.successResponse));
     component.generateOTP('declared-email', 'xyz@yopmail.com');
     expect(component.isOtpVerificationRequired).toBe(true);
@@ -210,7 +211,7 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should generate otp for phone', () => {
-    const otpService = TestBed.get(OtpService);
+    const otpService = TestBed.inject(OtpService);
     spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockRes.successResponse));
     component.generateOTP('declared-phone', '901100110011');
     expect(component.isOtpVerificationRequired).toBe(true);
@@ -219,8 +220,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should not validate user as otp generation failed', () => {
-    const otpService = TestBed.get(OtpService);
-    const toasterService = TestBed.get(ToasterService);
+    const otpService = TestBed.inject(OtpService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(otpService, 'generateOTP').and.returnValue(throwError({}));
     component.generateOTP('declared-phone', '901100110011');
@@ -228,8 +229,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should set validators for phone', () => {
-    const tncService = TestBed.get(TncService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const tncService = TestBed.inject(TncService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
     spyOn(telemetryService, 'impression');
     component.userProfile = mockRes.userData.result.response;
@@ -237,12 +238,12 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should set form data and user profile email from user profile', () => {
-    const tncService = TestBed.get(TncService);
-    const userService = TestBed.get(UserService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const tncService = TestBed.inject(TncService);
+    const userService:any = TestBed.inject(UserService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
     spyOn(telemetryService, 'impression');
-    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
+    userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.validationType['declared-email'].isVerified).toBe(false);
@@ -250,8 +251,8 @@ describe('SubmitTeacherDetailsComponent', () => {
 
   it('should call updateProfile with success', () => {
     component.formAction = 'update';
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(profileService, 'declarations').and.returnValue(observableOf(mockRes.updateProfile));
     spyOn(toasterService, 'success');
     spyOn(component, 'navigateToProfile');
@@ -262,7 +263,7 @@ describe('SubmitTeacherDetailsComponent', () => {
 
   it('should call updateProfile with success modal and log audit event for tnc ', () => {
     component.formAction = 'submit';
-    const profileService = TestBed.get(ProfileService);
+    const profileService = TestBed.inject(ProfileService);
     component.declaredLatestFormValue = { tnc: true };
     spyOn(profileService, 'declarations').and.returnValue(observableOf(mockRes.updateProfile));
     spyOn(component, 'logAuditEvent');
@@ -272,8 +273,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should call updateProfile with error while submit form', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(profileService, 'declarations').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(component, 'navigateToProfile');
@@ -284,8 +285,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should call updateProfile with error while update form', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(profileService, 'declarations').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(component, 'navigateToProfile');
@@ -303,13 +304,13 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should navigateToProfile and redirect to profile page while updating', () => {
-    const route = TestBed.get(Router);
+    const route = TestBed.inject(Router);
     component.navigateToProfile();
     expect(route.navigate).toHaveBeenCalledWith(['/profile']);
   });
 
   it('should close Success modal and redirect to profile page while submitting', () => {
-    const route = TestBed.get(Router);
+    const route = TestBed.inject(Router);
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
@@ -331,7 +332,7 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should log audit event', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'audit');
     component.logAuditEvent();
     expect(telemetryService.audit).toHaveBeenCalled();
@@ -357,7 +358,7 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should get getTeacherDetails Form, on success', () => {
-    const profileService = TestBed.get(ProfileService);
+    const profileService = TestBed.inject(ProfileService);
     spyOn(profileService, 'getSelfDeclarationForm').and.returnValue(of({}));
     spyOn(component, 'initializeFormData');
     component.getTeacherDetailsForm();
@@ -366,8 +367,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should get getTeacherDetails Form, on error', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(profileService, 'getSelfDeclarationForm').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
     spyOn(component, 'initializeFormData');
@@ -443,7 +444,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component['assignDefaultValue']).toHaveBeenCalled();
   });
   it('should get persona and tenant form details, on success', () => {
-    const profileService = TestBed.get(ProfileService);
+    const profileService = TestBed.inject(ProfileService);
     component.userProfile.declarations = [
       {
         'persona': 'teacher',
@@ -460,8 +461,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should get persona and tenant form details, on error', () => {
-    const toasterService = TestBed.get(ToasterService);
-    const profileService = TestBed.get(ProfileService);
+    const toasterService: any = TestBed.inject(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
     spyOn(toasterService, 'error');
     spyOn(component, 'navigateToProfile');
     spyOn(profileService, 'getPersonaTenantForm').and.returnValue(throwError({}));
@@ -529,7 +530,7 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should return if the form does not have the latest value', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     component.submit();
     expect(toasterService.error).toHaveBeenCalledWith('m0051');
@@ -562,12 +563,12 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.get(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.get('CS_USER_SERVICE');
-      const toasterService = TestBed.get(ToasterService);
+      const userService:any = TestBed.inject(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
+      const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
+      const toasterService: any = TestBed.inject(ToasterService);
       component.isTenantChanged = true;
-      spyOn(csUserService, 'updateConsent').and.returnValue(of({
+      spyOn<any>(csUserService, 'updateConsent').and.returnValue(of({
         'consent': {
           'userId': 'c4cc494f-04c3-49f3-b3d5-7b1a1984abad'
         },
@@ -586,10 +587,10 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.get(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.get('CS_USER_SERVICE');
-      const toasterService = TestBed.get(ToasterService);
+      const userService:any = TestBed.inject(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
+      const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
+      const toasterService: any = TestBed.inject(ToasterService);
       component.isTenantChanged = true;
       spyOn(csUserService, 'updateConsent').and.returnValue(throwError({
         error: 'samle-error'
@@ -607,10 +608,10 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.get(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.get('CS_USER_SERVICE');
-      const toasterService = TestBed.get(ToasterService);
+      const userService:any = TestBed.inject(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
+      const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
+      const toasterService: any = TestBed.inject(ToasterService);
       component.isTenantChanged = false;
       spyOn(csUserService, 'updateConsent').and.returnValue(of({
         'consent': {
@@ -630,10 +631,10 @@ describe('SubmitTeacherDetailsComponent', () => {
       // arrange
       const currentOrgId = 'new-sample-org-id';
       const previousOrgId = 'old-sample-org-id';
-      const userService = TestBed.get(UserService);
-      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-      const csUserService = TestBed.get('CS_USER_SERVICE');
-      const toasterService = TestBed.get(ToasterService);
+      const userService:any = TestBed.inject(UserService);
+      userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response as any});
+      const csUserService: any = TestBed.inject(('CS_USER_SERVICE') as any);
+      const toasterService: any = TestBed.inject(ToasterService);
       component.isTenantChanged = false;
       spyOn(csUserService, 'updateConsent').and.returnValue(throwError({
         error: 'samle-error'

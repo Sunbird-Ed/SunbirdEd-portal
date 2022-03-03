@@ -131,7 +131,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     });
   }
   checkMultipleAssessment() {
-    const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
+    try {
+      const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
     const selfAssessCount = _.get(contentTypes, 'SelfAssess');
     if (selfAssessCount && selfAssessCount > 1) {
       this.isSingleAssessment = false;
@@ -140,6 +141,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     } else {
       this.isSingleAssessment = false;
     }
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
   certificateCreation() {
     this.currentState = this.screenStates.certRules;
