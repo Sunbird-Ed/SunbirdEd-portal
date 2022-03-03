@@ -19,6 +19,7 @@ export class ContentDownloadManager {
   private systemSDK;
   private ContentReadUrl = `${process.env.APP_BASE_URL}/api/content/v1/read/`;
   private ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
+  private QuestionListUrl = `${process.env.APP_BASE_URL}/api/question/v1/list`;
   @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   public async initialize() {
     this.systemQueue = containerAPI.getSystemQueueInstance(manifest.id);
@@ -54,10 +55,17 @@ export class ContentDownloadManager {
   
       if (apiContentDetail.mimeType === "application/vnd.ekstep.content-collection") {
         logger.debug(`${reqId} Content childNodes: ${apiContentDetail.childNodes}`);
-        const childNodeDetailFromApi = await this.getContentChildNodeDetailsFromApi(apiContentDetail.childNodes);
+        let childNodeDetailFromApi = await this.getContentChildNodeDetailsFromApi(apiContentDetail.childNodes);
+        const childQuestionNodeFromApi = await this.getQuestionsFromQuestionSetApi(childNodeDetailFromApi);
+        if(childQuestionNodeFromApi.length > 0) {
+          childNodeDetailFromApi = [...childNodeDetailFromApi, ...childQuestionNodeFromApi]
+        }
         const childNodeDetailFromDb = await this.getContentChildNodeDetailsFromDb(apiContentDetail.childNodes);
         const contentsToDownload = this.getAddedAndUpdatedContents(childNodeDetailFromApi, childNodeDetailFromDb);
         for (const content of contentsToDownload) {
+          if(["application/vnd.sunbird.questionset", "application/vnd.sunbird.question"].includes(content.mimeType)) {
+            content['size'] = 0;
+          }
           if (content.size && content.downloadUrl) {
             contentToBeDownloadedCount += 1;
             logger.debug(`${reqId} Content childNodes: ${content.identifier} added to list`);
@@ -141,8 +149,17 @@ export class ContentDownloadManager {
 
       if (contentDetail.mimeType === "application/vnd.ekstep.content-collection") {
         logger.debug(`${reqId} Content childNodes: ${contentDetail.childNodes}`);
-        const childNodeDetail = await this.getContentChildNodeDetailsFromApi(contentDetail.childNodes);
+        let childNodeDetail = await this.getContentChildNodeDetailsFromApi(contentDetail.childNodes);
+        const childQuestions = await this.getQuestionsFromQuestionSetApi(childNodeDetail);
+        if(childQuestions.length > 0) {
+          childNodeDetail = [...childNodeDetail, ...childQuestions]
+        }
         for (const content of childNodeDetail) {
+
+          if(["application/vnd.sunbird.questionset", "application/vnd.sunbird.question"].includes(content.mimeType)) {
+            content['size'] = 0;
+          }
+
           if (content.size && content.downloadUrl) {
             contentToBeDownloadedCount += 1;
             logger.debug(`${reqId} Content childNodes: ${content.identifier} added to list`);
@@ -264,7 +281,38 @@ export class ContentDownloadManager {
       },
     };
     return HTTPService.post(this.ContentSearchUrl, requestBody, DefaultRequestOptions).toPromise()
-      .then((response) => _.get(response, "data.result.content") || []);
+      .then((response) => {
+        let contents = []
+        contents = _.get(response, "data.result.content") || [];
+        if(_.has(response, "data.result.QuestionSet")) {
+          const questionset = _.get(response, "data.result.QuestionSet");
+          questionset.forEach(element => {
+            contents.push(element)
+          });
+        }
+        return contents;
+      });
+  }
+  private getQuestionsFromQuestionSetApi(contentList) {
+    let childNodes = [];
+    contentList.map((content) => {
+      if(content?.mimeType === "application/vnd.sunbird.questionset") {
+        childNodes = [...childNodes, ...content.childNodes];
+      }
+    });
+
+    if (!childNodes || !childNodes.length) {
+      return Promise.resolve([]);
+    }
+    const requestBody = {
+      request: {
+        search: {
+          identifier: childNodes,
+        }
+      },
+    };
+    return HTTPService.post(this.QuestionListUrl, requestBody, DefaultRequestOptions).toPromise()
+      .then((response) => _.get(response, "data.result.questions") || []);
   }
   private getContentChildNodeDetailsFromDb(childNodes) {
     if (!childNodes || !childNodes.length) {
