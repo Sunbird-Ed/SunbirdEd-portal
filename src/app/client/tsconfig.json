@@ -6,7 +6,7 @@
     "enableIvy": false,
   },
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "module": "esnext",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -17,6 +17,11 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "es5",
+    "types": [
+      "node",
+      "reflect-metadata",
+      "jest"
+    ],
     "typeRoots": [
       "./node_modules/@types"
     ],
@@ -25,8 +30,10 @@
       "es2017",
       "es6",
       "dom"
-    ]
+    ],
+    "esModuleInterop": true
   },
+  "files": ["src/polyfills.ts"],
   "exclude": [
     "**/*.spec.data.ts"
   ]

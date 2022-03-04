@@ -1,8 +1,8 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
       "@sunbird/core": [
         "app/modules/core"
@@ -78,12 +78,11 @@
       ]
     },
     "types": [
-      "jasmine",
-      "node"
+      "jest"
     ]
   },
   "files": [
-    "test.ts",
+    "setup-jest.ts",
     "polyfills.ts"
   ],
   "include": [
