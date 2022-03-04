@@ -270,7 +270,7 @@ export default (app, proxyURL, contentDownloadManager) => {
             `Received API call to get questionset hierarchy: ${req.params.id}`,
           );
   
-          logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
+          logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`); 
           const online = Boolean(_.get(req, "query.online") && req.query.online.toLowerCase() === "true");
           const isProxyEnabled = _.has(req, "query.online") ? online : enableProxy(req);
           const offlineData = await content.getOfflineContents([req.params.id], req.headers["X-msgid"]).catch((error) => {
