@@ -16,7 +16,7 @@
   .sb-desktop-content-manager.sb-mat-accordion .mat-expansion-panel .mat-expansion-panel-header {
     background: #5630dc;
     border-radius: 0;
-  
+    height:3rem !important;
     &:hover {
       background: #5630dc;
     }
@@ -44,6 +44,10 @@
         }
         .mat-expansion-panel-body {
           padding: 0 0px 0px;
+      }
+      .sb-mat-accordion__content {
+        max-height: calc(100vh - 30vh);
+        overflow-y: auto;
       }
   }
   }
