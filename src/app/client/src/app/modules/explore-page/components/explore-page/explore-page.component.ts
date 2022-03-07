@@ -268,8 +268,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                               (_.toLower(contentType) === _.toLower(pageContentType));
                     };
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
-                    filteredCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);
-                    this.enrolledCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     enrolledSection.contents = _.map(filteredCourses, content => {
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
