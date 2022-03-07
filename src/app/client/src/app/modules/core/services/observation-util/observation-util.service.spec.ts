@@ -34,7 +34,8 @@ import {
 } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-describe('ObservationUtilService', () => {
+// Old One
+xdescribe('ObservationUtilService', () => {
   let baseHref, kendraService, userService, modalService;
   let service: ObservationUtilService;
   let requiredFields, data, allFieldsPresent, originalTimeout, formService;
@@ -65,11 +66,11 @@ describe('ObservationUtilService', () => {
   );
 
   beforeEach(() => {
-    service = TestBed.get(ObservationUtilService);
-    userService = TestBed.get(UserService);
-    kendraService = TestBed.get(KendraService);
-    modalService = TestBed.get(SuiModalService);
-    formService = TestBed.get(FormService);
+    service = TestBed.inject(ObservationUtilService);
+    userService = TestBed.inject(UserService);
+    kendraService = TestBed.inject(KendraService);
+    modalService = TestBed.inject(SuiModalService);
+    formService = TestBed.inject(FormService);
   });
 
   it('should be created', () => {

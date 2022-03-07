@@ -25,3 +25,20 @@ export const configureTestSuite = () => {
         TestBed.resetTestingModule();
     });
   };
+
+/*
+*  Jasmine has deprecated multiple done() callback in single file
+*  This function is wrapper method for done callback
+*  Ref link: https://jasmine.github.io/pages/faq.html#012-done-twice
+*/
+export const allowUnsafeMultipleDone = (fn) => {
+  return function(done) {
+    let doneCalled = false;
+    fn(function(err) {
+      if (!doneCalled) {
+        done(err);
+        doneCalled = true;
+      }
+    });
+  }
+}

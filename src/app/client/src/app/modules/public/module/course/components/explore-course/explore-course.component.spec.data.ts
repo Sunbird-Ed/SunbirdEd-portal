@@ -39,7 +39,7 @@ export const Response = {
                 'children': [],
                 'appId': 'staging.sunbird.portal',
                 'contentEncoding': 'gzip',
-                'mimeTypesCount': '{\'application/vnd.ekstep.html-archive\':1,\':1,\'application/vnd.ekstep.content-collection\':1}',
+                'mimeTypesCount': '{"application/vnd.ekstep.html-archive":1,"application/vnd.ekstep.content-collection":1}',
                 'contentType': 'Course',
                 'identifier': 'do_2124765386384179201514',
                 'lastUpdatedBy': '7d3dd6ec-e9bb-4298-b260-12b95200984e',

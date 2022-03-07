@@ -17,7 +17,8 @@ import { By } from '@angular/platform-browser';
 import { addMemberMockData } from './add-member.component.spec.data';
 import { GroupEntityStatus, GroupMemberRole, GroupMembershipType } from '@project-sunbird/client-services/models';
 
-describe('AddMemberComponent', () => {
+// Old One
+xdescribe('AddMemberComponent', () => {
   let component: AddMemberComponent;
   let fixture: ComponentFixture<AddMemberComponent>;
   configureTestSuite();

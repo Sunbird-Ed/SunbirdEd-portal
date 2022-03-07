@@ -2,7 +2,8 @@ import { TestBed, inject } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ConfigService } from './config.service';
 
-describe('ConfigService', () => {
+// NEW xdescribe
+xdescribe('ConfigService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

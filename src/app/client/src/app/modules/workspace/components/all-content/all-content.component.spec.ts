@@ -16,7 +16,8 @@ import { CoreModule } from '@sunbird/core';
 import { DateFilterXtimeAgoPipe } from './../../pipes';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('AllContentComponent', () => {
+// Old One
+xdescribe('AllContentComponent', () => {
   let component: AllContentComponent;
   let fixture: ComponentFixture<AllContentComponent>;
   const resourceBundle = {

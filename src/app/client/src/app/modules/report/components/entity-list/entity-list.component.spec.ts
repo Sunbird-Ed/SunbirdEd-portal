@@ -16,7 +16,8 @@ import {
 } from '../solution-listing/solution-listing.component.spec.data';
 import { NoopAnimationsModule,BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-describe('EntityListComponent', () => {
+// Old One
+xdescribe('EntityListComponent', () => {
   let component: EntityListComponent;
   let fixture: ComponentFixture<EntityListComponent>;
   let element;

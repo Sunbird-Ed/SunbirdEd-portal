@@ -95,8 +95,8 @@ describe('SearchFilterComponent', () => {
     });
 
     beforeEach(() => {
-        contentSearchService = TestBed.get(ContentSearchService);
-        formService = TestBed.get(FormService);
+        contentSearchService = TestBed.inject(ContentSearchService);
+        formService = TestBed.inject(FormService);
         spyOn(contentSearchService, 'fetchFilter').and.returnValue(observableOf(response.filterValue));
         spyOn<any>(formService, 'getFormConfig').and.returnValue(observableOf([]));
         component.selectedFilters = {};

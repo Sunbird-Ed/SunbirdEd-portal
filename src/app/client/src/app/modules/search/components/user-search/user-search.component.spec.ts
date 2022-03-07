@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, INoResultMessage
+  ConfigService, ToasterService, INoResultMessage, IUserProfile
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService, CoreModule, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { UserSearchService } from './../../services';
@@ -81,8 +81,8 @@ describe('UserSearchComponent', () => {
   });
 
   it('should call search api for populateUserSearch', () => {
-    const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
+    const searchService = TestBed.inject(SearchService);
+    const learnerService = TestBed.inject(LearnerService);
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.successData));
     component.populateUserSearch();
@@ -93,8 +93,8 @@ describe('UserSearchComponent', () => {
   });
 
   it('should call search api for populateUserSearch and get empty result', () => {
-    const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
+    const searchService = TestBed.inject(SearchService);
+    const learnerService = TestBed.inject(LearnerService);
     component.queryParams = mockQueryParma;
     spyOn(searchService, 'userSearch').and.callFake(() => observableOf(Response.emptySuccessData));
     fixture.detectChanges();
@@ -104,8 +104,8 @@ describe('UserSearchComponent', () => {
   });
 
   it('should throw error when searchService api is not called', () => {
-    const searchService = TestBed.get(SearchService);
-    const learnerService = TestBed.get(LearnerService);
+    const searchService = TestBed.inject(SearchService);
+    const learnerService = TestBed.inject(LearnerService);
     component.queryParams = mockQueryParma;
     component.searchList = Response.successData.result.response.content;
     component.userProfile = {orgRoleMap: [], rootOrgAdmin: true};
@@ -158,8 +158,8 @@ describe('UserSearchComponent', () => {
 
   it('should subscribe user profile and call populateUserSearch', () => {
     component.searchList = Response.successData.result.response.content;
-    const userService = TestBed.get(UserService);
-    userService._userData$.next({ err: null, userProfile: Response.userProfile });
+    const userService:any = TestBed.inject(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userProfile as any});
     spyOn(component, 'populateUserSearch').and.callThrough();
     fixture.detectChanges();
     expect(component.populateUserSearch).toHaveBeenCalled();

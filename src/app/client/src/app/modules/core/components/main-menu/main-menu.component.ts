@@ -103,7 +103,7 @@ export class MainMenuComponent implements OnInit {
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
     try {
-      this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
+      this.helpLinkVisibility = document.getElementById('helpLinkVisibility')?(<HTMLInputElement>document.getElementById('helpLinkVisibility')).value:'false';
     } catch (error) {
       this.helpLinkVisibility = 'false';
     }

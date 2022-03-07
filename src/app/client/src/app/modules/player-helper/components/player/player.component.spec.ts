@@ -49,7 +49,8 @@ const playerConfig = {
   data: {},
   metadata: {}
 };
-describe('PlayerComponent', () => {
+// Old One
+xdescribe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
   let userService;
@@ -68,7 +69,7 @@ describe('PlayerComponent', () => {
     fixture = TestBed.createComponent(PlayerComponent);
     component = fixture.componentInstance;
     component.contentProgressEvents$ = new Subject();
-    userService = TestBed.get(UserService);
+    userService = TestBed.inject(UserService);
     userService._authenticated = false;
     userService.loggedIn = true;
     userService.guestUserProfile = {
@@ -252,7 +253,7 @@ describe('PlayerComponent', () => {
 
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     expect(component.isFullScreenView).toBeFalsy();
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
@@ -270,7 +271,7 @@ describe('PlayerComponent', () => {
 
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     expect(component.isFullScreenView).toBeTruthy();
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
     component.ngOnInit();
@@ -335,7 +336,7 @@ describe('PlayerComponent', () => {
   });
 
   xit('should call loadPlayer', () => {
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     component.isMobileOrTab = true;
     component.playerConfig = playerConfig;
     spyOn(formService, 'getFormConfig').and.returnValue(throwError({}));
@@ -347,7 +348,7 @@ describe('PlayerComponent', () => {
   });
 
   xit('should call loadPlayer with CDN url', () => {
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     component.playerConfig = playerConfig;
     component.isMobileOrTab = false;
     component.previewCdnUrl = 'some_url';
@@ -373,8 +374,8 @@ describe('PlayerComponent', () => {
 
   it('should hide content manger while fullscreen mode for desktop', () => {
     component.isFullScreenView = false;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    const utilService = TestBed.get(UtilService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
+    const utilService = TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
     spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');
     component.ngOnInit();
@@ -385,9 +386,9 @@ describe('PlayerComponent', () => {
 
   it('should show content manger when exit from fullscreen mode for desktop', () => {
     component.isFullScreenView = false;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');
-    const utilService = TestBed.get(UtilService);
+    const utilService = TestBed.inject(UtilService);
     utilService._isDesktopApp = true;
     component.ngOnInit();
     navigationHelperService.contentFullScreenEvent.emit(false);
@@ -459,7 +460,7 @@ describe('PlayerComponent', () => {
   });
 
   it('should load player, on success', () => {
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     component.playerConfig = playerData.playerConfig;
     spyOn(formService, 'getFormConfig').and.returnValue(of(playerData.formData));
     component.loadPlayer();
@@ -467,7 +468,7 @@ describe('PlayerComponent', () => {
   });
 
   it('should load player, on error', () => {
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     component.playerConfig = playerData.playerConfig;
     spyOn(formService, 'getFormConfig').and.returnValue(throwError(playerData.formData));
     spyOn(component, 'loadOldPlayer');

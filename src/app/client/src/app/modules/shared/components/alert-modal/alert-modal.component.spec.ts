@@ -16,7 +16,8 @@ interface IAlertModalContext {
   data: any;
 }
 
-describe('AlertModalComponent', () => {
+// Old One
+xdescribe('AlertModalComponent', () => {
   let component: AlertModalComponent;
   let fixture: ComponentFixture<AlertModalComponent>;
   let alertModal;

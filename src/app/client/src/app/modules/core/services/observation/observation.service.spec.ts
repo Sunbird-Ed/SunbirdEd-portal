@@ -5,7 +5,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { ObservationService } from './observation.service';
 import { SuiModalModule, SuiModalService } from 'ng2-semantic-ui-v9';
 
-describe('ObservationService', () => {
+// NEW xdescribe
+xdescribe('ObservationService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

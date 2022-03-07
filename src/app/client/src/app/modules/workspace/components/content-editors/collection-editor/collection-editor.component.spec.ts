@@ -70,15 +70,15 @@ describe('CollectionEditorComponent', () => {
   });
 
   afterEach(() => {
-      const activatedRoute = TestBed.get(ActivatedRoute);
+      const activatedRoute = TestBed.inject(ActivatedRoute);
       activatedRoute.snapshot.params.type = 'collection';
   });
 
   it('should router to course editor ',
   inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService, UserService],
     (editorService, toasterService, tenantService, workspaceService, frameworkService, userService) => {
-      const router = TestBed.get(Router);
-      const activatedRoute = TestBed.get(ActivatedRoute);
+      const router = TestBed.inject(Router);
+      const activatedRoute = TestBed.inject(ActivatedRoute);
       activatedRoute.snapshot.params.type = 'Course';
       component.ngOnInit();
       expect(router.navigate).toHaveBeenCalledWith(
@@ -143,7 +143,7 @@ describe('CollectionEditorComponent', () => {
   }));
 
   it('#retireLock() should call #redirectToWorkSpace() method if success', () => {
-    const workSpaceService = TestBed.get(WorkSpaceService);
+    const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'retireLock').and.returnValue(observableOf({}));
     spyOn(component, 'redirectToWorkSpace').and.callThrough();
     component['routeParams'] = {contentId: '12345'};
@@ -152,7 +152,7 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('#retireLock() should call #redirectToWorkSpace() method if failed', () => {
-    const workSpaceService = TestBed.get(WorkSpaceService);
+    const workSpaceService = TestBed.inject(WorkSpaceService);
     spyOn(workSpaceService, 'retireLock').and.returnValue(throwError({}));
     spyOn(component, 'redirectToWorkSpace').and.callThrough();
     component['routeParams'] = {contentId: '12345'};
@@ -177,7 +177,7 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('should pass user selected board in the context for courses', () => {
-    const userService = TestBed.get(UserService);
+    const userService:any = TestBed.inject(UserService);
     component['userProfile'] = userService.userProfile;
     component['routeParams'] = {type: 'course'};
     component['setWindowContext']();
@@ -185,8 +185,8 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('#lockContent() should navigate with lock data',  () => {
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    const router = TestBed.get(Router);
+    const workSpaceService = TestBed.inject(WorkSpaceService);
+    const router = TestBed.inject(Router);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({result: 'test'}));
     component['routeParams'] = {state: 'collaborating-on'};
     component.lockContent().subscribe(() => {
@@ -196,7 +196,7 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('Should generate interact telemetry event', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.callThrough();
     component.collectionDetails = mockRes.successResult.result.content;
     component['generateInteractEvent']({});
