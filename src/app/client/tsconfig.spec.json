@@ -78,8 +78,11 @@
       ]
     },
     "types": [
+      "node",
+      "reflect-metadata",
       "jest"
-    ]
+    ],
+    "resolveJsonModule": true
   },
   "files": [
     "setup-jest.ts",

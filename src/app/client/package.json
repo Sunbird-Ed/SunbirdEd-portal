@@ -136,7 +136,7 @@
     "@angular-builders/jest": "^13.0.3",
     "@angular/language-service": "^10.2.5",
     "@types/jasminewd2": "^2.0.2",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "26.4.0",
     "@types/jquery": "^3.3.38",
     "@types/jquery.fancytree": "2.7.34",
     "@types/node": "^12.20.15",
