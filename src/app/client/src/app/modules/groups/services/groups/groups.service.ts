@@ -20,7 +20,7 @@ import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/mod
   providedIn: 'root'
 })
 export class GroupsService {
-  private groupCservice: any;
+  groupCservice: any;
   private userCservice: any;
   private _groupData: IGroupCard;
   public isCurrentUserAdmin = false;

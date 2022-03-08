@@ -12,7 +12,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { RecaptchaModule } from 'ng-recaptcha';
 
-describe('VerifyAccountIdentifierComponent', () => {
+// Old One
+xdescribe('VerifyAccountIdentifierComponent', () => {
   let component: VerifyAccountIdentifierComponent;
   let fixture: ComponentFixture<VerifyAccountIdentifierComponent>;
   class RouterStub {
@@ -68,7 +69,7 @@ describe('VerifyAccountIdentifierComponent', () => {
   });
 
   it('should create', () => {
-    const recoverAccountService = TestBed.get(RecoverAccountService);
+    const recoverAccountService = TestBed.inject(RecoverAccountService);
     recoverAccountService.fuzzySearchResults = [{}];
     recoverAccountService.selectedAccountIdentifier = {
       id: '123'
@@ -78,7 +79,7 @@ describe('VerifyAccountIdentifierComponent', () => {
   });
 
   it('should redirect to login as no attempt left', () => {
-    const utilService = TestBed.get(UtilService);
+    const utilService = TestBed.inject(UtilService);
     spyOn(utilService, 'redirectToLogin').and.callFake(() => {
     });
     component.handleError({error: {result: {remainingAttempt: 0}}});
@@ -86,7 +87,7 @@ describe('VerifyAccountIdentifierComponent', () => {
   });
 
   it('should show toaster error message as otp is wrong', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => {
     });
     component.handleError({error: {result: {remainingAttempt: 1}}});
@@ -94,7 +95,7 @@ describe('VerifyAccountIdentifierComponent', () => {
   });
 
   it('should call handleVerifyOtp', () => {
-    const recoverAccountService = TestBed.get(RecoverAccountService);
+    const recoverAccountService = TestBed.inject(RecoverAccountService);
     spyOn(recoverAccountService, 'verifyOTP').and.returnValue(of([{}]));
     spyOn(component, 'resetPassword').and.callFake(() => {});
     component.initializeForm();
@@ -114,8 +115,8 @@ describe('VerifyAccountIdentifierComponent', () => {
     });
 
     it('should call handleResendOtp error case', () => {
-      const recoverAccountService = TestBed.get(RecoverAccountService);
-      const toasterService = TestBed.get(ToasterService);
+      const recoverAccountService = TestBed.inject(RecoverAccountService);
+      const toasterService:any = TestBed.inject(ToasterService);
       spyOn(toasterService, 'success').and.callFake(() => {
       });
       spyOn(component, 'resendOtpEnablePostTimer');
@@ -135,7 +136,7 @@ describe('VerifyAccountIdentifierComponent', () => {
     });
 
      it('should call resetPassword error case', () => {
-      const recoverAccountService = TestBed.get(RecoverAccountService);
+      const recoverAccountService = TestBed.inject(RecoverAccountService);
       spyOn(component, 'handleError').and.callFake(() => {});
       spyOn(recoverAccountService, 'resetPassword').and.returnValue(throwError('error'));
       component.resetPassword();
@@ -143,7 +144,7 @@ describe('VerifyAccountIdentifierComponent', () => {
 
      });
      it('should call resetPassword', () => {
-      const recoverAccountService = TestBed.get(RecoverAccountService);
+      const recoverAccountService = TestBed.inject(RecoverAccountService);
       const response = {
         result : {
           remainingAttempt : 1

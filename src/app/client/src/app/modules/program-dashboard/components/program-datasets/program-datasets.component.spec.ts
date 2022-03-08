@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angul
 import { DatasetsComponent } from './program-datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { KendraService, UserService, FormService } from '@sunbird/core';
-import { ResourceService, SharedModule, ConfigService, OnDemandReportService } from '@sunbird/shared';
+import { ResourceService, SharedModule, ConfigService, OnDemandReportService, IUserProfile } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -92,11 +92,11 @@ describe('DatasetsComponent', () => {
 
 
   it('should fetch programsList', () => {
-    const userService = TestBed.get(UserService);
-    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
+    const userService:any = TestBed.inject(UserService);
+    userService._userData$.next({ err: null, userProfile: mockData.userProfile as any});
     userService._userProfile = mockData.userProfile;
     component.userRoles = mockData.userProfile.roles;
-    const kendraService = TestBed.get(KendraService);
+    const kendraService = TestBed.inject(KendraService);
     spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.programs));
     component.getProgramsList();
     expect(component.programs).toEqual(mockData.programs.result);
@@ -104,7 +104,7 @@ describe('DatasetsComponent', () => {
   });
 
   it('should call programSelection', () => {
-    const kendraService = TestBed.get(KendraService);
+    const kendraService = TestBed.inject(KendraService);
     component.programs = mockData.programs.result;
     spyOn(kendraService, 'get').and.returnValue(observableOf({ result: mockData.solutions.result }));
     component.programSelection('5f34ec17585244939f89f90c');
@@ -113,7 +113,7 @@ describe('DatasetsComponent', () => {
   });
 
   it('should call getSolutionList', () => {
-    const kendraService = TestBed.get(KendraService);
+    const kendraService = TestBed.inject(KendraService);
     component.programs = mockData.programs.result;
 
     component.solutions = [];
@@ -145,7 +145,7 @@ describe('DatasetsComponent', () => {
   it('should load reports', () => {
     component.tag = 'mockTag';
     component.onDemandReportData = [];
-    const onDemandReportService = TestBed.get(OnDemandReportService);
+    const onDemandReportService = TestBed.inject(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
     component.loadReports();
     expect(component.onDemandReportData).toEqual(mockData.reportListResponse.result.jobs);
@@ -164,7 +164,7 @@ describe('DatasetsComponent', () => {
     };
     component.onDemandReportData = [{1: 'a' , requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }];
     component.reportTypes = mockData.FormData['observation'];
-    const onDemandReportService = TestBed.get(OnDemandReportService);
+    const onDemandReportService = TestBed.inject(OnDemandReportService);
     spyOn(onDemandReportService, 'submitRequest').and.returnValue(observableOf({result: {requestId: '1', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report' }, title: 'Status Report', 2: 'b', dataset: 'ml-observation-status-report'}}));
     component.submitRequest();
     expect(component.onDemandReportData).toEqual([{
@@ -177,7 +177,7 @@ describe('DatasetsComponent', () => {
 
   it('should call getFormDetails', fakeAsync(() => {
 
-    const formService = TestBed.get(FormService);
+    const formService = TestBed.inject(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.FormData));
     component.getFormDetails();
     expect(component.formData).toEqual(mockData.FormData);
@@ -192,7 +192,7 @@ describe('DatasetsComponent', () => {
     component.formData = mockData.FormData;
 
     component.onDemandReportData = [];
-    const onDemandReportService = TestBed.get(OnDemandReportService);
+    const onDemandReportService = TestBed.inject(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
     component.loadReports();
     tick(1000);
@@ -225,7 +225,7 @@ describe('DatasetsComponent', () => {
     component.formData = mockData.FormData;
 
     component.onDemandReportData = [];
-    const onDemandReportService = TestBed.get(OnDemandReportService);
+    const onDemandReportService = TestBed.inject(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
     component.loadReports();
 

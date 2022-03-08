@@ -33,7 +33,7 @@ describe('NetworkStatusComponent', () => {
   });
 
   it('should change is connected', () => {
-    const connectionService = TestBed.get(ConnectionService);
+    const connectionService = TestBed.inject(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(of(false));
     component.ngOnInit();
     expect(component.isConnected).toBeFalsy();

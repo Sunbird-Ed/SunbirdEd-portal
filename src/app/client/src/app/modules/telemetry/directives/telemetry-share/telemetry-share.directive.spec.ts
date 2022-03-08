@@ -38,8 +38,8 @@ const fakeActivatedRoute = {
     });
   });
   it('should take input and  generate the telemetry  share  event', () => {
-    const telemetryService = TestBed.get(TelemetryService);
-    const activatedRoute = TestBed.get(ActivatedRoute);
+    const telemetryService = TestBed.inject(TelemetryService);
+    const activatedRoute = TestBed.inject(ActivatedRoute);
     const directive = new TelemetryShareDirective(telemetryService, activatedRoute);
     spyOn(telemetryService, 'share').and.callFake(() => observableOf(eventData.inputData));
     directive.appTelemetryShare = eventData.inputData;

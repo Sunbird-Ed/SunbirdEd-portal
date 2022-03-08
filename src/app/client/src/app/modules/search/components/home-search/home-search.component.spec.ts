@@ -72,18 +72,18 @@ describe('HomeSearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeSearchComponent);
     component = fixture.componentInstance;
-    toasterService = TestBed.get(ToasterService);
-    searchService = TestBed.get(SearchService);
-    activatedRoute = TestBed.get(ActivatedRoute);
-    cacheService = TestBed.get(CacheService);
-    learnerService = TestBed.get(LearnerService);
-    coursesService = TestBed.get(CoursesService);
-    schemaService = TestBed.get(SchemaService);
+    toasterService = TestBed.inject(ToasterService);
+    searchService = TestBed.inject(SearchService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    cacheService = TestBed.inject(CacheService);
+    learnerService = TestBed.inject(LearnerService);
+    coursesService = TestBed.inject(CoursesService);
+    schemaService = TestBed.inject(SchemaService);
     sendEnrolledCourses = true;
     sendSearchResult = true;
     sendFormResult = true;
     sendFormApi = true;
-    toasterService = TestBed.get(ToasterService);
+    toasterService = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => {});
     spyOn(learnerService, 'get').and.callFake((options) => {
       if (sendEnrolledCourses) {
@@ -226,8 +226,8 @@ describe('HomeSearchComponent', () => {
   }));
 
   it('should playContent without batch id', () => {
-    const courseService = TestBed.get(CoursesService);
-    const playerService = TestBed.get(PlayerService);
+    const courseService:any = TestBed.inject(CoursesService);
+    const playerService:any = TestBed.inject(PlayerService);
     spyOn(courseService, 'findEnrolledCourses').and.returnValue({ onGoingBatchCount: 0, expiredBatchCount: 0 });
     spyOn(playerService, 'playContent').and.callThrough();
     const data = {
@@ -238,8 +238,8 @@ describe('HomeSearchComponent', () => {
   });
 
   it('should playContent for on going batch with batch id', () => {
-    const courseService = TestBed.get(CoursesService);
-    const playerService = TestBed.get(PlayerService);
+    const courseService:any = TestBed.inject(CoursesService);
+    const playerService:any = TestBed.inject(PlayerService);
     const returnValue = {
       onGoingBatchCount: 1,
       expiredBatchCount: 0,
@@ -257,8 +257,8 @@ describe('HomeSearchComponent', () => {
 
   it('should call navigateToPage method', () => {
     component.paginationDetails.totalPages = 20;
-    const router = TestBed.get(Router);
-    router.url = '/search/Courses/1?key=SB-194&selectedTab=all';
+    const router = TestBed.inject(Router);
+    router['url' as any] = '/search/Courses/1?key=SB-194&selectedTab=all';
     spyOn(window, 'scroll');
     component.navigateToPage(2);
     expect(router.navigate).toHaveBeenCalled();
@@ -301,8 +301,8 @@ describe('HomeSearchComponent', () => {
       'disabled': false
     };
     contentResponse.hoverActionsData['data'] = contentResponse.hoverActionsData.content;
-    const route = TestBed.get(Router);
-    route.url = '/explore-page?selectedTab=explore-page';
+    const route = TestBed.inject(Router);
+    route['url' as any] = '/explore-page?selectedTab=explore-page';
     spyOn(component, 'logTelemetry').and.callThrough();
     spyOn(component, 'playContent');
     component.hoverActionClicked(contentResponse.hoverActionsData);
@@ -312,7 +312,7 @@ describe('HomeSearchComponent', () => {
   });
 
   it('should call download content with success ', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService = TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
@@ -325,7 +325,7 @@ describe('HomeSearchComponent', () => {
   });
 
   it('should call download content with error ', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentManagerService = TestBed.inject(ContentManagerService);
     spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
     component.ngOnInit();
     component.downloadContent('123');
@@ -356,9 +356,9 @@ describe('HomeSearchComponent', () => {
       returnTo: 'home'
     };
     spyOn(component, 'moveToTop').and.stub();
-    const userServices = TestBed.get(UserService);
+    const userServices:any = TestBed.inject(UserService);
     spyOn(userServices, 'loggedIn').and.returnValue(true);
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService:any = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.stub();
     component.viewAll(events);
     expect(events.contents).toBeTruthy();

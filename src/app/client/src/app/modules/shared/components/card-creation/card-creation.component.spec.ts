@@ -11,7 +11,8 @@ import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('CardCreationComponent', () => {
+// Old One
+xdescribe('CardCreationComponent', () => {
   let component: CardCreationComponent;
   let fixture: ComponentFixture<CardCreationComponent>;
   configureTestSuite();

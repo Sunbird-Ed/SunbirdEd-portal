@@ -11,7 +11,8 @@ import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { of, throwError } from 'rxjs';
 import { UpdateContactDetailsComponent } from './update-contact-details.component';
 
-describe('UpdateContactDetailsComponent', () => {
+// Old One
+xdescribe('UpdateContactDetailsComponent', () => {
   let component: UpdateContactDetailsComponent;
   let fixture: ComponentFixture<UpdateContactDetailsComponent>;
 
@@ -182,8 +183,8 @@ describe('UpdateContactDetailsComponent', () => {
   });
 
   it('should call updateProfile for contact type phone', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toastService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toastService = TestBed.inject(ToasterService);
     component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(of({}));
@@ -196,8 +197,8 @@ describe('UpdateContactDetailsComponent', () => {
   });
 
   it('should call updateProfile for contact type email', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toastService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toastService = TestBed.inject(ToasterService);
     component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(of({}));
@@ -211,8 +212,8 @@ describe('UpdateContactDetailsComponent', () => {
 
 
   it('should close the modal and show appropriate message on update fail for type phone', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toastService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toastService = TestBed.inject(ToasterService);
     component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
@@ -225,8 +226,8 @@ describe('UpdateContactDetailsComponent', () => {
   });
 
   it('should close the modal and show appropriate message on update fail for type email', () => {
-    const profileService = TestBed.get(ProfileService);
-    const toastService = TestBed.get(ToasterService);
+    const profileService = TestBed.inject(ProfileService);
+    const toastService = TestBed.inject(ToasterService);
     component.verifiedUser = true;
     spyOn(component, 'closeModal');
     spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
@@ -244,7 +245,7 @@ describe('UpdateContactDetailsComponent', () => {
       uniqueContact: new FormControl(true, [Validators.required])
     });
     component.contactType = 'email';
-    const otpService = TestBed.get(OtpService);
+    const otpService = TestBed.inject(OtpService);
     spyOn(otpService, 'generateOTP').and.returnValue(of({}));
     spyOn(component, 'prepareOtpData');
     component.generateOTP();
@@ -259,8 +260,8 @@ describe('UpdateContactDetailsComponent', () => {
       uniqueContact: new FormControl(true, [Validators.required])
     });
     component.contactType = 'email';
-    const otpService = TestBed.get(OtpService);
-    const toasterService =  TestBed.get(ToasterService);
+    const otpService = TestBed.inject(OtpService);
+    const toasterService =  TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(otpService, 'generateOTP').and.returnValue(throwError({ error: { params: { status: 'EMAIL_IN_USE', errmsg: 'error' } } }));
     component.generateOTP();

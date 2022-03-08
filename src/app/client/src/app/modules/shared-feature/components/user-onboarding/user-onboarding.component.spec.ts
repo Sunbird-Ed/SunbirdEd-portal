@@ -46,7 +46,7 @@ describe('UserOnboardingComponent', () => {
   });
 
   it('should call ngOnInit', () => {
-    const tenantService = TestBed.get(TenantService);
+    const tenantService:any = TestBed.inject(TenantService);
     const tenantData = { 'appLogo': '/appLogo.png', 'favicon': '/favicon.ico', 'logo': '/logo.png', 'titleName': 'SUNBIRD' };
     tenantService._tenantData$.next({ err: null, tenantData: tenantData });
     component.ngOnInit();
@@ -55,11 +55,11 @@ describe('UserOnboardingComponent', () => {
   });
 
   it('should call ngOnInit for igot instance', () => {
-    const tenantService = TestBed.get(TenantService);
-    const cacheService = TestBed.get(CacheService);
+    const tenantService:any = TestBed.inject(TenantService);
+    const cacheService = TestBed.inject(CacheService);
     spyOn(cacheService, 'get').and.returnValue({ slug: 'SUNBIRD' });
     const tenantData = { 'appLogo': '/appLogo.png', 'favicon': '/favicon.ico', 'logo': '/logo.png', 'titleName': 'SUNBIRD' };
-    tenantService._tenantData$.next({ err: null, tenantData: tenantData });
+    tenantService._tenantData$.next({ err: null, tenantData: tenantData as any });
     tenantService.slugForIgot = 'SUNBIRD';
     component.ngOnInit();
     expect(component.tenantInfo.titleName).toEqual('SUNBIRD');
@@ -68,13 +68,14 @@ describe('UserOnboardingComponent', () => {
   });
 
   it('should call userTypeSubmit', () => {
+    component.isGuestUser = true;
     spyOn(component.close, 'emit');
     component.userTypeSubmit();
     expect(component.close.emit).toHaveBeenCalled();
   });
 
   it('should call locationSubmit', () => {
-    const popupControlService = TestBed.get(PopupControlService);
+    const popupControlService = TestBed.inject(PopupControlService);
     spyOn(popupControlService, 'changePopupStatus');
     spyOn(component.close, 'emit');
     component.locationSubmit();

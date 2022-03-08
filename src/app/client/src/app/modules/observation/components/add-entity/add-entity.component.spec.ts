@@ -29,6 +29,7 @@ import {
   of
 } from 'rxjs';
 
+// Old One
 xdescribe('AddEntityComponent', () => {
   let component: AddEntityComponent;
   let fixture: ComponentFixture<AddEntityComponent>;
@@ -62,9 +63,9 @@ xdescribe('AddEntityComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddEntityComponent);
     component = fixture.componentInstance;
-    observationUtilService = TestBed.get(ObservationUtilService);
-    observationService = TestBed.get(ObservationService);
-    kendraService = TestBed.get(KendraService);
+    observationUtilService = TestBed.inject(ObservationUtilService);
+    observationService = TestBed.inject(ObservationService);
+    kendraService = TestBed.inject(KendraService);
     component.searchQuery = '';
     component.payload = {};
   });

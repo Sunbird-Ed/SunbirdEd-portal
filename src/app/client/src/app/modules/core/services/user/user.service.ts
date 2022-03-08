@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
@@ -26,11 +27,11 @@ export class UserService {
   /**
    * Contains user id
    */
-  private _userid: string;
+  _userid: string;
   /**
     * Contains session id
     */
-  private _sessionId: string;
+  _sessionId: string;
 
   timeDiff: any;
 
@@ -41,15 +42,15 @@ export class UserService {
   /**
    * Contains user profile.
    */
-  private _userProfile: IUserProfile;
+  _userProfile: Partial<IUserProfile>;
   /**
    * BehaviorSubject Containing user profile.
    */
-  private _userData$ = new BehaviorSubject<IUserData>(undefined);
+  _userData$ = new BehaviorSubject<Partial<IUserData>>(undefined);
   /**
    * Read only observable Containing user profile.
    */
-  public readonly userData$: Observable<IUserData> = this._userData$.asObservable()
+  public readonly userData$: Observable<Partial<IUserData>> = this._userData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of config service.
@@ -62,25 +63,25 @@ export class UserService {
   /**
  * Contains hashTag id
  */
-  private _hashTagId: string;
+  _hashTagId: string;
   /**
  * Reference of appId
  */
-  private _appId: string;
+  _appId: string;
   /**
    * Reference of channel
    */
-  private _channel: string;
+  _channel: string;
   /**
    * Reference of dims
    */
-  private _dims: Array<string> = [];
+  _dims: Array<string> = [];
   /**
    * Reference of cloud Storage Urls
    */
-  private _cloudStorageUrls: string[];
-  private _authenticated: boolean;
-  private _anonymousSid: string;
+  _cloudStorageUrls: string[];
+  _authenticated: boolean;
+  _anonymousSid: string;
   /**
    * Reference of content service.
    */
@@ -95,7 +96,7 @@ export class UserService {
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
   public isDesktopApp = false;
-  private _guestData$ = new BehaviorSubject<any>(undefined);
+  _guestData$ = new BehaviorSubject<any>(undefined);
   public guestUserProfile;
   public readonly guestData$: Observable<any> = this._guestData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
@@ -103,7 +104,7 @@ export class UserService {
    * Reference of public data service.
    */
   public publicDataService: PublicDataService;
-  private _slug = '';
+  _slug = '';
   public _isCustodianUser: boolean;
   public anonymousUserPreference;
   public readonly userOrgDetails$ = this.userData$.pipe(
@@ -136,8 +137,8 @@ export class UserService {
       DataService.sessionId = this._anonymousSid;
     }
     try {
-      this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
-      this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
+      this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value: undefined;
+      this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
     } catch (error) {
     }
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
@@ -194,7 +195,7 @@ export class UserService {
         this.setUserProfile(data);
       },
       (err: ServerResponse) => {
-        this._userData$.next({ err: err, userProfile: this._userProfile });
+        this._userData$.next({ err: err, userProfile: this._userProfile as any });
       }
     );
   }
@@ -266,7 +267,7 @@ export class UserService {
     this._hashTagId = _.get(this._userProfile, 'rootOrg.hashTagId');
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
-    this._userData$.next({ err: null, userProfile: this._userProfile });
+    this._userData$.next({ err: null, userProfile: this._userProfile as any });
     this.rootOrgName = _.get(this._userProfile, 'rootOrg.orgName');
 
     // Storing profile details of stroger credentials user in cache

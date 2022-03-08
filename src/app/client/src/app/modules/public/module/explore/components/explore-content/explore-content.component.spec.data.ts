@@ -764,7 +764,7 @@ export const Response = {
             'contentType': 'TextBook'
         },
         'completionPercentage': 0,
-        'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+        'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
         'cardImg': 'https://ntpstagingall.blob8521957.thumb.jpg',
         'resourceType': 'Book',
         'organisation': ['Chhattisgarh', 'Chhattisgarh'],

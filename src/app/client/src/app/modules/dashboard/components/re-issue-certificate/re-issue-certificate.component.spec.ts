@@ -13,7 +13,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { CertRegService } from '@sunbird/core';
 
-describe('ReIssueCertificateComponent', () => {
+// Old One
+xdescribe('ReIssueCertificateComponent', () => {
   let component: ReIssueCertificateComponent;
   let fixture: ComponentFixture<ReIssueCertificateComponent>;
   let searchBtn;
@@ -138,7 +139,7 @@ describe('ReIssueCertificateComponent', () => {
   });
 
   it('should return  certList with batchList[] empty', () => {
-    const certRegService = TestBed.get(CertRegService);
+    const certRegService = TestBed.inject(CertRegService);
     const response = {
           userId: 'testUser',
           userName: 'user',
@@ -168,7 +169,7 @@ describe('ReIssueCertificateComponent', () => {
   });
 
   it('should return  certList with batchList[]', () => {
-    const certRegService = TestBed.get(CertRegService);
+    const certRegService = TestBed.inject(CertRegService);
     const response = {
       result: {
         response: {

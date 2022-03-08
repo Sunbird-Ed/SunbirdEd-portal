@@ -36,7 +36,7 @@ export class NavigationHelperService {
    * Name used to store previous url in session
    */
   private cacheServiceName = 'previousUrl';
-  contentFullScreenEvent = new EventEmitter<any>();
+  public contentFullScreenEvent = new EventEmitter<any>();
   handleCMvisibility = new EventEmitter<any>();
   previousNavigationUrl;
 

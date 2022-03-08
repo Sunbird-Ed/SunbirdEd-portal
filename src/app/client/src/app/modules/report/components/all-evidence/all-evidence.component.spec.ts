@@ -10,7 +10,8 @@ import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('AllEvidenceComponent', () => {
+// Old One
+xdescribe('AllEvidenceComponent', () => {
   let component: AllEvidenceComponent;
   let fixture: ComponentFixture<AllEvidenceComponent>;
   let dhitiService;
@@ -34,7 +35,7 @@ describe('AllEvidenceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AllEvidenceComponent);
     component = fixture.componentInstance;
-    dhitiService = TestBed.get(DhitiService);
+    dhitiService = TestBed.inject(DhitiService);
     fixture.detectChanges();
   });
 

@@ -3,7 +3,8 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { DataService } from './data.service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('DataService', () => {
+// NEW xdescribe
+xdescribe('DataService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

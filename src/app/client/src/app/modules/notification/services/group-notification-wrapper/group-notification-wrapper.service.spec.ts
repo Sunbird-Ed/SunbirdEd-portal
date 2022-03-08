@@ -10,7 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-describe('GroupNotificationWrapperService', () => {
+// Old One
+xdescribe('GroupNotificationWrapperService', () => {
   let service: GroupNotificationWrapperService;
 
   class RouterStub {
@@ -55,7 +56,7 @@ describe('GroupNotificationWrapperService', () => {
   });
 
   it('should call navigateToActivityToc()', () => {
-    const service = TestBed.get(GroupNotificationWrapperService);
+    const service = TestBed.inject(GroupNotificationWrapperService);
     const activity = { type: 'course', id: '123'};
     const isAdmin = false;
     spyOn(service['groupCservice'], 'getActivityDataById');
@@ -66,23 +67,23 @@ describe('GroupNotificationWrapperService', () => {
   });
 
   it('should call navigateNotification()', () => {
-    const service = TestBed.get(GroupNotificationWrapperService);
+    const service = TestBed.inject(GroupNotificationWrapperService);
     const additionalInfo = notificationData.data.action.additionalInfo;
     const accepted = service.navigateNotification(notificationData, additionalInfo);
     expect(accepted).toEqual({ path: 'my-groups/group-details/2ae1e555-b9cc-4510-9c1d-2f90e94ded90' });
   });
 
   it('should navigate to course player if trackable object is not available', fakeAsync(() => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(GroupNotificationWrapperService);
+    const router = TestBed.inject(Router);
     service.playContent(MockResponse.contentMetadata);
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier], { queryParams: undefined });
   }));
 
   it('should navigate to collection player if trackable object is not available and content type is other then course', fakeAsync(() => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(GroupNotificationWrapperService);
+    const router = TestBed.inject(Router);
     const mockData = MockResponse.contentMetadata;
     mockData.contentType = 'TextBook';
     mockData.primaryCategory = 'TextBook';
@@ -93,8 +94,8 @@ describe('GroupNotificationWrapperService', () => {
   }));
 
   it('should navigate to collection player if course is not trackable', fakeAsync(() => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(GroupNotificationWrapperService);
+    const router = TestBed.inject(Router);
     MockResponse.contentMetadata['trackable'] = { 'enabled': 'No' };
     service.playContent(MockResponse.contentMetadata);
     tick(50);
@@ -103,8 +104,8 @@ describe('GroupNotificationWrapperService', () => {
   }));
 
   it('should navigate to course player if collection is trackable', fakeAsync(() => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(GroupNotificationWrapperService);
+    const router = TestBed.inject(Router);
     MockResponse.contentMetadata['trackable'] = { 'enabled': 'Yes' };
     service.playContent(MockResponse.contentMetadata);
     tick(50);
@@ -112,8 +113,8 @@ describe('GroupNotificationWrapperService', () => {
   }));
 
   it('should navigate to course player with batch id if collection is trackable and enrolled course', fakeAsync(() => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(GroupNotificationWrapperService);
+    const router = TestBed.inject(Router);
     MockResponse.contentMetadata['trackable'] = { 'enabled': 'Yes' };
     MockResponse.contentMetadata['batchId'] = '123';
     service.playContent(MockResponse.contentMetadata);
@@ -123,8 +124,8 @@ describe('GroupNotificationWrapperService', () => {
   }));
 
   it('should navigate to resource player if content mime type is not collection', fakeAsync(() => {
-    const service = TestBed.get(GroupNotificationWrapperService);
-    const router = TestBed.get(Router);
+    const service = TestBed.inject(GroupNotificationWrapperService);
+    const router = TestBed.inject(Router);
     MockResponse.contentMetadata['mimeType'] = 'pdf';
     service.playContent(MockResponse.contentMetadata);
     tick(50);
@@ -132,7 +133,7 @@ describe('GroupNotificationWrapperService', () => {
   }));
 
   it('should navigate to resource player if content mime type is ecml', fakeAsync(() => {
-   const router = TestBed.get(Router);
+   const router = TestBed.inject(Router);
     MockResponse.contentMetadata.mimeType = 'application/vnd.ekstep.ecml-archive';
     service.playContent(MockResponse.contentMetadata);
     tick(50);

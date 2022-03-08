@@ -18,7 +18,7 @@ export class UtilService {
   public hideHeaderTabs = new EventEmitter<boolean>();
   public searchKeyword = new EventEmitter<string>();
   private csvExporter: any;
-  private _isDesktopApp = false;
+  _isDesktopApp = false;
   public formData: any;
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();

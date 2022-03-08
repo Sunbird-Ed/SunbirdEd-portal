@@ -72,11 +72,11 @@ describe('ViewAllComponent', () => {
   });
 
   it('should call ngOninit when content is present', () => {
-    const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
-    const searchService = TestBed.get(SearchService);
-    const route = TestBed.get(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    const courseService = TestBed.inject(CoursesService);
+    const learnerService = TestBed.inject(LearnerService);
+    const searchService = TestBed.inject(SearchService);
+    const route = TestBed.inject(Router);
+    route['url' as any] = 'learn/view-all/LatestCourses/1?contentType: course';
     const queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
@@ -86,7 +86,7 @@ describe('ViewAllComponent', () => {
     const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
     const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
     const sortIntractEdata = { id: 'sort', type: 'click', pageid: 'course' };
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses as any});
     component.queryParams = {
       viewMore: true,
       content: JSON.stringify(Response.successData.result.content[0])
@@ -111,14 +111,14 @@ describe('ViewAllComponent', () => {
     expect(component.pageNumber).toEqual(1);
   });
   it('should call ngOninit when error', () => {
-    const courseService = TestBed.get(CoursesService);
-    const learnerService = TestBed.get(LearnerService);
-    const searchService = TestBed.get(SearchService);
-    const toasterService = TestBed.get(ToasterService);
-    const resourceService = TestBed.get(ResourceService);
+    const courseService = TestBed.inject(CoursesService);
+    const learnerService = TestBed.inject(LearnerService);
+    const searchService = TestBed.inject(SearchService);
+    const toasterService:any = TestBed.inject(ToasterService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = resourceBundle.messages;
-    const route = TestBed.get(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    const route = TestBed.inject(Router);
+    route['url' as any] = 'learn/view-all/LatestCourses/1?contentType: course';
     const queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     const filters = {contentType: ['Course'], objectType: ['Content'], status: ['Live']};
@@ -128,7 +128,7 @@ describe('ViewAllComponent', () => {
     const closeIntractEdata = { id: 'close', type: 'click', pageid: 'course'};
     const cardIntractEdata = {  id: 'content-card',  type: 'click', pageid: 'course' };
     const sortIntractEdata = { id: 'sort', type: 'click', pageid: 'course' };
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses as any});
      spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError({}));
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
@@ -153,27 +153,27 @@ describe('ViewAllComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0051);
   });
   it('should call playcontent with batchId', () => {
-    const playerService = TestBed.get(PlayerService);
-    const route = TestBed.get(Router);
-    route.url = '/learn/view-all/LatestCourses/1?contentType: course';
+    const playerService = TestBed.inject(PlayerService);
+    const route = TestBed.inject(Router);
+    route['url' as any] = '/learn/view-all/LatestCourses/1?contentType: course';
     const event = { data: { metaData: { batchId: '0122838911932661768' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
     component.playContent(event, {});
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should call playcontent without batchId', () => {
-    const route = TestBed.get(Router);
-    route.url = '/learn/view-all/LatestCourses/1?contentType: course';
-    const playerService = TestBed.get(PlayerService);
+    const route = TestBed.inject(Router);
+    route['url' as any] = '/learn/view-all/LatestCourses/1?contentType: course';
+    const playerService = TestBed.inject(PlayerService);
     const event = { data: { metaData: { contentType: 'story' } } };
     spyOn(playerService, 'playContent').and.callFake(() => observableOf(event.data.metaData));
     component.playContent(event, {});
     expect(playerService.playContent).toHaveBeenCalled();
   });
   it('should call navigateToPage method', () => {
-    const configService = TestBed.get(ConfigService);
-    const route = TestBed.get(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    const configService = TestBed.inject(ConfigService);
+    const route = TestBed.inject(Router);
+    route['url' as any] = 'learn/view-all/LatestCourses/1?contentType: course';
     component.queryParams = { contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({lastPublishedOn: 'desc'})};
     component.pageNumber = 1;
@@ -188,7 +188,7 @@ describe('ViewAllComponent', () => {
   });
 
   it('should call updateDownloadStatus when updateCardData is called' , () => {
-    const playerService = TestBed.get(PublicPlayerService);
+    const playerService = TestBed.inject(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus');
     component.searchList = Response.successData.result.content;
     component.updateCardData(Response.download_list);
@@ -202,7 +202,7 @@ describe('ViewAllComponent', () => {
   });
 
   it('should process the data if view-all is clicked from My-Courses section', () => {
-    const courseService = TestBed.get(CoursesService);
+    const courseService = TestBed.inject(CoursesService);
     component.sectionName = 'My Enrolled Collection';
     const sortedData = _.map(_.orderBy(_.get(Response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {
       const value = _.get(val, 'content');
@@ -213,7 +213,7 @@ describe('ViewAllComponent', () => {
       'contentData': Response.successData,
       'currentPageData': { contentType: 'Course', search: {filters: {primaryCategory: []}}}
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     spyOn<any>(component, 'formatSearchresults').and.stub();
     component.getContents(Response.paramsData);
     expect(component.showLoader).toBeFalsy();
@@ -225,14 +225,14 @@ describe('ViewAllComponent', () => {
   it('should process the data if view-all is clicked from any of the page section other than my courses', () => {
     component.pageLimit = 20;
     component.pageNumber = 1;
-    const pagenationService = TestBed.get(PaginationService);
-    const courseService = TestBed.get(CoursesService);
+    const pagenationService = TestBed.inject(PaginationService);
+    const courseService = TestBed.inject(CoursesService);
     component.sectionName = 'Latest courses';
     spyOn<any>(component, 'getContentList').and.returnValue(observableOf({
       'enrolledCourseData': Response.enrolledCourseData,
       'contentData': Response.successData
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     spyOn<any>(component, 'formatSearchresults').and.stub();
     spyOn(pagenationService, 'getPager').and.stub();
     component.getContents(Response.paramsData);
@@ -244,7 +244,7 @@ describe('ViewAllComponent', () => {
   });
 
   it('should show no result message if no content fount with the search query coming from other page section', () => {
-    const courseService = TestBed.get(CoursesService);
+    const courseService = TestBed.inject(CoursesService);
     component.sectionName = 'Latest courses';
     const noResultMessages = {
       'message': 'messages.stmsg.m0007',
@@ -254,14 +254,14 @@ describe('ViewAllComponent', () => {
       'enrolledCourseData': Response.enrolledCourseData,
       'contentData': { 'result': { 'content': [], 'count': 0 } }
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     component.getContents(Response.paramsData);
     expect(component.noResult).toBeTruthy();
     expect(component.noResultMessage).toEqual(noResultMessages);
   });
 
   it('should show no result message if no content fount with the search query coming from other my courses section', () => {
-    const courseService = TestBed.get(CoursesService);
+    const courseService = TestBed.inject(CoursesService);
     component.sectionName = 'My courses';
     const noResultMessages = {
       'message': 'messages.stmsg.m0007',
@@ -271,14 +271,14 @@ describe('ViewAllComponent', () => {
       'enrolledCourseData': { ' enrolledCourses': [] },
       'contentData': { 'result': { 'content': [], 'count': 0 } }
     }));
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData as any});
     component.getContents(Response.paramsData);
     expect(component.noResult).toBeTruthy();
     expect(component.noResultMessage).toEqual(noResultMessages);
   });
   it('should handle close button click', () => {
-    const route = TestBed.get(Router);
-    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    const route = TestBed.inject(Router);
+    route['url' as any] = 'learn/view-all/LatestCourses/1?contentType: course';
     component.queryParams = {
       viewMore: false
     };
@@ -290,7 +290,7 @@ describe('ViewAllComponent', () => {
     component.queryParams = {
       selectedTab: 'all'
     };
-    const navigationhelperService = TestBed.get(NavigationHelperService);
+    const navigationhelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationhelperService, 'getPreviousUrl').and.returnValue({url: 'sample'});
     spyOn(navigationhelperService, 'popHistory');
     spyOn(component, 'handleCloseButton');
@@ -301,7 +301,7 @@ describe('ViewAllComponent', () => {
     component.queryParams = {
       selectedTab: 'all'
     };
-    const navigationhelperService = TestBed.get(NavigationHelperService);
+    const navigationhelperService = TestBed.inject(NavigationHelperService);
     spyOn(navigationhelperService, 'getPreviousUrl').and.returnValue({url: '/explore/'});
     spyOn(navigationhelperService, 'goBack');
     component.handleCloseButton();
@@ -319,7 +319,7 @@ describe('ViewAllComponent', () => {
     });
 
     it('from the form config is history state is not available', done => {
-      const formService = TestBed.get(FormService);
+      const formService = TestBed.inject(FormService);
       spyOn(formService, 'getFormConfig').and.returnValue(of([{
         contentType: 'textbook'
       }]));

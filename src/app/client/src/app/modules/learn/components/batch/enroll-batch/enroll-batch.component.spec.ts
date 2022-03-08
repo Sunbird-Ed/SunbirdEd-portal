@@ -82,10 +82,10 @@ describe('EnrollBatchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EnrollBatchComponent);
     component = fixture.componentInstance;
-    courseBatchService = TestBed.get(CourseBatchService);
-    toasterService = TestBed.get(ToasterService);
-    coursesService = TestBed.get(CoursesService);
-    router = TestBed.get(Router);
+    courseBatchService = TestBed.inject(CourseBatchService);
+    toasterService = TestBed.inject(ToasterService);
+    coursesService = TestBed.inject(CoursesService);
+    router = TestBed.inject(Router);
   });
 
   it('should fetch details using the batch id', () => {
@@ -183,7 +183,7 @@ describe('EnrollBatchComponent', () => {
     spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const fetchEnrolledCourseDataSpy = spyOn(component, 'fetchEnrolledCourseData');
     const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
-    TestBed.get(ActivatedRoute).queryParams = of({ autoEnroll: true });
+    TestBed.inject(ActivatedRoute).queryParams = of({ autoEnroll: true });
     component.ngOnInit();
     fixture.detectChanges();
     component.enrollToCourse();
@@ -217,21 +217,21 @@ describe('EnrollBatchComponent', () => {
       identifier: '01278712683697766417',
       courseId: 'do_2127871108662804481320',
     };
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'audit');
     component.logAuditEvent();
     expect(telemetryService.audit).toHaveBeenCalled();
   });
 
   it('should call redirect', () => {
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     spyOn(router, 'navigate');
     component.redirect();
     expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should log telemetry events', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'log');
     component.telemetryLogEvents(true);
     expect(telemetryService.log).toHaveBeenCalled();

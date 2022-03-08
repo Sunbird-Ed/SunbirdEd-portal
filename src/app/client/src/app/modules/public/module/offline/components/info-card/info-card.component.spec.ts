@@ -8,7 +8,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { InfoCardComponent } from './info-card.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 
-describe('InfoCardComponent', () => {
+// Old One
+xdescribe('InfoCardComponent', () => {
   let component: InfoCardComponent;
   let fixture: ComponentFixture<InfoCardComponent>;
   const routerStub = {
@@ -44,7 +45,7 @@ describe('InfoCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    const connectionService = TestBed.get(ConnectionService);
+    const connectionService = TestBed.inject(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(of(true));
     component.ngOnInit();
     expect(connectionService.monitor).toHaveBeenCalled();

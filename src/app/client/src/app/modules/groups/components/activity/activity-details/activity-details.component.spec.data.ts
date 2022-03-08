@@ -12,7 +12,7 @@ export const courseHierarchy = {
       'contentTypesCount': '{\'CourseUnit\': 2,\'Resource\': 1,\'Course\': 1}',
       'objectType': 'Content',
       'leafNodesCount': 1,
-      'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\': 3,\'video/x-youtube\': 1}',
+      'mimeTypesCount': '{"application/vnd.ekstep.content-collection": 3,"video/x-youtube": 1}',
       'childNodes': [
         'do_21307962653118464012405',
         'do_21307962088008908812604',
@@ -132,7 +132,7 @@ export const nestedCourse = [
     'contentTypesCount': '{\'CourseUnit\': 2,\'Resource\': 1,\'Course\': 1}',
     'objectType': 'Content',
     'leafNodesCount': 1,
-    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\': 3,\'video/x-youtube\': 1}',
+    'mimeTypesCount': '{"application/vnd.ekstep.content-collection": 3,"video/x-youtube": 1}',
     'childNodes': [
       'do_21307962653118464012405',
       'do_21307962088008908812604',

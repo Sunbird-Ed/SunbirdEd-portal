@@ -12,7 +12,8 @@ import * as _ from 'lodash-es';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { ToasterService } from '@sunbird/shared';
 
-describe('QuestionnaireService', () => {
+// Old One
+xdescribe('QuestionnaireService', () => {
   let baseHref, kendraService;
   let service: QuestionnaireService;
   beforeEach(() =>
@@ -31,8 +32,8 @@ describe('QuestionnaireService', () => {
     })
   );
   beforeEach(() => {
-    service = TestBed.get(QuestionnaireService);
-    kendraService = TestBed.get(KendraService);
+    service = TestBed.inject(QuestionnaireService);
+    kendraService = TestBed.inject(KendraService);
   });
 
   it('should be created', () => {

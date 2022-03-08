@@ -268,8 +268,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                               (_.toLower(contentType) === _.toLower(pageContentType));
                     };
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
-                    filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
-                    this.enrolledCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     enrolledSection.contents = _.map(filteredCourses, content => {
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
@@ -594,8 +592,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']) {
                         currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id);
                     }
-                    const currentUserType = this.userType.toLowerCase();
-                    if (data && data[currentBoard] &&
+                    const currentUserType = this.userType?.toLowerCase();
+                    if (currentUserType && currentBoard && data && data[currentBoard] &&
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
                         this.targetedCategory = data[currentBoard][currentUserType];
