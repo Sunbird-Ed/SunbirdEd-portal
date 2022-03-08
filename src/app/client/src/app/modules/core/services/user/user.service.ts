@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
@@ -125,9 +126,9 @@ export class UserService {
     this.publicDataService = publicDataService;
     this.isDesktopApp = environment.isDesktopApp;
     try {
-      this._userid = document.getElementById('userId')?(<HTMLInputElement>document.getElementById('userId')).value:'';
+      this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
-      this._sessionId = document.getElementById('sessionId')?(<HTMLInputElement>document.getElementById('sessionId')).value:'';
+      this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
       DataService.sessionId = this._sessionId;
       this._authenticated = true;
     } catch (error) {
@@ -136,8 +137,8 @@ export class UserService {
       DataService.sessionId = this._anonymousSid;
     }
     try {
-      this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value:'';
-      this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
+      this._appId = document.getElementById('appId') ? (<HTMLInputElement>document.getElementById('appId')).value : '';
+      this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
     } catch (error) {
     }
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
@@ -369,7 +370,7 @@ export class UserService {
       roleOrgMap[roleObj.role] = _.map(roleObj.scope, 'organisationId');
       const roleObjScope = roleObj.scope && roleObj.scope[0];
       roleOrgDetails[roleObj.role] = {
-        orgId : _.get(roleObjScope, 'organisationId')
+        orgId: _.get(roleObjScope, 'organisationId')
       };
       _.forEach(orgList, (org, index) => {
         if (org.organisationId === _.get(roleObjScope, 'organisationId')) {
