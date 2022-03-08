@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ProfileService } from '@sunbird/profile';
 import { CourseProgressService } from './../course-progress/course-progress.service';
 import { IListReportsFilter, IReportsApiResponse, IDataSource } from './../../interfaces';
@@ -27,7 +28,7 @@ export class ReportService  {
     private courseProgressService: CourseProgressService, private searchService: SearchService,
     private frameworkService: FrameworkService, private profileService: ProfileService ) {
     try {
-      this._superAdminSlug = document.getElementById('superAdminSlug')?(<HTMLInputElement>document.getElementById('superAdminSlug')).value:'';
+      this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
       this._superAdminSlug = 'sunbird';
     }
