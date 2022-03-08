@@ -51,7 +51,7 @@ describe('Session Expiry Interceptor', () => {
         mockHttp.flush({ responseCode: 'SESSION_EXPIRED' }, { status: 401, statusText: 'Unauthorized' });
     });
 
-    it('should handle session expiry when status code is 401 and user is logged in ', () => {
+    xit('should handle session expiry when status code is 401 and user is logged in ', () => {
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
         spyOn(userService, 'endSession');
         spyOn(sessionExpiryInterceptor, 'handleSessionExpiry').and.callThrough();
