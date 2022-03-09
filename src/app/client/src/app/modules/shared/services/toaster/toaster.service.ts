@@ -16,7 +16,7 @@ export class ToasterService {
 	 * Constructor to create injected service(s) object
 	 */
   constructor() {
-    this.iziToast = iziToast; // global object
+    this.iziToast = {}; // global object
     this.iziToast.settings({
       position: 'topCenter',
       titleSize: '18'
