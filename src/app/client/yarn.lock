@@ -1825,10 +1825,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.38.tgz#86ebd5d1336b7f8625b24035e244f979ad2375b0"
   integrity sha512-uO6Xdo9JT80bFgtu7SMJzuH5Qj2GgP2PTepTK6vbZ+eUvlrP2abwSgeSNWYRNyXUTMBzkouvuy5OW862/ZoNng==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.7.20":
-  version "4.7.20"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.7.20.tgz#f0671c16d6ebf5c26937c1273d293c64746b80e1"
-  integrity sha512-0vGjTLI3fcEt8lOvZMD1RVxefEaVWs/d8R+NtIBzRbofwMMtcm2GaLkE8fhTtN8u3db605t/4ymTjRfbpvLRLw==
+"@project-sunbird/sunbird-collection-editor-v9@4.8.9":
+  version "4.8.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.8.9.tgz#846010f175e808f0a169e40788ae8e9104f4589b"
+  integrity sha512-UkISGr1RVw26oD85xnPf7vlYlxrqRT6qoL5K7ueeyO6yaUnk2pfIn4aPMLiMuuZArdqU34PZpprZlvNfuOWKqw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1874,12 +1874,19 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.8.2":
-  version "4.8.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.8.2.tgz#9ddd331032ae2da887f4855ed008afb98e1e1bda"
-  integrity sha512-zIq6vf8GTiHG9YX/NGV/Gjeuz0jUvMAse46NR3UMdB8vaydgi24m5oUv/RxbFnvGITGI/x2OnvRlMnqc0AKfqg==
+"@project-sunbird/sunbird-quml-player-v9@4.8.3":
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.8.3.tgz#911861464aa2f0d27a8a19cdb699cb094e274dbe"
+  integrity sha512-zfa0L4VGo/KLd1x2WoBKloQ2bN4CE6Sg7tnGuRThUBFmF2lMQjxgyZoxuWJCik5zGSmCCL8mW+UVhEbo0cMdtw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.8.0"
+
+"@project-sunbird/sunbird-resource-library@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.14.tgz#a4fc597d5e78787348cdebdd55bc6e8c62d05f94"
+  integrity sha512-VH6xOFENjePIPqh1LdQ2ZG/iKAPRlDIWMO2e4FA4sa72G43MMGgdPfY/BXwt6R52iLSIuEFZ8YRGjZzpwDz/4A==
+  dependencies:
+    tslib "^1.10.0"
 
 "@project-sunbird/sunbird-video-player-v9@^4.6.1":
   version "4.7.0"
