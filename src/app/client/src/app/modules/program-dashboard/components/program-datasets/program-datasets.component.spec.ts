@@ -14,7 +14,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('DatasetsComponent', () => {
+fdescribe('DatasetsComponent', () => {
   let component: DatasetsComponent;
   let fixture: ComponentFixture<DatasetsComponent>;
 
@@ -197,9 +197,11 @@ describe('DatasetsComponent', () => {
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
     component.loadReports();
     tick(1000);
+    spyOn(component,'loadReports').and.callThrough();
     component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
     component.solutions = mockData.solutions.result;
     component.selectSolution('5f34ec17585244939f89f90d');
+    expect(component.loadReports).toHaveBeenCalled();
     expect(spy).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([
       {
@@ -237,12 +239,17 @@ describe('DatasetsComponent', () => {
     component.onDemandReportData = [];
     const onDemandReportService = TestBed.inject(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
-    component.loadReports();
+    // component.loadReports();
     tick(1000);
+    spyOn(component,'loadReports').and.callThrough();
+   
     component.reportForm.get('solution').setValue(['5fbb75537380505718640436']);
     component.solutions = mockData.solutions.result;
     component.selectSolution('5fbb75537380505718640436');
+
+    expect(component.loadReports).toHaveBeenCalled();
     expect(spy).toHaveBeenCalled();
+
     expect(component.reportTypes).toEqual([
       {
         'name': 'Task Detail Report',
@@ -273,24 +280,25 @@ describe('DatasetsComponent', () => {
     component.onDemandReportData = [];
     const onDemandReportService = TestBed.inject(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
-    component.loadReports();
 
-    tick(1000);
-    component.solutions = mockData.solutions.result;
+    component.loadReports();
+    component.solutions = mockData.solutions.result;  
     component.selectSolution('5fbb75537380505718640438');
+    tick(1000);
     expect(spy).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([]);
-
 
   }));
 
   	
   it('should call getReportTypes', fakeAsync(() => {
+    spyOn(component,'getReportTypes').and.callThrough();
     component.programs = mockData.programs.result;
     component.formData = mockData.FormData;
     component.reportTypes = [];
     component.getReportTypes("5f34ec17585244939f89f90c","observation");
     tick(1000);
+    expect(component.getReportTypes).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([
       {
         'name': 'Question Report',
@@ -305,6 +313,19 @@ describe('DatasetsComponent', () => {
         'roles': ['PM']
       }
     ]);
+  }));
+
+  it('should call getReportTypes for invalid solution', fakeAsync(() => {
+
+    spyOn(component,'getReportTypes').and.callThrough();
+    component.programs = mockData.programs.result;
+    component.formData = mockData.FormData;
+    component.reportTypes = [];
+    component.getReportTypes("5f34ec17585244939f89f90k","observations");
+    tick(1000);
+    expect(component.getReportTypes).toHaveBeenCalled();
+    expect(component.reportTypes).toEqual([]);
+
   }));
 
 
