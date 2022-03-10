@@ -1,12 +1,16 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'normal'}" (dismiss)="modal.deny();closeModal();" #modal>
+<app-modal-wrapper [config]="{disableClose: false, size: 'normal'}" (dismiss)="modal.deny();closeModal();" #modal>
   <ng-template sbModalContent>
     <div class="sb-modal">
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible normal">
           <!--Header-->
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn mt-4 mr-4 ml-2 mb-2">
+            <span>&times;</span>
+          </button>
           <div class="sb-modal-header">
             {{resourceService.frmelmnts?.lbl?.exploreContentOn | interpolate:'{instance}': instance}}
           </div>
+          
           <!--/Header-->
 
           <!--Content-->
