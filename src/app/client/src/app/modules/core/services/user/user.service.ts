@@ -137,8 +137,8 @@ export class UserService {
       DataService.sessionId = this._anonymousSid;
     }
     try {
-      this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value: undefined;
-      this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
+      this._appId = document.getElementById('appId') ? (<HTMLInputElement>document.getElementById('appId')).value : '';
+      this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
     } catch (error) {
     }
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
@@ -370,7 +370,7 @@ export class UserService {
       roleOrgMap[roleObj.role] = _.map(roleObj.scope, 'organisationId');
       const roleObjScope = roleObj.scope && roleObj.scope[0];
       roleOrgDetails[roleObj.role] = {
-        orgId : _.get(roleObjScope, 'organisationId')
+        orgId: _.get(roleObjScope, 'organisationId')
       };
       _.forEach(orgList, (org, index) => {
         if (org.organisationId === _.get(roleObjScope, 'organisationId')) {

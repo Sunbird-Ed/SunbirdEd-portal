@@ -263,7 +263,6 @@
   </div>
   <div class="sb-modal-content content">
     <div *ngFor="let question of modalFilterData">
-      <!-- <sui-checkbox  (checkChange)="onChange(question._id, $event, i)"><span class="questions">{{question.name}}</span></sui-checkbox> -->
       <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
         <input value="{{question._id}}" type="checkbox" id="{{question._id}}" (change)="onQuestionClick(question._id)"
           [checked]="filteredData?.includes(question?._id)">
