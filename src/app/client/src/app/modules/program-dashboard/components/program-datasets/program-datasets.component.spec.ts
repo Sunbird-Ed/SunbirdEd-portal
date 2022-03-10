@@ -188,6 +188,7 @@ describe('DatasetsComponent', () => {
 
     const spy = spyOn(component, 'selectSolution').and.callThrough();
     tick(1000);
+    component.programs = mockData.programs.result;
     component.programSelected = '5f34ec17585244939f89f90c';
     component.formData = mockData.FormData;
 
@@ -204,12 +205,14 @@ describe('DatasetsComponent', () => {
       {
         'name': 'Question Report',
         'encrypt': true,
-        'datasetId': 'ml-observation-question-report'
+        'datasetId': 'ml-observation-question-report',
+        'roles': ['PM']
       },
       {
         'name': 'Status Report',
         'encrypt': false,
-        'datasetId': 'ml-observation-status-report'
+        'datasetId': 'ml-observation-status-report',
+        'roles': ['PM']
       }
     ]);
     flush();
@@ -237,5 +240,28 @@ describe('DatasetsComponent', () => {
 
 
   }));
+
+  	
+  it('should call getReportTypes', fakeAsync(() => {
+    component.programs = mockData.programs.result;
+    component.formData = mockData.FormData;
+    component.getReportTypes("5f34ec17585244939f89f90c","observation");
+    tick(1000);
+    expect(component.reportTypes).toEqual([
+      {
+        'name': 'Question Report',
+        'encrypt': true,
+        'datasetId': 'ml-observation-question-report',
+        'roles': ['PM']
+      },
+      {
+        'name': 'Status Report',
+        'encrypt': false,
+        'datasetId': 'ml-observation-status-report',
+        'roles': ['PM']
+      }
+    ]);
+  }));
+
 
 });
