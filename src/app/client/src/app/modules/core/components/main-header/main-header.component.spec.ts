@@ -443,7 +443,7 @@ it('should call the navigateToHome method with and the formService with no goToB
   const navigateByUrlSpy = spyOn<any>(component, 'navigateByUrl');
   spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData[1]));
   component.navigateToHome();
-  expect(navigateByUrlSpy).toHaveBeenCalledWith('/resources');
+  expect(navigateByUrlSpy).toHaveBeenCalledWith('/explore');
   expect(formService.getFormConfig).toHaveBeenCalled();
   done();
 });

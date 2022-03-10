@@ -63,8 +63,8 @@ export class ContentDownloadManager {
         const childNodeDetailFromDb = await this.getContentChildNodeDetailsFromDb(apiContentDetail.childNodes);
         const contentsToDownload = this.getAddedAndUpdatedContents(childNodeDetailFromApi, childNodeDetailFromDb);
         for (const content of contentsToDownload) {
-          if(["application/vnd.sunbird.questionset", "application/vnd.sunbird.question"].includes(content.mimeType)) {
-            content['size'] = 0;
+          if(!content.size && ["application/vnd.sunbird.questionset", "application/vnd.sunbird.question"].includes(content.mimeType)) {
+            content['size'] = 1;
           }
           if (content.size && content.downloadUrl) {
             contentToBeDownloadedCount += 1;
@@ -156,8 +156,10 @@ export class ContentDownloadManager {
         }
         for (const content of childNodeDetail) {
 
-          if(["application/vnd.sunbird.questionset", "application/vnd.sunbird.question"].includes(content.mimeType)) {
-            content['size'] = 0;
+          // TODO: Questionset and question should have size property 
+          // as of now it does not have size property so adding it manualy 
+          if(!content.size && ["application/vnd.sunbird.questionset", "application/vnd.sunbird.question"].includes(content.mimeType)) {
+            content['size'] = 1; 
           }
 
           if (content.size && content.downloadUrl) {
