@@ -36,7 +36,7 @@ export let mockData = {
         result: [
             {
                 '_id': '5f34ec17585244939f89f90d',
-                'isRubricDriven': false,
+                'isRubricDriven': true,
                 'externalId': 'cbd074fa-dd11-11ea-a3bf-000d3af02677-OBSERVATION-TEMPLATE-1597303831612',
                 'name': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',
                 'description': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',

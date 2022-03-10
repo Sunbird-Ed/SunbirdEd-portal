@@ -203,17 +203,60 @@ describe('DatasetsComponent', () => {
     expect(spy).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([
       {
-        'name': 'Question Report',
+        'name': 'Task Detail Report',
         'encrypt': true,
-        'datasetId': 'ml-observation-question-report',
+        'datasetId': 'ml-observation_with_rubric-task-detail-report',
         'roles': ['PM']
-      },
-      {
+    },
+    {
         'name': 'Status Report',
         'encrypt': false,
-        'datasetId': 'ml-observation-status-report',
+        'datasetId': 'ml-observation_with_rubric-status-report',
         'roles': ['PM']
-      }
+    },
+    {
+        'name': 'Domain Criteria Report',
+        'encrypt': false,
+        'datasetId': 'ml-observation_with_rubric-domain-criteria-report',
+        'roles': ['PM']
+    }
+    ]);
+    flush();
+
+
+  }));
+
+  it('should call selectSolution with improvement', fakeAsync(() => {
+
+    const spy = spyOn(component, 'selectSolution').and.callThrough();
+    tick(1000);
+    component.programs = mockData.programs.result;
+    component.programSelected = '5f34ec17585244939f89f90c';
+    component.formData = mockData.FormData;
+
+    component.onDemandReportData = [];
+    const onDemandReportService = TestBed.inject(OnDemandReportService);
+    spyOn(onDemandReportService, 'getReportList').and.returnValue(observableOf({ result: mockData.reportListResponse.result }));
+    component.loadReports();
+    tick(1000);
+    component.reportForm.get('solution').setValue(['5fbb75537380505718640436']);
+    component.solutions = mockData.solutions.result;
+    component.selectSolution('5fbb75537380505718640436');
+    expect(spy).toHaveBeenCalled();
+    expect(component.reportTypes).toEqual([
+      {
+        'name': 'Task Detail Report',
+        'encrypt': true,
+        'datasetId': 'ml-improvementproject-task-detail-report',
+        'roles': ['PM']
+    },
+    {
+        'name': 'Status Report',
+        'encrypt': false,
+        'datasetId': 'ml-improvementproject-status-report',
+        'roles': ['PM']
+
+    }
     ]);
     flush();
 
@@ -245,6 +288,7 @@ describe('DatasetsComponent', () => {
   it('should call getReportTypes', fakeAsync(() => {
     component.programs = mockData.programs.result;
     component.formData = mockData.FormData;
+    component.reportTypes = [];
     component.getReportTypes("5f34ec17585244939f89f90c","observation");
     tick(1000);
     expect(component.reportTypes).toEqual([
