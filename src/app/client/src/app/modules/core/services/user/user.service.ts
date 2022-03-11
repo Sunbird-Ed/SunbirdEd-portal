@@ -137,8 +137,8 @@ export class UserService {
       DataService.sessionId = this._anonymousSid;
     }
     try {
-      this._appId = document.getElementById('appId') ? (<HTMLInputElement>document.getElementById('appId')).value : '';
-      this._cloudStorageUrls = document.getElementById('cloudStorageUrls') ? (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',') : [];
+      this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value: undefined;
+      this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
     } catch (error) {
     }
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
