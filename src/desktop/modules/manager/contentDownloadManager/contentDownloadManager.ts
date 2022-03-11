@@ -297,19 +297,32 @@ export class ContentDownloadManager {
         return contents;
       });
   }
-  private getQuestionsFromQuestionSetApi(childNodes) {
+  private async getQuestionsFromQuestionSetApi(childNodes) {
     if (!childNodes || !childNodes.length) {
       return Promise.resolve([]);
     }
-    const requestBody = {
-      request: {
-        search: {
-          identifier: childNodes,
+    // question/v1/list api is only allowed 20 identifier per call
+    let questionsList = [];
+    let childNodeChunks = childNodes
+    if(childNodes.length > 20) {
+      childNodeChunks = _.chunk(childNodes, 20);
+    }
+    
+    await Promise.all(childNodeChunks.map(async (nodes) => {
+      const requestBody = {
+        request: {
+          search: {
+            identifier: nodes,
+          }
+        },
+      };
+      let result = await HTTPService.post(this.QuestionListUrl, requestBody, DefaultRequestOptions).toPromise()
+        .then((response) => _.get(response, "data.result.questions") || []);
+        if(result.length) {
+          questionsList = [...questionsList, ...result]
         }
-      },
-    };
-    return HTTPService.post(this.QuestionListUrl, requestBody, DefaultRequestOptions).toPromise()
-      .then((response) => _.get(response, "data.result.questions") || []);
+     }));
+    return questionsList;
   }
   private getContentChildNodeDetailsFromDb(childNodes) {
     if (!childNodes || !childNodes.length) {
