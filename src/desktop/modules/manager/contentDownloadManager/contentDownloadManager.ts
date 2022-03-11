@@ -136,8 +136,7 @@ export class ContentDownloadManager {
       let contentResponse = await HTTPService.get(`${this.ContentReadUrl}/${contentId}`, {}).toPromise();
       let contentDetail = contentResponse.data.result.content;
       if(contentDetail.mimeType === 'application/vnd.sunbird.questionset') {
-        contentResponse = await HTTPService.get(`${this.QuestionSetReadUrl}/${contentId}`, {}).toPromise();
-        contentDetail = contentResponse.data.result.questionSet;
+        contentDetail = await this.getQuestionsetHirarchy(contentId);
       }
       let contentSize = contentDetail.size;
       let contentToBeDownloadedCount = 1;
@@ -212,33 +211,6 @@ export class ContentDownloadManager {
       res.status(500);
       return res.send(Response.error("api.content.download", 500));
     }
-  }
-
-  public async getContentDetailsFromChildNode(contentDetail) {
-    let childNodeDetail = [];
-    if(contentDetail.mimeType === "application/vnd.ekstep.content-collection") {
-      childNodeDetail = await this.getContentChildNodeDetailsFromApi(contentDetail.childNodes);
-      let questionSetchildNodes = [];
-      childNodeDetail.map((content) => {
-        if(content?.mimeType === "application/vnd.sunbird.questionset") {
-          questionSetchildNodes = [...questionSetchildNodes, ...content.childNodes];
-        }
-      });
-      const childQuestions = await this.getQuestionsFromQuestionSetApi(questionSetchildNodes);
-      if(childQuestions.length > 0) {
-        childNodeDetail = [...childNodeDetail, ...childQuestions]
-      }
-    } else if (contentDetail.mimeType === "application/vnd.sunbird.questionset") {
-      let qchildNodes = contentDetail.childNodes;
-      _.forEach(contentDetail.children, function(questionset, key) {
-        if(qchildNodes.includes(questionset.identifier)) {
-          qchildNodes = _.without(qchildNodes, questionset.identifier)
-        }
-      });
-      childNodeDetail = await this.getQuestionsFromQuestionSetApi(qchildNodes);
-    }
-  
-    return childNodeDetail;
   }
 
   public async pause(req, res) {
@@ -385,5 +357,46 @@ export class ContentDownloadManager {
       const found = _.find(liveContents, { identifier: data._id });
       return found ? false : true;
     });
+  }
+
+  public async getContentDetailsFromChildNode(contentDetail) {
+    let childNodeDetail = [];
+    if(contentDetail.mimeType === "application/vnd.ekstep.content-collection") {
+      childNodeDetail = await this.getContentChildNodeDetailsFromApi(contentDetail.childNodes);
+      let questionSetchildNodes = [];
+      await Promise.all(childNodeDetail.map(async (content) => {
+        if(content?.mimeType === "application/vnd.sunbird.questionset") {
+          let questionsetHirarchy = await this.getQuestionsetHirarchy(content.identifier);
+          const questionNodes = await this.getQuestionsNodes(questionsetHirarchy);
+          questionSetchildNodes = [...questionSetchildNodes, ...questionNodes];
+        }
+      }));
+
+      const childQuestions = await this.getQuestionsFromQuestionSetApi(questionSetchildNodes);
+      if(childQuestions.length > 0) {
+        childNodeDetail = [...childNodeDetail, ...childQuestions]
+      }
+    } else if (contentDetail.mimeType === "application/vnd.sunbird.questionset") {
+      const questionNodes = await this.getQuestionsNodes(contentDetail);
+      childNodeDetail = await this.getQuestionsFromQuestionSetApi(questionNodes);
+    }
+  
+    return childNodeDetail;
+  }
+
+
+  private async getQuestionsNodes(contentDetails) {
+    let qchildNodes = contentDetails.childNodes;
+    _.forEach(contentDetails.children, function(questionset, key) {
+      if(qchildNodes.includes(questionset.identifier)) {
+        qchildNodes = _.without(qchildNodes, questionset.identifier)
+      }
+    });
+    return qchildNodes;
+  }
+
+  private async getQuestionsetHirarchy(contentId) {
+    const quesionset = await HTTPService.get(`${this.QuestionSetReadUrl}/${contentId}`, {}).toPromise();
+    return quesionset.data.result.questionSet;
   }
 }
