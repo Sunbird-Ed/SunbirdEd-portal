@@ -136,7 +136,7 @@ export class ContentDownloadManager {
       let contentResponse = await HTTPService.get(`${this.ContentReadUrl}/${contentId}`, {}).toPromise();
       let contentDetail = contentResponse.data.result.content;
       if(contentDetail.mimeType === 'application/vnd.sunbird.questionset') {
-        contentDetail = await this.getQuestionsetHirarchy(contentId);
+        contentDetail = await this.getQuestionsetHierarchy(contentId);
       }
       let contentSize = contentDetail.size;
       let contentToBeDownloadedCount = 1;
@@ -366,8 +366,8 @@ export class ContentDownloadManager {
       let questionSetchildNodes = [];
       await Promise.all(childNodeDetail.map(async (content) => {
         if(content?.mimeType === "application/vnd.sunbird.questionset") {
-          let questionsetHirarchy = await this.getQuestionsetHirarchy(content.identifier);
-          const questionNodes = await this.getQuestionsNodes(questionsetHirarchy);
+          let questionsetHierarchy = await this.getQuestionsetHierarchy(content.identifier);
+          const questionNodes = await this.getQuestionsNodes(questionsetHierarchy);
           questionSetchildNodes = [...questionSetchildNodes, ...questionNodes];
         }
       }));
@@ -395,7 +395,7 @@ export class ContentDownloadManager {
     return qchildNodes;
   }
 
-  private async getQuestionsetHirarchy(contentId) {
+  private async getQuestionsetHierarchy(contentId) {
     const quesionset = await HTTPService.get(`${this.QuestionSetReadUrl}/${contentId}`, {}).toPromise();
     return quesionset.data.result.questionSet;
   }
