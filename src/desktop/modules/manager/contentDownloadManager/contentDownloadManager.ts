@@ -19,6 +19,7 @@ export class ContentDownloadManager {
   private systemSDK;
   private ContentReadUrl = `${process.env.APP_BASE_URL}/api/content/v1/read/`;
   private ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
+  private QuestionSetReadUrl = `${process.env.APP_BASE_URL}/learner/questionset/v1/hierarchy/`;
   private QuestionListUrl = `${process.env.APP_BASE_URL}/api/question/v1/list`;
   @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   public async initialize() {
@@ -132,8 +133,12 @@ export class ContentDownloadManager {
     const contentId = req.params.id;
     const reqId = req.headers["X-msgid"];
     try {
-      const contentResponse = await HTTPService.get(`${this.ContentReadUrl}/${contentId}`, {}).toPromise();
-      const contentDetail = contentResponse.data.result.content;
+      let contentResponse = await HTTPService.get(`${this.ContentReadUrl}/${contentId}`, {}).toPromise();
+      let contentDetail = contentResponse.data.result.content;
+      if(contentDetail.mimeType === 'application/vnd.sunbird.questionset') {
+        contentResponse = await HTTPService.get(`${this.QuestionSetReadUrl}/${contentId}`, {}).toPromise();
+        contentDetail = contentResponse.data.result.questionSet;
+      }
       let contentSize = contentDetail.size;
       let contentToBeDownloadedCount = 1;
       const contentDownloadList = {
@@ -147,13 +152,10 @@ export class ContentDownloadManager {
       };
       logger.debug(`${reqId} Content mimeType: ${contentDetail.mimeType}`);
 
-      if (contentDetail.mimeType === "application/vnd.ekstep.content-collection") {
+      if (contentDetail.mimeType === "application/vnd.ekstep.content-collection" || contentDetail.mimeType === "application/vnd.sunbird.questionset") {
         logger.debug(`${reqId} Content childNodes: ${contentDetail.childNodes}`);
-        let childNodeDetail = await this.getContentChildNodeDetailsFromApi(contentDetail.childNodes);
-        const childQuestions = await this.getQuestionsFromQuestionSetApi(childNodeDetail);
-        if(childQuestions.length > 0) {
-          childNodeDetail = [...childNodeDetail, ...childQuestions]
-        }
+        const childNodeDetail = await this.getContentDetailsFromChildNode(contentDetail);
+        
         for (const content of childNodeDetail) {
 
           // TODO: Questionset and question should have size property 
@@ -211,6 +213,34 @@ export class ContentDownloadManager {
       return res.send(Response.error("api.content.download", 500));
     }
   }
+
+  public async getContentDetailsFromChildNode(contentDetail) {
+    let childNodeDetail = [];
+    if(contentDetail.mimeType === "application/vnd.ekstep.content-collection") {
+      childNodeDetail = await this.getContentChildNodeDetailsFromApi(contentDetail.childNodes);
+      let questionSetchildNodes = [];
+      childNodeDetail.map((content) => {
+        if(content?.mimeType === "application/vnd.sunbird.questionset") {
+          questionSetchildNodes = [...questionSetchildNodes, ...content.childNodes];
+        }
+      });
+      const childQuestions = await this.getQuestionsFromQuestionSetApi(questionSetchildNodes);
+      if(childQuestions.length > 0) {
+        childNodeDetail = [...childNodeDetail, ...childQuestions]
+      }
+    } else if (contentDetail.mimeType === "application/vnd.sunbird.questionset") {
+      let qchildNodes = contentDetail.childNodes;
+      _.forEach(contentDetail.children, function(questionset, key) {
+        if(qchildNodes.includes(questionset.identifier)) {
+          qchildNodes = _.without(qchildNodes, questionset.identifier)
+        }
+      });
+      childNodeDetail = await this.getQuestionsFromQuestionSetApi(qchildNodes);
+    }
+  
+    return childNodeDetail;
+  }
+
   public async pause(req, res) {
     const downloadId = req.params.downloadId;
     const reqId = req.headers["X-msgid"];
@@ -295,14 +325,7 @@ export class ContentDownloadManager {
         return contents;
       });
   }
-  private getQuestionsFromQuestionSetApi(contentList) {
-    let childNodes = [];
-    contentList.map((content) => {
-      if(content?.mimeType === "application/vnd.sunbird.questionset") {
-        childNodes = [...childNodes, ...content.childNodes];
-      }
-    });
-
+  private getQuestionsFromQuestionSetApi(childNodes) {
     if (!childNodes || !childNodes.length) {
       return Promise.resolve([]);
     }
