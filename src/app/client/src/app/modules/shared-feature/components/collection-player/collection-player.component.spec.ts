@@ -257,7 +257,7 @@ describe('CollectionPlayerComponent', () => {
     spyOn(navigationHelperService, 'navigateToPreviousUrl');
     component.closeCollectionPlayer();
     const router = TestBed.inject(Router);
-    expect(router.navigate).toHaveBeenCalledWith(['/resources'], { queryParams: { selectedTab: 'textbook' } });
+    expect(router.navigate).toHaveBeenCalledWith(['/explore'], { queryParams: { selectedTab: 'textbook' } });
   });
   //TODO
   xit ('should return only required properties', () => {
