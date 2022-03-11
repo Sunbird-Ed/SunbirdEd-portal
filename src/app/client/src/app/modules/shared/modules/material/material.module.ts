@@ -16,6 +16,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -27,6 +28,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     exports: [MatTooltipModule, MatTabsModule, MatDialogModule,
         MatAutocompleteModule, MatFormFieldModule, MatInputModule,
         MatChipsModule, MatIconModule, MatSelectModule, MatListModule,
-        MatButtonModule, MatCheckboxModule, MatExpansionModule, MatSlideToggleModule, MatDatepickerModule, MatNativeDateModule]
+        MatButtonModule, MatCheckboxModule, MatExpansionModule, MatSlideToggleModule, MatDatepickerModule, MatNativeDateModule, MatProgressBarModule]
 })
 export class MaterialModule { }

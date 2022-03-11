@@ -64,8 +64,8 @@
   <!--/Body-->
 
   <!--Progress Bar-->
-  <div class="sb-card-progressbar" *ngIf="data.maxCount && data.progress > 0">
-    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
+  <div class="sb-card-progressbar" *ngIf="data.progress > 0">
+    <mat-progress-bar mode="determinate" [value]="data.progress" class="ui progress"></mat-progress-bar>
   </div>
   <!--/Progress Bar-->
 
