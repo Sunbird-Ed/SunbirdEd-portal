@@ -303,9 +303,11 @@ export class ContentDownloadManager {
     }
     // question/v1/list api is only allowed 20 identifier per call
     let questionsList = [];
-    let childNodeChunks = childNodes
+    let childNodeChunks = [];
     if(childNodes.length > 20) {
       childNodeChunks = _.chunk(childNodes, 20);
+    } else {
+      childNodeChunks.push(childNodes);
     }
     
     await Promise.all(childNodeChunks.map(async (nodes) => {
@@ -401,7 +403,7 @@ export class ContentDownloadManager {
   private async getQuestionsNodes(contentDetails) {
     let qchildNodes = contentDetails.childNodes;
     _.forEach(contentDetails.children, function(questionset, key) {
-      if(qchildNodes.includes(questionset.identifier)) {
+      if(qchildNodes.includes(questionset.identifier) && questionset.mimeType === 'application/vnd.sunbird.questionset') {
         qchildNodes = _.without(qchildNodes, questionset.identifier)
       }
     });
