@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UciComponent } from './uci.component';
-import { ConfigService, IUserProfile } from '@sunbird/shared';
-import { HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { APP_BASE_HREF } from '@angular/common';
-import { UserService } from '../../../core/services/user/user.service';
-import { configureTestSuite } from '@sunbird/test-util';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CacheService } from 'ng2-cache-service';
+import {UciComponent} from './uci.component';
+import {ConfigService, ResourceService} from '@sunbird/shared';
+import {HttpClient} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {APP_BASE_HREF} from '@angular/common';
+import {UserService} from '../../../core/services/user/user.service';
+import {configureTestSuite} from '@sunbird/test-util';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {CacheService} from 'ng2-cache-service';
 
 describe('UciComponent', () => {
   let baseHref;
@@ -44,10 +44,13 @@ describe('UciComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UciComponent ],
+      declarations: [UciComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        HttpClient, UserService, ConfigService, { provide: APP_BASE_HREF, useValue: baseHref }, CacheService
+        HttpClient, UserService, ConfigService, {
+          provide: ResourceService,
+          useValue: {instance: 'SUNBIRD'}
+        }, {provide: APP_BASE_HREF, useValue: baseHref}, CacheService
       ],
       imports: [HttpClientTestingModule]
     })
@@ -65,11 +68,11 @@ describe('UciComponent', () => {
   });
 
   it('should get user profile details', () => {
-    const userService:any = TestBed.inject(UserService);
+    const userService: any = TestBed.inject(UserService);
     const configService = TestBed.inject(ConfigService);
     expect(component.blobUrl).toBeDefined();
     component.ngOnInit();
-    userService._userData$.next({ err: null, userProfile: userMockData.userProfile as any });
+    userService._userData$.next({err: null, userProfile: userMockData.userProfile as any});
     expect(component.userProfile).toEqual(userMockData.userProfile);
     expect(component.url).toEqual(configService.urlConFig.URLS.UCI);
   });

@@ -236,6 +236,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       query: this.queryParams.key,
+      sort_by: {lastPublishedOn: 'desc'},
       mode: 'soft',
       softConstraints: softConstraints,
       facets: this.globalSearchFacets,
