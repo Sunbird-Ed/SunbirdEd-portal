@@ -73,11 +73,10 @@
           <!-- File details -->
 
           <!-- Progress bar -->
-          <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'download'"
-            [value]="getContentPercentage(data.downloadedSize, data.totalSize)" [maximum]="100" class="my-0 mr-0">
-          </sui-progress>
-          <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'import'"
-            [value]="data.downloadedSize" [maximum]="100" class="my-0 mr-0"></sui-progress>
+          <mat-progress-bar *ngIf="data.status === 'inProgress' && data.addedUsing === 'download'" mode="determinate" [value]="getContentPercentage(data.downloadedSize, data.totalSize)" class="my-0 mr-0"></mat-progress-bar>
+          
+          <mat-progress-bar *ngIf="data.status === 'inProgress' && data.addedUsing === 'import'" mode="determinate" [value]="data.downloadedSize" class="my-0 mr-0"></mat-progress-bar>
+
           <!-- Progress bar -->
 
           <!-- Content status -->
