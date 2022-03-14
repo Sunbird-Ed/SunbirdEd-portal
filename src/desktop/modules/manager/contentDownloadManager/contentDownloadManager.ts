@@ -323,7 +323,7 @@ export class ContentDownloadManager {
         if(result.length) {
           questionsList = [...questionsList, ...result]
         }
-     }));
+     })); 
     return questionsList;
   }
   private getContentChildNodeDetailsFromDb(childNodes) {
