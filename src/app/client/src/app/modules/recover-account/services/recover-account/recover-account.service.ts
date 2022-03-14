@@ -28,7 +28,6 @@ export class RecoverAccountService {
   fuzzyUserSearch(data: any, captchaResponse?: string) {
     const options = {
       url: this.configService.urlConFig.URLS.ACCOUNT_RECOVERY.FUZZY_SEARCH + '?captchaResponse=' + captchaResponse,
-      // url: 'user/v1/search',
       data: {
         request: {
           filters: {
