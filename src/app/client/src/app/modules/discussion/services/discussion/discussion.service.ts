@@ -8,7 +8,7 @@ import { FormService } from '@sunbird/core';
 })
 export class DiscussionService {
 
-  private discussionCsService: any;
+  discussionCsService: any;
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,

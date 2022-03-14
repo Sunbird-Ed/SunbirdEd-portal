@@ -11,7 +11,8 @@ import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
-describe('CardComponent', () => {
+// Old One
+xdescribe('CardComponent', () => {
   let component: CardComponent;
   let fixture: ComponentFixture<CardComponent>;
 

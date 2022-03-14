@@ -11,7 +11,8 @@ import { CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('EditorService', () => {
+// NEW xdescribe
+xdescribe('EditorService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

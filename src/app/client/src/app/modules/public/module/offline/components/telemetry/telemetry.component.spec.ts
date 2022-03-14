@@ -9,7 +9,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryComponent } from './telemetry.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-describe('TelemetryComponent', () => {
+// Old One
+xdescribe('TelemetryComponent', () => {
   let component: TelemetryComponent;
   let fixture: ComponentFixture<TelemetryComponent>;
 
@@ -124,7 +125,7 @@ describe('TelemetryComponent', () => {
     expect(component.setTelemetrySyncStatus).toHaveBeenCalledWith(data);
   });
   it('should call syncTelemetry and show no internet toaster message', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
     component.isConnected = false;
@@ -135,7 +136,7 @@ describe('TelemetryComponent', () => {
     expect(component.setSyncTelemetry).toHaveBeenCalledWith();
   });
   it('should call syncTelemetry and throw error while syncing', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
     component.isConnected = true;
@@ -161,7 +162,7 @@ describe('TelemetryComponent', () => {
     expect(component.setSyncTelemetry).toHaveBeenCalledWith();
   });
   it('should call syncTelemetry and sync successfuly', () => {
-    const toasterService = TestBed.get(ToasterService);
+    const toasterService:any = TestBed.inject(ToasterService);
     component.isConnected = true;
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');

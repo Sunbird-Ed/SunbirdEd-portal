@@ -24,7 +24,7 @@ describe('SbFormLocationOptionsFactory', () => {
     }
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     sbFormLocationOptionsFactory = new SbFormLocationOptionsFactory(
       mockLocationService as LocationService,
       mockUserService as UserService,

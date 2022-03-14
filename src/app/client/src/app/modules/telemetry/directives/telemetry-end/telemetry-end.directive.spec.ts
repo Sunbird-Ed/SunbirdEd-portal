@@ -15,7 +15,7 @@ describe('TelemetryStartDirective', () => {
     });
   });
   it('should take input and generate the telemetry end event ', () => {
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     const directive = new TelemetryEndDirective( telemetryService);
     spyOn(telemetryService, 'end').and.callFake(() => observableOf(eventData.inputData));
     directive.appTelemetryEnd = eventData.inputData;

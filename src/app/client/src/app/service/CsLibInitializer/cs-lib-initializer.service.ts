@@ -13,7 +13,7 @@ export class CsLibInitializerService {
   constructor(public userService: UserService) { }
 
   private _initializeCs() {
-    this.fingerprintInfo = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    this.fingerprintInfo = document?.getElementById('deviceId')?(<HTMLInputElement>document?.getElementById('deviceId'))?.value:'';
     if (!CsModule.instance.isInitialised) {
        // Singleton initialised or not
         CsModule.instance.init({

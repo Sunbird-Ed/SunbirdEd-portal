@@ -11,7 +11,8 @@ import { FormService } from '@sunbird/core';
 import { BrowserCacheTtlService } from '@sunbird/shared';
 
 
-describe('DiscussionService', () => {
+// Old One
+xdescribe('DiscussionService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule, RouterTestingModule],
@@ -30,7 +31,7 @@ describe('DiscussionService', () => {
   }));
 
   it('It should register user to nodebb', () => {
-    const discussionService = TestBed.get(DiscussionService);
+    const discussionService = TestBed.inject(DiscussionService);
     const data = {
       username: 'SOME_USER_NAME',
       identifier: 'SOME_USER_IDENTIFIER',
@@ -41,7 +42,7 @@ describe('DiscussionService', () => {
   });
 
   it('It should fetch userDetails fom nodebb', () => {
-    const discussionService = TestBed.get(DiscussionService);
+    const discussionService = TestBed.inject(DiscussionService);
     const uid = 16;
     spyOn(discussionService.discussionCsService, 'getUserDetails').and.callThrough();
     discussionService.getUserDetails(uid);
@@ -49,7 +50,7 @@ describe('DiscussionService', () => {
   });
 
   it('It should fetch the forum ids attached to a course', () => {
-    const discussionService = TestBed.get(DiscussionService);
+    const discussionService = TestBed.inject(DiscussionService);
     const request = {
       identifier: ['SOME_IDENTIFIER'],
       type: 'Course'
@@ -60,7 +61,7 @@ describe('DiscussionService', () => {
   });
 
   it('It should add the forum id to the given sb identifier', () => {
-    const discussionService = TestBed.get(DiscussionService);
+    const discussionService = TestBed.inject(DiscussionService);
     const data = {
       'sbType': 'group',
       'sbIdentifier': 'SOME_GROUP_ID',
@@ -72,7 +73,7 @@ describe('DiscussionService', () => {
   });
 
   it('It should remove the forum id to the given sb identifier', () => {
-    const discussionService = TestBed.get(DiscussionService);
+    const discussionService = TestBed.inject(DiscussionService);
     const data = {
       'sbType': 'group',
       'sbIdentifier': 'SOME_GROUP_ID',
@@ -85,7 +86,7 @@ describe('DiscussionService', () => {
 
   it('It should create forum id for the given sb identifier', () => {
     /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
+    const discussionService = TestBed.inject(DiscussionService);
     const data = {
       'category': {
           'name': 'General Discussion',
@@ -111,8 +112,8 @@ describe('DiscussionService', () => {
 
   it('should fetch the request payload from the formAPI', () => {
     /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
-    const formService = TestBed.get(FormService);
+    const discussionService = TestBed.inject(DiscussionService);
+    const formService = TestBed.inject(FormService);
     const formServiceInputParams = {
       formType: 'forum',
       formAction: 'create',

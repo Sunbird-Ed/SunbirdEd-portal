@@ -7,7 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService,
-  InterpolatePipe, SharedModule } from '@sunbird/shared';
+  InterpolatePipe, SharedModule, IUserProfile } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
@@ -140,7 +140,7 @@ describe('CertificateConfigurationComponent', () => {
 
   it('Should close cert configuration screen from cert default screen on click of back button', () => {
     /** Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     component.showLoader = false;
     component.currentState = component.screenStates.default;
     fixture.detectChanges();
@@ -150,7 +150,7 @@ describe('CertificateConfigurationComponent', () => {
     /** Act */
     buttonEle.click();
 
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     component.navigateToCreateTemplate();
     expect(router.navigate).toHaveBeenCalledWith(['/learn/course/do_456789']);
 
@@ -160,7 +160,7 @@ describe('CertificateConfigurationComponent', () => {
 
   it('should call all the necessary method to get the required page data ready', () => {
     /* Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
     spyOn(component, 'initializeLabels').and.stub();
     spyOn(navigationHelperService, 'setNavigationUrl').and.stub();
     spyOn(component, 'initializeFormFields').and.stub();
@@ -193,169 +193,6 @@ describe('CertificateConfigurationComponent', () => {
 
     /* Assert */
     expect(component.showLoader).toBeFalsy();
-  });
-
-  // it('should close the page-loader if any of the apis fail and show an error toast message', () => {
-  //   /* Arrange */
-  //   const toasterService = TestBed.get(ToasterService);
-  //   spyOn(component, 'getCourseDetails').and.callFake(() => observableThrowError({}));
-  //   spyOn(component, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchData));
-  //   spyOn(component, 'getTemplateList').and.returnValue(observableOf(CertMockResponse.certTemplateListData));
-  //   spyOn(toasterService, 'error').and.stub();
-
-  //   /* Act */
-  //   component.ngOnInit();
-
-  //   /* Assert */
-  //   expect(component.showLoader).toBeFalsy();
-  //   expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
-  // });
-
-  xit('should fetch the drop-down values for "Certificate type" and "Issue to" from preference api', () => {
-    /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
-    userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableOf(CertMockResponse.certRulesData));
-
-    /** Act */
-    component.getCertConfigFields();
-
-    /** Assert */
-    expect(component.certTypes).toEqual([
-      {
-        'name': 'Completion certificate',
-        'value': {
-          'enrollment': {
-            'status': 2
-          }
-        }
-      },
-      {
-        'name': 'Merit certificate',
-        'value': {
-          'score': '>= 60'
-        }
-      }
-    ]);
-
-    expect(component.issueTo).toEqual([
-      {
-        'name': 'All',
-        'value': {
-          'user': {
-            'rootid': ''
-          }
-        }
-      },
-      {
-        'name': 'My state teacher',
-        'rootOrgId': ''
-      }
-    ]);
-  });
-
-  xit('should return empty observable if preference api fails to fetch cert template list', () => {
-    /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
-    userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableThrowError({}));
-
-    /** Act */
-    component.getTemplateList();
-
-    /** Assert */
-    component.getTemplateList().subscribe( data => {
-      expect(component.getTemplateList).toEqual(jasmine.objectContaining({}));
-    });
-  });
-
-  xit(`should fetch batch details and get the drop-down values if
-        "certificate_template" object does not exist on the batch details `, () => {
-    /** Arrange */
-    const certificateService  = TestBed.get(CertificateService);
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchData));
-    spyOn(component, 'getCertConfigFields').and.stub();
-
-    /** Act */
-    component.getBatchDetails('123466789');
-
-    /** Assert */
-    component.getBatchDetails('123466789').subscribe( data => {
-      expect(component.batchDetails).toEqual(CertMockResponse.batchData.result.response);
-      expect(component.getCertConfigFields).toHaveBeenCalled();
-    });
-  });
-
-  xit(`should fetch batch details and process the certificate details if "certificate_template" exists on the batch details `, () => {
-    /** Arrange */
-    const certificateService  = TestBed.get(CertificateService);
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
-    spyOn(component, 'processCertificateDetails').and.stub();
-
-    /** Act */
-    component.getBatchDetails('123466789');
-
-    /** Assert */
-    component.getBatchDetails('123466789').subscribe( data => {
-      expect(component.batchDetails).toEqual(CertMockResponse.batchDataWithCertificate.result.response);
-      expect(component.processCertificateDetails).
-      toHaveBeenCalledWith(CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
-    });
-  });
-
-  xit('should fetch the course details', () => {
-    /** Arrange */
-    const playerService = TestBed.get(PlayerService);
-    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(CertMockResponse.courseData));
-    /** Act */
-    component.getCourseDetails('do_123456');
-    /** Assert */
-    component.getCourseDetails('do_123456').subscribe( data => {
-      expect(component.courseDetails).toEqual(CertMockResponse.courseData.result.content);
-    });
-  });
-
-  xit('should return empty observable if course details api fails', () => {
-    /** Arrange */
-    const playerService = TestBed.get(PlayerService);
-    spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => observableThrowError({}));
-
-    /** Act */
-    component.getCourseDetails('do_123456');
-
-    /** Assert */
-    component.getCourseDetails('do_123456').subscribe( data => { }, error => {
-      expect(component.getCourseDetails).toBeTruthy();
-    });
-  });
-
-  xit('should show template change modal on "update certificate" button click if template change detected', () => {
-    /** Arrange */
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER'};
-    component.templateIdentifier = 'SOME_OTHER_IDENTIFIER';
-
-    /** Act */
-    component.updateCertificate();
-
-    /** Assert */
-    expect(component.isTemplateChanged).toBeTruthy();
-  });
-
-  xit('should attach the certificate on "update certificate" button click if template change not detected', () => {
-    /** Arrange */
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-    component.templateIdentifier = 'SOME_IDENTIFIER';
-    spyOn(component, 'attachCertificateToBatch').and.stub();
-
-    /** Act */
-    component.updateCertificate();
-
-    /** Assert */
-    expect(component.attachCertificateToBatch).toHaveBeenCalled();
   });
 
   it('should send interact telemetry on click of add certificate to the batch', () => {
@@ -394,8 +231,8 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
+    const certRegService = TestBed.inject(CertRegService);
+    const certificateService  = TestBed.inject(CertificateService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
@@ -414,9 +251,9 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
+    const certRegService = TestBed.inject(CertRegService);
+    const certificateService  = TestBed.inject(CertificateService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
@@ -436,9 +273,9 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
+    const certRegService = TestBed.inject(CertRegService);
+    const certificateService  = TestBed.inject(CertificateService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
@@ -458,8 +295,8 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
+    const certRegService = TestBed.inject(CertRegService);
+    const certificateService  = TestBed.inject(CertificateService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
@@ -479,8 +316,8 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
+    const certRegService = TestBed.inject(CertRegService);
+    const certificateService  = TestBed.inject(CertificateService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
@@ -497,8 +334,8 @@ describe('CertificateConfigurationComponent', () => {
 
   it('should show an error toast message if preference api fails', () => {
     /** Arrange */
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
+    const certificateService  = TestBed.inject(CertificateService);
+    const toasterService:any = TestBed.inject(ToasterService);
     const errorMsg = resourceBundle.messages.emsg.m0005;
 
     /** Assert */
@@ -518,9 +355,9 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
+    const certRegService = TestBed.inject(CertRegService);
+    const certificateService  = TestBed.inject(CertificateService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
     spyOn(certificateService, 'getBatchDetails').and.callFake(() => observableThrowError({}));
@@ -538,8 +375,8 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const toasterService = TestBed.get(ToasterService);
+    const certRegService = TestBed.inject(CertRegService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
@@ -552,10 +389,10 @@ describe('CertificateConfigurationComponent', () => {
 
   it('should show an error toast message if preference api fails', () => {
     /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    const userService:any = TestBed.inject(UserService);
+    const certificateService  = TestBed.inject(CertificateService);
+    const toasterService:any = TestBed.inject(ToasterService);
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData as any});
     userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
@@ -573,8 +410,8 @@ describe('CertificateConfigurationComponent', () => {
     component.isTemplateChanged = true;
     component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
-    const certRegService = TestBed.get(CertRegService);
-    const toasterService = TestBed.get(ToasterService);
+    const certRegService = TestBed.inject(CertRegService);
+    const toasterService:any = TestBed.inject(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
     spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
@@ -859,8 +696,8 @@ describe('CertificateConfigurationComponent', () => {
 
   it('should send telemetry impression event', () => {
     /** Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    const telemetryService = TestBed.get(TelemetryService);
+    const navigationHelperService = TestBed.inject(NavigationHelperService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(10);
     spyOn(telemetryService, 'impression').and.stub();
     const mockTelemetryImpressionData = {
@@ -895,7 +732,7 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'add';
     const mockInteractData = {id: 'add-certificate'};
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.stub();
     const mockTelemetryInteractObject = {
       context: {
@@ -928,7 +765,7 @@ describe('CertificateConfigurationComponent', () => {
     component.configurationMode = 'edit';
     component.selectedTemplate = {name: 'SOME_MOCK_TEMPLATE'};
     const mockInteractData = {id: 'add-certificate'};
-    const telemetryService = TestBed.get(TelemetryService);
+    const telemetryService = TestBed.inject(TelemetryService);
     spyOn(telemetryService, 'interact').and.stub();
     const mockTelemetryInteractObject = {
       context: {
@@ -963,7 +800,7 @@ describe('CertificateConfigurationComponent', () => {
   });
 
   it('should navigate to create-template page', () => {
-    const router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     component.navigateToCreateTemplate();
     expect(router.navigate).toHaveBeenCalledWith(['/certs/configure/create-template'], {queryParams: { type: 'edit', courseId: 'do_456789', batchId: '124631256' }});
   });

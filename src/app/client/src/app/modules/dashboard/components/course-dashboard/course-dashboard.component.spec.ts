@@ -60,14 +60,14 @@ describe('CourseDashboardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseDashboardComponent);
     component = fixture.componentInstance;
-    courseProgressService = TestBed.get(CourseProgressService);
+    courseProgressService = TestBed.inject(CourseProgressService);
     fixture.detectChanges();
   });
 
   it('should call getBatchList', () => {
     spyOn(component, 'getBatchList');
     spyOn(component, 'setImpressionEvent');
-    spyOn(component['activatedRoute'].parent, 'params');
+    spyOn(component['activatedRoute'].parent.params, 'pipe').and.returnValue(of({ data: false}));;
     expect(component).toBeTruthy();
     component.ngOnInit();
     expect(component.getBatchList).toHaveBeenCalled();

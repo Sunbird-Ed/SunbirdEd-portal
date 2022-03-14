@@ -15,9 +15,9 @@ const frameWorkPrefix = 'framework_';
   providedIn: 'root'
 })
 export class FrameworkService {
-  private _frameworkData: FrameworkData = {};
+  _frameworkData: FrameworkData = {};
   private _channelData: any = {};
-  private _frameworkData$ = new BehaviorSubject<Framework>(undefined);
+  _frameworkData$ = new BehaviorSubject<Framework>(undefined);
   private _channelData$ = new BehaviorSubject<any>(undefined);
   private _defaultCourseFrameworkName = '';
   public readonly frameworkData$: Observable<Framework> = this._frameworkData$

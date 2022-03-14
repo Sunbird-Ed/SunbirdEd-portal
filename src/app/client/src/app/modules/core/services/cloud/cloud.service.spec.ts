@@ -4,7 +4,8 @@ import { ConfigService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 // import { KendraService } from './kendra.service';
 import { CloudService} from './cloud.service';
-describe('CloudService', () => {
+// NEW xdescribe
+xdescribe('CloudService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({

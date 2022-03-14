@@ -9,7 +9,7 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule, UserService,  PermissionService, SearchService, ObservationUtilService} from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TranslateModule } from '@ngx-translate/core';
-import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule, IUserProfile } from '@sunbird/shared';
 import { mockObject } from './user-role-assign.spec.data';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 
@@ -35,10 +35,10 @@ describe('UserRoleAssignComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserRoleAssignComponent);
-    observationUtilService = TestBed.get(ObservationUtilService);
+    observationUtilService = TestBed.inject(ObservationUtilService);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    const userService = TestBed.get(UserService);
+    const userService:any = TestBed.inject(UserService);
 
   });
 
@@ -76,11 +76,13 @@ describe('UserRoleAssignComponent', () => {
   it('should call dismissRoleAssign and goBack method', () => {
     component.dismissRoleAssign();
     expect(component.showAssignRole).toBeFalsy();
+    const router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
     component.goBack();
     expect(component.showingResults).toBeFalsy();
   });
   it('should call getOrgDetails method', () => {
-      const userService = TestBed.get(UserService);
+      const userService:any = TestBed.inject(UserService);
       userService._userProfile = mockObject.userMockData;
     spyOn(component, 'getOrgDetails').and.callThrough();
     component.getOrgDetails();
@@ -89,14 +91,14 @@ describe('UserRoleAssignComponent', () => {
   it('should call getAllRoles to get all the roles', () => {
     const removeRole = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'PUBLIC'];
     const getAllRolesSpy = spyOn(component, 'getAllRoles');
-    const permissionService = TestBed.get(PermissionService);
+    const permissionService = TestBed.inject(PermissionService);
     component.getAllRoles(removeRole);
     expect(getAllRolesSpy).toHaveBeenCalled();
     expect(getAllRolesSpy).toHaveBeenCalledTimes(1);
   });
   it('should call onEnter ', () => {
     const key = 'rajtest11936';
-    const searchService = TestBed.get(SearchService);
+    const searchService = TestBed.inject(SearchService);
     spyOn(component, 'onEnter').and.callThrough();
     component.onEnter(key);
     spyOn(searchService, 'globalUserSearch').and.returnValue(observableOf(mockObject.userSearch));
@@ -112,8 +114,8 @@ describe('UserRoleAssignComponent', () => {
       'roleName': 'Book Reviewer'
     }];
     component.allRoles = mockObject.roleList;
-    const userService = TestBed.get(UserService);
-    userService._userData$.next({ err: null, userProfile: mockObject.userMockData });
+    const userService:any = TestBed.inject(UserService);
+    userService._userData$.next({ err: null, userProfile: mockObject.userMockData as any });
     userService._rootOrgId = '01269878797503692810';
     userService.rootOrgName = 'tamilnadu';
     spyOn(component, 'manipulateUserObject').and.callThrough();

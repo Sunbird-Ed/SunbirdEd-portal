@@ -268,8 +268,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                               (_.toLower(contentType) === _.toLower(pageContentType));
                     };
                     let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
-                    filteredCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
-                    this.enrolledCourses = _.orderBy(filteredCourses, [sortingField], [sortingOrder]);
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     enrolledSection.contents = _.map(filteredCourses, content => {
                         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
@@ -355,7 +353,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const _cacheFilters = {
                 gradeLevel: [..._.intersection(filters['gradeLevel'], _searchFilters['gradeLevel']), ..._.difference(filters['gradeLevel'], _searchFilters['gradeLevel'])],
                 subject: [..._.intersection(filters['subject'], _searchFilters['subject']),
-                    ..._.difference(filters['subject'], _searchFilters['subject'])].map((e) => _.startCase(e)),
+                    ..._.difference(filters['subject'], _searchFilters['subject'])],
                 medium: [..._.intersection(filters['medium'], _searchFilters['medium']), ..._.difference(filters['medium'], _searchFilters['medium'])],
                 publisher: [..._.intersection(filters['publisher'], _searchFilters['publisher']), ..._.difference(filters['publisher'], _searchFilters['publisher'])],
                 audience: [..._.intersection(filters['audience'], _searchFilters['audience']), ..._.difference(filters['audience'], _searchFilters['audience'])],
@@ -594,8 +592,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (this.userPreference && this.userPreference['framework'] && this.userPreference['framework']['id']) {
                         currentBoard = Array.isArray(this.userPreference?.framework?.id) ? (this.userPreference?.framework?.id[0]) : (this.userPreference?.framework?.id);
                     }
-                    const currentUserType = this.userType.toLowerCase();
-                    if (data && data[currentBoard] &&
+                    const currentUserType = this.userType?.toLowerCase();
+                    if (currentUserType && currentBoard && data && data[currentBoard] &&
                         data[currentBoard][currentUserType]) {
                         this.showTargetedCategory = true;
                         this.targetedCategory = data[currentBoard][currentUserType];
@@ -1287,7 +1285,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     board: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, 'board') : _.get(_filter, 'board'),
                     gradeLevel: _.get(_filter, 'gradeLevel'),
                     medium: _.get(_filter, 'medium'),
-                    subject: _.get(_filter, 'subject').map((e) => _.startCase(e))
+                    subject: _.get(_filter, 'subject')
                 };
             }
         }

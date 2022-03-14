@@ -2,7 +2,7 @@ import { DashboardModule } from '@sunbird/dashboard';
 import { UserService, CoreModule, TncService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ReportComponent } from './report.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -58,7 +58,7 @@ describe('ReportComponent', () => {
     languageSelected$: of({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
@@ -68,14 +68,22 @@ describe('ReportComponent', () => {
         { provide: Router, useValue: routerStub },
         { provide: ResourceService, useValue: resourceServiceMockData }]
     })
-      .compileComponents();
+      .compileComponents().then(() => {
+        fixture = TestBed.createComponent(ReportComponent);
+        component = fixture.componentInstance;
+        reportService = TestBed.inject(ReportService);
+        fixture.detectChanges();
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ReportComponent);
-    component = fixture.componentInstance;
-    reportService = TestBed.get(ReportService);
-    fixture.detectChanges();
+  afterEach(() => {
+    fixture.destroy();
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    TestBed.resetTestingModule();
   });
 
   it('should create', () => {
@@ -309,8 +317,9 @@ describe('ReportComponent', () => {
     spyOn(reportService, 'isUserSuperAdmin').and.returnValue(false);
     spyOn(reportService, 'isReportParameterized').and.returnValue(true);
     spyOn(reportService, 'getParametersHash').and.returnValue('123');
-    delete mockReportObj.hashed_val;
-    component['setParametersHash'] = mockReportObj;
+    const clonedReportObj = {...mockReportObj};
+    delete clonedReportObj.hashed_val;
+    component['setParametersHash'] = clonedReportObj;
     expect(component['hash']).toBe('123');
     expect(reportService.getParametersHash).toHaveBeenCalled();
   });
@@ -382,12 +391,12 @@ describe('ReportComponent', () => {
     component.reportData = {
       charts: [{
         chartData: chartData,
-        chartConfig : { id: 'chartId' }
+        chartConfig: { id: 'chartId' }
       }
-    ]
+      ]
     };
     const data = component.getAllChartData();
-    expect(data).toEqual([{ data: chartData, id: 'chartId'}]);
+    expect(data).toEqual([{ data: chartData, id: 'chartId' }]);
   }));
 
   it('should get chart data', fakeAsync(() => {
@@ -395,18 +404,18 @@ describe('ReportComponent', () => {
     tick(1000);
     component.chartsReportData = {
       charts: [{
-          chartConfig : {
-            id: 123
-          }
+        chartConfig: {
+          id: 123
+        }
       }]
     };
     const data = component.getChartData({
-        chartConfig : {
-          id: 123
-        }
+      chartConfig: {
+        id: 123
+      }
     });
     expect(data).toEqual({
-      chartConfig : {
+      chartConfig: {
         id: 123
       }
     });
@@ -435,12 +444,12 @@ describe('ReportComponent', () => {
     component.reportData = {
       charts: [{
         chartData: chartData,
-        chartConfig : { id: 'chartId' }
+        chartConfig: { id: 'chartId' }
       }
-    ]
+      ]
     };
     component.resetFilter();
-    expect(component.resetFilters).toEqual({ data: [ { id: 'chartId', data: chartData }], reset: true });
+    expect(component.resetFilters).toEqual({ data: [{ id: 'chartId', data: chartData }], reset: true });
 
   }));
 
@@ -469,7 +478,7 @@ describe('ReportComponent', () => {
   });
 
   it('should get tnc details for report viewer', () => {
-    const reportViewerTncService = TestBed.get(TncService);
+    const reportViewerTncService = TestBed.inject(TncService);
     spyOn(reportViewerTncService, 'getReportViewerTnc').and.returnValue(of(
       {
         'id': 'api',

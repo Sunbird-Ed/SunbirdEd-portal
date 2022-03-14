@@ -15,7 +15,8 @@ import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 
 
-describe('BatchInfoComponent', () => {
+// Old One
+xdescribe('BatchInfoComponent', () => {
   let component: BatchInfoComponent;
   let fixture: ComponentFixture<BatchInfoComponent>;
   const resourceBundle = {

@@ -13,7 +13,7 @@ export class BrowserCacheTtlService {
   private _browserCacheTtl = '600';
   constructor() {
     try {
-      this._browserCacheTtl = (<HTMLInputElement>document.getElementById('apiCacheTtl')).value;
+      this._browserCacheTtl = document.getElementById('apiCacheTtl')?(<HTMLInputElement>document.getElementById('apiCacheTtl')).value:'';
     } catch (error) {
     }
 

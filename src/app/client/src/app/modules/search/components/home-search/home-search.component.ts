@@ -190,7 +190,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       offset: (this.paginationDetails.currentPage - 1) * (this.configService.appConfig.SEARCH.PAGE_LIMIT),
       query: this.queryParams.key,
-      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
+      sort_by: { lastPublishedOn: 'desc' },
       facets: this.globalSearchFacets,
       params: this.configService.appConfig.Course.contentApiQueryParams,
       pageNumber: this.paginationDetails.currentPage

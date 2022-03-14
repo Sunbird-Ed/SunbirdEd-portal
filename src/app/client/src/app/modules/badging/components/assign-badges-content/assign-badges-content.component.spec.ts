@@ -5,7 +5,7 @@ import { AssignBadgesContentComponent } from './assign-badges-content.component'
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { UserService, BadgesService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, IUserProfile } from '@sunbird/shared';
 import { mockResponse } from './assign-badges-content.component.spec.data';
 import { ContentBadgeService } from './../../services';
 import { TelemetryModule, TelemetryInteractDirective } from '@sunbird/telemetry';
@@ -37,11 +37,11 @@ describe('AssignBadgesContentComponent', () => {
   });
 
   it('should initialize the component expected calls for setInteractEventData and  getAllBadgeList ', () => {
-    const userService = TestBed.get(UserService);
-    const badgeService = TestBed.get(BadgesService);
-    const resourceService = TestBed.get(ResourceService);
+    const userService:any = TestBed.inject(UserService);
+    const badgeService = TestBed.inject(BadgesService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = mockResponse.resourceBundle.messages;
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData as IUserProfile });
     component.contentId = fakeActivatedRoute.params['collectionId'];
     spyOn(component, 'getBadgeDetails').and.callThrough();
     spyOn(component, 'setInteractEventData').and.callThrough();
@@ -56,12 +56,12 @@ describe('AssignBadgesContentComponent', () => {
     expect(component.allBadgeList.length).toBeGreaterThanOrEqual(2);
   });
   it('should call assign method and make service call, should return success response', () => {
-    const userService = TestBed.get(UserService);
-    const badgeService = TestBed.get(ContentBadgeService);
-    const resourceService = TestBed.get(ResourceService);
+    const userService:any = TestBed.inject(UserService);
+    const badgeService = TestBed.inject(ContentBadgeService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = mockResponse.resourceBundle.messages;
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
+    const toasterService:any = TestBed.inject(ToasterService);
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData as IUserProfile });
     component.allBadgeList = mockResponse.badgeSuccessResponse.result.badges;
     spyOn(badgeService, 'addBadge').and.callFake(() => observableOf(mockResponse.returnValue));
     spyOn(component, 'assignBadge').and.callThrough();
@@ -75,12 +75,12 @@ describe('AssignBadgesContentComponent', () => {
     expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0044);
   });
   it('should call assign method and make service call, should throw error', () => {
-    const userService = TestBed.get(UserService);
-    const badgeService = TestBed.get(ContentBadgeService);
-    const resourceService = TestBed.get(ResourceService);
+    const userService:any = TestBed.inject(UserService);
+    const badgeService = TestBed.inject(ContentBadgeService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = mockResponse.resourceBundle.messages;
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
+    const toasterService:any = TestBed.inject(ToasterService);
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData as IUserProfile });
     spyOn(badgeService, 'addBadge').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
     component.assignBadge(mockResponse.badgeSuccessResponse.result.badges);
@@ -88,12 +88,12 @@ describe('AssignBadgesContentComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0079);
   });
   it('should call assign method and make service call, should emit the event', () => {
-    const userService = TestBed.get(UserService);
-    const badgeService = TestBed.get(ContentBadgeService);
-    const resourceService = TestBed.get(ResourceService);
+    const userService:any = TestBed.inject(UserService);
+    const badgeService = TestBed.inject(ContentBadgeService);
+    const resourceService = TestBed.inject(ResourceService);
     resourceService.messages = mockResponse.resourceBundle.messages;
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData });
+    const toasterService:any = TestBed.inject(ToasterService);
+    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData as IUserProfile});
     component.allBadgeList = mockResponse.badgeSuccessResponse.result.badges;
     spyOn(badgeService, 'addBadge').and.callFake(() => observableOf(mockResponse.returnValue));
     spyOn(badgeService, 'setAssignBadge').and.callThrough();
