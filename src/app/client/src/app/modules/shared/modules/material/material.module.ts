@@ -27,8 +27,7 @@ import {MatRadioModule} from '@angular/material/radio';
     declarations: [],
     providers: [],
     exports: [MatTooltipModule, MatTabsModule, MatDialogModule,
-        MatAutocompleteModule, MatFormFieldModule, MatInputModule,
-        MatChipsModule, MatIconModule, MatSelectModule, MatListModule,
+        MatAutocompleteModule, MatFormFieldModule, MatInputModule,MatChipsModule, MatIconModule, MatSelectModule, MatListModule,
         MatButtonModule, MatCheckboxModule, MatExpansionModule, MatSlideToggleModule, MatDatepickerModule, MatNativeDateModule, MatProgressBarModule, MatRadioModule]
 })
 export class MaterialModule { }
