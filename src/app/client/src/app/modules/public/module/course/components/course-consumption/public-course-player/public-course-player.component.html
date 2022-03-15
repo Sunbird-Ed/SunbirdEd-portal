@@ -121,7 +121,7 @@
   <app-loader [data]="loaderMessage"></app-loader>
 </div>
 
-  <app-modal-wrapper *ngIf="showJoinTrainingModal" [config]="{disableClose: true, size: 'small'}"
+  <app-modal-wrapper *ngIf="showJoinTrainingModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
     (dismiss)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" #joinTrainingModal>
     <ng-template sbModalContent>
       <div class="sb-mat__modal sb-mat__modal--small">
