@@ -1,5 +1,5 @@
 <app-modal-wrapper *ngIf="showCreateModal"
-  [config]="{disableClose: true, size: 'normal', panelClass: 'overflow-visible'}" (dismiss)="redirect()"
+  [config]="{disableClose: true, size: 'normal', panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="redirect()"
   #createBatchModel>
   <ng-template sbModalContent>
     <div class="sb-mat__modal">
@@ -94,7 +94,7 @@
               [ngClass]="createBatchForm.controls['startDate'].invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine ? 'error': ''">
               <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
               <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" class="sb-mat__datepicker">
                   <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
                   <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="pickerMinDate">
                   <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -109,7 +109,7 @@
             <div class="sb-field-group">
               <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
               <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" class="sb-mat__datepicker">
                   <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
                   <input matInput [matDatepicker]="endDatePicker" formControlName="endDate"
                     [min]="getPickerMinDateForEndDate()">
@@ -122,7 +122,7 @@
               [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
               <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
-                <mat-form-field appearance="fill" [ngClass]="{'disabled': !createBatchForm.value.startDate}"
+                <mat-form-field appearance="fill" class="sb-mat__datepicker" [ngClass]="{'disabled': !createBatchForm.value.startDate}"
                   (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])">
                   <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</mat-label>
                   <input matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
