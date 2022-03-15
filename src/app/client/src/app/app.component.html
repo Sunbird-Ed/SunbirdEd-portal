@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true, panelClass: 'overflow-visible', autoFocus: false}">
+    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
       <ng-template sbModalContent let-data>
         <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
           [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
@@ -88,7 +88,7 @@
     <app-user-onboarding (close)="onLocationSubmit()" *ngIf="isGuestUser ? showUserTypePopup :(showUserTypePopup || !isLocationConfirmed)"
       [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
     
-  <app-modal-wrapper [config]="{disableClose: true, size: 'small'}"
+  <app-modal-wrapper [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
     *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
     <ng-template sbModalContent let-data>
       <app-year-of-birth [dialogProps]="data"></app-year-of-birth>
@@ -111,7 +111,7 @@
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 
-<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired" [config]="{disableClose: true, size: 'small'}">
+<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}">
   <ng-template sbModalContent let-data>
     <div class="sb-mat__modal sb-mat__modal--small">
 
