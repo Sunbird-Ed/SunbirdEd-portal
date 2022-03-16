@@ -132,7 +132,7 @@
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9"
           *ngIf="collectionData">
           <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
-            <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16">
+            <div [ngClass]="layoutConfiguration ? '' : 'sb-bg-color-white'" class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center p-16">
               <h6 class="sb-color-primary font-weight-normal">
                 {{generaliseLabelService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
               <div class="sb-checkbox sb-checkbox-rightaligned sb-checkbox-primary ml-auto m-0">
