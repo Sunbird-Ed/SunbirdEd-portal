@@ -762,7 +762,13 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
-
+    '/learner/certreg/v2/certs/search': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/rc/certificate/v1/search': {
+      checksNeeded: []
+    },
     // get user session
     '/learner/get/user/sessionId/:userId': {
       checksNeeded: ['ROLE_CHECK'],
