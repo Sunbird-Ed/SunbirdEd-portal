@@ -159,7 +159,7 @@ export class ContentDownloadManager {
 
           // TODO: Questionset and question should have size property 
           // as of now it does not have size property so adding it manualy 
-          if(!content.size && ["application/vnd.sunbird.questionset", "application/vnd.sunbird.question"].includes(content.mimeType)) {
+          if(!content.size) {
             content['size'] = 1; 
           }
 
@@ -387,13 +387,11 @@ export class ContentDownloadManager {
         }
       }));
 
-      const childQuestions = await this.getQuestionsFromQuestionSetApi(questionSetchildNodes);
-      if(childQuestions.length > 0) {
-        childNodeDetail = [...childNodeDetail, ...childQuestions]
+      if(questionSetchildNodes.length > 0) {
+        childNodeDetail = [...childNodeDetail, ...questionSetchildNodes]
       }
     } else if (contentDetail.mimeType === "application/vnd.sunbird.questionset") {
-      const questionNodes = await this.getQuestionsNodes(contentDetail);
-      childNodeDetail = await this.getQuestionsFromQuestionSetApi(questionNodes);
+      childNodeDetail = await this.getQuestionsNodes(contentDetail);
     }
   
     return childNodeDetail;
@@ -402,12 +400,15 @@ export class ContentDownloadManager {
 
   private async getQuestionsNodes(contentDetails) {
     let qchildNodes = contentDetails.childNodes;
+    let questionSetContent=[]
     _.forEach(contentDetails.children, function(questionset, key) {
       if(qchildNodes.includes(questionset.identifier) && questionset.mimeType === 'application/vnd.sunbird.questionset') {
         qchildNodes = _.without(qchildNodes, questionset.identifier)
+        questionSetContent.push(questionset);
       }
     });
-    return qchildNodes;
+    const childQuestions = await this.getQuestionsFromQuestionSetApi(qchildNodes);
+    return [...questionSetContent, ...childQuestions];
   }
 
   private async getQuestionsetHierarchy(contentId) {
