@@ -82,11 +82,6 @@
     text-align:center
 }
 
-// .sb-checkbox .disabled-checkbox input:checked ~ .box:after, .sb-checkbox .disabled-checkbox input:checked ~ label:after {
-//   background: #ccc;
-//   border: #ccc;
-// }
-
 input[type=checkbox][disabled] {
   background: var(--sb-card-bg);
   border: #ccc;
