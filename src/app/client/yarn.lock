@@ -1825,10 +1825,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.38.tgz#86ebd5d1336b7f8625b24035e244f979ad2375b0"
   integrity sha512-uO6Xdo9JT80bFgtu7SMJzuH5Qj2GgP2PTepTK6vbZ+eUvlrP2abwSgeSNWYRNyXUTMBzkouvuy5OW862/ZoNng==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.8.13":
-  version "4.8.13"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.8.13.tgz#2ef22313d53c2957a8cec448625a39f6491b2295"
-  integrity sha512-EAlWeTSkRln0aeidac1gxjyaAd8rUpbaaaMmbB/9Vu6maFNBwQEAIHC5a5TfP6vqzNpJoI8KypIHJZJwg/TYBA==
+"@project-sunbird/sunbird-collection-editor-v9@4.8.16":
+  version "4.8.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.8.16.tgz#04f5e01a2ff1796f407234a7b3b12d93ce8d4411"
+  integrity sha512-A8j3hmVeErh0/MwVRqSzOWtX9mjrpKOfAqZe+ZmuBAsMP8/FHhpONkFHHCrBTJQORgDiEx8syD/4jb6Haj1v/Q==
   dependencies:
     tslib "^1.10.0"
 
@@ -1918,10 +1918,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.3.0.tgz#fe0e56e879b47ecacf166e905d57bfcd39a3c741"
-  integrity sha512-3LgQS97SqdX6kxNWMgZa8Q+7rFgSjgv3rbgdQra9ibGWNBPlDq8iNeU25Sh4zoX+J+dqZ111A2xPmt47yBc5lA==
+"@samagra-x/uci-console@1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.3.2.tgz#50319f37c20d66ac59b59322e0e15bd26578eb83"
+  integrity sha512-l4lX/HF8fmXnQ2JdS2MzTtl00w7TS3AXdQG56BLzb69ePl9mW1n4eXZVRmtzUTpGgQwYfQfkyWWE79edJ4upLA==
   dependencies:
     tslib "^1.10.0"
 

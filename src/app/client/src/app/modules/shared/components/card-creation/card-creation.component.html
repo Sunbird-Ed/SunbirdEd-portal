@@ -1,8 +1,8 @@
 <div class="ui link cards mb-0" *ngIf="data" tabindex="0" (click)="onAction(data,data.action.onImage)" 
  appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata" >
   <div class="ui fluid card mt-10" [ngClass]="customClass">
-    <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
-      <sui-progress class="top attached active orange ui progress" [value]="data.progress" [maximum]="data.maxCount"></sui-progress>
+    <div class="top attached indicating active" *ngIf="data.progress > 0">
+      <mat-progress-bar mode="determinate" [value]="data.progress" class="top attached active orange ui progress"></mat-progress-bar>
     </div>
     <div class="ui image" >
       <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">{{data.ribbon.left.name}}</a>

@@ -46,14 +46,14 @@
   </mat-expansion-panel>
 </mat-accordion>
 
-<app-modal-wrapper *ngIf="showConsentPopup" [config]="{disableClose: true, size: 'normal', panelClass: 'overflow-visible'}"
+<app-modal-wrapper *ngIf="showConsentPopup" [config]="{disableClose: true, size: 'normal', panelClass: ['overflow-visible', 'material-modal']}"
   (dismiss)="showConsentPopup = false;" #profileDetailsModal>
   <ng-template sbModalContent>
     <div class="sb-mat__modal">
 
           <!--Header-->
           <div mat-dialog-title class="mb-0 px-16">
-            <div class="title">{{resourceService?.frmelmnts?.lbl?.profileDetails}}</div>
+            <div class="title">{{resourceService?.frmelmnts?.lbl?.consentsharedetail}}</div>
           </div>
           <!--/Header-->
 

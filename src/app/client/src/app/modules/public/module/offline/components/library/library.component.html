@@ -85,14 +85,5 @@
   </ng-template>
 </app-modal-wrapper>
 
-<sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
-  <div class="ui active centered inline loader"></div>
-  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
-  </h6>
-</sui-dimmer>
-<sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
-  <div class="ui active centered inline loader"></div>
-  <h6 class="mt-8">
-    {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
-  </h6>
-</sui-dimmer>
+<app-loader *ngIf="showExportLoader" [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}"> </app-loader>
+<app-loader *ngIf="showDownloadLoader" [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}"> </app-loader>
