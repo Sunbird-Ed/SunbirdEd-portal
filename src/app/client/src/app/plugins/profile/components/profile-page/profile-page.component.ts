@@ -28,6 +28,7 @@ import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from 'common-form-elements-web-v9';
+import { CsCertificateService, CSGetLearnerCerificateRequest } from '@project-sunbird/client-services/services/certificate/interface';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -104,7 +105,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService) {
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
 
@@ -266,33 +268,59 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 /**
  * @param userId
- *It will fetch certificates of user, other than courses
+ * It will fetch certificates of user, other than courses
+ * Learner passbook API
  */
   getOtherCertificates(userId, certType) {
-    const requestParam = { userId,  certType };
+    console.log('userId ', userId); // TODO: log!
+    console.log('certType', certType); // TODO: log!
+    const requestParam = { userId, certType };
     if (this.otherCertificatesCounts) {
       requestParam['limit'] = this.otherCertificatesCounts;
     }
-    this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
-      this.otherCertificatesCounts = _.get(data, 'result.response.count');
-      this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
-        const certObj: any =  {
-          certificates: [{
-            url: _.get(val, '_source.pdfUrl')
-          }],
-          issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
-          issuedOn: _.get(val, '_source.data.issuedOn'),
-          courseName: _.get(val, '_source.data.badge.name'),
-        };
-        if (_.get(val, '_id') && _.get(val, '_source.data.badge.name')) {
-          certObj.issuedCertificates = [{identifier: _.get(val, '_id'), name: _.get(val, '_source.data.badge.name') }];
-        }
-        return certObj;
+    // this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
+    //   this.otherCertificatesCounts = _.get(data, 'result.response.count');
+    //   this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
+    //     const certObj: any =  {
+    //       certificates: [{
+    //         url: _.get(val, '_source.pdfUrl')
+    //       }],
+    //       issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
+    //       issuedOn: _.get(val, '_source.data.issuedOn'),
+    //       courseName: _.get(val, '_source.data.badge.name'),
+    //     };
+    //     if (_.get(val, '_id') && _.get(val, '_source.data.badge.name')) {
+    //       certObj.issuedCertificates = [{identifier: _.get(val, '_id'), name: _.get(val, '_source.data.badge.name') }];
+    //     }
+    //     return certObj;
+    //   });
+    //   if (this.otherCertificates && this.otherCertificates.length && this.scrollToId) {
+    //     this.triggerAutoScroll();
+    //   }
+    // });
+    // let requestBody: CSGetLearnerCerificateRequest = {
+    //   userId: userId
+    // };
+    let requestBody = { userId: userId, schemaName: 'certificate' };
+    // this.CsCertificateService
+    //   .fetchCertificates(requestBody, {
+    //     apiPath: '/certreg/v1',
+    //     rcApiPath: '/api/rc/${schemaName}/v1'
+    //   })
+    this.CsCertificateService
+    .fetchCertificates(requestBody,{
+      apiPath: '/learner/certreg/v2',
+      apiPathLegacy: '/certreg/v1',
+      rcApiPath: '/learner/rc/${schemaName}/v1',
+    })
+      
+      // .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((_res) => {
+        console.log('res ', _res); // TODO: log!
+      }, error => {
+        console.log('CSL : Fetch certificate CSL API failed ', error);
       });
-      if (this.otherCertificates && this.otherCertificates.length && this.scrollToId) {
-        this.triggerAutoScroll();
-      }
-    });
+
   }
 
   downloadCert(course) {
