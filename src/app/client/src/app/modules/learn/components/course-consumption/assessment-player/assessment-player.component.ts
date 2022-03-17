@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v9';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
@@ -10,7 +10,7 @@ import { ConfigService, ResourceService, ToasterService, NavigationHelperService
   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { first, map, takeUntil } from 'rxjs/operators';
+import { first, map, takeUntil, tap } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
@@ -113,7 +113,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   showQSExitConfirmation = false;
   isStatusChange = false;
   lastActiveContentBeforeModuleChange;
-
+  contentRatingModal = false;
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
@@ -165,6 +165,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     });
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.getLanguageChangeEvent();
+    this.routerEventsChangeHandler().subscribe();
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -683,6 +684,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   onRatingPopupClose() {
+    this.contentRatingModal = false;
     this.getCourseCompletionStatus(true);
   }
 
@@ -876,6 +878,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       this.showMaxAttemptsModal = true;
       this.showQSExitConfirmation = true;
     }
+  }
+  routerEventsChangeHandler() {
+    return this.router.events
+      .pipe(
+        takeUntil(this.unsubscribe),
+        tap(event => {
+          if (event instanceof NavigationStart) {
+            const isH5pContent = [_.get(this.playerConfig, 'metadata.mimeType'), _.get(this.activeContent, 'mimeType')].every(mimeType => mimeType === 'application/vnd.ekstep.h5p-archive');
+            if (isH5pContent) {
+              this.contentRatingModal = true;
+            }
+          }
+        })
+      )
   }
 
 }

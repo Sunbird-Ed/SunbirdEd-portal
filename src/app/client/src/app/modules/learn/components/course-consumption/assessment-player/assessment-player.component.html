@@ -222,3 +222,7 @@
   </ng-template>
 </app-modal-wrapper>
 <!-- End - Modal for Assessment attempts -->
+
+    <!--Rating popup -->
+    <app-content-rating *ngIf="contentRatingModal && playerConfig" [contentData]="playerConfig.metadata"
+      (closeModal)="onRatingPopupClose()"></app-content-rating>
