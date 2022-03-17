@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false}"
+<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="sharelinkModal = false; contentUtilsServiceService.contentShareEvent.emit('close')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
