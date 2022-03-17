@@ -1,5 +1,5 @@
 <!-- New Pop up -->
-<app-modal-wrapper [config]="{disableClose: true, id: locationSelectionModalId, panelClass: 'overflow-visible'}" (dismiss)="closeModal()">
+<app-modal-wrapper [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">

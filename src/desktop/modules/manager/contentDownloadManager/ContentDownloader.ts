@@ -257,6 +257,10 @@ export class ContentDownloader implements ITaskExecuter {
       }
     })
     metaData.baseDir = `content/${contentDetails.identifier}`;
+    if(metaData.mimeType === "application/vnd.sunbird.question") {
+      metaData.isAvailableLocally = true;
+      metaData.basePath = `content/${contentDetails.identifier}`; 
+    }
     metaData.desktopAppMetadata = {
       "addedUsing": ContentDownloader.taskType,
       "createdOn": Date.now(),

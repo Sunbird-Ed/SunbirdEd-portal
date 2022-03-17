@@ -1491,3 +1491,12 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
     transform: translate(50%,-50%) !important;
   }
 }
+
+.sbaccordion__panel-header__title .sb-checkbox, .sbselectpopover .sb-checkbox {
+  padding: 0 0;
+  margin-top: 0;
+}
+html[layout=joy] sb-form .multi-select-container .list-border {
+  padding: 0px !important;
+  border: inherit !important;
+}
