@@ -594,6 +594,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/rc/certificate/v1/download/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     //Admin related APIs
     '/learner/data/v1/upload/status': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1900,6 +1904,7 @@ const API_LIST = {
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
+    '/learner/rc/certificate/v1/download/:id',
     '/content/asset/v1/upload/:id',
     '/action/asset/v1/upload/:id',
     '/action/asset/v1/read/:id',
