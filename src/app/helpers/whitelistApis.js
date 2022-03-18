@@ -1586,6 +1586,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
+    '/api/rc/certificate/v1/search': {
+      description: 'RC API to fetch certificates from RC',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     // Question & QuestionSet API's
     '/action/questionset/v1/create': {
       description: 'QuestionSet create',

@@ -92,6 +92,12 @@ module.exports = function (app) {
           urlParam = req.originalUrl.replace('/learner/', '')
         }
         logger.info({ msg: '/learner/* called - ' + req.method + ' - ' + req.url });
+
+        if (req.originalUrl === ' /learner/rc/certificate/v1/search') {
+          logger.info({ msg: '/learner/rc/certificate/v1/search called - ' + req.method + ' - ' + '/api/rc/certificate/v1/search' });
+          return `/api/rc/certificate/v1/search`;
+        }
+       
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
