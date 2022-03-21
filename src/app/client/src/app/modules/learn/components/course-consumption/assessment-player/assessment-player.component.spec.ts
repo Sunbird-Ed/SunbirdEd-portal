@@ -720,4 +720,22 @@ describe('AssessmentPlayerComponent', () => {
     component.layoutConfiguration = {};
     component.layoutConfiguration = null;
   });
+  it('should show content rating popup if the mimeType is h5p', done => {
+    component.playerConfig = {
+      metadata: {
+        mimeType: 'application/vnd.ekstep.h5p-archive'
+      }
+    };
+    component.activeContent = {
+      mimeType: 'application/vnd.ekstep.h5p-archive'
+    };
+
+    expect(component.contentRatingModal).toBeFalsy();
+    component.routerEventsChangeHandler().subscribe(event => {
+      expect(component.contentRatingModal).toBeTruthy();
+      done();
+    }, err => {
+      done();
+    })
+  })
 });
