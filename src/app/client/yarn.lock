@@ -1773,10 +1773,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.6.2":
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.6.2.tgz#097b8fe0879f5afa37c9f00fdd67d5469fedc020"
-  integrity sha512-TxPNS/fe74d52en4QHtiRaYRDrk8Q4ZlU0HqVcssA15ygZsqPo5sFaAwx6HJkE2LV2rApjoeJGE/mSXNPWDRFQ==
+"@project-sunbird/client-services@4.8.2":
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.8.2.tgz#d46dd0e16270fc66886ddde1423a14743fca6e8c"
+  integrity sha512-bilXyz6Z7KJJiff6OrlqQKZI5Z3HuelEkLABGgQEpqoCV8gVRI5dzOCSOiLlGsFdhaGTAaCD+gCFO2Dm5WSl9A==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1874,10 +1874,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.8.7":
-  version "4.8.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.8.7.tgz#5f4aa5a26db279904786b539abf966cf4b89f682"
-  integrity sha512-2vvxTbgkJXYhxqs+73UWYfq2NOg7YQ9vyYYY9VEG+MVpEYp0O5PQdtMYJyOc2epBjjaKGiMzXomivw+8VH6pSg==
+"@project-sunbird/sunbird-quml-player-v9@4.8.9":
+  version "4.8.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.8.9.tgz#55659f86fbe84a24fda72aff96c796ffa0ec4ee7"
+  integrity sha512-9lEdBqmINKpHXXlZu+bCIMvTh9e5zGmz2kw3e+9ZwoY+qeb0V1exQTFFj0HDaaoSfmIE9Mgyqj4wQxESAtnTyA==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.8.0"
 
