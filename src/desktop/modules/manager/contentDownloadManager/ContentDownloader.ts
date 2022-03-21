@@ -247,7 +247,7 @@ export class ContentDownloader implements ITaskExecuter {
           metaData["instructions"] = instructions;
           metaData.isAvailableLocally = true;
           metaData.basePath = `http://localhost:${process.env.APPLICATION_PORT}/${contentDetails.identifier}`;
-        } 
+        }
       } catch(error) {
         this.standardLog.error({ id: 'CONTENT_DOWNLOADER_JSON_READ_FAILED', message: `Failed to read JSON file`, error });
         metaData.children = this.createHierarchy(_.cloneDeep(_.get(manifestJson, "archive.items")), metaData);
