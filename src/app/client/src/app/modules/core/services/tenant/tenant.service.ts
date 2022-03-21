@@ -132,7 +132,7 @@ export class TenantService extends DataService {
         try {
           if (JSON.parse(data.result.response.value)) { configResponse = data; }
         } catch (parseJSONResponse) {
-          console.error('org settings parse error => ', parseJSONResponse);
+          // console.error('org settings parse error => ', parseJSONResponse);
         }
         return configResponse;
       } else {
