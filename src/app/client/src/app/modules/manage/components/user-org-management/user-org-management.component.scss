@@ -96,3 +96,11 @@
         background: var(--sbt-compt-bg);
     }
   }
+
+  ::ng-deep {
+      table.dataTable tbody td,
+      table.dataTable tbody th {
+        padding: 8px 18px;
+      }
+    }
+  
