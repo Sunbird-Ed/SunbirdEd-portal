@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupHeaderComponent } from './group-header.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -59,7 +59,7 @@ xdescribe('GroupHeaderComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [GroupHeaderComponent],
       imports: [SuiModule, CommonConsumptionModule, SharedModule.forRoot(), HttpClientModule, RouterTestingModule],

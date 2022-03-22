@@ -1,5 +1,5 @@
 import { SharedModule } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService, ConnectionService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { NetworkStatusComponent } from './network-status.component';
@@ -14,7 +14,7 @@ describe('NetworkStatusComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
       providers: [ResourceService, ConnectionService, { provide: Router, useClass: RouterStub }]

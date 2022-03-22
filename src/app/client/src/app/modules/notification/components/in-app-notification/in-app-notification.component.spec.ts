@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { InAppNotificationComponent } from './in-app-notification.component';
 
@@ -61,7 +61,7 @@ xdescribe('InAppNotificationComponent', () => {
     notificationUpdate() { return observableOf({}); }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [InAppNotificationComponent],
       imports: [SuiModule, SuiModalModule, SharedModule.forRoot(), CommonConsumptionModule, HttpClientTestingModule, TelemetryModule.forRoot(), SbNotificationModule],

@@ -1,4 +1,4 @@
-import { async, fakeAsync, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { ObservationUtilService } from './observation-util.service';
 import { UserService} from '../user/user.service';
 import { FormService } from '../form/form.service';

@@ -1,6 +1,6 @@
 import { ExploreCourseComponent } from './explore-course.component'; // SearchService
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, FormService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -53,7 +53,7 @@ describe('ExploreCourseComponent', () => {
     public changeParams(params) { this.paramsMock.next(params); }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreCourseComponent],

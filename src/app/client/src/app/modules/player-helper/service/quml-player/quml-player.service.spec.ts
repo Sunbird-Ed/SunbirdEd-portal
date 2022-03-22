@@ -12,7 +12,7 @@ xdescribe('qumlPlayerService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterModule.forRoot([])],
+      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' })],
       providers: [QumlPlayerService, ConfigService]
     });
   });

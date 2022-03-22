@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ForumComponent } from './forum.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -27,7 +27,7 @@ xdescribe('ForumComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ForumComponent],
       imports: [SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule, BrowserAnimationsModule],

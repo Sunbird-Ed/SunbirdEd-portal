@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ShareLinkComponent } from './share-link.component';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services/index';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -23,7 +23,7 @@ describe('ShareLinkComponent', () => {
     };
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule , HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

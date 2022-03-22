@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UploadedComponent } from './uploaded.component';
@@ -52,7 +52,7 @@ describe('UploadedComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [UploadedComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),

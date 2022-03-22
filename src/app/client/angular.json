@@ -101,47 +101,47 @@
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "bundleName": "semanticDropdown"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/dropdown.min.js",
                 "bundleName": "semanticDropdown"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "bundleName": "semanticModal"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/dimmer.min.js",
                 "bundleName": "semanticModal"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/modal.min.js",
                 "bundleName": "semanticModal"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "bundleName": "semanticTreePicker"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/dimmer.min.js",
                 "bundleName": "semanticTreePicker"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui/modal.min.js",
                 "bundleName": "semanticTreePicker"
               },
               {
-                "inject": false,
+                "inject": true,
                 "input": "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
                 "bundleName": "semanticTreePicker"
               }
@@ -158,7 +158,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": false,
@@ -181,7 +180,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": false,
@@ -204,7 +202,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": false,
@@ -227,7 +224,6 @@
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
-              "extractCss": false,
               "namedChunks": true,
               "aot": false,
               "extractLicenses": false,

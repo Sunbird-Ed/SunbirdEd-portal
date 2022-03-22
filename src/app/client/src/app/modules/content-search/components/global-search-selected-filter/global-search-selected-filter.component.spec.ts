@@ -1,6 +1,6 @@
 import { GlobalSearchSelectedFilterComponent } from './global-search-selected-filter.component';
 import { Response } from './global-search-selected-filter.component.spec.data';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import * as _ from 'lodash-es';
@@ -30,7 +30,7 @@ describe('GlobalSearchSelectedFilterComponent', () => {
     };
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [GlobalSearchSelectedFilterComponent],

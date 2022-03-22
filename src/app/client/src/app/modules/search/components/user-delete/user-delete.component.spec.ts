@@ -2,7 +2,7 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 
 import { UserSearchService } from './../../services/user-search/user-search.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
@@ -40,7 +40,7 @@ describe('UserDeleteComponent', () => {
     'params': observableOf({ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
       declarations: [UserDeleteComponent],

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule, LayoutService, IUserProfile } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, inject} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -35,7 +35,7 @@ describe('SearchComponent', () => {
     });
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(),

@@ -1,7 +1,7 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 // Import NG testing module(s)
-import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LimitedPublishedComponent } from './limited-published.component';
@@ -66,7 +66,7 @@ xdescribe('LimitedPublishedComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [LimitedPublishedComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),

@@ -1,5 +1,5 @@
 import { CollaborationContentFilterComponent } from './collaboration-content-filter.component';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
@@ -24,7 +24,7 @@ describe('CollaborationContentFilterComponent', () => {
     'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CollaborationContentFilterComponent ],
       imports: [HttpClientTestingModule, SharedModule.forRoot()],

@@ -6,7 +6,7 @@ import { LearnModule, CourseBatchService, CourseConsumptionService} from '@sunbi
 import {UpdateCourseBatchComponent} from './update-course-batch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import {SharedModule, ResourceService, ToasterService} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { By } from '@angular/platform-browser';
@@ -74,7 +74,7 @@ xdescribe('UpdateCourseBatchComponent', () => {
   let component: UpdateCourseBatchComponent;
   let fixture: ComponentFixture<UpdateCourseBatchComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [UpdateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],

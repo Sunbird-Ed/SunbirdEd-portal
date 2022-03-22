@@ -1,12 +1,12 @@
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { FrameworkCatLabelTranslatePipe } from './framework-label-translate.pipe';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('FrameworkCatLabelTranslatePipe', () => {
     configureTestSuite()
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [FrameworkCatLabelTranslatePipe],
             imports: [SharedModule.forRoot(), HttpClientTestingModule],

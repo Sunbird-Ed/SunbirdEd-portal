@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { DashboardModule } from '@sunbird/dashboard';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DatasetComponent } from './dataset.component';
 import { CoreModule } from '@sunbird/core';
 import { ReportService, DatasetService } from '../../services';
@@ -42,7 +42,7 @@ xdescribe('DatasetComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), DashboardModule, RouterTestingModule, BrowserAnimationsModule],
       providers: [

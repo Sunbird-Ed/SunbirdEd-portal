@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { FancyTreeComponent } from './fancy-tree.component';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +16,7 @@ describe('FancyTreeComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FancyTreeComponent ],
       providers: [ { provide: ActivatedRoute, useValue: fakeActivatedRoute } ]

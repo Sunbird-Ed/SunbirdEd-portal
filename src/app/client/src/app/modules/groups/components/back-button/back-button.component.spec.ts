@@ -1,7 +1,7 @@
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { BackButtonComponent } from './back-button.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -14,7 +14,7 @@ describe('BackButtonComponent', () => {
   let fixture: ComponentFixture<BackButtonComponent>;
   configureTestSuite();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BackButtonComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot()],

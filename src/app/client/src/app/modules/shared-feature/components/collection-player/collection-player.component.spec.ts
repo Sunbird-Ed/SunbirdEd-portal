@@ -1,6 +1,6 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, of, throwError } from 'rxjs';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { CoreModule, CopyContentService, GeneraliseLabelService } from '@sunbird/core';
 import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ContentUtilsServiceService,
@@ -78,7 +78,7 @@ describe('CollectionPlayerComponent', () => {
     languageSelected$: of({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule, TelemetryModule.forRoot()],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { GroupsService } from '@sunbird/groups';
 import { ToasterService, SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
@@ -29,7 +29,7 @@ xdescribe('DashboardComponent', () => {
     messages: { fmsg: { m0085: 'Fetching CSV failed, please try again later...' } }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DashboardComponent],
       imports: [

@@ -1,6 +1,6 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { CollaboratingOnComponent } from './collaborating-on.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
@@ -58,7 +58,7 @@ xdescribe('CollaboratingOnComponent', () => {
   };
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CollaboratingOnComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, OrderModule, CoreModule, TelemetryModule.forRoot(), SharedModule.forRoot()],

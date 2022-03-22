@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService, PaginationService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService, FormService } from '@sunbird/core';
@@ -53,7 +53,7 @@ describe('ViewAllComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],

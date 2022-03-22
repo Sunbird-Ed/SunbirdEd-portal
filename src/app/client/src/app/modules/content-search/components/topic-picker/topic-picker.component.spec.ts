@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TopicPickerComponent } from './topic-picker.component';
 import { FormsModule } from '@angular/forms';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
@@ -49,7 +49,7 @@ describe('TopicPickerComponent', () => {
         }
     };
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [FormsModule, HttpClientTestingModule],
             declarations: [TopicPickerComponent],

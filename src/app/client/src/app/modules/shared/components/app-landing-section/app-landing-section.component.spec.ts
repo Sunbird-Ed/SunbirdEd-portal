@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SharedModule } from '@sunbird/shared';
 import { AppLandingSectionComponent } from './app-landing-section.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -17,7 +17,7 @@ describe('AppLandingSectionComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientModule, SharedModule.forRoot(), TranslateModule.forRoot({
          loader: {

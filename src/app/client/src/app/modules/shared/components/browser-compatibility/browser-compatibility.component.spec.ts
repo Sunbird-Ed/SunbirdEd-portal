@@ -1,5 +1,5 @@
 import { of as observableOf, Observable, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
@@ -20,7 +20,7 @@ describe('BrowserCompatibilityComponent', () => {
     browser: 'chrome'
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, TranslateModule.forRoot({
          loader: {

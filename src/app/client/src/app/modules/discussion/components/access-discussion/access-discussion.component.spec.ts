@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AccessDiscussionComponent } from './access-discussion.component';
 import { DiscussionService } from '../../services';
 import { of as observableOf, throwError } from 'rxjs';
@@ -28,10 +28,10 @@ describe('AccessDiscussionComponent', () => {
 
   configureTestSuite();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AccessDiscussionComponent],
-      imports: [SharedModule.forRoot(), RouterModule.forRoot([]), HttpClientTestingModule, HttpClientModule, RouterTestingModule],
+      imports: [SharedModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), HttpClientTestingModule, HttpClientModule, RouterTestingModule],
       providers: [{ provide: ResourceService, useValue: resourceBundle }, DiscussionService, ConfigService,
       { provide: APP_BASE_HREF, useValue: '/' },
         TelemetryService, NavigationHelperService]

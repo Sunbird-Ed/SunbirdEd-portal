@@ -6,7 +6,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { PopupComponent } from './popup.component';
@@ -24,7 +24,7 @@ describe('PopupComponent', () => {
     url: '/';
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [PopupComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientTestingModule, FormsModule, BrowserAnimationsModule],

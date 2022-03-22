@@ -1,6 +1,6 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks, waitForAsync } from '@angular/core/testing';
 import { ReviewsubmissionsContentplayerComponent } from './reviewsubmissions-contentplayer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -35,7 +35,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ReviewsubmissionsContentplayerComponent],

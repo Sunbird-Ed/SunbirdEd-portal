@@ -1,6 +1,6 @@
 import { fakeActivatedRoute } from './../../../services/groups/groups.service.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ActivityFormComponent } from './activity-form.component';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
@@ -29,7 +29,7 @@ describe('ActivityFormComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityFormComponent],
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, TelemetryModule.forRoot(), HttpClientTestingModule,

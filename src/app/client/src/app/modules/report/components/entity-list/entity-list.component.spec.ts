@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EntityListComponent } from './entity-list.component';
 import {
@@ -34,7 +34,7 @@ xdescribe('EntityListComponent', () => {
   };
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModalModule, SharedModule, CoreModule, InfiniteScrollModule,BrowserAnimationsModule,NoopAnimationsModule],
       declarations: [ EntityListComponent ],

@@ -1,7 +1,7 @@
 import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
-import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';
 import {
@@ -80,7 +80,7 @@ describe('MainHeaderComponent', () => {
     notificationUpdate() { return observableOf({}); }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot(), RouterTestingModule, CommonConsumptionModule],

@@ -1,5 +1,5 @@
 import { mockChartData } from './usage-reports.spec.data';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Observable, of as observableOf, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UsageService, CourseProgressService } from './../../services';
@@ -22,7 +22,7 @@ describe('UsageReportsComponent', () => {
   };
   const routerStub = { url: '/dashBoard/organization' };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],

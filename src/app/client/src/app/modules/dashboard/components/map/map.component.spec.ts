@@ -3,7 +3,7 @@ import { DashboardModule } from './../../dashboard.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ToasterService } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MapComponent } from './map.component';
 import { ReportService } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -16,7 +16,7 @@ describe('MapComponent', () => {
 
   configureTestSuite();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, DashboardModule, RouterTestingModule, TelemetryModule.forRoot()],

@@ -1,7 +1,7 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { ExploreGroupComponent } from './explore-group.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -34,7 +34,7 @@ describe('ExploreGroupComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreGroupComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, RouterTestingModule],

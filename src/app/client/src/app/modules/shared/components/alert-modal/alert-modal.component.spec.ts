@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AlertModalComponent } from './alert-modal.component';
 import {
   SuiModal,
@@ -31,7 +31,7 @@ xdescribe('AlertModalComponent', () => {
     context: modalContext,
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

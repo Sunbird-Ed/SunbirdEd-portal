@@ -1,5 +1,5 @@
 import { throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignBadgesContentComponent } from './assign-badges-content.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -20,7 +20,7 @@ describe('AssignBadgesContentComponent', () => {
     'params': observableOf({ collectionId: 'Test_Textbook2_8907797' })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AssignBadgesContentComponent],
       imports: [SuiModule, CoreModule, SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],

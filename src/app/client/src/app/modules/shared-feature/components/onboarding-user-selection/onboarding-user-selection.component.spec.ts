@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { OnboardingUserSelectionComponent } from './onboarding-user-selection.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -27,7 +27,7 @@ xdescribe('OnboardingUserSelectionComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [OnboardingUserSelectionComponent],
       imports: [

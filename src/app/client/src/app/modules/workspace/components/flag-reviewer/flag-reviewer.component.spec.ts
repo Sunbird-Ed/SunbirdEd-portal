@@ -1,7 +1,7 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { FlagReviewerComponent } from './flag-reviewer.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
@@ -67,7 +67,7 @@ describe('FlagReviewerComponent', () => {
     userRoles: ['PUBLIC']
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [FlagReviewerComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],

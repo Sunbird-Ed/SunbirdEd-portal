@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { BrowseImagePopupComponent } from './browse-image-popup.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -27,7 +27,7 @@ describe('BrowseImagePopupComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, FormsModule, CoreModule, ReactiveFormsModule, HttpClientTestingModule, SharedModule],
       providers: [

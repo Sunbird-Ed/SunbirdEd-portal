@@ -3,7 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
 import { ResourceService, ConfigService, BrowserCacheTtlService, InterpolatePipe } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { OfflineBannerComponent } from './offline-banner.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -27,7 +27,7 @@ describe('OfflineBannerComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

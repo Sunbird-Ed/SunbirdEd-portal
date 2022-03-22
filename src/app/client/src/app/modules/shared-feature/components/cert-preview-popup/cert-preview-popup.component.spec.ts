@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CertPreviewPopupComponent } from './cert-preview-popup.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, SharedModule } from '@sunbird/shared';
@@ -13,7 +13,7 @@ xdescribe('CertPreviewPopupComponent', () => {
   const resourceBundle = {
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SharedModule.forRoot(), BrowserAnimationsModule],
       declarations: [ CertPreviewPopupComponent ],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,7 +29,7 @@ xdescribe('SelectOptionGroupComponent', () => {
     }]
   }];
   const event = {label: 'Publisher', selectedOption: '012519677821', value: 'channel'};
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, ReactiveFormsModule,
         TranslateModule.forRoot({

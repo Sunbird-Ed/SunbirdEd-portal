@@ -1,6 +1,6 @@
 
 import { of as observableOf, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
 import { CoreModule, OrgDetailsService, ContentService, PublicDataService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -46,9 +46,9 @@ describe('LanguageDropdownComponent', () => {
         }
     };
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],
+            imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([], { relativeLinkResolution: 'legacy' })],
             providers: [ConfigService, OrgDetailsService, CacheService, BrowserCacheTtlService, UtilService,
                 { provide: ResourceService, useValue: resourceBundle }
             ],

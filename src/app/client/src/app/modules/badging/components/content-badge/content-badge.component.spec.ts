@@ -1,6 +1,6 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentBadgeComponent } from './content-badge.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -22,7 +22,7 @@ describe('ContentBadgeComponent', () => {
     'params': observableOf({ collectionId: 'Test_Textbook2_8907797' })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentBadgeComponent],
       imports: [SuiModule, CoreModule, SharedModule.forRoot(), HttpClientTestingModule],

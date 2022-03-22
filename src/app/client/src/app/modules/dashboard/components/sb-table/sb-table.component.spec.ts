@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SbTableComponent } from './sb-table.component';
 import { mockData } from './sb-table.component.spec.data';
@@ -22,7 +22,7 @@ describe('SbTableComponent', () => {
       }
     }
   };
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SbTableComponent ],
       schemas: [NO_ERRORS_SCHEMA],

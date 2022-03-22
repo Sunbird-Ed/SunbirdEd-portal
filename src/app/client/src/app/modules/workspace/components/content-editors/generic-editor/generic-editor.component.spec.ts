@@ -1,5 +1,5 @@
 
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { GenericEditorComponent } from './generic-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -36,7 +36,7 @@ describe('GenericEditorComponent', () => {
   let component: GenericEditorComponent;
   let fixture: ComponentFixture<GenericEditorComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [GenericEditorComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],

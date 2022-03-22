@@ -1,7 +1,7 @@
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { BatchCardComponent } from '@sunbird/shared';
 import { BatchListComponent } from './batch-list.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -69,7 +69,7 @@ describe('BatchListComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [BatchListComponent],
       schemas: [NO_ERRORS_SCHEMA],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RecoverAccountService } from './../../services';
 import { IdentifyAccountComponent } from './identify-account.component';
 import { CoreModule } from '@sunbird/core';
@@ -60,7 +60,7 @@ xdescribe('IdentifyAccountComponent', () => {
     }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IdentifyAccountComponent],
       schemas: [NO_ERRORS_SCHEMA],

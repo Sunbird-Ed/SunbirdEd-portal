@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContentCreditsComponent } from './content-credits.component';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, InterpolatePipe } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -13,7 +13,7 @@ describe('ContentCreditsComponent', () => {
   let component: ContentCreditsComponent;
   let fixture: ComponentFixture<ContentCreditsComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

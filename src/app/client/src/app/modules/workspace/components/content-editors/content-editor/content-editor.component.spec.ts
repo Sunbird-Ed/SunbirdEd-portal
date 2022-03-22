@@ -1,6 +1,6 @@
 
 import { of as observableOf, throwError } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, tick, waitForAsync } from '@angular/core/testing';
 import { ContentEditorComponent } from './content-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -38,7 +38,7 @@ describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
   let fixture: ComponentFixture<ContentEditorComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],
       imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],

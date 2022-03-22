@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService, IUserProfile } from '@sunbird/shared';
 import { CoreModule, UserService, PlayerService } from '@sunbird/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -65,7 +65,7 @@ describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [ContentPlayerComponent],

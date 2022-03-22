@@ -1,5 +1,5 @@
 import { ModalWrapperComponent, ModalContentDirective } from './../modal-wrapper/modal-wrapper.component';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui-v9';
 import {ResourceService} from '@sunbird/shared';
 import {TelemetryModule} from '@sunbird/telemetry';
@@ -20,7 +20,7 @@ describe('AccountMergeModalComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule, MatDialogModule,
         BrowserAnimationsModule],

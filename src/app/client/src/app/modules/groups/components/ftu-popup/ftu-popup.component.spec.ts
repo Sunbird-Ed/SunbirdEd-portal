@@ -2,7 +2,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryService } from '@sunbird/telemetry';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { FtuPopupComponent } from './ftu-popup.component';
 import { SlickModule } from 'ngx-slick';
@@ -29,7 +29,7 @@ xdescribe('FtuPopupComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FtuPopupComponent ],
       imports: [HttpClientModule, SlickModule, SuiModalModule, SharedModule.forRoot(), RouterTestingModule],

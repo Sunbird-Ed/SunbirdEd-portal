@@ -1,4 +1,4 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
@@ -79,7 +79,7 @@ xdescribe('UserOrgManagementComponent', () => {
   let component: UserOrgManagementComponent;
   let fixture: ComponentFixture<UserOrgManagementComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

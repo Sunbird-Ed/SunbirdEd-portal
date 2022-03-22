@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { ContentPlayerComponent } from './content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -16,10 +16,10 @@ xdescribe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentPlayerComponent],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), SharedModule.forRoot()],
       providers: [
         ToasterService, NavigationHelperService, { provide: APP_BASE_HREF, useValue: '/' }
       ],

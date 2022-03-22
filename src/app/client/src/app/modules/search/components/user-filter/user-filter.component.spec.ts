@@ -1,5 +1,5 @@
 import { UserSearchComponent } from './../user-search/user-search.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
  SharedModule, ServerResponse, PaginationService, ResourceService,
@@ -27,7 +27,7 @@ describe('UserFilterComponent', () => {
    navigate = jasmine.createSpy('navigate');
  }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [ UserFilterComponent ],
@@ -46,7 +46,7 @@ describe('UserFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('valueField must be code', async(() => {
+  it('valueField must be code', waitForAsync(() => {
       expect(component.valueField).toEqual('code');
   }));
 

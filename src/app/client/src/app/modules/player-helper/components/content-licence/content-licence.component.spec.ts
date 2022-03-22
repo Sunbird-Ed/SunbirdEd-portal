@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentLicenceComponent } from './content-licence.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
@@ -23,7 +23,7 @@ describe('CreditsAndLicenceComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentLicenceComponent],
       imports: [CommonConsumptionModule, BrowserAnimationsModule, SharedModule.forRoot()],

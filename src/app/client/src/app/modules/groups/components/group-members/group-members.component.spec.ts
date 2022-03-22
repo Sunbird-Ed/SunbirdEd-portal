@@ -1,6 +1,6 @@
 import { IGroupMember } from './../../interfaces/group';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GroupMembersComponent } from './group-members.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -54,7 +54,7 @@ xdescribe('GroupMembersComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [GroupMembersComponent],
       imports: [SharedModule.forRoot(),

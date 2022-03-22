@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SharedModule, ConnectionService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InfoCardComponent } from './info-card.component';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -25,7 +25,7 @@ xdescribe('InfoCardComponent', () => {
   }
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [ InfoCardComponent ],

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, OrgDetailsService, SearchService, UserService, CoursesService, PlayerService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -83,7 +83,7 @@ xdescribe('DialCodeComponent', () => {
     url = 'browse';
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [DialCodeComponent],

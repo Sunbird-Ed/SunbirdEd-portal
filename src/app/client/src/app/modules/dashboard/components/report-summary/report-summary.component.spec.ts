@@ -2,7 +2,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { DashboardModule } from '@sunbird/dashboard';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ReportSummaryComponent } from './report-summary.component';
 import { ReportService } from '../../services';
@@ -13,7 +13,7 @@ describe('ReportSummaryComponent', () => {
   let component: ReportSummaryComponent;
   let fixture: ComponentFixture<ReportSummaryComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [],
       providers: [ReportService],

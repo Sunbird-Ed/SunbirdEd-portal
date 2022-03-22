@@ -1,6 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, FormService, UserService } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, LayoutService,
@@ -35,7 +35,7 @@ describe('ContentTypeComponent', () => {
       },
     }
   };
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [ContentTypeComponent, OnlineOnlyDirective, InterpolatePipe],

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import {MergeAccountStatusComponent} from './merge-account-status.component';
@@ -19,7 +19,7 @@ describe('MergeAccountStatusComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SharedModule.forRoot(), BrowserAnimationsModule],
       declarations: [MergeAccountStatusComponent],

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ToasterService, ResourceService, ConfigService} from '../../services';
 import {OnDemandReportService} from '../../services/on-demand-report/on-demand-report.service';
 import {SuiModule} from 'ng2-semantic-ui-v9';
@@ -27,7 +27,7 @@ xdescribe('OnDemandReportsComponent', () => {
   };
   let component: OnDemandReportsComponent;
   let fixture: ComponentFixture<OnDemandReportsComponent>;
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe, InterpolatePipe],
       imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule,

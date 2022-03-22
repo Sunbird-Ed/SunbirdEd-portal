@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TelemetryImportComponent } from './telemetry-import.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -27,7 +27,7 @@ xdescribe('TelemetryImportComponent', () => {
       }
     };
   }
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryImportComponent],
       imports: [TelemetryModule.forRoot(), FileSizeModule, SharedModule.forRoot(), HttpClientTestingModule],

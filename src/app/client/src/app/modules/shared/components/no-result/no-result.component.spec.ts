@@ -1,4 +1,4 @@
-import { async, ComponentFixture, flush, TestBed, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, flush, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { NoResultComponent } from './no-result.component';
 import { SharedModule } from '@sunbird/shared';
 import { ResourceService } from '../../services/index';
@@ -17,7 +17,7 @@ describe('NoResultComponent', () => {
     languageSelected$: of({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ SharedModule.forRoot() ],
       providers: [ ResourceService,

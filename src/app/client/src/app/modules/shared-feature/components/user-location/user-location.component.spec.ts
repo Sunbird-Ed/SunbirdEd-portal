@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -28,7 +28,7 @@ describe('UserLocationComponent', () => {
   let configService;
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,

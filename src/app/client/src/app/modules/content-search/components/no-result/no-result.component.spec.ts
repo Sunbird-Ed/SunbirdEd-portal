@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NoResultComponent } from './no-result.component';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -29,7 +29,7 @@ describe('NoResultComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule, SharedModule.forRoot(), SuiModule, TelemetryModule.forRoot(), PlayerHelperModule],
       declarations: [NoResultComponent],

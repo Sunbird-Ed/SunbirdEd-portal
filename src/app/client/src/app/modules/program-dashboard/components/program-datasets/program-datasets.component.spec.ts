@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, flush, waitForAsync } from '@angular/core/testing';
 import { DatasetsComponent } from './program-datasets.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { KendraService, UserService, FormService } from '@sunbird/core';
@@ -40,7 +40,7 @@ describe('DatasetsComponent', () => {
   };
   configureTestSuite();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,

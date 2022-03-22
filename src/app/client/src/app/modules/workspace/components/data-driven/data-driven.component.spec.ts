@@ -1,6 +1,6 @@
 
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataDrivenComponent } from './data-driven.component';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
@@ -65,7 +65,7 @@ xdescribe('DataDrivenComponent', () => {
     })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot()],

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -25,7 +25,7 @@ describe('SsoMergeConfirmationComponent', () => {
   }
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, TelemetryModule.forRoot()],
       declarations: [SsoMergeConfirmationComponent, InterpolatePipe],

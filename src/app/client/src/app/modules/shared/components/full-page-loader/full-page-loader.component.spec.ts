@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FullPageLoaderComponent } from './full-page-loader.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -7,7 +7,7 @@ describe('FullPageLoaderComponent', () => {
   let component: FullPageLoaderComponent;
   let fixture: ComponentFixture<FullPageLoaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FullPageLoaderComponent ],
       schemas: [

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SystemWarningComponent } from './system-warning.component';
 import { ResourceService } from '../../services/resource/resource.service';
@@ -21,7 +21,7 @@ xdescribe('SystemWarningComponent', () => {
       },
     }
   };
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SystemWarningComponent],
       imports: [],

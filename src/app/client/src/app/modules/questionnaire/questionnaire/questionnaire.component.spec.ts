@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BehaviorSubject, throwError, of, of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { QuestionnaireComponent } from './questionnaire.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -101,7 +101,7 @@ xdescribe('QuestionaireComponent', () => {
       this.snapshot.queryParams = queryParams;
     }
   }
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         SuiModalModule,

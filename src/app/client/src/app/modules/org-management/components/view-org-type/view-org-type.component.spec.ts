@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { mockRes } from './view-org-type.component.spec.data';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -34,7 +34,7 @@ describe('ViewOrgTypeComponent', () => {
         navigate = jasmine.createSpy('navigate');
     }
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [ViewOrgTypeComponent],
             imports: [HttpClientTestingModule,

@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { LoadContentComponent } from './load-content.component';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -36,10 +36,10 @@ xdescribe('LoadContentComponent', () => {
     },
     instance: 'tenant'
   };
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LoadContentComponent ],
-      imports: [ SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),
+      imports: [ SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
     HttpClientTestingModule, BrowserAnimationsModule ],
     providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
       { provide: ResourceService, useValue: resourceBundle }]

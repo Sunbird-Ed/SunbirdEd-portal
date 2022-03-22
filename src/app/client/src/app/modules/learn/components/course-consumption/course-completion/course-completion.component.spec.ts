@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -17,7 +17,7 @@ xdescribe('CourseCompletionComponent', () => {
     snapshot: { data: { telemetry: { env: 'Course', pageid: 'course-player' } } }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CourseCompletionComponent],
       imports: [SharedModule.forRoot(),

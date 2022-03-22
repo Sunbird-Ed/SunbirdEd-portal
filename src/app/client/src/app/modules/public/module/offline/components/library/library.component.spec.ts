@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
@@ -86,7 +86,7 @@ describe('LibraryComponent', () => {
     public changeParams(params) { this.paramsMock.next(params); }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         LibraryComponent
@@ -94,7 +94,7 @@ describe('LibraryComponent', () => {
       imports: [
         CommonConsumptionModule,
         TelemetryModule.forRoot(),
-        RouterModule.forRoot([]),
+        RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
         HttpClientModule,
         SuiModule,
         SlickModule,

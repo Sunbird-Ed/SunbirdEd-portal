@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -19,7 +19,7 @@ describe('CollectionPlayerMetadataComponent', () => {
     'params': observableOf({ collectionId: 'LP_FT_TextBook2' })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerMetadataComponent, DateFormatPipe, InterpolatePipe],
       imports: [HttpClientTestingModule, RouterTestingModule, TranslateModule.forRoot({

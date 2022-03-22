@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { OfflineHelpVideosComponent } from './offline-help-videos.component';
 import { of } from 'rxjs';
@@ -14,7 +14,7 @@ xdescribe('OfflineHelpVideosComponent', () => {
   let component: OfflineHelpVideosComponent;
   let fixture: ComponentFixture<OfflineHelpVideosComponent>;
   let resourceServiceStub;
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const fakeActivatedRoute = {
       snapshot: {
         data: {

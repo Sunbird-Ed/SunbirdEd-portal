@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FullPageModalComponent } from './full-page-modal.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -9,7 +9,7 @@ describe('FullPageModalComponent', () => {
   let component: FullPageModalComponent;
   let fixture: ComponentFixture<FullPageModalComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, MatDialogModule, BrowserAnimationsModule],
       declarations: [ FullPageModalComponent, ModalWrapperComponent, ModalContentDirective]

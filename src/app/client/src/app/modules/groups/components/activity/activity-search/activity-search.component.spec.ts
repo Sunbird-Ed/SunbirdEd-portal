@@ -1,7 +1,7 @@
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CoreModule, FrameworkService, SearchService, FormService } from '@sunbird/core';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
@@ -72,7 +72,7 @@ xdescribe('ActivitySearchComponent', () => {
   }
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ActivitySearchComponent],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),

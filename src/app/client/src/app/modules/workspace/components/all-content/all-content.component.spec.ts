@@ -1,7 +1,7 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { AllContentComponent } from './all-content.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
@@ -59,7 +59,7 @@ xdescribe('AllContentComponent', () => {
   };
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AllContentComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -27,7 +27,7 @@ describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
   let fixture: ComponentFixture<PageSectionComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(), NgInviewModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [PageSectionComponent],

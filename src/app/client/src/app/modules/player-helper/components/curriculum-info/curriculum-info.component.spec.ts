@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService } from '@sunbird/shared';
 import { CurriculumInfoComponent, ICurriculum } from './curriculum-info.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -21,7 +21,7 @@ describe('CurriculumInfoComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CurriculumInfoComponent],
       providers: [{ provide: ResourceService, useValue: resourceServiceMockData }]

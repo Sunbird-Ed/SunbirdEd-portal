@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, flush, waitForAsync } from '@angular/core/testing';
 import { MaterialAutoCompleteComponent } from './material-auto-complete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -9,7 +9,7 @@ xdescribe('MaterialAutoCompleteComponent', () => {
   let component: MaterialAutoCompleteComponent;
   let fixture: ComponentFixture<MaterialAutoCompleteComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       imports: [],

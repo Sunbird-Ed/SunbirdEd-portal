@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed , async} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { ToasterService } from '@sunbird/shared';

@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
@@ -52,7 +52,7 @@ describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [BatchDetailsComponent],

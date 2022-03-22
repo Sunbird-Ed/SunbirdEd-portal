@@ -7,7 +7,7 @@ import { UserService, LearnerService, CoursesService, PermissionService, TenantS
   PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
 } from '@sunbird/core';
 import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
-import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -71,7 +71,7 @@ describe('AppComponent', () => {
     languageSelected$: of({ value: 'en', dir: 'ltr' })
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         RouterTestingModule, TranslateModule.forRoot()],

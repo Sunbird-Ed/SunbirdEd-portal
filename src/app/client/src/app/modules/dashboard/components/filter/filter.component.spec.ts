@@ -1,5 +1,5 @@
 
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { FilterComponent } from './filter.component';
 // import { FilterComponent } from '../';
 import { mockChartData } from './filter.component.spec.data';
@@ -56,7 +56,7 @@ describe('FilterComponent', () => {
   };
   configureTestSuite();
   const formBuilder: FormBuilder = new FormBuilder();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [FilterComponent],
       schemas: [NO_ERRORS_SCHEMA],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CertificateConfigurationComponent } from './certificate-configuration.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
@@ -65,10 +65,10 @@ describe('CertificateConfigurationComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, CoreModule,
-        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), SharedModule.forRoot()],
+        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), SharedModule.forRoot()],
       declarations: [ CertificateConfigurationComponent],
       providers: [
         ConfigService,

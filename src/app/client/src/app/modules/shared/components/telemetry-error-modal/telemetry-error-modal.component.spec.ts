@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TelemetryErrorModalComponent } from './telemetry-error-modal.component';
@@ -14,7 +14,7 @@ describe('TelemetryErrorModalComponent', () => {
 
   configureTestSuite();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TelemetryErrorModalComponent ],
       imports: [SuiModule],

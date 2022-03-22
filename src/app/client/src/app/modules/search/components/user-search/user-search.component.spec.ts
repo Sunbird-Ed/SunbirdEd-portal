@@ -1,7 +1,7 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { UserFilterComponent } from './../user-filter/user-filter.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
@@ -61,7 +61,7 @@ describe('UserSearchComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       declarations: [UserSearchComponent, UserFilterComponent],

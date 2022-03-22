@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CacheService } from 'ng2-cache-service';
 import { AppLoaderComponent } from './app-loader.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -12,7 +12,7 @@ describe('AppLoaderComponent', () => {
   let component: AppLoaderComponent;
   let fixture: ComponentFixture<AppLoaderComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserCacheTtlService, ConfigService, ResourceService} from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -15,7 +15,7 @@ xdescribe('DesktopAppUpdateComponent', () => {
   let component: DesktopAppUpdateComponent;
   let fixture: ComponentFixture<DesktopAppUpdateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DesktopAppUpdateComponent, ModalContentDirective, ModalWrapperComponent],
       imports: [SuiModalModule, HttpClientTestingModule, TelemetryModule, MatDialogModule],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { AddActivityContentTypesComponent } from './add-activity-content-types.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule, ToasterService, ResourceService, ConfigService, BrowserCacheTtlService, NavigationHelperService } from '@sunbird/shared';
@@ -61,7 +61,7 @@ xdescribe('AddActivityContentTypesComponent', () => {
     })
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [AddActivityContentTypesComponent],

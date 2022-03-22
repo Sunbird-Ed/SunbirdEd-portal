@@ -1,7 +1,7 @@
 
 import { of, Observable } from 'rxjs';
 import { CourseHierarchyGetMockResponse, coursePlayerMockData } from './public-course-player.component.mock.data';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PublicCoursePlayerComponent } from './public-course-player.component';
 import { SharedModule, ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
 import { CoreModule, CoursesService, GeneraliseLabelService } from '@sunbird/core';
@@ -57,7 +57,7 @@ describe('PublicCoursePlayerComponent', () => {
   let fixture: ComponentFixture<PublicCoursePlayerComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, generaliseLabelService;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [PublicCoursePlayerComponent],

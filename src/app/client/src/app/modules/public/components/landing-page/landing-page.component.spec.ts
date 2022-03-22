@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { LandingPageComponent } from './landing-page.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {  SharedModule } from '@sunbird/shared';
@@ -9,7 +9,7 @@ describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
   let fixture: ComponentFixture<LandingPageComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, SharedModule.forRoot()],
       declarations: [LandingPageComponent],

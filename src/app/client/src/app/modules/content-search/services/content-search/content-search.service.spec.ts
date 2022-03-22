@@ -10,7 +10,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 xdescribe('ContentSearchService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],
+    imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([], { relativeLinkResolution: 'legacy' })],
   }));
 
   it('should be created', () => {

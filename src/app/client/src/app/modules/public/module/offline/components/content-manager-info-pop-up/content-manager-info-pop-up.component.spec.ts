@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ContentManagerInfoPopUpComponent } from './content-manager-info-pop-up.component';
 import { contantData } from './content-manager-info-pop-up.component.spec.data';
@@ -15,10 +15,10 @@ xdescribe('ContentManagerInfoPopUpComponent', () => {
   let component: ContentManagerInfoPopUpComponent;
   let fixture: ComponentFixture<ContentManagerInfoPopUpComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentManagerInfoPopUpComponent],
-      imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot(), RouterModule.forRoot([]),
+      imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
       BrowserAnimationsModule],
       providers: [
         ResourceService

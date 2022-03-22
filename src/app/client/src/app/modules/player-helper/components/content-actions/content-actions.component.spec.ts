@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContentActionsComponent } from './content-actions.component';
 import { actionsData } from './content-actions.component.spec.data';
 import { of, throwError } from 'rxjs';
@@ -35,10 +35,10 @@ describe('ContentActionsComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentActionsComponent],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), SharedModule.forRoot()],
       providers: [
         { provide: ActivatedRoute, useValue: ActivatedRouteStub },
         { provide: ResourceService, useValue: actionsData.resourceBundle },

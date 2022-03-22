@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 // Modules
@@ -46,7 +46,7 @@ describe('OrganisationComponent', () => {
   const consumptionDataset = 'consumption';
   const dashboardBaseUrl = 'dashBoard/organization';
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [OrganisationComponent],
       imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],

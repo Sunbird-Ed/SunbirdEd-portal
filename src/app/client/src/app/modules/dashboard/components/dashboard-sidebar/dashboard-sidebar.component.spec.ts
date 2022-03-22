@@ -3,7 +3,7 @@ import { CoreModule } from '@sunbird/core';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DashboardSidebarComponent } from './dashboard-sidebar.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -39,7 +39,7 @@ describe('DashboardSidebarComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DashboardSidebarComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, CoreModule, RouterTestingModule.withRoutes([])],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivityDashboardComponent } from './activity-dashboard.component';
 import { groupData, GroupsService } from '../../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -60,7 +60,7 @@ xdescribe('ActivityDashboardComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityDashboardComponent],
       imports: [

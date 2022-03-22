@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ExploreCurriculumCoursesComponent } from './explore-curriculum-courses.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -36,11 +36,11 @@ describe('ExploreCurriculumCoursesComponent', () => {
     url = jasmine.createSpy('url');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreCurriculumCoursesComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule, RouterModule.forRoot([])],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule, RouterModule.forRoot([], { relativeLinkResolution: 'legacy' })],
       providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle},
         { provide: Router, useClass: RouterStub }

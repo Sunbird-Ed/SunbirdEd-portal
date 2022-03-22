@@ -1,5 +1,5 @@
 import { VerifyAccountIdentifierComponent } from './verify-account-identifier.component';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RecoverAccountService } from './../../services';
 import { CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -49,7 +49,7 @@ xdescribe('VerifyAccountIdentifierComponent', () => {
     }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [VerifyAccountIdentifierComponent],
       schemas: [NO_ERRORS_SCHEMA],

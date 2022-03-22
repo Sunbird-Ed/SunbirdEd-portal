@@ -1,5 +1,5 @@
 import { of as observableOf, throwError } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContentManagerComponent } from './content-manager.component';
 import { ContentManagerService, ElectronDialogService } from '../../services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui-v9';
@@ -45,7 +45,7 @@ xdescribe('ContentManagerComponent', () => {
     loggedIn: true;
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
         RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule],

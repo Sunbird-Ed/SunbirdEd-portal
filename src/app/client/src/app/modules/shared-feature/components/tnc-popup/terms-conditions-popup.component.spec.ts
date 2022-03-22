@@ -3,7 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
 import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService, IUserProfile } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TermsAndConditionsPopupComponent } from './terms-conditions-popup.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -42,7 +42,7 @@ xdescribe('TermsAndConditionsPopupComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), SuiModule, CoreModule],

@@ -4,7 +4,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { MemberActionsComponent } from './member-actions.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -26,7 +26,7 @@ describe('MemberActionsComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MemberActionsComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule, BrowserAnimationsModule],

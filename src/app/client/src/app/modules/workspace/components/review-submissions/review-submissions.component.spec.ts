@@ -1,6 +1,6 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 // Import NG testing module(s)
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -59,7 +59,7 @@ describe('ReviewSubmissionsComponent', () => {
   let component: ReviewSubmissionsComponent;
   let fixture: ComponentFixture<ReviewSubmissionsComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ReviewSubmissionsComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),

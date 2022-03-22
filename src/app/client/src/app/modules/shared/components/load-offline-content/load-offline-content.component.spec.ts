@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { LoadOfflineContentComponent } from './load-offline-content.component';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -41,10 +41,10 @@ xdescribe('LoadOfflineContentComponent', () => {
     instance: 'tenant'
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),
+      imports: [SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
         HttpClientTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },

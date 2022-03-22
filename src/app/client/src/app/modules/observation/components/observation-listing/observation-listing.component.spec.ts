@@ -1,13 +1,6 @@
 import { ObservationListingComponent } from './observation-listing.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  tick,
-  fakeAsync,
-  flush,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, flush, waitForAsync } from '@angular/core/testing';
 import {
   ResourceService,
   ToasterService,
@@ -90,7 +83,7 @@ xdescribe('ObservationListingComponent', () => {
     languageSelected$: of({}),
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

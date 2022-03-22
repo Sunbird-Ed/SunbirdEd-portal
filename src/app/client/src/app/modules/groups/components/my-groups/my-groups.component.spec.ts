@@ -1,7 +1,7 @@
 import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP, acceptTnc } from './../../interfaces';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MyGroupsComponent } from './my-groups.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -36,7 +36,7 @@ xdescribe('MyGroupsComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],

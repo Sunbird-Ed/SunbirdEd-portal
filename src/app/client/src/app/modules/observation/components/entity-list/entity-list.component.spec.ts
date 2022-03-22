@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EntityListComponent } from './entity-list.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -7,7 +7,7 @@ describe('EntityListComponent', () => {
     let component: EntityListComponent;
     let fixture: ComponentFixture<EntityListComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [SuiModule],
             declarations: [EntityListComponent],

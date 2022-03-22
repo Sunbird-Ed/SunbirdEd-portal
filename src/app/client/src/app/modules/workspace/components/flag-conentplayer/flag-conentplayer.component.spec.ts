@@ -1,6 +1,6 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { FlagConentplayerComponent } from './flag-conentplayer.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -34,7 +34,7 @@ describe('FlagConentplayerComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [FlagConentplayerComponent],
       imports: [HttpClientTestingModule,

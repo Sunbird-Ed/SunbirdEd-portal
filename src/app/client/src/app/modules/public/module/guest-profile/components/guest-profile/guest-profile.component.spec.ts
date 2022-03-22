@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { AvatarModule } from 'ngx-avatar';
@@ -38,7 +38,7 @@ describe('GuestProfileComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [GuestProfileComponent],
       imports: [

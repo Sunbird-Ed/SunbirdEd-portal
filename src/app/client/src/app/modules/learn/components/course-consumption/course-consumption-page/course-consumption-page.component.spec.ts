@@ -2,7 +2,7 @@
 import {throwError, of,  Observable } from 'rxjs';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CourseHierarchyGetMockResponse } from './../course-player/course-player.component.mock.data';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { CourseConsumptionPageComponent } from './course-consumption-page.component';
 import {SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { CoreModule, CoursesService, LearnerService, GeneraliseLabelService } from '@sunbird/core';
@@ -69,7 +69,7 @@ describe('CourseConsumptionPageComponent', () => {
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService,
   navigationHelperService, generaliseLabelService;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot()],
       declarations: [ CourseConsumptionPageComponent ],

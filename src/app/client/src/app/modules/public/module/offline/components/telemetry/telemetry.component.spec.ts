@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService , ToasterService, ConnectionService} from '@sunbird/shared';
 import { FileSizeModule } from 'ngx-filesize';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TelemetryComponent } from './telemetry.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -34,7 +34,7 @@ xdescribe('TelemetryComponent', () => {
 
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TelemetryComponent ],
       imports: [ TelemetryModule.forRoot(), FileSizeModule, SharedModule.forRoot(), HttpClientTestingModule],

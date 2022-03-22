@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -13,7 +13,7 @@ describe('ConfirmPopupComponent', () => {
   let component: ConfirmPopupComponent;
   let fixture: ComponentFixture<ConfirmPopupComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPopupComponent, ModalWrapperComponent, ModalContentDirective],
       imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({

@@ -1,7 +1,7 @@
 
 import { of, Observable, throwError } from 'rxjs';
 import { CourseHierarchyGetMockResponse } from '../public-course-player/public-course-player.component.mock.data';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PublicCourseConsumptionPageComponent } from './public-course-consumption-page.component';
 import { SharedModule, ResourceService, ToasterService, ContentUtilsServiceService, NavigationHelperService, OfflineCardService } from '@sunbird/shared';
 import { CoreModule, CoursesService } from '@sunbird/core';
@@ -69,7 +69,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   let fixture: ComponentFixture<PublicCourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, navigationHelperService;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [PublicCourseConsumptionPageComponent],

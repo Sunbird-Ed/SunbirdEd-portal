@@ -2,7 +2,7 @@ import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -73,7 +73,7 @@ describe('CourseProgressComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
         CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule, RouterTestingModule],

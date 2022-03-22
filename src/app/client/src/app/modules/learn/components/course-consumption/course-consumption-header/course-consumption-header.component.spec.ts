@@ -5,7 +5,7 @@ import {
   CourseHierarchyGetMockResponse,
   CourseHierarchyGetMockResponseFlagged
 } from './../course-player/course-player.component.mock.data';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CourseConsumptionHeaderComponent } from './course-consumption-header.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -87,7 +87,7 @@ xdescribe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionHeaderComponent],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), BrowserAnimationsModule],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SearchFilterComponent } from './search-filter.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -58,7 +58,7 @@ describe('SearchFilterComponent', () => {
         public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     }
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [SearchFilterComponent],
             imports: [CoreModule, CommonConsumptionModule, TelemetryModule.forRoot(),

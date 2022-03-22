@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, TncService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
@@ -52,7 +52,7 @@ describe('GlobalConsentPiiComponent', () => {
     navigate: jasmine.createSpy('navigate')
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [GlobalConsentPiiComponent],

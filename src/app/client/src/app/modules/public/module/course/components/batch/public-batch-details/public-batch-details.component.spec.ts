@@ -1,7 +1,7 @@
 // Stage 1 - RK
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PublicBatchDetailsComponent } from './public-batch-details.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -48,7 +48,7 @@ describe('PublicBatchDetailsComponent', () => {
   let component: PublicBatchDetailsComponent;
   let fixture: ComponentFixture<PublicBatchDetailsComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule, BrowserAnimationsModule],
       declarations: [PublicBatchDetailsComponent],

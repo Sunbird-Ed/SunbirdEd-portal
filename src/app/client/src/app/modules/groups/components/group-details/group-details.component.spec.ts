@@ -1,5 +1,5 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { GroupDetailsComponent } from './group-details.component';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
@@ -39,7 +39,7 @@ xdescribe('GroupDetailsComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [GroupDetailsComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule, SuiModalModule, TelemetryModule],

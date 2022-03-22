@@ -1,6 +1,6 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UserService, CoreModule, BadgesService } from '@sunbird/core';
 import { ProfileBadgeComponent } from './profile-badge.component';
 import { mockRes } from './profile-badge.component.spec.data';
@@ -13,7 +13,7 @@ describe('ProfileBadgeComponent', () => {
   let component: ProfileBadgeComponent;
   let fixture: ComponentFixture<ProfileBadgeComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule],
       declarations: [ProfileBadgeComponent],

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, RecaptchaService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { AddMemberComponent } from './add-member.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -52,7 +52,7 @@ xdescribe('AddMemberComponent', () => {
     url: '/my-groups';
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddMemberComponent ],
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, TelemetryModule, RecaptchaModule],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CoreModule } from '@sunbird/core';
 import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -12,7 +12,7 @@ describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
       providers: [ ConfigService, WorkSpaceService],

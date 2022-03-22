@@ -1,7 +1,7 @@
 
 import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { UpForReviewComponent } from './up-for-review.component';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
@@ -70,7 +70,7 @@ describe('UpForReviewComponent', () => {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [UpForReviewComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],

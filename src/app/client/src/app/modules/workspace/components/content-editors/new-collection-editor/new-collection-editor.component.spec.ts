@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService, BrowserCacheTtlService, LayoutService } from '@sunbird/shared';
@@ -56,7 +56,7 @@ describe('NewCollectionEditorComponent', () => {
   let component: NewCollectionEditorComponent;
   let fixture: ComponentFixture<NewCollectionEditorComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [NewCollectionEditorComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],

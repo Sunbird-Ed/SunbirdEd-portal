@@ -1,6 +1,6 @@
 
 import {of as observableOf,  Observable , throwError as observableThrowError} from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OrganizationUploadComponent } from './organization-upload.component';
@@ -57,7 +57,7 @@ describe('OrganizationUploadComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationUploadComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(),

@@ -1,6 +1,6 @@
 import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, throwError, of, of as observableOf } from 'rxjs';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, LayoutService, UtilService } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService, ObservationUtilService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -93,7 +93,7 @@ xdescribe('ExplorePageComponent', () => {
     public changeSnapshotQueryParams(queryParams) { this.snapshot.queryParams = queryParams; }
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule, ObservationModule],
       declarations: [ExplorePageComponent],

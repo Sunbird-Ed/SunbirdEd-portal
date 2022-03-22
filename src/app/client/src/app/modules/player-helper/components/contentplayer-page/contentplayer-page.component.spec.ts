@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterModule, ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { SharedModule, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
@@ -39,10 +39,10 @@ xdescribe('ContentPlayerComponent', () => {
   let fixture: ComponentFixture<ContentPlayerPageComponent>;
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentPlayerPageComponent],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), SharedModule.forRoot()],
       providers: [
         ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },

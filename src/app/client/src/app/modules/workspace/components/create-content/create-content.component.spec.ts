@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CoreModule } from '@sunbird/core';
 import { CreateContentComponent } from './create-content.component';
 import { CacheService } from 'ng2-cache-service';
@@ -31,7 +31,7 @@ describe('CreateContentComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule],
       declarations: [CreateContentComponent],

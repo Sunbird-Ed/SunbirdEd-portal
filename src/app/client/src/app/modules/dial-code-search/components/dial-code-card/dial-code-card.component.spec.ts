@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -15,7 +15,7 @@ xdescribe('DialCodeCardComponent', () => {
   let component: DialCodeCardComponent;
   let fixture: ComponentFixture<DialCodeCardComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {

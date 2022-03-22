@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, SharedModule } from '@sunbird/shared';
@@ -29,7 +29,7 @@ xdescribe('AboutUsComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AboutUsComponent],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), HttpClientTestingModule, SuiModalModule],

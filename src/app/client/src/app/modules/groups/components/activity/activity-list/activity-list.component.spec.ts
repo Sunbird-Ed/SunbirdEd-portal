@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync, waitForAsync } from '@angular/core/testing';
 
 import { ActivityListComponent } from './activity-list.component';
 import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
@@ -64,7 +64,7 @@ xdescribe('ActivityListComponent', () => {
     }
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityListComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), SuiModule],

@@ -4,7 +4,7 @@ import {
   CoreModule, UserService, SearchService, PlayerService, LearnerService,
   CoursesService, CertRegService, OrgDetailsService, FormService
 } from '@sunbird/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProfileService } from '@sunbird/profile';
@@ -130,7 +130,7 @@ xdescribe('ProfilePageComponent', () => {
     languageSelected$: observableOf({})
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule, NgInviewModule, SlickModule],

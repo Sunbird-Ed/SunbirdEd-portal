@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CoreModule } from '@sunbird/core';
 import { ResourceService, SharedModule } from '@sunbird/shared';
@@ -38,11 +38,11 @@ describe('CurriculumCoursesComponent', () => {
     url = jasmine.createSpy('url');
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CurriculumCoursesComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule, RouterModule.forRoot([])],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule, RouterModule.forRoot([], { relativeLinkResolution: 'legacy' })],
       providers: [{ provide: ActivatedRoute, useClass: FakeActivatedRoute },
       { provide: Router, useClass: RouterStub },
       { provide: ResourceService, useValue: resourceBundle }

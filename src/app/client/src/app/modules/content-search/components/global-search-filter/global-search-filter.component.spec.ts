@@ -1,5 +1,5 @@
 import { GlobalSearchFilterComponent } from './global-search-filter.component';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SharedModule, UtilService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import * as _ from 'lodash-es';
@@ -33,7 +33,7 @@ describe('GlobalSearchFilterComponent', () => {
     };
   }
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot(), CoreModule],
       declarations: [GlobalSearchFilterComponent],

@@ -2,7 +2,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService, InterpolatePipe } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { OfflineApplicationDownloadComponent } from './offline-application-download.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -38,7 +38,7 @@ xdescribe('OfflineApplicationDownloadComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [OfflineApplicationDownloadComponent, InterpolatePipe],

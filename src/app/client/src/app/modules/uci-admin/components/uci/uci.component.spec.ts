@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {UciComponent} from './uci.component';
 import {ConfigService, ResourceService} from '@sunbird/shared';
@@ -42,7 +42,7 @@ describe('UciComponent', () => {
     }
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [UciComponent],
       schemas: [NO_ERRORS_SCHEMA],

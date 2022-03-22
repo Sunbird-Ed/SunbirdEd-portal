@@ -1,7 +1,7 @@
 
 
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { DataDrivenFilterComponent } from './data-driven-filter.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
@@ -44,7 +44,7 @@ describe('DataDrivenFilterComponent', () => {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), BrowserAnimationsModule],
       declarations: [DataDrivenFilterComponent],

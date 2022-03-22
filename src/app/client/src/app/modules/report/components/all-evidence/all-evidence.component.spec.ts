@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AllEvidenceComponent } from './all-evidence.component';
 import { DhitiService, CoreModule } from '@sunbird/core';
 import { SharedModule, ConfigService } from '@sunbird/shared';
@@ -15,7 +15,7 @@ xdescribe('AllEvidenceComponent', () => {
   let component: AllEvidenceComponent;
   let fixture: ComponentFixture<AllEvidenceComponent>;
   let dhitiService;
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,

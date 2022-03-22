@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ObservationDetailsComponent } from './observation-details.component';
 import { of, Observable } from 'rxjs';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
@@ -71,9 +71,9 @@ xdescribe('ObservationDetailsComponent', () => {
     delete: () => of()
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), SuiModule, InfiniteScrollModule, RouterTestingModule, FormsModule, HttpClientTestingModule, RouterModule.forRoot([])],
+      imports: [SharedModule.forRoot(), SuiModule, InfiniteScrollModule, RouterTestingModule, FormsModule, HttpClientTestingModule, RouterModule.forRoot([], { relativeLinkResolution: 'legacy' })],
       declarations: [ObservationDetailsComponent, EntityListComponent, SubmissionsComponent, EditSubmissionComponent, AddEntityComponent],
       providers: [{ provide: ObservationUtilService, useValue: observationUtilService },
       { provide: ObservationService, useValue: observationService }, { provide: Location, useValue: locationStub },

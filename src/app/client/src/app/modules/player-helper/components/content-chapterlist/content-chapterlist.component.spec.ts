@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ContentChapterlistComponent } from './content-chapterlist.component';
 import {
@@ -15,10 +15,10 @@ describe('ContentPlayerComponent', () => {
   let component: ContentChapterlistComponent;
   let fixture: ComponentFixture<ContentChapterlistComponent>;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentChapterlistComponent],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), SharedModule.forRoot()],
       providers: [
        ToasterService
       ],

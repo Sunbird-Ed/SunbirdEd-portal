@@ -1,8 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ObservationService, KendraService, CoreModule, ObservationUtilService } from '@sunbird/core';
 import {
   ConfigService,
@@ -41,7 +37,7 @@ xdescribe('AddEntityComponent', () => {
   const resourceBundle = {};
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule.forRoot(),

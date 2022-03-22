@@ -4,7 +4,7 @@ import { CoreModule, TncService, UserService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ListAllReportsComponent } from './list-all-reports.component';
 import { NO_ERRORS_SCHEMA, ElementRef } from '@angular/core';
@@ -27,7 +27,7 @@ xdescribe('ListAllReportsComponent', () => {
   const routerStub = { navigate: () => Promise.resolve(true) };
   let reportService: ReportService;
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), DashboardModule],

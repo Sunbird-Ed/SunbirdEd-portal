@@ -4,7 +4,7 @@ import {
   BrowserCacheTtlService,
   ToasterService,
   NavigationHelperService, UtilService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { RedirectComponent } from './redirect.component';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -44,7 +44,7 @@ describe('RedirectComponent', () => {
   }
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [RedirectComponent],
       imports: [

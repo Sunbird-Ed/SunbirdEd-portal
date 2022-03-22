@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UserRoleAssignComponent } from './user-role-assign.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -20,11 +20,11 @@ describe('UserRoleAssignComponent', () => {
   let fixture: ComponentFixture<UserRoleAssignComponent>;
   let observationUtilService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule,
-        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TranslateModule.forRoot(), SharedModule.forRoot()],
+        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), TranslateModule.forRoot(), SharedModule.forRoot()],
       declarations: [ UserRoleAssignComponent ],
       providers: [TelemetryService, ObservationUtilService, ConfigService, ResourceService,
         BrowserCacheTtlService, ToasterService, UserService, PermissionService, SearchService],

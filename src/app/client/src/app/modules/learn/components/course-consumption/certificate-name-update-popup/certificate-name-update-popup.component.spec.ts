@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { CertificateNameUpdatePopupComponent } from './certificate-name-update-popup.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -33,7 +33,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
   }
 };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CertificateNameUpdatePopupComponent ],
       imports: [

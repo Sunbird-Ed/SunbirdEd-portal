@@ -2,7 +2,7 @@
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { UserSearchService } from './../../services/user-search/user-search.service';
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
     SharedModule, ServerResponse, PaginationService, ResourceService,
@@ -53,7 +53,7 @@ describe('UserProfileComponent', () => {
         }
     };
     configureTestSuite();
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, TelemetryModule.forRoot(),
                 SharedModule.forRoot(), CoreModule, RouterTestingModule, OrderModule],

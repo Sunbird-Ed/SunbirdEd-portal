@@ -3,7 +3,7 @@ import { mockUserData } from './../course-progress/course-progress.component.spe
 import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CourseDashboardComponent } from './course-dashboard.component';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -44,7 +44,7 @@ describe('CourseDashboardComponent', () => {
   };
 
   configureTestSuite();
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseDashboardComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
