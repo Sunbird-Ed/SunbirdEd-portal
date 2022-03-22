@@ -501,7 +501,7 @@
   </app-location-selection>
   <app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>
 
-  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false}" (dismiss)="showRecoveryId = !showRecoveryId">
+  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="showRecoveryId = !showRecoveryId">
     <ng-template sbModalContent let-data>
       <app-account-recovery-info [dialogProps]="data" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"
       [userProfile]="userProfile"></app-account-recovery-info>
