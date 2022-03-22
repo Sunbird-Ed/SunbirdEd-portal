@@ -28,6 +28,7 @@ import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from 'common-form-elements-web-v9';
+import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -104,7 +105,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService) {
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
 
@@ -264,34 +266,138 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-/**
- * @param userId
- *It will fetch certificates of user, other than courses
- */
+  /**
+   * @param userId
+   * It will fetch certificates of user, other than courses
+   * Learner passbook API
+   */
   getOtherCertificates(userId, certType) {
-    const requestParam = { userId,  certType };
-    if (this.otherCertificatesCounts) {
-      requestParam['limit'] = this.otherCertificatesCounts;
-    }
-    this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
-      this.otherCertificatesCounts = _.get(data, 'result.response.count');
-      this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
-        const certObj: any =  {
-          certificates: [{
-            url: _.get(val, '_source.pdfUrl')
-          }],
-          issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
-          issuedOn: _.get(val, '_source.data.issuedOn'),
-          courseName: _.get(val, '_source.data.badge.name'),
-        };
-        if (_.get(val, '_id') && _.get(val, '_source.data.badge.name')) {
-          certObj.issuedCertificates = [{identifier: _.get(val, '_id'), name: _.get(val, '_source.data.badge.name') }];
-        }
-        return certObj;
-      });
-      if (this.otherCertificates && this.otherCertificates.length && this.scrollToId) {
-        this.triggerAutoScroll();
-      }
+    let requestBody = { userId: userId, schemaName: 'certificate' };
+    this.CsCertificateService.fetchCertificates(requestBody, {
+      apiPath: '/learner/certreg/v2',
+      apiPathLegacy: '/certreg/v1',
+      rcApiPath: '/learner/rc/${schemaName}/v1',
+    }).subscribe((_res) => {
+      console.log('Portal :: CSL response ', _res); // TODO: log!
+      this.otherCertificates = _res;
+    }, (error) => {
+      // this.otherCertificates = [
+      //   {
+      //     "id": "83a570f4-667a-4fb6-9635-c8a0734c5979",
+      //     "trainingName": "vk-2.8coursewithallcontents",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2020-03-16T00:00:00Z",
+      //     "courseId": "do_21297903501076889616",
+      //     "pdfUrl": "https://preprod.ntp.net.in/certs/01269878797503692810_0129790433215119362/83a570f4-667a-4fb6-9635-c8a0734c5979.pdf",
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "72b144d0-46f5-4acd-b44f-5570802bee34",
+      //     "trainingName": "Copy of Vjay1105",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2020-06-19T00:00:00Z",
+      //     "courseId": "do_2130460954138705921142",
+      //     "pdfUrl": "https://preprod.ntp.net.in/certs/01269878797503692810_0130461337718456321/c6452360-b38a-11ea-adfd-8182610c1c44.pdf",
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "4c050c5f-951a-4702-98f9-0a187ef1725a",
+      //     "trainingName": "Non TPD course 1 - 0813",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2020-08-13T00:00:00Z",
+      //     "courseId": "do_21308516619623628818804",
+      //     "pdfUrl": "https://preprod.ntp.net.in/certs/01269878797503692810_01308517302126182481/08477b50-dd61-11ea-b6da-85ae3acb17e8.pdf",
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "48d962d1-2952-4c35-82d0-70e0f55265d6",
+      //     "trainingName": "SHS 1 - 1207",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2020-12-07T00:00:00Z",
+      //     "courseId": "do_2131671646862786561724",
+      //     "pdfUrl": null,
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "20024a4d-e13f-4da6-8c8a-78ab8c837ed8",
+      //     "trainingName": "3.5 Trackable Book",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2020-12-08T00:00:00Z",
+      //     "courseId": "do_2131586259123404801208",
+      //     "pdfUrl": null,
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "f2613b10-a52d-492b-bc91-eb6a9983cd6d",
+      //     "trainingName": "SK-Course-Cert with description",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2020-12-08T00:00:00Z",
+      //     "courseId": "do_213167936904691712167",
+      //     "pdfUrl": null,
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "42827bbc-3b42-4277-86cb-c2c952424fc8",
+      //     "trainingName": "Certificate Check - May11",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2021-05-12T00:00:00Z",
+      //     "courseId": "do_2132769169312317441142",
+      //     "pdfUrl": null,
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "a61452f4-c82a-4240-8fc7-85c3c717fc94",
+      //     "trainingName": " R3.9.0 Course testing - 01",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2021-05-07T00:00:00Z",
+      //     "courseId": "do_213274221564076032141",
+      //     "pdfUrl": null,
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "36d8a663-d9c8-43fe-8dfd-40a8e946ffc5",
+      //     "trainingName": "Course_with_batch25",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2021-03-30T00:00:00Z",
+      //     "courseId": "do_213242183756898304154",
+      //     "pdfUrl": null,
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "5d6d231b-1d7d-4153-86eb-ca08696aa448",
+      //     "trainingName": "kiruba 4.0",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2021-07-23T00:00:00Z",
+      //     "courseId": "do_2133018188148080641956",
+      //     "pdfUrl": null,
+      //     "type": "certificate_registry"
+      //   },
+      //   {
+      //     "id": "edd967aa-db7d-4f74-87a5-8e433c451fca",
+      //     "trainingName": "Dummy testing course",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2022-03-17T10:13:21.193Z",
+      //     "courseId": "do_1133327",
+      //     "type": "rc_certificate_registry"
+      //   },
+      //   {
+      //     "id": "6095b9a3-c459-4b30-a24f-bd6e070f7ba5",
+      //     "trainingName": "Course Name1",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2022-03-17T10:12:56.972Z",
+      //     "courseId": "do_1133",
+      //     "type": "rc_certificate_registry"
+      //   },
+      //   {
+      //     "id": "a772eba5-b26f-4405-aba1-f15ea33b64fa",
+      //     "trainingName": "New testing course",
+      //     "issuerName": "Gujarat Council of Educational Research and Training",
+      //     "issuedOn": "2022-03-17T10:13:08.736Z",
+      //     "courseId": "do_113332739606568960117",
+      //     "type": "rc_certificate_registry"
+      //   }
+      // ]
+      console.log('Portal :: CSL : Fetch certificate CSL API failed ', error);
     });
   }
 
@@ -328,6 +434,30 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
     }
+  }
+
+  downloadOldAndRCCert(courseObj) {
+    let requestBody = {
+      certificateId: courseObj.id,
+      schemaName: 'certificate',
+      type: courseObj.type,
+    };
+    this.CsCertificateService.getCerificateDownloadURI(requestBody, {
+      apiPath: '/learner/certreg/v2',
+      apiPathLegacy: '/certreg/v1',
+      rcApiPath: '/learner/rc/${schemaName}/v1',
+    })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        if (_.get(resp, 'printUri')) {
+          this.certDownloadAsPdf.download(resp.printUri, null, courseObj.trainingName);
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m0076);
+        }
+        console.log('Portal :: CSL : Download certificate CSL API response ', resp);
+      }, error => {
+        console.log('Portal :: CSL : Download certificate CSL API failed ', error);
+      });
   }
 
   downloadPdfCertificate(value) {

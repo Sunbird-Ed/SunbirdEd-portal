@@ -236,10 +236,18 @@ export class ContentDownloader implements ITaskExecuter {
     const manifestJson = await this.fileSDK.readJSON(
       path.join(contentPath, contentDetails.identifier, "manifest.json"));
     let metaData: any = _.get(manifestJson, "archive.items[0]");
-    if (metaData.mimeType === "application/vnd.ekstep.content-collection") {
+    if (metaData.mimeType === "application/vnd.ekstep.content-collection" || metaData.mimeType === "application/vnd.sunbird.questionset") {
       try {
         const hierarchy = await this.fileSDK.readJSON(path.join(contentPath, contentDetails.identifier, "hierarchy.json"));
-        metaData = _.get(hierarchy, 'content') ? hierarchy.content : metaData;
+        if(metaData.mimeType === "application/vnd.ekstep.content-collection") {
+          metaData = _.get(hierarchy, 'content') ? hierarchy.content : metaData;
+        } else {
+          const instructions = _.get(metaData, 'instructions') ? metaData.instructions : "";
+          metaData = _.get(hierarchy, 'questionset') ? hierarchy.questionset : metaData;
+          metaData["instructions"] = instructions;
+          metaData.isAvailableLocally = true;
+          metaData.basePath = `http://localhost:${process.env.APPLICATION_PORT}/${contentDetails.identifier}`;
+        }
       } catch(error) {
         this.standardLog.error({ id: 'CONTENT_DOWNLOADER_JSON_READ_FAILED', message: `Failed to read JSON file`, error });
         metaData.children = this.createHierarchy(_.cloneDeep(_.get(manifestJson, "archive.items")), metaData);

@@ -1,5 +1,5 @@
 <app-modal-wrapper *ngIf="showUpdateModal"
-  [config]="{disableClose: false, size: 'normal', panelClass: 'overflow-visible'}" (dismiss)="redirect()"
+  [config]="{disableClose: false, size: 'normal', panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="redirect()"
   #updateBatchModal>
   <ng-template sbModalContent>
     <div class="sb-mat__modal">
@@ -93,13 +93,16 @@
               [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
               <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
               <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
-                <div class="sb-field ui left icon input">
-                  <i class="calendar icon date-calendar"></i>
-                  <input class="sb-form-control"
-                    [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null"
-                    [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
-                    suiDatepicker formControlName="startDate" [pickerMode]="'date'" aria-label="start Date">
-                </div>
+                <mat-form-field appearance="fill" class="sb-mat__datepicker">
+                  <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label> -->
+                  <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" matInput
+                    [matDatepicker]="startDatePicker" formControlName="startDate"
+                    [min]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'>
+                  <mat-datepicker-toggle matSuffix [for]="startDatePicker"
+                    [disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
               </div>
               <div class="mt-0 mb-8 ui pointing red basic label below"
                 *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
@@ -109,26 +112,33 @@
             <div class="sb-field-group">
               <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
               <div class="ui calendar rangeendAdd" id="rangeendAdd">
-                <div class="sb-field ui left icon input">
-                  <i class="calendar icon date-calendar"></i>
-                  <input class="sb-form-control" [attr.disabled]="(showFormInViewMode) ? true : null"
-                    [pickerMinDate]='pickerMinDateForEndDate' suiDatepicker formControlName="endDate"
-                    [pickerMode]="'date'" aria-label="end Date">
-                </div>
+                <mat-form-field appearance="fill" class="sb-mat__datepicker">
+                  <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label> -->
+                  <input [attr.disabled]="(showFormInViewMode) ? true : null" matInput [matDatepicker]="endDatePicker"
+                    formControlName="endDate" [min]='pickerMinDateForEndDate'>
+                  <mat-datepicker-toggle matSuffix [for]="endDatePicker"
+                    [disabled]="(showFormInViewMode) ? true : null"></mat-datepicker-toggle>
+                  <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
               </div>
             </div>
             <div class="sb-field-group pl-8" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
               [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
               <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
-                <div class="sb-field ui left icon input" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
-                  <i class="calendar icon date-calendar"></i>
-                  <input class="sb-form-control" tabindex="0"
+                <mat-form-field appearance="fill" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}" class="sb-mat__datepicker">
+                  <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label> -->
+                  <input
                     (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
-                    [pickerMinDate]='pickerMinDateForEnrollmentEndDate' [pickerMaxDate]='batchUpdateForm.value.endDate'
-                    suiDatepicker formControlName="enrollmentEndDate" [pickerMode]="'date'"
+                    [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" matInput
+                    [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
+                    [min]='pickerMinDateForEnrollmentEndDate' [max]="batchUpdateForm.value.endDate"
                     aria-label="enrollment End Date">
-                </div>
+                  <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker"
+                    [disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
+                </mat-form-field>
               </div>
               <div class="mt-0 mb-8 ui pointing red basic label below"
                 *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">

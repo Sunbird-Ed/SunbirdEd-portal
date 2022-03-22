@@ -130,65 +130,85 @@
     </div>
   </div>
 </div>
+<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeModal()" #modal *ngIf="popup">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <div class="sb-modal-header">
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal sb-modal-addsummary" appBodyScroll (dismissed)="closeModal()" #modal *ngIf="popup">
-  <div class="sb-modal-header">
-    
-    {{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}
-  </div>
-  <div class="sb-modal-content o-x-hide" [formGroup]="passwordForm">
-    <div class="sb-field-group">
-      <div class="sb-field relative">
-        <div class="sb-field filterTable mx-16 mb-0">
-          <input class="sb-form-control" formControlName="password" type="text" placeholder="Enter a password to request Report" aria-label="enter password">
+            {{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}
+          </div>
+          <div class="sb-modal-content o-x-hide" [formGroup]="passwordForm">
+            <div class="sb-field-group">
+              <div class="sb-field relative">
+                <div class="sb-field filterTable mx-16 mb-0">
+                  <input class="sb-form-control" formControlName="password" type="text"
+                    placeholder="Enter a password to request Report" aria-label="enter password">
+                </div>
+              </div>
+              <p class="fsmall note-text my-8 administrator-text">
+                {{resourceService?.frmelmnts?.lbl?.pswdRule}}
+              </p>
+            </div>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="(!reportForm.valid || !passwordForm.valid)"
+              [ngClass]="{'sb-btn-disabled': (!reportForm.valid || !passwordForm.valid)}" (click)="csvRequest()">
+              {{resourceService?.frmelmnts?.btn?.yes}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
+              {{resourceService?.frmelmnts?.btn?.no}}
+            </button>
+          </div>
         </div>
       </div>
-      <p class="fsmall note-text my-8 administrator-text">
-        {{resourceService?.frmelmnts?.lbl?.pswdRule}}
-      </p>
     </div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="(!reportForm.valid || !passwordForm.valid)" 
-    [ngClass]="{'sb-btn-disabled': (!reportForm.valid || !passwordForm.valid)}" 
-    (click)="csvRequest()">
-      {{resourceService?.frmelmnts?.btn?.yes}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
-      {{resourceService?.frmelmnts?.btn?.no}}
-    </button>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
+<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeConfirmModal()" #modal
+  *ngIf="awaitPopUp">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <div class="sb-modal-content mt-15">
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal" appBodyScroll (dismissed)="closeConfirmModal()" #modal *ngIf="awaitPopUp">
-  <div class="sb-modal-content mt-15">
-    
-    {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeConfirmModal()">
-      {{resourceService?.frmelmnts?.btn?.ok}}
-    </button>
-  </div>
-</sui-modal>
-
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal" appBodyScroll (dismissed)="closeConfirmationModal()" *ngIf="showConfirmationModal">
-  <div class="sb-modal-content o-x-hide">
-      <div class="my-8">
-        {{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}
+            {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeConfirmModal()">
+              {{resourceService?.frmelmnts?.btn?.ok}}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="sb-modal-actions">
-     <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleConfirmationEvent(true)">
-      {{resourceService?.frmelmnts?.btn?.yes}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="handleConfirmationEvent(false)">
-      {{resourceService?.frmelmnts?.btn?.no}}
-    </button>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
+<app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeConfirmationModal()" #modal
+  *ngIf="showConfirmationModal">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <div class="sb-modal-content o-x-hide">
+            <div class="my-8">
+              {{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}
+            </div>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleConfirmationEvent(true)">
+              {{resourceService?.frmelmnts?.btn?.yes}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="handleConfirmationEvent(false)">
+              {{resourceService?.frmelmnts?.btn?.no}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

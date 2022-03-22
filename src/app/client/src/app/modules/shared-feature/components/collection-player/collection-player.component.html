@@ -1,121 +1,122 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 <div *ngIf="collectionData" [style.display]="!showLoader ? 'block' : 'none'"
-    [appTelemetryImpression]="telemetryContentImpression">
+  [appTelemetryImpression]="telemetryContentImpression">
 
-        <!--CC-Player Back button -->
-    <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
-          <div class="ui container py-0 px-0 d-flex flex-ai-center">
-            <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
-              tabindex="0" (click)="closeCollectionPlayer()">
-              <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-                  <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-                </svg></i>
-             <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
-            </button>
-            <!--CC-Player Content Header -->
-            <div class="content-header flex-basis-1 ml-16 p-0 mb-0" *ngIf="collectionData">
-                <div class="content-header__content">
-                  <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-                    <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2">{{collectionData.name}}</div>
-                    <div class="content-header__info mt-4" *ngIf="collectionTreeNodes">
-                      <span *ngIf="collectionTreeNodes?.data?.board">{{collectionTreeNodes?.data?.board}}</span>
-                      <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.medium"></span>
-                      <span *ngIf="collectionTreeNodes?.data?.medium">{{collectionTreeNodes?.data?.medium}}</span>
-                      <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
-                      <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
-                    </div>
-                  </div>
-                  <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-                    <div *ngIf="isDesktopApp">
-                      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-                        *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
-                        (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
-                      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-                        *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
-                        (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
-                      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-                        *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
-                        (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-                      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-                        *ngIf="checkStatus('DOWNLOAD')" tabindex="0"
-                        (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
-                      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-                        *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-                      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-                        *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
-                    </div>
-    
-                    <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0"
-                      (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-                      <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
-                    </button>
-    
-                    <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-                      [telemetryInteractEdata]="copyContentInteractEdata"
-                      *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
-                      appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0"
-                      (click)="copyContent(collectionTreeNodes.data)"
-                      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-                      <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
-                    </button>
-    
-                    <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-                      [telemetryInteractEdata]="copyContentInteractEdata"
-                      *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
-                      appPermission [permission]="['BOOK_CREATOR']" tabindex="0"
-                      (click)="copyContent(collectionTreeNodes.data)"
-                      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-                      <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
-                    </button>
-    
-                    <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-                      [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
-                      *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
-                      appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="copyAsCourse()"
-                      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-                      <img src="assets/images/copy-clone.svg" alt="copy-clone" class="mr-4 pt-2">
-                      {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
-                    </button>
-    
-                    <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-                      [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
-                      *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
-                      appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="clearSelection()"
-                      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-                      {{resourceService?.frmelmnts?.btn?.cancel}}
-                    </button>
-    
-                    <button [ngClass]="{ 'sb-btn-disabled': !(selectedItems.length > 0) }"
-                      [disabled]="!(selectedItems.length > 0)" type="button" appTelemetryInteract
-                      [telemetryInteractObject]="collectionInteractObject"
-                      [telemetryInteractEdata]="createCourseInteractEdata" href="javascript:void(0)"
-                      *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
-                      appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="createCourse()"
-                      class="sb-btn sb-btn-normal sb-btn-primary">
-                      {{generaliseLabelService?.frmelmnts?.btn?.create}}
-                    </button>
-    
-                    <div class="certified-course__btn" *ngIf="isGroupAdmin">
-                      <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
-                        [identifier]="collectionData?.identifier"
-                        [pageId]="collectionData?.primaryCategory?.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
-                      </button>
-                    </div>
-    
-                    <div class="ui active inverted dimmer" *ngIf="!isDesktopApp && showCopyLoader">
-                      <div class="ui text centered inline loader mt-40">
-                        {{resourceService.frmelmnts.lbl.copycontent}}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  <!--CC-Player Back button -->
+  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'"
+    class="relative position mt-0">
+    <div class="ui container py-0 px-0 d-flex flex-ai-center">
+      <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''"
+        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" tabindex="0"
+        (click)="closeCollectionPlayer()">
+        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>
+        <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+      </button>
+      <!--CC-Player Content Header -->
+      <div class="content-header flex-basis-1 ml-16 p-0 mb-0" *ngIf="collectionData">
+        <div class="content-header__content">
+          <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
+            <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2">
+              {{collectionData.name}}</div>
+            <div class="content-header__info mt-4" *ngIf="collectionTreeNodes">
+              <span *ngIf="collectionTreeNodes?.data?.board">{{collectionTreeNodes?.data?.board}}</span>
+              <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.medium"></span>
+              <span *ngIf="collectionTreeNodes?.data?.medium">{{collectionTreeNodes?.data?.medium}}</span>
+              <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
+              <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
             </div>
-    
+          </div>
+          <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+            <div *ngIf="isDesktopApp">
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
+                (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
+                (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
+                (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOAD')" tabindex="0"
+                (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
+                *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
+            </div>
+
+            <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0"
+              (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
+            </button>
+
+            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+              [telemetryInteractEdata]="copyContentInteractEdata"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
+              appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0"
+              (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
+            </button>
+
+            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+              [telemetryInteractEdata]="copyContentInteractEdata"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
+              appPermission [permission]="['BOOK_CREATOR']" tabindex="0" (click)="copyContent(collectionTreeNodes.data)"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
+            </button>
+
+            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+              [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
+              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="copyAsCourse()"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              <img src="assets/images/copy-clone.svg" alt="copy-clone" class="mr-4 pt-2">
+              {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
+            </button>
+
+            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+              [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="clearSelection()"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              {{resourceService?.frmelmnts?.btn?.cancel}}
+            </button>
+
+            <button [ngClass]="{ 'sb-btn-disabled': !(selectedItems.length > 0) }"
+              [disabled]="!(selectedItems.length > 0)" type="button" appTelemetryInteract
+              [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
+              href="javascript:void(0)"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="createCourse()"
+              class="sb-btn sb-btn-normal sb-btn-primary">
+              {{generaliseLabelService?.frmelmnts?.btn?.create}}
+            </button>
+
+            <div class="certified-course__btn" *ngIf="isGroupAdmin">
+              <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
+                [identifier]="collectionData?.identifier"
+                [pageId]="collectionData?.primaryCategory?.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+              </button>
+            </div>
+
+            <div class="ui active inverted dimmer" *ngIf="!isDesktopApp && showCopyLoader">
+              <div class="ui text centered inline loader mt-40">
+                {{resourceService.frmelmnts.lbl.copycontent}}
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-    <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" [appTelemetryStart]="telemetryCourseStart"
+    </div>
+  </div>
+
+  <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" [appTelemetryStart]="telemetryCourseStart"
     [appTelemetryEnd]="telemetryCourseEndEvent">
 
     <!-- CC-Player Video -->
@@ -132,7 +133,7 @@
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9"
           *ngIf="collectionData">
           <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
-            <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16">
+            <div [ngClass]="layoutConfiguration ? '' : 'sb-bg-color-white'" class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center p-16">
               <h6 class="sb-color-primary font-weight-normal">
                 {{generaliseLabelService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
               <div class="sb-checkbox sb-checkbox-rightaligned sb-checkbox-primary ml-auto m-0">
@@ -179,7 +180,7 @@
   <div class="ui container py-16" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
   </div>
-  <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false}" (dismiss)="sharelinkModal = false">
+  <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="sharelinkModal = false">
     <ng-template sbModalContent>
       <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
       </app-share-link>
@@ -189,7 +190,7 @@
 
 <div *ngIf="isDesktopApp">
 
-  <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true}" (dismiss)="showModal = !showModal;">
+  <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, panelClass: 'material-modal'}" (dismiss)="showModal = !showModal;">
     <ng-template sbModalContent>
       <div class="sb-modal">
         <div class="transition ui dimmer page modals active visible">
@@ -219,7 +220,7 @@
     </ng-template>
   </app-modal-wrapper>
 
-  <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true}"
+  <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true, panelClass: 'material-modal'}"
     (dismiss)="showDeleteModal = !showDeleteModal;">
     <ng-template sbModalContent>
       <div class="sb-modal">
@@ -252,17 +253,10 @@
     </ng-template>
   </app-modal-wrapper>
 
-  <sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
-    <div class="ui active centered inline loader"></div>
-    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent |
-      interpolate:'{contentName}':collectionData?.name}}
-    </h6>
-  </sui-dimmer>
-
-  <sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
-    <div class="ui active centered inline loader"></div>
-    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent |
-      interpolate:'{contentName}':collectionData?.name}}
-    </h6>
-  </sui-dimmer>
+  <app-loader *ngIf="showExportLoader"
+    [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':collectionData?.name}">
+  </app-loader>
+  <app-loader *ngIf="showDownloadLoader"
+    [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':collectionData?.name}">
+  </app-loader>
 </div>

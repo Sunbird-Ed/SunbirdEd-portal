@@ -8,7 +8,7 @@
   <div class="notification-count" *ngIf="notificationCount">{{notificationCount}}</div>
 </div>
 
-<app-modal-wrapper *ngIf="showNotificationModel" [config]="{disableClose: false, size: 'small'}"
+<app-modal-wrapper *ngIf="showNotificationModel" [config]="{disableClose: false, size: 'small', panelClass: 'material-modal'}"
   (dismiss)="showNotificationModel=false">
   <ng-template sbModalContent let-data>
     <div class="sb-mat__modal sb-notification-modal">

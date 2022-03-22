@@ -96,8 +96,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.initFilters = true;
     this.initLayout();
-    combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent).
-      subscribe((data: Array<any>) => {
+    combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent)
+    .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data: Array<any>) => {
         this.enrolledSection = data[0];
         this.dataDrivenFilters = data[1];
         this.fetchContentOnParamChange();

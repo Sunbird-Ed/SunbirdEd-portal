@@ -159,7 +159,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mentorList = userList.mentorList;
         this.initDropDown();
       }, (err) => {
-        if (err.error && err.error.params.errmsg) {
+        if (err.error && err.error?.params?.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0056);

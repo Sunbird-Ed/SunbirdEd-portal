@@ -14,6 +14,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {
   ObservationData
 } from '../solution-listing/solution-listing.component.spec.data';
+import { NoopAnimationsModule,BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 // Old One
 xdescribe('EntityListComponent', () => {
@@ -35,7 +36,7 @@ xdescribe('EntityListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModalModule, SharedModule, CoreModule, InfiniteScrollModule],
+      imports: [SuiModalModule, SharedModule, CoreModule, InfiniteScrollModule,BrowserAnimationsModule,NoopAnimationsModule],
       declarations: [ EntityListComponent ],
       providers: [{ provide: ResourceService, useValue: resourceBundle }]
     })
@@ -55,9 +56,6 @@ xdescribe('EntityListComponent', () => {
 
   it('should call closeModal', () => {
     spyOn(component, 'closeModal').and.callThrough();
-    component.modal = {
-      approve: () => {}
-    };
     component.closeModal();
     expect(component.closeModal).toHaveBeenCalled();
   });
@@ -81,9 +79,6 @@ xdescribe('EntityListComponent', () => {
 
   it('should call submit', () => {
     spyOn(component, 'submit').and.callThrough();
-    component.modal = {
-      approve: () => {}
-    };
     component.submit();
     expect(component.submit).toHaveBeenCalled();
   });

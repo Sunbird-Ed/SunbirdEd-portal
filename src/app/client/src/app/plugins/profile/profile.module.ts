@@ -32,6 +32,12 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
   }
   return CsModule.instance.courseService;
 };
+export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
+  if (!CsModule.instance.isInitialised) {
+    csLibInitializerService.initializeCs();
+  }
+  return CsModule.instance.certificateService;
+};
 @NgModule({
   imports: [
     CommonModule,
@@ -59,6 +65,9 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
    CreateUserComponent,
    ChooseUserComponent,
    SubmitTeacherDetailsComponent],
-  providers: [{provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService]}]
+  providers: [
+    {provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService]},
+    {provide: 'CS_CERTIFICATE_SERVICE', useFactory: csCertificateServiceFactory, deps: [CsLibInitializerService]}
+  ]
 })
 export class ProfileModule { }

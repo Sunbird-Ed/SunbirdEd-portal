@@ -1,5 +1,5 @@
 <app-modal-wrapper *ngIf="showCreateModal"
-  [config]="{disableClose: true, size: 'normal', panelClass: 'overflow-visible'}" (dismiss)="redirect()"
+  [config]="{disableClose: true, size: 'normal', panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="redirect()"
   #createBatchModel>
   <ng-template sbModalContent>
     <div class="sb-mat__modal">
@@ -94,11 +94,12 @@
               [ngClass]="createBatchForm.controls['startDate'].invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine ? 'error': ''">
               <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
               <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
-                <div class="sb-field ui left icon input">
-                  <i class="calendar icon date-calendar"></i>
-                  <input class="sb-form-control" [pickerMinDate]='pickerMinDate' suiDatepicker
-                    formControlName="startDate" [pickerMode]="'date'">
-                </div>
+                <mat-form-field appearance="fill" class="sb-mat__datepicker">
+                  <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
+                  <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="pickerMinDate">
+                  <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
               </div>
               <div class="mt-0 mb-8 ui pointing red basic label below"
                 *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
@@ -108,25 +109,27 @@
             <div class="sb-field-group">
               <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
               <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
-                <div class="sb-field ui left icon input">
-                  <i class="calendar icon date-calendar"></i>
-                  <input class="sb-form-control" [pickerMinDate]='getPickerMinDateForEndDate()' suiDatepicker
-                    formControlName="endDate" [pickerMode]="'date'">
-                </div>
+                <mat-form-field appearance="fill" class="sb-mat__datepicker">
+                  <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
+                  <input matInput [matDatepicker]="endDatePicker" formControlName="endDate"
+                    [min]="getPickerMinDateForEndDate()">
+                  <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
               </div>
             </div>
             <div class="sb-field-group pl-8" *ngIf="createBatchForm.value.enrollmentType === 'open'"
               [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
               <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
-                <div class="sb-field ui left icon input" [ngClass]="{'disabled': !createBatchForm.value.startDate}">
-                  <i class="calendar icon date-calendar"></i>
-                  <input tabindex="0"
-                    (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
-                    class="sb-form-control" [pickerMinDate]='createBatchForm.value.startDate'
-                    [pickerMaxDate]='createBatchForm.value.endDate' suiDatepicker formControlName="enrollmentEndDate"
-                    [pickerMode]="'date'">
-                </div>
+                <mat-form-field appearance="fill" class="sb-mat__datepicker" [ngClass]="{'disabled': !createBatchForm.value.startDate}"
+                  (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])">
+                  <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</mat-label>
+                  <input matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
+                    [min]="createBatchForm.value.startDate" [max]="createBatchForm.value.endDate">
+                  <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
+                </mat-form-field>
               </div>
               <div class="mt-0 mb-8 ui pointing red basic label below"
                 *ngIf="createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine? 'error': ''">
@@ -194,9 +197,10 @@
         </button>
 
         <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-          [ngClass]="{'sb-btn-disabled': !createBatchForm.valid || disableSubmitBtn}" id="submitbutton" [disabled]="!createBatchForm.valid || disableSubmitBtn"
-          (click)="createBatch()" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-          [telemetryInteractEdata]="createBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata">
+          [ngClass]="{'sb-btn-disabled': !createBatchForm.valid || disableSubmitBtn}" id="submitbutton"
+          [disabled]="!createBatchForm.valid || disableSubmitBtn" (click)="createBatch()" appTelemetryInteract
+          [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createBatchInteractEdata"
+          [telemetryInteractCdata]="telemetryCdata">
           {{resourceService?.frmelmnts?.btn?.create}}
         </button>
 
