@@ -147,6 +147,7 @@ export class ContentDownloadManager {
           url: contentDetail.downloadUrl,
           size: contentDetail.size,
           step: "DOWNLOAD",
+          parentRoot: ""
         },
       };
       logger.debug(`${reqId} Content mimeType: ${contentDetail.mimeType}`);
@@ -173,6 +174,7 @@ export class ContentDownloadManager {
               url: content.downloadUrl,
               size: content.size,
               step: "DOWNLOAD",
+              parentRoot: content.mimeType === 'application/vnd.sunbird.question' ? content.parent : ''
             };
           } else {
             logger.debug(`${reqId} Content childNodes: ${content.identifier} download skipped ${content.size}, ${content.downloadUrl}`);
@@ -399,16 +401,18 @@ export class ContentDownloadManager {
 
 
   private async getQuestionsNodes(contentDetails) {
-    let qchildNodes = contentDetails.childNodes;
     let questionSetContent=[]
     _.forEach(contentDetails.children, function(questionset, key) {
-      if(qchildNodes.includes(questionset.identifier) && questionset.mimeType === 'application/vnd.sunbird.questionset') {
-        qchildNodes = _.without(qchildNodes, questionset.identifier)
-        questionSetContent.push(questionset);
+      if(questionset.mimeType === 'application/vnd.sunbird.questionset') {
+        questionset.children.map((childQuestion) => {
+          if(childQuestion.mimeType === 'application/vnd.sunbird.question') {
+            questionSetContent.push(childQuestion);
+          }
+        })
       }
+      questionSetContent.push(questionset);
     });
-    const childQuestions = await this.getQuestionsFromQuestionSetApi(qchildNodes);
-    return [...questionSetContent, ...childQuestions];
+    return questionSetContent;
   }
 
   private async getQuestionsetHierarchy(contentId) {
