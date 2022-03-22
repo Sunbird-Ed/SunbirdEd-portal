@@ -412,7 +412,7 @@ export class ContentDownloadManager {
       }
       questionSetContent.push(questionset);
     });
-    return questionSetContent;
+    return questionSetContent; 
   }
 
   private async getQuestionsetHierarchy(contentId) {
