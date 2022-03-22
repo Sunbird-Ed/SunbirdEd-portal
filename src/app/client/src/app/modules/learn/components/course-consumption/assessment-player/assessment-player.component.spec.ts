@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
@@ -15,7 +15,7 @@ import {
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
@@ -56,6 +56,16 @@ describe('AssessmentPlayerComponent', () => {
     notificationDelete() { return observableOf({}); },
     notificationUpdate() { return observableOf({}); }
   };
+  class RouterStub {
+    public navigationStart = new NavigationStart(0, '/explore');
+    public navigate = jasmine.createSpy('navigate');
+    public url = '';
+    public events = new Observable(observer => {
+      observer.next(this.navigationStart);
+      observer.complete();
+    });
+    public getCurrentNavigation = jasmine.createSpy('getCurrentNavigation');
+  }
 
   configureTestSuite();
   beforeEach(async(() => {
@@ -79,7 +89,8 @@ describe('AssessmentPlayerComponent', () => {
         NotificationServiceImpl, CourseProgressService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
-        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService }
+        { provide: 'CS_NOTIFICATION_SERVICE', useValue: MockCSNotificationService },
+        { provide: Router, useClass: RouterStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -108,7 +119,6 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should go to courseDetails page', fakeAsync(() => {
-    spyOn(component['router'], 'navigate');
     const activeContent = { id: '123' };
     component.activeContent = activeContent;
     component.isCourseCompletionPopupShown = true;
@@ -122,7 +132,6 @@ describe('AssessmentPlayerComponent', () => {
   }));
 
   it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', fakeAsync(() => {
-    spyOn(component['router'], 'navigate');
     fixture.detectChanges();
     component.goBack();
     tick(500);
@@ -142,7 +151,7 @@ describe('AssessmentPlayerComponent', () => {
 
   xit('should call subscribeToQueryParam, on error', fakeAsync(() => {
     component.batchId = '0130272832104038409';
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'goBack');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
@@ -217,7 +226,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call initPlayer on error', () => {
     component.collectionId = 'do_11287204084174028818';
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     const courseConsumptionService = TestBed.inject(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
@@ -451,8 +460,8 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
-    const navigationHelperService:NavigationHelperService = TestBed.inject(NavigationHelperService);
-    spyOn(navigationHelperService['contentFullScreenEvent'],'pipe').and.returnValue(of({ data: false }));
+    const navigationHelperService: NavigationHelperService = TestBed.inject(NavigationHelperService);
+    spyOn(navigationHelperService['contentFullScreenEvent'], 'pipe').and.returnValue(of({ data: false }));
     fixture.detectChanges();
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
@@ -461,8 +470,8 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
-    const navigationHelperService:NavigationHelperService = TestBed.inject(NavigationHelperService);
-    spyOn(navigationHelperService['contentFullScreenEvent'],'pipe').and.returnValue(of({ data: true }));
+    const navigationHelperService: NavigationHelperService = TestBed.inject(NavigationHelperService);
+    spyOn(navigationHelperService['contentFullScreenEvent'], 'pipe').and.returnValue(of({ data: true }));
     fixture.detectChanges();
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
@@ -483,7 +492,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   xit('should call navigateToPlayerPage', () => {
-    spyOn(component['router'], 'navigate');
+    // spyOn(component['router'], 'navigate');
     component.batchId = 'do_1130272760359813121209';
     component.courseId = 'do_1130272760359485441199';
     component.parentCourse = assessmentPlayerMockData.courseHierarchy;
@@ -604,7 +613,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onSelfAssessLastAttempt last attempt', () => {
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const event = {
       'data': 'renderer:selfassess:lastattempt'
@@ -614,7 +623,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onSelfAssessLastAttempt max attempt exceeded', () => {
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     const event = {
       'data': 'renderer:maxLimitExceeded'
@@ -652,7 +661,7 @@ describe('AssessmentPlayerComponent', () => {
     }));
     component.activeContent = assessmentPlayerMockData.lastAttemptContent;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
@@ -662,7 +671,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call getCourseCompletionStatus for self assess course', () => {
     component.isCourseCompleted = false;
     component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
-    const toasterService:any = TestBed.inject(ToasterService);
+    const toasterService: any = TestBed.inject(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'getContentStateRequest').and.returnValue(of({
       userId: 'asas-saa12-asas-12',
@@ -720,4 +729,22 @@ describe('AssessmentPlayerComponent', () => {
     component.layoutConfiguration = {};
     component.layoutConfiguration = null;
   });
+  it('should show content rating popup if the mimeType is h5p', done => {
+    component.playerConfig = {
+      metadata: {
+        mimeType: 'application/vnd.ekstep.h5p-archive'
+      }
+    };
+    component.activeContent = {
+      mimeType: 'application/vnd.ekstep.h5p-archive'
+    };
+
+    expect(component.contentRatingModal).toBeFalsy();
+    component.routerEventsChangeHandler().subscribe(event => {
+      expect(component.contentRatingModal).toBeTruthy();
+      done();
+    }, err => {
+      done();
+    })
+  })
 });

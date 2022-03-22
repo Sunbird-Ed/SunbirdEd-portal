@@ -429,8 +429,7 @@
         <!-- / certificates-->
         
         <!-- RC Certificates -->
-        <div class="container my-16 sb-certificate-trained" id="learner-passbook"
-          *ngIf="otherCertificates && otherCertificates.length">
+        <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
             <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
@@ -442,10 +441,10 @@
               <label class="list-items__item mr-auto mb-0 text-left"></label>
             </div>
           </div>
-          <div class="list-item-parent" *ngFor="let data of otherCertificates">
-            <div class="list-items" *ngIf="data.issuerName">
+          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
+            <div class="list-items" *ngIf="data?.issuerName">
               <label class="list-items__item mr-auto mb-0 text-left">{{data.trainingName}}</label>
-              <label class="list-items__item mr-auto mb-0 text-left">{{data.issuerName}}</label>
+              <label class="list-items__item mr-auto mb-0 text-left">{{data?.issuerName}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data?.id">
                 <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
@@ -453,13 +452,13 @@
                   (click)="downloadOldAndRCCert(data)" tabindex="0">
                   <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length">
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">
                 <span class="bar"></span>
                 <span class="bar"></span>
               </div>
             </div>
           </div>
-          <!-- <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
+          <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreCertificates"
               (click)="toggleOtherCertific(true)" tabindex="0">{{resourceService.frmelmnts.lbl.viewmore}}<i
@@ -468,7 +467,7 @@
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
               (click)="toggleOtherCertific(false)" tabindex="0"
               *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i class="chevron up icon"></i></button>
-          </div> -->
+          </div>
         </div>
         <!-- RC Certificates -->
 
@@ -502,7 +501,7 @@
   </app-location-selection>
   <app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>
 
-  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false}" (dismiss)="showRecoveryId = !showRecoveryId">
+  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="showRecoveryId = !showRecoveryId">
     <ng-template sbModalContent let-data>
       <app-account-recovery-info [dialogProps]="data" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"
       [userProfile]="userProfile"></app-account-recovery-info>

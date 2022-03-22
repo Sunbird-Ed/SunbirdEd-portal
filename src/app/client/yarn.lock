@@ -1930,10 +1930,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.3.2.tgz#50319f37c20d66ac59b59322e0e15bd26578eb83"
-  integrity sha512-l4lX/HF8fmXnQ2JdS2MzTtl00w7TS3AXdQG56BLzb69ePl9mW1n4eXZVRmtzUTpGgQwYfQfkyWWE79edJ4upLA==
+"@samagra-x/uci-console@1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.3.4.tgz#5d977bee0e90175e4005367bf6b327e2e44f4e0b"
+  integrity sha512-+03IhWUOCcabzoMOUTTFy+sLchj32oJ4Y80JqJNijd2X6Q6pL8HMIjmMM/Jpl2jCK6xZh1uq/0htxLIOrnPSQw==
   dependencies:
     tslib "^1.10.0"
 
@@ -5970,7 +5970,7 @@ file-loader@6.0.0:
     loader-utils "^2.0.0"
     schema-utils "^2.6.5"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
