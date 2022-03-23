@@ -272,6 +272,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
    * Learner passbook API
    */
   getOtherCertificates(userId, certType) {
+    this.otherCertificates = [];
     let requestBody = { userId: userId, schemaName: 'certificate' };
     if (this.otherCertificatesCounts) {
       requestBody['size'] = this.otherCertificatesCounts;
@@ -282,9 +283,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       rcApiPath: '/learner/rc/${schemaName}/v1',
     }).subscribe((_res) => {
       console.log('Portal :: CSL response ', _res); // TODO: log!
-      if (_res && _res.length > 0) {
-        this.otherCertificates = _res;
-        this.otherCertificatesCounts = _res.length;
+      if (_res && _res?.certificates?.length > 0) {
+        this.otherCertificates = _.get(_res, 'certificates');
+        this.otherCertificatesCounts = (_.get(_res, 'certRegCount') ? _.get(_res, 'certRegCount') : 0) + (_.get(_res, 'rcCount') ? _.get(_res, 'rcCount') : 0);
       }
     }, (error) => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -332,6 +333,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       certificateId: courseObj.id,
       schemaName: 'certificate',
       type: courseObj.type,
+      templateUrl: courseObj.templateUrl
     };
     this.CsCertificateService.getCerificateDownloadURI(requestBody, {
       apiPath: '/learner/certreg/v2',
