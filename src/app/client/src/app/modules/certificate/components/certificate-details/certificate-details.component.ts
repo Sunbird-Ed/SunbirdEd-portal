@@ -209,10 +209,14 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
             console.log('Portal :: verifyCertificate response ', data); // TODO: log!
             const certData = _.get(data, 'certificateData');
             this.loader = false;
-            this.viewCertificate = true;
-            this.recipient = _.get(certData, 'issuedTo');
-            this.courseName = _.get(certData, 'trainingName');
-            this.issuedOn = dayjs(new Date(_.get(certData, 'issuanceDate'))).format('DD MMM YYYY');
+            if (_.get(data, 'verified')) {
+              this.viewCertificate = true;
+              this.recipient = _.get(certData, 'issuedTo');
+              this.courseName = _.get(certData, 'trainingName');
+              this.issuedOn = dayjs(new Date(_.get(certData, 'issuanceDate'))).format('DD MMM YYYY');
+            } else {
+              this.viewCertificate = false;
+            }
           },
           (err) => {
             this.loader = false;
