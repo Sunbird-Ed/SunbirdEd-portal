@@ -3,6 +3,7 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig.json');
 
 module.exports = {
+  name: 'sunbird-portal',
   preset: "jest-preset-angular",
   "verbose": true,
   "testEnvironment": "jsdom",
@@ -215,7 +216,8 @@ module.exports = {
     "src/app/plugins/profile/services/profile/profile.service.spec.ts",
     "src/app/service/popup-control.service.spec.ts",
     "src/app/service/CsLibInitializer/cs-lib-initializer.service.spec.ts",
-    "src/app/service/LazzyLoadScript/lazzy-load-script.service.spec.ts"
+    "src/app/service/LazzyLoadScript/lazzy-load-script.service.spec.ts",
+    "src/app/modules/telemetry/directives/"
   ]
   // transform: {
   //   "lodash-es": "<rootDir>/node_modules/lodash-es"
