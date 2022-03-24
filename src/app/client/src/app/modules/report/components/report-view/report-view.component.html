@@ -235,31 +235,34 @@
 
 <app-modal-wrapper [config]="{disableClose: false, size: 'normal'}" (dismiss)="closeModal()" *ngIf="filterModal" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-header">
-            <h4>{{segmentValue =='Questions' ? (resourceService?.frmelmnts?.lbl?.selectquestionfilter) :
-              (resourceService?.frmelmnts?.lbl?.selectcriteriafilter) }}</h4>
-          </div>
-          <div class="sb-modal-content content">
-            <div *ngFor="let question of modalFilterData">
-              <!-- <sui-checkbox  (checkChange)="onChange(question._id, $event, i)"><span class="questions">{{question.name}}</span></sui-checkbox> -->
-              <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
-                <input value="{{question._id}}" type="checkbox" id="{{question._id}}"
-                  (change)="onQuestionClick(question._id)" [checked]="filteredData?.includes(question?._id)">
-                <label for="{{question._id}}" class="questions">{{question.name}}</label>
-              </div>
+    <div class="sb-mat__modal sb-onboard">
+      <div mat-dialog-title class="flex-jc-center">
+        <div class="sb-onboard__header">
+          <h4>{{segmentValue =='Questions' ? (resourceService?.frmelmnts?.lbl?.selectquestionfilter) :
+            (resourceService?.frmelmnts?.lbl?.selectcriteriafilter) }}</h4>
+        </div>
+        <button aria-label="close dialog" mat-dialog-close class="close-btn" (click)="closeModal()">
+        </button>
+      </div>
+      <mat-dialog-content>
+        <div class="sb-mat__modal__content">
+          <div *ngFor="let question of modalFilterData">
+            <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
+              <input value="{{question._id}}" type="checkbox" id="{{question._id}}" (change)="onQuestionClick(question._id)"
+                [checked]="filteredData?.includes(question?._id)">
+              <label for="{{question._id}}" class="questions">{{question.name}}</label>
             </div>
           </div>
-          <div class="actions footer">
-            <button class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="applyFilter()"
-              [disabled]="selectedListCount == 0" [ngClass]="{ 'sb-btn-disabled': selectedListCount == 0 }">
-              {{resourceService?.frmelmnts?.btn?.apply}} {{resourceService?.frmelmnts?.lbl?.filters }}
-            </button>
-          </div>
         </div>
-      </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center">
+        <div class="sb-onboard__footer d-flex">
+          <button class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="applyFilter()"
+            [disabled]="selectedListCount == 0" [ngClass]="{ 'sb-btn-disabled': selectedListCount == 0 }">
+            {{resourceService?.frmelmnts?.btn?.apply}} {{resourceService?.frmelmnts?.lbl?.filters }}
+          </button>
+        </div>
+      </mat-dialog-actions>
     </div>
   </ng-template>
 </app-modal-wrapper>
