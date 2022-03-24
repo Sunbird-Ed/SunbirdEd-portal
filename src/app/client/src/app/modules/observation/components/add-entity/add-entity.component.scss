@@ -1,11 +1,8 @@
 @import "variables";
 @import "mixins/mixins";
 
-  .sb-modal-content {
-    height: calc(100vh - 350px) !important;
-    }
   .content{
-    max-height: 65vh;
+    max-height: 60vh;
     label{
       color: var(--sb-prominent-filter-title);
     }
@@ -13,13 +10,7 @@
       cursor: pointer;
     }
   }
-  .footer{
-    width: 100%;
-    text-align: center;
-    display: flex;
-    background: var(--sb-card-bg);
-    border-top: none;
-  }
+
   .search-box{
     margin-top: 15px;
   }
