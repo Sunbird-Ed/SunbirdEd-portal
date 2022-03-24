@@ -318,7 +318,7 @@ export class TelemetryService {
       type: 'Device'
     });
     eventContextData.cdata.push({
-      id: localStorage.getItem('layoutType') || 'default',
+      id: document.documentElement.getAttribute('layout') === 'joy' ? 'joy' : 'default',
       type: 'Theme',
     });
     return eventContextData;

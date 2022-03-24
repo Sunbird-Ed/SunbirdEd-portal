@@ -341,7 +341,7 @@
           </div>
           <div class="list-item-parent">
             <div class="list-items sb-course-progress-status-label">
-              <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.course}}</div>
+              <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.course}}</div>
               <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</div>
               <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</div>
               <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.status}}</div>
@@ -386,8 +386,8 @@
         </div>
          <!-- trainings attended computer view ends-->
 
-         <!-- certificates-->
-        <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
+         <!-- certificates - old layout-->
+        <!-- <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
             <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
@@ -425,14 +425,59 @@
               (click)="toggleOtherCertific(false)" tabindex="0" *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
           </div>
-        </div>
+        </div> -->
         <!-- / certificates-->
+        
+        <!-- RC Certificates -->
+        <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
+          <div class="list-heading">
+            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
+          </div>
+          <div class="list-item-parent">
+            <div class="list-items sb-course-progress-status-label">
+              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</label>
+              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</label>
+              <label class="list-items__item mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</label>
+              <label class="list-items__item mb-0 text-left"></label>
+              <label class="list-items__item mb-0 text-left"></label>
+            </div>
+          </div>
+          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
+            <div class="list-items" *ngIf="data?.issuerName">
+              <label class="list-items__item mb-0 text-left">{{data.trainingName}}</label>
+              <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
+              <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+              <div class="list-items__item" *ngIf="data?.id">
+                <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
+                  (click)="downloadOldAndRCCert(data)" tabindex="0">
+                  <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+              </div>
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">
+                <span class="bar"></span>
+                <span class="bar"></span>
+              </div>
+            </div>
+          </div>
+          <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreCertificates"
+              (click)="toggleOtherCertific(true)" tabindex="0">{{resourceService.frmelmnts.lbl.viewmore}}<i
+                class="chevron down icon"></i></button>
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+              (click)="toggleOtherCertific(false)" tabindex="0"
+              *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i class="chevron up icon"></i></button>
+          </div>
+        </div>
+        <!-- RC Certificates -->
+
       </div>
   </div>
 </div>
 </div>
 </div>
-<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showEdit = !showEdit">
+<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showEdit = !showEdit">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)">
@@ -440,7 +485,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showContactPopup = !showContactPopup">
+<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showContactPopup = !showContactPopup">
   <ng-template sbModalContent let-data>
     <app-update-contact-details [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType" [userProfile]="userProfile">
     </app-update-contact-details>
@@ -457,7 +502,7 @@
   </app-location-selection>
   <app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>
 
-  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false}" (dismiss)="showRecoveryId = !showRecoveryId">
+  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="showRecoveryId = !showRecoveryId">
     <ng-template sbModalContent let-data>
       <app-account-recovery-info [dialogProps]="data" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"
       [userProfile]="userProfile"></app-account-recovery-info>

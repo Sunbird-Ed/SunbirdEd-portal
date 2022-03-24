@@ -65,7 +65,7 @@
         <app-loader [data]='loaderMessage'></app-loader>
     </div>
 
-    <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false}" (dismiss)="sharelinkModal = false">
+    <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="sharelinkModal = false">
       <ng-template sbModalContent>
         <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
         </app-share-link>

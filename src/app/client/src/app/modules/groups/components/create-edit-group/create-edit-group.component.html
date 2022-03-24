@@ -1,4 +1,4 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'small'}"
+<app-modal-wrapper [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
   (dismiss)="closeModal({modalId: ''});addTelemetry('close-group-form', '', { type: SELECT_CLOSE, subtype: CLOSE_ICON })">
   <ng-template sbModalContent let-data>
     <!-- add create group form -->

@@ -171,7 +171,7 @@
 <app-certificate-name-update-popup *ngIf="showProfileUpdatePopup" [profileInfo]="profileInfo"
   (close)="showProfileUpdatePopup = false"></app-certificate-name-update-popup>
 
-<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false}"
+<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">

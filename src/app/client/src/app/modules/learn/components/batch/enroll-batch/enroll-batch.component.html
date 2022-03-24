@@ -1,4 +1,4 @@
-<app-modal-wrapper *ngIf="modalVisibility" [config]="{disableClose: true, size: 'normal'}" (dismiss)="redirect()"
+<app-modal-wrapper *ngIf="modalVisibility" [config]="{disableClose: true, size: 'normal', panelClass: 'material-modal'}" (dismiss)="redirect()"
     #enrollBatch>
     <ng-template sbModalContent>
         <div class="sb-mat__modal">

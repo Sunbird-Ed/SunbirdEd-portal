@@ -38,7 +38,7 @@
 <app-add-activity *ngIf="!showLoader && ((activityList | json) === '{}')"></app-add-activity>
 
 <!-- Remove Activity from the group -->
-<app-modal-wrapper *ngIf="showModal" #modal [config]="{disableClose: true, size: 'small'}">
+<app-modal-wrapper *ngIf="showModal" #modal [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}">
   <ng-template sbModalContent let-data>
     <div class="sb-mat__modal">
       <div mat-dialog-title>

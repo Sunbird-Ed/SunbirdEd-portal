@@ -7,7 +7,7 @@
             {{ resourceService?.frmelmnts?.lbl?.tcfrom}}
           </label>
           <div class="sb-field">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" class="sb-mat__datepicker">
               <mat-label>Select From</mat-label>
               <input matInput [matDatepicker]="startPicker" formControlName="from" [min]="pickerMinDate" [max]="getPickerMaxDate()">
               <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -21,7 +21,7 @@
             {{ resourceService?.frmelmnts?.lbl?.tcto}}
           </label>
           <div class="sb-field">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" class="sb-mat__datepicker">
               <mat-label>Select To</mat-label>
               <input matInput [matDatepicker]="endPicker" formControlName="to" [min]="getPickerMinDate()" [max]="pickerMaxDate">
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
