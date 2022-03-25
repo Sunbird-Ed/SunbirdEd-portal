@@ -341,7 +341,7 @@
           </div>
           <div class="list-item-parent">
             <div class="list-items sb-course-progress-status-label">
-              <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.course}}</div>
+              <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.course}}</div>
               <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</div>
               <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</div>
               <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.status}}</div>
@@ -435,16 +435,17 @@
           </div>
           <div class="list-item-parent">
             <div class="list-items sb-course-progress-status-label">
-              <label class="list-items__item mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</label>
-              <label class="list-items__item mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</label>
-              <label class="list-items__item mr-auto mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</label>
-              <label class="list-items__item mr-auto mb-0 text-left"></label>
+              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</label>
+              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</label>
+              <label class="list-items__item mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</label>
+              <label class="list-items__item mb-0 text-left"></label>
+              <label class="list-items__item mb-0 text-left"></label>
             </div>
           </div>
           <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
             <div class="list-items" *ngIf="data?.issuerName">
-              <label class="list-items__item mr-auto mb-0 text-left">{{data.trainingName}}</label>
-              <label class="list-items__item mr-auto mb-0 text-left">{{data?.issuerName}}</label>
+              <label class="list-items__item mb-0 text-left">{{data.trainingName}}</label>
+              <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data?.id">
                 <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
