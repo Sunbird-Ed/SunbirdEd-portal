@@ -149,7 +149,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-mocha-reporter": "2.2.5",
     "md5": "2.2.1",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "protractor": "^5.4.4",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
