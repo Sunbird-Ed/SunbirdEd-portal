@@ -39,9 +39,6 @@ export class AddEntityComponent implements OnInit {
         public observationUtilService: ObservationUtilService,
         config: ConfigService, public location: LocationStrategy, ) {
         this.config = config;
-        this.location.onPopState(() => {
-            this.modal.approve();
-         });
     }
     ngOnInit() {
         this.getProfileData();
