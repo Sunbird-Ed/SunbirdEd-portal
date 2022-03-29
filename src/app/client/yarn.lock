@@ -1782,10 +1782,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.8.6":
-  version "4.8.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.8.6.tgz#24718baf6c34651a6442dc9f9206d6543abce3ff"
-  integrity sha512-r5mpTg17ZB2B/N/Tld41yX6widisWCGhhmmG2w5d3R+P2a+yuG5A6fufK507cqWqSPi0NBagJlxYwX8eBx8TyQ==
+"@project-sunbird/client-services@4.8.8":
+  version "4.8.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.8.8.tgz#81991b6e4af563baa9fbd2c181269a15d8dc93ae"
+  integrity sha512-Tr11PmVGzq97S3ZTRQEKkeLjbemC+LGWRLOcWxgIuIDvh/6OnfFFzrjTvLp3h4nSZCjILYZ1+7oIB9f8AEqzQw==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1832,10 +1832,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.40":
-  version "0.0.40"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.40.tgz#617f4b2bbd3308999c37058932fbfda9898307f7"
-  integrity sha512-r7FX8h3brA7bEGXdwmTRYdwzaZeEKjczbpChq+ICYd42JLwWeFOghMbygVGkO/ro9k4GfhTBfpyPdrUF+L/lag==
+"@project-sunbird/sb-themes@0.0.41":
+  version "0.0.41"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.41.tgz#43b40f1f8dad3eff992ff027d261d80bf297d9a0"
+  integrity sha512-53pOHTKEXuiXblcD5y9pjkguIDXSbRMoS9mtqXsPyUDVf55h6qSC8AepOKWz/yYhbzsOCiZhrJVP15D2ZCZXfQ==
 
 "@project-sunbird/sunbird-collection-editor-v9@4.8.22":
   version "4.8.22"
@@ -1930,10 +1930,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@samagra-x/uci-console@1.3.4":
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.3.4.tgz#5d977bee0e90175e4005367bf6b327e2e44f4e0b"
-  integrity sha512-+03IhWUOCcabzoMOUTTFy+sLchj32oJ4Y80JqJNijd2X6Q6pL8HMIjmMM/Jpl2jCK6xZh1uq/0htxLIOrnPSQw==
+"@samagra-x/uci-console@1.3.7":
+  version "1.3.7"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-1.3.7.tgz#8a995a8ee26ac8e8f819c5f9945a4ecb12aa547e"
+  integrity sha512-+h4asuJhCBZqw5xLWEnsP9onxURbiUB8/VUfQHEEiVrTP0XHv4LUPLmH9xBNYO7llnZNt345k+qUyjw+xXbLWw==
   dependencies:
     tslib "^1.10.0"
 
