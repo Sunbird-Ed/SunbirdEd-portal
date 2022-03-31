@@ -29,19 +29,17 @@
   @include respond-above(md){
     justify-content: space-between;
   }
-  @include respond-below(md){
+  @media (max-width: 1023px){
     flex-direction: column;
-    // align-items: flex-start !important;
-    &__item {
-      margin: calculateRem(8px) 0px;
-    }
   }
   &__item {
     text-align: center;
     color: var(--sb-list-items);
     flex: 1 1 0;
-    @include respond-below(md) {
+    margin: 0 0.5rem;
+    @media (max-width: 1023px) {
       text-align: center !important;
+      margin: calculateRem(4px) 0px !important;
     }
     // &:first-child{
     //   flex: 1 1 45%;
@@ -76,7 +74,7 @@
   }
 
   label {
-    font-size: calculateRem(16px);
+    font-size: calculateRem(14px);
     font-weight: normal;
     // flex: 2;
 
