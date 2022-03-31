@@ -37,13 +37,20 @@ export default (app, proxyURL) => {
     });
 
     app.post([
-        "/learner/course/v1/batch/list",
         "/learner/user/v1/search",
         "/learner/course/v1/enrol",
         "/learner/course/v1/unenrol",
         "/discussion/forum/v2/read",
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
+    });
+
+    app.post("/learner/course/v1/batch/list", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+        if (_.get(res, 'body.result.response.content')) {
+            res.status(res.statusCode).send(res.body);
+        } else {
+            await batchDetails.findBatchList(req, res);
+        }
     });
 
     app.post("/learner/user/v2/search", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
