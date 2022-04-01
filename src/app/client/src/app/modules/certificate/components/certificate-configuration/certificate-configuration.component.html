@@ -167,13 +167,22 @@
                       <label
                         class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
                       <label>
-                        <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
+                        <!-- <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
                           [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
                           [isDisabled]="configurationMode === 'edit'" #selectRecipient
                           (selectedOptionChange)="handleParameterChange($event)">
                           <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option">
                           </sui-select-option>
-                        </sui-select>
+                        </sui-select> -->
+                        <mat-form-field appearance="fill">
+                          <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
+                          <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo"
+                            class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick language-dropdown-options"
+                            [disabled]="configurationMode === 'edit'" (selectionChange)="handleParameterChange($event)">
+                            <mat-option role="option" *ngFor="let option of issueTo" [value]="option.name"
+                            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
                       </label>
                     </div>
                     <label class="fnormal font-weight-normal text-left"
