@@ -334,7 +334,7 @@ urltoFile(url, filename, mimeType) {
   }
   getBase64Data(ev) {
     const div = document?.createElement('div');
-    // div?.appendChild(ev?.cloneNode(true));
+    div?.appendChild(ev?.cloneNode(true));
     const b64 = 'data:image/svg+xml;base64,' + window.btoa(div.innerHTML);
     return b64;
   }
