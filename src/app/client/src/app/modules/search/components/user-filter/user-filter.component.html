@@ -39,11 +39,20 @@
 
       <div class="sb-prominent-filter-field">
         <label>{{resourceService.frmelmnts?.lbl?.district | translate}}</label>
-        <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection"
+        <!-- <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection"
           [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict | translate}}"
           #districtDiv>
           <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
-        </sui-select>
+        </sui-select> -->
+        <mat-form-field class="example-full-width">
+          <input type="text" [placeholder]="resourceService.frmelmnts?.lbl?.district" [formControl]="districtControl"
+          aria-label="resourceService.frmelmnts?.lbl?.district" matInput [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="districtSelected($event, district)">
+            <mat-option *ngFor="let district of filteredDistricts | async" [value]="district.name">
+              {{district.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       </div>
 
       <div class="sb-prominent-filter-field">

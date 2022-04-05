@@ -47,7 +47,7 @@
               <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.selectBatch"
                 class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick language-dropdown-options"
                 [(ngModel)]="selectedOption" (selectionChange)="setBatchId($event)">
-                <mat-option role="option" *ngFor="let option of batchlist" [value]="selectedOption"
+                <mat-option role="option" *ngFor="let option of batchlist" [value]="option"
                 attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
               </mat-select>
             </mat-form-field>

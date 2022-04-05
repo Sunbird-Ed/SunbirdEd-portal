@@ -4,10 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService, OrgDetailsService, RolesAndPermissions, PermissionService, FrameworkService, FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { map, catchError } from 'rxjs/operators';
-import { of, combineLatest } from 'rxjs';
+import { map, catchError, startWith } from 'rxjs/operators';
+import { of, combineLatest, Observable } from 'rxjs';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-filter',
@@ -39,6 +40,8 @@ export class UserFilterComponent implements OnInit {
   districtIds: any;
   blockIds: any;
   userTypeList: any;
+  districtControl = new FormControl();
+  filteredDistricts: Observable<string[]>;
 
   constructor(private cdr: ChangeDetectorRef, public resourceService: ResourceService,
     private router: Router, private activatedRoute: ActivatedRoute,
@@ -66,6 +69,18 @@ export class UserFilterComponent implements OnInit {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
+      this.filteredDistricts = this.districtControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => {
+          return this._filter(value)
+        })
+      );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.allDistricts.filter(option => option?.name?.toLowerCase().includes(filterValue));
   }
 
   private subscribeToQueryParams() {
@@ -280,6 +295,11 @@ export class UserFilterComponent implements OnInit {
       type: 'User',
       ver: '1.0'
     };
+  }
+
+  districtSelected(e) {
+    const _selectedDistrict = _.find(this.allDistricts, {name: e.option.value});
+    this.onDistrictChange(_.get(_selectedDistrict, 'id'));
   }
 
 }

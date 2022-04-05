@@ -42,13 +42,22 @@
                     <div *ngFor="let filter of filters">
                       <div *ngIf="filter.filter.type == 'dropdown'" class="d-flex">
                         <div class="sb-field filter-drop mb-0 mr-8">
-                          <sui-select class="selection mr-8" labelField="name" [isSearchable]="false"
+                          <!-- <sui-select class="selection mr-8" labelField="name" [isSearchable]="false"
                             [options]="options" [placeholder]="'Select Submission'"
                             (selectedOptionChange)="handleParameterChange($event)">
                             <sui-select-option *ngFor="let option of filter.filter.data" [value]="option"
                               title="{{option.name}}">
                             </sui-select-option>
-                          </sui-select>
+                          </sui-select> -->
+                          <mat-form-field appearance="fill">
+                            <mat-label>Select Submission</mat-label>
+                            <mat-select role="listbox" aria-label="Select Submission"
+                              class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick language-dropdown-options"
+                              (selectionChange)="handleParameterChange($event)">
+                              <mat-option role="option" *ngFor="let option of filter.filter.data" [value]="option"
+                              attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
                         </div>
                       </div>
                     </div>
