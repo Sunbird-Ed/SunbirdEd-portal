@@ -353,7 +353,7 @@ export class ReportService  {
  * @description - fetches the report metadata from the blob
  * to enable backward compatibilty taking filenames from the last
  * @example because some reports use /reports/:slug/:filename
- * @example while some other reports use /reports/fetch/:slug/:filename 
+ * @example while some other reports use /reports/fetch/:slug/:filename
  * @param {IDataSource[]} dataSources
  * @returns
  * @memberof ReportService
