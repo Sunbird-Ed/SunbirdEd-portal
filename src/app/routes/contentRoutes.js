@@ -50,7 +50,7 @@ module.exports = (app) => {
             telemetryHelper.generateTelemetryForContentService,
             // Generate telemetry for proxy service
             telemetryHelper.generateTelemetryForProxy,
-            bodyParser.json(),
+            bodyParser.json({limit: '10mb'}),
             bodyParser.urlencoded({ extended: true }),
             // check the lock router  and assign admin as collaborator of textbook
             orgAdminHelper.orgAdminAsCollaborator,
