@@ -1,12 +1,13 @@
 import { PublicPlayerService } from '@sunbird/public';
 import {CertificateService, UserService, TenantService} from '@sunbird/core';
-import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData, ToasterService } from '@sunbird/shared';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
+import { CsCertificateService, CsVerifyCertificateResponse } from '@project-sunbird/client-services/services/certificate/interface';
 
 @Component({
   selector: 'app-certificate-details',
@@ -36,6 +37,7 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
   courseName: string;
   issuedOn: string;
   watchVideoLink: string;
+  validateRCCertificate: boolean = false;
   @ViewChild('codeInputField') codeInputField: ElementRef;
 
   constructor(
@@ -46,12 +48,18 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
     public userService: UserService,
     public playerService: PublicPlayerService,
     public router: Router,
-    public tenantService: TenantService
+    public tenantService: TenantService,
+    @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService,
+    private toasterService: ToasterService,
   ) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
+    if (_.get(this.activatedRoute, 'snapshot.queryParams.data')) {
+      this.validateRCCertificate = true;
+      this.validateCertificate();
+    }
     this.setTelemetryData();
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
       if (data && !data.err && data.tenantData) {
@@ -183,4 +191,44 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
     }
   }
 
+  validateCertificate() {
+    this.loader = true;
+    let url = _.get(this.activatedRoute, 'snapshot.queryParams.data').toString();
+    url = url.replace(/ /g, "+");
+    this.CsCertificateService
+      .getEncodedData(url)
+      .then((resp) => {
+        let requestBody = {
+          certificateData: resp,
+          schemaName: 'certificate',
+          certificateId: _.get(this.activatedRoute, 'snapshot.params.uuid'),
+        };
+        this.CsCertificateService.verifyCertificate(requestBody, {
+          apiPath: '/learner/certreg/v2',
+          apiPathLegacy: '/certreg/v1',
+          rcApiPath: '/learner/rc/${schemaName}/v1',
+        }).subscribe(
+          (data: CsVerifyCertificateResponse) => {
+            console.log('Portal :: verifyCertificate response ', data); // TODO: log!
+            const certData = _.get(data, 'certificateData');
+            this.loader = false;
+            if (_.get(data, 'verified')) {
+              this.viewCertificate = true;
+              this.recipient = _.get(certData, 'issuedTo');
+              this.courseName = _.get(certData, 'trainingName');
+              this.issuedOn = dayjs(new Date(_.get(certData, 'issuanceDate'))).format('DD MMM YYYY');
+            } else {
+              this.viewCertificate = false;
+            }
+          },
+          (err) => {
+            this.loader = false;
+            this.toasterService.error(this.resourceService.messages.emsg.m0005);
+            console.log('Portal :: verifyCertificate err ', err); // TODO: log!
+          }
+        );
+      }).catch(error => {
+        console.log('Portal :: CSL : Get Encode CSL API failed ', error);
+      });
+  }
 }

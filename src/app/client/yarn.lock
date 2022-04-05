@@ -1782,16 +1782,17 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.8.8":
-  version "4.8.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.8.8.tgz#81991b6e4af563baa9fbd2c181269a15d8dc93ae"
-  integrity sha512-Tr11PmVGzq97S3ZTRQEKkeLjbemC+LGWRLOcWxgIuIDvh/6OnfFFzrjTvLp3h4nSZCjILYZ1+7oIB9f8AEqzQw==
+"@project-sunbird/client-services@4.8.10":
+  version "4.8.10"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.8.10.tgz#971a50e89388582fccd7c60d3315ad3fae1060fa"
+  integrity sha512-OX66HWV1sc99+8DJH46v5Mom08p+7fu3KuaIfFHtVSXD5ejQcLh9e9DADkdbFXwczNq1+CG6kgLtu38UU/7ZTg==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
     jsonld "^5.2.0"
     jsonld-signatures "^6.0.0"
     jszip "^3.7.1"
+    node-fetch "2.6.5"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
@@ -9560,6 +9561,13 @@ node-fetch-npm@^2.0.2:
     json-parse-better-errors "^1.0.0"
     safe-buffer "^5.1.1"
 
+node-fetch@2.6.5:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
+  integrity sha512-mmlIVHJEu5rnIxgEgez6b9GgWXbkZj5YZ7fx+2r94a2E+Uirsp6HsPTPlomfdHtpt/B0cdKviwkoaM6pyvUOpQ==
+  dependencies:
+    whatwg-url "^5.0.0"
+
 node-fetch@3.0.0-beta.9:
   version "3.0.0-beta.9"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-3.0.0-beta.9.tgz#0a7554cfb824380dd6812864389923c783c80d9b"
@@ -14019,6 +14027,14 @@ whatwg-url@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-2.0.1.tgz#5396b2043f020ee6f704d9c45ea8519e724de659"
   integrity sha1-U5ayBD8CDub3BNnEXqhRnnJN5lk=
+  dependencies:
+    tr46 "~0.0.3"
+    webidl-conversions "^3.0.0"
+
+whatwg-url@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-5.0.0.tgz#966454e8765462e37644d3626f6742ce8b70965d"
+  integrity sha1-lmRU6HZUYuN2RNNib2dCzotwll0=
   dependencies:
     tr46 "~0.0.3"
     webidl-conversions "^3.0.0"
