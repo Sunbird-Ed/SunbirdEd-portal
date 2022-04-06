@@ -7,7 +7,7 @@ import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import {Subject, Subscription} from 'rxjs';
-import { CsCertificateService, CsVerifyCertificateResponse } from '@project-sunbird/client-services/services/certificate/interface';
+import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 
 @Component({
   selector: 'app-certificate-details',
@@ -59,6 +59,9 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.data')) {
       this.validateRCCertificate = true;
       this.validateCertificate();
+    } else if (_.get(this.activatedRoute, 'snapshot.queryParams.t')) {
+      this.validateRCCertificate = true;
+      this.validateTCertificate();
     }
     this.setTelemetryData();
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
@@ -191,6 +194,10 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
     }
   }
 
+  /**
+   * @description
+   * Function to validate certificate if URL has `data` params
+   */
   validateCertificate() {
     this.loader = true;
     let url = _.get(this.activatedRoute, 'snapshot.queryParams.data').toString();
@@ -208,7 +215,7 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
           apiPathLegacy: '/certreg/v1',
           rcApiPath: '/learner/rc/${schemaName}/v1',
         }).subscribe(
-          (data: CsVerifyCertificateResponse) => {
+          (data) => {
             console.log('Portal :: verifyCertificate response ', data); // TODO: log!
             const certData = _.get(data, 'certificateData');
             this.loader = false;
@@ -230,5 +237,39 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
       }).catch(error => {
         console.log('Portal :: CSL : Get Encode CSL API failed ', error);
       });
+  }
+  /**
+   * @description
+   * Function to validate certificate if URL has `t` params
+   */
+  validateTCertificate() {
+    let requestBody = {
+      schemaName: 'certificate',
+      certificateId: _.get(this.activatedRoute, 'snapshot.params.uuid'),
+    };
+    this.CsCertificateService.verifyCertificate(requestBody, {
+      apiPath: '/learner/certreg/v2',
+      apiPathLegacy: '/certreg/v1',
+      rcApiPath: '/learner/rc/${schemaName}/v1',
+    }).subscribe(
+      (data) => {
+        console.log('Portal :: validate TCertificate response ', data); // TODO: log!
+        const certData = _.get(data, 'certificateData');
+        this.loader = false;
+        if (_.get(data, 'verified')) {
+          this.viewCertificate = true;
+          this.recipient = _.get(certData, 'issuedTo');
+          this.courseName = _.get(certData, 'trainingName');
+          this.issuedOn = dayjs(new Date(_.get(certData, 'issuanceDate'))).format('DD MMM YYYY');
+        } else {
+          this.viewCertificate = false;
+        }
+      },
+      (err) => {
+        this.loader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        console.log('Portal :: validate TCertificate err ', err); // TODO: log!
+      }
+    );
   }
 }
