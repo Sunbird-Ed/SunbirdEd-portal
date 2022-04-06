@@ -163,7 +163,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         }, (err) => {
           this.showError = true;
           if (!this.isDesktopApp || (this.isDesktopApp && this.isConnected)) {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+            this.toasterService.error(this.resourceService.messages?.fmsg?.m0004);
           }
         });
      } else {

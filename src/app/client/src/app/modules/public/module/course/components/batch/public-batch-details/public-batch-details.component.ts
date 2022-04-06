@@ -93,7 +93,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       },
       (err: ServerResponse) => {
         this.showError = true;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        this.toasterService.error(this.resourceService.messages?.fmsg?.m0004);
       });
   }
 
