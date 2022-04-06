@@ -102,7 +102,7 @@ export class ReportService  {
   }
 
   /**
-   * @description retires a report and deactivates all jobs associated with this report.
+   * @description retires a report and deactivates all jobs associated with this report. 
    * @param {string} reportId
    * @returns
    * @memberof ReportService
