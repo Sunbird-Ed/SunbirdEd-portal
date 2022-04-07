@@ -595,8 +595,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/rc/certificate/v1/download/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: []
     },
     'learner/rc/certificate/v1/key/:id': {
       checksNeeded: ['ROLE_CHECK'],
