@@ -28,6 +28,11 @@ export default (app, proxyURL) => {
                 try {
                     const userToken = await userSDK.getUserToken();
                     user.accessToken = userToken;
+                    if(user.managedBy) {
+                        const allmanagedUser = await userSDK.getAllManagedUsers();
+                        const managedUser = allmanagedUser.find((mUser:any) => mUser.identifier === user.identifier)
+                        user.managedToken = managedUser.managedToken;
+                    }
                     await userSDK.insertLoggedInUser(user);
                     res.status(res.statusCode).send(res.body);
                 } catch (err) {

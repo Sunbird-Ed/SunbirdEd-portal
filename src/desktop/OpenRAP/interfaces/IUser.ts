@@ -37,6 +37,7 @@ export interface ILoggedInUser {
   };
   avatar?: string;
   managedBy?: string;
+  managedToken?: string;
   locationIds?: string;
   framework?: any;
   externalIds?: {
