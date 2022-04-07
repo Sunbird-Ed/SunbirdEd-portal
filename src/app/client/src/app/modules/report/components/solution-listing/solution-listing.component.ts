@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import 'datatables.net';
 import { ObservationService, UserService, TncService, ObservationUtilService } from '@sunbird/core';
 import { first } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-solution-listing',
@@ -47,7 +48,7 @@ export class SolutionListingComponent implements OnInit {
     public paginationService: PaginationService,
     public configService: ConfigService,
     public tncService: TncService,
-    public navigationHelperService: NavigationHelperService
+    public location:Location
   ) {
     this.config = config;
     this.paginationDetails = this.paginationService.getPager(0, 1, this.pageSize);
@@ -85,7 +86,7 @@ export class SolutionListingComponent implements OnInit {
   }
 
   goBack() {
-    this.navigationHelperService.goBack();
+    this.location.back();
   }
 
   getSolutions() {

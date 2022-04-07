@@ -341,11 +341,11 @@
           </div>
           <div class="list-item-parent">
             <div class="list-items sb-course-progress-status-label">
-              <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.course}}</div>
-              <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</div>
-              <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</div>
-              <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.status}}</div>
-              <div class="list-items__item"></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.status}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left"></span></div>
             </div>
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
@@ -364,7 +364,7 @@
                 <button appTelemetryInteract
                  [telemetryInteractEdata]="downloadCertificateEData"
                 [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)" tabindex="0">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fnormal" (click)="downloadCert(data)" tabindex="0">
                 <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
               <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
@@ -406,7 +406,7 @@
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data?.certificates?.length">
                 <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)" tabindex="0">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fnormal" (click)="downloadCert(data)" tabindex="0">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
               <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length">
@@ -463,6 +463,5 @@
       [userProfile]="userProfile"></app-account-recovery-info>
     </ng-template>
   </app-modal-wrapper>
-
 <router-outlet></router-outlet>
 
