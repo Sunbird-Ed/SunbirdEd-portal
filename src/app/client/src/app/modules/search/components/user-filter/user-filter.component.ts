@@ -40,9 +40,6 @@ export class UserFilterComponent implements OnInit {
   districtIds: any;
   blockIds: any;
   userTypeList: any;
-  districtControl = new FormControl();
-  filteredDistricts: Observable<string[]>;
-
   constructor(private cdr: ChangeDetectorRef, public resourceService: ResourceService,
     private router: Router, private activatedRoute: ActivatedRoute,
     public userService: UserService, public toasterService: ToasterService,
@@ -69,18 +66,6 @@ export class UserFilterComponent implements OnInit {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
-      this.filteredDistricts = this.districtControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => {
-          return this._filter(value)
-        })
-      );
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.allDistricts.filter(option => option?.name?.toLowerCase().includes(filterValue));
   }
 
   private subscribeToQueryParams() {
@@ -168,7 +153,7 @@ export class UserFilterComponent implements OnInit {
       this.profileService.getUserLocation(requestData).subscribe(res => {
         this.allBlocks = this.sortAndCapitaliseFilters(res.result.response);
         this.selectedBlock = this.queryParams.Block;
-        this.hardRefreshFilter();
+        // this.hardRefreshFilter();
         // Get school API call
         this.blockIds = _.map(this.allBlocks, 'id');
         this.getSchool(this.blockIds);
@@ -183,7 +168,7 @@ export class UserFilterComponent implements OnInit {
         this.allSchools = _.sortBy(res.result.response.content, [(sort) => {
           return sort.orgName = _.capitalize(sort.orgName); }]);
         this.selectedSchool = this.queryParams.School;
-        this.hardRefreshFilter();
+        // this.hardRefreshFilter();
       });
     }
   }
@@ -298,8 +283,22 @@ export class UserFilterComponent implements OnInit {
   }
 
   districtSelected(e) {
-    const _selectedDistrict = _.find(this.allDistricts, {name: e.option.value});
-    this.onDistrictChange(_.get(_selectedDistrict, 'id'));
+    this.onDistrictChange(_.get(e, 'value.id'));
   }
 
+  blockSelected(e) {
+    this.onBlockChange(_.get(e, 'value.id'));
+  }
+
+  schoolSelected(e) {
+    this.onSchoolChange(_.get(e, 'value.identifier'));
+  }
+
+  selectedMultiValues(roleSelected, code) {
+    this.selectedValue(_.get(roleSelected, 'value'), code);
+  }
+
+  getSortedList(arr, objKey) {
+    return arr.sort((a, b) => a[objKey].localeCompare(b[objKey], 'en', { numeric: true }))
+  }
 }
