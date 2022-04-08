@@ -597,7 +597,7 @@ const API_LIST = {
     '/learner/rc/certificate/v1/download/:id': {
       checksNeeded: []
     },
-    'learner/rc/certificate/v1/key/:id': {
+    '/learner/rc/certificate/v1/key/:id': {
       checksNeeded: [],
       description: 'RC API to validate scanned certificate'
     },
@@ -1909,7 +1909,7 @@ const API_LIST = {
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
     '/learner/rc/certificate/v1/download/:id',
-    'learner/rc/certificate/v1/key/:id',
+    '/learner/rc/certificate/v1/key/:id',
     '/content/asset/v1/upload/:id',
     '/action/asset/v1/upload/:id',
     '/action/asset/v1/read/:id',
