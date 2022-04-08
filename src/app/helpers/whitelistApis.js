@@ -598,8 +598,7 @@ const API_LIST = {
       checksNeeded: []
     },
     'learner/rc/certificate/v1/key/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC],
+      checksNeeded: [],
       description: 'RC API to validate scanned certificate'
     },
     
