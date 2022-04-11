@@ -337,14 +337,12 @@ app-workspace {
 
 
 /* new theme */
-
-
 .sbt-container {
   width: 100%;
   margin: 0 auto;
 
   @include respond-above(sm) {
-    // padding: 0 5% 0 3%;
+    padding: 0 1%;
   }
 }
 
@@ -892,7 +890,6 @@ app-landing-page {
   font-size: calculateRem(12px);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0rem;
   display: flex;
   align-items: center;
@@ -917,7 +914,7 @@ app-landing-page {
 
   @include respond-below(sm) {
     .head-tail-right-side {
-      margin-top: 0.5rem;
+      // margin-top: 0.5rem;
       align-self: flex-end;
       width: 100%;
     }
@@ -936,7 +933,12 @@ app-landing-page {
       flex-direction: column;
       width: 100%;
     }
-
+    nav {
+      @include respond-below(xs) {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
     ul {
       list-style: none;
       display: flex;
@@ -969,7 +971,7 @@ app-landing-page {
       }
 
       &:last-child {
-        @include respond-below(sm) {
+        @include respond-below(xs) {
           margin-top: 0.5rem;
         }
       }
@@ -1499,4 +1501,29 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 html[layout=joy] sb-form .multi-select-container .list-border {
   padding: 0px !important;
   border: inherit !important;
+}
+
+/* error page */
+.error-page {
+  padding:0 5%;
+  @include respond-below(sm){
+    padding:0 1%;
+  }
+  .logo {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    img {
+      min-height: 65%;
+      height: 80%;
+    }
+  }
+  .error-img img {
+    max-width: 35.375rem;
+    width:100%;
+    @include respond-below(sm){
+      max-width: 25rem;
+    }
+  }
+
 }

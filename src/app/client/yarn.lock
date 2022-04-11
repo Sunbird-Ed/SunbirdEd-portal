@@ -1832,15 +1832,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.40":
-  version "0.0.40"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.40.tgz#617f4b2bbd3308999c37058932fbfda9898307f7"
-  integrity sha512-r7FX8h3brA7bEGXdwmTRYdwzaZeEKjczbpChq+ICYd42JLwWeFOghMbygVGkO/ro9k4GfhTBfpyPdrUF+L/lag==
+"@project-sunbird/sb-themes@0.0.43":
+  version "0.0.43"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.43.tgz#3bda03318acc84fcb51a4a0ce01f4094a2e2bf8c"
+  integrity sha512-nK/OuyDKlLLNnmpK7vuJW7Wf6ZrxJJMvcIeDcBWhTmFnjJRDLwXHcIUKXlQIXBHSRRMA45P3KcXjE8R9r4YWMA==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.8.22":
-  version "4.8.22"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.8.22.tgz#6c1e1ccb6f752e8c98102dfb275e80636f3a7cf5"
-  integrity sha512-57go0lyJ3lipvukYhKIG6xmVXu8MB7vqcoeKblNqGqQjulIJxJcW4rqYyu0FJaZXFWaNOzAvR1uJW7AgJAdb9w==
+"@project-sunbird/sunbird-collection-editor-v9@4.9.2":
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.9.2.tgz#42359c8bf8672f0f3fc6cb33db3afd2bb993a3f6"
+  integrity sha512-15fnn9/xCaEtsdrjP+TvTrDELguNGUJGz7nRmzTcNA6ZovIeCyeDnnU2TQFgmMQgnwNPWV9YjRbUJrYoqVi/XQ==
   dependencies:
     tslib "^1.10.0"
 
