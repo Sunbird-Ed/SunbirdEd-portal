@@ -47,7 +47,7 @@
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
-            <label>
+            <div>
               <!-- <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16"
                 [(ngModel)]="batchStatus" [options]="statusOptions" valueField="value" labelField="name"
                 #batchStatusSelect>
@@ -55,16 +55,16 @@
                   tabindex="0">
                 </sui-select-option>
               </sui-select> -->
-              <mat-form-field appearance="fill">
-                <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
-                <mat-select   role="listbox" aria-label="Select Status" [(value)]="selectedLanguage"
-                  class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick language-dropdown-options"
+              <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                <!-- <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label> -->
+                <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage"
+                  class="selection"
                   [(ngModel)]="batchStatus" (selectionChange)="getSelectedBatches()">
                   <mat-option role="option" *ngFor="let option of statusOptions" [value]="option.value"
                     attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
-            </label>
+            </div>
             <div *ngFor="let batch of batchList">
 
               <div class="sb-color-primary fmedium font-weight-bold"><i class="calendar outline icon"></i>

@@ -71,7 +71,6 @@ export class LoginSessionProvider {
                 backgroundColor: "#EDF4F9",
                 webPreferences: {
                     nodeIntegration: false,
-                    enableRemoteModule: false,
                     session: session.fromPartition('loginwindow')
                 },
             });
