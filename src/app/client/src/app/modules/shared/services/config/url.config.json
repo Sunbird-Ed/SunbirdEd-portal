@@ -117,7 +117,7 @@
       "USER_MIGRATE": "user/v1/migrate",
       "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc",
       "SIGN_UP_V4": "user/v4/create",
-      "SIGN_UP_MANAGED_USER": "user/v1/managed/create",
+      "SIGN_UP_MANAGED_USER": "user/v4/managed/create",
       "SWITCH_USER": "user/v1/switch",
       "END_SESSION": "endSession",
       "GET_MANAGED_USER": "user/v1/managed",
