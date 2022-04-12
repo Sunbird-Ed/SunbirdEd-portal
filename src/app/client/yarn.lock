@@ -1782,10 +1782,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.8.12":
-  version "4.8.12"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.8.12.tgz#1eddca76f2b748222801e3eabfda954e60c09073"
-  integrity sha512-NHeL+euDbMlu1K6JDS6oeCh/ZNESkPc4D0Hd5E1yX13n7spJZbgloIRVSYqFHq8om0UX5vgS/TeTTsokDnF1UQ==
+"@project-sunbird/client-services@4.8.13":
+  version "4.8.13"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.8.13.tgz#b434883f6c4be3f3e0d52ce739d5a547ee346695"
+  integrity sha512-A4oPmFHuuQeZPkx+E2ngl3jqmoar4F4PdgNvGOaOCNzYtPNusneutj0J+pUIutL/LL7Tu/AW9NRr7lj1LrP+xQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
