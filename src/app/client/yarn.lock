@@ -1893,7 +1893,7 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.8.0"
 
-"@project-sunbird/sunbird-resource-library@^0.0.15":
+"@project-sunbird/sunbird-resource-library@0.0.15":
   version "0.0.15"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.15.tgz#ade8fa0799657792865a003f6610220535b90eaf"
   integrity sha512-VIiRB48Xib+RoLJV9U4pj0vnrTW1/FiQ5yZF9rBVImMgwM0RbtxsiVIlZwVBmFt8yPSn55I1Hq9eGr3vXLkAjg==
