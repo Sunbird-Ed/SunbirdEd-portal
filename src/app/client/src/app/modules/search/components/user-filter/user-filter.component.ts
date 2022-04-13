@@ -299,6 +299,10 @@ export class UserFilterComponent implements OnInit {
   }
 
   getSortedList(arr, objKey) {
-    return arr.sort((a, b) => a[objKey].localeCompare(b[objKey], 'en', { numeric: true }))
+    try {
+      return arr.sort((a, b) => a[objKey].localeCompare(b[objKey], 'en', { numeric: true }))
+    } catch (error) {
+      return arr;
+    }
   }
 }
