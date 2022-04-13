@@ -101,7 +101,7 @@ module.exports = function (app) {
         }
         delete req.body.request.filters['courseId'];
         delete req.body.request.filters['createdBy'];
-        return require('url').parse(certRegURL + 'user/v1/search').path;
+        return require('url').parse(certRegURL + 'user/v3/search').path;
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
