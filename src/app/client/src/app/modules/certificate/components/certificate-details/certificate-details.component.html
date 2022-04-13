@@ -102,7 +102,7 @@
 
 </div>
 
-<div *ngIf="validateRCCertificate && !viewCertificate" class="sb-certificatePage" [class.loading]="loader" [class.error]="error">
+<div *ngIf="validateRCCertificate && !viewCertificate && isInvalidCertificate" class="sb-certificatePage" [class.loading]="loader" [class.error]="error">
 
   <div class="sb-certificatePage sb-certificate-view sb-certificatePage-flexHeight">
     <div class="sb-certificatePage-header">
