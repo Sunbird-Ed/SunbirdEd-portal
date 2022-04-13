@@ -28,17 +28,17 @@ module.exports = function (app) {
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
-        return '/private/user/v1/update';
+        return '/private/user/v3/update';
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
-        logger.info({ msg: '/learner/portal/user/v1/update called /private/user/v1/update' });
+        logger.info({ msg: '/learner/portal/user/v1/update called upstream url /private/user/v3/update' });
         try {
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
           logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
-          logger.error({ msg: 'learner route : error for /learner/portal/user/v1/update', err });
+          logger.error({ msg: 'learner route : error for /learner/portal/user/v1/update upstram url is /private/user/v3/update ', err });
           return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, null);
         }
       }
