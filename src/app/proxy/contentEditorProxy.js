@@ -133,7 +133,7 @@ module.exports = function (app) {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
       proxyReqPathResolver: function (req) {
-        let originalUrl = req.originalUrl.replace('/action/', '')
+        let originalUrl = req.originalUrl.replace('/action/user/v1/search', 'user/v3/search')
         return require('url').parse(learnerURL + originalUrl).path
       },
       userResDecorator: userResDecorator
