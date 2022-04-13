@@ -39,6 +39,7 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
   watchVideoLink: string;
   validateRCCertificate: boolean = false;
   @ViewChild('codeInputField') codeInputField: ElementRef;
+  isInvalidCertificate: boolean = false;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -226,6 +227,7 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
               this.issuedOn = dayjs(new Date(_.get(certData, 'issuanceDate'))).format('DD MMM YYYY');
             } else {
               this.viewCertificate = false;
+              this.isInvalidCertificate = true;
             }
           },
           (err) => {
@@ -263,6 +265,7 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
           this.issuedOn = dayjs(new Date(_.get(certData, 'issuanceDate'))).format('DD MMM YYYY');
         } else {
           this.viewCertificate = false;
+          this.isInvalidCertificate = true;
         }
       },
       (err) => {
