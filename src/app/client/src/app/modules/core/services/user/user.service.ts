@@ -370,7 +370,7 @@ export class UserService {
       roleOrgMap[roleObj.role] = _.map(roleObj.scope, 'organisationId');
       const roleObjScope = roleObj.scope && roleObj.scope[0];
       roleOrgDetails[roleObj.role] = {
-        orgId : _.get(roleObjScope, 'organisationId')
+        orgId: _.get(roleObjScope, 'organisationId')
       };
       _.forEach(orgList, (org, index) => {
         if (org.organisationId === _.get(roleObjScope, 'organisationId')) {

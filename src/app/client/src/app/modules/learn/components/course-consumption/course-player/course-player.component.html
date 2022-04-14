@@ -188,7 +188,7 @@
           <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progressToDisplay}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-          <sui-progress [value]="progressToDisplay" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+          <mat-progress-bar mode="determinate" [value]="progressToDisplay" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
         </div>
 
         <!-- 3. Join batch, leave batch and show batch popup-->
@@ -241,7 +241,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false}"
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">

@@ -141,7 +141,7 @@
 </div>
 </div>
 
-<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: 'overflow-visible'}">
+<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="guestUser?.framework" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isGuestUser]="true" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">

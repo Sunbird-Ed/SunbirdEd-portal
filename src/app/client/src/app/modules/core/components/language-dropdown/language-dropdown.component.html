@@ -12,11 +12,18 @@
 
  <!-- language dropdown -->
  <div *ngIf="isLayoutAvailable()">
-  <label class="mb-0 w-100" *ngIf="isLayoutAvailable()">
+  <mat-form-field appearance="fill">
+    <mat-label>{{resourceService.frmelmnts?.btn?.selectLanguage}}</mat-label>
+    <mat-select role="listbox" aria-label="Select Language" [(value)]="selectedLanguage" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick language-dropdown-options" [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event?.value)">
+      <mat-option role="option" *ngFor="let option of languageRange" [value]="option.value" appTelemetryInteract
+      [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" attr.aria-label="{{option.accessibleText}}">{{option.label}}</mat-option>
+    </mat-select>
+</mat-form-field>
+  <!-- <label class="mb-0 w-100" *ngIf="isLayoutAvailable()">
     <sui-select *ngIf="isLayoutAvailable()" role="combobox" aria-label="Select Language" title="Select Language" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick language-dropdown-options" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
      <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
        [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option" role="option" attr.aria-label="{{option.accessibleText}}" title="{{option.accessibleText}}" lang="{{option?.value}}">
      </sui-select-option>
-   </sui-select></label>
+   </sui-select></label> -->
  </div>
 

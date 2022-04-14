@@ -7,28 +7,28 @@ export let mockData = {
                 'externalId': 'TN-Program-1597301830708',
                 'name': 'TN-Program',
                 'description': 'TN01-Mantra4Change-APSWREIS School Leader Feedback',
-                'role': 'PM'
+                'role': ['PM']
             },
             {
                 '_id': '5f34ec17585244939f89f90c',
                 'externalId': 'MH-Program-1597303831605',
                 'name': 'MH-Program',
                 'description': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',
-                'role': 'PM'
+                'role': ['PM']
             },
             {
                 '_id': '5f75b90454670074deacf087',
                 'name': 'Skilling Teachers -- Google Project',
                 'externalId': 'PGM-2948-KEF-RTLBS-INDIVIDUAL_ASSESSMENT',
                 'description': 'This is a type of individual assessment',
-                'role': 'PM'
+                'role': ['PM']
             },
             {
                 '_id': '5f7f262e54670074deb99bcb',
                 'externalId': 'PGM_NIQSA_Self_Assessment-Feb2020',
                 'name': 'NIQSA Self Assessment',
                 'description': 'This tool is used to assess schools that are part of NISA on five domains of the NIQSA quality charter.',
-                'role': 'PM'
+                'role': ['PM']
             }
         ]
     },
@@ -36,7 +36,7 @@ export let mockData = {
         result: [
             {
                 '_id': '5f34ec17585244939f89f90d',
-                'isRubricDriven': false,
+                'isRubricDriven': true,
                 'externalId': 'cbd074fa-dd11-11ea-a3bf-000d3af02677-OBSERVATION-TEMPLATE-1597303831612',
                 'name': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',
                 'description': 'MH01-Mantra4Change-APSWREIS School Leader Feedback',
@@ -79,53 +79,63 @@ export let mockData = {
             {
                 'name': 'Task Detail Report',
                 'encrypt': true,
-                'datasetId': 'ml-improvementproject-task-detail-report'
+                'datasetId': 'ml-improvementproject-task-detail-report',
+                'roles': ['PM']
             },
             {
                 'name': 'Status Report',
                 'encrypt': false,
-                'datasetId': 'ml-improvementproject-status-report'
+                'datasetId': 'ml-improvementproject-status-report',
+                'roles': ['PM']
+
             }
         ],
         'observation': [
             {
                 'name': 'Question Report',
                 'encrypt': true,
-                'datasetId': 'ml-observation-question-report'
+                'datasetId': 'ml-observation-question-report',
+                'roles': ['PM']
             },
             {
                 'name': 'Status Report',
                 'encrypt': false,
-                'datasetId': 'ml-observation-status-report'
+                'datasetId': 'ml-observation-status-report',
+                'roles': ['PM']
             }
         ],
         'observation_with_rubric': [
             {
                 'name': 'Task Detail Report',
                 'encrypt': true,
-                'datasetId': 'ml-observation_with_rubric-task-detail-report'
+                'datasetId': 'ml-observation_with_rubric-task-detail-report',
+                'roles': ['PM']
             },
             {
                 'name': 'Status Report',
                 'encrypt': false,
-                'datasetId': 'ml-observation_with_rubric-status-report'
+                'datasetId': 'ml-observation_with_rubric-status-report',
+                'roles': ['PM']
             },
             {
                 'name': 'Domain Criteria Report',
                 'encrypt': false,
-                'datasetId': 'ml-observation_with_rubric-domain-criteria-report'
+                'datasetId': 'ml-observation_with_rubric-domain-criteria-report',
+                'roles': ['PM']
             }
         ],
         'assessment': [
             {
                 'name': 'Task Detail Report',
                 'encrypt': true,
-                'datasetId': 'ml-assessment-task-detail-report'
+                'datasetId': 'ml-assessment-task-detail-report',
+                'roles': ['PM']
             },
             {
                 'name': 'Status Report',
                 'encrypt': false,
-                'datasetId': 'ml-assessment-status-report'
+                'datasetId': 'ml-assessment-status-report',
+                'roles': ['PM']
             }
         ]
     },

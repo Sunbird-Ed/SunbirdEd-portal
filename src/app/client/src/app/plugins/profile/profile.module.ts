@@ -32,6 +32,7 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
   }
   return CsModule.instance.courseService;
 };
+
 @NgModule({
   imports: [
     CommonModule,
@@ -59,6 +60,8 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
    CreateUserComponent,
    ChooseUserComponent,
    SubmitTeacherDetailsComponent],
-  providers: [{provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService]}]
+  providers: [
+    {provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService]}
+  ]
 })
 export class ProfileModule { }
