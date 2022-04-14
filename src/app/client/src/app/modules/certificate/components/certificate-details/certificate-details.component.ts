@@ -232,12 +232,16 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
           },
           (err) => {
             this.loader = false;
+            this.viewCertificate = false;
+            this.isInvalidCertificate = true;
             this.toasterService.error(this.resourceService.messages.emsg.m0005);
             console.log('Portal :: verifyCertificate err ', err); // TODO: log!
           }
         );
       }).catch(error => {
         console.log('Portal :: CSL : Get Encode CSL API failed ', error);
+        this.viewCertificate = false;
+        this.isInvalidCertificate = true;
       });
   }
   /**
@@ -272,6 +276,8 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         console.log('Portal :: validate TCertificate err ', err); // TODO: log!
+        this.viewCertificate = false;
+        this.isInvalidCertificate = true;
       }
     );
   }
