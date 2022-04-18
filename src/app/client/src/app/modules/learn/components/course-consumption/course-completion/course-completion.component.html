@@ -18,6 +18,8 @@
           </div>
           <div class="course-complete-para mt-32" *ngIf="certificateDescription && certificateDescription?.description">
             <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
+          </div>
+          <div class="course-complete-para mt-32" *ngIf="certificateDescription">
             <p class="fsmall mb-0">{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
           </div>
         </div>
