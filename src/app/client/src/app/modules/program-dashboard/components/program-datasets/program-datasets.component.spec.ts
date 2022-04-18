@@ -109,7 +109,9 @@ describe('DatasetsComponent', () => {
     const kendraService = TestBed.inject(KendraService);
     component.programs = mockData.programs.result;
     spyOn(kendraService, 'get').and.returnValue(observableOf({ result: mockData.solutions.result }));
-    component.programSelection('5f34ec17585244939f89f90c');
+    component.programSelection({
+      value: '5f34ec17585244939f89f90c'
+    });
     expect(component.solutions).toEqual(mockData.solutions.result);
 
   });
@@ -202,7 +204,9 @@ describe('DatasetsComponent', () => {
     spyOn(component,'loadReports').and.callThrough();
     component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
     component.solutions = mockData.solutions.result;
-    component.selectSolution('5f34ec17585244939f89f90d');
+    component.selectSolution({
+      value: '5f34ec17585244939f89f90d'
+    });
     expect(component.loadReports).toHaveBeenCalled();
     expect(spy).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([
@@ -247,7 +251,9 @@ describe('DatasetsComponent', () => {
    
     component.reportForm.get('solution').setValue(['5fbb75537380505718640436']);
     component.solutions = mockData.solutions.result;
-    component.selectSolution('5fbb75537380505718640436');
+    component.selectSolution({
+      value: '5fbb75537380505718640436'
+    });
 
     expect(component.loadReports).toHaveBeenCalled();
     expect(spy).toHaveBeenCalled();
@@ -285,7 +291,9 @@ describe('DatasetsComponent', () => {
 
     component.loadReports();
     component.solutions = mockData.solutions.result;  
-    component.selectSolution('5fbb75537380505718640438');
+    component.selectSolution({
+      value: '5fbb75537380505718640438'
+    });
     tick(1000);
     expect(spy).toHaveBeenCalled();
     expect(component.reportTypes).toEqual([]);
