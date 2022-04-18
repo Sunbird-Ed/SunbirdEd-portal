@@ -13,6 +13,7 @@ import { of as observableOf, throwError as observableThrowError, of, Subject } f
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
@@ -50,6 +51,7 @@ describe('DatasetsComponent', () => {
         SuiModule,
         FormsModule,
         ReactiveFormsModule,
+        BrowserAnimationsModule, NoopAnimationsModule
       ],
       providers: [
         {
