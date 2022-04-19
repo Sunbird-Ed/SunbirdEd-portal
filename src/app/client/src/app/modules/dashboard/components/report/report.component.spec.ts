@@ -113,7 +113,9 @@ describe('ReportComponent', () => {
 
   it('should export the report as pdf', fakeAsync(() => {
     spyOn<any>(component, 'downloadReportAsPdf');
-    component.downloadReport('pdf');
+    component.downloadReport({
+      value: 'pdf'
+    });
     tick(1500);
     expect(component['downloadReportAsPdf']).toHaveBeenCalled();
     expect(component['downloadReportAsPdf']).toHaveBeenCalledTimes(1);
@@ -122,7 +124,9 @@ describe('ReportComponent', () => {
 
   it('should export the report as image', fakeAsync(() => {
     spyOn<any>(component, 'downloadReportAsImage');
-    component.downloadReport('img');
+    component.downloadReport({
+      value: 'img'
+    });
     tick(1500);
     expect(component['downloadReportAsImage']).toHaveBeenCalled();
     expect(component['downloadReportAsImage']).toHaveBeenCalledTimes(1);
@@ -336,7 +340,9 @@ describe('ReportComponent', () => {
       hashed_val: '123',
       materialize: true
     };
-    component.handleParameterChange(input);
+    component.handleParameterChange({
+      value: input
+    });
     expect(component['router'].navigate).toHaveBeenCalledWith(['/dashBoard/reports', 'daily_metrics', '123'],
       { queryParams: { materialize: true } });
   });

@@ -229,7 +229,7 @@ export class ReportComponent implements OnInit {
     };
   }
 
-  downloadReport(reportType: string) {
+  downloadReport(reportType) {
     this.reportExportInProgress = true;
     this.toggleHtmlVisibilty(true);
     setTimeout(() => {
