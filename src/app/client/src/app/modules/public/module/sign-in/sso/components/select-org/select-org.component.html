@@ -16,21 +16,12 @@
                 </div>
                 <div *ngIf="enableSSO.toLowerCase() === 'true'">
                   <div class="width-300 mx-auto mt-60">
-                    <div class="line-height-1-3 font-weight-bold text-center mb-50 mt-60">{{
-                      resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}</div>
                     <div *ngIf="!isIOSDevice" class="w-100 mb-16">
-                      <!-- <sui-select class="mb-50 d-flex selection mt-60" labelField="name" valueField="loginUrl"
-                        name="state" [(ngModel)]="selectedOrg" (ngModelChange)="handleOrgChange($event)"
-                        placeholder="{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}">
-                        <sui-select-option *ngFor="let state of orgList" tabindex="0" [value]="state">
-                        </sui-select-option>
-                      </sui-select> -->
-                      <mat-form-field appearance="fill" class="mat-dropdown">
-                        <!-- <mat-label>{{resourceService.frmelmnts?.lbl?.sltstate || 'Select your State'}}</mat-label> -->
-                        <mat-select role="listbox" aria-label="Select Status"
-                          class="selection"
+                      <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                        <mat-label>{{resourceService.frmelmnts?.lbl?.Select}}</mat-label>
+                        <mat-select role="listbox" aria-label="Select State" class="selection"
                           [(ngModel)]="selectedOrg" (selectionChange)="handleOrgChange($event.value)">
-                          <mat-option role="option" *ngFor="let state of orgList" [value]="state.loginUrl"
+                          <mat-option class="mat-dropdown__options" role="option" *ngFor="let state of orgList" [value]="state.loginUrl"
                             attr.aria-label="{{state.name}}">{{state.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>

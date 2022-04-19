@@ -115,7 +115,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   changeBirthYear(selectedBirthYear) {
-    let _selectedYOB = selectedBirthYear;
+    let _selectedYOB = _.get(selectedBirthYear, 'value');
     if (this.isIOSDevice) {
       _selectedYOB = parseInt(selectedBirthYear.target.value);
     }

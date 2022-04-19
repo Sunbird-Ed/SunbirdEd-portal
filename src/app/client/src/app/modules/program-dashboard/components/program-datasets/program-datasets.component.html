@@ -52,30 +52,31 @@
           <div class='ui stackable grid mt-0'>
             <div class="twelve wide column pt-0 pb-40">
               <div class="d-flex flex-ai-center pd-10 ">
-                <div class="ml-0">
-                  <label class="mr-10">  
-                    {{resourceService?.frmelmnts?.lbl?.program }}
-                  </label>
-                <label class="sb-field">
-                  <sui-select #programSelect labelField="name" valueField="_id" formControlName="programName"
-                    [options]="programs" [(ngModel)]="programSelected" class="selection pd-10" 
-                    placeholder="Select Program" (selectedOptionChange)="programSelection($event)">
-                    <sui-select-option *ngFor="let program of programSelect.availableOptions" [value]="program">
-                    </sui-select-option>
-                  </sui-select>
+                <div class="ml-0 w-25">
+                <label class="sb-field w-100">
+
+                  <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                    <mat-label>{{resourceService.frmelmnts?.lbl?.program}}</mat-label>
+                    <mat-select [(ngModel)]="programSelected" formControlName="programName" role="listbox" aria-label="resourceService.frmelmnts?.lbl?.program" tabindex="0"
+                      class="selection" (selectionChange)="programSelection($event)">
+                      <mat-option class="mat-dropdown__options" role="option" *ngFor="let program of programs" [value]="program?._id"
+                      attr.aria-label="{{program?.name}}">{{program?.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </label>
                 </div>
 
-                <div class="ml-10" *ngIf="programSelected">
-                  <label class="mr-10">  {{ resourceService?.frmelmnts?.lbl?.solution }} </label>
-                  <label class="sb-field">
-                  <sui-select #solutionSelect labelField="name" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                    [options]="solutions" class="selection pd-10"  placeholder="Select Resource"
-                    (selectedOptionChange)="selectSolution($event)">
-                    <sui-select-option *ngFor="let solutionInfo of solutionSelect.availableOptions" [value]="solutionInfo">
-                    </sui-select-option>
-                  </sui-select>
-                </label>
+                <div class="ml-10 w-25" *ngIf="programSelected">
+                  <label class="sb-field w-100">
+                    <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                      <mat-label>{{resourceService.frmelmnts?.lbl?.solution}}</mat-label>
+                      <mat-select [(ngModel)]="solutionSelected" formControlName="solution" role="listbox" aria-label="resourceService.frmelmnts?.lbl?.solution" tabindex="1"
+                        class="selection" (selectionChange)="selectSolution($event)">
+                        <mat-option class="mat-dropdown__options" role="option" *ngFor="let solution of solutions" [value]="solution?._id"
+                        attr.aria-label="{{solution?.name}}">{{solution?.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </label>
                 </div>
               </div>
             </div>
@@ -91,13 +92,15 @@
               <div class="twelve wide column pt-0">
                 <div class="d-flex flex-ai-center pd-10 ">
                   <div class="mr-10">
-                    <label class="mr-10"> {{ resourceService?.frmelmnts?.lbl?.reportType }} </label>
                     <label class="sb-field">
-                    <sui-select formControlName="reportType" class="selection course-dashboard-select pd-10"
-                     placeholder="Select Report">
-                      <sui-select-option *ngFor="let report of reportTypes" [value]="report.name" (click)="reportChanged(report);">
-                      </sui-select-option>
-                    </sui-select>
+                    <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                      <mat-label>{{resourceService?.frmelmnts?.lbl?.reportType}}</mat-label>
+                      <mat-select formControlName="reportType" role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.reportType" tabindex="2"
+                        class="selection" (selectionChange)="reportChanged($event)">
+                        <mat-option class="mat-dropdown__options" role="option" *ngFor="let report of reportTypes" [value]="report"
+                        attr.aria-label="{{report?.name}}">{{report?.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </label>
                   </div>
 

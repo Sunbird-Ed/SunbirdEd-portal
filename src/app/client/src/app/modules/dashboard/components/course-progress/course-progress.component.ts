@@ -287,14 +287,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   setBatchId(batch?: any): void {
     this.fetchForumIdReq = null;
     this.showWarningDiv = false;
-    this.queryParams.batchIdentifier = batch.id;
+    this.queryParams.batchIdentifier = _.get(batch, 'value.id');
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
-    this.currentBatch = batch;
+    this.currentBatch = _.get(batch, 'value');;
     // this.currentBatch.lastUpdatedOn = dayjs(this.currentBatch.lastUpdatedOn).format('DD-MMM-YYYY hh:mm a');
-    this.batchId = batch.id;
+    this.batchId = _.get(batch, 'value.id');
     this.setCounts(this.currentBatch);
-    this.populateCourseDashboardData(batch);
+    this.populateCourseDashboardData(_.get(batch, 'value'));
     if (this.selectedTab === 1) {
       this.summaryReport(1);
     } else {
