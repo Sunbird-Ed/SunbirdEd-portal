@@ -451,7 +451,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.showStats = data;
   }
   changeChartType(chartType) {
-    this.chartType = _.lowerCase(chartType);
+    this.chartType = _.lowerCase(_.get(chartType, 'value'));
   }
   filterModalPopup(operator) {
 

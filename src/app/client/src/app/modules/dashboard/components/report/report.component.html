@@ -61,14 +61,16 @@
                         <div
                           *ngIf="reportService.isUserReportAdmin() && report.parameters && report.parameters.length && !hideElements"
                           class="d-flex">
-                          <div class="sb-field filter-drop mb-0 mr-8"
-                            *ngIf="getParametersValueForDropDown$ | async as options">
-                            <sui-select *ngIf="options.length" class="selection mr-8" [options]="options"
-                              labelField="label" isSearchable="true" [placeholder]="'Select Parameter'"
-                              (selectedOptionChange)="handleParameterChange($event)" #paramSelect>
-                              <sui-select-option *ngFor="let option of paramSelect.filteredOptions" [value]="option">
-                              </sui-select-option>
-                            </sui-select>
+                          <div class="sb-field filter-drop mb-0 mr-8" *ngIf="getParametersValueForDropDown$ | async as options">
+                            <mat-form-field appearance="fill" class="mat-dropdown mr-8">
+                              <mat-label>Select Parameter</mat-label>
+                              <mat-select role="listbox" aria-label="Select Parameter" [(value)]="selectedLanguage" class="selection"
+                                (selectionChange)="handleParameterChange($event)">
+                                <mat-option class="mat-dropdown__options" role="option"
+                                  *ngFor="let option of getParametersValueForDropDown$ | async as options" [value]="option"
+                                  attr.aria-label="{{option.label}}">{{option.label}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
                           </div>
                         </div>
 
@@ -344,14 +346,15 @@
         {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
       <div class="sb-field mb-0 mr-8 d-flex flex-jc-flex-end">
         <label>
-          <sui-select *ngIf="showExportsOption" class="selection mr-12"
-            [ngClass]="{'ml-auto': !reportData?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
-            (selectedOptionChange)="downloadReport($event)">
-            <sui-select-option *ngFor="let option of exportOptions" [value]="option" appTelemetryInteract
-              [telemetryInteractObject]="setTelemetryInteractObject()"
-              [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'export-chart', subtype: option})">
-            </sui-select-option>
-          </sui-select>
+          <mat-form-field appearance="fill" class="mat-dropdown mr-12" [ngClass]="{'ml-auto': !reportData?.reportMetaData?.downloadUrl}">
+            <mat-label>Export As</mat-label>
+            <mat-select role="listbox" aria-label="Export As" [(value)]="selectedLanguage" class="selection"
+              (selectionChange)="downloadReport($event)">
+              <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
+              appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()" [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'export-chart', subtype: option})" 
+              attr.aria-label="{{option}}">{{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </label>
       </div>
     </div>
