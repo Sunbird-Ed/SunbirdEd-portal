@@ -56,7 +56,9 @@ describe('YearOfBirthComponent', () => {
 
   it('should set select year', () => {
     const year = 2000;
-    yearOfBirthComponent.changeBirthYear(year);
+    yearOfBirthComponent.changeBirthYear({
+      value: year
+    });
     expect(yearOfBirthComponent.selectedYearOfBirth).toBe(year);
   });
 });
