@@ -233,7 +233,7 @@ export class ReportComponent implements OnInit {
     this.reportExportInProgress = true;
     this.toggleHtmlVisibilty(true);
     setTimeout(() => {
-      switch (_.toLower(reportType)) {
+      switch (_.toLower( _.get(reportType, 'value'))) {
         case 'img': {
           this.downloadReportAsImage();
           break;
@@ -243,7 +243,7 @@ export class ReportComponent implements OnInit {
           break;
         }
       }
-      const telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: _.toLower(reportType) });
+      const telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: _.toLower( _.get(reportType, 'value')) });
       this.telemetryService.impression(telemetryObj);
     }, 1500);
   }
@@ -495,7 +495,7 @@ export class ReportComponent implements OnInit {
 
   public handleParameterChange(val) {
     const { reportId } = this.activatedRoute.snapshot.params;
-    const { hashed_val, materialize = false } = val;
+    const { hashed_val, materialize = false } = _.get(val, 'value');
     this.router.navigate(['/dashBoard/reports', reportId, hashed_val], { queryParams: { ...materialize && { materialize } } }).then(() => {
       this.refreshComponent();
     });
