@@ -302,20 +302,28 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
       const certificateInfo = course.issuedCertificates[0];
       const courseName = course.courseName || _.get(course, 'issuedCertificates[0].name') || 'certificate';
-      if (_.get(certificateInfo, 'identifier')) {
+      if (_.get(certificateInfo, 'type') === 'TrainingCertificate') {
+        const courseObj = {
+          id: certificateInfo.identifier,
+          type: 'rc_certificate_registry',
+          templateUrl: _.get(certificateInfo, 'templateUrl'),
+          trainingName: courseName
+        }
+        this.downloadOldAndRCCert(courseObj);
+      } else if (_.get(certificateInfo, 'identifier')) {
         this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((resp) => {
-          if (_.get(resp, 'printUri')) {
-            this.certDownloadAsPdf.download(resp.printUri, null, courseName);
-          } else if (_.get(course, 'certificates.length')) {
-            this.downloadPdfCertificate(course.certificates[0]);
-          } else {
-            this.toasterService.error(this.resourceService.messages.emsg.m0076);
-          }
-        }, error => {
-          this.downloadPdfCertificate(certificateInfo);
-        });
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((resp) => {
+            if (_.get(resp, 'printUri')) {
+              this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+            } else if (_.get(course, 'certificates.length')) {
+              this.downloadPdfCertificate(course.certificates[0]);
+            } else {
+              this.toasterService.error(this.resourceService.messages.emsg.m0076);
+            }
+          }, error => {
+            this.downloadPdfCertificate(certificateInfo);
+          });
       } else {
         this.downloadPdfCertificate(certificateInfo);
       }
