@@ -243,7 +243,6 @@ export class ReportViewComponent implements OnInit {
   }
 
   public closeModal() {
-    this.modal.approve();
     this.filterModal = false;
   }
 
