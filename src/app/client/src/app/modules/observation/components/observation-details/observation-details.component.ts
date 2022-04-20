@@ -65,6 +65,12 @@ export class ObservationDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout() 
+    .subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
     this.getProfileData();
   }
   getProfileData() {

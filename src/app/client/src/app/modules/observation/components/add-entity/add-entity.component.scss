@@ -24,27 +24,28 @@
     margin-top: 15px;
   }
 
-.sb-onboard {
-  &__header {
-    width: 100%;
-    margin: 20px 0px;
-    padding-left : 15px;
+  .sb-onboard {
+    &__header {
+      width: 100%;
+      margin: 20px 0px;
+      padding-left : 15px;
+    }
+  
+    &__content {
+      width: calculateRem(648px);
+      max-width: 100%;
+      margin-bottom: auto;
+      overflow: hidden;
+      overflow-y: auto;
+    }
+  
+    &__footer {
+      margin-top: calculateRem(16px);
+      width: 100%;
+      text-align: center;
+    }
   }
-
-  &__content {
-    width: calculateRem(648px);
-    max-width: 100%;
-    margin-bottom: auto;
-    overflow: hidden;
-    overflow-y: auto;
-  }
-
-  &__footer {
-    margin-top: calculateRem(16px);
-    width: 100%;
-    text-align: center;
-  }
-}
+  
 
 ::ng-deep {
   .sb-onbrd-modal {
@@ -87,4 +88,3 @@ input[type=checkbox][disabled] {
   border: #ccc;
 }
 .search-results{ height : 100%; overflow-y: scroll; }
-

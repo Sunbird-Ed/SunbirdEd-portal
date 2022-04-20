@@ -18,6 +18,9 @@ const routes: Routes = [
         component: ObservationDetailsComponent,
         data: {
             telemetry: { env: telemetryEnv, pageid: 'observation-details', type: 'view' },
+            menuBar: {
+                visible: false
+            }
         }
     }
 ];
