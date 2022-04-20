@@ -44,6 +44,9 @@
   .ui.accordion .title .chevron.down.icon {
     margin-top:calculateRem(-6px);
   }
+  .mat-expansion-panel {
+    overflow: inherit;
+	}
 }
 ul {
   list-style-type: none;

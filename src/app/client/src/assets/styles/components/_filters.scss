@@ -84,6 +84,8 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
         padding: 0;
         display: flex;
         color: var(--sb-dropdown-menu-text);
+        border: calculateRem(1px) solid var(--gray-200);
+        background: transparent;
         &:hover{
           border-color: var(--sb-multiple-dropdown-border-hover);
         }
@@ -142,6 +144,8 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
           margin: 0;
           padding: $sb-prominent-filter-field-input-padding;
           font-size: $sb-prominent-filter-field-font-size;
+          line-height: 1.21428571em;
+          white-space: nowrap;
           &::first-letter {
             text-transform: uppercase;
           }
