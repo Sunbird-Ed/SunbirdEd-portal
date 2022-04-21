@@ -4,7 +4,7 @@
       <!-- <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label> -->
       <div [formGroup]="reportForm" class="d-flex flex-ai-center">
         <div class="sb-field w-25">
-        <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>Choose your report</mat-label>
           <mat-select formControlName="reportType" role="listbox" aria-label="Choose your report" class="selection"
             (selectionChange)="reportChanged($event)">
