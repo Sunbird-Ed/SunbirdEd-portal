@@ -126,16 +126,14 @@
               [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
               <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
               <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
-                <mat-form-field appearance="fill" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}" class="sb-mat__datepicker">
+                <mat-form-field appearance="fill" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}"
+                  class="sb-mat__datepicker">
                   <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label> -->
-                  <input
-                    (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
-                    [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" matInput
-                    [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
+                  <input (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
+                    matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
                     [min]='pickerMinDateForEnrollmentEndDate' [max]="batchUpdateForm.value.endDate"
                     aria-label="enrollment End Date">
-                  <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker"
-                    [disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null">
+                  <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker">
                   </mat-datepicker-toggle>
                   <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
                 </mat-form-field>

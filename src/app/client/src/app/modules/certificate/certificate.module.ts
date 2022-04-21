@@ -14,6 +14,12 @@ import { SvgEditorModule } from 'ng-svg-editor';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
+export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
+  if (!CsModule.instance.isInitialised) {
+    csLibInitializerService.initializeCs();
+  }
+  return CsModule.instance.certificateService;
+};
 
 @NgModule({
   declarations: [
@@ -39,6 +45,6 @@ import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-i
     SvgEditorModule,
     SharedFeatureModule
   ],
-  providers: []
+  providers: [{ provide: 'CS_CERTIFICATE_SERVICE', useFactory: csCertificateServiceFactory, deps: [CsLibInitializerService] }]
 })
 export class CertificateModule { }
