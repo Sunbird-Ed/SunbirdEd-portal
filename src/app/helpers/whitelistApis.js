@@ -595,9 +595,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/rc/certificate/v1/download/:id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: []
     },
+    '/learner/rc/certificate/v1/key/:id': {
+      checksNeeded: [],
+      description: 'RC API to validate scanned certificate'
+    },
+    
     //Admin related APIs
     '/learner/data/v1/upload/status': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1905,6 +1909,7 @@ const API_LIST = {
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
     '/learner/rc/certificate/v1/download/:id',
+    '/learner/rc/certificate/v1/key/:id',
     '/content/asset/v1/upload/:id',
     '/action/asset/v1/upload/:id',
     '/action/asset/v1/read/:id',

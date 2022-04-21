@@ -1,4 +1,4 @@
-import { ResourceService, ConfigService, PaginationService, LayoutService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ConfigService, PaginationService, LayoutService } from '@sunbird/shared';
 import { SolutionListingComponent } from './solution-listing.component';
 import { ObservationService, UserService, TncService, ObservationUtilService } from '@sunbird/core';
 import {
@@ -10,6 +10,7 @@ import {
 } from './solution-listing.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 describe('SolutionListingComponent', () => {
   let component: SolutionListingComponent;
   const mockConfigService: Partial<ConfigService> = {};
@@ -75,8 +76,8 @@ describe('SolutionListingComponent', () => {
       userProfile: {}
     }) as any
   };
-  const mockNavigationHelperService: Partial<NavigationHelperService> = {
-    goBack: () => {}
+  const locationStub: Partial<Location> = {
+    back: jasmine.createSpy('back')
   };
   beforeEach(() => {
     component = new SolutionListingComponent(
@@ -90,7 +91,7 @@ describe('SolutionListingComponent', () => {
       mockPaginationService as PaginationService,
       mockConfigService as ConfigService,
       mockTncService as TncService,
-      mockNavigationHelperService as NavigationHelperService
+      locationStub as Location
     );
   });
   it('should create', () => {

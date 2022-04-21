@@ -82,6 +82,7 @@ export class UtilService {
       downloadUrl: data.downloadUrl
     };
     if (data.trackable) {
+      data.trackable = _.isString(data.trackable) ? JSON.parse(data.trackable) : data.trackable;
       content.trackable = data.trackable;
     }
     if (data.desktopAppMetadata) {
