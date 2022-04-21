@@ -63,6 +63,7 @@ export class LoginSessionProvider {
                 parent: this.mainWindow, 
                 closable: true, 
                 titleBarStyle: "hidden",
+                titleBarOverlay: true,
                 show: false,
                 minWidth: 700,
                 minHeight: 500,
