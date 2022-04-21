@@ -166,7 +166,7 @@
                     <div class="d-flex flex-dc w-50">
                         <mat-form-field appearance="fill" class="mat-dropdown mb-16">
                           <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
-                          <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo"
+                          <mat-select formControlName="issueTo" role="listbox" aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo"
                             class="selection" [disabled]="configurationMode === 'edit'" (selectionChange)="handleParameterChange($event)">
                             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of issueTo" [value]="option.name"
                             attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
