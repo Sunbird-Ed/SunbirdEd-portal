@@ -211,7 +211,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(utm[0]['type']).toBe('Source');
     expect(utm[1]['type']).toBe('UtmMedium');
     expect(utm[2]['type']).toBe('UtmSource');
-    expect(utm[4]['type']).toBe('UtmTerm');
+    expect(utm[4]['type']).toBe('UtmTerm'); 
     expect(utm[5]['type']).toBe('UtmContent');
   });
 
