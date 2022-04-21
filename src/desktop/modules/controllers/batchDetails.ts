@@ -8,6 +8,7 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 
 const DB_NAME = "batch_details";
 const API_ID = "api.course.batch.read";
+const BATCH_LIST_API_ID = "api.course.batch.list";
 const course = new Course(manifestObj);
 const userSDK = containerAPI.getUserSdkInstance();
 
@@ -73,6 +74,35 @@ export default class BatchDetails {
       }
     } catch (error) {
       standardLog.error({ id: 'BATCH_DETAILS_DB_INSERT_FAILED', message: `Error while inserting content status in database`, error });
+    }
+  }
+
+  public async findBatchList(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
+    try {
+      const serchReq = req.body.request;
+      const dbFilters = {
+          selector: {
+            courseId: serchReq.filters.courseId,
+            enrollmentType: serchReq.filters.enrollmentType,
+            status: parseInt(serchReq.filters.status)
+          }
+      }
+      let response = await this.databaseSdk.find(DB_NAME, dbFilters);
+
+      if(_.get(response, 'docs.length') ) {
+        const batchList = {
+          content: response.docs,
+          count: response.docs.length
+        };
+        res.status(200).send(Response.success(BATCH_LIST_API_ID, { response: batchList }, req));
+      }
+      
+      res.status(500).send(Response.error(BATCH_LIST_API_ID, 500));
+    
+    } catch (error) {
+      standardLog.error({ id: 'BATCH_LIST_FETCH_FAILED', message: `Error while fetching content status from database`, error });
+      res.status(500).send(Response.error(BATCH_LIST_API_ID, 500));
     }
   }
 }

@@ -160,7 +160,7 @@ export class DatasetsComponent implements OnInit {
 
     this.reportForm.reset();
     const program = this.programs.filter(data => {
-      if (data._id == $event) {
+      if (data._id == _.get($event, 'value')) {
         return data;
       }
     });
@@ -169,14 +169,14 @@ export class DatasetsComponent implements OnInit {
     this.reportTypes = [];
     this.onDemandReportData = [];
     this.getSolutionList(program[0]);
-    this.reportForm.controls.programName.setValue($event);
+    this.reportForm.controls.programName.setValue(_.get($event, 'value'));
   }
 
   public selectSolution($event) {
 
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
-        if (data._id == $event) {
+        if (data._id == _.get($event, 'value')) {
           return data;
         }
       });
@@ -185,7 +185,7 @@ export class DatasetsComponent implements OnInit {
 
       const program = this.programSelected;
       this.reportForm.reset();
-      this.reportForm.controls.solution.setValue($event);
+      this.reportForm.controls.solution.setValue(_.get($event, 'value'));
       this.reportForm.controls.programName.setValue(program);
 
       if (solution[0].isRubricDriven == true && solution[0].type == 'observation') {
@@ -260,7 +260,7 @@ export class DatasetsComponent implements OnInit {
   }
 
   reportChanged(selectedReportData) {
-    this.selectedReport = selectedReportData;
+    this.selectedReport = _.get(selectedReportData, 'value');
   }
 
   submitRequest() {

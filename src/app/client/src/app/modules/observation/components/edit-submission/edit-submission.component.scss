@@ -22,3 +22,25 @@ input.edit-sub-input:focus-visible {
 .ui.small.modal {
   width: 40% !important;
 }
+
+.sb-onboard {
+  &__header {
+    width: 100%;
+    margin: 20px 0px;
+    padding-left : 15px;
+  }
+
+  &__content {
+    width: calculateRem(648px);
+    max-width: 100%;
+    margin-bottom: auto;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    margin-top: calculateRem(16px);
+    width: 100%;
+    text-align: center;
+  }
+}

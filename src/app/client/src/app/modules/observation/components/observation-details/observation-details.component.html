@@ -1,4 +1,4 @@
-<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [ngClass]="{'header-block': isFullScreenView}">
+<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back py-8'" class="relative position mt-0">
   <div class="ui container py-0 px-0 d-flex flex-ai-center">
     <!-- /* Back button */ -->
     <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
@@ -8,19 +8,15 @@
         </svg></i>
      <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
     </button>
-  </div>
-</div>
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
-<div class="content-header">
-  <div class="ui container py-16">
-    <div class="content-header__content">
-      <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
-        <div class="content-header__title font-weight-bold ellipsis text-left sb-color-primary">{{solution}}</div>
-        <small class="content-header__title font-weight-bold ellipsis text-left">{{programName}} </small>
-      </div>
+
+    <div class="d-flex flex-dc ml-8">
+      <h4 class="mb-4">{{solution}}</h4>
+      <div class="fsmall">{{programName}} </div>
     </div>
   </div>
 </div>
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
+
 <div class="ui container">
   <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
     <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
@@ -35,7 +31,7 @@
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
               <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="addEntity()">
-                {{resourceService.frmelmnts?.btn?.addEntity}}
+                {{resourceService.frmelmnts?.btn?.add}} {{entities?.entityType|titlecase}}
               </button>
             </div>
           </div>

@@ -8,7 +8,6 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { RecaptchaModule } from 'ng-recaptcha';
-
 @NgModule({
   imports: [
     CommonModule,

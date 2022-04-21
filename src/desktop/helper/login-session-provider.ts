@@ -63,6 +63,7 @@ export class LoginSessionProvider {
                 parent: this.mainWindow, 
                 closable: true, 
                 titleBarStyle: "hidden",
+                titleBarOverlay: true,
                 show: false,
                 minWidth: 700,
                 minHeight: 500,
@@ -71,7 +72,6 @@ export class LoginSessionProvider {
                 backgroundColor: "#EDF4F9",
                 webPreferences: {
                     nodeIntegration: false,
-                    enableRemoteModule: false,
                     session: session.fromPartition('loginwindow')
                 },
             });

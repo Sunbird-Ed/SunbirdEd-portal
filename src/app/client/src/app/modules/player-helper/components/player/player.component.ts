@@ -65,6 +65,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   playerType: string;
   isDesktopApp = false;
   showQumlPlayer = false;
+  contentId: string;
 
   /**
  * Dom element reference of contentRatingModal
@@ -286,6 +287,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   loadNewPlayer() {
     const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
     const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
+    this.contentId = _.get(this.playerConfig, 'metadata.identifier');
     if (downloadStatus && artifactUrl && !_.startsWith(artifactUrl, 'http://')) {
       this.playerConfig.metadata.artifactUrl = `${location.origin}/${artifactUrl}`;
     }
@@ -297,6 +299,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
     }
     this.showNewPlayer = true;
+    if (this.userService.loggedIn) {
+      this.userService.userData$.subscribe((user: any) => {
+        if (user && !user.err) {
+          const userProfile = user.userProfile;
+          const userId = userProfile.id;
+          const varName = (userId + '_' + (this.contentId ? this.contentId : '') + '_config');
+          const playerConfig: any = JSON.parse(localStorage.getItem(varName)) || {};
+          this.playerConfig['config'] = { ...this.playerConfig['config'], ...playerConfig };
+        }
+      });
+    } else {
+      const varName = ('guest' + '_' + (this.contentId ? this.contentId : '') + '_config');;
+      const playerConfig: any = JSON.parse(localStorage.getItem(varName)) || {};
+      this.playerConfig['config'] = { ...this.playerConfig['config'], ...playerConfig };
+    }
   }
 
   // Update ArtifactUrl for old Player
@@ -350,6 +367,23 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   eventHandler(event) {
+    if (event.eid === 'END') {
+      const metaDataconfig = event.metaData;
+      if (this.userService.loggedIn) {
+        this.userService.userData$.subscribe((user: any) => {
+          if (user && !user.err) {
+            const userProfile = user.userProfile;
+            const userId = userProfile.id;
+            const varName = (userId + '_' + (this.contentId ? this.contentId : '') + '_config');
+            localStorage.setItem(varName, JSON.stringify(metaDataconfig));
+          }
+        });
+      } else {
+        const userId = 'guest';
+        const varName = (userId + '_' + (this.contentId ? this.contentId : '') + '_config');
+        localStorage.setItem(varName, JSON.stringify(metaDataconfig));
+      }
+    }
     if (event.eid === 'exdata') {
       this.generatelimitedAttemptEvent(event);
       return;
@@ -377,6 +411,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     const eid = _.get(eventCopy, 'detail.telemetryData.eid');
     const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
+    this.contentId = contentId;
     if (eid && (eid === 'START' || eid === 'END') && contentId === _.get(this.playerConfig, 'metadata.identifier')) {
       this.showRatingPopup(eventCopy);
       if (this.contentProgressEvents$) {
