@@ -59,7 +59,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       category: 'medium',
       type: 'dropdown',
       labelText: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
-      placeholderText: 'Select Board',
+      placeholderText: 'Select Medium',
       multiple: true
     },
     {
