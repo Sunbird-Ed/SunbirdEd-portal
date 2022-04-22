@@ -11,7 +11,7 @@
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h2>
           <div class="year-birth my-8 required">
             <mat-form-field *ngIf="!isIOSDevice" appearance="fill" class="sb-mat__dropdown w-100">
-              <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}</mat-label>
+              <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></mat-label>
               <mat-select role="listbox" aria-label="resourceService.frmelmnts?.lbl?.yearOfBirth" tabindex="0"
                 class="selection" (selectionChange)="changeBirthYear($event)">
                 <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of birthYearOptions" [value]="option"
