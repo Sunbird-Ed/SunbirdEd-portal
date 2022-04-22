@@ -49,3 +49,11 @@
 .justify-flex-end {
     justify-content: flex-end;
 }
+
+.ui.segment {
+    background-color: var(--sbt-body-bg);
+}
+
+.sb-sidebar-menu ul li.active {
+    background-color: var(--sbt-body-bg2);
+}

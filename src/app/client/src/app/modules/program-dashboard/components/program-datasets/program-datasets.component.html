@@ -55,7 +55,7 @@
                 <div class="ml-0 w-25">
                 <label class="sb-field w-100">
 
-                  <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                  <mat-form-field appearance="fill" class="sb-mat__dropdown">
                     <mat-label>{{resourceService.frmelmnts?.lbl?.program}}</mat-label>
                     <mat-select [(ngModel)]="programSelected" formControlName="programName" role="listbox" aria-label="resourceService.frmelmnts?.lbl?.program" tabindex="0"
                       class="selection" (selectionChange)="programSelection($event)">
@@ -68,7 +68,7 @@
 
                 <div class="ml-10 w-25" *ngIf="programSelected">
                   <label class="sb-field w-100">
-                    <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                    <mat-form-field appearance="fill" class="sb-mat__dropdown">
                       <mat-label>{{resourceService.frmelmnts?.lbl?.solution}}</mat-label>
                       <mat-select [(ngModel)]="solutionSelected" formControlName="solution" role="listbox" aria-label="resourceService.frmelmnts?.lbl?.solution" tabindex="1"
                         class="selection" (selectionChange)="selectSolution($event)">
@@ -93,7 +93,7 @@
                 <div class="d-flex flex-ai-center pd-10 ">
                   <div class="mr-10">
                     <label class="sb-field">
-                    <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                    <mat-form-field appearance="fill" class="sb-mat__dropdown">
                       <mat-label>{{resourceService?.frmelmnts?.lbl?.reportType}}</mat-label>
                       <mat-select formControlName="reportType" role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.reportType" tabindex="2"
                         class="selection" (selectionChange)="reportChanged($event)">
