@@ -141,133 +141,7 @@
     </div>
   </div>
   
-  <!-- <div class="sb-g">
-     <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
-      <div class="sidebar">
-        <div class="ui segment mb-0 sidebar-block">
-          <div class='ui stackable grid mt-0'>
-            <div class="twelve wide column pt-0 d-flex flex-end justify-flex-end" >
-              <div class="two wide column sb-sidebar-menu p-0">
-                <ul class="m-0">
-                  <li class="pl-30 pr-30 item m-0 active">
-                    {{resourceService?.frmelmnts?.lbl?.csvDataSets}}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> 
-    <div class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-12" [formGroup]="reportForm">
-      <router-outlet>
-
-        <div class="ui segment pb-0">
-          <div class='ui stackable grid mt-0'>
-            <div class="twelve wide column pt-0 pb-40">
-              <div class="d-flex flex-ai-center flex-jc-space-between">
-                <div style="display: flex;flex-direction: column;">
-                  <label class="mr-10">  
-                    {{resourceService?.frmelmnts?.lbl?.program }}
-                  </label>
-                <label class="sb-field">
-                  <sui-select #programSelect labelField="name" valueField="_id" formControlName="programName"
-                    [options]="programs" [(ngModel)]="programSelected" class="selection pd-10" 
-                    placeholder="Select Program" (selectedOptionChange)="programSelection($event)">
-                    <sui-select-option *ngFor="let program of programSelect.availableOptions" [value]="program">
-                    </sui-select-option>
-                  </sui-select>
-                </label>
-                </div>
-
-                <div  style="display: flex;flex-direction: column;">
-                  <label class="mr-10">  {{ resourceService?.frmelmnts?.lbl?.solution }} </label>
-                  <label class="sb-field">
-                  <sui-select #solutionSelect labelField="name" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                    [options]="solutions" class="selection pd-10"  placeholder="Select Resource"
-                    (selectedOptionChange)="selectSolution($event)">
-                    <sui-select-option *ngFor="let solutionInfo of solutionSelect.availableOptions" [value]="solutionInfo">
-                    </sui-select-option>
-                  </sui-select>
-                </label>
-                </div>
-                <div  style="display: flex;flex-direction: column;">
-                  <label class="mr-10"> Select District name</label>
-                  <label class="sb-field">
-                  <sui-select #solutionSelect labelField="name" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                    [options]="solutions" class="selection pd-10"  placeholder="Select District"
-                    (selectedOptionChange)="selectSolution($event)">
-                    <sui-select-option *ngFor="let solutionInfo of solutionSelect.availableOptions" [value]="solutionInfo">
-                    </sui-select-option>
-                  </sui-select>
-                </label>
-                </div>
-                <div  style="display: flex;flex-direction: column;">
-                  <label class="mr-10"> Select orgnisation</label>
-                  <label class="sb-field">
-                  <sui-select #solutionSelect labelField="name" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                    [options]="solutions" class="selection pd-10"  placeholder="Select organisation"
-                    (selectedOptionChange)="selectSolution($event)">
-                    <sui-select-option *ngFor="let solutionInfo of solutionSelect.availableOptions" [value]="solutionInfo">
-                    </sui-select-option>
-                  </sui-select>
-                </label>
-                </div>
-                <div>
-                  <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" style="color: var(--primary);background-color: var(--brand-header-tail-text);" (click)="resetFilter()">Reset Filters</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <sui-tabset class="ui container">
-          <div class="ui pointing secondary menu d-flex flex-ai-center">
-            <a class="item active" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.detailsReports}}</a>
-          </div>
-          <div class="ui segment mb-0 mt-2" suiTabContent="1">
-            <div class='ui stackable grid mt-0'>
-              <div class="twelve wide column pt-0">
-                <div class="d-flex flex-ai-center pd-10 ">
-                  <div class="mr-10">
-                    <label class="mr-10"> {{ resourceService?.frmelmnts?.lbl?.reportType }} </label>
-                    <label class="sb-field">
-                    <sui-select formControlName="reportType" class="selection course-dashboard-select pd-10"
-                     placeholder="Select Report">
-                      <sui-select-option *ngFor="let report of reportTypes" [value]="report.name" (click)="reportChanged(report);">
-                      </sui-select-option>
-                    </sui-select>
-                  </label>
-                  </div>
-
-                  <button [disabled]="(!reportForm.valid)" 
-                  [ngClass]="{'sb-btn-disabled': (!reportForm.valid )}"
-                  type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="requestDataset()">
-                    {{resourceService?.frmelmnts?.btn?.requestReport}}
-                  </button>
-                </div>
-
-                <div *ngIf="isProcessed" class="d-flex">
-                  <div class="information-icon">
-                    <img src="assets/images/error-icon.svg" width="18px"></div>
-                  <p class="fsmall note-text my-8 administrator-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
-                </div>
-               
-
-                <div class="fsmall font-weight-bold download-section-text mt-20">
-                  {{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
-                <p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenProgramAdminNote | interpolate:'{instance}': instance }}</p>
-
-                <sb-datatable [message]="message" [data]="onDemandReportData" [columns]="columns"
-                  [downloadCSV]="false"  (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
-              </div>
-            </div>
-
-          </div>
-        </sui-tabset>
-      </router-outlet>
-    </div> 
-  </div> -->
+ 
 </ng-template>
 
 <app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeModal()" #modal *ngIf="popup">
@@ -368,17 +242,7 @@
               <mat-icon style="justify-self: flex-end;margin-left: 10px;cursor: pointer;color: var(--danger);" (click)="goBack()">highlight_off</mat-icon>
              </div>
             </div>
-            <!-- <div class="sb-modal-actions" style="flex-direction: column;margin-top: 10px;" [formGroup]="reportForm">
-              <label class="my-8" style="color: var(--primary) !important;">Select program name</label>
-              <label class="sb-field">
-              <sui-select #programSelect labelField="name" valueField="_id" formControlName="programName"
-                    [options]="programs" [(ngModel)]="programSelected" class="selection pd-10" 
-                    placeholder="Select Program" (selectedOptionChange)="programSelection($event)" style="margin-top: 5px;">
-                    <sui-select-option *ngFor="let program of programSelect.availableOptions" [value]="program">
-                    </sui-select-option>
-                  </sui-select>
-                  </label>
-            </div> -->
+            
             
             <div class="sb-prominent-filter-field sb-modal-actions mt-40" style="flex-direction: column;" [formGroup]="reportForm">
               <label  style="color: var(--primary) !important;">{{resourceService?.frmelmnts?.lbl?.program }}</label>
@@ -409,17 +273,6 @@
               </div>  
               
             </div>
-            <!-- <div class="sb-modal-actions" style="flex-direction: column;" [formGroup]="reportForm">
-              <label class="my-8" style="color: var(--primary) !important;">Select resource name</label>
-              <label class="sb-field">
-              <sui-select #solutionSelect labelField="name" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                    [options]="solutions" class="selection pd-10"  placeholder="Select Resource"
-                    (selectedOptionChange)="selectSolution($event)" style="margin-top:5px;">
-                    <sui-select-option *ngFor="let solutionInfo of solutionSelect.availableOptions" [value]="solutionInfo">
-                    </sui-select-option>
-                  </sui-select>
-                  </label>
-            </div> -->
             <div class="sb-modal-actions">
               <button [disabled]="reportForm.controls.solution.value == undefined" [ngClass]="{'sb-btn-disabled': (reportForm.controls.solution.value == undefined)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="showPopUpModal = !showPopUpModal">Confirm</button>
             </div>

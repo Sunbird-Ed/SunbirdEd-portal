@@ -147,7 +147,6 @@ export class DatasetsComponent implements OnInit {
     };
     this.kendraService.get(paramOptions).subscribe(data => {
       if (data && data.result) {
-       console.log(data.result);
        this.districts = data.result.districts;
        this.organisations = data.result.organisations;
       }
@@ -206,7 +205,7 @@ export class DatasetsComponent implements OnInit {
         }
       });
       this.tag = solution[0]._id + '_' + this.userId;
-      // this.loadReports();
+      this.loadReports();
 
       const program = this.programSelected;
       this.reportForm.reset();
@@ -228,15 +227,12 @@ export class DatasetsComponent implements OnInit {
     let selectedProgram = this.programs.filter(program => program._id==programId);
     if(selectedProgram && selectedProgram[0]){
      let role = selectedProgram[0]['role'];
-     console.log(this.formData, "Form Data")
      let types = this.formData[solutionType];
-     console.log(types, "types")
      if(types && types.length > 0){
        types.forEach(element => {
            let roleMatch = role.some(e =>  element.roles.includes(e));
            if(roleMatch){
              this.reportTypes.push(element);
-             console.log(this.reportTypes,"report types")
            }
        });
      } 
@@ -338,7 +334,6 @@ export class DatasetsComponent implements OnInit {
       this.filter.splice(index,1);
     }
   })
-  console.log(this.filter,"the filter to be sent")
  }
   submitRequest() {
     this.addFilters();
@@ -349,8 +344,6 @@ export class DatasetsComponent implements OnInit {
       const config = {
         type: this.selectedReport['datasetId'],
         params: {
-          // programId: this.programSelected,
-          // solutionId: this.reportForm.controls.solution.value,
           filters: this.filter
         },
         title: this.selectedReport.name
