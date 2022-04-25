@@ -70,7 +70,7 @@
                   <label class="sb-field w-100">
                     <mat-form-field appearance="fill" class="sb-mat__dropdown">
                       <mat-label>{{resourceService.frmelmnts?.lbl?.solution}}</mat-label>
-                      <mat-select [(ngModel)]="solutionSelected" formControlName="solution" role="listbox" aria-label="resourceService.frmelmnts?.lbl?.solution" tabindex="1"
+                      <mat-select [(ngModel)]="solutionSelected" formControlName="solution" role="listbox" aria-label="resourceService.frmelmnts?.lbl?.solution" tabindex="0"
                         class="selection" (selectionChange)="selectSolution($event)">
                         <mat-option class="mat-dropdown__options" role="option" *ngFor="let solution of solutions" [value]="solution?._id"
                         attr.aria-label="{{solution?.name}}">{{solution?.name}}</mat-option>
@@ -95,7 +95,7 @@
                     <label class="sb-field">
                     <mat-form-field appearance="fill" class="sb-mat__dropdown">
                       <mat-label>{{resourceService?.frmelmnts?.lbl?.reportType}}</mat-label>
-                      <mat-select formControlName="reportType" role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.reportType" tabindex="2"
+                      <mat-select formControlName="reportType" role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.reportType" tabindex="0"
                         class="selection" (selectionChange)="reportChanged($event)">
                         <mat-option class="mat-dropdown__options" role="option" *ngFor="let report of reportTypes" [value]="report"
                         attr.aria-label="{{report?.name}}">{{report?.name}}</mat-option>
@@ -104,7 +104,7 @@
                   </label>
                   </div>
 
-                  <button [disabled]="(!reportForm.valid)" 
+                  <button [disabled]="(!reportForm.valid)" tabindex="0"
                   [ngClass]="{'sb-btn-disabled': (!reportForm.valid )}"
                   type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="requestDataset()">
                     {{resourceService?.frmelmnts?.btn?.requestReport}}
