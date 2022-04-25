@@ -366,7 +366,8 @@
       "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",
       "PRESIGNED_URLS": "cloud-services/mlcore/v1/files/preSignedUrls",
       "PROGRAMS_BY_PLATFORM_ROLES": "user-extension/mlcore/v1/programsByPlatformRoles",
-      "SOLUTIONS_BY_PROGRAMID": "user-extension/mlcore/v1/solutions"
+      "SOLUTIONS_BY_PROGRAMID": "user-extension/mlcore/v1/solutions",
+      "DISTRICTS_AND_ORGANISATIONS":"solutions/mlcore/v1/read"
     },
     "DHITI":{
       "GENERIC_REPORTS": "reports/mlreports/v1/fetch",

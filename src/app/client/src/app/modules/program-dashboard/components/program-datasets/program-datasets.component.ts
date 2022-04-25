@@ -9,6 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
 
+
 @Component({
   selector: 'app-datasets',
   templateUrl: './program-datasets.component.html',
@@ -19,7 +20,7 @@ export class DatasetsComponent implements OnInit {
 
   public activatedRoute: ActivatedRoute;
   public showConfirmationModal = false;
-
+  showPopUpModal:boolean;
   config;
   reportTypes = [];
   programs = [];
@@ -56,7 +57,9 @@ export class DatasetsComponent implements OnInit {
   reportForm = new FormGroup({
     programName: new FormControl('', [Validators.required]),
     solution: new FormControl('', [Validators.required]),
-    reportType: new FormControl('', [Validators.required])
+    reportType: new FormControl('', [Validators.required]),
+    districtName:new FormControl(),
+    organisationName:new FormControl()
   });
 
   passwordForm = new FormGroup({
@@ -65,6 +68,12 @@ export class DatasetsComponent implements OnInit {
 
   programSelected: any;
   solutionSelected: any;
+  districts:any;
+  organisations:any;
+  districtId:any;
+  organisationId:any;
+  filter:any = [];
+  
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -130,6 +139,24 @@ export class DatasetsComponent implements OnInit {
 
   }
 
+  getDistritAndOrganisationList() {
+
+    const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.KENDRA.DISTRICTS_AND_ORGANISATIONS+ '/' + this.reportForm.controls.solution.value
+    };
+    this.kendraService.get(paramOptions).subscribe(data => {
+      if (data && data.result) {
+       console.log(data.result);
+       this.districts = data.result.districts;
+       this.organisations = data.result.organisations;
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
+
+  }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
@@ -140,6 +167,7 @@ export class DatasetsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showPopUpModal = true;
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -157,35 +185,32 @@ export class DatasetsComponent implements OnInit {
 
 
   public programSelection($event) {
-
     this.reportForm.reset();
     const program = this.programs.filter(data => {
-      if (data._id == $event) {
+      if (data._id == $event.value) {
         return data;
       }
     });
-
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
     this.getSolutionList(program[0]);
-    this.reportForm.controls.programName.setValue($event);
+    this.reportForm.controls.programName.setValue($event.value);
   }
 
   public selectSolution($event) {
-
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
-        if (data._id == $event) {
+        if (data._id == $event.value) {
           return data;
         }
       });
       this.tag = solution[0]._id + '_' + this.userId;
-      this.loadReports();
+      // this.loadReports();
 
       const program = this.programSelected;
       this.reportForm.reset();
-      this.reportForm.controls.solution.setValue($event);
+      this.reportForm.controls.solution.setValue($event.value);
       this.reportForm.controls.programName.setValue(program);
 
       if (solution[0].isRubricDriven == true && solution[0].type == 'observation') {
@@ -194,6 +219,7 @@ export class DatasetsComponent implements OnInit {
       } else {
         this.getReportTypes(this.programSelected,solution[0].type);
       }
+      this.getDistritAndOrganisationList();
 
     }
   }
@@ -202,12 +228,15 @@ export class DatasetsComponent implements OnInit {
     let selectedProgram = this.programs.filter(program => program._id==programId);
     if(selectedProgram && selectedProgram[0]){
      let role = selectedProgram[0]['role'];
+     console.log(this.formData, "Form Data")
      let types = this.formData[solutionType];
+     console.log(types, "types")
      if(types && types.length > 0){
        types.forEach(element => {
            let roleMatch = role.some(e =>  element.roles.includes(e));
            if(roleMatch){
              this.reportTypes.push(element);
+             console.log(this.reportTypes,"report types")
            }
        });
      } 
@@ -248,6 +277,19 @@ export class DatasetsComponent implements OnInit {
     this.awaitPopUp = false;
   }
 
+  public resetFilter(){
+    this.reportForm.reset();
+    this.filter = [];
+    this.districtId = undefined;
+    this.organisationId = undefined;
+    this.districts = [];
+    this.organisations = [];
+    this.solutions = [];
+    this.reportTypes = [];
+    this.onDemandReportData = [];
+    this.showPopUpModal = true;
+  }
+
   loadReports() {
     this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
       if (data) {
@@ -259,11 +301,47 @@ export class DatasetsComponent implements OnInit {
     });
   }
 
-  reportChanged(selectedReportData) {
-    this.selectedReport = selectedReportData;
+  districtSelection($event){
+    this.districtId = $event.value;
+    this.reportForm.controls.districtName.setValue($event.value);
   }
 
+  organisationSelection($event){
+    this.organisationId = $event.value;
+    this.reportForm.controls.organisationName.setValue($event.value);
+  }
+
+  reportChanged(selectedReportData) {
+    this.selectedReport = selectedReportData;
+    this.filter = this.selectedReport['filters'];
+  }
+ addFilters(){
+  if(this.districtId == undefined){
+    this.filter = this.filter.filter( element => {
+      return element.dimension != 'district_externalId'
+    })
+  }
+  this.filter.forEach((data, index) => {
+    if(data.dimension == 'program_id'){
+      data.value = this.programSelected;
+    }
+    if(data.dimension == 'solution_id'){
+      data.value = this.reportForm.controls.solution.value;
+    }
+    if(this.districtId !== undefined && data.dimension == 'district_externalId'){
+      data.value = this.districtId;
+    }
+    if(this.organisationId !== undefined && data.dimension == 'organisation_id' ){
+      data.value = this.organisationId;
+    }
+    if(this.organisationId == undefined && data.dimension == 'organisation_id' ){
+      this.filter.splice(index,1);
+    }
+  })
+  console.log(this.filter,"the filter to be sent")
+ }
   submitRequest() {
+    this.addFilters();
     this.selectedSolution = this.reportForm.controls.solution.value;
     const isRequestAllowed = this.checkStatus();
     if (isRequestAllowed) {
@@ -271,8 +349,9 @@ export class DatasetsComponent implements OnInit {
       const config = {
         type: this.selectedReport['datasetId'],
         params: {
-          programId: this.programSelected,
-          solutionId: this.reportForm.controls.solution.value,
+          // programId: this.programSelected,
+          // solutionId: this.reportForm.controls.solution.value,
+          filters: this.filter
         },
         title: this.selectedReport.name
       };
