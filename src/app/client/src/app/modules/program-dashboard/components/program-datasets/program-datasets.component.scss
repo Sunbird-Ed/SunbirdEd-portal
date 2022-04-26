@@ -103,3 +103,13 @@
 .mat-form-field-appearance-fill .mat-form-field-fill {
   border-radius:24px
 }
+
+:host ::ng-deep {
+  .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
+  vertical-align: bottom !important;
+}
+
+.sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
+  padding-top: 0px !important;
+}
+}
