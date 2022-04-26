@@ -356,7 +356,6 @@ describe('DatasetsComponent', () => {
     component.programSelected = '5f34ec17585244939f89f90c';
     component.reportForm.get('solution').setValue(['01285019302823526477']);
     const spy = spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.districtAndOrganisations));
-
     component.getDistritAndOrganisationList();
     expect(spy).toHaveBeenCalled();
     expect(component.districts).toEqual(mockData.districtAndOrganisations.result.districts);
@@ -364,7 +363,6 @@ describe('DatasetsComponent', () => {
 
 
   }));
-
 
   it('should call districtSelection', fakeAsync(() => {
 
@@ -415,9 +413,7 @@ describe('DatasetsComponent', () => {
       }
     ]
     component.reportForm.get('solution').setValue('01285019302823526477');
-
     component.addFilters();
-
     tick(1000);
     expect(spy).toHaveBeenCalled();
     expect(component.filter).toEqual([
