@@ -47,47 +47,47 @@
   <form class="sb-form" [formGroup]="reportForm">
     <div>
       <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center" style="grid-column-gap: 30px;">
-        <div class="sb-prominent-filter-field ">
+        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
           <label>{{resourceService?.frmelmnts?.lbl?.program }}</label>
-            <mat-form-field appearance="fill" class="mat-dropdown mat-dropdown--form">
-            <mat-select role="radio" class="mat-dropdown__options" valueField="_id" formControlName="programName"
+            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
             [(ngModel)]="programSelected"
             placeholder="Select Program"  (selectionChange)="programSelection($event)">
-              <mat-option *ngFor="let program of programs" role="option" [value]="program._id">
+              <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
                 {{program.name}}
               </mat-option>
             </mat-select>
             </mat-form-field>
         </div>
-        <div class="sb-prominent-filter-field ">
+        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
           <label>{{ resourceService?.frmelmnts?.lbl?.solution }}</label>
-            <mat-form-field appearance="fill" class="mat-dropdown mat-dropdown--form">
-            <mat-select role="radio" class="mat-dropdown__options" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
+            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
             placeholder="Select Resource"  (selectionChange)="selectSolution($event)">
-              <mat-option *ngFor="let solution of solutions" role="option" [value]="solution._id">
+              <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
                 {{solution.name}}
               </mat-option>
             </mat-select>
             </mat-form-field>
         </div>
-        <div class="sb-prominent-filter-field ">
+        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
           <label>Select District</label>
-            <mat-form-field appearance="fill" class="mat-dropdown mat-dropdown--form">
-            <mat-select role="radio" class="mat-dropdown__options" valueField="locationId" formControlName="districtName"
+            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <mat-select role="radio" class="selection"  valueField="locationId" formControlName="districtName"
             placeholder="Select District"  (selectionChange)="districtSelection($event)">
-              <mat-option *ngFor="let district of districts" role="option" [value]="district.locationId">
+              <mat-option *ngFor="let district of districts" class="mat-dropdown__options" role="option" [value]="district.locationId">
                 {{district.name}}
               </mat-option>
             </mat-select>
             </mat-form-field>
         </div>
-        <div class="sb-prominent-filter-field ">
+        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
           <label>Select Organisation</label>
        
-            <mat-form-field appearance="fill" class="mat-dropdown mat-dropdown--form">
-            <mat-select role="radio" class="mat-dropdown__options" valueField="organisationId" formControlName="organisationName"
+            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
             placeholder="Select Organisation"  (selectionChange)="organisationSelection($event)">
-              <mat-option *ngFor="let organisation of organisations" role="option" [value]="organisation.organisationId">
+              <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.organisationId">
                 {{organisation.orgName}}
               </mat-option>
             </mat-select>
@@ -110,10 +110,10 @@
       <div [formGroup]="reportForm" class="mt-30">
         <label>{{ resourceService?.frmelmnts?.lbl?.reportType }}</label>
         <div style="display: flex; flex-wrap: wrap;flex-direction: row;">
-          <mat-form-field appearance="fill" class="mat-dropdown" style="width: auto;display: flex;align-items: center;">
-          <mat-select role="listbox" formControlName="reportType" class="selection course-dashboard-select pd-10"
+          <mat-form-field appearance="fill" class="sb-mat__dropdown" style="width: auto;display: flex;align-items: center;">
+          <mat-select role="listbox" formControlName="reportType" class="selection"
           placeholder="Select Report">
-            <mat-option role="option" *ngFor="let report of reportTypes" [value]="report?.name" (click)="reportChanged(report)">
+            <mat-option role="option" *ngFor="let report of reportTypes" class="mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
               {{report?.name}}
             </mat-option>
           </mat-select>
@@ -247,11 +247,11 @@
             <div class="sb-prominent-filter-field sb-modal-actions mt-40" style="flex-direction: column;" [formGroup]="reportForm">
               <label  style="color: var(--primary) !important;">{{resourceService?.frmelmnts?.lbl?.program }}</label>
                <div>
-                <mat-form-field appearance="fill" class="mat-dropdown">
-                  <mat-select role="radio" class="mat-dropdown__options" valueField="_id" formControlName="programName"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown">
+                  <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
                   [(ngModel)]="programSelected"
                   placeholder="Select Program"  (selectionChange)="programSelection($event)">
-                    <mat-option *ngFor="let program of programs" role="option" [value]="program._id">
+                    <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
                       {{program.name}}
                     </mat-option>
                   </mat-select>
@@ -262,10 +262,10 @@
             <div class="sb-prominent-filter-field sb-modal-actions mt-20" style="flex-direction: column;" [formGroup]="reportForm">
               <label  style="color: var(--primary) !important;">{{ resourceService?.frmelmnts?.lbl?.solution }}</label>
               <div>
-                <mat-form-field appearance="fill" class="mat-dropdown">
-                  <mat-select role="radio" class="mat-dropdown__options" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
+                <mat-form-field appearance="fill" class="sb-mat__dropdown">
+                  <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
                   placeholder="Select Resource"  (selectionChange)="selectSolution($event)">
-                    <mat-option *ngFor="let solution of solutions" role="option" [value]="solution._id">
+                    <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
                       {{solution.name}}
                     </mat-option>
                   </mat-select>
