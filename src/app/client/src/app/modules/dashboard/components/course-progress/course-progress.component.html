@@ -30,18 +30,15 @@
     <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
       <div class="d-flex  progress-report-content">
         <div class="d-flex w-300 flex-dc">
-          <label
-            class="fnormal font-weight-normal pl-4 text-left">{{resourceService?.frmelmnts?.lbl?.selectBatch}}</label>
           <div class="sb-field">
-            <sui-select class="selection" placeholder="Select batch to see dashboard"
-              [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id" #select>
-              <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
-                (click)="setBatchId(course);" tabindex="0" appTelemetryInteract
-                [telemetryInteractObject]="interactObject"
-                [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
-                [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
-              </sui-select-option>
-            </sui-select>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+              <mat-label>{{resourceService?.frmelmnts?.lbl?.selectBatch}}</mat-label>
+              <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.selectBatch" class="selection"
+                [(ngModel)]="selectedOption" (selectionChange)="setBatchId($event)">
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of batchlist" [value]="option"
+                attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
         <!-- below needs to be done score card -->

@@ -47,7 +47,7 @@
         <div class="training-modules my-16">
           <div class="training-modules__title d-flex flex-ai-center mb-16">
             <h4 class="sb-pageSection-title sb-pageSection-title-light">
-              {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h4>
+              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
               (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
@@ -185,9 +185,9 @@
                 {{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
             </div>
           </div>
-          <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.courseProgress}}</div>
+          <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progressToDisplay}}%
-            {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+            <span>{{resourceService?.frmelmnts?.lbl?.completed}}</span></div>
           <mat-progress-bar mode="determinate" [value]="progressToDisplay" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
         </div>
 

@@ -163,18 +163,15 @@
                   <div class="seven wide column">
                     <div class="pt-8 pb-16 font-weight-bold fnormal text-left">
                       {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
-                    <div class="d-flex flex-dc">
-                      <label
-                        class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
-                      <label>
-                        <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
-                          [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
-                          [isDisabled]="configurationMode === 'edit'" #selectRecipient
-                          (selectedOptionChange)="handleParameterChange($event)">
-                          <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option">
-                          </sui-select-option>
-                        </sui-select>
-                      </label>
+                    <div class="d-flex flex-dc w-50">
+                        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                          <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
+                          <mat-select formControlName="issueTo" role="listbox" aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo"
+                            class="selection" [disabled]="configurationMode === 'edit'" (selectionChange)="handleParameterChange($event)">
+                            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of issueTo" [value]="option.name"
+                            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
                     </div>
                     <label class="fnormal font-weight-normal text-left"
                       *ngIf="isStateCertificate">{{resourceService?.frmelmnts?.intxt?.ssousers |

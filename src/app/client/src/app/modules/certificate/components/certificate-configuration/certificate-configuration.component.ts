@@ -607,7 +607,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }
   }
   handleParameterChange(event) {
-    if (event === 'My state teacher') {
+    if (_.get(event, 'value') === 'My state teacher') {
       this.isStateCertificate = true;
     } else {
       this.isStateCertificate = false;

@@ -395,6 +395,7 @@ async function createWindow() {
     // Create the main window.
     win = new BrowserWindow({
       titleBarStyle: "hidden",
+      titleBarOverlay: true,
       show: false,
       minWidth: 700,
       minHeight: 500,

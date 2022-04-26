@@ -208,7 +208,7 @@ export class ReportViewComponent implements OnInit {
   }
 
   handleParameterChange(event) {
-    this.state['submissionId'] = event._id;
+    this.state['submissionId'] = _.get(event, 'value._id');
     this.getReport();
   }
 
@@ -243,7 +243,6 @@ export class ReportViewComponent implements OnInit {
   }
 
   public closeModal() {
-    this.modal.approve();
     this.filterModal = false;
   }
 

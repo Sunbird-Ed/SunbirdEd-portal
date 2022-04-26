@@ -29,7 +29,9 @@ export class AddEntityComponent implements OnInit {
     showDownloadModal = true;
     showLoaderBox = false;
     public loaderMessage: ILoaderMessage;
-    public noResultMessage: INoResultMessage;
+    public noResultMessage: INoResultMessage = {
+        'messageText': 'frmelmnts.lbl.noDataFound'
+      };
     showDownloadSuccessModal;
     selectedEntities = [];
     constructor(
@@ -39,9 +41,6 @@ export class AddEntityComponent implements OnInit {
         public observationUtilService: ObservationUtilService,
         config: ConfigService, public location: LocationStrategy, ) {
         this.config = config;
-        this.location.onPopState(() => {
-            this.modal.approve();
-         });
     }
     ngOnInit() {
         this.getProfileData();

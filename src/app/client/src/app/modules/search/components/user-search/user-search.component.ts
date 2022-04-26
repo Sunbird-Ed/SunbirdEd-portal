@@ -15,7 +15,8 @@ import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-search',
-  templateUrl: './user-search.component.html'
+  templateUrl: './user-search.component.html',
+  styleUrls: ['./user-search.component.scss']
 })
 export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   private searchService: SearchService;

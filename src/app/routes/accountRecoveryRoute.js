@@ -18,7 +18,7 @@ module.exports = (app) => {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
     proxyReqPathResolver: (req) => {
       logger.info({ msg: `${req.url} called`});
-    return '/private/user/v1/search';
+    return '/private/user/v3/search';
     }
   }))
 

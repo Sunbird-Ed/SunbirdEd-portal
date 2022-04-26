@@ -55,8 +55,8 @@
                   tabindex="0">
                 </sui-select-option>
               </sui-select> -->
-              <mat-form-field appearance="fill" class="mat-dropdown mb-16">
-                <!-- <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label> -->
+              <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
                 <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage"
                   class="selection"
                   [(ngModel)]="batchStatus" (selectionChange)="getSelectedBatches()">
