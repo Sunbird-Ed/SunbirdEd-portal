@@ -62,7 +62,7 @@
                           *ngIf="reportService.isUserReportAdmin() && report.parameters && report.parameters.length && !hideElements"
                           class="d-flex">
                           <div class="sb-field filter-drop mb-0 mr-8" *ngIf="getParametersValueForDropDown$ | async as options">
-                            <mat-form-field appearance="fill" class="mat-dropdown mr-8">
+                            <mat-form-field appearance="fill" class="sb-mat__dropdown mr-8">
                               <mat-label>Select Parameter</mat-label>
                               <mat-select role="listbox" aria-label="Select Parameter" [(value)]="selectedLanguage" class="selection"
                                 (selectionChange)="handleParameterChange($event)">
@@ -346,7 +346,7 @@
         {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
       <div class="sb-field mb-0 mr-8 d-flex flex-jc-flex-end">
         <label>
-          <mat-form-field appearance="fill" class="mat-dropdown mr-12" [ngClass]="{'ml-auto': !reportData?.reportMetaData?.downloadUrl}">
+          <mat-form-field appearance="fill" class="sb-mat__dropdown mr-12" [ngClass]="{'ml-auto': !reportData?.reportMetaData?.downloadUrl}">
             <mat-label>Export As</mat-label>
             <mat-select role="listbox" aria-label="Export As" [(value)]="selectedLanguage" class="selection"
               (selectionChange)="downloadReport($event)">
