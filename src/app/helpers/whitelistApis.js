@@ -540,7 +540,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v4/managed/create': {
+    '/learner/user/v1/managed/create': {
       description: 'API is to create managed user',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -1733,6 +1733,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    '/kendra/solutions/mlcore/v1/read/:id':{
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
     '/assessment/observations/mlsurvey/v1/entities': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
@@ -2010,6 +2014,7 @@ const API_LIST = {
     '/action/collection/v1/import/:id',
     '/action/collection/v1/export/:id',
     '/kendra/v1/user-extension/solutions/:id',
+    '/kendra/solutions/mlcore/v1/read/:id',
     '/uci/admin/v1/bot/get',
     '/uci/admin/v1/bot/search',
     '/uci/admin/v1/bot/pause/:botId',
