@@ -1,21 +1,25 @@
-
 .sb-modal-actions {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .sb-modal .ui.modal {
   margin-top: 15% !important;
 }
+
 .ngx-datatable.fixed-header .datatable-header {
   padding: 10px;
 }
+
 .sidebar-block {
   min-height: 400px;
 }
+
 .justify-flex-end {
   justify-content: flex-end;
 }
+
 .sb-prominent-filter-field {
   .form-control {
 
@@ -45,9 +49,7 @@
 }
 
 
-.sb-prominent-filter
-  .sb-prominent-filter-container
-  .sb-prominent-filter-field:last-child {
+.sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
   margin-left: 0;
   margin-top: 0;
   text-align: left;
@@ -55,16 +57,14 @@
   padding-right: calculateRem(16px);
 }
 
-.sb-prominent-filter
-  .sb-prominent-filter-container
-  .sb-prominent-filter-field {
-    margin-bottom:  calculateRem(24px);
-    border-radius: 24px !important;
-  }
+.sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
+  margin-bottom: calculateRem(24px);
+  border-radius: 24px !important;
+}
 
 .reset-filter-section {
-    display: block !important;
-    position: relative;
+  display: block !important;
+  position: relative;
 
   right: 0;
   top: calculateRem(2px);
@@ -78,6 +78,7 @@
 .sb-filter-label {
   border-bottom: 0px;
   width: 100%;
+
   .sb-label-value {
     border-radius: 24px;
     padding: 7px !important;
@@ -90,26 +91,46 @@
 
     margin-bottom: calculateRem(4px);
     margin-right: calculateRem(4px);
-   
+
   }
+
   .sb-label-name {
     font-size: 16px;
   }
 }
+
 .ngx-datatable.datatable-header {
   background: var(--mat-accordion-tab-body-active-bg) !important;
 }
 
 .mat-form-field-appearance-fill .mat-form-field-fill {
-  border-radius:24px
+  border-radius: 24px
 }
 
-:host ::ng-deep {
-  .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
+.custom_mat_dd .mat-select-arrow-wrapper {
   vertical-align: bottom !important;
 }
 
-.sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
-  padding-top: 0px !important;
-}
+::ng-deep {
+
+  .custom_mat_dd .mat-select-arrow-wrapper {
+    vertical-align: bottom !important;
+  }
+
+  .custom_mat_dd .mat-form-field-flex {
+    padding-top: 0px !important;
+  }
+
+  .mat-select-panel .mat-option {
+    white-space: normal !important;
+    display: inline-table !important;
+    width: 100% !important;
+    line-height: 1.5em !important;
+    padding-top: 10px;
+  }
+
+  .mat-select-panel.mat-primary .mat-option.mat-selected:not(.mat-option-disabled).mat-dropdown__options span::before {
+    content: unset !important;
+  }
+
 }
