@@ -111,6 +111,54 @@
   vertical-align: bottom !important;
 }
 
+.flex-dir-col{
+  flex-direction: column;
+}
+
+.reset-filter{
+  color: var(--primary);
+  background-color: var(--brand-header-tail-text);
+}
+.newData{
+  color:var(--ck-color-base-error);
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.flex-dir-row{
+  flex-direction: row;
+}
+
+.info{
+  justify-self: flex-start;
+  margin-right: 10px;
+  cursor: pointer;
+  color: var(--primary) !important;
+}
+
+.note{
+  margin-top: 5px;
+  color: var(--primary) !important;
+  font-weight: bold;
+}
+
+.goback{
+  justify-self: flex-end;
+  margin-left: 10px;
+  cursor: pointer;
+  color: var(--ck-color-button-cancel);
+}
+.popupFilterLbl{
+  color: var(--primary) !important;
+  justify-content: center;
+}
+.ppFilter{
+  justify-content:center;
+  margin-top: 20px;
+}
+.wi-80{
+  width: 80%;
+}
 ::ng-deep {
 
   .custom_mat_dd .mat-select-arrow-wrapper {
