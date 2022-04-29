@@ -18,7 +18,7 @@
       
       <div *ngIf="allUserType" class="sb-prominent-filter-field">
 
-        <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.userType | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.Usertype" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.userType" 
             class="selection" (selectionChange)="selectedMultiValues($event, allUserType?.code)">
@@ -36,7 +36,7 @@
 
       <div *ngIf="medium" class="sb-prominent-filter-field">
         
-        <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.medium | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.medium" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.medium"
             class="selection" (selectionChange)="selectedMultiValues($event, medium?.code)">
@@ -55,7 +55,7 @@
 
       <div *ngIf="class" class="sb-prominent-filter-field">
 
-         <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.class | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.gradeLevel" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.class"
             class="selection" (selectionChange)="selectedMultiValues($event, class?.code)">
@@ -73,7 +73,7 @@
 
       <div *ngIf="subject" class="sb-prominent-filter-field">
         
-         <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.subject | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.subject" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.subject"
             class="selection" (selectionChange)="selectedMultiValues($event, subject?.code)">
@@ -91,7 +91,7 @@
       </div>
 
       <div class="sb-prominent-filter-field">
-         <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.district}}</mat-label>
           <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.district"
             class="selection" (selectionChange)="districtSelected($event)">
@@ -102,7 +102,7 @@
       </div>
 
       <div class="sb-prominent-filter-field">
-         <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.block | translate}}</mat-label>
           <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.block"
             class="selection" (selectionChange)="blockSelected($event)">
@@ -113,7 +113,7 @@
       </div>
 
       <div class="sb-prominent-filter-field">
-         <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.school | translate}}</mat-label>
           <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.school"
             class="selection" (selectionChange)="schoolSelected($event)">
@@ -124,7 +124,7 @@
       </div>
 
       <div *ngIf="allRoles" class="sb-prominent-filter-field">
-        <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
           <mat-label>{{resourceService.frmelmnts?.lbl?.role | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.Roles" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.role"
             class="selection" (selectionChange)="selectedMultiValues($event, allRoles?.code)">

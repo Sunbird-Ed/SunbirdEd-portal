@@ -24,8 +24,7 @@
           <div class="required sb-field-form-group"
             *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
             <div class="sb-field">
-              <label class="w-100">
-                <mat-form-field id={{field.code}} appearance="fill" class="mat-dropdown mb-16">
+                <mat-form-field id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
@@ -35,14 +34,12 @@
                     attr.aria-label="{{option?.name | interpolate: 'CBSE': 'CBSE/NCERT'}}">{{option?.name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
-              </label>
             </div>
           </div>
           <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
             [ngClass]="field.code === 'subject' ? '' : 'required'">
             <div class="sb-field">
-              <label class="w-100">
-                <mat-form-field *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="mat-dropdown mb-16">
+                <mat-form-field *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
@@ -59,7 +56,7 @@
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="mat-dropdown mb-16">
+                <mat-form-field *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
@@ -76,7 +73,6 @@
                   </mat-select>
                 </mat-form-field>
 
-              </label>
             </div>
           </div>
         </div>

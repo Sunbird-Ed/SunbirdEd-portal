@@ -116,6 +116,7 @@ export class AppComponent implements OnInit, OnDestroy {
   guestUserDetails;
   showYearOfBirthPopup = false;
   public isIOS = false;
+  loadPopUps = true;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -230,8 +231,28 @@ export class AppComponent implements OnInit, OnDestroy {
     document.documentElement.setAttribute('data-theme', themeColour);
     this.layoutService.setLayoutConfig(this.layoutConfiguration);
   }
-
+  checkToShowPopups() {
+    const formReadInputParams = {
+      formType: 'user',
+      formAction: 'onboarding',
+      contentType: 'exclusion',
+      component: 'portal'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        const routesArray = formResponsedata;
+        const url = location.href
+        routesArray.forEach(element => {
+          if (_.includes(url, element)) {
+            this.loadPopUps = false;
+          }
+        });
+      }
+    );
+  }
+  
   ngOnInit() {
+    this.checkToShowPopups();
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {

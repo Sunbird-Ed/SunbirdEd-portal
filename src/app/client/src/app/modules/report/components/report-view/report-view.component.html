@@ -42,7 +42,7 @@
                     <div *ngFor="let filter of filters">
                       <div *ngIf="filter.filter.type == 'dropdown'" class="d-flex">
                         <div class="sb-field filter-drop mb-0 mr-8">
-                          <mat-form-field appearance="fill" class="mat-dropdown mb-16">
+                          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
                             <mat-label>Select Submission</mat-label>
                             <mat-select role="listbox" aria-label="Select Submission" class="selection"
                               (selectionChange)="handleParameterChange($event)">
