@@ -71,7 +71,7 @@
             </mat-form-field>
         </div>
         <div class="d-flex flex-dir-col">
-          <label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrict}}</label>
+          <label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrict }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
             <mat-select role="radio" class="selection"  valueField="locationId" formControlName="districtName"
             placeholder="Select district"  (selectionChange)="districtSelection($event)">
@@ -82,8 +82,7 @@
             </mat-form-field>
         </div>
         <div class="d-flex flex-dir-col">
-          <label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrg }}</label>
-       
+          <label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrg }}</label>      
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
             <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
             placeholder="Select organisation"  (selectionChange)="organisationSelection($event)">
