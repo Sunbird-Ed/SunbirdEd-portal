@@ -9,79 +9,55 @@
 }
 
 .ngx-datatable.fixed-header .datatable-header {
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .sidebar-block {
-  min-height: 400px;
+  min-height: 25rem;
 }
-
-.justify-flex-end {
-  justify-content: flex-end;
-}
-
 
 .ngx-datatable.datatable-header {
   background: var(--mat-accordion-tab-body-active-bg) !important;
 }
 
-.mat-form-field-appearance-fill .mat-form-field-fill {
-  border-radius: 24px
-}
 
 .custom_mat_dd .mat-select-arrow-wrapper {
   vertical-align: bottom !important;
-}
-
-.flex-dir-col{
-  flex-direction: column;
 }
 
 .reset-filter{
   color: var(--primary);
   background-color: var(--brand-header-tail-text);
 }
+
 .newData{
   color:var(--ck-color-base-error);
-  margin-left: 30px;
-  margin-top: 10px;
-}
-
-.flex-dir-row{
-  flex-direction: row;
+  margin-left: 1.875rem;
+  margin-top: 0.625rem;
 }
 
 .info{
   justify-self: flex-start;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   cursor: pointer;
   color: var(--primary) !important;
 }
 
-.note{
-  margin-top: 5px;
-  color: var(--primary) !important;
-  font-weight: bold;
-}
 
 .goback{
   justify-self: flex-end;
-  margin-left: 10px;
+  margin-left: 0.625rem;
   cursor: pointer;
   color: var(--ck-color-button-cancel);
 }
-.popupFilterLbl{
-  color: var(--primary) !important;
-  justify-content: center;
-}
+
 .ppFilter{
-  justify-content:center;
-  margin-top: 20px;
-}
-.wi-80{
-  width: 80%;
+  margin-top: 1.25rem;
 }
 
+.col-gap{
+  column-gap:1.875rem;
+}
 ::ng-deep {
 
   .custom_mat_dd .mat-select-arrow-wrapper {
@@ -97,7 +73,7 @@
     display: inline-table !important;
     width: 100% !important;
     line-height: 1.5em !important;
-    padding-top: 10px;
+    padding-top: 0.625rem;
   }
   .mat-option-text{
     display: flex !important;
