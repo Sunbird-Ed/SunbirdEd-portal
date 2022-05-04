@@ -89,6 +89,7 @@ export class ObservationListingComponent
   queryParam: any = {};
   showEditUserDetailsPopup: any = true;
   payload: any;
+  public limit  = 50;
   constructor(
     public searchService: SearchService,
     public router: Router,
@@ -195,7 +196,7 @@ export class ObservationListingComponent
     await this.getDataParam();
     const paramOption = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_LISTING,
-      param: { page: page, limit: 20, search: this.searchData },
+      param: { page: page, limit: this.limit, search: this.searchData },
       data: this.payload
     };
 
@@ -206,7 +207,7 @@ export class ObservationListingComponent
         this.paginationDetails = this.paginationService.getPager(
           data.result.count,
           this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT
+          this.limit
         );
         this.setFormat(data.result.data);
       },

@@ -16,15 +16,15 @@
   <!--/Content-->
 </sui-modal>
 <!-- Updated code as per new design for semantic datatable-->
-<div class="sb-bg-color-white p-16 progress-content">
+<div class="p-16 progress-content">
   <div>
     <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
       <div class="d-flex  progress-report-content">
         <div class="d-flex w-300 flex-dc">
           <label
             class="fnormal font-weight-normal pl-4 text-left">{{resourceService?.frmelmnts?.lbl?.selectBatch}}</label>
-          <label class="w-100">
-            <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
+          <div class="sb-field">
+            <sui-select class="selection" placeholder="Select batch to see dashboard"
               [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id" #select>
               <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
                 (click)="setBatchId(course);" tabindex="0" appTelemetryInteract
@@ -33,7 +33,7 @@
                 [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
               </sui-select-option>
             </sui-select>
-          </label>
+          </div>
         </div>
         <!-- below needs to be done score card -->
         <app-access-discussion *ngIf="fetchForumIdReq" [fetchForumIdReq]="fetchForumIdReq"
@@ -64,7 +64,7 @@
             </span>
           </div>
 
-          <div class="sb-bg-color-white sb-course-progress-status-result">
+          <div class="sb-course-progress-status-result">
             <span class="course-start-dt course-participants-label">
               <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
             </span>
@@ -114,7 +114,7 @@
     </div>
   </div>
 
-  <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)">
+  <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)" class="sb-mat__tab sb-mat__tab--tabinacc">
     <!-- <mat-tab [label]="{index: 1}">
       <ng-template mat-tab-label>
         <span></span>
