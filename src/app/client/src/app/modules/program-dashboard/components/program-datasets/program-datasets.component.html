@@ -95,12 +95,12 @@
          
         </div>
         <div class="ml-auto mt-12">
-          <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter" (click)="resetFilter()">Reset filters</button>
+          <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
         </div>
       </div>
     </div>
   </form>
-  <div *ngIf="newData" class="newData">*Please select the resource name to get new data</div>
+  <div *ngIf="newData" class="newData">*{{resourceService?.frmelmnts?.lbl?.resourceSelect}}</div>
 
   <div class="sbt-inside-page-container relative position mt-32">
     <div>
@@ -128,7 +128,7 @@
       </div>
       <div *ngIf="isProcessed" class="d-flex">
         <div class="information-icon">
-          <img src="assets/images/error-icon.svg" width="1.125rem"></div>
+          <img src="assets/images/error-icon.svg" class="infoIcon"></div>
         <p class="fsmall note-text my-8 administrator-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
       </div>
      
@@ -238,7 +238,7 @@
              <div>
               <mat-icon class="info">info</mat-icon> 
              </div>
-             <div class="mt-8 font-weight-bold sb-color-primary"> Note: Please select program and resource name. </div>
+             <div class="font-weight-bold sb-color-primary modalNote"> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
              <div>
               <mat-icon class="goback" (click)="goBack()">highlight_off</mat-icon>
              </div>

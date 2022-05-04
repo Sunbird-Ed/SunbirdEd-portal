@@ -42,8 +42,6 @@
   cursor: pointer;
   color: var(--primary) !important;
 }
-
-
 .goback{
   justify-self: flex-end;
   margin-left: 0.625rem;
@@ -58,6 +56,15 @@
 .col-gap{
   column-gap:1.875rem;
 }
+
+.modalNote{
+  line-height: initial;
+}
+
+.infoIcon{
+  width: 1.125rem;
+}
+
 ::ng-deep {
 
   .custom_mat_dd .mat-select-arrow-wrapper {
