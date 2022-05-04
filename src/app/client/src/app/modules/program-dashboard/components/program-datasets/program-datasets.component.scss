@@ -1,115 +1,88 @@
-
 .sb-modal-actions {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .sb-modal .ui.modal {
   margin-top: 15% !important;
 }
+
 .ngx-datatable.fixed-header .datatable-header {
-  padding: 10px;
+  padding: 0.625rem;
 }
+
 .sidebar-block {
-  min-height: 400px;
-}
-.justify-flex-end {
-  justify-content: flex-end;
-}
-.sb-prominent-filter-field {
-  .form-control {
-
-    &:focus {
-      border: calculateRem(1px) solid var(--rc-dddddd);
-      border-radius: calculateRem(24px);
-    }
-
-    &::placeholder {
-      color: var(--black);
-      opacity: 1;
-    }
-
-    &:-ms-input-placeholder {
-      color: var(--black);
-    }
-
-    &::-ms-input-placeholder {
-      color: var(--black);
-    }
-  }
-
-  .md-drppicker .ranges ul li {
-    margin-bottom: calculateRem(8px);
-  }
-
+  min-height: 25rem;
 }
 
-
-.sb-prominent-filter
-  .sb-prominent-filter-container
-  .sb-prominent-filter-field:last-child {
-  margin-left: 0;
-  margin-top: 0;
-  text-align: left;
-  padding: 0px;
-  padding-right: calculateRem(16px);
-}
-
-.sb-prominent-filter
-  .sb-prominent-filter-container
-  .sb-prominent-filter-field {
-    margin-bottom:  calculateRem(24px);
-    border-radius: 24px !important;
-  }
-
-.reset-filter-section {
-    display: block !important;
-    position: relative;
-
-  right: 0;
-  top: calculateRem(2px);
-  align-items: center;
-
-  .selection {
-    padding: calculateRem(8px);
-  }
-}
-
-.sb-filter-label {
-  border-bottom: 0px;
-  width: 100%;
-  .sb-label-value {
-    border-radius: 24px;
-    padding: 7px !important;
-    padding-left: 9px !important;
-    padding-right: 9px !important;
-
-    background-color: #F2F2EA !important;
-    box-shadow: 4px 4px 3px 0 #C2C2C2 !important;
-    color: #333;
-
-    margin-bottom: calculateRem(4px);
-    margin-right: calculateRem(4px);
-   
-  }
-  .sb-label-name {
-    font-size: 16px;
-  }
-}
 .ngx-datatable.datatable-header {
   background: var(--mat-accordion-tab-body-active-bg) !important;
 }
 
-.mat-form-field-appearance-fill .mat-form-field-fill {
-  border-radius:24px
-}
 
-:host ::ng-deep {
-  .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
+.custom_mat_dd .mat-select-arrow-wrapper {
   vertical-align: bottom !important;
 }
 
-.sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
-  padding-top: 0px !important;
+.reset-filter{
+  color: var(--primary);
+  background-color: var(--brand-header-tail-text);
 }
+
+.newData{
+  color:var(--ck-color-base-error);
+  margin-left: 1.875rem;
+  margin-top: 0.625rem;
+}
+
+.info{
+  justify-self: flex-start;
+  margin-right: 0.625rem;
+  cursor: pointer;
+  color: var(--primary) !important;
+}
+.goback{
+  justify-self: flex-end;
+  margin-left: 0.625rem;
+  cursor: pointer;
+  color: var(--ck-color-button-cancel);
+}
+
+.ppFilter{
+  margin-top: 1.25rem;
+}
+
+.col-gap{
+  column-gap:1.875rem;
+}
+
+.modalNote{
+  line-height: initial;
+}
+
+.infoIcon{
+  width: 1.125rem;
+}
+
+::ng-deep {
+
+  .custom_mat_dd .mat-select-arrow-wrapper {
+    vertical-align: bottom !important;
+  }
+
+  .custom_mat_dd .mat-form-field-flex {
+    padding-top: 0px !important;
+  }
+
+  .mat-select-panel .mat-option {
+    white-space: normal !important;
+    display: inline-table !important;
+    width: 100% !important;
+    line-height: 1.5em !important;
+    padding-top: 0.625rem;
+  }
+  .mat-option-text{
+    display: flex !important;
+  }
 }

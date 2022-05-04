@@ -25,7 +25,7 @@ export class DatasetsComponent implements OnInit {
   reportTypes = [];
   programs = [];
   solutions = [];
-  public message = 'There is no data available';
+  public message = 'There is no data dispalyed';
   instance: string;
 
   @ViewChild('modal', { static: false }) modal;
@@ -73,7 +73,7 @@ export class DatasetsComponent implements OnInit {
   districtId:any;
   organisationId:any;
   filter:any = [];
-  
+  newData:boolean = false;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -195,9 +195,11 @@ export class DatasetsComponent implements OnInit {
     this.onDemandReportData = [];
     this.getSolutionList(program[0]);
     this.reportForm.controls.programName.setValue($event.value);
+    this.newData = true;
   }
 
   public selectSolution($event) {
+    this.newData = false;
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
         if (data._id == $event.value) {
