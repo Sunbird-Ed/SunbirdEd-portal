@@ -25,7 +25,7 @@ export class DatasetsComponent implements OnInit {
   reportTypes = [];
   programs = [];
   solutions = [];
-  public message = 'There is no data dispalyed';
+  public message = 'There is no data displayed';
   instance: string;
 
   @ViewChild('modal', { static: false }) modal;
