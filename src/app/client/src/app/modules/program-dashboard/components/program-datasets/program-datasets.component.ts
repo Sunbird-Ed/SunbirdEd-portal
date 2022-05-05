@@ -262,7 +262,7 @@ export class DatasetsComponent implements OnInit {
     this.showConfirmationModal = false;
   }
   goBack() {
-    this.goToPrevLocation ? this.location.back() : this.showPopUpModal = false;
+    this.goToPrevLocation ? this.location.back() : (this.showPopUpModal = false);
   }
 
   confirm(){
