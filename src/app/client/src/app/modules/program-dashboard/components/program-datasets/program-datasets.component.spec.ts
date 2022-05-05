@@ -440,4 +440,9 @@ describe('DatasetsComponent', () => {
     ]);
 
   }));
+
+  it('should call confirm', () => {
+    component.confirm();
+    expect(component.showPopUpModal).toEqual(false);
+  });
 });
