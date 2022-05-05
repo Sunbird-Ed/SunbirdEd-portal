@@ -74,7 +74,7 @@ export class DatasetsComponent implements OnInit {
   organisationId:any;
   filter:any = [];
   newData:boolean = false;
-  newEntry:boolean = true;
+  goToPrevLocation:boolean = true;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -262,7 +262,7 @@ export class DatasetsComponent implements OnInit {
     this.showConfirmationModal = false;
   }
   goBack() {
-    this.newEntry ? this.location.back() : this.showPopUpModal = false;
+    this.goToPrevLocation ? this.location.back() : this.showPopUpModal = false;
   }
 
   confirm(){
@@ -288,7 +288,7 @@ export class DatasetsComponent implements OnInit {
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
-    this.newEntry = false;
+    this.goToPrevLocation = false;
     this.showPopUpModal = true;
   }
 
