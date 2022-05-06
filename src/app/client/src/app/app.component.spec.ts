@@ -411,6 +411,7 @@ describe("App Component", () => {
       mockChangeDetectionRef.detectChanges = jest.fn();
       jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
       mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn();
+      jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
       // act
       appComponent.ngOnInit();
       // assert
@@ -492,6 +493,7 @@ describe("App Component", () => {
       mockOrgDetailsService.getOrgDetails = jest.fn(() => of({
         hashTagId: 'sample-hasTag-id'
       })) as any;
+      jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
       // act
       appComponent.ngOnInit();
       // assert
@@ -557,6 +559,7 @@ describe("App Component", () => {
       mockOrgDetailsService.getOrgDetails = jest.fn(() => throwError({
         hashTagId: 'sample-hasTag-id'
       })) as any;
+      jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
       // act
       appComponent.ngOnInit();
       // assert
