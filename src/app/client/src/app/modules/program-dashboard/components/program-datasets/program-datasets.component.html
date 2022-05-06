@@ -275,7 +275,7 @@
               
             </div>
             <div class="mt-32 sb-modal-actions">
-              <button [disabled]="reportForm.controls.solution.value == undefined" [ngClass]="{'sb-btn-disabled': (reportForm.controls.solution.value == undefined)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="showPopUpModal = !showPopUpModal">Confirm</button>
+              <button [disabled]="reportForm.controls.solution.value == undefined" [ngClass]="{'sb-btn-disabled': (reportForm.controls.solution.value == undefined)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
             </div>
           </div>
         </div>

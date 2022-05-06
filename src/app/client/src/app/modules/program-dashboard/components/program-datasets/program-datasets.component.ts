@@ -25,7 +25,7 @@ export class DatasetsComponent implements OnInit {
   reportTypes = [];
   programs = [];
   solutions = [];
-  public message = 'There is no data dispalyed';
+  public message = this.resourceService?.frmelmnts?.msg?.noDataDisplayed;
   instance: string;
 
   @ViewChild('modal', { static: false }) modal;
@@ -74,7 +74,7 @@ export class DatasetsComponent implements OnInit {
   organisationId:any;
   filter:any = [];
   newData:boolean = false;
-
+  goToPrevLocation:boolean = true;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -262,9 +262,12 @@ export class DatasetsComponent implements OnInit {
     this.showConfirmationModal = false;
   }
   goBack() {
-    this.location.back();
+    this.goToPrevLocation ? this.location.back() : (this.showPopUpModal = false);
   }
 
+  confirm(){
+    this.showPopUpModal = false;
+  }
   public handleConfirmationEvent(event: boolean) {
     this.closeConfirmationModal();
     if (event == true) {
@@ -285,6 +288,7 @@ export class DatasetsComponent implements OnInit {
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
+    this.goToPrevLocation = false;
     this.showPopUpModal = true;
   }
 

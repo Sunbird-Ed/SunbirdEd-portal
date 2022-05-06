@@ -347,6 +347,7 @@ describe('DatasetsComponent', () => {
     tick(1000);
     expect(spy).toHaveBeenCalled();
     expect(component.filter).toEqual([]);
+    expect(component.goToPrevLocation).toEqual(false);
 
   }));
 
@@ -440,4 +441,17 @@ describe('DatasetsComponent', () => {
     ]);
 
   }));
+
+  it('should call goBack', ()=> {
+    spyOn(component, 'goBack').and.callThrough();
+    component.goToPrevLocation = false;
+    component.goBack();
+    expect(component.showPopUpModal).toEqual(false);
+  });
+
+  it('should call confirm', () => {
+    spyOn(component, 'confirm').and.callThrough();
+    component.confirm();
+    expect(component.showPopUpModal).toEqual(false);
+  });
 });
