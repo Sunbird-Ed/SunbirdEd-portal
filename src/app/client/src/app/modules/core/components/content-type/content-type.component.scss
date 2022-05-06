@@ -214,6 +214,10 @@
     -webkit-mask-image: url(/assets/images/mask-image/explore.svg);
     mask-image: url(/assets/images/mask-image/explore.svg);
   }
+  &__questionSet {
+    -webkit-mask-image: url(/assets/images/mask-image/question_set.svg);
+    mask-image: url(/assets/images/mask-image/question_set.svg);
+  }
 }
 html[layout=joy] .help-page .help-page__header {
   border-radius: 1.5rem 1.5rem 0 0 !important;
