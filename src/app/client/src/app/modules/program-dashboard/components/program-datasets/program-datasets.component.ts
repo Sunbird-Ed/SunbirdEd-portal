@@ -25,7 +25,7 @@ export class DatasetsComponent implements OnInit {
   reportTypes = [];
   programs = [];
   solutions = [];
-  public message = 'There is no data displayed';
+  public message = this.resourceService?.frmelmnts?.msg?.noDataDisplayed;
   instance: string;
 
   @ViewChild('modal', { static: false }) modal;
