@@ -197,12 +197,11 @@ export class ReportViewComponent implements OnInit {
   getconfig(element) {
     const config = {
       labels: element.chart.data.labels,
-      datasets: [{ data: element.chart.data.datasets[0].data }],
+      datasets: [{ data: element.chart.data.datasets[0].data,label:element.chart.data.labels[0] }],
       options: element.chart.options,
       colors: [
         { backgroundColor: element.chart.data.datasets[0].backgroundColor },
-      ],
-      legend: true,
+      ]
     };
     return config;
   }
