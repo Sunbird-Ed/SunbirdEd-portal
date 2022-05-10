@@ -11,7 +11,7 @@
     "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
     "post-build": "gulp post:build",
     "build-dev": "ng build --prod --build-optimizer=false --deployUrl dist/",
-    "test": "jest  --coverage --watch",
+    "test": "jest --collectCoverage=true --coverageReporters=lcov --watch",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
