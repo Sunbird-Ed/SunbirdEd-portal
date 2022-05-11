@@ -320,7 +320,7 @@ export class DatasetsComponent implements OnInit {
     }
     let keys = Object.keys(filterKeysObj);
     this.selectedReport['filters'].map(data=> {
-     let matchedData = keys.filter(key => {
+     keys.filter(key => {
         return data.dimension == key && (data.value = filterKeysObj[key]);
       })
       if(data.value !== undefined){
