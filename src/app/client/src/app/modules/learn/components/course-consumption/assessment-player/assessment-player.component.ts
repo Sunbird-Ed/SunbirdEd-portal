@@ -840,6 +840,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
             const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
             this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
+            this.playerConfig['context']['objectRollup'] = this.objectRollUp; 
             this.showLoader = false;
           }, (err) => {
             this.toasterService.error(this.resourceService.messages.stmsg.m0009);
