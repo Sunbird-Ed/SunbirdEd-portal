@@ -311,12 +311,12 @@ export class DatasetsComponent implements OnInit {
   }
  addFilters(){ 
     let filterKeysObj = {
-    program_id:this.reportForm.controls.programName.value,
-    solution_id:this.reportForm.controls.solution.value,
-    programId:this.reportForm.controls.programName.value,
-    solutionId:this.reportForm.controls.solution.value,
-    district_externalId:this.reportForm.controls.districtName.value || undefined,
-    organisation_id:this.reportForm.controls.organisationName.value || undefined
+    program_id:_.get(this.reportForm,'controls.programName.value'),
+    solution_id:_.get(this.reportForm,'controls.solution.value'),
+    programId:_.get(this.reportForm,'controls.programName.value'),
+    solutionId:_.get(this.reportForm,'controls.solution.value'),
+    district_externalId:_.get(this.reportForm,'controls.districtName.value')|| undefined,
+    organisation_id:_.get(this.reportForm,'controls.organisationName.value')|| undefined
     }
     let keys = Object.keys(filterKeysObj);
     this.selectedReport['filters'].map(data=> {
