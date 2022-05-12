@@ -9,7 +9,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
 
-
 @Component({
   selector: 'app-datasets',
   templateUrl: './program-datasets.component.html',
@@ -70,8 +69,6 @@ export class DatasetsComponent implements OnInit {
   solutionSelected: any;
   districts:any;
   organisations:any;
-  districtId:any;
-  organisationId:any;
   filter:any = [];
   newData:boolean = false;
   goToPrevLocation:boolean = true;
@@ -281,8 +278,6 @@ export class DatasetsComponent implements OnInit {
   public resetFilter(){
     this.reportForm.reset();
     this.filter = [];
-    this.districtId = undefined;
-    this.organisationId = undefined;
     this.districts = [];
     this.organisations = [];
     this.solutions = [];
@@ -304,43 +299,35 @@ export class DatasetsComponent implements OnInit {
   }
 
   districtSelection($event){
-    this.districtId = $event.value;
     this.reportForm.controls.districtName.setValue($event.value);
   }
 
   organisationSelection($event){
-    this.organisationId = $event.value;
     this.reportForm.controls.organisationName.setValue($event.value);
   }
 
   reportChanged(selectedReportData) {
     this.selectedReport = selectedReportData;
-    this.filter = this.selectedReport['filters'];
   }
- addFilters(){
-  if(this.districtId == undefined){
-    this.filter = this.filter.filter( element => {
-      return element.dimension != 'district_externalId'
-    })
+ addFilters(){ 
+    let filterKeysObj = {
+    program_id:_.get(this.reportForm,'controls.programName.value'),
+    solution_id:_.get(this.reportForm,'controls.solution.value'),
+    programId:_.get(this.reportForm,'controls.programName.value'),
+    solutionId:_.get(this.reportForm,'controls.solution.value'),
+    district_externalId:_.get(this.reportForm,'controls.districtName.value')|| undefined,
+    organisation_id:_.get(this.reportForm,'controls.organisationName.value')|| undefined
+    }
+    let keys = Object.keys(filterKeysObj);
+    this.selectedReport['filters'].map(data=> {
+     keys.filter(key => {
+        return data.dimension == key && (data.value = filterKeysObj[key]);
+      })
+      if(data.value !== undefined){
+        this.filter.push(data);
+      }
+    });
   }
-  this.filter.forEach((data, index) => {
-    if(data.dimension == 'program_id'){
-      data.value = this.programSelected;
-    }
-    if(data.dimension == 'solution_id'){
-      data.value = this.reportForm.controls.solution.value;
-    }
-    if(this.districtId !== undefined && data.dimension == 'district_externalId'){
-      data.value = this.districtId;
-    }
-    if(this.organisationId !== undefined && data.dimension == 'organisation_id' ){
-      data.value = this.organisationId;
-    }
-    if(this.organisationId == undefined && data.dimension == 'organisation_id' ){
-      this.filter.splice(index,1);
-    }
-  })
- }
   submitRequest() {
     this.addFilters();
     this.selectedSolution = this.reportForm.controls.solution.value;

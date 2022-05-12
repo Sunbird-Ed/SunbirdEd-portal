@@ -164,7 +164,29 @@ describe('DatasetsComponent', () => {
     component.selectedReport =  {
       'name': 'Status Report',
       'encrypt': false,
-      'datasetId': 'ml-observation-status-report'
+      'datasetId': 'ml-observation-status-report',
+      filters:[
+        {
+            "type": "equals",
+            "dimension": "program_id",
+            "value": "$programId"
+        },
+        {
+            "type": "equals",
+            "dimension": "solution_id",
+            "value": "$solutionId"
+        },
+        {
+            "type": "equals",
+            "dimension": "district_externalId",
+            "value": "$district_externalId"
+        },
+        {
+            "type": "equals",
+            "dimension": "organisation_id",
+            "value": "$organisation_id"
+        }
+      ]
     };
     component.onDemandReportData = [{1: 'a' , requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }];
     component.reportTypes = mockData.FormData['observation'];
@@ -371,8 +393,6 @@ describe('DatasetsComponent', () => {
     component.districtSelection({ value: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03" });
     tick(1000);
     expect(spy).toHaveBeenCalled();
-    expect(component.districtId).toEqual("2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03");
-
   }));
 
   it('should call organisationSelection', fakeAsync(() => {
@@ -381,17 +401,17 @@ describe('DatasetsComponent', () => {
     component.organisationSelection({ value: "01269878797503692810" });
     tick(1000);
     expect(spy).toHaveBeenCalled();
-    expect(component.organisationId).toEqual("01269878797503692810");
-
   }));
 
   it('should call addFilters', fakeAsync(() => {
 
     const spy = spyOn(component, 'addFilters').and.callThrough();
-    component.organisationId = "01269878797503692810";
-    component.districtId ="2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03";
-    component.programSelected = "5f34ec17585244939f89f90c";
-    component.filter = [
+    component.reportForm.get('programName').setValue('5f34ec17585244939f89f90c');
+    component.reportForm.get('solution').setValue('01285019302823526477');
+    component.reportForm.get('districtName').setValue('2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03');
+    component.reportForm.get('organisationName').setValue('01269878797503692810');
+    component.selectedReport = {
+      filters:[
       {
           "type": "equals",
           "dimension": "program_id",
@@ -412,8 +432,7 @@ describe('DatasetsComponent', () => {
           "dimension": "organisation_id",
           "value": "$organisation_id"
       }
-    ]
-    component.reportForm.get('solution').setValue('01285019302823526477');
+    ]}
     component.addFilters();
     tick(1000);
     expect(spy).toHaveBeenCalled();
