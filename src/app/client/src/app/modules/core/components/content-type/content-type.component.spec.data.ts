@@ -98,7 +98,7 @@ export const mockData = {
       'title': 'frmelmnts.lbl.textbooks',
       'desc': 'frmelmnts.lbl.textbooks',
       'menuType': 'Content',
-      'contentType': 'textbook',
+      'contentType': 'observation',
       'isEnabled': true,
       'theme': {
         'baseColor': '',
@@ -132,6 +132,7 @@ export const mockData = {
       'desc': 'frmelmnts.tab.all',
       'menuType': 'Content',
       'isEnabled': false,
+      'default': true,
       'theme': {
         'baseColor': '',
         'textColor': '',
