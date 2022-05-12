@@ -125,7 +125,52 @@ describe("BrowseImagePopupComponent", () => {
         });
     });
     
-    xdescribe("fileChange", () => {
+    describe("diementionCheck", () => {
+        it ('should return "flag=true" for dimentionCheck', () => {
+            // arrange
+            component.logoType =  {type: 'LOGO'};
+             // act
+            const value = component.dimentionCheck({
+              height: 88,
+              size: 0.01,
+              type: 'image/png',
+              width: 88,
+              name: 'file1'
+            });
+             // assert
+            expect(value).toBeTruthy();
+        });
+        
+        it ('should return "flag=false" for dimentionCheck', () => {
+            component.logoType =  {type: 'LOGO'};
+            const value = component.dimentionCheck('');
+            expect(value).toBeFalsy();
+        });
+    })
+
+    describe("getImageProperties", () => {
+        it("should get image properties", () => {
+            global.URL.createObjectURL = jest.fn(() => 'details');
+            let onloadRef: Function | undefined;
+            const mFile = new File(['go'], 'go.pdf');
+            const fileData = { target: { files: [mFile] } };
+            Object.defineProperty(Image.prototype, 'onload', {
+                get() {
+                  return this._onload;
+                },
+                set(onload: Function) {
+                  onloadRef = onload;
+                  this._onload = onload;
+                },
+            });
+            component.getImageProperties(fileData).then((data) => {
+                expect(data).toEqual({ height: 0, width: 0, size: NaN, type: undefined })
+            })
+            onloadRef()
+        })
+    })
+
+    describe("fileChange", () => {
         it('should change file', ((done) => {
             // arrange
             const imagedata = {
@@ -186,49 +231,6 @@ describe("BrowseImagePopupComponent", () => {
             expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.fmsg.m0004);
         });
     });
-
-    describe("diementionCheck", () => {
-        it ('should return "flag=true" for dimentionCheck', () => {
-            // arrange
-            component.logoType =  {type: 'LOGO'};
-             // act
-            const value = component.dimentionCheck({
-              height: 88,
-              size: 0.01,
-              type: 'image/png',
-              width: 88,
-              name: 'file1'
-            });
-             // assert
-            expect(value).toBeTruthy();
-        });
-        
-        it ('should return "flag=false" for dimentionCheck', () => {
-            component.logoType =  {type: 'LOGO'};
-            const value = component.dimentionCheck('');
-            expect(value).toBeFalsy();
-        });
-    })
-
-    describe("getImageProperties", () => {
-        it("should get image properties", () => {
-            global.URL.createObjectURL = jest.fn(() => 'details');
-            let onloadRef: Function | undefined;
-            const mFile = new File(['go'], 'go.pdf');
-            const fileData = { target: { files: [mFile] } };
-            Object.defineProperty(Image.prototype, 'onload', {
-                get() {
-                  return this._onload;
-                },
-                set(onload: Function) {
-                  onloadRef = onload;
-                  this._onload = onload;
-                },
-            });
-            component.getImageProperties(fileData);
-            onloadRef()
-        })
-    })
     
     describe("selectLogo", () => {
         it('should select the logo', ((done) => {
@@ -307,38 +309,7 @@ describe("BrowseImagePopupComponent", () => {
             expect(component.selectedLogo).toEqual(null);
         });
     })
-    
-    describe("upload asset", () => {
-        it('should upload the asset for logos', () => {
-            component.logoType = { type: 'LOGO' };
-            mockUploadCertificateService.createAsset = jest.fn(() => of(MockData.create))
-            jest.spyOn(component, 'uploadBlob').getMockImplementation();
-            component.upload();
-            expect(component.uploadBlob).toHaveBeenCalledWith(MockData.create);
-        });
-    
-        it('should not upload the asset for logos', () => {
-            component.logoType = { type: 'LOGO' };
-            mockUploadCertificateService.createAsset = jest.fn(() => throwError({})); 
-            component.upload();
-            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.fmsg.m0004);
-        });
 
-        it('should get image url if logo type and sign are matched', () => {
-            component.logoType = { type: 'LOGO' };
-            component.sign = 'LOGO'
-            jest.spyOn(component, 'getImageURLs');
-            component.upload();
-            expect(component.getImageURLs).toHaveBeenCalled();
-        });
-    })
-
-    it('should browse the images', () => {
-        component.browseImages();
-        expect(component.showUploadUserModal).toEqual(true);
-        expect(component.selectedLogo).toEqual(null);
-    });
-    
     describe("uploadBlob", () => {
         it('should upload to blob', () => {
             component.logoType = {
@@ -380,30 +351,6 @@ describe("BrowseImagePopupComponent", () => {
             expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.fmsg.m0004);
         });
     })
-    
-    it('should select and use the logo', () => {
-        component.logoType = {
-          type: 'logo',
-          index: 1,
-          key: 'SOME_KEY'
-        };
-        component.selectedLogo = {
-          name: 'SOME_NAME',
-          artifactUrl: 'SOME_ARTIFACT_URL'
-        };
-        jest.spyOn(component.assetData, 'emit');
-        jest.spyOn(component, 'closeModel').mockImplementation();
-        component.selectAndUseLogo();
-        expect(component.selectedLogo).toEqual(null);
-        expect(component.closeModel).toHaveBeenCalled();
-    });
-    
-    it('should show Upload Signature', () => {
-        component.logoType = { type: 'SIGN', index: 0, key: 'SIGN1' };
-        component.showUploadSignature();
-        expect(component.showSelectImageModal).toBeFalsy();
-        expect(component.showUploadUserModal).toBeTruthy();
-    });
 
     describe("getImageURLs", () => {
         it("should convert images files as data URLs", (() => {
@@ -445,6 +392,62 @@ describe("BrowseImagePopupComponent", () => {
 
         }))
     })
+    
+    describe("upload asset", () => {
+        it('should upload the asset for logos', () => {
+            component.logoType = { type: 'LOGO' };
+            mockUploadCertificateService.createAsset = jest.fn(() => of(MockData.create))
+            jest.spyOn(component, 'uploadBlob').getMockImplementation();
+            component.upload();
+            expect(component.uploadBlob).toHaveBeenCalledWith(MockData.create);
+        });
+    
+        it('should not upload the asset for logos', () => {
+            component.logoType = { type: 'LOGO' };
+            mockUploadCertificateService.createAsset = jest.fn(() => throwError({})); 
+            component.upload();
+            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.fmsg.m0004);
+        });
+
+        it('should get image url if logo type and sign are matched', () => {
+            component.logoType = { type: 'LOGO' };
+            component.sign = 'LOGO'
+            jest.spyOn(component, 'getImageURLs');
+            component.upload();
+            expect(component.getImageURLs).toHaveBeenCalled();
+        });
+    })
+
+    it('should browse the images', () => {
+        component.browseImages();
+        expect(component.showUploadUserModal).toEqual(true);
+        expect(component.selectedLogo).toEqual(null);
+    });
+    
+    it('should select and use the logo', () => {
+        component.logoType = {
+          type: 'logo',
+          index: 1,
+          key: 'SOME_KEY'
+        };
+        component.selectedLogo = {
+          name: 'SOME_NAME',
+          artifactUrl: 'SOME_ARTIFACT_URL'
+        };
+        jest.spyOn(component.assetData, 'emit');
+        jest.spyOn(component, 'closeModel').mockImplementation();
+        component.selectAndUseLogo();
+        expect(component.selectedLogo).toEqual(null);
+        expect(component.closeModel).toHaveBeenCalled();
+    });
+    
+    it('should show Upload Signature', () => {
+        component.logoType = { type: 'SIGN', index: 0, key: 'SIGN1' };
+        component.showUploadSignature();
+        expect(component.showSelectImageModal).toBeFalsy();
+        expect(component.showUploadUserModal).toBeTruthy();
+    });
+
     
     
    
