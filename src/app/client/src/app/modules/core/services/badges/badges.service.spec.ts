@@ -10,15 +10,15 @@ import { LearnerService } from './../learner/learner.service';
 describe('BadgesService', () => {
   let badgesService: BadgesService;
   const mockConfigService: Partial<ConfigService> = {
-      urlConFig: {
-          URLS: {
-              PUBLIC_PREFIX: {},
-              BADGE: {
-                BADGE_CLASS_SEARCH: true,
-                  APP_INFO: true
-              }
-          }
+    urlConFig: {
+      URLS: {
+        PUBLIC_PREFIX: {},
+        BADGE: {
+          BADGE_CLASS_SEARCH: true,
+          APP_INFO: true
+        }
       }
+    }
   };
   const req = {
     request: {
@@ -34,52 +34,83 @@ describe('BadgesService', () => {
   };
   const mockDataService: Partial<DataService> = {};
   const mockLearnerService: Partial<LearnerService> = {
-    post : jest.fn().mockImplementation(() => {})
+    post: jest.fn().mockImplementation(() => { })
   };
   beforeAll(() => {
-    badgesService= new BadgesService(
-          mockConfigService as ConfigService,
-          mockLearnerService as LearnerService,
-      );
+    badgesService = new BadgesService(
+      mockConfigService as ConfigService,
+      mockLearnerService as LearnerService,
+    );
   });
 
   beforeEach(() => {
-      jest.clearAllMocks();
-      jest.resetAllMocks();
+    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   it('should create a instance of appUpdateService', () => {
-      expect(badgesService).toBeTruthy();
+    expect(badgesService).toBeTruthy();
   });
 
   describe('checkForAppUpdate', () => {
-      it('should return all badge list', (done) => {
-          jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
-              id: 'id',
-              params: {
-                  resmsgid: '',
-                  status: 'staus'
-              },
-              responseCode: 'OK',
-              result: {},
-              ts: '',
-              ver: ''
-          }));
-          // act
-          badgesService.getAllBadgeList(req).subscribe(() => {
-              done();
-          });
+    it('should return all badge list', (done) => {
+      jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      badgesService.getAllBadgeList(req).subscribe(() => {
+        done();
       });
+    });
 
-      it('should not return all badge list', () => {
-          // arrange
-          jest.spyOn(badgesService.learner, 'post').mockImplementation(() => {
-              return throwError({error: {}});
-          });
-          // act
-          badgesService.getAllBadgeList(req).subscribe(() => {
-          });
+    it('should not return all badge list', () => {
+      // arrange
+      jest.spyOn(badgesService.learner, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
       });
+      // act
+      badgesService.getAllBadgeList(req).subscribe(() => {
+      });
+    });
   });
-  
+  xdescribe('getDetailedBadgeAssertions', () => {
+    it('should return detailed badge Assertions', (done) => {
+      jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      const assertions = {};
+      // act
+      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
+        done();
+      });
+    });
+
+    it('should not return detailed badge Assertions', () => {
+      // arrange
+      jest.spyOn(badgesService.learner, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      const assertions = {};
+      // act
+      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
+      });
+    });
+  });
+
 });
