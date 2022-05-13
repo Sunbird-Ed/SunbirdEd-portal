@@ -16,7 +16,9 @@ describe('certRegService', () => {
         CERT_REG_PREFIX: true,
         CERTIFICATE: {
           FETCH_CERTIFICATES: 'v1/certs/search',
-          FETCH_USER: 'v1/user/search'
+          FETCH_USER: 'v1/user/search',
+          REISSUE_CERTIFICATE: 'v1/cert/reissue',
+          ATTACH_CERTIFICATE: 'v1/template/adds'
         }
       }
     }
@@ -27,7 +29,7 @@ describe('certRegService', () => {
     post: jest.fn().mockImplementation(() => { })
   };
   const mockDataService: Partial<DataService> = {};
-  
+
   beforeAll(() => {
     certRegService = new CertRegService(
       mockConfigService as ConfigService,
@@ -43,74 +45,172 @@ describe('certRegService', () => {
   it('should create a instance of appUpdateService', () => {
     expect(certRegService).toBeTruthy();
   });
-describe('should fetch all the certificates by calling fetchCertificates', () => {
-  const request = {
-    userId : '874ed8a5-782e-4f6c-8f36-e0288455901e',
-    certType: 'userCert',
-    limit: 100
-  }
-  it('should return certificates for a user', (done) => {
-    jest.spyOn(certRegService, 'post').mockReturnValue(of({
+
+  describe('should fetch all the certificates by calling fetchCertificates', () => {
+    const request = {
+      userId: '874ed8a5-782e-4f6c-8f36-e0288455901e',
+      certType: 'userCert',
+      limit: 100
+    }
+    it('should return certificates for a user', (done) => {
+      jest.spyOn(certRegService, 'post').mockReturnValue(of({
         id: 'id',
         params: {
-            resmsgid: '',
-            status: 'staus'
+          resmsgid: '',
+          status: 'staus'
         },
         responseCode: 'OK',
         result: {},
         ts: '',
         ver: ''
-    }));
-    // act
-    certRegService.fetchCertificates(request).subscribe(() => {
+      }));
+      // act
+      certRegService.fetchCertificates(request).subscribe(() => {
         done();
+      });
+      expect(certRegService.post).toHaveBeenCalled();
     });
-    expect(certRegService.post).toHaveBeenCalled();
-});
 
-it('should not return certificates for a user', () => {
-    // arrange
-    jest.spyOn(certRegService, 'post').mockImplementation(() => {
-        return throwError({error: {}});
+    it('should not return certificates for a user', () => {
+      // arrange
+      jest.spyOn(certRegService, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      certRegService.fetchCertificates(request).subscribe(() => {
+      });
+      expect(certRegService.post).toHaveBeenCalled();
     });
-    // act
-    certRegService.fetchCertificates(request).subscribe(() => {
-    });
-    expect(certRegService.post).toHaveBeenCalled();
-});
-});
-describe('should fetch all the certificates of a user by calling getUserCertList', () => {
- const userName = 'ntptest102';
- const courseId = 'do_21307528604532736012398';
- const loggedInUser = '874ed8a5-782e-4f6c-8f36-e0288455901e';
-  it('should return certificates for a user by taking the userName and courseId from loggedInUser', (done) => {
-    jest.spyOn(certRegService, 'post').mockReturnValue(of({
+  });
+
+  describe('should fetch all the certificates of a user by calling getUserCertList', () => {
+    const userName = 'ntptest102';
+    const courseId = 'do_21307528604532736012398';
+    const loggedInUser = '874ed8a5-782e-4f6c-8f36-e0288455901e';
+    it('should return certificates for a user by taking the userName and courseId from loggedInUser', (done) => {
+      jest.spyOn(certRegService, 'post').mockReturnValue(of({
         id: 'id',
         params: {
-            resmsgid: '',
-            status: 'staus'
+          resmsgid: '',
+          status: 'staus'
         },
         responseCode: 'OK',
         result: {},
         ts: '',
         ver: ''
-    }));
-    // act
-    certRegService.getUserCertList(userName, courseId, loggedInUser).subscribe(() => {
+      }));
+      // act
+      certRegService.getUserCertList(userName, courseId, loggedInUser).subscribe(() => {
         done();
+      });
     });
-});
 
-it('should not return certificates for a user by taking the userName and courseId from loggedInUser', () => {
-    // arrange
-    jest.spyOn(certRegService, 'post').mockImplementation(() => {
-        return throwError({error: {}});
+    it('should not return certificates for a user by taking the userName and courseId from loggedInUser', () => {
+      // arrange
+      jest.spyOn(certRegService, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      certRegService.getUserCertList(userName, courseId, loggedInUser).subscribe(() => {
+      });
     });
-    // act
-    certRegService.getUserCertList(userName, courseId, loggedInUser).subscribe(() => {
+  });
+
+  describe('should reissue a certificate', () => {
+    const request = {
+      certId: 'ABCD_1234'
+    }
+    it('should call the reissue Certificate method and should pass the flow', (done) => {
+      jest.spyOn(certRegService, 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      certRegService.reIssueCertificate(request).subscribe(() => {
+        done();
+      });
     });
-});
-});
-  
+
+    it('should call the reissue Certificate method and should throw error', () => {
+      // arrange
+      jest.spyOn(certRegService, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      certRegService.reIssueCertificate(request).subscribe(() => {
+      });
+    });
+  });
+
+  describe('should add certificate template', () => {
+    const request = {
+      templateId: 'ABCD_1234'
+    }
+    it('should call the addCertificateTemplate method with request', (done) => {
+      jest.spyOn(certRegService, 'patch').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      certRegService.addCertificateTemplate(request).subscribe(() => {
+        done();
+      });
+    });
+
+    it('should call the addCertificateTemplate method with request and should throw error', () => {
+      // arrange
+      jest.spyOn(certRegService, 'patch').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      certRegService.addCertificateTemplate(request).subscribe(() => {
+      });
+    });
+  });
+
+  describe('should check the Criteria and return the value', () => {
+    it('should call the checkCriteria method and return false value', () => {
+      const batchData = [
+        {
+          batchId: '123qwe',
+          status: 1
+        },
+        {
+          batchId: 'qwe123',
+          status: 2
+        }
+      ]
+      const output = certRegService.checkCriteria(batchData)
+      expect(output).toBeFalsy();
+    });
+    it('should call the checkCriteria method and return true value', () => {
+      const batchData = [
+        {
+          batchId: '123qwe',
+          status: 2
+        },
+        {
+          batchId: 'qwe123',
+          status: 1
+        }
+      ]
+      const output = certRegService.checkCriteria(batchData)
+      expect(output).toBeTruthy();
+    });
+  });
 
 });
