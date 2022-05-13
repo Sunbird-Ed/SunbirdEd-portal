@@ -151,8 +151,7 @@ describe('CertificateService', () => {
         done();
       });
       const obj = {
-        url : `${mockConfigService.urlConFig.URLS.BATCH.GET_DETAILS}/${batchId}`,
-        
+        url : `${mockConfigService.urlConFig.URLS.BATCH.GET_DETAILS}/${batchId}`, 
       }
       expect(certificateService.learnerService.get).toHaveBeenCalledWith(obj);
     });

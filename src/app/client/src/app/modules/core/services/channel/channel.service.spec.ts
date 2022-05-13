@@ -31,9 +31,33 @@ describe('ChannelService', () => {
     jest.clearAllMocks();
     jest.resetAllMocks();
   });
-
-  it('should create a instance of appUpdateService', () => {
+  
+  it('should create a instance of channelService', () => {
     expect(channelService).toBeTruthy();
   });
 
+  describe('should fetch framework details', () => {
+    const hashTagId = 'NTP'
+    it('should call the getFrameWork method with hashTagId', (done) => {
+      jest.spyOn(channelService['publicDataService'],'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      channelService.getFrameWork(hashTagId).subscribe(() => {
+        done();
+      });
+      const obj = {
+        url : `${mockConfigService.urlConFig.URLS.CHANNEL.READ}/${hashTagId}`
+      }
+      expect(channelService['publicDataService'].get).toHaveBeenCalledWith(obj);
+    });
+  });
 });
