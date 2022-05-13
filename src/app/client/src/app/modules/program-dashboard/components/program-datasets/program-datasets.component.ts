@@ -396,10 +396,12 @@ export class DatasetsComponent implements OnInit {
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
-
+      this.filter= [];
+      
     } else {
       this.popup = false;
       this.isProcessed = true;
+      this.filter = [];
       setTimeout(() => {
         this.isProcessed = false;
       }, 5000);
