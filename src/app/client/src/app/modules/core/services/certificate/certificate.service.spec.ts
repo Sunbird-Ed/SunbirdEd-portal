@@ -40,7 +40,7 @@ describe('CertificateService', () => {
       jest.resetAllMocks();
   });
 
-  it('should create a instance of appUpdateService', () => {
+  it('should create a instance of certificateService', () => {
       expect(certificateService).toBeTruthy();
   });
 

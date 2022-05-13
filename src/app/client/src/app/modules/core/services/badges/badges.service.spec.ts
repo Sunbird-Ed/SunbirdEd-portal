@@ -48,11 +48,11 @@ describe('BadgesService', () => {
     jest.resetAllMocks();
   });
 
-  it('should create a instance of appUpdateService', () => {
+  it('should create a instance of badgeService', () => {
     expect(badgesService).toBeTruthy();
   });
 
-  describe('checkForAppUpdate', () => {
+  describe('getAllBadgeList', () => {
     it('should return all badge list', (done) => {
       jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
         id: 'id',
