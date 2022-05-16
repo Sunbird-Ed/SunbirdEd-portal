@@ -9,7 +9,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
 
-
 @Component({
   selector: 'app-datasets',
   templateUrl: './program-datasets.component.html',
@@ -25,7 +24,7 @@ export class DatasetsComponent implements OnInit {
   reportTypes = [];
   programs = [];
   solutions = [];
-  public message = 'There is no data available';
+  public message = this.resourceService?.frmelmnts?.msg?.noDataDisplayed;
   instance: string;
 
   @ViewChild('modal', { static: false }) modal;
@@ -70,11 +69,9 @@ export class DatasetsComponent implements OnInit {
   solutionSelected: any;
   districts:any;
   organisations:any;
-  districtId:any;
-  organisationId:any;
   filter:any = [];
-  
-
+  newData:boolean = false;
+  goToPrevLocation:boolean = true;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -195,9 +192,11 @@ export class DatasetsComponent implements OnInit {
     this.onDemandReportData = [];
     this.getSolutionList(program[0]);
     this.reportForm.controls.programName.setValue($event.value);
+    this.newData = true;
   }
 
   public selectSolution($event) {
+    this.newData = false;
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
         if (data._id == $event.value) {
@@ -260,9 +259,12 @@ export class DatasetsComponent implements OnInit {
     this.showConfirmationModal = false;
   }
   goBack() {
-    this.location.back();
+    this.goToPrevLocation ? this.location.back() : (this.showPopUpModal = false);
   }
 
+  confirm(){
+    this.showPopUpModal = false;
+  }
   public handleConfirmationEvent(event: boolean) {
     this.closeConfirmationModal();
     if (event == true) {
@@ -276,13 +278,12 @@ export class DatasetsComponent implements OnInit {
   public resetFilter(){
     this.reportForm.reset();
     this.filter = [];
-    this.districtId = undefined;
-    this.organisationId = undefined;
     this.districts = [];
     this.organisations = [];
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
+    this.goToPrevLocation = false;
     this.showPopUpModal = true;
   }
 
@@ -298,43 +299,35 @@ export class DatasetsComponent implements OnInit {
   }
 
   districtSelection($event){
-    this.districtId = $event.value;
     this.reportForm.controls.districtName.setValue($event.value);
   }
 
   organisationSelection($event){
-    this.organisationId = $event.value;
     this.reportForm.controls.organisationName.setValue($event.value);
   }
 
   reportChanged(selectedReportData) {
     this.selectedReport = selectedReportData;
-    this.filter = this.selectedReport['filters'];
   }
- addFilters(){
-  if(this.districtId == undefined){
-    this.filter = this.filter.filter( element => {
-      return element.dimension != 'district_externalId'
-    })
+ addFilters(){ 
+    let filterKeysObj = {
+    program_id:_.get(this.reportForm,'controls.programName.value'),
+    solution_id:_.get(this.reportForm,'controls.solution.value'),
+    programId:_.get(this.reportForm,'controls.programName.value'),
+    solutionId:_.get(this.reportForm,'controls.solution.value'),
+    district_externalId:_.get(this.reportForm,'controls.districtName.value')|| undefined,
+    organisation_id:_.get(this.reportForm,'controls.organisationName.value')|| undefined
+    }
+    let keys = Object.keys(filterKeysObj);
+    this.selectedReport['filters'].map(data=> {
+     keys.filter(key => {
+        return data.dimension == key && (data.value = filterKeysObj[key]);
+      })
+      if(data.value !== undefined){
+        this.filter.push(data);
+      }
+    });
   }
-  this.filter.forEach((data, index) => {
-    if(data.dimension == 'program_id'){
-      data.value = this.programSelected;
-    }
-    if(data.dimension == 'solution_id'){
-      data.value = this.reportForm.controls.solution.value;
-    }
-    if(this.districtId !== undefined && data.dimension == 'district_externalId'){
-      data.value = this.districtId;
-    }
-    if(this.organisationId !== undefined && data.dimension == 'organisation_id' ){
-      data.value = this.organisationId;
-    }
-    if(this.organisationId == undefined && data.dimension == 'organisation_id' ){
-      this.filter.splice(index,1);
-    }
-  })
- }
   submitRequest() {
     this.addFilters();
     this.selectedSolution = this.reportForm.controls.solution.value;
@@ -403,10 +396,12 @@ export class DatasetsComponent implements OnInit {
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
-
+      this.filter= [];
+      
     } else {
       this.popup = false;
       this.isProcessed = true;
+      this.filter = [];
       setTimeout(() => {
         this.isProcessed = false;
       }, 5000);

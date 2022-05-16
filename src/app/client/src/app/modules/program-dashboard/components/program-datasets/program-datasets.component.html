@@ -6,7 +6,7 @@
   class="relative position mt-0">
     <div class="py-0 d-flex flex-ai-center w-100">
       <!-- /* Back button */ -->
-       <div style="margin-right: 10px;">
+       <div class="mr-12">
         <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''"
       class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" tabindex="0"
       (click)="goBack()" id="goBack">
@@ -19,7 +19,7 @@
      <div class="textbook d-flex flex-jc-space-between w-100">
        
         <!-- title -->
-        <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{resourceService?.frmelmnts?.lbl?.programDatasets}}</h5>
+        <h4 class="textbook__title sb-color-primary font-weight-bold mt-8 ml-24" >{{resourceService?.frmelmnts?.lnk?.programDashboard}}</h4>
         <div>
           <button class="sb-btn sb-btn-primary sb-btn-normal px-24" (click)="goBack()">
             {{resourceService?.frmelmnts?.btn?.closedb}}
@@ -35,7 +35,7 @@
   <mat-tab-group class="sb-mat__tab sb-mat__tab--tabinacc">
     <mat-tab appTelemetryInteract>
          <ng-template mat-tab-label>
-            <span>{{resourceService?.frmelmnts?.lbl?.programDatasets}}</span>
+            <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.programDatasets}}</span>
          </ng-template>
         <ng-container *ngTemplateOutlet="programDataset"></ng-container>
       </mat-tab>    
@@ -46,47 +46,46 @@
 <ng-template #programDataset>
   <form class="sb-form" [formGroup]="reportForm">
     <div>
-      <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center" style="grid-column-gap: 30px;">
-        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
+      <div class="d-flex flex-w-wrap flex-ai-center ml-32 col-gap">
+        <div class="d-flex flex-dc">
           <label>{{resourceService?.frmelmnts?.lbl?.program }}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
             <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
             [(ngModel)]="programSelected"
-            placeholder="Select Program"  (selectionChange)="programSelection($event)">
+            [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
               <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
                 {{program.name}}
               </mat-option>
             </mat-select>
             </mat-form-field>
         </div>
-        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
+        <div class="d-flex flex-dc">
           <label>{{ resourceService?.frmelmnts?.lbl?.solution }}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
             <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-            placeholder="Select Resource"  (selectionChange)="selectSolution($event)">
+            [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
               <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
-                {{solution.name}}
+                {{solution.name}} 
               </mat-option>
             </mat-select>
             </mat-form-field>
         </div>
-        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
-          <label>Select District</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+        <div class="d-flex flex-dc">
+          <label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrict }}</label>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
             <mat-select role="radio" class="selection"  valueField="locationId" formControlName="districtName"
-            placeholder="Select District"  (selectionChange)="districtSelection($event)">
+            [placeholder]="resourceService?.frmelmnts?.lbl?.dashboarddistrict"  (selectionChange)="districtSelection($event)">
               <mat-option *ngFor="let district of districts" class="mat-dropdown__options" role="option" [value]="district.locationId">
                 {{district.name}}
               </mat-option>
             </mat-select>
             </mat-form-field>
         </div>
-        <div class="sb-prominent-filter-field" style="display: flex;flex-direction: column;">
-          <label>Select Organisation</label>
-       
-            <mat-form-field appearance="fill" class="sb-mat__dropdown">
+        <div class="d-flex flex-dc">
+          <label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrg }}</label>      
+            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
             <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
-            placeholder="Select Organisation"  (selectionChange)="organisationSelection($event)">
+            [placeholder]="resourceService?.frmelmnts?.lbl?.dashboardOrg"  (selectionChange)="organisationSelection($event)">
               <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.organisationId">
                 {{organisation.orgName}}
               </mat-option>
@@ -95,44 +94,46 @@
     
          
         </div>
-        <div class="ml-auto mt-10">
-          <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" style="color: var(--primary);background-color: var(--brand-header-tail-text);" (click)="resetFilter()">Reset Filters</button>
+        <div class="ml-auto mt-12">
+          <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
         </div>
       </div>
     </div>
   </form>
-  <div class="sbt-inside-page-container relative position" style="margin-top: 30px !important;">
+  <div *ngIf="newData" class="newData">*{{resourceService?.frmelmnts?.lbl?.resourceSelect}}</div>
+
+  <div class="sbt-inside-page-container relative position mt-32">
     <div>
       <div>
         <label>{{resourceService?.frmelmnts?.lbl?.detailsReports}}</label>
         <hr>
       </div>
-      <div [formGroup]="reportForm" class="mt-30">
+      <div [formGroup]="reportForm" class="mt-32">
         <label>{{ resourceService?.frmelmnts?.lbl?.reportType }}</label>
-        <div style="display: flex; flex-wrap: wrap;flex-direction: row;">
-          <mat-form-field appearance="fill" class="sb-mat__dropdown" style="width: auto;display: flex;align-items: center;">
+        <div class="d-flex flex-w-wrap flex-dr">
+          <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd d-flex flex-ai-center w-auto" >
           <mat-select role="listbox" formControlName="reportType" class="selection"
-          placeholder="Select Report">
-            <mat-option role="option" *ngFor="let report of reportTypes" class="mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
+          [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport">
+            <mat-option role="option" *ngFor="let report of reportTypes" class="custom_mat_dd mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
               {{report?.name}}
             </mat-option>
           </mat-select>
           </mat-form-field>
           <button [disabled]="(!reportForm.valid)" 
                   [ngClass]="{'sb-btn-disabled': (!reportForm.valid )}"
-                  type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary ml-10" (click)="requestDataset()">
+                  type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary ml-12" (click)="requestDataset()">
                     {{resourceService?.frmelmnts?.btn?.requestReport}}
                   </button>
         </div>
       </div>
       <div *ngIf="isProcessed" class="d-flex">
         <div class="information-icon">
-          <img src="assets/images/error-icon.svg" width="18px"></div>
+          <img src="assets/images/error-icon.svg" class="infoIcon"></div>
         <p class="fsmall note-text my-8 administrator-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
       </div>
      
 
-      <div class="fsmall font-weight-bold download-section-text mt-20">
+      <div class="fsmall font-weight-bold download-section-text mt-24">
         {{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
       <p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenProgramAdminNote | interpolate:'{instance}': instance }}</p>
 
@@ -187,7 +188,7 @@
     <div class="sb-modal">
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible small">
-          <div class="sb-modal-content mt-15">
+          <div class="sb-modal-content mt-16">
 
             {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
           </div>
@@ -233,24 +234,24 @@
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible small">
           <div class="sb-modal-content o-x-hide">
-            <div class="my-8" style="display: flex;flex-direction: row;">
+            <div class="d-flex flex-dir-row my-8">
              <div>
-              <mat-icon style="justify-self: flex-start;margin-right: 10px;cursor: pointer;color: var(--primary) !important;">info</mat-icon> 
+              <mat-icon class="info">info</mat-icon> 
              </div>
-             <div style="margin-top: 5px;color: var(--primary) !important;"> Note: Please select program and resource name. </div>
+             <div class="font-weight-bold sb-color-primary modalNote"> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
              <div>
-              <mat-icon style="justify-self: flex-end;margin-left: 10px;cursor: pointer;color: var(--danger);" (click)="goBack()">highlight_off</mat-icon>
+              <mat-icon class="goback" (click)="goBack()">highlight_off</mat-icon>
              </div>
             </div>
             
             
-            <div class="sb-prominent-filter-field sb-modal-actions mt-40" style="flex-direction: column;" [formGroup]="reportForm">
-              <label  style="color: var(--primary) !important;">{{resourceService?.frmelmnts?.lbl?.program }}</label>
-               <div>
-                <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <div class="mt-48 flex-dc" [formGroup]="reportForm">
+              <label  class="d-flex flex-jc-center sb-color-primary">{{resourceService?.frmelmnts?.lbl?.program }}</label>
+               <div class="d-flex flex-jc-center mt-24">
+                <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
                   <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
                   [(ngModel)]="programSelected"
-                  placeholder="Select Program"  (selectionChange)="programSelection($event)">
+                  [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
                     <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
                       {{program.name}}
                     </mat-option>
@@ -259,22 +260,22 @@
                </div>
               
             </div>
-            <div class="sb-prominent-filter-field sb-modal-actions mt-20" style="flex-direction: column;" [formGroup]="reportForm">
-              <label  style="color: var(--primary) !important;">{{ resourceService?.frmelmnts?.lbl?.solution }}</label>
-              <div>
-                <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <div class="mt-48 flex-dc" [formGroup]="reportForm">
+              <label  class="d-flex flex-jc-center sb-color-primary">{{ resourceService?.frmelmnts?.lbl?.solution }}</label>
+              <div class="d-flex flex-jc-center mt-24">
+                <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
                   <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                  placeholder="Select Resource"  (selectionChange)="selectSolution($event)">
+                  [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
                     <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
-                      {{solution.name}}
+                      {{solution.name}} 
                     </mat-option>
                   </mat-select>
                   </mat-form-field>
               </div>  
               
             </div>
-            <div class="sb-modal-actions">
-              <button [disabled]="reportForm.controls.solution.value == undefined" [ngClass]="{'sb-btn-disabled': (reportForm.controls.solution.value == undefined)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="showPopUpModal = !showPopUpModal">Confirm</button>
+            <div class="mt-32 sb-modal-actions">
+              <button [disabled]="reportForm.controls.solution.value == undefined" [ngClass]="{'sb-btn-disabled': (reportForm.controls.solution.value == undefined)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
             </div>
           </div>
         </div>

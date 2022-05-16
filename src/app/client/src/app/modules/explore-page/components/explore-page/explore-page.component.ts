@@ -457,7 +457,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this._facets$.next(request.facets ?
                                     this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                 this.searchResponse = get(response, 'result.content');
-                                const filteredContents = omit(groupBy(get(response, 'result.content'), content => {
+                                if (_.has(response, 'result.QuestionSet')) {
+                                  this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
+                                }
+                                const filteredContents = omit(groupBy(this.searchResponse, content => {
                                     return content[groupByKey] || content['subject'] || 'Others';
                                 }), ['undefined']);
                                 for (const [key, value] of Object.entries(filteredContents)) {
@@ -1105,8 +1108,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         if(this.isUserLoggedIn()) {
             if(pillData.name === 'observation'){
-                this.router.navigate(['observation']);      
-            } 
+                this.router.navigate(['observation']);
+            }
         }
     }
 

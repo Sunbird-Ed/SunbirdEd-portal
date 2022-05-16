@@ -236,7 +236,7 @@
 
 <app-modal-wrapper [config]="{disableClose: false, size: 'normal'}" (dismiss)="closeModal()" *ngIf="filterModal" #modal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal sb-onboard">
+    <div class="sb-mat__modal sb-onboard modalDimention">
       <div mat-dialog-title class="flex-jc-center">
         <div class="sb-onboard__header">
           <h4>{{segmentValue =='Questions' ? (resourceService?.frmelmnts?.lbl?.selectquestionfilter) :
