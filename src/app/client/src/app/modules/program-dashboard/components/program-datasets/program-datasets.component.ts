@@ -19,12 +19,12 @@ export class DatasetsComponent implements OnInit {
 
   public activatedRoute: ActivatedRoute;
   public showConfirmationModal = false;
-
+  showPopUpModal:boolean;
   config;
   reportTypes = [];
   programs = [];
   solutions = [];
-  public message = 'There is no data available';
+  public message = this.resourceService?.frmelmnts?.msg?.noDataDisplayed;
   instance: string;
 
   @ViewChild('modal', { static: false }) modal;
@@ -56,7 +56,9 @@ export class DatasetsComponent implements OnInit {
   reportForm = new FormGroup({
     programName: new FormControl('', [Validators.required]),
     solution: new FormControl('', [Validators.required]),
-    reportType: new FormControl('', [Validators.required])
+    reportType: new FormControl('', [Validators.required]),
+    districtName:new FormControl(),
+    organisationName:new FormControl()
   });
 
   passwordForm = new FormGroup({
@@ -65,7 +67,11 @@ export class DatasetsComponent implements OnInit {
 
   programSelected: any;
   solutionSelected: any;
-
+  districts:any;
+  organisations:any;
+  filter:any = [];
+  newData:boolean = false;
+  goToPrevLocation:boolean = true;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -130,6 +136,23 @@ export class DatasetsComponent implements OnInit {
 
   }
 
+  getDistritAndOrganisationList() {
+
+    const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.KENDRA.DISTRICTS_AND_ORGANISATIONS+ '/' + this.reportForm.controls.solution.value
+    };
+    this.kendraService.get(paramOptions).subscribe(data => {
+      if (data && data.result) {
+       this.districts = data.result.districts;
+       this.organisations = data.result.organisations;
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
+
+  }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
@@ -140,6 +163,7 @@ export class DatasetsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showPopUpModal = true;
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -157,26 +181,25 @@ export class DatasetsComponent implements OnInit {
 
 
   public programSelection($event) {
-
     this.reportForm.reset();
     const program = this.programs.filter(data => {
-      if (data._id == _.get($event, 'value')) {
+      if (data._id == $event.value) {
         return data;
       }
     });
-
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
     this.getSolutionList(program[0]);
-    this.reportForm.controls.programName.setValue(_.get($event, 'value'));
+    this.reportForm.controls.programName.setValue($event.value);
+    this.newData = true;
   }
 
   public selectSolution($event) {
-
+    this.newData = false;
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
-        if (data._id == _.get($event, 'value')) {
+        if (data._id == $event.value) {
           return data;
         }
       });
@@ -185,7 +208,7 @@ export class DatasetsComponent implements OnInit {
 
       const program = this.programSelected;
       this.reportForm.reset();
-      this.reportForm.controls.solution.setValue(_.get($event, 'value'));
+      this.reportForm.controls.solution.setValue($event.value);
       this.reportForm.controls.programName.setValue(program);
 
       if (solution[0].isRubricDriven == true && solution[0].type == 'observation') {
@@ -194,6 +217,7 @@ export class DatasetsComponent implements OnInit {
       } else {
         this.getReportTypes(this.programSelected,solution[0].type);
       }
+      this.getDistritAndOrganisationList();
 
     }
   }
@@ -235,9 +259,12 @@ export class DatasetsComponent implements OnInit {
     this.showConfirmationModal = false;
   }
   goBack() {
-    this.location.back();
+    this.goToPrevLocation ? this.location.back() : (this.showPopUpModal = false);
   }
 
+  confirm(){
+    this.showPopUpModal = false;
+  }
   public handleConfirmationEvent(event: boolean) {
     this.closeConfirmationModal();
     if (event == true) {
@@ -246,6 +273,18 @@ export class DatasetsComponent implements OnInit {
   }
   public closeConfirmModal() {
     this.awaitPopUp = false;
+  }
+
+  public resetFilter(){
+    this.reportForm.reset();
+    this.filter = [];
+    this.districts = [];
+    this.organisations = [];
+    this.solutions = [];
+    this.reportTypes = [];
+    this.onDemandReportData = [];
+    this.goToPrevLocation = false;
+    this.showPopUpModal = true;
   }
 
   loadReports() {
@@ -259,11 +298,38 @@ export class DatasetsComponent implements OnInit {
     });
   }
 
-  reportChanged(selectedReportData) {
-    this.selectedReport = _.get(selectedReportData, 'value');
+  districtSelection($event){
+    this.reportForm.controls.districtName.setValue($event.value);
   }
 
+  organisationSelection($event){
+    this.reportForm.controls.organisationName.setValue($event.value);
+  }
+
+  reportChanged(selectedReportData) {
+    this.selectedReport = selectedReportData;
+  }
+ addFilters(){ 
+    let filterKeysObj = {
+    program_id:_.get(this.reportForm,'controls.programName.value'),
+    solution_id:_.get(this.reportForm,'controls.solution.value'),
+    programId:_.get(this.reportForm,'controls.programName.value'),
+    solutionId:_.get(this.reportForm,'controls.solution.value'),
+    district_externalId:_.get(this.reportForm,'controls.districtName.value')|| undefined,
+    organisation_id:_.get(this.reportForm,'controls.organisationName.value')|| undefined
+    }
+    let keys = Object.keys(filterKeysObj);
+    this.selectedReport['filters'].map(data=> {
+     keys.filter(key => {
+        return data.dimension == key && (data.value = filterKeysObj[key]);
+      })
+      if(data.value !== undefined){
+        this.filter.push(data);
+      }
+    });
+  }
   submitRequest() {
+    this.addFilters();
     this.selectedSolution = this.reportForm.controls.solution.value;
     const isRequestAllowed = this.checkStatus();
     if (isRequestAllowed) {
@@ -271,8 +337,7 @@ export class DatasetsComponent implements OnInit {
       const config = {
         type: this.selectedReport['datasetId'],
         params: {
-          programId: this.programSelected,
-          solutionId: this.reportForm.controls.solution.value,
+          filters: this.filter
         },
         title: this.selectedReport.name
       };
@@ -331,10 +396,12 @@ export class DatasetsComponent implements OnInit {
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
-
+      this.filter= [];
+      
     } else {
       this.popup = false;
       this.isProcessed = true;
+      this.filter = [];
       setTimeout(() => {
         this.isProcessed = false;
       }, 5000);

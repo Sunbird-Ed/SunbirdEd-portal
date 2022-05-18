@@ -164,7 +164,29 @@ describe('DatasetsComponent', () => {
     component.selectedReport =  {
       'name': 'Status Report',
       'encrypt': false,
-      'datasetId': 'ml-observation-status-report'
+      'datasetId': 'ml-observation-status-report',
+      filters:[
+        {
+            "type": "equals",
+            "dimension": "program_id",
+            "value": "$programId"
+        },
+        {
+            "type": "equals",
+            "dimension": "solution_id",
+            "value": "$solutionId"
+        },
+        {
+            "type": "equals",
+            "dimension": "district_externalId",
+            "value": "$district_externalId"
+        },
+        {
+            "type": "equals",
+            "dimension": "organisation_id",
+            "value": "$organisation_id"
+        }
+      ]
     };
     component.onDemandReportData = [{1: 'a' , requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }];
     component.reportTypes = mockData.FormData['observation'];
@@ -338,5 +360,117 @@ describe('DatasetsComponent', () => {
 
   }));
 
+  it('should call resetFilter', fakeAsync(() => {
 
+    const spy = spyOn(component, 'resetFilter').and.callThrough();
+    component.reportForm.get('reportType').setValue(['Status Report']);
+    component.reportForm.get('solution').setValue(['01285019302823526477']);
+    component.resetFilter();
+    tick(1000);
+    expect(spy).toHaveBeenCalled();
+    expect(component.filter).toEqual([]);
+    expect(component.goToPrevLocation).toEqual(false);
+
+  }));
+
+  it('should call getDistritAndOrganisationList', fakeAsync(() => {
+
+    const kendraService = TestBed.inject(KendraService);
+    component.programSelected = '5f34ec17585244939f89f90c';
+    component.reportForm.get('solution').setValue(['01285019302823526477']);
+    const spy = spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.districtAndOrganisations));
+    component.getDistritAndOrganisationList();
+    expect(spy).toHaveBeenCalled();
+    expect(component.districts).toEqual(mockData.districtAndOrganisations.result.districts);
+    expect(component.organisations).toEqual(mockData.districtAndOrganisations.result.organisations);
+
+
+  }));
+
+  it('should call districtSelection', fakeAsync(() => {
+
+    const spy = spyOn(component, 'districtSelection').and.callThrough();
+    component.districtSelection({ value: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03" });
+    tick(1000);
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should call organisationSelection', fakeAsync(() => {
+
+    const spy = spyOn(component, 'organisationSelection').and.callThrough();
+    component.organisationSelection({ value: "01269878797503692810" });
+    tick(1000);
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should call addFilters', fakeAsync(() => {
+
+    const spy = spyOn(component, 'addFilters').and.callThrough();
+    component.reportForm.get('programName').setValue('5f34ec17585244939f89f90c');
+    component.reportForm.get('solution').setValue('01285019302823526477');
+    component.reportForm.get('districtName').setValue('2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03');
+    component.reportForm.get('organisationName').setValue('01269878797503692810');
+    component.selectedReport = {
+      filters:[
+      {
+          "type": "equals",
+          "dimension": "program_id",
+          "value": "$programId"
+      },
+      {
+          "type": "equals",
+          "dimension": "solution_id",
+          "value": "$solutionId"
+      },
+      {
+          "type": "equals",
+          "dimension": "district_externalId",
+          "value": "$district_externalId"
+      },
+      {
+          "type": "equals",
+          "dimension": "organisation_id",
+          "value": "$organisation_id"
+      }
+    ]}
+    component.addFilters();
+    tick(1000);
+    expect(spy).toHaveBeenCalled();
+    expect(component.filter).toEqual([
+      {
+          "type": "equals",
+          "dimension": "program_id",
+          "value": "5f34ec17585244939f89f90c"
+      },
+      {
+          "type": "equals",
+          "dimension": "solution_id",
+          "value": "01285019302823526477"
+      },
+      {
+          "type": "equals",
+          "dimension": "district_externalId", 
+          "value": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03"
+      },
+      {
+          "type": "equals",
+          "dimension": "organisation_id",
+          "value": "01269878797503692810"
+      }
+    ]);
+
+  }));
+
+  it('should call goBack', ()=> {
+    spyOn(component, 'goBack').and.callThrough();
+    component.goToPrevLocation = false;
+    component.goBack();
+    expect(component.showPopUpModal).toEqual(false);
+  });
+
+  it('should call confirm', () => {
+    spyOn(component, 'confirm').and.callThrough();
+    component.confirm();
+    expect(component.showPopUpModal).toEqual(false);
+  });
 });
