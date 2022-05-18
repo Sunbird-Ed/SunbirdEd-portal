@@ -172,7 +172,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }];
   }
 
-  printPdf(pdfUrl: string) { 
+  printPdf(pdfUrl: string) {
     window.open(pdfUrl, '_blank');
   }
 
