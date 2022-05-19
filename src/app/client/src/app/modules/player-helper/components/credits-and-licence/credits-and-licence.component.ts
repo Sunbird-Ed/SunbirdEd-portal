@@ -12,11 +12,41 @@ export class CreditsAndLicenceComponent implements OnInit {
   @Input() contentData;
   instance: string;
   isCollapsed = false;
-
+  showDownloadPopup = false;
+  options = [];
+  transcriptLanguage = '';
   constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
+    this.createOptionOrDownload();
   }
-
+  showDownloadTranscript() {
+    this.showDownloadPopup = true
+  }
+  changeTranscriptlanguage(event) {
+    this.transcriptLanguage = event.value
+  }
+  createOptionOrDownload(download?: boolean) {
+    const transcriptsObj = this.contentData?.transcripts
+    if (transcriptsObj) {
+      const transcripts = JSON.parse(transcriptsObj);
+      if (transcripts && transcripts.length > 0) {
+        transcripts.forEach(item => {
+          if (download) {
+            if (item.language === this.transcriptLanguage) {
+              const url = (_.get(item, 'artifactUrl'));
+              if (url) { window.open(url, '_blank'); }
+            }
+          } else {
+            this.options.push(item.language);
+          }
+        });
+      }
+    }
+  }
+  dowloadTranscript() {
+    this.showDownloadPopup = false;
+    this.createOptionOrDownload(true);
+  }
 }
