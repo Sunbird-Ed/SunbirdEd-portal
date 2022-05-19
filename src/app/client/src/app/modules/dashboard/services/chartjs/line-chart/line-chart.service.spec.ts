@@ -1,6 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { LineChartService } from './line-chart.service';
-import * as _ from 'lodash-es';
 import { configureTestSuite } from '@sunbird/test-util';
 // Test data
 import * as mockData from './line-chart.service.spec.data';

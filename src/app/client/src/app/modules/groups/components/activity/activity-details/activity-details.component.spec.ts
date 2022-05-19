@@ -5,12 +5,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, UserService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { courseHierarchy, nestedCourse, activityData, groupData, content, updatedGroupData } from './activity-details.component.spec.data';
-import * as _ from 'lodash-es';
 import { ActivityDetailsComponent } from './activity-details.component';
 
 describe('ActivityDetailsComponent', () => {

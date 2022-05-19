@@ -1,5 +1,5 @@
 import { CoreModule, SearchService, PlayerService, UserService, PublicDataService } from '@sunbird/core';
-import { SharedModule, ConfigService } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DialCodeService } from './dial-code.service';

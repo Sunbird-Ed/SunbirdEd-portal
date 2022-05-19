@@ -12,9 +12,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
-import { of, throwError, observable } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { MockData } from './create-template.component.spec.data';
-import dayjs from 'dayjs';
 
 describe('CreateTemplateComponent', () => {
   let component: CreateTemplateComponent;

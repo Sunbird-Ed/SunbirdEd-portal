@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui-v9';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {of as observableOf} from 'rxjs';
 import {ResourceService, SharedModule} from '@sunbird/shared';
 import {TenantService} from '@sunbird/core';

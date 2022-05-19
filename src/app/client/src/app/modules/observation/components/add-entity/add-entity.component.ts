@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { ObservationService, KendraService, ObservationUtilService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
-import { debounceTime, map } from 'rxjs/operators';
-import { fromEvent } from 'rxjs';
 import { LocationStrategy } from '@angular/common';
 
 @Component({

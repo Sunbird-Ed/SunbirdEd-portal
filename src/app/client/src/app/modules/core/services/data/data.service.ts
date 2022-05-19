@@ -5,7 +5,6 @@ import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 
 /**

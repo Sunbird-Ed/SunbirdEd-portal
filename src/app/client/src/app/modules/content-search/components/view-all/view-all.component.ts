@@ -9,8 +9,8 @@ import {
 import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil, map, tap, filter } from 'rxjs/operators';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 
 @Component({

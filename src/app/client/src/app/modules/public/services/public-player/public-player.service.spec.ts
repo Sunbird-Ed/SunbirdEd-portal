@@ -1,6 +1,6 @@
 
-import {of as observableOf,  Observable, of } from 'rxjs';
-import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import {of as observableOf, of } from 'rxjs';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CoreModule, ContentService, UserService, PublicDataService } from '@sunbird/core';
 import { PublicPlayerService } from './public-player.service';
 import { SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';

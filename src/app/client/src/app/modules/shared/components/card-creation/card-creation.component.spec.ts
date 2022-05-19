@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService } from '../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { Response } from './card-creation.component.spec.data';
 import { CardCreationComponent } from './card-creation.component';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';

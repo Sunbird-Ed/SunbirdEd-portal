@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import {
   ConfigService,
@@ -14,9 +14,6 @@ import { MlGuard } from './ml.guard';
 import {
   of as observableOf,
   throwError as observableThrowError,
-  Observable,
-  of,
-  throwError,
 } from 'rxjs';
 
 // Old One

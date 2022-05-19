@@ -1,5 +1,5 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ToasterService, ConfigService, UtilService, IUserProfile } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import {
   CoreModule, UserService, SearchService, PlayerService, LearnerService,
   CoursesService, CertRegService, OrgDetailsService, FormService
@@ -13,7 +13,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
 import { locationConfig, personaFormConfig, Response } from './profile-page.spec.data';
-import { of as observableOf, throwError as observableThrowError, of, throwError, Observable } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError, of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import * as _ from 'lodash-es';
 

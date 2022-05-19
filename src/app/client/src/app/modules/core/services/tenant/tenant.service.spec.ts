@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { response } from './tenant.service.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LearnerService } from '../learner/learner.service';

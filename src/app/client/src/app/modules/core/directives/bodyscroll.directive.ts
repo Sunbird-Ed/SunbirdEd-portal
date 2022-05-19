@@ -1,4 +1,4 @@
-import {Directive, AfterViewInit, OnDestroy, Input} from '@angular/core';
+import {Directive, AfterViewInit, OnDestroy} from '@angular/core';
 
 @Directive({
   selector: '[appBodyScroll]'

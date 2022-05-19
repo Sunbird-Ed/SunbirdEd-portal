@@ -1,9 +1,8 @@
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AuthGuard } from './auth-gard.service';
-import { RouterModule, Router, Routes, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
 import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';

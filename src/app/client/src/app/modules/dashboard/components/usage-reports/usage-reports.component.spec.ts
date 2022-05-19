@@ -1,10 +1,10 @@
 import { mockChartData } from './usage-reports.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of as observableOf, of } from 'rxjs';
+import { of as observableOf, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UsageService, CourseProgressService } from './../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { ToasterService } from '@sunbird/shared';
 import { UserService, TncService } from '@sunbird/core';
 import {SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';

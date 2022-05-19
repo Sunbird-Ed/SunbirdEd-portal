@@ -1,11 +1,11 @@
 
-import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks } from '@angular/core/testing';
+import { of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { ReviewsubmissionsContentplayerComponent } from './reviewsubmissions-contentplayer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
+import { PlayerService, UserService, CoreModule } from '@sunbird/core';
 import * as mockData from './reviewsubmissions-contentplayer.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';

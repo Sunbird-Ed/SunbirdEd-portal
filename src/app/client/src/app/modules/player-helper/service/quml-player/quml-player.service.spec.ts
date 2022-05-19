@@ -1,9 +1,8 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
-import { of as observableOf, of, throwError as observableThrowError } from 'rxjs';
-import { CoreModule, LearnerService, PublicDataService, UserService } from '@sunbird/core';
+import { CoreModule } from '@sunbird/core';
 import { RouterModule } from '@angular/router';
 import { ConfigService, SharedModule } from '@sunbird/shared';
 import { QumlPlayerService } from './quml-player.service';

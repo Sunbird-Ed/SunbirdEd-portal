@@ -4,11 +4,9 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {SbDatatableComponent} from './sb-datatable.component';
 import {TableData} from './sb-datatable.component.spec.data';
 import {ExportToCsv} from 'export-to-csv';
-import * as _ from 'lodash-es';
 import {FilterPipe} from '../../pipes/filter/filter.pipe';
 import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
 import {ResourceService} from '../../services/resource/resource.service';
-import {of as observableOf} from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 
 // Old One

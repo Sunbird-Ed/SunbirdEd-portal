@@ -1,7 +1,7 @@
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ElectronService } from '../../../core/services/electron/electron.service';
-import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { ResourceService, ConnectionService, ConfigService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';

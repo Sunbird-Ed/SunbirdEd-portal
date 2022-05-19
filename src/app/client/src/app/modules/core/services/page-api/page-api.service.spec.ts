@@ -1,6 +1,6 @@
 
-import { of as observableOf, Observable } from 'rxjs';
-import { LearnerService, IPageSection, CoreModule, PublicDataService } from '@sunbird/core';
+import { of as observableOf } from 'rxjs';
+import { LearnerService, CoreModule, PublicDataService } from '@sunbird/core';
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PageApiService } from './page-api.service';

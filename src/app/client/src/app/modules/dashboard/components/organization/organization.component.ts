@@ -1,13 +1,13 @@
 
 import {takeUntil, first} from 'rxjs/operators';
 import { Component, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription ,  Subject } from 'rxjs';
 import { RendererService, OrganisationService, DownloadService } from './../../services';
 import { UserService, SearchService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { DashboardData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 
 /**

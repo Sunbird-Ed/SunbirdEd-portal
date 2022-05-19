@@ -1,5 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule} from '@angular/core';
 import { UciComponent } from './components/uci/uci.component';
 import { UciAdminRoutingModule } from './uci-admin-routing.module';
 import {UciModule} from '@samagra-x/uci-console';

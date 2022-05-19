@@ -6,7 +6,6 @@ import { SearchService, OrgDetailsService, CoreModule, UserService, FormService,
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RESPONSE, categoryData, EventPillData } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +17,6 @@ import { ContentManagerService } from '../../../public/module/offline/services';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
-import { find } from 'lodash-es';
-import { result } from 'lodash';
 import {ObservationModule} from '../../../observation/observation.module';
 
 // Old One

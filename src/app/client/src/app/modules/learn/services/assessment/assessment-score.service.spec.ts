@@ -5,7 +5,6 @@ import { SharedModule } from '@sunbird/shared';
 import { AssessmentScoreService } from './assessment-score.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
-import { of } from 'rxjs';
 
 // NEW xdescribe
 xdescribe('AssessmentScoreService', () => {

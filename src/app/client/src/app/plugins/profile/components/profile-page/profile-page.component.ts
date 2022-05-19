@@ -21,7 +21,7 @@ import {
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
-import {IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService} from '@sunbird/telemetry';
+import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';

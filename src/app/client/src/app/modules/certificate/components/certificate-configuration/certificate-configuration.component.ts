@@ -4,9 +4,9 @@ import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/
 import { CertificateService, UserService, PlayerService, CertRegService, FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE, ServerResponse } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { combineLatest, of, Subject, Observable } from 'rxjs';
+import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { DomSanitizer } from '@angular/platform-browser';

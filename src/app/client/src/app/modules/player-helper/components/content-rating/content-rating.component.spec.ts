@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed , async} from '@angular/core/testing';
+import { ComponentFixture, TestBed} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { ToasterService } from '@sunbird/shared';
@@ -8,7 +8,7 @@ import { ContentRatingComponent } from './content-rating.component';
 import { FormService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { mockData } from './content-rating.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 // Old One

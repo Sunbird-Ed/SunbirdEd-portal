@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
 import { ToasterService, ResourceService, ServerResponse } from '@sunbird/shared';

@@ -1,7 +1,6 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { mockPermissionRes } from './permission.mock.spec.data';
-import { mockUserData } from './../user/user.mock.spec.data';
 import { TestBed } from '@angular/core/testing';
 import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService, IUserProfile } from '@sunbird/shared';
 import { PermissionService } from './permission.service';

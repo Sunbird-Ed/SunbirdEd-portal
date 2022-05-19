@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { ReviewCommentsComponent } from './review-comments.component';
-import { CoreModule, UserService, PermissionService } from '@sunbird/core';
+import { CoreModule, UserService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

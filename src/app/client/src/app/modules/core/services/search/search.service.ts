@@ -1,6 +1,6 @@
 
 import { map } from 'rxjs/operators';
-import { Injectable, Input } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse, ResourceService } from '@sunbird/shared';

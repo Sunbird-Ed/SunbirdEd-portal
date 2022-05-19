@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { AuthGuard } from '../core/guard/auth-gard.service';
 import { ObservationDetailsComponent, ObservationListingComponent } from './components';
 const telemetryEnv = 'observation';
 

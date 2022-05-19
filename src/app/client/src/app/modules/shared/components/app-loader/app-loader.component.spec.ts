@@ -2,9 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CacheService } from 'ng2-cache-service';
 import { AppLoaderComponent } from './app-loader.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
-import {of} from 'rxjs';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 

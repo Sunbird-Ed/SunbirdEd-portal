@@ -1,6 +1,5 @@
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
 export interface Editdata {
     title?: string;
     subTitle?: string;

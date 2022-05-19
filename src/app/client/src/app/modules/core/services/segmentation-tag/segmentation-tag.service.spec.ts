@@ -4,7 +4,6 @@ import { CacheService } from 'ng2-cache-service';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '../../core.module';
 import { FrameworkService } from '../framework/framework.service';
-import { cmdList, validCmdList } from './segmentation-tag.service.spec.data';
 
 import { SegmentationTagService } from './segmentation-tag.service';
 

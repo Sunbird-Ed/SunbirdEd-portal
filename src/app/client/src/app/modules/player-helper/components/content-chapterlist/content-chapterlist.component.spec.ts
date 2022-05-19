@@ -4,7 +4,6 @@ import { ContentChapterlistComponent } from './content-chapterlist.component';
 import {
    ToasterService, SharedModule
 } from '@sunbird/shared';
-import * as _ from 'lodash-es';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';

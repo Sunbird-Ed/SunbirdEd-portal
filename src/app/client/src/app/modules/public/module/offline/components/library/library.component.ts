@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
-import { combineLatest, Subject, of } from 'rxjs';
-import { tap, catchError, filter, takeUntil, first, debounceTime, delay } from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { tap, filter, takeUntil, first, debounceTime, delay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import {
     OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData,

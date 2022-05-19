@@ -1,4 +1,4 @@
-import {TestBed, inject} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {ConfigService} from '@sunbird/shared';
 import {DeviceService} from './device.service';

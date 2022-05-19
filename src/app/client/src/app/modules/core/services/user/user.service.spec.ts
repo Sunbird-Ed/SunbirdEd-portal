@@ -1,6 +1,6 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { CoreModule, LearnerService, PublicDataService, UserService } from '@sunbird/core';
 import { ConfigService, SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';

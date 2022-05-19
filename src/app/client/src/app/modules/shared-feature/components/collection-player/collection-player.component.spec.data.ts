@@ -1,4 +1,4 @@
-import { CollectionHierarchyAPI } from '@sunbird/core';
+
 
 export const CollectionHierarchyGetMockResponse = {
     'id': 'ekstep.learning.content.hierarchy',

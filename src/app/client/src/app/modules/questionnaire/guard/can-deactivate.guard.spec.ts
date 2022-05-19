@@ -1,12 +1,10 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import {
   CanDeactivateGuard,
   ComponentDeactivate,
 } from './can-deactivate.guard';
 import { ResourceService } from '@sunbird/shared';
-import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/internal/observable/of';
 
 class MockComponent implements ComponentDeactivate {
   // Set this to the value you want to mock being returned from GuardedComponent

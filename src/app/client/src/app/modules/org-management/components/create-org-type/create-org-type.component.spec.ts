@@ -1,20 +1,18 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { mockRes } from './create-org-type.component.spec.data';
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash-es';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CreateOrgTypeComponent, OrgTypeService, IorgTypeData } from '@sunbird/org-management';
+import { CreateOrgTypeComponent, OrgTypeService } from '@sunbird/org-management';
 import { LearnerService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
-  SharedModule, ResourceService, PaginationService, ToasterService, ServerResponse, RouterNavigationService
+  SharedModule, ResourceService, PaginationService, ToasterService, RouterNavigationService
 } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

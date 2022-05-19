@@ -1,9 +1,9 @@
 
-import { takeUntil, first, share } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { CourseBatchService, CourseProgressService, CourseConsumptionService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, ConnectionService } from '@sunbird/shared';
 import { PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';

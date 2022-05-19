@@ -1,17 +1,15 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { UserFilterComponent } from './../user-filter/user-filter.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  SharedModule, ServerResponse, PaginationService, ResourceService,
-  ConfigService, ToasterService, INoResultMessage, IUserProfile
+  SharedModule, PaginationService, ResourceService,
+  ConfigService, ToasterService
 } from '@sunbird/shared';
 import { SearchService, UserService, LearnerService, ContentService, CoreModule, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { UserSearchService } from './../../services';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import * as _ from 'lodash-es';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';

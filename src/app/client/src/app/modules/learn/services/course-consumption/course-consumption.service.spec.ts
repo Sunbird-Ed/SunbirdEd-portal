@@ -1,4 +1,4 @@
-import { Observable, of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';

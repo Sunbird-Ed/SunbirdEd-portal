@@ -3,9 +3,6 @@ import {
   ResourceService,
   ConfigService,
   ToasterService,
-  INoResultMessage,
-  ICard,
-  ILoaderMessage,
   UtilService,
   BrowserCacheTtlService,
   NavigationHelperService,
@@ -19,18 +16,16 @@ import {
   PlayerService,
   CoursesService,
   UserService,
-  ISort,
   OrgDetailsService,
   SchemaService,
   KendraService,
   ObservationUtilService
 } from '@sunbird/core';
-import { combineLatest, Subject, of } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
   Component,
   OnInit,
   OnDestroy,
-  EventEmitter,
   ChangeDetectorRef,
   AfterViewInit,
 } from '@angular/core';
@@ -43,12 +38,6 @@ import {
 } from '@sunbird/telemetry';
 import {
   takeUntil,
-  map,
-  delay,
-  first,
-  debounceTime,
-  tap,
-  mergeMap,
 } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';

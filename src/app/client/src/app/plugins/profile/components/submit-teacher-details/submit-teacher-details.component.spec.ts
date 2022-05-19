@@ -9,7 +9,7 @@ import { ProfileService } from '@sunbird/profile';
 import {
   BrowserCacheTtlService, ConfigService,
   NavigationHelperService, ResourceService,
-  SharedModule, ToasterService, IUserProfile
+  SharedModule, ToasterService
 } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';

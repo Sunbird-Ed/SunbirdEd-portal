@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignBadgesContentComponent } from './assign-badges-content.component';
@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService, IUserProfile } from '@sunbird/shared';
 import { mockResponse } from './assign-badges-content.component.spec.data';
 import { ContentBadgeService } from './../../services';
-import { TelemetryModule, TelemetryInteractDirective } from '@sunbird/telemetry';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('AssignBadgesContentComponent', () => {
   let component: AssignBadgesContentComponent;

@@ -1,9 +1,7 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import {
-  ConfigService, ToasterService, ResourceService, ServerResponse,
-  CourseStates, CourseProgressData, CourseProgress, ContentList, IUserData, IUserProfile,
   SharedModule
 } from '@sunbird/shared';
 import { ContentService, CoreModule } from '@sunbird/core';

@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FaqService } from './faq.service';
 import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';

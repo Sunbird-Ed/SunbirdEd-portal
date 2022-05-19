@@ -2,7 +2,7 @@ import { ContentService, PublicDataService, UserService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { WorkSpaceService } from './../work-space/workspace.service';
 

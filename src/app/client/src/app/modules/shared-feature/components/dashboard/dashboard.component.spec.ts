@@ -5,7 +5,7 @@ import { ToasterService, SharedModule, ConfigService, ResourceService } from '@s
 import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { RouterTestingModule } from '@angular/router/testing';

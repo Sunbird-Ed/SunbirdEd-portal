@@ -1,20 +1,16 @@
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import {ContentService, UserService, LearnerService, CoreModule, FormService} from '@sunbird/core';
-import { By } from '@angular/platform-browser';
+import { UserService, CoreModule, FormService} from '@sunbird/core';
 import {
-  SharedModule, ResourceService, ConfigService, PaginationService,
-  ToasterService, ServerResponse, IUserProfile
+  SharedModule, ResourceService,
+  ToasterService, IUserProfile
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { FormsModule } from '@angular/forms';

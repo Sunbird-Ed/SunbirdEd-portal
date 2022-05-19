@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { fakeActivatedRoute, groupData } from './../../services/groups/groups.service.spec.data';
+import { fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';

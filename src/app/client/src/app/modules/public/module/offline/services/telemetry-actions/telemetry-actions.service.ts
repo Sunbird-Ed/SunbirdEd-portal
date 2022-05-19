@@ -1,10 +1,10 @@
 import { mergeMap } from 'rxjs/operators';
-import { Observable, throwError as observableThrowError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PublicDataService } from '@sunbird/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import { ElectronDialogService } from '../electron-dialog/electron-dialog.service';
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import {EventEmitter} from '@angular/core';
 @Injectable({

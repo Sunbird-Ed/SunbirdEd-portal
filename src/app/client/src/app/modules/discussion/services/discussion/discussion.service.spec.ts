@@ -6,7 +6,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CsModule } from '@project-sunbird/client-services';
 import { FormService } from '@sunbird/core';
 import { BrowserCacheTtlService } from '@sunbird/shared';
 

@@ -8,7 +8,7 @@ import {
   ModalEventData,
   ObservationDataFail
 } from './solution-listing.component.spec.data';
-import { of as observableOf, throwError as observableThrowError, of, Observable, throwError } from 'rxjs';
+import { throwError as observableThrowError, of, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 describe('SolutionListingComponent', () => {

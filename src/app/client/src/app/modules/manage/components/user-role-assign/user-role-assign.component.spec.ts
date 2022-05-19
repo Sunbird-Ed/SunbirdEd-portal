@@ -3,15 +3,15 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UserRoleAssignComponent } from './user-role-assign.component';
 import { configureTestSuite } from '@sunbird/test-util';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule, UserService,  PermissionService, SearchService, ObservationUtilService} from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TranslateModule } from '@ngx-translate/core';
-import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule, IUserProfile } from '@sunbird/shared';
+import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule } from '@sunbird/shared';
 import { mockObject } from './user-role-assign.spec.data';
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 
 
 describe('UserRoleAssignComponent', () => {

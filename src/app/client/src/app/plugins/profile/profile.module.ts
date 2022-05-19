@@ -1,5 +1,4 @@
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { ProfileService } from './services';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';

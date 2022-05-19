@@ -1,10 +1,7 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { CoreModule, DeviceRegisterService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
-import {of as observableOf, of} from 'rxjs';
-import {DeviceService} from '../device/device.service';
 import { configureTestSuite } from '@sunbird/test-util';
 
 // NEW xdescribe

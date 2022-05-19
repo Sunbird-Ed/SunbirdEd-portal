@@ -4,7 +4,7 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecoverAccountService } from './recover-account.service';
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
 // NEW xdescribe
