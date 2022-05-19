@@ -213,7 +213,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).pipe(map((content) => {
+    this.playerConfig = this.getPlayerConfig(id).pipe(map((content:any) => {
+
+      if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        const contentDetails = {contentId: id, contentData: content.questionSet };
+        content = this.playerServiceReference.getConfig(contentDetails);
+        this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
+          content['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
+        });
+      }
 
       const CData: Array<{}> = this.dialCode ? [{ id: this.dialCode, type: 'dialCode' }] : [];
       if (this.groupId) {
@@ -295,10 +303,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
-    if (this.dialCode) {
-      return this.playerServiceReference.getConfigByContent(contentId, { dialCode: this.dialCode });
+
+    if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      return this.publicPlayerService.getQuestionSetHierarchy(contentId);
     } else {
-      return this.playerServiceReference.getConfigByContent(contentId);
+      if (this.dialCode) {
+        return this.playerServiceReference.getConfigByContent(contentId, { dialCode: this.dialCode });
+      } else {
+        return this.playerServiceReference.getConfigByContent(contentId);
+      }
     }
   }
 

@@ -100,20 +100,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
-      this.playerConfig.config.sideMenu.showDownload = false;
-      if (!_.get(this.playerConfig, 'metadata.instructions')) {
-        this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
-          this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
-          this.showQumlPlayer = true;
-        }, (error) => {
-          this.showQumlPlayer = true;
-        });
-      } else {
-        this.showQumlPlayer = true;
-      }
-    }
-
+    this.checkForQumlPlayer()
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -233,6 +220,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadPlayer() {
+    this.checkForQumlPlayer();
     this.playerType = null;
     const formReadInputParams = {
       formType: 'content',
@@ -260,6 +248,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.loadOldPlayer();
       }
     );
+  }
+
+  checkForQumlPlayer() {
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      this.playerConfig.config.sideMenu.showDownload = false;
+      if (!_.get(this.playerConfig, 'metadata.instructions')) {
+        this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
+          this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+          this.showQumlPlayer = true;
+        }, (error) => {
+          this.showQumlPlayer = true;
+        });
+      } else {
+        this.showQumlPlayer = true;
+      }
+    }
   }
 
   loadOldPlayer() {
