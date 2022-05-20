@@ -76,13 +76,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       placeholderText: 'Select Subject',
       multiple: true
     },
-    {
-      category: 'publisher',
-      type: 'dropdown',
-      labelText: _.get(this.resourceService, 'frmelmnts.lbl.publishedBy'),
-      placeholderText: 'Select Published by',
-      multiple: true
-    },
+    // {
+    //   category: 'publisher',
+    //   type: 'dropdown',
+    //   labelText: _.get(this.resourceService, 'frmelmnts.lbl.publishedBy'),
+    //   placeholderText: 'Select Published by',
+    //   multiple: true
+    // },
     {
       category: 'audience',
       type: 'dropdown',
@@ -297,6 +297,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.selectedFilters['subject'] = [];
       this.selectedFilters['publisher'] = [];
       this.selectedFilters['audience'] = [];
+      this.selectedFilters['channel'] = [];
       return this.updateRouteForBoardChange();
     }
   }
@@ -309,6 +310,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     _selectedFilters['subject'] = [];
     _selectedFilters['publisher'] = [];
     _selectedFilters['audience'] = [];
+    _selectedFilters['channel'] = [];
     this.router.navigate([], {
       queryParams: resetFilters ? { ...this.defaultFilters, selectedTab } : _.omit(_selectedFilters || {}, ['audienceSearchFilterValue']),
       relativeTo: this.activatedRoute.parent
