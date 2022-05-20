@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ConnectionService } from './connection.service';
 import { of as observableOf, of } from 'rxjs';
-import { ToasterService, ResourceService, UtilService } from '@sunbird/shared';
+import { ResourceService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
 // NEW xdescribe

@@ -1,4 +1,4 @@
-import { filter, first, takeUntil, tap } from 'rxjs/operators';
+import { filter, first, takeUntil } from 'rxjs/operators';
 import {
   UserService,
   PermissionService,
@@ -19,7 +19,7 @@ import {
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
+import { IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';

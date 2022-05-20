@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IAppIdEnv } from '@sunbird/shared';
-import { HttpClient } from '@angular/common/http';
 /**
  * Service to fetch user details from server
  *

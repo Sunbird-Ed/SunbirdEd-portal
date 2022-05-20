@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router, Routes, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';

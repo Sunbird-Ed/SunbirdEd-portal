@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { FrameworkService, UserService, CoreModule, PublicDataService } from '@sunbird/core';
+import { CoreModule } from '@sunbird/core';
 import { ContentSearchService } from './content-search.service';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 
 // NEW xdescribe

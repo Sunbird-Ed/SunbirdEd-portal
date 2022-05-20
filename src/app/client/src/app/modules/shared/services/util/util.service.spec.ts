@@ -9,7 +9,6 @@ import {
   nonDuplicateData,
   courseSectionFacetData,
   parsedCourseFacetData,
-  courseFilters,
   requiredProperties,
   colorSet,
   iconObj
@@ -19,7 +18,6 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { UtilService } from './util.service';
 import { ResourceService } from '../resource/resource.service';
 import { ExportToCsv } from 'export-to-csv';
-import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
 
 const resourceBundle = {

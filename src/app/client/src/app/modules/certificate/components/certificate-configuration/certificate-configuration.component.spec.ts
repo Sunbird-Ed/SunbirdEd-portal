@@ -6,8 +6,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { CoreModule } from '@sunbird/core';
-import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService,
-  InterpolatePipe, SharedModule, IUserProfile } from '@sunbird/shared';
+import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService, SharedModule } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';

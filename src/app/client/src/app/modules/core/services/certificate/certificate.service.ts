@@ -2,8 +2,6 @@ import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs';
-import { SearchParam } from './../../interfaces/search';
-import * as _ from 'lodash-es';
 
 
 @Injectable({

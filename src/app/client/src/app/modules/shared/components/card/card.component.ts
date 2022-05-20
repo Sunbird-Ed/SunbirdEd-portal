@@ -1,9 +1,7 @@
 import { ResourceService } from '../../services/index';
-import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { ICard } from '../../interfaces';
-import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
-import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-card',

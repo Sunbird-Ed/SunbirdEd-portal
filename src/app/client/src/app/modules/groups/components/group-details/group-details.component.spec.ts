@@ -2,7 +2,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupDetailsComponent } from './group-details.component';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
-import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import { ResourceService, SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GroupsService } from '../../services';

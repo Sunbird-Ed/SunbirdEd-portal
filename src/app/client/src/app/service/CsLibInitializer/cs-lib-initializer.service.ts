@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsClientStorage } from '@project-sunbird/client-services/core/cs-client-storage';
 import { UserService } from '@sunbird/core';
-import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

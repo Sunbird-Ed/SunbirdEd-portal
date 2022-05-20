@@ -1,19 +1,17 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { mockRes } from './view-org-type.component.spec.data';
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { ViewOrgTypeComponent, OrgTypeService, IorgTypeData } from '@sunbird/org-management';
+import { ViewOrgTypeComponent, OrgTypeService } from '@sunbird/org-management';
 import { LearnerService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
-    SharedModule, ResourceService, PaginationService, ToasterService, ServerResponse
+    SharedModule, ResourceService, PaginationService, ToasterService
 } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 

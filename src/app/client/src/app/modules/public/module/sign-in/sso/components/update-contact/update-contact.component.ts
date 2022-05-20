@@ -9,7 +9,7 @@ import {
 import * as _ from 'lodash-es';
 import {SignupService} from '../../../../signup/services';
 import { map } from 'rxjs/operators';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 

@@ -9,7 +9,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { mockData } from './onboarding-user-selection.component.spec.data';
 import { ProfileService } from '@sunbird/profile';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
 import { UserService } from '@sunbird/core';
 
 // Old One

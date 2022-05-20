@@ -11,7 +11,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE, NavigationHelperService, UtilService } from '@sunbird/shared';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import * as _ from 'lodash-es';

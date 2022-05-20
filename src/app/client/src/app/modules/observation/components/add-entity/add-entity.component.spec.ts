@@ -5,7 +5,6 @@ import {
 } from '@angular/core/testing';
 import { ObservationService, KendraService, CoreModule, ObservationUtilService } from '@sunbird/core';
 import {
-  ConfigService,
   ResourceService,
   SharedModule,
 } from '@sunbird/shared';

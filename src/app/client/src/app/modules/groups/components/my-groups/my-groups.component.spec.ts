@@ -7,7 +7,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import * as _ from 'lodash-es';
 import { CoreModule, TncService } from '@sunbird/core';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { GroupsService } from '../../services';

@@ -1,13 +1,8 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
-import { ServerResponse, ConfigService } from '@sunbird/shared';
+import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
-// Rxjs
-import { Observable } from 'rxjs';
-
-
-import * as _ from 'lodash-es';
 
 /**
  * Service to get course consumption dashboard

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ConnectionService } from '../../services';
-import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 

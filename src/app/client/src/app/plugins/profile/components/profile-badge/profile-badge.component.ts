@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData } from '../../../../modules/shared';
+import { ResourceService, ConfigService, IUserProfile, IUserData } from '../../../../modules/shared';
 import { UserService, BadgesService } from '../../../../modules/core/services';
 import * as _ from 'lodash-es';
 

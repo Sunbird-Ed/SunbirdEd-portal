@@ -1,4 +1,4 @@
-import { combineLatest, Subject, of, merge, throwError, Observable, forkJoin } from 'rxjs';
+import { combineLatest, Subject, of, merge, throwError, forkJoin } from 'rxjs';
 import {
   PageApiService, OrgDetailsService, FormService, UserService, CoursesService, FrameworkService,
   PlayerService, SearchService

@@ -1,4 +1,4 @@
-import { Directive, Input, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
 import { environment } from '@sunbird/environment';
 
 @Directive({

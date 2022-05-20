@@ -5,13 +5,13 @@ import { mergeMap } from 'rxjs/operators';
 import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
 import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
 import dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
-import { TranslateService, TranslateStore } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 /**
  * Service to fetch resource bundle
  */

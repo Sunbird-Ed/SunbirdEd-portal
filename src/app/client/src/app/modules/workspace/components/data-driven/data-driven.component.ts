@@ -13,8 +13,8 @@ import { DefaultTemplateComponent } from '../content-creation-default-template/c
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-import { Subject, forkJoin, of } from 'rxjs';
-import { mergeMap, takeUntil} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil} from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 
 @Component({

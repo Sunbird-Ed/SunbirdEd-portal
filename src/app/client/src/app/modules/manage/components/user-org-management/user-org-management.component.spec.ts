@@ -8,7 +8,7 @@ import { ResourceService, SharedModule, ToasterService, NavigationHelperService,
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserOrgManagementComponent } from './user-org-management.component';
-import { throwError as observableThrowError, of as observableOf, of } from 'rxjs';
+import { of as observableOf, of } from 'rxjs';
 import { mockManageData } from './user-org-management.mock.spec';
 import { CoreModule, TncService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

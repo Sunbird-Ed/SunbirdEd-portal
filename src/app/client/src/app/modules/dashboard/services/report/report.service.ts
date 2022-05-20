@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
 import { map, catchError, pluck, mergeMap, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { Observable, of, forkJoin, throwError } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 

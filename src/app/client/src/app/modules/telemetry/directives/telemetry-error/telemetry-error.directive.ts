@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { Directive, Input, OnChanges } from '@angular/core';
 import { IErrorEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 

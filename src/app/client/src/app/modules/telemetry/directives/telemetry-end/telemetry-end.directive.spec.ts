@@ -1,9 +1,8 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TelemetryEndDirective } from './telemetry-end.directive';
-import { IEndEventInput } from '../../interfaces';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import {eventData} from './telemetry-end.directive.spec.data';
 describe('TelemetryStartDirective', () => {

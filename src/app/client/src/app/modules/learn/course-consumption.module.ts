@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import {
   CoursePlayerComponent, CourseConsumptionHeaderComponent, CourseConsumptionPageComponent,
   CurriculumCardComponent  } from './components';
-import { CourseConsumptionService, CourseBatchService, CourseProgressService , AssessmentScoreService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import {

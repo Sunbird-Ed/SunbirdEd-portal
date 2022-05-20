@@ -6,7 +6,7 @@ import { IInteractEventInput, ILogEventInput, TelemetryService } from '@sunbird/
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { LocationService } from '../..';
 import { LocationSelectionComponent } from './location-selection.component';
-import { of, Observable, throwError } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 
 describe('LocationSelectionComponent', () => {

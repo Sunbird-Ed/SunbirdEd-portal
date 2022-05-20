@@ -4,7 +4,7 @@ import { LearnerService } from './../learner/learner.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { mockResponseData } from './certificate.service.spec.data';
 import { CertificateService } from './certificate.service';
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
 // NEW xdescribe

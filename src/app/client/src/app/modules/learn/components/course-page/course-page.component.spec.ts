@@ -1,12 +1,11 @@
 import { CoursePageComponent } from '././course-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
-import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, UtilService, LayoutService } from '@sunbird/shared';
 import { PageApiService, OrgDetailsService, CoreModule, FormService, UserService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './course-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';

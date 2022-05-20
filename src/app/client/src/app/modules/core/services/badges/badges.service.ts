@@ -1,8 +1,7 @@
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { Observable ,  BehaviorSubject } from 'rxjs';
-import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 /**
  * Service to fetch badges

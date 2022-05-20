@@ -1,20 +1,17 @@
-import { async, fakeAsync, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ObservationUtilService } from './observation-util.service';
 import { UserService} from '../user/user.service';
 import { FormService } from '../form/form.service';
 import { KendraService } from '../kendra/kendra.service';
 import { CoreModule } from '../../core.module';
 import {
-  ModalConfig,
-  ModalControls,
-  SuiModal,
   SuiModalModule,
   SuiModalService,
 } from 'ng2-semantic-ui-v9';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
-import { ConfigService, ResourceService, IUserData, SharedModule, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { APP_BASE_HREF } from '@angular/common';
 import { Router } from '@angular/router';
@@ -28,9 +25,7 @@ import {
 import {
   of as observableOf,
   throwError as observableThrowError,
-  Observable,
   of,
-  observable,
 } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 

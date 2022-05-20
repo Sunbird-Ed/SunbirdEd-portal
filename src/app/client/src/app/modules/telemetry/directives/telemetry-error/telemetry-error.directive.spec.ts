@@ -1,8 +1,8 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TelemetryErrorDirective } from './telemetry-error.directive';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {eventData} from './telemetry-error.dircetive.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('TelemetryErrorDirective', () => {

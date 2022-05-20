@@ -4,7 +4,6 @@ import { UtilService, ResourceService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TestBed } from '@angular/core/testing';
 import { ElementRef, Renderer2 } from '@angular/core';
-import { of } from 'rxjs';
 
 // Old One
 xdescribe('TelemetryEventsDirective', () => {

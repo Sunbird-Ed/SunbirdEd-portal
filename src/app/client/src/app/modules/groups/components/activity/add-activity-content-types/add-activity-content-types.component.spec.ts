@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddActivityContentTypesComponent } from './add-activity-content-types.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule, ToasterService, ResourceService, ConfigService, BrowserCacheTtlService, NavigationHelperService } from '@sunbird/shared';

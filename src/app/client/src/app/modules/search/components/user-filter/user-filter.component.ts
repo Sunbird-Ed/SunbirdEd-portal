@@ -4,11 +4,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService, OrgDetailsService, RolesAndPermissions, PermissionService, FrameworkService, FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { map, catchError, startWith } from 'rxjs/operators';
-import { of, combineLatest, Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { of, combineLatest } from 'rxjs';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-filter',

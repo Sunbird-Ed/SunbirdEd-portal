@@ -2,11 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EntityListComponent } from './entity-list.component';
 import {
-  ConfigService,
   ResourceService,
-  SharedModule,
-  ILoaderMessage,
-  INoResultMessage
+  SharedModule
 } from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';

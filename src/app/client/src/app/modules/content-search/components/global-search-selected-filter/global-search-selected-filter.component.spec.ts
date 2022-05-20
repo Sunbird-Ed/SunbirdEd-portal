@@ -3,7 +3,6 @@ import { Response } from './global-search-selected-filter.component.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';

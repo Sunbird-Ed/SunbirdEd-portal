@@ -1,7 +1,7 @@
 import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
-import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';
 import {
@@ -32,7 +32,6 @@ import {mockData} from './main-header.component.spec.data';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import {ObservationUtilService} from '../../services';
-import { Router } from '@angular/router';
 const mockUserRoles = {
   userRoles: ['PUBLIC']
 };

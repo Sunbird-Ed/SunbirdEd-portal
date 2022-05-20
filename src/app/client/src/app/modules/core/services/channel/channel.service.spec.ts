@@ -1,13 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { ChannelService } from './channel.service';
-import {of as observableOf,  Observable, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { CoreModule, ContentService } from '@sunbird/core';
+import {of as observableOf, throwError } from 'rxjs';
+import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { serverRes } from './channel.service.spec.data';
-import { RouterTestingModule } from '@angular/router/testing';
 import { PublicDataService } from './../public-data/public-data.service';
 import { configureTestSuite } from '@sunbird/test-util';
 

@@ -1,6 +1,6 @@
-import { combineLatest, Subscription, Observable, Subject, of } from 'rxjs';
+import { combineLatest, Subscription, Subject, of } from 'rxjs';
 
-import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay, tap } from 'rxjs/operators';
+import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -11,9 +11,8 @@ import {
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData, IForumContext } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
-import dayjs from 'dayjs';
 
 /**
  * This component shows the course progress dashboard

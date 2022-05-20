@@ -1,6 +1,6 @@
 
-import { throwError, of , Observable } from 'rxjs';
-import { TestBed, inject } from '@angular/core/testing';
+import { throwError, of } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FrameworkService, UserService, CoreModule, PublicDataService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';

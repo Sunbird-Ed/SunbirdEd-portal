@@ -1,11 +1,8 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryInteractDirective } from './telemetry-interact.directive';
-import { IStartEventInput } from '../../interfaces';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ElementRef, Component, DebugElement, ViewChild } from '@angular/core';
-import { eventData } from './telemetry-interact.directive.spec.data';
-import { Observable } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 

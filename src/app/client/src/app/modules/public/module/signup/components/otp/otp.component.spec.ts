@@ -10,7 +10,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OtpComponent } from './otp.component';
 import { OtpComponentMockResponse } from './otp.component.spec.data';
 import { SignupService } from '../../services';
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { configureTestSuite } from '@sunbird/test-util';
 

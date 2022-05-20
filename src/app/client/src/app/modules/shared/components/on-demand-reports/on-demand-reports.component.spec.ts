@@ -8,7 +8,7 @@ import {SbDatatableComponent} from '../sb-datatable/sb-datatable.component';
 import {OnDemandReportsComponent} from './on-demand-reports.component';
 import {throwError, of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {MockData} from './on-demand-report.component.spec.data';
 import { ReactiveFormsModule } from '@angular/forms';
 import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';

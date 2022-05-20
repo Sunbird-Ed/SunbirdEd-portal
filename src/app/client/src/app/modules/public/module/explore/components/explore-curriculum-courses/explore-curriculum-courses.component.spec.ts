@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExploreCurriculumCoursesComponent } from './explore-curriculum-courses.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';

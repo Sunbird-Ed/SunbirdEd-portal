@@ -1,5 +1,5 @@
 import {throwError, of, Observable, BehaviorSubject } from 'rxjs';
-import { mergeMap, map, catchError, skipWhile, shareReplay, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError, skipWhile, shareReplay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router } from '@angular/router';

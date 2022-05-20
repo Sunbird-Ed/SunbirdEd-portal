@@ -14,7 +14,7 @@ import {
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
-  OfflineCardService, RecaptchaService, LayoutService, ConnectionService
+  OfflineCardService, RecaptchaService, ConnectionService
 } from './services';
 import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';

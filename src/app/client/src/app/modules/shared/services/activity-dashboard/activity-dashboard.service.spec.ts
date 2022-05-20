@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { truncate } from 'fs';
 
 import { ActivityDashboardService } from './activity-dashboard.service';
 

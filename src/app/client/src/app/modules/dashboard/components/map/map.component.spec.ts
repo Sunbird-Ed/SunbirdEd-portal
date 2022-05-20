@@ -7,7 +7,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapComponent } from './map.component';
 import { ReportService } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { geoJSONDataMock } from './map.component.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 describe('MapComponent', () => {

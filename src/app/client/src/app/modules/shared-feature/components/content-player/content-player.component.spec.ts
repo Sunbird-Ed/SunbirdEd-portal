@@ -1,14 +1,14 @@
 // Stage 1 - RK
-import { throwError as observableThrowError, of as observableOf, Observable, of } from 'rxjs';
+import { of as observableOf, of } from 'rxjs';
 import { mockUserData } from '../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService, IUserProfile } from '@sunbird/shared';
+import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
 import { CoreModule, UserService, PlayerService } from '@sunbird/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
 

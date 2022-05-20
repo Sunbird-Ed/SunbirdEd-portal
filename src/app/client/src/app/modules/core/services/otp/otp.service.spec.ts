@@ -2,7 +2,7 @@ import { ConfigService } from '@sunbird/shared';
 import { TestBed, inject } from '@angular/core/testing';
 import { LearnerService } from './../learner/learner.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { testData } from './otp.service.spec.data';
 import { OtpService } from './otp.service';
 import { configureTestSuite } from '@sunbird/test-util';

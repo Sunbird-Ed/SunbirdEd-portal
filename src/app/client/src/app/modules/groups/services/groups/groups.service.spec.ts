@@ -1,4 +1,4 @@
-import { of, combineLatest } from 'rxjs';
+import { of } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';

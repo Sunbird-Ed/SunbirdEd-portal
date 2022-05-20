@@ -1,12 +1,11 @@
 
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
-import { CoreModule, OrgDetailsService, ContentService, PublicDataService } from '@sunbird/core';
+import { CoreModule, OrgDetailsService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, Router } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
-import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LanguageDropdownComponent } from './language-dropdown.component';
 import { configureTestSuite } from '@sunbird/test-util';

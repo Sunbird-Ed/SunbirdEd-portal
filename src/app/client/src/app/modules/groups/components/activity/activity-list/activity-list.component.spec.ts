@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivityListComponent } from './activity-list.component';
 import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
@@ -11,7 +11,6 @@ import { BehaviorSubject, of, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mockActivityList } from './activity-list.component.data.spec';
 import { GroupsService } from '../../../services/groups/groups.service';
-import * as _ from 'lodash-es';
 
 // Old One
 xdescribe('ActivityListComponent', () => {

@@ -1,15 +1,15 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable, of } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
-import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import { CoreModule, PermissionService, UserService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
-import {userSearch, allBatchDetails, enrolledBatch, allBatchDetailsWithFeactureBatch, courseHierarchy } from './batch-details.component.data';
+import {userSearch, allBatchDetails, allBatchDetailsWithFeactureBatch } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
 

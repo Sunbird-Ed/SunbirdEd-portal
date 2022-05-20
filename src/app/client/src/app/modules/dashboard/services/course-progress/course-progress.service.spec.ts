@@ -1,9 +1,9 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService, SharedModule } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import { LearnerService, CoreModule } from '@sunbird/core';
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { CourseProgressService, UsageService } from './../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as testData from './course-progress.service.spec.data';

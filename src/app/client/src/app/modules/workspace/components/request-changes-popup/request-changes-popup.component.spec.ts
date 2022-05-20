@@ -1,18 +1,15 @@
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ContentService, CoreModule } from '@sunbird/core';
-import { SharedModule, ResourceService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { RequestChangesPopupComponent } from './request-changes-popup.component';
 import { WorkSpaceService } from './../../services';
 import { mockRes } from './request-change-pop.component.spec.data';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
+import { SuiModalService } from 'ng2-semantic-ui-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 
 // Old One

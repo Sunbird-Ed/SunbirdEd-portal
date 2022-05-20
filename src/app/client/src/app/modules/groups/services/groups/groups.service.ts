@@ -1,5 +1,4 @@
 import { delay } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';

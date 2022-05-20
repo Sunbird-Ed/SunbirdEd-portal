@@ -5,7 +5,6 @@ import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { SearchService, CoursesService, CoreModule, LearnerService, PlayerService,  UserService, SchemaService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
-import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './home-search.component.spec.data';
 import { Response as contentResponse } from '../../../../modules/public/module/explore/components/explore-content/explore-content.component.spec.data';

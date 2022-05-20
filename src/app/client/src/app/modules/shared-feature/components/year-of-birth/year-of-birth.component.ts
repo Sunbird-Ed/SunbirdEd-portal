@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileService } from '@sunbird/profile';
 import { ConfigService, ResourceService } from '@sunbird/shared';

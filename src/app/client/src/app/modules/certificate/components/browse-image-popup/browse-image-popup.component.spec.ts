@@ -2,7 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import * as _ from 'lodash-es';
 import { BrowseImagePopupComponent } from './browse-image-popup.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService , SharedModule} from '@sunbird/shared';

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
 import { ResourceService, UtilService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';

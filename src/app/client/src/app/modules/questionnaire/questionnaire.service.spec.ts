@@ -8,7 +8,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Router } from '@angular/router';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import { PayloadData } from './questionnaire.service.mock';
-import * as _ from 'lodash-es';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { ToasterService } from '@sunbird/shared';
 

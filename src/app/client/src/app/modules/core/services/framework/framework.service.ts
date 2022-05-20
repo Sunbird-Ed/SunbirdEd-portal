@@ -5,8 +5,8 @@ import {
   ConfigService, ToasterService, ResourceService, ServerResponse, Framework, FrameworkData,
   BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { skipWhile, mergeMap, tap, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { skipWhile, mergeMap, map } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
 import { FormService } from '../form/form.service';

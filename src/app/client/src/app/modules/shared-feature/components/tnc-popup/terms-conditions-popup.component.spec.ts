@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
-import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService, IUserProfile } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TermsAndConditionsPopupComponent } from './terms-conditions-popup.component';

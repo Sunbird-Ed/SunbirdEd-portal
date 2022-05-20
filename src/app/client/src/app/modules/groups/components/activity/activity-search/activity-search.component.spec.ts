@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule, FrameworkService, SearchService, FormService } from '@sunbird/core';
-import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SlickModule } from 'ngx-slick';
@@ -13,7 +13,6 @@ import { activitySearchMockData } from './activity-search.component.data.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupsService } from '../../../services/groups/groups.service';
-import { CourseConsumptionService } from '@sunbird/learn';
 
 // Old One
 xdescribe('ActivitySearchComponent', () => {

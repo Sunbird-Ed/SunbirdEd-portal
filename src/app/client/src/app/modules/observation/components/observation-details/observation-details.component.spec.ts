@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ObservationDetailsComponent } from './observation-details.component';
-import { of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-import { ConfigService, ResourceService, SharedModule, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
-import { Router, NavigationEnd, ActivatedRoute, RouterModule } from '@angular/router';
-import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission, AlertNotApplicable } from './Observation-details.component.mock.data';
+import { ResourceService, SharedModule } from '@sunbird/shared';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission } from './Observation-details.component.mock.data';
 import { ObservationService, ObservationUtilService } from '@sunbird/core';
 import { EntityListComponent } from '../entity-list/entity-list.component';
 import { SubmissionsComponent } from '../submissions/submission.component';
