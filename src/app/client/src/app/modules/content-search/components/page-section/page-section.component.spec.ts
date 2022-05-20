@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -11,7 +11,7 @@ import { Response } from './page-section.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 const fakeActivatedRoute = {
   snapshot: {

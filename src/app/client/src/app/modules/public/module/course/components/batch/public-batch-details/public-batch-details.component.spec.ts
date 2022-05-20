@@ -1,11 +1,11 @@
 // Stage 1 - RK
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PublicBatchDetailsComponent } from './public-batch-details.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { CoreModule, PermissionService } from '@sunbird/core';
+import { CoreModule } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';

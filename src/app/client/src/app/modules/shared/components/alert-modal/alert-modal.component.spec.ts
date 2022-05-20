@@ -2,11 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlertModalComponent } from './alert-modal.component';
 import {
   SuiModal,
-  ComponentModalConfig,
-  ModalSize,
   SuiModalModule,
 } from 'ng2-semantic-ui-v9';
-import { Location } from '@angular/common';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

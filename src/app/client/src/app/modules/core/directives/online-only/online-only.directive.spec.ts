@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { OnlineOnlyDirective } from './online-only.directive';
-import { Component, HostListener, ElementRef, Renderer2 } from '@angular/core';
-import { ToasterService, ResourceService, ConnectionService, UtilService } from '@sunbird/shared';
+import { Component, HostListener } from '@angular/core';
+import { ToasterService, ResourceService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
 // Simple test component that will not in the actual app

@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProfileFrameworkPopupComponent } from './profile-framework-popup.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  FrameworkService, FormService, ChannelService, CoreModule, UserService, OrgDetailsService, PublicDataService
+import { FormService, ChannelService, CoreModule, UserService, OrgDetailsService, PublicDataService
 } from '@sunbird/core';
-import { ConfigService, ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { throwError, of } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
 import { CacheService } from 'ng2-cache-service';

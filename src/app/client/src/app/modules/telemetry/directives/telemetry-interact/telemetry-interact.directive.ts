@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, OnChanges, HostListener } from '@angular/core';
+import { Directive, Input, HostListener } from '@angular/core';
 import { IInteractEventInput, IInteractEventObject, IInteractEventEdata, IProducerData } from '../../interfaces';
 import { TelemetryService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';

@@ -1,18 +1,18 @@
 
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
+import {combineLatest as observableCombineLatest } from 'rxjs';
 import { WorkSpace } from './../../classes/workspace';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService, UserService, PermissionService, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData,
+  ResourceService, IContents, ILoaderMessage, INoResultMessage,
   NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { SuiModalService } from 'ng2-semantic-ui-v9';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 /**
  * The  FlagReviewerComponent search for all the flag-reviewer
 */

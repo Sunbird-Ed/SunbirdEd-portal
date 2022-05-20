@@ -1,4 +1,4 @@
-import { async, ComponentFixture, flush, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReportViewComponent } from './report-view.component';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
@@ -6,12 +6,9 @@ import { DhitiService, CoreModule } from '@sunbird/core';
 import { LOCALE_ID } from '@angular/core';
 import {
   ConfigService,
-  LayoutService,
-  INoResultMessage,
   ResourceService,
   SharedModule,
 } from '@sunbird/shared';
-import * as _ from 'lodash-es';
 import { SuiModule, SuiSelectModule, SuiModalModule } from 'ng2-semantic-ui-v9';
 import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
 import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';

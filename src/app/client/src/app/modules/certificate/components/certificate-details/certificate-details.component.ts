@@ -1,12 +1,12 @@
 import { PublicPlayerService } from '@sunbird/public';
 import {CertificateService, UserService, TenantService} from '@sunbird/core';
-import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData, ToasterService } from '@sunbird/shared';
+import { ServerResponse, ResourceService, ConfigService, PlayerConfig, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import {Subject, Subscription} from 'rxjs';
+import { Subscription} from 'rxjs';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 
 @Component({

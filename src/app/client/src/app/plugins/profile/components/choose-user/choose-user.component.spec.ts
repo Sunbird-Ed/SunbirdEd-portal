@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {CoreModule, UserService, ManagedUserService, LearnerService, CoursesService} from '@sunbird/core';
+import {CoreModule, UserService, ManagedUserService, LearnerService} from '@sunbird/core';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {
   ResourceService, SharedModule, ConfigService,
@@ -8,7 +8,7 @@ import {
 import {ChooseUserComponent} from './choose-user.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ActivatedRoute, Router} from '@angular/router';
-import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
+import {of as observableOf, throwError as observableThrowError} from 'rxjs';
 import {mockData} from './choose-user.component.spec.data';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';

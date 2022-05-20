@@ -1,13 +1,13 @@
 import { Observable, of, throwError } from 'rxjs';
 import {
   ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
-  BrowserCacheTtlService, LayoutService, IUserData, IUserProfile
+  BrowserCacheTtlService, LayoutService, IUserProfile
 } from '@sunbird/shared';
 import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
-  PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
+  PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService
 } from '@sunbird/core';
 import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
-import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -16,7 +16,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
-import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
+import { AnimationBuilder } from '@angular/animations';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';

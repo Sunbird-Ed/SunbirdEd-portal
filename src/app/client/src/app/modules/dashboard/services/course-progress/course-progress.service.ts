@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ServerResponse, ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 // Rxjs

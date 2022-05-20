@@ -1,4 +1,4 @@
-import { tap, delay, mergeMap } from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -7,7 +7,6 @@ import { ResourceService, SharedModule } from '@sunbird/shared';
 import { BatchInfoComponent } from './batch-info.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { batchInfoMockResponse } from './batch-info.component.spec.data';
 import { of, throwError } from 'rxjs';

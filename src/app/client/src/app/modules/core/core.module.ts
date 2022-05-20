@@ -1,6 +1,6 @@
 import { PermissionDirective, BodyScrollDirective, OnlineOnlyDirective, DesktopOnlyDirective } from './directives';
 import { RouterModule } from '@angular/router';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,

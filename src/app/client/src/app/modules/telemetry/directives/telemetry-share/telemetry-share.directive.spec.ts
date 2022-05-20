@@ -1,12 +1,10 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { TelemetryShareDirective } from './telemetry-share.directive';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {eventData} from './telemetry-share.directive.spec.data';
-import { ActivatedRoute, Data } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ElementRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TelemetryShareDirective', () => {

@@ -6,9 +6,9 @@ import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable, of as observableOf } from 'rxjs';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
+import { of as observableOf } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TelemetryService } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from '@sunbird/test-util';
 

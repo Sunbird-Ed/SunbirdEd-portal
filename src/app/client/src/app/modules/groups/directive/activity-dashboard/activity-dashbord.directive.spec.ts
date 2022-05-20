@@ -8,7 +8,6 @@ import { ConfigService, NavigationHelperService, ResourceService, ToasterService
 import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { CoreModule } from '@sunbird/core';
-import { GroupsModule } from '../../../groups';
 import { GroupsService } from '../../services';
 import { ActivityDashboardDirective } from './activity-dashbord.directive';
 //STAGE1 -->RS

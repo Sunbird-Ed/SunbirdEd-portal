@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService } from '../../../services';
 import { CoreModule, UserService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, ToasterService, ContentData, OfflineCardService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ContentData, OfflineCardService } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import dayjs from 'dayjs';

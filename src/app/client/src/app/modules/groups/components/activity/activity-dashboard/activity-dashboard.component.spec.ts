@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivityDashboardComponent } from './activity-dashboard.component';
-import { groupData, GroupsService } from '../../../services';
+import { GroupsService } from '../../../services';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CertPreviewPopupComponent } from './cert-preview-popup.component';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, SharedModule } from '@sunbird/shared';
-import { By } from '@angular/platform-browser';
 
 // Old One
 xdescribe('CertPreviewPopupComponent', () => {

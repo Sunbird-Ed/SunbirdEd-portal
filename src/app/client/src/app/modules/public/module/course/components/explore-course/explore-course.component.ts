@@ -10,7 +10,7 @@ import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angu
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, debounceTime, catchError, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({

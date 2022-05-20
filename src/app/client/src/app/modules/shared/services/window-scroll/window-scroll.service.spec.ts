@@ -1,8 +1,8 @@
 import {of as observableOf } from 'rxjs';
-import { TestBed, fakeAsync, tick, inject } from '@angular/core/testing';
-import { SharedModule, NavigationHelperService } from '@sunbird/shared';
+import { TestBed, inject } from '@angular/core/testing';
+import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, PlayerService, UserService, PublicDataService } from '@sunbird/core';
+import { CoreModule, PublicDataService } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WindowScrollService } from './window-scroll.service';

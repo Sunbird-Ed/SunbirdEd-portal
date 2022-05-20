@@ -10,7 +10,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
 import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import * as _ from 'lodash-es';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer, of } from 'rxjs';
 import { map, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';

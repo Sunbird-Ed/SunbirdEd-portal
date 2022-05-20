@@ -1,13 +1,13 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import {of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UpforreviewContentplayerComponent } from './upforreview-contentplayer.component';
 import { TelemetryModule , TelemetryService } from '@sunbird/telemetry';
 // Import NG testing module(s)
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule,  ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
+import { PlayerService, UserService, CoreModule } from '@sunbird/core';
 import * as mockData from './upforreview-content.component.spce.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';

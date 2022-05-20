@@ -3,7 +3,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CertRegService } from './cert-reg.service';
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf } from 'rxjs';
 import { mockResponseData } from './cert-reg.service.spec.data';
 
 // NEW xdescribe

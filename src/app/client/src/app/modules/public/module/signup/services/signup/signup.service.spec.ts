@@ -1,9 +1,9 @@
-import {TestBed, inject, getTestBed} from '@angular/core/testing';
-import {throwError as observableThrowError, of as observableOf, Observable} from 'rxjs';
+import {TestBed, inject} from '@angular/core/testing';
+import { of as observableOf} from 'rxjs';
 import {SignupService} from './signup.service';
-import {ConfigService, SharedModule} from '@sunbird/shared';
-import {LearnerService, UserService} from '@sunbird/core';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {ConfigService} from '@sunbird/shared';
+import {LearnerService} from '@sunbird/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 
 // NEW xdescribe

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService, RequestParam, ServerResponse, HttpOptions } from '@sunbird/shared';
+import { ConfigService, RequestParam, ServerResponse } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 import { Observable } from 'rxjs';
   /**

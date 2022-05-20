@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnDestroy, DoCheck, HostListener } from '@angular/core';
+import { Directive, Input, OnDestroy, HostListener } from '@angular/core';
 import { IEndEventInput } from '../../interfaces';
 import { TelemetryService } from '../../services';
 

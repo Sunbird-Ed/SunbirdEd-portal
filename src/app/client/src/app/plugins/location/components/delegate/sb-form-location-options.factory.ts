@@ -1,7 +1,7 @@
 import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements-web-v9';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
-import { concat, defer, iif, Observable, of } from 'rxjs';
+import { concat, defer, iif, of } from 'rxjs';
 import { distinctUntilChanged, mergeMap, map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 

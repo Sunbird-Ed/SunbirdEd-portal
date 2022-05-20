@@ -1,6 +1,6 @@
 import { MY_GROUPS, NOTIFICATION } from './modules/groups';
 import { NgModule } from '@angular/core';
-import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
+import { ErrorPageComponent } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MlGuard } from './modules/observation/guards';
 

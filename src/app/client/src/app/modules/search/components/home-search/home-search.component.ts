@@ -1,6 +1,5 @@
 import {
-  PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
+  PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
   LayoutService, COLUMN_TYPE, OfflineCardService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, ISort, OrgDetailsService, SchemaService } from '@sunbird/core';
@@ -9,7 +8,7 @@ import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterVie
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
+import { takeUntil, map, delay, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';

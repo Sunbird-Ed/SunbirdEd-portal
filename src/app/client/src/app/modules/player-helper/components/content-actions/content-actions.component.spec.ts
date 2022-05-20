@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentActionsComponent } from './content-actions.component';
 import { actionsData } from './content-actions.component.spec.data';
 import { of, throwError } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import {
-  ResourceService, ToasterService, NavigationHelperService,
-  SharedModule, ServerResponse, UtilService, OfflineCardService
+  ResourceService,
+  SharedModule, UtilService, OfflineCardService
 } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';

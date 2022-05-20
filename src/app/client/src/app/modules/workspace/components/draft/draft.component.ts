@@ -6,7 +6,7 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, FrameworkService } from '@sunbird/core';
 import {
     ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
-    ResourceService, IContents, ILoaderMessage, INoResultMessage, ICard, NavigationHelperService
+    ResourceService, ILoaderMessage, INoResultMessage, ICard, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';

@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable, throwError } from 'rxjs';
+import {of as observableOf, throwError } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { CoreModule, ContentService } from '@sunbird/core';

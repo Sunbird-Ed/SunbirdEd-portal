@@ -1,5 +1,5 @@
 
-import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { BatchPageSectionComponent } from './batch-page-section.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -13,7 +13,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as mockData from './batch-page-section.component.spec.data';
 const testData = mockData.mockRes;
-import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { PageApiService } from '@sunbird/core';

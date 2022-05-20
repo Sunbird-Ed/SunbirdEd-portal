@@ -1,6 +1,6 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
-import { TestBed, inject } from '@angular/core/testing';
+import {of as observableOf } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
 import { ProfileService } from '@sunbird/profile';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

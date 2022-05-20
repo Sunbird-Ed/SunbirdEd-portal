@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { LandingpageGuard } from './landingpage.guard';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router } from '@angular/router';

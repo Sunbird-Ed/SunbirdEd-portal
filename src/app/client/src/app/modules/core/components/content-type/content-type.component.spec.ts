@@ -1,10 +1,10 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreModule, FormService, UserService } from '@sunbird/core';
+import { FormService, UserService } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, LayoutService,
-  NavigationHelperService, ResourceService, UtilService , IUserData, InterpolatePipe} from '@sunbird/shared';
+  NavigationHelperService, ResourceService, UtilService, InterpolatePipe} from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { of as observableOf } from 'rxjs';

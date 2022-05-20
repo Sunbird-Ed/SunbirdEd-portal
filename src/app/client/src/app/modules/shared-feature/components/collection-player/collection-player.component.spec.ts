@@ -1,10 +1,9 @@
-import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { of as observableOf, of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { CoreModule, CopyContentService, GeneraliseLabelService } from '@sunbird/core';
-import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ContentUtilsServiceService,
-  ConnectionService, OfflineCardService, UtilService } from '@sunbird/shared';
+import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ContentUtilsServiceService, OfflineCardService, UtilService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';

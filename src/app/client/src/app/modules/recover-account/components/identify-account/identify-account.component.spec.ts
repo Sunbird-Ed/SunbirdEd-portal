@@ -4,7 +4,7 @@ import { IdentifyAccountComponent } from './identify-account.component';
 import { CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {SharedModule, ResourceService, RecaptchaService, ToasterService} from '@sunbird/shared';
+import {SharedModule, ResourceService, RecaptchaService} from '@sunbird/shared';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';

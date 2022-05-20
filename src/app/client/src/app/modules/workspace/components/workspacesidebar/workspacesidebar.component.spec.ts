@@ -3,7 +3,7 @@ import { CoreModule } from '@sunbird/core';
 import { WorkspacesidebarComponent } from './workspacesidebar.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import { SharedModule, ConfigService} from '@sunbird/shared';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import { WorkSpaceService } from './../../services';

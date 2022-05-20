@@ -15,7 +15,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
 import { fakeOpenBatchDetails } from './unenroll-batch.component.spec.data';
-import { By } from '@angular/platform-browser';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

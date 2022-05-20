@@ -1,5 +1,5 @@
-import { combineLatest, Subject, throwError } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ResourceService, ToasterService, ConfigService, ContentUtilsServiceService, ITelemetryShare,
   LayoutService, UtilService } from '@sunbird/shared';
 import { CourseBatchService, CourseConsumptionService } from '@sunbird/learn';

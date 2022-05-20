@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from './../../shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavigationHelperService } from './../navigation-helper/navigation-helper.service';
-import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { DiscussionTelemetryService } from './discussion-telemetry.service';
 
 const event = {

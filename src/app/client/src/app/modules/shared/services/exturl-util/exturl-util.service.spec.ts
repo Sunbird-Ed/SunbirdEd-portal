@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { ConfigService, ResourceService, ToasterService } from '../../services';
+import { ConfigService } from '../../services';
 import { ExternalUrlPreviewService } from '../exturl-util/exturl-util.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router } from '@angular/router';

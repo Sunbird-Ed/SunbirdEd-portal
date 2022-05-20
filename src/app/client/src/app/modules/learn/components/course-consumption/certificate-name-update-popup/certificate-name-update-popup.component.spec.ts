@@ -4,14 +4,14 @@ import { CertificateNameUpdatePopupComponent } from './certificate-name-update-p
 import { configureTestSuite } from '@sunbird/test-util';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService, IUserProfile } from '@sunbird/shared';
+import { SharedModule, BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CacheService } from 'ng2-cache-service';
 import { CoreModule, UserService } from '@sunbird/core';
 import { ProfileService } from '@sunbird/profile';
 import { response as CertMockResponse } from './certificate-name-update-popup.component.spec.data';
-import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
+import { throwError as observableThrowError, of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 

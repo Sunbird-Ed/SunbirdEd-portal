@@ -5,7 +5,7 @@ import { ResourceService } from '../../../shared/services/resource/resource.serv
 import {ToasterService, NavigationHelperService, LayoutService} from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
-import {first, takeUntil} from 'rxjs/operators';
+import { takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as $ from 'jquery';
 import 'datatables.net';

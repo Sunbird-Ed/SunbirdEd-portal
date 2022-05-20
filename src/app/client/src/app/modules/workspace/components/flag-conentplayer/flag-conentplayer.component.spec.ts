@@ -1,12 +1,12 @@
 
-import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FlagConentplayerComponent } from './flag-conentplayer.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
+import { PlayerService, UserService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './flag-contentplayer.componemt.spec.data';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { TelemetryService } from '@sunbird/telemetry';

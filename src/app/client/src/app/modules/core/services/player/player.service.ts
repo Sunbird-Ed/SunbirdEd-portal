@@ -6,7 +6,7 @@ import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, IUserData, ServerResponse, UtilService,
+  ConfigService, ServerResponse, UtilService,
   ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '../../interfaces';
