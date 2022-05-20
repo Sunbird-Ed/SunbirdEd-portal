@@ -30,7 +30,12 @@ export class CreditsAndLicenceComponent implements OnInit {
   createOptionOrDownload(download?: boolean) {
     const transcriptsObj = this.contentData?.transcripts
     if (transcriptsObj) {
-      const transcripts = JSON.parse(transcriptsObj);
+      let transcripts = [];
+        if(typeof transcriptsObj === 'string') {
+          transcripts = JSON.parse(transcriptsObj);
+        } else{
+          transcripts = transcriptsObj;
+        }
       if (transcripts && transcripts.length > 0) {
         transcripts.forEach(item => {
           if (download) {
