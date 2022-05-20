@@ -259,7 +259,7 @@ export default (app, proxyURL, contentDownloadManager) => {
           res.status(res.statusCode).send(res.body);
       });
 
-      app.post("/certreg/v1/certs/search", customProxy(proxyURL), (req, res) => {
+      app.post("/learner/certreg/v2/certs/search", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
           res.status(res.statusCode).send(res.body);
       });
 
