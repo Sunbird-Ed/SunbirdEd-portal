@@ -262,13 +262,6 @@
           </div>
           <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-4 sb-g-col-xxxl-4 sbt-header-tool-bar">
             <div class="d-flex flex-ai-center sbt-dropdown-profile-area">
-              <!-- student dropdown -->
-              <!-- Component no longer used -->
-              <!-- <sui-select *ngIf="ShowStudentDropdown" class="selection sbt-dropdown sbt-dropdown--md sbt-purple mr-16"
-                placeholder="Student" labelField="name" #multiSelect>
-                <sui-select-option *ngFor="let option of multiSelect1" [value]="option">
-                </sui-select-option>
-              </sui-select> -->
               <!-- language dropdown -->
               <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
                 *ngIf="languages && showLanguageDropdown()">
