@@ -48,13 +48,6 @@
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
             <div>
-              <!-- <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16"
-                [(ngModel)]="batchStatus" [options]="statusOptions" valueField="value" labelField="name"
-                #batchStatusSelect>
-                <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option"
-                  tabindex="0">
-                </sui-select-option>
-              </sui-select> -->
               <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
                 <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
                 <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage"
