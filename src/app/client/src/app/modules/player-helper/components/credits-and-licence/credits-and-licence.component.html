@@ -21,14 +21,14 @@
       aria-labelledby="aboutTheContent">
 
       <div class="py-8" *ngIf="contentData?.transcripts" (click)="showDownloadTranscript()">
-        <span class="blue content-metadeta__text fnormal" >Download transcripts</span>
-        <span class="ml-8 flex-ai-center">
-          <i _ngcontent-nyl-c32="" class="icon-svg icon-svg--sm icon-download icon-svg--primary">
-            <svg _ngcontent-nyl-c32="" class="icon bell-icon">
-              <use _ngcontent-nyl-c32="" xlink:href="./assets/images/sprite.svg#download"></use>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn download-scripts-btn">
+          Download Transcripts
+          <i class="icon-svg icon-svg--sm icon-download-transcripts icon-svg--primary ml-16">
+            <svg>
+              <use xlink:href="./assets/images/sprite.svg#file_download" ></use>
             </svg>
           </i>
-        </span>
+        </button>
       </div>
 
       <div class="py-8" *ngIf="contentData?.author">
