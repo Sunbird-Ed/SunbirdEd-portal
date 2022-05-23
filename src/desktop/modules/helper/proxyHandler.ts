@@ -38,7 +38,7 @@ const decorateRequest = async (request, options) => {
       if (userToken) {
         headers['x-authenticated-user-token'] = userToken;
       }
-      if (userDetails && userDetails.managedToken) {
+      if (userDetails && userDetails.managedToken) { 
         headers['x-authenticated-for'] = userDetails.managedToken
       }
     }
