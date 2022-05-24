@@ -5,6 +5,7 @@ import DatabaseSDK from "../sdk/database/index";
 import Response from "./../utils/response";
 
 const DB_NAME = 'enrolled_trackable_collection';
+const DB_LP_NAME = 'learner_passbook_collection';
 const API_ID = "api.user.courses.list";
 const userSDK = containerAPI.getUserSdkInstance();
 
@@ -59,6 +60,42 @@ export default class Course {
 
     } catch (error) {
       standardLog.error({ id: 'COURSE_GET_INSERT_ENROLLED_LIST_FAILED', message: `Error while inserting courses from database`, error });
+    }
+  }
+
+  public async saveLearnerPassbook(courses) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
+    try {
+      const userId = await this.getCurrentUserId();
+      const results = await this.databaseSdk.find(DB_LP_NAME, {
+        selector: { userId },
+      });
+      const inputData = { userId, courses: courses };
+
+      if (_.get(results, 'docs.length')) {      // If doc is available then update the same doc
+        const userData = results.docs[0];
+        await this.databaseSdk.upsert(DB_LP_NAME, userData._id, inputData)
+      } else {                                  // if doc is not available then insert data to create new doc
+        await this.databaseSdk.insert(DB_LP_NAME, inputData);
+      }
+
+    } catch (error) {
+      standardLog.error({ id: 'COURSE_GET_OFFLINE_LEARNER_PASSBOOK_LIST_FAILED', message: `Error while inserting courses from database`, error });
+    }
+  }
+
+  public async findLearnerPassbook(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
+    try {
+      const userId = await this.getCurrentUserId();
+      const results = await this.databaseSdk.find(DB_LP_NAME, {
+        selector: { userId },
+      });
+      const response = _.get(results, 'docs[0].courses');
+      res.status(200).send(Response.success(API_ID, { response }, req));
+    } catch (error) {
+      standardLog.error({ id: 'COURSE_GET_OFFLINE_LEARNER_PASSBOOK_LIST_FAILED', message: `Error while fetching courses from database`, error });
+      res.status(500).send(Response.error(API_ID, 500));
     }
   }
 }

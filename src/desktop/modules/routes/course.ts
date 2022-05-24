@@ -57,6 +57,15 @@ export default (app, proxyURL) => {
         res.status(res.statusCode).send(res.body);
     });
 
+    app.post("/learner/certreg/v2/certs/search", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+        if (_.get(res, 'body.result.response.content')) {
+            await course.saveLearnerPassbook(res.body.result.response);
+            res.status(res.statusCode).send(res.body);
+        } else {
+            await course.findLearnerPassbook(req, res);
+        }
+    });
+
 
     app.post("/content/course/v1/content/state/read", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
         const contentList = _.get(res, 'body.result.contentList');
