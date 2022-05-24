@@ -74,7 +74,6 @@ describe('CoursesService', () => {
   });
 
   describe('should get the enrolled courses for a user', () => {
-
     it('should call the getEnrolledCourses method and get the enrolled courses', (done) => {
       jest.spyOn(coursesService['learnerService'], 'get').mockReturnValue(of({
         id: 'id',
@@ -88,6 +87,7 @@ describe('CoursesService', () => {
         ver: ''
       }));
       // act
+      coursesService.initialize();
       coursesService.getEnrolledCourses().subscribe(() => {
         done();
       });
@@ -100,6 +100,7 @@ describe('CoursesService', () => {
         return throwError({ error: {} });
       });
       // act
+      coursesService.initialize();
       coursesService.getEnrolledCourses().subscribe(() => {
       });
       expect(coursesService['learnerService'].get).toHaveBeenCalled();
