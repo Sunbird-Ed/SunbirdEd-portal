@@ -1825,15 +1825,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.48":
-  version "0.0.48"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.48.tgz#97d06f7d98b79fcc0756d7cfc1710b24cb7673df"
-  integrity sha512-eC7qNKZetxMdY+6q8CWCbcRbJUO2aYWojkoFOCp2FS3r/KY38Unqd/vX1u2N3GNGBiFH+QTFtZP9M3UFudsGjw==
+"@project-sunbird/sb-themes@0.0.49":
+  version "0.0.49"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.49.tgz#525d52b78c75afa6f6a8722e9cf2d00481d472f7"
+  integrity sha512-WX3MdsFFmaH1ToSOyQp54c+rMPSO+KcR1ns3eViCXfW2frRGv+Q1Xf/09i0Vnke+9okhbQzuNnB+CdDr81k0Rw==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.9.17":
-  version "4.9.17"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.9.17.tgz#0b3466b83c23d9f76df9003bca0662c47313675f"
-  integrity sha512-ieoEF/rFyoAxDTcLNRehDahdFE7VB9Fp8ufNFJ0kNiajxnc2NTYKQnnris47j1HdnqH/MtkT+GIMj6YfqVkvPw==
+"@project-sunbird/sunbird-collection-editor-v9@4.9.21":
+  version "4.9.21"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.9.21.tgz#bbb97ec150df3e1533dc418e695056e12f1da231"
+  integrity sha512-IIRL1jeOT/TOx1X+3Xe3CeooGDZYHu3dS0w2xolid2cwrpjAQvpOhDAZJQYnzdH28RW6pr9KrRWgHhuQjQ6YQQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -1879,10 +1879,10 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.8.0"
 
-"@project-sunbird/sunbird-resource-library@0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.17.tgz#94cc4c69799730529b9fade54cbd7f3d4eec21b3"
-  integrity sha512-FHTvWXVVNtW3FYGJV/C9zTRtcSG95Vn9Ki5cJsh5tb6UdZasaAciIp1j7mEv02v/vgE6tvsFypPkqaiGYpunsg==
+"@project-sunbird/sunbird-resource-library@0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.19.tgz#cc9b12dbbd4ab1bce7d136f29bc567d2ae6e9e2d"
+  integrity sha512-yn24LCq6PAoBrosdJFM0T+j19vopjpxKTkYUtSLZAbFhlYqeKLnZCaBNQNvnwen9A2E9i1fw5UPxfNGOAYhMcw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1996,13 +1996,13 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.12.tgz#342fca9c2c0cdc5121be16cd9fa7ea66febdaa94"
-  integrity sha512-H1qYUlgNP6Sx+/9jrrPi51va8jcNhHjg1fouSkarrcS2z56FoqSvHgyUKk207hY2DvrZNN5OPq2lAR/641/7wQ==
+"@shikshalokam/sl-questionnaire@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-1.1.0.tgz#6cace114b8c191679a03b49626dae44266bfe04d"
+  integrity sha512-rRorRqXqMcG4V6NPWCB5G6Z0WWU1oCTmeWMvVk8SJUp9nTgOs9LWgdWDfKaQC/yi7AHn7J3xCdeUA/D0Jht31A==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
-    tslib "^1.10.0"
+    tslib "^2.0.0"
 
 "@shikshalokam/sl-reports-library@^1.0.7":
   version "1.0.7"

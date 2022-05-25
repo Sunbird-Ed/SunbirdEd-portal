@@ -113,7 +113,7 @@
           <button [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"
             [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}"
             class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" tabindex="0"
-            (click)="showJoinModal(true); this.logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy)">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+            (click)="showJoinModal(true); this.logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy)">{{resourceService?.frmelmnts?.btn?.enroll}}</button>
         </div>
 
         <div class="certified-course__btn py-8" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
@@ -136,7 +136,7 @@
           <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
             [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
             class="sb-btn sb-btn-secondary sb-btn-normal" tabindex="0" (click)="showDashboard()">
-            {{generaliseLabelService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
+            {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
           </button>
         </div>
 

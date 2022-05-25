@@ -394,8 +394,7 @@ async function createWindow() {
     });
     // Create the main window.
     win = new BrowserWindow({
-      titleBarStyle: "hidden",
-      titleBarOverlay: true,
+      titleBarStyle: "customButtonsOnHover",
       show: false,
       minWidth: 700,
       minHeight: 500,
