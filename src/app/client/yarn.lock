@@ -1901,10 +1901,10 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-video-player-v9@^4.6.1":
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.7.0.tgz#c01b703e49021f46dbe72d76d71e68285f2926b1"
-  integrity sha512-i4EuU+CWyjD0vgSfWbtdrnY/Urq+ZtI/o/WXEq+1353we2N7sJbATKwnM02V9qowI+gJflSyNUv6eGGpUA0KNw==
+"@project-sunbird/sunbird-video-player-v9@4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.10.0.tgz#837d4d74ecd24a78927b42e253cacf91fa67d0e2"
+  integrity sha512-p/59QcVpEJI67QArxvpqyp+Ps31qmqgkUI6FWXEJRzsqMM5ZRbzzI0/8+Vo2JuiAs6q9A2occXYPbCwuUGp/WQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.6.4"
 
