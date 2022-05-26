@@ -67,7 +67,7 @@ export default (app, proxyURL) => {
     });
 
     app.post("/learner/rc/certificate/v1/search", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
-        if (_.get(res, 'body')) {
+        if (_.get(res, 'body')) { 
             await course.saveLearnerPassbook(res.body);
             res.status(res.statusCode).send(res.body);
         } else {
