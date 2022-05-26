@@ -78,7 +78,7 @@ export default (app, proxyURL) => {
 
     app.post("/content/course/v1/content/state/read", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
         const contentList = _.get(res, 'body.result.contentList');
-        if (_.get(contentList, 'length')) {
+        if (_.get(contentList, 'length')) { 
             await contentStatus.saveContentStatus(contentList);
             await contentStatus.getLocalContentStatusList(req, res);
         } else {
