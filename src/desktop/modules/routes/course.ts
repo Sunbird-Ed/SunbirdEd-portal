@@ -75,6 +75,12 @@ export default (app, proxyURL) => {
         }
     });
 
+    app.get("/learner/rc/certificate/v1/download/:id", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+        if (_.get(res, 'body')) {
+            res.status(res.statusCode).send(res.body);
+        }
+    }); 
+
 
     app.post("/content/course/v1/content/state/read", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
         const contentList = _.get(res, 'body.result.contentList');
