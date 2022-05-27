@@ -79,7 +79,7 @@ export default (app, proxyURL) => {
         if (_.get(res, 'body')) {
             res.status(res.statusCode).send(res.body);
         }
-    });
+    }); 
 
 
     app.post("/content/course/v1/content/state/read", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
