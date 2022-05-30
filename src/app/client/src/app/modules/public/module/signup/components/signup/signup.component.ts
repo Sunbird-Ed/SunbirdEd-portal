@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import {
   ResourceService,
   ConfigService,
@@ -18,6 +18,7 @@ import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@s
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { map, startWith } from 'rxjs/operators';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -49,12 +50,14 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   termsAndConditionLink: string;
   passwordError: string;
   showTncPopup = false;
-  birthYearOptions: Array<number> = [];
   isMinor: Boolean = false;
   formInputType: string;
   isP1CaptchaEnabled: any;
   yearOfBirth: string;
   isIOSDevice = false;
+  birthYearOptions: Array<string> = [];
+  yobControl = new FormControl();
+  filteredYOB: Observable<number[]>;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -111,11 +114,29 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.signUpForm.disable();
     this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
       ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
+    // @ts-ignore
+    this.filteredYOB = this.yobControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value)),
+    );
   }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.birthYearOptions.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  public isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 
   changeBirthYear(selectedBirthYear) {
-    let _selectedYOB = _.get(selectedBirthYear, 'value');
+    let _selectedYOB = parseInt(_.get(selectedBirthYear, 'option.value'));
     if (this.isIOSDevice) {
       _selectedYOB = parseInt(selectedBirthYear.target.value);
     }
@@ -134,7 +155,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     const endYear = new Date().getFullYear();
     const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
     for (let year = endYear; year > startYear; year--) {
-      this.birthYearOptions.push(year);
+      this.birthYearOptions.push(year.toString());
     }
   }
 
@@ -450,4 +471,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   showAndHidePopup(mode: boolean) {
     this.showTncPopup = mode;
   }
+
+  
 }
