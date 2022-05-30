@@ -283,8 +283,8 @@
                     [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
                     name="{{guestUser?.formatedName || 'Guest'}}">
                   </ngx-avatar>
-                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" aria-label="User Profile"
-                    *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle"
+                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" [attr.aria-label]="'Welcome ' + userProfile?.firstName + ',' + 'Click here to continue to your profile'"
+                    [title]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'" *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle"
                     [size]="48" initialsSize="1" name="{{userProfile?.firstName}}">
                   </ngx-avatar>
                 </div>

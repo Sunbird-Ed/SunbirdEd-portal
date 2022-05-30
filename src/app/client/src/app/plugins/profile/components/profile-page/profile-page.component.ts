@@ -281,7 +281,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       apiPathLegacy: '/certreg/v1',
       rcApiPath: '/learner/rc/${schemaName}/v1',
     }).subscribe((_res) => {
-      console.log('Portal :: CSL response ', _res); // TODO: log!
       if (_res && _res?.certificates?.length > 0) {
         this.otherCertificates = _.get(_res, 'certificates');
         this.otherCertificatesCounts = (_.get(_res, 'certRegCount') ? _.get(_res, 'certRegCount') : 0) + (_.get(_res, 'rcCount') ? _.get(_res, 'rcCount') : 0);
@@ -354,7 +353,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
-        console.log('Portal :: CSL : Download certificate CSL API response ', resp);
       }, error => {
         console.log('Portal :: CSL : Download certificate CSL API failed ', error);
       });
