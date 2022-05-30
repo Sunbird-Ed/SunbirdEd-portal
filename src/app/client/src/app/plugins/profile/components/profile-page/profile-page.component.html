@@ -448,9 +448,9 @@
               <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data?.id">
-                <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
+                <button appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
-                  (click)="downloadOldAndRCCert(data)" tabindex="0">
+                  (click)="downloadOldAndRCCert(data)" tabindex="0" >
                   <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
               <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">

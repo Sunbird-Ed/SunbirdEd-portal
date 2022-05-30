@@ -57,10 +57,34 @@ export default (app, proxyURL) => {
         res.status(res.statusCode).send(res.body);
     });
 
+    app.post("/learner/certreg/v2/certs/search", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+        if (_.get(res, 'body.result.response.content')) {
+            await course.saveLearnerPassbook(res.body.result.response);
+            res.status(res.statusCode).send(res.body);
+        } else {
+            await course.findLearnerPassbook(req, res);
+        }
+    });
+
+    app.post("/learner/rc/certificate/v1/search", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+        if (_.get(res, 'body')) {
+            await course.saveLearnerPassbook(res.body);
+            res.status(res.statusCode).send(res.body);
+        } else {
+            await course.findLearnerPassbook(req, res);
+        }
+    });
+
+    app.get("/learner/rc/certificate/v1/download/:id", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+        if (_.get(res, 'body')) {
+            res.status(res.statusCode).send(res.body);
+        }
+    }); 
+
 
     app.post("/content/course/v1/content/state/read", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
         const contentList = _.get(res, 'body.result.contentList');
-        if (_.get(contentList, 'length')) {
+        if (_.get(contentList, 'length')) { 
             await contentStatus.saveContentStatus(contentList);
             await contentStatus.getLocalContentStatusList(req, res);
         } else {

@@ -259,10 +259,6 @@ export default (app, proxyURL, contentDownloadManager) => {
           res.status(res.statusCode).send(res.body);
       });
 
-      app.post("/certreg/v1/certs/search", customProxy(proxyURL), (req, res) => {
-          res.status(res.statusCode).send(res.body);
-      });
-
       app.get(
         "/learner/questionset/v1/hierarchy/:id",
         async (req, res, next) => {

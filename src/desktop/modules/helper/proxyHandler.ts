@@ -29,6 +29,7 @@ const decorateRequest = async (request, options) => {
     const userToken: any = await userSDK.getUserToken().catch(error => { 
       standardLog.error({ id: 'PROXY_HANDLER_READ_USER_TOKEN_FAILED', message: 'Received error while fetching current user token', error });
     })
+    const userDetails = (loggedInUserSession && loggedInUserSession.userId) ? await userSDK.getLoggedInUser() : undefined;
     if (loggedInUserSession) {
       const userId = loggedInUserSession.userId;
       if (loggedInUserSession.userId) {
@@ -36,6 +37,9 @@ const decorateRequest = async (request, options) => {
       }
       if (userToken) {
         headers['x-authenticated-user-token'] = userToken;
+      }
+      if (userDetails && userDetails.managedToken) { 
+        headers['x-authenticated-for'] = userDetails.managedToken
       }
     }
   }
