@@ -431,7 +431,7 @@ export class AppComponent implements OnInit, OnDestroy {
             let userType;
             if (this.isDesktopApp && this.isGuestUser) {
                userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
-               this.showUserTypePopup = true
+               this.showUserTypePopup = userType ? false : true;
             } else if(this.isGuestUser) {
               userType = localStorage.getItem('userType');
               if(!this.showUserTypePopup && this.isLocationConfirmed){
