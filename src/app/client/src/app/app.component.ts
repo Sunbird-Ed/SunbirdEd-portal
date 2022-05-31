@@ -752,7 +752,11 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public updateFrameWork(event) {
     if (this.isGuestUser && !this.guestUserDetails) {
-      const user = { name: 'guest', formatedName: 'Guest', framework: event };
+      const user:any = { name: 'guest', formatedName: 'Guest', framework: event };
+      const userType = localStorage.getItem('userType');
+      if (userType) {
+        user.role = userType;
+      }
       this.userService.createGuestUser(user).subscribe(data => {
         this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
       }, error => {
