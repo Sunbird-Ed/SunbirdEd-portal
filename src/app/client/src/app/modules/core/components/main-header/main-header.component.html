@@ -278,14 +278,15 @@
                     aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
                     (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                       width="48"></div>
-                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" aria-label="Guest User"
-                    *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
-                    [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
-                    name="{{guestUser?.formatedName || 'Guest'}}">
+                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
+                    [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{guestUser?.formatedName || 'Guest'}}"
+                    [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
+                    [title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
                   </ngx-avatar>
-                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" [attr.aria-label]="'Welcome ' + userProfile?.firstName + ',' + 'Click here to continue to your profile'"
-                    [title]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'" *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle"
-                    [size]="48" initialsSize="1" name="{{userProfile?.firstName}}">
+                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)"
+                    [style]="SbtavtarDesktopStyle" [size]="48" initialsSize="1" name="{{userProfile?.firstName}}"
+                    [attr.aria-label]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
+                    [title]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'">
                   </ngx-avatar>
                 </div>
               </a>
