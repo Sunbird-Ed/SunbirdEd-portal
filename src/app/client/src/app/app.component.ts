@@ -208,7 +208,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setTagManager() {
-    console.log('Tag Manager');
     window['TagManager'] = SBTagModule.instance;
     window['TagManager'].init();
     if (this.userService.loggedIn) {
