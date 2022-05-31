@@ -188,10 +188,6 @@ export class MainMenuComponent implements OnInit {
     this.cacheService.removeAll();
   }
 
-  showSideBar() {
-    jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
-  }
-
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
     if (authroles) {
