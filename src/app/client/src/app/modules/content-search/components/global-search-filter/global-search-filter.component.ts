@@ -19,7 +19,6 @@ import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import { UserService } from '@sunbird/core';
 import { IFacetFilterFieldTemplateConfig } from 'common-form-elements-web-v9';
 import { CacheService } from 'ng2-cache-service';
-import { keyBy } from 'lodash';
 
 @Component({
   selector: 'app-global-search-filter',
