@@ -10,7 +10,7 @@ import {
   SimpleChanges, ViewChild
 } from '@angular/core';
 import * as _ from 'lodash-es';
-import { ResourceService, UtilService } from '@sunbird/shared';
+import { ResourceService, UtilService, ConnectionService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -19,6 +19,7 @@ import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import { UserService } from '@sunbird/core';
 import { IFacetFilterFieldTemplateConfig } from 'common-form-elements-web-v9';
 import { CacheService } from 'ng2-cache-service';
+import { keyBy } from 'lodash';
 
 @Component({
   selector: 'app-global-search-filter',
@@ -34,6 +35,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   public selectedMediaType: string;
   public selectedFilters: any = {};
   public refresh = true;
+  public isConnected = true;
   public filterChangeEvent = new Subject();
   private unsubscribe$ = new Subject<void>();
   public resetFilterInteractEdata: IInteractEventEdata;
@@ -48,7 +50,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
 
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, private utilService: UtilService,
-    public userService: UserService, private cacheService: CacheService) {
+    public userService: UserService, private cacheService: CacheService, public connectionService: ConnectionService) {
   }
 
   onChange(facet) {
@@ -112,6 +114,9 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         if (window.innerWidth <= 992 ) {
           this.isOpen = false;
         }
+    this.connectionService.monitor().subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
   }
 
   public resetFilters() {
@@ -212,6 +217,12 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         channelIds.push(data.identifier);
       });
       this.selectedFilters.channel = channelIds;
+    }
+    if(this.utilService.isDesktopApp && queryFilters.selectedTab === 'mydownloads' && this.isConnected) {
+      this.queryParamsToOmit = this.queryParamsToOmit && this.queryParamsToOmit.length ? this.queryParamsToOmit.push('key') : ['key']
+      if(this.selectedFilters.key) {
+        delete this.selectedFilters.key;
+      }
     }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
