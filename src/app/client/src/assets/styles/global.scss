@@ -1527,8 +1527,3 @@ html[layout=joy] sb-form .multi-select-container .list-border {
   }
 
 }
-html[data-theme=Darkmode] {
-  .field>label, .inline.fields>label, .ui.modal .ui.radio.checkbox .box, .ui.radio.checkbox label{
-    color: var(--black);
-  }
-}
