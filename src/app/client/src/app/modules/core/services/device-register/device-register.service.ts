@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
-import { ConfigService} from '@sunbird/shared';
-import dayjs from 'dayjs';
+import { ConfigService,  HttpOptions} from '@sunbird/shared';
+import * as dayjs from 'dayjs';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
 import {Observable, Subscription, of} from 'rxjs';
