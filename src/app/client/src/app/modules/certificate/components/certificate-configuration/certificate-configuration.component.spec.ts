@@ -754,6 +754,21 @@ describe("CertificateConfigurationComponent", () => {
         });
     })
 
+    describe("ngOnDestroy", () => {
+        it('should destroy sub', () => {
+            component.unsubscribe$ = {
+                next: jest.fn(),
+                complete: jest.fn()
+            } as any;
+            mockUploadCertificateService.certificate = {
+                next: jest.fn()
+            } as any;
+            component.ngOnDestroy();
+            expect(component.unsubscribe$.next).toHaveBeenCalled();
+            expect(component.unsubscribe$.complete).toHaveBeenCalled();
+        });
+    });
+
    
 
 
