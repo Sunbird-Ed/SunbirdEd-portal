@@ -574,6 +574,9 @@ public viewAll(event) {
      (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
     (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
     searchQueryParams['selectedTab'] = 'all';
+  if (this.queryParams.channel) {
+    searchQueryParams['channel'] = this.queryParams.channel;
+  }
     searchQueryParams['visibility'] = [];
     searchQueryParams['appliedFilters'] = true;
     const sectionUrl = '/resources' + '/view-all/' + event.name.replace(/\s/g, '-');

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-credits-and-licence',
@@ -10,6 +11,8 @@ import * as _ from 'lodash-es';
 export class CreditsAndLicenceComponent implements OnInit {
 
   @Input() contentData;
+  public transcriptsInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
   instance: string;
   isCollapsed = false;
   showDownloadPopup = false;
@@ -51,6 +54,11 @@ export class CreditsAndLicenceComponent implements OnInit {
     }
   }
   dowloadTranscript() {
+    this.transcriptsInteractEdata = {
+      id: 'download-transcripts',
+      type: 'click',
+      pageid: 'content-details'
+    }
     this.showDownloadPopup = false;
     this.createOptionOrDownload(true);
   }

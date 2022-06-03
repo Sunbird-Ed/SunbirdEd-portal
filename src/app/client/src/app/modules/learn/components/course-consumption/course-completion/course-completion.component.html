@@ -12,14 +12,15 @@
               <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
             </div>
           </div>
-          <div class="course-complete-para mt-32"
+          <div class="course-complete-para mt-32 sb-color-warning"
             *ngIf="certificateDescription && !certificateDescription?.isCertificate">
-            <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</p>
+            <img src="assets/images/alert.svg" width="22px" height="22px" alt="Cpu load warning" class="mr-8">
+            <span>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</span>
           </div>
           <div class="course-complete-para mt-32" *ngIf="certificateDescription && certificateDescription?.description">
             <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
           </div>
-          <div class="course-complete-para mt-32" *ngIf="certificateDescription">
+          <div class="course-complete-para mt-32 sb-color-primary" *ngIf="certificateDescription && certificateDescription?.isCertificate">
             <p class="fsmall mb-0">{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
           </div>
         </div>
