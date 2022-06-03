@@ -1,22 +1,8 @@
 {
-  "compileOnSave": false,
-  "angularCompilerOptions": {
-    "genDir": "aot",
-    "debug": true,
-    "enableIvy": false
-  },
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
-    "module": "esnext",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es5",
+    "outDir": "../out-tsc/spec",
+    "baseUrl": "./src",
     "paths": {
       "@sunbird/core": [
         "app/modules/core"
@@ -89,22 +75,21 @@
       ],
       "@sunbird/groups": [
         "app/modules/groups"
-      ],
-      "lodash-es": [
-        "../node_modules/lodash/"
       ]
     },
-    "typeRoots": [
-      "./node_modules/@types"
+    "types": [
+      "node",
+      "reflect-metadata",
+      "jest"
     ],
-    "removeComments": true,
-    "lib": [
-      "es2017",
-      "es6",
-      "dom"
-    ]
+    "resolveJsonModule": true
   },
-  "exclude": [
-    "**/*.spec.data.ts"
+  "files": [
+    "setup-jest.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts"
   ]
 }

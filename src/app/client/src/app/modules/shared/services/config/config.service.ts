@@ -17,36 +17,36 @@ export class ConfigService {
    * property containing url config
    *
    */
-  urlConFig = (<any>urlConfig.default);
+  urlConFig = (<any>urlConfig['default']);
   /**
    * property containing drop down config
    *
    */
-  dropDownConfig = (<any>dropDownConfig.default);
+  dropDownConfig = (<any>dropDownConfig['default']);
   /**
    * property containing roles config
    *
    */
-  rolesConfig = (<any>rolesConfig.default);
+  rolesConfig = (<any>rolesConfig['default']);
   /**
    * property containing app config
    *
    */
-  appConfig = (<any>appConfig.default);
+  appConfig = (<any>appConfig['default']);
   /**
   * property containing editor config
   *
   */
-  editorConfig = (<any>editorConfig.default);
+  editorConfig = (<any>editorConfig['default']);
 
   /**
    * Constants to configure the app
    */
-  constants = (<any>constants.default);
+  constants = (<any>constants['default']);
   /**
   * property containing offline application config
   *
   */
-  offlineConfig = (<any>offlineConfig.default);
+  offlineConfig = (<any>offlineConfig['default']);
 }
 
