@@ -262,54 +262,6 @@
             "browserTarget": "src:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "sourceMap": true,
-            "scripts": [
-              "node_modules/epubjs/dist/epub.js",
-              "src/assets/libs/iziToast/iziToast.min.js",
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/@project-sunbird/telemetry-sdk/index.js",
-              "src/assets/libs/semantic.min.js",
-              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
-              "node_modules/leaflet/dist/leaflet.js"
-            ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/assets/styles/semantic/semantic.min.css",
-              "node_modules/font-awesome/css/font-awesome.css",
-              "src/assets/styles/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/assets/styles/"
-              ]
-            },
-            "assets": [
-              "src/assets",
-              "src/thirdparty",
-              "src/favicon.png"
-            ],
-            "codeCoverageExclude": [
-              "src/assets/**",
-              "src/thidparty/**",
-              "src/app/modules/offline/**",
-              "src/app/modules/**/**/index.ts",
-              "src/app/plugins/profile/index.ts",
-              "src/app/plugins/profile/services/index.ts",
-              "src/app/testUtil/index.ts",
-              "src/app/client/src/**/*.spec.ts",
-              "src/app/client/src/**/*.spec.data.ts",
-              "src/app/client/src/**/*.module.ts",
-              "src/app/modules/cbse-program/**/**"
-            ]
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {

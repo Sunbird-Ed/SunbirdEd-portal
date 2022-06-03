@@ -159,7 +159,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.coursesService = coursesService;
     this.userService = userService;
     this.router.onSameUrlNavigation = 'reload';
-    this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.sortingOptions = this.configService?.dropDownConfig?.FILTER?.RESOURCES?.sortingOptions;
     this._enrolledSectionNames = [_.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections'), _.get(this.resourceService, 'tbk.trk.frmelmnts.lbl.mytrainings'),
     _.get(this.resourceService, 'crs.trk.frmelmnts.lbl.mytrainings'), _.get(this.resourceService, 'tvc.trk.frmelmnts.lbl.mytrainings')];
   }
