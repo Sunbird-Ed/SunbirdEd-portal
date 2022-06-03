@@ -91,7 +91,7 @@
                 <!-- <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i> -->
                 <span role="button" [attr.aria-pressed]="showPassword == true ? true : false" (click)="displayPassword()"><img class="password-showhideimage" src="{{ showPassword ? 'assets/images/password-hidden.svg' : 'assets/images/password-visibile.svg'}}" role="button" alt="show hide password" tabindex="0"></span>
               </div>
-              <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{passwordError}}</label>
+              <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{passwordError}}.</label>
             </div>
             <div class="required field mb-16">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors)">{{resourceService.frmelmnts.lbl.confirmPassword}}<span class="sb-color-red">*</span></label>
@@ -100,8 +100,8 @@
                 formControlName="confirmPassword" type="password" name="confirmPassword" placeholder="{{resourceService.frmelmnts.lbl.reEnterPassword}}">
             </div>
             <div class="ui basic blue error label pt-0" tabindex="0" *ngIf="signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors">{{resourceService.frmelmnts.lbl.errorConfirmPassword}}</div>
-            <div class="sb-requirement-field mb-8 font-weight-bold">
-              {{resourceService.frmelmnts.lbl.fieldsmarked}}<span class="sb-error">*</span>{{resourceService.frmelmnts.lbl.mandatory  }}
+            <div class="sb-requirement-field mb-8 font-weight-bold d-flex">
+              {{resourceService.frmelmnts.lbl.fieldsmarked}}<div class="sb-color-red">*</div>{{resourceService.frmelmnts.lbl.mandatory  }}
           </div>
             <!-- Google invisible recaptcha -->
             <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" tabindex='-1' #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
