@@ -365,7 +365,7 @@ form.On {
       left: 0;
       right: 0;
       text-align: center;
-      padding: 1rem 0 2rem 0;
+      padding: calculateRem(16px) 0 calculateRem(32px) 0;
     }
 
     .register-content{
@@ -373,11 +373,11 @@ form.On {
       max-width: calculateRem(480px);
       margin-left: auto;
       margin-right: auto;
-      padding: 0 1.5rem;
+      padding: 0 calculateRem(24px);
 
       .title{
         color: var(--primary-color);
-        font-size: 1.5rem;
+        font-size: calculateRem(24px);
         font-weight: bold;
         text-align: center;
       }
