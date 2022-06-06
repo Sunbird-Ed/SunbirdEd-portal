@@ -149,6 +149,13 @@
           <div class="text-center mb-24">
             <img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
           </div>
+
+          <div class="hide">
+            <app-signup-basic-info *ngIf="signupStage === Stage.BASIC_INFO" (triggerNext)="next()"></app-signup-basic-info>
+            <app-signup-onboarding-info *ngIf="signupStage === Stage.ONBOARDING_INFO" (triggerNext)="next()"></app-signup-onboarding-info>
+            <app-signup-email-password *ngIf="signupStage === Stage.EMAIL_PASSWORD" (triggerNext)="next()"></app-signup-email-password>
+          </div>
+
           <div *ngIf="showSignUpForm" [appTelemetryStart]="telemetryStart">
             <h2 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="title text-center">
               {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h2>
