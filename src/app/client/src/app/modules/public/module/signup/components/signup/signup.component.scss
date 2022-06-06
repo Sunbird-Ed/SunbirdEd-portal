@@ -332,9 +332,9 @@ form.On {
     height: 100%;
 
       .image{
-        width: 100px;
+        width: calculateRem(100px);
         background: #fff;
-        height: 100px;
+        height: calculateRem(100px);
         display: flex;
         z-index: 999999;
         position: absolute;
@@ -346,16 +346,16 @@ form.On {
         bottom: 0;
         transform: translate(-50%, -50%);
         img{
-          width: 86px;
-          height: 80px;
-          padding-left: 1rem;
+          width: calculateRem(86px);
+          height: calculateRem(80px);
+          padding-left: calculateRem(16px);
         }
       }
   
   }  
   
   .right-panel {
-    background: #fff;
+    background: var(--white);
     height: 100%;
     position: relative;
 
@@ -369,18 +369,16 @@ form.On {
     }
 
     .register-content{
-      min-width: 360px;
-      max-width: 480px;
+      min-width: calculateRem(360px);
+      max-width: calculateRem(480px);
       margin-left: auto;
       margin-right: auto;
       padding: 0 1.5rem;
 
       .title{
-        color: #024F9D;
+        color: var(--primary-color);
         font-size: 1.5rem;
         font-weight: bold;
-        letter-spacing: 0;
-        line-height: 2rem;
         text-align: center;
       }
     }
