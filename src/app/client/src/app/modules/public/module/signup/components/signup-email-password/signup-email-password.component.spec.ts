@@ -1,22 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SignupEmailPasswordComponent } from './signup-email-password.component';
 
 describe('SignupEmailPasswordComponent', () => {
   let component: SignupEmailPasswordComponent;
-  let fixture: ComponentFixture<SignupEmailPasswordComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SignupEmailPasswordComponent ]
-    })
-    .compileComponents();
+  beforeAll(() => {
+    component = new SignupEmailPasswordComponent();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SignupEmailPasswordComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      jest.clearAllMocks();
   });
 
   it('should create', () => {

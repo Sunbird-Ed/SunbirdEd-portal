@@ -1,25 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SignupBasicInfoComponent } from './signup-basic-info.component';
 
 describe('SignupBasicInfoComponent', () => {
   let component: SignupBasicInfoComponent;
-  let fixture: ComponentFixture<SignupBasicInfoComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SignupBasicInfoComponent ]
-    })
-    .compileComponents();
+  beforeAll(() => {
+      component = new SignupBasicInfoComponent();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SignupBasicInfoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      jest.clearAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be create a instance', () => {
+      expect(component).toBeTruthy();
   });
+
 });
