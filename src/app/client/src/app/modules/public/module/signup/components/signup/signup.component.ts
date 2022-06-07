@@ -19,6 +19,14 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { map, startWith } from 'rxjs/operators';
+
+export enum SignUpStage {
+  BASIC_INFO = 'basic_info',
+  ONBOARDING_INFO = 'onboarding_info',
+  EMAIL_PASSWORD = 'email_password',
+  OTP = 'otp'
+}
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -58,6 +66,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   birthYearOptions: Array<string> = [];
   yobControl = new FormControl();
   filteredYOB: Observable<number[]>;
+  signupStage: SignUpStage;
+  get Stage() { return SignUpStage; }
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -70,6 +80,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.signupStage = SignUpStage.BASIC_INFO;
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
       this.telemetryLogEvents('fetch-terms-condition', true);
@@ -472,5 +483,25 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showTncPopup = mode;
   }
 
+  public next(): void {
+    console.log("CURRENT_STAGE::"+this.signupStage);
+    switch(this.signupStage) {
+      case this.Stage.BASIC_INFO:
+        this.signupStage = this.Stage.ONBOARDING_INFO;
+        break;
+
+      case this.Stage.ONBOARDING_INFO:
+        this.signupStage = this.Stage.EMAIL_PASSWORD;
+        break;
+
+      case this.Stage.EMAIL_PASSWORD:
+        this.signupStage = this.Stage.OTP;
+        break;
+
+      default:
+        this.signupStage = this.Stage.BASIC_INFO;
+        break;
+    }
+  }
   
 }
