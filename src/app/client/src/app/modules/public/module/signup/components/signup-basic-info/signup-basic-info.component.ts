@@ -20,6 +20,8 @@ export class SignupBasicInfoComponent implements OnInit {
   public personalInfoForm: FormGroup;
   @Input() isIOSDevice;
   @Input() telemetryImpression;
+  @Input() submitInteractEdata;
+  @Input() telemetryCdata;
   birthYearOptions: Array<string> = [];
   filteredYOB: Observable<number[]>;
   yearOfBirth: string;

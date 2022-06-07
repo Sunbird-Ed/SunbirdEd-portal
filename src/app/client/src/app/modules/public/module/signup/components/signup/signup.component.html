@@ -43,6 +43,8 @@
                 <app-signup-basic-info
                   [isIOSDevice]="isIOSDevice" 
                   [telemetryImpression]="telemetryImpression" 
+                  [submitInteractEdata]="submitInteractEdata" 
+                  [telemetryCdata]="telemetryCdata" 
                   *ngSwitchCase="Stage.BASIC_INFO" 
                   [startingForm]="signUpForm.get('basicInfo').value" 
                   (subformInitialized)="subformInitialized('basicInfo', $event)" 
