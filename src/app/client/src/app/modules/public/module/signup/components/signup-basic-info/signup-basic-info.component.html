@@ -1,5 +1,46 @@
-<p>
-    Sign up 
-    Name and Date of Birth Field
-</p>
-<button (click)="next()">continue</button>
+<div [formGroup]="personalInfoForm">
+    
+    <div class="required field mb-8">
+        <label for="signup-form-name" class="mb-10 font-weight-bold">
+            {{resourceService.frmelmnts?.lbl?.name}}
+        </label>
+        
+        <input id="signup-form-name" class="sb-form-control"
+            [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
+            formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
+        
+        <div class="ui basic blue error label pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
+        <div class="ui basic blue error label pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
+
+    </div>
+
+    <div class="year-birth my-8 required">
+        <mat-form-field *ngIf="!isIOSDevice" appearance="fill" class="sb-mat__dropdown w-100">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
+            </mat-label>
+
+            <input type="text" (keypress)="isNumber(event)" formControlName="yearOfBirth" tabindex="0"
+            placeholder="Pick one" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" matInput
+            [matAutocomplete]="auto">
+            <mat-autocomplete (optionSelected)="changeBirthYear($event)" role="combobox" #auto="matAutocomplete">
+                <mat-option role="listbox" *ngFor="let option of filteredYOB | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <label *ngIf="isIOSDevice">
+            <select name="birthYearOptions" id="birthYearOptions" class="sb-form-control birthYearOptions"
+            (change)="changeBirthYear($event, true)">
+            <option value="" disabled selected>{{resourceService.frmelmnts?.lbl?.year}}</option>
+            <option *ngFor="let option of birthYearOptions" [value]="option">{{option}}</option>
+            </select>
+        </label>
+       
+    </div>
+
+    <button [attr.aria-disabled]="disableSubmitBtn" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
+        [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+        [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"
+        class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0" (click)="next()">Continue</button>
+</div>
