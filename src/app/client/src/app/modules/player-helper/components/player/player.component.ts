@@ -538,9 +538,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   closeModal() {
+    this.focusOnReplay();
     this.ratingPopupClose.emit({});
   }
-
+  
+  focusOnReplay() {
+    if (this.playerType === 'quml-player') {
+      const replayButton: HTMLElement = document.querySelector('.replay-section');
+      if (replayButton) {
+        replayButton.focus();
+      }
+    }
+  }
+  
   public addUserDataToContext() {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
