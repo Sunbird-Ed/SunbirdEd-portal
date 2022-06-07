@@ -39,8 +39,8 @@
        
     </div>
 
-    <button [attr.aria-disabled]="disableSubmitBtn" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
+    <button [attr.aria-disabled]="!personalInfoForm.valid" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
         [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-        [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"
+        [ngClass]="{'sb-btn-disabled':!personalInfoForm.valid, 'sb-btn-primary':personalInfoForm.valid}"
         class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0" (click)="next()">Continue</button>
 </div>
