@@ -77,23 +77,6 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   ngOnInit() {
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    // this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
-    //   this.telemetryLogEvents('fetch-terms-condition', true);
-    //     const response = _.get(data, 'result.response.value');
-    //     if (response) {
-    //       try {
-    //         const tncConfig = this.utilService.parseJson(response);
-    //         this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
-    //         this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
-    //       } catch (e) {
-    //         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    //       }
-    //     }
-    //   }, (err) => {
-    //   this.telemetryLogEvents('fetch-terms-condition', false);
-    //     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    //   }
-    // );
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
@@ -111,40 +94,10 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
     }
     this.initializeFormFields();
     this.setInteractEventData();
-
     // Telemetry Start
     this.signUpTelemetryStart();
-
-    //this.initiateYearSelecter();
-    // disabling the form as age should be selected
-    //this.signUpForm.disable();
     this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
       ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
-  }
-
-
-  // changeBirthYear(selectedBirthYear) {
-  //   let _selectedYOB = _.get(selectedBirthYear, 'value');
-  //   if (this.isIOSDevice) {
-  //     _selectedYOB = parseInt(selectedBirthYear.target.value);
-  //   }
-  //   if (this.signUpForm.get('uniqueContact').value === true) {
-  //   } else {
-  //     this.signUpForm.enable();
-  //   }
-  //   this.disableForm = false;
-  //   const currentYear = new Date().getFullYear();
-  //   this.yearOfBirth = `${_selectedYOB}`;
-  //   const userAge = currentYear - _selectedYOB;
-  //   this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;
-  // }
-
-  initiateYearSelecter() {
-    const endYear = new Date().getFullYear();
-    const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
-    for (let year = endYear; year > startYear; year--) {
-      this.birthYearOptions.push(year);
-    }
   }
 
   signUpTelemetryStart() {
