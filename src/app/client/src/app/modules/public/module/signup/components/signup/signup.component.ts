@@ -172,7 +172,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   changeStep() {
-    console.log("CURRENT_STAGE::"+this.signupStage);
     switch(this.signupStage) {
       case this.Stage.BASIC_INFO:
         this.signupStage = this.Stage.ONBOARDING_INFO;
@@ -195,6 +194,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   submitForm() {
     const formValues = this.signUpForm.value;
     // submit the form with a service
+    // TODO Complete submit function
     console.log(formValues);  
   }
 
