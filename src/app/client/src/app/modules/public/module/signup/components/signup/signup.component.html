@@ -133,12 +133,12 @@
 
   <div class="layout">
     <div class="left-panel">
-      <div class="image"><img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
+      <div class="image"><img alt={{tenantName}} src="{{logo}}">
       </div>
     </div>
 
-    <div class="right-panel">
-      <div class="login-content">
+    <div class="right-panel p-16">
+      <div class="login-content py-16 px-8">
         <label class="mb-0 mx-8">Already have an account</label>
         <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" type="submit">Login</button>
       </div>
@@ -160,7 +160,7 @@
             <h2 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="title text-center">
               {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h2>
             <div class="year-birth my-8 required">
-              <mat-form-field *ngIf="!isIOSDevice" appearance="fill" class="sb-mat__dropdown w-100">
+              <mat-form-field *ngIf="!isIOSDevice" appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--autocmp w-100">
                 <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
                 </mat-label>
 
