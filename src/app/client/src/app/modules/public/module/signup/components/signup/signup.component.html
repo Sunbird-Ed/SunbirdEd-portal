@@ -35,7 +35,7 @@
             <ng-container [ngSwitch]="signupStage">
               <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
                 [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO"
+                *ngSwitchCase="Stage.BASIC_INFO" (triggerIsMinor)="triggerIsMinor($event)"
                 (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-basic-info>
               <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" (triggerNext)="changeStep()">

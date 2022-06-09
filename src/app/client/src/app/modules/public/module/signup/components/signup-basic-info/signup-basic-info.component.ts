@@ -15,6 +15,7 @@ import * as _ from 'lodash-es';
 export class SignupBasicInfoComponent implements OnInit {
 
   @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
+  @Output() triggerIsMinor: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
   public personalInfoForm: FormGroup;
   @Input() isIOSDevice;
@@ -87,6 +88,7 @@ export class SignupBasicInfoComponent implements OnInit {
     this.yearOfBirth = `${_selectedYOB}`;
     const userAge = currentYear - _selectedYOB;
     this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;
+    this.triggerIsMinor.emit(this.isMinor);
   }
 
 }
