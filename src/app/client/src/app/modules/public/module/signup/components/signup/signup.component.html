@@ -12,20 +12,20 @@
 
     <div class="right-panel d-flex flex-dc flex-jc-center p-16 pb-72">
       <div class="login-content w-100 fix-bottom py-16 px-8">
-        <label class="mb-0 mx-8">Already have an account</label>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="redirectToLogin()" tabindex="0" type="submit">LOGIN</button>
+        <label class="mb-0 mx-8">Already have an account?</label>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()" aria-label="Already have an account? Login here" tabindex="0" type="submit">Login</button>
       </div>
 
       <div class="register-content">
 
-        <div class="text-center mb-24">
-          <img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
+        <div class="text-center mb-8">
+          <img class="image centered" tabindex="0" aria-label="" alt={{tenantName}} height="56" src="{{logo}}">
         </div>
 
-        <h3 class="sb-color-primary text-center font-weight-bold mb-16">Welcome to Sunbird</h3>
+        <h3 tabindex="0" class="sb-color-primary text-center font-weight-bold mb-8">{{resourceService.frmelmnts.lbl.welcomeToInstance | interpolate:'{instance}': instance}}</h3>
 
-        <h5 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
-          class="font-weight-bold text-center mb-24">
+        <h5 tabindex="0" *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
+          class="font-weight-bold text-center mb-16">
           {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
         <div *ngIf="true" [appTelemetryStart]="telemetryStart">
