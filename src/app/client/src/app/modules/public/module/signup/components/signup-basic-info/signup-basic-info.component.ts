@@ -64,7 +64,8 @@ export class SignupBasicInfoComponent implements OnInit {
       localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
       const signupStage1Details = {
         name: userDetails.name,
-        yearOfBirth: this.personalInfoForm.controls.yearOfBirth.value
+        yearOfBirth: this.personalInfoForm.controls.yearOfBirth.value,
+        isMinor: this.isMinor
       }
       this.subformInitialized.emit(signupStage1Details);
       this.triggerNext.emit();
