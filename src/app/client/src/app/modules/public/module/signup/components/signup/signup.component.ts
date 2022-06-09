@@ -176,15 +176,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       case this.Stage.BASIC_INFO:
         this.signupStage = this.Stage.ONBOARDING_INFO;
         break;
-
       case this.Stage.ONBOARDING_INFO:
         this.signupStage = this.Stage.EMAIL_PASSWORD;
         break;
-
       case this.Stage.EMAIL_PASSWORD:
         this.signupStage = this.Stage.OTP;
         break;
-
       default:
         this.signupStage = this.Stage.BASIC_INFO;
         break;
