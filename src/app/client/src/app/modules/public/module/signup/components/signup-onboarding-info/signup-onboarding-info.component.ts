@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 
 @Component({
@@ -8,6 +9,8 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 })
 export class SignupOnboardingInfoComponent implements OnInit {
 
+  @Input() startingForm: FormGroup;
+  @Output() subformInitialized: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
   @Output() triggerNext = new EventEmitter();
   showEditUserDetailsPopup = false;
   showFullScreenLoader = false;
@@ -16,11 +19,8 @@ export class SignupOnboardingInfoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  next() {
-    this.triggerNext.emit();
-  }
-
   onRegisterSubmit(event) {
-    console.log('user registration submit ', event);
+    console.log('user registration submit ', event); //TODO
+    this.triggerNext.emit();
   }
 }
