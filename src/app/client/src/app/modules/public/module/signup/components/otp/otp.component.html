@@ -75,30 +75,32 @@
 
   <!-- Terms and Conditions popup -->
   <!-- For Minor -->
-  <div *ngIf="startingForm && startingForm?.basicInfo?.isMinor" class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
+  <div *ngIf="startingForm && startingForm?.basicInfo?.isMinor"
+    class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
     <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
-           formControlName="tncAccepted" name="tncAccepted">
+      formControlName="tncAccepted" name="tncAccepted">
     <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMinor}}
       <a class="text-underline fsmall" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
-      {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
-    </a> {{resourceService?.frmelmnts?.lbl?.tncLabelForMinorSub | interpolate:'{instance}': instance}}
-  </label>
+        {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
+      </a> {{resourceService?.frmelmnts?.lbl?.tncLabelForMinorSub | interpolate:'{instance}': instance}}
+    </label>
   </div>
   <!-- For Minor -->
 
   <!-- For Major -->
-  <div *ngIf="startingForm && !startingForm?.basicInfo?.isMinor" class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
+  <div *ngIf="startingForm && !startingForm?.basicInfo?.isMinor"
+    class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
     <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
-           formControlName="tncAccepted" name="tncAccepted">
+      formControlName="tncAccepted" name="tncAccepted">
     <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMajor}}
       <a class="text-underline fsmall" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
-      {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
-    </a>
-  </label>
+        {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
+      </a>
+    </label>
   </div>
   <!-- For Major -->
-    <!-- Terms and Conditions popup -->
-  
+  <!-- Terms and Conditions popup -->
+
   <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
 
     <button type="button" [attr.readonly]="disableResendButton" appTelemetryInteract
@@ -116,4 +118,5 @@
   </div>
   <a tabindex="0" role="button" aria-label="re captcha" (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
 </form>
-<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp *ngIf="showTncPopup"></app-tnc-popup>
+<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
+  *ngIf="showTncPopup"></app-tnc-popup>

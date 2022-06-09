@@ -98,21 +98,21 @@ export class OtpComponent implements OnInit {
     this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
       ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
   }
-resendOtpEnablePostTimer() {
-  this.counter = 20;
-  this.disableResendButton = false;
-  setTimeout(() => {
-    this.disableResendButton = true;
-  }, 22000);
-  const interval = setInterval(() => {
-    this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
-    this.counter--;
-    if (this.counter < 0) {
-      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
-      clearInterval(interval);
-    }
-  }, 1000);
-}
+  resendOtpEnablePostTimer() {
+    this.counter = 20;
+    this.disableResendButton = false;
+    setTimeout(() => {
+      this.disableResendButton = true;
+    }, 22000);
+    const interval = setInterval(() => {
+      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      this.counter--;
+      if (this.counter < 0) {
+        this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
   verifyOTP() {
     const wrongOTPMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
       this.resourceService.frmelmnts.lbl.wrongEmailOTP;
@@ -261,7 +261,7 @@ resendOtpEnablePostTimer() {
   }
 
   resendOTP(captchaResponse?) {
-    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    this.resendOtpCounter = this.resendOtpCounter + 1;
     if (this.resendOtpCounter >= this.maxResendTry) {
       this.disableResendButton = false;
       this.infoMessage = '';
