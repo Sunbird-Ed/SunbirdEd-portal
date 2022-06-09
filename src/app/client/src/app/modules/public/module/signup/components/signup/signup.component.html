@@ -55,6 +55,10 @@
 
           </form>
         </div>
+        <div *ngIf="!showSignUpForm">
+          <app-otp [isMinor]="isMinor" [yearOfBirth]="yearOfBirth" [signUpdata]="signUpForm"
+            [tncLatestVersion]="tncLatestVersion" (redirectToParent)="showParentForm($event)"></app-otp>
+        </div>
       </div>
     </div>
   </div>
