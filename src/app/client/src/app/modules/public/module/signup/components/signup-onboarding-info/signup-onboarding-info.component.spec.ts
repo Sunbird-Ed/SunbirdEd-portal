@@ -20,21 +20,4 @@ describe('SignupOnboardingInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should close the profile popup on onLocationModalClose() called', () => {
-    const event = {
-      isSubmitted: false
-    };
-    component.showEditUserDetailsPopup = !component.showEditUserDetailsPopup;
-    component.onLocationModalClose(event);
-    expect(component.showFullScreenLoader).toBe(false);
-  });
-
-  it('should close the profile popup on onLocationModalClose() called when submission is true', () => {
-    const event = {
-      isSubmitted: true
-    };
-    component.showEditUserDetailsPopup = !component.showEditUserDetailsPopup;
-    component.onLocationModalClose(event);
-    expect(component.showFullScreenLoader).toBe(true);
-  });
 });

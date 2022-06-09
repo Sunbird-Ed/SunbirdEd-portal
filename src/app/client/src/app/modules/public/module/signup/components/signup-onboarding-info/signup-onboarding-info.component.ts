@@ -20,17 +20,6 @@ export class SignupOnboardingInfoComponent implements OnInit {
     this.triggerNext.emit();
   }
 
-  public onLocationModalClose(event) {
-    this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
-    this.showFullScreenLoader = !event?.isSubmitted ? false : true;
-    setTimeout(() => {
-      if (this.showFullScreenLoader) {
-        this.showFullScreenLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      }
-    }, 5000);
-  }
-
   onRegisterSubmit(event) {
     console.log('user registration submit ', event);
   }
