@@ -35,7 +35,7 @@ export enum SignUpStage {
 export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public unsubscribe = new Subject<void>();
-  signUpForm: FormGroup;
+  signUpForm;
   sbFormBuilder: FormBuilder;
   showContact = 'phone';
   disableSubmitBtn = true;
@@ -160,15 +160,15 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initializeFormFields() {
-    this.signUpForm = this.sbFormBuilder.group({
+    this.signUpForm = {
       basicInfo: null,
       onboardingInfo: null,
       emailPassInfo: null
-    });
+    };
   }
 
-  subformInitialized(name: string, group: FormGroup) {
-    this.signUpForm.setControl(name, group);
+  subformInitialized(name: string, group: object) {
+    this.signUpForm[name] = group
   }
 
   changeStep() {
