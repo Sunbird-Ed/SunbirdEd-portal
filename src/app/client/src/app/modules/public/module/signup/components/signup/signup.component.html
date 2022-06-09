@@ -24,8 +24,7 @@
 
         <h3 class="sb-color-primary text-center font-weight-bold mb-16">Welcome to Sunbird</h3>
 
-        <h5 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
-          class="font-weight-bold text-center mb-24">
+        <h5 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="font-weight-bold text-center mb-24">
           {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
         <div *ngIf="true" [appTelemetryStart]="telemetryStart">
@@ -33,15 +32,26 @@
           <form class="" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
 
             <ng-container [ngSwitch]="signupStage">
-              <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
-                [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm.get('basicInfo').value"
-                (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
-              </app-signup-basic-info>
-              <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" (triggerNext)="changeStep()">
-              </app-signup-onboarding-info>
-              <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" (submitForm)="submitForm()">
-              </app-signup-email-password>
+              <app-signup-basic-info
+                  [isIOSDevice]="isIOSDevice" 
+                  [telemetryImpression]="telemetryImpression" 
+                  [submitInteractEdata]="submitInteractEdata" 
+                  [telemetryCdata]="telemetryCdata" 
+                  *ngSwitchCase="Stage.BASIC_INFO" 
+                  [startingForm]="signUpForm.get('basicInfo').value" 
+                  (subformInitialized)="subformInitialized('basicInfo', $event)" 
+                  (triggerNext)="changeStep()"
+                ></app-signup-basic-info>
+                <app-signup-onboarding-info
+                  *ngSwitchCase="Stage.ONBOARDING_INFO"
+                  [startingForm]="signUpForm.get('onboardingInfo').value"
+                  (subformInitialized)="subformInitialized('onboardingInfo', $event)" 
+                  (triggerNext)="changeStep()"
+                ></app-signup-onboarding-info>
+                <app-signup-email-password 
+                  *ngSwitchCase="Stage.EMAIL_PASSWORD" 
+                  (submitForm)="submitForm()"
+                ></app-signup-email-password>
             </ng-container>
 
           </form>
