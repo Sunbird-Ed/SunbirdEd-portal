@@ -16,9 +16,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 export class OtpComponent implements OnInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   @Input() signUpdata: any;
-  @Input() isMinor: boolean;
   @Input() tncLatestVersion: any;
-  @Input() yearOfBirth: string;
   @Output() redirectToParent = new EventEmitter();
   otpForm: FormGroup;
   disableSubmitBtn = true;
@@ -47,6 +45,10 @@ export class OtpComponent implements OnInit {
   googleCaptchaSiteKey: string;
   isP2CaptchaEnabled: any;
   redirecterrorMessage = false;
+  @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
+  @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() startingForm: any;
+
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService, public router: Router,
@@ -54,9 +56,10 @@ export class OtpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.emailAddress = this.signUpdata.value.email;
-    this.phoneNumber = this.signUpdata.value.phone;
-    this.mode = this.signUpdata.controls.contactType.value;
+    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    this.emailAddress = _.get(this.startingForm, 'emailPassInfo.type') === 'email' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
+    this.phoneNumber = _.get(this.startingForm, 'emailPassInfo.type') === 'phone' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
+    this.mode = _.get(this.startingForm, 'emailPassInfo.type');
     this.otpForm = new FormGroup({
       otp: new FormControl('', [Validators.required])
     });
@@ -95,8 +98,7 @@ resendOtpEnablePostTimer() {
     this.disableSubmitBtn = true;
     const request = {
       'request': {
-        'key': this.mode === 'phone' ? this.signUpdata.controls.phone.value.toString() :
-          this.signUpdata.controls.email.value,
+        'key': _.get(this.startingForm, 'emailPassInfo.key'),
         'type': this.mode,
         'otp': _.trim(this.otpForm.controls.otp.value)
       }
@@ -154,19 +156,19 @@ resendOtpEnablePostTimer() {
         signupType: 'self'
       },
       'request': {
-        'firstName': _.trim(this.signUpdata.controls.name.value),
+        'firstName': _.trim(_.get(this.startingForm, 'basicInfo.name')),
         'password': _.trim(this.signUpdata.controls.password.value),
-        'dob': this.yearOfBirth,
+        'dob': _.get(this.startingForm, 'basicInfo.yearOfBirth').toString(),
       }
     };
     if (this.mode === 'phone') {
-      createRequest.request['phone'] = this.signUpdata.controls.phone.value.toString();
+      createRequest.request['phone'] = _.get(this.startingForm, 'emailPassInfo.key').toString();
       createRequest.request['phoneVerified'] = true;
-      identifier = this.signUpdata.controls.phone.value.toString();
+      identifier = _.get(this.startingForm, 'emailPassInfo.key').toString();
     } else {
-      createRequest.request['email'] = this.signUpdata.controls.email.value;
+      createRequest.request['email'] = _.get(this.startingForm, 'emailPassInfo.key');
       createRequest.request['emailVerified'] = true;
-      identifier = this.signUpdata.controls.email.value;
+      identifier = _.get(this.startingForm, 'emailPassInfo.key');
     }
     createRequest.request['reqData'] = _.get(data, 'reqData');
     if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
@@ -247,12 +249,12 @@ resendOtpEnablePostTimer() {
     }
     const request = {
       'request': {
-        'key': this.signUpdata.controls.contactType.value === 'phone' ?
-          this.signUpdata.controls.phone.value.toString() : this.signUpdata.controls.email.value,
+        'key': _.trim(_.get(this.startingForm, 'emailPassInfo.key').toString()),
         'type': this.mode
       }
     };
-    if (this.isMinor) {
+    // if (this.isMinor) {
+    if (false) {
       request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
     }
     this.signupService.generateOTPforAnonymousUser(request, captchaResponse).subscribe(

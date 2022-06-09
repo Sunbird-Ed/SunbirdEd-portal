@@ -13,7 +13,7 @@
     <div class="right-panel d-flex flex-dc flex-jc-center p-16 pb-72">
       <div class="login-content w-100 fix-bottom py-16 px-8">
         <label class="mb-0 mx-8">Already have an account</label>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" type="submit">LOGIN</button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="redirectToLogin()" tabindex="0" type="submit">LOGIN</button>
       </div>
 
       <div class="register-content">
@@ -30,23 +30,24 @@
 
         <div *ngIf="true" [appTelemetryStart]="telemetryStart">
 
-          <form class="" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
+          <!-- <form class="" [formGroup]="signUpForm" autocomplete="off" id="signUpForm"> -->
 
             <ng-container [ngSwitch]="signupStage">
               <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
                 [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" (triggerIsMinor)="triggerIsMinor($event)"
+                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" (triggerIsMinor)="triggerIsMinor($event)"
                 (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-basic-info>
-              <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" (triggerNext)="changeStep()">
+              <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm" 
+                (subformInitialized)="subformInitialized('onboardingInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-onboarding-info>
-              <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" (submitForm)="submitForm()">
+              <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" [startingForm]="signUpForm" 
+                (subformInitialized)="subformInitialized('emailPassInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-email-password>
-              <app-otp  *ngSwitchCase="Stage.OTP" [isMinor]="isMinor" [yearOfBirth]="yearOfBirth" [signUpdata]="signUpForm"
-              [tncLatestVersion]="tncLatestVersion" (redirectToParent)="showParentForm($event)"></app-otp>
+              <app-otp *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm" (triggerNext)="changeStep()"></app-otp>
             </ng-container>
 
-          </form>
+          <!-- </form> -->
         </div>
       </div>
     </div>

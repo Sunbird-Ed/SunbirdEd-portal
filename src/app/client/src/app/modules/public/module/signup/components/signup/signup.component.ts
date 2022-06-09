@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
 import {
   ResourceService,
@@ -16,7 +16,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { map, startWith } from 'rxjs/operators';
 
@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService, public utilService: UtilService,
     public configService: ConfigService,  public recaptchaService: RecaptchaService,
-    public tncService: TncService) {
+    public tncService: TncService, private router: Router) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -265,5 +265,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryService.log(event);
   }
 
+  redirectToLogin () {
+    this.router.navigate(['/resources/play/content']);
+  }
   
 }

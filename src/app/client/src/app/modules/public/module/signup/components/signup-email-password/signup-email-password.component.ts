@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, OnDestroy, AfterViewInit, ViewChild, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy, AfterViewInit, ViewChild, Output, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import {
@@ -27,7 +27,6 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 
 export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
-  @Output() triggerNext = new EventEmitter();
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
@@ -58,6 +57,9 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   isP1CaptchaEnabled: any;
   yearOfBirth: string;
   isIOSDevice = false;
+  @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
+  @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() startingForm: object;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -68,14 +70,9 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
     public tncService: TncService) {
     this.sbFormBuilder = formBuilder;
   }
-  
- 
-  
-  next() {
-    this.triggerNext.emit();
-  }
 
   ngOnInit() {
+    console.log('Global Object data => ', this.startingForm); // TODO: log!
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
@@ -214,7 +211,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   vaidateUserContact(captchaResponse?) {
     const value = this.signUpForm.controls.contactType.value === 'phone' ?
-      this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
+      this.signUpForm?.controls?.phone?.value.toString() : this.signUpForm?.controls?.email?.value;
     const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value + '?captchaResponse=' + captchaResponse;
     this.signupService.checkUserExists(uri).subscribe(
       (data: ServerResponse) => {
@@ -315,7 +312,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
       (data: ServerResponse) => {
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
-        console.log('move to otp page');
+        this.subformInitialized.emit(request.request);
         this.triggerNext.emit();
       },
       (err) => {

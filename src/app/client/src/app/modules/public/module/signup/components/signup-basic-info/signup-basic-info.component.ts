@@ -26,6 +26,7 @@ export class SignupBasicInfoComponent implements OnInit {
   filteredYOB: Observable<number[]>;
   yearOfBirth: string;
   isMinor: boolean;
+  @Input() startingForm: object;
   
   constructor(
     public resourceService: ResourceService, public telemetryService: TelemetryService,
@@ -43,6 +44,7 @@ export class SignupBasicInfoComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value)),
     );
+    console.log('Global Object data => ', this.startingForm); // TODO: log!
   }
 
   private _filter(value: string): string[] {

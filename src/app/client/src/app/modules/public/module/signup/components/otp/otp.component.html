@@ -3,31 +3,33 @@
 
   <!-- user-details gray box new design -->
   <div class="user-detail-container p-24 my-16">
-    <div class="user-detail-list">
-    <label class="label-names fnormal font-weight-normal" role="heading">Name:</label>
-    <label class="label-values fnormal font-weight-bold px-8">Hrishikesh S Bothe</label></div>
-    <div class="user-detail-list">
-    <label class="label-names fnormal font-weight-normal" role="heading">Year of Birth:</label>
-    <label class="label-values fnormal font-weight-bold px-8">2015</label></div>
-    <div class="user-detail-list">
-    <label class="label-names fnormal font-weight-normal" role="heading">State:</label>
-    <label class="label-values fnormal font-weight-bold px-8">Karnataka</label>
+    <div class="user-detail-list" *ngIf="startingForm?.basicInfo?.name">
+      <label class="label-names fnormal font-weight-normal" role="heading">Name:</label>
+      <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.basicInfo?.name}}</label>
     </div>
-    <div class="user-detail-list">
-    <label class="label-names fnormal font-weight-normal" role="heading">District:</label>
-    <label class="label-values fnormal font-weight-bold px-8">Belagavi</label>
+    <div class="user-detail-list" *ngIf="startingForm?.basicInfo?.yearOfBirth">
+      <label class="label-names fnormal font-weight-normal" role="heading">Year of Birth:</label>
+      <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.basicInfo?.yearOfBirth}}</label>
     </div>
-    <div class="user-detail-list">
-    <label class="label-names fnormal font-weight-normal" role="heading">School:</label>
-    <label class="label-values fnormal font-weight-bold px-8">balmohan Vidya Mandir</label>
+    <div class="user-detail-list" *ngIf="startingForm?.onboardingInfo?.children?.persona?.state?.name">
+      <label class="label-names fnormal font-weight-normal" role="heading">State:</label>
+      <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.state?.name}}</label>
     </div>
-    <div class="user-detail-list">
-    <label class="label-names fnormal font-weight-normal" role="heading">Block:</label>
-    <label class="label-values fnormal font-weight-bold px-8">2nd Block</label>
+    <div class="user-detail-list" *ngIf="startingForm?.onboardingInfo?.children?.persona?.district?.name">
+      <label class="label-names fnormal font-weight-normal" role="heading">District:</label>
+      <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.district?.name}}</label>
     </div>
-    <div class="user-detail-list">
-    <label class="label-names fnormal font-weight-normal" role="heading">Cluster:</label>
-     <label class="label-values fnormal font-weight-bold px-8">Somwarpeth</label>
+    <div class="user-detail-list" *ngIf="startingForm?.onboardingInfo?.children?.persona?.school?.name">
+      <label class="label-names fnormal font-weight-normal" role="heading">School:</label>
+      <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.school?.name}}</label>
+    </div>
+    <div class="user-detail-list" *ngIf="startingForm?.onboardingInfo?.children?.persona?.block?.name">
+      <label class="label-names fnormal font-weight-normal" role="heading">Block:</label>
+      <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.block?.name}}</label>
+    </div>
+    <div class="user-detail-list" *ngIf="startingForm?.onboardingInfo?.children?.persona?.cluster?.name">
+      <label class="label-names fnormal font-weight-normal" role="heading">Cluster:</label>
+      <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.cluster?.name}}</label>
     </div>
   </div>
  <!-- user-details gray box new design end-->

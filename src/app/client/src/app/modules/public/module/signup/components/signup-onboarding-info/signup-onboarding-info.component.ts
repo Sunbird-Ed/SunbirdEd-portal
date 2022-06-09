@@ -9,18 +9,19 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 })
 export class SignupOnboardingInfoComponent implements OnInit {
 
-  @Input() startingForm: FormGroup;
-  @Output() subformInitialized: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
-  @Output() triggerNext = new EventEmitter();
+  @Input() startingForm: object;
+  @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
+  @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
   showEditUserDetailsPopup = false;
   showFullScreenLoader = false;
   constructor(public resourceService: ResourceService, public toasterService: ToasterService) { }
 
   ngOnInit(): void {
+    console.log('Global Object data => ', this.startingForm); // TODO: log!
   }
 
   onRegisterSubmit(event) {
-    console.log('user registration submit ', event); //TODO
+    this.subformInitialized.emit(event);
     this.triggerNext.emit();
   }
 }
