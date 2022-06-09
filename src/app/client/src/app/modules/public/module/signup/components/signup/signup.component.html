@@ -51,7 +51,9 @@
                   (triggerNext)="changeStep()"
                 ></app-signup-basic-info>
                 <app-signup-onboarding-info
-                  *ngSwitchCase="Stage.ONBOARDING_INFO" 
+                  *ngSwitchCase="Stage.ONBOARDING_INFO"
+                  [startingForm]="signUpForm.get('onboardingInfo').value"
+                  (subformInitialized)="subformInitialized('onboardingInfo', $event)" 
                   (triggerNext)="changeStep()"
                 ></app-signup-onboarding-info>
                 <app-signup-email-password 
