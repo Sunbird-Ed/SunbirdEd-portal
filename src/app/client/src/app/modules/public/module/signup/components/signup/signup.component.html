@@ -28,14 +28,12 @@
           class="font-weight-bold text-center mb-24">
           {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
-        <div *ngIf="true" [appTelemetryStart]="telemetryStart">
+        <div [appTelemetryStart]="telemetryStart">
 
-          <!-- <form class="" [formGroup]="signUpForm" autocomplete="off" id="signUpForm"> -->
-
-            <ng-container [ngSwitch]="signupStage">
+          <ng-container [ngSwitch]="signupStage">
               <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
                 [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" (triggerIsMinor)="triggerIsMinor($event)"
+                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm"
                 (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-basic-info>
               <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm" 
@@ -47,7 +45,6 @@
               <app-otp *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm" (triggerNext)="changeStep()"></app-otp>
             </ng-container>
 
-          <!-- </form> -->
         </div>
       </div>
     </div>
