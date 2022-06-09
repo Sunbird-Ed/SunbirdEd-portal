@@ -195,6 +195,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log(formValues);  
   }
 
+  triggerIsMinor(val) {
+    this.isMinor = val;
+  }
+ 
   ngAfterViewInit () {
     setTimeout(() => {
       this.telemetryCdata = [{ 'type': 'signup', 'id': this.activatedRoute.snapshot.data.telemetry.uuid }];
