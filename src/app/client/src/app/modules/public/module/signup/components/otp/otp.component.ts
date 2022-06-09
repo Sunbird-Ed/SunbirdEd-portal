@@ -47,7 +47,7 @@ export class OtpComponent implements OnInit {
   redirecterrorMessage = false;
   @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
   @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() startingForm: object;
+  @Input() startingForm: any;
 
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
