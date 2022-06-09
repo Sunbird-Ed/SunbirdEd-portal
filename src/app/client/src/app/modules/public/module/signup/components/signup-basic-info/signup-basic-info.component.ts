@@ -3,7 +3,7 @@ import { ResourceService, UtilService, ConfigService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
@@ -14,8 +14,7 @@ import * as _ from 'lodash-es';
 })
 export class SignupBasicInfoComponent implements OnInit {
 
-  @Input() startingForm: FormGroup;
-  @Output() subformInitialized: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
+  @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
   @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
   public personalInfoForm: FormGroup;
   @Input() isIOSDevice;
@@ -33,15 +32,10 @@ export class SignupBasicInfoComponent implements OnInit {
   
 
   ngOnInit(): void {
-    if (this.startingForm) {
-      this.personalInfoForm = this.startingForm;
-    } else {
-      this.personalInfoForm = this._fb.group({
-        name: ['', Validators.required],
-        yearOfBirth: ['', Validators.required]
-      })
-    }
-    this.subformInitialized.emit(this.personalInfoForm);
+    this.personalInfoForm = this._fb.group({
+      name: ['', Validators.required],
+      yearOfBirth: ['', Validators.required]
+    })
     this.initiateYearSelecter();
     // @ts-ignore
     this.filteredYOB = this.personalInfoForm.controls.yearOfBirth.valueChanges.pipe(
@@ -64,7 +58,12 @@ export class SignupBasicInfoComponent implements OnInit {
         userDetails = {name: this.personalInfoForm.controls.name.value}
       }
       userDetails.name = this.personalInfoForm.controls.name.value;
-      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails))
+      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      const signupStage1Details = {
+        name: userDetails.name,
+        yearOfBirth: this.personalInfoForm.controls.yearOfBirth.value
+      }
+      this.subformInitialized.emit(signupStage1Details);
       this.triggerNext.emit();
     } else {
       console.log("Invalid form");
