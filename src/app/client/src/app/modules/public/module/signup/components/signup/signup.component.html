@@ -24,7 +24,8 @@
 
         <h3 class="sb-color-primary text-center font-weight-bold mb-16">Welcome to Sunbird</h3>
 
-        <h5 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="font-weight-bold text-center mb-24">
+        <h5 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
+          class="font-weight-bold text-center mb-24">
           {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
         <div *ngIf="true" [appTelemetryStart]="telemetryStart">

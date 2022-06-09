@@ -6,7 +6,7 @@
         <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
           <label>{{filter.displayName}}</label>
           <div *ngIf="filter.controlType === 'multi-select'">
-            <app-material-auto-complete name="mat-ms-auto" placeholder="" [dropdownList]="filter.options"
+            <app-material-auto-complete name="mat-ms-auto" placeholder="Select {{filter.displayName | lowercase}}" [dropdownList]="filter.options"
               [selectedFilters]="getSelectedData(filter.reference)"
               (selectionChanged)="autoCompleteChange($event,filter.reference)" display-key="name">
             </app-material-auto-complete>
