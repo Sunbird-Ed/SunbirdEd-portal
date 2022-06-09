@@ -1,6 +1,6 @@
 <div [formGroup]="personalInfoForm">
     
-    <div class="required field mb-8">
+    <div class="required field mb-24">
         <label for="signup-form-name" class="mb-10 font-weight-bold">
             {{resourceService.frmelmnts?.lbl?.name}}
         </label>
@@ -9,12 +9,12 @@
             [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
             formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
         
-        <div class="ui basic blue error label pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
-        <div class="ui basic blue error label pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
+        <div class="sb-color-red pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
+        <div class="sb-color-red pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
 
     </div>
 
-    <div class="year-birth my-8 required">
+    <div class="year-birth mb-24 required">
         <mat-form-field *ngIf="!isIOSDevice" appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--autocmp w-100">
             <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
             </mat-label>
@@ -42,5 +42,9 @@
     <button [attr.aria-disabled]="!personalInfoForm.valid" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
         [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
         [ngClass]="{'sb-btn-disabled':!personalInfoForm.valid, 'sb-btn-primary':personalInfoForm.valid}"
-        class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0" (click)="next()">Continue</button>
+        class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0" (click)="next()">Continue<span
+        class='arrow-icon pl-8'><i class="icon-svg icon-svg--xxs icon-back">
+          <svg class="icon icon-svg--white">
+            <use xlink:href="./assets/images/sprite.svg#arrow-long-right"></use>
+          </svg></i></span></button>
 </div>

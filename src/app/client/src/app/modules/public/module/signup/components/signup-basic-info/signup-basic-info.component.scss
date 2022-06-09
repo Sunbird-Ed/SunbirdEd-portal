@@ -1,0 +1,7 @@
+@import "variables";
+@import 'mixins/mixins';
+
+.sb-mat__dropdown.sb-mat__dropdown--autocmp {
+    border: 1px solid var(--gray-200);
+    border-radius: calculateRem(24px);
+}
