@@ -315,6 +315,8 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
       (data: ServerResponse) => {
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
+        console.log('move to otp page');
+        this.triggerNext.emit();
       },
       (err) => {
         const failedgenerateOTPMessage = (_.get(err, 'error.params.status') && err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
