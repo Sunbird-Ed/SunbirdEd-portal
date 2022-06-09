@@ -8,7 +8,8 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { SignupService } from './services';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule } from '@sunbird/shared';
-import {SharedFeatureModule } from '@sunbird/shared-feature';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { LocationModule } from '../../../../plugins/location';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import {SharedFeatureModule } from '@sunbird/shared-feature';
     RecaptchaModule,
     TelemetryModule,
     SharedModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    LocationModule
   ],
   declarations: [SignupComponent, OtpComponent, SignupBasicInfoComponent, SignupOnboardingInfoComponent, SignupEmailPasswordComponent],
   providers: [SignupService]

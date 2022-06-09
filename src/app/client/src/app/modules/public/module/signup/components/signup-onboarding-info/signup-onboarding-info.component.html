@@ -1,4 +1,6 @@
-<p>
-    sign up onboarding fields
-</p>
-<button (click)="next()">continue</button>
+<app-location-selection (close)="onLocationModalClose($event)" (registerSubmit)="onRegisterSubmit($event)"
+    [showModal]="false">
+    <div slot="popup-sub-header">
+        <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
+    </div>
+</app-location-selection>

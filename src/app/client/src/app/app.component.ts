@@ -655,6 +655,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private setOrgDetails(): Observable<any> {
     return this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
       tap(data => {
+        localStorage.setItem('orgHashTagId', _.get(data, 'hashTagId'));
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
         this.botObject['channel'] = this.channel;
