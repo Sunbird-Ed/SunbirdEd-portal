@@ -49,15 +49,13 @@
 
     .login-content {
       text-align: right;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
+      position: relative;
+      margin-bottom: 2rem;
+      top: 0;
+      right: 0;
       @include respond-below(sm) {
         text-align: center;
-        margin-bottom: 2rem;
-        position: relative;
-        top: 0;
-        right: 0;
+      
         &.fix-bottom {
           // background-color: var(--primary-0);
           // background-color: #f8fafc;
@@ -70,12 +68,6 @@
           // border-top: calculateRem(1px) solid var(--gray-100);
         }
       }
-    }
-
-    .logo-content{
-      width: 100%;
-      max-width: calculateRem(360px);
-      margin: 0 auto;
     }
   }
 }
