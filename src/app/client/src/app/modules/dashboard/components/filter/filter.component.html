@@ -6,7 +6,7 @@
         <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
           <label>{{filter.displayName}}</label>
           <div *ngIf="filter.controlType === 'multi-select'">
-            <app-material-auto-complete name="mat-ms-auto" placeholder="Select {{filter.displayName | lowercase}}" [dropdownList]="filter.options"
+            <app-material-auto-complete name="mat-ms-auto" [dynamicplaceholder]="filter.displayName" [dropdownList]="filter.options"
               [selectedFilters]="getSelectedData(filter.reference)"
               (selectionChanged)="autoCompleteChange($event,filter.reference)" display-key="name">
             </app-material-auto-complete>
@@ -15,7 +15,7 @@
           <div *ngIf="filter.controlType === 'select'">
 
             <input matInput type="text" [(ngModel)]="filterQuery" (keyup.enter)="chooseOption()"
-              [placeholder]="filter.displayName" aria-label="Number" matInput [formControlName]="filter.reference"
+              placeholder="Select {{filter.displayName | lowercase}}" aria-label="Number" matInput [formControlName]="filter.reference"
               [matAutocomplete]="auto2">
             <mat-autocomplete #auto2="matAutocomplete" class="test-class">
               <mat-option *ngFor="let option of getFilters(filter.options)" [value]="option">
