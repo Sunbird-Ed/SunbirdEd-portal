@@ -10,28 +10,22 @@
     </div>
   </div>
 
-  <div class="right-panel d-flex flex-dc flex-jc-center p-16 pb-72">
-    <div class="login-content w-100 fix-bottom py-16 px-8">
-      <label class="mb-0 mx-8">{{resourceService.frmelmnts?.lbl?.haveaccount}}</label>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()"
-        aria-label="Already have an account? Login here" tabindex="0"
-        type="submit">{{resourceService.frmelmnts?.btn?.login}}</button>
-    </div>
 
-    <div class="right-panel d-flex flex-dc flex-jc-center p-16 pb-72">
-      <div class="login-content w-100 fix-bottom py-8 px-8">
+  <div class="right-panel d-flex flex-dc flex-jc-center p-16 pb-72">
+    <div class="login-content w-100 fix-bottom py-8 px-8">
         <label class="mb-0 mx-8">{{resourceService.frmelmnts?.lbl?.haveaccount}}</label>
         <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()" aria-label="Already have an account? Login here" tabindex="0" type="submit">{{resourceService.frmelmnts?.btn?.login}}</button>
-      </div>
+    </div>
 
-      <div class="logo-content">
+    <div class="logo-content">
         <div class="text-center mb-8">
           <img class="image centered" tabindex="0" aria-label="" alt={{tenantName}} height="56" src="{{logo}}">
         </div>
         <h3 tabindex="0" class="sb-color-primary text-center font-weight-bold mb-8">
           {{resourceService.frmelmnts.lbl.welcomeToInstance | interpolate:'{instance}': instance}}</h3>
+    </div>
 
-      <ng-container [ngSwitch]="signupStage">
+    <ng-container [ngSwitch]="signupStage">
               <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
                 [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
                 *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm"
@@ -44,7 +38,8 @@
                 (subformInitialized)="subformInitialized('emailPassInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-email-password>
               <app-otp *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm" (triggerNext)="changeStep()"></app-otp>
-      </ng-container>
-    </div>
-
+    </ng-container>
+  
   </div>
+
+</div>
