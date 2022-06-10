@@ -24,8 +24,8 @@
     }
 
     .image {
-      width: calculateRem(100px);
-      height: calculateRem(100px);
+      width: calculateRem(124px);
+      height: calculateRem(124px);
       background: var(--white);
       display: flex;
       align-items: center;
@@ -49,15 +49,10 @@
 
     .login-content {
       text-align: right;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
+      padding:1rem 1rem 1.5rem 1rem;
+      position: relative;
       @include respond-below(sm) {
         text-align: center;
-        margin-bottom: 2rem;
-        position: relative;
-        top: 0;
-        right: 0;
         &.fix-bottom {
           // background-color: var(--primary-0);
           // background-color: #f8fafc;
@@ -71,12 +66,15 @@
         }
       }
     }
+  }
 
-    .logo-content{
-      width: 100%;
-      max-width: calculateRem(360px);
-      margin: 0 auto;
-    }
+  .content-center-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;    
+    padding-bottom: 2rem;
   }
 }
 
