@@ -193,6 +193,13 @@ input[type=number]::-webkit-inner-spin-button {
     grid-template-columns: 1fr 1fr;
     grid-gap: 0.25rem;
     text-transform: capitalize;
+
+    .user-detail-list {
+        display: flex;
+        .label-values {
+            word-break: break-word;
+        }
+    }
   
     .user-detail-list:nth-child(1){ order: 1; }
     .user-detail-list:nth-child(2) { order: 2; }

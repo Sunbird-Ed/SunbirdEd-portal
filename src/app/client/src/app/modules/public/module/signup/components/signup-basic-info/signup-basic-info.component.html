@@ -1,6 +1,6 @@
 <div [formGroup]="personalInfoForm">
 
-    <h5 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
+    <h5 tabindex="0" *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
     class="font-weight-bold text-center mb-24">
     {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
