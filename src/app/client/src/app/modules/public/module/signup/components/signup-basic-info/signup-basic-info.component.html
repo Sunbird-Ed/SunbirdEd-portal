@@ -1,5 +1,9 @@
 <div [formGroup]="personalInfoForm">
-    
+
+    <h5 *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
+    class="font-weight-bold text-center mb-24">
+    {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
+
     <div class="required field mb-24">
         <label for="signup-form-name" class="mb-10 font-weight-bold">
             {{resourceService.frmelmnts?.lbl?.name}}
@@ -7,7 +11,7 @@
         
         <input id="signup-form-name" class="sb-form-control"
             [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
-            formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
+            formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
         
         <div class="sb-color-red pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
         <div class="sb-color-red pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
