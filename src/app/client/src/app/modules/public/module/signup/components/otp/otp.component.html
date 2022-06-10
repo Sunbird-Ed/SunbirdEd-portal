@@ -1,5 +1,8 @@
+<!-- <p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081 | interpolate:'{instance}': instance}}</p>
+<p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082 | interpolate:'{instance}': instance}}</p> -->
+
 <!-- user-details gray box new design -->
- <div class="user-detail-container p-24 my-16">
+<div class="user-detail-container p-24 my-16">
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.basicInfo?.name">
     <label class="label-names fnormal font-weight-normal pr-8" role="heading">Name:</label>
     <label class="label-values fnormal font-weight-bold">{{startingForm?.basicInfo?.name}}</label>
@@ -35,9 +38,6 @@
   </div>
 </div>
 <!-- user-details gray box new design end-->
-<div class="signup-form-content">
-<!-- <p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081 | interpolate:'{instance}': instance}}</p>
-<p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082 | interpolate:'{instance}': instance}}</p> -->
 
 <!-- <div class="grey text text-center pt-16">{{resourceService.frmelmnts.lbl.OTPhasbeensent}} {{resourceService.frmelmnts.lbl.toYourEmailPhone}}</div>-->
 <div class="grey text text-center otp-label">
@@ -46,7 +46,7 @@
 </div>
 <div class="grey text text-center mb-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
-<div class="grey text font-weight-bold text-center otp-label" *ngIf="startingForm && startingForm?.basicInfo?.isMinor">
+<div class="grey text text-center otp-label" *ngIf="startingForm && startingForm?.basicInfo?.isMinor">
   <span>{{resourceService.frmelmnts.lbl.enterOTPByParent}}</span>
 </div>
 
@@ -72,7 +72,7 @@
   <!-- Terms and Conditions popup -->
   <!-- For Minor -->
   <div *ngIf="startingForm && startingForm?.basicInfo?.isMinor"
-    class="required sb-checkbox sb-checkbox-primary sb-field my-16">
+    class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
     <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
       formControlName="tncAccepted" name="tncAccepted">
     <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMinor}}
@@ -85,7 +85,7 @@
 
   <!-- For Major -->
   <div *ngIf="startingForm && !startingForm?.basicInfo?.isMinor"
-    class="required sb-checkbox sb-checkbox-primary sb-field my-16">
+    class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
     <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
       formControlName="tncAccepted" name="tncAccepted">
     <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMajor}}
@@ -116,6 +116,3 @@
 </form>
 <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
   *ngIf="showTncPopup"></app-tnc-popup>
-</div>
-
-

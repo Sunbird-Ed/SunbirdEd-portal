@@ -49,6 +49,9 @@
 
     .login-content {
       text-align: right;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
 
       @include respond-below(sm) {
         text-align: center;
@@ -70,9 +73,9 @@
       }
     }
 
-    .logo-content{
+    .register-content {
       width: 100%;
-      max-width: calculateRem(360px);
+      max-width: calculateRem(400px);
       margin: 0 auto;
     }
   }

@@ -193,14 +193,14 @@ input[type=number]::-webkit-inner-spin-button {
     grid-template-columns: 1fr 1fr;
     grid-gap: 0.25rem;
     text-transform: capitalize;
-    width: 100%;
-    max-width: 36rem;
-    margin: 1rem auto;
 
-    .user-detail-list{
+    .user-detail-list {
         display: flex;
+        .label-values {
+            word-break: break-word;
+        }
     }
-
+  
     .user-detail-list:nth-child(1){ order: 1; }
     .user-detail-list:nth-child(2) { order: 2; }
     .user-detail-list:nth-child(3) { order: 3; }
@@ -214,8 +214,9 @@ input[type=number]::-webkit-inner-spin-button {
     .user-detail-container {
       grid-template-columns: 1fr;
       border-radius:0;
-      max-width: calculateRem(360px);
-
+      width: 100%;
+      margin: 0 auto;
+  
       .user-detail-list:nth-child(1){ order: 1; }
       .user-detail-list:nth-child(2) { order: 2; }
       .user-detail-list:nth-child(3) { order: 3; }
@@ -227,8 +228,5 @@ input[type=number]::-webkit-inner-spin-button {
       .label-names{
        width:30%;
       }
-      .label-values{
-        width: 70%;
-    }
    }
   }
