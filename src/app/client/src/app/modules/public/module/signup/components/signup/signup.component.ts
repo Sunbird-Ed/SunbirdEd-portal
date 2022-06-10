@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.signupStage = SignUpStage.OTP;
+    this.signupStage = SignUpStage.BASIC_INFO;
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
