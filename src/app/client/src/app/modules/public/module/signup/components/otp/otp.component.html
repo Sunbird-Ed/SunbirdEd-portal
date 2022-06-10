@@ -1,8 +1,5 @@
-<!-- <p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081 | interpolate:'{instance}': instance}}</p>
-<p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082 | interpolate:'{instance}': instance}}</p> -->
-
 <!-- user-details gray box new design -->
-<div class="user-detail-container p-24 my-16">
+ <div class="user-detail-container p-24 my-16">
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.basicInfo?.name">
     <label class="label-names fnormal font-weight-normal" role="heading">Name:</label>
     <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.basicInfo?.name}}</label>
@@ -36,8 +33,11 @@
     <label
       class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.cluster?.name}}</label>
   </div>
-</div>
+</div> 
 <!-- user-details gray box new design end-->
+<div class="signup-form-content">
+<!-- <p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081 | interpolate:'{instance}': instance}}</p>
+<p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082 | interpolate:'{instance}': instance}}</p> -->
 
 <!-- <div class="grey text text-center pt-16">{{resourceService.frmelmnts.lbl.OTPhasbeensent}} {{resourceService.frmelmnts.lbl.toYourEmailPhone}}</div>-->
 <div class="grey text text-center otp-label">
@@ -120,3 +120,6 @@
 </form>
 <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
   *ngIf="showTncPopup"></app-tnc-popup>
+</div>
+
+

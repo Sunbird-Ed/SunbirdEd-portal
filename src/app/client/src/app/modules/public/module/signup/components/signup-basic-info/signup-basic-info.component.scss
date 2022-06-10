@@ -5,3 +5,9 @@
     border: 1px solid var(--gray-200);
     border-radius: calculateRem(24px);
 }
+
+.signup-form-content{
+    width: 100%;
+    max-width: calculateRem(400px);
+    margin: 0 auto;
+  }
