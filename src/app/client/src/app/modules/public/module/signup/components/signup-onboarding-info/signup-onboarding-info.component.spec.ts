@@ -20,13 +20,4 @@ describe('SignupOnboardingInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should call onRegisterSubmit on submiting form", () => {
-    jest.spyOn(component.subformInitialized, 'emit');
-    jest.spyOn(component.triggerNext, 'emit');
-    const onboardingData = { }
-    component.onRegisterSubmit(onboardingData);
-    expect(component.subformInitialized.emit).toHaveBeenCalled();
-    expect(component.triggerNext.emit).toHaveBeenCalled();
-  })
-
 });

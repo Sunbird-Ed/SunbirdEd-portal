@@ -22,7 +22,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 @Component({
   selector: 'app-signup-email-password',
   templateUrl: './signup-email-password.component.html',
-  styleUrls: ['./signup-email-password.component.scss']
+  styleUrls: ['./signup-email-password.component.scss' , '../signup/signup_form.component.scss']
 })
 
 export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterViewInit {
