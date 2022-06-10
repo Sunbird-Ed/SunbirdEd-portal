@@ -12,8 +12,8 @@
 
     <div class="right-panel d-flex flex-dc flex-jc-center p-16 pb-72">
       <div class="login-content w-100 fix-bottom py-16 px-8">
-        <label class="mb-0 mx-8">Already have an account?</label>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()" aria-label="Already have an account? Login here" tabindex="0" type="submit">Login</button>
+        <label class="mb-0 mx-8">{{resourceService.frmelmnts?.lbl?.haveaccount}}</label>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()" aria-label="Already have an account? Login here" tabindex="0" type="submit">{{resourceService.frmelmnts?.btn?.login}}</button>
       </div>
 
       <div class="register-content">
@@ -28,14 +28,10 @@
           class="font-weight-bold text-center mb-16">
           {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
-        <div *ngIf="true" [appTelemetryStart]="telemetryStart">
-
-          <!-- <form class="" [formGroup]="signUpForm" autocomplete="off" id="signUpForm"> -->
-
-            <ng-container [ngSwitch]="signupStage">
+          <ng-container [ngSwitch]="signupStage">
               <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
                 [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" (triggerIsMinor)="triggerIsMinor($event)"
+                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm"
                 (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-basic-info>
               <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm" 
@@ -47,7 +43,6 @@
               <app-otp *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm" (triggerNext)="changeStep()"></app-otp>
             </ng-container>
 
-          <!-- </form> -->
         </div>
       </div>
     </div>

@@ -27,6 +27,7 @@ export class SignupBasicInfoComponent implements OnInit {
   yearOfBirth: string;
   isMinor: boolean;
   @Input() startingForm: object;
+  instance: ''
   
   constructor(
     public resourceService: ResourceService, public telemetryService: TelemetryService,
@@ -34,6 +35,7 @@ export class SignupBasicInfoComponent implements OnInit {
   
 
   ngOnInit(): void {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.personalInfoForm = this._fb.group({
       name: ['', Validators.required],
       yearOfBirth: ['', Validators.required]
@@ -64,7 +66,8 @@ export class SignupBasicInfoComponent implements OnInit {
       localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
       const signupStage1Details = {
         name: userDetails.name,
-        yearOfBirth: this.personalInfoForm.controls.yearOfBirth.value
+        yearOfBirth: this.personalInfoForm.controls.yearOfBirth.value,
+        isMinor: this.isMinor
       }
       this.subformInitialized.emit(signupStage1Details);
       this.triggerNext.emit();

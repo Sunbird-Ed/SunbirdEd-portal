@@ -11,14 +11,13 @@ import {
   RecaptchaService
 } from '@sunbird/shared';
 import { SignupService } from './../../services';
-import { TenantService, TncService } from '@sunbird/core';
+import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
-import { map, startWith } from 'rxjs/operators';
 
 export enum SignUpStage {
   BASIC_INFO = 'basic_info',
@@ -54,11 +53,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
   instance: string;
-  tncLatestVersion: string;
-  termsAndConditionLink: string;
   passwordError: string;
   showTncPopup = false;
-  isMinor: Boolean = false;
   formInputType: string;
   isP1CaptchaEnabled: any;
   isIOSDevice = false;
@@ -70,31 +66,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService, public utilService: UtilService,
-    public configService: ConfigService,  public recaptchaService: RecaptchaService,
-    public tncService: TncService, private router: Router) {
+    public configService: ConfigService, public recaptchaService: RecaptchaService, private router: Router) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
     this.signupStage = SignUpStage.OTP;
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
-      this.telemetryLogEvents('fetch-terms-condition', true);
-        const response = _.get(data, 'result.response.value');
-        if (response) {
-          try {
-            const tncConfig = this.utilService.parseJson(response);
-            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
-            this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
-          } catch (e) {
-            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-          }
-        }
-      }, (err) => {
-      this.telemetryLogEvents('fetch-terms-condition', false);
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      }
-    );
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
@@ -193,10 +171,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     // submit the form with a service
     // TODO Complete submit function
     console.log(formValues);  
-  }
-
-  triggerIsMinor(val) {
-    this.isMinor = val;
   }
  
   ngAfterViewInit () {
