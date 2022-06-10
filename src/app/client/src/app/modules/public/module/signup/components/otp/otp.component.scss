@@ -199,6 +199,12 @@ input[type=number]::-webkit-inner-spin-button {
 
     .user-detail-list{
         display: flex;
+        @include respond-below(sm){
+            flex-direction: column;
+        }
+        .label-values{
+            word-break: break-word;
+        }
     }
 
     .user-detail-list:nth-child(1){ order: 1; }
