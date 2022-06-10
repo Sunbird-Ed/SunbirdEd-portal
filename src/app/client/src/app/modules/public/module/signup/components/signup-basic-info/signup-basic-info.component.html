@@ -4,7 +4,7 @@
     class="font-weight-bold text-center mb-24">
     {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
-    <div class="required field mb-24">
+    <div class="required field mb-16">
         <label for="signup-form-name" class="mb-8 font-weight-bold">
             {{resourceService.frmelmnts?.lbl?.name}}<span class="sb-color-red">*</span>
         </label>
@@ -18,7 +18,7 @@
 
     </div>
 
-    <div class="year-birth mb-24 required">
+    <div class="year-birth mb-16 required">
         <label for="signup-form-name" class="mb-8 font-weight-bold">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
         <mat-form-field *ngIf="!isIOSDevice" aria-required="true" appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--autocmp w-100">
             <!-- <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
