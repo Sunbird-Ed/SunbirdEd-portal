@@ -6,8 +6,11 @@
     border-radius: calculateRem(24px);
 }
 
-.signup-form-content{
-    width: 100%;
-    max-width: calculateRem(400px);
-    margin: 0 auto;
-  }
+::ng-deep {
+html[layout=joy] .sb-form-control:hover {
+    border: 0.0625rem solid var(--gray-200);
+}
+span.arrow-icon.pl-8 {
+    float: right;
+}
+}

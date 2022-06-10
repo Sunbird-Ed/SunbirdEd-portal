@@ -33,7 +33,7 @@
     <label
       class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.cluster?.name}}</label>
   </div>
-</div> 
+</div>
 <!-- user-details gray box new design end-->
 <div class="signup-form-content">
 <!-- <p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081 | interpolate:'{instance}': instance}}</p>
@@ -49,6 +49,8 @@
 <div class="grey text text-center otp-label" *ngIf="startingForm && startingForm?.basicInfo?.isMinor">
   <span>{{resourceService.frmelmnts.lbl.enterOTPByParent}}</span>
 </div>
+
+<h6 tabindex="0" class="font-weight-bold text-center">PARENT/GUARDIAN Should Enter the OTP</h6>
 
 <label *ngIf="redirecterrorMessage" class="color-danger sb-color-red text fs-1 text-center mb-8">The
   redirectURL/errorcallbackURL do not match the domain</label>
@@ -76,7 +78,7 @@
   <!-- Terms and Conditions popup -->
   <!-- For Minor -->
   <div *ngIf="startingForm && startingForm?.basicInfo?.isMinor"
-    class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
+    class="required sb-checkbox sb-checkbox-primary sb-field my-16">
     <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
       formControlName="tncAccepted" name="tncAccepted">
     <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMinor}}
@@ -89,7 +91,7 @@
 
   <!-- For Major -->
   <div *ngIf="startingForm && !startingForm?.basicInfo?.isMinor"
-    class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
+    class="required sb-checkbox sb-checkbox-primary sb-field my-16">
     <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
       formControlName="tncAccepted" name="tncAccepted">
     <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMajor}}

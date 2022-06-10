@@ -12,7 +12,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 @Component({
   selector: 'app-otp',
   templateUrl: './otp.component.html',
-  styleUrls: ['./otp.component.scss']
+  styleUrls: ['./otp.component.scss', '../signup/signup_form.component.scss']
 })
 export class OtpComponent implements OnInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;

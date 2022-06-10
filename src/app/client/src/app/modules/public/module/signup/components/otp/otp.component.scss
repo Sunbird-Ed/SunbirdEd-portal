@@ -185,12 +185,6 @@ input[type=number]::-webkit-inner-spin-button {
     color: #555;
   }
 
-.signup-form-content{
-    width: 100%;
-    max-width: 25rem;
-    margin: 0 auto;
-  }
-
   // user-details gray box new design css
 .user-detail-container{
     border-radius: 1.5rem;
@@ -200,9 +194,13 @@ input[type=number]::-webkit-inner-spin-button {
     grid-gap: 0.25rem;
     text-transform: capitalize;
     width: 100%;
-    max-width: 38rem;
-    margin: 0 auto;
-  
+    max-width: 36rem;
+    margin: 1rem auto;
+
+    .user-detail-list{
+        display: flex;
+    }
+
     .user-detail-list:nth-child(1){ order: 1; }
     .user-detail-list:nth-child(2) { order: 2; }
     .user-detail-list:nth-child(3) { order: 3; }
@@ -216,7 +214,7 @@ input[type=number]::-webkit-inner-spin-button {
     .user-detail-container {
       grid-template-columns: 1fr;
       border-radius:0;
-      max-width: 25rem;
+      max-width: calculateRem(360px);
 
       .user-detail-list:nth-child(1){ order: 1; }
       .user-detail-list:nth-child(2) { order: 2; }
@@ -229,5 +227,8 @@ input[type=number]::-webkit-inner-spin-button {
       .label-names{
        width:30%;
       }
+      .label-values{
+        width: 70%;
+    }
    }
   }
