@@ -46,11 +46,9 @@
 </div>
 <div class="grey text text-center mb-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
-<div class="grey text text-center otp-label" *ngIf="startingForm && startingForm?.basicInfo?.isMinor">
+<div class="grey text font-weight-bold text-center otp-label" *ngIf="startingForm && startingForm?.basicInfo?.isMinor">
   <span>{{resourceService.frmelmnts.lbl.enterOTPByParent}}</span>
 </div>
-
-<h6 tabindex="0" class="font-weight-bold text-center">PARENT/GUARDIAN Should Enter the OTP</h6>
 
 <label *ngIf="redirecterrorMessage" class="color-danger sb-color-red text fs-1 text-center mb-8">The redirectURL/errorcallbackURL do not match the domain</label>
 <div *ngIf="showSignUpLink" class="">{{unabletoVerifyErrorMessage}}<br> Please <span tabindex="0" (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span> again
