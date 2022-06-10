@@ -5,21 +5,21 @@
     {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
 
     <div class="required field mb-24">
-        <label for="signup-form-name" class="mb-10 font-weight-bold">
-            {{resourceService.frmelmnts?.lbl?.name}}
+        <label for="signup-form-name" class="mb-8 font-weight-bold">
+            {{resourceService.frmelmnts?.lbl?.name}}<span class="sb-color-red">*</span>
         </label>
         
         <input id="signup-form-name" class="sb-form-control"
             [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
-            formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
+            formControlName="name" type="text" name="name" aria-required="true" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
         
-        <div class="sb-color-red pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
-        <div class="sb-color-red pt-0" tabindex="0" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter a valid name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
 
     </div>
 
     <div class="year-birth mb-24 required">
-        <mat-form-field *ngIf="!isIOSDevice" appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--autocmp w-100">
+        <mat-form-field *ngIf="!isIOSDevice" aria-required="true" appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--autocmp w-100">
             <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
             </mat-label>
 
@@ -42,11 +42,10 @@
         </label>
        
     </div>
-
     <button [attr.aria-disabled]="!personalInfoForm.valid" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
         [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
         [ngClass]="{'sb-btn-disabled':!personalInfoForm.valid, 'sb-btn-primary':personalInfoForm.valid}"
-        class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0" (click)="next()">Continue<span
+        class="sb-btn sb-btn-sm text-uppercase width-100 mt-16  flex-basis-1" tabindex="0" (click)="next()"><span>{{resourceService.frmelmnts.lbl.continue}}</span><span
         class='arrow-icon pl-8'><i class="icon-svg icon-svg--xxs icon-back">
           <svg class="icon icon-svg--white">
             <use xlink:href="./assets/images/sprite.svg#arrow-long-right"></use>
