@@ -312,6 +312,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
       (data: ServerResponse) => {
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
+        request.request['password'] = this.signUpForm.controls.password.value.toString();
         this.subformInitialized.emit(request.request);
         this.triggerNext.emit();
       },

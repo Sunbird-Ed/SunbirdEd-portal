@@ -1,37 +1,37 @@
 <!-- user-details gray box new design -->
  <div class="user-detail-container p-24 my-16">
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.basicInfo?.name">
-    <label class="label-names fnormal font-weight-normal" role="heading">Name:</label>
-    <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.basicInfo?.name}}</label>
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Name:</label>
+    <label class="label-values fnormal font-weight-bold">{{startingForm?.basicInfo?.name}}</label>
   </div>
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.basicInfo?.yearOfBirth">
-    <label class="label-names fnormal font-weight-normal" role="heading">Year of Birth:</label>
-    <label class="label-values fnormal font-weight-bold px-8">{{startingForm?.basicInfo?.yearOfBirth}}</label>
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Year of Birth:</label>
+    <label class="label-values fnormal font-weight-bold">{{startingForm?.basicInfo?.yearOfBirth}}</label>
   </div>
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.state?.name">
-    <label class="label-names fnormal font-weight-normal" role="heading">State:</label>
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">State:</label>
     <label
-      class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.state?.name}}</label>
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.state?.name}}</label>
   </div>
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.district?.name">
-    <label class="label-names fnormal font-weight-normal" role="heading">District:</label>
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">District:</label>
     <label
-      class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.district?.name}}</label>
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.district?.name}}</label>
   </div>
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.school?.name">
-    <label class="label-names fnormal font-weight-normal" role="heading">School:</label>
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">School:</label>
     <label
-      class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.school?.name}}</label>
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.school?.name}}</label>
   </div>
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.block?.name">
-    <label class="label-names fnormal font-weight-normal" role="heading">Block:</label>
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Block:</label>
     <label
-      class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.block?.name}}</label>
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.block?.name}}</label>
   </div>
   <div class="user-detail-list" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.cluster?.name">
-    <label class="label-names fnormal font-weight-normal" role="heading">Cluster:</label>
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Cluster:</label>
     <label
-      class="label-values fnormal font-weight-bold px-8">{{startingForm?.onboardingInfo?.children?.persona?.cluster?.name}}</label>
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.cluster?.name}}</label>
   </div>
 </div>
 <!-- user-details gray box new design end-->
@@ -41,10 +41,10 @@
 
 <!-- <div class="grey text text-center pt-16">{{resourceService.frmelmnts.lbl.OTPhasbeensent}} {{resourceService.frmelmnts.lbl.toYourEmailPhone}}</div>-->
 <div class="grey text text-center otp-label">
-  <span *ngIf="emailAddress">{{resourceService.frmelmnts.lbl.OTPhasbeensentToEmail}}:<br>{{emailAddress}} </span>
-  <span *ngIf="phoneNumber">{{resourceService.frmelmnts.lbl.OTPhasbeensentToPhone}}:<br>{{phoneNumber}} </span>
+  <span *ngIf="emailAddress">{{resourceService.frmelmnts.lbl.OTPhasbeensentToEmail}}:<br><b>{{emailAddress}}</b></span>
+  <span *ngIf="phoneNumber">{{resourceService.frmelmnts.lbl.OTPhasbeensentToPhone}}:<br><b>{{phoneNumber}}</b></span>
 </div>
-<div class="grey text text-center my-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
+<div class="grey text text-center mb-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
 <div class="grey text text-center otp-label" *ngIf="startingForm && startingForm?.basicInfo?.isMinor">
   <span>{{resourceService.frmelmnts.lbl.enterOTPByParent}}</span>
@@ -52,18 +52,14 @@
 
 <h6 tabindex="0" class="font-weight-bold text-center">PARENT/GUARDIAN Should Enter the OTP</h6>
 
-<label *ngIf="redirecterrorMessage" class="color-danger sb-color-red text fs-1 text-center mb-8">The
-  redirectURL/errorcallbackURL do not match the domain</label>
-<div *ngIf="showSignUpLink" class="">{{unabletoVerifyErrorMessage}}<br> Please
-  <span tabindex="0" (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button"
-    tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
-  again
+<label *ngIf="redirecterrorMessage" class="color-danger sb-color-red text fs-1 text-center mb-8">The redirectURL/errorcallbackURL do not match the domain</label>
+<div *ngIf="showSignUpLink" class="">{{unabletoVerifyErrorMessage}}<br> Please <span tabindex="0" (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span> again
 </div>
-<form class="sb-form borderd mb-16" [formGroup]="otpForm">
+<form class="sb-form borderd my-16" [formGroup]="otpForm">
   <div class="sb-field-group mb-16 text-left">
     <div class="sb-field">
       <label *ngIf="!infoMessage" for="enterOTP"
-        class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</label>
+        class="fs-1 text-left mb-8 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</label>
       <label *ngIf="errorMessage" class="sb-text-error d-inline-block line-height-1-3">{{errorMessage |
         interpolate:'{remainingAttempt}': remainingAttempt}}</label>
       <label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
@@ -103,20 +99,20 @@
   <!-- For Major -->
   <!-- Terms and Conditions popup -->
 
-  <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
-
-    <button type="button" [attr.readonly]="disableResendButton" appTelemetryInteract
-      [telemetryInteractEdata]="submitResendOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 w-50" tabindex="0"
-      [ngClass]="{'sb-btn-disabled resend-disable': !disableResendButton}" [disabled]="!disableResendButton"
-      [attr.aria-disabled]="disableResendButton == false ? false : true" (click)="generateResendOTP();" type="button"
-      value="{{resendOTPbtn}}">{{resendOTPbtn}}</button>
+  <div class="assessment-action-buttons mt-16 d-flex flex-ai-center flex-dc">
     <button type="submit" [attr.readonly]="disableSubmitBtn" role="button" appTelemetryInteract
       [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-      class="sb-btn sb-btn-normal w-50" [disabled]="disableSubmitBtn"
+      class="sb-btn sb-btn-normal w-100" [disabled]="disableSubmitBtn"
       [attr.aria-disabled]="disableSubmitBtn == true ? true : false"
       [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" tabindex="0"
       (click)="verifyOTP()">{{resourceService.frmelmnts.lbl.submit}}</button>
+
+      <span class="mt-16 w-100 text-center">Didn’t Receive an OTP? <button type="button" [attr.readonly]="disableResendButton" appTelemetryInteract
+        [telemetryInteractEdata]="submitResendOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" tabindex="0"
+        [ngClass]="{'sb-btn-disabled resend-disable': !disableResendButton}" [disabled]="!disableResendButton"
+        [attr.aria-disabled]="disableResendButton == false ? false : true" (click)="generateResendOTP();" type="button"
+        value="{{resendOTPbtn}}">{{resendOTPbtn}}</button></span>
   </div>
   <a tabindex="0" role="button" aria-label="re captcha" (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
 </form>

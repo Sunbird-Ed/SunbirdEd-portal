@@ -178,7 +178,7 @@ export class OtpComponent implements OnInit {
       },
       'request': {
         'firstName': _.trim(_.get(this.startingForm, 'basicInfo.name')),
-        'password': _.trim(this.signUpdata.controls.password.value),
+        'password': _.trim(_.get(this.startingForm, 'emailPassInfo.password')),
         'dob': _.get(this.startingForm, 'basicInfo.yearOfBirth').toString(),
       }
     };
@@ -192,7 +192,7 @@ export class OtpComponent implements OnInit {
       identifier = _.get(this.startingForm, 'emailPassInfo.key');
     }
     createRequest.request['reqData'] = _.get(data, 'reqData');
-    if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
+    if (this.otpForm.controls.tncAccepted.value && this.otpForm.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
         this.telemetryLogEvents('sign-up', true);
         const tncAcceptRequestBody = {
