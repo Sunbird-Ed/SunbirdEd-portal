@@ -1,16 +1,32 @@
 @import "variables";
-@import 'mixins/mixins';
+@import "mixins/mixins";
 
 .sb-mat__dropdown.sb-mat__dropdown--autocmp {
-    border: 1px solid var(--gray-200);
-    border-radius: calculateRem(24px);
+  border: 1px solid var(--gray-200);
+  border-radius: calculateRem(24px);
 }
 
 ::ng-deep {
-html[layout=joy] .sb-form-control:hover {
+  html[layout="joy"] .sb-form-control:hover {
     border: 0.0625rem solid var(--gray-200);
-}
-span.arrow-icon.pl-8 {
+  }
+  span.arrow-icon.pl-8 {
     float: right;
-}
+  }
+  .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
+    padding: 0px 0.75rem 0 1rem;
+  }
+  .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: 0 0 0px 0;
+    margin-top: -0.375rem;
+  }
+  .sb-mat__dropdown.sb-mat__dropdown--autocmp {
+    height: 2rem;
+  }
+  html[layout="joy"]
+    .sb-mat__dropdown.mat-form-field-appearance-fill
+    .mat-form-field-flex {
+    background: transparent;
+    height: 32px;
+  }
 }

@@ -52,17 +52,20 @@
 
       @include respond-below(sm) {
         text-align: center;
-
+        margin-bottom: 2rem;
+        position: relative;
+        top: 0;
+        right: 0;
         &.fix-bottom {
           // background-color: var(--primary-0);
-          background-color: #f8fafc;
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          top: unset;
-          z-index: 1;
-          border-top: calculateRem(1px) solid var(--gray-100);
+          // background-color: #f8fafc;
+          // position: fixed;
+          // bottom: 0;
+          // left: 0;
+          // right: 0;
+          // top: unset;
+          // z-index: 1;
+          // border-top: calculateRem(1px) solid var(--gray-100);
         }
       }
     }
