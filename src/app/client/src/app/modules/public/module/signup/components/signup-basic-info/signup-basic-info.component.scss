@@ -17,20 +17,18 @@
   span.arrow-icon.pl-8 {
     float: right;
   }
-  .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
-    padding: 0px 0.75rem 0 1rem;
-  }
   .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-infix {
     padding: 0 0 0px 0;
     margin-top: -0.0625rem;
     font-size: 0.8125rem;
+    line-height: 2.5rem;
   }
-  .sb-mat__dropdown.sb-mat__dropdown--autocmp {
+  .sb-mat__dropdown.sb-mat__dropdown--autocmp, .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
     height: 2.5rem;
   }
   html[layout="joy"]
-    .sb-mat__dropdown.mat-form-field-appearance-fill
-    .mat-form-field-flex {
+    .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
+      padding: 0px 0.75rem 0 1rem;
     background: transparent;
   }
 }
