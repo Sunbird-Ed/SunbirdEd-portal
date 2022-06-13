@@ -24,8 +24,8 @@
     }
 
     .image {
-      width: calculateRem(100px);
-      height: calculateRem(100px);
+      width: calculateRem(124px);
+      height: calculateRem(124px);
       background: var(--white);
       display: flex;
       align-items: center;
@@ -49,32 +49,32 @@
 
     .login-content {
       text-align: right;
-      position: absolute;
-      top: 12px;
-      right: 8px;
-
+      padding:1rem 1rem 1.5rem 1rem;
+      position: relative;
       @include respond-below(sm) {
         text-align: center;
-
         &.fix-bottom {
           // background-color: var(--primary-0);
-          background-color: #f8fafc;
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          top: unset;
-          z-index: 1;
-          border-top: calculateRem(1px) solid var(--gray-100);
+          // background-color: #f8fafc;
+          // position: fixed;
+          // bottom: 0;
+          // left: 0;
+          // right: 0;
+          // top: unset;
+          // z-index: 1;
+          // border-top: calculateRem(1px) solid var(--gray-100);
         }
       }
     }
+  }
 
-    .register-content {
-      width: 100%;
-      max-width: calculateRem(400px);
-      margin: 0 auto;
-    }
+  .content-center-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;    
+    padding-bottom: 2rem;
   }
 }
 

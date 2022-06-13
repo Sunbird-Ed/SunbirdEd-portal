@@ -10,7 +10,7 @@ import * as _ from 'lodash-es';
 @Component({
   selector: 'app-signup-basic-info',
   templateUrl: './signup-basic-info.component.html',
-  styleUrls: ['./signup-basic-info.component.scss']
+  styleUrls: ['./signup-basic-info.component.scss' , '../signup/signup_form.component.scss']
 })
 export class SignupBasicInfoComponent implements OnInit {
 

@@ -28,5 +28,5 @@ describe('SignupOnboardingInfoComponent', () => {
     expect(component.subformInitialized.emit).toHaveBeenCalled();
     expect(component.triggerNext.emit).toHaveBeenCalled();
   })
-
+  
 });
