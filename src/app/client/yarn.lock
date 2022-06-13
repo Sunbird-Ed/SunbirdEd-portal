@@ -2082,10 +2082,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@4.9.0":
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.9.0.tgz#6cc4e3d7f2377a3a37f1463be764edf19036a256"
-  integrity sha512-1vbDEQ4cwNZNmcb8Si8gQ3EIeDMzmuCInvxhKVtHlg0O5kHYF3P81G0onXukQ+r9d7esLzAjdX5nJKCRLEoBqA==
+"@project-sunbird/common-consumption-v9@4.9.1":
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.9.1.tgz#b228e0ed6fc675cc209c7d45c45c1d1c08567b47"
+  integrity sha512-PpaNeHUK/nPS0kzSW0GCwtx4jzf52Ga6iRD1niRr9mO8tJ/M4e50geFZH/N8nhOQyjjsq23sb9tbWuCKd8Kgcg==
 
 "@project-sunbird/discussions-ui-v8@2.6.0-beta.2":
   version "2.6.0-beta.2"
