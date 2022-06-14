@@ -1,16 +1,9 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import {
   ResourceService,
-  ConfigService,
-  ServerResponse,
-  ToasterService,
-  NavigationHelperService,
-  UtilService,
-  RecaptchaService
+  NavigationHelperService
 } from '@sunbird/shared';
-import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -35,15 +28,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public unsubscribe = new Subject<void>();
   signUpForm;
-  sbFormBuilder: FormBuilder;
-  showContact = 'phone';
-  disableSubmitBtn = true;
-  disableForm = true;
-  showPassword = false;
-  captchaResponse = '';
-  googleCaptchaSiteKey: string;
-  showSignUpForm = true;
-  showUniqueError = '';
   tenantDataSubscription: Subscription;
   logo: string;
   tenantName: string;
@@ -53,21 +37,14 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
   instance: string;
-  passwordError: string;
-  showTncPopup = false;
   formInputType: string;
-  isP1CaptchaEnabled: any;
   isIOSDevice = false;
   signupStage: SignUpStage;
   get Stage() { return SignUpStage; }
 
-  constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
-    public signupService: SignupService, public toasterService: ToasterService,
-    public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
+  constructor(public resourceService: ResourceService, public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService, public utilService: UtilService,
-    public configService: ConfigService, public recaptchaService: RecaptchaService, private router: Router) {
-    this.sbFormBuilder = formBuilder;
+    public navigationhelperService: NavigationHelperService, private router: Router) {
   }
 
   ngOnInit() {
@@ -83,22 +60,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
 
-    try {
-      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
-    } catch (error) {
-      this.googleCaptchaSiteKey = '';
-    }
     this.initializeFormFields();
     this.setInteractEventData();
 
     // Telemetry Start
     this.signUpTelemetryStart();
 
-    this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
-      ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
-
   }
-
 
   signUpTelemetryStart() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
@@ -166,13 +134,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  submitForm() {
-    const formValues = this.signUpForm.value;
-    // submit the form with a service
-    // TODO Complete submit function
-    console.log(formValues);  
-  }
- 
   ngAfterViewInit () {
     setTimeout(() => {
       this.telemetryCdata = [{ 'type': 'signup', 'id': this.activatedRoute.snapshot.data.telemetry.uuid }];
@@ -197,46 +158,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         // 'contactType': this.signUpForm.controls.contactType.value.toString()
       }
     };
-  }
-
-  generateTelemetry(e) {
-    const selectedType = e.target.checked ? 'selected' : 'unselected';
-    const interactData = {
-      context: {
-        env: 'self-signup',
-        cdata: [
-          {id: 'user:tnc:accept', type: 'Feature'},
-          {id: 'SB-16663', type: 'Task'}
-        ]
-      },
-      edata: {
-        id: 'user:tnc:accept',
-        type: 'click',
-        subtype: selectedType,
-        pageid: 'self-signup'
-      }
-    };
-    this.telemetryService.interact(interactData);
-  }
-
-  telemetryLogEvents(api: any, status: boolean) {
-    let level = 'ERROR';
-    let msg = api + ' failed';
-    if (status) {
-      level = 'SUCCESS';
-      msg = api + ' success';
-    }
-    const event = {
-      context: {
-        env: 'self-signup'
-      },
-      edata: {
-        type: api,
-        level: level,
-        message: msg
-      }
-    };
-    this.telemetryService.log(event);
   }
 
   redirectToLogin () {
