@@ -92,7 +92,7 @@ export class MaterialAutoCompleteComponent implements OnChanges {
      if (this.selected.length > 0) {
       this.writeValue(`${this.selected.length} selections`);
     } else {
-      this.writeValue(`0 selections`);
+      this.writeValue(`Select ${this.dynamicplaceholder.toLowerCase()}`);
     }
 
   }

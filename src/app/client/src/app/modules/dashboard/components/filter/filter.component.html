@@ -29,7 +29,7 @@
             <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
               [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="sb-form-control" type="text"
-              [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
+              placeholder="Select {{filter.displayName | lowercase}}" ngxDaterangepickerMd [showCustomRangeLabel]="true"
               [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
               [minDate]="pickerMinDate" [maxDate]="pickerMaxDate" (change)="getDateRange($event,filter.reference)" />
           </div>
