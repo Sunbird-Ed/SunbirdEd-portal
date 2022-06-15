@@ -88,7 +88,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   dialogRef: any;
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
-  constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
+  constructor(public resourceService: ResourceService, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService, private reportService: ReportService, private dialog: MatDialog) {
     this.alwaysShowCalendars = true;

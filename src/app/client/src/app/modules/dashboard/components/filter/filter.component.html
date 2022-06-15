@@ -6,7 +6,7 @@
         <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
           <label>{{filter.displayName}}</label>
           <div *ngIf="filter.controlType === 'multi-select'">
-            <app-material-auto-complete name="mat-ms-auto" placeholder="Select {{filter.displayName | lowercase}}" [dropdownList]="filter.options"
+            <app-material-auto-complete name="mat-ms-auto" [dynamicplaceholder]="filter.displayName" [dropdownList]="filter.options"
               [selectedFilters]="getSelectedData(filter.reference)"
               (selectionChanged)="autoCompleteChange($event,filter.reference)" display-key="name">
             </app-material-auto-complete>
@@ -15,7 +15,7 @@
           <div *ngIf="filter.controlType === 'select'">
 
             <input matInput type="text" [(ngModel)]="filterQuery" (keyup.enter)="chooseOption()"
-              [placeholder]="filter.displayName" aria-label="Number" matInput [formControlName]="filter.reference"
+              placeholder="Select {{filter.displayName | lowercase}}" aria-label="Number" matInput [formControlName]="filter.reference"
               [matAutocomplete]="auto2">
             <mat-autocomplete #auto2="matAutocomplete" class="test-class">
               <mat-option *ngFor="let option of getFilters(filter.options)" [value]="option">
@@ -29,7 +29,7 @@
             <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
               [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="sb-form-control" type="text"
-              [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
+              placeholder="Select {{filter.displayName | lowercase}}" ngxDaterangepickerMd [showCustomRangeLabel]="true"
               [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
               [minDate]="pickerMinDate" [maxDate]="pickerMaxDate" (change)="getDateRange($event,filter.reference)" />
           </div>

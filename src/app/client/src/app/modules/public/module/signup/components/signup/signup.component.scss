@@ -24,8 +24,8 @@
     }
 
     .image {
-      width: calculateRem(100px);
-      height: calculateRem(100px);
+      width: calculateRem(124px);
+      height: calculateRem(124px);
       background: var(--white);
       display: flex;
       align-items: center;
@@ -55,7 +55,8 @@
       right: 0;
       @include respond-below(sm) {
         text-align: center;
-      
+        padding:1rem 1rem 1.5rem 1rem;
+ 
         &.fix-bottom {
           // background-color: var(--primary-0);
           // background-color: #f8fafc;
@@ -69,6 +70,15 @@
         }
       }
     }
+  }
+
+  .content-center-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;    
+    padding-bottom: 2rem;
   }
 }
 

@@ -6,6 +6,7 @@ import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnCha
   styleUrls: ['./material-auto-complete.component.scss']
 })
 export class MaterialAutoCompleteComponent implements OnChanges {
+  @Input() dynamicplaceholder:string;
   @Input()
   get selectedFilters() {
     return this._selectedFilters;
@@ -26,13 +27,6 @@ export class MaterialAutoCompleteComponent implements OnChanges {
 
     this._dropdownList = val;
     this.dropDownSelectedShow();
-  }
-
-  @Input()
-  get placeholder(): string { return this._placeholder; }
-  set placeholder(value: string) {
-    this._placeholder = '0 selections';
-
   }
 
   constructor(private _elementRef: ElementRef<HTMLElement>, private changeDetectorRef: ChangeDetectorRef) {}
@@ -98,7 +92,7 @@ export class MaterialAutoCompleteComponent implements OnChanges {
      if (this.selected.length > 0) {
       this.writeValue(`${this.selected.length} selections`);
     } else {
-      this.writeValue(`0 selections`);
+      this.writeValue(`Select ${this.dynamicplaceholder.toLowerCase()}`);
     }
 
   }

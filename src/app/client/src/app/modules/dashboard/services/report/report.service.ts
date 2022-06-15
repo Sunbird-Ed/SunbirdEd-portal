@@ -239,7 +239,7 @@ export class ReportService  {
     return this.getDataSourceById(data, tableId) || {};
   }
 
-  private getChartData = (data: { result: any, id: string }[], chart: any) => {
+  getChartData = (data: { result: any, id: string }[], chart: any) => {
     const chartDataSource = _.get(chart, 'dataSource');
 
     if (chartDataSource.ids.length === 1) {
@@ -277,7 +277,6 @@ export class ReportService  {
    * @memberof ReportService
    */
   public overlayMultipleDataSources<T, U extends keyof T>(dataSources: (T[])[], commonDimension: U) {
-    // return _.values(_.merge(..._.map(dataSources, dataSource => _.keyBy(dataSource, commonDimension))));
     return _.flatten(dataSources);
   }
 
@@ -534,7 +533,7 @@ export class ReportService  {
             return report;
           }),
           catchError(err => {
-            console.error(err);
+            // console.error(err);
             return of(report);
           }));
     });
