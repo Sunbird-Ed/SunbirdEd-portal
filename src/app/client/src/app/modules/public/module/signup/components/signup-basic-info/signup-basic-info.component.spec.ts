@@ -108,4 +108,17 @@ describe('SignupBasicInfoComponent', () => {
     });
   })
 
+  describe("isNumber", () => {
+    it("should return with false for non numeric value", () => {
+      let event = {which: 40};
+      let res = component.isNumber(event);
+      expect(res).toBeFalsy();
+    });
+    it("should return with true for numeric value", () => {
+      let event = {which: 50};
+      let res = component.isNumber(event);
+      expect(res).toBeTruthy();
+    });
+  })
+
 });
