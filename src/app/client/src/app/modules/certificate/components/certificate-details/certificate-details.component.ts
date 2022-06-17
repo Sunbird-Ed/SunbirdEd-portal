@@ -217,7 +217,6 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
           rcApiPath: '/learner/rc/${schemaName}/v1',
         }).subscribe(
           (data) => {
-            console.log('Portal :: verifyCertificate response ', data); // TODO: log!
             const certData = _.get(data, 'certificateData');
             this.loader = false;
             if (_.get(data, 'verified')) {
@@ -235,11 +234,9 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
             this.viewCertificate = false;
             this.isInvalidCertificate = true;
             this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            console.log('Portal :: verifyCertificate err ', err); // TODO: log!
           }
         );
       }).catch(error => {
-        console.log('Portal :: CSL : Get Encode CSL API failed ', error);
         this.viewCertificate = false;
         this.isInvalidCertificate = true;
       });
@@ -259,7 +256,6 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
       rcApiPath: '/learner/rc/${schemaName}/v1',
     }).subscribe(
       (data) => {
-        console.log('Portal :: validate TCertificate response ', data); // TODO: log!
         const certData = _.get(data, 'certificateData');
         this.loader = false;
         if (_.get(data, 'verified')) {
@@ -275,7 +271,6 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
       (err) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
-        console.log('Portal :: validate TCertificate err ', err); // TODO: log!
         this.viewCertificate = false;
         this.isInvalidCertificate = true;
       }
