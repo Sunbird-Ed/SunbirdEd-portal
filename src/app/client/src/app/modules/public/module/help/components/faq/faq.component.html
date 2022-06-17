@@ -124,6 +124,9 @@
     <div class="sb-modal">
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible large">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
           <div class="sb-modal-content height-auto">
             <sunbird-video-player [playerConfig]="playerConfig" #videoPlayer>
             </sunbird-video-player>
