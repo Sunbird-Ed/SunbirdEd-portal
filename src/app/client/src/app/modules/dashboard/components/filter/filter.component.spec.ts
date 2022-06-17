@@ -1,6 +1,5 @@
 
 import { FilterComponent } from './filter.component';
-// import { FilterComponent } from '../';
 import { mockChartData } from './filter.component.spec.data';
 import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -62,13 +61,6 @@ describe('FilterComponent', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // component.filters = mockChartData.filters;
-    // component.chartData = [{ data: mockChartData.chartData, id: 'chartId' }];
-    // component.selectedFilter = {};
-    // component.filterType = 'chart-filter';
-    // component.chartLabels = [];
-    // component.dateFilterReferenceName = '';
-    // component.filtersFormGroup = new FormBuilder().group({});
   });
 
   it('should create', () => {
