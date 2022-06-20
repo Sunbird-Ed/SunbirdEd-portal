@@ -69,7 +69,7 @@ describe('FilterComponent', () => {
   });
 
   it('should build filters form from the configuration', () => {
-    jest.spyOn(component, 'buildFiltersForm').mockImplementation(() => {});
+    jest.spyOn(component, 'buildFiltersForm').mockImplementation(() => { });
     component.filters = mockChartData.filters;
     component.ngOnInit();
     expect(component.buildFiltersForm).toHaveBeenCalled();
@@ -104,7 +104,7 @@ describe('FilterComponent', () => {
     tick(1000);
     component.buildFiltersForm();
     tick(1000);
-    expect(component.chartData).toEqual([{id: 'chartId', data: mockChartData.chartData}]);
+    expect(component.chartData).toEqual([{ id: 'chartId', data: mockChartData.chartData }]);
   }));
 
   it('should run buildFiltersForm', fakeAsync(() => {
@@ -134,19 +134,17 @@ describe('FilterComponent', () => {
   }));
 
 
-  it('should set the dateRange', fakeAsync(() => {
+  it('should set the dateRange', () => {
     component.filtersFormGroup = new FormBuilder().group({
       Grade: ['1']
     });
     component.ngOnInit();
-    tick(1000);
     component.getDateRange({
       startDate: new Date('Tue Jan 08 2019 00:00:00 GMT+0530 (India Standard Time'),
       endDate: new Date('Tue Jan 10 2019 00:00:00 GMT+0530 (India Standard Time')
     }, 'Grade');
-    tick(1000);
     expect(component.filtersFormGroup.get('Grade').value).toEqual(['08-01-2019', '09-01-2019', '10-01-2019']);
-  }));
+  });
 
   it('should update form', fakeAsync(() => {
     component.filtersFormGroup = new FormBuilder().group({
