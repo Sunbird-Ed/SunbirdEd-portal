@@ -133,19 +133,6 @@ describe('FilterComponent', () => {
 
   }));
 
-
-  it('should set the dateRange', () => {
-    component.filtersFormGroup = new FormBuilder().group({
-      Grade: ['1']
-    });
-    component.ngOnInit();
-    component.getDateRange({
-      startDate: new Date('Tue Jan 08 2019 00:00:00 GMT+0530 (India Standard Time'),
-      endDate: new Date('Tue Jan 10 2019 00:00:00 GMT+0530 (India Standard Time')
-    }, 'Grade');
-    expect(component.filtersFormGroup.get('Grade').value).toEqual(['08-01-2019', '09-01-2019', '10-01-2019']);
-  });
-
   it('should update form', fakeAsync(() => {
     component.filtersFormGroup = new FormBuilder().group({
       state: ['1']
