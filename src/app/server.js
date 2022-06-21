@@ -240,6 +240,8 @@ require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
 require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
 
+require('./routes/keycloakSignInRoutes.js')(app, keycloak) // google sign in routes
+
 require('./routes/ios.js')(app, keycloak) // apple sign in routes
 
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
