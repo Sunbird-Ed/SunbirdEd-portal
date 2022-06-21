@@ -26,9 +26,16 @@
   .sb-mat__dropdown.sb-mat__dropdown--autocmp, .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
     height: 2.5rem;
   }
-  html[layout="joy"]
+  html[layout="joy"] {
     .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
       padding: 0px 0.75rem 0 1rem;
-    background: transparent;
+      background: transparent;
+    }
+  }
+  html[data-theme='Darkmode'] {
+    input.sb-form-control:-internal-autofill-selected {
+      color-scheme: dark;
+      box-shadow: 0 0 0 1000px #333 inset;
+    }
   }
 }
