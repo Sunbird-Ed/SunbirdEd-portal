@@ -2123,10 +2123,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.52.tgz#c837ccc88d0d94e0372f5399eb14d2459338bd97"
   integrity sha512-/6PmYalzteRw6NWb4Tp5OJYO/6K38EsPKh9HA7E4UdzcXLGj5pZZR+vCRn8GblmWE3CczBJxwO3EuZypf4i0lQ==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.9.21":
-  version "4.9.21"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.9.21.tgz#bbb97ec150df3e1533dc418e695056e12f1da231"
-  integrity sha512-IIRL1jeOT/TOx1X+3Xe3CeooGDZYHu3dS0w2xolid2cwrpjAQvpOhDAZJQYnzdH28RW6pr9KrRWgHhuQjQ6YQQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.10.6":
+  version "4.10.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.10.6.tgz#68a8f2709ebc1acaa90e78e493d160e77c48e0f3"
+  integrity sha512-x/s656oeEahGHXaXLirUwhtehOVlXUBL6rnF8ZtxMSHKWXCsvzQf1XarQP/7ojfxj+zXpaqb0PIZWufCcvhplQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -2165,10 +2165,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.9.9":
-  version "4.9.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.9.9.tgz#9bfa35d1e3f6fdb3e1266f9ae844c327e153724d"
-  integrity sha512-SP7Y5nqDu0KQG7haEN8+nn+2rOTTgvG6M60NIuxtLZ7RlolYC7FiN8ZmlbnF7HKZ6BgERhZq3ahkZ54RhUDAcg==
+"@project-sunbird/sunbird-quml-player-v9@4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.10.0.tgz#6356850798e0af1d9798f08d1f8ba6debb9d1104"
+  integrity sha512-UFsjf7Ej8xvS9WCaAfN40fYbmmzUvfgLvCbgF23mQhm3Sw277N3hewSrPAOoGw7rOqCqh0vu2CcZv9+wDaaWOw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.8.0"
 
@@ -2179,10 +2179,10 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-video-player-v9@^4.6.1":
-  version "4.7.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.7.1.tgz#1c70cd11499bdfede8993bad2b19bea208ec9562"
-  integrity sha512-fGR6TubCUIgNPg6vwmzEgJasIRA346geWye4T4RaaCEQfRihFZZuQOIVbRU2KTwovk+QX4EgQNVVphoo7A7zbA==
+"@project-sunbird/sunbird-video-player-v9@4.10.2":
+  version "4.10.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.10.2.tgz#ae75aac3e9886cc7410866ef4ae640a346a11f13"
+  integrity sha512-kxRcrPnIF71LaWKleetBLdvXssXMhxvb4ekGYGRxpQpOOX7uc4IqE2bIai1vj0ZbqsLSvaWTw0ykwdQiIJSd3Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.6.4"
 
