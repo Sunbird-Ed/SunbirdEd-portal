@@ -148,7 +148,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private _addFiltersInTheQueryParams(updatedFilters = {}) {
         this.getCurrentPageData();
-        const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook', ...updatedFilters };
+        const params = _.get(this.activatedRoute, 'snapshot.queryParams');
+        const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook', ...updatedFilters, ...params };
         this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
     }
 
@@ -371,7 +372,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
         this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
         this.showLoader = true;
-        this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
+        this.selectedFilters = pick(filters, _.get(currentPageData , 'metaData.filters'));
         if (this.selectedFilters['board'][0] === 'CBSE/NCERT') {
             this.selectedFilters['board'][0] = 'CBSE';
         }
