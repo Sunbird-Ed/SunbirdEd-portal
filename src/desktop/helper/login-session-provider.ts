@@ -63,8 +63,7 @@ export class LoginSessionProvider {
             this.loginWindow = new BrowserWindow({ 
                 parent: this.mainWindow, 
                 closable: true, 
-                titleBarStyle: "hidden",
-                titleBarOverlay: true,
+                titleBarStyle: "customButtonsOnHover",
                 show: false,
                 minWidth: 700,
                 minHeight: 500,
