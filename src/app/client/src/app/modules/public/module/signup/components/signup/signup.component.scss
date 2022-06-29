@@ -26,7 +26,7 @@
     .image {
       width: calculateRem(124px);
       height: calculateRem(124px);
-      background: var(--white);
+      background: var(--signup-panel-bg);
       display: flex;
       align-items: center;
       border-radius: 50%;
@@ -43,7 +43,7 @@
   }
 
   .right-panel {
-    background: var(--white);
+    background: var(--signup-panel-bg);
     height: 100%;
     position: relative;
 
