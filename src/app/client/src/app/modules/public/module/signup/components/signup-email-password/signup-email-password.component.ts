@@ -73,6 +73,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   ngOnInit() {
     console.log('Global Object data => ', this.startingForm); // TODO: log!
+    this.isMinor = _.get(this.startingForm, 'basicInfo.isMinor') ? _.get(this.startingForm, 'basicInfo.isMinor') : false;
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(

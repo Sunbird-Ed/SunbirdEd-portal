@@ -297,6 +297,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.selectedFilters['subject'] = [];
       this.selectedFilters['publisher'] = [];
       this.selectedFilters['audience'] = [];
+      this.selectedFilters['channel'] = [];
       return this.updateRouteForBoardChange();
     }
   }
@@ -309,6 +310,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     _selectedFilters['subject'] = [];
     _selectedFilters['publisher'] = [];
     _selectedFilters['audience'] = [];
+    _selectedFilters['channel'] = [];
     this.router.navigate([], {
       queryParams: resetFilters ? { ...this.defaultFilters, selectedTab } : _.omit(_selectedFilters || {}, ['audienceSearchFilterValue']),
       relativeTo: this.activatedRoute.parent
