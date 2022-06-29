@@ -15,3 +15,8 @@
       font-size: calculateRem(14px);
     }
 }
+.sb-offline-load-content-btn{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
