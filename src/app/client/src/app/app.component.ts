@@ -205,6 +205,18 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getLocalTheme();
 
     this.setTagManager();
+    this.userService.userData$.subscribe((user: IUserData) => {
+        if (user.err) {
+          return throwError(user.err);
+        }
+        // TODO - check if user having dob in profile data or not
+        // if (_.get(user, 'userProfile.dob')) {
+        //   this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
+        // }
+        if (true) {
+          this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
+        }
+      });
   }
 
   setTagManager() {
