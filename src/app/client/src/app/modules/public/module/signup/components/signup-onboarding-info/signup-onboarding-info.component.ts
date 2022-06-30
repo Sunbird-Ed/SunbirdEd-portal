@@ -49,7 +49,7 @@ export class SignupOnboardingInfoComponent implements OnInit {
     };
     this.profileService.updateProfile(req).subscribe(res => {
       if (_.get(res, 'result.response') === 'SUCCESS') {
-          this.toasterService.success(this.resourceService?.frmelmnts?.smsg?.m0046);
+        this.toasterService.success(this.resourceService?.messages?.smsg?.m0046);
         setTimeout(() => {
           this.router.navigate(['/resources']);
         }, 1000);
