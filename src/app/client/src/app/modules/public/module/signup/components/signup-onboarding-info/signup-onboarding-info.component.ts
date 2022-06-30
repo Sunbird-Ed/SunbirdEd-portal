@@ -49,9 +49,7 @@ export class SignupOnboardingInfoComponent implements OnInit {
     };
     this.profileService.updateProfile(req).subscribe(res => {
       if (_.get(res, 'result.response') === 'SUCCESS') {
-        let _msg = _.get(this.startingForm, 'emailPassInfo.type') === 'phone' ? this.resourceService.frmelmnts.lbl.createUserSuccessWithPhone :
-          this.resourceService.frmelmnts.lbl.createUserSuccessWithEmail;
-        this.toasterService.success(_msg);
+          this.toasterService.success(this.resourceService?.frmelmnts?.smsg?.m0046);
         setTimeout(() => {
           this.router.navigate(['/resources']);
         }, 1000);
