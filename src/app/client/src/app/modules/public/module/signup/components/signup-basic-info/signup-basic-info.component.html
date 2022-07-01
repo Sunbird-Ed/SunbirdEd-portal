@@ -11,7 +11,7 @@
         
         <input id="signup-form-name" class="sb-form-control"
             [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
-            formControlName="name" type="text" name="name" aria-required="true" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
+            formControlName="name" type="text" name="name" autocomplete="off" aria-required="true" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
         
         <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
         <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter a valid name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
