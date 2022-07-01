@@ -21,8 +21,20 @@ export class SignupOnboardingInfoComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Global Object data => ', this.startingForm); // TODO: log!
+    setTimeout(() => {
+      this.sbformDOMManipulation();
+    }, 500);
   }
 
+  sbformDOMManipulation() {
+    let formElement = document.getElementsByTagName('sb-form')[0];
+    if (formElement) {
+      let roleElement = formElement.getElementsByClassName('ng-star-inserted')[0];
+      if (roleElement) {
+        roleElement.classList.add('hide');
+      }
+    }
+  }
   onRegisterSubmit(event) {
     // If user is minor and login mode is gmail, then continue accepting email / phone for verification
     if (_.get(this.startingForm, 'basicInfo.isMinor') && _.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
