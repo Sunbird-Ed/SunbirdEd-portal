@@ -20,7 +20,7 @@ export class SignupOnboardingInfoComponent implements OnInit {
     public router: Router, private profileService: ProfileService) { }
 
   ngOnInit(): void {
-    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
     setTimeout(() => {
       this.sbformDOMManipulation();
     }, 500);

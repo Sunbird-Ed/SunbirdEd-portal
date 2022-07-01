@@ -46,7 +46,7 @@ export class SignupBasicInfoComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value)),
     );
-    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
   }
 
   private _filter(value: string): string[] {

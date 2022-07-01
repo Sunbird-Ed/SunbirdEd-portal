@@ -62,7 +62,7 @@ export class OtpComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
     this.emailAddress = _.get(this.startingForm, 'emailPassInfo.type') === 'email' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
     this.phoneNumber = _.get(this.startingForm, 'emailPassInfo.type') === 'phone' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
     this.mode = _.get(this.startingForm, 'emailPassInfo.type');

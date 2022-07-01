@@ -209,11 +209,8 @@ export class AppComponent implements OnInit, OnDestroy {
         if (user.err) {
           return throwError(user.err);
         }
-        // TODO - check if user having dob in profile data or not
-        // if (_.get(user, 'userProfile.dob') && LOGGED_IN_USER_CHECK) {
-        //   this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
-        // }
-        if (true) {
+        // If User is logged in and dob is missing, initiate consent workflow
+        if (!_.get(user, 'userProfile.dob') && this.userService.loggedIn) {
           this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
         }
       });
