@@ -24,7 +24,8 @@ describe('SignupComponent', () => {
           type: 'view', mode: 'self', uuid: 'hadfisgefkjsdvv'
         }
       }
-    } as any
+    } as any,
+    queryParams: of({}) as any
   };
   const mockTelemetryService: Partial<TelemetryService> = {};
   const mockNavigationHelperService: Partial<NavigationHelperService> = {};

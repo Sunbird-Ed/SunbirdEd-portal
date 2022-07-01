@@ -38,7 +38,7 @@ export class SignupBasicInfoComponent implements OnInit {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.personalInfoForm = this._fb.group({
       name: ['', Validators.required],
-      yearOfBirth: ['', Validators.required]
+      yearOfBirth: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
     })
     this.initiateYearSelecter();
     // @ts-ignore
@@ -46,7 +46,7 @@ export class SignupBasicInfoComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value)),
     );
-    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
   }
 
   private _filter(value: string): string[] {

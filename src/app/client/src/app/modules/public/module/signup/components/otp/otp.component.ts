@@ -8,6 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { IEndEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { TncService } from '@sunbird/core';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { ProfileService } from '@sunbird/profile';
 
 @Component({
   selector: 'app-otp',
@@ -56,11 +57,12 @@ export class OtpComponent implements OnInit {
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService, public router: Router,
     public utilService: UtilService, public configService: ConfigService,
-    public tncService: TncService, private toasterService: ToasterService) {
+    public tncService: TncService, private toasterService: ToasterService,
+    private profileService: ProfileService) {
   }
 
   ngOnInit() {
-    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
     this.emailAddress = _.get(this.startingForm, 'emailPassInfo.type') === 'email' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
     this.phoneNumber = _.get(this.startingForm, 'emailPassInfo.type') === 'phone' ? _.get(this.startingForm, 'emailPassInfo.key') : '';
     this.mode = _.get(this.startingForm, 'emailPassInfo.type');
@@ -128,7 +130,11 @@ export class OtpComponent implements OnInit {
       (data: ServerResponse) => {
         this.infoMessage = '';
         this.errorMessage = '';
-        this.createUser(data);
+        if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+          this.updateUserBasicInfo();
+        } else {
+          this.createUser(data);
+        }
       },
       (err) => {
         this.logVerifyOtpError(err.error.params.errmsg);
@@ -417,5 +423,26 @@ export class OtpComponent implements OnInit {
       }
     };
     this.telemetryService.interact(interactData);
+  }
+
+  updateUserBasicInfo() {
+    const req = {
+      'firstName': _.trim(_.get(this.startingForm, 'basicInfo.name')),
+      'dob': _.get(this.startingForm, 'basicInfo.yearOfBirth').toString(),
+    };
+    this.profileService.updateProfile(req).subscribe(res => {
+      if(_.get(res, 'result.response') === 'SUCCESS') {
+        let _msg =  _.get(this.startingForm, 'emailPassInfo.type') === 'phone' ? this.resourceService.frmelmnts.lbl.createUserSuccessWithPhone :
+        this.resourceService.frmelmnts.lbl.createUserSuccessWithEmail;
+        this.toasterService.success(_msg);
+        setTimeout(() => {
+          this.router.navigate(['/resources']);
+        }, 1000);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+      }
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+    });
   }
 }

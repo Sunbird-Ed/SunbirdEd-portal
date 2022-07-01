@@ -205,6 +205,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getLocalTheme();
 
     this.setTagManager();
+    this.userService.userData$.subscribe((user: IUserData) => {
+        if (user.err) {
+          return throwError(user.err);
+        }
+        // If User is logged in and dob is missing, initiate consent workflow
+        if (!_.get(user, 'userProfile.dob') && this.userService.loggedIn) {
+          this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
+        }
+      });
   }
 
   setTagManager() {

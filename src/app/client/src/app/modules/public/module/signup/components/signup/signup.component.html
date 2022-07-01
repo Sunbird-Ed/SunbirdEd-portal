@@ -8,7 +8,7 @@
 
 
   <div class="right-panel d-flex flex-dc">
-    <div class="login-content w-100 fix-bottom">
+    <div *ngIf="!routeParams?.loginMode" class="login-content w-100 fix-bottom">
       <label class="mb-0 mx-8">{{resourceService.frmelmnts?.lbl?.haveaccount}}</label>
       <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()"
         aria-label="Already have an account? Login here" tabindex="0"
