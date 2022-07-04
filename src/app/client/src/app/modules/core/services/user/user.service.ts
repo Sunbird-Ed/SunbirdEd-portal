@@ -534,7 +534,14 @@ export class UserService {
   get defaultFrameworkFilters() {
     const isUserLoggedIn = this.loggedIn || false;
     const { framework = null } = this.userProfile || {};
-    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
+    let userFramework = {}
+    if (!isUserLoggedIn) {
+      let userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
+      userFramework = _.get(userDetails, 'framework');
+    } else {
+      userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
+    }
+
     return { board: ['CBSE'], ...userFramework };
   }
 }
