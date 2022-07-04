@@ -29,21 +29,21 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/build-angular": "0.1002.4",
-    "@angular/animations": "^10.2.5",
-    "@angular/cdk": "10.2.7",
-    "@angular/cli": "^10.2.4",
-    "@angular/common": "^10.2.5",
-    "@angular/compiler": "^10.2.5",
-    "@angular/compiler-cli": "^10.2.5",
-    "@angular/core": "^10.2.5",
-    "@angular/forms": "^10.2.5",
+    "@angular-devkit/build-angular": "0.1102.19",
+    "@angular/animations": "^11.2.14",
+    "@angular/cdk": "11.2.13",
+    "@angular/cli": "^11.2.19",
+    "@angular/common": "^11.2.14",
+    "@angular/compiler": "^11.2.14",
+    "@angular/compiler-cli": "^11.2.14",
+    "@angular/core": "^11.2.14",
+    "@angular/forms": "^11.2.14",
     "@angular/http": "^7.2.10",
-    "@angular/localize": "10.2.5",
-    "@angular/material": "10.2.7",
-    "@angular/platform-browser": "^10.2.5",
-    "@angular/platform-browser-dynamic": "^10.2.5",
-    "@angular/router": "^10.2.5",
+    "@angular/localize": "11.2.14",
+    "@angular/material": "11.2.13",
+    "@angular/platform-browser": "^11.2.14",
+    "@angular/platform-browser-dynamic": "^11.2.14",
+    "@angular/router": "^11.2.14",
     "@ngx-translate/core": "12.0.0",
     "@ngx-translate/http-loader": "^5.0.0",
     "@project-sunbird/chatbot-client-v8": "2.0.3",
@@ -137,12 +137,13 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular/language-service": "^10.2.5",
+    "@angular-devkit/build-angular": "~0.1102.18",
+    "@angular/language-service": "^11.2.14",
     "@types/jest": "^27.4.1",
     "@types/jquery": "^3.3.38",
     "@types/jquery.fancytree": "2.7.34",
     "@types/node": "^12.20.15",
-    "codelyzer": "^5.1.2",
+    "codelyzer": "^6.0.0",
     "husky": "^4.2.5",
     "jest": "^27.5.1",
     "jest-preset-angular": "^11.1.1",
@@ -154,6 +155,6 @@
     "typescript": "~4.0.8"
   },
   "resolutions": {
-    "moment": "2.22.1"
+    "moment": "2.29.1"
   }
 }
