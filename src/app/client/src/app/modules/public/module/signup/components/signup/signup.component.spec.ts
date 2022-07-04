@@ -96,7 +96,7 @@ describe('SignupComponent', () => {
 
   it('should navigagte to login page', () => {
     component.redirectToLogin();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/resources/play/content']);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/resources']);
   });
 
   describe("ngOnInit", () => {
