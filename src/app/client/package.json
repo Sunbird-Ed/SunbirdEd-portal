@@ -65,7 +65,7 @@
     "@project-sunbird/telemetry-sdk": "0.0.29",
     "@project-sunbird/web-extensions": "^0.0.2",
     "@samagra-x/uci-console": "1.3.7",
-    "@shikshalokam/sl-questionnaire": "1.1.0",
+    "@shikshalokam/sl-questionnaire": "1.2.0",
     "@shikshalokam/sl-reports-library": "^1.0.7",
     "@swimlane/ngx-datatable": "16.1.1",
     "@types/jquery": "3.3.31",
