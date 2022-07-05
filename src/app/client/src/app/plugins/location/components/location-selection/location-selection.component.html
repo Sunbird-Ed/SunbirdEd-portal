@@ -85,7 +85,7 @@
               *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
               [config]="sbFormLocationSelectionDelegate.locationFormConfig"
               (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
-              (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
+              (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event); onSbFormValueChange($event);"
               (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal)">
             </sb-form>
           </div>
