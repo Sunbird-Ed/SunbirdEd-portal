@@ -23,10 +23,10 @@ telemetryService.prototype.context = []
  */
 function SyncManager() {
   this.init = function (event) {
-    if (!_.get(event, 'authtoken')) console.log(event);
+    // if (!_.get(event, 'authtoken')) console.log(event);
   },
     this.dispatch = function (event) {
-      if (!_.get(event, 'authtoken')) console.log(event);
+      // if (!_.get(event, 'authtoken')) console.log(event);
     }
 }
 telemetryService.prototype.init = function (config) {
