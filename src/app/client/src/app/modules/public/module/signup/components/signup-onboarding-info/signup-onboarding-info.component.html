@@ -1,6 +1,6 @@
 <div class="signup-form-content">
 <p class="fnormal font-weight-bold mb-16">To discover relevant content update the following details:</p>
-<app-location-selection (registerSubmit)="onRegisterSubmit($event)"
+<app-location-selection (onFormValueChange)="onSbFormValueChange($event)" (registerSubmit)="onRegisterSubmit($event)"
     [showModal]="false">
     <div slot="popup-sub-header">
         <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>

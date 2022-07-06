@@ -20,7 +20,6 @@ export class SignupOnboardingInfoComponent implements OnInit {
     public router: Router, private profileService: ProfileService) { }
 
   ngOnInit(): void {
-    // console.log('Global Object data => ', this.startingForm); // TODO: log!
     setTimeout(() => {
       this.sbformDOMManipulation();
     }, 500);
@@ -29,7 +28,7 @@ export class SignupOnboardingInfoComponent implements OnInit {
   sbformDOMManipulation() {
     let formElement = document.getElementsByTagName('sb-form')[0];
     if (formElement) {
-      let roleElement = formElement.getElementsByClassName('ng-star-inserted')[0];
+      let roleElement = formElement.getElementsByClassName('cfe-multiselect-container')[0];
       if (roleElement) {
         roleElement.classList.add('hide');
       }
@@ -71,5 +70,9 @@ export class SignupOnboardingInfoComponent implements OnInit {
     }, err => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0085);
     });
+  }
+
+  onSbFormValueChange(event) {
+    this.sbformDOMManipulation();
   }
 }

@@ -21,6 +21,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   @Input() deviceProfile: IDeviceProfile;
   @Output() close = new EventEmitter<any>();
   @Output() registerSubmit = new EventEmitter<any>();
+  @Output() onFormValueChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('onboardingModal', { static: true }) onboardingModal;
   telemetryImpression: IImpressionEventInput;
   sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
@@ -191,5 +192,9 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       }
     };
     this.telemetryService.log(event);
+  }
+
+  onSbFormValueChange(changes: any) {
+    this.onFormValueChange.emit(true);
   }
 }
