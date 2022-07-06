@@ -95,11 +95,6 @@ describe('SignupComponent', () => {
     expect(component.signUpForm.basicInfo).toEqual(basicFormFields);
   });
 
-  it('should navigagte to login page', () => {
-    component.redirectToLogin();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/resources']);
-  });
-
   describe("ngOnInit", () => {
     it('initialize Form Fields and telemetry', () => {
       jest.spyOn(component, 'initializeFormFields').mockImplementation();
