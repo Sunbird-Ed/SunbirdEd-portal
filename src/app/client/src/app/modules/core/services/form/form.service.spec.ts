@@ -6,7 +6,8 @@ import { UserService } from '../../services/user/user.service';
 import { PublicDataService } from '../../services/public-data/public-data.service';
 import { CacheService } from "ng2-cache-service";
 import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-ttl/browser-cache-ttl.service'
-import { mockFormData } from './form.mock.spec.data'
+import { mockFormData } from './form.mock.spec.data';
+import { OrgDetailsService } from '../org-details/org-details.service';
 describe('FormService', () => {
   let formService: FormService;
   const mockConfigService: Partial<ConfigService> = {
@@ -38,6 +39,7 @@ describe('FormService', () => {
     }))
   };
   const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
+  const mockOrgDetailsService: Partial<OrgDetailsService> = {};
   const mockPublicDataService: Partial<PublicDataService> = {
     get: jest.fn().mockImplementation(() => { }),
     post: jest.fn(() => of(mockFormData.success))
@@ -66,7 +68,8 @@ describe('FormService', () => {
       mockConfigService as ConfigService,
       mockPublicDataService as PublicDataService,
       mockCacheService as CacheService, 
-      mockBrowserCacheTtlService as BrowserCacheTtlService
+      mockBrowserCacheTtlService as BrowserCacheTtlService,
+      mockOrgDetailsService as OrgDetailsService
     );
   });
 

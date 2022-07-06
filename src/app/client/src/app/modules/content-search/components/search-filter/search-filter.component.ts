@@ -291,30 +291,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
       }
     });
-    if (_.get(this.queryFilters, 'board[0]') !== (this.cacheService.get('searchFilters') && this.cacheService.get('searchFilters')['board'] && this.cacheService.get('searchFilters')['board'][0])) {
-      this.selectedFilters['medium'] = [];
-      this.selectedFilters['gradeLevel'] = [];
-      this.selectedFilters['subject'] = [];
-      this.selectedFilters['publisher'] = [];
-      this.selectedFilters['audience'] = [];
-      this.selectedFilters['channel'] = [];
-      return this.updateRouteForBoardChange();
-    }
-  }
-
-  private updateRouteForBoardChange(resetFilters?: boolean) {
-    const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
-    let _selectedFilters = this.getSelectedFilter();
-    _selectedFilters['medium'] = [];
-    _selectedFilters['gradeLevel'] = [];
-    _selectedFilters['subject'] = [];
-    _selectedFilters['publisher'] = [];
-    _selectedFilters['audience'] = [];
-    _selectedFilters['channel'] = [];
-    this.router.navigate([], {
-      queryParams: resetFilters ? { ...this.defaultFilters, selectedTab } : _.omit(_selectedFilters || {}, ['audienceSearchFilterValue']),
-      relativeTo: this.activatedRoute.parent
-    });
   }
   private updateRoute(resetFilters?: boolean) {
     const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
