@@ -161,7 +161,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   redirectToLogin () {
-    this.router.navigate(['/resources']);
+    window.location.href = '/resources';
   }
   
 }
