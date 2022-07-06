@@ -94,7 +94,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       return null;
     }
 
-
     // All and myDownloads Tab should not carry any filters from other tabs / user can apply fresh filters
     if (data.contentType === 'mydownloads' || data.contentType === 'all') {
       params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);

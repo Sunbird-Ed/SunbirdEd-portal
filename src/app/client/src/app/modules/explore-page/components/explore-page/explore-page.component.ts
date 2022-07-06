@@ -164,7 +164,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (this.isUserLoggedIn()) {
                        // this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
                        this.defaultFilters =  this.userService.defaultFrameworkFilters;
-                        this.userProfile = this.userService.userProfile;
+                       this.userProfile = this.userService.userProfile;
                     } else {
                         this.userService.getGuestUser().subscribe((response) => {
                             const guestUserDetails: any = response;
@@ -175,7 +175,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             } else {
                                 this.userProfile = guestUserDetails;
                                 this.userProfile['firstName'] = guestUserDetails.formatedName;
-                                //this.defaultFilters = this.getPersistFilters(true);
+                                // this.defaultFilters = this.getPersistFilters(true);
                             }
                         });
                     }

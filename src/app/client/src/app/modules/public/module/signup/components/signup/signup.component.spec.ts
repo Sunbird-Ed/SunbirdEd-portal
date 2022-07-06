@@ -181,8 +181,4 @@ describe('SignupComponent', () => {
         expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
     });
   });
-
-  
-
-
 });
