@@ -541,7 +541,6 @@ export class UserService {
     } else {
       userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
     }
-
     return { board: ['CBSE'], ...userFramework };
   }
 }
