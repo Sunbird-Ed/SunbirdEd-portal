@@ -1,4 +1,4 @@
-import { FieldConfigInputType } from 'common-form-elements-web-v9';
+import { FieldConfigInputType } from '@project-sunbird/common-form-elements-v9';
 
 export const mockRes = {
   orgSearch: {

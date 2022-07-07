@@ -2114,6 +2114,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.9.1.tgz#b228e0ed6fc675cc209c7d45c45c1d1c08567b47"
   integrity sha512-PpaNeHUK/nPS0kzSW0GCwtx4jzf52Ga6iRD1niRr9mO8tJ/M4e50geFZH/N8nhOQyjjsq23sb9tbWuCKd8Kgcg==
 
+"@project-sunbird/common-form-elements-v9@4.10.1":
+  version "4.10.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements-v9/-/common-form-elements-v9-4.10.1.tgz#b4aa266e4b686a4dba54dcea379735b2a8ce21e5"
+  integrity sha512-EdpML344w79VI6yfzTmDblRDTkLiMoNddyM5T06DQJjgh5NTMxg8YLlQqnXffXxR+MAnzwznaBj9a7YPadbZjg==
+  dependencies:
+    immutable "^4.0.0-rc.12"
+    moment "^2.29.1"
+    tslib "^1.10.0"
+
 "@project-sunbird/discussions-ui-v8@2.6.0-beta.2":
   version "2.6.0-beta.2"
   resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.6.0-beta.2.tgz#d440c819630ab79c2bc3885a19effaf3a42b4e6b"
