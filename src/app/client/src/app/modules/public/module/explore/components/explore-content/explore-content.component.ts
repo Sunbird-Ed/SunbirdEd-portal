@@ -254,43 +254,44 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
-          const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-          const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
-            return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
-        }), ['undefined']);
-        for (const [key, value] of Object.entries(filteredContents)) {
-            const isMultipleSubjects = key && key.split(',').length > 1;
-            if (isMultipleSubjects) {
-                const subjects = key && key.split(',');
-                subjects.forEach((subject) => {
-                    if (filteredContents[subject]) {
-                        filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
-                    } else {
-                        filteredContents[subject] = value;
-                    }
-                });
-                delete filteredContents[key];
-            }
-        }
-        const sections = [];
-        for (const section in filteredContents) {
-            if (section) {
-                if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
-                    continue;
-                }
-                sections.push({
-                    name: section,
-                    contents: filteredContents[section]
-                });
-            }
-        }
-        _map(sections, (section) => {
-            forEach(section.contents, contents => {
-                contents.cardImg = contents.appIcon || 'assets/images/book.png';
-            });
-            return section;
-        });
-        this.contentList = sections;
+        //   const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
+        //   const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
+        //     return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
+        // }), ['undefined']);
+        // for (const [key, value] of Object.entries(filteredContents)) {
+        //     const isMultipleSubjects = key && key.split(',').length > 1;
+        //     if (isMultipleSubjects) {
+        //         const subjects = key && key.split(',');
+        //         subjects.forEach((subject) => {
+        //             if (filteredContents[subject]) {
+        //                 filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+        //             } else {
+        //                 filteredContents[subject] = value;
+        //             }
+        //         });
+        //         delete filteredContents[key];
+        //     }
+        // }
+       // const sections = [];
+        // for (const section in filteredContents) {
+        //     if (section) {
+        //         if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
+        //             continue;
+        //         }
+        //         sections.push({
+        //             name: section,
+        //             contents: filteredContents[section]
+        //         });
+        //     }
+        // }
+        // _map(sections, (section) => {
+        //     forEach(section.contents, contents => {
+        //         contents.cardImg = contents.appIcon || 'assets/images/book.png';
+        //     });
+        //     return section;
+        // });
+        //this.contentList = sections;
+        this.contentList = _.concat(get(data, 'result.content'), get(data, 'result.QuestionSet'));
         this.addHoverData();
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
@@ -327,14 +328,24 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   addHoverData() {
-    each(this.contentList, (contentSection) => {
-      forEach(contentSection.contents, content => {
-          if (this.contentDownloadStatus[content.identifier]) {
-              content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-          }
-      });
-      this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
-   });
+    // if (!this.showBackButton) {
+    //   this.contentList['contentSection'] = [];
+    //   each(this.contentList, (contentSection) => {
+    //     forEach(contentSection.contents, content => {
+    //       this.contentList['contentSection'].push(content);
+    //     });
+    //   });
+    // } else {
+    //   each(this.contentList, (contentSection) => {
+    //     forEach(contentSection.contents, content => {
+    //       if (this.contentDownloadStatus[content.identifier]) {
+    //         content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+    //       }
+    //     });
+    //     this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
+    //   });
+    // }
+    console.log('------>',this.contentList);
   }
   moveToTop() {
     window.scroll({
