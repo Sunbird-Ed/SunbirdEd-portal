@@ -20,7 +20,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { CertificateDirectivesModule } from 'sb-svg2pdf';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
-import { CommonFormElementsModule } from 'common-form-elements-web-v9';
+import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-v9';
 import {LocationModule} from '../location';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
