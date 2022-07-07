@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "4.10.0",
+    "version": "4.10.1",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
