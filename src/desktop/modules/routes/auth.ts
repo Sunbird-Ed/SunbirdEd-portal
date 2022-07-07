@@ -168,4 +168,13 @@ export default (app, proxyURL) => {
       res.status(500).send(Response.error("api.user.switch", 500, "failed to switch user"));
     }
   });
+
+    app.post(["/learner/anonymous/otp/v1/generate"], (req, res, next) => {
+        if (req.url.indexOf('anonymous') > -1) {
+            req.originalUrl = req.originalUrl.replace('anonymous/', '');
+        }
+        next();
+    }, customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
 }
