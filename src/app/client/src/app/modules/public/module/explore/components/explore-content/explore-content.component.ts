@@ -334,24 +334,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   addHoverData() {
-    // if (!this.showBackButton) {
-    //   this.contentList['contentSection'] = [];
-    //   each(this.contentList, (contentSection) => {
-    //     forEach(contentSection.contents, content => {
-    //       this.contentList['contentSection'].push(content);
-    //     });
-    //   });
-    // } else {
-    //   each(this.contentList, (contentSection) => {
-    //     forEach(contentSection.contents, content => {
-    //       if (this.contentDownloadStatus[content.identifier]) {
-    //         content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-    //       }
-    //     });
-    //     this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
-    //   });
-    // }
-    console.log('------>',this.contentList);
+    this.contentList = this.utilService.addHoverData(this.contentList, true);  
   }
   moveToTop() {
     window.scroll({

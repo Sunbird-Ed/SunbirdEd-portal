@@ -399,14 +399,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addHoverData() {
-  //   each(this.contentList, (contentSection) => {
-  //     forEach(contentSection.contents, content => {
-  //         if (this.contentDownloadStatus[content.identifier]) {
-  //             content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-  //         }
-  //     });
-  //     this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
-  //  });
+    this.contentList = this.utilService.addHoverData(this.contentList, true);  
   }
 
   hoverActionClicked(event) {
