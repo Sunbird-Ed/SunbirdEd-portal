@@ -291,7 +291,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         //     return section;
         // });
         //this.contentList = sections;
-        this.contentList = _.concat(get(data, 'result.content'), get(data, 'result.QuestionSet'));
+        if(get(data, 'result.content') && get(data, 'result.QuestionSet')){
+          this.contentList = _.concat(get(data, 'result.content'), get(data, 'result.QuestionSet'));
+        } else if(get(data, 'result.content')){
+          this.contentList = get(data, 'result.content');
+        }
         this.addHoverData();
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
