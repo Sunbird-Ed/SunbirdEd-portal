@@ -64,7 +64,7 @@
     *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
     {{enrollmentEndDate | dateFormat}}</span>
   <span class="sb-label-status-error"
-    *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
+    *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':enrollmentEndDate}}</span>
 </div>
 <div *ngIf="batchEndDate && showBatchCounter" class="d-flex">
   <span class="fnormal sb-color-gray-400">{{resourceService?.frmelmnts?.lbl?.BatchExpiringIn}}:&nbsp;</span>

@@ -45,7 +45,7 @@
             *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
             {{enrollmentEndDate | dateFormat}}</span>
           <span class="sb-label-status-error"
-            *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
+            *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':enrollmentEndDate}}</span>
         </div>
         <div class="certified-course mx-8" [ngClass]="{'d-flex': isDesktopApp}">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
