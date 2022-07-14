@@ -26,7 +26,7 @@
 
 <!-- batch details -->
 <mat-accordion class="sb-mat-accordion mb-16">
-  <mat-expansion-panel>
+  <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
@@ -54,7 +54,7 @@
             <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate |
               dateFormat}}</div>
             <div class="sb-label-status-error fsmall" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
-              {{resourceService?.messages?.stmsg?.m0134}}</div>
+              {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
           </div>
         </div>
       </div>
