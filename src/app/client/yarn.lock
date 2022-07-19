@@ -2325,10 +2325,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-1.2.0.tgz#e1a216bb3b5ada7361ffd5a23ff3b5ac4afcf366"
-  integrity sha512-2P2xOZVmIz6EXOJQkA7R2mN2PJEGBseMkM1DWJwynkR29vYnVmqSQmUCdtezIdE0WG+emkgMet5nxA1HcE39yg==
+"@shikshalokam/sl-questionnaire@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-1.5.0.tgz#e46571cf744aa2972e35accecdd611bafb7a8bac"
+  integrity sha512-eoSRYWDS4oxprWZUIJ/zqyElPvAm+3wz631Da1oH40ploKSJFua0ZonSts48BnF6vOuIwwiOgAzrzGuiNof2Yw==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^2.0.0"
@@ -6529,7 +6529,7 @@ file-loader@6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
