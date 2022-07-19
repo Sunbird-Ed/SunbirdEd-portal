@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ObservationService,ObservationUtilService } from '@sunbird/core';
+import { ObservationService, ObservationUtilService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, LayoutService, ToasterService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import {Editdata} from '../edit-submission/edit-submission.component'
+import {Editdata} from '../edit-submission/edit-submission.component';
 @Component({
   selector: 'app-observation-details',
   templateUrl: './observation-details.component.html',
@@ -35,13 +35,13 @@ export class ObservationDetailsComponent implements OnInit {
   openEditModal: {
     show: boolean,
     data: Editdata|null
-  }= {show:false,data:null};
+  } = {show: false, data: null};
   showLoader = false;
   public loaderMessage: ILoaderMessage;
   public noResultMessageForEntity: INoResultMessage = {
     'messageText': 'frmelmnts.msg.noEntityFound'
   };
-  courseHierarchy:any={};
+  courseHierarchy: any = {};
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
@@ -65,6 +65,12 @@ export class ObservationDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout() 
+    .subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
     this.getProfileData();
   }
   getProfileData() {
@@ -102,10 +108,10 @@ export class ObservationDetailsComponent implements OnInit {
         this.entities = [];
       }
 
-      if(data.result && data.result.license){
-        this.courseHierarchy=data.result.license;
+      if (data.result && data.result.license) {
+        this.courseHierarchy = data.result.license;
        }
-       
+
     }, error => {
       this.showLoader = false;
     });
@@ -246,11 +252,11 @@ export class ObservationDetailsComponent implements OnInit {
   openEditSubmission(event) {
     this.openEditModal.data = {
       title: this.resourceService.frmelmnts?.lbl?.instanceName,
-      defaultValue:event.title,
+      defaultValue: event.title,
       leftBtnText: this.resourceService.frmelmnts?.btn?.cancel,
       rightBtnText: this.resourceService.frmelmnts?.btn?.update,
       action: 'submissionTitleUpdate',
-      returnParams :{submissionId:event._id}
+      returnParams : {submissionId: event._id}
     };
     this.openEditModal.show = true;
 
@@ -290,14 +296,14 @@ export class ObservationDetailsComponent implements OnInit {
 
   closeEditModal(event) {
     this.openEditModal.show = false;
-    if (!event.data) return;
+    if (!event.data) { return; }
     if (event.action === 'submissionTitleUpdate') { this.updateSubmission(event); }
     if (event.action === 'markEcmNotApplicable') { this.markEcmNotApplicable(event); }
   }
 
   updateSubmission(event) {
     this.showLoader = true;
-    this.payload.title =event.data;
+    this.payload.title = event.data;
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE + event.returnParams.submissionId,
       param: {},
@@ -313,8 +319,8 @@ export class ObservationDetailsComponent implements OnInit {
 
   actionOnSubmission(event) {
     if (event.action == 'markEcmNotApplicable') {
-      this.markEcmNotApplicableRemark(event.data)
-      return
+      this.markEcmNotApplicableRemark(event.data);
+      return;
     }
     event.action == 'edit' ? this.openEditSubmission(event.data) : this.deleteSubmission(event.data);
   }
@@ -329,16 +335,16 @@ export class ObservationDetailsComponent implements OnInit {
   markEcmNotApplicableRemark(e) {
     if (e.notApplicable) {
       const metaData = this.observationUtilService.getAlertMetaData();
-      metaData.content.body.data = this.resourceService.frmelmnts.lbl.allReadyNotApplicable
-      metaData.content.body.type = "text";
+      metaData.content.body.data = this.resourceService.frmelmnts.lbl.allReadyNotApplicable;
+      metaData.content.body.type = 'text';
       metaData.content.title = this.resourceService.frmelmnts.lbl.allReadyNotApplicableTitle;
-      metaData.size = "small";
-      metaData.footer.buttons.push({  
-        type: "cancel",
+      metaData.size = 'small';
+      metaData.footer.buttons.push({
+        type: 'cancel',
         returnValue: false,
         buttonText: 'Go back',
       });
-      metaData.footer.className = "double-btn";
+      metaData.footer.className = 'double-btn';
       this.observationUtilService.showPopupAlert(
         metaData
       );
@@ -346,11 +352,11 @@ export class ObservationDetailsComponent implements OnInit {
     }
     this.openEditModal.data = {
       title: this.resourceService.frmelmnts?.lbl?.notApplicable,
-      subTitle:this.resourceService.frmelmnts?.lbl?.notApplicableRemark  ,
+      subTitle: this.resourceService.frmelmnts?.lbl?.notApplicableRemark  ,
       leftBtnText: this.resourceService.frmelmnts?.btn?.goBack,
       rightBtnText: this.resourceService.frmelmnts?.btn?.save,
       action: 'markEcmNotApplicable',
-      returnParams:{submissionId:e.submissionId,code:e.code}
+      returnParams: {submissionId: e.submissionId, code: e.code}
     };
 
     this.openEditModal.show = true;
@@ -362,7 +368,7 @@ export class ObservationDetailsComponent implements OnInit {
     const evidence = {
       externalId: event.returnParams.code,
       notApplicable: true,
-      remarks:event.data
+      remarks: event.data
     };
     payload.evidence = evidence;
     const profile: Object = this.observationUtilService.getProfileDataList();
@@ -370,14 +376,14 @@ export class ObservationDetailsComponent implements OnInit {
       return;
     }
    payload = { ...profile, ...payload };
-   const submissionId= event.returnParams.submissionId
+   const submissionId = event.returnParams.submissionId;
       const paramOptions = {
       url:
         this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
         `${submissionId}`,
       data: payload,
       };
-    
+
      this.observationService.post(paramOptions).subscribe(
       (data) => {
         try {
@@ -385,18 +391,18 @@ export class ObservationDetailsComponent implements OnInit {
             if (sub._id == event.returnParams.submissionId) {
               sub.evidencesStatus.find(evidence => {
                 if (evidence.code == event.returnParams.code) {
-                  evidence.notApplicable = true
-                  evidence.status ='completed'
+                  evidence.notApplicable = true;
+                  evidence.status = 'completed';
                 }
-              })
+              });
             }
-          })
+          });
         } catch (error) {
-          
+
         }
       },
       (error) => {
-        
+
       }
     );
 

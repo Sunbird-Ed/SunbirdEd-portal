@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
 import { ResourceService, UtilService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -81,7 +81,7 @@ export class GuestProfileComponent implements OnInit {
     });
   }
 
-  updateProfile(event) {    
+  updateProfile(event) {
     // this.showEdit = !this.showEdit;
     this.guestUser.framework = event;
 

@@ -1,4 +1,3 @@
-@import './varsass';
 .sbt-header {
   .sbt-container {
     padding: 0 5%;
@@ -29,13 +28,11 @@
     }
 }
 .sbt-header-logo {
-  min-height: calculateRem(128px);
   position: relative;
   display: flex;    
   align-items: flex-start;
-  padding: calculateRem(16px) calculateRem(16px) calculateRem(0px) calculateRem(16px);
+  padding:0px 0px;
   @include respond-above(sm) {
-    padding: 0px 0px;
     min-height: calculateRem(80px);
     align-items: center;
     }
@@ -61,6 +58,7 @@
   @include respond-below(sm) {
   overflow-x: auto;
   padding: 1rem 0.5rem 1rem 1rem;
+  margin-top: 0.5rem;
   }
 
 }

@@ -1,0 +1,54 @@
+<div [formGroup]="personalInfoForm" class="signup-form-content">
+
+    <h5 tabindex="0" *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
+    class="font-weight-bold text-center mb-24">
+    {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
+
+    <div class="required mb-16">
+        <label for="signup-form-name" class="mb-8 font-weight-bold">
+            {{resourceService.frmelmnts?.lbl?.name}}<span class="sb-color-red">*</span>
+        </label>
+        
+        <input id="signup-form-name" class="sb-form-control"
+            [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
+            formControlName="name" type="text" name="name" aria-required="true" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
+        
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter a valid name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>
+
+    </div>
+
+    <div class="year-birth mb-16 required">
+        <label for="signup-form-yearofbirth" class="mb-8 font-weight-bold">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
+        <mat-form-field *ngIf="!isIOSDevice" aria-required="true" appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--autocmp w-100">
+            <!-- <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
+            </mat-label> -->
+            <input type="text" (keypress)="isNumber(event)" formControlName="yearOfBirth" tabindex="0"
+            placeholder="Select year" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" matInput
+            [matAutocomplete]="auto">
+            <mat-autocomplete (optionSelected)="changeBirthYear($event)" role="combobox" #auto="matAutocomplete">
+                <mat-option class="mat-dropdown__options" role="listbox" *ngFor="let option of filteredYOB | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <label *ngIf="isIOSDevice">
+            <select name="birthYearOptions" id="birthYearOptions" class="sb-form-control birthYearOptions"
+            (change)="changeBirthYear($event, true)">
+            <option value="" disabled selected>{{resourceService.frmelmnts?.lbl?.year}}</option>
+            <option *ngFor="let option of birthYearOptions" [value]="option">{{option}}</option>
+            </select>
+        </label>    
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-yearofbirth" tabindex="0" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" *ngIf="personalInfoForm.controls.yearOfBirth.touched && personalInfoForm.controls['yearOfBirth'].errors && personalInfoForm.controls['yearOfBirth'].errors.required">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}</div>
+        <div class="sb-color-red pt-0" aria-describedby="signup-form-yearofbirth" tabindex="0" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" *ngIf="personalInfoForm.controls.yearOfBirth.touched && personalInfoForm.controls['yearOfBirth'].errors && personalInfoForm.controls['yearOfBirth'].errors.pattern">{{resourceService.frmelmnts.lbl.yearOfBirth}}</div>
+    </div>
+    <button [attr.aria-disabled]="!personalInfoForm.valid" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
+        [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+        [ngClass]="{'sb-btn-disabled':!personalInfoForm.valid, 'sb-btn-primary':personalInfoForm.valid}"
+        class="sb-btn sb-btn-sm text-uppercase width-100 mt-16  flex-basis-1" tabindex="0" (click)="next()"><span>{{resourceService.frmelmnts.lbl.continue}}</span><span
+        class='arrow-icon pl-8'><i class="icon-svg icon-svg--xxs icon-back">
+          <svg class="icon icon-svg--white">
+            <use xlink:href="./assets/images/sprite.svg#arrow-long-right"></use>
+          </svg></i></span></button>
+</div>

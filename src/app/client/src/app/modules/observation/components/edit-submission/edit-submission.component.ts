@@ -1,14 +1,13 @@
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
 export interface Editdata {
-    title?: string,
-    subTitle?: string
-    defaultValue?: string
-    leftBtnText?: string,
-    rightBtnText?: string,
-    action: string,
-    returnParams:any
+    title?: string;
+    subTitle?: string;
+    defaultValue?: string;
+    leftBtnText?: string;
+    rightBtnText?: string;
+    action: string;
+    returnParams: any;
 }
 @Component({
     selector: 'app-edit-submission',
@@ -18,27 +17,33 @@ export interface Editdata {
 
 export class EditSubmissionComponent implements OnInit {
     @ViewChild('modal') modal;
-    @Input() editData:Editdata
+    @Input() editData: Editdata;
     @Output() onAction = new EventEmitter<any>();
     showPopup;
-    updatedValue:string
+    updatedValue: string;
     constructor(
         public location: LocationStrategy,
-    ) { 
+    ) {
         this.location.onPopState(() => {
-            this.modal.deny();
+            if(this.modal && this.modal.deny){
+                this.modal.deny();
+            }
         });
     }
     ngOnInit() {
-        if (this.editData.defaultValue) this.updatedValue = this.editData.defaultValue
+        if (this.editData.defaultValue) { this.updatedValue = this.editData.defaultValue; }
     }
 
     closeModal() {
-        this.modal.deny();
+        if(this.modal && this.modal.deny){
+            this.modal.deny();
+        }
         this.onAction.emit({ action: this.editData.action, data: null });
     }
     submit() {
-        this.modal.approve();
-        this.onAction.emit({ action: this.editData.action, data: this.updatedValue,returnParams:this.editData.returnParams });
+        if(this.modal && this.modal.deny){
+            this.modal.deny();
+        }
+        this.onAction.emit({ action: this.editData.action, data: this.updatedValue, returnParams: this.editData.returnParams });
     }
 }

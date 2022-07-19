@@ -121,7 +121,7 @@
           <div class="fmedium ml-5 font-w-bold text-center">{{persona.name}}</div>
         </div>
         <div *ngIf="subPersona" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.subRole}} :</div>
+          <div class="fmedium text-center white-space-nowrap">{{resourceService.frmelmnts.lbl.subRole}} :</div>
           <div class="fmedium ml-5 font-w-bold text-center">{{subPersona.join(', ')}}</div>
         </div>
         <div *ngIf="userLocation?.district && userLocation?.district?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
@@ -158,7 +158,7 @@
           <button appTelemetryInteract appOnlineOnly tabindex="0"
                   [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
                   *ngIf="!declarationDetails && isCustodianOrgUser && !userProfile.isMinor"
-                  (click)="navigate('/profile/teacher-declaration','submit')" tabindex="0"
+                  (click)="navigate('/profile/submit-declaration','submit')" tabindex="0"
                   class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
           {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
         </div>
@@ -204,7 +204,7 @@
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}}:</span>
         <span class="fmedium font-w-bold text-center"
-          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
+          *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
@@ -296,7 +296,7 @@
       <div class="my-8">
         <button appTelemetryInteract appOnlineOnly
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" tabindex="0" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
-        (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
+        (click)="navigate('/profile/submit-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
 
     </div>
@@ -341,11 +341,11 @@
           </div>
           <div class="list-item-parent">
             <div class="list-items sb-course-progress-status-label">
-              <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.course}}</div>
-              <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</div>
-              <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</div>
-              <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.status}}</div>
-              <div class="list-items__item"></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.status}}</span></div>
+              <div class="list-items__item"><span class="sb__ellipsis mr-auto mb-0 text-left"></span></div>
             </div>
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
@@ -364,7 +364,7 @@
                 <button appTelemetryInteract
                  [telemetryInteractEdata]="downloadCertificateEData"
                 [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)" tabindex="0">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fnormal" (click)="downloadCert(data)" tabindex="0">
                 <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
               <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
@@ -376,7 +376,7 @@
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
-              (click)="toggleCourse(true, attendedTraining.length)" tabindex="0">{{resourceService.frmelmnts.lbl.viewmore}}<i
+              (click)="toggleCourse(true, attendedTraining.length)" tabindex="0"> +{{attendedTraining.length - 3}} {{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
@@ -386,8 +386,8 @@
         </div>
          <!-- trainings attended computer view ends-->
 
-         <!-- certificates-->
-        <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
+         <!-- certificates - old layout-->
+        <!-- <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
             <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
@@ -406,7 +406,7 @@
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data?.certificates?.length">
                 <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)" tabindex="0">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fnormal" (click)="downloadCert(data)" tabindex="0">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
               <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length">
@@ -425,14 +425,58 @@
               (click)="toggleOtherCertific(false)" tabindex="0" *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
           </div>
+        </div> -->
+        <!-- certificates - old layout-->
+
+        <!-- RC Certificates -->
+        <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
+          <div class="list-heading">
+            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
+          </div>
+          <div class="list-item-parent">
+            <div class="list-items sb-course-progress-status-label">
+              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.course}}</label>
+              <label class="list-items__item mb-0 text-left">{{resourceService?.frmelmnts?.lbl?.certgivenby}}</label>
+              <label class="list-items__item mb-0 last-date">{{resourceService?.frmelmnts?.lbl?.certissuedon}}</label>
+              <label class="list-items__item mb-0 text-left"></label>
+              <label class="list-items__item mb-0 text-left"></label>
+            </div>
+          </div>
+          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
+            <div class="list-items" *ngIf="data?.issuerName">
+              <label class="list-items__item mb-0 text-left">{{data.trainingName}}</label>
+              <label class="list-items__item mb-0 text-left">{{data?.issuerName}}</label>
+              <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+              <div class="list-items__item" *ngIf="data?.id">
+                <button appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
+                  (click)="downloadOldAndRCCert(data)" tabindex="0" >
+                  <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+              </div>
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.length">
+                <span class="bar"></span>
+                <span class="bar"></span>
+              </div>
+            </div>
+          </div>
+          <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreCertificates"
+              (click)="toggleOtherCertific(true)" tabindex="0">{{resourceService.frmelmnts.lbl.viewmore}}<i
+                class="chevron down icon"></i></button>
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+              (click)="toggleOtherCertific(false)" tabindex="0"
+              *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i class="chevron up icon"></i></button>
+          </div>
         </div>
-        <!-- / certificates-->
+        <!-- RC Certificates -->
       </div>
   </div>
 </div>
 </div>
 </div>
-<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showEdit = !showEdit">
+<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showEdit = !showEdit">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)">
@@ -440,7 +484,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: 'overflow-visible'}" (dismiss)="showContactPopup = !showContactPopup">
+<app-modal-wrapper *ngIf="showContactPopup" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showContactPopup = !showContactPopup">
   <ng-template sbModalContent let-data>
     <app-update-contact-details [dialogProps]="data" (close)="showContactPopup = !showContactPopup" [contactType]="contactType" [userProfile]="userProfile">
     </app-update-contact-details>
@@ -457,11 +501,10 @@
   </app-location-selection>
   <app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>
 
-  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false}" (dismiss)="showRecoveryId = !showRecoveryId">
+  <app-modal-wrapper *ngIf="showRecoveryId" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="showRecoveryId = !showRecoveryId">
     <ng-template sbModalContent let-data>
       <app-account-recovery-info [dialogProps]="data" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"
       [userProfile]="userProfile"></app-account-recovery-info>
     </ng-template>
   </app-modal-wrapper>
-
 <router-outlet></router-outlet>

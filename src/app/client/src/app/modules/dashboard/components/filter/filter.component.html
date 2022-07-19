@@ -1,73 +1,57 @@
-  <form [formGroup]="filtersFormGroup"  class="sb-form"
-  [ngClass]="{'hide': hideElements}" *ngIf="showFilters && !hideElements">
- 
-  <!-- <sui-accordion class="styled fluid" [closeOthers]="false">
-    <sui-accordion-panel [isOpen]="true"> -->
-      <!-- <div title>
-        <i class="dropdown icon"></i>
-        {{resourceService?.frmelmnts?.lbl?.filters }}
-      </div> -->
-      <div content>
-        <div>
-          <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center">
-            <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
-              <label>{{filter.displayName}}</label>
-              <div *ngIf="filter.controlType === 'multi-select'">
-                <app-material-auto-complete name="mat-ms-auto"
-                placeholder=""
-                [dropdownList]="filter.options"
-                [selectedFilters]="getSelectedData(filter.reference)"
-                (selectionChanged)="autoCompleteChange($event,filter.reference)"
-                display-key="name"
-               ></app-material-auto-complete>
-               
-              </div>
-              <div *ngIf="filter.controlType === 'select'">
-              
-                  <input matInput type="text" [(ngModel)]="filterQuery" (keyup.enter)="chooseOption()" [placeholder]="filter.displayName" aria-label="Number" matInput [formControlName]="filter.reference" [matAutocomplete]="auto2">
-                  <mat-autocomplete #auto2="matAutocomplete" class = "test-class">
-                  <mat-option *ngFor="let option of getFilters(filter.options)" [value]="option">
-                  {{ option }}
-                  </mat-option>
-                  </mat-autocomplete>
-              
-              
-              </div>
-              <div *ngIf="filter.controlType === 'date'">
-                <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                  [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
-                  [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="sb-form-control" type="text"
-                  [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
-                  [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
-                  [minDate]="pickerMinDate" [maxDate]="pickerMaxDate"
-                  (change)="getDateRange($event,filter.reference)" />
-              </div>
-            </div>
+<form [formGroup]="filtersFormGroup" class="sb-form" [ngClass]="{'hide': hideElements}"
+  *ngIf="showFilters && !hideElements">
+  <div content>
+    <div>
+      <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center">
+        <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
+          <label>{{filter.displayName}}</label>
+          <div *ngIf="filter.controlType === 'multi-select'">
+            <app-material-auto-complete name="mat-ms-auto" [dynamicplaceholder]="filter.displayName" [dropdownList]="filter.options"
+              [selectedFilters]="getSelectedData(filter.reference)"
+              (selectionChanged)="autoCompleteChange($event,filter.reference)" display-key="name">
+            </app-material-auto-complete>
+
+          </div>
+          <div *ngIf="filter.controlType === 'select'">
+
+            <input matInput type="text" [(ngModel)]="filterQuery" (keyup.enter)="chooseOption()"
+              placeholder="Select {{filter.displayName | lowercase}}" aria-label="Number" matInput [formControlName]="filter.reference"
+              [matAutocomplete]="auto2">
+            <mat-autocomplete #auto2="matAutocomplete" class="test-class">
+              <mat-option *ngFor="let option of getFilters(filter.options)" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+
+
+          </div>
+          <div *ngIf="filter.controlType === 'date'">
+            <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
+              [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="sb-form-control" type="text"
+              placeholder="Select {{filter.displayName | lowercase}}" ngxDaterangepickerMd [showCustomRangeLabel]="true"
+              [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
+              [minDate]="pickerMinDate" [maxDate]="pickerMaxDate" (change)="getDateRange($event,filter.reference)" />
           </div>
         </div>
       </div>
-    <!-- </sui-accordion-panel>
-  </sui-accordion> -->
-
-
+    </div>
+  </div>
 </form>
 
 <div class="sb-filter-label pt-16 pb-8" *ngIf="selectedFilters && filterType=='report-filter'">
   <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap pr-10">
-    
+
     <span *ngIf="checkFilterReferance(key)">
-      <span 
-      class="sb-label-name mb-4" >{{key}}:</span>
-        <span  class="date-range-label"
-        *ngIf="selectedFilters[key]?.length>0">
-            {{selectedFilters[key][0]}} - {{selectedFilters[key][selectedFilters[key].length-1]}} 
-        </span>
+      <span class="sb-label-name mb-4">{{key}}:</span>
+      <span class="date-range-label" *ngIf="selectedFilters[key]?.length>0">
+        {{selectedFilters[key][0]}} - {{selectedFilters[key][selectedFilters[key].length-1]}}
+      </span>
     </span>
     <span *ngIf="!checkFilterReferance(key)">
-    <span
-      class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
-      *ngFor="let val of getFiltersValues(selectedFilters[key])">{{val}}
-    </span>
+      <span class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
+        *ngFor="let val of getFiltersValues(selectedFilters[key])">{{val}}
+      </span>
     </span>
   </div>
 </div>

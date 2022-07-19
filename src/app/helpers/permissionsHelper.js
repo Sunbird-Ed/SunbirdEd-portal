@@ -104,7 +104,7 @@ let PERMISSIONS_HELPER = {
     const telemetryData = {
       reqObj: reqObj,
       options: options,
-      uri: 'user/v1/read',
+      uri: 'user/v5/read',
       type: 'user',
       id: userId,
       userId: userId
@@ -114,7 +114,7 @@ let PERMISSIONS_HELPER = {
       reqObj.session.roles = [];
       reqObj.session.orgs = [];
       if (error) {
-        logger.error({ msg: 'error while user/v1/read', error });
+        logger.error({ msg: 'error while user/v5/read', error });
         callback(error, null)
       } else if (!error && body && body.responseCode === 'OK') {
         module.exports.setUserSessionData(reqObj, body);
@@ -137,7 +137,7 @@ let PERMISSIONS_HELPER = {
         logger.error({ msg: 'getCurrentUserRoles :: Error while reading user/v5/read', body });
         callback(body, null);
       } else {
-        logger.error({ msg: 'getCurrentUserRoles error while user/v1/read', error });
+        logger.error({ msg: 'getCurrentUserRoles error while user/v5/read', error });
         callback(error, null)
       }
     })

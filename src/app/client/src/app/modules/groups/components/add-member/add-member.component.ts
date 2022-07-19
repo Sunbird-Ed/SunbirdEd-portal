@@ -1,4 +1,4 @@
-import { CsModule } from '@project-sunbird/client-services';
+
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { TelemetryService } from '@sunbird/telemetry';
 import { VERIFY_USER, USER_SEARCH } from '../../interfaces/telemetryConstants';
+import { sessionKeys } from '../../../../modules/groups';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
@@ -54,7 +55,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initLayout();
     this.showModal = !localStorage.getItem('login_members_ftu');
-    this.groupData = this.groupsService.groupData;
+    this.groupData = this.groupsService.groupData || JSON.parse(sessionStorage.getItem(sessionKeys.GROUPDATA));
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
@@ -185,7 +186,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   getUpdatedGroupData() {
     const groupId = _.get(this.groupData, 'id') || _.get(this.activatedRoute.snapshot, 'params.groupId');
     this.groupsService.getGroupById(groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-      this.groupsService.groupData = groupData;
+      this.groupsService.groupData = groupData || JSON.parse(sessionStorage.getItem(sessionKeys.GROUPDATA));
       this.groupData = groupData;
       this.membersList = this.groupsService.addFieldsToMember(_.get(groupData, 'members'));
       this.groupsService.emitMembers(this.membersList);

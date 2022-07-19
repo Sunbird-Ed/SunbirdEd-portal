@@ -1,986 +1,780 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CertificateConfigurationComponent } from './certificate-configuration.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui-v9';
-import { CoreModule } from '@sunbird/core';
-import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService,
-  InterpolatePipe, SharedModule } from '@sunbird/shared';
-import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
+import { BehaviorSubject, of, throwError } from "rxjs";
+import { CertificateService, UserService, PlayerService, CertRegService, FormService } from '@sunbird/core';
+import { CertificateConfigurationComponent } from "./certificate-configuration.component";
 import { TelemetryService } from '@sunbird/telemetry';
-import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
+import { UploadCertificateService } from "../../services/upload-certificate/upload-certificate.service";
+import { ActivatedRoute, Router } from "@angular/router";
 import { response as CertMockResponse } from './certificate-configuration.component.spec.data';
-import { configureTestSuite } from '@sunbird/test-util';
+import { FormControl, FormGroup } from "@angular/forms";
 
-describe('CertificateConfigurationComponent', () => {
-  let component: CertificateConfigurationComponent;
-  let fixture: ComponentFixture<CertificateConfigurationComponent>;
-  configureTestSuite();
+describe("CertificateConfigurationComponent", () => {
+    let component: CertificateConfigurationComponent;
 
-  class RouterStub {
-    public url = '/cert/configure/add';
-    navigate = jasmine.createSpy('navigate');
-  }
-
-  const fakeActivatedRoute = {
-    snapshot: {
-      data: {
-        telemetry: {
-          env: 'certs',
-          pageid: 'certificate-configuration',
-          type: 'view',
-          subtype: 'paginate',
-          ver: '1.0'
+    const mockCertificateService: Partial<CertificateService> = {
+    };
+    const mockUserService: Partial<UserService> = {
+        userData$: of({
+            userProfile: {
+                userId: 'sample-uid',
+                rootOrgId: 'sample-root-id',
+                rootOrg: {},
+                hashTagIds: ['id']
+            } as any
+        }) as any,
+    };
+    const mockPlayerService: Partial<PlayerService> = {};
+    const mockDomSanitizer: Partial<DomSanitizer> = {};
+    const mockResourceService: Partial<ResourceService> = {
+        frmelmnts: {
+            lbl: {
+                Select: 'Select'
+            },
+            cert: {
+                lbl: {
+                    preview: 'preview',
+                    certAddSuccess: 'Certificate added successfully',
+                    certUpdateSuccess: 'Certificate updated successfully.',
+                    certAddError: 'Failed to add the certificate. Try again later.',
+                    certEditError: 'Failed to edit the certificate. Try again later.'
+                }
+            }
+        },
+        messages: {
+            emsg: {
+                m0005: 'Something went wrong, try again later'
+            }
         }
-      }
-    },
-    queryParams: of({
-      type: 'edit',
-      courseId: 'do_456789',
-      batchId: '124631256'
+    };
+    const mockCertRegService: Partial<CertRegService> = {};
+    const mockUploadCertificateService: Partial<UploadCertificateService> = {
+        certificate: {
+            subscribe: jest.fn(() => [{ 'identifier': "do_1131446242806251521827" }])
+        } as any
+    };
+    const mockNavigationHelperService: Partial<NavigationHelperService> = {};
+    const mockTelemetryService: Partial<TelemetryService> = {
+        impression: jest.fn(),
+        interact: jest.fn()
+    };
+    const mockLayoutService: Partial<LayoutService> = {
+        redoLayoutCSS: jest.fn()
+    };
+    const mockFormService: Partial<FormService> = {};
+    const mockRouter: Partial<Router> = {
+        events: of({ url: '/cert/configure/add' }) as any,
+        navigate: jest.fn()
+    };
+    const mockToasterService: Partial<ToasterService> = {
+        error: jest.fn(),
+        success: jest.fn()
+    };
+    const mockActivatedRoute: Partial<ActivatedRoute> = {
+        queryParams: of({
+            type: 'edit',
+            courseId: 'do_456789',
+            batchId: '124631256'
+        }),
+        params: of({ collectionId: "123" }),
+        snapshot: {
+            data: {
+                telemetry: {
+                  env: 'certs',
+                  pageid: 'certificate-configuration',
+                  type: 'view',
+                  subtype: 'paginate',
+                  ver: '1.0'
+                }
+            }
+        } as any
+    };
+
+    beforeAll(() => {
+        component = new CertificateConfigurationComponent(
+            mockCertificateService as CertificateService,
+            mockUserService as UserService,
+            mockPlayerService as PlayerService,
+            mockDomSanitizer as DomSanitizer,
+            mockResourceService as ResourceService,
+            mockCertRegService as CertRegService,
+            mockUploadCertificateService as UploadCertificateService,
+            mockNavigationHelperService as NavigationHelperService,
+            mockActivatedRoute as ActivatedRoute,
+            mockToasterService as ToasterService,
+            mockRouter as Router,
+            mockTelemetryService as TelemetryService,
+            mockLayoutService as LayoutService,
+            mockFormService as FormService
+        );
+    });
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should be create a instance of Certificate Configuration Component', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('Should reset isTemplateChanged property on cert preview close/No button click', () => {
+        // Template changed state value
+        component.isTemplateChanged = true;
+        component.onPopState(new Event('popstate'));
+        expect(component.isTemplateChanged).toBeFalsy();
+    });
+
+    it('should set certification creation state', () => {
+        component.certificateCreation();
+        expect(component.currentState).toEqual(component.screenStates.certRules)
+    });
+
+    it("remove selected certificates", () => {
+        component.removeSelectedCertificate();
+        expect(component.selectedTemplate).toEqual(null);
     })
-  };
 
-  const resourceBundle = {
-    frmelmnts: {
-      lbl: {
-        Select: 'Select'
-      },
-      cert: {
-        lbl: {
-          preview: 'preview',
-          certAddSuccess: 'Certificate added successfully',
-          certUpdateSuccess: 'Certificate updated successfully.',
-          certAddError: 'Failed to add the certificate. Try again later.',
-          certEditError: 'Failed to edit the certificate. Try again later.'
-        }
-      }
-    },
-    messages: {
-      emsg: {
-        m0005: 'Something went wrong, try again later'
-      }
-    }
-  };
+    describe("telemetry event", () => {
+        it('should send telemetry impression event', () => {
+            mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
+            component.setTelemetryImpressionData();
+            expect(mockTelemetryService.impression).toHaveBeenCalled();
+        });
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [SuiModule, SuiTabsModule, CoreModule,
-        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]), SharedModule.forRoot()],
-      declarations: [ CertificateConfigurationComponent],
-      providers: [
-        ConfigService,
-        NavigationHelperService,
-        UtilService,
-        CertificateService,
-        UserService,
-        PlayerService,
-        CertRegService,
-        BrowserCacheTtlService,
-        ToasterService,
-        TelemetryService,
-        {provide: ResourceService, useValue: resourceBundle},
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Router, useClass: RouterStub},
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        it('should set Telemetry Impression Data on ngAfterViewInit', () => {
+            jest.spyOn(component, 'setTelemetryImpressionData').mockImplementation();
+            component.ngAfterViewInit();
+            expect(component.setTelemetryImpressionData).toHaveBeenCalled();
+        });
+        
+        it('should send telemetry interact event for all the clicks on "add certificate" mode', () => {
+            component.configurationMode = 'add';
+            const mockInteractData = {id: 'add-certificate'};
+            component.sendInteractData(mockInteractData);
+            expect(mockTelemetryService.interact).toHaveBeenCalled();
+        });
+    
+        it('should send telemetry interact event for all the clicks on "edit certificate" mode', () => {
+            component.configurationMode = 'edit';
+            component.selectedTemplate = {name: 'SOME_MOCK_TEMPLATE'};
+            const mockInteractData = {id: 'add-certificate'};
+            component.sendInteractData(mockInteractData);
+            expect(mockTelemetryService.interact).toHaveBeenCalled();
+        });
+
+        it('should set edit certificate', () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            component.editCertificate();
+            expect(component.configurationMode).toEqual('edit');
+        });
+
+        it('should close template detect modal', () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            component.closeTemplateDetectModal();
+            expect(component.isTemplateChanged).toBeFalsy();
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'cancel-template-change' });
+        });
+    
+        it('should navigate to cert rules screen', () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            component.navigateToCertRules();
+            expect(component.currentState).toEqual('certRules');
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'add-certificate' });
+        });
     })
-    .compileComponents();
-  }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CertificateConfigurationComponent);
-    component = fixture.componentInstance;
-    component.screenStates = {'default': 'default', 'certRules': 'certRules' };
-    fixture.detectChanges();
-  });
-
-  it('should terminate all subscriptions', () => {
-    spyOn(component.unsubscribe$, 'next');
-    spyOn(component.unsubscribe$, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe$.next).toHaveBeenCalled();
-    expect(component.unsubscribe$.complete).toHaveBeenCalled();
-
-  });
-
-  it('Should handle the "window.popstate" event', () => {
-    spyOn(component, 'onPopState');
-    const popStateEvent = new Event('popstate');
-    window.dispatchEvent(popStateEvent);
-    expect(component.onPopState).toHaveBeenCalledWith(popStateEvent);
-  });
-
-  it('Should reset isTemplateChanged property on cert preview close/No button click', () => {
-    // Template changed state value
-    component.isTemplateChanged = true;
-
-    component.onPopState(new Event('popstate'));
-    expect(component.isTemplateChanged).toBeFalsy();
-  });
-
-  it('Should the screen state to certRule on click of "Add certificate" button', () => {
-    component.showLoader = false;
-    fixture.detectChanges();
-    const buttonEle = fixture.debugElement.nativeElement.querySelector('#addNewCert');
-    buttonEle.click();
-    expect(component.currentState).toEqual(component.screenStates.certRules);
-  });
-
-  it('Should go to default screen from certRules screen on click of back/cancel', () => {
-    component.showLoader = false;
-    component.currentState = component.screenStates.certRules;
-    fixture.detectChanges();
-    const buttonEle = fixture.debugElement.nativeElement.querySelector('#goBack');
-    buttonEle.click();
-    expect(component.currentState).toEqual(component.screenStates.default);
-  });
-
-  it('Should close cert configuration screen from cert default screen on click of back button', () => {
-    /** Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    component.showLoader = false;
-    component.currentState = component.screenStates.default;
-    fixture.detectChanges();
-    const buttonEle = fixture.debugElement.nativeElement.querySelector('#goBack');
-    spyOn(navigationHelperService, 'navigateToLastUrl').and.stub();
-
-    /** Act */
-    buttonEle.click();
-
-    const router = TestBed.get(Router);
-    component.navigateToCreateTemplate();
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course/do_456789']);
-
-    /** Assert */
-    // expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
-  });
-
-  it('should call all the necessary method to get the required page data ready', () => {
-    /* Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(component, 'initializeLabels').and.stub();
-    spyOn(navigationHelperService, 'setNavigationUrl').and.stub();
-    spyOn(component, 'initializeFormFields').and.stub();
-
-    /* Act */
-    component.ngOnInit();
-
-    /* Assert */
-    expect(component.initializeLabels).toHaveBeenCalled();
-    expect(component.currentState).toEqual('default');
-    expect(navigationHelperService.setNavigationUrl).toHaveBeenCalled();
-    expect(component.initializeFormFields).toHaveBeenCalled();
-    expect(component.queryParams).toEqual({
-      type: 'edit',
-      courseId: 'do_456789',
-      batchId: '124631256'
+    describe("initializeLabels", () => {
+        it('should initializeLabels', () => {
+            component.initializeLabels();
+            expect(component.config.select.label).toEqual(mockResourceService.frmelmnts.lbl.Select)
+        })
     });
-    expect(component.configurationMode).toEqual('edit');
-  });
 
-  it('should fetch data from all the necessary apis and close the page-loader once data is ready', () => {
-    /* Arrange */
-    spyOn(component, 'getCourseDetails').and.returnValue(observableOf(CertMockResponse.courseData));
-    spyOn(component, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchData));
-    spyOn(component, 'getTemplateList').and.returnValue(observableOf(CertMockResponse.certTemplateListData));
-
-    /* Act */
-    component.ngOnInit();
-
-    /* Assert */
-    expect(component.showLoader).toBeFalsy();
-  });
-
-  // it('should close the page-loader if any of the apis fail and show an error toast message', () => {
-  //   /* Arrange */
-  //   const toasterService = TestBed.get(ToasterService);
-  //   spyOn(component, 'getCourseDetails').and.callFake(() => observableThrowError({}));
-  //   spyOn(component, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchData));
-  //   spyOn(component, 'getTemplateList').and.returnValue(observableOf(CertMockResponse.certTemplateListData));
-  //   spyOn(toasterService, 'error').and.stub();
-
-  //   /* Act */
-  //   component.ngOnInit();
-
-  //   /* Assert */
-  //   expect(component.showLoader).toBeFalsy();
-  //   expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
-  // });
-
-  xit('should fetch the drop-down values for "Certificate type" and "Issue to" from preference api', () => {
-    /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
-    userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableOf(CertMockResponse.certRulesData));
-
-    /** Act */
-    component.getCertConfigFields();
-
-    /** Assert */
-    expect(component.certTypes).toEqual([
-      {
-        'name': 'Completion certificate',
-        'value': {
-          'enrollment': {
-            'status': 2
-          }
-        }
-      },
-      {
-        'name': 'Merit certificate',
-        'value': {
-          'score': '>= 60'
-        }
-      }
-    ]);
-
-    expect(component.issueTo).toEqual([
-      {
-        'name': 'All',
-        'value': {
-          'user': {
-            'rootid': ''
-          }
-        }
-      },
-      {
-        'name': 'My state teacher',
-        'rootOrgId': ''
-      }
-    ]);
-  });
-
-  xit('should return empty observable if preference api fails to fetch cert template list', () => {
-    /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
-    userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableThrowError({}));
-
-    /** Act */
-    component.getTemplateList();
-
-    /** Assert */
-    component.getTemplateList().subscribe( data => {
-      expect(component.getTemplateList).toEqual(jasmine.objectContaining({}));
+    describe("redoLayout", () => {
+        it('should redo layout on render for threeToNine column', () => {
+            component.layoutConfiguration = {};
+            mockLayoutService.initlayoutConfig = jest.fn(() => { });
+            mockLayoutService.redoLayoutCSS = jest.fn(() => {
+                return 'sb-g-col-xs-9';
+            });
+            component.redoLayout();
+            expect(component.FIRST_PANEL_LAYOUT).toEqual('sb-g-col-xs-9');
+        });
+        it('should redo layout on render for fullLayout column', () => {
+            component.layoutConfiguration = null;
+            mockLayoutService.initlayoutConfig = jest.fn(() => { });
+            mockLayoutService.redoLayoutCSS = jest.fn(() => {
+                return 'sb-g-col-xs-12';
+            });
+            component.redoLayout();
+            expect(component.FIRST_PANEL_LAYOUT).toEqual('sb-g-col-xs-12');
+        });
     });
-  });
 
-  xit(`should fetch batch details and get the drop-down values if
-        "certificate_template" object does not exist on the batch details `, () => {
-    /** Arrange */
-    const certificateService  = TestBed.get(CertificateService);
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchData));
-    spyOn(component, 'getCertConfigFields').and.stub();
+    describe("checkMultipleAssessment", () => {
+        it("should set isSingleAssessment=True if SelfAssess count is 1", () => {
+            component.courseDetails = { contentTypesCount: JSON.stringify({ SelfAssess: 1 }) };
+            component.checkMultipleAssessment();
+            expect(component.isSingleAssessment).toBeTruthy();
+        });
 
-    /** Act */
-    component.getBatchDetails('123466789');
+        it("should set isSingleAssessment=False if SelfAssess count is more than 1", () => {
+            component.courseDetails = { contentTypesCount: JSON.stringify({ SelfAssess: 2 }) };
+            component.checkMultipleAssessment();
+            expect(component.isSingleAssessment).toBeFalsy();
+        })
 
-    /** Assert */
-    component.getBatchDetails('123466789').subscribe( data => {
-      expect(component.batchDetails).toEqual(CertMockResponse.batchData.result.response);
-      expect(component.getCertConfigFields).toHaveBeenCalled();
+        it("should set isSingleAssessment=False if SelfAssess count is 0 ", () => {
+            component.courseDetails = { contentTypesCount: JSON.stringify({ SelfAssess: 0 }) };
+            component.checkMultipleAssessment();
+            expect(component.isSingleAssessment).toBeFalsy();
+        })
+
+        it("should log an error if there is no SelfAssess ", () => {
+            component.courseDetails = { contentTypesCount: {} };
+            jest.spyOn(console, 'log').mockImplementation();
+            component.checkMultipleAssessment();
+            expect(console.log).toHaveBeenCalled();
+        })
     });
-  });
 
-  xit(`should fetch batch details and process the certificate details if "certificate_template" exists on the batch details `, () => {
-    /** Arrange */
-    const certificateService  = TestBed.get(CertificateService);
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
-    spyOn(component, 'processCertificateDetails').and.stub();
+    describe("getTemplateList", () => {
+        it("should fetch certificate list successfully", () => {
+            component.templateIdentifier = "do_1131446242806251521827";
+            mockUploadCertificateService.getCertificates = jest.fn().mockImplementation(() => of(CertMockResponse.certTemplateListData));
+            component.getTemplateList().subscribe((data) => {
+                expect(mockUploadCertificateService.getCertificates).toHaveBeenCalled();
+                expect(component.selectedTemplate).toEqual(CertMockResponse.certTemplateListData.result.content[1])
+            });
+        })
 
-    /** Act */
-    component.getBatchDetails('123466789');
+        it("should fetch certificate list successfully with newTemplateIdentifier ", () => {
+            component.newTemplateIdentifier = "do_11317806644278067214595";
+            mockUploadCertificateService.getCertificates = jest.fn().mockImplementation(() => of(CertMockResponse.certTemplateListData));
+            component.getTemplateList().subscribe((data) => {
+                expect(mockUploadCertificateService.getCertificates).toHaveBeenCalled();
+                expect(component.selectedTemplate).toEqual(CertMockResponse.certTemplateListData.result.content[0])
+            });
+        })
 
-    /** Assert */
-    component.getBatchDetails('123466789').subscribe( data => {
-      expect(component.batchDetails).toEqual(CertMockResponse.batchDataWithCertificate.result.response);
-      expect(component.processCertificateDetails).
-      toHaveBeenCalledWith(CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
+        it("should throw error ", () => {
+            component.newTemplateIdentifier = "do_11317806644278067214595";
+            mockUploadCertificateService.getCertificates = jest.fn(() => throwError({}));
+            component.getTemplateList().subscribe(error => {
+                expect(error).toBeDefined()
+            })
+        })
+
+        it('should refresh template list', () => {
+            jest.spyOn(component, 'getTemplateList').mockImplementation(() => throwError({}))
+            component.refreshData();
+            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0005)
+        })
     });
-  });
 
-  xit('should fetch the course details', () => {
-    /** Arrange */
-    const playerService = TestBed.get(PlayerService);
-    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(CertMockResponse.courseData));
-    /** Act */
-    component.getCourseDetails('do_123456');
-    /** Assert */
-    component.getCourseDetails('do_123456').subscribe( data => {
-      expect(component.courseDetails).toEqual(CertMockResponse.courseData.result.content);
+    describe("setCertEditable", () => {
+        it("should set cert editable true if preview url is available", () => {
+            component.previewUrl = "dummy-url";
+            component.setCertEditable();
+            expect(component.certEditable).toBeTruthy();
+        })
+
+        it("should set cert editable false if preview url is not available", () => {
+            component.previewUrl = "";
+            component.setCertEditable();
+            expect(component.certEditable).toBeFalsy();
+        })
+    })
+
+    describe("processCriteria", () => {
+        it('should process on form field', () => {
+            component.userPreference = new FormGroup({
+                scoreRange: new FormControl('1'),
+                issueTo: new FormControl('12'),
+                allowPermission: new FormControl('123')
+            });
+            let criteria = CertMockResponse.batchDataWithCertificate.result.response.cert_templates.template_21.criteria;
+            component.processCriteria(criteria);
+            expect(component.issueTo).toEqual([{ "name": "My state teacher" }]);
+        })
+    })
+
+    describe("processCertificateDetails", () => {
+        it("should processCertificateDetails", () => {
+            jest.spyOn(component, 'setCertEditable').mockImplementation();
+            jest.spyOn(component, 'processCriteria').mockImplementation();
+            let certTempDetails = CertMockResponse.batchDataWithCertificate.result.response.cert_templates.template_21;
+            component.processCertificateDetails([certTempDetails]);
+            expect(component.setCertEditable).toHaveBeenCalled();
+            expect(component.processCriteria).toHaveBeenCalled();
+        });
+
+        it("should process Certificate Details and update preview url", () => {
+            jest.spyOn(component, 'setCertEditable').mockImplementation();
+            jest.spyOn(component, 'processCriteria').mockImplementation();
+            let certTempDetails: any = CertMockResponse.batchDataWithCertificate.result.response.cert_templates.template_21;
+            certTempDetails['url'] = "cert-url"
+            component.processCertificateDetails([certTempDetails]);
+            expect(component.setCertEditable).toHaveBeenCalled();
+            expect(component.processCriteria).toHaveBeenCalled();
+        })
+    })
+
+    describe("getBatchDetails", () => {
+        it("should fetch the batch details without certificates", () => {
+            jest.spyOn(component, 'getCertConfigFields')
+            mockCertificateService.getBatchDetails = jest.fn().mockImplementation(() => of(CertMockResponse.batchData))
+            component.getBatchDetails('is').subscribe(data => {
+                expect(mockCertificateService.getBatchDetails).toHaveBeenCalled();
+                expect(component.getCertConfigFields).toHaveBeenCalled();
+            })
+        });
+        it("should fetch the batch details with certificates", () => {
+            jest.spyOn(component, 'processCertificateDetails').mockImplementation();
+            mockCertificateService.getBatchDetails = jest.fn().mockImplementation(() => of(CertMockResponse.batchDataWithCertificate))
+            component.getBatchDetails('is').subscribe(data => {
+                expect(mockCertificateService.getBatchDetails).toHaveBeenCalled();
+                expect(component.processCertificateDetails).toHaveBeenCalled();
+            })
+        })
+        it("should fetch the batch details with certificates array", () => {
+            jest.spyOn(component, 'processCertificateDetails').mockImplementation();
+            let mockData = CertMockResponse.batchDataWithCertificate;
+            mockData.result.response.cert_templates = [{ ...CertMockResponse.batchDataWithCertificate.result.response.cert_templates }] as any;
+            mockCertificateService.getBatchDetails = jest.fn().mockImplementation(() => of(mockData))
+            component.getBatchDetails('is').subscribe(data => {
+                expect(mockCertificateService.getBatchDetails).toHaveBeenCalled();
+                expect(component.processCertificateDetails).toHaveBeenCalled();
+                expect(component.batchDetails.cert_templates).toHaveLength(1);
+            })
+        })
     });
-  });
 
-  xit('should return empty observable if course details api fails', () => {
-    /** Arrange */
-    const playerService = TestBed.get(PlayerService);
-    spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => observableThrowError({}));
+    describe("Initialize form fields and validate form", () => {
+        it("Should enable add certificate if form is valid", () => {
+            component.selectedTemplate = "tpl";
+            component.userPreference = new FormGroup({
+                scoreRange: new FormControl(null),
+                issueTo: new FormControl('12'),
+                allowPermission: new FormControl('123')
+            });
+            component.validateForm();
+            expect(component.disableAddCertificate).toBeFalsy();
+        });
 
-    /** Act */
-    component.getCourseDetails('do_123456');
+        it("Should disable add certificate if form is not valid", () => {
+            component.selectedTemplate = "";
+            component.userPreference = new FormGroup({
+                scoreRange: new FormControl('1'),
+                issueTo: new FormControl('12'),
+                allowPermission: new FormControl('123')
+            });
+            component.validateForm();
+            expect(component.disableAddCertificate).toBeTruthy();
+        });
 
-    /** Assert */
-    component.getCourseDetails('do_123456').subscribe( data => { }, error => {
-      expect(component.getCourseDetails).toEqual(jasmine.objectContaining({}));
+        it('should initialize form fields and validateForm', () => {
+            jest.spyOn(component, 'validateForm').mockImplementation();
+            component.userPreference = new FormGroup({
+                scoreRange: new FormControl(''),
+                issueTo: new FormControl(''),
+                allowPermission: new FormControl('')
+            });
+            component.initializeFormFields();
+            component.userPreference.setValue({
+                scoreRange: "1",
+                issueTo: "12",
+                allowPermission: "123"
+            });
+            expect(component.validateForm).toHaveBeenCalled();
+        });
     });
-  });
 
-  it('should show template change modal on "update certificate" button click if template change detected', () => {
-    /** Arrange */
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER'};
-    component.templateIdentifier = 'SOME_OTHER_IDENTIFIER';
+    describe("getCourseDetails", () => {
+        it("should get Course Details", () => {
+            mockPlayerService.getCollectionHierarchy = jest.fn().mockImplementation(() => of(CertMockResponse.courseData));
+            component.getCourseDetails("batch-id").subscribe(data => {
+                expect(component.courseDetails).toEqual(CertMockResponse.courseData.result.content);
+            })
+        })
+        it("should show error while get Course Details", () => {
+            mockPlayerService.getCollectionHierarchy = jest.fn(() => throwError({}));
+            component.getCourseDetails("batch-id").subscribe(error => {
+                expect(error).toBeDefined()
+            })
+        })
+    })
 
-    /** Act */
-    component.updateCertificate();
+    describe("getCertificateFormData", () => {
+        it('should get Certificate FormData', () => {
+            mockFormService.getFormConfig = jest.fn().mockImplementation(() => of(CertMockResponse.certificateFormData))
+            component.getCertificateFormData().subscribe(data => {
+                expect(component.certificateFormConfig).toEqual(CertMockResponse.certificateFormData);
+            })
+        });
 
-    /** Assert */
-    expect(component.isTemplateChanged).toBeTruthy();
-  });
+        it('should throw error on fetching Certificate FormData', () => {
+            mockFormService.getFormConfig = jest.fn(() => throwError({}))
+            component.getCertificateFormData().subscribe(data => {}, error => {
+                expect(error).toBeDefined();
+            })
+        });
+    })
 
-  it('should attach the certificate on "update certificate" button click if template change not detected', () => {
-    /** Arrange */
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-    component.templateIdentifier = 'SOME_IDENTIFIER';
-    spyOn(component, 'attachCertificateToBatch').and.stub();
+    describe("ngOnInit", () => {
+        it('should fetch all required data for certificate', () => {
+            jest.spyOn(component, 'initializeLabels');
+            jest.spyOn(component, 'redoLayout');
+            jest.spyOn(component, 'initializeFormFields');
+            jest.spyOn(component, 'checkMultipleAssessment').mockReturnValue();
+            jest.spyOn(component, 'getCourseDetails').mockReturnValue(of(CertMockResponse.courseData));
+            jest.spyOn(component, 'getBatchDetails').mockReturnValue(of(CertMockResponse.batchData))
+            jest.spyOn(component, 'getTemplateList').mockReturnValue(of(CertMockResponse.certTemplateListData))
+            jest.spyOn(component, 'getCertificateFormData').mockReturnValue(of(CertMockResponse.certificateFormData))
+            mockNavigationHelperService.setNavigationUrl = jest.fn();
+            component.ngOnInit();
+            expect(component.getCourseDetails).toHaveBeenCalled();
+            expect(component.checkMultipleAssessment).toHaveBeenCalled();
+            expect(component.showLoader).toBeFalsy()
+        });
 
-    /** Act */
-    component.updateCertificate();
-
-    /** Assert */
-    expect(component.attachCertificateToBatch).toHaveBeenCalled();
-  });
-
-  it('should send interact telemetry on click of add certificate to the batch', () => {
-    /** Arrange */
-    component.configurationMode = 'add';
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(component.sendInteractData).toHaveBeenCalledWith({
-      id: 'attach-certificate'
+        it('should show error message if there is error while fetching data from api', () => {
+            jest.spyOn(component, 'initializeLabels');
+            jest.spyOn(component, 'redoLayout');
+            jest.spyOn(component, 'initializeFormFields');
+            jest.spyOn(component, 'getCourseDetails').mockImplementation(() => throwError({}))
+            mockNavigationHelperService.setNavigationUrl = jest.fn();
+            component.ngOnInit();
+            expect(component.getCourseDetails).toHaveBeenCalled();
+            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0005);
+        });
     });
-  });
 
-  it('should send interact telemetry on click of update certificate to the batch', () => {
-    /** Arrange */
-    component.configurationMode = 'edit';
-    spyOn(component, 'sendInteractData').and.stub();
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(component.sendInteractData).toHaveBeenCalledWith({
-      id: 'confirm-template-change'
+    describe("getCertConfigFields", () => {
+        it("should fetch certificate preferences successfully", () => {
+            mockCertificateService.fetchCertificatePreferences = jest.fn().mockImplementation(() => of(CertMockResponse.certRulesData))
+            component.getCertConfigFields();
+            expect(mockCertificateService.fetchCertificatePreferences).toHaveBeenCalled();
+        })
+        it("should fetch certificate preferences successfully", () => {
+            mockCertificateService.fetchCertificatePreferences = jest.fn().mockImplementation(() => throwError({}));
+            component.getCertConfigFields();
+            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0005);
+        })
     });
-  });
-
-  it('should close template change modal if user changes template and make an update call', () => {
-    /** Arrange */
-    component.configurationMode = 'edit';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
-    spyOn(component, 'processCertificateDetails').and.stub();
-    spyOn(component, 'goBack').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(component.isTemplateChanged).toBeFalsy();
-  });
-
-  it('should show success toast message if user adds certificate', () => {
-    /** Arrange */
-    component.configurationMode = 'add';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
-    spyOn(component, 'processCertificateDetails').and.stub();
-    spyOn(component, 'goBack').and.stub();
-    spyOn(toasterService, 'success').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(toasterService.success).toHaveBeenCalledWith('Certificate added successfully');
-  });
-
-  it('should show success toast message if user updates certificate', () => {
-    /** Arrange */
-    component.configurationMode = 'edit';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
-    spyOn(component, 'processCertificateDetails').and.stub();
-    spyOn(component, 'goBack').and.stub();
-    spyOn(toasterService, 'success').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(toasterService.success).toHaveBeenCalledWith('Certificate updated successfully.');
-  });
-
-  it('should fetch updated batch details post adding / updating certificate', () => {
-    /** Arrange */
-    component.configurationMode = 'edit';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
-    spyOn(component, 'processCertificateDetails').and.stub();
-    spyOn(component, 'goBack').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(component.batchDetails).toEqual(CertMockResponse.batchDataWithCertificate.result.response);
-
-  });
-
-  it('should process the certificate details and navigate back to first screen post adding / updating certificate', () => {
-    /** Arrange */
-    component.configurationMode = 'edit';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
-    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
-    spyOn(component, 'processCertificateDetails').and.stub();
-    spyOn(component, 'goBack').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(component.processCertificateDetails).toHaveBeenCalledWith(
-      CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
-    expect(component.goBack).toHaveBeenCalled();
-  });
-
-  it('should show an error toast message if preference api fails', () => {
-    /** Arrange */
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    let errorMsg = resourceBundle.messages.emsg.m0005;
-
-    /** Assert */
-    spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({errorMsg}));
-    spyOn(toasterService, 'error').and.stub();
-    /** Act */
-    component.getCertConfigFields();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalled();
-  });
-
-
-  it('should show  error toast message if fetching batch details fail', () => {
-    /** Arrange */
-    component.configurationMode = 'edit';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
-    spyOn(certificateService, 'getBatchDetails').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
-  });
-
-  it('should show error toast message if adding certificate fails', () => {
-    /** Arrange */
-    component.configurationMode = 'add';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith('Failed to add the certificate. Try again later.');
-  });
-
-  it('should show an error toast message if preference api fails', () => {
-    /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
-    userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.stub();
-
-    /** Act */
-    component.getCertConfigFields();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
-  });
-
-  it('should show error toast message if updating certificate fails', () => {
-    /** Arrange */
-    component.configurationMode = 'edt';
-    component.isTemplateChanged = true;
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
-
-    const certRegService = TestBed.get(CertRegService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(component, 'sendInteractData').and.stub();
-    spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.stub();
-    /** Act */
-    component.attachCertificateToBatch();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith('Failed to edit the certificate. Try again later.');
-  });
-
-  // it('should process certificate details', () => {
-  //   /** Arrange */
-  //   spyOn(component, 'setCertEditable').and.stub();
-  //   spyOn(component, 'processCriteria').and.stub();
-
-  //   /** Act */
-  //   component.processCertificateDetails(CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
-
-  //   /** Assert */
-  //   // expect(component.selectedTemplate).toEqual({ name: 'mock_cert_identifier' });
-  //   expect(component.templateIdentifier).toEqual('mock_cert_identifier');
-  //   expect(component.previewUrl).toEqual('https://cert.svg');
-  //   expect(component.setCertEditable).toHaveBeenCalled();
-  //   expect(component.processCriteria).toHaveBeenCalledWith({
-  //     'user': {
-  //       'rootOrgId': '0124784842112040965'
-  //     },
-  //     'enrollment': {
-  //       'status': 2
-  //     }
-  //   });
-  // });
-
-  it('should set the flag for the certificate to be editable', () => {
-    /** Arrange */
-    component.previewUrl = 'SOME_PREVIEW_URL';
-
-    /** Act */
-    component.setCertEditable();
-
-    /** Assert */
-    expect(component.certEditable).toBeTruthy();
-  });
-
-  it('should set the flag for the certificate to be non-editable', () => {
-    /** Arrange */
-    component.previewUrl = undefined;
-
-    /** Act */
-    component.setCertEditable();
-
-    /** Assert */
-    expect(component.certEditable).toBeFalsy();
-  });
-
-  it('should navigate to rules screen for editing the certificate', () => {
-    /** Arrange */
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.editCertificate();
-
-    /** Assert */
-    expect(component.configurationMode).toEqual('edit');
-    expect(component.currentState).toEqual('certRules');
-    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'edit-certificate'});
-  });
-
-  xit('should process the criteria to get the drop-down values', () => {
-    /** Arrange */
-    const mockCriteria = {
-      'user': {
-        'rootOrgId': '0124784842112040965'
-      },
-      'enrollment': {
-        'status': 2
-      }
-    };
-
-    /** Act */
-    component.processCriteria(mockCriteria);
-
-    /** Assert */
-    expect(component.issueTo).toEqual([{
-      name : 'My state teacher'
-    }]);
-
-  });
-
-  it('should handle "select" click on hover certificate templates', () => {
-    /** Arrange */
-    const mockEvent = { name: 'select'};
-    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    spyOn(component, 'validateForm').and.stub();
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.handleCertificateEvent( mockEvent, mockTemplate);
-
-    /** Assert */
-    expect(component.selectedTemplate).toEqual(mockTemplate);
-    expect(component.config.remove.show).toBeTruthy();
-    expect(component.config.select.show).toBeFalsy();
-    expect(component.validateForm).toHaveBeenCalled();
-    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'select-template'});
-  });
-
-  it('should handle "remove" click on hover certificate templates', () => {
-    /** Arrange */
-    const mockEvent = { name: 'remove'};
-    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    spyOn(component, 'validateForm').and.stub();
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.handleCertificateEvent( mockEvent, mockTemplate);
-
-    /** Assert */
-    expect(component.selectedTemplate).toEqual({});
-    expect(component.config.select.show).toBeTruthy();
-    expect(component.config.remove.show).toBeFalsy();
-    expect(component.validateForm).toHaveBeenCalled();
-    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'unselect-template'});
-  });
-
-  it('should handle "preview" click on hover certificate templates', () => {
-    /** Arrange */
-    const mockEvent = { name: 'preview'};
-    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    spyOn(component, 'validateForm').and.stub();
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.handleCertificateEvent( mockEvent, mockTemplate);
-
-    /** Assert */
-    expect(component.previewTemplate).toEqual(mockTemplate);
-    expect(component.showPreviewModal).toBeTruthy();
-    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'preview-template'});
-  });
-
-  it('should fetch the configs for "select" hover button', () => {
-    /** Arrange */
-    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    const mocConfig = {show: true, label: 'select', name: 'select'};
-
-    /** Act */
-    component.getConfig(mocConfig, mockTemplate);
-
-    /** Assert */
-    expect(component.getConfig(mocConfig, mockTemplate)).toEqual(jasmine.objectContaining({
-      show: false,
-      label: 'select',
-      name: 'select'
-    }));
-  });
-
-  it('should fetch the configs for hover buttons other than "select"', () => {
-    /** Arrange */
-    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
-    const mocConfig = {show: true, label: 'preview', name: 'preview'};
-
-    /** Act */
-    component.getConfig(mocConfig, mockTemplate);
-
-    /** Assert */
-    expect(component.getConfig(mocConfig, mockTemplate)).toEqual(jasmine.objectContaining({
-      show: true,
-      label: 'preview',
-      name: 'preview'
-    }));
-  });
-
-  it('should close preview modal if user clicks "Select template" from preview popup', () => {
-    /** Arrange */
-    const mockEvent = {
-      name: 'select',
-      template: {name: 'SOME_TEMPLATE'}
-    };
-    spyOn(component, 'validateForm').and.stub();
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.closeModal(mockEvent);
-
-    /** Assert */
-   expect(component.showPreviewModal).toBeFalsy();
-   expect(component.selectedTemplate).toEqual({name: 'SOME_TEMPLATE'});
-   expect(component.validateForm).toHaveBeenCalled();
-   expect(component.sendInteractData).toHaveBeenCalledWith({id: 'select-template'});
-  });
-
-  it('should close preview modal if user clicks "close" from preview popup', () => {
-    /** Arrange */
-    const mockEvent = {
-    };
-    component.selectedTemplate = { name: 'SOME_PRE_SELECTED_TEMPLATE' };
-    spyOn(component, 'validateForm').and.stub();
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.closeModal(mockEvent);
-
-    /** Assert */
-   expect(component.showPreviewModal).toBeFalsy();
-   expect(component.selectedTemplate).toEqual({ name: 'SOME_PRE_SELECTED_TEMPLATE' });
-   expect(component.validateForm).toHaveBeenCalled();
-   expect(component.sendInteractData).toHaveBeenCalledWith({id: 'close-preview'});
-  });
-
-  it('should close template detect modal', () => {
-    /** Arrange */
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.closeTemplateDetectModal();
-
-    /** Assert */
-    expect(component.isTemplateChanged).toBeFalsy();
-    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'cancel-template-change' });
-  });
-
-  it('should navigate to cert rules screen', () => {
-    /** Arrange */
-    spyOn(component, 'sendInteractData').and.stub();
-
-    /** Act */
-    component.navigateToCertRules();
-
-    /** Assert */
-    expect(component.currentState).toEqual('certRules');
-    expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'add-certificate' });
-  });
-
-  it('should reset the selected form fields and template for "add certificate" scenario', () => {
-    /** Arrange */
-    component.userPreference = new FormGroup({
-        certificateType: new FormControl('Completion certificate'),
-        issueTo: new FormControl('My state teacher'),
-        allowPermission: new FormControl(true)
-      });
-      component.configurationMode = 'add';
-      spyOn(component, 'sendInteractData').and.stub();
-      spyOn(component.userPreference, 'reset');
-
-    /** Act */
-    component.cancelSelection();
-
-    /** Assert */
-    expect(component.currentState).toEqual('default');
-    expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'cancel-add-certificate' });
-    expect(component.userPreference.reset).toHaveBeenCalled();
-    expect(component.selectedTemplate).toEqual({});
-  });
-
-  it('should reset the selected form fields and template for "update certificate" scenario', () => {
-    /** Arrange */
-    component.batchDetails = CertMockResponse.batchDataWithCertificate.result.response;
-    component.userPreference = new FormGroup({
-        certificateType: new FormControl('Completion certificate'),
-        issueTo: new FormControl('My state teacher'),
-        allowPermission: new FormControl(true)
-      });
-      component.configurationMode = 'edit';
-      spyOn(component, 'sendInteractData').and.stub();
-      spyOn(component, 'processCertificateDetails').and.stub();
-
-    /** Act */
-    component.cancelSelection();
-
-    /** Assert */
-    expect(component.currentState).toEqual('default');
-    expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'cancel-update-certificate' });
-    expect(component.processCertificateDetails).toHaveBeenCalledWith(
-      CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
-  });
-
-  it('should send telemetry impression event', () => {
-    /** Arrange */
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(10);
-    spyOn(telemetryService, 'impression').and.stub();
-    const mockTelemetryImpressionData = {
-      context: {
-        env: fakeActivatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          type: 'Batch',
-          id: '124631256'
-        },
-        {
-          type: 'Course',
-          id: 'do_456789'
-        }]
-      },
-      edata: {
-        type: fakeActivatedRoute.snapshot.data.telemetry.type,
-        subtype: fakeActivatedRoute.snapshot.data.telemetry.subtype,
-        pageid: fakeActivatedRoute.snapshot.data.telemetry.pageid,
-        uri: '/cert/configure/add',
-        duration: 10
-      }
-    };
-
-    /** Act */
-    component.setTelemetryImpressionData();
-
-    /**Assert */
-    expect(telemetryService.impression).toHaveBeenCalledWith(mockTelemetryImpressionData);
-  });
-
-  it('should send telemetry interact event for all the clicks on "add certificate" mode', () => {
-    /** Arrange */
-    component.configurationMode = 'add';
-    const mockInteractData = {id: 'add-certificate'};
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact').and.stub();
-    const mockTelemetryInteractObject = {
-      context: {
-        env: fakeActivatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          type: 'Batch',
-          id: '124631256'
-        },
-        {
-          type: 'Course',
-          id: 'do_456789'
-        }]
-      },
-      edata: {
-        id: 'add-certificate',
-        type: 'CLICK',
-        pageid: fakeActivatedRoute.snapshot.data.telemetry.pageid
-      }
-    };
-
-    /** Act */
-    component.sendInteractData(mockInteractData);
-
-    /** Assert */
-    expect(telemetryService.interact).toHaveBeenCalledWith(mockTelemetryInteractObject);
-  });
-
-  it('should send telemetry interact event for all the clicks on "edit certificate" mode', () => {
-    /** Arrange */
-    component.configurationMode = 'edit';
-    component.selectedTemplate = {name: 'SOME_MOCK_TEMPLATE'};
-    const mockInteractData = {id: 'add-certificate'};
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact').and.stub();
-    const mockTelemetryInteractObject = {
-      context: {
-        env: fakeActivatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          type: 'Batch',
-          id: '124631256'
-        },
-        {
-          type: 'Course',
-          id: 'do_456789'
-        }]
-      },
-      edata: {
-        id: 'add-certificate',
-        type: 'CLICK',
-        pageid: fakeActivatedRoute.snapshot.data.telemetry.pageid
-      },
-      object: {
-        id: 'SOME_MOCK_TEMPLATE',
-        type: 'Certificate',
-        ver: '1.0',
-        rollup: { l1: 'do_456789' }
-      }
-    };
-
-    /** Act */
-    component.sendInteractData(mockInteractData);
-
-    /** Assert */
-    expect(telemetryService.interact).toHaveBeenCalledWith(mockTelemetryInteractObject);
-  });
-
-  it('should navigate to create-template page', () => {
-    const router = TestBed.get(Router);
-    component.navigateToCreateTemplate();
-    expect(router.navigate).toHaveBeenCalledWith(['/certs/configure/create-template'], {queryParams: { type: 'edit', courseId: 'do_456789', batchId: '124631256' }});
-  });
-  it('should redo layout on render', () => {
-    component.layoutConfiguration = {};
-    component.redoLayout();
-    component.layoutConfiguration = null;
-    component.redoLayout();
-  });
-  it('should call handleParameterChange method with event as All', () => {
-    const eventAll = 'All';
-    component.handleParameterChange(eventAll);
-    expect(component.isStateCertificate).toBeFalsy();
-  });
-  it('should call handleParameterChange method with event as teacher', () => {
-    const event = 'My state teacher';
-    component.handleParameterChange(event);
-    expect(component.isStateCertificate).toBeTruthy();
-  });
-  
-});
+
+    describe("attachCertificateToBatch", () => {
+        it("should attach certificate to batch for update mode", () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            component.selectedTemplate = CertMockResponse.certTemplateListData.result.content[0];
+            component.addScoreRule = false;
+            component.isTemplateChanged = true;
+            mockCertRegService.addCertificateTemplate = jest.fn().mockImplementation(() => of(CertMockResponse.certAddSuccess));
+            mockCertificateService.getBatchDetails = jest.fn().mockImplementation(() => of(CertMockResponse.batchData));
+            component.attachCertificateToBatch();
+            expect(mockCertRegService.addCertificateTemplate).toHaveBeenCalled();
+            expect(mockToasterService.success).toHaveBeenCalledWith(mockResourceService.frmelmnts.cert.lbl.certUpdateSuccess);
+        });
+
+        it("should attach certificate to batch for add mode and processCertificateDetails", () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            jest.spyOn(component, 'processCertificateDetails').mockImplementation();
+            jest.spyOn(component, 'goBack').mockImplementation();
+            component.selectedTemplate = CertMockResponse.certTemplateListData.result.content[0];
+            component.addScoreRule = false;
+            component.isTemplateChanged = true;
+            component.configurationMode = "add"
+            mockCertRegService.addCertificateTemplate = jest.fn().mockImplementation(() => of(CertMockResponse.certAddSuccess));
+            mockCertificateService.getBatchDetails = jest.fn().mockImplementation(() => of(CertMockResponse.batchData));
+            component.attachCertificateToBatch();
+            expect(mockCertRegService.addCertificateTemplate).toHaveBeenCalled();
+            expect(mockToasterService.success).toHaveBeenCalledWith(mockResourceService.frmelmnts.cert.lbl.certAddSuccess);
+        });
+
+        it("should get error while attach certificate to batch and getBatchDetails", () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            component.selectedTemplate = CertMockResponse.certTemplateListData.result.content[0];
+            component.addScoreRule = false;
+            component.isTemplateChanged = true;
+            mockCertRegService.addCertificateTemplate = jest.fn().mockImplementation(() => of(CertMockResponse.certAddSuccess));
+            mockCertificateService.getBatchDetails = jest.fn(() => throwError({}));
+            component.attachCertificateToBatch();
+            expect(mockCertRegService.addCertificateTemplate).toHaveBeenCalled();
+            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0005);
+        });
+
+        it("should get error for add certificate", () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            component.configurationMode = "add"
+            component.selectedTemplate = CertMockResponse.certTemplateListData.result.content[0];
+            mockCertRegService.addCertificateTemplate = jest.fn(() => throwError({}));
+            component.attachCertificateToBatch();
+            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.frmelmnts.cert.lbl.certAddError);
+        });
+
+        it("should get error for update certificate", () => {
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            component.configurationMode = "update"
+            component.selectedTemplate = CertMockResponse.certTemplateListData.result.content[0];
+            mockCertRegService.addCertificateTemplate = jest.fn(() => throwError({}));
+            component.attachCertificateToBatch();
+            expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.frmelmnts.cert.lbl.certEditError);
+        });
+    })
+
+    describe("updateCertificate", () => {
+        it("should not update certificate if selected template are same", () => {
+            component.templateIdentifier = "124";
+            component.selectedTemplate = { name: "11234" };
+            component.updateCertificate();
+            expect(component.isTemplateChanged).toBeTruthy();
+        });
+
+        it("should attach certificate to batch", () => {
+            component.templateIdentifier = "124";
+            component.selectedTemplate = { name: "124" };
+            jest.spyOn(component, 'attachCertificateToBatch').mockImplementation();
+            component.updateCertificate();
+            expect(component.attachCertificateToBatch).toHaveBeenCalled();
+        })
+    });
+
+    describe("handleCertificateEvent", () => {
+        it('should handle "select" click on hover certificate templates', () => {
+            /** Arrange */
+            const mockEvent = { name: 'select' };
+            const mockTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            jest.spyOn(component, 'validateForm').mockImplementation();
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+
+            /** Act */
+            component.handleCertificateEvent(mockEvent, mockTemplate);
+
+            /** Assert */
+            expect(component.selectedTemplate).toEqual(mockTemplate);
+            expect(component.config.remove.show).toBeTruthy();
+            expect(component.config.select.show).toBeFalsy();
+            expect(component.validateForm).toHaveBeenCalled();
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'select-template' });
+        });
+
+        it('should handle "remove" click on hover certificate templates', () => {
+            /** Arrange */
+            const mockEvent = { name: 'remove' };
+            const mockTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            jest.spyOn(component, 'validateForm').mockImplementation();
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+
+            /** Act */
+            component.handleCertificateEvent(mockEvent, mockTemplate);
+
+            /** Assert */
+            expect(component.selectedTemplate).toEqual({});
+            expect(component.config.select.show).toBeTruthy();
+            expect(component.config.remove.show).toBeFalsy();
+            expect(component.validateForm).toHaveBeenCalled();
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'unselect-template' });
+        });
+
+        it('should handle "preview" click on hover certificate templates', () => {
+            /** Arrange */
+            const mockEvent = { name: 'preview' };
+            const mockTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            jest.spyOn(component, 'validateForm').mockImplementation();
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+
+            /** Act */
+            component.handleCertificateEvent(mockEvent, mockTemplate);
+
+            /** Assert */
+            expect(component.previewTemplate).toEqual(mockTemplate);
+            expect(component.showPreviewModal).toBeTruthy();
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'preview-template' });
+        });
+    })
+
+    describe("getConfig", () => {
+        it('should fetch the configs for "select" hover button', () => {
+            /** Arrange */
+            const mockTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            const mocConfig = { show: true, label: 'select', name: 'select' };
+
+            /** Act */
+            const returnVal = component.getConfig(mocConfig, mockTemplate);
+
+            /** Assert */
+            expect(returnVal).toEqual({
+                show: false,
+                label: 'select',
+                name: 'select'
+            });
+        });
+
+        it('should fetch the configs for hover buttons other than "select"', () => {
+            /** Arrange */
+            const mockTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE' };
+            const mocConfig = { show: true, label: 'preview', name: 'preview' };
+
+            /** Act */
+            const returnVal = component.getConfig(mocConfig, mockTemplate);
+
+            /** Assert */
+            expect(returnVal).toEqual({
+                show: true,
+                label: 'preview',
+                name: 'preview'
+            });
+        });
+    })
+
+    describe("closeModal", () => {
+        it('should close preview modal if user clicks "Select template" from preview popup', () => {
+            /** Arrange */
+            const mockEvent = {
+                name: 'select',
+                template: { name: 'SOME_TEMPLATE' }
+            };
+            component.certTemplateList = [];
+            jest.spyOn(component, 'validateForm').mockImplementation();
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+
+            /** Act */
+            component.closeModal(mockEvent);
+
+            /** Assert */
+            expect(component.showPreviewModal).toBeFalsy();
+            expect(component.selectedTemplate).toEqual({ name: 'SOME_TEMPLATE' });
+            expect(component.validateForm).toHaveBeenCalled();
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'select-template' });
+        });
+
+        it('should close preview modal if user clicks "close" from preview popup', () => {
+            /** Arrange */
+            const mockEvent = {
+            };
+            component.certTemplateList = [];
+            component.selectedTemplate = { name: 'SOME_PRE_SELECTED_TEMPLATE' };
+            jest.spyOn(component, 'validateForm').mockImplementation();
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+
+            /** Act */
+            component.closeModal(mockEvent);
+
+            /** Assert */
+            expect(component.showPreviewModal).toBeFalsy();
+            expect(component.selectedTemplate).toEqual({ name: 'SOME_PRE_SELECTED_TEMPLATE' });
+            expect(component.validateForm).toHaveBeenCalled();
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'close-preview' });
+        });
+    })
+
+    describe("cancelSelection", () => {
+        it('should reset the selected form fields and template for "add certificate" scenario', () => {
+            /** Arrange */
+            component.userPreference = new FormGroup({
+                certificateType: new FormControl('Completion certificate'),
+                issueTo: new FormControl('My state teacher'),
+                allowPermission: new FormControl(true)
+            });
+            component.configurationMode = 'add';
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            jest.spyOn(component.userPreference, 'reset');
+
+            /** Act */
+            component.cancelSelection();
+
+            /** Assert */
+            expect(component.currentState).toEqual('default');
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'cancel-add-certificate' });
+            expect(component.userPreference.reset).toHaveBeenCalled();
+            expect(component.selectedTemplate).toEqual({});
+        });
+
+        it('should reset the selected form fields and template for "update certificate" scenario', () => {
+            /** Arrange */
+            component.batchDetails = CertMockResponse.batchDataWithCertificate.result.response;
+            component.userPreference = new FormGroup({
+                certificateType: new FormControl('Completion certificate'),
+                issueTo: new FormControl('My state teacher'),
+                allowPermission: new FormControl(true)
+            });
+            component.configurationMode = 'edit';
+            jest.spyOn(component, 'sendInteractData').mockImplementation();
+            jest.spyOn(component, 'processCertificateDetails').mockImplementation();
+
+            /** Act */
+            component.cancelSelection();
+
+            /** Assert */
+            expect(component.currentState).toEqual('default');
+            expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'cancel-update-certificate' });
+            expect(component.processCertificateDetails).toHaveBeenCalledWith(
+                CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
+        });
+    });
+
+    describe("navigateToCreateTemplate", () => {
+        it('should navigate to create-template page', () => {
+            component.navigateToCreateTemplate();
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/certs/configure/create-template'], {queryParams: { type: 'edit', courseId: 'do_456789', batchId: '124631256' }});
+        });
+        it('should navigate to create-certificate-template page for svgEditor', () => {
+            component.certificateFormConfig = {enableSVGEditor : true};
+            component.navigateToCreateTemplate();
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/certs/configure/create-certificate-template'], {queryParams: { type: 'edit', courseId: 'do_456789', batchId: '124631256' }});
+        }); 
+    })
+
+    describe("handleParameterChange", () => {
+        it('should call handleParameterChange method with event as All', () => {
+            const eventAll = 'All';
+            component.handleParameterChange(eventAll);
+            expect(component.isStateCertificate).toBeFalsy();
+          });
+          it('should call handleParameterChange method with event as teacher', () => {
+            const event ={value: 'My state teacher'};
+            component.handleParameterChange(event);
+            expect(component.isStateCertificate).toBeTruthy();
+          });
+    })
+
+    describe("Add and Remove Rule", () => {
+        it('should add rule', () => {
+            component.addRule();
+            expect(component.addScoreRule).toBeTruthy();
+        });
+        it('should remove rule', () => {
+            component.removeRule();
+            expect(component.addScoreRule).toBeFalsy();
+        });
+    })
+
+    describe("ngOnDestroy", () => {
+        it('should destroy sub', () => {
+            component.unsubscribe$ = {
+                next: jest.fn(),
+                complete: jest.fn()
+            } as any;
+            mockUploadCertificateService.certificate = {
+                next: jest.fn()
+            } as any;
+            component.ngOnDestroy();
+            expect(component.unsubscribe$.next).toHaveBeenCalled();
+            expect(component.unsubscribe$.complete).toHaveBeenCalled();
+        });
+    });
+
+   
+
+
+
+
+
+
+
+})

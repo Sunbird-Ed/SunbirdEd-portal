@@ -13,6 +13,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { SELECT_ACTIVITY } from '../../../groups/interfaces/telemetryConstants';
 import { ActivityDashboardService } from '../../services';
+// import { sessionKeys } from '../../../../modules/groups';
 
 
 // tslint:disable-next-line:only-arrow-functions
@@ -52,7 +53,7 @@ export class AddToGroupDirective implements OnInit {
 
   ngOnInit() {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.groupAddableBlocData = data;
+      this.groupAddableBlocData = data; //|| JSON.parse(sessionStorage.getItem(sessionKeys.GROUPADDABLEBLOCDATA));
     });
     if (CsGroupAddableBloc.instance.initialised) {
       CsGroupAddableBloc.instance.state$.pipe(

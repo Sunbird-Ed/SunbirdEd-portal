@@ -1,47 +1,100 @@
-
-.ui.dropdown.selection {
-    padding: 0.5rem 0.75rem !important;
-}
-
-.li-item {
-    text-align: right;
-    padding: 10px;
-    background: aliceblue;
-    border: none;
-}
-::ng-deep{
-    
-    .ui.selection.dropdown {
-        padding: 11px;
-        display: block !important;
-        min-width: 260px !important;
-    }
-    .datatable-body-cell-label {
-        padding: 10px !important;
-    }
-    .sb-field-group {
-        padding: 10px !important;
-    }
-    .sb-modal-actions {
-        justify-content: center;
-    } 
-  
-    
-}
 .sb-modal-actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .sb-modal .ui.modal {
-    margin-top: 15% !important;
+  margin-top: 15% !important;
 }
+
 .ngx-datatable.fixed-header .datatable-header {
-    padding: 10px;
+  padding: 0.625rem;
 }
+
 .sidebar-block {
-    min-height: 400px;
+  min-height: 25rem;
 }
-.justify-flex-end {
-    justify-content: flex-end;
+
+.ngx-datatable.datatable-header {
+  background: var(--mat-accordion-tab-body-active-bg) !important;
+}
+
+
+.custom_mat_dd .mat-select-arrow-wrapper {
+  vertical-align: bottom !important;
+}
+
+.reset-filter{
+  color: var(--primary);
+  background-color: var(--brand-header-tail-text);
+}
+
+.newData{
+  color:var(--ck-color-base-error);
+  margin-left: 1.875rem;
+  margin-top: 0.625rem;
+}
+
+.info{
+  justify-self: flex-start;
+  margin-right: 0.625rem;
+  cursor: pointer;
+  color: var(--primary) !important;
+}
+.goback{
+  justify-self: flex-end;
+  margin-left: 0.625rem;
+  cursor: pointer;
+  color: var(--ck-color-button-cancel);
+}
+
+.ppFilter{
+  margin-top: 1.25rem;
+}
+
+.col-gap{
+  column-gap:1.875rem;
+}
+
+.modalNote{
+  line-height: initial;
+}
+
+.infoIcon{
+  width: 1.125rem;
+}
+
+::ng-deep {
+
+   .cdk-overlay-container{
+      z-index: 1 !important;
+   }
+   
+  .custom_mat_dd .mat-select-arrow-wrapper {
+    vertical-align: bottom !important;
+  }
+
+  .custom_mat_dd .mat-form-field-flex {
+    padding-top: 0px !important;
+  }
+
+  .mat-select-panel .mat-option {
+    white-space: normal !important;
+    display: inline-table !important;
+    width: 100% !important;
+    line-height: 1.5em !important;
+    padding-top: 0.625rem;
+  }
+  .mat-option-text{
+    display: flex !important;
+  }
+  .mat-dropdown__options span {
+    position: unset !important;
+}
+  .mat-dropdown__options span:before {
+    display: flex !important;
+    align-self: flex-end !important;
+    right: 0.5rem !important;
+  }
 }

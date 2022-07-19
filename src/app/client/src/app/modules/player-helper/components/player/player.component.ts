@@ -6,12 +6,12 @@ import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
-import { forkJoin, of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -65,6 +65,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   playerType: string;
   isDesktopApp = false;
   showQumlPlayer = false;
+  contentId: string;
+  collectionId:string;
 
   /**
  * Dom element reference of contentRatingModal
@@ -98,20 +100,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
-      this.playerConfig.config.sideMenu.showDownload = false;
-      if (!_.get(this.playerConfig, 'metadata.instructions')) {
-        this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
-          this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
-          this.showQumlPlayer = true;
-        }, (error) => {
-          this.showQumlPlayer = true;
-        });
-      } else {
-        this.showQumlPlayer = true;
-      }
-    }
-
+    this.checkForQumlPlayer()
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -231,6 +220,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadPlayer() {
+    this.checkForQumlPlayer();
     this.playerType = null;
     const formReadInputParams = {
       formType: 'content',
@@ -260,6 +250,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     );
   }
 
+  checkForQumlPlayer() {
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      this.playerConfig.config.sideMenu.showDownload = false;
+      if (!_.get(this.playerConfig, 'metadata.instructions')) {
+        this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
+          this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+          this.showQumlPlayer = true;
+        }, (error) => {
+          this.showQumlPlayer = true;
+        });
+      } else {
+        this.showQumlPlayer = true;
+      }
+    }
+  }
+
   loadOldPlayer() {
     this.showNewPlayer = false;
     if (this.isDesktopApp) {
@@ -286,6 +292,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   loadNewPlayer() {
     const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
     const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
+    this.contentId = _.get(this.playerConfig, 'metadata.identifier');
+    this.collectionId = _.get(this.playerConfig, 'context.objectRollup.l1');
     if (downloadStatus && artifactUrl && !_.startsWith(artifactUrl, 'http://')) {
       this.playerConfig.metadata.artifactUrl = `${location.origin}/${artifactUrl}`;
     }
@@ -297,6 +305,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
     }
     this.showNewPlayer = true;
+    if (this.userService.loggedIn) {
+      this.userService.userData$.subscribe((user: any) => {
+        if (user && !user.err) {
+          const userProfile = user.userProfile;
+          const userId = userProfile.id;
+          const varName = (userId + '_' + (this.collectionId ? this.collectionId : '') + '_' + (this.contentId ? this.contentId : '') + '_config');
+          const playerConfig: any = JSON.parse(localStorage.getItem(varName)) || {};
+          this.playerConfig['config'] = { ...this.playerConfig['config'], ...playerConfig };
+        }
+      });
+    } else {
+      const varName = ('guest' + '_' + (this.collectionId ? this.collectionId : '') + '_' + (this.contentId ? this.contentId : '') + '_config');;
+      const playerConfig: any = JSON.parse(localStorage.getItem(varName)) || {};
+      this.playerConfig['config'] = { ...this.playerConfig['config'], ...playerConfig };
+    }
   }
 
   // Update ArtifactUrl for old Player
@@ -350,6 +373,23 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   eventHandler(event) {
+    if (event.eid === 'END') {
+      const metaDataconfig = event.metaData;
+      if (this.userService.loggedIn) {
+        this.userService.userData$.subscribe((user: any) => {
+          if (user && !user.err) {
+            const userProfile = user.userProfile;
+            const userId = userProfile.id;
+            const varName = (userId + '_' + (this.collectionId ? this.collectionId : '') + '_' + (this.contentId ? this.contentId : '') + '_config');
+            localStorage.setItem(varName, JSON.stringify(metaDataconfig));
+          }
+        });
+      } else {
+        const userId = 'guest';
+        const varName = (userId + '_' + (this.collectionId ? this.collectionId : '') + '_' + (this.contentId ? this.contentId : '') + '_config');
+        localStorage.setItem(varName, JSON.stringify(metaDataconfig));
+      }
+    }
     if (event.eid === 'exdata') {
       this.generatelimitedAttemptEvent(event);
       return;
@@ -377,6 +417,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     const eid = _.get(eventCopy, 'detail.telemetryData.eid');
     const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
+    // this.contentId = contentId;
     if (eid && (eid === 'START' || eid === 'END') && contentId === _.get(this.playerConfig, 'metadata.identifier')) {
       this.showRatingPopup(eventCopy);
       if (this.contentProgressEvents$) {
@@ -497,21 +538,35 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   closeModal() {
+    this.focusOnReplay();
     this.ratingPopupClose.emit({});
   }
-
+  
+  focusOnReplay() {
+    if (this.playerType === 'quml-player') {
+      const replayButton: HTMLElement = document.querySelector('.replay-section');
+      if (replayButton) {
+        replayButton.focus();
+      }
+    }
+  }
+  
   public addUserDataToContext() {
-    this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
           const userProfile = user.userProfile;
           this.playerConfig.context['userData'] = {
-            firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
+            firstName: userProfile.firstName ? userProfile.firstName : 'Guest',
             lastName: userProfile.lastName ? userProfile.lastName : ''
           };
         }
       });
+    } else {
+      this.playerConfig.context.userData = {
+        firstName: this.userService.guestUserProfile.formatedName || 'Guest',
+        lastName: ''
+      };
     }
   }
 

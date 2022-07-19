@@ -1,81 +1,245 @@
-import { UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ConfigService, SharedModule, LayoutService, UtilService } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-// import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
-import { configureTestSuite } from '@sunbird/test-util';
-import {TelemetryService} from '@sunbird/telemetry';
-import {mockData} from '../main-menu/main-menu.component.spec.data';
+import {
+  ConfigService, ResourceService, ToasterService, UtilService,
+  LayoutService, NavigationHelperService, ConnectionService
+} from '../../../shared';
+import { Observable, of, Subscriber, Subscription, throwError as observableThrowError } from 'rxjs';
+import { UserService, PermissionService, ManagedUserService, CoursesService, ElectronService, FormService, LearnerService } from '../../../core';
+import { mockUserData } from './../../services/user/user.mock.spec.data';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CacheService } from 'ng2-cache-service';
+import { TelemetryService } from '@sunbird/telemetry';
+import { mockData } from './main-menu.component.spec.data';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
-  let fixture: ComponentFixture<MainMenuComponent>;
-  const eventSubject = new ReplaySubject<RouterEvent>(1);
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-    url = '/explore-course';
-    events = eventSubject.asObservable();
-  }
-  class FakeActivatedRoute {
-  }
-  configureTestSuite();
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
-      providers: [HttpClient, ResourceService, ConfigService, UserService, LayoutService, TelemetryService,
-        LearnerService, ContentService, {provide: ActivatedRoute, useClass: FakeActivatedRoute}, UtilService,
-        {provide: Router, useClass: RouterStub}]
-    })
-      .compileComponents();
-  }));
+  const mockconfig: Partial<ConfigService> = {
+    constants: {
+      SIZE: {
+        SMALL: 1
+      },
+      VIEW: {
+        VERTICAL: {
+        }
+      }
+    },
+    appConfig: {
+    },
+    rolesConfig: {
+      headerDropdownRoles: {
+        adminDashboard: '',
+        myActivityRole: '',
+        orgSetupRole: '',
+        orgAdminRole: '',
+      }
+    },
+    urlConFig: {
+      URLS: {
+        OFFLINE: {
+          LOGIN: '/explore'
+        }
+      }
+    }
+  };
+  const mockutilService: Partial<UtilService> = {
+    currentRole: of({}) as any,
+    redirect: jest.fn(),
+    isDesktopApp: true,
+  };
+  const mockresourceService: Partial<ResourceService> = {};
+  const mockUserService: Partial<UserService> = {
+    getGuestUser: jest.fn(() => of({
+      userId: 'sample-uid',
+      rootOrgId: 'sample-root-id',
+      rootOrg: {},
+      hashTagIds: ['id'],
+      managedBy: true
+    })),
+    userData$: of({
+      userProfile: {
+        userId: 'sample-uid',
+        rootOrgId: 'sample-root-id',
+        rootOrg: {},
+        hashTagIds: ['id'],
+        managedBy: true
+      }
+    }) as any,
+    initialize: jest.fn(),
+    guestData$: of(mockUserData),
+    userProfile: () => {
+      return {
+        managedBy: true
+      }
+    },
+    _guestData$: of({}) as any,
+  };
+  const mockrouter: Partial<Router> = {
+    url: '/resources/view-all/Course-Unit/1',
+    navigate: jest.fn(),
+    events: of({}) as any
+  };
+  const mockactivatedRoute: Partial<ActivatedRoute> = {
+    queryParams: of({
+      selectedTab: 'all',
+      contentType: ['Course'], objectType: ['Content'], status: ['Live'],
+      defaultSortBy: JSON.stringify({ lastPublishedOn: 'desc' })
+    }),
+    snapshot: {
+      queryParams: {
+        selectedTab: 'course'
+      }
+    } as any
+  };
+  const mockcacheService: Partial<CacheService> = {
+    set: jest.fn(),
+    exists: jest.fn(() => true),
+    removeAll: jest.fn(() => true)
+  };
+  const mocktelemetryService: Partial<TelemetryService> = {
+    initialize: jest.fn(),
+    interact: jest.fn()
+  };
+  const mocklayoutService: Partial<LayoutService> = {
+    isLayoutAvailable: jest.fn(() => true),
+    initiateSwitchLayout: jest.fn()
+  };
+  const mockpermissionService: Partial<PermissionService> = {
+    getWorkspaceAuthRoles: jest.fn(() => of({ url: 'test@123/123' }))
+  };
+  beforeAll(() => {
+    component = new MainMenuComponent(
+      mockresourceService as ResourceService,
+      mockUserService as UserService,
+      mockrouter as Router,
+      mockactivatedRoute as ActivatedRoute,
+      mockpermissionService as PermissionService,
+      mockconfig as ConfigService,
+      mockcacheService as CacheService,
+      mockutilService as UtilService,
+      mocklayoutService as LayoutService,
+      mocktelemetryService as TelemetryService
+    )
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainMenuComponent);
-    component = fixture.componentInstance;
-    component.layoutConfiguration = {};
+    jest.clearAllMocks();
   });
 
-  it('should create', () => {
+  it('should be create a instance of main menu component', () => {
+    // @ts-ignore
+    mockUserService.loggedIn = true;
     expect(component).toBeTruthy();
   });
-
-  describe('getFeatureId method', () => {
-    it('should return the feature id', () => {
-      const result = component.getFeatureId('user:program:contribute', 'SB-15591');
-      expect(result).toEqual([{ id: 'user:program:contribute', type: 'Feature' }, { id: 'SB-15591', type: 'Task' }]);
-    });
+  it('should call updateHrefPath with url and convert explore-course into learn', () => {
+    const url = 'https://localhost:3000/explore-course?board=CBSE';
+    component.updateHrefPath(url);
+    expect(component.hrefPath).toBe('https://localhost:3000/learn?board=CBSE');
   });
-  it('should create with layout config', () => {
-    component.layoutConfiguration = {};
-    expect(component).toBeTruthy();
+  it('should call updateHrefPath with url and convert explore into resources', () => {
+    const url = 'https://localhost:3000/explore?board=CBSE';
+    component.updateHrefPath(url);
+    expect(component.hrefPath).toBe('https://localhost:3000/resources?board=CBSE');
+  });
+  it('should call updateHrefPath with url and convert play into resources', () => {
+    const url = '/play/content/do_2134696122632519681670?contentType=eTextBook';
+    component.updateHrefPath(url);
+    expect(component.hrefPath).toBe('/resources/play/content/do_2134696122632519681670?contentType=eTextBook');
+  });
+  it('should call updateHrefPath with url and convert any other path into resources', () => {
+    const url = 'https://localhost:3000/get/dial/123asd';
+    component.updateHrefPath(url);
+    expect(component.hrefPath).toBe('/resources');
   });
 
-  it('should switch layout and generate telemetry for classic', () => {
-    const layoutService = TestBed.get(LayoutService);
-    const telemetryService = TestBed.get(TelemetryService);
-    component.layoutConfiguration = null;
-    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
+  it('should call setInteractData and update the telemetry objects', () => {
+    component.setInteractData();
+    expect(JSON.stringify(component.homeMenuIntractEdata)).toBe(JSON.stringify(mockData.homeMenuIntractEdata));
+    expect(JSON.stringify(component.libraryMenuIntractEdata)).toBe(JSON.stringify(mockData.libraryMenuIntractEdata));
+    expect(JSON.stringify(component.myLibraryMenuInteractEdata)).toBe(JSON.stringify(mockData.myLibraryMenuInteractEdata));
+    expect(JSON.stringify(component.browseEdata)).toBe(JSON.stringify(mockData.browseEdata));
+    expect(JSON.stringify(component.helpCenterEdata)).toBe(JSON.stringify(mockData.helpCenterEdata));
+    expect(JSON.stringify(component.learnMenuIntractEdata)).toBe(JSON.stringify(mockData.learnMenuIntractEdata));
+    expect(JSON.stringify(component.groupsMenuIntractEdata)).toBe(JSON.stringify(mockData.groupsMenuIntractEdata));
+    expect(JSON.stringify(component.workspaceMenuIntractEdata)).toBe(JSON.stringify(mockData.workspaceMenuIntractEdata));
+    expect(JSON.stringify(component.helpMenuIntractEdata)).toBe(JSON.stringify(mockData.helpMenuIntractEdata));
+    expect(JSON.stringify(component.contributeMenuEdata)).toBe(JSON.stringify(mockData.contributeMenuEdata));
+    expect(JSON.stringify(component.signInIntractEdata)).toBe(JSON.stringify(mockData.signInIntractEdata));
+  });
+  it('should call getLogoutInteractEdata and update the telemetry objects of logout Interact data', () => {
+    const obj = component.getLogoutInteractEdata();
+    expect(JSON.stringify(obj)).toBe(JSON.stringify(mockData.LogoutInteractEdata));
+  });
+
+  it('should call logout method and logout', () => {
+    Object.defineProperty(window, "location", {
+      value: {
+        replace: jest.fn()
+      }
     });
-    spyOn(telemetryService, 'interact').and.callFake(() => {
-    });
+    component.logout();
+    expect(component['cacheService'].removeAll).toBeCalled();
+  });
+
+  it('should call navigateToWorkspace method and navigate to workspace', () => {
+    jest.spyOn(component.permissionService, 'getWorkspaceAuthRoles').mockReturnValue(of({
+      id: 'id',
+      url: 'test@123/abc',
+      params: {
+        resmsgid: '',
+        status: 'staus'
+      },
+      responseCode: 'OK',
+      result: {},
+      ts: '',
+      ver: ''
+    }));
+    const obj = component.navigateToWorkspace();
+    expect(component.permissionService.getWorkspaceAuthRoles).toBeCalled();
+  });
+
+  it('should call getFeatureId method with featureId and taskID', () => {
+    const featureId = 'Feature1'
+    const taskId = 'Task1'
+    const obj = component.getFeatureId(featureId, taskId);
+    expect(JSON.stringify(obj)).toBe(JSON.stringify(mockData.featuresObj));
+  });
+
+  it('should call navigateToGroups method and return path of MY_GROUPS', () => {
+    const obj = component.navigateToGroups();
+    expect(obj).toBe('my-groups');
+  });
+
+  it('should call isLayoutAvailable method and return layout config', () => {
+    const obj = component.isLayoutAvailable();
+    expect(obj).toBeTruthy();
+  });
+
+  it('should call switchLayout method ', () => {
+    jest.spyOn(component.layoutService, 'initiateSwitchLayout');
+    jest.spyOn(component, 'generateInteractTelemetry');
     component.switchLayout();
-    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventClassic);
+    expect(component.layoutService.initiateSwitchLayout).toBeCalled();
+    expect(component.generateInteractTelemetry).toBeCalled();
   });
 
-  it('should switch layout and generate telemetry for joy', () => {
-    const layoutService = TestBed.get(LayoutService);
-    const telemetryService = TestBed.get(TelemetryService);
-    component.layoutConfiguration = {options: 'option1'};
-    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
-    });
-    spyOn(telemetryService, 'interact').and.callFake(() => {
-    });
-    component.switchLayout();
-    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventJoy);
+  it('should call ngOnInit method with out helpLinkVisibility', () => {
+    jest.spyOn(component, 'setInteractData')
+    component.ngOnInit();
+    expect(component.isDesktopApp).toBeTruthy();
+    expect(component.setInteractData).toBeCalled();
   });
 
+  it('should call ngOnInit method ', () => {
+    jest.spyOn(document, 'getElementById').mockImplementation((data) => {
+      switch (data) {
+        case 'helpLinkVisibility':
+          return { value: 'True' } as any;
+      }
+    });
+    jest.spyOn(component, 'setInteractData')
+    component.ngOnInit();
+    expect(component.isDesktopApp).toBeTruthy();
+    expect(component.setInteractData).toBeCalled();
+  });
 
 });

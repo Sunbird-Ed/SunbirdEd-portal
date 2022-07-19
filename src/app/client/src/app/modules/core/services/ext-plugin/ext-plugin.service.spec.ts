@@ -1,26 +1,33 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { of, throwError } from "rxjs";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { HttpClient } from "@angular/common/http";
 import { ExtPluginService } from './ext-plugin.service';
-import { DataService } from '../data/data.service';
-import { ConfigService } from '@sunbird/shared';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { configureTestSuite } from '@sunbird/test-util';
 
-describe('ExtPlugin', () => {
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [ExtPluginService, ConfigService, HttpClient, DataService]
-    });
+describe('ExtPluginService', () => {
+  let extPluginService: ExtPluginService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        EXT_PLUGIN_PREFIX: '/plugin/'
+      }
+    }
+  };
+  const mockHttpClient: Partial<HttpClient> = {
+  };
+  beforeAll(() => {
+    extPluginService = new ExtPluginService(
+      mockConfigService as ConfigService,
+      mockHttpClient as HttpClient
+    );
   });
 
-  it('should be created', inject([ExtPluginService], (service: ExtPluginService) => {
-    expect(service).toBeTruthy();
-  }));
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
 
-  it('should set config object and baseUrl', inject([ExtPluginService], (service: ExtPluginService) => {
-    expect(service.config).toBeDefined();
-    expect(service.config).toEqual(jasmine.any(Object));
-    expect(service.baseUrl).toEqual('/plugin/');
-  }));
+  it('should create a instance of ExtPluginService', () => {
+    expect(extPluginService).toBeTruthy();
+    expect(extPluginService.baseUrl).toBe('/plugin/');
+  });
 });

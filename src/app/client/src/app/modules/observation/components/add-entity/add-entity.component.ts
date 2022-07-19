@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
-import { ObservationService, KendraService,ObservationUtilService } from '@sunbird/core';
+import { ObservationService, KendraService, ObservationUtilService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
-import { debounceTime, map } from 'rxjs/operators';
-import { fromEvent } from 'rxjs';
 import { LocationStrategy } from '@angular/common';
 
 @Component({
@@ -29,7 +27,9 @@ export class AddEntityComponent implements OnInit {
     showDownloadModal = true;
     showLoaderBox = false;
     public loaderMessage: ILoaderMessage;
-    public noResultMessage: INoResultMessage;
+    public noResultMessage: INoResultMessage = {
+        'messageText': 'frmelmnts.lbl.noDataFound'
+      };
     showDownloadSuccessModal;
     selectedEntities = [];
     constructor(
@@ -37,20 +37,10 @@ export class AddEntityComponent implements OnInit {
         private kendraService: KendraService,
         public resourceService: ResourceService,
         public observationUtilService: ObservationUtilService,
-        config: ConfigService, public location: LocationStrategy,) {
+        config: ConfigService, public location: LocationStrategy, ) {
         this.config = config;
-        this.location.onPopState(() => {
-            this.modal.approve();
-         });
     }
     ngOnInit() {
-        const searchBox = document.getElementById('entitySearch');
-        const keyup$ = fromEvent(searchBox, 'keyup');
-        keyup$.pipe(
-            map((i: any) => i.currentTarget.value),
-            debounceTime(500)
-        )
-            .subscribe((text: string) => this.searchEntity());
         this.getProfileData();
     }
     getProfileData() {
@@ -60,7 +50,6 @@ export class AddEntityComponent implements OnInit {
         });
     }
     public closeModal() {
-        this.modal.approve();
         this.showDownloadModal = false;
         this.closeEvent.emit();
     }

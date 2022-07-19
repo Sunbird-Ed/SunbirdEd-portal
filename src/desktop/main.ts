@@ -372,8 +372,7 @@ async function createWindow() {
     alwaysOnTop: true,
     icon: windowIcon,
     webPreferences: {
-      nodeIntegration: false,
-      enableRemoteModule: false
+      nodeIntegration: false
     },
   });
   splash.once("show", () => {
@@ -395,14 +394,12 @@ async function createWindow() {
     });
     // Create the main window.
     win = new BrowserWindow({
-      titleBarStyle: "hidden",
+      titleBarStyle: "customButtonsOnHover",
       show: false,
       minWidth: 700,
       minHeight: 500,
       webPreferences: {
         nodeIntegration: false,
-        enableRemoteModule: false,
-        nativeWindowOpen: true
       },
       icon: windowIcon
     });

@@ -1,6 +1,84 @@
 @import "variables";
 @import 'mixins/mixins';
-@import 'pages/sign_in_up';
+
+/* Layout: */
+
+.layout {
+  display: grid;
+  height: calc(100vh - 3rem);
+  grid-template-columns: 1fr 2fr;
+
+  @include respond-below(sm) {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 3.5rem);
+  }
+
+  .left-panel {
+    background: url(/assets/images/bg.svg) no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 100%;
+
+    @include respond-below(sm) {
+      display: none;
+    }
+
+    .image {
+      width: calculateRem(124px);
+      height: calculateRem(124px);
+      background: var(--signup-panel-bg);
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
+      position: absolute;
+      overflow: hidden;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .right-panel {
+    background: var(--signup-panel-bg);
+    height: 100%;
+    position: relative;
+
+    .login-content {
+      text-align: right;
+      padding:1rem 1rem 1.5rem 1rem;
+      position: relative;
+      @include respond-below(sm) {
+        text-align: center;
+        &.fix-bottom {
+          // background-color: var(--primary-0);
+          // background-color: #f8fafc;
+          // position: fixed;
+          // bottom: 0;
+          // left: 0;
+          // right: 0;
+          // top: unset;
+          // z-index: 1;
+          // border-top: calculateRem(1px) solid var(--gray-100);
+        }
+      }
+    }
+  }
+
+  .content-center-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;    
+    padding-bottom: 2rem;
+  }
+}
+
+/* For now commented later will remove this code block(starts)
 
 .signup-background {
   overflow-y: auto;
@@ -316,3 +394,5 @@ form.On {
 .sb-btn-disabled {
   color: #555;
 }
+
+For now commented later will remove this code block(ends) */

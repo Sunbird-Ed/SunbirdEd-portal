@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="twelve wide column right aligned"
-            *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
+            *ngIf="!showLoader">
             <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
               <div class="sb-pagination my-0">
                 <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "

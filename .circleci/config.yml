@@ -12,7 +12,7 @@ jobs:
     working_directory: ~/portal/src/app/client
     machine:
       # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2004:202111-02
     steps:
       - checkout:
           path: ~/portal
@@ -23,16 +23,13 @@ jobs:
             sudo apt-get update && sudo apt install -y ca-certificates libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 \
                   xvfb gtk2-engines-pixbuf \
                   xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
-            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
             sudo apt install nodejs -y
             sudo npm install -g yarn
             node --version
       - run:
           name: ignore-engines
           command: 'yarn config set ignore-engines true'
-      - restore_cache:
-          name: Restoring cache
-          key: dependency-cache-portal-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
           command: 'yarn install'
@@ -44,10 +41,10 @@ jobs:
           name: ng lint and building
           command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
-          name: Executing test cases
+          name: Executing test cases using JEST
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
       - run:
-          name: install sonar scanner
+          name: Install Sonar Scanner
           command: |
             cd /tmp
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip

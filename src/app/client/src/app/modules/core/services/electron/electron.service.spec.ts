@@ -1,19 +1,33 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { ConfigService } from '@sunbird/shared';
+import { of, throwError } from "rxjs";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { HttpClient } from "@angular/common/http";
 import { ElectronService } from './electron.service';
-import { configureTestSuite } from '@sunbird/test-util';
 
-describe('LearnerService', () => {
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [ElectronService, ConfigService, HttpClient]
-    });
+describe('ElectronService', () => {
+  let electronService: ElectronService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        ELECTRON_DIALOG_PREFIX: '/dialog/'
+      }
+    }
+  };
+  const mockHttpClient: Partial<HttpClient> = {
+  };
+  beforeAll(() => {
+    electronService = new ElectronService(
+      mockConfigService as ConfigService,
+      mockHttpClient as HttpClient
+    );
   });
 
-  it('should be created', inject([ElectronService], (service: ElectronService) => {
-    expect(service).toBeTruthy();
-  }));
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('should create a instance of ElectronService', () => {
+    expect(electronService).toBeTruthy();
+    expect(electronService.baseUrl).toBe('/dialog/');
+  });
 });

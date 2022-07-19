@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormService, UserService } from './../../services';
+import { FormService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { LayoutService, ResourceService, UtilService, IUserData, NavigationHelperService, InterpolatePipe} from '@sunbird/shared';
+import { LayoutService, ResourceService, UtilService, IUserData, NavigationHelperService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -77,7 +77,22 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
   showContentType(data) {
     this.generateTelemetry(data.contentType);
-    let params = _.cloneDeep(this.activatedRoute.snapshot.queryParams);
+    let userPreference;
+    let params;
+    try {
+      if (this.userService.loggedIn) {
+        userPreference = { framework: this.userService.defaultFrameworkFilters };
+        params = _.cloneDeep(_.get(userPreference, 'framework'));
+      } else {
+        const guestUserDetails = localStorage.getItem('guestUserDetails');
+        if (guestUserDetails) {
+          userPreference = JSON.parse(guestUserDetails);
+          params = _.cloneDeep(_.get(userPreference, 'framework'));
+        }
+      }
+    } catch (error) {
+      return null;
+    }
 
     // All and myDownloads Tab should not carry any filters from other tabs / user can apply fresh filters
     if (data.contentType === 'mydownloads' || data.contentType === 'all') {

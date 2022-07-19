@@ -18,7 +18,7 @@ export class UtilService {
   public hideHeaderTabs = new EventEmitter<boolean>();
   public searchKeyword = new EventEmitter<string>();
   private csvExporter: any;
-  private _isDesktopApp = false;
+  _isDesktopApp = false;
   public formData: any;
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();
@@ -82,6 +82,7 @@ export class UtilService {
       downloadUrl: data.downloadUrl
     };
     if (data.trackable) {
+      data.trackable = _.isString(data.trackable) ? JSON.parse(data.trackable) : data.trackable;
       content.trackable = data.trackable;
     }
     if (data.desktopAppMetadata) {

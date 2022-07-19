@@ -28,14 +28,17 @@
           class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
           {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button> -->
         <label>
-          <sui-select class="selection sbt-dropdown sbt-green" [placeholder]="'Select ChartType'"
-            (selectedOptionChange)="changeChartType($event)">
-            <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          <mat-form-field appearance="fill" class="sb-mat__dropdown">
+            <mat-label>Select ChartType</mat-label>
+            <mat-select role="listbox" aria-label="Select ChartType" [(value)]="selectedLanguage" class="selection"
+              (selectionChange)="changeChartType($event)">
+              <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of availableChartTypeOptions" [value]="option"
+              appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="setTelemetryInteractEdata('chart-type-filter')"
-              [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of availableChartTypeOptions"
-              [value]="option">
-            </sui-select-option>
-          </sui-select>
+              [telemetryInteractCdata]="telemetryCdata"
+              attr.aria-label="{{option}}">{{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </label>
       </div>
 

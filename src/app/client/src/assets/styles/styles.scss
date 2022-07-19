@@ -15,7 +15,6 @@
 // base structure @import "~@project-sunbird/sb-styles/assets/mixins/mixins";
 @import "./mixins/mixins";
 @import "~@project-sunbird/sb-styles/assets/variables";
-// @import "./base/base";
 @import "./layout/layout";
 @import "./semantic/semantic-overrides";
 @import "./semantic/semantic-rtl";
@@ -25,8 +24,9 @@
 @import "./legacy";
 @import "./global";
 @import "./pages/sbt-dropdown";
-// @import "./themes";
 
 
 // @import '~@swimlane/ngx-datatable/src/themes/material';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
+
+@import url( 'https://fonts.googleapis.com/css?family=Material+Icons');

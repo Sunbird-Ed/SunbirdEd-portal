@@ -38,12 +38,12 @@
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
               <div *ngFor="let section of contentList; let last = last" [ngClass]="{'last mb-0':last}">
                 <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
-                  [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" [viewMore]="true"
+                  [title]="section.name" [contentList]="section.contents" [maxCardCount]="3" [viewMore]="true"
                   (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
                 </sb-library-cards-grid>
                 <div class="sb-desktop-library-card relative9">
                   <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
-                  [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" [viewMore]="true"
+                  [title]="section?.name" [contentList]="section.contents" [maxCardCount]="3" [viewMore]="true"
                   (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
                   </sb-library-cards-grid>
                 </div>
@@ -85,20 +85,30 @@
 </div>
 </div>
 <!-- Show Modal if content has any YouTube data-->
-<sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
-<div class="sb-modal-header">
-  {{resourceService.frmelmnts?.btn?.download}}
-</div>
-<div class="sb-modal-content">
-  <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
-</div>
-<div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
-    {{resourceService.frmelmnts?.btn?.yes}}
-  </button>
-  <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
-    {{resourceService.frmelmnts?.btn?.cancel}}
-  </button>
-</div>
-</sui-modal>
+<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'normal'}"
+  (dismiss)="showModal = !showModal;showModal = !showModal;" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-header">
+            {{resourceService.frmelmnts?.btn?.download}}
+          </div>
+          <div class="sb-modal-content">
+            <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+              (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+              {{resourceService.frmelmnts?.btn?.yes}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+              (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+              {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

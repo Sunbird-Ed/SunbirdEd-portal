@@ -12,7 +12,7 @@ import { SharedModule } from '@sunbird/shared';
     SuiModule,
     CommonConsumptionModule,
     SbNotificationModule,
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [InAppNotificationComponent],
   exports: [InAppNotificationComponent],

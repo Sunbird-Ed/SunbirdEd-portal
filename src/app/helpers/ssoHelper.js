@@ -98,6 +98,7 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
   }
   logger.info({msg:'sso fetch user with external id', additionalInfo:{options: options}})
   return request(options).then(data => {
+    
     if (data.responseCode === 'OK') {
       logger.info({msg: 'sso fetching user',
       additionalInfo: {
@@ -302,7 +303,13 @@ const getHeaders = (req) => {
   }
 }
 const handleGetUserByIdError = (error) => {
-  if (['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND'].includes(_.get(error, 'error.params.err')) || ['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND'].includes(_.get(error, 'error.params.status'))) {
+  logger.info({msg: 'Error Happened and the error is --->',
+      additionalInfo: {
+        result: error
+        }
+      })
+  if (['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0013'].includes(_.get(error, 'error.params.err')) || 
+  ['USER_NOT_FOUND', 'EXTERNALID_NOT_FOUND', 'UOS_USRRED0013'].includes(_.get(error, 'error.params.status'))) {
     return {};
   }
   throw error.error || error.message || error;

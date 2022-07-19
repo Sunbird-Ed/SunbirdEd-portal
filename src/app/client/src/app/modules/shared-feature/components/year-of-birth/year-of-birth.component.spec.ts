@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 
 describe('YearOfBirthComponent', () => {
-  let yearOfBirthComponent: YearOfBirthComponent;
+  let component: YearOfBirthComponent;
   const mockConfigService: Partial<ConfigService> = {
     constants: {
       SIGN_UP: {
@@ -19,10 +19,12 @@ describe('YearOfBirthComponent', () => {
     }
   };
   const mockResourceService: Partial<ResourceService> = {};
-  const mockMatDialog: Partial<MatDialog> = {};
+  const mockMatDialog: Partial<MatDialog> = {
+    getDialogById: jest.fn()
+  };
 
-  beforeAll(() => {
-    yearOfBirthComponent = new YearOfBirthComponent(
+  beforeEach(() => {
+    component = new YearOfBirthComponent(
       mockProfileService as ProfileService,
       mockConfigService as ConfigService,
       mockResourceService as ResourceService,
@@ -31,32 +33,30 @@ describe('YearOfBirthComponent', () => {
   });
 
   it('should be create a instance of yearOfBirthComponent', () => {
-    expect(yearOfBirthComponent).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   it('should return year by invoked ', () => {
-    spyOn(yearOfBirthComponent, 'initiateYearSelector');
-    yearOfBirthComponent.ngOnInit();
+    jest.spyOn(component, 'initiateYearSelector');
+    component.ngOnInit();
   });
 
   it('should initialized total years', () => {
-    yearOfBirthComponent.initiateYearSelector();
+    component.initiateYearSelector();
     expect(mockConfigService.constants).toBeTruthy();
   });
 
   it('should update profile if DOB is missing', () => {
-    yearOfBirthComponent.selectedYearOfBirth = 2000;
-    const spy = spyOn(mockProfileService, 'updateProfile').and.callFake(() => {
-
-      return of({});
-    });
-    yearOfBirthComponent.submitYearOfBirth();
-    expect(yearOfBirthComponent.selectedYearOfBirth).toBeTruthy();
+    component.selectedYearOfBirth = 2000;
+    mockProfileService.updateProfile = jest.fn(() => of({})) as any;
+    component.dialogProps = {id: "asd"};
+    component.submitYearOfBirth();
+    expect(component.selectedYearOfBirth).toBeTruthy();
   });
 
   it('should set select year', () => {
-    const year = 2000;
-    yearOfBirthComponent.changeBirthYear(year);
-    expect(yearOfBirthComponent.selectedYearOfBirth).toBe(year);
+    const year = {value: 2000};
+    component.changeBirthYear(year);
+    expect(component.selectedYearOfBirth).toEqual(year.value);
   });
 });

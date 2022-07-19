@@ -1,5 +1,5 @@
 
-import {combineLatest as observableCombineLatest, Observable, Subject} from 'rxjs';
+import {combineLatest as observableCombineLatest, Subject} from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   NavigationHelperService, IPagination, LayoutService
@@ -9,13 +9,14 @@ import {Component, OnInit, NgZone, AfterViewInit, OnDestroy} from '@angular/core
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { UserSearchService } from './../../services';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ProfileService } from '@sunbird/profile';
 import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-search',
-  templateUrl: './user-search.component.html'
+  templateUrl: './user-search.component.html',
+  styleUrls: ['./user-search.component.scss']
 })
 export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   private searchService: SearchService;

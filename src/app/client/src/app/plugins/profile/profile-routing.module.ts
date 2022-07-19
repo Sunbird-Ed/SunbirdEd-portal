@@ -46,14 +46,14 @@ const routes: Routes = [
     }
   },
   {
-    path: 'teacher-declaration', component: SubmitTeacherDetailsComponent,
+    path: 'submit-declaration', component: SubmitTeacherDetailsComponent,
     data: {
       menuBar: {
         visible: false
       },
       telemetry: {
         env: telemetryEnv, pageid: 'teacher-declaration', type: 'view',
-        uri: '/profile/teacher-declaration',
+        uri: '/profile/submit-declaration',
       }
     }
   }

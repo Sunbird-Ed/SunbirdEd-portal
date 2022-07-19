@@ -40,7 +40,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   dateFilters: Array<string>;
   public unsubscribe = new Subject<void>();
   previousFilters: any;
-  formChartData:any =[];
+  formChartData: any = [];
 
   @Input()
   set selectedFilter(val: any) {
@@ -60,7 +60,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   @Input()
   set resetFilters(val: any) {
-    if (val) {    
+    if (val) {
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
         this.chartData = val.data;
@@ -87,7 +87,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   };
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
   @ViewChild('matAutocomplete') matAutocomplete: MatAutocomplete;
-  filterQuery:any;
+  filterQuery: any;
 
   constructor(
     public resourceService: ResourceService,
@@ -100,12 +100,12 @@ export class FilterComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    let charts =[];
-    if(this.chartData && this.chartData.length > 0) {
-      this.chartData.map(function(data){
+    const charts = [];
+    if (this.chartData && this.chartData.length > 0) {
+      this.chartData.map(function(data) {
         charts.push(...data.data);
         return data.data;
-      })
+      });
     }
     this.formChartData = charts;
     if (this.filters) {
@@ -125,16 +125,16 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
     _.forEach(this.filters, filter => {
       const options = (_.sortBy(_.uniq(
-        _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
+        _.map(chartData, (data) => (data && data[filter.reference]) ? data[filter.reference].toLowerCase() : ''
         )))).filter(Boolean);
 
       if (!filterKeys.includes(filter.reference)) {
         filter.options = options;
       } else {
         if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-          if(options.length > filter.options){
+          if (options.length > filter.options) {
             filter.options = options;
-          } 
+          }
         }
       }
     });
@@ -152,7 +152,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
         filter.options = (_.sortBy(_.uniq(
-          _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ''
+          _.map(chartData, (data) => (data && data[filter.reference]) ? data[filter.reference].toLowerCase() : ''
           )))).filter(Boolean);
 
       });
@@ -217,31 +217,31 @@ export class FilterComponent implements OnInit, OnDestroy {
   filterData() {
     if (this.selectedFilters) {
 
-      let filterData = [];
-      let filteredChartData =[];
+      const filterData = [];
+      const filteredChartData = [];
       this.chartData.forEach(chart => {
 
-        let id = chart.id;
+        const id = chart.id;
         delete chart.id;
         delete chart.data.selectedFilters;
         delete chart.data.id;
-        
-        let result: Array<{}> = _.filter(chart.data, data => {
+
+        const result: Array<{}> = _.filter(chart.data, data => {
             return _.every(this.selectedFilters, (filterValues, key) => {
-              if(data[key]){
+              if (data && data[key]) {
                 return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
               }
             });
-            
+
         });
 
-        filteredChartData.push({ id:id,data: result });
+        filteredChartData.push({ id: id, data: result });
         result['selectedFilters'] = this.selectedFilters;
         filterData.push(...result);
       });
 
       this.formUpdate(filterData);
-      let keys = Object.keys(this.selectedFilters);
+      const keys = Object.keys(this.selectedFilters);
       this.dateFilters = [];
       this.filters.map(ele => {
           if (ele && ele['controlType'].toLowerCase() == 'date') {
@@ -275,16 +275,16 @@ export class FilterComponent implements OnInit, OnDestroy {
       return false;
     }
   }
-  autoCompleteChange(data,reference){    
-    let object = {};
-    if(data && data.length > 0){
-      object[reference] =data;
+  autoCompleteChange(data, reference) {
+    const object = {};
+    if (data && data.length > 0) {
+      object[reference] = data;
     }
     this.filtersFormGroup.controls[reference].setValue(data);
   }
-  getSelectedData(reference){
+  getSelectedData(reference) {
 
-    if(this.selectedFilters && this.selectedFilters[reference]){
+    if (this.selectedFilters && this.selectedFilters[reference]) {
       return this.selectedFilters[reference];
     } else {
       return [];
@@ -293,19 +293,19 @@ export class FilterComponent implements OnInit, OnDestroy {
 
 
   getFilters(options) {
-    if(this.filterQuery && this.filterQuery !=""){
+    if (this.filterQuery && this.filterQuery != '') {
       return options.filter(opt =>
         opt.toLowerCase().indexOf(this.filterQuery.toLowerCase()) === 0);
     } else {
       return options;
     }
   }
-  
+
   chooseOption(): void {
     this.matAutocomplete.options.first.select();
   }
 
-  getFiltersValues(filter){
+  getFiltersValues(filter) {
    return Array.isArray(filter) ? filter : [filter];
   }
 

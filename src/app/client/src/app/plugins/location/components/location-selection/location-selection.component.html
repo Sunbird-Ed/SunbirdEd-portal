@@ -1,70 +1,5 @@
-<!-- <app-modal-wrapper [config]="{disableClose: true, id: locationSelectionModalId}" (dismiss)="closeModal()">
-  <ng-template sbModalContent let-data>
-
-    <mat-dialog-content>
-      <div class="sb-modal sb-onboard-modal" tabindex="0">
-        <div class="transition ui dimmer page modals active visible">
-          <div class="ui modal transition active visible normal">
-            <button aria-label="close dialog" mat-dialog-close class="mat-close-btn" *ngIf="isClosable">
-              <span>&times;</span>
-            </button>
-            <div class="sb-onboard">
-              <div class="sb-onboard__container">
-                <div class="sb-onboard__header">
-                  <ng-content select="[slot=popup-header]"></ng-content>
-                </div>
-                <div class="sb-onboard__content">
-                  <ng-content select="[slot=popup-sub-header]"></ng-content>
-                </div>
-                <div class="sb-onboard__content">
-                  <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
-                    <label class="w-100">
-                      <sb-form
-                        *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
-                        [config]="sbFormLocationSelectionDelegate.locationFormConfig"
-                        (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
-                        (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
-                        (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event)">
-                      </sb-form>
-                    </label>
-                  </div>
-                </div>
-                <div class="sb-onboard__footer">
-                  <ng-content select="[slot=popup-footer]"></ng-content>
-                </div>
-                <div class="sb-onboard__footer d-flex">
-                  <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
-                    [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
-                    [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
-                    (click)="clearUserLocationSelections()" tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
-                  </button>
-                  <div class="w-10"></div>
-                  <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
-                    [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
-                    [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
-                    (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
-                    <span class='arrow-icon'>
-                      <em class="icon-svg icon-svg--xxs icon-back">
-                        <svg class="icon icon-svg--white">
-                          <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
-                        </svg>
-                      </em>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </mat-dialog-content>
-
-  </ng-template>
-</app-modal-wrapper> -->
-
-
 <!-- New Pop up -->
-<app-modal-wrapper [config]="{disableClose: true, id: locationSelectionModalId, panelClass: 'overflow-visible'}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">
@@ -127,3 +62,61 @@
 
   </ng-template>
 </app-modal-wrapper>
+
+<div *ngIf="!showModal" class="sb-mat__modal sb-onboard">
+
+  <!-- <div mat-dialog-title class="flex-jc-center">
+    <div class="sb-onboard__header">
+      <ng-content select="[slot=popup-header]"></ng-content>
+    </div>
+    <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="isClosable">
+    </button>
+  </div> -->
+
+  <mat-dialog-content>
+    <div class="sb-mat__modal__content">
+      <!-- <div>
+        <ng-content select="[slot=popup-sub-header]"></ng-content>
+      </div> -->
+      <div>
+        <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
+          <div class="w-100">
+            <sb-form
+              *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
+              [config]="sbFormLocationSelectionDelegate.locationFormConfig"
+              (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
+              (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
+              (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal)">
+            </sb-form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center">
+    <div class="sb-onboard__footer mt-0">
+      <ng-content select="[slot=popup-footer]"></ng-content>
+    </div>
+    <div class="sb-onboard__footer d-flex">
+      <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
+        [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+        [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
+        tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
+      </button>
+      <div class="w-10"></div>
+      <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
+        [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+        [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+        (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
+        <span class='arrow-icon'>
+          <em class="icon-svg icon-svg--xxs icon-back">
+            <svg class="icon icon-svg--white">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
+            </svg>
+          </em>
+        </span>
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

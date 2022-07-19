@@ -6,7 +6,7 @@ export const profileData = {
 };
 
 
-export const PaginateData={
+export const PaginateData = {
   totalItems: 20,
   currentPage: 1,
   pageSize: 10,
@@ -15,18 +15,18 @@ export const PaginateData={
   endPage: 2,
   startIndex: 0,
   endIndex: 9,
-  pages: [1,2]
-}
+  pages: [1, 2]
+};
 
-export const ObservationDataFail={
+export const ObservationDataFail = {
   message: 'Solutions fetched successfully',
   status: 200,
-  result:{
-    entityType:[],
-    count:0,
-    data:[]
+  result: {
+    entityType: [],
+    count: 0,
+    data: []
   }
-}
+};
 
 export const ObservationData = {
   message: 'Solutions fetched successfully',

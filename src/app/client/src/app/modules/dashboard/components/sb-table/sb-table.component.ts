@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef,ViewChild } from '@angular/core';
+import { Component, Input, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
 
@@ -10,26 +10,26 @@ import { ResourceService } from '@sunbird/shared';
 export class SbTableComponent implements AfterViewInit  {
   @Input() rowsData: Array<Object>;
   data = {};
-  @Input() config :Object;
+  @Input() config: Object;
 
-  constructor(private cdRef : ChangeDetectorRef, private resourceService: ResourceService) { }
+  constructor(private cdRef: ChangeDetectorRef, private resourceService: ResourceService) { }
   @ViewChild('lib', { static: false }) lib: any;
 
-  loadTable(){
- 
+  loadTable() {
+
     this.data = {
-      values:this.rowsData
-    }
+      values: this.rowsData
+    };
     this.cdRef.detectChanges();
   }
   ngAfterViewInit() {
     this.loadTable();
   }
 
-  exportToCsv(){
+  exportToCsv() {
     this.lib.instance.exportAs('csv');
   }
-  reset(){
+  reset() {
     this.lib.instance.reset();
     this.loadTable();
   }

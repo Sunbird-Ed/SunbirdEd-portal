@@ -24,7 +24,7 @@ export class PaginationService {
   */
   getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10, pageStrip: number = 5) {
     // calculate total pages
-    const totalPages = Math.ceil(totalItems / pageSize);
+    const totalPages = (Math.ceil(totalItems / pageSize) < 100) ? Math.ceil(totalItems / pageSize) : 99;
 
     // set start page and end page
     let startPage: number, endPage: number;

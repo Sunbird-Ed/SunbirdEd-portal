@@ -4,7 +4,7 @@ import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import {
   OrgDetailsService,
   ChannelService,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import * as _ from 'lodash-es';
 import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor-v9';
@@ -48,7 +48,17 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
   }
 
   getQuestionSet(identifier: string) {
-    return this.playerService.getQuestionSetHierarchy(identifier);
+    const hierarchy = this.playerService.getQuestionSetHierarchy(identifier);
+    const questionSetResponse = this.playerService.getQuestionSetRead(identifier);
+
+    return forkJoin([hierarchy, questionSetResponse]).pipe(map(res => {
+      const questionSet = _.get(res[0], 'questionSet');
+      const instructions = _.get(res[1], 'result.questionset.instructions');
+      if (questionSet && instructions) {
+        questionSet['instructions'] = instructions;
+      }
+      return { questionSet };
+    }));
   }
   getAllQuestionSet(identifiers: string[]): Observable<any> {
     const option = {
@@ -60,9 +70,9 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
       return this.playerService.getQuestionSetRead(id, option);
     });
     return forkJoin(requests).pipe(
-        map(res => {
-          return res.map(item => _.get(item, 'result.questionset.maxScore'));
-        })
+      map(res => {
+        return res.map(item => _.get(item, 'result.questionset.maxScore'));
+      })
     );
   }
 }

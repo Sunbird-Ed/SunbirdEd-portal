@@ -196,7 +196,7 @@ export const RESPONSE = {
           'contentEncoding': 'gzip',
           'lockKey': '93e020b8-de57-45ad-9863-737ad82e51d2',
           'totalCompressedSize': 50594,
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+          'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
           'contentType': 'TextBook',
           'identifier': 'do_21285725285052416011433',
           'audience': [
@@ -920,7 +920,7 @@ export const RESPONSE = {
           'contentEncoding': 'gzip',
           'lockKey': 'c98ba06f-cd7c-4507-b286-68d5aa960b60',
           // tslint:disable-next-line:max-line-length
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':4,\'application/vnd.ekstep.ecml-archive\':7,\'video/x-youtube\':1}',
+          'mimeTypesCount': '{"application/vnd.ekstep.content-collection":4,"application/vnd.ekstep.ecml-archive":7,"video/x-youtube":1}',
           'totalCompressedSize': 11089779,
           'contentType': 'TextBook',
           'identifier': 'do_212916581536096256131',
@@ -1057,7 +1057,7 @@ export const RESPONSE = {
           'contentEncoding': 'gzip',
           'lockKey': '9a50546f-683c-417d-96fc-6a7969f34a58',
           'totalCompressedSize': 7757867,
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+          'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
           'contentType': 'TextBook',
           'identifier': 'do_21286012130068070412543',
           'audience': [
@@ -1170,7 +1170,7 @@ export const RESPONSE = {
           'contentEncoding': 'gzip',
           'lockKey': '93e020b8-de57-45ad-9863-737ad82e51d2',
           'totalCompressedSize': 50594,
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+          'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
           'contentType': 'TextBook',
           'identifier': 'do_21285725285052416011433',
           'audience': [
@@ -1289,7 +1289,7 @@ export const RESPONSE = {
           'appId': 'staging.diksha.portal',
           'contentEncoding': 'gzip',
           'lockKey': '7b8401fc-f37b-4e2d-bab5-bf7ab801563a',
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':2,\'application/vnd.ekstep.ecml-archive\':1}',
+          'mimeTypesCount': '{"application/vnd.ekstep.content-collection":2,"application/vnd.ekstep.ecml-archive":1}',
           'totalCompressedSize': 10414,
           'contentType': 'TextBook',
           'contentCredits': '[{\'id\':\'01231711180382208027\',\'name\':\'345 org\',\'type\':\'user\'}]',
@@ -1458,7 +1458,7 @@ export const RESPONSE = {
           'appId': 'staging.diksha.portal',
           'contentEncoding': 'gzip',
           'lockKey': '52064784-2f88-40b3-80a7-4e29dab94f13',
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+          'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
           'totalCompressedSize': 7757867,
           'contentType': 'TextBook',
           'contentCredits': '[{\'id\':\'0e0ea1db-dbad-4202-bc73-dfc8b122296f\',\'name\':\'Helington N\',\'type\':\'user\'}]',
@@ -1613,7 +1613,7 @@ export const RESPONSE = {
       'appId': 'staging.diksha.portal',
       'contentEncoding': 'gzip',
       'lockKey': 'c98ba06f-cd7c-4507-b286-68d5aa960b60',
-      'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':4,\'application/vnd.ekstep.ecml-archive\':7,\'video/x-youtube\':1}',
+      'mimeTypesCount': '{"application/vnd.ekstep.content-collection":4,"application/vnd.ekstep.ecml-archive":7,\'video/x-youtube\':1}',
       'totalCompressedSize': 11089779,
       'contentType': 'TextBook',
       'identifier': 'do_212916581536096256131',
@@ -1855,7 +1855,7 @@ export const RESPONSE = {
             'contentType': 'TextBook'
         },
         'completionPercentage': 0,
-        'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+        'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
         'cardImg': 'https://ntpstagingall.blob8521957.thumb.jpg',
         'resourceType': 'Book',
         'organisation': ['Chhattisgarh', 'Chhattisgarh'],
@@ -1932,7 +1932,7 @@ export const RESPONSE = {
             'Class 10'
           ],
           'medium': [
-            
+
           ]
         }
       },
@@ -1963,13 +1963,13 @@ export const RESPONSE = {
         ],
         'filters': {
           'channel': [
-            
+
           ],
           'subject': [
-            
+
           ],
           'audience': [
-            
+
           ],
           'primaryCategory': [
             'Digital Textbook',
@@ -1977,13 +1977,13 @@ export const RESPONSE = {
             'Course'
           ],
           'board': [
-            
+
           ],
           'medium': [
-            
+
           ],
           'gradeLevel': [
-            
+
           ]
         }
       },
@@ -2135,13 +2135,13 @@ export const RESPONSE = {
               'request': {
                 'filters': {
                   'channel': [
-                    
+
                   ],
                   'subject': [
-                    
+
                   ],
                   'audience': [
-                    
+
                   ],
                   'primaryCategory': [
                     'Digital Textbook'
@@ -2204,7 +2204,7 @@ export const RESPONSE = {
             'url': '',
             'method': '',
             'req': {
-              
+
             },
             'params': '',
             'contextKey': 'res.facet.subject'
@@ -2277,7 +2277,7 @@ export const RESPONSE = {
             'url': '',
             'method': '',
             'req': {
-              
+
             },
             'params': '',
             'contextKey': 'res.facet.primaryCategory'
@@ -2338,7 +2338,7 @@ export const RESPONSE = {
             'url': '',
             'method': '',
             'req': {
-              
+
             },
             'params': '',
             'contextKey': 'res.facet.medium'
@@ -3404,13 +3404,13 @@ export const categoryData = {
     teacher: [{
       name: 'observation',
       icon: {
-        web:'assets/images/mask-image/observation_category.png' 
+        web: 'assets/images/mask-image/observation_category.png'
       }
     }]
   }
 };
 
-export const EventPillData={
+export const EventPillData = {
   event: {
       'isTrusted': true
   },

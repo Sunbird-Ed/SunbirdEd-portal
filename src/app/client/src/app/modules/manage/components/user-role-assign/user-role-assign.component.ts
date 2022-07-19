@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
 import { ToasterService, ResourceService, ServerResponse } from '@sunbird/shared';
@@ -34,8 +34,8 @@ export class UserRoleAssignComponent implements OnInit {
   orgName = [];
   isEditRole = false;
   showDelete = false;
-  item:any;
-  instance:string;
+  item: any;
+  instance: string;
 
   constructor(searchService: SearchService,
     userService: UserService,
@@ -75,12 +75,12 @@ export class UserRoleAssignComponent implements OnInit {
     this.isEditRole = true;
   }
   deleteRole(item) {
-    this.showDelete=true
+    this.showDelete = true;
     this.item = item;
   }
   deleteRoleConformed() {
-    const item = this.item
-    const roleToDelete = []
+    const item = this.item;
+    const roleToDelete = [];
     roleToDelete.push({
       role: item.role,
       operation: 'remove',
@@ -94,12 +94,12 @@ export class UserRoleAssignComponent implements OnInit {
   }
   dismiss() {
     this.item = {};
-    this.showDelete=false
+    this.showDelete = false;
   }
   getOrgDetails() {
     if (this.userService && this.userService.userProfile) {
       const userRoles = this.userService.userProfile.userOrgDetails;
-      for (let key in userRoles) {
+      for (const key in userRoles) {
         if (key === 'ORG_ADMIN') {
           this.orgList.push(userRoles[key]);
         }
@@ -118,7 +118,7 @@ export class UserRoleAssignComponent implements OnInit {
     this.permissionService.availableRoles$.subscribe(params => {
       this.allRoles = this.permissionService.allRoles;
       this.allRoles = _.filter(this.allRoles, (role) => {
-        return (_.indexOf(removeRoles, role.role) < 0)
+        return (_.indexOf(removeRoles, role.role) < 0);
       });
     });
   }
@@ -136,10 +136,10 @@ export class UserRoleAssignComponent implements OnInit {
       (apiResponse) => {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
           this.showingResults = true;
-          this.userObj = apiResponse.result.response.content[0]
+          this.userObj = apiResponse.result.response.content[0];
           this.manipulateUserObject(this.userObj);
         } else {
-          this.showNoResult = true
+          this.showNoResult = true;
         }
       },
       err => {
@@ -157,7 +157,7 @@ export class UserRoleAssignComponent implements OnInit {
           role: role.role,
           orgName: this.userService.rootOrgName,
           orgId: this.userService.rootOrgId
-        }
+        };
         this.rootOrgRoles.push(role.role);
         _.forEach(this.allRoles, (userRole) => {
           if ((userRole.role === role.role)) {
@@ -167,8 +167,8 @@ export class UserRoleAssignComponent implements OnInit {
         this.userRole.push(userObj);
         this.userAssignedRole.push(role.role);
       }
-    })
-    //this.getAllRoles(this.removeRoles);
+    });
+    // this.getAllRoles(this.removeRoles);
     if (this.userRole.length > 0) {
       this.showCards = true;
     }
@@ -223,8 +223,8 @@ export class UserRoleAssignComponent implements OnInit {
     });
     return reqBody;
   }
-  enableButton(){
-    if (!_.isEmpty(this.userDetailsForm.controls.role.value) && !_.isEmpty(this.userDetailsForm.controls.orgName.value)){
+  enableButton() {
+    if (!_.isEmpty(this.userDetailsForm.controls.role.value) && !_.isEmpty(this.userDetailsForm.controls.orgName.value)) {
       this.enableSubmitBtn = true;
     } else {
       this.enableSubmitBtn = false;

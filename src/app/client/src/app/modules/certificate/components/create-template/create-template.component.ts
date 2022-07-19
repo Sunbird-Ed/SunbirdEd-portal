@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
 import {ActivatedRoute} from '@angular/router';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
@@ -255,14 +255,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   updateStateLogos(stateLogos) {
     const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'LOGO');
     this.editSVG(logosArray, stateLogos).then(res => {
-      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
+      this.certificateCreation(this.svgData?.getElementsByTagName('svg')[0]);
     });
   }
 
   updateSigns(stateLogos) {
     const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'SIGN');
     this.editSVG(logosArray, stateLogos).then(res => {
-      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
+      this.certificateCreation(this.svgData?.getElementsByTagName('svg')[0]);
     });
   }
 
@@ -333,8 +333,8 @@ urltoFile(url, filename, mimeType) {
     }
   }
   getBase64Data(ev) {
-    const div = document.createElement('div');
-    div.appendChild(ev.cloneNode(true));
+    const div = document?.createElement('div');
+    div?.appendChild(ev?.cloneNode(true));
     const b64 = 'data:image/svg+xml;base64,' + window.btoa(div.innerHTML);
     return b64;
   }

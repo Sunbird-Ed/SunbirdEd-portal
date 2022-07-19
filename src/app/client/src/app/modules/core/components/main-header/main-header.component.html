@@ -262,12 +262,6 @@
           </div>
           <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-4 sb-g-col-xxxl-4 sbt-header-tool-bar">
             <div class="d-flex flex-ai-center sbt-dropdown-profile-area">
-              <!-- student dropdown -->
-              <sui-select *ngIf="ShowStudentDropdown" class="selection sbt-dropdown sbt-dropdown--md sbt-purple mr-16"
-                placeholder="Student" labelField="name" #multiSelect>
-                <sui-select-option *ngFor="let option of multiSelect1" [value]="option">
-                </sui-select-option>
-              </sui-select>
               <!-- language dropdown -->
               <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
                 *ngIf="languages && showLanguageDropdown()">
@@ -284,14 +278,15 @@
                     aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
                     (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                       width="48"></div>
-                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" aria-label="Guest User"
-                    *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
-                    [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
-                    name="{{guestUser?.formatedName || 'Guest'}}">
+                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)"
+                    [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="{{guestUser?.formatedName || 'Guest'}}"
+                    [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
+                    [title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
                   </ngx-avatar>
-                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" aria-label="User Profile"
-                    *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle"
-                    [size]="48" initialsSize="1" name="{{userProfile?.firstName}}">
+                  <ngx-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)"
+                    [style]="SbtavtarDesktopStyle" [size]="48" initialsSize="1" name="{{userProfile?.firstName}}"
+                    [attr.aria-label]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
+                    [title]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'">
                   </ngx-avatar>
                 </div>
               </a>
@@ -474,7 +469,7 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-          <li class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
+          <li  *ngIf="showSwitchTheme" class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
@@ -540,7 +535,7 @@
                 </svg></i>
               {{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
             </li>
-            <li class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);switchLayout()">
+            <li  *ngIf="showSwitchTheme" class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);switchLayout()">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
                 </svg></i>

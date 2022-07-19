@@ -1,26 +1,33 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { of, throwError } from "rxjs";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { HttpClient } from "@angular/common/http";
 import { PublicDataService } from './public-data.service';
-import { DataService } from './../data/data.service';
-import { ConfigService } from '@sunbird/shared';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublicDataService', () => {
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [PublicDataService, ConfigService, HttpClient, DataService]
-    });
+  let publicDataService: PublicDataService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        PUBLIC_PREFIX: '/api/'
+      }
+    }
+  };
+  const mockHttpClient: Partial<HttpClient> = {
+  };
+  beforeAll(() => {
+    publicDataService = new PublicDataService(
+      mockConfigService as ConfigService,
+      mockHttpClient as HttpClient
+    );
   });
 
-  it('should be created', inject([PublicDataService], (service: PublicDataService) => {
-    expect(service).toBeTruthy();
-  }));
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
 
-  it('should set config object and baseUrl', inject([PublicDataService], (service: PublicDataService) => {
-    expect(service.config).toBeDefined();
-    expect(service.config).toEqual(jasmine.any(Object));
-    expect(service.baseUrl).toEqual('/api/');
-  }));
+  it('should create a instance of PublicDataService', () => {
+    expect(publicDataService).toBeTruthy();
+    expect(publicDataService.baseUrl).toBe('/api/');
+  });
 });

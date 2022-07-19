@@ -73,7 +73,7 @@ export class UploadCertificateService {
   /**
   * To create new asset images (State logos and Signs) and it create space
   */
-  createAsset(reqObj, type) {
+  createAsset(reqObj, type?) {
     const body = {
       'request':
       {

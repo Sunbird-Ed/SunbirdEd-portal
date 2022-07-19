@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import {
-  ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService,
+  ConfigService, NavigationHelperService, ToasterService, ResourceService,
   UtilService, LayoutService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { takeUntil, filter, map } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PublicPlayerService } from '@sunbird/public';
@@ -30,7 +30,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
-  isCollapsed: boolean = false;
+  isCollapsed = false;
 
   unsubscribe$ = new Subject<void>();
   contentId: string;
@@ -113,7 +113,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
       this.playerService.getContent(this.contentId, params)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => {
-          this.contentDetails = _.get(response, 'result.content');
+          this.contentDetails = _.get(response, 'result.content') || _.get(response, 'result.questionSet');
           const status = !_.has(this.contentDetails, 'desktopAppMetadata.isAvailable') ? false :
           !_.get(this.contentDetails, 'desktopAppMetadata.isAvailable');
           this.isContentDeleted.next({value: status});

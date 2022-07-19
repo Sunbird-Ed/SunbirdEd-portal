@@ -54,7 +54,7 @@
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled">
+          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
             <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference"
               tabindex="0">
               <div class="preference">
@@ -70,7 +70,7 @@
                     <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}:
                     </span>
                     <span *ngIf="userPreference?.framework?.board?.length"
-                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board)}}</span>
+                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
                   </span>
 
                   <span class="mr-24">
@@ -157,8 +157,8 @@
               [pillSize]="'medium'" [platform]="'portal'" [pillBorder]="'semi_round'"
               [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
               (select)="handleTargetedpillSelected($event)">
-              <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="pillData?.name | titlecase"
-                [icon]="pillData?.icon?.web" [value]="pillData" [theme]="targetedCategorytheme"></sb-pill-item>
+              <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase"
+              [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? targetedCategorytheme : Categorytheme)"></sb-pill-item>
             </sb-pills-grid>
             <hr class="section-hr my-32" />
           </div>
@@ -253,7 +253,7 @@
 </app-batch-info>
 
 
-<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: 'overflow-visible'}">
+<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userPreference?.framework" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"

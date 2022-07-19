@@ -1,6 +1,6 @@
 <div class="sb-autocomp-dropdown">
   <mat-form-field class="sb-autocomp-dropdown__formfield">
-    <input matInput (focus)="DisplayDropdown()" readonly name="selectedDpdwnInput"
+    <input matInput (focus)="DisplayDropdown()" readonly name="selectedDpdwnInput" 
       [value]="_selectedDpdwnInput ? _selectedDpdwnInput : ''" />
   </mat-form-field>
   <div class="sb-autocomp-dropdown__list" *ngIf="displayDropdown">

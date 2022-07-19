@@ -1,40 +1,107 @@
-import { ConfigService } from '@sunbird/shared';
-import { TestBed, inject } from '@angular/core/testing';
-import { LearnerService } from './../learner/learner.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
-import { testData } from './otp.service.spec.data';
+import { of, throwError } from 'rxjs';
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { HttpClient } from '@angular/common/http';
 import { OtpService } from './otp.service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { LearnerService } from '../../../core';
 
 describe('OtpService', () => {
-  configureTestSuite();
+  let otpService: OtpService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        OTP: {
+          GENERATE: 'otp/v1/generate',
+          VERIFY: 'otp/v1/verify',
+        }
+      }
+    }
+  };
+  const mockLearnerService: Partial<LearnerService> = {
+    post: jest.fn().mockImplementation(() => { })
+  };
+  beforeAll(() => {
+    otpService = new OtpService(
+      mockLearnerService as LearnerService,
+      mockConfigService as ConfigService
+    );
+  });
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ConfigService, LearnerService]
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('should create a instance of OtpService', () => {
+    expect(otpService).toBeTruthy();
+  });
+
+  describe('should call the generate otp method with data object', () => {
+    const data = {
+      userId: '874ed8a5-782e-4f6c-8f36-e0288455901e'
+    }
+    it('should return otp for a user', (done) => {
+      jest.spyOn(otpService['learnerService'], 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      otpService.generateOTP(data).subscribe(() => {
+        done();
+      });
+      expect(otpService['learnerService'].post).toHaveBeenCalled();
+    });
+
+    it('should call the generate otp method with data object with error', () => {
+      // arrange
+      jest.spyOn(otpService['learnerService'], 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      otpService.generateOTP(data).subscribe(() => {
+      });
+      expect(otpService['learnerService'].post).toHaveBeenCalled();
     });
   });
 
-  it('should call generate API', inject([],
-    () => {
-      const learnerService = TestBed.get(LearnerService);
-      const otpService = TestBed.get(OtpService);
-      const params = { 'request': { 'key': '7088283838', 'type': 'phone' } };
-      spyOn(learnerService, 'post').and.returnValue(observableOf(testData.generateOtpData));
-      otpService.generateOTP(params);
-      const options = { url: 'otp/v1/generate', data: params };
-      expect(learnerService.post).toHaveBeenCalledWith(options);
-    }));
+  describe('should call the verify otp method with data object', () => {
+    const data = {
+      userId: '874ed8a5-782e-4f6c-8f36-e0288455901e'
+    }
+    it('should return verify otp for a user', (done) => {
+      jest.spyOn(otpService['learnerService'], 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      otpService.verifyOTP(data).subscribe(() => {
+        done();
+      });
+      expect(otpService['learnerService'].post).toHaveBeenCalled();
+    });
 
-  it('should call verifyOTP API', inject([],
-    () => {
-      const learnerService = TestBed.get(LearnerService);
-      const otpService = TestBed.get(OtpService);
-      const params = { 'request': { 'key': '7088283838', 'type': 'phone', 'otp': '238798' } };
-      spyOn(learnerService, 'post').and.returnValue(observableOf(testData.verifyOtpData));
-      otpService.verifyOTP(params);
-      const options = { url: 'otp/v1/verify', data: params };
-      expect(learnerService.post).toHaveBeenCalledWith(options);
-    }));
+    it('should call the verify otp method with data object with error', () => {
+      // arrange
+      jest.spyOn(otpService['learnerService'], 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      otpService.verifyOTP(data).subscribe(() => {
+      });
+      expect(otpService['learnerService'].post).toHaveBeenCalled();
+    });
+  });
 });

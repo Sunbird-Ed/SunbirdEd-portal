@@ -1,0 +1,9 @@
+@import "variables";
+@import 'mixins/mixins';
+
+.signup-form-content,.logo-content{
+    width: 100%;
+    max-width: calculateRem(360px);
+    margin: 0 auto;
+    padding:0 1rem
+  }

@@ -21,12 +21,12 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   closeModal() {
-    this.confirmationModal.deny();
+    this.confirmationModal && this.confirmationModal.deny();
     this.close.emit();
   }
 
   navigateToAddCertificate() {
-    this.confirmationModal.deny();
+    this.confirmationModal && this.confirmationModal.deny();
     this.close.emit({mode: 'add-certificates', batchId: this.batchId});
   }
 

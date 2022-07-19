@@ -5,7 +5,6 @@ import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 
 /**
@@ -183,7 +182,6 @@ export class DataService {
       headers: requestParam.header,
       params: requestParam.param,
     };
-    debugger;
     return this.http.put(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
@@ -208,8 +206,8 @@ export class DataService {
       'X-Session-ID': DataService.sessionId
     };
     try {
-      this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
-      this.appId = (<HTMLInputElement>document.getElementById('appId')).value;
+      this.deviceId = document.getElementById('deviceId')?(<HTMLInputElement>document.getElementById('deviceId')).value:'';
+      this.appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value:'';
     } catch (err) { }
     if (this.deviceId) {
       default_headers['X-Device-ID'] = this.deviceId;

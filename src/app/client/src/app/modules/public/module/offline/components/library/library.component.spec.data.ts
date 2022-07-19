@@ -22,7 +22,7 @@ export const response = {
                 'contentType': 'TextBook'
             },
             'completionPercentage': 0,
-            'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+            'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
             'cardImg': 'https://ntpstagingall.blob8521957.thumb.jpg',
             'resourceType': 'Book',
             'organisation': ['Chhattisgarh', 'Chhattisgarh'],
@@ -600,7 +600,7 @@ export const response = {
                     ],
                     'appId': 'prod.diksha.app',
                     'contentEncoding': 'gzip',
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':2,\'application/vnd.ekstep.ecml-archive\':2}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":2,"application/vnd.ekstep.ecml-archive":2}',
                     'contentType': 'TextBook',
                     'contentCredits': '[{\'id\':\'01264500484714496098\',\'name\':\'Diksha Pilot Tests\',\'type\':\'user\'}]',
                     'lastUpdatedBy': '58b159df-0dab-458d-b772-d8cf11f1a011',
@@ -3447,7 +3447,7 @@ export const response = {
                     'contentEncoding': 'gzip',
                     'lockKey': '0dd93140-afb9-4d69-a8a7-6b1170847ebb',
                     'totalCompressedSize': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':56}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":56}',
                     'contentType': 'TextBook',
                     'lastUpdatedBy': '80ae760d-f9dd-43a9-91a7-09dfabba2293',
                     'identifier': 'do_31271203188629504016901',
@@ -7180,7 +7180,7 @@ export const response = {
                     'contentEncoding': 'gzip',
                     'lockKey': '62464736-94a2-4b7c-97f9-036e5148d9f6',
                     'totalCompressedSize': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':16}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":16}',
                     'contentType': 'TextBook',
                     'lastUpdatedBy': 'b800aaed-2b28-44ca-b247-0dfe842b4354',
                     'identifier': 'do_31288688470997401612126',
@@ -8773,7 +8773,7 @@ export const response = {
                     'contentEncoding': 'gzip',
                     'lockKey': '9cfc1d26-37f4-4778-8ade-4e06bfd3d7fe',
                     'totalCompressedSize': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':17}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":17}',
                     'contentType': 'TextBook',
                     'lastUpdatedBy': 'b800aaed-2b28-44ca-b247-0dfe842b4354',
                     'identifier': 'do_31289480331462246414717',
@@ -8878,7 +8878,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':17}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":17}',
                     'cardImg': 'do_31289480331462246414717/capture_1574072742164.thumb.png',
                     'resourceType': 'Book',
                     'organisation': [
@@ -8969,7 +8969,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':56}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":56}',
                     'cardImg': 'do_31271203188629504016901/bb-logo-1_1529338156293.jpg',
                     'resourceType': 'Book',
                     'board': 'State (Maharashtra)',
@@ -9012,7 +9012,7 @@ export const response = {
                         'contentType': 'Collection'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.html-archive\':2,\'application/pdf\':2}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.html-archive":2,"application/pdf":2}',
                     'cardImg': 'do_312352584359821312285/tiss-thumbnail-1_1507872548423.thumb.png',
                     'resourceType': 'Collection',
                     'board': 'NCTE',
@@ -9056,7 +9056,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':16}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":16}',
                     'cardImg': 'do_31288688470997401612126/capture_1573106196816.thumb.png',
                     'resourceType': 'Book',
                     'organisation': [
@@ -9103,7 +9103,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':2,\'application/vnd.ekstep.ecml-archive\':2}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":2,"application/vnd.ekstep.ecml-archive":2}',
                     'cardImg': 'do_3126590694660915201293/design_dump_11_334_1487144558_1487144558596.thumb.png',
                     'resourceType': 'Book',
                     'organisation': [
@@ -9149,7 +9149,7 @@ export const response = {
                         'contentType': 'Collection'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.html-archive\':1,\'application/pdf\':3}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.html-archive":1,"application/pdf":3}',
                     'cardImg': 'do_312352510418632704261/tiss1_1507180971135.thumb.png',
                     'resourceType': 'Collection',
                     'board': 'NCTE',
@@ -9202,7 +9202,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':56}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":56}',
                     'cardImg': 'do_31271203188629504016901/bb-logo-1_1529338156293.jpg',
                     'resourceType': 'Book',
                     'board': 'State (Maharashtra)',
@@ -9248,7 +9248,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':16}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":16}',
                     'cardImg': 'do_31288688470997401612126/capture_1573106196816.thumb.png',
                     'resourceType': 'Book',
                     'organisation': [
@@ -9302,7 +9302,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':2,\'application/vnd.ekstep.ecml-archive\':2}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":2,"application/vnd.ekstep.ecml-archive":2}',
                     'cardImg': 'do_3126590694660915201293/design_dump_11_334_1487144558_1487144558596.thumb.png',
                     'resourceType': 'Book',
                     'organisation': [
@@ -9351,7 +9351,7 @@ export const response = {
                         'contentType': 'TextBook'
                     },
                     'completionPercentage': 0,
-                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':17}',
+                    'mimeTypesCount': '{"application/vnd.ekstep.content-collection":17}',
                     'cardImg': 'do_31289480331462246414717/capture_1574072742164.thumb.png',
                     'resourceType': 'Book',
                     'organisation': [

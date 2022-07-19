@@ -1,73 +1,86 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-    appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showLoginModal">
-    <div class="sb-modal-header">
-        {{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}
-    </div>
-    <div class="sb-modal-content sb-join-modal-content">
+<app-modal-wrapper *ngIf="showLoginModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}" (dismiss)="closeLoginModal()"
+  #modal>
+  <ng-template sbModalContent>
+    <div class="sb-mat__modal sb-mat__modal--small">
+
+      <div mat-dialog-title class="mb-0 px-16">
+        <div class="title">{{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}</div>
+        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+      </div>
+      <div class="sb-mat__modal__content sb-join-modal-content">
         <div class="fsmall px-0 py-8">
-            {{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}
+          {{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}
         </div>
-    </div>
-    <div class="sb-modal-actions">
+      </div>
+      <div class="sb-mat__modal__actions">
         <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="signInInteractEdata" tabindex="0" (click)="setTelemetryData(); setUrlToCourse();"
-            class="sb-btn sb-btn-normal sb-btn-primary">
-            {{resourceService.frmelmnts?.btn?.login}}
+          [telemetryInteractEdata]="signInInteractEdata" tabindex="0"
+          (click)="setTelemetryData(); setUrlToCourse();" class="sb-btn sb-btn-normal sb-btn-primary">
+          {{resourceService.frmelmnts?.btn?.login}}
         </a>
+      </div>
+
     </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 
 <!-- batch details -->
-<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
-    <sui-accordion-panel [isOpen]="false">
-      <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-        <span>{{resourceService?.frmelmnts?.lbl?.batchdetails}}</span>
-        <i class="chevron down icon" role="img" title="expand"></i>
-      </div>
-      <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
-        <div class="batch-details">
-          <div class="mb-16">
-            <div *ngIf="batchDetails?.startDate">
-              <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-                {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
-              <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}</div>
+<mat-accordion class="sb-mat-accordion mb-16">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{resourceService?.frmelmnts?.lbl?.batchdetails}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sb-mat-accordion__content">
+      <div class="batch-details">
+        <div class="mb-16">
+          <div *ngIf="batchDetails?.startDate">
+            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}
             </div>
-            <hr class="section-hr" *ngIf="batchDetails?.endDate"/>
-            <div *ngIf="batchDetails?.endDate">
-              <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-                {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
-              <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
-            </div>
-            <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"/>
-            <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-              <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-                {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
-              <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate | dateFormat}}</div>
-              <div class="sb-label-status-error fsmall"
-              *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</div>
-            </div>
+          </div>
+          <hr class="section-hr" *ngIf="batchDetails?.endDate" />
+          <div *ngIf="batchDetails?.endDate">
+            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
+          </div>
+          <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
+          <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
+            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
+            <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate |
+              dateFormat}}</div>
+            <div class="sb-label-status-error fsmall" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
+              {{resourceService?.messages?.stmsg?.m0134}}</div>
           </div>
         </div>
       </div>
-    </sui-accordion-panel>
-</sui-accordion>
-
-<sui-accordion *ngIf="showCertificateDetails" class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
-  <sui-accordion-panel [isOpen]="false">
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{resourceService?.frmelemnts?.scttl?.certques}}</span>
-      <i class="chevron down icon" role="img" title="expand"></i>
     </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-accordion *ngIf="showCertificateDetails" class="sb-mat-accordion mb-16">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
+        {{resourceService?.frmelemnts?.scttl?.certques}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <ul>
-            <li *ngIf="showCompletionCertificate" class="fsmall mb-8 sb-color-gray-800">{{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
-            <li *ngIf="showMeritCertificate" class="fsmall mb-8 sb-color-gray-800">{{resourceService?.frmelemnts?.bltpt?.earnmcert |
+            <li *ngIf="showCompletionCertificate" class="fsmall mb-8 sb-color-gray-800">
+              {{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
+            <li *ngIf="showMeritCertificate" class="fsmall mb-8 sb-color-gray-800">
+              {{resourceService?.frmelemnts?.bltpt?.earnmcert |
               interpolate:'{percent}': meritCertPercent}}</li>
           </ul>
         </div>
       </div>
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
+  </mat-expansion-panel>
+</mat-accordion>

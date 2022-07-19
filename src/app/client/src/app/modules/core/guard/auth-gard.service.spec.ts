@@ -1,162 +1,173 @@
-import { TestBed, inject, async } from '@angular/core/testing';
 import { AuthGuard } from './auth-gard.service';
-import { RouterModule, Router, Routes, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
-import { configureTestSuite } from '@sunbird/test-util';
-import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
+import { Router, RouterStateSnapshot } from '@angular/router';
+import { ConfigService, ResourceService, ToasterService } from '../../shared';
+import { UserService, PermissionService } from '../../core';
+import { of } from 'rxjs/internal/observable/of';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 describe('AuthGardService', () => {
-    // const authGuard: AuthGuard;
-    const router = {
-        navigate: jasmine.createSpy('navigate')
+    let authGuard: AuthGuard;
+    const mockResourceService: Partial<ResourceService> = {
+        messages: {
+            imsg: {
+                m0035: 'Something went wrong',
+            },
+        }
     };
-    const snapshot = {
-        state: jasmine.createSpy('url')
+    const mockRouter: Partial<Router> = {
+        navigate: jest.fn(),
+        url: '/home'
     };
-    const activeroutesnapshot = {
-        route: jasmine.createSpy('')
+    const mockUserService: Partial<UserService> = {
+        loggedIn: true,
+        userData$: of({
+            userProfile: {
+                userId: 'sample-uid',
+                rootOrgId: 'sample-root-id',
+                rootOrg: {},
+                hashTagIds: ['id'],
+                profileUserType: {
+                    type: 'student'
+                }
+            } as any
+        }) as any,
+        slug: jest.fn() as any
     };
-    let resourceService;
-    configureTestSuite();
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [AuthGuard, PermissionService, ToasterService, UserService, ResourceService, ConfigService, LearnerService,
-                BrowserCacheTtlService,
-                { provide: Router, useValue: router },
-                { provide: RouterStateSnapshot, useValue: snapshot },
-                {
-                    provide: ActivatedRoute, useValue: {
-                        snapshot: {
-                            url: [
-                                {
-                                    path: 'workspace',
-                                }
-                            ],
-                        },
-                    }
-                }],
-            imports: [HttpClientTestingModule, CoreModule,
-                        TranslateModule.forRoot({
-                          loader: {
-                            provide: TranslateLoader,
-                            useClass: TranslateFakeLoader
-                          }
-                        })]
-        });
-        resourceService = TestBed.get(ResourceService);
-        resourceService.messages = {imsg: {m0035: 'Navigating to home'}};
+    const mockConfigService: Partial<ConfigService> = {
+        appConfig: {
+            layoutConfiguration: "joy",
+            TELEMETRY: {
+                PID: 'sample-page-id'
+            },
+            UrlLinks: {
+                downloadsunbirdApp: 'https://play.google.com/store/apps/details?'
+            }
+        },
+        urlConFig: {
+            URLS: {
+                TELEMETRY: {
+                    SYNC: true
+                },
+                CONTENT_PREFIX: ''
+            }
+        },
+        rolesConfig: {
+            ROLES: {
+                announcement: ["ANNOUNCEMENT_SENDER"],
+            }
+        }
+    };
+    const mockToasterService: Partial<ToasterService> = {
+        warning: jest.fn()
+    };
+    const mockPermissionService: Partial<PermissionService> = {
+        permissionAvailable$: of(true) as any,
+        checkRolesPermissions: jest.fn(() => {
+            return true;
+        }) as any
+    };
+    beforeAll(() => {
+        authGuard = new AuthGuard(
+            mockRouter as Router,
+            mockPermissionService as PermissionService,
+            mockResourceService as ResourceService,
+            mockConfigService as ConfigService,
+            mockToasterService as ToasterService,
+            mockUserService as UserService
+        )
     });
-    it('be able to hit route when user is logged in', () => {
-        const authservice = TestBed.get(AuthGuard);
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should be able to hit route when user is logged in', () => {
         const snapshotroute = {
             url: [
                 {
                     path: 'workspace',
                 }
             ],
-            data: {}
+            data: {},
+            root: ''
         };
-        const result = authservice.canActivate(snapshotroute, RouterStateSnapshot);
+        const mock = <T, P extends keyof T>(obj: Pick<T, P>): T => obj as T;
+        const state = mock<RouterStateSnapshot, "url" | "root">({
+            url: '/workspace',
+            root: jest.fn() as any
+        });
+        const result = authGuard.canActivate(snapshotroute as any, state);
         expect(result).toBeTruthy();
     });
 
     it('canLoad should return false if user not logged in', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
-        spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
-        expect(authservice.canLoad()).toBeFalsy();
+        // @ts-ignore
+        mockUserService.loggedIn = false;
+        expect(authGuard.canLoad()).toBeFalsy();
     });
 
     it('canLoad should return true if user is logged in', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
-        spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
-        expect(authservice.canLoad()).toBeTruthy();
+        // @ts-ignore
+        mockUserService.loggedIn = true;
+        expect(authGuard.canLoad()).toBeTruthy();
     });
+
     it('should navigate to home', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
-        spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
-        spyOn(toasterService, 'warning').and.returnValue(true);
-        authservice.navigateToHome({
+        // @ts-ignore
+        mockUserService.loggedIn = true;
+        authGuard.navigateToHome({
             next() { },
             complete() { },
         });
-        expect(router.navigate).toHaveBeenCalled();
-        expect(toasterService.warning).toHaveBeenCalled();
+        expect(mockRouter.navigate).toHaveBeenCalled();
+        expect(mockToasterService.warning).toHaveBeenCalled();
     });
-    it('should return true if user has rootOrgAdmin role', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
-        userService['_userData$'].next({ err: null, userProfile: {} });
-        spyOnProperty(userService, 'userProfile', 'get').and.returnValue({rootOrgAdmin: true});
-        authservice.getPermission('rootOrgAdmin').subscribe((data) => {
-            expect(data).toBeTruthy();
-        });
-    });
-    it('should navigate to home if role is rootOrgAdmin and user dosnt have rootOrgAdmin role', () => {
-        const userService = TestBed.get(UserService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
-        spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
-        spyOn(toasterService, 'warning').and.returnValue(true);
-        userService['_userData$'].next({ err: null, userProfile: {} });
-        spyOnProperty(userService, 'userProfile', 'get').and.returnValue({rootOrgAdmin: false});
-        authservice.getPermission('rootOrgAdmin').subscribe((data) => {
-            expect(data).toBeFalsy();
-            expect(router.navigate).toHaveBeenCalled();
-            expect(toasterService.warning).toHaveBeenCalled();
-        });
-    });
+
     it('should navigate to home if permission is not fetched or error occurred while fetching permission', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
-        spyOn(toasterService, 'warning').and.returnValue(true);
-        permissionService['permissionAvailable$'].next('error');
-        authservice.getPermission('creator').subscribe((data) => {
+        mockPermissionService.permissionAvailable$ = new BehaviorSubject('error');
+        authGuard.getPermission('creator').subscribe((data) => {
             expect(data).toBeFalsy();
-            expect(router.navigate).toHaveBeenCalled();
-            expect(toasterService.warning).toHaveBeenCalled();
+            expect(mockRouter.navigate).toHaveBeenCalled();
+            expect(mockToasterService.warning).toHaveBeenCalled();
         });
     });
+
     it('should navigate to home if passed role is not configured in config service', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
-        spyOn(toasterService, 'warning').and.returnValue(true);
-        permissionService['permissionAvailable$'].next('success');
-        authservice.getPermission('unknown_role').subscribe((data) => {
+        mockPermissionService.permissionAvailable$ = new BehaviorSubject('success');
+        authGuard.getPermission('unknown_role').subscribe((data) => {
             expect(data).toBeFalsy();
-            expect(router.navigate).toHaveBeenCalled();
-            expect(toasterService.warning).toHaveBeenCalled();
+            expect(mockRouter.navigate).toHaveBeenCalled();
+            expect(mockToasterService.warning).toHaveBeenCalled();
         });
     });
-    it('should navigate to home if user dosnt have proper role', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
-        spyOn(toasterService, 'warning').and.returnValue(true);
-        permissionService['permissionAvailable$'].next('success');
-        authservice.getPermission('announcement').subscribe((data) => {
+
+    it('should navigate to home if user does not have proper role', () => {
+        mockPermissionService.permissionAvailable$ = new BehaviorSubject('success');
+        authGuard.getPermission('announcement').subscribe((data) => {
             expect(data).toBeFalsy();
-            expect(router.navigate).toHaveBeenCalled();
-            expect(toasterService.warning).toHaveBeenCalled();
+            expect(mockRouter.navigate).toHaveBeenCalled();
+            expect(mockToasterService.warning).toHaveBeenCalled();
         });
     });
-    it('should return true if user has propper role', () => {
-        const permissionService = TestBed.get(PermissionService);
-        const authservice = TestBed.get(AuthGuard);
-        const toasterService = TestBed.get(ToasterService);
-        spyOn(toasterService, 'warning').and.returnValue(true);
-        permissionService['permissionAvailable$'].next('success');
-        spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-        authservice.getPermission('announcement').subscribe((data) => {
+
+    it('should return true if user has proper role', () => {
+        mockPermissionService.permissionAvailable$ = new BehaviorSubject('success');
+        authGuard.getPermission('announcement').subscribe((data) => {
             expect(data).toBeTruthy();
+        });
+    });
+
+    it('should return true if user has rootOrgAdmin role', () => {
+        authGuard.getPermission('rootOrgAdmin').subscribe((data) => {
+            expect(data).toBeTruthy();
+        });
+    });
+
+    it('should navigate to home if role is rootOrgAdmin and user dosnt have rootOrgAdmin role', () => {
+        authGuard.getPermission('rootOrgAdmin').subscribe((data) => {
+            expect(data).toBeFalsy();
+            expect(mockRouter.navigate).toHaveBeenCalled();
+            expect(mockToasterService.warning).toHaveBeenCalled();
         });
     });
 });

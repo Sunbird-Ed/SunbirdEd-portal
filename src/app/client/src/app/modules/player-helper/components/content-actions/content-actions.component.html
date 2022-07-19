@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false}"
+<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="sharelinkModal = false; contentUtilsServiceService.contentShareEvent.emit('close')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
@@ -29,22 +29,32 @@
   </ng-template>
 </app-modal-wrapper>
 
-<sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
-<div class="sb-modal-header">
-  {{resourceService?.frmelmnts?.lbl?.delete}}
-</div>
-  <div class="sb-modal-content">
-    <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}</p>
-  </div>
-  <div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-    (click)="deleteContent(contentData); showDeleteModal = !showDeleteModal;">
-    {{resourceService?.frmelmnts?.lbl?.delete}}
-  </button>
-  <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
-    tabindex="0" (click)="logTelemetry('cancel-delete-content', contentData); showDeleteModal = !showDeleteModal;">
-    {{resourceService.frmelmnts?.btn?.cancel}}
-  </button>
-</div>
-</sui-modal>
+
+<app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: false, size: 'normal'}"
+  (dismiss)="showDeleteModal = !showDeleteModal;" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.lbl?.delete}}
+          </div>
+          <div class="sb-modal-content">
+            <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}</p>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+              (click)="deleteContent(contentData); showDeleteModal = !showDeleteModal;">
+              {{resourceService?.frmelmnts?.lbl?.delete}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+              (click)="logTelemetry('cancel-delete-content', contentData); showDeleteModal = !showDeleteModal;">
+              {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

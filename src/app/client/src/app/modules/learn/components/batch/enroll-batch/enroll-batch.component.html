@@ -1,79 +1,87 @@
-<sui-modal
-    [mustScroll]="true" 
-    [isClosable]="true"
-    [transitionDuration]="0"
-    [size]="'normal'"
-    class="sb-modal"
-    appBodyScroll 
-    (dismissed)="redirect()"
-    #enrollBatch
-    *ngIf="modalVisibility"
->
-    <!--Header-->
-    <div class="sb-modal-header">
-      {{batchDetails.name}}
-    </div>
-    <!--/Header-->
+<app-modal-wrapper *ngIf="modalVisibility" [config]="{disableClose: true, size: 'normal', panelClass: 'material-modal'}" (dismiss)="redirect()"
+    #enrollBatch>
+    <ng-template sbModalContent>
+        <div class="sb-mat__modal">
 
-    <!--Content-->
-    <div class="scrolling content sb-modal-content">
-    <div class="ui grid">
-        <div class="twelve wide column">
-            <div class="content">
+            <!--Header-->
+            <div mat-dialog-title class="mb-0 px-16">
+                <div class="title">{{batchDetails.name}}</div>
+                <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+            </div>
+            <!--/Header-->
+
+            <!--Content-->
+            <div class="sb-mat__modal__content">
                 <div class="ui grid">
-                    <div class="ten wide column pl-25">
-                        <div class="ui grid">
-                            <div class="twelve wide column batch-des pb-0" *ngIf="batchDetails.description">
-                                <label>{{resourceService.frmelmnts.lbl.batchdescription}}</label>
-                                <div *ngIf="batchDetails.description" class="des-content">
-                                    <p *ngIf="!readMore"> {{ batchDetails.description | slice:0:120}}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" *ngIf="batchDetails.description && batchDetails.description.length > 120 && readMore === false"
-                                            tabindex="0" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
-                                    </p>
-                                    <p *ngIf="readMore" class="courseStructureDesc"> {{ batchDetails.description}}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" tabindex="0" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
-                                    </p>
+                    <div class="twelve wide column">
+                        <div class="content">
+                            <div class="ui grid">
+                                <div class="ten wide column pl-25">
+                                    <div class="ui grid">
+                                        <div class="twelve wide column batch-des pb-0"
+                                            *ngIf="batchDetails.description">
+                                            <label>{{resourceService.frmelmnts.lbl.batchdescription}}</label>
+                                            <div *ngIf="batchDetails.description" class="des-content">
+                                                <p *ngIf="!readMore"> {{ batchDetails.description |
+                                                    slice:0:120}}&nbsp;
+                                                    <span class="ui cardsKnowMore mouse-pointer"
+                                                        *ngIf="batchDetails.description && batchDetails.description.length > 120 && readMore === false"
+                                                        tabindex="0"
+                                                        (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                                                </p>
+                                                <p *ngIf="readMore" class="courseStructureDesc"> {{
+                                                    batchDetails.description}}&nbsp;
+                                                    <span class="ui cardsKnowMore mouse-pointer" tabindex="0"
+                                                        (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="ui grid batch-date">
+                                        <div class="twelve wide column start-date pb-0">
+                                            <label>{{resourceService.frmelmnts.lbl.startdate}}</label>
+                                            <span class="pl-10">{{batchDetails.startDate | dateFormat}}</span>
+                                        </div>
+                                        <div class="twelve wide column end-date" *ngIf="batchDetails.endDate">
+                                            <label>{{resourceService.frmelmnts.lbl.enddate}}</label>
+                                            <span *ngIf="batchDetails.endDate"
+                                                class="pl-10">{{batchDetails.endDate | dateFormat}}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                        </div>
-                        <div class="ui grid batch-date">
-                            <div class="twelve wide column start-date pb-0">
-                                <label>{{resourceService.frmelmnts.lbl.startdate}}</label>
-                                <span class="pl-10">{{batchDetails.startDate | dateFormat}}</span>
-                            </div>
-                            <div class="twelve wide column end-date" *ngIf="batchDetails.endDate">
-                                <label>{{resourceService.frmelmnts.lbl.enddate}}</label>
-                                <span *ngIf="batchDetails.endDate" class="pl-10">{{batchDetails.endDate | dateFormat}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!--/Content-->
+            <!--Actions-->
+            <div class="sb-mat__modal__actions">
+                <button appTelemetryInteract
+                    [telemetryInteractObject]="{id:batchId , ver : '1.0' , type:'CourseBatch' , rollup:{l1: batchDetails.courseId,l2: batchDetails.identifier}}"
+                    [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+                    [disabled]="disableSubmitBtn" class="sb-btn sb-btn-normal sb-btn-primary"
+                    id="enrollToCourse" tabindex="0" (click)="enrollToCourse()">
+                    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
+                </button>
+            </div>
+            <!--Actions-->
+
         </div>
-    </div>
-  </div>
-  <!--/Content-->
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <button appTelemetryInteract [telemetryInteractObject]="{id:batchId , ver : '1.0' , type:'CourseBatch' , rollup:{l1: batchDetails.courseId,l2: batchDetails.identifier}}" 
-    [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-        [disabled]="disableSubmitBtn" 
-        class="sb-btn sb-btn-normal sb-btn-primary" 
-        id="enrollToCourse" tabindex="0" 
-        (click)="enrollToCourse()"
-    >
-    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
-    </button>
-  </div>
-  <!--Actions-->
-</sui-modal>
-<sui-modal
-[isClosable]="false"
-[transitionDuration]="0"
-[size]="'normal'"
-class="sb-modal" *ngIf="showLoader">
-    <div class="twelve wide column my-20">
-        <app-loader></app-loader>
-    </div>
-</sui-modal>
+    </ng-template>
+</app-modal-wrapper>
+
+<app-modal-wrapper *ngIf="showLoader" [config]="{disableClose: false, size: 'normal'}">
+    <ng-template sbModalContent>
+        <div class="sb-modal">
+            <div class="transition ui dimmer page modals active visible">
+                <div class="ui modal transition active visible normal">
+                    <div class="twelve wide column my-20">
+                        <app-loader></app-loader>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</app-modal-wrapper>

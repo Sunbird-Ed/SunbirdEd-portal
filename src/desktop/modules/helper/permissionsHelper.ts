@@ -54,7 +54,7 @@ const PERMISSIONS_HELPER = {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
       standardLog.error({ id: 'PERMISSION_HELPER_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
     });
-    let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}?fields=organisations,roles,locations,declarations`;
+    let url = `${process.env.APP_BASE_URL}/api/user/v5/read/${userData.userId}?fields=organisations,roles,locations,declarations`;
     if (isManagedUser) {
       url = url + "&withTokens=true";
     }
@@ -82,7 +82,7 @@ const PERMISSIONS_HELPER = {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
       standardLog.error({ id: 'PERMISSION_HELPER_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getManagedUser', error: err });
     });
-    let url = `${process.env.APP_BASE_URL}/learner/user/v1/managed/${managedByUser.userId}`;
+    let url = `${process.env.APP_BASE_URL}/api/user/v1/managed/${managedByUser.userId}`;
     const options = {
       headers: {
         "content-type": "application/json",

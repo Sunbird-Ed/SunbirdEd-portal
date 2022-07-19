@@ -118,12 +118,21 @@
   </a>
 </ng-template>
 
-<sui-modal class="sb-modal sb-success" (dismissed)="showVideoModal = false" [size]="'large'" [mustScroll]="false"
-  *ngIf="showVideoModal && playerConfig">
-
-  <div class="sb-modal-content height-auto">
-    <sunbird-video-player [playerConfig]="playerConfig" #videoPlayer>
-    </sunbird-video-player>
-  </div>
-
-</sui-modal>
+<app-modal-wrapper *ngIf="showVideoModal && playerConfig" [config]="{disableClose: true, size: 'large'}"
+  (dismiss)="showVideoModal = false">
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible large">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-content height-auto">
+            <sunbird-video-player [playerConfig]="playerConfig" #videoPlayer>
+            </sunbird-video-player>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

@@ -1,6 +1,6 @@
 <div *ngIf="contentData.description" class="content-metadeta sb-bg-color-white mt-8 text-left">
   <div class="mx-16 py-16 content-metadeta__content" tabindex="0">
-    <div class="content-metadeta__title fnormal font-weight-bold"  role="heading" aria-level="2">
+    <div class="content-metadeta__title fnormal font-weight-bold" role="heading" aria-level="2">
       {{resourceService?.frmelmnts?.lbl?.description}}</div>
     <p class="content-metadeta__text fnormal pt-8">
       {{contentData?.description}}
@@ -9,12 +9,28 @@
 
 </div>
 
-<sui-accordion class="styled fluid sb-accordion">
-  <sui-accordion-panel>
-    <div role="button" tabindex="0" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="isCollapsed" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.aboutTheContent}} accordion" aria-controls="aboutTheContent" title class="sb-accordion-title fnormal">{{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
-      <i class="chevron down icon ml-8"></i>
-    </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8" role="region" id="aboutTheContent" aria-labelledby="aboutTheContent">
+
+<mat-accordion class="sb-mat-accordion mb-16">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header class="sb-mat-accordion__title fnormal" role="button" tabindex="0">
+      <mat-panel-title>
+        {{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div content class="sb-mat-accordion__content" role="region" id="aboutTheContent"
+      aria-labelledby="aboutTheContent">
+
+      <div class="py-8" *ngIf="contentData?.transcripts" (click)="showDownloadTranscript()">
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn download-scripts-btn">
+          {{resourceService?.frmelmnts?.lbl?.DownloadTranscript}}
+          <i class="icon-svg icon-svg--sm icon-download-transcripts icon-svg--primary ml-16">
+            <svg>
+              <use xlink:href="./assets/images/sprite.svg#file_download" ></use>
+            </svg>
+          </i>
+        </button>
+      </div>
+
       <div class="py-8" *ngIf="contentData?.author">
         <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.author}}</div>
         <div class="content-metadeta__text fnormal">{{contentData?.author}}</div>
@@ -29,25 +45,29 @@
       </div>
       <div class="py-8" *ngIf="contentData?.licenseDetails?.name">
         <div class="content-metadeta__title fsmall mb-4"></div>
-        <div class="content-metadeta__text fnormal" *ngIf="contentData?.licenseDetails?.name">{{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
+        <div class="content-metadeta__text fnormal" *ngIf="contentData?.licenseDetails?.name">
+          {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
           <span *ngIf="contentData.licenseDetails['url']">
-            <a href="{{contentData.licenseDetails['url']}}" class="break-all" target="_blank">{{contentData.licenseDetails['url']}}</a>
+            <a href="{{contentData.licenseDetails['url']}}" class="break-all"
+              target="_blank">{{contentData.licenseDetails['url']}}</a>
           </span>
         </div>
       </div>
       <div class="py-8" *ngIf="contentData?.copyright">
         <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
         <div class="content-metadeta__text fnormal">{{contentData?.copyright}}<span
-          *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></div>
+            *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></div>
       </div>
       <div *ngIf="contentData.originData">
-        <div class="content-metadeta__text fnormal sb-color-primary-400" *ngIf="contentData?.originData">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}</div>
+        <div class="content-metadeta__text fnormal sb-color-primary-400" *ngIf="contentData?.originData">
+          {{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}</div>
         <div class="py-8" *ngIf="contentData?.originData?.name">
           <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</div>
           <div class="content-metadeta__text fnormal">{{contentData?.originData?.name}}</div>
         </div>
         <div class="py-8" *ngIf="contentData?.originData?.author">
-          <div class="content-metadeta__title fsmall mb-4">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</div>
+          <div class="content-metadeta__title fsmall mb-4">
+            {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</div>
           <div class="content-metadeta__text fnormal">{{contentData?.originData?.author}}</div>
         </div>
         <div class="py-8" *ngIf="contentData?.originData?.license">
@@ -55,14 +75,55 @@
           <div class="content-metadeta__text fnormal">{{contentData?.originData?.license}}</div>
         </div>
         <div class="py-8" *ngIf="contentData?.originData?.organisation">
-          <div class="content-metadeta__title fsmall mb-4"  [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance"></div>
-          <div class="content-metadeta__text fnormal" *ngIf="contentData?.originData?.organisation">{{contentData?.originData?.organisation.join(', ')}}</div>
+          <div class="content-metadeta__title fsmall mb-4"
+            [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
+          </div>
+          <div class="content-metadeta__text fnormal" *ngIf="contentData?.originData?.organisation">
+            {{contentData?.originData?.organisation.join(', ')}}</div>
           <a *ngIf="contentData?.orgDetails?.email"
-          href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
+            href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
         </div>
       </div>
-      
-
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+<app-modal-wrapper *ngIf="showDownloadPopup" [config]="{disableClose: true, size: 'small'}"
+  (dismiss)="showAlertModal = false" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.lbl?.DownloadTranscript}}
+          </div>
+          <mat-dialog-content>
+            <div class="sb-modal-content">
+              <div class="ui center aligned segment text-left">
+                <mat-form-field appearance="fill" class="sb-mat__dropdown mb-16 w-100">
+                  <mat-label>{{resourceService.frmelmnts?.btn?.selectLanguage}}</mat-label>
+                  <mat-select role="listbox" aria-label="Export As" [(value)]="selectedLanguage" class="selection"
+                    (selectionChange)="changeTranscriptlanguage($event)">
+                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of options" [value]="option"
+                      attr.aria-label="{{option}}">{{option}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-dialog-content>
+          <mat-dialog-actions class="sb-mat__modal__actions">
+            <button type="button" appTelemetryInteract [telemetryInteractObject]="{id:transcripts,type:'transcripts',ver:'1.0'}"
+            [telemetryInteractEdata]="transcriptsInteractEdata" 
+             (click)="dowloadTranscript()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+              {{ resourceService?.frmelmnts?.lbl?.dashboard?.download}}
+            </button>
+          </mat-dialog-actions>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

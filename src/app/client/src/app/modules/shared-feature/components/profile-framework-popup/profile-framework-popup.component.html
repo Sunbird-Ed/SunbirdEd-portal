@@ -1,89 +1,95 @@
 <div class="sb-mat__modal" *ngIf="formFieldOptions.length">
-
-      <!--Header-->
-      <div mat-dialog-title>
-        <div class="title" role="heading" aria-level="2">
-          {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+  <!--Header-->
+  <div mat-dialog-title>
+    <div class="title" role="heading" aria-level="2">
+      {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+    </div>
+    <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <mat-dialog-content>
+    <div class="sb-mat__modal__content">
+      <div *ngIf="isPreference">
+        <div class="d-flex">
+          <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
+          <div class="hr-preference-line ml-24"></div>
         </div>
-        <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
-
-      </div>
-      <!--/Header-->
-
-      <!--Content-->
-      <mat-dialog-content>
-        <div class="sb-mat__modal__content">
-
-          <div *ngIf="isPreference">
-            <div class="d-flex">
-              <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
-              <div class="hr-preference-line ml-24"></div>
-            </div>
-            <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
+        <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
           interpolate:'{instance}': instance}}</p>
-            <div class="hr-border py-8"></div>
-          </div>
-
-          <form class="ui form">
-            <div *ngFor="let field of formFieldOptions">
-              <div class="required sb-field-form-group"
-                *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
-                <label>{{field.label}}
-                  <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-                </label>
-                <div class="sb-field">
-                  <label class="w-100">
-                    <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                      [(ngModel)]="selectedOption[field.code]" [options]="options"
-                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
-                      <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
-                        [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"></sui-select-option>
-                    </sui-select>
-                  </label>
-                </div>
-              </div>
-              <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
-                [ngClass]="field.code === 'subject' ? '' : 'required'">
-                <label>{{field.label}}
-                  <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-                </label>
-                <div class="sb-field">
-                  <label class="w-100">
-                    <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                      [(ngModel)]="selectedOption[field.code]" [options]="options"
-                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
-                      *ngIf="field.code === 'gradeLevel'">
-                      <sui-select-option *ngFor="let option of field.range" tabindex="0" [value]="option.name">
-                      </sui-select-option>
-                    </sui-multi-select>
-                    <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control"
-                      [(ngModel)]="selectedOption[field.code]" [options]="options"
-                      (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect
-                      *ngIf="field.code !== 'gradeLevel'">
-                      <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
-                        [value]="option.name"></sui-select-option>
-                    </sui-multi-select>
-                  </label>
-                </div>
-              </div>
+        <div class="hr-border py-8"></div>
+      </div>
+      <form class="ui form">
+        <div *ngFor="let field of formFieldOptions">
+          <div class="required sb-field-form-group"
+            *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
+            <div class="sb-field">
+                <mat-form-field id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                  <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
+                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                  </mat-label>
+                  <mat-select name={{field.code}} role="listbox" aria-label="field?.label"
+                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name | interpolate: 'CBSE': 'CBSE/NCERT'"
+                    attr.aria-label="{{option?.name | interpolate: 'CBSE': 'CBSE/NCERT'}}">{{option?.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
             </div>
-          </form>
+          </div>
+          <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
+            [ngClass]="field.code === 'subject' ? '' : 'required'">
+            <div class="sb-field">
+                <mat-form-field *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                  <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
+                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                  </mat-label>
+                  <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
+                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+                  <!-- <mat-select-trigger>
+                    {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
+                    <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
+                      (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
+                    </span>
+                  </mat-select-trigger> -->
+                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range" [value]="option?.name"
+                    attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                  <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate}}
+                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+                  </mat-label>
+                  <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
+                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+                  <!-- <mat-select-trigger>
+                    {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
+                    <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
+                      (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
+                    </span>
+                  </mat-select-trigger> -->
+                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
+                    attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+            </div>
+          </div>
         </div>
-      </mat-dialog-content>
-      <!--/Content-->
-
-      <!--Actions-->
-      <mat-dialog-actions align="end" class="mb-0 sb-mat__modal__actions">
-          <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
-            [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
-            {{buttonLabel}}
-          </button>
-      </mat-dialog-actions>
-      <!--/Actions-->
-
+      </form>
+    </div>
+  </mat-dialog-content>
+  <!--/Content-->
+  <!--Actions-->
+  <mat-dialog-actions align="end" class="mb-0 sb-mat__modal__actions">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
+      [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
+      {{buttonLabel}}
+    </button>
+  </mat-dialog-actions>
+  <!--/Actions-->
 </div>
-
-<div *ngIf="!formFieldOptions || !formFieldOptions.length">
+<div *ngIf="!formFieldOptions || !formFieldOptions.length" class="sb-mat__modal">
   <app-loader></app-loader>
 </div>

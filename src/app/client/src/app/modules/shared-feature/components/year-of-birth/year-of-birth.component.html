@@ -9,14 +9,16 @@
       </div>
       <div class="sb-modal-content o-y-visible">
         <div class="ui center aligned segment">
-          <label class="mr-16">{{resourceService?.frmelmnts?.lbl?.yearOfBirth}}<span
-              class="sb-color-red">*</span></label>
-          <sui-select class="selection" [options]="birthYearOptions"
-            placeholder="{{resourceService.frmelmnts?.lbl?.year}}" (selectedOptionChange)="changeBirthYear($event)"
-            #select>
-            <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
-            </sui-select-option>
-          </sui-select>
+          <mat-form-field appearance="fill" class="sb-mat__dropdown mb-16">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.yearOfBirth}} <span
+              class="sb-color-red">*</span>
+            </mat-label>
+            <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.yearOfBirth" tabindex="0"
+              class="selection" (selectionChange)="changeBirthYear($event)">
+              <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of birthYearOptions" [value]="option"
+              attr.aria-label="{{option}}">{{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
       <div class="sb-modal-actions">

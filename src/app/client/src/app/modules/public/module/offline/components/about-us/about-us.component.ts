@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ServerResponse, ToasterService, ConnectionService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';

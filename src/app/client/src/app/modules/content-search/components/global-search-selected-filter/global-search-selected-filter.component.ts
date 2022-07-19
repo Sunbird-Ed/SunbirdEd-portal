@@ -39,13 +39,24 @@ export class GlobalSearchSelectedFilterComponent {
       });
       this.selectedFilters.channel = channelIds;
     }
+    if (!_.get(this.selectedFilters, 'selectedTab') && _.get(queryFilters, 'selectedTab')) {
+      this.selectedFilters['selectedTab'] = _.get(queryFilters, 'selectedTab');
+    }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
-      queryFilters = {...queryFilters, ...this.selectedFilters};
     }
+    queryFilters = {...queryFilters, ...this.selectedFilters};
     this.router.navigate([], {
-      queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,
+      queryParams: queryFilters,
       relativeTo: this.activatedRoute.parent
     });
+  }
+
+  showLabel() {
+    if((Object.keys(this.selectedFilters).length == 0) || (Object.keys(this.selectedFilters).length == 1 && _.get(this.selectedFilters, 'selectedTab') == 'all')) {
+      return false
+    } else {
+      return true;
+    }
   }
 }

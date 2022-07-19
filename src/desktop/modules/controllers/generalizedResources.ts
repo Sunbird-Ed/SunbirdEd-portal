@@ -51,7 +51,7 @@ export class GeneralizedResources {
     const language = req.params.lang;
     const generalizedResources = await this.fetchOnline(language, req) || await this.fetchOffline(language, req);
     if (generalizedResources) {
-      res.send(Response.success("api.report", { result: generalizedResources }, req));
+      res.send(Response.success("api.report", generalizedResources, req));
     } else {
       this.standardLog.error({ id: 'GENERALIZED_RESOURCE_LANG_NOT_FOUND', message: `Generalized Resources not found for language: ${language}`, mid: req.get("x-msgid"), error: 'Resource not found!' });
       res.status(404).send(Response.error("api.report", 404));

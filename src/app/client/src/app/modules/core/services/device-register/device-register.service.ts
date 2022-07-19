@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
 import { ConfigService,  HttpOptions} from '@sunbird/shared';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
-import {Observable, timer, Subscription, of} from 'rxjs';
+import {Observable, Subscription, of} from 'rxjs';
 import * as _ from 'lodash-es';
 import {map} from 'rxjs/operators';
 import {DeviceService} from '../device/device.service';

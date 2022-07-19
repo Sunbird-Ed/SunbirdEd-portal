@@ -15,6 +15,7 @@ export class BrowseImagePopupComponent implements OnInit {
 
   @Input() showSelectImageModal = false;
   @Input() logoType;
+  @Input() enableUploadSignature = false;
   @Output() assetData = new EventEmitter();
   @Output() close = new EventEmitter();
   @Input() showUploadUserModal = false;
@@ -42,7 +43,6 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('comp loaded fresh s');
     // this.getAssetList();
   }
 
@@ -73,11 +73,9 @@ export class BrowseImagePopupComponent implements OnInit {
   async fileChange(ev) {
     this.uploadForm.reset();
     const imageProperties = await this.getImageProperties(ev.target.files[0]);
-    console.log(imageProperties);
     const isDimensionMatched = this.dimentionCheck(imageProperties);
     const isTypeMatched = _.get(imageProperties, 'type').includes('png');
     const isSizeMatched = _.get(imageProperties, 'size') < 1;
-    console.log(isDimensionMatched, isTypeMatched, isSizeMatched);
     if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
@@ -215,11 +213,9 @@ export class BrowseImagePopupComponent implements OnInit {
       size: logo.size
     };
     const imageProperties = await this.getImageProperties(file);
-    console.log(imageProperties);
     const isDimensionMatched = this.dimentionCheck(imageProperties);
     const isTypeMatched = _.get(imageProperties, 'type').includes('png');
     const isSizeMatched = _.get(imageProperties, 'size') < 1;
-    console.log(isDimensionMatched, isTypeMatched, isSizeMatched);
     if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
       this.selectedLogo = logo;
     } else {
@@ -258,5 +254,11 @@ export class BrowseImagePopupComponent implements OnInit {
     this.assetData.emit(image);
     this.selectedLogo = null;
     this.closeModel();
+  }
+
+  showUploadSignature() {
+    this.logoType = { type: 'SIGN', index: 0, key: 'SIGN1' };
+    this.showSelectImageModal = false;
+    this.showUploadUserModal = true;
   }
 }

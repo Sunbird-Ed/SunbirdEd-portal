@@ -2,21 +2,22 @@
 <div *ngIf="!isLayoutAvailable()" class="d-flex flex-ai-center language-selector">
   <div class="computer only fsmall">{{resourceService.frmelmnts?.btn?.selectLanguage}}<span class="mx-8">:</span></div>
   <label *ngIf="!isLayoutAvailable()">
-  <sui-select class="ui dropdown fsmall" (contextmenu)="false" role="combobox" aria-label="Select Language" title="Select Language" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
+  <sui-select class="ui dropdown fsmall language-dropdown-options" (contextmenu)="false" role="combobox" aria-label="Select Language" title="Select Language" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
     <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
-      [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option"  role="option"  title="{{option.accessibleText}}" lang="{{option?.value}}">
+      [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option"  role="option"  title="{{option.accessibleText}}" lang="{{option?.value}}" >
     </sui-select-option>
   </sui-select></label>
 </div>
 
 
- <!-- language dropdown -->
+ <!-- language dropdown --> 
  <div *ngIf="isLayoutAvailable()">
-  <label class="mb-0 w-100" *ngIf="isLayoutAvailable()">
-    <sui-select *ngIf="isLayoutAvailable()" role="combobox" aria-label="Select Language" title="Select Language" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
-     <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
-       [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option" role="option" attr.aria-label="{{option.accessibleText}}" title="{{option.accessibleText}}" lang="{{option?.value}}">
-     </sui-select-option>
-   </sui-select></label>
+  <mat-form-field appearance="fill" class="sb-mat__dropdown sb-mat__dropdown--nolabel sb-mat__dropdown--language w-100 my-16">
+    <!-- <mat-label>{{resourceService.frmelmnts?.btn?.selectLanguage}}</mat-label> -->
+    <mat-select role="listbox" aria-label="Select Language" [(value)]="selectedLanguage" class="selection" [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event?.value)">
+      <mat-option class="mat-dropdown__options mat-dropdown__options--language" role="option" *ngFor="let option of languageRange" [value]="option.value" appTelemetryInteract
+      [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" attr.aria-label="{{option.accessibleText}}">{{option.label}}</mat-option>
+    </mat-select>
+</mat-form-field>
  </div>
 

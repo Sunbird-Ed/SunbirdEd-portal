@@ -90,13 +90,13 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   enableDisableactionButtons() {
-    if(!this.isFullScreen){
+    if (!this.isFullScreen) {
       _.forEach(this.actionButtons, data => {
         if (data.name === 'fullscreen') {
           data.isInActive = false;
         }
       });
-      }else {
+      } else {
         _.forEach(this.fullScreenActionButtons, data => {
           if (data.name === 'minimize') {
             data.isInActive = false;
@@ -106,8 +106,8 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
       if (this.assessmentEvents) {
         this.telemetryEventSubscription$ = this.assessmentEvents.subscribe(telemetry => {
             const eid = _.get(telemetry, 'detail.telemetryData.eid');
-            if(eid === 'ASSESS') {
-                if(!this.isFullScreen){
+            if (eid === 'ASSESS') {
+                if (!this.isFullScreen) {
                   _.forEach(this.actionButtons, data => {
                     if (data.name === 'fullscreen') {
                       data.isInActive = true;
@@ -123,7 +123,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
             }
         });
       }
-  };
+  }
   ngOnChanges(changes: SimpleChanges) {
     this.enableDisableactionButtons();
     this.contentPrintable();

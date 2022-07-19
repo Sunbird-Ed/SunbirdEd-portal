@@ -193,7 +193,7 @@
 }
 .qq-upload-spinner {
     display: inline-block;
-    background: url("../../../node_modules/fine-uploader/fine-uploader/loading.gif");
+    background: url("../../../../node_modules/fine-uploader/fine-uploader/loading.gif");
     width: calculateRem(15px);
     height: calculateRem(15px);
     vertical-align: text-bottom;
@@ -203,7 +203,7 @@
 }
 .qq-drop-processing-spinner {
     display: inline-block;
-    background: url("../../../node_modules/fine-uploader/fine-uploader/processing.gif");
+    background: url("../../../../node_modules/fine-uploader/fine-uploader/processing.gif");
     width: calculateRem(24px);
     height: calculateRem(24px);
     vertical-align: text-bottom;
@@ -306,7 +306,7 @@ INPUT.qq-edit-filename.qq-editing {
 
 .qq-edit-filename-icon {
     display: none;
-    background: url("../../../node_modules/fine-uploader/fine-uploader/edit.gif");
+    background: url("../../../../node_modules/fine-uploader/fine-uploader/edit.gif");
     width: calculateRem(15px);
     height: calculateRem(15px);
     vertical-align: text-bottom;

@@ -1,36 +1,121 @@
+<!-- user-details gray box new design -->
+ <div class="user-detail-container p-24 my-16"role="list">
+  <div class="user-detail-list" role="listitem" tabindex="0" attr.aria-label="Name:{{startingForm?.basicInfo?.name}}"  *ngIf="startingForm && startingForm?.basicInfo?.name">
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Name:</label>
+    <label class="label-values fnormal font-weight-bold">{{startingForm?.basicInfo?.name}}</label>
+  </div>
+  <div class="user-detail-list" role="listitem" tabindex="0"  attr.aria-label="Year of Birth:{{startingForm?.basicInfo?.yearOfBirth}}" *ngIf="startingForm && startingForm?.basicInfo?.yearOfBirth">
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Year of Birth:</label>
+    <label class="label-values fnormal font-weight-bold">{{startingForm?.basicInfo?.yearOfBirth}}</label>
+  </div>
+  <div class="user-detail-list" role="listitem" tabindex="0"  attr.aria-label="State:{{startingForm?.onboardingInfo?.children?.persona?.state?.name}}" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.state?.name">
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">State:</label>
+    <label
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.state?.name}}</label>
+  </div>
+  <div class="user-detail-list" role="listitem" tabindex="0"  attr.aria-label="District:{{startingForm?.onboardingInfo?.children?.persona?.district?.name}}" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.district?.name">
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">District:</label>
+    <label
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.district?.name}}</label>
+  </div>
+  <div class="user-detail-list" role="listitem" tabindex="0"  attr.aria-label="School:{{startingForm?.onboardingInfo?.children?.persona?.school?.name}}" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.school?.name">
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">School:</label>
+    <label
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.school?.name}}</label>
+  </div>
+  <div class="user-detail-list" role="listitem" tabindex="0"  attr.aria-label="Block:{{startingForm?.onboardingInfo?.children?.persona?.block?.name}}" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.block?.name">
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Block:</label>
+    <label
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.block?.name}}</label>
+  </div>
+  <div class="user-detail-list" role="listitem" tabindex="0"  attr.aria-label="Cluster:{{startingForm?.onboardingInfo?.children?.persona?.cluster?.name}}" *ngIf="startingForm && startingForm?.onboardingInfo?.children?.persona?.cluster?.name">
+    <label class="label-names fnormal font-weight-normal pr-8" role="heading">Cluster:</label>
+    <label
+      class="label-values fnormal font-weight-bold">{{startingForm?.onboardingInfo?.children?.persona?.cluster?.name}}</label>
+  </div>
+</div>
+<!-- user-details gray box new design end-->
+<div class="signup-form-content">
 <!-- <p *ngIf="mode === 'phone' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0081 | interpolate:'{instance}': instance}}</p>
 <p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082 | interpolate:'{instance}': instance}}</p> -->
 
-
-
 <!-- <div class="grey text text-center pt-16">{{resourceService.frmelmnts.lbl.OTPhasbeensent}} {{resourceService.frmelmnts.lbl.toYourEmailPhone}}</div>-->
-<div class="grey text text-center otp-label">
-  <span *ngIf="emailAddress">{{resourceService.frmelmnts.lbl.OTPhasbeensentToEmail}}:<br>{{emailAddress}} </span>
-  <span *ngIf="phoneNumber">{{resourceService.frmelmnts.lbl.OTPhasbeensentToPhone}}:<br>{{phoneNumber}} </span>
+<div tabindex="0" class="grey text text-center otp-label">
+  <span *ngIf="emailAddress">{{resourceService.frmelmnts.lbl.OTPhasbeensentToEmail}}:<br><b>{{emailAddress}}</b></span>
+  <span *ngIf="phoneNumber">{{resourceService.frmelmnts.lbl.OTPhasbeensentToPhone}}:<br><b>{{phoneNumber}}</b></span>
 </div>
-<div class="grey text text-center my-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
+<div tabindex="0" class="grey text text-center mb-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
-<label *ngIf="redirecterrorMessage" class="color-danger sb-color-red text fs-1 text-center mb-8">The redirectURL/errorcallbackURL do not match the domain</label>
-<div *ngIf="showSignUpLink" class="">{{unabletoVerifyErrorMessage}}<br>  Please
-  <span tabindex="0" (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
-  again</div>
-<form class="sb-form borderd mb-16" [formGroup]="otpForm">
+<div tabindex="0" class="grey text font-weight-bold text-center otp-label" *ngIf="startingForm && startingForm?.basicInfo?.isMinor">
+  <span>{{resourceService.frmelmnts.lbl.enterOTPByParent}}</span>
+</div>
+
+<label  tabindex="0" *ngIf="redirecterrorMessage" class="color-danger sb-color-red text fs-1 text-center mb-8">The redirectURL/errorcallbackURL do not match the domain</label>
+<div *ngIf="showSignUpLink" class="">{{unabletoVerifyErrorMessage}}<br> Please <span tabindex="0" (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span> again
+</div>
+<form class="sb-form borderd my-16" [formGroup]="otpForm">
   <div class="sb-field-group mb-16 text-left">
-      <div class="sb-field">
-<label *ngIf="!infoMessage" for="enterOTP" class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</label>
-<label *ngIf="errorMessage" class="sb-text-error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
-<label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
-        <input class="sb-form-control" tabindex="0" autofocus id="enterOTP" [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp"  placeholder="{{resourceService.frmelmnts.lbl.enterOTP}}">
-      </div>
+    <div class="sb-field">
+      <label *ngIf="!infoMessage" for="enterOTP"
+        class="fs-1 text-left mb-8 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</label>
+      <label *ngIf="errorMessage" class="sb-text-error d-inline-block line-height-1-3">{{errorMessage |
+        interpolate:'{remainingAttempt}': remainingAttempt}}</label>
+      <label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
+      <input class="sb-form-control" tabindex="0" autofocus id="enterOTP" [ngClass]="{'orange-border': errorMessage}"
+        formControlName="otp" type="text" name="otp" placeholder="{{resourceService.frmelmnts.lbl.enterOTP}}">
+    </div>
   </div>
-  <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-  <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
-       
-       <button type="button" [attr.readonly]="disableResendButton" appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 w-50" tabindex="0"
-       [ngClass]="{'sb-btn-disabled resend-disable': !disableResendButton}" [disabled]="!disableResendButton" [attr.aria-disabled]="disableResendButton == false ? false : true" (click)="generateResendOTP();" type="button" value="{{resendOTPbtn}}">{{resendOTPbtn}}</button>
-       <button type="submit" [attr.readonly]="disableSubmitBtn" role="button" appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-       class="sb-btn sb-btn-normal w-50" [disabled]="disableSubmitBtn" [attr.aria-disabled]="disableSubmitBtn == true ? true : false" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="0" (click)="verifyOTP()">{{resourceService.frmelmnts.lbl.submit}}</button>
-      </div>
-      <a tabindex="0" role="button" aria-label="re captcha" (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
+  <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha"
+    (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible">
+  </re-captcha>
+
+  <!-- Terms and Conditions popup -->
+  <!-- For Minor -->
+  <div *ngIf="startingForm && startingForm?.basicInfo?.isMinor"
+    class="required sb-checkbox sb-checkbox-primary sb-field my-16">
+    <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
+      formControlName="tncAccepted" name="tncAccepted">
+    <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMinor}}
+      <a class="text-underline fsmall" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
+        {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
+      </a> {{resourceService?.frmelmnts?.lbl?.tncLabelForMinorSub | interpolate:'{instance}': instance}}
+    </label>
+  </div>
+  <!-- For Minor -->
+
+  <!-- For Major -->
+  <div *ngIf="startingForm && !startingForm?.basicInfo?.isMinor"
+    class="required sb-checkbox sb-checkbox-primary sb-field my-16">
+    <input type="checkbox" id="tncAccepted" role="checkbox" tabindex="0" (click)="generateTelemetry($event)"
+      formControlName="tncAccepted" name="tncAccepted">
+    <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabelForMajor}}
+      <a class="text-underline fsmall" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
+        {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
+      </a>
+    </label>
+  </div>
+  <!-- For Major -->
+  <!-- Terms and Conditions popup -->
+
+  <div class="assessment-action-buttons mt-16 d-flex flex-ai-center flex-dc">
+    <button type="submit" [attr.readonly]="disableSubmitBtn" role="button" appTelemetryInteract
+      [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+      class="sb-btn sb-btn-normal w-100" [disabled]="disableSubmitBtn"
+      [attr.aria-disabled]="disableSubmitBtn == true ? true : false"
+      [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" tabindex="0"
+      (click)="verifyOTP()">{{resourceService.frmelmnts.lbl.submit}}</button>
+
+      <span class="mt-16 w-100 text-center">Didn’t Receive an OTP? <button type="button" [attr.readonly]="disableResendButton" appTelemetryInteract
+        [telemetryInteractEdata]="submitResendOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" tabindex="0"
+        [ngClass]="{'sb-btn-disabled resend-disable': !disableResendButton}" [disabled]="!disableResendButton"
+        [attr.aria-disabled]="disableResendButton == false ? false : true" (click)="generateResendOTP();" type="button"
+        value="{{resendOTPbtn}}">{{resendOTPbtn}}</button></span>
+  </div>
+  <a tabindex="0" role="button" aria-label="re captcha" (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
 </form>
+<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
+  *ngIf="showTncPopup"></app-tnc-popup>
+</div>
+
+

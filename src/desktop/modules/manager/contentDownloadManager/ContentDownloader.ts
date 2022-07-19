@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import StreamZip from "node-stream-zip";
 import { containerAPI, ISystemQueue, ITaskExecuter } from "@project-sunbird/OpenRAP/api";
 import * as path from "path";
+import * as fs from "fs";
 import { Observer } from "rxjs";
 import { Inject } from "typescript-ioc";
 import ContentLocation from "../../controllers/contentLocation";
@@ -207,8 +208,18 @@ export class ContentDownloader implements ITaskExecuter {
     const zipHandler: any = await this.loadZipHandler(path.join(this.ecarBasePath, contentDetails.downloadId));
     await this.checkSpaceAvailability(path.join(this.ecarBasePath, contentDetails.downloadId), zipHandler);
     const entries = zipHandler.entries();
-    const contentPath = await this.contentLocation.get();
-    await this.fileSDK.mkdir(contentDetails.identifier);
+    let contentPath = await this.contentLocation.get();
+    if(contentDetails.parentRoot) {
+      contentPath = path.join(contentPath, contentDetails.parentRoot);
+      if(!fs.existsSync(contentPath)) {
+        await this.fileSDK.mkdir(contentDetails.parentRoot);
+      }
+      if(!fs.existsSync(path.join(contentPath, contentDetails.identifier))) {
+        fs.mkdirSync(path.join(contentPath, contentDetails.identifier));
+      }
+    } else {
+      await this.fileSDK.mkdir(contentDetails.identifier);
+    }
     for (const entry of _.values(entries) as any) {
       await this.extractZipEntry(zipHandler, entry.name,
         path.join(contentPath, contentDetails.identifier));
@@ -223,23 +234,34 @@ export class ContentDownloader implements ITaskExecuter {
       await this.checkSpaceAvailability(path.join(contentPath,
         contentDetails.identifier, path.basename(metaData.artifactUrl)));
       this.standardLog.debug({ id: 'ARTIFACT_EXTRACTION_STEP', message: `${this.contentDownloadData._id}:Extracting artifact url content: ${contentId}` });
-      await this.fileSDK.unzip(path.join(contentDetails.identifier, path.basename(metaData.artifactUrl)),
-      contentDetails.identifier, false);
-      itemsToDelete.push(path.join("content", contentDetails.identifier, path.basename(metaData.artifactUrl)));
+      const filePath = contentDetails.parentRoot ? `${contentDetails.parentRoot}/${contentDetails.identifier}` : contentDetails.identifier;
+      await this.fileSDK.unzip(path.join(filePath, path.basename(metaData.artifactUrl)), filePath, false);
+      itemsToDelete.push(path.join("content", filePath, path.basename(metaData.artifactUrl)));
     }
     contentDetails.step = "EXTRACT";
     this.observer.next(this.contentDownloadData);
     return { itemsToDelete };
   }
   private async saveContentToDb(contentId: string, contentDetails: IContentDownloadList) {
-    const contentPath = await this.contentLocation.get();
+    let contentPath = await this.contentLocation.get();
+    if(contentDetails.parentRoot) {
+      contentPath = path.join(contentPath, contentDetails.parentRoot);
+    }
     const manifestJson = await this.fileSDK.readJSON(
       path.join(contentPath, contentDetails.identifier, "manifest.json"));
     let metaData: any = _.get(manifestJson, "archive.items[0]");
-    if (metaData.mimeType === "application/vnd.ekstep.content-collection") {
+    if (metaData.mimeType === "application/vnd.ekstep.content-collection" || metaData.mimeType === "application/vnd.sunbird.questionset") {
       try {
         const hierarchy = await this.fileSDK.readJSON(path.join(contentPath, contentDetails.identifier, "hierarchy.json"));
-        metaData = _.get(hierarchy, 'content') ? hierarchy.content : metaData;
+        if(metaData.mimeType === "application/vnd.ekstep.content-collection") {
+          metaData = _.get(hierarchy, 'content') ? hierarchy.content : metaData;
+        } else {
+          const instructions = _.get(metaData, 'instructions') ? metaData.instructions : "";
+          metaData = _.get(hierarchy, 'questionset') ? hierarchy.questionset : metaData;
+          metaData["instructions"] = instructions;
+          metaData.isAvailableLocally = true;
+          metaData.basePath = `http://localhost:${process.env.APPLICATION_PORT}/${contentDetails.identifier}`;
+        }
       } catch(error) {
         this.standardLog.error({ id: 'CONTENT_DOWNLOADER_JSON_READ_FAILED', message: `Failed to read JSON file`, error });
         metaData.children = this.createHierarchy(_.cloneDeep(_.get(manifestJson, "archive.items")), metaData);

@@ -66,6 +66,7 @@ export class GeneraliseLabelService {
 
   private getResourcedFileName(contentData, lang) {
     this.collectionType = contentData.primaryCategory.toLocaleLowerCase();
+    contentData.trackable = (contentData.trackable && typeof contentData.trackable === 'string') ? JSON.parse(contentData.trackable) : contentData.trackable;
     if (!contentData.trackable && this.collectionType === 'course') {
       this.isTrackable = 'trackable';
     } else if (_.get(contentData, 'trackable.enabled') === 'Yes') {

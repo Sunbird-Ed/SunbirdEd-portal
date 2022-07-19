@@ -1,87 +1,73 @@
 
-import { of as observableOf, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
-import { CoreModule, OrgDetailsService, ContentService, PublicDataService } from '@sunbird/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterModule, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { ResourceService, LayoutService, UtilService } from '../../../shared';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LanguageDropdownComponent } from './language-dropdown.component';
-import { configureTestSuite } from '@sunbird/test-util';
 
 describe('LanguageDropdownComponent', () => {
     let component: LanguageDropdownComponent;
-    let fixture: ComponentFixture<LanguageDropdownComponent>;
-    const resourceBundle = {
-        'messages': {
-            'stmsg': {
-                'm0007': 'Search for something else',
-                'm0006': 'No result'
-            },
-            'fmsg': {
-                'm0077': 'Fetching search result failed',
-                'm0051': 'Fetching other courses failed, please try again later...'
-            }
-        },
-        languageSelected$: observableOf({}),
-        getLanguageChange: () => { },
-        initialize: () => {},
-        getResource: () => ({})
+    const mockCacheService: Partial<CacheService> = {
+        set: jest.fn(),
+        get: jest.fn()
     };
-    const mockQueryParma = {
-        'query': 'hello'
+    const mockActivatedRoute: Partial<ActivatedRoute> = {};
+    const mockLayoutService: Partial<LayoutService> = {
+        isLayoutAvailable: jest.fn(() => true),
+        updateSelectedContentType: jest.fn(() => {
+            return
+        }) as any
     };
-    const routerStub = {
-        url: '',
-        navigate : jasmine.createSpy('navigate')
+    const mockUtilService: Partial<UtilService> = {
+        emitLanguageChangeEvent: jest.fn()
     };
-    const fakeActivatedRoute = {
-        'queryParams': observableOf({ language: 'en' }),
-        snapshot: {
-            params: {
-                slug: 'ap'
-            }
-        }
+    const mockResourceService: Partial<ResourceService> = {
+        initialize: jest.fn(),
+        getResource: jest.fn(),
+        getLanguageChange: jest.fn()
     };
-    configureTestSuite();
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],
-            providers: [ConfigService, OrgDetailsService, CacheService, BrowserCacheTtlService, UtilService,
-                { provide: ResourceService, useValue: resourceBundle }
-            ],
-            schemas: [NO_ERRORS_SCHEMA]
-        })
-            .compileComponents();
-    }));
+    const mockRouter: Partial<Router> = {
+        url: '/learn?selectedTab=course',
+        navigate: jest.fn()
+    };
+    beforeAll(() => {
+        component = new LanguageDropdownComponent(
+            mockActivatedRoute as ActivatedRoute,
+            mockCacheService as CacheService,
+            mockResourceService as ResourceService,
+            mockRouter as Router,
+            mockUtilService as UtilService,
+            mockLayoutService as LayoutService,
+        )
+    });
+
     beforeEach(() => {
-        fixture = TestBed.createComponent(LanguageDropdownComponent);
-        component = fixture.componentInstance;
+        jest.clearAllMocks();
     });
 
     it('On language change', () => {
-        const utilService = TestBed.get(UtilService);
-        const cacheService = TestBed.get(CacheService);
-        spyOn(utilService, 'emitLanguageChangeEvent');
-        cacheService.set('portalLanguage', 'en', { maxAge: 10 * 60 });
+        mockCacheService.set('portalLanguage', 'en', { maxAge: 10 * 60 });
         component.onLanguageChange('en');
-        expect(utilService.emitLanguageChangeEvent).toHaveBeenCalled();
+        expect(mockUtilService.emitLanguageChangeEvent).toHaveBeenCalled();
+        expect(mockResourceService.getResource).toHaveBeenCalled();
     });
-    it('On ngOninit for else case', inject([CacheService], (cacheService) => {
-        cacheService.set('portalLanguage', null);
+
+    it('On ngOninit for else case', () => {
+        mockCacheService.set('portalLanguage', null);
         component.ngOnInit();
         expect(component.selectedLanguage).toBe('en');
-    }));
+    });
+
     it('should get the interact edata for telemetry', () => {
-        const route = TestBed.get(Router);
-        route.navigate(['learn?selectedTab=course'])
-        .then(() => {
-            spyOn(component, 'getTelemetryInteractEdata');
-            const result = component.getTelemetryInteractEdata('en');
-            expect(result).toEqual({id: 'en-lang', type: 'click', pageid: 'learn'});
-        });
+        mockRouter.navigate(['learn?selectedTab=course'])
+        jest.spyOn(component, 'getTelemetryInteractEdata');
+        const result = component.getTelemetryInteractEdata('en');
+        expect(result).toEqual({ id: 'en-lang', type: 'click', pageid: 'learn' });
+    });
+
+    it('should tell is layout is available', () => {
+        const layoutData = component.isLayoutAvailable();
+        expect(layoutData).toBe(true);
     });
 });
-

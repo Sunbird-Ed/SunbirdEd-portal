@@ -93,7 +93,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       },
       (err: ServerResponse) => {
         this.showError = true;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        this.toasterService.error(this.resourceService.messages?.fmsg?.m0004);
       });
   }
 
@@ -177,14 +177,14 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   }
   ShowCertDetails() {
     if (this.batchList && this.batchList[0]) {
-      const batchDetails = this.batchList[0]
+      const batchDetails = this.batchList[0];
       this.showCertificateDetails = !(_.isEmpty(_.get(batchDetails, 'certTemplates'))) ? true : false;
       const certDetails = _.get(batchDetails, 'certTemplates');
-      for (var key in certDetails) {
+      for (const key in certDetails) {
         const certCriteria = certDetails[key]['criteria'];
         this.showCompletionCertificate = _.get(certCriteria, 'enrollment.status') === 2 ? true : false;
         this.showMeritCertificate = _.get(certCriteria, 'assessment.score') ? true : false;
-        this.meritCertPercent = _.get(certCriteria, 'assessment.score.>=')
+        this.meritCertPercent = _.get(certCriteria, 'assessment.score.>=');
       }
 
     }

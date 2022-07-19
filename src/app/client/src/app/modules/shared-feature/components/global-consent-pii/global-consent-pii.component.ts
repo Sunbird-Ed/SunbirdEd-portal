@@ -78,7 +78,9 @@ export class GlobalConsentPiiComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(response => {
         if (response.consent) {
-          this.showConsentPopup = true;
+          if (this.type === 'course-consent' || this.type === 'global-consent') {
+            this.showConsentPopup = true;
+          }
           this.removeQueryParam();
         }
       });
@@ -90,12 +92,12 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
     this.userInformation['phone'] = this.usersProfile.phone;
-    if(this.usersProfile && this.usersProfile.externalIds) {
+    if (this.usersProfile && this.usersProfile.externalIds) {
       _.forEach(this.usersProfile.externalIds, (externaleId) => {
         if (externaleId.provider === this.usersProfile.channel) {
-          this.userInformation['externalId'] = externaleId.id; 
+          this.userInformation['externalId'] = externaleId.id;
         }
-      });      
+      });
     }
 
     if (_.get(this.usersProfile, 'userLocations.length')) {
@@ -193,8 +195,8 @@ export class GlobalConsentPiiComponent implements OnInit {
     } else if ( this.type === 'global-consent') {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
-      const declReq = []
-      if(this.getDeclarationReqObject(this.usersProfile)){
+      const declReq = [];
+      if (this.getDeclarationReqObject(this.usersProfile)) {
         declReq.push(this.getDeclarationReqObject(this.usersProfile));
         this.updateUserDeclaration(declReq);
       }
@@ -271,30 +273,30 @@ export class GlobalConsentPiiComponent implements OnInit {
   }
   getDeclarationReqObject(usersProfile) {
     let userExternalId = null;
-    if(usersProfile && usersProfile.externalIds) {
+    if (usersProfile && usersProfile.externalIds) {
       _.forEach(usersProfile.externalIds, (externaleId) => {
         if (externaleId.provider === usersProfile.channel) {
-          userExternalId = externaleId.id; 
+          userExternalId = externaleId.id;
         }
-      });      
+      });
     }
-    const info:any = {
+    const info: any = {
       'declared-ext-id': userExternalId,
       'declared-phone': '',
-      'declared-email':''
-    }
+      'declared-email': ''
+    };
     const declarationObj = {
-      operation:'add',
+      operation: 'add',
       userId : usersProfile.userId,
       orgId: usersProfile.rootOrgId,
       info: info
-    }
-    if(userExternalId) {
+    };
+    if (userExternalId) {
       return declarationObj;
     } else {
       return null;
     }
-    
+
   }
 
   ngOnDestroy() {

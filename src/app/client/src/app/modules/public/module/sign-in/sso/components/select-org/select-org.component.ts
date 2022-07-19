@@ -19,7 +19,7 @@ export class SelectOrgComponent implements OnInit, AfterViewInit {
   public submitOrgInteractEdata;
   enableSSO = (<HTMLInputElement>document.getElementById('enableSSO'))
     ? (<HTMLInputElement>document.getElementById('enableSSO')).value || 'true' : 'true';
-  isIOSDevice: boolean = false;
+  isIOSDevice = false;
 
   constructor(private formService: FormService, public activatedRoute: ActivatedRoute, private tenantService: TenantService,
     public resourceService: ResourceService, public navigationhelperService: NavigationHelperService) { }

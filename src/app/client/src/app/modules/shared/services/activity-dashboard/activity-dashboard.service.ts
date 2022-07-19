@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ActivityDashboardService {
- 
+
   public _isActivityAdded = false;
- 
+
   constructor() { }
 
   set isActivityAdded(isAdded) {

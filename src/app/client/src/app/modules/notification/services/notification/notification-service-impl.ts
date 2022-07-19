@@ -64,7 +64,7 @@ export class NotificationServiceImpl implements SbNotificationService {
     const navigationDetails = await this.getNavigationPath(notificationData);
 
     if (navigationDetails) {
-      const path = navigationDetails['path']|| '';
+      const path = navigationDetails['path'] || '';
       const navigationExtras: NavigationExtras = navigationDetails['navigationExtras'] || {};
       if (path) {
         this.showNotificationModel$.next(false);
@@ -82,7 +82,7 @@ export class NotificationServiceImpl implements SbNotificationService {
       const req = {
         ids: [notificationData.id],
         userId: _.get(this.userService, 'userid')
-      }
+      };
       this.generateInteractEvent('notification-read', { id: notificationData.id, type: 'notificationId' });
       this.NotificationCsService.notificationUpdate(req).subscribe(() => {
         this.fetchNotificationList();
@@ -115,7 +115,7 @@ export class NotificationServiceImpl implements SbNotificationService {
   }
 
   /**
-   * @description - delete all the notification from the user list 
+   * @description - delete all the notification from the user list
    * @param  {any} notificationListData
    * @returns Promise
    */
@@ -162,14 +162,14 @@ export class NotificationServiceImpl implements SbNotificationService {
       return {};
     }
   }
-  
+
   private async deleteNotificationData(notificationId) {
     try {
       const req = {
         ids: [notificationId],
         userId: this.userService.userid,
         category: 'group-feed'
-      }
+      };
       await this.NotificationCsService.notificationDelete(req).toPromise();
       return true;
     } catch (e) {
@@ -201,5 +201,5 @@ export class NotificationServiceImpl implements SbNotificationService {
     };
     this.telemetryService.interact(data);
   }
-  
+
 }

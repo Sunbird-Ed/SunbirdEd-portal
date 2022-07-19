@@ -1,7 +1,7 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [appTelemetryImpression]="telemetryImpression">
-  <div class="ui container d-flex flex-ai-center">
+  <div class="ui container d-flex flex-ai-center py-8">
     <app-back-button></app-back-button>
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap ml-16 w-100">
       <div class="d-flex flex-dc w-100">
@@ -30,12 +30,11 @@
 
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-activity-search relative9':'sb-back-header'" >
   <div [ngClass]="layoutConfiguration ? 'd-flex':'ui container'">
-    <div *ngIf="showFilters" class="pr-16 flex-b">
+    <div *ngIf="showFilters" class="flex-b" [ngClass]="layoutConfiguration ? '':'pr-16'">
         <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
         </app-global-search-filter>
     </div>
-    <div class="flex-basis-1">
-    <div class="mt-24">
+    <div class="flex-basis-1" [ngClass]="layoutConfiguration ? '':'mt-24'">
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
           <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title">
@@ -93,7 +92,6 @@
           </div>
         </div>
       </div>
-    </div>
     </div>
   
   </div>

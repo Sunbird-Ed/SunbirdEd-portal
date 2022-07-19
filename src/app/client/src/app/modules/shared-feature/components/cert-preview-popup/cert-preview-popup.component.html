@@ -1,17 +1,24 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-cert-preview-modal" appBodyScroll (dismissed)="closeModal()" #modal>
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.cert?.lbl?.certPreview }}
-  </div>
-  <div class="sb-modal-content">
-    <div class="cert-preview-img"><img [src]="certTemplateURL(template?.artifactUrl)"></div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeModal('select')">
-      {{resourceService?.frmelmnts?.cert?.lbl?.selectTemplate}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeModal()">
-      {{resourceService?.frmelmnts?.btn?.close}}
-    </button>
-  </div>
-</sui-modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'normal'}" (dismiss)="closeModal()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.cert?.lbl?.certPreview }}
+          </div>
+          <div class="sb-modal-content">
+            <div class="cert-preview-img"><img [src]="certTemplateURL(template?.artifactUrl)"></div>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeModal('select')">
+              {{resourceService?.frmelmnts?.cert?.lbl?.selectTemplate}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeModal()">
+              {{resourceService?.frmelmnts?.btn?.close}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

@@ -46,6 +46,15 @@ export default class ContentDelete {
                 failed.push(err.message || err.errMessage);
             });
             deleted =  _.map(deleted, (content) => content.id);
+            _.forEach(contentsToDelete, (content) => {
+                if(content.mimeType === 'application/vnd.sunbird.questionset') {
+                    _.forEach(content.children, (child) => {
+                        if(child.mimeType === 'application/vnd.sunbird.questionset' && !_.includes(deleted, child.identifier)) {
+                            deleted = [...deleted, child.identifier]
+                        }
+                    })
+                }
+            })
             const contentPaths: string[] = _.map(deleted, (id) => {
                 if (id) {
                     return path.join("content", id);
@@ -79,7 +88,7 @@ export default class ContentDelete {
         for (const content of contentsToDelete) {
             content.desktopAppMetadata.isAvailable = false;
             deleteContents.push(content);
-            if (content.mimeType === "application/vnd.ekstep.content-collection") {
+            if (content.mimeType === "application/vnd.ekstep.content-collection" || content.mimeType === "application/vnd.sunbird.questionset") {
                 const children: object[] = await this.getResources(content);
                 for (const child of children["docs"]) {
                     child.desktopAppMetadata.isAvailable = false;

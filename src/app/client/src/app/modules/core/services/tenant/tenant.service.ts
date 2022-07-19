@@ -6,7 +6,7 @@ import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { skipWhile, map, catchError, mergeMap, tap, retry } from 'rxjs/operators';
+import { skipWhile, map, catchError, mergeMap, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 
@@ -21,11 +21,11 @@ export class TenantService extends DataService {
   /**
    * BehaviorSubject containing tenant data.
    */
-  private _tenantData$ = new BehaviorSubject<ITenantInfo>(undefined);
+  _tenantData$ = new BehaviorSubject<ITenantInfo>(undefined);
   /**
    * BehaviorSubject containing tenant settings data.
    */
-  private _tenantSettings$ = new BehaviorSubject<ITenantSettings>(undefined);
+  _tenantSettings$ = new BehaviorSubject<ITenantSettings>(undefined);
   /**
    * Read only observable containing tenant data.
    */
@@ -132,7 +132,7 @@ export class TenantService extends DataService {
         try {
           if (JSON.parse(data.result.response.value)) { configResponse = data; }
         } catch (parseJSONResponse) {
-          console.error('org settings parse error => ', parseJSONResponse);
+          // console.error('org settings parse error => ', parseJSONResponse);
         }
         return configResponse;
       } else {

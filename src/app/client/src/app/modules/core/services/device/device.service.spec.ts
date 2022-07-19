@@ -1,20 +1,33 @@
-import {TestBed, inject} from '@angular/core/testing';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
-import {ConfigService} from '@sunbird/shared';
-import {DeviceService} from './device.service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { of, throwError } from "rxjs";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { HttpClient } from "@angular/common/http";
+import { DeviceService } from './device.service';
 
 describe('DeviceService', () => {
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [DeviceService, ConfigService, HttpClient]
-    });
+  let deviceService: DeviceService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        DEVICE_PREFIX: '/device/'
+      }
+    }
+  };
+  const mockHttpClient: Partial<HttpClient> = {
+  };
+  beforeAll(() => {
+    deviceService = new DeviceService(
+      mockConfigService as ConfigService,
+      mockHttpClient as HttpClient
+    );
   });
 
-  it('should be created', () => {
-    const service: DeviceService = TestBed.get(DeviceService);
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('should create a instance of DeviceService', () => {
+    expect(deviceService).toBeTruthy();
+    expect(deviceService.baseUrl).toBe('/device/');
   });
 });

@@ -16,18 +16,22 @@ export class MlGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.userService.userData$.pipe(take(1)).toPromise().then((profileData: IUserData) => {
+      const subRoles = [];
       if (profileData
         && profileData.userProfile
-        && profileData.userProfile['profileUserType']
-        && (profileData.userProfile['profileUserType']['type'] === 'administrator' || profileData.userProfile['profileUserType']['type'] === 'leader' || profileData.userProfile['profileUserType']['type'] === 'teacher')
-      ) {
+        && profileData.userProfile['profileUserTypes']) {
+        for (const subRole of profileData.userProfile['profileUserTypes']) {
+          subRoles.push(subRole.type);
+        }
+      }
+      if (subRoles.includes('administrator') || subRoles.includes('leader') || subRoles.includes('teacher')) {
         return true;
       } else {
         this.toasterService.error(_.get(this.resourceService, 'messages.stmsg.m0145'));
         const queryParam = {
           showEditUserDetailsPopup: true
         };
-       this.router.navigate(['profile'], {queryParams: queryParam});
+        this.router.navigate(['profile'], { queryParams: queryParam });
         return false;
       }
     }).catch(error => {

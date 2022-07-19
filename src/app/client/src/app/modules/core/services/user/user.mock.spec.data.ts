@@ -607,14 +607,14 @@ export const mockUserData = {
                 'currentLoginTime': null,
                 'location': '',
                 'status': 1,
-                'userOrgDetails':{
+                'userOrgDetails': {
                     'PUBLIC': {
-                        'orgId':'01285019302823526477', 
-                        'orgName':'ORG_001'},
+                        'orgId': '01285019302823526477',
+                        'orgName': 'ORG_001'},
                     'COURSE_MENTOR': {
-                        'orgId':'01285019302823526477', 'orgName':'ORG_001'},
+                        'orgId': '01285019302823526477', 'orgName': 'ORG_001'},
                     'COURSE_CREATOR': {
-                        'orgId':'01285019302823526477',  'orgName':'ORG_001'}
+                        'orgId': '01285019302823526477',  'orgName': 'ORG_001'}
                 }
             }
         }

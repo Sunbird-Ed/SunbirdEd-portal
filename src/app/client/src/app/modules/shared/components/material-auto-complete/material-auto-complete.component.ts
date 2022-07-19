@@ -1,4 +1,4 @@
-import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnChanges,ViewChild,ChangeDetectorRef } from '@angular/core';
+import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-material-auto-complete',
@@ -6,11 +6,9 @@ import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnCha
   styleUrls: ['./material-auto-complete.component.scss']
 })
 export class MaterialAutoCompleteComponent implements OnChanges {
-
-
-  _selectedFilters: Array<any>;
+  @Input() dynamicplaceholder:string;
   @Input()
-  get selectedFilters() {  
+  get selectedFilters() {
     return this._selectedFilters;
   }
   set selectedFilters(val) {
@@ -20,11 +18,8 @@ export class MaterialAutoCompleteComponent implements OnChanges {
 
   }
 
-  _dropdownList: Array<any>;
-  selected =[];
-
   @Input()
-  get dropdownList() {  
+  get dropdownList() {
     return this._dropdownList;
   }
 
@@ -34,11 +29,29 @@ export class MaterialAutoCompleteComponent implements OnChanges {
     this.dropDownSelectedShow();
   }
 
-  @ViewChild("autocompleteInput") searchField: ElementRef;
+  constructor(private _elementRef: ElementRef<HTMLElement>, private changeDetectorRef: ChangeDetectorRef) {}
+  get selectedDpdwnInput() {
+    return this._selectedDpdwnInput;
+  }
+
+  set selectedDpdwnInput(val) {
+    this._selectedDpdwnInput = val;
+  }
+
+
+  _selectedFilters: Array<any>;
+
+  _dropdownList: Array<any>;
+  selected = [];
+
+  @ViewChild('autocompleteInput') searchField: ElementRef;
 
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
 
   displayDropdown = false;
+  private _placeholder: string;
+
+  @Input() _selectedDpdwnInput: any;
   @HostListener('document:click', ['$event'])
   clickout(event: any) {
     if (!(this._elementRef && this._elementRef.nativeElement.contains(event.target))) {
@@ -46,34 +59,24 @@ export class MaterialAutoCompleteComponent implements OnChanges {
     }
   }
 
-  @Input()
-  get placeholder(): string { return this._placeholder; }
-  set placeholder(value: string) {
-    this._placeholder = "0 selections";
-
-  }
-  private _placeholder: string;
-
-  constructor(private _elementRef: ElementRef<HTMLElement>,private changeDetectorRef: ChangeDetectorRef) {}
-
   ngOnChanges() {
     if (!this.dropdownList) {
       throw new TypeError('\'dropdownList\' is Required');
     } else if (!(this.dropdownList instanceof Array)) {
       throw new TypeError('\'dropdownList\' should be an Array of objects');
-    }  
+    }
   }
 
-  DropdownValueSelected(listItem){
-    if(listItem){
-      if(this.selected.includes(listItem)){
-        this.selected = this.selected.filter(item=>{
-          if(item == listItem){
-            return false
+  DropdownValueSelected(listItem) {
+    if (listItem) {
+      if (this.selected.includes(listItem)) {
+        this.selected = this.selected.filter(item => {
+          if (item == listItem) {
+            return false;
           } else {
-            return true
+            return true;
           }
-        })
+        });
 
       } else {
         this.selected.push(listItem);
@@ -89,7 +92,7 @@ export class MaterialAutoCompleteComponent implements OnChanges {
      if (this.selected.length > 0) {
       this.writeValue(`${this.selected.length} selections`);
     } else {
-      this.writeValue(`0 selections`);
+      this.writeValue(`Select ${this.dynamicplaceholder.toLowerCase()}`);
     }
 
   }
@@ -97,27 +100,18 @@ export class MaterialAutoCompleteComponent implements OnChanges {
   DisplayDropdown() {
     this.displayDropdown = true;
     this.changeDetectorRef.detectChanges();
-    setTimeout(()=>{
+    setTimeout(() => {
         this.searchField.nativeElement.focus();
-    },100)
+    }, 100);
 
   }
-  isChecked(item){
+  isChecked(item) {
 
-    if(this.selected.includes(item)){
+    if (this.selected.includes(item)) {
       return true;
     } else {
       return false;
     }
-  }
-
-  @Input() _selectedDpdwnInput: any;
-  get selectedDpdwnInput() {
-    return this._selectedDpdwnInput;
-  }
-
-  set selectedDpdwnInput(val) {
-    this._selectedDpdwnInput = val;
   }
 
   writeValue(value?: any) {

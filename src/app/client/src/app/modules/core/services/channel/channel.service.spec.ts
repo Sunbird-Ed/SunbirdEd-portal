@@ -1,46 +1,63 @@
-import { TestBed, inject } from '@angular/core/testing';
-
-import { ChannelService } from './channel.service';
-import {of as observableOf,  Observable, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { CoreModule, ContentService } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { serverRes } from './channel.service.spec.data';
-import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClient } from "@angular/common/http";
+import { doesNotReject } from "assert";
+import dayjs from "dayjs";
+import { of, throwError } from "rxjs";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { ChannelService } from "./channel.service";
 import { PublicDataService } from './../public-data/public-data.service';
-import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ChannelService', () => {
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
-      providers: [ChannelService]
-    });
+  let channelService: ChannelService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        CHANNEL: {
+          READ: 'channel/v1/read'
+        }
+      }
+    }
+  };
+  const mockPublicDataService: Partial<PublicDataService> = {
+    get: jest.fn().mockImplementation(() => { })
+  };
+  beforeAll(() => {
+    channelService = new ChannelService(
+      mockConfigService as ConfigService,
+      mockPublicDataService as PublicDataService
+    );
   });
 
-  it('should be created', inject([ChannelService], (service: ChannelService) => {
-    expect(service).toBeTruthy();
-  }));
-  it('Get a channel data', () => {
-    const service = TestBed.get(ChannelService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'post').and.callFake(() => observableOf(serverRes.successData));
-    service.getFrameWork('01246944855007232011').subscribe(
-      apiResponse => {
-        expect(apiResponse).toBe(serverRes.successData.result.channel);
-      }
-    );
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
-  it(' should throw error Get a channel data', () => {
-    const service = TestBed.get(ChannelService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'post').and.callFake(() => throwError({}));
-    service.getFrameWork('01246944855007232011').subscribe(
-      apiResponse => {
-        expect(apiResponse).toBe(serverRes.noResultData);
+  
+  it('should create a instance of channelService', () => {
+    expect(channelService).toBeTruthy();
+  });
+
+  describe('should fetch framework details', () => {
+    const hashTagId = 'NTP'
+    it('should call the getFrameWork method with hashTagId', (done) => {
+      jest.spyOn(channelService['publicDataService'],'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      channelService.getFrameWork(hashTagId).subscribe(() => {
+        done();
+      });
+      const obj = {
+        url : `${mockConfigService.urlConFig.URLS.CHANNEL.READ}/${hashTagId}`
       }
-    );
+      expect(channelService['publicDataService'].get).toHaveBeenCalledWith(obj);
+    });
   });
 });

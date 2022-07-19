@@ -89,7 +89,7 @@
     <div *ngIf="!isUnitCompleted"> 
       <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
       <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-      <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+      <mat-progress-bar mode="determinate" [value]="consumedContents" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
     </div>
   
   <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
@@ -158,7 +158,7 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false}" (dismiss)="shareLinkModal = false">
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="shareLinkModal = false">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
     </app-share-link>
@@ -168,37 +168,61 @@
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
 
 <!-- Start - Modal for Assessment attempts -->
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-    appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showMaxAttemptsModal">
-    <div class="sb-modal-content sb-join-modal-content">
-        <div class="sb-h4 px-0 py-20">
-          {{resourceService?.frmelmnts?.lbl?.selfAssessMaxAttempt}}
+<app-modal-wrapper *ngIf="showMaxAttemptsModal" [config]="{disableClose: true, size: 'normal'}"
+  (dismiss)="closeLoginModal()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-content sb-join-modal-content">
+            <div class="sb-h4 px-0 py-20">
+              {{resourceService?.frmelmnts?.lbl?.selfAssessMaxAttempt}}
+            </div>
+          </div>
+          <div class="sb-modal-actions">
+            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
+              [telemetryInteractEdata]="signInInteractEdata"
+              (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
+              class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
+              {{resourceService?.frmelmnts?.btn?.close}}
+            </a>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="sb-modal-actions">
-        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
-            [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
-            class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
-            {{resourceService?.frmelmnts?.btn?.close}}
-        </a>
-    </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 <!-- End - Modal for Assessment attempts -->
+
 <!-- Start - Modal for Assessment attempts -->
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-    appBodyScroll #modal *ngIf="showLastAttemptsModal">
-    <div class="sb-modal-content sb-join-modal-content">
-        <div class="sb-h4 px-0 py-20">
-          {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
+<app-modal-wrapper *ngIf="showLastAttemptsModal" [config]="{disableClose: true, size: 'small'}" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+
+          <div class="sb-modal-content sb-join-modal-content">
+            <div class="sb-h4 px-0 py-20">
+              {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
+            </div>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+              (click)="showLastAttemptsModal = false; onTocCardClick();">
+              {{resourceService.frmelmnts?.btn?.ok}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+              (click)="showLastAttemptsModal = false;">
+              {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="showLastAttemptsModal = false; onTocCardClick();">
-        {{resourceService.frmelmnts?.btn?.ok}}
-      </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showLastAttemptsModal = false;">
-        {{resourceService.frmelmnts?.btn?.cancel}}
-      </button>
-    </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 <!-- End - Modal for Assessment attempts -->
+
+    <!--Rating popup -->
+    <app-content-rating *ngIf="contentRatingModal && playerConfig" [contentData]="playerConfig.metadata"
+      (closeModal)="onRatingPopupClose()"></app-content-rating>

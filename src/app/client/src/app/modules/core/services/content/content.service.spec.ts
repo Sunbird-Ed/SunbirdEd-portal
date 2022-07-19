@@ -1,19 +1,36 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { ConfigService } from '@sunbird/shared';
-import { ContentService } from './content.service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { HttpClient } from "@angular/common/http";
+import { doesNotReject } from "assert";
+import dayjs from "dayjs";
+import { of, throwError } from "rxjs";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { ContentService } from "./content.service";
+
 
 describe('ContentService', () => {
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [ContentService, ConfigService, HttpClient]
-    });
+  let contentService: ContentService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        CONTENT_PREFIX: '/content/'
+      }
+    }
+  };
+  const mockHttpClient: Partial<HttpClient> = {
+  };
+  beforeAll(() => {
+    contentService = new ContentService(
+      mockConfigService as ConfigService,
+      mockHttpClient as HttpClient
+    );
   });
 
-  it('should be created', inject([ContentService], (service: ContentService) => {
-    expect(service).toBeTruthy();
-  }));
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('should create a instance of ContentService', () => {
+    expect(contentService).toBeTruthy();
+    expect(contentService.baseUrl).toBe('/content/');
+  });
 });

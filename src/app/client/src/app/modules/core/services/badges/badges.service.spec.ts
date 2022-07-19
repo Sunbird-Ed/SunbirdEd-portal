@@ -1,60 +1,116 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { LearnerService } from '@sunbird/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { ConfigService } from '@sunbird/shared';
-import { BadgesService } from './badges.service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { HttpClient } from "@angular/common/http";
+import { doesNotReject } from "assert";
+import dayjs from "dayjs";
+import { of, throwError } from "rxjs";
+import { DataService } from "..";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { BadgesService } from "./badges.service";
+import { LearnerService } from './../learner/learner.service';
 
 describe('BadgesService', () => {
-  configureTestSuite();
+  let badgesService: BadgesService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        PUBLIC_PREFIX: {},
+        BADGE: {
+          BADGE_CLASS_SEARCH: true,
+          APP_INFO: true
+        }
+      }
+    }
+  };
+  const req = {
+    request: {
+      filters: {
+        'issuerList': [],
+        'rootOrgId': '01285019302823526477',
+        'roles': 'PUBLIC',
+        'type': 'content',
+      }
+    }
+  };
+  const mockHttpClient: Partial<HttpClient> = {
+  };
+  const mockDataService: Partial<DataService> = {};
+  const mockLearnerService: Partial<LearnerService> = {
+    post: jest.fn().mockImplementation(() => { })
+  };
+  beforeAll(() => {
+    badgesService = new BadgesService(
+      mockConfigService as ConfigService,
+      mockLearnerService as LearnerService,
+    );
+  });
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [BadgesService, ConfigService, HttpClient, LearnerService]
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('should create a instance of badgeService', () => {
+    expect(badgesService).toBeTruthy();
+  });
+
+  describe('getAllBadgeList', () => {
+    it('should return all badge list', (done) => {
+      jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      badgesService.getAllBadgeList(req).subscribe(() => {
+        done();
+      });
+    });
+
+    it('should not return all badge list', () => {
+      // arrange
+      jest.spyOn(badgesService.learner, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      badgesService.getAllBadgeList(req).subscribe(() => {
+      });
+    });
+  });
+  xdescribe('getDetailedBadgeAssertions', () => {
+    it('should return detailed badge Assertions', (done) => {
+      jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      const assertions = {};
+      // act
+      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
+        done();
+      });
+    });
+
+    it('should not return detailed badge Assertions', () => {
+      // arrange
+      jest.spyOn(badgesService.learner, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      const assertions = {};
+      // act
+      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
+      });
     });
   });
 
-  it('should be created', inject([BadgesService], (service: BadgesService) => {
-    expect(service).toBeTruthy();
-  }));
-
-  it('should be  call initialize', () => {
-    const badgesService: BadgesService = TestBed.get(BadgesService);
-    spyOn(badgesService, 'initialize');
-    badgesService.initialize();
-    expect(badgesService.initialize).toHaveBeenCalled();
-  });
-
-  it('should be  call getAllBadgeList', () => {
-    const badgesService: BadgesService = TestBed.get(BadgesService);
-    const req = {
-      request: {
-        filters: {
-          'issuerList': [],
-          'rootOrgId': '01285019302823526477',
-          'roles': 'PUBLIC',
-          'type': 'content',
-        }
-      }
-    };
-    spyOn(badgesService, 'getAllBadgeList');
-    badgesService.getAllBadgeList(req);
-    expect(badgesService.getAllBadgeList).toHaveBeenCalledWith(req);
-  });
-
-  it('should be  call getDetailedBadgeAssertions', () => {
-    const badgesService: BadgesService = TestBed.get(BadgesService);
-    const req = {
-      request: {
-        filters: {
-          'badgeList': [],
-          'type': 'user',
-          'rootOrgId': '01285019302823526477'
-        }
-      }
-    };
-    spyOn(badgesService, 'getDetailedBadgeAssertions');
-    badgesService.getDetailedBadgeAssertions(req, []);
-    expect(badgesService.getDetailedBadgeAssertions).toHaveBeenCalledWith(req, []);
-  });
 });

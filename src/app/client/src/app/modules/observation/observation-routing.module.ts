@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { AuthGuard } from '../core/guard/auth-gard.service';
 import { ObservationDetailsComponent, ObservationListingComponent } from './components';
 const telemetryEnv = 'observation';
 
@@ -18,6 +16,9 @@ const routes: Routes = [
         component: ObservationDetailsComponent,
         data: {
             telemetry: { env: telemetryEnv, pageid: 'observation-details', type: 'view' },
+            menuBar: {
+                visible: false
+            }
         }
     }
 ];

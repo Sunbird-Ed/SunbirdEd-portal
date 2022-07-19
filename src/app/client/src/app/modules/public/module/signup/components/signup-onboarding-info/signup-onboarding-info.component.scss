@@ -1,0 +1,23 @@
+::ng-deep {
+    html[layout=joy] sb-form {
+        .multi-select-container .list-border {
+            border: 0.03125rem solid var(--gray-400) !important;
+        }
+    
+       .multi-select-container {
+            margin-top: 0.5rem !important;
+        }
+        .multi-select-container {
+            margin-bottom: 1rem !important;
+        }
+       
+    } 
+    .sb-onboard__footer {
+        max-width: 100% !important;
+        margin-top: 1.5rem !important;
+    }
+    .w-10 {
+        width: 5% !important;
+        max-width: 5% !important;
+    }
+}

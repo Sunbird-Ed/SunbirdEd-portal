@@ -259,18 +259,190 @@ export default (app, proxyURL, contentDownloadManager) => {
           res.status(res.statusCode).send(res.body);
       });
 
-      app.post("/certreg/v1/certs/search", customProxy(proxyURL), (req, res) => {
-          res.status(res.statusCode).send(res.body);
-      });
-      app.get("/learner/questionset/v1/hierarchy/:id", customProxy(proxyURL), (req, res) => {
-        res.status(res.statusCode).send(res.body);
-      });
-      app.get("/api/questionset/v1/read/:id", customProxy(proxyURL), (req, res) => {
-        res.status(res.statusCode).send(res.body);
-      });
-      app.post("/api/question/v1/list", customProxy(proxyURL), (req, res) => {
-        res.status(res.statusCode).send(res.body);
-      });
+      app.get(
+        "/learner/questionset/v1/hierarchy/:id",
+        async (req, res, next) => {
+          logger.debug(
+            `Received API call to get questionset hierarchy: ${req.params.id}`,
+          );
+  
+          logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`); 
+          const online = Boolean(_.get(req, "query.online") && req.query.online.toLowerCase() === "true");
+          const isProxyEnabled = _.has(req, "query.online") ? online : enableProxy(req);
+          const offlineData = await content.getOfflineContents([req.params.id], req.headers["X-msgid"]).catch((error) => {
+            standardLog.error({id: 'CONTENT_GET_HIERARCHY_FAILED', message: `Received ERROR while getting data from questionset hierarchy`, error, mid: req.headers["X-msgid"] });
+          });
+          if (isProxyEnabled && offlineData.docs.length <= 0 ) {
+            logger.info(`Proxy is Enabled`);
+            next();
+          } else {
+            logger.info(`ReqId = "${req.headers["X-msgid"]}": Proxy is disabled`);
+            logger.debug(
+              `ReqId = "${req.headers["X-msgid"]}": Calling Content get method to get questionset Hierarchy: ${req.params.id} `,
+            );
+            content.get(req, res);
+            return;
+          }
+        },
+        proxy(proxyURL, {
+          proxyReqPathResolver(req) {
+            const queryParams = req.url.split("?")[1];
+            return queryParams ? `/learner/questionset/v1/hierarchy/${req.params.id}?${queryParams}` : `/learner/questionset/v1/hierarchy/${req.params.id}`;
+          },
+          userResDecorator(proxyRes, proxyResData, req) {
+            return new Promise(function(resolve) {
+              logger.info(`Proxy is Enabled for questionset: ${req.params.id}`);
+              logger.debug(
+                `ReqId = "${req.headers["X-msgid"]}": Convert buffer data to json`,
+              );
+              const proxyData = content.convertBufferToJson(proxyResData, req);
+              const contents = _.get(proxyData, "result.questionSet");
+              if (!_.isEmpty(contents)) {
+                logger.debug(
+                  `ReqId = "${req.headers["X-msgid"]}": Calling decorateDialCodeContent to decorate a content`,
+                );
+                content
+                  .decorateDialCodeContents(contents, req.headers["X-msgid"])
+                  .then((data) => {
+                    logger.info(
+                      `ReqId = "${req.headers["X-msgid"]}": Resolving Data after decorating DialCodecontent `,
+                    );
+                    proxyData.result.questionSet = data[0];
+                    resolve(proxyData);
+                  })
+                  .catch((err) => {
+                    standardLog.error({id: 'CONTENT_GET_ONLINE_HIERARCHY_FAILED', message: `Received ERROR while getting data from questionSet hierarchy`, error: err, mid: req.headers["X-msgid"] });
+                    resolve(proxyData);
+                  });
+              } else {
+                logger.info(
+                  `ReqId = "${req.headers["X-msgid"]}": Resolving data if there in no content in questionSet hierarchy request`,
+                );
+                resolve(proxyData);
+              }
+            });
+          },
+        }),
+      );
+      
+      app.get(
+        "/api/questionset/v1/read/:id",
+        async (req, res, next) => {
+          standardLog.debug({ id: 'QUESTIONSET_API_REQUEST', message: `Received API call to read questionset: ${req.params.id}` });
+          const offlineData = await content.getOfflineContents([req.params.id], req.headers["X-msgid"]).catch(error => {
+            standardLog.error({ id: 'CONTENT_DB_SEARCH_FAILED', message: `Received error while getting data from questionset read`, mid: req.headers["X-msgid"], error });
+          });
+          if (enableProxy(req) && offlineData.docs.length <= 0 ) {
+            logger.info(`Proxy is Enabled`);
+            next();
+          } else {
+            logger.info(`ReqId = "${req.headers["X-msgid"]}": Proxy is disabled`);
+            logger.debug(
+              `ReqId = "${req.headers["X-msgid"]}": Calling Content get method to get questionset: ${req.params.id} `,
+            );
+            content.get(req, res);
+            return;
+          }
+        },
+        proxy(proxyURL, {
+          proxyReqPathResolver(req) {
+            const query = require('url').parse(req.url).query;
+            return `/api/questionset/v1/read/${req.params.id}?${query}`;
+          },
+          userResDecorator(proxyRes, proxyResData, req) {
+            return new Promise(function(resolve) {
+              logger.info(`Proxy is Enabled for questionset: ${req.params.id}`);
+              logger.debug(
+                `ReqId = "${req.headers["X-msgid"]}": Convert buffer data to json`,
+              );
+              const proxyData = content.convertBufferToJson(proxyResData, req);
+              const contents = _.get(proxyData, "result.questionset");
+              if (!_.isEmpty(contents)) {
+                logger.debug(
+                  `ReqId = "${req.headers["X-msgid"]}": Calling decorateContent to decorate a questionset`,
+                );
+                content
+                  .decorateContentWithProperty([contents], req.headers["X-msgid"])
+                  .then((data) => {
+                    logger.info(
+                      `ReqId = "${req.headers["X-msgid"]}": Resolving Data after decorating questionset `,
+                    );
+                    proxyData.result.questionset = data[0];
+                    resolve(proxyData);
+                  })
+                  .catch((err) => {
+                    standardLog.error({id: 'CONTENT_READ_FAILED', message: `Received error`, error: err, mid: req.headers["X-msgid"] });
+                    resolve(proxyData);
+                  });
+              } else {
+                logger.info(
+                  `ReqId = "${req.headers["X-msgid"]}": Resolving data if there in no questionset in request`,
+                );
+                resolve(proxyData);
+              }
+            });
+          },
+        }),
+      );
+
+      app.post(
+        "/api/question/v1/list",
+        async (req, res, next) => {
+          standardLog.debug({ id: 'CONTENT_API_REQUEST', message: `Received API call to read question list: ${req.body.request.search.identifier}` });
+          const offlineData = await content.getOfflineContents([...req.body.request.search.identifier], req.headers["X-msgid"]).catch(error => {
+            standardLog.error({ id: 'CONTENT_DB_SEARCH_FAILED', message: `Received error while getting data from question list read`, mid: req.headers["X-msgid"], error });
+          });
+          if (enableProxy(req) && offlineData.docs.length <= 0 ) {
+            logger.info(`Proxy is Enabled`);
+            next();
+          } else {
+            logger.info(`ReqId = "${req.headers["X-msgid"]}": Proxy is disabled`);
+            logger.debug(
+              `ReqId = "${req.headers["X-msgid"]}": Calling Content get method to get question list: ${req.body.request.search.identifier} `,
+            );
+            content.getQuestionList(req, res);
+            return;
+          }
+        },
+        proxy(proxyURL, {
+          proxyReqPathResolver(req) {
+            return "/api/question/v1/list";
+          },
+          userResDecorator(proxyRes, proxyResData, req) {
+            return new Promise(function(resolve) {
+              logger.info(`Proxy is Enabled for questionset: ${req.params.id}`);
+              logger.debug(
+                `ReqId = "${req.headers["X-msgid"]}": Convert buffer data to json`,
+              );
+              const proxyData = content.convertBufferToJson(proxyResData, req);
+              const contents = _.get(proxyData, "result.questions");
+              if (!_.isEmpty(contents)) {
+                logger.debug(
+                  `ReqId = "${req.headers["X-msgid"]}": Calling decorateContent to decorate a question list`,
+                );
+                content
+                  .decorateContentWithProperty([contents], req.headers["X-msgid"])
+                  .then((data) => {
+                    logger.info(
+                      `ReqId = "${req.headers["X-msgid"]}": Resolving Data after decorating question list `,
+                    );
+                    proxyData.result.questions = data[0];
+                    resolve(proxyData);
+                  })
+                  .catch((err) => {
+                    standardLog.error({id: 'CONTENT_READ_FAILED', message: `Received error`, error: err, mid: req.headers["X-msgid"] });
+                    resolve(proxyData);
+                  });
+              } else {
+                logger.info(
+                  `ReqId = "${req.headers["X-msgid"]}": Resolving data if there in no question list in request`,
+                );
+                resolve(proxyData);
+              }
+            });
+          },
+        }),
+      );
       
 }
 

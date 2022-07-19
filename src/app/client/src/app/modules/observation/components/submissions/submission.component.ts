@@ -33,6 +33,6 @@ export class SubmissionsComponent implements OnInit {
         this.selectedSubmission.emit(data);
     }
     actionEvent(data, type) {
-        this.onAction.emit({action: type, data: {...data,submissionId:this.submission._id}});
+        this.onAction.emit({action: type, data: {...data, submissionId: this.submission._id}});
     }
 }

@@ -1,4 +1,4 @@
-import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, TelemetryInteractDirective, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CourseProgressService, UsageService } from './../../services';
 import * as _ from 'lodash-es';
@@ -58,7 +58,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.initLayout();
-    const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation'))?(<HTMLInputElement>document.getElementById('reportsLocation')).value: '';
+    const reportsLocation = (<HTMLInputElement>document.getElementById('reportsLocation')) ? (<HTMLInputElement>document.getElementById('reportsLocation')).value : '';
     this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 @Component({

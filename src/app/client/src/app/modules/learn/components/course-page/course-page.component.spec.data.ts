@@ -223,7 +223,7 @@ export const Response = {
                 'contentEncoding': 'gzip',
                 'lockKey': '3613adb4-fb01-48fb-ad0c-27d58537d7fe',
                 'totalCompressedSize': 2013060,
-                'mimeTypesCount': '{\'application/vnd.ekstep.h5p-archive\':1,\'application/vnd.ekstep.html-archive\':1,\'application/epub\':1,\'application/vnd.ekstep.content-collection\':2}',
+                'mimeTypesCount': '{"application/vnd.ekstep.h5p-archive":1,"application/vnd.ekstep.html-archive":1,"application/epub":1,"application/vnd.ekstep.content-collection":2}',
                 'contentType': 'Course',
                 'identifier': 'do_21308940206039040011229',
                 'audience': [
@@ -365,7 +365,7 @@ export const Response = {
                 'contentEncoding': 'gzip',
                 'lockKey': 'dd6310a8-9b2e-45f0-8240-ff060d0f9aff',
                 'totalCompressedSize': 268608,
-                'mimeTypesCount': '{\'application/pdf\':1,\'application/vnd.ekstep.content-collection\':1}',
+                'mimeTypesCount': '{"application/pdf":1,"application/vnd.ekstep.content-collection":1}',
                 'contentType': 'Course',
                 'identifier': 'do_21308956613515673611357',
                 'lastUpdatedBy': '45904459-1dea-4be1-baf1-9f675918c89f',
@@ -507,7 +507,7 @@ export const Response = {
                 'contentEncoding': 'gzip',
                 'lockKey': '6fa285ec-c9f8-4f22-8bcf-ab60e52d95b9',
                 'totalCompressedSize': 380968,
-                'mimeTypesCount': '{\'application/pdf\':1,\'application/vnd.ekstep.content-collection\':2,\'application/vnd.ekstep.ecml-archive\':1}',
+                'mimeTypesCount': '{"application/pdf":1,"application/vnd.ekstep.content-collection":2,"application/vnd.ekstep.ecml-archive":1}',
                 'contentType': 'Course',
                 'identifier': 'do_2130887206273843201640',
                 'audience': [
@@ -1516,7 +1516,7 @@ export const Response = {
         'contentType': 'TextBook'
       },
       'completionPercentage': 0,
-      'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+      'mimeTypesCount': '{"application/vnd.ekstep.content-collection":1,"application/vnd.ekstep.ecml-archive":1}',
       'cardImg': 'https://ntpstagingall.blob8521957.thumb.jpg',
       'resourceType': 'Book',
       'organisation': ['Chhattisgarh', 'Chhattisgarh'],

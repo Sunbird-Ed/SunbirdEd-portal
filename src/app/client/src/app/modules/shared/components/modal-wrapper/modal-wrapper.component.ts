@@ -8,11 +8,11 @@ const modalSizeToMinWidthMapping = {
   small: '30rem',
   normal: '45rem',
   large: '56.5rem'
-}
+};
 
 type ModalSize = keyof typeof modalSizeToMinWidthMapping;
-type AdditionalConfig = {
-  size: string
+interface AdditionalConfig {
+  size: string;
 }
 type IMatDialogConfig = MatDialogConfig & AdditionalConfig;
 
@@ -38,10 +38,10 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
   @Input() config: IMatDialogConfig;
   @ContentChild(ModalContentDirective, { static: true }) private modalContent: any;
   @Output() dismiss = new EventEmitter();
-  public modal: MatDialogRef<unknown>
+  public modal: MatDialogRef<unknown>;
 
   private getDefaultConfig(): MatDialogConfig {
-    return { disableClose: true }
+    return { disableClose: true };
   }
 
   constructor(private matDialog: MatDialog, private overlay: Overlay) { }
@@ -54,7 +54,7 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
       ...config,
       data: { id, ...data },
       // scrollStrategy
-    }
+    };
   }
 
   private open(templateRef: TemplateRef<any>, options: MatDialogConfig): MatDialogRef<any> {
@@ -72,7 +72,7 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
       this.setElementStyle(document.body)('overflow', 'auto');
       this.setElementStyle(document.documentElement)('overflow', 'inherit');
       this.dismiss.emit(event);
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -87,8 +87,8 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   private setElementStyle(element: HTMLElement) {
     return (styleProperty: string, styleValue: string) => {
-      element.style[styleProperty] = styleValue
-    }
+      element.style[styleProperty] = styleValue;
+    };
   }
 }
 

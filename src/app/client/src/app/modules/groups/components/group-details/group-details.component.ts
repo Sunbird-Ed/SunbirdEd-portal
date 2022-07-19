@@ -10,6 +10,7 @@ import { GroupsService } from '../../services';
 import { IGroupMemberConfig, IGroupCard, IGroupMember, ADD_ACTIVITY_CONTENT_TYPES } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { ADD_ACTIVITY, PAGE_LOADED} from '../../interfaces/telemetryConstants';
+import { sessionKeys } from '../../../../modules/groups';
 
 @Component({
   selector: 'app-group-details',
@@ -83,6 +84,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
           this.groupService.goBack();
         }
         this.groupService.groupData = groupData;
+        sessionStorage.setItem(sessionKeys.GROUPDATA, JSON.stringify( groupData));
         this.groupData = this.groupService.addGroupFields(groupData);
         this.members = this.groupService.addFieldsToMember(this.groupData.members);
         this.isAdmin = this.groupService.isCurrentUserAdmin;

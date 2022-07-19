@@ -1,39 +1,45 @@
-<sui-modal class="sb-modal sb-success" (dismissed)="modal.deny(); showDownloadModal = false;" #modal
-  *ngIf="showDownloadModal">
-  <!-- Download report popup-->
-  <div class="header">
-    <div class="ui grid">
-      <div class="eleven wide column">
-        <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0060}}</span>
+<app-modal-wrapper *ngIf="showDownloadModal" [config]="{disableClose: true, size: 'large'}"
+  (dismiss)="modal.deny(); showDownloadModal = false;" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible large">
+
+          <!-- Download report popup-->
+          <div class="header">
+            <div class="ui grid">
+              <div class="eleven wide column">
+                <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0060}}</span>
+              </div>
+            </div>
+          </div>
+          <!--/Header-->
+          <!--Content-->
+          <div class="sb-modal-content">
+            <p class="meta">{{resourceService?.messages?.stmsg?.m0132}}</p>
+          </div>
+          <!--/Content-->
+        </div>
       </div>
     </div>
-  </div>
-  <!--/Header-->
-  <!--Content-->
-  <div class="sb-modal-content">
-    <p class="meta">{{resourceService?.messages?.stmsg?.m0132}}</p>
-  </div>
-  <!--/Content-->
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
 <!-- Updated code as per new design for semantic datatable-->
-<div class="sb-bg-color-white p-16 progress-content">
+<div class="p-16 progress-content">
   <div>
     <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
       <div class="d-flex  progress-report-content">
         <div class="d-flex w-300 flex-dc">
-          <label
-            class="fnormal font-weight-normal pl-4 text-left">{{resourceService?.frmelmnts?.lbl?.selectBatch}}</label>
-          <label class="w-100">
-            <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
-              [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id" #select>
-              <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
-                (click)="setBatchId(course);" tabindex="0" appTelemetryInteract
-                [telemetryInteractObject]="interactObject"
-                [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
-                [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
-              </sui-select-option>
-            </sui-select>
-          </label>
+          <div class="sb-field">
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+              <mat-label>{{resourceService?.frmelmnts?.lbl?.selectBatch}}</mat-label>
+              <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.selectBatch" class="selection"
+                [(ngModel)]="selectedOption" (selectionChange)="setBatchId($event)">
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of batchlist" [value]="option"
+                attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
         <!-- below needs to be done score card -->
         <app-access-discussion *ngIf="fetchForumIdReq" [fetchForumIdReq]="fetchForumIdReq"
@@ -64,7 +70,7 @@
             </span>
           </div>
 
-          <div class="sb-bg-color-white sb-course-progress-status-result">
+          <div class="sb-course-progress-status-result">
             <span class="course-start-dt course-participants-label">
               <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
             </span>
@@ -115,20 +121,6 @@
   </div>
 
   <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)">
-    <!-- <mat-tab [label]="{index: 1}">
-      <ng-template mat-tab-label>
-        <span></span>
-      </ng-template>
-      <div class="ui stackable grid">
-        <div class="nine wide column py-0">
-          <p class="fsmall mt-8 mb-0 summary-text">{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}
-            <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.summaryReportUpdateNote}}</span>
-          </p>
-        </div>
-      </div>
-      <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message" [data]="stateWiseReportData"
-        [columns]="columns" [downloadCSV]="isDownloadReport"></sb-datatable>
-    </mat-tab> -->
     <mat-tab [label]="{index: 2}">
       <ng-template mat-tab-label>
         <span>{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</span>

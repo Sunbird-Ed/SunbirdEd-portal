@@ -1,10 +1,15 @@
- <sui-modal  [mustScroll]="false" [isClosable]="true" [transitionDuration]="0"
-  [size]="'fullscreen'" class="sb-modal sb-modal-fullscreen" appBodyScroll
-  (dismissed)="navigateToPreviousPage()" #modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'large'}" (dismiss)="navigateToPreviousPage()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible large">
 
-  <div class="sb-modal-content">
-    <iframe scrolling="no" [src]="discussionUrl"></iframe>
-  </div>
+          <div class="sb-modal-content">
+            <iframe scrolling="no" [src]="discussionUrl"></iframe>
+          </div>
 
-</sui-modal>
-
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

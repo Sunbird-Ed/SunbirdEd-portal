@@ -1,17 +1,21 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  [ngClass]="{'sb-error': memberActionData?.theme === 'error'}" appBodyScroll (dismissed)="closeModal();" #modal>
-
-  <div class="sb-modal-header">
-    {{memberActionData?.title}}
-  </div>
-
-  <div class="sb-modal-content">
-    <p> {{memberActionData?.description}}</p>
-  </div>
-
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" [ngClass]="{'sb-btn-error': memberActionData?.theme === 'error'}"
-      (click)="performAction()">{{memberActionData?.buttonText}}</button>
-  </div>
-
-</sui-modal>
+<app-modal-wrapper  [config]="{disableClose: true, size: 'small',panelClass: 'material-modal'}" (dismiss)="closeModal()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-mat__modal">
+      <div mat-dialog-title class="px-16">
+        <div class="title" tabindex="0">{{memberActionData?.title}}</div>
+        <button type="button" aria-label="close dialog" class="close-btn" 
+        (dismiss)="closeModel()" mat-dialog-close tabindex="0"></button>
+      </div>
+      <mat-dialog-content>
+        <div class="sb-mat__modal__content">
+          <p tabindex="0">{{memberActionData?.description}}</p>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+        [ngClass]="{'sb-btn-error': memberActionData?.theme === 'error'}"
+        (click)="performAction()">{{memberActionData?.buttonText}}</button>
+      </mat-dialog-actions>
+    </div>
+  </ng-template>
+</app-modal-wrapper>
