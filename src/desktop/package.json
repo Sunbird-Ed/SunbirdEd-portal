@@ -111,7 +111,7 @@
         "cpy-cli": "^2.0.0",
         "cross-env": "^7.0.2",
         "devtron": "^1.4.0",
-        "electron": "^18.0.1",
+        "electron": "^15.5.5",
         "electron-builder": "22.14.13",
         "electron-builder-squirrel-windows": "22.2.0",
         "electron-icon-maker": "0.0.4",
