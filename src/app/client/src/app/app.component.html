@@ -9,7 +9,7 @@
           <div class="dk-country-flag">
           </div>
           <div class="d-flex flex-ai-center head-tail-right-side">
-            <div class="pull-right dk-top-head-ul">
+            <div class="dk-top-head-ul">
               <nav title="accessibility_links" class="d-flex flex-ai-center">
                 <ul role="navigation" aria-label="accessibility links">
                   <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);"
@@ -71,30 +71,33 @@
         </div>
       </div>
     </div>
-    <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{disableClose: true, panelClass: 'overflow-visible'}">
-      <ng-template sbModalContent let-data>
-        <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
-          [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
-      </ng-template>
-    </app-modal-wrapper>
+    <div *ngIf="loadPopUps">
+      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
+        [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
+        <ng-template sbModalContent let-data>
+          <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
+            [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+        </ng-template>
+      </app-modal-wrapper>
+      <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
+        [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
+      <app-user-onboarding (close)="onLocationSubmit()"
+        *ngIf="isGuestUser ? showUserTypePopup :(showUserTypePopup || !isLocationConfirmed)"
+        [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
+    </div>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
     <div *ngIf="showGlobalConsentPopUpSection">
       <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()"
         [consentConfig]="consentConfig"></app-global-consent-pii>
     </div>
-    <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
-      [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
-    <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
-      [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
-    
-  <app-modal-wrapper [config]="{disableClose: true, size: 'small'}"
-    *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
-    <ng-template sbModalContent let-data>
-      <app-year-of-birth [dialogProps]="data"></app-year-of-birth>
-    </ng-template>
-  </app-modal-wrapper>
-    
+    <app-modal-wrapper [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
+      *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
+      <ng-template sbModalContent let-data>
+        <app-year-of-birth [dialogProps]="data"></app-year-of-birth>
+      </ng-template>
+    </app-modal-wrapper>
+
     <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
       [ngClass]="{'header-block': isFullScreenView}"></app-header>
     <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
@@ -102,7 +105,8 @@
     <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
 
     <main>
-      <router-outlet *ngIf="isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)"></router-outlet>
+      <router-outlet *ngIf="isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)"
+        (activate)="onActivate($event)"></router-outlet>
     </main>
   </div>
 </div>
@@ -111,7 +115,8 @@
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 
-<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired" [config]="{disableClose: true, size: 'small'}">
+<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
+  [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}">
   <ng-template sbModalContent let-data>
     <div class="sb-mat__modal sb-mat__modal--small">
 
@@ -122,7 +127,7 @@
         <div class="sb-mat__modal__content d-flex flex-ai-center text-center flex-jc-center p-24">
           <p>
             {{resourceService?.frmelmnts?.lbl?.plslgn |
-                interpolate:'{instance}': instance }}
+            interpolate:'{instance}': instance }}
           </p>
         </div>
       </mat-dialog-content>
@@ -155,3 +160,5 @@
 </ng-container>
 
 <app-telemetry-error-modal></app-telemetry-error-modal>
+
+

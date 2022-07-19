@@ -1,215 +1,103 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-// NG core testing module(s)
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// Modules
-import { ChartsModule } from 'ng2-charts';
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import { FormsModule } from '@angular/forms';
-import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
-// SB components and service
-import { DashboardUtilsService, LineChartService, CourseConsumptionService, RendererService } from './../../services';
+// Custom service(s)
+import { RendererService, CourseConsumptionService } from '../../services';
+import { SearchService, GeneraliseLabelService } from '@sunbird/core';
+import { ResourceService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
+// Interface
+import { DashboardData } from '../../interfaces';
+import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import * as _ from 'lodash-es';
+import { EventEmitter } from "@angular/core";
+import { Subject, of } from 'rxjs';
+import { mockRes } from './course-consumption.component.spec.data';
 import { CourseConsumptionComponent } from './course-consumption.component';
-import { UserService, SearchService, ContentService, LearnerService } from '@sunbird/core';
-// Test data
-import * as mockData from './course-consumption.component.spec.data';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { CoreModule } from '@sunbird/core';
-import { configureTestSuite } from '@sunbird/test-util';
 
-const testData = mockData.mockRes;
-describe('CourseConsumptionComponent', () => {
+
+describe("CourseConsumptionComponent", () => {
   let component: CourseConsumptionComponent;
-  let fixture: ComponentFixture<CourseConsumptionComponent>;
-  let router: Router;
-
-  const fakeActivatedRoute = {
-    'params': observableOf({ 'id': 1, 'timePeriod': '7d' }),
-    snapshot: {
-      params: {
-        'id': '1',
-        'timePeriod': '7d'
-      },
-      data: {
-        telemetry: {
-          env: 'course', pageid: 'course-creator-dashboard', type: 'view',
-          object: { type: 'course', ver: '1.0' }
-        }
-      }
-    }
+  const mockRouter: Partial<Router> = {
+    url: '/resources/view-all/Course-Unit/1',
+    navigate: jest.fn(),
+    events: of({}) as any
   };
-
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
-  configureTestSuite();
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CourseConsumptionComponent],
-      imports: [CoreModule, HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
-      providers: [CourseConsumptionService,
-        RendererService,
-        LearnerService,
-        ContentService,
-        UserService,
-        SearchService,
-        LineChartService,
-        DashboardUtilsService,
-        ConfigService,
-        ResourceService,
-        { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-      ]
-    })
-    .compileComponents();
-  }));
+  const mockCourseConsumptionService: Partial<CourseConsumptionService> = {};
+  const mockActivatedRoute: Partial<ActivatedRoute> = {
+    queryParams: of({
+      selectedTab: 'all',
+      contentType: ['Course'], objectType: ['Content'], status: ['Live'],
+      defaultSortBy: JSON.stringify({ lastPublishedOn: 'desc' })
+    }),
+    snapshot: {
+      queryParams: {
+        selectedTab: 'course'
+      }
+    } as any,
+    params: of({
+      id: 'sample-id',
+      utm_campaign: 'utm_campaign',
+      utm_medium: 'utm_medium',
+      clientId: 'android',
+      timePeriod: '7d',
+      context: JSON.stringify({ data: 'sample-data' })
+    }) as any
+  };
+  const mockSearchService: Partial<SearchService> = {
+    searchContentByUserId: jest.fn().mockReturnValue(of(mockRes.searchSuccess)) as any,
+    _searchedContentList:mockRes.searchSuccess.result
+  };
+  const mockRendererService: Partial<RendererService> = {};
+  const mockResourceService: Partial<ResourceService> = {};
+  const mockNavigationHelperService: Partial<NavigationHelperService> = {
+    contentFullScreenEvent: new EventEmitter<any>()
+  };
+  const mockGeneraliseLabelService: Partial<GeneraliseLabelService> = {};
+  beforeAll(() => {
+    component = new CourseConsumptionComponent(
+      mockRouter as Router,
+      mockCourseConsumptionService as CourseConsumptionService,
+      mockActivatedRoute as ActivatedRoute,
+      mockSearchService as SearchService,
+      mockRendererService as RendererService,
+      mockResourceService as ResourceService,
+      mockNavigationHelperService as NavigationHelperService,
+      mockGeneraliseLabelService as GeneraliseLabelService
+    );
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CourseConsumptionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    router = TestBed.get(Router);
+    jest.clearAllMocks();
   });
 
-  it('should call search api and returns result count 1', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableOf(testData.searchSuccess));
-    component.getMyContent();
-    fixture.detectChanges();
-    expect(component.myCoursesList).toBeDefined();
-    expect(component.myCoursesList.length).toEqual(1);
-    expect(component.identifier).toEqual('do_2124339707713126401772');
-    expect(component.isMultipleCourses).toEqual(false);
-  }));
-
-  // When search api's throw's error
-  it('should throw error', inject([SearchService], (searchService) => {
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableThrowError({}));
-    component.getMyContent();
-    fixture.detectChanges();
-    expect(component.blockData.length).toBeLessThanOrEqual(0);
-    expect(component.myCoursesList.length).toEqual(0);
-  }));
-
-  // If search api returns more than one course
-  it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
-    component.isMultipleCourses = false;
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-    component.getMyContent();
-    fixture.detectChanges();
-    expect(component.myCoursesList).toBeDefined();
-    expect(component.isMultipleCourses).toEqual(true);
-    expect(component.myCoursesList.length).toBeGreaterThan(1);
-  }));
-
-  it('should call validateIdentifier method when counet is more than 1 ', inject([SearchService], (searchService) => {
-    component.isMultipleCourses = false;
-    spyOn(searchService, 'searchContentByUserId').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-    spyOn(component, 'validateIdentifier').and.callThrough();
-    component.getMyContent();
-    component.validateIdentifier(testData.searchSuccessWithCountTwo.result.content[0].identifier);
-    fixture.detectChanges();
-    expect(component.selectedCourse).toBe(testData.searchSuccessWithCountTwo.result.content[0]);
-    expect(component.myCoursesList).toBeDefined();
-    expect(component.isMultipleCourses).toEqual(true);
-    expect(component.myCoursesList.length).toBeGreaterThan(1);
-  }));
-
-  // When course consumption api's return response
-  it('should call dashboard api and return valid response', inject([CourseConsumptionService],
-    (courseConsumptionService) => {
-      spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => observableOf(testData.consumptionData));
-      component.getDashboardData('7d', 'do_2123250076616048641482');
-      fixture.detectChanges();
-      expect(component.blockData.length).toBeGreaterThan(1);
-      expect(component.graphData.length).toBeGreaterThanOrEqual(1);
-      expect(component.showLoader).toEqual(false);
-    }));
-
-  it('should call dashboard api and return error', inject([CourseConsumptionService], (courseConsumptionService) => {
-    spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => observableThrowError({}));
-    component.getDashboardData('', 'do_2123250076616048641482');
-    fixture.detectChanges();
-    expect(component.blockData.length).toEqual(0);
-    expect(component.showLoader).toEqual(false);
-  }));
-
-  it('should call onAfterCourseChange - and load graph', inject([Router], (route) => {
-    component.identifier = 'do_2124319530479697921602';
-    const courseDetails = { 'identifier': 'do_2124319530479697921602123' };
-    spyOn(component, 'onAfterCourseChange').and.callThrough();
-    const response = component.onAfterCourseChange(courseDetails);
-    fixture.detectChanges();
-    expect(component.isMultipleCourses).toBeFalsy();
-    expect(route.navigate).toHaveBeenCalledWith(['dashBoard/activity/course/consumption', courseDetails.identifier, '7d']);
-  }));
-
-  it('should call onAfterFilterChange function - but should not change time period', inject([Router], (route) => {
-    component.timePeriod = '7d';
-    const response = component.onAfterFilterChange('7d');
-    fixture.detectChanges();
+  it('should be create a instance of CourseConsumptionComponent', () => {
     expect(component).toBeTruthy();
-    expect(response).toBeFalsy();
-    expect(component.timePeriod).toEqual('7d');
-    expect(route.navigate).not.toHaveBeenCalled();
-  }));
-
-  it('should call onAfterFilterChange function - and display last 14 days data', inject([Router], (route) => {
-    component.timePeriod = '7d';
-    component.identifier = 'do_1234';
-    const response = component.onAfterFilterChange('14d');
-    fixture.detectChanges();
-    expect(response).toBeFalsy();
-    expect(route.navigate).toHaveBeenCalledWith(['dashBoard/activity/course/consumption', component.identifier, '14d']);
-  }));
-
-  it('should call onAfterCourseChange function - but should not load graph', inject([Router], (route) => {
-    component.identifier = 'do_2124319530479697921602';
-    const response = component.onAfterCourseChange({ identifier: 'do_2124319530479697921602' });
-    fixture.detectChanges();
-    expect(response).toBeFalsy();
-    expect(component.identifier).toEqual('do_2124319530479697921602');
-    expect(route.navigate).not.toHaveBeenCalled();
-  }));
-
-  it('should validate identifier and load dashboard data', inject([Router], (route) => {
-    component.myCoursesList = [{ identifier: 'do_123' }];
-    component.validateIdentifier('do_123');
-    fixture.detectChanges();
-    expect(component.myCoursesList.length).toBeGreaterThanOrEqual(1);
-    expect(route.navigate).not.toHaveBeenCalled();
-  }));
-
-  it('should throw invalidate identifier error', inject([Router], (route) => {
-    component.myCoursesList = [{ identifier: 'do_1231' }];
-    component.validateIdentifier('do_123');
-    fixture.detectChanges();
-    expect(component.myCoursesList.length).toBeGreaterThanOrEqual(1);
-    expect(route.navigate).toHaveBeenCalledWith(['home']);
-  }));
-
-  it('should display next graph', () => {
-    component.showGraph = 0;
-    component.graphNavigation('next');
-    fixture.detectChanges();
-    expect(component.showGraph).toEqual(1);
   });
 
-  it('should call getMyContent when content length is 1', inject([SearchService, Router],
-    (searchService, route) => {
-      searchService._searchedContentList = testData.searchSuccess.result;
-      component.myCoursesList = testData.searchSuccess.result.content;
-      component.getMyContent();
-      expect(route.navigate).toHaveBeenCalledWith(['dashBoard/activity/course/consumption', component.identifier, '7d']);
-      expect(component.showLoader).toEqual(false);
-    }));
+  it('should be create a instance of CourseConsumptionComponent and interactObject should have a value of', () => {
+    const obj = { id: 'sample-id', type: 'Course', ver: '1.0' }
+    expect(component).toBeTruthy();
+    expect(JSON.stringify(component.interactObject)).toBe(JSON.stringify(obj));
+  });
 
-    it('should unsubscribe from all observable subscriptions', () => {
-      component.getDashboardData('7d', 'do_2123250076616048641482');
-      component.getMyContent();
-      spyOn(component.unsubscribe, 'complete');
-      component.ngOnDestroy();
-      expect(component.unsubscribe.complete).toHaveBeenCalled();
-    });
+  it('should be create a instance of CourseConsumptionComponent and isMultipleCourses should have a value of false', () => {
+    expect(component).toBeTruthy();
+    expect(component.isMultipleCourses).toBeFalsy();
+  });
+
+  it('should be create a instance of CourseConsumptionComponent and showDashboard should have a value of true', () => {
+    expect(component).toBeTruthy();
+    expect(component.showDashboard).toBeTruthy();
+  });
+  // it('should be create a instance of CourseConsumptionComponent and call getMyContent method', () => {
+  //   component.searchService._searchedContentList = {
+  //     count:50
+  //   }
+  //   console.log(component.searchService.searchedContentList);
+  //   component.getMyContent();
+  //   expect(component).toBeTruthy();
+  //   expect(component.showDashboard).toBeTruthy();
+  // });
+  
 });

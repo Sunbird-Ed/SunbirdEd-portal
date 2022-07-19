@@ -1,36 +1,54 @@
-<sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal [mustScroll]="'true'">
-  <div [appTelemetryImpression]="telemetryImpression" class="signup-background">
-    <div class="fullpage-background-image">
-      <div class="container-wrapper mx-auto">
-      <div class="d-flex flex-jc-center mb-16">
-        <img class="image centered" alt={{tenantInfo.tenantName}} height="56" src="{{tenantInfo.logo}}">
-      </div>
-        <div class="title mt-8">{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}</div>
-      <div *ngIf="enableSSO.toLowerCase() === 'false'" class="line-height-1-3 font-weight-bold text-center mb-50 mt-60">
-        <p>Login with State System is temporarily unavailable.</p>
-        <p> Please try again later.</p>
-      </div>
-      <div *ngIf="enableSSO.toLowerCase() === 'true'">
-      <div class="width-300 mx-auto mt-60">
-        <div class="line-height-1-3 font-weight-bold text-center mb-50 mt-60">{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}</div>
-        <label *ngIf="!isIOSDevice" class="w-100"><sui-select class="mb-50 d-flex selection mt-60"
-          labelField="name" valueField="loginUrl" name="state" [(ngModel)]="selectedOrg" (ngModelChange)="handleOrgChange($event)" placeholder="{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}">
-          <sui-select-option *ngFor="let state of orgList" tabindex="0" [value]="state"></sui-select-option>
-        </sui-select></label>
-        <!-- Dropdown only for iOS device -->
-        <label *ngIf="isIOSDevice" class="w-100">
-          <select name="stateOrg" id="stateOrg" class="sb-form-control mb-50 d-flex mt-60 ui dropdown stateOrg" (change)="handleOrgChange($event)">
-            <option value="" disabled selected>{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}</option>
-            <option *ngFor="let state of orgList" [value]="state.loginUrl">{{state.name}}</option>
-          </select>
-        </label>
-        <!-- Dropdown only for iOS device -->
-        <button appTelemetryInteract [telemetryInteractEdata]="submitOrgInteractEdata"
-          [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary w-100"
-          tabindex="0" (click)="handleOrgSelection($event)">{{ resourceService?.frmelmnts?.btn?.submit || 'Submit'}}</button>
-      </div>
-      </div>
+<app-modal-wrapper #modal [config]="{disableClose: true, size: 'large', panelClass: ['overflow-visible', 'material-modal']}">
+  <ng-template sbModalContent>
+    <div class="sb-mat__modal sb-mat__modal--fullscreen">
+
+          <div [appTelemetryImpression]="telemetryImpression" class="signup-background">
+            <div class="fullpage-background-image">
+              <div class="container-wrapper mx-auto">
+                <div class="d-flex flex-jc-center mb-16">
+                  <img class="image centered" alt={{tenantInfo.tenantName}} height="56" src="{{tenantInfo.logo}}">
+                </div>
+                <div class="title mt-8">{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}</div>
+                <div *ngIf="enableSSO.toLowerCase() === 'false'"
+                  class="line-height-1-3 font-weight-bold text-center mb-50 mt-60">
+                  <p>Login with State System is temporarily unavailable.</p>
+                  <p> Please try again later.</p>
+                </div>
+                <div *ngIf="enableSSO.toLowerCase() === 'true'">
+                  <div class="width-300 mx-auto mt-60">
+                    <div *ngIf="!isIOSDevice" class="w-100 mb-16">
+                      <mat-form-field appearance="fill" class="sb-mat__dropdown mb-16 w-100">
+                        <mat-label>{{resourceService.frmelmnts?.lbl?.Select}}</mat-label>
+                        <mat-select role="listbox" aria-label="Select State" class="selection"
+                          [(ngModel)]="selectedOrg" (selectionChange)="handleOrgChange($event.value)">
+                          <mat-option class="mat-dropdown__options" role="option" *ngFor="let state of orgList" [value]="state.loginUrl"
+                            attr.aria-label="{{state.name}}">{{state.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <!-- Dropdown only for iOS device -->
+                    <label *ngIf="isIOSDevice" class="w-100">
+                      <select name="stateOrg" id="stateOrg"
+                        class="sb-form-control mb-50 d-flex mt-60 ui dropdown stateOrg"
+                        (change)="handleOrgChange($event)">
+                        <option value="" disabled selected>{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your
+                          State'}}</option>
+                        <option *ngFor="let state of orgList" [value]="state.loginUrl">{{state.name}}</option>
+                      </select>
+                    </label>
+                    <!-- Dropdown only for iOS device -->
+                    <button appTelemetryInteract [telemetryInteractEdata]="submitOrgInteractEdata"
+                      [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"
+                      class="sb-btn sb-btn-normal sb-btn-primary w-100" tabindex="0"
+                      (click)="handleOrgSelection($event)">{{ resourceService?.frmelmnts?.btn?.submit ||
+                      'Submit'}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      
     </div>
-  </div>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>

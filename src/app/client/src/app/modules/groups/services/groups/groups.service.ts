@@ -1,5 +1,4 @@
 import { delay } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
@@ -20,7 +19,7 @@ import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/mod
   providedIn: 'root'
 })
 export class GroupsService {
-  private groupCservice: any;
+  groupCservice: any;
   private userCservice: any;
   private _groupData: IGroupCard;
   public isCurrentUserAdmin = false;
@@ -161,7 +160,7 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
   get groupData() {
     return this._groupData;
   }
-  
+
   emitCloseForm() {
     this.closeForm.emit();
   }

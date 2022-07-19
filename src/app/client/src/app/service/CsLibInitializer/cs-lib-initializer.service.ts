@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsClientStorage } from '@project-sunbird/client-services/core/cs-client-storage';
 import { UserService } from '@sunbird/core';
-import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,7 @@ export class CsLibInitializerService {
   constructor(public userService: UserService) { }
 
   private _initializeCs() {
-    this.fingerprintInfo = (<HTMLInputElement>document.getElementById('deviceId')).value;
+    this.fingerprintInfo = document?.getElementById('deviceId')?(<HTMLInputElement>document?.getElementById('deviceId'))?.value:'';
     if (!CsModule.instance.isInitialised) {
        // Singleton initialised or not
         CsModule.instance.init({
@@ -57,6 +56,10 @@ export class CsLibInitializerService {
               },
               notificationServiceConfig: {
                 apiPath: '/learner/notification/v1/feed'
+              },
+              certificateServiceConfig: {
+                apiPath: 'v1/certs/search',
+                rcApiPath: 'api/rc/certificate/v1'
               }
           }
       },

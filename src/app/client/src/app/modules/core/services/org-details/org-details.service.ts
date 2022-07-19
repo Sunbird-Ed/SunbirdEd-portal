@@ -1,5 +1,5 @@
 import {throwError, of, Observable, BehaviorSubject } from 'rxjs';
-import { mergeMap, map, catchError, skipWhile, shareReplay, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError, skipWhile, shareReplay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ export class OrgDetailsService {
   timeDiff: any;
   custodianOrgDetails: any;
 
-  private _orgDetails$ = new BehaviorSubject<any>(undefined);
+  _orgDetails$ = new BehaviorSubject<any>(undefined);
   /**
    * Contains root org id
    */
@@ -28,7 +28,7 @@ export class OrgDetailsService {
   public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable()
   .pipe(skipWhile(data => data === undefined || data === null));
 
-  private _custodianOrg$: Observable<any> = this.getCustodianOrg().pipe(shareReplay(1));
+  _custodianOrg$: Observable<any> = this.getCustodianOrg().pipe(shareReplay(1));
 
   constructor(public configService: ConfigService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService,

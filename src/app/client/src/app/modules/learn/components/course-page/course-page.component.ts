@@ -1,4 +1,4 @@
-import { combineLatest, Subject, of, merge, throwError, Observable, forkJoin } from 'rxjs';
+import { combineLatest, Subject, of, merge, throwError, forkJoin } from 'rxjs';
 import {
   PageApiService, OrgDetailsService, FormService, UserService, CoursesService, FrameworkService,
   PlayerService, SearchService
@@ -565,7 +565,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.playerService.playContent(metaData);
       }
       if (sectionType) {
-        metaData.batchId = _.get(metaData,'metaData.batchId');
+        metaData.batchId = _.get(metaData, 'metaData.batchId');
         return this.playerService.playContent(metaData);
       }
 

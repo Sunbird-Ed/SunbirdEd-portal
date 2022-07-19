@@ -1,21 +1,33 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { ConfigService } from '@sunbird/shared';
-import { configureTestSuite } from '@sunbird/test-util';
+import { of, throwError } from "rxjs";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { HttpClient } from "@angular/common/http";
 import { ObservationService } from './observation.service';
-import { SuiModalModule, SuiModalService } from 'ng2-semantic-ui-v9';
 
 describe('ObservationService', () => {
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule, SuiModalModule],
-      providers: [ObservationService, ConfigService, HttpClient, SuiModalService]
-    });
+  let observationService: ObservationService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        OBSERVATION_PREFIX: '/assessment/'
+      }
+    }
+  };
+  const mockHttpClient: Partial<HttpClient> = {
+  };
+  beforeAll(() => {
+    observationService = new ObservationService(
+      mockConfigService as ConfigService,
+      mockHttpClient as HttpClient
+    );
   });
 
-  it('should be created', inject([ObservationService], (service: ObservationService) => {
-    expect(service).toBeTruthy();
-  }));
-});
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
 
+  it('should create a instance of ObservationService', () => {
+    expect(observationService).toBeTruthy();
+    expect(observationService.baseUrl).toBe('/assessment/');
+  });
+});

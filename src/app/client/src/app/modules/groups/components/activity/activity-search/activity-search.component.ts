@@ -21,6 +21,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { VIEW_ACTIVITY, CATEGORY_SEARCH } from '../../../interfaces/telemetryConstants';
 import { ActivityDashboardService } from '@sunbird/shared';
+import { sessionKeys } from '../../../interfaces/group';
 
 
 @Component({
@@ -89,7 +90,10 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.groupAddableBlocData = data;
+      if(data){
+        sessionStorage.setItem(sessionKeys.GROUPADDABLEBLOCDATA, JSON.stringify((data)))
+      }
+      this.groupAddableBlocData = data || JSON.parse(sessionStorage.getItem(sessionKeys.GROUPADDABLEBLOCDATA));
     });
     this.activityDashboardService.isActivityAdded = false; // setting this value to enable or disable the activity dashboard button in activity-dashboard directive
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
@@ -221,9 +225,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     const searchQuery = _.get(this.groupAddableBlocData, 'params.searchQuery.request.filters');
     const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
-    filters = { ...filters, ...searchQuery, ...user };
     const option: any = {
-      filters: _.omit(filters, 'key'),
+      filters: _.omit({ ...filters, ...searchQuery, ...user }, 'key'),
       fields: _.get(this.allTabData, 'search.fields'),
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
@@ -239,6 +242,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     /* istanbul ignore else */
     if (_.get(this.queryParams, 'key')) {
       option.query = this.queryParams.key;
+      option.filters =  _.omit({ ...filters, ...searchQuery }, 'key');
     }
 
     /* istanbul ignore else */

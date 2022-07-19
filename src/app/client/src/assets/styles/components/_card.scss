@@ -272,6 +272,7 @@ app-card[lang="ur"] {
   padding: calculateRem(8px) calculateRem(16px);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);
+  color:var(--gray-800);
 }
 
 // activity-search hover card scss //

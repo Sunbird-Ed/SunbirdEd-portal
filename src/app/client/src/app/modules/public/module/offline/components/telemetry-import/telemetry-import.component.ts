@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
 import { timer, Subject, combineLatest } from 'rxjs';
-import { switchMap, map, filter, takeUntil, tap , pluck} from 'rxjs/operators';
+import { switchMap, filter, takeUntil, tap} from 'rxjs/operators';
 @Component({
   selector: 'app-telemetry-import',
   templateUrl: './telemetry-import.component.html',

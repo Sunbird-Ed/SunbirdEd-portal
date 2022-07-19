@@ -162,7 +162,7 @@ select:-internal-autofill-selected {
   display: flex;
   align-items: center;
   border-radius: calculateRem(28px);
-  margin:-1.5rem calculateRem(0px) calculateRem(16px);
+  // margin:-1.5rem calculateRem(0px) calculateRem(16px);
   @include respond-above(sm) {
     margin:0 calculateRem(24px);
   }
@@ -234,7 +234,7 @@ select:-internal-autofill-selected {
     border-radius:calculateRem(28px);
     line-height: normal;
     background: var(--sb-search-input-bg);
-    color: #545454;
+    color: var(--gray-800);
     html[dir="rtl"] & {
       padding: calculateRem(4px) calculateRem(40px) calculateRem(4px) calculateRem(88px);
     } 
@@ -383,7 +383,7 @@ select:-internal-autofill-selected {
       padding: 1rem 0;
       border-bottom: none;
       cursor: pointer;
-      color: #333333;
+      color: var(--gray-800);
       padding-top: 0;
       font-size: calculateRem(14px);
       letter-spacing: 0;
@@ -413,12 +413,6 @@ select:-internal-autofill-selected {
 }
 @media screen and (min-width: 768px){
   .sbt-search-bar-panel:focus-within{
-    // search bar expand styles
-    // max-width: calculateRem(698px);
-    // background: #F3F3E5;
-    // padding: calculateRem(12px) calculateRem(20px);
-    // border-bottom: 0.03125rem solid var(--gray-100);
-    // border-radius: calculateRem(32px) calculateRem(32px) 0 0;
   }
   .sbt-search-bar-panel{
     .sbt-search-box.large {

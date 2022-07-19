@@ -70,7 +70,7 @@
                 </sb-accordion-header>
                 <sb-accordion-body>
                   <div class="chapter-box sb-g">
-                    <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12">
+                    <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16">
                       <div *ngIf="item;else noContent">
                         <div
                           *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
@@ -121,20 +121,27 @@
   <app-loader [data]="loaderMessage"></app-loader>
 </div>
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')"
-  *ngIf="showJoinTrainingModal" #joinTrainingModal>
-  <div class="sb-modal-header">
-    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
-  </div>
-  <div class="sb-modal-content">
-    <div class="ui center aligned segment">
-      <p>{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
-    </div>
-  </div>
-</sui-modal>
+  <app-modal-wrapper *ngIf="showJoinTrainingModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
+    (dismiss)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" #joinTrainingModal>
+    <ng-template sbModalContent>
+      <div class="sb-mat__modal sb-mat__modal--small">
+        <div mat-dialog-title class="mb-0">
+          <div class="title">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</div>
+          <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+        </div>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false}"
+        <div class="sb-mat__modal__content d-flex flex-ai-center flex-jc-center">
+          <div>
+            <p>{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
+          </div>
+        </div>
+
+        <div class="sb-mat__modal__actions"></div>
+      </div>
+    </ng-template>
+  </app-modal-wrapper>
+
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">

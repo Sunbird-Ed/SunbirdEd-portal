@@ -1,105 +1,202 @@
-
-import { throwError, of , Observable } from 'rxjs';
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FrameworkService, UserService, CoreModule, PublicDataService } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { HttpClient } from "@angular/common/http";
+import { doesNotReject } from "assert";
+import dayjs from "dayjs";
+import { of, throwError } from "rxjs";
+import { FrameworkService } from "./framework.service";
+import { PublicDataService } from './../public-data/public-data.service';
+import { UserService, LearnerService, FormService } from '@sunbird/core';
+import {
+  ConfigService, ToasterService, ResourceService, ServerResponse, Framework, FrameworkData,
+  BrowserCacheTtlService
+} from '@sunbird/shared';
 
 describe('FrameworkService', () => {
-  let userService, publicDataService, frameworkService, cacheService;
-  let mockHashTagId: string, mockFrameworkInput: string;
-  let mockFrameworkCategories: Array<any> = [];
-  let makeChannelReadSuc, makeFrameworkReadSuc  = true;
-  configureTestSuite();
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
-      providers: [CacheService]
-    });
-    cacheService = TestBed.get(CacheService);
-    userService = TestBed.get(UserService);
-    publicDataService = TestBed.get(PublicDataService);
-    frameworkService = TestBed.get(FrameworkService);
-    spyOn(cacheService, 'get').and.returnValue(undefined);
-    spyOn(publicDataService, 'get').and.callFake((options) => {
-      if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
-        return of({result: {channel: {defaultFramework: mockFrameworkInput}}});
-      } else if (options.url === 'framework/v1/read/' + mockFrameworkInput && makeFrameworkReadSuc) {
-        return of({result: {framework: {code: mockFrameworkInput, categories: mockFrameworkCategories}}});
+  let frameworkService: FrameworkService;
+  const mockConfigService: Partial<ConfigService> = {
+    urlConFig: {
+      URLS: {
+        CHANNEL: {
+          READ: 'channel/v1/read'
+        },
+        FRAMEWORK: {
+          READ: 'framework/v1/read'
+        },
+        COURSE_FRAMEWORK: {
+          COURSE_FRAMEWORKID: 'data/v1/system/settings/get/courseFrameworkId'
+        }
       }
-      return throwError({});
+    }
+  };
+  const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
+  const mockUserService: Partial<UserService> = {};
+  const mockToasterService: Partial<ToasterService> = {};
+  const mockResourceService: Partial<ResourceService> = {};
+  const mockLearnerService: Partial<LearnerService> = {
+    get: jest.fn().mockImplementation(() => { })
+  };
+  const mockFormService: Partial<FormService> = {};
+  const mockPublicDataService: Partial<PublicDataService> = {
+    get: jest.fn().mockImplementation(() => { })
+  };
+  beforeAll(() => {
+    frameworkService = new FrameworkService(
+      mockBrowserCacheTtlService as BrowserCacheTtlService,
+      mockUserService as UserService,
+      mockConfigService as ConfigService,
+      mockToasterService as ToasterService,
+      mockResourceService as ResourceService,
+      mockPublicDataService as PublicDataService,
+      mockLearnerService as LearnerService,
+      mockFormService as FormService
+    );
+    frameworkService['_channelData'].defaultLicense = 'ABCD'
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('should create a instance of FrameworkService', () => {
+    expect(frameworkService).toBeTruthy();
+  });
+
+  describe('should fetch channel data using the getChannel method', () => {
+    const hashTagId = 'NTP'
+    it('should return channel data using the getChannel method', (done) => {
+      jest.spyOn(frameworkService['publicDataService'], 'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      frameworkService.getChannel(hashTagId).subscribe(() => {
+        done();
+      });
+      expect(frameworkService['publicDataService'].get).toHaveBeenCalled();
+    });
+
+    it('should not return channel data using the getChannel method', () => {
+      // arrange
+      jest.spyOn(frameworkService['publicDataService'], 'get').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      frameworkService.getChannel(hashTagId).subscribe(() => {
+      });
+      expect(frameworkService['publicDataService'].get).toHaveBeenCalled();
     });
   });
 
-  it('should fetch channel then framework data if initial was call with 0 param and emit data if both api return data', () => {
-    mockHashTagId = undefined;
-    mockFrameworkInput = undefined;
-    mockFrameworkCategories = [];
-    makeChannelReadSuc = true;
-    makeFrameworkReadSuc = true;
-    frameworkService.initialize();
-    frameworkService.frameworkData$.subscribe((data) => {
-      expect(data.frameworkdata).toBeDefined();
-      expect(data.err).toBeNull();
+  describe('should fetch framework data using the getFrameworkCategories method', () => {
+    const frameworkId = 'NTP'
+    it('should return framework data using the getFrameworkCategories method', (done) => {
+      jest.spyOn(frameworkService['publicDataService'], 'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      frameworkService.getFrameworkCategories(frameworkId).subscribe(() => {
+        done();
+      });
+      expect(frameworkService['publicDataService'].get).toHaveBeenCalled();
     });
-  });
-  it('should fetch channel then framework data if initial was call with 0 param and emit error if channel api fails', () => {
-    mockHashTagId = undefined;
-    mockFrameworkInput = undefined;
-    mockFrameworkCategories = [];
-    makeChannelReadSuc = false;
-    makeFrameworkReadSuc = true;
-    frameworkService.initialize();
-    frameworkService.frameworkData$.subscribe((data) => {
-      expect(data.frameworkdata).toBeNull();
-      expect(data.err).toBeDefined();
-    });
-  });
-  it('should fetch channel then framework data if initial was call with 0 param and emit error if framework read api fails', () => {
-    mockHashTagId = undefined;
-    mockFrameworkInput = undefined;
-    mockFrameworkCategories = [];
-    makeChannelReadSuc = true;
-    makeFrameworkReadSuc = false;
-    frameworkService.initialize();
-    frameworkService.frameworkData$.subscribe((data) => {
-      expect(data.frameworkdata).toBeNull();
-      expect(data.err).toBeDefined();
-    });
-  });
-  it('should fetch only framework data if initial was call with framework param and emit data if framework read api return data', () => {
-    mockHashTagId = undefined;
-    mockFrameworkInput = 'NCF';
-    mockFrameworkCategories = [];
-    makeChannelReadSuc = true;
-    makeFrameworkReadSuc = true;
-    frameworkService.initialize('NCF');
-    frameworkService.frameworkData$.subscribe((data) => {
-      expect(data.frameworkdata).toBeDefined();
-      expect(data.err).toBeNull();
-    });
-  });
-  it('should fetch only framework data if initial was call with framework param and emit data if framework read api return data', () => {
-    mockHashTagId = undefined;
-    mockFrameworkInput = 'NCF';
-    mockFrameworkCategories = [];
-    makeChannelReadSuc = true;
-    makeFrameworkReadSuc = true;
-    frameworkService.initialize('NCF');
-    frameworkService.frameworkData$.subscribe((data) => {
-      expect(data.frameworkdata).toEqual({'NCF': {'code': 'NCF', 'categories': []}});
-      expect(data.err).toBeDefined();
+
+    it('should not return framework data using the getFrameworkCategories method', () => {
+      // arrange
+      jest.spyOn(frameworkService['publicDataService'], 'get').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      frameworkService.getFrameworkCategories(frameworkId).subscribe(() => {
+      });
+      expect(frameworkService['publicDataService'].get).toHaveBeenCalled();
     });
   });
 
-  it('should fetch the default course framework from channel read api', () => {
-    cacheService.get('defaultCourseFramework', null);
-    spyOn<any>(frameworkService, 'getChannel').and.callThrough();
-    frameworkService.getDefaultCourseFramework('012451140510203904560');
-    expect(frameworkService['getChannel']).toHaveBeenCalledWith('012451140510203904560');
+  describe('should fetch selected framework category data using the getSelectedFrameworkCategories method', () => {
+    const frameworkId = 'NTP'
+    const queryParams = {}
+    it('should return selected framework category using getSelectedFrameworkCategories method', (done) => {
+      jest.spyOn(frameworkService['publicDataService'], 'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      frameworkService.getSelectedFrameworkCategories(frameworkId, queryParams).subscribe(() => {
+        done();
+      });
+      expect(frameworkService['publicDataService'].get).toHaveBeenCalled();
+    });
+
+    it('should not return selected framework category using getSelectedFrameworkCategories method', () => {
+      // arrange
+      jest.spyOn(frameworkService['publicDataService'], 'get').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      frameworkService.getSelectedFrameworkCategories(frameworkId, queryParams).subscribe(() => {
+      });
+      expect(frameworkService['publicDataService'].get).toHaveBeenCalled();
+    });
+  });
+
+  describe('should fetch course framework using getCourseFramework method', () => {
+    it('should return course framework using getCourseFramework method', (done) => {
+      jest.spyOn(frameworkService.learnerService, 'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      frameworkService.getCourseFramework().subscribe(() => {
+        done();
+      });
+      expect(frameworkService.learnerService.get).toHaveBeenCalled();
+    });
+
+    it('should not return course framework using getCourseFramework method', () => {
+      // arrange
+      jest.spyOn(frameworkService.learnerService, 'get').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      frameworkService.getCourseFramework().subscribe(() => {
+      });
+      expect(frameworkService.learnerService.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('should fetch defaultLicense from getDefaultLicense', () => {
+    it('should return defaultLicense from the method getDefaultLicense', () => {
+      let defaultLicense = frameworkService.getDefaultLicense();
+      expect(defaultLicense).toBe('ABCD');
+    });
   });
 });
-
-

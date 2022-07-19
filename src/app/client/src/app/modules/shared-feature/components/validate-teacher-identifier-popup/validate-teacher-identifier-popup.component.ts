@@ -1,6 +1,6 @@
 import { IInteractEventObject, IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { UserService } from '@sunbird/core';
 import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';

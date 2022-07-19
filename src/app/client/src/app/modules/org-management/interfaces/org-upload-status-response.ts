@@ -1,4 +1,4 @@
-import { ServerResponse } from '@sunbird/shared';
+
 export interface IOrgUploadStatusResponse {
     objectType: string;
     processId: string;

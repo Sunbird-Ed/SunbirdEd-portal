@@ -5,7 +5,7 @@ import { ResourceService } from '../../../shared/services/resource/resource.serv
 import {ToasterService, NavigationHelperService, LayoutService} from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
-import {first, takeUntil} from 'rxjs/operators';
+import { takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as $ from 'jquery';
 import 'datatables.net';
@@ -102,7 +102,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     this.resourceService.frmelmnts.lbl.admindshheader.schools,
     this.resourceService.frmelmnts.lbl.admindshheader.teachers
     ];
-    this.userService.userData$.pipe(first()).subscribe(async (user) => {
+    this.userService.userData$.subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
         this.getAdminPolicyTnC();
@@ -176,7 +176,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         edata: {
           type: this.activatedRoute.snapshot.data.telemetry.type,
           pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: '/' + this.activatedRoute.snapshot.routeConfig.path,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
@@ -404,7 +404,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     }
   }
 
-  assignUserRole(){
+  assignUserRole() {
     this.router.navigate(['/manage/userRoleAssign']);
   }
 

@@ -262,7 +262,8 @@ export class MapComponent implements OnInit, AfterViewInit {
       tap(response => {
         if (this.geoJSONRootLayer && this.map && response) {
           this.geoJSONRootLayer.addData(response);
-          this.map.fitBounds(this.geoJSONRootLayer.getBounds());
+          if(this.geoJSONRootLayer.getBounds())
+            this.map.fitBounds(this.geoJSONRootLayer.getBounds());
         }
       }, err => {
         console.error(err);

@@ -2,8 +2,8 @@ import { IShareEventData } from '@sunbird/telemetry';
 import { Component, OnInit, Input, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { ResourceService } from '../../services/index';
 import { IPopup } from 'ng2-semantic-ui-v9';
-import { ISharelink, ITelemetryShare } from './../../interfaces';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ITelemetryShare } from './../../interfaces';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-share-link',
   templateUrl: './share-link.component.html',
@@ -66,7 +66,7 @@ export class ShareLinkComponent implements OnInit {
   */
   initializeModal() {
     setTimeout(() => {
-      this.copyLinkButton.nativeElement.click();
+      this.copyLinkButton && this.copyLinkButton.nativeElement.click();
     }, 300);
     this.telemetryShare = {
       type: 'Link',

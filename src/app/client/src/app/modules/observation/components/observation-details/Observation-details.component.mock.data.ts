@@ -86,7 +86,7 @@ export const ProfileData = {
     },
   };
 
-  export const AlertNotApplicable={
+  export const AlertNotApplicable = {
     type: 'Not Applicable',
     size: 'mini',
     isClosed: true,

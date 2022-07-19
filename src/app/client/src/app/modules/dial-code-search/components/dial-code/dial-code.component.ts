@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { combineLatest as observableCombineLatest, of } from 'rxjs';
 import { ResourceService, ToasterService, ConfigService, UtilService, NavigationHelperService, LayoutService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -460,6 +460,14 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       telemetry.edata['subtype'] = subtype;
     }
     this.telemetryService.interact(telemetry);
+  }
+
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    if (event && this.router.url.includes('/get/dial')) {
+      this.goBack();
+    }
   }
 
 }

@@ -40,16 +40,14 @@ export class ObservationUtilService {
         if (profileData &&
           profileData.userProfile &&
           profileData.userProfile['profileUserType'] &&
-          profileData.userProfile['profileUserType']['type'] === 'administrator')
-          {
+          profileData.userProfile['profileUserType']['type'] === 'administrator') {
           if (profileData.userProfile['profileUserType']['subType'] === null) {
             return false;
           } else {
             return true;
           }
-        }
-        else{
-          return true
+        } else {
+          return true;
         }
       })
       .catch((error) => { });
@@ -110,7 +108,7 @@ export class ObservationUtilService {
 
   getProfileDataList() {
     return new Promise((resolve, reject) => {
-      let profileData;
+      let profileData:any;
       try {
         profileData = JSON.parse(
           sessionStorage.getItem('CacheServiceuserProfile')
@@ -119,20 +117,20 @@ export class ObservationUtilService {
         reject();
       }
       const obj = {};
-      for (const location of profileData.value['userLocations']) {
+      for (const location of profileData?.value['userLocations']) {
         obj[location.type] = location.id;
       }
-      for (const org of profileData.value['organisations']) {
+      for (const org of profileData?.value['organisations']) {
         if (org.isSchool) {
           obj['school'] = org.externalId;
         }
       }
 
-      obj['role'] =
-        profileData.value['profileUserType'] &&
-          profileData.value['profileUserType']['subType']
-          ? profileData.value['profileUserType']['subType'].toUpperCase()
-          : profileData.value['profileUserType']['type'].toUpperCase();
+      const roles = [];
+      for (const userRole of profileData?.value['profileUserTypes']) {
+       userRole.subType ? roles.push(userRole.subType.toUpperCase()) : roles.push(userRole.type.toUpperCase());
+      }
+      obj['role'] = roles.toString();
       this.dataParam = obj;
       resolve(obj);
     });
@@ -140,9 +138,10 @@ export class ObservationUtilService {
 
    showPopupAlert(alertData) {
     return new Promise((resolve, reject) => {
-      this.modalService
-        .open(new AlertModal(alertData))
-        .onApprove((val: any) => {
+      let modal:any = this.modalService
+      .open(new AlertModal(alertData));
+      
+      modal.onApprove((val: any) => {
           resolve(val);
         })
         .onDeny((val?: any) => {
@@ -193,7 +192,7 @@ export class ObservationUtilService {
             resolve(data);
           }
         }, (error) => {
-          reject()
+          reject();
         });
     });
    }

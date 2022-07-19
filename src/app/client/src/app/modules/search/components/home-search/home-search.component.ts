@@ -1,6 +1,5 @@
 import {
-  PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
+  PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
   LayoutService, COLUMN_TYPE, OfflineCardService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, ISort, OrgDetailsService, SchemaService } from '@sunbird/core';
@@ -9,7 +8,7 @@ import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterVie
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
+import { takeUntil, map, delay, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
@@ -77,10 +76,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setTelemetryData();
   }
   ngOnInit() {
-    /* istanbul ignore next */
-    // if (this.cacheService.exists('searchFiltersAll')) {
-    //   this.selectedFilters = this.cacheService.get('searchFiltersAll');
-    // }
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.listenLanguageChange();
     this.contentManagerService.contentDownloadStatus$
@@ -100,8 +95,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.initFilters = true;
     this.initLayout();
-    combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent).pipe(first()).
-      subscribe((data: Array<any>) => {
+    combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent)
+    .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data: Array<any>) => {
         this.enrolledSection = data[0];
         this.dataDrivenFilters = data[1];
         this.fetchContentOnParamChange();
@@ -159,6 +155,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchContents() {
+    /* istanbul ignore next */
     const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
       _.get(this.queryParams, 'mediaType');
     const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
@@ -193,7 +190,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       offset: (this.paginationDetails.currentPage - 1) * (this.configService.appConfig.SEARCH.PAGE_LIMIT),
       query: this.queryParams.key,
-      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
+      sort_by: { lastPublishedOn: 'desc' },
       facets: this.globalSearchFacets,
       params: this.configService.appConfig.Course.contentApiQueryParams,
       pageNumber: this.paginationDetails.currentPage
@@ -530,31 +527,33 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     this.selectedFilters = filterData;
-    // const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
-    // /* istanbul ignore next */
-    // if (_.get(filterData, 'se_boards')) {
-    //   /* istanbul ignore next */
-    //   // if (this.cacheService.exists('searchFiltersAll')) {
-    //   //   const _searchFilters = this.cacheService.get('searchFiltersAll');
-    //   //   let _cacheFilters = {
-    //   //     primaryCategory: [..._.intersection(filterData['primaryCategory'], _searchFilters['primaryCategory']), ..._.difference(filterData['primaryCategory'], _searchFilters['primaryCategory'])],
-    //   //     se_boards: [_.union(_searchFilters['se_boards'], filterData['se_boards'])[0]],
-    //   //     se_mediums: [..._.intersection(filterData['se_mediums'], _searchFilters['se_mediums']), ..._.difference(filterData['se_mediums'], _searchFilters['se_mediums'])],
-    //   //     se_gradeLevels: [..._.intersection(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels']), ..._.difference(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels'])],
-    //   //     se_subjects: [..._.intersection(filterData['se_subjects'], _searchFilters['se_subjects']),
-    //   //     ..._.difference(filterData['se_subjects'], _searchFilters['se_subjects'])].map((e) => { return _.startCase(e) }),
-    //   //     selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab')
-    //   //   }
-    //   //   this.selectedFilters = _cacheFilters;
-    //   //   this.cacheService.set('searchFiltersAll', this.selectedFilters, { expires: Date.now() + _cacheTimeout });
-    //   // } else {
-    //     this.cacheService.set('searchFiltersAll', filterData, { expires: Date.now() + _cacheTimeout });
-    //   //}
-    // }
-    // /* istanbul ignore next */
-    // // if (this.cacheService.exists('searchFiltersAll')) {
-    // //   this.selectedFilters = this.cacheService.get('searchFiltersAll');
-    // // }
+    const _cacheTimeout = _.get(this.allTabData, 'metaData.cacheTimeout') || 3600000;
+    /* istanbul ignore next */
+    if (this.cacheService.exists('searchFiltersAll') && Object.keys(filterData).length > 0 && !_.get(filterData, 'key') 
+    && _.get(this.activatedRoute, 'snapshot.queryParams.ignoreSavedFilter') !== 'true' ) {
+      const _searchFilters = this.cacheService.get('searchFiltersAll');
+      let _cacheFilters = {
+        primaryCategory: [..._.intersection(filterData['primaryCategory'], _searchFilters['primaryCategory']), ..._.difference(filterData['primaryCategory'], _searchFilters['primaryCategory'])],
+        se_boards: (_.get(filterData, 'se_boards') && filterData['se_boards'].length > 0) ? [_.union(_searchFilters['se_boards'], filterData['se_boards'])[0]] : [],
+        se_mediums: [..._.intersection(filterData['se_mediums'], _searchFilters['se_mediums']), ..._.difference(filterData['se_mediums'], _searchFilters['se_mediums'])],
+        se_gradeLevels: [..._.intersection(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels']), ..._.difference(filterData['se_gradeLevels'], _searchFilters['se_gradeLevels'])],
+        se_subjects: [..._.intersection(filterData['se_subjects'], _searchFilters['se_subjects']),
+        ..._.difference(filterData['se_subjects'], _searchFilters['se_subjects'])].map((e) => { return _.startCase(e) }),
+        selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'all'
+      };
+      for (const key in _cacheFilters) {
+        if (_cacheFilters[key] && _cacheFilters[key].length == 0) delete _cacheFilters[key];
+      }
+      this.cacheService.set('searchFiltersAll', this.selectedFilters, { expires: Date.now() + _cacheTimeout });
+    } else if (!this.cacheService.exists('searchFiltersAll') && Object.keys(filterData).length > 0 && !_.get(filterData, 'key') 
+    && _.get(this.activatedRoute, 'snapshot.queryParams.ignoreSavedFilter') !== 'true') {
+      this.cacheService.set('searchFiltersAll', filterData, { expires: Date.now() + _cacheTimeout });
+    } else {
+      if(_.get(this.activatedRoute, 'snapshot.queryParams.ignoreSavedFilter') === 'true'){
+      } else{
+        this.cacheService.remove('searchFiltersAll');
+      }
+    }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -570,13 +569,17 @@ public viewAll(event) {
      const searchQueryParams: any = {};
     searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });
     searchQueryParams['exists'] = undefined;
-    searchQueryParams['primaryCategory'] = this.queryParams.primaryCategory ? this.queryParams.primaryCategory : [event.name];
-    this.queryParams.primaryCategory ? (searchQueryParams['subject'] = [event.name]) :
+    searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length)
+     ? this.queryParams.primaryCategory : [event.name];
+     (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
     (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
     searchQueryParams['selectedTab'] = 'all';
+  if (this.queryParams.channel) {
+    searchQueryParams['channel'] = this.queryParams.channel;
+  }
     searchQueryParams['visibility'] = [];
     searchQueryParams['appliedFilters'] = true;
-    const sectionUrl = '/explore' + '/view-all/' + event.name.replace(/\s/g, '-');
+    const sectionUrl = '/resources' + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: searchQueryParams, state: {} });
  }
 

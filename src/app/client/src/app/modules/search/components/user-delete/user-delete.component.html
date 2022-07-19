@@ -1,41 +1,35 @@
-<sui-modal 
-  [mustScroll]="true" 
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'small'"
-  class="sb-modal sb-error"
-  appBodyScroll
-  (dismissed)="redirect()" 
-  #modal
-  >
+<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="redirect()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <!--Header-->
+          <div class="sb-modal-header">
+            {{resourceService.frmelmnts?.scttl?.blkuser | translate}}
+          </div>
+          <!--/Header-->
 
-  <!--Header-->
-  <div class="sb-modal-header">
-    {{resourceService.frmelmnts?.scttl?.blkuser | translate}}
-  </div>
-  <!--/Header-->
+          <!--Content-->
+          <div class="sb-modal-content">
+            <p>{{resourceService.frmelmnts?.lbl?.confirmblock | translate}} {{userDetails.firstName}}
+              {{userDetails.lastName}}</p>
+          </div>
+          <!--/Content-->
 
-  <!--Content-->
-  <div class="sb-modal-content">
-    <p>{{resourceService.frmelmnts?.lbl?.confirmblock | translate}} {{userDetails.firstName}} {{userDetails.lastName}}</p>
-  </div>
-  <!--/Content-->
+          <!--Actions-->
+          <div class="sb-modal-actions">
+            <button tabindex="0" class="sb-btn sb-btn-normal sb-btn-error"
+              (click)="modal.approve('done'); deleteUser()">
+              {{resourceService.frmelmnts?.btn?.yes | translate}}
+            </button>
+            <button tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="modal.deny(); redirect();">
+              {{resourceService.frmelmnts?.btn?.no | translate}}
+            </button>
 
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <button tabindex="0"
-      class="sb-btn sb-btn-normal sb-btn-error" 
-      (click)="modal.approve('done'); deleteUser()"
-    >
-      {{resourceService.frmelmnts?.btn?.yes | translate}}
-    </button>
-    <button tabindex="0"
-      class="sb-btn sb-btn-normal sb-btn-outline-error" 
-      (click)="modal.deny(); redirect();"
-    >
-      {{resourceService.frmelmnts?.btn?.no | translate}}
-    </button>
-    
-  </div>
-  <!--/Actions-->
-</sui-modal>
+          </div>
+          <!--/Actions-->
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

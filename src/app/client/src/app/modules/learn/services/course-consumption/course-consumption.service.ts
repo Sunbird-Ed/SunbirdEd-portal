@@ -7,7 +7,7 @@ import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import * as _ from 'lodash-es';
 import * as TreeModel from 'tree-model';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
 import dayjs from 'dayjs';
 

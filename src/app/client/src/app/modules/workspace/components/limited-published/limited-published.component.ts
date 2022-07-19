@@ -1,5 +1,5 @@
-import { FormsModule } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, FrameworkService } from '@sunbird/core';
@@ -13,7 +13,7 @@ import * as _ from 'lodash-es';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
 } from 'ng2-semantic-ui-v9';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
  * The limited publish component to search limited published content
@@ -244,6 +244,11 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit, Afte
     config.size = 'small';
     config.transitionDuration = 0;
     config.mustScroll = true;
+    setTimeout(() => {
+      let element = document.getElementsByTagName('sui-modal');
+      if(element && element.length > 0)
+        element[0].className = 'sb-modal';
+    }, 10);
     this.modalService
       .open(config)
       .onApprove(result => {

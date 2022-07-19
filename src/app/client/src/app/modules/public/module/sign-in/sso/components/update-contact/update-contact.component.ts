@@ -9,7 +9,7 @@ import {
 import * as _ from 'lodash-es';
 import {SignupService} from '../../../../signup/services';
 import { map } from 'rxjs/operators';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 
@@ -70,8 +70,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     this.setTenantInfo();
   }
   ngAfterViewInit () {
-    this.handleFormChangeEvent();
     setTimeout(() => {
+      this.handleFormChangeEvent();
       this.telemetryImpression = {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -144,21 +144,23 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   }
 
   handleFormChangeEvent() {
-    this.contactDetailsForm.valueChanges.pipe(delay(1)).subscribe((data, data2) => {
-      if (_.get(this.contactDetailsForm, 'status') === 'VALID' &&
-        _.get(this.contactDetailsForm, 'controls.tncAccepted.value')) {
-        this.disableSubmitBtn = false;
-         this.isValidIdentifier = true;
-        this.userExist = false;
-        this.userBlocked = false;
-      } else {
-        this.disableSubmitBtn = true;
-        this.isValidIdentifier = _.get(this.contactDetailsForm, 'controls.value.status') === 'VALID'
-          && this.validationPattern[this.contactForm.type].test(this.contactForm.value);
-        this.userExist = false;
-        this.userBlocked = false;
-      }
-    });
+    if(this.contactDetailsForm){
+      this.contactDetailsForm.valueChanges.pipe(delay(1)).subscribe((data, data2) => {
+        if (_.get(this.contactDetailsForm, 'status') === 'VALID' &&
+          _.get(this.contactDetailsForm, 'controls.tncAccepted.value')) {
+          this.disableSubmitBtn = false;
+          this.isValidIdentifier = true;
+          this.userExist = false;
+          this.userBlocked = false;
+        } else {
+          this.disableSubmitBtn = true;
+          this.isValidIdentifier = _.get(this.contactDetailsForm, 'controls.value.status') === 'VALID'
+            && this.validationPattern[this.contactForm.type].test(this.contactForm.value);
+          this.userExist = false;
+          this.userBlocked = false;
+        }
+      });
+  }
   }
   private checkUserExist(captchaResponse?) {
     const uri = this.contactForm.type + '/' + this.contactForm.value + '?captchaResponse=' + captchaResponse;
@@ -332,7 +334,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    */
   resetGoogleCaptcha() {
     const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
-    element.click();
+    element && element.click();
   }
 
   /**
@@ -342,7 +344,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   submitForm() {
     if (this.isP1CaptchaEnabled === 'true') {
       this.resetGoogleCaptcha();
-      this.captchaRef.execute();
+      this.captchaRef && this.captchaRef.execute();
     } else {
       this.onFormUpdate();
     }

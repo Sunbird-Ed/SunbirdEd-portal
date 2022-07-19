@@ -3,7 +3,7 @@ import { ConfigService, ResourceService, IUserData, IUserProfile, LayoutService,
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
+import { IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -103,7 +103,7 @@ export class MainMenuComponent implements OnInit {
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
     try {
-      this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
+      this.helpLinkVisibility = document.getElementById('helpLinkVisibility')?(<HTMLInputElement>document.getElementById('helpLinkVisibility')).value:'false';
     } catch (error) {
       this.helpLinkVisibility = 'false';
     }
@@ -186,10 +186,6 @@ export class MainMenuComponent implements OnInit {
   logout() {
     window.location.replace('/logoff');
     this.cacheService.removeAll();
-  }
-
-  showSideBar() {
-    jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
 
   navigateToWorkspace() {

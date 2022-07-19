@@ -32,7 +32,6 @@
 }
 
 .credits-section {
-  padding: calculateRem(16px);
   .title {
     color: var(--gray-200);
     font-size: calculateRem(10px);
@@ -43,6 +42,11 @@
     color: var(--gray-800);
     font-size: calculateRem(14px);
     word-wrap: break-word; 
+  }
+  .description__url {
+    a.url {
+      word-break: break-all;
+    }
   }
   .sub-section {
     color: var(--primary-color);

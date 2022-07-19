@@ -50,7 +50,7 @@
         <div class="certified-course mx-8" [ngClass]="{'d-flex': isDesktopApp}">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
             <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" tabindex="0"
-              (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+              (click)="showJoinModal(true); logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
           </div>
           <div *ngIf="isDesktopApp && !enrolledCourse && !courseMentor" class="d-flex">
             <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
@@ -85,7 +85,7 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false}"
+<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
@@ -94,43 +94,62 @@
 </app-modal-wrapper>
 
 <div *ngIf="isDesktopApp">
-  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-    class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
-    <div class="sb-modal-header">
-      {{resourceService.frmelmnts?.btn?.download}}
-    </div>
-    <div class="sb-modal-content">
-      <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
-    </div>
-    <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-        (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
-        {{resourceService.frmelmnts?.btn?.download}}
-      </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-        (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
-        {{resourceService.frmelmnts?.btn?.cancel}}
-      </button>
-    </div>
-  </sui-modal>
-
-  <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-    class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
-    <div class="sb-modal-header">
-      {{resourceService?.frmelmnts?.lbl?.delete}}
-    </div>
-    <div class="sb-modal-content">
-      <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCourse | interpolate:'{name}': courseHierarchy?.name}}</p>
-    </div>
-    <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-        (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
-        {{resourceService?.frmelmnts?.lbl?.delete}}
-      </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-        (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
-        {{resourceService.frmelmnts?.btn?.cancel}}
-      </button>
-    </div>
-  </sui-modal>
+  
+    <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'normal'}" (dismiss)="showModal = !showModal;"
+      #modal>
+      <ng-template sbModalContent>
+        <div class="sb-modal">
+          <div class="transition ui dimmer page modals active visible">
+            <div class="ui modal transition active visible normal">
+              <div class="sb-modal-header">
+                {{resourceService.frmelmnts?.btn?.download}}
+              </div>
+              <div class="sb-modal-content">
+                <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
+              </div>
+              <div class="sb-modal-actions">
+                <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+                  (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
+                  {{resourceService.frmelmnts?.btn?.download}}
+                </button>
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+                  (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
+                  {{resourceService.frmelmnts?.btn?.cancel}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </app-modal-wrapper>
+    
+    
+    <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true, size: 'normal'}"
+      (dismiss)="showDeleteModal = !showDeleteModal;" #modal>
+      <ng-template sbModalContent>
+        <div class="sb-modal">
+          <div class="transition ui dimmer page modals active visible">
+            <div class="ui modal transition active visible normal">
+              <div class="sb-modal-header">
+                {{resourceService?.frmelmnts?.lbl?.delete}}
+              </div>
+              <div class="sb-modal-content">
+                <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCourse | interpolate:'{name}': courseHierarchy?.name}}
+                </p>
+              </div>
+              <div class="sb-modal-actions">
+                <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+                  (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
+                  {{resourceService?.frmelmnts?.lbl?.delete}}
+                </button>
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+                  (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
+                  {{resourceService.frmelmnts?.btn?.cancel}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </app-modal-wrapper>
 </div>

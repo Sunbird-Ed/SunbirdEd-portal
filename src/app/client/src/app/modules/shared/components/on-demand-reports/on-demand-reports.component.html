@@ -3,12 +3,16 @@
     <div class="d-flex flex-dc">
       <!-- <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label> -->
       <div [formGroup]="reportForm" class="d-flex flex-ai-center">
-        <label>
-        <sui-select [isSearchable]="false" formControlName="reportType" class="selection course-dashboard-select" placeholder="Choose your report"
-                    [options]="reportTypes" labelField="title" valueField="title" #select>
-          <sui-select-option *ngFor="let report of reportTypes" [value]="report" tabindex="0" (click)="reportChanged(report);">
-          </sui-select-option>
-        </sui-select></label>
+        <div class="sb-field w-25">
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>Choose your report</mat-label>
+          <mat-select formControlName="reportType" role="listbox" aria-label="Choose your report" class="selection"
+            (selectionChange)="reportChanged($event)">
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of reportTypes" [value]="option"
+            attr.aria-label="{{option.title}}">{{option.title}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
         <div class="sb-field filterTable mx-16 mb-0">
           <input class="sb-form-control" type="text" formControlName="password" placeholder="Enter password" aria-label="enter password">

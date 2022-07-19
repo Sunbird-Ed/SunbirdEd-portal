@@ -17,19 +17,19 @@ export class PermissionService {
   /**
    * all roles with actions, including sub roles.
    */
-  private rolesAndPermissions: Array<RolesAndPermissions> = [];
+  rolesAndPermissions: Array<RolesAndPermissions> = [];
   /**
    * main roles with action
    */
-  private mainRoles: Array<RolesAndPermissions> = [];
+  mainRoles: Array<RolesAndPermissions> = [];
   /**
    * all user role action
    */
-  private userRoleActions: Array<string> = [];
+  userRoleActions: Array<string> = [];
   /**
    * all user role
    */
-  private userRoles: Array<string> = [];
+  userRoles: Array<string> = [];
   /**
    * flag to store permission availability
    */

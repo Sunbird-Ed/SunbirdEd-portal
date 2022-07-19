@@ -1,5 +1,5 @@
 <div class="sb-certificatePage-bg" [appTelemetryImpression]="telemetryImpressionData">
-  <div *ngIf="!viewCertificate" class="sb-certificatePage" [class.loading]="loader" [class.error]="error">
+  <div *ngIf="!viewCertificate && !validateRCCertificate" class="sb-certificatePage" [class.loading]="loader" [class.error]="error">
     <div class="sb-certificatePage-overlay"></div>
     <div class="sb-certificatePage-header">
       <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo" />
@@ -30,7 +30,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="viewCertificate">
+<div *ngIf="viewCertificate && !validateRCCertificate">
 <div  class="sb-certificatePage sb-certificate-view sb-certificatePage-flexHeight">
     <div class="sb-certificatePage-header">
       <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo"/>
@@ -75,4 +75,45 @@
     </div>
   </div>
 </div>
+
+<!-- RC Certificate validation -->
+<div *ngIf="validateRCCertificate && viewCertificate">
+
+  <div class="sb-certificatePage sb-certificate-view sb-certificatePage-flexHeight">
+    <div class="sb-certificatePage-header">
+      <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo" />
+    </div>
+    <div class="sb-certificatePage-holder-details mb-auto">
+      <img src="assets/images/badge.svg" class="sb-icon-badge mt-24 mb-8" alt="Badge" />
+      <p *ngIf="recipient" class="sb-certificatePage-holder-desc sb-certificatePage-holder-desc-primary">
+        {{resourceService?.frmelmnts?.lbl?.certificateIssuedTo}}
+      </p>
+      <h4 *ngIf="recipient" class="sb-certificatePage-holder-name">
+        {{recipient}}
+      </h4>
+      <p *ngIf="courseName && issuedOn" class="sb-certificatePage-holder-desc">
+        {{resourceService?.frmelmnts?.lbl?.completingCourseSuccessfully}}
+        <strong class="d-block">“{{courseName}}”</strong>
+        <span class="d-block">{{resourceService?.frmelmnts?.lbl?.onDiksha | interpolate:'{instance}':instance}}<strong>
+            {{issuedOn}}</strong></span>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="validateRCCertificate && !viewCertificate && isInvalidCertificate" class="sb-certificatePage" [class.loading]="loader" [class.error]="error">
+
+  <div class="sb-certificatePage sb-certificate-view sb-certificatePage-flexHeight">
+    <div class="sb-certificatePage-header">
+      <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo" />
+    </div>
+    <div class="sb-certificatePage-holder-details mb-auto">
+      <img class="mr-8" src="assets/images/exclamation.svg" width="20px">
+      {{resourceService?.frmelmnts?.cert?.imsg?.rcInvalid}}
+    </div>
+  </div>
+
+</div>
+<!-- RC Certificate validation -->
 </div>

@@ -1,18 +1,15 @@
 <div class="sbt-back-header sbt-inside-page-container sb-dashlet-table">
-  <app-back-button></app-back-button>
-  <div class="content-header">
-    <div class="ui container pb-16">
-      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+  <div class="content-header sb-bg-color-white">
+    <div class="d-flex ui container py-8">
+      <app-back-button></app-back-button>
+      <div class="d-flex flex-ai-center flex-jc-space-between w-100 flex-w-wrap">
         <div class="d-flex flex-basis-1 mr-32 min-w-0 content-header__content__title">
-          <div class="d-flex flex-dc">
-            <div class="content-header__title font-weight-bold ellipsis text-left">
-              {{ hierarchyData.name }}
-            </div>
-          </div>
+          <div class="content-header__title font-weight-bold ellipsis text-left px-16">{{ hierarchyData.name }}</div>
         </div>
       </div>
     </div>
   </div>
+
   <div class="ui container sb-dashlet-table" *ngIf="dashletData">
     <app-dashboard [dashletData]="dashletData" [fileName]="hierarchyData.name" (downloadCsv)="addTelemetry()"
       [lastUpdatedOn]="memberListUpdatedOn"></app-dashboard>

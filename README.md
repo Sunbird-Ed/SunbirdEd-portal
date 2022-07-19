@@ -1,8 +1,13 @@
 # sunbird-portal
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5b3a8965fbe9447a9e74967e852c38df)](https://www.codacy.com/app/sunbird-bot/SunbirdEd-portal?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sunbird-Ed/SunbirdEd-portal&amp;utm_campaign=Badge_Grade)
 
-[![Build Status](https://travis-ci.org/project-sunbird/sunbird-portal.svg?branch=master)](https://travis-ci.org/project-sunbird/sunbird-portal)
+[![Circle CI - master branch](https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal/tree/master.svg?style=svg)](https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal/tree/master.svg?style=svg)
+[![Circle CI Badge](https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal.svg?style=shield)]((https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal.svg?style=shield))
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Sunbird-Ed_SunbirdEd-portal&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Sunbird-Ed_SunbirdEd-portal)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Sunbird-Ed_SunbirdEd-portal&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Sunbird-Ed_SunbirdEd-portal)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Sunbird-Ed_SunbirdEd-portal&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Sunbird-Ed_SunbirdEd-portal)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Sunbird-Ed_SunbirdEd-portal&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Sunbird-Ed_SunbirdEd-portal)
 
+---
 
 ## What is Sunbird?
 [Sunbird](http://sunbird.org) is a next-generation scalable open-source learning solution for teachers and tutors. Built for the 21st century with [state-of-the-art technology](http://www.sunbird.org/architecture/views/physical/), Sunbird runs natively in [cloud/mobile environments](http://www.sunbird.org/features/). The [open-source governance](LICENSE) of Sunbird allows a massive community of nation-builders to co-create and extend the solution in novel ways.
@@ -26,8 +31,8 @@ Have node version 10 and follow the next steps
 
 Prerequisities
 
-	1. Node > 10x
-	2. Angular 8x
+	1. Node > 14x
+	2. Angular 10x
 	3. Yarn
 
 Sunbird dev has 2 parts 
@@ -35,34 +40,29 @@ Sunbird dev has 2 parts
 		1. Angular client
 		2. Node server
     
-   Go to src/app/helpers/ replace environmentVariablesHelper.js
+   ```Go to src/app/helpers/ replace environmentVariablesHelper.js```
     
 ### Installing and running Angular client
 
 ## Step 1: Go to src/app/client folder
 
-    npm i (OR) yarn install
+    yarn install
     npm run start
     
 ### Installing and running Node server
 
 ## Step 2: Go to src/app folder
   
-    npm i (OR) yarn install
+    yarn install
     npm run server
     
 
 ## Reporting Issues
 We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues.
 
-# Installing Sunbird Portal
+---
 
-Installing Sunbird requires two primary software components:
-
-- Sunbird portal or web application
-- Sunbird services stack or the backend API interface
-
-# Installing Sunbird Portal
+## Installing Sunbird Portal
 
 Installing Sunbird requires two primary software components:
 
@@ -101,8 +101,8 @@ Installing Sunbird requires two primary software components:
 
 | Software dependencies |  |
 | :--- | ------- |
-| **[Node](https://nodejs.org/en/download/)** | > 12.x.x (Install the latest release of LTS version) |
-| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 12.x.x (Install the latest Angular CLI version) |
+| **[Node](https://nodejs.org/en/download/)** | > 14.x.x (Install the latest release of LTS version) |
+| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 10.x.x (Install the latest Angular CLI version) |
 | **[yarn](https://classic.yarnpkg.com/en/)** | Latest version of yarn: `npm install --global yarn` |
 | **[nodemon](https://www.npmjs.com/package/nodemon)** | Latest version  of nodemon: `npm install -g nodemon` |
 

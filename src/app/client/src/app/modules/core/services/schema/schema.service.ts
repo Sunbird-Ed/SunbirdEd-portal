@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormService } from '../form/form.service';
-import * as contentSchema from './schemas/contentSchema.json';
-import { tap, map } from 'rxjs/operators';
-import { Observable, of, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { reduce } from 'lodash-es';
 
 interface ISchema {

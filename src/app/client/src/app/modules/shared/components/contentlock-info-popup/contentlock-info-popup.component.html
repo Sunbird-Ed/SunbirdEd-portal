@@ -1,36 +1,34 @@
-<sui-modal
-    [mustScroll]="true" 
-    [isClosable]="true"
-    [transitionDuration]="0"
-    [size]="'small'"
-    class="sb-modal"
-    appBodyScroll
-    (dismissed)="closeModal()" 
-    #modal
->
-    <!--Header-->
-	<div class="sb-modal-header">
-        &nbsp;
-    </div>
-    <!--/Header-->
-    <!--Content-->
-    <div class="sb-modal-content">
-        <div class="ui center aligned segment">
-            <div class="header cardsHeading">
-                {{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content.lockInfo.creatorInfo.name | interpolate:'{contentName}':content?.name}} 
+<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="closeModal()" #modal>
+    <ng-template sbModalContent>
+        <div class="sb-modal">
+            <div class="transition ui dimmer page modals active visible">
+                <div class="ui modal transition active visible small">
+                    <!--Header-->
+                    <div class="sb-modal-header">
+                        &nbsp;
+                    </div>
+                    <!--/Header-->
+                    <!--Content-->
+                    <div class="sb-modal-content">
+                        <div class="ui center aligned segment">
+                            <div class="header cardsHeading">
+                                {{resourceService?.frmelmnts?.lbl?.lockPopupTitle |
+                                interpolate:'{collaborator}':content.lockInfo.creatorInfo.name |
+                                interpolate:'{contentName}':content?.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Content-->
+                    <!--Actions-->
+                    <div class="sb-modal-actions">
+                        <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()" tabindex="0">
+                            {{resourceService.frmelmnts?.btn?.ok}}
+                        </button>
+                    </div>
+                    <!--/Actions-->
+
+                </div>
             </div>
         </div>
-    </div>
-    <!--/Content-->
-    <!--Actions-->
-	<div class="sb-modal-actions">
-        <button 
-            class="sb-btn sb-btn-normal sb-btn-primary"
-            (click)="closeModal()" tabindex="0"
-        >
-            {{resourceService.frmelmnts?.btn?.ok}}
-        </button>
-    </div>
-    <!--/Actions-->
-
-</sui-modal>
+    </ng-template>
+</app-modal-wrapper>

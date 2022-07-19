@@ -14,7 +14,7 @@ import {
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
-  OfflineCardService, RecaptchaService, LayoutService, ConnectionService
+  OfflineCardService, RecaptchaService, ConnectionService
 } from './services';
 import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
@@ -37,15 +37,16 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AutocompletePipe } from './components/material-auto-complete/auto-complete-pipe';
 import { MaterialAutoCompleteComponent } from './components/material-auto-complete/material-auto-complete.component';
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatInputModule   } from "@angular/material/input";
-import { MatChipsModule } from "@angular/material/chips";
-import { MatListModule } from "@angular/material/list";
-import { MatSelectModule } from "@angular/material/select";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule   } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MaterialModule } from './modules/material/material.module';
 // import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
@@ -58,8 +59,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TelemetryModule,
     TranslateModule.forChild(),
     MatTooltipModule, MatTabsModule, MatDialogModule,
-    MatAutocompleteModule,MatFormFieldModule, MatInputModule,
-    MatChipsModule,MatIconModule,MatSelectModule,MatListModule,MatButtonModule,MatCheckboxModule
+    MatAutocompleteModule, MatFormFieldModule, MatInputModule,
+    MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule, MaterialModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -69,7 +70,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
     TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe,MaterialAutoCompleteComponent
+    AutocompletePipe, MaterialAutoCompleteComponent
   ],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
@@ -80,7 +81,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
     AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe,MaterialAutoCompleteComponent
+    AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule
   ],
   entryComponents: [AlertModalComponent]
 })

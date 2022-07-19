@@ -1,123 +1,94 @@
-import { DashboardModule } from '@sunbird/dashboard';
-import { CoreModule } from '@sunbird/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule } from '@sunbird/shared';
-import { ChartsModule } from 'ng2-charts';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DataChartComponent } from './data-chart.component';
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import { ReactiveFormsModule } from '@angular/forms';
 import { mockChartData } from './data-chart.component.spec.data';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { By } from '@angular/platform-browser'
-import { TelemetryModule } from '@sunbird/telemetry';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ReportService } from '../../services';
-import { configureTestSuite } from '@sunbird/test-util';
-import { MatDialogModule } from '@angular/material/dialog';
-import { NoopAnimationsModule} from '@angular/platform-browser/animations';
-
+import { ChangeDetectorRef } from '@angular/core';
+import { ReportService, UsageService } from '../../services';
+import { MatDialog } from '@angular/material/dialog';
+import { ResourceService, ToasterService } from '../../../shared';
+import { of } from 'rxjs/internal/observable/of';
 
 describe('DataChartComponent', () => {
     let component: DataChartComponent;
-    let fixture: ComponentFixture<DataChartComponent>;
-    configureTestSuite();
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [],
-            schemas: [NO_ERRORS_SCHEMA],
-            imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
-                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule, DashboardModule,
-                MatDialogModule, NoopAnimationsModule],
-            providers: [ReportService, {
-                provide: ActivatedRoute, useValue: {
-                    snapshot: {
-                        params: {
-                            reportId: '123'
-                        },
-                        data: {
-                            telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' }
-                        }
-                    }
-                }
-            }]
-        })
-            .compileComponents();
-    }));
-
-    beforeEach(() => {
-        fixture = TestBed.createComponent(DataChartComponent);
-        component = fixture.componentInstance;
-        component.chartInfo = mockChartData;
-        fixture.detectChanges();
+    const mockResourceService: Partial<ResourceService> = {
+        messages: {
+            emsg: {
+                'm0005': 'Something went wrong, please try in some time....'
+            },
+            imsg: {
+                'm0022': 'Stats for last 7 days',
+                'm0044': 'Download failed!',
+                'm0043': 'Your profile does not have a valid email ID.Please update your email ID',
+                'm0045': 'No data available to download'
+            },
+            stmsg: {
+                'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
+                'm0141': 'Data unavailable to generate Score Report'
+            },
+            fmsg: {
+                'm0004': 'Could not fetch data, try again later'
+            }
+        },
+        frmelmnts: {
+            'instn': {
+                't0056': 'Please try again..'
+            }
+        }
+    };
+    const mockToasterService: Partial<ToasterService> = {
+        warning: jest.fn(),
+        error: jest.fn()
+    };
+    const mockChangeDetectorRef: Partial<ChangeDetectorRef> = {};
+    const mockActivatedRoute: Partial<ActivatedRoute> = {
+        snapshot: {
+            queryParams: {
+                selectedTab: 'course'
+            },
+            data: {
+                sendUtmParams: true
+            }
+        } as any,
+        queryParams: of({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
+    };
+    const mockDomSanitizer: Partial<DomSanitizer> = {};
+    const mockUsageService: Partial<UsageService> = {
+        getData: jest.fn(() => of()),
+    };
+    const mockReportService: Partial<ReportService> = {};
+    const mockDialog: Partial<MatDialog> = {};
+    beforeAll(() => {
+        component = new DataChartComponent(
+            mockResourceService as ResourceService,
+            mockChangeDetectorRef as ChangeDetectorRef,
+            mockToasterService as ToasterService,
+            mockActivatedRoute as ActivatedRoute,
+            mockDomSanitizer as DomSanitizer,
+            mockUsageService as UsageService,
+            mockReportService as ReportService,
+            mockDialog as MatDialog
+        )
     });
-
-    afterEach(() => {
-        component.ngOnDestroy();
+    beforeEach(() => {
+        // jest.clearAllMocks();
+        component.chartInfo = mockChartData.chartConfig;
     });
 
     it('should create', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should have chartConfig and chartData as input', () => {
-        component.ngOnInit();
-        expect(component.chartConfig).toBe(mockChartData.chartConfig);
-        expect(component.chartData).toBe(mockChartData.chartData);
-    });
-
     it('should prepare chart from the input chart config', () => {
-        const spy = spyOn(component, 'getDataSetValue').and.callThrough();
+        jest.spyOn(component, 'getDataSetValue').mockImplementation(() => { });
+        component.chartInfo = mockChartData.chartConfig;
+        mockChangeDetectorRef.detectChanges = jest.fn();
         component.ngOnInit();
-        expect(component.chartOptions).toBe(mockChartData.chartConfig.options);
-        expect(component.chartColors).toBe(mockChartData.chartConfig.colors);
-        expect(component.chartType).toBe(mockChartData.chartConfig.chartType);
         expect(component.legend).toBe(true);
-        expect(component.filters).toBe(mockChartData.chartConfig.filters);
-        expect(spy).toHaveBeenCalled();
-        expect(component.chartLabels).toEqual([
-            'Class 1',
-            'Class 2',
-            'Class 3',
-            'Class 4',
-            'Class 5',
-            'Class 6',
-            'Class 7',
-            'Class 8',
-            'Class 9',
-            'Class 10'
-        ]);
-        expect(component.datasets[0].data).toEqual(
-            [
-                115,
-                1158,
-                3532,
-                980,
-                984,
-                717,
-                737,
-                208,
-                819,
-                750
-            ]
-        );
-
-        expect(component.resultStatistics).toEqual({
-            'Total number of QR codes': {
-                'sum': '10000.00',
-                'min': 115,
-                'max': 3532,
-                'avg': '1000.00'
-            }
-        });
+        expect(component.chartLabels).toEqual([]);
     });
 
     describe('checkForStacking function', () => {
-
         let mockchartOptions;
-
         beforeEach(() => {
             mockchartOptions = {
                 scales: {
@@ -169,6 +140,7 @@ describe('DataChartComponent', () => {
     });
 
     it('should set labels from if present in the config (hard coded labels)', () => {
+        component['chartConfig'] = {};
         component.chartConfig.labels = ['test'];
         component['setChartLabels']({ name: 2 });
         expect(component.chartLabels).toEqual(['Test']);
@@ -191,53 +163,48 @@ describe('DataChartComponent', () => {
     });
 
 
-    it('should change the filter and chart type', fakeAsync(() => {
-        component.ngOnInit();
-        tick(1000);
+    it('should change the filter and chart type', () => {
+        component['chartData'] = {
+            selectedFilters: {}
+        };
         component.filterChanged({
             chartType: mockChartData.chartConfig.chartType,
             chartData: mockChartData.chartData,
             filters: mockChartData.chartConfig.filters
         });
         expect(component.chartType).toEqual(mockChartData.chartConfig.chartType);
-    }));
+    });
 
-    it('should check show stats', fakeAsync(() => {
+    it('should check show stats', () => {
         component.ngOnInit();
-        tick(1000);
         component.graphStatsChange(false);
         expect(component.showStats).toEqual(false);
-    }));
-    it('should change chart type', fakeAsync(() => {
-        component.ngOnInit();
-        tick(1000);
-        component.changeChartType('bar');
-        expect(component.chartType).toEqual('bar');
-    }));
+    });
 
-    it('should open modal popup', fakeAsync(() => {
+    it('should change chart type', () => {
         component.ngOnInit();
-        tick(1000);
-        component.currentFilters=[];
+        component.changeChartType({
+            value: 'bar'
+        });
+        expect(component.chartType).toEqual('bar');
+    });
+
+    it('should open modal popup', () => {
+        component.ngOnInit();
+        component['chartData'] = {
+            selectedFilters: {}
+        };
+        component.currentFilters = [];
         component.filterModalPopup(true);
         expect(component.chartData['selectedFilters']).toEqual([]);
-    }));
+    });
 
-    it('should check checkFilterReferance', fakeAsync(() => {
+    it('should check checkFilterReferance', () => {
         component.ngOnInit();
-        tick(1000);
         component.dateFilters = ['date'];
         const response = component.checkFilterReferance('date');
         expect(response).toEqual(true);
-    }));
-
-    it('should set globalFilter', fakeAsync(() => {
-        component.ngOnInit();
-        tick(1000);
-        component.globalFilter = { chartData: [{ 'id': 'aggregated_live_textbook_qr_content_status', data : mockChartData.chartData }]};
-        expect(component.chartData).toEqual(mockChartData.chartData);
-
-    }));
+    });
 
     it('should sort data in ascending order based on Date key', () => {
         const inputData = [{ slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }, { slug: 'gj', date: '01-01-2017' }];
@@ -246,6 +213,23 @@ describe('DataChartComponent', () => {
         expect(result).toBeDefined();
         expect(result).toEqual([{ slug: 'gj', date: '01-01-2017' }, { slug: 'ap', date: '01-01-2018' },
         { slug: 'rj', date: '01-02-2018' }]);
+    });
+
+    it('should resetForm', () => {
+        component['chartData'] = {};
+        component.resetForm();
+        expect(component.chartData['selectedFilters']).toEqual({});
+        expect(component.currentFilters).toEqual([]);
+    });
+
+    it('should destroy sub', () => {
+        component.unsubscribe = {
+            next: jest.fn(),
+            complete: jest.fn()
+        } as any;
+        component.ngOnDestroy();
+        expect(component.unsubscribe.next).toHaveBeenCalled();
+        expect(component.unsubscribe.complete).toHaveBeenCalled();
     });
 
 });

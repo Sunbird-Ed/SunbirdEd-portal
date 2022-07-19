@@ -18,7 +18,15 @@
     }
   }
 }
-
+.download-scripts-btn{
+  display: flex;
+  align-items: center;
+  font-size: calculateRem(16px);
+}
+.icon-download-transcripts svg{
+  height: 100%;
+  width: 100%;
+}
 :host ::ng-deep {
   .ui.styled.accordion .title {
     color: var(--primary-400) !important;
@@ -42,7 +50,6 @@
 
 .credits-section {
   background-color: var(--white);
-  padding: calculateRem(16px);
 
   .title {
     color: var(--gray-200);

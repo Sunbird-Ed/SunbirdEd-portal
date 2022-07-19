@@ -1,9 +1,11 @@
 import { FormService, UserService } from '@sunbird/core';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, UtilService, ConnectionService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-no-result-found',
@@ -23,8 +25,12 @@ export class NoResultComponent implements OnInit {
   exploreMoreContentEdata: IInteractEventEdata;
   currentPage;
   url;
-  constructor( public router: Router, public resourceService: ResourceService,
-    public activatedRoute: ActivatedRoute, public formService: FormService,  public userService: UserService) { }
+  isConnected = true;
+  public unsubscribe$ = new Subject<void>();
+  isDesktopApp = false;
+  constructor( public router: Router, public resourceService: ResourceService, public UtilService: UtilService,
+    public ConnectionService: ConnectionService, public activatedRoute: ActivatedRoute,
+    public formService: FormService,  public userService: UserService, public ToasterService: ToasterService) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
@@ -34,7 +40,14 @@ export class NoResultComponent implements OnInit {
       ...this.filters
       }
     };
+    this.ConnectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
+    this.isDesktopApp = this.UtilService.isDesktopApp;
     this.formData();
+    if (this.isDesktopApp && !this.isConnected) {
+      this.ToasterService.info(_.get(this.resourceService, 'messages.stmsg.desktop.offlineNoMatch'));
+    }
   }
   formData() {
       const formServiceInputParams = {

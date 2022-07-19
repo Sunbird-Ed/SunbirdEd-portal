@@ -119,16 +119,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
-    this.mimeTypeFilters = [
-      { text: _.get(this.resourceService, 'frmelmnts.btn.all', 'All'), value: 'all' },
-      { text: _.get(this.resourceService, 'frmelmnts.btn.video', 'Video'), value: 'video' },
-      { text: _.get(this.resourceService, 'frmelmnts.btn.interactive', 'Interactive'), value: 'interactive' },
-      { text: _.get(this.resourceService, 'frmelmnts.btn.docs', 'Docs'), value: 'docs' }
-    ];
     this.activeMimeTypeFilter = ['all'];
   }
 
   ngOnInit() {
+    this.setMimeTypeFilters();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
@@ -142,7 +137,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.isGroupAdmin = !_.isEmpty(_.get(this.route.snapshot, 'queryParams.groupId')) && _.get(data.params, 'groupData.isAdmin');
       this.groupId = _.get(data, 'groupId') || _.get(this.route.snapshot, 'queryParams.groupId');
     });
- 
+
     if (this.isDesktopApp) {
       this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe(contentDownloadStatus => {
         this.contentDownloadStatus = contentDownloadStatus;
@@ -156,7 +151,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.scrollTop();
     this.layoutService.switchableLayout().
       pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
         if (layoutConfig != null) {
@@ -219,7 +213,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private initPlayer(id: string): void {
-    this.playerConfig = this.getPlayerConfig(id).pipe(map((content) => {
+    this.playerConfig = this.getPlayerConfig(id).pipe(map((content:any) => {
+
+      if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        const contentDetails = {contentId: id, contentData: content.questionSet };
+        content = this.playerServiceReference.getConfig(contentDetails);
+        this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
+          content['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
+        });
+      }
 
       const CData: Array<{}> = this.dialCode ? [{ id: this.dialCode, type: 'dialCode' }] : [];
       if (this.groupId) {
@@ -301,10 +303,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private getPlayerConfig(contentId: string): Observable<PlayerConfig> {
-    if (this.dialCode) {
-      return this.playerServiceReference.getConfigByContent(contentId, { dialCode: this.dialCode });
+
+    if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      return this.publicPlayerService.getQuestionSetHierarchy(contentId);
     } else {
-      return this.playerServiceReference.getConfigByContent(contentId);
+      if (this.dialCode) {
+        return this.playerServiceReference.getConfigByContent(contentId, { dialCode: this.dialCode });
+      } else {
+        return this.playerServiceReference.getConfigByContent(contentId);
+      }
     }
   }
 
@@ -356,6 +363,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.generaliseLabelService.initialize(data, item.value);
       this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+      this.setMimeTypeFilters();
     });
   }
 
@@ -831,6 +839,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }
     };
     this.telemetryService.interact(interactData);
+  }
+
+  private setMimeTypeFilters() {
+    this.mimeTypeFilters = [
+      { text: _.get(this.resourceService, 'frmelmnts.btn.all', 'All'), value: 'all' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.video', 'Video'), value: 'video' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.interactive', 'Interactive'), value: 'interactive' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.docs', 'Docs'), value: 'docs' }
+    ];
   }
 }
 

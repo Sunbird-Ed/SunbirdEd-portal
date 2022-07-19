@@ -38,7 +38,8 @@
               </div>
               <div class="ml-8 textbook__heading">
                 <!-- Textbook title -->
-                <div class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseDetails?.name}}</div>
+                <div class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseDetails?.name}}
+                </div>
                 <div class="fs-1 pt-8">{{courseDetails?.contentType}}</div>
               </div>
             </div>
@@ -89,7 +90,8 @@
                 <div><img src="../../assets/images/addcertificate.png" alt="add certificate "></div>
                 <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
                   <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
-                  {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
+                  {{ resourceService?.frmelmnts?.cert?.lbl?.button}}
+                </p>
                 <button type="button" id="addNewCert" tabindex="0" (click)="certificateCreation()"
                   class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                   {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
@@ -142,18 +144,6 @@
                       {{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</div>
                     <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">
                       {{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</div>
-                    <!-- <div class="d-flex flex-dc">
-                      <label
-                        class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.certType}}</label>
-                      <label>
-                        <sui-select class="selection form-control" formControlName="certificateType" [options]="certTypes"
-                          [placeholder]="'Select certificate'" labelField="name" valueField="name" [isSearchable]="false"
-                          [isDisabled]="configurationMode === 'edit'" #selectCertType>
-                          <sui-select-option *ngFor="let option of selectCertType.filteredOptions" [value]="option">
-                          </sui-select-option>
-                        </sui-select>
-                      </label>
-                    </div> -->
                   </div>
                 </div>
 
@@ -161,21 +151,19 @@
                   <div class="seven wide column">
                     <div class="pt-8 pb-16 font-weight-bold fnormal text-left">
                       {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
-                    <div class="d-flex flex-dc">
-                      <label
-                        class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
-                      <label>
-                        <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
-                          [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
-                          [isDisabled]="configurationMode === 'edit'" #selectRecipient (selectedOptionChange)="handleParameterChange($event)">
-                          <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option">
-                          </sui-select-option>
-                        </sui-select>
-                      </label>
+                    <div class="d-flex flex-dc w-50">
+                        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                          <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
+                          <mat-select formControlName="issueTo" role="listbox" aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo"
+                            class="selection" [disabled]="configurationMode === 'edit'" (selectionChange)="handleParameterChange($event)">
+                            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of issueTo" [value]="option.name"
+                            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
                     </div>
                     <label class="fnormal font-weight-normal text-left"
                       *ngIf="isStateCertificate">{{resourceService?.frmelmnts?.intxt?.ssousers |
-                        interpolate:'{instance}': instance}}</label>
+                      interpolate:'{instance}': instance}}</label>
                   </div>
                 </div>
 
@@ -336,39 +324,60 @@
 </app-cert-preview-popup>
 
 <!-- footer certificate -->
-<sui-modal *ngIf="isTemplateChanged" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-batch-update-modal" appBodyScroll (dismissed)="closeTemplateDetectModal()" #templateChangeModal>
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.cert?.lbl?.changeDetected}}
-  </div>
-  <div class="sb-modal-content">
-    <div class="ui stackable grid mt-16 mb-8">
-      <div class="two wide column p-0">
-        <div class="checkbox-img"></div>
-      </div>
-      <div class="nine wide column p-0">
-        <p class="fnormal">{{resourceService?.frmelmnts?.cert?.lbl?.templateChange}}</p>
-      </div>
-    </div>
-  </div>
-  <div class="sb-modal-actions">
-    <button (click)="attachCertificateToBatch()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
-      {{resourceService?.frmelmnts?.lbl?.continue}}
-    </button>
-    <button (click)="closeTemplateDetectModal()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      {{resourceService?.frmelmnts?.btn?.cancel}}
-    </button>
-  </div>
-</sui-modal>
+<app-modal-wrapper *ngIf="isTemplateChanged" [config]="{disableClose: true, size: 'normal'}"
+  (dismiss)="closeTemplateDetectModal()" #templateChangeModal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="showAlertModal = false" #modal *ngIf="showAlertModal">
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.cert?.lbl?.alertHeader}}
-  </div>
-  <div class="sb-modal-content">
-    <div class="ui center aligned segment text-left">
-      <p>{{resourceService?.frmelmnts?.cert?.imsg?.alertMessageForCert}}</p>
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.cert?.lbl?.changeDetected}}
+          </div>
+          <div class="sb-modal-content">
+            <div class="ui stackable grid mt-16 mb-8">
+              <div class="two wide column p-0">
+                <div class="checkbox-img"></div>
+              </div>
+              <div class="nine wide column p-0">
+                <p class="fnormal">{{resourceService?.frmelmnts?.cert?.lbl?.templateChange}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="sb-modal-actions">
+            <button (click)="attachCertificateToBatch()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+              {{resourceService?.frmelmnts?.lbl?.continue}}
+            </button>
+            <button (click)="closeTemplateDetectModal()" tabindex="0"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary">
+              {{resourceService?.frmelmnts?.btn?.cancel}}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>
+
+<app-modal-wrapper *ngIf="showAlertModal" [config]="{disableClose: true, size: 'small'}"
+  (dismiss)="showAlertModal = false" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-header">
+            {{resourceService?.frmelmnts?.cert?.lbl?.alertHeader}}
+          </div>
+          <div class="sb-modal-content">
+            <div class="ui center aligned segment text-left">
+              <p>{{resourceService?.frmelmnts?.cert?.imsg?.alertMessageForCert}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

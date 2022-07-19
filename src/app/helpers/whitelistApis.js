@@ -247,7 +247,18 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
-
+    '/action/asset/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
+    },
+    '/action/asset/v1/read/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
+    },
+    '/action/asset/v1/upload/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR, ROLE.COURSE_CREATOR]
+    },
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
@@ -583,6 +594,14 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/rc/certificate/v1/download/:id': {
+      checksNeeded: []
+    },
+    '/learner/rc/certificate/v1/key/:id': {
+      checksNeeded: [],
+      description: 'RC API to validate scanned certificate'
+    },
+    
     //Admin related APIs
     '/learner/data/v1/upload/status': {
       checksNeeded: ['ROLE_CHECK'],
@@ -751,7 +770,13 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
-
+    '/learner/certreg/v2/certs/search': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/rc/certificate/v1/search': {
+      checksNeeded: []
+    },
     // get user session
     '/learner/get/user/sessionId/:userId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1569,6 +1594,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ANONYMOUS]
     },
+    '/api/rc/certificate/v1/search': {
+      description: 'RC API to fetch certificates from RC',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     // Question & QuestionSet API's
     '/action/questionset/v1/create': {
       description: 'QuestionSet create',
@@ -1700,6 +1730,10 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/kendra/solutions/mlcore/v1/targetedSolutions': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/kendra/solutions/mlcore/v1/read/:id':{
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1878,7 +1912,11 @@ const API_LIST = {
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
+    '/learner/rc/certificate/v1/download/:id',
+    '/learner/rc/certificate/v1/key/:id',
     '/content/asset/v1/upload/:id',
+    '/action/asset/v1/upload/:id',
+    '/action/asset/v1/read/:id',
     '/learner/get/user/sessionId/:userId',
     '/action/assessment/v3/items/read/:do_id',
     '/action/assessment/v3/items/update/:do_id',
@@ -1976,6 +2014,7 @@ const API_LIST = {
     '/action/collection/v1/import/:id',
     '/action/collection/v1/export/:id',
     '/kendra/v1/user-extension/solutions/:id',
+    '/kendra/solutions/mlcore/v1/read/:id',
     '/uci/admin/v1/bot/get',
     '/uci/admin/v1/bot/search',
     '/uci/admin/v1/bot/pause/:botId',

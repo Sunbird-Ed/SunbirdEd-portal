@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CourseBatchService } from '../../../services';
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -36,12 +36,13 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.batchId = params.batchId;
-      this.telemetryInteractObject = { id: this.batchId, type: 'Course', ver: '1.0' };
+      const primaryCategory = _.get(this.activatedRoute, 'snapshot.queryParams.primaryCategory');
+      this.telemetryInteractObject = { id: this.batchId, type: primaryCategory || 'Course', ver: '1.0' };
       this.courseBatchService.getEnrollToBatchDetails(this.batchId).pipe(
         takeUntil(this.unsubscribe))
         .subscribe((data) => {
           this.batchDetails = data;
-          this.telemetryInteractObject = { id: this.batchId, type: 'Course', ver: '1.0', rollup: {l1: _.get(data, 'courseId'),
+          this.telemetryInteractObject = { id: this.batchId, type: primaryCategory || 'Course', ver: '1.0', rollup: {l1: _.get(data, 'courseId'),
           l2: this.batchId}};
           if (this.batchDetails.enrollmentType !== 'open') {
             this.toasterService.error(this.generaliseLabelService.messages.fmsg.m0082);

@@ -1,5 +1,5 @@
 import { of, throwError, Subscription, Subject } from 'rxjs';
-import { first, mergeMap, map, tap, catchError, filter, takeUntil } from 'rxjs/operators';
+import { first, mergeMap, map, catchError, filter } from 'rxjs/operators';
 import {
   ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService, LayoutService} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy, ViewRef } from '@angular/core';

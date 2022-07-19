@@ -36,28 +36,28 @@
 </app-modal-wrapper>
 
 <!-- create batch -->
-<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="isTrackable && viewBatch">
-  <sui-accordion-panel>
-    <div role="button" tabindex="0" (click)="isOpen = !isOpen" [attr.aria-expanded]="isOpen"
-      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion" aria-controls="batches" title
-      class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
-      <i class="chevron down icon" role="img" title="expand"></i>
-    </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16" role="region" id="batches"
-      aria-labelledby="batches">
+<mat-accordion class="sb-mat-accordion mb-16" *ngIf="isTrackable && viewBatch">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion" aria-controls="batches">
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
+        {{resourceService?.frmelmnts?.lbl?.batches}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sb-mat-accordion__content" role="region" id="batches" aria-labelledby="batches">
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
-            <label>
-              <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16"
-                [(ngModel)]="batchStatus" [options]="statusOptions" valueField="value" labelField="name"
-                #batchStatusSelect>
-                <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option"
-                  tabindex="0">
-                </sui-select-option>
-              </sui-select>
-            </label>
+            <div>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
+                <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage"
+                  class="selection"
+                  [(ngModel)]="batchStatus" (selectionChange)="getSelectedBatches()">
+                  <mat-option role="option" *ngFor="let option of statusOptions" [value]="option.value"
+                    attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div *ngFor="let batch of batchList">
 
               <div class="sb-color-primary fmedium font-weight-bold"><i class="calendar outline icon"></i>
@@ -111,17 +111,18 @@
         </div>
       </div>
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
 
 <!-- batch details -->
-<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="showBatchDetailsBeforeJoin">
-  <sui-accordion-panel [isOpen]="false">
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{resourceService?.frmelmnts?.lbl?.batchdetails}}</span>
-      <i class="chevron down icon" role="img" title="expand"></i>
-    </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+<mat-accordion class="sb-mat-accordion mb-16" *ngIf="showBatchDetailsBeforeJoin">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
+        {{resourceService?.frmelmnts?.lbl?.batchdetails}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <div *ngIf="batchDetails?.startDate">
@@ -148,15 +149,16 @@
         </div>
       </div>
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
-<sui-accordion *ngIf="showCertificateDetails" class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
-  <sui-accordion-panel [isOpen]="false">
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{resourceService?.frmelemnts?.scttl?.certques}}</span>
-      <i class="chevron down icon" role="img" title="expand"></i>
-    </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion *ngIf="showCertificateDetails" class="sb-mat-accordion mb-16">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title>
+        <span>{{resourceService?.frmelemnts?.scttl?.certques}}</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <ul>
@@ -169,19 +171,19 @@
         </div>
       </div>
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
 
 <!-- Leave batch card -->
-<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion"
+<mat-accordion class="sb-mat-accordion mb-16"
   *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
-  <sui-accordion-panel [isOpen]="false" [attr.aria-expanded]="!isOpen" aria-label="accordion area label"
-    (click)="isOpen = !isOpen">
-    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
-      <i class="chevron down icon" role="img" title="expand"></i>
-    </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
+        {{resourceService.frmelmnts.lbl.batchdetails}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="sb-mat-accordion__content">
       <div class="batch-details">
         <div class="mb-16">
           <div class="batch-details__name sb-color-primary font-weight-bold fmedium">
@@ -209,8 +211,8 @@
         </div>
       </div>
     </div>
-  </sui-accordion-panel>
-</sui-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
 
 <app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="showMessageModal = false;"
   *ngIf="showMessageModal">

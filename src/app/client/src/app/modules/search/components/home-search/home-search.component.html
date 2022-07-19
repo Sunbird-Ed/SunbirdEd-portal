@@ -37,12 +37,12 @@
         class="dynamic-section-card">
         <div *ngFor="let section of contentList; let last = last" [ngClass]="{'last mb-0':last}">
           <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
-            [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" [viewMore]="true"
+            [title]="section.name" [contentList]="section.contents" [maxCardCount]="3" [viewMore]="true"
             (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
           </sb-library-cards-grid>
           <div class="sb-desktop-library-card relative9">
             <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
-            [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" [viewMore]="true"
+            [title]="section?.name" [contentList]="section.contents" [maxCardCount]="3" [viewMore]="true"
             (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
             </sb-library-cards-grid>
           </div>

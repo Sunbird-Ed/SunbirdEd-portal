@@ -29,7 +29,7 @@
 <div class="sb-mat__modal__actions flex-jc-center">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
   [telemetryInteractEdata]="submitInteractEdata"
-    [ngClass]="{'disabled':!enableSubmitBtn}" 
+    [ngClass]="{'sb-btn-disabled':!enableSubmitBtn}" 
     class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
     (click)="verifyOTP()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
 </div>

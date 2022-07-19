@@ -1,17 +1,24 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal sb-modal-addsummary" appBodyScroll (dismissed)="modal.deny()" #modal>
-  <div class="sb-modal-header">
-    {{input?.title}}
-  </div>
-  <div class="sb-modal-content">
-    {{input?.body}}
-  </div>
-  <div class="sb-modal-actions">
-    <button (click)="confirm(true)" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
-      {{resourceService.frmelmnts?.btn?.yes}}
-    </button>
-    <button (click)="confirm(false)" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      {{resourceService?.frmelmnts?.btn?.no}}
-    </button>
-  </div>
-</sui-modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="modal.deny()" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible small">
+          <div class="sb-modal-header">
+            {{input?.title}}
+          </div>
+          <div class="sb-modal-content">
+            {{input?.body}}
+          </div>
+          <div class="sb-modal-actions">
+            <button (click)="confirm(true)" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+              {{resourceService.frmelmnts?.btn?.yes}}
+            </button>
+            <button (click)="confirm(false)" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+              {{resourceService?.frmelmnts?.btn?.no}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>

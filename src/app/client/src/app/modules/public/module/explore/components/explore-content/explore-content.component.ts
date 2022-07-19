@@ -1,15 +1,14 @@
 import {
-  PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, OfflineCardService,
-  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
+  PaginationService, ResourceService, ConfigService, ToasterService, OfflineCardService, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService, SchemaService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, UserService, FrameworkService, SchemaService } from '@sunbird/core';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../offline/services';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
@@ -236,6 +235,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       : this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       query: this.queryParams.key,
+      sort_by: {lastPublishedOn: 'desc'},
       mode: 'soft',
       softConstraints: softConstraints,
       facets: this.globalSearchFacets,
@@ -526,10 +526,14 @@ logTelemetry(content, actionId) {
     const searchQueryParams: any = {};
     searchQueryParams.defaultSortBy = JSON.stringify({ lastPublishedOn: 'desc' });
     searchQueryParams['exists'] = undefined;
-    searchQueryParams['primaryCategory'] = this.queryParams.primaryCategory ? this.queryParams.primaryCategory : [event.name];
-    this.queryParams.primaryCategory ? (searchQueryParams['subject'] = [event.name]) :
+    searchQueryParams['primaryCategory'] = (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ?
+     this.queryParams.primaryCategory : [event.name];
+    (this.queryParams.primaryCategory && this.queryParams.primaryCategory.length) ? (searchQueryParams['subject'] = [event.name]) :
     (searchQueryParams['se_subjects'] = this.queryParams.se_subjects);
     searchQueryParams['selectedTab'] = 'all';
+    if (this.queryParams.channel) {
+      searchQueryParams['channel'] = this.queryParams.channel;
+    }
     searchQueryParams['visibility'] = [];
     searchQueryParams['appliedFilters'] = true;
     const sectionUrl = '/explore' + '/view-all/' + event.name.replace(/\s/g, '-');

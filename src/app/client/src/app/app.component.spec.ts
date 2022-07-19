@@ -1,525 +1,604 @@
-import { Observable, of, throwError } from 'rxjs';
-import {
-  ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
-  BrowserCacheTtlService, LayoutService
-} from '@sunbird/shared';
-import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
-  PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
-} from '@sunbird/core';
-import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
-import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { ChangeDetectorRef, EventEmitter, NgZone, Renderer2 } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CacheService } from "ng2-cache-service";
+import { BehaviorSubject, Observable, of, throwError } from "rxjs";
+import { AppComponent } from "./app.component"
+import { CoursesService, DeviceRegisterService, FormService, GeneraliseLabelService, LearnerService, OrgDetailsService, PermissionService, PublicDataService, SessionExpiryInterceptor, TenantService, UserService } from "./modules/core";
+import { BrowserCacheTtlService, ConfigService, ConnectionService, IUserData, IUserProfile, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService } from "./modules/shared";
+import { TelemetryService } from "./modules/telemetry";
+import { ProfileService } from "./plugins/profile";
 import { mockData } from './app.component.spec.data';
-import { AppComponent } from './app.component';
-import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import * as _ from 'lodash-es';
-import { ProfileService } from '@sunbird/profile';
-import { CacheService } from 'ng2-cache-service';
-import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
-import { configureTestSuite } from '@sunbird/test-util';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { UtilService, ConnectionService } from '@sunbird/shared';
+import { mockRes } from "./modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data";
 
-class RouterStub {
-  public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
-  public navigate = jasmine.createSpy('navigate');
-  public url = '';
-  public events = new Observable(observer => {
-    observer.next(this.navigationEnd);
-    observer.complete();
-  });
-}
+describe("App Component", () => {
+  let appComponent: AppComponent;
 
-class MockElementRef {
-  nativeElement: {};
-}
-
-const fakeActivatedRoute = {
-  snapshot: {
-    root: { firstChild: { params: { slug: 'sunbird' } } }
-  },
-  queryParams: of({})
-};
-const mockUserRoles = {
-  userRoles: ['PUBLIC'],
-  userOrgDetails:'testing123'
-};
-
-describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
-  let telemetryService;
-  let configService;
-  let userService;
-  let timerCallback;
-  let resourceService;
-  let setAttributeSpy;
-  let removeAttributeSpy;
-  let increaseFontSize;
-  let decreaseFontSize;
-  let resetFontSize;
-  let darkModeToggle;
-  const resourceMockData = {
-    messages: {
-      fmsg: { m0097: 'Something went wrong' },
-      stmsg: { desktop: { onlineStatus: 'You are online' } },
-      emsg: { desktop: { offlineStatus: 'You are offline' } }
-    },
-    initialize: () => ({}),
-    languageSelected$: of({ value: 'en', dir: 'ltr' })
+  const mockCacheService: Partial<CacheService> = {
+    set: jest.fn()
   };
-  configureTestSuite();
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
-        RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [
-        AppComponent
-      ],
-      providers: [
-        { provide: Router, useClass: RouterStub},
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ElementRef, useValue: new MockElementRef() },
-        ToasterService, TenantService, CacheService, AnimationBuilder,
-        UserService, ConfigService, LearnerService, BrowserCacheTtlService,
-        PermissionService, CoursesService, OrgDetailsService, ProfileService,
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService,
-        { provide: ResourceService, useValue: resourceMockData }],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
-  }));
+  const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
+  const mockUserService: Partial<UserService> = {
+    loggedIn: true,
+    slug: jest.fn().mockReturnValue("tn") as any,
+    userData$: of({userProfile: {
+      userId: 'sample-uid',
+      rootOrgId: 'sample-root-id',
+      rootOrg: {},
+      hashTagIds: ['id']
+    } as any}) as any,
+    setIsCustodianUser: jest.fn(),
+    userid: 'sample-uid',
+    appId: 'sample-id',
+    getServerTimeDiff: '',
+  };
+  const mockNavigationHelperService: Partial<NavigationHelperService> = {
+    contentFullScreenEvent: new EventEmitter<any>()
+  };
+  const mockPermissionService: Partial<PermissionService> = {};
+  const mockResourceService: Partial<ResourceService> = {};
+  const mockDeviceRegisterService: Partial<DeviceRegisterService> = {};
+  const mockCoursesService: Partial<CoursesService> = {};
+  const mockTenantService: Partial<TenantService> = {
+    tenantData$: of({favicon: 'sample-favicon'}) as any
+  };
+  const mockTelemetryService: Partial<TelemetryService> = {};
+  const mockRouter: Partial<Router> = {
+    events: of({id: 1, url: 'sample-url'}) as any,
+    navigate: jest.fn()
+};
+  const mockConfigService: Partial<ConfigService> = {
+    appConfig: {
+      layoutConfiguration: "joy",
+      TELEMETRY: {
+        PID: 'sample-page-id'
+      }
+    },
+    urlConFig: {
+      URLS: {
+        TELEMETRY: {
+          SYNC: true
+        },
+        CONTENT_PREFIX: ''
+      }
+    }
+  };
+  const mockOrgDetailsService: Partial<OrgDetailsService> = {};
+  const mockActivatedRoute: Partial<ActivatedRoute> = {
+    queryParams: of({})
+  };
+  const mockProfileService: Partial<ProfileService> = {};
+  const mockToasterService: Partial<ToasterService> = {};
+  const mockUtilService: Partial<UtilService> = {
+    isDesktopApp: true,
+    isIos: true
+  };
+  const mockFormService: Partial<FormService> = {};
+  const mockSessionExpiryInterceptor: Partial<SessionExpiryInterceptor> = {};
+  const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
+  };
+  const mockLayoutService: Partial<LayoutService> = {};
+  const mockGeneraliseLabelService: Partial<GeneraliseLabelService> = {};
+  const mockRenderer2: Partial<Renderer2> = {};
+  const mockNgZone: Partial<NgZone> = {};
+  const mockConnectionService: Partial<ConnectionService> = {};
+  const mockPublicDataService: Partial<PublicDataService> = {};
+  const mockLearnerService: Partial<LearnerService> = {};
+  const mockDocument: Partial<Document> = {};
+
+  const mockUserRoles = {
+    userRoles: ['PUBLIC'],
+    userOrgDetails: 'testing123'
+  };
+
+  beforeAll(() => {
+    appComponent = new AppComponent(
+      mockCacheService as CacheService,
+      mockBrowserCacheTtlService as BrowserCacheTtlService,
+      mockUserService as UserService,
+      mockNavigationHelperService as NavigationHelperService,
+      mockPermissionService as PermissionService,
+      mockResourceService as ResourceService,
+      mockDeviceRegisterService as DeviceRegisterService,
+      mockCoursesService as CoursesService,
+      mockTenantService as TenantService,
+      mockTelemetryService as TelemetryService,
+      mockRouter as Router,
+      mockConfigService as ConfigService,
+      mockOrgDetailsService as OrgDetailsService,
+      mockActivatedRoute as ActivatedRoute,
+      mockProfileService as ProfileService,
+      mockToasterService as ToasterService,
+      mockUtilService as UtilService,
+      mockFormService as FormService,
+      mockDocument as Document,
+      mockSessionExpiryInterceptor as SessionExpiryInterceptor,
+      mockChangeDetectionRef as ChangeDetectorRef,
+      mockLayoutService as LayoutService,
+      mockGeneraliseLabelService as GeneraliseLabelService,
+      mockRenderer2 as Renderer2,
+      mockNgZone as NgZone,
+      mockConnectionService as ConnectionService
+    );
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    telemetryService = TestBed.get(TelemetryService);
-    configService = TestBed.get(ConfigService);
-    userService = TestBed.get(UserService);
-    resourceService = TestBed.get(ResourceService);
-    darkModeToggle = component.darkModeToggle  = TestBed.get(ElementRef);
-    increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
-    decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
-    resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
+      jest.clearAllMocks();
+  });
 
+  it('should be create a instance of appComponent', () => {
+      expect(appComponent).toBeTruthy();
+  });
 
-    spyOn(navigationHelperService, 'initialize').and.callFake(() => {});
-    spyOn(telemetryService, 'initialize');
-    spyOn(telemetryService, 'getDeviceId').and.callFake((cb) => cb('123'));
-    spyOn(document, 'querySelector').and.returnValue({ setAttribute: () => { }});
-    setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
-    removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
-    spyOn(Fingerprint2, 'constructor').and.returnValue({get: () => {}});
-    spyOn(document, 'getElementById').and.callFake((id) => {
-      if (id === 'buildNumber') {
-        return { value: '1.1.12.0' };
-      }
-      if (id === 'deviceId') {
-        return { value: 'device' };
-      }
-      if (id === 'defaultTenant') {
-        return { value: 'defaultTenant' };
+  it('should handle login', () => {
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { 
+        replace: jest.fn(),
       }
     });
-    timerCallback = jasmine.createSpy('timerCallback');
-    jasmine.clock().install();
+    mockCacheService.removeAll = jest.fn();
+    appComponent.handleLogin();
+    expect(mockCacheService.removeAll).toHaveBeenCalled();
   });
 
-afterEach(() => {
-  jasmine.clock().uninstall();
-});
-  it('should config telemetry service for login Session', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    userService._userData$.next({ err: null, userProfile: mockUserRoles });
-    userService._authenticated = true;
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    component.ngOnInit();
-    const config = {
-      userOrgDetails: {
-        userId: userService.userProfile.userId,
-        rootOrgId: userService.userProfile.rootOrgId,
-        rootOrg: userService.userProfile.rootOrg,
-        organisationIds: userService.userProfile.hashTagIds,
-        OrgDetails:userService.userProfile.userOrgDetails
-      },
-      config: {
-        pdata: {
-          id: component.userService.appId,
-          ver: '1.1.12',
-          pid: configService.appConfig.TELEMETRY.PID
-        },
-        endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: userService.userProfile.userId,
-        sid: component.userService.sessionId,
-        channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
-        env: 'home',
-        enableValidation: true,
-        timeDiff: 0
+  describe('getOrgDetails', () => {
+    it('should get ord details and set in cache', () => {
+      mockOrgDetailsService.getOrgDetails = jest.fn().mockReturnValue(of({})) as any;
+      appComponent.getOrgDetails(true).subscribe((data) => {
+        expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalled();
+      });
+    })
+  })
+
+  describe('checkForCustodianUser', () => {
+    it('should set user as custodian if it is', (done) => {
+      const custodianOrg = {
+        result: {response: {value: 'ROOT_ORG'}}
       }
-    };
-    expect(telemetryService.initialize).toHaveBeenCalled();
-    // expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
-  });
-const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
-  it('should config telemetry service for Anonymous Session', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of(maockOrgDetails));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654', id: '1235654'};
-    component.ngOnInit();
-    const config = {
-      userOrgDetails: {
-        userId: 'anonymous',
-        rootOrgId: '1235654',
-        organisationIds: ['1235654']
-      },
-      config: {
-        pdata: {
-          id: component.userService.appId,
-          ver: '1.1.12',
-          pid: configService.appConfig.TELEMETRY.PID
-        },
-        batchsize: 2,
-        endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: 'anonymous',
-        sid: component.userService.anonymousSid,
-        channel: '1235654',
-        env: 'home',
-        enableValidation: true,
-        timeDiff: 0
+      mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(custodianOrg)) as any;
+      const mockUserProfile = {
+        rootOrg: {rootOrgId: 'ROOT_ORG'}
       }
+      Object.defineProperty(mockUserService, 'userProfile', {
+        get: jest.fn(() => mockUserProfile)
+      });
+      appComponent.checkForCustodianUser();
+      setTimeout(() => {
+        expect(mockUserService.setIsCustodianUser).toHaveBeenCalledWith(true);
+        done();
+      });
+    });
+
+    it('should set user as non custodian user', (done) => {
+      const custodianOrg = {
+        result: {response: {value: ''}}
+      }
+      mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(custodianOrg)) as any;
+      appComponent.checkForCustodianUser();
+      setTimeout(() => {
+        expect(mockUserService.setIsCustodianUser).toHaveBeenCalledWith(false);
+        done();
+      });
+    });
+  })
+
+  describe('onAcceptTnc', () => {
+    it('should show framework selection popup for non logged in user', () => {
+      Object.defineProperty(mockUserService, 'loggedIn', {
+        get: jest.fn(() => false)
+      });
+      jest.spyOn(appComponent, 'checkFrameworkSelected').mockImplementation();
+      appComponent.onAcceptTnc();
+      expect(appComponent.checkFrameworkSelected).toHaveBeenCalled();
+    });
+
+    it('should show global consent popup for non custodian user', (done) => {
+      Object.defineProperty(mockUserService, 'userProfile', {
+        get: jest.fn(() => {rootOrgId: 'ROOT_ORG'})
+      });
+      Object.defineProperty(mockUserService, 'loggedIn', {
+        get: jest.fn(() => true)
+      });
+      const nonCustodianOrg = { result: {response: {value: ''}}}
+      mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(nonCustodianOrg)) as any;
+      appComponent.onAcceptTnc();
+      setTimeout(() => {
+        expect(appComponent.showGlobalConsentPopUpSection).toBeTruthy();
+        done();
+      });  
+    });
+
+    it('should check framework selected or not for logged in and custodian user', (done) => {
+      const mockUserProfile = {
+        rootOrg: {rootOrgId: 'ROOT_ORG'}
+      }
+      Object.defineProperty(mockUserService, 'userProfile', {
+        get: jest.fn(() => mockUserProfile)
+      });
+      Object.defineProperty(mockUserService, 'loggedIn', {
+        get: jest.fn(() => true)
+      });
+      const nonCustodianOrg = { result: {response: {value: 'ROOT_ORG'}}}
+      mockOrgDetailsService.getCustodianOrgDetails = jest.fn().mockReturnValue(of(nonCustodianOrg)) as any;
+      jest.spyOn(appComponent, 'checkFrameworkSelected').mockImplementation();
+      appComponent.onAcceptTnc();
+      setTimeout(() => {
+        expect(appComponent.checkFrameworkSelected).toHaveBeenCalled();
+        done();
+      });  
+    });
+  })
+
+
+  describe("closeConsentPopUp", () => {
+    it("should close consent popup", () => {
+      jest.spyOn(appComponent, 'checkFrameworkSelected').mockImplementation();
+      appComponent.closeConsentPopUp();
+      expect(appComponent.showGlobalConsentPopUpSection).toBeFalsy();
+      expect(appComponent.isglobalConsent).toBeFalsy();
+      expect(appComponent.checkFrameworkSelected).toHaveBeenCalled();
+    })
+  })
+
+  it('should invoked ngOnDestroy before unload', () => {
+    // arrange
+    mockTelemetryService.syncEvents = jest.fn(() => {});
+    jest.spyOn(appComponent, 'ngOnDestroy').mockImplementation(() => {
+      return;
+    });
+    // act
+    appComponent.beforeunloadHandler({});
+    // assert
+    expect(mockTelemetryService.syncEvents).toHaveBeenCalledWith(false);
+  });
+
+  it('should handle header and footer data', () => {
+    // arrange
+    // act
+    appComponent.handleHeaderNFooter();
+    // assert
+    expect(appComponent.router.events).toBeTruthy();
+  });
+
+  describe('setTagManager', () => {
+    it('should set tag manager for loggedIn user', () => {
+      // arrange
+      Storage.prototype.getItem = jest.fn(() => '');
+      // act
+      appComponent.setTagManager();
+      // assert
+      expect(Storage.prototype.getItem).toHaveBeenCalled();
+    });
+  });
+
+  it('should be set Selected Theme Colour', () => {
+    jest.spyOn(document, 'getElementById').mockImplementation(() => {
+      return {value: ['val-01', '12', '-', '.'], checked: false} as any;
+    });
+    appComponent.setSelectedThemeColour({});
+    expect(document.getElementById).toHaveBeenCalled();
+  });
+
+  it('should be return theme', () => {
+    // arrange
+    Storage.prototype.getItem = jest.fn(() => 'sample-color');
+    appComponent.darkModeToggle = {
+      nativeElement: true
     };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
-  });
-  it('Should call beforeunloadHandler method', () => {
-    const event = {};
-    spyOn(component, 'beforeunloadHandler');
-    component.beforeunloadHandler(event);
-    expect(component.beforeunloadHandler).toHaveBeenCalledWith(event);
-  });
-  it('Should call handleLogin method', () => {
-    spyOn(component, 'handleLogin');
-    component.handleLogin();
-    expect(component.handleLogin).toHaveBeenCalled();
-  });
-  it('Check if bot diplayed for route ', () => {
-    spyOn(component, 'isBotdisplayforRoute');
-    component.isBotdisplayforRoute();
-    expect(component.isBotdisplayforRoute).toHaveBeenCalled();
-  });
-  it('Set theme color ', () => {
-    spyOn(component, 'storeThemeColour');
-    component.storeThemeColour('#ffff');
-    expect(component.storeThemeColour).toHaveBeenCalled();
-  });
-  it('Check location pop up is required ', () => {
-    spyOn(component, 'isLocationStatusRequired');
-    component.isLocationStatusRequired();
-    expect(component.isLocationStatusRequired).toHaveBeenCalled();
-  });
-  it('Check location status pop up is required ', () => {
-    spyOn(component, 'checkLocationStatus');
-    component.checkLocationStatus();
-    expect(component.checkLocationStatus).toHaveBeenCalled();
-  });
-  it('Should subscribe to tenant service and retrieve title and favicon details', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    component.ngOnInit();
-    component.ngAfterViewInit();
-    // expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
-    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
+    mockRenderer2.setAttribute = jest.fn();
+    jest.spyOn(appComponent, 'setSelectedThemeColour').mockImplementation();
+    mockLayoutService.setLayoutConfig = jest.fn(() => 'sample-layout');
+    // act
+    appComponent.setTheme();
+    // assert
+    expect(Storage.prototype.getItem).toHaveBeenCalled();
+    expect(mockRenderer2.setAttribute).toHaveBeenCalled();
+    expect(mockLayoutService.setLayoutConfig).toHaveBeenCalled();
   });
 
-  it('Should display the tenant logo if user is not logged in', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    component.ngOnInit();
-    // expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
-    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
-  });
-  xit('should check framework key is in user read api and open the popup  ', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    userService._authenticated = true;
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    component.ngOnInit();
-    expect(component.showFrameWorkPopUp).toBeTruthy();
-  });
-
-  it('Should return proper object by calling make UTM session', () => {
-    telemetryService = TestBed.get(TelemetryService);
-    telemetryService.makeUTMSession({'channel': 'sunbird', 'utm_medium': 'sunbird', 'utm_source': 'sunbird',
-    'utm_campaign': 'sunbird', 'utm_term': 'sunbird', 'utm_content': 'sunbird'});
-    spyOn(telemetryService, 'makeUTMSession');
-    expect(sessionStorage.getItem('UTM')).toBeDefined();
-    const utm = sessionStorage.getItem('UTM') ? JSON.parse(sessionStorage.getItem('UTM').toString()) : [];
-    expect(utm[0]['type']).toBe('Source');
-    expect(utm[1]['type']).toBe('UtmMedium');
-    expect(utm[2]['type']).toBe('UtmSource');
-    expect(utm[4]['type']).toBe('UtmTerm');
-    expect(utm[5]['type']).toBe('UtmContent');
+  describe('ngAfterViewInit', () => {
+    it('should checked after child component initialized', () => {
+      // arrange
+      const mHeaderPos = { height: 50, checked: true };
+      const mHeader = [{addEventListener: jest.fn((as, listener, sd) => ({}))
+      }];
+      jest.spyOn(document, 'querySelectorAll').mockImplementation((selector) => {
+        switch (selector) {
+          case 'input[name=selector]':
+            return mHeader as any;
+        }
+      });
+      jest.spyOn(appComponent, 'setTheme').mockImplementation();
+      jest.spyOn(appComponent, 'getLocalFontSize').mockImplementation();
+      jest.spyOn(appComponent, 'getLocalTheme').mockImplementation();
+      jest.spyOn(appComponent, 'setTagManager').mockImplementation();
+      // act
+      appComponent.ngAfterViewInit();
+      // assert
+      expect(document.querySelectorAll).toHaveBeenCalled();
+    });
   });
 
-  it('should not get user feed api data', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    userService._authenticated = true;
-    spyOn(userService, 'getFeedData');
-    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({result: {response: {content: 'data'}}}));
-    component.getUserFeedData();
-    expect(userService.getFeedData).not.toHaveBeenCalled();
-  });
-  it('Check logExData called ', () => {
-    spyOn(component, 'logExData');
-    component.logExData('IMPRESSION', {});
-    expect(component.logExData).toHaveBeenCalled();
-  });
-  it('Check onLocationSubmit called ', () => {
-    spyOn(component, 'onLocationSubmit');
-    component.showYearOfBirthPopup = false;
-    component.onLocationSubmit();
-    expect(component.onLocationSubmit).toHaveBeenCalled();
-  });
-  it('Check interpolateInstance called ', () => {
-    spyOn(component, 'interpolateInstance');
-    component.interpolateInstance('check the data');
-    expect(component.interpolateInstance).toHaveBeenCalled();
+  it('should check FullScreen View', () => {
+    mockNavigationHelperService.contentFullScreenEvent = of({fullScreen: true}) as any;
+    appComponent.checkFullScreenView();
+    expect(appComponent.isFullScreenView).toStrictEqual({fullScreen: true});
   });
 
-  it('should close joy theme popup and trigger furthur popup flow', () => {
-    spyOn(component, 'checkTncAndFrameWorkSelected');
-    component.onCloseJoyThemePopup();
-    expect(component.showJoyThemePopUp).toBe(false);
-    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  describe('checkTncAndFrameWorkSelected', () => {
+    it('should show TermsAndCondPopUp', () => {
+      const mockUserProfile = {
+        promptTnC: true,
+        tncLatestVersion: 'sample-version'
+      };
+      Object.defineProperty(mockUserService, 'userProfile', {
+        get: jest.fn(() => mockUserProfile)
+      });
+      appComponent.checkTncAndFrameWorkSelected();
+      expect(appComponent.showTermsAndCondPopUp).toBeTruthy();
+    });
+
+    it('should show GlobalConsentPopUpSection', () => {
+      const mockUserProfile = {
+        promptTnC: false,
+        tncLatestVersion: 'sample-version'
+      };
+      Object.defineProperty(mockUserService, 'userProfile', {
+        get: jest.fn(() => mockUserProfile)
+      });
+      appComponent.checkTncAndFrameWorkSelected();
+    });
   });
 
-  it('should show tnc popup second time', () => {
-    spyOn(localStorage, 'getItem').and.returnValue('true');
-    spyOn(component, 'checkTncAndFrameWorkSelected');
-    component.joyThemePopup();
-    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  it('should return joyThemePopup', () => {
+    Storage.prototype.getItem = jest.fn(() => 'sample-data');
+    jest.spyOn(appComponent, 'checkTncAndFrameWorkSelected').mockImplementation();
+    appComponent.joyThemePopup();
   });
 
-  it('should close joy theme popup and trigger furthur popup flow', () => {
-    spyOn(component, 'checkTncAndFrameWorkSelected');
-    component.onCloseJoyThemePopup();
-    expect(component.showJoyThemePopUp).toBe(false);
-    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
-  });
-  it('should unsubscribe from all observable subscriptions', () => {
-    spyOn(component.unsubscribe$, 'next');
-    spyOn(component.unsubscribe$, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe$.next).toHaveBeenCalled();
-    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  describe('ngOnInit', () => {
+    it('should be return user details for web and Ios', () => {
+      // arrange
+      jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      mockDocument.body = {
+        classList: {
+          add: jest.fn()
+        }
+      } as any;
+      jest.spyOn(appComponent, 'checkFullScreenView').mockImplementation();
+      mockLayoutService.switchableLayout = jest.fn(() => of([{data: ''}]));
+      mockActivatedRoute.queryParams = of({
+        id: 'sample-id',
+        utm_campaign: 'utm_campaign',
+        utm_medium: 'utm_medium',
+        clientId: 'android',
+        context: JSON.stringify({data: 'sample-data'})
+      });
+      Storage.prototype.getItem = jest.fn(() => 'sample-data');
+      jest.spyOn(appComponent, 'handleHeaderNFooter').mockImplementation();
+      mockResourceService.initialize = jest.fn(() => {});
+      jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
+        return of('sample-device-id');
+      });
+      mockNavigationHelperService.initialize = jest.fn(() => {});
+      mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
+      jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
+      mockPermissionService.initialize = jest.fn(() => {});
+      mockCoursesService.initialize = jest.fn(() => {});
+      mockTelemetryService.makeUTMSession = jest.fn();
+      mockUserService.startSession = jest.fn(() => true);
+      jest.spyOn(appComponent, 'checkForCustodianUser').mockImplementation(() => {
+        return true;
+      });
+      jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
+      mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn(() => {});
+      mockTenantService.getTenantInfo = jest.fn(() => {});
+      mockTenantService.initialize = jest.fn(() => {});
+      mockTelemetryService.initialize = jest.fn(() => ({cdata: {}}));
+      jest.spyOn(document, 'getElementById').mockImplementation(() => {
+        return {value: ['val-01', '12', '-', '.']} as any;
+      });
+      appComponent.telemetryContextData = {
+        did: 'sample-did',
+        pdata: 'sample-pdata',
+        channel: 'sample-channel',
+        sid: 'sample-sid'
+      };
+      jest.spyOn(appComponent, 'logCdnStatus').mockImplementation();
+      jest.spyOn(appComponent, 'setFingerPrintTelemetry').mockImplementation();
+      Storage.prototype.setItem = jest.fn(() => true);
+      jest.spyOn(appComponent, 'joyThemePopup').mockImplementation();
+      mockChangeDetectionRef.detectChanges = jest.fn();
+      jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
+      mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn();
+      jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
+      // act
+      appComponent.ngOnInit();
+      // assert
+      expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
+      expect(mockTelemetryService.makeUTMSession).toHaveBeenCalled();
+      expect(mockUserService.loggedIn).toBeTruthy();
+      expect(mockActivatedRoute.queryParams).not.toBe(undefined);
+      expect(Storage.prototype.getItem).toHaveBeenCalledWith('fpDetails_v2');
+      expect(mockResourceService.initialize).toHaveBeenCalled();
+      expect(mockNavigationHelperService.initialize).toHaveBeenCalled();
+      expect(mockUserService.initialize).toHaveBeenCalledTimes(1);
+      expect(mockPermissionService.initialize).toHaveBeenCalled();
+      expect(mockCoursesService.initialize).toHaveBeenCalled();
+      expect(mockUserService.startSession).toHaveBeenCalled();
+      expect(mockUserService.userData$).toBeTruthy();
+      expect(mockGeneraliseLabelService.getGeneraliseResourceBundle).toHaveBeenCalled();
+      expect(mockTenantService.getTenantInfo).toHaveBeenCalled();
+      expect(mockTenantService.initialize).toHaveBeenCalled();
+      expect(mockGeneraliseLabelService.getGeneraliseResourceBundle).toHaveBeenCalled();
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should be return user details for guest user', () => {
+      // arrange
+      jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      mockDocument.body = {
+        classList: {
+          add: jest.fn()
+        }
+      } as any;
+      jest.spyOn(appComponent, 'checkFullScreenView').mockImplementation();
+      mockLayoutService.switchableLayout = jest.fn(() => of([{data: ''}]));
+      mockActivatedRoute.queryParams = of({
+        id: 'sample-id',
+        utm_campaign: 'utm_campaign',
+        utm_medium: 'utm_medium',
+        clientId: 'android',
+        context: JSON.stringify({data: 'sample-data'})
+      });
+      Storage.prototype.getItem = jest.fn(() => 'sample-data');
+      jest.spyOn(appComponent, 'handleHeaderNFooter').mockImplementation();
+      mockResourceService.initialize = jest.fn(() => {});
+      jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
+        return of('sample-device-id');
+      });
+      mockNavigationHelperService.initialize = jest.fn(() => {});
+      mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
+      jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
+      mockPermissionService.initialize = jest.fn(() => {});
+      mockCoursesService.initialize = jest.fn(() => {});
+      mockTelemetryService.makeUTMSession = jest.fn();
+      mockUserService.startSession = jest.fn(() => true);
+      jest.spyOn(appComponent, 'checkForCustodianUser').mockImplementation(() => {
+        return true;
+      });
+      jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
+      mockGeneraliseLabelService.getGeneraliseResourceBundle = jest.fn(() => {});
+      mockTenantService.getTenantInfo = jest.fn(() => {});
+      mockTenantService.initialize = jest.fn(() => {});
+      mockTelemetryService.initialize = jest.fn(() => ({cdata: {}}));
+      jest.spyOn(document, 'getElementById').mockImplementation(() => {
+        return {value: ['val-01', '12', '-', '.']} as any;
+      });
+      appComponent.telemetryContextData = {
+        did: 'sample-did',
+        pdata: 'sample-pdata',
+        channel: 'sample-channel',
+        sid: 'sample-sid'
+      };
+      jest.spyOn(appComponent, 'logCdnStatus').mockImplementation();
+      jest.spyOn(appComponent, 'setFingerPrintTelemetry').mockImplementation();
+      Storage.prototype.setItem = jest.fn(() => true);
+      jest.spyOn(appComponent, 'joyThemePopup').mockImplementation();
+      mockChangeDetectionRef.detectChanges = jest.fn();
+      mockUserService.getGuestUser = jest.fn(() => of({role: 'teacher'}));
+      mockOrgDetailsService.getOrgDetails = jest.fn(() => of({
+        hashTagId: 'sample-hasTag-id'
+      })) as any;
+      jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
+      // act
+      appComponent.ngOnInit();
+      // assert
+      expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
+      expect(mockTelemetryService.makeUTMSession).toHaveBeenCalled();
+      expect(mockActivatedRoute.queryParams).not.toBe(undefined);
+      expect(Storage.prototype.getItem).toHaveBeenCalledWith('fpDetails_v2');
+      expect(mockResourceService.initialize).toHaveBeenCalled();
+      expect(mockNavigationHelperService.initialize).toHaveBeenCalled();
+      expect(mockUserService.initialize).toHaveBeenCalledTimes(1);
+      expect(mockTenantService.getTenantInfo).toHaveBeenCalled();
+      expect(mockTenantService.initialize).toHaveBeenCalled();
+      expect(mockUserService.getGuestUser).toHaveBeenCalled();
+      expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalled();
+    });
+
+    it('should be return user details for guest user and error part', () => {
+      // arrange
+      jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();
+      mockDocument.body = {
+        classList: {
+          add: jest.fn()
+        }
+      } as any;
+      jest.spyOn(appComponent, 'checkFullScreenView').mockImplementation();
+      mockLayoutService.switchableLayout = jest.fn(() => of([{data: ''}]));
+      mockActivatedRoute.queryParams = of({
+        id: 'sample-id',
+        utm_campaign: 'utm_campaign',
+        utm_medium: 'utm_medium',
+        clientId: 'android',
+        context: JSON.stringify({data: 'sample-data'})
+      });
+      Storage.prototype.getItem = jest.fn(() => 'sample-data');
+      jest.spyOn(appComponent, 'handleHeaderNFooter').mockImplementation();
+      mockResourceService.initialize = jest.fn(() => {});
+      jest.spyOn(appComponent, 'setDeviceId').mockImplementation(() => {
+        return of('sample-device-id');
+      });
+      mockNavigationHelperService.initialize = jest.fn(() => {});
+      mockUserService.initialize = jest.fn(() => ({uid: 'sample-uid'}));
+      jest.spyOn(appComponent, 'getOrgDetails').mockImplementation();
+      mockUserService.startSession = jest.fn(() => true);
+      jest.spyOn(appComponent, 'checkForCustodianUser').mockImplementation(() => {
+        return true;
+      });
+      jest.spyOn(appComponent, 'changeLanguageAttribute').mockImplementation();
+      jest.spyOn(document, 'getElementById').mockImplementation(() => {
+        return {value: ['val-01', '12', '-', '.']} as any;
+      });
+      appComponent.telemetryContextData = {
+        did: 'sample-did',
+        pdata: 'sample-pdata',
+        channel: 'sample-channel',
+        sid: 'sample-sid'
+      };
+      jest.spyOn(appComponent, 'logCdnStatus').mockImplementation();
+      jest.spyOn(appComponent, 'setFingerPrintTelemetry').mockImplementation();
+      Storage.prototype.setItem = jest.fn(() => true);
+      jest.spyOn(appComponent, 'joyThemePopup').mockImplementation();
+      mockChangeDetectionRef.detectChanges = jest.fn();
+      mockUserService.getGuestUser = jest.fn(() => throwError({role: 'teacher'}));
+      mockOrgDetailsService.getOrgDetails = jest.fn(() => throwError({
+        hashTagId: 'sample-hasTag-id'
+      })) as any;
+      jest.spyOn(appComponent, 'checkToShowPopups').mockImplementation();
+      // act
+      appComponent.ngOnInit();
+      // assert
+      expect(mockLayoutService.switchableLayout).toHaveBeenCalled();
+      expect(mockTelemetryService.makeUTMSession).toHaveBeenCalled();
+      expect(mockActivatedRoute.queryParams).not.toBe(undefined);
+      expect(Storage.prototype.getItem).toHaveBeenCalledWith('fpDetails_v2');
+      expect(mockResourceService.initialize).toHaveBeenCalled();
+      expect(mockNavigationHelperService.initialize).toHaveBeenCalled();
+      expect(mockUserService.initialize).toHaveBeenCalledTimes(1);
+      expect(mockUserService.getGuestUser).toHaveBeenCalled();
+      expect(mockOrgDetailsService.getOrgDetails).toHaveBeenCalled();
+    });
   });
 
-  it('Should subscribe to layout service and retrieve layout config', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    const layoutService = TestBed.get(LayoutService);
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: 'new layout'}));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    component.ngOnInit();
-    // expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
-    expect(component.layoutConfiguration).toEqual('new layout');
-    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
+  it('should be close JoyTheme Popup', () => {
+    // arrange
+    appComponent.showJoyThemePopUp = false;
+    jest.spyOn(appComponent, 'checkTncAndFrameWorkSelected').mockImplementation(() => {
+      return;
+    });
+    // act
+    appComponent.onCloseJoyThemePopup();
+    // assert
+    expect(appComponent.showJoyThemePopUp).toBeFalsy();
   });
 
-  it('should check if font size if stored in system or not', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(16);
-    spyOn(component, 'isDisableFontSize');
-    component.getLocalFontSize();
-    expect(component.fontSize).toBe(16);
-    expect(component.isDisableFontSize).toHaveBeenCalledWith(16);
+  it('should be checked is display for Route', () => {
+    appComponent.isBotdisplayforRoute();
+    expect(mockRouter.url).toEqual(undefined);
   });
 
-  it('should reset font size of the browser to 16px', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(16);
-    spyOn(component, 'setLocalFontSize');
-    component.changeFontSize('reset');
-    expect(component.fontSize).toBe(16);
-    expect(component.setLocalFontSize).toHaveBeenCalledWith(16);
-    expect(setAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed', 'true');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
+  it('should be return Theme Colour', () => {
+    Storage.prototype.setItem = jest.fn(() => true);
+    appComponent.storeThemeColour({});
+    expect(Storage.prototype.setItem).toHaveBeenCalled();
   });
 
-  it('should increase font size of the browser by 2px', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(18);
-    spyOn(component, 'setLocalFontSize');
-    component.changeFontSize('increase');
-    expect(component.fontSize).toBe(20);
-    expect(component.setLocalFontSize).toHaveBeenCalledWith(20);
-    expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed', 'true');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
-  });
-
-  it('should decrease font size of the browser by 2px', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(14);
-    spyOn(component, 'setLocalFontSize');
-    component.changeFontSize('decrease');
-    expect(component.fontSize).toBe(12);
-    expect(component.setLocalFontSize).toHaveBeenCalledWith(12);
-    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'aria-pressed', 'true');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'aria-pressed');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'aria-pressed');
-  });
-
-  it('should call isDisableFontSize with the value 12', () => {
-    spyOn(localStorage, 'setItem');
-    spyOn(component, 'isDisableFontSize');
-    component.setLocalFontSize(12);
-    expect(component.isDisableFontSize).toHaveBeenCalledWith(12);
-  });
-
-  it('should call isDisableFontSize with the value 12', () => {
-    component.isDisableFontSize(20);
-    expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled', 'true');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
-
-    component.isDisableFontSize(12);
-    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled', 'true');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
-
-    component.isDisableFontSize(16);
-    expect(setAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled', 'true');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
-
-    component.isDisableFontSize(14);
-    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
-    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
-
-  });
-
-  it('should get Local Theme', () => {
-    spyOn(localStorage, 'getItem').and.returnValue('true');
-    spyOn(component, 'setLocalTheme');
-    component.getLocalTheme();
-    expect(component.setLocalTheme).toHaveBeenCalled();
-  });
-  it('should change Theme to Dark mode', () => {
-    component.dataThemeAttribute = 'Darkmode';
-    spyOn(component, 'changeTheme');
-    component.changeTheme();
-    expect(component.changeTheme).toHaveBeenCalled();
-  });
-  it('should set the Local Theme', () => {
-    component.dataThemeAttribute = 'Darkmode';
-    spyOn(component, 'setLocalTheme');
-    component.setLocalTheme(component.dataThemeAttribute);
-    expect(component.setLocalTheme).toHaveBeenCalled();
-  });
-  it('should call skipToMainContent', () => {
-    spyOn(component, 'skipToMainContent');
-    component.skipToMainContent();
-    expect(component.skipToMainContent).toHaveBeenCalled();
-  });
-  it('should close framework popup', () => {
-    component.frameWorkPopUp = {
-      deny: jasmine.createSpy('deny')
-    };
-    component.closeFrameworkPopup();
-    expect(component.frameWorkPopUp.deny).toHaveBeenCalled();
-    expect(component.showFrameWorkPopUp).toBe(false);
-  });
-
-  it('should update framework for logged In user', () => {
-    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
-    component.isGuestUser = false;
-    const profileService = TestBed.get(ProfileService);
-    const utilService = TestBed.get(UtilService);
-    spyOn(profileService, 'updateProfile').and.returnValue(of({}));
-    spyOn(component, 'closeFrameworkPopup');
-    spyOn(component, 'checkLocationStatus');
-    spyOn(userService, 'setUserFramework');
-    spyOn(utilService, 'toggleAppPopup');
-    component.updateFrameWork(event);
-    expect(profileService.updateProfile).toHaveBeenCalled();
-    expect(component.closeFrameworkPopup).toHaveBeenCalled();
-    expect(component.checkLocationStatus).toHaveBeenCalled();
-    expect(userService.setUserFramework).toHaveBeenCalled();
-    expect(utilService.toggleAppPopup).toHaveBeenCalled();
-  });
-  it('should not update framework for logged In user', () => {
-    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
-    component.isGuestUser = false;
-    const profileService = TestBed.get(ProfileService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
-    component.updateFrameWork(event);
-    expect(profileService.updateProfile).toHaveBeenCalled();
-  });
-  it('should update framework for guest user', () => {
-    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
-    component.isGuestUser = true;
-    component.guestUserDetails = undefined;
-    component.isDesktopApp = false;
-    spyOn(component, 'closeFrameworkPopup');
-    spyOn(component, 'checkLocationStatus');
-    component.updateFrameWork(event);
-    expect(component.closeFrameworkPopup).toHaveBeenCalled();
-    expect(component.checkLocationStatus).toHaveBeenCalled();
-  });
-  it('should update framework for guest user/desktop', () => {
-    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
-    component.isGuestUser = true;
-    component.guestUserDetails = undefined;
-    component.isDesktopApp = true;
-    spyOn(component, 'closeFrameworkPopup');
-    spyOn(component, 'checkLocationStatus');
-    component.updateFrameWork(event);
-    expect(component.closeFrameworkPopup).toHaveBeenCalled();
-    expect(component.checkLocationStatus).toHaveBeenCalled();
-  });
-  it('should call notifyNetworkChange', () => {
-    const connectionService = TestBed.get(ConnectionService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'info');
-    spyOn(connectionService, 'monitor').and.returnValue(of(true));
-    component.notifyNetworkChange();
-    expect(toasterService.info).toHaveBeenCalledWith('You are online');
-  });
-
-  it('should navigate to my download page if network is not available', () => {
-    const connectionService = TestBed.get(ConnectionService);
-    const router = TestBed.get(Router);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'info');
-    spyOn(connectionService, 'monitor').and.returnValue(of(false));
-    component.notifyNetworkChange();
-    expect(toasterService.info).toHaveBeenCalledWith('You are offline');
-    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams: { selectedTab: 'mydownloads' }});
+  it('should be checked Location Status is Required', () => {
+    appComponent.isLocationStatusRequired();
   });
 });

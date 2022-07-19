@@ -4,7 +4,7 @@ import { SuiModule } from 'ng2-semantic-ui-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-  CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
+  FancyTreeComponent, CollectionPlayerMetadataComponent,
   ContentRatingComponent, CommingSoonComponent,
   CreditsAndLicenceComponent, ContentActionsComponent, ContentPlayerComponent,
   ContentPlayerPageComponent, ContentChapterlistComponent, ContentLicenceComponent,
@@ -42,14 +42,14 @@ import { EditorCursor } from '@project-sunbird/sunbird-collection-editor-v9';
    QumlLibraryModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
+    FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
     ContentLicenceComponent,
     CurriculumInfoComponent,
     CourseInfoComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
+    FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
     ContentLicenceComponent, CurriculumInfoComponent, CourseInfoComponent]

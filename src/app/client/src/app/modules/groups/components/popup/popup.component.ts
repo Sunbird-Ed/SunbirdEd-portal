@@ -1,7 +1,7 @@
 import { GroupsService } from './../../services';
 import { ResourceService } from '@sunbird/shared';
-import { acceptTnc, IGroupCard } from './../../interfaces/group';
-import { Component, Input, EventEmitter, Output, ViewChild, HostListener, AfterViewInit } from '@angular/core';
+import { acceptTnc } from './../../interfaces/group';
+import { Component, Input, EventEmitter, Output, HostListener, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';

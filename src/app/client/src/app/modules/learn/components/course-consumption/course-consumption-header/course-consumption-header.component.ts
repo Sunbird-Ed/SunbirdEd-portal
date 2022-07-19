@@ -1,5 +1,5 @@
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
-import { takeUntil, map} from 'rxjs/operators';
+import { takeUntil} from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,6 @@ import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
-import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CourseBatchService } from './../../../services';
 import { DiscussionService } from '../../../../discussion/services/discussion/discussion.service';
 import { FormService } from '../../../../core/services/form/form.service';
@@ -116,7 +115,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
-  
+
   ngOnInit() {
     this.isGroupAdmin = _.get(this.groupService, 'groupData.isAdmin');
     this.isDesktopApp = this.utilService.isDesktopApp;
@@ -355,7 +354,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
-        type: content ? _.get(content, 'contentType') : 'Course',
+        type: content ? _.get(content, 'primaryCategory') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }

@@ -99,23 +99,80 @@ export default class Content {
                     content = downloadedContents[0];
                 }
                 if (this.isAvailableOffline(content)) {
-                let resObj = {};
-                logger.debug(`ReqId = "${req.headers['X-msgid']}": Call isUpdateRequired()`)
-                if (this.isUpdateRequired(content, req)) {
-                    logger.debug(`ReqId = "${req.headers['X-msgid']}": Call checkForUpdate() to check whether update is required for content: `, _.get(content, 'identifier'));
-                    content = await this.checkForUpdates(content, req)
-                    resObj['content'] = content;
+                    let resObj = {};
+                    logger.debug(`ReqId = "${req.headers['X-msgid']}": Call isUpdateRequired()`)
+                    if (this.isUpdateRequired(content, req)) {
+                        logger.debug(`ReqId = "${req.headers['X-msgid']}": Call checkForUpdate() to check whether update is required for content: `, _.get(content, 'identifier'));
+                        content = await this.checkForUpdates(content, req)
+                    }
+                    content = _.has(content, 'streamingUrl') ? _.omit(content, 'streamingUrl') : content;
+                    if(content.mimeType === "application/vnd.sunbird.questionset") {
+                        resObj['questionSet'] = content;
+                    } else {
+                        resObj['content'] = content;
+                    }
                     return res.send(Response.success('api.content.read', resObj, req));
                 } else {
-                    resObj['content'] = content;
-                    return res.send(Response.success('api.content.read', resObj, req));
+                    res.status(404);
+                    return res.send(Response.error('api.content.read', 404));
                 }
-            } else {
-                res.status(404);
-                return res.send(Response.error('api.content.read', 404));
-            }
             } catch (error) {
                 this.standardLog.error({ id: 'CONTENT_DB_READ_FAILED', message: 'Received error while getting the data from content database', error, mid: req.headers['X-msgid'] });
+                if (error.status === 404) {
+                    res.status(404);
+                    return res.send(Response.error('api.content.read', 404));
+                } else {
+                    let status = error.status || 500;
+                    res.status(status);
+                    return res.send(Response.error('api.content.read', status));
+                }
+            }
+        })()
+
+    }
+
+    getQuestionList(req: any, res: any): any {
+        (async () => {
+            try {
+                logger.debug(`ReqId = "${req.headers['X-msgid']}": Called Question list get method to get Content: ${req.params.id} `);
+                let serchReq = req.body;
+                let dbFilters = {
+                    selector: {
+                        identifier: {
+                            $in: serchReq.request.search.identifier
+                        }
+                    },
+                }
+                let questionList = await this.databaseSdk.find('content', dbFilters);
+
+                let resObj = {
+                    questions: []
+                };
+                for (let content of questionList.docs) {
+                    content = _.omit(content, ['_id', '_rev']);
+                    const downloadedContents = await this.changeContentStatus([content], req.headers['X-msgid']);
+                    if (downloadedContents.length > 0) {
+                        content = downloadedContents[0];
+                    }
+                    if (this.isAvailableOffline(content)) {
+                        logger.debug(`ReqId = "${req.headers['X-msgid']}": Call isUpdateRequired()`)
+                        if (this.isUpdateRequired(content, req)) {
+                            logger.debug(`ReqId = "${req.headers['X-msgid']}": Call checkForUpdate() to check whether update is required for content: `, _.get(content, 'identifier'));
+                            content = await this.checkForUpdates(content, req);
+                        }
+                        if(content.mimeType === 'application/vnd.sunbird.question') {
+                            resObj['questions'].push(content);
+                        }
+                    } else {
+                        res.status(404);
+                        return res.send(Response.error('api.content.read', 404));
+                    }
+                }
+                req['count'] = resObj.questions.length;
+                return res.send(Response.success('api.content.read', resObj, req));
+
+            } catch (error) {
+                this.standardLog.error({ id: 'QUESTION_LIST_DB_READ_FAILED', message: 'Received error while getting the data from content database', error, mid: req.headers['X-msgid'] });
                 if (error.status === 404) {
                     res.status(404);
                     return res.send(Response.error('api.content.read', 404));

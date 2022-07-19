@@ -37,13 +37,13 @@
             <mat-tab-group mat-align-tabs="center" class="sb-mat__tab sb-mat__tab--tabinacc list-all-mat-tab">
               <mat-tab label="Reports">
                 <div class="ui bottom attached small p-0 b-0 no-bg py-24">
-                  <table #all_reports class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+                  <table #allReports class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
                   </table>
                 </div>
               </mat-tab>
               <mat-tab label="Datasets" *ngIf="reportService?.isUserReportAdmin()">
                 <div class="ui bottom attached small p-0 b-0 no-bg py-24">
-                  <table #all_datasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+                  <table #allDatasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
                   </table>
                 </div>
               </mat-tab>

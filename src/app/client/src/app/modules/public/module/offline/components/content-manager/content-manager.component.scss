@@ -1,0 +1,53 @@
+.sb-desktop-content-manager {
+    z-index: 999;
+    position: fixed;
+    bottom: 0px;
+    right: 2rem;
+    width: 100%;
+    max-width: 30rem;
+    left: auto;
+  }
+  
+  .mat-accordion>.mat-expansion-panel-spacing:last-child,
+  .mat-accordion>*:last-child:not(.mat-expansion-panel) .mat-expansion-panel-spacing {
+    box-shadow: var(--sbt-box-shadow-6px);
+  }
+  
+  .sb-desktop-content-manager.sb-mat-accordion .mat-expansion-panel .mat-expansion-panel-header {
+    background: #5630dc;
+    border-radius: 0;
+    height:3rem !important;
+    &:hover {
+      background: #5630dc;
+    }
+  }
+  
+  
+  .sb-desktop-content-manager.sb-mat-accordion .mat-expansion-panel {
+    border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0 0 !important;
+  }
+  
+  .sb-desktop-content-manager.sb-mat-accordion .mat-expansion-panel-header-title,
+  .sb-desktop-content-manager.sb-mat-accordion .mat-expansion-indicator::after,
+  .mat-expansion-indicator::after {
+    color: var(--white);
+  }
+  
+  .sb-desktop-content-manager.sb-mat-accordion .sb-single-pannel-accordion-list-item:last-child {
+    border-bottom: 0rem solid var(--gray-100);
+  }
+  
+  :host ::ng-deep {
+      .sb-desktop-content-manager{
+      .mat-expansion-indicator::after {
+          color: var(--white);
+        }
+        .mat-expansion-panel-body {
+          padding: 0 0px 0px;
+      }
+      .sb-mat-accordion__content {
+        max-height: calc(100vh - 30vh);
+        overflow-y: auto;
+      }
+  }
+  }

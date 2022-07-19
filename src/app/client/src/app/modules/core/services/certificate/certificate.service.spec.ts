@@ -1,54 +1,174 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { ConfigService } from '@sunbird/shared';
+import { HttpClient } from "@angular/common/http";
+import { doesNotReject } from "assert";
+import dayjs from "dayjs";
+import { of, throwError } from "rxjs";
+import { DataService } from "..";
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { CertificateService } from "./certificate.service";
 import { LearnerService } from './../learner/learner.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { mockResponseData } from './certificate.service.spec.data';
-import { CertificateService } from './certificate.service';
-import { of as observableOf, Observable } from 'rxjs';
-import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CertificateService', () => {
-  configureTestSuite();
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [ConfigService, LearnerService]
-  }));
-
-  it('should be created', () => {
-    const service: CertificateService = TestBed.get(CertificateService);
-    expect(service).toBeTruthy();
+  let certificateService: CertificateService;
+  const mockConfigService: Partial<ConfigService> = {
+      urlConFig: {
+          URLS: {
+            USER: {
+              VALIDATE_CERTIFICATE: 'certreg/v1/certs/validate'
+            },
+            TENANT_PREFERENCE:{
+              READ: 'org/v2/preferences/read'
+            },
+            BATCH:{
+              GET_DETAILS: 'course/v1/batch/read'
+            }
+          }
+      }
+  };
+  const mockLearnerService: Partial<LearnerService> = {
+    post: jest.fn().mockImplementation(() => { }),
+    get: jest.fn().mockImplementation(() => { })
+  };
+  beforeAll(() => {
+    certificateService = new CertificateService(
+      mockLearnerService as LearnerService,
+      mockConfigService as ConfigService
+    );
   });
 
-  it('should call validateCertificate API', inject([],
-    () => {
-      const certificateService = TestBed.get(CertificateService);
-      const learnerService = TestBed.get(LearnerService);
-      const params = {'request': { 'certId': '123456', 'accessCode': 'QWERTY', 'verifySignature': 'true' }};
-      spyOn(learnerService, 'post').and.returnValue(observableOf(mockResponseData.validateCertificateCodeData));
-      certificateService.validateCertificate(params);
-      const options = { url: 'certreg/v1/certs/validate', data: params };
-      expect(learnerService.post).toHaveBeenCalledWith(options);
-    }));
+  beforeEach(() => {
+      jest.clearAllMocks();
+      jest.resetAllMocks();
+  });
 
-    it('should call preference read API', inject([],
-      () => {
-        const certificateService = TestBed.get(CertificateService);
-        const learnerService = TestBed.get(LearnerService);
-        const params = {'request': { orgId: 'sunbird', key: 'certRules' }};
-        spyOn(learnerService, 'post').and.returnValue(observableOf(mockResponseData.preferenceReadAPiResponse));
-        certificateService.fetchCertificatePreferences(params);
-        const options = { url: 'org/v2/preferences/read', data: params };
-        expect(learnerService.post).toHaveBeenCalledWith(options);
-    }));
+  it('should create a instance of certificateService', () => {
+      expect(certificateService).toBeTruthy();
+  });
 
-    it('should fetch batch details', inject([],
-      () => {
-        const certificateService = TestBed.get(CertificateService);
-        const learnerService = TestBed.get(LearnerService);
-        spyOn(learnerService, 'get').and.returnValue(observableOf(mockResponseData.batchDetailsApiResponse));
-        certificateService.getBatchDetails('123456');
-        const options = { url: 'course/v1/batch/read/123456' };
-        expect(learnerService.get).toHaveBeenCalledWith(options);
-    }));
+  describe('should validate certificate', () => {
+    const data = {
+      certificateId: '123QWE'
+    }
+    it('should call the validateCertificate method with data object', (done) => {
+      jest.spyOn(certificateService.learnerService, 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      certificateService.validateCertificate(data).subscribe(() => {
+        done();
+      });
+      const obj = {
+        url : mockConfigService.urlConFig.URLS.USER.VALIDATE_CERTIFICATE,
+        data: data
+      }
+      expect(certificateService.learnerService.post).toHaveBeenCalledWith(obj);
+    });
 
+    it('should call the validateCertificate method with data object and should throw error', () => {
+      // arrange
+      jest.spyOn(certificateService.learnerService, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      certificateService.validateCertificate(data).subscribe(() => {
+      });
+      const obj = {
+        url : mockConfigService.urlConFig.URLS.USER.VALIDATE_CERTIFICATE,
+        data: data
+      }
+      expect(certificateService.learnerService.post).toHaveBeenCalledWith(obj);
+      expect(certificateService.learnerService.post).toHaveBeenCalled();
+    });
+  });
+
+  describe('should fetch certificate preferences', () => {
+    const data = {
+      certificateId: '123QWE'
+    }
+    it('should call the fetchCertificatePreferences method with data object', (done) => {
+      jest.spyOn(certificateService.learnerService, 'post').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      certificateService.fetchCertificatePreferences(data).subscribe(() => {
+        done();
+      });
+      const obj = {
+        url : mockConfigService.urlConFig.URLS.TENANT_PREFERENCE.READ,
+        data: data
+      }
+      expect(certificateService.learnerService.post).toHaveBeenCalledWith(obj);
+    });
+
+    it('should call the validateCertificate method with data object and should throw error', () => {
+      // arrange
+      jest.spyOn(certificateService.learnerService, 'post').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      certificateService.fetchCertificatePreferences(data).subscribe(() => {
+      });
+      const obj = {
+        url : mockConfigService.urlConFig.URLS.TENANT_PREFERENCE.READ,
+        data: data
+      }
+      expect(certificateService.learnerService.post).toHaveBeenCalledWith(obj);
+      expect(certificateService.learnerService.post).toHaveBeenCalled();
+    });
+  });
+
+  describe('should fetch batch details', () => {
+    const batchId = '123456789'
+    it('should call the getBatchDetails method with batchId', (done) => {
+      jest.spyOn(certificateService.learnerService, 'get').mockReturnValue(of({
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {},
+        ts: '',
+        ver: ''
+      }));
+      // act
+      certificateService.getBatchDetails(batchId).subscribe(() => {
+        done();
+      });
+      const obj = {
+        url : `${mockConfigService.urlConFig.URLS.BATCH.GET_DETAILS}/${batchId}`, 
+      }
+      expect(certificateService.learnerService.get).toHaveBeenCalledWith(obj);
+    });
+
+    it('should call the validateCertificate method with data object and should throw error', () => {
+      // arrange
+      jest.spyOn(certificateService.learnerService, 'get').mockImplementation(() => {
+        return throwError({ error: {} });
+      });
+      // act
+      certificateService.getBatchDetails(batchId).subscribe(() => {
+      });
+      const obj = {
+        url : `${mockConfigService.urlConFig.URLS.BATCH.GET_DETAILS}/${batchId}`,
+      }
+      expect(certificateService.learnerService.get).toHaveBeenCalledWith(obj);
+      expect(certificateService.learnerService.get).toHaveBeenCalled();
+    });
+  });
 });

@@ -38,13 +38,13 @@
 <app-add-activity *ngIf="!showLoader && ((activityList | json) === '{}')"></app-add-activity>
 
 <!-- Remove Activity from the group -->
-<app-modal-wrapper *ngIf="showModal" #modal [config]="{disableClose: true, size: 'small'}">
+<app-modal-wrapper *ngIf="showModal" #modal [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}">
   <ng-template sbModalContent let-data>
     <div class="sb-mat__modal">
       <div mat-dialog-title>
         <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.removeActivity}}</div>
-        <button type="button" aria-label="close dialog" class="close-btn" 
-        (click)="removeActivity()" mat-dialog-close tabindex="0"></button>
+        <button type="button" aria-label="close dialog" class="close-btn" (click)="toggleModal()" mat-dialog-close
+          tabindex="0"></button>
       </div>
       <mat-dialog-content>
         <div class="sb-mat__modal__content">

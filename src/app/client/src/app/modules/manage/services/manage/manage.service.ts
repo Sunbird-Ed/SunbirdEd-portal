@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ConfigService, RequestParam, ServerResponse, HttpOptions } from '@sunbird/shared';
+import { ConfigService, RequestParam, ServerResponse } from '@sunbird/shared';
 import { LearnerService } from '../../../core/services/learner/learner.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

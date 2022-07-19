@@ -1,63 +1,57 @@
-<sui-modal
-  [mustScroll]="true" 
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'normal'"
-  class="sb-modal"
-  appBodyScroll
-  (dismissed)="modal.deny();closeModal();"
-   #modal>
+<app-modal-wrapper [config]="{disableClose: false, size: 'normal'}" (dismiss)="modal.deny();closeModal();" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <!--Header-->
+          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn mt-4 mr-4 ml-2 mb-2">
+            <span>&times;</span>
+          </button>
+          <div class="sb-modal-header">
+            {{resourceService.frmelmnts?.lbl?.exploreContentOn | interpolate:'{instance}': instance}}
+          </div>
+          
+          <!--/Header-->
 
-  <!--Header-->
-  <div class="sb-modal-header">
-      {{resourceService.frmelmnts?.lbl?.exploreContentOn  | interpolate:'{instance}': instance}}
-  </div>
-  <!--/Header-->
+          <!--Content-->
+          <div class="sb-modal-content enter-qr-code-body">
+            <div class="ui grid stackable middle aligned">
+              <div class="six wide column">
+                <img class="ui image" src="{{'assets/images/Dialcode.png' | cdnprefixurl}}" alt="Dial code image">
+              </div>
+              <div class="six wide column">
+                <p class="mb-10">
+                  {{resourceService.frmelmnts?.lbl?.startExploringContent}}
+                </p>
+                <div class="sb-search-box no-btn">
+                  <div class="input-div relative">
+                    <i class="search icon"></i>
+                    <input class="sb-search-input" name="search" #dialCodeVal
+                      placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}"
+                      title="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" type="text" autofocus>
+                  </div>
+                  <button class="sb-btn sb-btn-normal">Search</button>
+                </div>
 
-  <!--Content-->
-  <div class="sb-modal-content enter-qr-code-body">
-    <div class="ui grid stackable middle aligned">
-      <div class="six wide column">
-          <img
-            class="ui image"
-            src="{{'assets/images/Dialcode.png' | cdnprefixurl}}"
-            alt="Dial code image"
-            >
-      </div>
-      <div class="six wide column">
-        <p class="mb-10">
-          {{resourceService.frmelmnts?.lbl?.startExploringContent}}
-        </p>
-        <div class="sb-search-box no-btn">
-            <div class="input-div relative">
-                <i class="search icon"></i>
-                <input class="sb-search-input" name="search" 
-                #dialCodeVal 
-                placeholder="{{resourceService.frmelmnts?.lbl?.enterDialCode}}" 
-                title="{{resourceService.frmelmnts?.lbl?.enterDialCode}}"
-                type="text" autofocus>
-            </div>
-            <button class="sb-btn sb-btn-normal">Search</button>
-        </div>
-
-        <!-- <p class="small mt-15">
+                <!-- <p class="small mt-15">
           {{resourceService.frmelmnts?.lbl?.dialCodeDescription}}
         </p> -->
+              </div>
+            </div>
+          </div>
+          <!--/Content-->
+
+          <!--Actions-->
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract
+              [telemetryInteractEdata]="setsubmitDialCodeInteractEdata(dialCodeVal.value)" tabindex="0"
+              (click)="onSubmit(dialCodeVal.value)" tabindex="0" autofocus>
+              {{resourceService.frmelmnts?.btn?.submit}}
+            </button>
+          </div>
+          <!--/Actions-->
+        </div>
       </div>
     </div>
-  </div>
-  <!--/Content-->
-
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
-      appTelemetryInteract [telemetryInteractEdata]="setsubmitDialCodeInteractEdata(dialCodeVal.value)"
-      tabindex="0" (click)="onSubmit(dialCodeVal.value)" tabindex="0"
-      autofocus>
-      {{resourceService.frmelmnts?.btn?.submit}}
-    </button>
-  </div>
-  <!--/Actions-->
-
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>

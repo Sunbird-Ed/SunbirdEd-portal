@@ -202,7 +202,6 @@
       text-transform: capitalize;
       text-decoration: none;
       text-align: center;
-      font-weight: 400;
       font-style: normal;
       font-stretch: normal;
       white-space: normal;
@@ -211,6 +210,8 @@
       margin: 0 .5rem .5rem 0;
 
       background-color: var(--sbt-pill-bg);
+      color: var(--gray-400);
+      font-weight: 700;
 
       &.selected-option {
         color: var(--sbt-pill-text-hover);

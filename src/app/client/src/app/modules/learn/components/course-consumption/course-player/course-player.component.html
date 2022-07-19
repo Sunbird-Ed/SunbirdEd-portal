@@ -47,7 +47,7 @@
         <div class="training-modules my-16">
           <div class="training-modules__title d-flex flex-ai-center mb-16">
             <h4 class="sb-pageSection-title sb-pageSection-title-light">
-              {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h4>
+              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
               (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
@@ -185,10 +185,10 @@
                 {{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
             </div>
           </div>
-          <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.courseProgress}}</div>
+          <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progressToDisplay}}%
-            {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-          <sui-progress [value]="progressToDisplay" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+            <span>{{resourceService?.frmelmnts?.lbl?.completed}}</span></div>
+          <mat-progress-bar mode="determinate" [value]="progressToDisplay" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
         </div>
 
         <!-- 3. Join batch, leave batch and show batch popup-->
@@ -241,7 +241,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false}"
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
@@ -273,21 +273,29 @@
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription"
   (close)="onCourseCompleteClose()"></app-course-completion>
 <!-- Start - Modal for Assessment attempts -->
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll #modal *ngIf="showLastAttemptsModal">
-  <div class="sb-modal-content sb-join-modal-content">
-    <div class="sb-h4 px-0 py-20">
-      {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
-    </div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-      (click)="showLastAttemptsModal = false; _navigateToContent();">
-      {{resourceService.frmelmnts?.btn?.ok}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showLastAttemptsModal = false;">
-      {{resourceService.frmelmnts?.btn?.cancel}}
-    </button>
-  </div>
-</sui-modal>
+  <app-modal-wrapper *ngIf="showLastAttemptsModal" [config]="{disableClose: false, size: 'small'}" #modal>
+    <ng-template sbModalContent>
+      <div class="sb-modal">
+        <div class="transition ui dimmer page modals active visible">
+          <div class="ui modal transition active visible small">
+            <div class="sb-modal-content sb-join-modal-content">
+              <div class="sb-h4 px-0 py-20">
+                {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
+              </div>
+            </div>
+            <div class="sb-modal-actions">
+              <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+                (click)="showLastAttemptsModal = false; _navigateToContent();">
+                {{resourceService.frmelmnts?.btn?.ok}}
+              </button>
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+                (click)="showLastAttemptsModal = false;">
+                {{resourceService.frmelmnts?.btn?.cancel}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </app-modal-wrapper>
 <!-- End - Modal for Assessment attempts -->

@@ -1,67 +1,57 @@
+import { of } from "rxjs";
+import { ContentBadgeService } from "../../services";
+import { ContentBadgeComponent } from "./content-badge.component";
 
-import {of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ContentBadgeComponent } from './content-badge.component';
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import { UserService, BadgesService, CoreModule } from '@sunbird/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule} from '@sunbird/shared';
-import { mockResponse } from './content-badge.component.spec.data';
-import { ContentBadgeService } from './../../services';
-import * as _ from 'lodash-es';
-import { configureTestSuite } from '@sunbird/test-util';
+describe("ContentBadgeComponent", () => {
+    let component: ContentBadgeComponent;
+    let mockBadgeData: [
+        {
+            'assertionId': 'd56e6d23-70cb-49dc-9c04-0050ae9067da',
+            'badgeClassImage': 'https://sunbirddev.blob.core.windows.net/badgr/uploads/badges/b0fcde73f1fd81491235e3cfddd15b1c.png',
+            'badgeClassName': 'Official Textbook - MH',
+            'badgeId': 'badgeslug-2',
+            'createdTS': '1526552568280',
+            'issuerId': 'issuerslug-2',
+            'status': 'active'
+        }
+    ]
 
-describe('ContentBadgeComponent', () => {
-  let component: ContentBadgeComponent;
-  let fixture: ComponentFixture<ContentBadgeComponent>;
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
-  const fakeActivatedRoute = {
-    'params': observableOf({ collectionId: 'Test_Textbook2_8907797' })
-  };
-  configureTestSuite();
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ContentBadgeComponent],
-      imports: [SuiModule, CoreModule, SharedModule.forRoot(), HttpClientTestingModule],
-      providers: [ContentBadgeService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }]
-    })
-      .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ContentBadgeComponent);
-    component = fixture.componentInstance;
-  });
-
-  it('should contain badgeClassName in response', () => {
-    component.data = mockResponse.badgeData;
-    expect(component.data[0]['badgeClassName']).toBeDefined();
-  });
-  it('should not contain badgeClassName in response', () => {
-    component.data = undefined;
-    expect(component.data).not.toBeDefined();
-  });
-  it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
-    spyOn(component.unsubscribe, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe.complete).toHaveBeenCalled();
-  });
-  it('should show badgeClassImage while passing badgeData', () => {
-    component.data = mockResponse.badgeData;
-    fixture.detectChanges();
-    const badgesElm = fixture.nativeElement.querySelector('div .mini');
-    expect(component.data).toBeDefined();
-    expect(component.data.length).toBeGreaterThanOrEqual(1);
-    component.data.forEach((data) => {
-      expect( _.has(data, 'badgeClassImage')).toBeTruthy();
-      expect( _.has(data, 'badgeClassImage')).toBeDefined();
+    const mockContentBadgeService: Partial<ContentBadgeService> = {
+    };
+    
+    beforeAll(() => {
+        component = new ContentBadgeComponent(
+            mockContentBadgeService as ContentBadgeService
+        );
     });
-    expect(badgesElm.src).toContain(mockResponse.badgeData[0].badgeClassImage);
-  });
-});
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should be create a instance of Content Badge Component', () => {
+        expect(component).toBeTruthy();
+    });
+
+    describe("ngOnInit", () => {
+        it('should get badge', () => {
+            mockContentBadgeService.badges = of(mockBadgeData) as any;
+            component.ngOnInit();
+            expect(component.data).toBeDefined();
+        });
+    });
+
+    describe("ngOnDestroy", () => {
+        it('should destroy sub', () => {
+            component.unsubscribe = {
+                next: jest.fn(),
+                complete: jest.fn()
+            } as any;
+            component.ngOnDestroy();
+            expect(component.unsubscribe.next).toHaveBeenCalled();
+            expect(component.unsubscribe.complete).toHaveBeenCalled();
+        });
+    });
+
+
+})

@@ -1,6 +1,6 @@
 import { ResourceService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { IDataset } from '../../interfaces';
 import { DatasetService, ReportService } from '../../services';
 import { FormBuilder, FormGroup } from '@angular/forms';

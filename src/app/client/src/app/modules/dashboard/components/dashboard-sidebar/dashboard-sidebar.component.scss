@@ -1,23 +1,23 @@
 @import "mixins/mixins";
 
 :host{
-  .sidebar {
-    margin: 0;
-    padding: 0;
-    background-color: var(--white);
-    height: 100vh;
-    overflow: auto;
-    padding-left: 40%;
-    padding-right: 0px;
-    [dir="rtl"] & {
-      padding-left: 0px;
-      padding-right: 40%;
-    }
-  }
+  // .sidebar {
+  //   margin: 0;
+  //   padding: 0;
+  //   background-color: var(--white);
+  //   height: 100vh;
+  //   overflow: auto;
+  //   padding-left: 40%;
+  //   padding-right: 0px;
+  //   [dir="rtl"] & {
+  //     padding-left: 0px;
+  //     padding-right: 40%;
+  //   }
+  // }
   
   .sidebar a ,.dashboard-title{
     display: block;
-    color: var(--gray-200);
+    color: var(--gray-800) !important;
     padding: calculateRem(8px);
     text-decoration: none;
     font-size: calculateRem(16px);
@@ -31,8 +31,8 @@
   
   .sidebar a.active {
       border-left:calculateRem(4px) solid var(--primary-400);
-      background: var(--primary-100);
-      color:var(--primary-color);
+      background: var(--sbt-body-bg);
+      color:var(--primary-color) !important;
       font-weight: bold;
       [dir="rtl"] & {
         border-left:none;
@@ -55,5 +55,11 @@
       float: none;
     }
   
+  }
+}
+
+::ng-deep {
+  html[accessable-theme=accessible] .progress-content #dashoardFiltersHolder .current-batch-list .update-text {
+    color: var(--gray-800) !important;
   }
 }

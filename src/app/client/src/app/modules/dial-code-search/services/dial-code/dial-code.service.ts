@@ -2,8 +2,8 @@ import { ConfigService } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, PublicDataService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
-import { map, catchError, retry } from 'rxjs/operators';
-import { of, Observable, iif, forkJoin, empty } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { of, Observable, iif, forkJoin } from 'rxjs';
 import * as TreeModel from 'tree-model';
 const treeModel = new TreeModel();
 

@@ -57,34 +57,33 @@
 <app-load-content *ngIf="showLoadContentModal" (close)="showLoadContentModal = false"></app-load-content>
 
 <!-- Show Modal if content has any YouTube data-->
-<sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
-  <div class="sb-modal-header">
-    {{resourceService.frmelmnts?.btn?.download}}
-  </div>
-  <div class="sb-modal-content">
-    <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-      (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
-      {{resourceService.frmelmnts?.btn?.yes}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-      (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
-      {{resourceService.frmelmnts?.btn?.cancel}}
-    </button>
-  </div>
-</sui-modal>
+<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'normal'}" (dismiss)="showModal = !showModal;"
+  #modal>
+  <ng-template sbModalContent>
+    <div class="sb-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-header">
+            {{resourceService.frmelmnts?.btn?.download}}
+          </div>
+          <div class="sb-modal-content">
+            <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
+          </div>
+          <div class="sb-modal-actions">
+            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+              (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+              {{resourceService.frmelmnts?.btn?.yes}}
+            </button>
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+              (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+              {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>
 
-<sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
-  <div class="ui active centered inline loader"></div>
-  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
-  </h6>
-</sui-dimmer>
-<sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
-  <div class="ui active centered inline loader"></div>
-  <h6 class="mt-8">
-    {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
-  </h6>
-</sui-dimmer>
+<app-loader *ngIf="showExportLoader" [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}"> </app-loader>
+<app-loader *ngIf="showDownloadLoader" [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}"> </app-loader>

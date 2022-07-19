@@ -2,7 +2,7 @@ import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
@@ -166,7 +166,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         if (err.error && err.error.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0054);
+          this.toasterService.error(this.resourceService?.messages?.fmsg?.m0054);
         }
         this.redirect();
       });
@@ -242,7 +242,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
           } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+            this.toasterService.error(this.resourceService?.messages?.fmsg?.m0056);
           }
           this.redirect();
         });
@@ -305,7 +305,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         fullTextSearch: true,
         maxSelections: 100 - count,
         message: {
-          maxSelections : this.resourceService.messages.imsg.m0046
+          maxSelections : this.resourceService?.messages?.imsg?.m0046
         },
         onAdd: () => {
         }
@@ -353,7 +353,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
           } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+            this.toasterService.error(this.resourceService?.messages?.fmsg?.m0056);
           }
         });
   }
@@ -393,7 +393,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.updateParticipantsToBatch(this.batchId, participants);
         } else {
           this.disableSubmitBtn = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0034);
+          this.toasterService.success(this.resourceService?.messages?.smsg?.m0034);
           this.reload();
         }
       },
@@ -402,7 +402,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
           } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+            this.toasterService.error(this.resourceService?.messages?.fmsg?.m0052);
           }
         });
   }
@@ -413,7 +413,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.batchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
         this.disableSubmitBtn = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0034);
+        this.toasterService.success(this.resourceService?.messages?.smsg?.m0034);
         this.reload();
       },
         (err) => {
@@ -421,7 +421,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           if (err.params && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
           } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0053);
+            this.toasterService.error(this.resourceService?.messages?.fmsg?.m0053);
           }
         });
   }

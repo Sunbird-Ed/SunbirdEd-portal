@@ -3,42 +3,6 @@
     <div  class="ui container">
       <div class="ui grid stackable">
         <div class="four wide column footerMenu mr-auto">
-          <!-- default links if tenant settings is not available -->
-          <!-- <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
-            <li class="mb-16">
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                href="{{defaultFooterConfig.helpCenterLink}}">
-                {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-              </a>
-            </li>
-            <li>
-              <label class="d-block mb-0">
-                {{resourceService.frmelmnts?.lnk?.footerContact}}
-              </label>
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
-                class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
-                {{defaultFooterConfig.helpDeskEmail}}
-              </a>
-            </li>
-          </ul> -->
-  
-          <!-- <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
-            <li class="mb-16" *ngIf="tenantFooter?.helpCenterLink">
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                href="{{tenantFooter?.helpCenterLink}}">
-                {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-              </a>
-            </li>
-           <li *ngIf="tenantFooter?.helpDeskEmail">
-              <label class="d-block mb-0">
-                {{resourceService.frmelmnts?.lnk?.footerContact}}
-              </label>
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
-                href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-            </li>
-          </ul>-->
-          
-       
         </div>
   
         <div class="download-mobile-app">
@@ -88,52 +52,17 @@
         </div>
         <div class="ui grid stackable px-72">
           <div class="six wide column contantDetails px-0">
-            <div class="footerMenu text-left">
-              <!-- <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
-                <li class="help-center">
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                    href="{{defaultFooterConfig.helpCenterLink}}">
-                    {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-                  </a>
-                </li>
-                <li class="contact-info">
-                  <label class="d-block contact-info-title mb-0">
-                    {{resourceService.frmelmnts?.lnk?.footerContact}}
-                  </label>
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
-                    class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
-                    {{defaultFooterConfig.helpDeskEmail}}
-                  </a>
-                </li> 
-              </ul>-->
-              <!-- <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
-                <li class="mb-16 help-cente" *ngIf="tenantFooter?.helpCenterLink">
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                    href="{{tenantFooter?.helpCenterLink}}">
-                    {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-                  </a>
-                </li>
-               <li class="contact-info" *ngIf="tenantFooter?.helpDeskEmail">
-                  <label class="d-block contact-info-title mb-0">
-                    {{resourceService.frmelmnts?.lnk?.footerContact}}
-                  </label>
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
-                    class="d-block mb-0"
-                    href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-                </li>
-              </ul> -->
-            </div>
             <div>
             <label class="d-flex footer-terms-info text-left font-weight-normal flex-w-wrap">
               <ul class="d-flex flex-ai-center fsmall mb-0 mobile only pl-0">
                 <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
                 <li class="mb-0" tabindex="0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li><li class="mx-4 mb-0">|</li>
               </ul>
-              <a *ngIf="!isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+              <a *ngIf="!isDesktopApp" [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerTnC" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="{{appBaseUrl}}/term-of-use.html" target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
-              <span tabindex="0">| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+              <span [attr.aria-label]="instance" tabindex="0">| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
             </label>
             <label class="d-block text-left fsmall" tabindex="0">
               <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
@@ -142,7 +71,7 @@
           </div>
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
-              <img class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
+              <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
               <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"

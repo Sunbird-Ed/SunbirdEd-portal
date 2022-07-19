@@ -17,56 +17,127 @@
     <div class="ui active sb-prominent-filter-container" [suiCollapse]="collapse">
       
       <div *ngIf="allUserType" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.userType | translate}}</label>
-        <app-custom-multi-select [inputData]="inputData.Usertype" [field]="allUserType" (selectedValue)="selectedValue($event, allUserType.code);">
-        </app-custom-multi-select>
+
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.userType | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData.Usertype" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.userType" 
+            class="selection" (selectionChange)="selectedMultiValues($event, allUserType?.code)">
+            <mat-select-trigger>
+              {{inputData.Usertype ? inputData.Usertype[0] : ''}}
+              <span *ngIf="inputData.Usertype?.length > 1" class="example-additional-selection">
+                (+{{inputData.Usertype.length - 1}} {{inputData.Usertype?.length === 2 ? 'other' : 'others'}})
+              </span>
+            </mat-select-trigger>
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let userType of allUserType?.range" [value]="userType.name"
+            attr.aria-label="{{userType.name}}">{{userType.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div *ngIf="medium" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.medium | translate}}</label>
-        <app-custom-multi-select [inputData]="inputData.medium" [field]="medium" (selectedValue)="selectedValue($event, medium.code);"></app-custom-multi-select>
+        
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.medium | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData.medium" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.medium"
+            class="selection" (selectionChange)="selectedMultiValues($event, medium?.code)">
+            <mat-select-trigger>
+              {{inputData.medium ? inputData.medium[0] : ''}}
+              <span *ngIf="inputData.medium?.length > 1" class="example-additional-selection">
+                (+{{inputData.medium.length - 1}} {{inputData.medium?.length === 2 ? 'other' : 'others'}})
+              </span>
+            </mat-select-trigger>
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of medium?.range" [value]="option.name"
+            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
       </div>
 
       <div *ngIf="class" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.class | translate}}</label>
-        <app-custom-multi-select [inputData]="inputData.gradeLevel" [field]="class" (selectedValue)="selectedValue($event, class.code);"></app-custom-multi-select>
+
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.class | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData.gradeLevel" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.class"
+            class="selection" (selectionChange)="selectedMultiValues($event, class?.code)">
+            <mat-select-trigger>
+              {{inputData.gradeLevel ? inputData.gradeLevel[0] : ''}}
+              <span *ngIf="inputData.gradeLevel?.length > 1" class="example-additional-selection">
+                (+{{inputData.gradeLevel.length - 1}} {{inputData.gradeLevel?.length === 2 ? 'other' : 'others'}})
+              </span>
+            </mat-select-trigger>
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of getSortedList(class?.range, 'name')" [value]="option.name"
+            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div *ngIf="subject" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.subject | translate}}</label>
-        <app-custom-multi-select [inputData]="inputData.subject" [field]="subject" (selectedValue)="selectedValue($event, subject.code);"></app-custom-multi-select>
+        
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.subject | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData.subject" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.subject"
+            class="selection" (selectionChange)="selectedMultiValues($event, subject?.code)">
+            <mat-select-trigger>
+              {{inputData.subject ? inputData.subject[0] : ''}}
+              <span *ngIf="inputData.subject?.length > 1" class="example-additional-selection">
+                (+{{inputData.subject.length - 1}} {{inputData.subject?.length === 2 ? 'other' : 'others'}})
+              </span>
+            </mat-select-trigger>
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of subject?.range" [value]="option.name"
+            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
       </div>
 
       <div class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.district | translate}}</label>
-        <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection"
-          [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict | translate}}"
-          #districtDiv>
-          <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
-        </sui-select>
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.district}}</mat-label>
+          <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.district"
+            class="selection" (selectionChange)="districtSelected($event)">
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let district of allDistricts" [value]="district"
+            attr.aria-label="{{district.name}}">{{district.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.block | translate}}</label>
-        <sui-select [(ngModel)]="selectedBlock" (ngModelChange)="onBlockChange($event)" [isSearchable]="true" class="selection" [options]="allBlocks"
-          labelField="name" valueField="id" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock | translate}}"
-          #blockDiv>
-          <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
-        </sui-select>
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.block | translate}}</mat-label>
+          <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.block"
+            class="selection" (selectionChange)="blockSelected($event)">
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let block of allBlocks" [value]="block"
+            attr.aria-label="{{block.name}}">{{block.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.school | translate}}</label>
-        <sui-select [(ngModel)]="selectedSchool" (ngModelChange)="onSchoolChange($event)" [isSearchable]="true" class="selection"
-          [options]="allSchools" labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool | translate}}"
-          #schoolDiv>
-          <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>
-        </sui-select>
+         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.school | translate}}</mat-label>
+          <mat-select role="listbox" [aria-label]="resourceService.frmelmnts?.lbl?.school"
+            class="selection" (selectionChange)="schoolSelected($event)">
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let school of allSchools" [value]="school"
+            attr.aria-label="{{school.orgName}}">{{school.orgName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div *ngIf="allRoles" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.role | translate}}</label>
-        <app-custom-multi-select [inputData]="inputData.Roles" [field]="allRoles" (selectedValue)="selectedValue($event, allRoles.code);"></app-custom-multi-select>
+        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+          <mat-label>{{resourceService.frmelmnts?.lbl?.role | translate}}</mat-label>
+          <mat-select [(ngModel)]="inputData.Roles" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.role"
+            class="selection" (selectionChange)="selectedMultiValues($event, allRoles?.code)">
+            <mat-select-trigger>
+              {{inputData.Roles ? inputData.Roles[0] : ''}}
+              <span *ngIf="inputData.Roles?.length > 1" class="example-additional-selection">
+                (+{{inputData.Roles.length - 1}} {{inputData.Roles?.length === 2 ? 'other' : 'others'}})
+              </span>
+            </mat-select-trigger>
+            <mat-option class="mat-dropdown__options" role="option" *ngFor="let role of allRoles?.range" [value]="role.name"
+            attr.aria-label="{{role.name}}">{{role.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="sb-prominent-filter-field">

@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, session, shell } from "electron";
 import * as qs from 'qs';
 import * as _ from "lodash";
 import * as path from "path";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 const nativeImage = require('electron').nativeImage;
 const windowIcon = nativeImage.createFromPath(path.join(__dirname, "build", "icons", "png", "512x512.png"));
@@ -62,7 +63,7 @@ export class LoginSessionProvider {
             this.loginWindow = new BrowserWindow({ 
                 parent: this.mainWindow, 
                 closable: true, 
-                titleBarStyle: "hidden",
+                titleBarStyle: "customButtonsOnHover",
                 show: false,
                 minWidth: 700,
                 minHeight: 500,
@@ -71,7 +72,6 @@ export class LoginSessionProvider {
                 backgroundColor: "#EDF4F9",
                 webPreferences: {
                     nodeIntegration: false,
-                    enableRemoteModule: false,
                     session: session.fromPartition('loginwindow')
                 },
             });
@@ -132,8 +132,9 @@ export class LoginSessionProvider {
             this.showLoader();
             logger.debug(`Resolve access token from buildPasswordSessionProvider`);
             const userData = await this.resolvePasswordSession(captured);
-            if(userData) {
-                await this.getUsers(userData);
+            const userTokens = await this.getKongAccessToken(userData);
+            if(userTokens) {
+                await this.getUsers(userTokens);
             }
         });
     }
@@ -149,8 +150,9 @@ export class LoginSessionProvider {
             this.showLoader();
             logger.debug(`Resolve access token from buildStateSessionProvider`);
             const userData = await this.resolveStateSession(captured);
-            if(userData) {
-                await this.getUsers(userData);
+            const userTokens = await this.getKongAccessToken(userData);
+            if(userTokens) {
+                await this.getUsers(userTokens);
             }
         });
     }
@@ -339,6 +341,30 @@ export class LoginSessionProvider {
             }).catch(async (err) => {
                 logger.error(`Error while getUsers after resolving user token : ${err.message}`);
                 await this.closeLoginWindow(false);
+            });
+    }
+    
+    private async getKongAccessToken(userTokens) {
+        const standardLog = containerAPI.getStandardLoggerInstance();
+        const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
+            standardLog.error({ id: 'LOGIN_SESSION_PROVIDER', message: 'Received error while fetching api key in getKongAccessToken', error: err });
+        });
+        const reqBody = qs.stringify({
+            refresh_token: userTokens.refresh_token
+        });
+        const appConfig = {
+            headers: {
+                'Authorization': 'Bearer ' + apiKey,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+        };
+        return await HTTPService.post(`${process.env.APP_BASE_URL}/auth/v1/refresh/token`, reqBody, appConfig)
+            .toPromise()
+            .then(async (response: any) => {
+                return _.get(response, 'data.result');
+            }).catch((err) => {
+                logger.error(`Error while kong access token : ${err.message}`, err);
+                this.closeLoginWindow(false);
             });
     }
 }

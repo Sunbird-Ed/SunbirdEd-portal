@@ -1,8 +1,11 @@
-<sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal
-  [mustScroll]="'true'">
-  <div class="signup-background">
-    <div class="fullpage-background-image">
-      <ng-content></ng-content>
+<app-modal-wrapper [config]="{disableClose: true, size: 'large', panelClass: ['overflow-visible', 'material-modal']}" #modal>
+  <ng-template sbModalContent>
+    <div class="sb-mat__modal sb-mat__modal--fullscreen">
+        <div class="signup-background">
+          <div class="fullpage-background-image">
+            <ng-content></ng-content>
+          </div>
+        </div>
     </div>
-  </div>
-</sui-modal>
+  </ng-template>
+</app-modal-wrapper>

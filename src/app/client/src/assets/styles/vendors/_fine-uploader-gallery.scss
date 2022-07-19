@@ -249,7 +249,7 @@
 }
 .qq-gallery .qq-upload-spinner {
     display: inline-block;
-    background: url("../../../node_modules/fine-uploader/fine-uploader/loading.gif");
+    background: url("../../../../node_modules/fine-uploader/fine-uploader/loading.gif");
     position: absolute;
     left: 50%;
     margin-left: -7px;
@@ -263,7 +263,7 @@
 }
 .qq-gallery .qq-drop-processing-spinner {
     display: inline-block;
-    background: url("../../../node_modules/fine-uploader/fine-uploader/processing.gif");
+    background: url("../../../../node_modules/fine-uploader/fine-uploader/processing.gif");
     width: 24px;
     height: 24px;
     vertical-align: text-bottom;

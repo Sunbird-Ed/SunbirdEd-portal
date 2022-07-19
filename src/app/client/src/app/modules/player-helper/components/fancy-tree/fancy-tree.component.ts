@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import 'jquery.fancytree';
-import { IFancytreeOptions } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { TelemetryInteractDirective } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';

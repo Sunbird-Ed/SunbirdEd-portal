@@ -12,7 +12,7 @@ export class ContentLicenceComponent implements OnInit {
   @Input() content;
   instance: string;
   attributions: string;
-  expanded: boolean = false;
+  expanded = false;
   constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {

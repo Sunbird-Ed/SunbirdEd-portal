@@ -1,13 +1,13 @@
 import { UploadCertificateService } from './../../services/upload-certificate/upload-certificate.service';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
-import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
+import { CertificateService, UserService, PlayerService, CertRegService, FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -61,9 +61,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   isSingleAssessment = false;
   isStateCertificate = false;
   instance: string;
-layoutConfiguration: any;
-FIRST_PANEL_LAYOUT;
-SECOND_PANEL_LAYOUT;
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
+  certificateFormConfig: any;
 
   constructor(
     private certificateService: CertificateService,
@@ -78,7 +79,8 @@ SECOND_PANEL_LAYOUT;
     private toasterService: ToasterService,
     private router: Router,
     private telemetryService: TelemetryService,
-    public layoutService: LayoutService) { 
+    public layoutService: LayoutService,
+    private formService: FormService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     }
@@ -119,6 +121,7 @@ SECOND_PANEL_LAYOUT;
       this.getCourseDetails(_.get(this.queryParams, 'courseId')),
       this.getBatchDetails(_.get(this.queryParams, 'batchId')),
       this.getTemplateList(),
+      this.getCertificateFormData()
     ).subscribe((data) => {
       this.showLoader = false;
       this.checkMultipleAssessment();
@@ -128,7 +131,8 @@ SECOND_PANEL_LAYOUT;
     });
   }
   checkMultipleAssessment() {
-    const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
+    try {
+      const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
     const selfAssessCount = _.get(contentTypes, 'SelfAssess');
     if (selfAssessCount && selfAssessCount > 1) {
       this.isSingleAssessment = false;
@@ -137,6 +141,10 @@ SECOND_PANEL_LAYOUT;
     } else {
       this.isSingleAssessment = false;
     }
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
   certificateCreation() {
     this.currentState = this.screenStates.certRules;
@@ -546,13 +554,23 @@ SECOND_PANEL_LAYOUT;
   }
 
   navigateToCreateTemplate() {
-    this.router.navigate([`/certs/configure/create-template`], {
-      queryParams: {
-        type: this.configurationMode,
-        courseId: _.get(this.queryParams, 'courseId'),
-        batchId: _.get(this.queryParams, 'batchId')
-      }
-    });
+    if(_.get(this.certificateFormConfig, 'enableSVGEditor')) {
+      this.router.navigate([`/certs/configure/create-certificate-template`], {
+        queryParams: {
+          type: this.configurationMode,
+          courseId: _.get(this.queryParams, 'courseId'),
+          batchId: _.get(this.queryParams, 'batchId')
+        }
+      });
+    } else {
+      this.router.navigate([`/certs/configure/create-template`], {
+        queryParams: {
+          type: this.configurationMode,
+          courseId: _.get(this.queryParams, 'courseId'),
+          batchId: _.get(this.queryParams, 'batchId')
+        }
+      });
+    }
   }
   removeSelectedCertificate() {
     this.selectedTemplate = null;
@@ -589,10 +607,29 @@ SECOND_PANEL_LAYOUT;
     }
   }
   handleParameterChange(event) {
-    if (event === 'My state teacher') {
+    if (_.get(event, 'value') === 'My state teacher') {
       this.isStateCertificate = true;
     } else {
       this.isStateCertificate = false;
     }
+  }
+
+  getCertificateFormData() {
+    const formServiceInputParams = {
+      formType: 'certificate',
+      contentType: 'course',
+      formAction: 'certificateCreate',
+      component: 'portal'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, null, 'data').pipe(
+      map((data) => {
+        this.certificateFormConfig = data;
+        return data;
+      }),tap(mapping => {
+      }),
+        catchError((err) => {
+          return of([])
+        })
+      );
   }
 }

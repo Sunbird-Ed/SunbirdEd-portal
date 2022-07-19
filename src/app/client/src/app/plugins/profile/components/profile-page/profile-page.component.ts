@@ -21,13 +21,14 @@ import {
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
-import {IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService} from '@sunbird/telemetry';
+import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from 'common-form-elements-web-v9';
+import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -38,7 +39,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
   { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
-  { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
+  { formType: 'profileConfig_v2', contentType: 'default', formAction: 'get' };
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
@@ -104,7 +105,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService) {
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
 
@@ -269,29 +271,23 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
  *It will fetch certificates of user, other than courses
  */
   getOtherCertificates(userId, certType) {
-    const requestParam = { userId,  certType };
+    this.otherCertificates = [];
+    let requestBody = { userId: userId, schemaName: 'certificate' };
     if (this.otherCertificatesCounts) {
-      requestParam['limit'] = this.otherCertificatesCounts;
+      requestBody['size'] = this.otherCertificatesCounts;
     }
-    this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
-      this.otherCertificatesCounts = _.get(data, 'result.response.count');
-      this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
-        const certObj: any =  {
-          certificates: [{
-            url: _.get(val, '_source.pdfUrl')
-          }],
-          issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
-          issuedOn: _.get(val, '_source.data.issuedOn'),
-          courseName: _.get(val, '_source.data.badge.name'),
-        };
-        if (_.get(val, '_id') && _.get(val, '_source.data.badge.name')) {
-          certObj.issuedCertificates = [{identifier: _.get(val, '_id'), name: _.get(val, '_source.data.badge.name') }];
-        }
-        return certObj;
-      });
-      if (this.otherCertificates && this.otherCertificates.length && this.scrollToId) {
-        this.triggerAutoScroll();
+    this.CsCertificateService.fetchCertificates(requestBody, {
+      apiPath: '/learner/certreg/v2',
+      apiPathLegacy: '/certreg/v1',
+      rcApiPath: '/learner/rc/${schemaName}/v1',
+    }).subscribe((_res) => {
+      if (_res && _res?.certificates?.length > 0) {
+        this.otherCertificates = _.get(_res, 'certificates');
+        this.otherCertificatesCounts = (_.get(_res, 'certRegCount') ? _.get(_res, 'certRegCount') : 0) + (_.get(_res, 'rcCount') ? _.get(_res, 'rcCount') : 0);
       }
+    }, (error) => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      console.log('Portal :: CSL : Fetch certificate CSL API failed ', error);
     });
   }
 
@@ -305,20 +301,28 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
       const certificateInfo = course.issuedCertificates[0];
       const courseName = course.courseName || _.get(course, 'issuedCertificates[0].name') || 'certificate';
-      if (_.get(certificateInfo, 'identifier')) {
+      if (_.get(certificateInfo, 'type') === 'TrainingCertificate') {
+        const courseObj = {
+          id: certificateInfo.identifier,
+          type: 'rc_certificate_registry',
+          templateUrl: _.get(certificateInfo, 'templateUrl'),
+          trainingName: courseName
+        }
+        this.downloadOldAndRCCert(courseObj);
+      } else if (_.get(certificateInfo, 'identifier')) {
         this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((resp) => {
-          if (_.get(resp, 'printUri')) {
-            this.certDownloadAsPdf.download(resp.printUri, null, courseName);
-          } else if (_.get(course, 'certificates.length')) {
-            this.downloadPdfCertificate(course.certificates[0]);
-          } else {
-            this.toasterService.error(this.resourceService.messages.emsg.m0076);
-          }
-        }, error => {
-          this.downloadPdfCertificate(certificateInfo);
-        });
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((resp) => {
+            if (_.get(resp, 'printUri')) {
+              this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+            } else if (_.get(course, 'certificates.length')) {
+              this.downloadPdfCertificate(course.certificates[0]);
+            } else {
+              this.toasterService.error(this.resourceService.messages.emsg.m0076);
+            }
+          }, error => {
+            this.downloadPdfCertificate(certificateInfo);
+          });
       } else {
         this.downloadPdfCertificate(certificateInfo);
       }
@@ -328,6 +332,30 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
     }
+  }
+
+  downloadOldAndRCCert(courseObj) {
+    let requestBody = {
+      certificateId: courseObj.id,
+      schemaName: 'certificate',
+      type: courseObj.type,
+      templateUrl: courseObj.templateUrl
+    };
+    this.CsCertificateService.getCerificateDownloadURI(requestBody, {
+      apiPath: '/learner/certreg/v2',
+      apiPathLegacy: '/certreg/v1',
+      rcApiPath: '/learner/rc/${schemaName}/v1',
+    })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        if (_.get(resp, 'printUri')) {
+          this.certDownloadAsPdf.download(resp.printUri, null, courseObj.trainingName);
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m0076);
+        }
+      }, error => {
+        console.log('Portal :: CSL : Download certificate CSL API failed ', error);
+      });
   }
 
   downloadPdfCertificate(value) {
@@ -510,7 +538,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   navigateToCourse(coursedata) {
     const courseId = _.get(coursedata, 'courseId');
-    const batchId = _.get(coursedata, 'batchId')
+    const batchId = _.get(coursedata, 'batchId');
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
@@ -626,8 +654,13 @@ private async getSubPersonaConfig(persona: string, userLocation: any): Promise<s
   }
 
   const personaConfig = formFields.find(formField => formField.code === 'persona');
+  const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
+  const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
+  if (!subPersonaConfig) {
+      return undefined;
+   }
   const subPersonaList = [];
-  if (_.get(personaConfig, 'templateOptions.multiple')) {
+  if (_.get(subPersonaConfig, 'templateOptions.multiple')) {
     if (this.userProfile.profileUserTypes && this.userProfile.profileUserTypes.length) {
       this.userProfile.profileUserTypes.forEach(ele => {
         if (_.get(ele, 'subType')) {
@@ -641,11 +674,6 @@ private async getSubPersonaConfig(persona: string, userLocation: any): Promise<s
     subPersonaList.push(this.userProfile.profileUserType.subType);
   }
 
-  const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
-  const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
-  if (!subPersonaConfig) {
-      return undefined;
-   }
    const subPersonaFieldConfigOption = [];
    subPersonaList.forEach((ele) => {
     subPersonaFieldConfigOption.push((subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).

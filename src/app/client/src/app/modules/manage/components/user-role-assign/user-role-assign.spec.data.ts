@@ -6,26 +6,26 @@ export const mockObject = {
   roleList: [{
     'roleName': 'Content Curation',
     'role': 'CONTENT_CURATION',
-    'actions':[{
-      'id':'CONTENT_CURATION',
+    'actions': [{
+      'id': 'CONTENT_CURATION',
       'name': 'Content Curation',
-      'urls':['','a']
+      'urls': ['', 'a']
     }]
   }, {
     'roleName': 'Book Creator',
     'role': 'BOOK_CREATOR',
-    'actions':[{
-      'id':'BOOK_CREATOR',
+    'actions': [{
+      'id': 'BOOK_CREATOR',
       'name': 'Book Creator',
-      'urls':['','a']
+      'urls': ['', 'a']
     }]
-  },{
+  }, {
     'roleName': 'Book Reviewer',
     'role': 'BOOK_REVIEWER',
-    'actions':[{
-      'id':'BOOK_REVIEWER',
+    'actions': [{
+      'id': 'BOOK_REVIEWER',
       'name': 'Book Reviewer',
-      'urls':['','a']
+      'urls': ['', 'a']
     }]
   }],
   userObj: {
@@ -470,4 +470,4 @@ export const mockObject = {
         }
     }
 }
-}
+};

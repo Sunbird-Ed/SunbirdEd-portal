@@ -1,136 +1,310 @@
-import { Observable } from 'rxjs';
-import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule, LayoutService } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, inject} from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { jest } from '@jest/globals';
 import { SearchComponent } from './search.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd} from '@angular/router';
-import { UserService, LearnerService, ContentService } from '@sunbird/core';
-import { mockResponse } from './search.component.spec.data';
-import { CoreModule } from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
+import {
+  ConfigService, ResourceService, ToasterService, UtilService,
+  LayoutService, NavigationHelperService, ConnectionService
+} from '../../../shared';
+import { Observable, of, Subscriber, Subscription, throwError as observableThrowError } from 'rxjs';
+import { UserService, PermissionService, ManagedUserService, CoursesService, ElectronService, FormService, LearnerService } from '../../../core';
+import { mockUserData } from './../../services/user/user.mock.spec.data';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
-import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService } from '@sunbird/telemetry';
+import { ChangeDetectorRef } from '@angular/core';
+import { mockResponse } from './search.component.spec.data';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
-  let fixture: ComponentFixture<SearchComponent>;
-  let location: Location;
-  let router: Router;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
+  const mockRouter: Partial<Router> = {
+    url: '/resources/view-all/Course-Unit/1?&selectedTab=course&board=CBSE%2FNCERT&medium=English&publisher=NCERT&',
+    navigate: jest.fn(),
+    events: of({}) as any
   };
-  class MockRouter {
-    navigate = jasmine.createSpy('navigate');
-    public navigationEnd = new NavigationEnd(1, '/learn', '/learn');
-    public navigationEnd2 = new NavigationEnd(2, '/search/All/1', '/search/All/1');
-    public url = '/profile';
-    public events = new Observable(observer => {
-      observer.next(this.navigationEnd);
-      observer.complete();
-    });
-  }
-  configureTestSuite();
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ],
-      imports: [SharedModule.forRoot(), TelemetryModule.forRoot(),
-        CoreModule, SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [ResourceService, ConfigService, CacheService, LayoutService, BrowserCacheTtlService, UserService, LearnerService, LayoutService,
-      ContentService, { provide: Router, useClass: MockRouter},
-         { provide: ActivatedRoute, useValue: {queryParams: {
-          subscribe: (fn: (value: Params) => void) => fn({
-            subjects : ['english']
-          })}  }}, Location],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
-  }));
+  const mockActivatedRoute: Partial<ActivatedRoute> = {
+    queryParams: of({
+      selectedTab: 'all',
+      contentType: ['Course'], objectType: ['Content'], status: ['Live'],
+      defaultSortBy: JSON.stringify({ lastPublishedOn: 'desc' })
+    }),
+    snapshot: {
+      queryParams: {
+        selectedTab: 'course'
+      }
+    } as any
+  };
+  const mockUserService: Partial<UserService> = {
+    getGuestUser: jest.fn(() => of({
+      userId: 'sample-uid',
+      rootOrgId: 'sample-root-id',
+      rootOrg: {},
+      hashTagIds: ['id'],
+      managedBy: true
+    })),
+    userData$: of({
+      userProfile: {
+        userId: 'sample-uid',
+        rootOrgId: 'sample-root-id',
+        rootOrg: {},
+        hashTagIds: ['id'],
+        managedBy: true,
+        rootOrgAdmin: true
+      }
+    }) as any,
+    initialize: jest.fn(),
+    guestData$: of(mockUserData),
+    userProfile: () => {
+      return {
+        managedBy: true
+      }
+    },
+    _guestData$: of({}) as any,
+  };
+  const mockResourceService: Partial<ResourceService> = {
+    languageSelected$: of({ language: 'en' }) as any
+  };
+  const mockConfig: Partial<ConfigService> = {
+    constants: {
+      SIZE: {
+        SMALL: 1
+      },
+      VIEW: {
+        VERTICAL: {
+        }
+      }
+    },
+    appConfig: {
+    },
+    rolesConfig: {
+      headerDropdownRoles: {
+        adminDashboard: '',
+        myActivityRole: '',
+        orgSetupRole: '',
+        orgAdminRole: '',
+      }
+    },
+    urlConFig: {
+      URLS: {
+        OFFLINE: {
+          LOGIN: '/explore'
+        }
+      }
+    },
+    dropDownConfig: {
+      FILTER: {
+        SEARCH: {
+          search: {
+            'All': '/search/All',
+            'home': '/search/All',
+            'learn': '/search/Courses',
+            'Courses': '/search/Courses',
+            'resources': '/search/Library',
+            'mydownloads': '/search/Library',
+            'Library': '/search/Library',
+            'Users': '/search/Users',
+            'profile': '/search/Users'
+          },
+          searchUrl: {
+            'home': 'All',
+            'learn': 'Courses',
+            'resources': 'Library',
+            'profile': 'Users',
+            'mydownloads': 'mydownloads'
+          },
+          searchEnabled: [
+            'home',
+            'learn',
+            'resources',
+          ]
+        }
+      }
+    }
+  };
+  const mockUtilService: Partial<UtilService> = {
+    currentRole: of({}) as any,
+    redirect: jest.fn(),
+    isDesktopApp: true,
+  };
+  const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
+    detectChanges: jest.fn()
+  };
+  const mockLayoutService: Partial<LayoutService> = {
+    isLayoutAvailable: jest.fn(() => true),
+    initiateSwitchLayout: jest.fn()
+  };
+  const mockConnectionService: Partial<ConnectionService> = {
+    monitor: jest.fn(() => of(true))
+  };
+  beforeAll(() => {
+    component = new SearchComponent(
+      mockRouter as Router,
+      mockActivatedRoute as ActivatedRoute,
+      mockUserService as UserService,
+      mockResourceService as ResourceService,
+      mockConfig as ConfigService,
+      mockUtilService as UtilService,
+      mockChangeDetectionRef as ChangeDetectorRef,
+      mockLayoutService as LayoutService,
+      mockConnectionService as ConnectionService
+    )
+  });
+
   beforeEach(() => {
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
-    fixture = TestBed.createComponent(SearchComponent);
-    component = fixture.componentInstance;
-    component.layoutConfiguration = {};
+    jest.clearAllMocks();
   });
-  it('should create', () => {
+
+  it('should be create a instance of main menu component', () => {
+    // @ts-ignore
+    mockUserService.loggedIn = true;
     expect(component).toBeTruthy();
   });
-  it('should call onchange method', ( ) => {
-    component.search = {All: '/search/All'};
-    component.selectedOption = 'All';
+
+  it('should call ngOnInit method ', () => {
+    mockActivatedRoute.queryParams = of({
+      id: 'sample-id',
+      utm_campaign: 'utm_campaign',
+      utm_medium: 'utm_medium',
+      clientId: 'android',
+      context: JSON.stringify({ data: 'sample-data' })
+    });
+    component.ngOnInit();
+    expect(component.isDesktopApp).toBeTruthy();
+    expect(component.showSuiSelectDropdown).toBeTruthy();
+    expect(component.showInput).toBeTruthy();
+  });
+
+  it('should call ngOnDestroy', () => {
+    //arrange
+    component.resourceDataSubscription = of().subscribe();
+    // act
+    component.ngOnDestroy();
+    // assert
+    expect(component.resourceDataSubscription).toBeDefined()
+  });
+
+  it('should call onChange', () => {
+    //arrange
+    component.selectedOption = 'selectedOption';
+    component.search = {
+      selectedOption: 'abcd'
+    }
+    jest.spyOn(component['route'], 'navigate')
+    // act
     component.onChange();
-    expect(router.navigate).toHaveBeenCalledWith(['/search/All', 1]);
+    // assert
+    expect(component['route'].navigate).toBeCalled();
   });
-  it('should call onEnter method', ( ) => {
-    component.search = {All: '/search/All'};
-    component.selectedOption = 'All';
-    const key = 'hello';
-    component.queryParam['key'] = key;
-    component.onEnter(key);
-    expect(router.navigate).toHaveBeenCalledWith(['/search/All', 1], {queryParams:  component.queryParam});
-  });
-  it('should hide users search from dropdown if loggedin user is not rootorgadmin', ( ) => {
-    const userService = TestBed.get(UserService);
-    const resourceService = TestBed.get(ResourceService);
-    const route = TestBed.get(Router);
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
-    resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
-    component.searchDropdownValues = ['All', 'Courses', 'Library'];
-    component.ngOnInit();
-    expect(component.searchDropdownValues).not.toContain('Users');
-  });
-  it('should show users search from dropdown if loggedin user is rootorgadmin', ( ) => {
-    const userService = TestBed.get(UserService);
-    const resourceService = TestBed.get(ResourceService);
-    mockResponse.userMockData.userProfile.rootOrgAdmin = true;
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
-    resourceService._languageSelected.next({ 'value': 'en', 'name': 'English', 'dir': 'ltr' });
+
+  it('should call setSearchPlaceHolderValue', () => {
+    //arrange
+    component.selectedOption = 'selectedOption';
     component.searchDisplayValueMappers = {
-      'All': 'all',
-      'Library': 'resources',
-      'Courses': 'courses',
-      'Users': 'users'
-    };
-    component.searchDropdownValues = ['All', 'Courses', 'Library'];
-    component.ngOnInit();
-    expect(component.searchDropdownValues).toContain('Users');
-  });
-  xit('search dropdown selected value should be ALL when non rootorgadmin user lands to profile page', ( ) => {
-    const userService = TestBed.get(UserService);
-    mockResponse.userMockData.userProfile.rootOrgAdmin = false;
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
-    component.ngOnInit();
-    expect(component.selectedOption).toEqual('All');
-  });
-  xit('search dropdown selected value should be Users when rootorgadmin user lands to profile page', ( ) => {
-    const userService = TestBed.get(UserService);
-    mockResponse.userMockData.userProfile.rootOrgAdmin = true;
-    userService._userData$.next({ err: null, userProfile: mockResponse.userMockData.userProfile });
-    component.ngOnInit();
-    expect(component.selectedOption).toEqual('Users');
-  });
-  xit('should call search redo layout', () => {
-    component.isLayoutAvailable();
-    expect(component).toBeTruthy();
-  });
-  it('should call setSearchPlaceHolderValue method', () => {
-    component.selectedOption = 'Users';
-    component.searchDisplayValueMappers = {User: 'user'};
-    spyOn(component, 'setSearchPlaceHolderValue');
+      selectedOption: 'abcd'
+    }
+    // act
     component.setSearchPlaceHolderValue();
-    expect(component.setSearchPlaceHolderValue).toHaveBeenCalled();
+    // assert
+    expect(component.searchPlaceHolderValue).toBe('selectedOption');
   });
-  it('should call onEnter method and redirect to mydownloads page when user is offline', ( ) => {
+
+  it('should call onEnter', () => {
+    //arrange
+    const key = [{
+      value: 'A'
+    }]
+    // act
+    component.onEnter(key);
+    // assert
+    expect(component.searchPlaceHolderValue).toBe('selectedOption');
+  });
+
+  it('should call onEnter with empty key', () => {
+    //arrange
+    const key = []
+    // act
+    component.onEnter(key);
+    // assert
+    expect(component.searchPlaceHolderValue).toBe('selectedOption');
+  });
+
+  it('should call onEnter with empty key and selectedOption as false', () => {
+    //arrange
+    const key = []
+    component.selectedOption = null;
+    // act
+    component.onEnter(key);
+    // assert
+    expect(component.searchPlaceHolderValue).toBe('selectedOption');
+  });
+
+  it('should call onEnter with empty key and selectedOption as false and isConnected as true', () => {
+    //arrange
     component.isDesktopApp = true;
     component.isConnected = false;
-    const key = 'hello';
-    component.queryParam['key'] = key;
+    const key = []
+    component.selectedOption = null;
+    // act
     component.onEnter(key);
-    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams:  component.queryParam});
+    // assert
+    expect(component.searchPlaceHolderValue).toBe('selectedOption');
+  });
+
+  it('should call setFilters with config', () => {
+    //arrange
+    const obj = {
+      All: '/search/All',
+      home: '/search/All',
+      learn: '/search/Courses',
+      Courses: '/search/Courses',
+      resources: '/search/Library',
+      mydownloads: '/search/Library',
+      Library: '/search/Library',
+      Users: '/search/Users',
+      profile: '/search/Users'
+    }
+    // act
+    component.setFilters();
+    // assert
+    expect(JSON.stringify(component.search)).toBe(JSON.stringify(obj));
+  });
+
+  it('should call setFilters with config with searchEnabled updated', () => {
+    //arrange
+    component.config.dropDownConfig.FILTER.SEARCH.searchEnabled = ['profile', 'search', 'mydownloads'];
+    // act
+    component.setFilters();
+    // assert
+    expect(JSON.stringify(component.value)).toBe(JSON.stringify(['', 'resources', 'view-all']));
+  });
+
+  it('should call setDropdownSelectedOption with input as value', () => {
+    //arrange
+    jest.spyOn(component['cdr'], 'detectChanges')
+    const value = 'Users';
+    component.setDropdownSelectedOption(value);
+    // assert
+    expect(JSON.stringify(component.selectedOption)).toBe(JSON.stringify('Users'));
+    expect(component.showSuiSelectDropdown).toBeTruthy();
+    expect(component['cdr'].detectChanges).toBeCalled();
+  });
+
+  it('should call setDropdownSelectedOption with input as value and usertype admin', () => {
+    //arrange
+    const value = 'Users';
+    component.setDropdownSelectedOption(value);
+    // assert
+    expect(JSON.stringify(component.selectedOption)).toBe(JSON.stringify('Users'));
+  });
+
+  it('should call getInteractEdata with input as key', () => {
+    //arrange
+    const key = 'Users';
+    const obj = component.getInteractEdata(key);
+    // assert
+    expect(JSON.stringify(obj)).toBe(JSON.stringify(mockResponse.searchInteractEdata));
+  });
+
+  it('should call isLayoutAvailable method and return layout config', () => {
+    const obj = component.isLayoutAvailable();
+    expect(obj).toBeTruthy();
   });
 });

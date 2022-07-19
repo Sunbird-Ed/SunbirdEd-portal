@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
+import { RouterNavigationService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
@@ -27,7 +27,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showCreateModal = false;
 
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
 
   private courseId: string;
   /**
@@ -89,8 +89,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   public courseConsumptionService: CourseConsumptionService;
 
   pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
-
-  pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
 
   createBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -161,7 +159,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mentorList = userList.mentorList;
         this.initDropDown();
       }, (err) => {
-        if (err.error && err.error.params.errmsg) {
+        if (err.error && err.error?.params?.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0056);
@@ -196,13 +194,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       issueCertificate: new FormControl(null, [Validators.required]),
       tncCheck: new FormControl(false, [Validators.requiredTrue]),
       enableDiscussions: new FormControl('false', [Validators.required])
-    });
-    this.createBatchForm.valueChanges.subscribe(val => {
-      if (this.createBatchForm.status === 'VALID') {
-        this.disableSubmitBtn = false;
-      } else {
-        this.disableSubmitBtn = true;
-      }
     });
   }
   private sortUsers(res) {
@@ -266,7 +257,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         if (participants && participants.length > 0) {
           this.addParticipantToBatch(response.result.batchId, participants);
         } else {
-          // this.disableSubmitBtn = false; // - On success; the button will be still disabled to avoid multiple clicks
           this.toasterService.success(this.resourceService.messages.smsg.m0033);
           this.reload();
           this.checkIssueCertificate(response.result.batchId);
@@ -288,7 +278,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
-        this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
         this.checkIssueCertificate(batchId);
@@ -491,5 +480,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       telemetryData.context.cdata.push(cdata);
     }
     this.telemetryService.interact(telemetryData);
+  }
+
+  getPickerMinDateForEndDate() {
+    const startDate = this.createBatchForm.controls.startDate.value as Date;
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    if (startDate) {
+      return new Date(startDate.getTime() + oneDayMs);
+    }
+    return new Date(this.pickerMinDate.getTime() + oneDayMs);
   }
 }

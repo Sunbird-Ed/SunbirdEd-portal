@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "4.5.0",
+    "version": "4.10.0",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
@@ -111,8 +111,8 @@
         "cpy-cli": "^2.0.0",
         "cross-env": "^7.0.2",
         "devtron": "^1.4.0",
-        "electron": "^11.2.1",
-        "electron-builder": "21.2.0",
+        "electron": "^18.0.1",
+        "electron-builder": "22.14.13",
         "electron-builder-squirrel-windows": "22.2.0",
         "electron-icon-maker": "0.0.4",
         "grunt": "^1.0.4",
@@ -128,6 +128,7 @@
     "keywords": [],
     "license": "MIT",
     "engines": {
-        "node": ">=12.17.0"
+        "node": ">=14.17.0",
+        "npm": ">=6.14.13"
     }
 }

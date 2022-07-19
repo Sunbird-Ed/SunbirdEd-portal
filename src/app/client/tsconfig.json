@@ -3,7 +3,7 @@
   "angularCompilerOptions": {
     "genDir": "aot",
     "debug": true,
-    "enableIvy": false,
+    "enableIvy": false
   },
   "compilerOptions": {
     "baseUrl": "./",
@@ -17,6 +17,83 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "es5",
+    "paths": {
+      "@sunbird/core": [
+        "app/modules/core"
+      ],
+      "@sunbird/shared": [
+        "app/modules/shared"
+      ],
+      "@sunbird/home": [
+        "app/modules/home"
+      ],
+      "@sunbird/dashboard": [
+        "app/modules/dashboard"
+      ],
+      "@sunbird/admin": [
+        "app/modules/admin"
+      ],
+      "@sunbird/resource": [
+        "app/modules/resource"
+      ],
+      "@sunbird/learn": [
+        "app/modules/learn"
+      ],
+      "@sunbird/workspace": [
+        "app/modules/workspace"
+      ],
+      "@sunbird/org-management": [
+        "app/modules/org-management"
+      ],
+      "@sunbird/public": [
+        "app/modules/public"
+      ],
+      "@sunbird/profile": [
+        "app/plugins/profile"
+      ],
+      "@sunbird/search": [
+        "app/modules/search"
+      ],
+      "@sunbird/telemetry": [
+        "app/modules/telemetry"
+      ],
+      "@sunbird/badge": [
+        "app/modules/badging"
+      ],
+      "@sunbird/shared-feature": [
+        "app/modules/shared-feature"
+      ],
+      "@sunbird/environment": [
+        "environments/environment"
+      ],
+      "@sunbird/course-batch": [
+        "app/modules/course-batch"
+      ],
+      "moment": [
+        "../node_modules/moment/min/moment.min.js"
+      ],
+      "@sunbird/player-helper": [
+        "app/modules/player-helper"
+      ],
+      "@sunbird/content-search": [
+        "app/modules/content-search"
+      ],
+      "CsLibInitializer": [
+        "app/service/CsLibInitializer/cs-lib-initializer.service.ts"
+      ],
+      "LazzyLoadScriptService": [
+        "app/service/LazzyLoadScript/lazzy-load-script.service.ts"
+      ],
+      "@sunbird/test-util": [
+        "app/testUtil/"
+      ],
+      "@sunbird/groups": [
+        "app/modules/groups"
+      ],
+      "lodash-es": [
+        "../node_modules/lodash/"
+      ]
+    },
     "typeRoots": [
       "./node_modules/@types"
     ],

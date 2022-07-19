@@ -9,9 +9,8 @@ import {
 import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { Location } from '@angular/common';
+import { takeUntil, map, tap, filter } from 'rxjs/operators';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 
 @Component({
@@ -26,6 +25,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public closeIntractEdata: IInteractEventEdata;
   public cardIntractEdata: IInteractEventEdata;
   public sortIntractEdata: IInteractEventEdata;
+  get = _.get;
   /**
    * To call searchService which helps to use list of courses
    */
@@ -148,7 +148,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private location: Location) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -159,7 +159,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.coursesService = coursesService;
     this.userService = userService;
     this.router.onSameUrlNavigation = 'reload';
-    this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.sortingOptions = this.configService?.dropDownConfig?.FILTER?.RESOURCES?.sortingOptions;
     this._enrolledSectionNames = [_.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections'), _.get(this.resourceService, 'tbk.trk.frmelmnts.lbl.mytrainings'),
     _.get(this.resourceService, 'crs.trk.frmelmnts.lbl.mytrainings'), _.get(this.resourceService, 'tvc.trk.frmelmnts.lbl.mytrainings')];
   }
@@ -277,7 +277,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
           this.initFilters = true;
         }
         this.showLoader = false;
-        if (this._enrolledSectionNames.some(sectionName => sectionName === this.sectionName)) {
+        const derivedSectionName = _.get(this.resourceService, this.sectionName) || this.sectionName;
+        if (this._enrolledSectionNames.some(sectionName => sectionName === derivedSectionName)) {
           this.processEnrolledCourses(_.get(response, 'enrolledCourseData'), _.get(response, 'currentPageData'));
         } else {
           if (response.contentData.result.count && response.contentData.result.content) {
@@ -405,6 +406,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (page < 1 || page > this.pager.totalPages) {
       return;
     }
+    // if (this.pageClicked >= 1 && this.queryParams.selectedTab === 'all') {
+    //   this.navigationhelperService.popHistory();
+    // }
     const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
     this.moveToTop();
@@ -423,7 +427,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {
-        const batchId = _.get(content,'metaData.batchId');
+        const batchId = _.get(content, 'metaData.batchId');
         this.handleCourseRedirection(event, batchId);
       } else {
         this.publicPlayerService.playContent(event);
@@ -438,9 +442,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (batchId) {
       metaData.batchId = batchId;
-      metaData.trackable={
-        enabled:'Yes'
-      }
+      metaData.trackable = {
+        enabled: 'Yes'
+      };
       return this.playerService.playContent(metaData);
     }
 
@@ -505,7 +509,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  
+
   updateCardData(downloadListdata) {
     _.each(this.searchList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
@@ -650,7 +654,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public handleCloseButton() {
     if (this.queryParams.selectedTab === 'all') {
-      window.history.go(-this.pageClicked);
+    const previousPageUrl = this.navigationhelperService.getPreviousUrl();
+    if (!['/search/Library/', '/explore/'].some(val => previousPageUrl.url.startsWith(val)) ||
+     ['/explore/view-all/'].some(val => previousPageUrl.url.startsWith(val))) {
+      this.navigationhelperService.popHistory();
+      this.handleCloseButton();
+      return;
+    }
+    this.navigationhelperService.goBack();
     } else {
     const [path] = this.router.url.split('/view-all');
     const redirectionUrl = `/${path.toString()}`;
