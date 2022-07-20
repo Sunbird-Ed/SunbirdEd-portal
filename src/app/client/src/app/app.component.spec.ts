@@ -36,7 +36,9 @@ describe("App Component", () => {
   };
   const mockPermissionService: Partial<PermissionService> = {};
   const mockResourceService: Partial<ResourceService> = {};
-  const mockGenericResourceService: Partial<GenericResourceService> = {};
+  const mockGenericResourceService: Partial<GenericResourceService> = {
+    initialize: jest.fn()
+  };
   const mockDeviceRegisterService: Partial<DeviceRegisterService> = {};
   const mockCoursesService: Partial<CoursesService> = {};
   const mockTenantService: Partial<TenantService> = {
