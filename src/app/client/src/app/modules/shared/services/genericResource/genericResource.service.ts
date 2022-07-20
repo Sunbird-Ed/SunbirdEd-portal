@@ -1,10 +1,9 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable, BehaviorSubject } from 'rxjs';
-
-import { mergeMap } from 'rxjs/operators';
-import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
-import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
-import { ConfigService } from './../config/config.service';
+import { map, mergeMap } from 'rxjs/operators';
+import { BrowserCacheTtlService } from '../browser-cache-ttl/browser-cache-ttl.service';
+import { HttpOptions, RequestParam, ServerResponse } from '../../interfaces';
+import { ConfigService } from '../config/config.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
@@ -12,48 +11,32 @@ import dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { TranslateService } from '@ngx-translate/core';
+import { FormService } from '@sunbird/core';
+
 /**
  * Service to fetch resource bundle
  */
 @Injectable()
-export class ResourceService {
+export class GenericResourceService {
   // Workaround for issue https://github.com/angular/angular/issues/12889
   // Dependency injection creates new instance each time if used in router sub-modules
-  static singletonInstance: ResourceService;
-  /**
-  * messages bundle
-  */
-  messages: any = {};
-  /**
-  * frmelmnts bundle
-  */
-  frmelmnts: any = {};
-  /**
-  * frmelemnts bundle
-  */
-  frmelemnts: any = {};
-  tbk: object = {};
-  tvc: object = {};
-  tvk: object = {};
-  crs: object = {};
+  static singletonInstance: GenericResourceService;
   /**
    * reference of config service.
    */
   public config: ConfigService;
-  public baseUrl: string;
   public http: HttpClient;
 
   /**
    * Contains instance name
    */
   private _instance: string;
-  private _selectedLang: string;
   // Observable navItem source
   _languageSelected = new BehaviorSubject<any>({});
   // Observable navItem stream
   languageSelected$ = this._languageSelected.asObservable();
 
-  public RESOURCE_CONSUMPTION_ROOT = 'result.consumption.';
+  terms: any = {};
 
   /**
    * constructor
@@ -62,18 +45,17 @@ export class ResourceService {
    */
   constructor(config: ConfigService, http: HttpClient,
     private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
-    private translateService: TranslateService) {
-    if (!ResourceService.singletonInstance) {
+    private translateService: TranslateService, private formService: FormService) {
+    if (!GenericResourceService.singletonInstance) {
       this.http = http;
       this.config = config;
-      this.baseUrl = this.config.urlConFig.URLS.RESOURCEBUNDLES_PREFIX;
       try {
-        this._instance = document.getElementById('instance')?(<HTMLInputElement>document.getElementById('instance')).value:'';
+        this._instance = document.getElementById('instance') ? (<HTMLInputElement>document.getElementById('instance')).value : '';
       } catch (error) {
       }
-      ResourceService.singletonInstance = this;
+      GenericResourceService.singletonInstance = this;
     }
-    return ResourceService.singletonInstance;
+    return GenericResourceService.singletonInstance;
   }
   public initialize() {
     const range = { value: 'en', label: 'English', dir: 'ltr' };
@@ -84,33 +66,25 @@ export class ResourceService {
    * method to fetch resource bundle
   */
   public getResource(language = 'en', range: any = {}): void {
-    this._selectedLang = language;
-    const option = {
-      url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
-    };
-    this.get(option).subscribe(
-      (data: ServerResponse) => {
-        const { creation: { messages: creationMessages = {}, frmelmnts: creationFrmelmnts = {}, frmelemnts: creationFrmelemnts = {} } = {},
-          consumption: { messages: consumptionMessages = {}, frmelmnts: consumptionFrmelmnts = {},
-            frmelemnts: consumptionFrmelemnts = {}, tbk = {}, tvc = {}, tvk = {}, crs = {} } = {} } = _.get(data, 'result') || {};
-        this.messages = _.merge({}, creationMessages, consumptionMessages);
-        this.frmelmnts = _.merge({}, creationFrmelmnts, consumptionFrmelmnts);
-        this.frmelemnts = _.merge({}, creationFrmelemnts, consumptionFrmelemnts);
-        this.tbk = tbk; this.tvc = tvc; this.tvk = tvk; this.crs = crs;
-        this.getLanguageChange(range);
-      },
-      (err: ServerResponse) => {
-      }
-    );
-
+    this.post({ url: this.config.urlConFig.URLS.CUSTOM_RESOURCE_BUNDLE }).subscribe((data: ServerResponse) => {
+      this.terms = _.get(data, 'result.form.data') || {};
+      this.getLanguageChange(range);
+    }, (err) => {
+      console.error('Custom resource form config fetch failed ', err);
+    });
     this.translateService.use(language);
   }
-  get(requestParam: RequestParam): Observable<any> {
-    const httpOptions: HttpOptions = {
-      headers: requestParam.header ? requestParam.header : this.getHeader(),
-      params: requestParam.param
+
+  post(requestParam: RequestParam): Observable<any> {
+    const formServiceInputParams = {
+      request: {
+        type: 'customResourcebundles',
+        action: 'list',
+        subType: 'global',
+        component: 'portal'
+      }
     };
-    return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
+    return this.http.post(requestParam.url, formServiceInputParams).pipe(
       mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
           return observableThrowError(data);
@@ -142,10 +116,6 @@ export class ResourceService {
  */
   get instance(): string {
     return _.upperCase(this._instance);
-  }
-
-  get selectedLang(): string {
-    return this._selectedLang;
   }
 
   getLanguageChange(language) {

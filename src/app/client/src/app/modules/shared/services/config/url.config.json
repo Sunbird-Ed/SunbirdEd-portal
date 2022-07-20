@@ -67,6 +67,7 @@
     "KENDRA_PREFIX": "/kendra/",
     "DHITI_PREFIX":"/dhiti/",
     "CLOUD_PREFIX":"/cloudUpload/",
+    "CUSTOM_RESOURCE_BUNDLE": "/api/data/v1/form/read",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
