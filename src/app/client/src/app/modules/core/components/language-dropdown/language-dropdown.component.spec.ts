@@ -14,7 +14,9 @@ describe('LanguageDropdownComponent', () => {
     };
     const mockActivatedRoute: Partial<ActivatedRoute> = {};
     const mockGenericResourceService: Partial<GenericResourceService> = {
-        initialize: jest.fn()
+        initialize: jest.fn(),
+        getResource: jest.fn(),
+        getLanguageChange: jest.fn()
     };
     const mockLayoutService: Partial<LayoutService> = {
         isLayoutAvailable: jest.fn(() => true),
