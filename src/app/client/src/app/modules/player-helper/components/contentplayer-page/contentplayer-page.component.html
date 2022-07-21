@@ -19,7 +19,7 @@
                 <div class="sb-mat-accordion__content">
                     <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal"
                         *ngIf="collectionData?.se_boards">
-                        <span>{{resourceService?.frmelmnts?.lbl?.board}}:&nbsp;</span><span>{{
+                        <span>{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}:&nbsp;</span><span>{{
                             collectionData.se_boards}}</span>
                     </div>
                     <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal"
