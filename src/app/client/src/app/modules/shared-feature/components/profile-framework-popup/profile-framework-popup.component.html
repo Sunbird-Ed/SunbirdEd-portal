@@ -15,8 +15,8 @@
           <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
           <div class="hr-preference-line ml-24"></div>
         </div>
-        <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader |
-          interpolate:'{instance}': instance}}</p>
+        <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader | transposeTerms: 'frmelmnts.lbl.preferencesheader' : resourceService?.selectedLang
+          | interpolate:'{instance}': instance}}</p>
         <div class="hr-border py-8"></div>
       </div>
       <form class="ui form">
