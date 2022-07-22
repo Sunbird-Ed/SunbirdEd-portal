@@ -31,7 +31,8 @@ export class TransposeTermsPipe implements PipeTransform {
   transform(value: any, defaultValue, selectedLang?, startsWith = '{', endsWith = '}'): any {
     if (value) {
       if (value.indexOf(startsWith) > -1) {
-        let term = value.substring(value.indexOf(startsWith) + 1, value.lastIndexOf(endsWith));
+        // let term = value.substring(value.indexOf(startsWith) + 1, value.lastIndexOf(endsWith));
+        let term = value.match(/frameworkCategory([0-9])/g)?.[0];
         return this.getTermsMapping(value, term, localStorage.getItem('portalLanguage'), startsWith, endsWith, defaultValue);
       } else {
         return value;
