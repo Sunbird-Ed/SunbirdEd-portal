@@ -8,7 +8,7 @@
   </dl>
 
   <dl class="sb-meta-data" *ngIf="metaData.medium">
-    <dt>{{resourceService?.frmelmnts?.lbl?.medium}}</dt>
+    <dt>{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}</dt>
     <dd>{{metaData.medium}}</dd>
   </dl>
 

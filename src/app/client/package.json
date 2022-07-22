@@ -1,7 +1,13 @@
 {
   "name": "src",
-  "version": "1.7.0",
+  "version": "4.10.2",
   "license": "MIT",
+  "description": "SUNBIRD Client Portal",
+  "keywords": [
+    "sunbird",
+    "client",
+    "portal"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",

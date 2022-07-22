@@ -32,8 +32,17 @@ export class TransposeTermsPipe implements PipeTransform {
     if (value) {
       if (value.indexOf(startsWith) > -1) {
         // let term = value.substring(value.indexOf(startsWith) + 1, value.lastIndexOf(endsWith));
-        let term = value.match(/frameworkCategory([0-9])/g)?.[0];
-        return this.getTermsMapping(value, term, localStorage.getItem('portalLanguage'), startsWith, endsWith, defaultValue);
+        let term = value.match(/frameworkCategory([0-9])/g);
+        if (term && term.length > 0) {
+          // return this.getTermsMapping(value, term, localStorage.getItem('portalLanguage'), startsWith, endsWith, defaultValue);
+          let resultStr = value;
+          term.forEach(termString => {
+            resultStr = this.getTermsMapping(resultStr, termString, localStorage.getItem('portalLanguage'), startsWith, endsWith, defaultValue);
+          });
+          return resultStr;
+        } else {
+          return value;
+        }
       } else {
         return value;
       }

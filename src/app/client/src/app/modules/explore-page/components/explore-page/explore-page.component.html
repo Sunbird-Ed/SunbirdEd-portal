@@ -73,7 +73,7 @@
                   </span>
 
                   <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}:
+                    <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium  | transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
                     </span>
                     <span class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
                     <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
