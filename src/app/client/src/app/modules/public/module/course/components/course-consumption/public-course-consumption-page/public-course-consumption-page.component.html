@@ -50,6 +50,8 @@
         <div class="certified-course mx-8" [ngClass]="{'d-flex': isDesktopApp}">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
             <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" tabindex="0"
+            [disabled]="isEnrollmentAllowed(enrollmentEndDate)"
+            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(enrollmentEndDate)}"
               (click)="showJoinModal(true); logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
           </div>
           <div *ngIf="isDesktopApp && !enrolledCourse && !courseMentor" class="d-flex">
