@@ -171,12 +171,12 @@
       <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
             <span class="fmedium font-w-bold pl-4"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
             <span class="fmedium font-w-bold pl-4"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
           </div>
@@ -202,12 +202,12 @@
     <!-- User info mobile view starts-->
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}}:</span>
+        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
         <span class="fmedium font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
+        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium  | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
         <span class="fmedium font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
       </div>
