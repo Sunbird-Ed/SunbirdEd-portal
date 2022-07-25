@@ -29,7 +29,7 @@
                     </div>
                     <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal"
                         *ngIf="collectionData?.se_gradeLevels">
-                        <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{
+                        <span>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}:&nbsp;</span><span>{{
                             collectionData.se_gradeLevels}}</span>
                     </div>
                     <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal"
