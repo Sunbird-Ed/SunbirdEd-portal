@@ -7,7 +7,7 @@
       <!-- /* Back button */ -->
       <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''"
         class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" tabindex="0"
-        (click)="redirectToExplore()">
+        (click)="redirectToExplore()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>
@@ -50,6 +50,8 @@
         <div class="certified-course mx-8" [ngClass]="{'d-flex': isDesktopApp}">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
             <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" tabindex="0"
+            [disabled]="isEnrollmentAllowed(enrollmentEndDate)"
+            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(enrollmentEndDate)}"
               (click)="showJoinModal(true); logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
           </div>
           <div *ngIf="isDesktopApp && !enrolledCourse && !courseMentor" class="d-flex">
