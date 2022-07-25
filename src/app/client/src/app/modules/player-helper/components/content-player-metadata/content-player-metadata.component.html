@@ -69,7 +69,7 @@
         <dd *ngIf="metadata.gradeLevel">{{metadata.gradeLevel}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.subject}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl.subject | transposeTerms: 'frmelmnts.lbl.subject' : resourceService?.selectedLang}}</dt>
         <dd *ngIf="metadata.subject">{{metadata.subject}}</dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.createdOn">

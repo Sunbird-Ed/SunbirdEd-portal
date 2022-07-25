@@ -22,7 +22,7 @@
   </dl>
 
   <dl class="sb-meta-data" *ngIf="metaData.subject">
-    <dt>{{resourceService?.frmelmnts?.lbl?.subject}}</dt>
+    <dt>{{resourceService?.frmelmnts?.lbl?.subject | transposeTerms: 'frmelmnts.lbl.subject': resourceService?.selectedLang}}</dt>
     <dd>{{metaData.subject}}</dd>
   </dl>
 

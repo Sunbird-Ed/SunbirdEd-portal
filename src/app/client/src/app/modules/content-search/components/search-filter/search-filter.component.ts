@@ -52,28 +52,28 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       category: 'board',
       type: 'dropdown',
       labelText: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
-      placeholderText: 'Select Board',
+      placeholderText: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
       multiple: false
     },
     {
       category: 'medium',
       type: 'dropdown',
       labelText: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
-      placeholderText: 'Select Medium',
+      placeholderText: _.get(this.resourceService, 'frmelmnts.lbl.selectMedium'),
       multiple: true
     },
     {
       category: 'gradeLevel',
       type: 'dropdown',
       labelText: _.get(this.resourceService, 'frmelmnts.lbl.class'),
-      placeholderText: 'Select Class',
+      placeholderText: _.get(this.resourceService, 'frmelmnts.lbl.selectClass'),
       multiple: true
     },
     {
       category: 'subject',
       type: 'dropdown',
       labelText: _.get(this.resourceService, 'frmelmnts.lbl.subject'),
-      placeholderText: 'Select Subject',
+      placeholderText: _.get(this.resourceService, 'frmelmnts.lbl.selectSubject'),
       multiple: true
     },
     // {
