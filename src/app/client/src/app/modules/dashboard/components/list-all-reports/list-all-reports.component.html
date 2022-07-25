@@ -9,7 +9,7 @@
       <!-- /* Back button */ -->
       <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''"
         class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" tabindex="0"
-        (click)="goBack()">
+        (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <em class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></em>
