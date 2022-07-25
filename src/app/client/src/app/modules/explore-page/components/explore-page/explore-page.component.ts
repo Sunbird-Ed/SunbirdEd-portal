@@ -1134,7 +1134,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     getSectionTitle (title) {
-        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+        let _sectionTitle = this.utilService.transposeTerms(get(this.resourceService, title), get(this.resourceService, title) || '', this.resourceService.selectedLang);
+        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + _sectionTitle;
+        
     }
 
     getSectionCategoryTitle (title) {
