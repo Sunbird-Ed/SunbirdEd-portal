@@ -13,7 +13,7 @@
   </dl>
 
   <dl class="sb-meta-data" *ngIf="metaData.gradeLevel">
-    <dt>{{resourceService?.frmelmnts?.lbl?.class}}</dt>
+    <dt>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}</dt>
     <dd>
       <span class="d-inline-block" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
         {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 

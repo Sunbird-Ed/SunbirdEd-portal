@@ -244,7 +244,7 @@
                 </span>
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.grades | translate}}
+                {{resourceService.frmelmnts?.lbl?.grades | transposeTerms: 'frmelmnts.lbl.grades': resourceService?.selectedLang | translate}}
               </div>
             </div>
             <div class="item ">
