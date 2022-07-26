@@ -1528,10 +1528,6 @@ html[layout=joy] sb-form .multi-select-container .list-border {
 
 }
 
-// .slick-prev.slick-arrow.slick-disabled:focus-visible, .slick-next.slick-arrow.slick-disabled:focus-visible {
-//   border-color: none !important;
-// }
-
 .slick-prev, .slick-next {
   &.slick-arrow.slick-disabled:focus-visible {
     border: none !important;
