@@ -1527,3 +1527,16 @@ html[layout=joy] sb-form .multi-select-container .list-border {
   }
 
 }
+
+.slick-prev,
+.slick-next {
+  &.slick-arrow.slick-disabled {
+    display: none;
+    &:focus-visible {
+      border: none !important;
+    }
+    &::before {
+      cursor: no-drop;
+    }
+  }
+}

@@ -52,11 +52,11 @@
                         <th>{{resourceService?.frmelmnts?.lbl?.emailVerfied}}</th>
                         <th>{{resourceService?.frmelmnts?.lbl?.roles}}</th>
                         <th>{{resourceService?.frmelmnts?.lbl?.position}}</th>
-                        <th>{{resourceService?.frmelmnts?.lbl?.grade}}</th>
+                        <th>{{resourceService?.frmelmnts?.lbl?.grade | transposeTerms: 'frmelmnts.lbl.grade': resourceService?.selectedLang}}</th>
                         <th>{{resourceService?.frmelmnts?.lbl?.location}}</th>
                         <th>{{resourceService?.frmelmnts?.lbl?.dob}}</th>
                         <th>{{resourceService?.frmelmnts?.lbl?.lang}}</th>
-                        <th>{{resourceService?.frmelmnts?.lbl?.subject}}</th>
+                        <th>{{resourceService?.frmelmnts?.lbl?.subject | transposeTerms: 'frmelmnts.lbl.subject': resourceService?.selectedLang}}</th>
                         <th *ngIf="status === statusResponse.failureResult">
                           {{resourceService?.frmelmnts?.lbl?.errorMessage}}</th>
                       </tr>
