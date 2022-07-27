@@ -25,12 +25,18 @@ export class TransposeTermsPipe implements PipeTransform {
    * - Transformed value
    * - If translation is not found, `defaultLanguage` from config is considered
    * - If key is not found in config, `defaultValue` is returned
+   * - If `startsWith` and `endsWith` are not provided, `value` is returned as is
    * @description Function to replace term with its translation
    */
   transform(value: any, defaultValue, selectedLang?, startsWith = '{', endsWith = '}'): any {
     if (value) {
-      let term = value.substring(value.indexOf(startsWith) + 1, value.lastIndexOf(endsWith));
-      return this.getTermsMapping(value, term, localStorage.getItem('portalLanguage'), startsWith, endsWith, defaultValue);
+      if (value.indexOf(startsWith) > -1) {
+        // let term = value.substring(value.indexOf(startsWith) + 1, value.lastIndexOf(endsWith));
+        let term = value.match(/frameworkCategory([0-9])/g)?.[0];
+        return this.getTermsMapping(value, term, localStorage.getItem('portalLanguage'), startsWith, endsWith, defaultValue);
+      } else {
+        return value;
+      }
     }
     return defaultValue ?? '';
   }

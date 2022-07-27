@@ -4,9 +4,11 @@ import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
+import { GenericResourceService } from '../genericResource/genericResource.service';
 import dayjs from 'dayjs';
 import { ExportToCsv } from 'export-to-csv';
 import { environment } from '@sunbird/environment';
+import { TransposeTermsPipe } from '../../pipes/transposeTerms/transposeTerms.pipe';
 // Dependency injection creates new instance each time if used in router sub-modules
 @Injectable()
 export class UtilService {
@@ -23,7 +25,7 @@ export class UtilService {
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();
 
-  constructor(private resourceService: ResourceService) {
+  constructor(private resourceService: ResourceService, private genericResourceService: GenericResourceService,) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
@@ -487,5 +489,10 @@ export class UtilService {
 
   get isIos() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent);
+  }
+
+  transposeTerms(value: any, defaultValue, selectedLang?, startsWith = '{', endsWith = '}') {
+    let _transpose = new TransposeTermsPipe(this.genericResourceService);
+    return _transpose.transform(value, defaultValue, selectedLang, startsWith = '{', endsWith = '}');
   }
 }

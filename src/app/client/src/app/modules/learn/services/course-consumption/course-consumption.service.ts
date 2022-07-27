@@ -121,6 +121,7 @@ getAllOpenBatches(contents) {
     if (content.enrollmentType === 'open') {
       if ((!(content.enrollmentEndDate && dayjs(content.enrollmentEndDate).isBefore(dayjs(new Date()).format('YYYY-MM-DD'))))) {
         enrollementEndedBatch++;
+        openBatchCount++;
       } else {
         openBatchCount++;
       }

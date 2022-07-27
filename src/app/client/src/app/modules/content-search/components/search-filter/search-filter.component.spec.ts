@@ -1,5 +1,5 @@
 import { SearchFilterComponent } from './search-filter.component';
-import { ResourceService, LayoutService } from '@sunbird/shared';
+import { ResourceService, LayoutService, UtilService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { FormService } from '../../../../modules/core';
 import { ChangeDetectorRef } from '@angular/core';
@@ -29,6 +29,9 @@ describe('SearchFilterComponent', () => {
     const mockCacheService: Partial<CacheService> = {
         set: jest.fn()
     };
+    const mockUtilService: Partial<UtilService> = {
+        transposeTerms: jest.fn(() => '')
+    };
 
     beforeAll(() => {
         component = new SearchFilterComponent(
@@ -39,8 +42,8 @@ describe('SearchFilterComponent', () => {
             mockChangeDetectionRef as ChangeDetectorRef,
             mockLayoutService as LayoutService,
             mockFormService as FormService,
-            mockCacheService as CacheService
-
+            mockCacheService as CacheService,
+            mockUtilService as UtilService
         );
     });
 

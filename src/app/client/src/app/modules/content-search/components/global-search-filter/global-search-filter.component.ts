@@ -102,6 +102,12 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           multiple: true
         };
       });
+      this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+        this.filterFormTemplateConfig.forEach((facet) => {
+          facet['labelText'] = this.utilService.transposeTerms(facet['labelText'], facet['labelText'], this.resourceService.selectedLang);
+          facet['placeholderText'] = this.utilService.transposeTerms(facet['placeholderText'], facet['placeholderText'], this.resourceService.selectedLang);
+        });
+      });
     }
   }
 
@@ -237,6 +243,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private emitFilterChangeEvent(skipUrlUpdate = false) {
+    this.updateTerms();
     this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
     if (!skipUrlUpdate) {
       this.updateRoute();
@@ -300,5 +307,15 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  updateTerms() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      if (this.facets) {
+        this.facets.forEach((facet) => {
+          facet['label'] = this.utilService.transposeTerms(facet['label'], facet['label'], this.resourceService.selectedLang);
+        });
+      }
+    });
   }
 }

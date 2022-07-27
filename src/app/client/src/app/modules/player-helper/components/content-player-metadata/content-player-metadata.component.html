@@ -61,7 +61,7 @@
         <dd *ngIf="metadata.medium">{{metadata.medium}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.board}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}</dt>
         <dd *ngIf="metadata.board">{{metadata.board}}</dd>    
     </dl>
     <dl class="sb-meta-data">
