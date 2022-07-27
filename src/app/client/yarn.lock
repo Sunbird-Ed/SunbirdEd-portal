@@ -2109,10 +2109,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v9@^4.10.2":
-  version "4.10.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.10.2.tgz#8c1e126249958fd139a57506d9c7e7c697251d68"
-  integrity sha512-rvZzHrmaMza7mXD2xoje97j7vBVptn5ci1BDIT6cbsKJUi4n2F3ohRU5n+2/y57d6fX/cb9Y9R5q/cVjT7H3yA==
+"@project-sunbird/common-consumption-v9@^4.10.3":
+  version "4.10.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.10.3.tgz#a2e89a22ee7c9dff157c10f1f3e57ba95d1dd0f0"
+  integrity sha512-gnm12hGha7N4KBlPE+Zg5buWXpF9LnS8/D1IAk/iAlO3POcpA7zyhmzwbE5UfO2krZUyDfhz6MN5Qky57w/qpA==
 
 "@project-sunbird/common-form-elements-v9@4.10.1":
   version "4.10.1"
@@ -4394,7 +4394,12 @@ cli-cursor@^3.1.0:
   dependencies:
     restore-cursor "^3.1.0"
 
-cli-spinners@^2.2.0, cli-spinners@^2.5.0:
+cli-spinners@^2.2.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.7.0.tgz#f815fd30b5f9eaac02db604c7a231ed7cb2f797a"
+  integrity sha512-qu3pN8Y3qHNgE2AFweciB1IfMnmZ/fsNTEE+NOFjmGB2F/7rLhnhzppvpCnN4FovtP26k8lHyy9ptEbNwWFLzw==
+
+cli-spinners@^2.5.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.6.1.tgz#adc954ebe281c37a6319bfa401e6dd2488ffb70d"
   integrity sha512-x/5fWmGMnbKQAaNwN+UZlV79qBLM9JFnJuJ03gIi5whrob0xV0ofNVHy9DhwGdsMJQc2OKv0oGmLzvaqvAVv+g==
