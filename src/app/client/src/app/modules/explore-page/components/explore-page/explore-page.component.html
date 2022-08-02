@@ -75,7 +75,7 @@
                   <span class="mr-24">
                     <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
                     </span>
-                    <span class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
+                    <span  *ngIf="userPreference?.framework?.medium?.length" class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
                     <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
                       ... + {{userPreference?.framework?.medium?.length-1}}
                     </span>
@@ -85,7 +85,7 @@
                     <span
                       *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}}:
                     </span>
-                    <span class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
+                    <span *ngIf="userPreference?.framework?.gradeLevel?.length" class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
                     <span class="font-weight-bold" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
                       ... + {{userPreference?.framework?.gradeLevel?.length-1}}
                     </span>

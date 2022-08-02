@@ -262,6 +262,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(data => {
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
+        this.facets.forEach((facet) => {
+          facet['label'] = this.utilService.transposeTerms(facet['label'], facet['label'], this.resourceService.selectedLang);
+        });
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
