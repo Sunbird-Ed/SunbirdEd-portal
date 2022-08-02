@@ -795,8 +795,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           const successMessage = filterPipe.transform(_.get(this.resourceService, title),
             '{searchString}', isInside);
           this.showingResult = successMessage;
-          this.showingDescription = description ? (filterPipe.transform(_.get(this.resourceService, description),
-          '{searchString}', isInside) + ' ' + this.resourceService.instance) : '';
+          this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+            this.showingDescription = description ? this.utilService.transposeTerms(filterPipe.transform(_.get(this.resourceService, description),
+              '{searchString}', isInside) + ' ' + this.resourceService.instance, description, this.resourceService.selectedLang) : '';
+          });
         } else {
           this.showBackButton = false;
         }
