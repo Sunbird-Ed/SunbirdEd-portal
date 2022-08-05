@@ -25,4 +25,8 @@ jobs:
         cache: 'npm'
     - name: Pull Request Stats
       uses: flowwer-dev/pull-request-stats@v2.4.3
+      with:
+        period: 90
+        charts: true
+        sort-by: 'REVIEWS'
 
