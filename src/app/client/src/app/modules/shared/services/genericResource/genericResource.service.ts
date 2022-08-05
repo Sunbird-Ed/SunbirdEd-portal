@@ -1,6 +1,6 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable, BehaviorSubject } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { BrowserCacheTtlService } from '../browser-cache-ttl/browser-cache-ttl.service';
 import { HttpOptions, RequestParam, ServerResponse } from '../../interfaces';
 import { ConfigService } from '../config/config.service';
@@ -66,32 +66,64 @@ export class GenericResourceService {
    * method to fetch resource bundle
   */
   public getResource(language = 'en', range: any = {}): void {
-    this.post({ url: this.config.urlConFig.URLS.CUSTOM_RESOURCE_BUNDLE }).subscribe((data: ServerResponse) => {
-      this.terms = _.get(data, 'result.form.data') || {};
-      this.getLanguageChange(range);
-    }, (err) => {
-      console.error('Custom resource form config fetch failed ', err);
-    });
+    // this.post({ url: this.config.urlConFig.URLS.CUSTOM_RESOURCE_BUNDLE }).subscribe((data: ServerResponse) => {
+    //   this.terms = _.get(data, 'result.form.data') || {};
+    //   this.getLanguageChange(range);
+    // }, (err) => {
+    //   console.error('Custom resource form config fetch failed ', err);
+    // });
+    this.formService.getHashTagID().pipe(
+      // @ts-ignore
+      mergeMap((rootOrgId: any) => {
+        const formServiceInputParams = {
+          request: {
+            type: 'customResourcebundles',
+            action: 'list',
+            subType: 'global',
+            component: 'portal',
+            rootOrgId: rootOrgId
+          }
+        };
+        return this.http.post(this.config.urlConFig.URLS.CUSTOM_RESOURCE_BUNDLE, formServiceInputParams).pipe(
+          mergeMap((data: ServerResponse) => {
+            if (data.responseCode !== 'OK') {
+              return observableThrowError(data);
+            }
+            return observableOf(data);
+          }));
+      })).subscribe((data: any) => {
+        this.terms = _.get(data, 'result.form.data') || {};
+        this.getLanguageChange(range);
+        // return data;
+      });
     this.translateService.use(language);
   }
 
-  post(requestParam: RequestParam): Observable<any> {
-    const formServiceInputParams = {
-      request: {
-        type: 'customResourcebundles',
-        action: 'list',
-        subType: 'global',
-        component: 'portal'
-      }
-    };
-    return this.http.post(requestParam.url, formServiceInputParams).pipe(
-      mergeMap((data: ServerResponse) => {
-        if (data.responseCode !== 'OK') {
-          return observableThrowError(data);
-        }
-        return observableOf(data);
-      }));
-  }
+  // post(requestParam: RequestParam): Observable<any> {
+  //   return this.formService.getHashTagID().pipe(
+  //     // @ts-ignore
+  //     mergeMap((rootOrgId: any) => {
+  //       const formServiceInputParams = {
+  //         request: {
+  //           type: 'customResourcebundles',
+  //           action: 'list',
+  //           subType: 'global',
+  //           component: 'portal',
+  //           rootOrgId: rootOrgId
+  //         }
+  //       };
+  //       this.http.post(requestParam.url, formServiceInputParams).pipe(
+  //         mergeMap((data: ServerResponse) => {
+  //           if (data.responseCode !== 'OK') {
+  //             return observableThrowError(data);
+  //           }
+  //           return observableOf(data);
+  //         }));
+  //     })).subscribe((data: any) => {
+  //       return data;
+  //     });
+    
+  // }
   /**
    * @description - Function to generate HTTP headers for API request
    * @returns HttpOptions
