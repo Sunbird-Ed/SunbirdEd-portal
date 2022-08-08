@@ -139,12 +139,14 @@ describe('DatasetsComponent', () => {
     expect(component.onDemandReportData).toEqual(mockData.reportListResponse.result.jobs);
   });
 
-  it('should populate data as submit request succeess', () => {
+  it('should populate data as submit request succeeds', () => {
     component.tag = 'mockTag';
     component.programSelected = '5f34ec17585244939f89f90c';
     component.userId = 'userId';
     component.reportForm.get('reportType').setValue(['Status Report']);
     component.reportForm.get('solution').setValue(['01285019302823526477']);
+    component.reportForm.get('startDate').setValue('2022-08-01');
+    component.reportForm.get('endDate').setValue('2022-08-01');
     component.selectedReport = {
       'name': 'Status Report',
       'encrypt': false,
@@ -182,6 +184,54 @@ describe('DatasetsComponent', () => {
       }, title: 'Status Report', 2: 'b', dataset: 'ml-observation-status-report'
     }, { 1: 'a', requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }]);
   });
+
+  it('should populate data as submit request succeeds with encryption', () => {
+    component.tag = 'mockTag';
+    component.programSelected = '5f34ec17585244939f89f90c';
+    component.userId = 'userId';
+    component.reportForm.get('reportType').setValue(['Status Report']);
+    component.reportForm.get('solution').setValue(['01285019302823526477']);
+    component.reportForm.get('startDate').setValue('2022-08-01');
+    component.reportForm.get('endDate').setValue('2022-08-01');
+    component.selectedReport = {
+      'name': 'Status Report',
+      'encrypt': true,
+      'datasetId': 'ml-observation-status-report',
+      filters: [
+        {
+          "type": "equals",
+          "dimension": "program_id",
+          "value": "$programId"
+        },
+        {
+          "type": "equals",
+          "dimension": "solution_id",
+          "value": "$solutionId"
+        },
+        {
+          "type": "equals",
+          "dimension": "district_externalId",
+          "value": "$district_externalId"
+        },
+        {
+          "type": "equals",
+          "dimension": "organisation_id",
+          "value": "$organisation_id"
+        }
+      ]
+    };
+    component.onDemandReportData = [{ 1: 'a', requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }];
+    component.reportTypes = mockData.FormData['observation'];
+    jest.spyOn(onDemandReportService, 'submitRequest').mockReturnValue(of({ result: { requestId: '1', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report' }, title: 'Status Report', 2: 'b', dataset: 'ml-observation-status-report' } }));
+    component.submitRequest();
+    expect(component.onDemandReportData).toEqual([{
+      requestId: '1', datasetConfig: {
+        title: 'Status Report', type: 'ml-observation-status-report'
+      }, title: 'Status Report', 2: 'b', dataset: 'ml-observation-status-report'
+    }, { 1: 'a', requestId: '0', dataset: 'ml-observation-status-report0', datasetConfig: { title: 'Status Report', type: 'ml-observation-status-report0' } }]);
+  });
+
+
 
   it('should call getFormDetails', () => {
     jest.spyOn(formService, 'getFormConfig').mockReturnValue(of(mockData.FormData));
@@ -327,6 +377,18 @@ describe('DatasetsComponent', () => {
       }
     ]);
   }));
+
+  it('should call getReportTypes', fakeAsync(() => {
+    jest.spyOn(component, 'getReportTypes');
+    component.programs = mockData.programs.result;
+    component.formData = mockData.FormData;
+    component.reportTypes = [];
+    jest.spyOn(reportService, 'listAllReports').mockReturnValue(of(mockData.reportConfig));
+    component.getReportTypes("5f34ec17585244939f89f90c", "improvementProject");
+    tick(1000);
+    expect(component.getReportTypes).toHaveBeenCalled();
+  }));
+
 
   it('should call getReportTypes for invalid solution', fakeAsync(() => {
 
@@ -602,23 +664,35 @@ describe('DatasetsComponent', () => {
   })
 
   it('should set the startDate', () => {
-    jest.spyOn(component,'startDateChanged');
-    component.startDateChanged({
+    jest.spyOn(component,'dateChanged');
+    component.dateChanged({
       value:{
         _d:"2022-07-04T18:30:00.000Z"
-      }
-    })
-    expect(component.startDateChanged).toHaveBeenCalled();
+      },
+    },'startDate')
+    expect(component.dateChanged).toHaveBeenCalled();
   });
 
-  it('should set the endDate', () => {
-    jest.spyOn(component,'endDateChanged');
-    component.endDateChanged({
+  it('should set the startDate', () => {
+    jest.spyOn(component,'dateChanged');
+    component.dateChanged({
       value:{
         _d:"2022-07-04T18:30:00.000Z"
-      }
-    })
-    expect(component.endDateChanged).toHaveBeenCalled();
+      },
+    },'endDate')
+    expect(component.dateChanged).toHaveBeenCalled();
+  });
+
+  it('should call the getTableData', () => {
+    jest.spyOn(component, 'getTableData')
+    component.getTableData(mockData.prepTable.data,'ml_district_wise_observation_status');
+    expect(component.getTableData).toHaveBeenCalled();
+  });
+
+  it('should call the getTableData', () => {
+    jest.spyOn(component, 'getTableData')
+    component.getTableData([mockData.prepTable.data[0]],'ml_district_wise_observation_status');
+    expect(component.getTableData).toHaveBeenCalled();
   })
 
   it('should call ngOnDestroy', () => {

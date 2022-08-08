@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
 import { map, catchError } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Observable, of} from 'rxjs';
 import { ReportService } from '../../../dashboard/services';
 import * as moment from 'moment';
 import html2canvas from 'html2canvas';
@@ -347,7 +347,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
             _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
           result['charts'] = chart;
           result['tables'] = (tables && this.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'))) || [];
-          (result?.tables[0]?.data != undefined) ? this.hideTableToCsv = true : this.hideTableToCsv = false; 
+          (result?.tables[0]?.data != undefined) ? (this.hideTableToCsv = true) : (this.hideTableToCsv = false); 
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
           this.lastUpdatedOn = moment(_.get(result, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
@@ -439,7 +439,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       pdf.save('report.pdf');
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
-    }).catch(err => {
+    }).catch(_err => {
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
     });
@@ -458,7 +458,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       anchorElement.click();
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
-    }).catch(err => {
+    }).catch(_err => {
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
     });
@@ -710,23 +710,18 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     return row;
   }
 
-  startDateChanged($event) {
+  dateChanged($event, type) {
     if (moment($event.value).isValid()) {
       const year = new Date($event.value._d).getFullYear();
       const month = new Date($event.value._d).getMonth();
       const day = new Date($event.value._d).getDate();
-      this.minEndDate = new Date(year, month, day + 1);
-      this.reportForm.controls.startDate.setValue(moment(_.get($event, 'value._d')).format('YYYY-MM-DD'));
-    }
-  }
-
-  endDateChanged($event) {
-    if (moment($event.value).isValid()) {
-      const year = new Date($event.value._d).getFullYear();
-      const month = new Date($event.value._d).getMonth();
-      const day = new Date($event.value._d).getDate();
-      this.maxStartDate = new Date(year, month, day - 1);
-      this.reportForm.controls.endDate.setValue(moment(_.get($event, 'value._d')).format('YYYY-MM-DD'));
+      if(type === 'startDate'){
+        this.minEndDate = new Date(year, month, day + 1);
+        this.reportForm.controls.startDate.setValue(moment(_.get($event, 'value._d')).format('YYYY-MM-DD'));
+      }else{
+        this.maxStartDate = new Date(year, month, day - 1);
+        this.reportForm.controls.endDate.setValue(moment(_.get($event, 'value._d')).format('YYYY-MM-DD'));
+      }
     }
   }
 

@@ -108,7 +108,7 @@
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input matInput placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="startDateChanged($event)" (dateChange)="startDateChanged($event)" formControlName="startDate" [matDatepicker]="picker">
+              <input matInput placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="dateChanged($event,'startDate')" (dateChange)="startDateChanged($event)" formControlName="startDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
@@ -116,7 +116,7 @@
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
-              <input matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="endDateChanged($event)" (dateChange)="endDateChanged($event)" formControlName="endDate" [matDatepicker]="picker">
+              <input matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="dateChanged($event,'endDate')" (dateChange)="endDateChanged($event)" formControlName="endDate" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            

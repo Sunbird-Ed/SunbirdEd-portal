@@ -51,11 +51,15 @@ export class SbTableComponent implements OnInit, OnChanges {
 
     if (this.globalDistrict !== undefined || this.globalOrg !== undefined) {
       this.globalData = _.filter(this.tableData, (data) => {
-        return (this.globalDistrict && this.globalOrg
-          ? data?.district_externalId == this.globalDistrict && data?.organisation_id == this.globalOrg
-          : this.globalDistrict ? data?.district_externalId == this.globalDistrict
-            : this.globalOrg ? data?.organisation_id == this.globalOrg
-              : data)
+        if(this.globalDistrict && this.globalOrg){
+          return data?.district_externalId == this.globalDistrict && data?.organisation_id == this.globalOrg;
+        }else if(this.globalDistrict){
+          return  data?.district_externalId == this.globalDistrict;
+         }else if(this.globalOrg){
+          return data?.organisation_id == this.globalOrg
+         }else{
+           return data;
+         };
       });
       this.filtered = this.globalData.map(({ district_externalId, organisation_id, program_id, solution_id, programId, solutionId, ...data }) => data)
       this.globalChange = true;

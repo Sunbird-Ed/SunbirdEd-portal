@@ -34,6 +34,8 @@ describe("SbBignumberComponent", () => {
   });
 
   it("should call ngOnChanges", () => {
+    component.globalOrg = "0126796199493140480";
+    component.globalDistrict = "b617e607-0a5b-45a0-9894-7a325ffa45c7";
     jest.spyOn(component, "ngOnChanges");
     component.outletRef = {
       clear(): void {},
@@ -49,7 +51,6 @@ describe("SbBignumberComponent", () => {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
@@ -65,7 +66,6 @@ describe("SbBignumberComponent", () => {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
@@ -82,7 +82,6 @@ describe("SbBignumberComponent", () => {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
@@ -98,7 +97,6 @@ describe("SbBignumberComponent", () => {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
