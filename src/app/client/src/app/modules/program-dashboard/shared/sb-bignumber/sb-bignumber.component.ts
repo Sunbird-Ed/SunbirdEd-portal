@@ -31,23 +31,23 @@ export class SbBignumberComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-   this.checkForGlobalChanges();
+   this.checkForChanges();
   }
 
-  checkForGlobalChanges(){
+  checkForChanges(){
     if(this.globalDistrict !== undefined || this.globalOrg !== undefined){
-      this.globalData = _.filter(this.chartData, (chart) => {
+      this.globalData = _.filter(this.chartData, (data) => {
         if(this.globalDistrict && this.globalOrg){
-          return chart?.district_externalId == this.globalDistrict && chart?.organisation_id == this.globalOrg;
+          return data?.district_externalId == this.globalDistrict && data?.organisation_id == this.globalOrg;
         }
-        if(this.globalDistrict && !this.globalOrg){
-          return  chart?.district_externalId == this.globalDistrict;
+        if(this.globalDistrict){
+          return  data?.district_externalId == this.globalDistrict;
          } 
-         if(this.globalOrg && !this.globalDistrict){
-          return chart?.organisation_id == this.globalOrg
+         if(this.globalOrg){
+          return data?.organisation_id == this.globalOrg
          }
 
-        return chart;
+        return data;
       });
     this.globalChange = true;
     this.updatedData = this.globalData;

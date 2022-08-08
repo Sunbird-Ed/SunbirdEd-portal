@@ -45,46 +45,46 @@ describe("SbBignumberComponent", () => {
     expect(component.ngOnChanges).toHaveBeenCalled();
   });
 
-  it("should call checkForGlobalChanges with only globalDistrict", () => {
+  it("should call checkForChanges with only globalDistrict", () => {
     component.globalDistrict = "b617e607-0a5b-45a0-9894-7a325ffa45c7";
     component.outletRef = {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "checkForGlobalChanges");
-    component.checkForGlobalChanges();
-    expect(component.checkForGlobalChanges).toHaveBeenCalled();
+    jest.spyOn(component, "checkForChanges");
+    component.checkForChanges();
+    expect(component.checkForChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
     expect(component.globalOrg).toBeUndefined();
     expect(component.globalChange).toBeTruthy();
     expect(component.updatedData).toBeDefined();
   });
 
-  it("should call checkForGlobalChanges with only globalOrg", () => {
+  it("should call checkForChanges with only globalOrg", () => {
     component.globalOrg = "0126796199493140480";
     component.outletRef = {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "checkForGlobalChanges");
-    component.checkForGlobalChanges();
-    expect(component.checkForGlobalChanges).toHaveBeenCalled();
+    jest.spyOn(component, "checkForChanges");
+    component.checkForChanges();
+    expect(component.checkForChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
     expect(component.globalDistrict).toBeUndefined();
     expect(component.globalChange).toBeTruthy();
     expect(component.updatedData).toBeDefined();
   });
 
-  it("should call checkForGlobalChanges with globalDistrict and globalOrg", () => {
+  it("should call checkForChanges with globalDistrict and globalOrg", () => {
     component.globalOrg = "0126796199493140480";
     component.globalDistrict = "b617e607-0a5b-45a0-9894-7a325ffa45c7";
     component.outletRef = {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "checkForGlobalChanges");
-    component.checkForGlobalChanges();
-    expect(component.checkForGlobalChanges).toHaveBeenCalled();
+    jest.spyOn(component, "checkForChanges");
+    component.checkForChanges();
+    expect(component.checkForChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
     expect(component.globalChange).toBeTruthy();
     expect(component.updatedData).toBeDefined();
@@ -92,14 +92,14 @@ describe("SbBignumberComponent", () => {
     expect(component.globalOrg).toBeDefined();
   });
 
-  it("should call checkForGlobalChanges without globalDistrict and globalOrg", () => {
+  it("should call checkForChanges without globalDistrict and globalOrg", () => {
     component.outletRef = {
       clear(): void {},
       createEmbeddedView(): void {},
     } as unknown as ViewContainerRef;
-    jest.spyOn(component, "checkForGlobalChanges");
-    component.checkForGlobalChanges();
-    expect(component.checkForGlobalChanges).toHaveBeenCalled();
+    jest.spyOn(component, "checkForChanges");
+    component.checkForChanges();
+    expect(component.checkForChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
     expect(component.globalDistrict).toBeUndefined();
     expect(component.globalOrg).toBeUndefined();

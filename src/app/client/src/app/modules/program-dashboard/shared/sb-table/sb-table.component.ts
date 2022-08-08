@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges,ViewChild} from '@angular/core';
 import * as _ from "lodash-es";
 @Component({
   selector: 'app-sb-table',
@@ -53,10 +53,10 @@ export class SbTableComponent implements OnInit, OnChanges {
         if(this.globalDistrict && this.globalOrg){
           return data?.district_externalId == this.globalDistrict && data?.organisation_id == this.globalOrg;
         }
-        if(this.globalDistrict && !this.globalOrg){
+        if(this.globalDistrict){
           return  data?.district_externalId == this.globalDistrict;
          } 
-         if(this.globalOrg && !this.globalDistrict){
+         if(this.globalOrg){
           return data?.organisation_id == this.globalOrg
          }
 

@@ -49,10 +49,10 @@ export class SbChartComponent implements OnInit, OnChanges {
         if (this.globalDistrict && this.globalOrg) {
           return chart?.district_externalId == this.globalDistrict && chart?.organisation_id == this.globalOrg;
         }
-        if (this.globalDistrict && !this.globalOrg) {
+        if (this.globalDistrict) {
           return chart?.district_externalId == this.globalDistrict;
         }
-        if (this.globalOrg && !this.globalDistrict) {
+        if (this.globalOrg) {
           return chart?.organisation_id == this.globalOrg
         }
         return chart;
@@ -91,7 +91,7 @@ export class SbChartComponent implements OnInit, OnChanges {
         this.globalData['selectedFilters'] = {}
       } else {
         this.chartData['selectedFilters'] = {}
-      };
+      }
       this.resetFilters = { data: (this.globalChange ? this.globalData : this.chartData), reset: true };
     }
     this.updatedData = data.chartData[0].data;
@@ -120,7 +120,11 @@ export class SbChartComponent implements OnInit, OnChanges {
         }
         this.resetFilters = { data: (this.globalChange ? this.globalData : this.chartData), reset: true };
       } else {
-        this.globalChange ? (this.globalData['selectedFilters'] = {}) : (this.chartData['selectedFilters'] = {});
+        if(this.globalChange){
+          this.globalData['selectedFilters'] = {}
+        }else{
+          this.chartData['selectedFilters'] = {}
+        }
       }
       this.openDialog();
     }
