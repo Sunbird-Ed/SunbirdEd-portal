@@ -113,12 +113,15 @@ export class SbChartComponent implements OnInit, OnChanges {
       this.closeDialog();
     } else {
       if (this.currentFilters) {
+        let dashletData;
         if (this.globalChange) {
-          this.globalData['selectedFilters'] = this.currentFilters
+          this.globalData['selectedFilters'] = this.currentFilters;
+          dashletData = this.globalData;
         } else {
-          this.chartData['selectedFilters'] = this.currentFilters
+          this.chartData['selectedFilters'] = this.currentFilters;
+          dashletData = this.chartData;
         }
-        this.resetFilters = { data: (this.globalChange ? this.globalData : this.chartData), reset: true };
+        this.resetFilters = { data: dashletData, reset: true };
       } else {
         if(this.globalChange){
           this.globalData['selectedFilters'] = {}
