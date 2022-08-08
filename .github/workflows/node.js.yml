@@ -29,3 +29,5 @@ jobs:
         period: 90
         charts: true
         sort-by: 'REVIEWS'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        organization: 'Sunbird-Ed'
