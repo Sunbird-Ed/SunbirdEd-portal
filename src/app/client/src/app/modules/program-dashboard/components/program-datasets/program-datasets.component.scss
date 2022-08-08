@@ -28,6 +28,7 @@
 .reset-filter{
   color: var(--primary);
   background-color: var(--brand-header-tail-text);
+  width: fit-content;
 }
 
 .newData{
@@ -54,7 +55,7 @@
 }
 
 .col-gap{
-  column-gap:1.875rem;
+  gap:1.875rem;
 }
 
 .modalNote{
@@ -64,21 +65,87 @@
 .infoIcon{
   width: 1.125rem;
 }
+.sb-graph-section{
+
+  box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
+  background: var(--sb-graph-section-bg);
+  border: 0.0625rem solid var(--rc-dddddd);
+
+}
+
+.sb-last-update-status {
+  font-size: calculateRem(12px);
+  font-weight: bold;
+}
 
 ::ng-deep {
+  
+  .cdk-overlay-container{
+    z-index: 1 !important;
+}
 
-   .cdk-overlay-container{
-      z-index: 1 !important;
-   }
-   
-  .custom_mat_dd .mat-select-arrow-wrapper {
-    vertical-align: bottom !important;
+  .customTable{
+    sb-dashlets-filters{
+      display: none !important;
+    }
+
+    .dataTables_length{
+      display: flex !important;
+      width: 100% !important;
+      justify-content: flex-end !important;
+    }
+    .chart-title{
+      font-weight: 700;
+    }
+    table{
+      width: 100% !important;
+    }
+  }
+  .customGraph{
+    .sb-filter-g__item{
+      border-radius: 1.5rem !important;
+    }
+
+    .multiselect-dropdown .dropdown-btn{
+      border-radius: 1.5rem !important;
+    }
+  }
+  
+  .customDate{
+    .mat-form-field-infix{
+      width: 8.75rem !important;
+    }
+  }
+  .chart-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem !important;
+    padding-top: 0.5rem;
   }
 
-  .custom_mat_dd .mat-form-field-flex {
-    padding-top: 0px !important;
-  }
+  
+  .custom_mat_dd{
+    
+    .mat-form-field-flex{
+      
+      input::placeholder{
+        color: rgba(0,0,0,.42) !important;
+        font-weight: bold !important;
+      }
+    }
 
+    .mat-form-field-flex {
+      display: flex;
+      align-items: center !important;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .mat-select-arrow-wrapper {
+      vertical-align: unset !important;
+    }
+
+  }
   .mat-select-panel .mat-option {
     white-space: normal !important;
     display: inline-table !important;
@@ -89,12 +156,5 @@
   .mat-option-text{
     display: flex !important;
   }
-  .mat-dropdown__options span {
-    position: unset !important;
-}
-  .mat-dropdown__options span:before {
-    display: flex !important;
-    align-self: flex-end !important;
-    right: 0.5rem !important;
-  }
+
 }
