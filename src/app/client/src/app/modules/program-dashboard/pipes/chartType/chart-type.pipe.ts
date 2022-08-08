@@ -7,12 +7,11 @@ import * as _ from "lodash-es";
 export class ChartTypePipe implements PipeTransform {
   transform(chartData: any): unknown {
     if (_.isArray(chartData)) {
-      let applicableData = {
+      return ({
         values: _.compact(chartData),
-      };
-      return applicableData;
+      });
     } else {
-      const config = {
+      return ({
         colors: _.get(chartData, "colors"),
         datasets: _.get(chartData, "datasets"),
         options: _.get(chartData, "options"),
@@ -20,8 +19,7 @@ export class ChartTypePipe implements PipeTransform {
           _.get(chartData, "labelsExpr") || _.get(chartData, "labelExpr"),
         filters: _.get(chartData, "filters"),
         type: _.get(chartData, "chartType") || _.get(chartData, "type"),
-      };
-      return config;
+      });
     }
   }
 }

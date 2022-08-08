@@ -1,15 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { INoResultMessage, ToasterService, IUserData, IUserProfile, LayoutService, ResourceService, ConfigService, OnDemandReportService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
-import { Subject, Subscription, throwError } from 'rxjs';
+import { Subject, Subscription, throwError ,Observable, of} from 'rxjs';
 import { KendraService, UserService, FormService } from '@sunbird/core';
-import { mergeMap, switchMap, takeUntil } from 'rxjs/operators';
+import { mergeMap, switchMap, takeUntil,map, catchError } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
-import { map, catchError } from 'rxjs/operators';
-import { Observable, of} from 'rxjs';
 import { ReportService } from '../../../dashboard/services';
 import * as moment from 'moment';
 import html2canvas from 'html2canvas';
@@ -33,7 +31,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   solutions = [];
   public message = this.resourceService?.frmelmnts?.msg?.noDataDisplayed;
   instance: string;
-  @ViewChild('reportElement') reportElement;
+  @ViewChild('reportSection') reportSection;
   public reportExportInProgress = false;
   @ViewChild('modal', { static: false }) modal;
   popup = false;
@@ -347,7 +345,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
             _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
           result['charts'] = chart;
           result['tables'] = (tables && this.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'))) || [];
-          (result?.tables[0]?.data != undefined) ? (this.hideTableToCsv = true) : (this.hideTableToCsv = false); 
+          this.hideTableToCsv = (result?.tables[0]?.data != undefined) ? true : false;
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
           this.lastUpdatedOn = moment(_.get(result, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
@@ -424,19 +422,18 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   downloadReportAsPdf() {
-    this.convertHTMLToCanvas(this.reportElement.nativeElement, {
+    this.convertHTMLToCanvas(this.reportSection.nativeElement, {
       scrollX: 0,
       scrollY: -window.scrollY,
       scale: 2
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
-      const pdf = new jspdf('p', 'px', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-
-      const imageHeight = (canvas.height * pageWidth) / canvas.width;
-      pdf.internal.pageSize.setHeight(imageHeight);
-      pdf.addImage(imageURL, 'JPEG', 10, 8, pageWidth - 28, imageHeight - 24);
-      pdf.save('report.pdf');
+      const pdfFormat = new jspdf('p', 'px', 'a4');
+      const docWidth = pdfFormat.internal.pageSize.getWidth();
+      const imageHeight = (canvas.height * docWidth) / canvas.width;
+      pdfFormat.internal.pageSize.setHeight(imageHeight);
+      pdfFormat.addImage(imageURL, 'JPEG', 10, 8, docWidth - 28, imageHeight - 24);
+      pdfFormat.save('report.pdf');
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
     }).catch(_err => {
@@ -446,7 +443,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   downloadReportAsImage() {
-    this.convertHTMLToCanvas(this.reportElement.nativeElement, {
+    this.convertHTMLToCanvas(this.reportSection.nativeElement, {
       scrollX: 0,
       scrollY: -window.scrollY,
       scale: 2

@@ -24,6 +24,38 @@
 }
 
 ::ng-deep {
+  .sb-filter__content {
+    .sb-prominent-filter-field {
+      width: 48%;
+      margin-bottom: 10px;
+    }
+}
+  .sb-filter-modal {
+    @include respond-below(sm) {
+      .ui.modal {
+        margin: 0 0 0 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .ui.modal.scroll {
+        position: fixed !important;
+        top: 0;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        margin: 0px !important;
+      }
+    }
+  }
+
+  .mat-dialog-container {
+    background-color: #E9E8D9 !important;
+    border-radius: 24px;
+  }
 
   .customGraph {
     .sb-filter-g__item {
@@ -137,46 +169,3 @@
   }
 }
 
-::ng-deep {
-  .sb-filter-modal {
-    @include respond-below(sm) {
-      .ui.modal {
-        width: 95%;
-        margin: 0 0 0 0;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-      }
-
-      .ui.modal.scroll {
-        position: fixed !important;
-        margin-top: o !important;
-        margin-bottom: 0px !important;
-        top: 0;
-        width: 100%;
-        left: 0px;
-        right: 0px;
-        margin: 0 !important;
-      }
-    }
-  }
-}
-
-.sb-filter__content {
-  ::ng-deep {
-    .sb-prominent-filter-field {
-      width: 48%;
-      margin-bottom: 10px;
-    }
-
-  }
-}
-
-::ng-deep {
-  .mat-dialog-container {
-    background-color: #E9E8D9 !important;
-    border-radius: 24px;
-  }
-}

@@ -18,9 +18,9 @@ export class SbTableComponent implements OnInit, OnChanges {
   unfiltered;
   keys = ['district_externalId', 'organisation_id', 'program_id', 'solution_id', 'programId', 'solutionId']
   @ViewChild('lib', { static: false }) lib: any;
-  @ViewChild('outlet', { read: ViewContainerRef }) outletRef: ViewContainerRef;
-  @ViewChild('content', { read: TemplateRef }) contentRef: TemplateRef<any>;
-  constructor() { }
+  constructor() {
+      // This is intentional
+   }
 
   ngOnInit(): void {
     this.tableData = this.table?.data;
@@ -43,31 +43,31 @@ export class SbTableComponent implements OnInit, OnChanges {
     _.remove(this.table.config
       ? this.table?.config?.columnConfig
       : this.table?.columnsConfiguration?.columnConfig, (col) => {
-        let remove = _.find(this.keys, (key) => {
+        return  _.find(this.keys, (key) => {
           return col['data'] == key
-        })
-        return remove;
+        });
       })
 
     if (this.globalDistrict !== undefined || this.globalOrg !== undefined) {
       this.globalData = _.filter(this.tableData, (data) => {
         if(this.globalDistrict && this.globalOrg){
           return data?.district_externalId == this.globalDistrict && data?.organisation_id == this.globalOrg;
-        }else if(this.globalDistrict){
+        }
+        if(this.globalDistrict && !this.globalOrg){
           return  data?.district_externalId == this.globalDistrict;
-         }else if(this.globalOrg){
+         } 
+         if(this.globalOrg && !this.globalDistrict){
           return data?.organisation_id == this.globalOrg
-         }else{
-           return data;
-         };
+         }
+
+        return data;
       });
-      this.filtered = this.globalData.map(({ district_externalId, organisation_id, program_id, solution_id, programId, solutionId, ...data }) => data)
+      this.filtered = this.globalData.map(({ _district_externalId, _organisation_id, _program_id, _solution_id, _programId, _solutionId, ...data }) => data)
       this.globalChange = true;
-      this.outletRef.clear();
-      this.outletRef.createEmbeddedView(this.contentRef);
+      this.lib.instance.update({data:this.filtered})
     } else {
       this.globalChange = false;
-      this.unfiltered = this.tableData.map(({ district_externalId, organisation_id, program_id, solution_id, programId, solutionId, ...data }) => data)
+      this.unfiltered = this.tableData.map(({ _district_externalId, _organisation_id, _program_id, _solution_id, _programId, _solutionId, ...data }) => data)
 
     }
   }

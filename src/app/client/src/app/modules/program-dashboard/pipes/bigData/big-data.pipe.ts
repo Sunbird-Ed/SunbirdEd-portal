@@ -14,25 +14,23 @@ export class BigDataPipe implements PipeTransform {
             data.push(expression);
           }
         });
-        let applicableData = {
+        return {
           values: _.compact(data),
         };
-        return applicableData;
+
       } else {
-        let applicableData = {
+        return {
           values: _.compact(bigData),
         };
-        return applicableData;
       }
     } else {
       if (bigData?.hasOwnProperty("header")) {
-        const bigConfig = {
+        return ({
           header: _.get(bigData, "header"),
           footer: _.get(bigData, "footer"),
           dataExpr: _.get(bigData, "dataExpr"),
           operation: "SUM",
-        };
-        return bigConfig;
+        });
       }
     }
   }

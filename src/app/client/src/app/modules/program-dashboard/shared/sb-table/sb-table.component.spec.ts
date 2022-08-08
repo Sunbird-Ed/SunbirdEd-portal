@@ -1,4 +1,4 @@
-import { SimpleChange, TemplateRef, ViewContainerRef } from "@angular/core";
+import { SimpleChange, TemplateRef} from "@angular/core";
 import { SbTableComponent } from "./sb-table.component";
 import { mockTable } from "./sb-table.component.spec.data";
 
@@ -35,14 +35,10 @@ describe("SbTableComponent", () => {
     jest.spyOn(component, "exportToCsv");
     jest.spyOn(component, "checkForGlobalChanges");
 
-    component.outletRef = {
-      clear(): void {},
-      createEmbeddedView(): void {},
-    } as unknown as ViewContainerRef;
-
     component.lib = {
       instance: {
-        exportAs(): void {},
+        update(): void {},
+        exportAs(): void {}
       },
     } as unknown as TemplateRef<any>;
     component.ngOnChanges({
@@ -56,11 +52,11 @@ describe("SbTableComponent", () => {
 
   it("should call checkForGlobalChanges with only globalDistrict", () => {
     component.globalDistrict = "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03";
-    component.outletRef = {
-      clear(): void {},
-      createEmbeddedView(): void {},
-    } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
+    component.lib = {
+      instance: {
+        update(): void {},
+      },
+    } as unknown as TemplateRef<any>;
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
@@ -71,11 +67,11 @@ describe("SbTableComponent", () => {
 
   it("should call checkForGlobalChanges with only globalOrg", () => {
     component.globalOrg = "0126796199493140480";
-    component.outletRef = {
-      clear(): void {},
-      createEmbeddedView(): void {},
-    } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
+    component.lib = {
+      instance: {
+        update(): void {},
+      },
+    } as unknown as TemplateRef<any>;
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
@@ -87,11 +83,11 @@ describe("SbTableComponent", () => {
   it("should call checkForGlobalChanges with globalDistrict and globalOrg", () => {
     component.globalOrg = "0126796199493140480";
     component.globalDistrict = "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03";
-    component.outletRef = {
-      clear(): void {},
-      createEmbeddedView(): void {},
-    } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
+    component.lib = {
+      instance: {
+        update(): void {},
+      },
+    } as unknown as TemplateRef<any>;
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
@@ -102,11 +98,11 @@ describe("SbTableComponent", () => {
   });
 
   it("should call checkForGlobalChanges without globalDistrict and globalOrg", () => {
-    component.outletRef = {
-      clear(): void {},
-      createEmbeddedView(): void {},
-    } as unknown as ViewContainerRef;
-    jest.spyOn(component, "ngOnChanges");
+    component.lib = {
+      instance: {
+        update(): void {},
+      },
+    } as unknown as TemplateRef<any>;
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();

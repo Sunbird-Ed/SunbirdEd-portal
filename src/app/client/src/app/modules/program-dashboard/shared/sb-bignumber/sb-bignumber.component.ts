@@ -36,17 +36,19 @@ export class SbBignumberComponent implements OnInit, OnChanges {
 
   checkForGlobalChanges(){
     if(this.globalDistrict !== undefined || this.globalOrg !== undefined){
-      this.globalData = _.filter(this.chartData,(bigData)=>{
+      this.globalData = _.filter(this.chartData, (chart) => {
         if(this.globalDistrict && this.globalOrg){
-          return bigData?.district_externalId == this.globalDistrict && bigData?.organisation_id == this.globalOrg;
-        }else if(this.globalDistrict){
-          return  bigData?.district_externalId == this.globalDistrict;
-         }else if(this.globalOrg){
-          return bigData?.organisation_id == this.globalOrg
-         }else{
-           return bigData;
-         };
-    });
+          return chart?.district_externalId == this.globalDistrict && chart?.organisation_id == this.globalOrg;
+        }
+        if(this.globalDistrict && !this.globalOrg){
+          return  chart?.district_externalId == this.globalDistrict;
+         } 
+         if(this.globalOrg && !this.globalDistrict){
+          return chart?.organisation_id == this.globalOrg
+         }
+
+        return chart;
+      });
     this.globalChange = true;
     this.updatedData = this.globalData;
     this.outletRef.clear();
