@@ -1169,6 +1169,9 @@ a.ui.labels .label:hover {
   .multi-select-container .list-border .placeholder {
     color: var(--black) !important;
   }
+  .multi-select-container .list-border ul{
+    padding-left: 1rem;
+  }
 }
 
 .sb-notification-container {
