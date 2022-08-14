@@ -154,9 +154,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         if (data.courseDetails.createdBy === this.userService.userid) {
           this.courseCreator = true;
         }
-        const userList = this.sortUsers(data.userDetails);
-        this.participantList = userList.participantList;
-        this.mentorList = userList.mentorList;
+        // const userList = this.sortUsers(data.userDetails);
+        // this.participantList = userList.participantList;
+        // this.mentorList = userList.mentorList;
         this.initDropDown();
       }, (err) => {
         if (err.error && err.error?.params?.errmsg) {
@@ -166,6 +166,18 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.redirect();
       });
+    this.courseBatchService.getUserList({ filters: { 'status': '1' } })
+      .subscribe((res) => {
+        const list = this.sortUsers(res);
+        this.mentorList = list?.mentorList;
+        this.participantList = list?.participantList;
+      }, (err) => {
+        if (err?.error && err?.error?.params?.errmsg) {
+          this.toasterService.error(err.error.params.errmsg);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0056);
+        }
+      });
   }
 
   private fetchBatchDetails() {
@@ -173,9 +185,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       filters: {'status': '1'},
     };
     return combineLatest(
-      this.courseBatchService.getUserList(requestBody),
+      // this.courseBatchService.getUserList(requestBody),
       this.courseConsumptionService.getCourseHierarchy(this.courseId),
-      (userDetails, courseDetails) => ({ userDetails, courseDetails })
+      (courseDetails) => ({ courseDetails })
     );
   }
   /**
