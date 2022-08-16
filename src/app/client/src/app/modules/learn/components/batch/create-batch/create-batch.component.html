@@ -139,8 +139,7 @@
           </div>
           <div class="sb-field-group mb-8">
             <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
-              ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors">
               <input id="mentorSelList" aria-label="mentor list">
               <i class="dropdown icon"></i>
               <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
@@ -156,8 +155,7 @@
 
           <div class="sb-field-group " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
             <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participants"
-              ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participants">
               <input id="userSelList">
               <i class="dropdown icon"></i>
               <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
