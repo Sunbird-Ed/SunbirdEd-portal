@@ -184,7 +184,7 @@ export class ReportService  {
       chartObj.downloadUrl = downloadUrl;
       chartObj.chartData = dataSource ? this.getChartData(data, chart) :
         _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
-        if(chartObj.chartConfig.id == 'Big_Number' && chartObj.chartData  == undefined){
+        if(chartObj.chartConfig.id === 'Big_Number' && chartObj.chartData  === undefined){
           chartObj.chartData = [0];
         }
       chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn') ||
