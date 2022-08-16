@@ -129,11 +129,11 @@ export class FilterComponent implements OnInit, OnDestroy {
       const options = (_.sortBy(_.uniq(
         _.map(chartData, (data) => (data && data[reference]) ? data[reference].toLowerCase() : ''
         )))).filter(Boolean);
-        if(this.firstFilter && this.firstFilter[0] != reference){
+        if(this.firstFilter && this.firstFilter[0] !== reference){
           if (this.selectedFilters[reference] && this.selectedFilters[reference].length > 0) {
             this.selectedFilters[reference] = options;
           }   
-          if (this.currentReference != reference) {
+          if (this.currentReference !== reference) {
             filter.options = options;
           }
         }
@@ -228,7 +228,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   filterData() {
     if (this.selectedFilters) {
       const filterKeys = Object.keys(this.selectedFilters);
-      if((!this.previousFilters || Object.keys(this.previousFilters).length == 0)&& Object.keys(this.selectedFilters).length == 1){
+      if((!this.previousFilters || Object.keys(this.previousFilters).length === 0)&& Object.keys(this.selectedFilters).length === 1){
         this.firstFilter = Object.keys(this.selectedFilters);
       }
 
