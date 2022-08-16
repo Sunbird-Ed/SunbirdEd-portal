@@ -97,6 +97,7 @@ export class SignupBasicInfoComponent implements OnInit {
     let _selectedYOB = parseInt(_.get(selectedBirthYear, 'option.value'));
     if (this.isIOSDevice) {
       _selectedYOB = parseInt(selectedBirthYear.target.value);
+      this.personalInfoForm.controls.yearOfBirth.setValue(_selectedYOB);
     }
     const currentYear = new Date().getFullYear();
     this.yearOfBirth = `${_selectedYOB}`;
