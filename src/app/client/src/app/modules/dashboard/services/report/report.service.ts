@@ -15,7 +15,9 @@ import { UUID } from 'angular2-uuid';
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
 
-@Injectable()
+@Injectable({
+  providedIn:'root'
+})
 export class ReportService  {
 
   private _superAdminSlug: string;
