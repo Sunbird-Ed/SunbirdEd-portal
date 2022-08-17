@@ -355,17 +355,15 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     _.forEach(this.batchDetails.participants, (value, key) => {
       const user = _.find(participantList, ['id', value]);
       if (user) {
-        this.selectedParticipants.push(user);
+        this.selectedParticipants.push(`${user.name}${user.otherDetail}`);
       }
     });
     _.forEach(this.batchDetails.mentors, (value, key) => {
       const mentor = _.find(mentorList, ['id', value]);
       if (mentor) {
-        this.selectedMentors.push(mentor);
+        this.selectedMentors.push(`${mentor.name}${mentor.otherDetail}`);
       }
     });
-    this.selectedParticipants = _.uniqBy(this.selectedParticipants, 'id');
-    this.selectedMentors = _.uniqBy(this.selectedMentors, 'id');
     this.disableSubmitBtn = false;
     this.showLoader = false;
   }

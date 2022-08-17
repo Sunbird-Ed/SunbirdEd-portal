@@ -149,17 +149,17 @@
             <app-loader></app-loader>
           </div>
           <div class="sb-field-group mb-8">
+            <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-              <mat-label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</mat-label>
               <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list"
                 class="selection" [disabled]="showFormInViewMode" (selectionChange)="selectedMultiValues($event, 'mentors')">
                 <mat-select-trigger>
-                  <span>{{selectedMentors ? selectedMentors[0].name : ''}} </span>
-                  <span *ngIf="selectedMentorList?.length > 2" class="example-additional-selection">
-                    (+{{selectedMentorList.length - 1}} {{selectedMentorList?.length === 2 ? 'other' : 'others'}})
+                  <span>{{selectedMentors ? selectedMentors[0] : ''}} </span>
+                  <span *ngIf="selectedMentors?.length >= 2" class="example-additional-selection">
+                    (+{{selectedMentors.length - 1}} {{selectedMentors?.length === 2 ? 'other' : 'others'}})
                   </span>
                 </mat-select-trigger>
-                <mat-option [disabled]="true" class="mat-dropdown__options" role="option" *ngFor="let mentor of mentorList" [value]="mentor.id"
+                <mat-option [disabled]="batchDetails.status === 0" class="mat-dropdown__options" role="option" *ngFor="let mentor of mentorList" [value]="mentor.id"
                 attr.aria-label="{{mentor.name}}">
                   <img class="ui mini avatar image"
                       src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
@@ -170,17 +170,17 @@
           </div>
           
           <div class="sb-field-group mb-8" *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
+            <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-              <mat-label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</mat-label>
               <mat-select formControlName="users" role="listbox" multiple aria-label="participant list"
                 class="selection" [disabled]="showFormInViewMode || (batchDetails.participants && batchDetails.participants.length >= 100)" (selectionChange)="selectedMultiValues($event, 'participant')">
                 <mat-select-trigger>
-                  <span>{{selectedParticipants ? selectedParticipants[0].name : ''}} </span>
-                  <span *ngIf="selectedMentorList?.length > 2" class="example-additional-selection">
+                  <span>{{selectedParticipants ? selectedParticipants[0] : ''}} </span>
+                  <span *ngIf="selectedMentorList?.length >= 2" class="example-additional-selection">
                     (+{{selectedParticipants.length - 1}} {{selectedParticipants?.length === 2 ? 'other' : 'others'}})
                   </span>
                 </mat-select-trigger>
-                <mat-option [disabled]="true" class="mat-dropdown__options" role="option" *ngFor="let participant of participantList" [value]="participant.id"
+                <mat-option [disabled]="batchDetails.status === 0" class="mat-dropdown__options" role="option" *ngFor="let participant of participantList" [value]="participant.id"
                 attr.aria-label="{{participant.name}}">
                   <img class="ui mini avatar image"
                       src="{{participant.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
