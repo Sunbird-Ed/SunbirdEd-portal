@@ -139,22 +139,45 @@
           </div>
           <div class="sb-field-group mb-8">
             <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-            <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors">
-              <input id="mentorSelList" aria-label="mentor list">
-              <i class="dropdown icon"></i>
-              <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
-              <div class="menu">
-                <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+              <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list"
+                class="selection" (selectionChange)="selectedMultiValues($event, 'mentors')">
+                <mat-select-trigger>
+                  <span>{{selectedMentorList ? selectedMentorList[0] : ''}} </span>
+                  <span *ngIf="selectedMentorList?.length >= 2" class="example-additional-selection">
+                    (+{{selectedMentorList.length - 1}} {{selectedMentorList?.length === 2 ? 'other' : 'others'}})
+                  </span>
+                </mat-select-trigger>
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let mentor of mentorList" [value]="mentor.id"
+                attr.aria-label="{{mentor.name}}">
                   <img class="ui mini avatar image"
-                    src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
+                      src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
                   {{mentor.name}}{{mentor.otherDetail}}
-                </div>
-              </div>
-            </div>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
 
           <div class="sb-field-group " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
             <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+              <mat-select formControlName="users" role="listbox" multiple aria-label="participant list"
+                class="selection" (selectionChange)="selectedMultiValues($event, 'participant')">
+                <mat-select-trigger>
+                  <span>{{selectedParticipantList ? selectedParticipantList[0] : ''}} </span>
+                  <span *ngIf="selectedParticipantList?.length >= 2" class="example-additional-selection">
+                    (+{{selectedParticipantList.length - 1}} {{selectedParticipantList?.length === 2 ? 'other' : 'others'}})
+                  </span>
+                </mat-select-trigger>
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let participant of participantList" [value]="participant.id"
+                attr.aria-label="{{participant.name}}">
+                  <img class="ui mini avatar image"
+                      src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
+                  {{participant.name}}{{participant.otherDetail}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
             <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participants">
               <input id="userSelList">
               <i class="dropdown icon"></i>
