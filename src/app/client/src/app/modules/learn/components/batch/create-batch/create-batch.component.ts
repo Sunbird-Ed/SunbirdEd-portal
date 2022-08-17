@@ -100,6 +100,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   private discussionCsService: any;
   createForumRequest: any;
   showDiscussionForum: string;
+  selectedMentorList: Array<any> = []
+  selectedParticipantList: Array<any> = []
 
   /**
 	 * Constructor to create injected service(s) object
@@ -157,7 +159,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         // const userList = this.sortUsers(data.userDetails);
         // this.participantList = userList.participantList;
         // this.mentorList = userList.mentorList;
-        this.initDropDown();
       }, (err) => {
         if (err.error && err.error?.params?.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
@@ -178,6 +179,22 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toasterService.error(this.resourceService.messages.fmsg.m0056);
         }
       });
+  }
+
+  selectedMultiValues(event, field) {
+    const selectedValue = event.value;
+    this.selectedMentorList = []
+    this.selectedParticipantList = []
+    if(selectedValue.length) {
+      selectedValue.forEach(userID => {
+        const user = this.mentorList.find(item => item.id === userID)
+        if (field === 'mentors') {
+          this.selectedMentorList.push(`${user.name}${user.otherDetail}`)
+        } else {
+          this.selectedParticipantList.push(`${user.name}${user.otherDetail}`)
+        }
+      });
+    }
   }
 
   private fetchBatchDetails() {
@@ -241,12 +258,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public createBatch() {
     this.disableSubmitBtn = true;
-    let participants = [];
-    let mentors = [];
-    mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
-    if (this.createBatchForm.value.enrollmentType !== 'open') {
-      participants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
-    }
+    let participants =  this.createBatchForm.value.users || [];
+    let mentors = this.createBatchForm.value.mentors || [];
     const startDate = dayjs(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
     const endDate = this.createBatchForm.value.endDate && dayjs(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
@@ -330,63 +343,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       return ' (' + userData.maskedPhone + ')';
     }
   }
-  private initDropDown() {
-    this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
-      $('#participants').dropdown({
-        forceSelection: false,
-        fullTextSearch: true,
-        onAdd: () => {
-        }
-      });
-      $('#mentors').dropdown({
-        fullTextSearch: true,
-        forceSelection: false,
-        onAdd: () => {
-        }
-      });
-      $('#participants input.search').on('keyup', (e) => {
-        this.getUserListWithQuery($('#participants input.search').val(), 'participant');
-      });
-      $('#mentors input.search').on('keyup', (e) => {
-        this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
-      });
-    });
-  }
-  private getUserListWithQuery(query, type) {
-    if (this.userSearchTime) {
-      clearTimeout(this.userSearchTime);
-    }
-    this.userSearchTime = setTimeout(() => {
-      this.getUserList(query, type);
-    }, 1000);
-  }
-  /**
-  *  api call to get user list
-  */
-  private getUserList(query: string = '', type) {
-    this.selectedParticipants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
-    this.selectedMentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
-    const requestBody = {
-      filters: {'status': '1'},
-      query: query
-    };
-    this.courseBatchService.getUserList(requestBody).pipe(takeUntil(this.unsubscribe))
-      .subscribe((res) => {
-        const list = this.sortUsers(res);
-        if (type === 'participant') {
-          this.participantList = list.participantList;
-        } else {
-          this.mentorList = list.mentorList;
-        }
-      },
-        (err) => {
-          if (err.error && err.error.params.errmsg) {
-            this.toasterService.error(err.error.params.errmsg);
-          } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0056);
-          }
-        });
-  }
+ 
   ngAfterViewInit () {
     setTimeout(() => {
       this.telemetryImpression = {
