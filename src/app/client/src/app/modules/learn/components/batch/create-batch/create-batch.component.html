@@ -138,8 +138,8 @@
             </div>
           </div>
           <div class="sb-field-group mb-8">
+            <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-              <mat-label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</mat-label>
               <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list"
                 class="selection" (selectionChange)="selectedMultiValues($event, 'mentors')">
                 <mat-select-trigger>
@@ -159,8 +159,8 @@
           </div>
 
           <div class="sb-field-group " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
+            <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-              <mat-label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</mat-label>
               <mat-select formControlName="users" role="listbox" multiple aria-label="participant list"
                 class="selection" (selectionChange)="selectedMultiValues($event, 'participant')">
                 <mat-select-trigger>
