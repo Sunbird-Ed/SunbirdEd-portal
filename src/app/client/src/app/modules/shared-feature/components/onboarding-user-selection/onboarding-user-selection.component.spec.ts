@@ -14,18 +14,29 @@ describe('onboarding user component', () => {
   const mockRouter: Partial<Router> = {
     events: of({ id: 1, url: 'sample-url' }) as any,
     navigate: jest.fn(),
-    url: 'jest/user',
+    url: 'jest/user'
   };
   const mockNavigationHelperService: Partial<NavigationHelperService> = {};
-  const mockTelemetryService: Partial<TelemetryService> = {};
+  const mockTelemetryService: Partial<TelemetryService> = {
+    audit:jest.fn()
+  };
   const mockActivatedRoute: Partial<ActivatedRoute> = {
+    snapshot: {
+      data: {
+        telemetry: {
+           pageid: 'onboard'
+        }
+      }
+    } as any,
     queryParams: of({})
   };
   const mockFormService: Partial<FormService> = {
     getFormConfig: jest.fn().mockReturnValue(of(true)) as any
   };
   const mockProfileService: Partial<ProfileService> = {};
-  const mockUserService: Partial<UserService> = {};
+  const mockUserService: Partial<UserService> = {
+    loggedIn:false
+  };
   const mockToasterService: Partial<ToasterService> = {};
 
   beforeAll(() => {
@@ -51,45 +62,54 @@ describe('onboarding user component', () => {
     expect(onboardingUserSelectionComponent).toBeTruthy();
   });
 
-  describe('setup the onboardingUserSelection component', () => {
-    describe('setup ngOnInit function', () => {
-      it('should call setPopupInteractEdata method', () => {
-        //arrange
-        const setPopupInteractEdataSpy = jest.spyOn(onboardingUserSelectionComponent,'setPopupInteractEdata');
-        //act
-        onboardingUserSelectionComponent.ngOnInit();
-        //assert
-        expect(setPopupInteractEdataSpy).toBeCalled();
-      });
-
-      it('should call initialize method',() => {
-        //arrange
-        //@ts-ignore
-        const initializeSpy = jest.spyOn(onboardingUserSelectionComponent,'initialize');
-        //act
-        onboardingUserSelectionComponent.ngOnInit();
-        //assert
-        expect(initializeSpy).toBeCalled();
-      });
+  describe('ngOnInit function', () => {
+    it('should call setPopupInteractEdata method and initialize method', () => {
+      //arrange
+      //@ts-ignore
+      const initializeSpy=jest.spyOn(onboardingUserSelectionComponent,'initialize');
+      const setPopupInteractEdataSpy=jest.spyOn(onboardingUserSelectionComponent,'setPopupInteractEdata');
+      //act
+      onboardingUserSelectionComponent.ngOnInit();
+      //assert
+      //@ts-ignore
+      expect(initializeSpy).toBeCalled();
+      expect( setPopupInteractEdataSpy).toBeCalled();
     });
   });
 
-  describe('setPopupInteractEdata method',() => {
-    const responseData = {
-      id: 'user-type-select',
-      type: 'click',
-      pageid: 'user',
-    };
 
-    it('should set userSelectionInteractEdata property to the responseData', () => {
+  describe('setPopupInteractEdata method', () => {
+    it('should set userSelectionInteractEdata property to the first responseData', () => {
+      //arrange
+      let responseData = {
+        id: 'user-type-select',
+        type: 'click',
+        pageid: 'onboard',
+      };
       //act
       onboardingUserSelectionComponent.setPopupInteractEdata();
       //assert
+      expect(onboardingUserSelectionComponent.userSelectionInteractEdata).toBeTruthy();
+      expect(onboardingUserSelectionComponent.userSelectionInteractEdata).toEqual(responseData);
+    });
+
+    it('should set userSelectionInteractEdata property to the second responseData', () => {
+      //arrange
+      onboardingUserSelectionComponent.activatedRoute.snapshot.data.telemetry.pageid=undefined
+      let responseData = {
+        id: 'user-type-select',
+        type: 'click',
+        pageid: 'user',
+      };
+      //act
+      onboardingUserSelectionComponent.setPopupInteractEdata();
+      //assert
+      expect(onboardingUserSelectionComponent.userSelectionInteractEdata).toBeTruthy();
       expect(onboardingUserSelectionComponent.userSelectionInteractEdata).toEqual(responseData);
     });
   });
 
-  describe('initialize method',() => {
+  describe('initialize method', () => {
     it('should call getFormConfig method of the onboard user selection component', () => {
       //arrange
       //@ts-ignore
@@ -100,7 +120,7 @@ describe('onboarding user component', () => {
       expect(getFormConfigSpy).toBeCalled();
     });
 
-    it('should call updateUserSelection', () => {
+    it('should call updateUserSelection and prepareGuestList', () => {
       //arrange
       //@ts-ignore
       const updateUserSelectionSpy = jest.spyOn(onboardingUserSelectionComponent,'updateUserSelection');
@@ -108,6 +128,7 @@ describe('onboarding user component', () => {
       onboardingUserSelectionComponent['initialize']();
       //assert
       expect(updateUserSelectionSpy).toBeCalled();
+      expect(onboardingUserSelectionComponent.guestList).toBeDefined();
     });
 
     it('should return an observable after merge', () => {
@@ -141,4 +162,148 @@ describe('onboarding user component', () => {
         });
     });
   });
+
+  describe('ngOnDestroy', () => {
+    it('should destroy subscription', () => {
+      //arrange
+      onboardingUserSelectionComponent.unsubscribe$ = {
+          next: jest.fn(),
+          complete: jest.fn()
+      } as any;
+      //run
+      onboardingUserSelectionComponent.ngOnDestroy();
+      //assert
+      expect(onboardingUserSelectionComponent.unsubscribe$.next).toHaveBeenCalled();
+      expect(onboardingUserSelectionComponent.unsubscribe$.complete).toHaveBeenCalled();
+    });
+  });
+
+  describe("ngAfterViewInit", () => {
+    it('should set telemetryImpression', (done) => {
+      //arrange
+      mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
+      //run
+      onboardingUserSelectionComponent.ngAfterViewInit();
+      //assert
+      setTimeout(() => {
+        expect(onboardingUserSelectionComponent.telemetryImpression).toBeDefined();
+        done();
+      })
+    });
+  });
+
+  it('should set the user-type appropriately', () => {
+    //arrange
+    const selectedGuest={code:'123',
+      name: 'test'
+    } as any;
+    //run
+    onboardingUserSelectionComponent.selectUserType(selectedGuest);
+    //assert
+    expect(onboardingUserSelectionComponent.selectedUserType).toBeDefined();
+    expect(onboardingUserSelectionComponent.selectedUserType).toEqual(selectedGuest);
+  })
+
+  describe('submit', () => {
+    const selectedGuest={
+      code:'123',
+      name: 'test'
+    } as any;
+
+    it('should call setItem twice if loggedIn status is false', () => {
+      //arrange
+      jest.spyOn(Storage.prototype, 'setItem');
+      //run
+      onboardingUserSelectionComponent.submit();
+      //assert
+      expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+    })
+
+    it('should set both userType and guestUserType if loggedIn status is false', () => {
+      //arrange
+      jest.spyOn(Storage.prototype, 'getItem');
+      //run
+      onboardingUserSelectionComponent.submit();
+      //assert
+      expect(localStorage.getItem('userType')).toEqual(selectedGuest.code);
+      expect(localStorage.getItem('guestUserType')).toEqual(selectedGuest.name);
+    })
+
+    it('should call emit on userSelect if loggedIn status is false', () => {
+      //arrange
+      onboardingUserSelectionComponent.userSelect={
+        emit:jest.fn()
+      } as any
+      //run
+      onboardingUserSelectionComponent.submit();
+      //assert
+      expect(onboardingUserSelectionComponent.userSelect.emit).toBeCalled();
+
+    })
+
+    it('should call setItem only once and set the userType if loggedIn status is true', () => {
+      //arrange
+      //@ts-ignore
+      mockUserService.loggedIn=true;
+      jest.spyOn(Storage.prototype, 'setItem');
+      jest.spyOn(Storage.prototype, 'getItem');
+      //run
+      onboardingUserSelectionComponent.submit();
+      //assert
+      expect(localStorage.getItem('userType')).toBeDefined();
+      expect(localStorage.getItem('userType')).toEqual(selectedGuest.code);
+      expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+    })
+
+    it('should call next on updateUserSelection if loggedIn status is true', () => {
+      //arrange
+      onboardingUserSelectionComponent['updateUserSelection$']={
+        next:jest.fn()
+      } as any
+      //run
+      onboardingUserSelectionComponent.submit();
+      //assert
+      expect(onboardingUserSelectionComponent['updateUserSelection$'].next).toBeCalled();
+    })
+
+    it('should call logAuditEvent ', () => {
+      //arrange
+      jest.spyOn(onboardingUserSelectionComponent,'logAuditEvent');
+      //run
+      onboardingUserSelectionComponent.submit();
+      //assert
+      expect(onboardingUserSelectionComponent.logAuditEvent).toBeCalled();
+    })
+  })
+
+  it('should  call the audit with auditEventInput on logAuditEvent call', () => {
+    //arrange
+    const auditEventInput = {
+      'context': {
+        'env': 'onboarding',
+        'cdata': [
+          { id: 'test', type: 'UserType' },
+        ]
+      },
+      'object': {
+        'id': 'test',
+        'type': '',
+        'ver': ''
+      },
+      'edata': {
+        'state': 'Updated',
+        'props': [
+          'profile_type'
+        ],
+        'type': 'set-usertype',
+        'prevstate': 'set-usertype',
+      }
+    };
+    //act
+    onboardingUserSelectionComponent.logAuditEvent('test');
+    //assert
+    expect(onboardingUserSelectionComponent.telemetryService.audit).toBeCalledWith(auditEventInput);
+  })
 });
+
+
