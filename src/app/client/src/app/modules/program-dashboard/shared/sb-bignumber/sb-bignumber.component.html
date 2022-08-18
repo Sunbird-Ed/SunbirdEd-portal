@@ -1,0 +1,37 @@
+<div
+  *ngIf="lastUpdatedOn !== 'Invalid date'"
+  class="sb-last-update-status mb-8"
+>
+  <span>{{ resourceService?.frmelmnts?.lbl?.lastUpdatedOn }}&nbsp;: </span>
+  &nbsp; {{ lastUpdatedOn }}
+</div>
+<div class="d-flex flex-dr bigNumberCard py-24">
+    <ng-container #outlet [ngTemplateOutlet]="content">
+    </ng-container>
+    <ng-template #content>
+        <ng-container *ngIf="globalChange else default">
+            <ng-container *ngFor="let bigNum of chart?.chartConfig?.bigNumbers">
+              <sb-dashlet
+                [type]="'bigNumber'"
+                [data]="globalData | bigData: bigNum"
+                [config]="bigNum | bigData"
+                class="mt-8"
+                #lib
+              ></sb-dashlet>
+            </ng-container>
+          </ng-container>
+    </ng-template>
+
+  <ng-template #default>
+    <ng-container *ngFor="let bigNum of chart?.chartConfig?.bigNumbers">
+      <sb-dashlet
+        [type]="'bigNumber'"
+        [data]="updatedData | bigData: bigNum"
+        [config]="bigNum | bigData"
+        class="mt-8"
+        #lib
+      >
+      </sb-dashlet>
+    </ng-container>
+  </ng-template>
+</div>

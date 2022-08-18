@@ -31,77 +31,115 @@
     </div>
   
 </div>
-<div class="sbt-inside-page-container">
-  <mat-tab-group class="sb-mat__tab sb-mat__tab--tabinacc">
+<div class="sbt-inside-page-container" #reportSection>
+  <mat-tab-group class="sb-mat__tab sb-mat__tab--tabinacc" (selectedTabChange)="selectedTabChange($event)">
     <mat-tab appTelemetryInteract>
          <ng-template mat-tab-label>
             <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.programDatasets}}</span>
          </ng-template>
         <ng-container *ngTemplateOutlet="programDataset"></ng-container>
-      </mat-tab>    
+      </mat-tab>
+      <mat-tab appTelemetryInteract>
+        <ng-template mat-tab-label>
+           <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.graphs}}</span>
+        </ng-template>
+       <ng-container *ngTemplateOutlet="graphs"></ng-container>
+     </mat-tab>
+      <mat-tab appTelemetryInteract> 
+      <ng-template mat-tab-label>
+         <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.table}}</span>
+      </ng-template>
+     <ng-container *ngTemplateOutlet="table"></ng-container>
+   </mat-tab> 
     </mat-tab-group>
 </div>
 
+<ng-template #globalFilters>
+  <ng-container *ngIf="!hideElements">
+    <form class="sb-form" [formGroup]="reportForm">
+      <div>
+        <div class="d-flex flex-w-wrap flex-ai-center ml-32 col-gap">
+          <div class="d-flex flex-dc">
+            <label>{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+              <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
+              [(ngModel)]="programSelected"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
+                <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
+                  {{program.name}}
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="d-flex flex-dc">
+            <label>{{ resourceService?.frmelmnts?.lbl?.solutionLbl }}</label>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+              <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
+                <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
+                  {{solution.name}} 
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="d-flex flex-dc">
+            <label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrictLbl }}</label>
+              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+              <mat-select role="radio" class="selection"  valueField="locationId" formControlName="districtName"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.dashboarddistrict"  (selectionChange)="districtSelection($event)">
+                <mat-option *ngFor="let district of districts" class="mat-dropdown__options" role="option" [value]="district.locationId">
+                  {{district.name | titlecase }}
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="d-flex flex-dc">
+            <label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrgLbl }}</label>      
+              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+              <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.dashboardOrg"  (selectionChange)="organisationSelection($event)">
+                <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.organisationId">
+                  {{organisation.orgName}}
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+          </div>
 
-<ng-template #programDataset>
-  <form class="sb-form" [formGroup]="reportForm">
-    <div>
-      <div class="d-flex flex-w-wrap flex-ai-center ml-32 col-gap">
-        <div class="d-flex flex-dc">
-          <label>{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
-            <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
-            [(ngModel)]="programSelected"
-            [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
-              <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
-                {{program.name}}
-              </mat-option>
-            </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="d-flex flex-dc">
-          <label>{{ resourceService?.frmelmnts?.lbl?.solutionLbl }}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
-            <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-            [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
-              <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
-                {{solution.name}} 
-              </mat-option>
-            </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="d-flex flex-dc">
-          <label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrictLbl }}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
-            <mat-select role="radio" class="selection"  valueField="locationId" formControlName="districtName"
-            [placeholder]="resourceService?.frmelmnts?.lbl?.dashboarddistrict"  (selectionChange)="districtSelection($event)">
-              <mat-option *ngFor="let district of districts" class="mat-dropdown__options" role="option" [value]="district.locationId">
-                {{district.name}}
-              </mat-option>
-            </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="d-flex flex-dc">
-          <label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrgLbl }}</label>      
-            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
-            <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
-            [placeholder]="resourceService?.frmelmnts?.lbl?.dashboardOrg"  (selectionChange)="organisationSelection($event)">
-              <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.organisationId">
-                {{organisation.orgName}}
-              </mat-option>
-            </mat-select>
-            </mat-form-field>
-    
-         
-        </div>
-        <div class="ml-auto mt-12">
-          <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+            <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
+              <input matInput placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="dateChanged($event,'startDate')" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>            
+          </div>
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+            <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
+            <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
+              <input matInput placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="dateChanged($event,'endDate')" (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker" class="sb-color-primary"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>            
+          </div>
+          <div class="d-flex flex-dc ml-auto mt-12">
+            <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
+            <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+              <mat-select role="radio" class="selection" placeholder="Export as" (selectionChange)="downloadReport($event)" >
+              <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
+              attr.aria-label="{{option}}">{{option}}</mat-option>
+              </mat-select>
+              </mat-form-field>
+              <button  *ngIf="!noResult && hideTableToCsv && (tabIndex == 2)" type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn flex-as-flex-end"
+              (click)="tableToCsv = !tableToCsv"><i class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>    
+          </div>
         </div>
       </div>
-    </div>
-  </form>
-  <div *ngIf="newData" class="newData">*{{resourceService?.frmelmnts?.lbl?.resourceSelect}}</div>
-
+    </form>
+    <div *ngIf="newData" class="newData">*{{resourceService?.frmelmnts?.lbl?.resourceSelect}}</div>
+  </ng-container>
+</ng-template>
+<ng-template #programDataset>
+  <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
   <div class="sbt-inside-page-container relative position mt-32">
     <div>
       <div>
@@ -144,7 +182,65 @@
   
  
 </ng-template>
-
+<ng-template #graphs>
+  <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
+  <div *ngIf="!noResult && (dashboardReport$ | async) as currentReport else loading">
+    <div class="sb-graph-section p-24 my-24"
+        *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
+        <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
+          <app-sb-bignumber [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [globalDistrict]="globalDistrict" [globalOrg]="globalOrg"></app-sb-bignumber>
+        </ng-container>
+        <ng-container *ngIf="chart?.chartConfig?.id !== 'Big_Number' && chart?.chartData && chart?.chartConfig">
+      <app-sb-chart [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [globalDistrict]="globalDistrict" [globalOrg]="globalOrg"></app-sb-chart>
+    </ng-container>
+      </div>
+      <div class="ui warning message" *ngIf="!currentReport.charts.length">
+        {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
+      </div>
+  </div>
+  <div *ngIf="noResult">
+    <app-no-result [data]="noResultMessage"></app-no-result>
+  </div>
+  <ng-template #loading>
+    <ng-container *ngIf="!noResult">
+      <div class="ui container">
+        <div class="nine wide column workspacesegment">
+          <app-loader></app-loader>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</ng-template>
+<ng-template #table>
+  <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
+  <div *ngIf="!noResult && (dashboardReport$ | async) as currentTable else loading">
+    <ng-container *ngIf="currentTable?.tables[0]?.data">
+    <div class="sb-graph-section p-24 my-24"
+        *ngFor="let table of currentTable?.tables; let i = index; let l = last;">
+        <ng-container *ngIf="table?.data">
+          <div class="customTable">
+            <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [globalDistrict]="globalDistrict" [globalOrg]="globalOrg"></app-sb-table>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+      <div class="ui warning message mt-16" *ngIf="currentTable?.tables.length === 0 || !currentTable?.tables || !currentTable?.tables[0]?.data">
+        {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
+      </div>
+  </div>
+  <div *ngIf="noResult">
+    <app-no-result [data]="noResultMessage"></app-no-result>
+  </div>
+  <ng-template #loading>
+    <ng-container *ngIf="!noResult">
+      <div class="ui container">
+        <div class="nine wide column workspacesegment">
+          <app-loader></app-loader>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</ng-template>
 <app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeModal()" #modal *ngIf="popup">
   <ng-template sbModalContent>
     <div class="sb-modal">
@@ -283,3 +379,23 @@
     </div>
   </ng-template>
 </app-modal-wrapper>
+
+<app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true}" (dismiss)="close.emit()">
+  <ng-template sbModalContent>
+    <div class="sb-modal sb-hawkeye-modal">
+      <div class="transition ui dimmer page modals active visible">
+        <div class="ui modal transition active visible normal">
+          <div class="sb-modal-content o-y-visible">
+            <div class="ui">
+              <div class="twelve wide column px-0 mb-30">
+                <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-modal-wrapper>
+
+
