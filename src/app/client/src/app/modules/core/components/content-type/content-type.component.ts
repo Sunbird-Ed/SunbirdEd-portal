@@ -169,7 +169,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
-    console.log('contentTypes',this.contentTypes)
     const defaultTab = _.find(this.contentTypes, ['default', true]);
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || _.get(defaultTab, 'contentType') || 'textbook';
   }
