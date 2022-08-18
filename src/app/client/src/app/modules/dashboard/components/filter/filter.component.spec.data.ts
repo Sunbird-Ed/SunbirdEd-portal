@@ -20,6 +20,12 @@ export let mockChartData = {
         'displayName': 'Select Plays',
         'options': ['10', '20', '8', '9', '323'],
         'reference': 'Plays'
+    },
+    {
+        'controlType': 'date',
+        'displayName': 'Select Date',
+        'options': [],
+        'reference': 'Date'
     }]
 
 
