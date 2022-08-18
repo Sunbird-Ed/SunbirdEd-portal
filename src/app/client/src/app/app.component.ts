@@ -206,14 +206,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.setTagManager();
     this.userService.userData$.subscribe((user: IUserData) => {
-        if (user.err) {
-          return throwError(user.err);
-        }
-        // If User is logged in and dob is missing, initiate consent workflow
-        if (!_.get(user, 'userProfile.dob') && this.userService.loggedIn) {
-          this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
-        }
-      });
+      if (user.err) {
+        return throwError(user.err);
+      }
+      // If User is logged in and dob is missing, initiate consent workflow
+      // Skip for managed users
+      // Skip for SSO users
+      if (!_.get(user, 'userProfile.dob') &&
+        (this.userService.loggedIn && !_.get(user, 'userProfile.managedBy')) &&
+        (_.isArray(user, 'userProfile.externalIds') && _.get(user, 'userProfile.externalIds').length === 0)
+      ) {
+        this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
+      }
+    });
   }
 
   setTagManager() {

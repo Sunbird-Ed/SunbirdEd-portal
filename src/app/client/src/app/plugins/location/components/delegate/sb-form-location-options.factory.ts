@@ -111,7 +111,8 @@ export class SbFormLocationOptionsFactory {
       return this.orgDetailsService.searchOrgDetails({
         filters: {
           'orgLocation.id': (value as SbLocation).id,
-          isSchool: true
+          isSchool: true,
+          'status': 1
         }
       }).pipe(
         map((list: any) => list.content.map(ele => {
