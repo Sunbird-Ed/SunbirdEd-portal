@@ -65,7 +65,7 @@ Installing Sunbird requires two primary software components:
 | Software dependencies |  |
 | :--- | ------- |
 | **[Node](https://nodejs.org/en/download/)** | > 14.x.x (Install the latest release of LTS version) |
-| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 10.x.x (Install the latest Angular CLI version) |
+| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 11.x.x (Install the latest Angular CLI version) |
 | **[yarn](https://classic.yarnpkg.com/en/)** | Latest version of yarn: `npm install --global yarn` |
 | **[nodemon](https://www.npmjs.com/package/nodemon)** | Latest version  of nodemon: `npm install -g nodemon` |
 
@@ -89,9 +89,8 @@ Installing Sunbird requires two primary software components:
 
     2. Sunbird services stack or the backend API interface
 
-        1. $ gulp download:editors
-        2. $ cd {PROJECT-FOLDER}/src/app
-        3. $ yarn install
+        1. $ cd {PROJECT-FOLDER}/src/app
+        2. $ yarn install
 
 3. Configuring the Environment and Services Stack
 

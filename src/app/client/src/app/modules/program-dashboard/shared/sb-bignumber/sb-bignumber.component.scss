@@ -1,0 +1,53 @@
+.sb-last-update-status {
+    font-size: calculateRem(12px);
+    font-weight: bold;
+  }
+  
+  ::ng-deep {
+  
+    .bigNumberCard {
+      border-bottom: 0.0625rem solid var(--rc-dddddd) !important;
+      display: grid !important;
+      grid-template-columns: 1fr 1fr 1fr !important;
+      gap: 1.5rem !important;
+  
+      sb-dashlet {
+        border-right: 0.0625rem solid var(--rc-dddddd) !important;
+  
+        &:nth-child(3n + 3) {
+          border-right: 0rem solid var(--rc-d4d8da) !important;
+        }
+      }
+  
+      .card {
+        flex: 1 !important;
+        background-color: var(--gray-hs) !important;
+        box-shadow: none !important;
+        margin-top: 1.5rem !important;
+  
+        .header {
+          font-size: 1.125rem !important;
+          font-weight: unset !important;
+        }
+  
+        .content {
+          padding: 0% !important;
+        }
+  
+        .description {
+          color: var(--gray) !important;
+          font-size: 2.5rem !important;
+          font-weight: 700 !important;
+          margin-top: 0% !important;
+        }
+  
+        .meta {
+          color: var(--gray-200);
+          font-size: calculateRem(18px) !important;
+        }
+  
+      }
+  
+  
+    }
+  }

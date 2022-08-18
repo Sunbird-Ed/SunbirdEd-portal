@@ -101,47 +101,47 @@
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "bundleName": "semanticDropdown"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/dropdown.min.js",
                 "bundleName": "semanticDropdown"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "bundleName": "semanticModal"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/dimmer.min.js",
                 "bundleName": "semanticModal"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/modal.min.js",
                 "bundleName": "semanticModal"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "bundleName": "semanticTreePicker"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/dimmer.min.js",
                 "bundleName": "semanticTreePicker"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui/modal.min.js",
                 "bundleName": "semanticTreePicker"
               },
               {
-                "inject": true,
+                "inject": false,
                 "input": "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
                 "bundleName": "semanticTreePicker"
               }
