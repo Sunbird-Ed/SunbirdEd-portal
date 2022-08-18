@@ -67,6 +67,10 @@
 
 ::ng-deep {
 
+   .cdk-overlay-container{
+      z-index: 1 !important;
+   }
+   
   .custom_mat_dd .mat-select-arrow-wrapper {
     vertical-align: bottom !important;
   }

@@ -463,6 +463,7 @@ export class UserService {
       data: request
     };
     return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
+      localStorage.setItem('guestUserDetails', JSON.stringify(request.request));
       this.getGuestUser().subscribe();
       return response;
     }));
@@ -483,6 +484,9 @@ export class UserService {
     if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
         this.guestUserProfile = _.get(response, 'result');
+        if(!localStorage.getItem('guestUserDetails')) {
+          localStorage.setItem('guestUserDetails', JSON.stringify(this.guestUserProfile));
+        }
         this._guestData$.next({ userProfile: this.guestUserProfile });
         return this.guestUserProfile;
       }));
@@ -541,7 +545,6 @@ export class UserService {
     } else {
       userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
     }
-
     return { board: ['CBSE'], ...userFramework };
   }
 }

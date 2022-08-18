@@ -162,8 +162,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
                     if (this.isUserLoggedIn()) {
-                       // this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
-                       this.defaultFilters =  this.userService.defaultFrameworkFilters;
+                        // this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
+                        this.defaultFilters = this.userService.defaultFrameworkFilters;
                         this.userProfile = this.userService.userProfile;
                     } else {
                         this.userService.getGuestUser().subscribe((response) => {
@@ -175,7 +175,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             } else {
                                 this.userProfile = guestUserDetails;
                                 this.userProfile['firstName'] = guestUserDetails.formatedName;
-                                //this.defaultFilters = this.getPersistFilters(true);
                             }
                         });
                     }
@@ -370,10 +369,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         //     filters = _cacheFilters;
         // }
         const currentPageData = this.getCurrentPageData();
-       // const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
+        // const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
         //this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
+
         this.showLoader = true;
-        this.selectedFilters = pick(filters, _.get(currentPageData , 'metaData.filters'));
+        this.selectedFilters = pick(filters, _.get(currentPageData, 'metaData.filters'));
         if (this.selectedFilters && this.selectedFilters['board'] && this.selectedFilters['board'][0] === 'CBSE/NCERT') {
             this.selectedFilters['board'][0] = 'CBSE';
         }
@@ -451,7 +451,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         request.channelId = this.selectedFilters['channel'];
                     }
                     const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
-                    option.filters['visibility'] = option.filters['channel'] = [];
+                    if (this.userService.loggedIn) {
+                        option.filters['visibility'] = option.filters['channel'] = [];
+                    }
                     return this.searchService.contentSearch(option)
                         .pipe(
                             map((response) => {

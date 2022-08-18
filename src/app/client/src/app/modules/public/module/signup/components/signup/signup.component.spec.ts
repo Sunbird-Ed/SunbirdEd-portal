@@ -13,7 +13,7 @@ describe('SignupComponent', () => {
     instance: 'SUNBIRD'
   };
   const mockTenantService: Partial<TenantService> = {
-    tenantData$: of({tenantData: {titleName: 'sample-favicon', logo: "logo-path"}}) as any
+    tenantData$: of({ tenantData: { titleName: 'sample-favicon', logo: "logo-path" } }) as any
   };
   const mockDeviceDetectorService: Partial<DeviceDetectorService> = {};
   const mockActivatedRoute: Partial<ActivatedRoute> = {
@@ -33,19 +33,19 @@ describe('SignupComponent', () => {
     navigate: jest.fn()
   };
   const SignUpStage = {
-    BASIC_INFO:'basic_info',
-    ONBOARDING_INFO:'onboarding_info',
-    EMAIL_PASSWORD:'email_password',
-    OTP:'otp'
+    BASIC_INFO: 'basic_info',
+    ONBOARDING_INFO: 'onboarding_info',
+    EMAIL_PASSWORD: 'email_password',
+    OTP: 'otp'
   }
   beforeAll(() => {
     component = new SignupComponent(
-      mockResourceService as ResourceService, 
-      mockTenantService as TenantService, 
-      mockDeviceDetectorService as DeviceDetectorService, 
-      mockActivatedRoute as ActivatedRoute, 
-      mockTelemetryService as TelemetryService, 
-      mockNavigationHelperService as NavigationHelperService, 
+      mockResourceService as ResourceService,
+      mockTenantService as TenantService,
+      mockDeviceDetectorService as DeviceDetectorService,
+      mockActivatedRoute as ActivatedRoute,
+      mockTelemetryService as TelemetryService,
+      mockNavigationHelperService as NavigationHelperService,
       mockRouter as Router
     );
   });
@@ -107,7 +107,7 @@ describe('SignupComponent', () => {
       expect(component.setInteractEventData).toHaveBeenCalled();
       expect(component.signUpTelemetryStart).toHaveBeenCalled();
     });
-  
+
   });
 
   describe("changeStep", () => {
@@ -143,7 +143,7 @@ describe('SignupComponent', () => {
       component.signUpTelemetryImpression();
       expect(component.telemetryImpression).toBeDefined();
     });
-    
+
     it("should set telemetry data", (done) => {
       jest.spyOn(component, 'signUpTelemetryImpression').mockImplementation();
       component.ngAfterViewInit();
@@ -158,31 +158,28 @@ describe('SignupComponent', () => {
 
   describe("ngOnDestroy", () => {
     it('should destroy sub', () => {
-        component.unsubscribe = {
-            next: jest.fn(),
-            complete: jest.fn()
-        } as any;
-        component.ngOnDestroy();
-        expect(component.unsubscribe.next).toHaveBeenCalled();
-        expect(component.unsubscribe.complete).toHaveBeenCalled();
+      component.unsubscribe = {
+        next: jest.fn(),
+        complete: jest.fn()
+      } as any;
+      component.ngOnDestroy();
+      expect(component.unsubscribe.next).toHaveBeenCalled();
+      expect(component.unsubscribe.complete).toHaveBeenCalled();
     });
 
     it('should unsubscribe tenantDataSubscription', () => {
-        component.tenantDataSubscription = {
-          unsubscribe: jest.fn()
-        } as any;
-        component.unsubscribe = {
-            next: jest.fn(),
-            complete: jest.fn()
-        } as any;
-        component.ngOnDestroy();
-        expect(component.unsubscribe.next).toHaveBeenCalled();
-        expect(component.unsubscribe.complete).toHaveBeenCalled();
-        expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
+      component.tenantDataSubscription = {
+        unsubscribe: jest.fn()
+      } as any;
+      component.unsubscribe = {
+        next: jest.fn(),
+        complete: jest.fn()
+      } as any;
+      component.ngOnDestroy();
+      expect(component.unsubscribe.next).toHaveBeenCalled();
+      expect(component.unsubscribe.complete).toHaveBeenCalled();
+      expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
     });
   });
-
-  
-
 
 });
