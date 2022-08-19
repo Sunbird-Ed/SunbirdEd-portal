@@ -214,7 +214,7 @@ export class AppComponent implements OnInit, OnDestroy {
       // Skip for SSO users
       if (!_.get(user, 'userProfile.dob') &&
         (this.userService.loggedIn && !_.get(user, 'userProfile.managedBy')) &&
-        (_.isArray(user, 'userProfile.externalIds') && _.get(user, 'userProfile.externalIds').length === 0)
+        (_.isArray(_.get(user, 'userProfile.externalIds')) && _.get(user, 'userProfile.externalIds').length === 0)
       ) {
         this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
       }
@@ -222,9 +222,9 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log('2 => ', this.userService.loggedIn); // TODO: log!
       console.log('3 => ', !_.get(user, 'userProfile.managedBy')); // TODO: log!
       console.log('4 => ', (this.userService.loggedIn && !_.get(user, 'userProfile.managedBy'))); // TODO: log!
-      console.log('5 => ', _.isArray(user, 'userProfile.externalIds')); // TODO: log!
+      console.log('5 => ', _.isArray(_.get(user, 'userProfile.externalIds'))); // TODO: log!
       console.log('6 => ', _.get(user, 'userProfile.externalIds').length === 0); // TODO: log!
-      console.log('7 => ', (_.isArray(user, 'userProfile.externalIds') && _.get(user, 'userProfile.externalIds').length === 0)); // TODO: log!
+      console.log('7 => ', (_.isArray(_.get(user, 'userProfile.externalIds')) && _.get(user, 'userProfile.externalIds').length === 0)); // TODO: log!
     });
   }
 
