@@ -210,11 +210,11 @@ export class AppComponent implements OnInit, OnDestroy {
         return throwError(user.err);
       }
       // If User is logged in and dob is missing, initiate consent workflow
-      // Skip for managed users
-      // Skip for SSO users
+      // Skip for managed users - SB-30762
+      // Skip for SSO users     - SB-30762
       if (!_.get(user, 'userProfile.dob') &&
         (this.userService.loggedIn && !_.get(user, 'userProfile.managedBy')) &&
-        (_.isArray(user, 'userProfile.externalIds') && _.get(user, 'userProfile.externalIds').length === 0)
+        (_.isArray(_.get(user, 'userProfile.externalIds')) && _.get(user, 'userProfile.externalIds').length === 0)
       ) {
         this.router.navigate(['/signup'], { queryParams: { loginMode: 'gmail' } });
       }
