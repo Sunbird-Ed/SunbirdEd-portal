@@ -100,7 +100,7 @@
                 <a class=" header ">{{experience.jobName}}</a>
                 <div class="description ">{{experience.role}}
                   <span *ngIf="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                  <p class="mb-0 " *ngIf="experience.subject.length ">{{resourceService.frmelmnts?.lbl?.subjectstaught | translate}} :
+                  <p class="mb-0 " *ngIf="experience.subject.length ">{{resourceService.frmelmnts?.lbl?.subjectstaught | transposeTerms: 'frmelmnts.lbl.subjectstaught': resourceService?.selectedLang | translate}} :
                     <span>
                       <span *ngFor="let sub of experience.subject; let last = last;">{{sub}}
                         <span *ngIf="!last ">, </span>
@@ -244,7 +244,7 @@
                 </span>
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.grades | translate}}
+                {{resourceService.frmelmnts?.lbl?.grades | transposeTerms: 'frmelmnts.lbl.grades': resourceService?.selectedLang | translate}}
               </div>
             </div>
             <div class="item ">
@@ -268,7 +268,7 @@
                 {{userDetails.subject.join(', ')}}
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.subjects | translate}}
+                {{resourceService.frmelmnts?.lbl?.subjects | transposeTerms: 'frmelmnts.lbl.subjects': resourceService?.selectedLang | translate}}
               </div>
             </div>
             <div class="item ">

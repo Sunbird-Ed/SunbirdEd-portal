@@ -1,9 +1,15 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "4.10.1",
+  "version": "4.10.3",
   "buildNumber": "1",
   "private": true,
+  "description": "SUNBIRD Client Backend",
+  "keywords": [
+    "sunbird",
+    "client",
+    "backend"
+  ],
   "devDependencies": {
     "babel": "6.23.0",
     "chai": "4.3.0",

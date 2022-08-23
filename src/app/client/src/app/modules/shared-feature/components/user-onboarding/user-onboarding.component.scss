@@ -54,9 +54,7 @@
     max-width: calculateRem(328px);
   }
 
-  .brand-logo {
-    width: calculateRem(86px);
-  }
+ 
 
   .arrow-icon {
     float: right;
@@ -91,6 +89,16 @@
     line-height: calculateRem(26px);
     text-align: center;
   }
+  .header-text{
+    color: var(--primary-400);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 2rem;
+    text-align: center;
+    margin: 0.5rem 0;
+    margin-bottom: 0;
+}
 }
 
 .animation {

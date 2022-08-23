@@ -9,7 +9,7 @@
     <div class="w-100 d-flex flex-ai-center">
       <!-- /* Back button */ -->
       <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
-      tabindex="0" (click)="goBack()">
+      tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>
@@ -64,7 +64,7 @@
     *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
     {{enrollmentEndDate | dateFormat}}</span>
   <span class="sb-label-status-error"
-    *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
+    *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':enrollmentEndDate}}</span>
 </div>
 <div *ngIf="batchEndDate && showBatchCounter" class="d-flex">
   <span class="fnormal sb-color-gray-400">{{resourceService?.frmelmnts?.lbl?.BatchExpiringIn}}:&nbsp;</span>

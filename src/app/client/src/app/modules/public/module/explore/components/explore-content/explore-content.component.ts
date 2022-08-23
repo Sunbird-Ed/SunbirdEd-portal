@@ -415,18 +415,22 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private setNoResultMessage() {
-    let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+    this.resourceService.languageSelected$.subscribe(item => {
+    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', get(item, 'value'));    
     if (this.queryParams.key) {
       const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
       const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
       title = title_part1 + ' ' + title_part2;
     }
-    this.noResultMessage = {
-      'title': title,
-      'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-      'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-      'showExploreContentButton': false
-    };
+      this.noResultMessage = {
+        'title': title,
+        'subTitle': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundSubTitle'), 'frmelmnts.lbl.noBookfoundSubTitle', get(item, 'value')),
+        'buttonText': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundButtonText'), 'frmelmnts.lbl.noBookfoundButtonText', get(item, 'value')),
+        'showExploreContentButton': false
+      };
+      
+    });
+    
   }
 
   updateCardData(downloadListdata) {

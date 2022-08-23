@@ -8,12 +8,12 @@
   </dl>
 
   <dl class="sb-meta-data" *ngIf="metaData.medium">
-    <dt>{{resourceService?.frmelmnts?.lbl?.medium}}</dt>
+    <dt>{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}</dt>
     <dd>{{metaData.medium}}</dd>
   </dl>
 
   <dl class="sb-meta-data" *ngIf="metaData.gradeLevel">
-    <dt>{{resourceService?.frmelmnts?.lbl?.class}}</dt>
+    <dt>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}</dt>
     <dd>
       <span class="d-inline-block" *ngFor="let gradeLevel of metaData.gradeLevel; let isLast=last;">
         {{gradeLevel}}<span *ngIf="!isLast">,&nbsp;</span> 
@@ -22,7 +22,7 @@
   </dl>
 
   <dl class="sb-meta-data" *ngIf="metaData.subject">
-    <dt>{{resourceService?.frmelmnts?.lbl?.subject}}</dt>
+    <dt>{{resourceService?.frmelmnts?.lbl?.subject | transposeTerms: 'frmelmnts.lbl.subject': resourceService?.selectedLang}}</dt>
     <dd>{{metaData.subject}}</dd>
   </dl>
 

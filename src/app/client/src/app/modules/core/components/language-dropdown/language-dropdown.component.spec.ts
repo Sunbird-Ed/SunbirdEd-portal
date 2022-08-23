@@ -1,6 +1,6 @@
 
 import { of } from 'rxjs';
-import { ResourceService, LayoutService, UtilService } from '../../../shared';
+import { ResourceService, LayoutService, UtilService, GenericResourceService } from '../../../shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
@@ -13,6 +13,11 @@ describe('LanguageDropdownComponent', () => {
         get: jest.fn()
     };
     const mockActivatedRoute: Partial<ActivatedRoute> = {};
+    const mockGenericResourceService: Partial<GenericResourceService> = {
+        initialize: jest.fn(),
+        getResource: jest.fn(),
+        getLanguageChange: jest.fn()
+    };
     const mockLayoutService: Partial<LayoutService> = {
         isLayoutAvailable: jest.fn(() => true),
         updateSelectedContentType: jest.fn(() => {
@@ -39,6 +44,7 @@ describe('LanguageDropdownComponent', () => {
             mockRouter as Router,
             mockUtilService as UtilService,
             mockLayoutService as LayoutService,
+            mockGenericResourceService as GenericResourceService
         )
     });
 

@@ -57,19 +57,19 @@
         </dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.medium}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}</dt>
         <dd *ngIf="metadata.medium">{{metadata.medium}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.board}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}</dt>
         <dd *ngIf="metadata.board">{{metadata.board}}</dd>    
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.class}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}</dt>
         <dd *ngIf="metadata.gradeLevel">{{metadata.gradeLevel}}</dd>
     </dl>
     <dl class="sb-meta-data">
-        <dt>{{resourceService.frmelmnts.lbl.subject}}</dt>
+        <dt>{{resourceService.frmelmnts.lbl.subject | transposeTerms: 'frmelmnts.lbl.subject' : resourceService?.selectedLang}}</dt>
         <dd *ngIf="metadata.subject">{{metadata.subject}}</dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.createdOn">

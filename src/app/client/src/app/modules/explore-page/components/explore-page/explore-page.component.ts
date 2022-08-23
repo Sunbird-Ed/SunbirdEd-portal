@@ -4,7 +4,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
-    OfflineCardService, BrowserCacheTtlService, IUserData
+    OfflineCardService, BrowserCacheTtlService, IUserData, GenericResourceService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
@@ -117,7 +117,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
-        private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService) {
+        private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
+        private genericResourceService: GenericResourceService) {
+            this.genericResourceService.initialize();
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         this.subscription = this.utilService.currentRole.subscribe(async (result) => {
@@ -715,8 +717,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private setNoResultMessage() {
         const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
-        let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
-            desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
+        let {
+            noBookfoundTitle: title,
+            noBookfoundTitle: subTitle,
+            noBookfoundTitle: buttonText,
+            noContentfoundTitle,
+            noContentfoundSubTitle,
+            noContentfoundButtonText,
+            desktop: { yourSearch = '', notMatchContent = '' } = {} 
+        } = get(this.resourceService, 'frmelmnts.lbl');
+            title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', this.resourceService.selectedLang);
+            subTitle = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', this.resourceService.selectedLang);
+            buttonText = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', this.resourceService.selectedLang);
+            noContentfoundSubTitle = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noContentfoundSubTitle'), 'frmelmnts.lbl.noContentfoundSubTitle', this.resourceService.selectedLang);
+            noContentfoundTitle = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noContentfoundTitle'), 'frmelmnts.lbl.noContentfoundTitle', this.resourceService.selectedLang);
+
         if (key) {
             const title_part1 = replace(yourSearch, '{key}', key);
             const title_part2 = notMatchContent;
@@ -1119,7 +1134,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     getSectionTitle (title) {
-        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+        let _sectionTitle = this.utilService.transposeTerms(get(this.resourceService, title), get(this.resourceService, title) || '', this.resourceService.selectedLang);
+        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + _sectionTitle;
+        
     }
 
     getSectionCategoryTitle (title) {

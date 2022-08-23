@@ -116,10 +116,15 @@ getContentRollUp(tree, identifier) {
 }
 getAllOpenBatches(contents) {
   let openBatchCount = 0;
+  let enrollementEndedBatch = 0;
   _.map(_.get(contents, 'content'), content => {
-    if (content.enrollmentType === 'open' &&
-    (!(content.enrollmentEndDate && dayjs(content.enrollmentEndDate).isBefore(dayjs(new Date()).format('YYYY-MM-DD'))))) {
-      openBatchCount++;
+    if (content.enrollmentType === 'open') {
+      if ((!(content.enrollmentEndDate && dayjs(content.enrollmentEndDate).isBefore(dayjs(new Date()).format('YYYY-MM-DD'))))) {
+        enrollementEndedBatch++;
+        openBatchCount++;
+      } else {
+        openBatchCount++;
+      }
     }
   });
   if (openBatchCount === 0) {
