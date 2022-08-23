@@ -23,18 +23,16 @@
     <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event)" siteKey="{{googleCaptchaSiteKey}}"
       size="invisible"></re-captcha>
     <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
-    <div class="d-flex flex-jc-space-between mt-32">
-      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-outline-primary row" tabindex="0" [ngClass]="{'sb-btn-disabled': !disableResendOtp}"
-        appTelemetryInteract [telemetryInteractCdata]="telemetryCdata" [disabled]="!disableResendOtp" [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
-        (click)="submitResendOTP()">
-        <div class="d-flex flex-jc-center">
-          <span>{{resourceService?.frmelmnts?.lbl?.resendOTP}}</span> &nbsp;
-          <span *ngIf="counter>0">( {{counter}} )</span>
-        </div>
-      </button>
-      <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-primary" tabindex="0" [disabled]="disableFormSubmit" appTelemetryInteract
+    <div class="mt-32">
+      <button class="sb-btn sb-btn-normal width-100 sb-btn-primary" tabindex="0" [disabled]="disableFormSubmit" appTelemetryInteract
         [telemetryInteractCdata]="telemetryCdata" [telemetryInteractEdata]="{id: 'verify-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
         (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
+    </div>
+    <div class="mt-32 sb-btn-link-primary resendBtn" tabindex="0" [ngClass]="{'sb-btn-disabled': !disableResendOtp}"
+    appTelemetryInteract [telemetryInteractCdata]="telemetryCdata" [disabled]="!disableResendOtp" [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
+    (click)="submitResendOTP()">
+      <span>{{resourceService?.frmelmnts?.lbl?.resendOTP}}</span> &nbsp;
+      <span *ngIf="counter>0">( {{counter}} )</span>
     </div>
   </form>
 </div>

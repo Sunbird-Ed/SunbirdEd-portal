@@ -1,3 +1,7 @@
 @import "./variables";
 @import "./mixins/mixins";
 @import './components/recover-account';
+
+.resendBtn{
+    text-decoration: underline;
+}
