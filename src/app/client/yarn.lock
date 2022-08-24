@@ -2161,10 +2161,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.55":
-  version "0.0.55"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.55.tgz#840855154f642962988b9b34823fffcaef9653c0"
-  integrity sha512-KQ9Sfqjc92/SiZMhLc1BEO/36+3Xu7os+jj/6decUFKAR9j6JkfsxRBgXlZ9g8RHrTex1IOtzgsp7IWpVeoAIA==
+"@project-sunbird/sb-themes@0.0.80":
+  version "0.0.80"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.80.tgz#3f6107fedc0d72088d3376b06ba3556442f471d1"
+  integrity sha512-saaAgbyO8/2BiB3KN+rOadCZB7CX0b1OJIwJzF/RiTY4opeDeH2j0Exn3/J24kCMmA5uoQElpvVl0Kgx6ZnQJQ==
 
 "@project-sunbird/sunbird-collection-editor-v9@4.10.9":
   version "4.10.9"
