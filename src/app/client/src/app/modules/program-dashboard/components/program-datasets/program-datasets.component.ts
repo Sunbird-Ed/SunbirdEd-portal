@@ -275,7 +275,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       this.reportForm.reset();
       this.reportForm.controls.solution.setValue($event.value);
       this.reportForm.controls.programName.setValue(program);
-      this.displayFilters['Resource'] = [$event.source.triggerValue]
+      this.displayFilters['Resource'] = [$event?.source?.triggerValue]
       if (solution[0].isRubricDriven == true && solution[0].type == 'observation') {
         const type = solution[0].type + '_with_rubric';
         this.getReportTypes(this.programSelected, type);
@@ -533,13 +533,13 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   districtSelection($event) {
     this.globalDistrict = $event.value
     this.reportForm.controls.districtName.setValue($event.value);
-    this.displayFilters['District'] = [$event.source.triggerValue]
+    this.displayFilters['District'] = [$event?.source?.triggerValue]
   }
 
   organisationSelection($event) {
     this.globalOrg = $event.value
     this.reportForm.controls.organisationName.setValue($event.value);
-    this.displayFilters['Organisation'] = [$event.source.triggerValue]
+    this.displayFilters['Organisation'] = [$event?.source?.triggerValue]
   }
 
   reportChanged(selectedReportData) {
