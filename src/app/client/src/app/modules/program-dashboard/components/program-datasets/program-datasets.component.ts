@@ -92,7 +92,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   minEndDate: any;  //Min end date - has to be one more than start date 
   maxEndDate: any;  //Max end date -  current date has to be max
   maxStartDate: any; //Start date - has to be one day less than end date
-
+  displayFilters:any = {};
+  loadash = _;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -249,6 +250,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.reportTypes = [];
     this.onDemandReportData = [];
     this.getSolutionList(program[0]);
+    this.displayFilters['Program'] = [program[0].name]
     this.reportForm.controls.programName.setValue($event.value);
     this.newData = true;
     this.globalDistrict = this.globalOrg = undefined;
@@ -273,7 +275,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       this.reportForm.reset();
       this.reportForm.controls.solution.setValue($event.value);
       this.reportForm.controls.programName.setValue(program);
-
+      this.displayFilters['Resource'] = [$event?.source?.triggerValue]
       if (solution[0].isRubricDriven == true && solution[0].type == 'observation') {
         const type = solution[0].type + '_with_rubric';
         this.getReportTypes(this.programSelected, type);
@@ -531,11 +533,13 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   districtSelection($event) {
     this.globalDistrict = $event.value
     this.reportForm.controls.districtName.setValue($event.value);
+    this.displayFilters['District'] = [$event?.source?.triggerValue]
   }
 
   organisationSelection($event) {
     this.globalOrg = $event.value
     this.reportForm.controls.organisationName.setValue($event.value);
+    this.displayFilters['Organisation'] = [$event?.source?.triggerValue]
   }
 
   reportChanged(selectedReportData) {
@@ -720,6 +724,10 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         this.reportForm.controls.endDate.setValue(moment(_.get($event, 'value._d')).format('YYYY-MM-DD'));
       }
     }
+  }
+
+  closeDashboard(){
+    this.location.back()
   }
 
   ngOnDestroy() {
