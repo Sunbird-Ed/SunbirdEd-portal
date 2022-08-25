@@ -27,7 +27,7 @@
       <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-primary" tabindex="0" [disabled]="disableFormSubmit" appTelemetryInteract
       [telemetryInteractCdata]="telemetryCdata" [telemetryInteractEdata]="{id: 'verify-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
       (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
-      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-link-primary text-underline mt-8" tabindex="0" [ngClass]="{'sb-btn-disabled': !disableResendOtp}"
+      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-outline-gray mt-8" tabindex="0" [ngClass]="{'sb-btn-outline-disabled': !disableResendOtp}"
         appTelemetryInteract [telemetryInteractCdata]="telemetryCdata" [disabled]="!disableResendOtp" [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
         (click)="submitResendOTP()">
         <div class="d-flex flex-jc-center">

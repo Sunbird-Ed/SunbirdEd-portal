@@ -1239,7 +1239,6 @@ html[layout='joy'] {
   .sbt-dropdown-language {
     @include respond-below(sm) {
       width: 100%;
-      margin-bottom: calculateRem(8px);
     }
   }
 
