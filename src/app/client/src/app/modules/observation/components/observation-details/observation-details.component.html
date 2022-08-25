@@ -30,7 +30,7 @@
               </div>
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="addEntity()">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" [disabled]="disableAddEntity" [ngClass]="{'sb-btn-disabled': disableAddEntity}" (click)="addEntity()">
                 {{resourceService.frmelmnts?.btn?.add}} {{entities?.entityType|titlecase}}
               </button>
             </div>
