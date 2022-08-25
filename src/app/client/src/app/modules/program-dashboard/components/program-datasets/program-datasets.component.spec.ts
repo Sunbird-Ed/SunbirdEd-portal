@@ -259,7 +259,8 @@ describe('DatasetsComponent', () => {
     component.reportForm.get('solution').setValue(['5f34ec17585244939f89f90d']);
     component.solutions = mockData.solutions.result;
     component.selectSolution({
-      value: '5f34ec17585244939f89f90d'
+      value: '5f34ec17585244939f89f90d',
+      source:{triggerValue:'an solution'}
     });
     tick(1000);
     expect(component.loadReports).toHaveBeenCalled();
@@ -307,7 +308,8 @@ describe('DatasetsComponent', () => {
     component.reportForm.get('solution').setValue(['5fbb75537380505718640436']);
     component.solutions = mockData.solutions.result;
     component.selectSolution({
-      value: '5fbb75537380505718640436'
+      value: '5fbb75537380505718640436',
+      source:{triggerValue:'a solution'}
     });
     tick(1000);
     expect(component.loadReports).toHaveBeenCalled();
@@ -344,7 +346,8 @@ describe('DatasetsComponent', () => {
     component.loadReports();
     component.solutions = mockData.solutions.result;
     component.selectSolution({
-      value: '5fbb75537380505718640438'
+      value: '5fbb75537380505718640438',
+      source:{triggerValue:'a solution'}
     });
     tick(1000);
     expect(spy).toHaveBeenCalled();
@@ -430,14 +433,14 @@ describe('DatasetsComponent', () => {
 
   it('should call districtSelection', fakeAsync(() => {
     const spy = jest.spyOn(component, 'districtSelection');
-    component.districtSelection({ value: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03" });
+    component.districtSelection({ value: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03", source:{triggerValue:'a district'} });
     tick(1000);
     expect(spy).toHaveBeenCalled();
   }));
 
   it('should call organisationSelection', fakeAsync(() => {
     const spy = jest.spyOn(component, 'organisationSelection');
-    component.organisationSelection({ value: "01269878797503692810" });
+    component.organisationSelection({ value: "01269878797503692810", source:{triggerValue:'an org'} });
     tick(1000);
     expect(spy).toHaveBeenCalled();
   }));
@@ -695,11 +698,21 @@ describe('DatasetsComponent', () => {
     expect(component.getTableData).toHaveBeenCalled();
   })
 
+  it('should call closeDashboard', () => {
+    jest.spyOn(component, 'closeDashboard');
+    component.location = {
+      back():void {}
+    } as unknown as any
+    component.closeDashboard();
+    expect(component.closeDashboard).toHaveBeenCalled();
+  });
+
   it('should call ngOnDestroy', () => {
     component.userDataSubscription = of().subscribe();
     component.ngOnDestroy();
     expect(component.userDataSubscription).toBeDefined()
   });
+  
 });
 
 
