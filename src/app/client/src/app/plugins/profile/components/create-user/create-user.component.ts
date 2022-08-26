@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import {InterpolatePipe, ResourceService, ToasterService, ServerResponse, UtilService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
@@ -43,7 +44,8 @@ export class CreateUserComponent implements OnInit {
     public userService: UserService, public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
     public frameworkService: FrameworkService, public utilService: UtilService, public formService: FormService,
     private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    public tncService: TncService, private managedUserService: ManagedUserService, public layoutService: LayoutService) {
+    public tncService: TncService, private managedUserService: ManagedUserService, public layoutService: LayoutService,
+    public _sanitizer: DomSanitizer) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -146,6 +148,7 @@ export class CreateUserComponent implements OnInit {
 
   onSubmitForm() {
     this.enableSubmitBtn = false;
+    this.userDetailsForm.value.name = this._sanitizer.sanitize(SecurityContext.HTML,this.userDetailsForm.value.name);
     const createUserRequest = {
       request: {
         firstName: this.userDetailsForm.value.name,
