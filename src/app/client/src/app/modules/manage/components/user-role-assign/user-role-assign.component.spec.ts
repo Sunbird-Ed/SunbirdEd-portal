@@ -10,11 +10,21 @@ import { setTimeout } from "timers";
 
 describe("UserRoleAssign component", () => {
   let userRoleAssignComponent: UserRoleAssignComponent;
+  const responseData={
+    result:{
+      response:{
+        count:1,
+        content:[{roles:'test'}]
+      }
+    }
+  }
   const mockSearchService: Partial<SearchService> = {
-    globalUserSearch:jest.fn().mockReturnValue(of(true)) as any,
+    globalUserSearch:jest.fn().mockReturnValue(of(responseData)) as any,
   };
   const mockUserService: Partial<UserService> = {
     userProfile: {userOrgDetails:{ORG_ADMIN:'admin1'}},
+    rootOrgId:'1',
+    rootOrgName:'test'
   };
   const mockResourceService: Partial<ResourceService> = {
     messages:{
@@ -22,7 +32,8 @@ describe("UserRoleAssign component", () => {
         m0049:'success'
       },
       emsg:{
-        m0020:'error'
+        m0020:'error1',
+        m0005:'error2'
       }
     }
   };
@@ -170,10 +181,10 @@ describe("UserRoleAssign component", () => {
     const errorResponse: HttpErrorResponse = {status: 401} as HttpErrorResponse;
     mockManageService.updateRoles = jest.fn().mockReturnValue(throwError(errorResponse));
     //@ts-ignore
-    jest.spyOn(userRoleAssignComponent.toasterService,'error')
+    jest.spyOn(userRoleAssignComponent.toasterService,'error');
     jest.spyOn(userRoleAssignComponent,'redirect');
     userRoleAssignComponent.updateRoleForUser(data);
-    expect(userRoleAssignComponent['toasterService'].error).toBeCalledWith('error');
+    expect(userRoleAssignComponent['toasterService'].error).toBeCalledWith('error1');
     expect(userRoleAssignComponent.redirect).toBeCalled();
   });
 
@@ -185,4 +196,30 @@ describe("UserRoleAssign component", () => {
       done();
     },2000)
   });
+
+  describe('onEnter', ()=> {
+    it('should set showingResults true  and set userObj after Observable firing', ()=> {
+      const data={roles:'test'};
+      jest.spyOn(userRoleAssignComponent,'manipulateUserObject');
+      userRoleAssignComponent.onEnter('test');
+      expect(userRoleAssignComponent.showingResults).toEqual(true)
+      expect(userRoleAssignComponent.userObj).toEqual(data);
+      expect(userRoleAssignComponent.manipulateUserObject).toHaveBeenCalledWith(data)
+    });
+
+    it('should set showNoResult if either response count or content length false', ()=> {
+      responseData.result.response.count=0
+      userRoleAssignComponent.onEnter('test');
+      expect(userRoleAssignComponent.showNoResult).toEqual(true);
+    });
+
+    it('should handle error showNoResult in case of thrown error', ()=> {
+      const errorResponse: HttpErrorResponse = {status: 401} as HttpErrorResponse;
+      mockSearchService.globalUserSearch = jest.fn().mockReturnValue(throwError(errorResponse));
+      //@ts-ignore
+      jest.spyOn(userRoleAssignComponent.toasterService,'error');
+      userRoleAssignComponent.onEnter('test');
+      expect(userRoleAssignComponent['toasterService'].error).toBeCalledWith('error2');
+    });
+  })
 });
