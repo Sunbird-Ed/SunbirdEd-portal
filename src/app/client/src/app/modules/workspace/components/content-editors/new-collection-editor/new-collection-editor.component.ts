@@ -325,11 +325,7 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         },
         channelData: this.frameworkService['_channelData'],
         cloudStorageUrls : this.userService.cloudStorageUrls,
-        cloudStorage: {
-          presigned_headers: {
-             'x-ms-blob-type': 'BlockBlob'
-          }
-        }
+        cloudStorage: _.get(this.config, 'editorConfig.COLLECTION_EDITOR.cloudStorage', {})
       },
       config: {
         mode: this.getEditorMode(),
