@@ -22,6 +22,7 @@ export class ObservationDetailsComponent implements OnInit {
   submissions;
   programName;
   disableAddEntity:boolean = true;
+  entityType;
   actions = [{
     name: this.resourceService.frmelmnts.lbl.edit,
     icon: 'pencil alternate large icon',
@@ -61,6 +62,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.observationId = data.observationId;
       this.solution = data.solutionName;
       this.programName = data.programName;
+      this.entityType = data.entityType;
     });
   }
 
