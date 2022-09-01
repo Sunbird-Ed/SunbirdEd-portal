@@ -62,8 +62,9 @@ export class SignupOnboardingInfoComponent implements OnInit {
       if (_.get(res, 'result.response') === 'SUCCESS') {
         this.toasterService.success(this.resourceService?.messages?.smsg?.m0046);
         setTimeout(() => {
-          this.router.navigate(['/resources']);
-          window.location.reload();
+          this.router.navigate(['/resources']).then(() => {
+            window.location.reload();
+          });
         }, 1000);
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
