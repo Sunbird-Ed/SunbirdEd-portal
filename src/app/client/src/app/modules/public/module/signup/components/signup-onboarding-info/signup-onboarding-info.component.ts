@@ -63,6 +63,7 @@ export class SignupOnboardingInfoComponent implements OnInit {
         this.toasterService.success(this.resourceService?.messages?.smsg?.m0046);
         setTimeout(() => {
           this.router.navigate(['/resources']);
+          window.location.reload();
         }, 1000);
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
