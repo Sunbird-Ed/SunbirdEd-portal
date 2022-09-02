@@ -39,14 +39,16 @@ describe("UserRoleAssign component", () => {
   };
   const mockPermissionService: Partial<PermissionService> = {
     availableRoles$: of(true) as any,
-    allRoles: ['admin'] as any,
+    allRoles: [{role:'admin',scope:'local',roleName:'test2'}] as any,
   };
   const mockToasterService: Partial<ToasterService> = {
     success:jest.fn(),
     error:jest.fn()
   };
   const mockFormBuilder: Partial<FormBuilder> = {};
-  const mockRoute: Partial<Router> = {};
+  const mockRoute: Partial<Router> = {
+    navigate: jest.fn(),
+  };
   const mockManageService: Partial<ManageService> = {
     updateRoles:jest.fn().mockReturnValue(of(true)) as any,
   };
@@ -74,7 +76,7 @@ describe("UserRoleAssign component", () => {
     jest.clearAllMocks();
   });
 
-  it("should  create an instance of userRoleAssign component and set userDetailsForm", () => {
+  it("should  create an instance of userRoleAssignComponent and set userDetailsForm", () => {
     expect(userRoleAssignComponent).toBeTruthy();
     expect(userRoleAssignComponent.userDetailsForm).toBeDefined();
   });
@@ -97,9 +99,11 @@ describe("UserRoleAssign component", () => {
   });
 
   it('should set allRoles on getAllRoles call',()=>{
+    const responseData= [{role:'admin',scope:'local',roleName:'test2'}]
     userRoleAssignComponent.getAllRoles(removeRolesData);
     //@ts-ignore
     expect(userRoleAssignComponent.allRoles).toBeDefined();
+    expect(userRoleAssignComponent.allRoles).toEqual(responseData);
   });
 
   it('should set the orgList if both userService and userProfile are true',()=>{
@@ -213,7 +217,7 @@ describe("UserRoleAssign component", () => {
       expect(userRoleAssignComponent.showNoResult).toEqual(true);
     });
 
-    it('should handle error showNoResult in case of thrown error', ()=> {
+    it('should handle error in case of thrown error', ()=> {
       const errorResponse: HttpErrorResponse = {status: 401} as HttpErrorResponse;
       mockSearchService.globalUserSearch = jest.fn().mockReturnValue(throwError(errorResponse));
       //@ts-ignore
@@ -221,5 +225,144 @@ describe("UserRoleAssign component", () => {
       userRoleAssignComponent.onEnter('test');
       expect(userRoleAssignComponent['toasterService'].error).toBeCalledWith('error2');
     });
+  });
+
+  describe('manipulateUserObject', ()=> {
+    const data={
+      roles:[{
+        role:'admin',
+        scope:['local'] as any
+      }]
+    };
+
+    it('should not set rootOrgRoles,userRole and userAssignedRole if findIndex return -1', ()=> {
+      //@ts-ignore
+      userRoleAssignComponent.manipulateUserObject(data);
+      expect(userRoleAssignComponent.rootOrgRoles).toEqual([]);
+      expect(userRoleAssignComponent.userRole).toEqual([]);
+      expect(userRoleAssignComponent.userAssignedRole).toEqual([]);
+    });
+
+    it('should set rootOrgRoles if findIndex return zero or positive value', ()=> {
+      data.roles[0].scope[1]={ organisationId:'1' }
+      //@ts-ignore
+      userRoleAssignComponent.manipulateUserObject(data);
+      expect(userRoleAssignComponent.rootOrgRoles).toEqual([data.roles[0].role])
+    });
+
+    it('should set userRole and userAssignedRole if findIndex return zero or positive value', ()=> {
+      userRoleAssignComponent.allRoles=mockPermissionService.allRoles;
+      userRoleAssignComponent.userRole=[];
+      userRoleAssignComponent.userAssignedRole=[];
+      const userObjData={
+        role: 'admin',
+        orgName: 'test',
+        orgId: '1',
+        roleName:'test2'
+      }
+      //@ts-ignore
+      userRoleAssignComponent.manipulateUserObject(data);
+      expect(userRoleAssignComponent.userRole).toEqual([userObjData]);
+      expect(userRoleAssignComponent.userAssignedRole).toEqual([data.roles[0].role]);
+    })
+
+    it('should set showCards true if userRole is not empty', ()=> {
+      userRoleAssignComponent.manipulateUserObject(data);
+      expect(userRoleAssignComponent.showCards).toEqual(true)
+    });
+
+    it('should set showCards false if userRole is  empty', ()=> {
+      userRoleAssignComponent.userRole=[];
+      userRoleAssignComponent.showCards=false;
+      data.roles[0].scope=['local'];
+      userRoleAssignComponent.manipulateUserObject(data);
+      expect(userRoleAssignComponent.showCards).toEqual(false)
+    });
   })
-});
+
+  describe('updateProfile', ()=> {
+    it('should call updateRoleForUser with appropriate data', ()=>{
+      userRoleAssignComponent.userObj={userId:'test'};
+      const argumentData={
+        userId: "test",
+        roles:[{operation: "add", role: "PUBLIC", scope: [{organisationId: ""}]}]
+      };
+      jest.spyOn(userRoleAssignComponent,'updateRoleForUser');
+      userRoleAssignComponent.updateProfile();
+      expect(userRoleAssignComponent.updateRoleForUser).toBeCalledWith(argumentData);
+    });
+
+    it('should call getRolesReqBody with appropriate data', ()=>{
+      userRoleAssignComponent.rootOrgRoles=[];
+      const rolesAddedData=['PUBLIC'];
+      jest.spyOn(userRoleAssignComponent,'getRolesReqBody');
+      userRoleAssignComponent.updateProfile();
+      expect(userRoleAssignComponent.getRolesReqBody).toBeCalledWith(rolesAddedData,[],'');
+    })
+  })
+
+  it('should return reqBody on getRolesReqBody call', ()=>{
+    const responseData=[{
+      role: 'PUBLIC',
+      operation: 'add',
+      scope: [{
+        organisationId:'test'
+      }]
+    }];
+    const reqBodyData=userRoleAssignComponent.getRolesReqBody(['PUBLIC'],[],'test');
+    expect(reqBodyData).toEqual(responseData);
+  });
+
+  it('should update profile and enable assign role on submitting form', ()=> {
+    jest.spyOn(userRoleAssignComponent,'updateProfile');
+    jest.spyOn(userRoleAssignComponent,'enableAssignRole');
+    userRoleAssignComponent.onSubmitForm();
+    expect(userRoleAssignComponent.updateProfile).toBeCalled();
+    expect(userRoleAssignComponent.enableAssignRole).toBeCalled();
+  });
+
+  it('should enable submit button if conditions are true', ()=> {
+      userRoleAssignComponent.userDetailsForm={
+        controls:{
+          role:{
+            value:'admin'
+          },
+          orgName:{
+            value:'test'
+          }
+        }
+      } as any
+      userRoleAssignComponent.enableButton();
+      expect(userRoleAssignComponent.enableSubmitBtn).toEqual(true);
+  })
+
+  it('should disable submit button if either of the condition is false', ()=> {
+    userRoleAssignComponent.userDetailsForm={
+      controls:{
+        role:{
+          value:'admin'
+        },
+        orgName:{
+          value:null
+        }
+      }
+    } as any;
+    userRoleAssignComponent.enableButton();
+    expect(userRoleAssignComponent.enableSubmitBtn).toEqual(false);
+  });
+
+  it('should dismiss role assign', ()=> {
+    userRoleAssignComponent.dismissRoleAssign();
+    expect(userRoleAssignComponent.showAssignRole).toEqual(false);
+    expect(userRoleAssignComponent.isEditRole).toEqual(false);
+  });
+
+  it('should navigate on goBack call', ()=> {
+    //@ts-ignore
+    jest.spyOn(userRoleAssignComponent.route,'navigate')
+    userRoleAssignComponent.goBack();
+    expect(userRoleAssignComponent.showingResults).toEqual(false);
+    expect(userRoleAssignComponent['route'].navigate).toBeCalledWith(['/manage'], { queryParams: {} });
+  });
+})
+
