@@ -36,7 +36,7 @@ export class SbTableComponent implements OnInit, OnChanges {
   }
 
   exportToCsv() {
-    this.lib.instance.exportAs('csv');
+    this.lib.instance.exportAs('csv',{strict:true});
   }
 
   checkForGlobalChanges() {
