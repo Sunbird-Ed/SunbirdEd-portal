@@ -118,7 +118,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
         this.isSubmitted = true;
         this.closeModal();
       }
-    } else {
+    } else if (_.get(this.userService, 'loggedIn') && _.get(this.userService, 'userid')) {
       const result: any = await this.sbFormLocationSelectionDelegate.formGroup;
       const locationDetails: SbLocation[] = Object.keys(_.get(result, 'value.children.persona'))
         .reduce<SbLocation[]>((acc, key) => {
@@ -136,13 +136,14 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       };
       this.locationService.updateProfile(payload).toPromise()
         .then((res) => {
-          console.log('res ', res); // TODO: log!
           this.registerSubmit.emit(_.get(result, 'value'));
           this.toasterService.success(this.resourceService?.messages?.smsg?.m0057);
         }).catch((err) => {
-          console.log('err ', err); // TODO: log!
           this.toasterService.error(this.resourceService?.messages?.emsg?.m0005);
         });
+    } else {
+      const result: any = await this.sbFormLocationSelectionDelegate.formGroup;
+      this.registerSubmit.emit(_.get(result, 'value'));
     }
   }
 
