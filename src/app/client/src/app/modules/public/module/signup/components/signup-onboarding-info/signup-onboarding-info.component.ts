@@ -28,7 +28,7 @@ export class SignupOnboardingInfoComponent implements OnInit {
   sbformDOMManipulation() {
     let formElement = document.getElementsByTagName('sb-form')[0];
     if (formElement) {
-      let roleElement = formElement.getElementsByClassName('cfe-multiselect-container')[0];
+      let roleElement = formElement.getElementsByClassName('sb-input')[0];
       if (roleElement) {
         roleElement.classList.add('hide');
       }
