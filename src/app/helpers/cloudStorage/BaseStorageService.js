@@ -14,9 +14,9 @@ class BaseStorageService {
    * @throws                          - Throws Exception if method is not invoked without declaration
    * @param  {String} container       - Container name or folder name in storage service
    * @param  {String} fileToDownload  - File path in storage service
-   * @param  {Boolean} isDirectory    - default `undefined`
+   * @param  {Boolean} isDirectory    - default `false`
    */
-  downloadFile(container, fileToDownload, isDirectory = undefined) {
+  downloadFile(container, fileToDownload, isDirectory = false) {
     throw new Error('downloadFile() must be implemented');
   }
 
