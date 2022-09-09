@@ -126,9 +126,8 @@ Installing Sunbird requires two primary software components:
 
     2. Sunbird services stack or the backend API interface
 
-        1. $ gulp download:editors
-        2. $ cd {PROJECT-FOLDER}/src/app
-        3. $ yarn install
+        1. $ cd {PROJECT-FOLDER}/src/app
+        2. $ yarn install
 
 3. Configuring the Environment and Services Stack
 
