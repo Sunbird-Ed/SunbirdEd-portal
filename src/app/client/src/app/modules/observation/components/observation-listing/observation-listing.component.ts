@@ -231,6 +231,7 @@ export class ObservationListingComponent
         metaData: {
           identifier: value.solutionId,
         },
+        entityType:value.entityType,
         identifier: value.solutionId,
         solutionId: value.solutionId,
         programId: value.programId,
@@ -332,7 +333,8 @@ export class ObservationListingComponent
       solutionId: data.solutionId,
       observationId: data._id,
       solutionName: data.name,
-      programName: data.subject[0]
+      programName: data.subject[0],
+      entityType:data.entityType
     };
     this.router.navigate(['observation/details'], {
       queryParams: this.queryParam,
