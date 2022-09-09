@@ -494,7 +494,7 @@ async function createWindow() {
         win.focus();
         checkForOpenFile();
         // Open the DevTools.
-        win.webContents.openDevTools();
+        // win.webContents.openDevTools();
       })
       .catch(err => {
         standardLog.error({ id: 'MAIN_APP_START_FAILED', message: 'Unable to start the app', error: err });
