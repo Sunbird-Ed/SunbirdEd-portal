@@ -2121,10 +2121,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.10.3.tgz#a2e89a22ee7c9dff157c10f1f3e57ba95d1dd0f0"
   integrity sha512-gnm12hGha7N4KBlPE+Zg5buWXpF9LnS8/D1IAk/iAlO3POcpA7zyhmzwbE5UfO2krZUyDfhz6MN5Qky57w/qpA==
 
-"@project-sunbird/common-form-elements-v9@4.10.1":
-  version "4.10.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements-v9/-/common-form-elements-v9-4.10.1.tgz#b4aa266e4b686a4dba54dcea379735b2a8ce21e5"
-  integrity sha512-EdpML344w79VI6yfzTmDblRDTkLiMoNddyM5T06DQJjgh5NTMxg8YLlQqnXffXxR+MAnzwznaBj9a7YPadbZjg==
+"@project-sunbird/common-form-elements-v9@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements-v9/-/common-form-elements-v9-5.0.1.tgz#2ca2e169c124b16c825444e91a99ec01dc100bc8"
+  integrity sha512-F1mpC5awPvzb3il4Cmt8PiOAvro+J8dmOk8Hz0AU0yqEI48JG+keosmonkvML3HeYUK5zfQasGwdcezE78k8CQ==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -2166,10 +2166,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.80.tgz#3f6107fedc0d72088d3376b06ba3556442f471d1"
   integrity sha512-saaAgbyO8/2BiB3KN+rOadCZB7CX0b1OJIwJzF/RiTY4opeDeH2j0Exn3/J24kCMmA5uoQElpvVl0Kgx6ZnQJQ==
 
-"@project-sunbird/sunbird-collection-editor-v9@5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-5.0.7.tgz#06d3fc2a88303234463c3ae6267f5d58fbff21c5"
-  integrity sha512-Sie4lC5waqCzAMRR/1XEF/xJDgz6q4xBAfAxm5fxzH8Zj39JkXNboDBDOn/4qX6zrJsGe57uDwqJXVEUA92wpA==
+"@project-sunbird/sunbird-collection-editor-v9@5.0.14":
+  version "5.0.14"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-5.0.14.tgz#a8c033e7acb8984f58c153046141606a48c4e13e"
+  integrity sha512-J0jMNx8bZHvaJsMqMdsq9EZdGZNcm4TRDR+sfc0JDiaIjFA/epjHRmM0NstxVgthWKgoOMFtPYvB+MQancwdZA==
   dependencies:
     tslib "^1.10.0"
 
