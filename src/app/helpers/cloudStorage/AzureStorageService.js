@@ -24,6 +24,28 @@ class AzureStorageService extends BaseStorageService {
       }
     });
   }
+  /**
+   * @description                                                     - Retrieves a shared access signature token
+   * @param  { string } container                                     - Container name
+   * @param  { string } blob                                          - Blob to be fetched
+   * @param  { azure.common.SharedAccessPolicy } sharedAccessPolicy   - Shared access policy
+   * @param  { azure.common.ContentSettingsHeaders } headers          - Optional header values to set for a blob returned wth this SAS
+   * @return { string }                                               - The shared access signature
+   */
+  generateSharedAccessSignature(container, blob, sharedAccessPolicy, headers) {
+    return blobService.generateSharedAccessSignature(container, blob, sharedAccessPolicy, headers);
+  }
+
+  /**
+   * @description                                                    - Retrieves a blob or container URL
+   * @param  { string } container                                    - Container name
+   * @param  { string } blob                                         - Blob to be fetched
+   * @param  { string } SASToken                                     - Shared Access Signature token
+   * @return { string }                                              - Formatted URL string
+   */
+  getUrl(container, blob, SASToken) {
+    return blobService.getUrl(container, blob, SASToken)
+  }
 
   fileReadStream(container = undefined, fileToGet = undefined) {
     return (req, res, next) => {
@@ -91,8 +113,8 @@ class AzureStorageService extends BaseStorageService {
           } else {
             let azureHeaders = {};
             if (req.headers['content-disposition'] == 'attachment' && req.headers.filename) azureHeaders.contentDisposition = `attachment;filename=${req.headers.filename}`;
-            let token = blobService.generateSharedAccessSignature(container, fileToGet, sharedAccessPolicy, azureHeaders);
-            let sasUrl = blobService.getUrl(container, fileToGet, token);
+            let token = this.generateSharedAccessSignature(container, fileToGet, sharedAccessPolicy, azureHeaders);
+            let sasUrl = this.getUrl(container, fileToGet, token);
             const response = {
               responseCode: "OK",
               params: {
@@ -111,8 +133,6 @@ class AzureStorageService extends BaseStorageService {
       }
     }
   }
-
-  
 }
 
 module.exports = AzureStorageService;

@@ -68,6 +68,10 @@ const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) 
     }
 }
 
+/**
+ * @deprecated  - From release-5.0.1
+ * @reference   - Base Storage Service
+ */
 function azureBlobStream() {
     return function (req, res, next) {
         let container = envHelper.sunbird_azure_report_container_name;
