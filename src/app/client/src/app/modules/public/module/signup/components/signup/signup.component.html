@@ -20,14 +20,14 @@
         <div class="text-center mb-8">
           <img class="image centered" tabindex="0" aria-label="" alt={{tenantName}} height="56" src="{{logo}}">
         </div>
-        <h3 tabindex="0" class="sb-color-primary text-center font-weight-bold mb-8">
+        <h3 tabindex="0" class="sb-color-primary text-center font-weight-bold mb-8" *ngIf="!routeParams?.loginMode">
           {{resourceService.frmelmnts.lbl.welcomeToInstance | interpolate:'{instance}': instance}}</h3>
     </div>
 
     <ng-container [ngSwitch]="signupStage">
               <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
                 [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm"
+                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" [routeParams]="routeParams"
                 (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-basic-info>
               <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm" 
