@@ -198,10 +198,27 @@ class AzureStorageService extends BaseStorageService {
               },
               result: responseData
             }
-            res.status(200).send(apiResponse(finalResponse))
+            res.status(200).send(this.apiResponse(finalResponse))
           }
         });
       }
+    }
+  }
+
+  apiResponse({ responseCode, result, params: { err, errmsg, status } }) {
+    return {
+      'id': 'api.report',
+      'ver': '1.0',
+      'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+      'params': {
+        'resmsgid': uuidv1(),
+        'msgid': null,
+        'status': status,
+        'err': err,
+        'errmsg': errmsg
+      },
+      'responseCode': responseCode,
+      'result': result
     }
   }
 }
