@@ -27,8 +27,10 @@ const initializeEnv = () => {
       // If environment is `local`; use custom config
       // Else default config will be used
       if (process.env.NODE_ENV === 'development' && fs.existsSync(devConfig)) {
+        console.log('✅ Loading configuration from dev config');
         envs = require('./devConfig');
       } else {
+        console.log('✅ Loading configuration from default config');
         envs = JSON.parse(
           fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
         );
