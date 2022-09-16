@@ -63,7 +63,7 @@ class AzureStorageService extends BaseStorageService {
         })
         readStream.on('error', error => {
           if (error && error.statusCode === 404) {
-            logger.error({ msg: 'Azure Blobstream : readStream error - Error with status code 404', error: error });
+            logger.error({ msg: 'AzureStorageService : readStream error - Error with status code 404', error: error });
             const response = {
               responseCode: "CLIENT_ERROR",
               params: {
@@ -75,7 +75,7 @@ class AzureStorageService extends BaseStorageService {
             }
             res.status(404).send(apiResponse(response));
           } else {
-            logger.error({ msg: 'Azure Blobstream : readStream error - Error 500', error: error });
+            logger.error({ msg: 'AzureStorageService : readStream error - Error 500', error: error });
             const response = {
               responseCode: "SERVER_ERROR",
               params: {
@@ -102,7 +102,7 @@ class AzureStorageService extends BaseStorageService {
         };
         this.fileExists(container, fileToGet, (err, resp) => {
           if (err || !(_.get(resp, 'exists'))) {
-            logger.error({ msg: 'Azure Blobstream : doesBlobExist error - Error with status code 404', error: err });
+            logger.error({ msg: 'AzureStorageService : doesBlobExist error - Error with status code 404', error: err });
             const response = {
               responseCode: "CLIENT_ERROR",
               params: {
@@ -140,7 +140,7 @@ class AzureStorageService extends BaseStorageService {
   async getBlobProperties(request, callback) {
     blobService.getBlobProperties(request.container, request.file, function (err, result, response) {
       if (err) {
-        logger.error({ msg: 'Azure Blobstream : readStream error - Error with status code 404' })
+        logger.error({ msg: 'AzureStorageService : readStream error - Error with status code 404' });
         callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname });
       }
       else if (!response.isSuccessful) {
@@ -203,6 +203,24 @@ class AzureStorageService extends BaseStorageService {
         });
       }
     }
+  }
+
+  getFileAsText(container = undefined, fileToGet = undefined, callback) {
+    blobService.getBlobToText(container, fileToGet, (error, result, response) => {
+      if (error) {
+        logger.error({ msg: 'AzureStorageService : getFileAsText error => ', error });
+        callback(error);
+      } else if (result) {
+        logger.info({ msg: 'AzureStorageService : getFileAsText success for container ' + container + ' for file ' + fileToGet });
+        callback(null, result);
+      } else if (response) {
+        callback(null, null, response)
+        logger.info({
+          msg: 'AzureStorageService : getFileAsText success response for container ' +
+            container + ' for file ' + fileToGet + ' response ' + response
+        });
+      }
+    });
   }
 
   apiResponse({ responseCode, result, params: { err, errmsg, status } }) {
