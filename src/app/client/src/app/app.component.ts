@@ -117,6 +117,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showYearOfBirthPopup = false;
   public isIOS = false;
   loadPopUps = true;
+  FORM_CONFIG_ENABLED = false;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -263,6 +264,22 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
   }
+  checkFormData(): Observable<any> {
+    const formReadInputParams = {
+      formType: 'newUserOnboarding',
+      formAction: 'onboarding',
+      contentType: 'global',
+      component: 'portal'
+    };
+    return of(this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        console.log('userOnboarding Form is called and we are trying to get the update',formResponsedata);
+        if (_.get(formResponsedata, 'shownewUserOnboarding') === 'false') {
+          this.FORM_CONFIG_ENABLED = true;
+        }
+      }
+    ));
+  }
   
   ngOnInit() {
     this.checkToShowPopups();
@@ -295,19 +312,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.handleHeaderNFooter();
     this.resourceService.initialize();
     this.genericResourceService.initialize();
-    combineLatest(queryParams$, this.setDeviceId())
+    combineLatest(queryParams$, this.setDeviceId(), this.checkFormData())
       .pipe(
         mergeMap(data => {
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
-          if (this.userService.loggedIn) {
+          if (this.userService.loggedIn && !this.FORM_CONFIG_ENABLED) {
             this.isGuestUser = false;
             this.permissionService.initialize();
             this.courseService.initialize();
             this.userService.startSession();
             this.checkForCustodianUser();
             return this.setUserDetails();
+          } else if(this.userService.loggedIn && this.FORM_CONFIG_ENABLED){
+            this.setUserOptions();
           } else {
             this.isGuestUser = true;
             this.userService.getGuestUser().subscribe((response) => {
@@ -355,7 +374,24 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     };
   }
-
+  setUserOptions() {
+    const userStoredData = JSON.parse(localStorage.getItem('guestUserDetails'));
+    if (userStoredData) {
+      const userFrameworkData = _.get(userStoredData , 'framework');
+      if (userFrameworkData && !(_.get(this.userService.userProfile, 'framework'))) {
+        const req = {
+          framework: userFrameworkData
+        };
+        this.profileService.updateProfile(req).subscribe(res => {
+          console.log('user data updated---->', req);
+        }, err => {
+          this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+          this.closeFrameworkPopup();
+          this.checkLocationStatus();
+        });
+      }
+    }
+  }
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
