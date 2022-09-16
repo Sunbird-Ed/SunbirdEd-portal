@@ -139,7 +139,9 @@ module.exports = function (app) {
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
-        reportHelper.getLastModifiedDate);
+        // reportHelper.getLastModifiedDate
+        StorageService.AzureStorageService.getFileProperties()
+        );
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),

@@ -6,10 +6,11 @@
  */
 
 const BaseStorageService  = require('./BaseStorageService');
-const envHelper           = require('./../../helpers/environmentletiablesHelper.js');
+const envHelper           = require('./../../helpers/environmentVariablesHelper');
 const azure               = require('azure-storage');
 const blobService         = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
 const { logger }          = require('@project-sunbird/logger');
+const async               = require('async');
 
 class AzureStorageService extends BaseStorageService {
 
@@ -130,6 +131,74 @@ class AzureStorageService extends BaseStorageService {
           }
         })
 
+      }
+    }
+  }
+
+  async getBlobProperties(request, callback) {
+    blobService.getBlobProperties(request.container, request.file, function (err, result, response) {
+      if (err) {
+        logger.error({ msg: 'Azure Blobstream : readStream error - Error with status code 404' })
+        callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname });
+      }
+      else if (!response.isSuccessful) {
+        console.error("Blob %s wasn't found container %s", file, containerName)
+        callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname });
+      }
+      else {
+        result.reportname = request.reportname;
+        result.statusCode = 200;
+        callback(null, result);
+      }
+    });
+  }
+
+  getFileProperties(container = undefined, fileToGet = undefined) {
+    return (req, res, next) => {
+      const container = envHelper.sunbird_azure_report_container_name;
+      const fileToGet = JSON.parse(req.query.fileNames);
+      logger.info({ msg: 'AzureStorageService - getFileProperties called for container ' + container + ' for file ' + fileToGet });
+      const responseData = {};
+      if (Object.keys(fileToGet).length > 0) {
+        const getBlogRequest = [];
+        for (const [key, file] of Object.entries(fileToGet)) {
+          const req = {
+            container: container,
+            file: file,
+            reportname: key
+          }
+          getBlogRequest.push(
+            async.reflect((callback) => {
+              this.getBlobProperties(req, callback)
+            })
+          );
+        }
+        async.parallel(getBlogRequest, (err, results) => {
+          if (results) {
+            results.forEach(blob => {
+              if (blob.error) {
+                responseData[(_.get(blob, 'error.reportname'))] = blob.error
+              } else {
+                responseData[(_.get(blob, 'value.reportname'))] = {
+                  lastModified: _.get(blob, 'value.lastModified'),
+                  reportname: _.get(blob, 'value.reportname'),
+                  statusCode: _.get(blob, 'value.statusCode'),
+                  fileSize: _.get(blob, 'value.contentLength')
+                }
+              }
+            });
+            const finalResponse = {
+              responseCode: "OK",
+              params: {
+                err: null,
+                status: "success",
+                errmsg: null
+              },
+              result: responseData
+            }
+            res.status(200).send(apiResponse(finalResponse))
+          }
+        });
       }
     }
   }
