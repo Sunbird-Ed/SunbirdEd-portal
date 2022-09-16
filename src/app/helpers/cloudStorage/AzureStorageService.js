@@ -11,7 +11,9 @@ const azure               = require('azure-storage');
 const blobService         = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
 const { logger }          = require('@project-sunbird/logger');
 const async               = require('async');
-
+const _                   = require('lodash')
+const dateFormat          = require('dateformat')
+const uuidv1              = require('uuid/v1')
 class AzureStorageService extends BaseStorageService {
 
   fileExists(container, fileToGet, callback) {
