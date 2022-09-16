@@ -17,7 +17,7 @@ class BaseStorageService {
    * @param  {Boolean} isDirectory    - default `false`
    */
   downloadFile(container, fileToDownload, isDirectory = false) {
-    throw new Error('downloadFile() must be implemented');
+    throw new Error('BaseStorageService :: downloadFile() must be implemented');
   }
 
   /**
@@ -27,7 +27,7 @@ class BaseStorageService {
    * @param {string} filePath         - File path in storage service
    */
   getURI(container, filePath) {
-    throw new Error('getURI() must be implemented');
+    throw new Error('BaseStorageService :: getURI() must be implemented');
   }
 
   /**
@@ -37,7 +37,7 @@ class BaseStorageService {
    * @param {string} filePath         - File path in storage service
    */
   fileReadStream(container, filePath) {
-    throw new Error('fileReadStream() must be implemented');
+    throw new Error('BaseStorageService :: fileReadStream() must be implemented');
   }
 
   /**
@@ -47,7 +47,7 @@ class BaseStorageService {
    * @param {string} filePath         - File path in storage service
    */
   fileExists(container, filePath) {
-    throw new Error('fileExists() must be implemented');
+    throw new Error('BaseStorageService :: fileExists() must be implemented');
   }
 
   /**
@@ -57,7 +57,7 @@ class BaseStorageService {
    * @param {string} filePath         - File path in storage service
    */
   getSharedAccessSignature(container, filePath) {
-    throw new Error('getSharedAccessSignature() must be implemented');
+    throw new Error('BaseStorageService :: getSharedAccessSignature() must be implemented');
   }
 
   /**
@@ -67,7 +67,18 @@ class BaseStorageService {
    * @param {string} filePath         - File path in storage service
    */
   getFileProperties(container, filePath) {
-    throw new Error('getFileProperties() must be implemented');
+    throw new Error('BaseStorageService :: getFileProperties() must be implemented');
+  }
+
+  /**
+   * @description                     - Downloads a blob / file into a text string
+   * @throws                          - Throws Exception if method is not invoked without declaration
+   * @param {string} container        - Container name or folder name in storage service
+   * @param {string} filePath         - File path in storage service
+   * @param { function } callback     - Callback function
+   */
+  getFileAsText(container, filePath, callback) {
+    throw new Error('BaseStorageService :: getFileAsText() must be implemented');
   }
 
 }
