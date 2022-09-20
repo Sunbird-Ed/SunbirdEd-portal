@@ -11,9 +11,9 @@ const azure               = require('azure-storage');
 const blobService         = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
 const { logger }          = require('@project-sunbird/logger');
 const async               = require('async');
-const _                   = require('lodash')
-const dateFormat          = require('dateformat')
-const uuidv1              = require('uuid/v1')
+const _                   = require('lodash');
+const dateFormat          = require('dateformat');
+const uuidv1              = require('uuid/v1');
 class AzureStorageService extends BaseStorageService {
 
   fileExists(container, fileToGet, callback) {
@@ -73,7 +73,7 @@ class AzureStorageService extends BaseStorageService {
               },
               result: {}
             }
-            res.status(404).send(apiResponse(response));
+            res.status(404).send(this.apiResponse(response));
           } else {
             logger.error({ msg: 'AzureStorageService : readStream error - Error 500', error: error });
             const response = {
@@ -85,7 +85,7 @@ class AzureStorageService extends BaseStorageService {
               },
               result: {}
             }
-            res.status(500).send(apiResponse(response));
+            res.status(500).send(this.apiResponse(response));
           }
         })
       } else {
@@ -112,7 +112,7 @@ class AzureStorageService extends BaseStorageService {
               },
               result: {}
             }
-            res.status(404).send(apiResponse(response));
+            res.status(404).send(this.apiResponse(response));
           } else {
             let azureHeaders = {};
             if (req.headers['content-disposition'] == 'attachment' && req.headers.filename) azureHeaders.contentDisposition = `attachment;filename=${req.headers.filename}`;
@@ -129,7 +129,7 @@ class AzureStorageService extends BaseStorageService {
                 'signedUrl': sasUrl
               }
             }
-            res.status(200).send(apiResponse(response));
+            res.status(200).send(this.apiResponse(response));
           }
         })
 
