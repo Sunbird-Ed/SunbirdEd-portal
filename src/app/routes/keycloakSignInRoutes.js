@@ -16,11 +16,11 @@ let client_id = "";
 
 module.exports = (app) => {
   app.post('/keycloak/login', bodyParser.json(), async (req, res) => {
-    if (req && req.body && req.body.loginConfig) {
-      let config = req.body.loginConfig;
-      client_id = req.body.client_id;
-      formData.username = req.body.emailId;
-      formData.password = req.body.password;
+    if(_.get(req, 'body.loginConfig')) {
+      let config = _.get(req, 'body.loginConfig');
+      client_id = _.get(req, 'body.client_id');
+      formData.username = _.get(req, 'body.emailId');
+      formData.password = _.get(req, 'body.password');
       let queryArr = [];
       (config.params).forEach(item => {
         if (item['key'] == 'redirect_uri') {
@@ -70,11 +70,11 @@ function handleSuccessResponse(option, response, data, type, res) {
 function handleResponse(err, response, data, type, res) {
   if(type == "reqLogin") {
     let errMsg = extractErrorMsg(data, "kc-error-message");
-    logger.error({ msg: 'keyclaok Signin route : initialize keyclaok error: '+ response.statusCode, error: errMsg.trim() });
+    logger.error({ msg: 'keyclaok Signin route : initialize keyclaok error: '+ _.get(response, 'statusCode'), error: errMsg.trim() });
     res.status(_.get(response, 'statusCode')).send({error_msg: errMsg.trim()});
   } else if(type == "reqData") {
     if (err) {
-      logger.error({msg: 'keyclaok Signin route : login failed ' + response.statusCode + 'error:'+ JSON.stringify(err)})
+      logger.error({msg: 'keyclaok Signin route : login failed ' + _.get(response, 'statusCode') + 'error:'+ JSON.stringify(err)})
       res.error(err + data);
     } else if ((_.get(response, 'statusCode') == 302) && data == "") {
       logger.info({msg: 'keyclaok Signin route : successfully login with a keycloak user'});
