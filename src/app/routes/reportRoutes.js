@@ -154,7 +154,9 @@ module.exports = function (app) {
         reportHelper.validateSlug(['public']),
         reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
         // reportHelper.azureBlobStream()
-        StorageService.AzureStorageService.fileReadStream());
+        // StorageService.AzureStorageService.fileReadStream()
+        StorageService.AWSStorageService.fileReadStream()
+        );
 
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
