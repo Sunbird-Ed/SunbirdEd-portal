@@ -134,28 +134,27 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
         // reportHelper.azureBlobStream()
-        StorageService.AzureStorageService.fileReadStream());
+        StorageService.CLOUD_CLIENT.fileReadStream());
 
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
         // reportHelper.getLastModifiedDate
-        StorageService.AzureStorageService.getFileProperties()
+        StorageService.CLOUD_CLIENT.getFileProperties()
         );
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         // reportHelper.azureBlobStream()
-        StorageService.AzureStorageService.fileReadStream());
+        StorageService.CLOUD_CLIENT.fileReadStream());
 
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
         reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
         // reportHelper.azureBlobStream()
-        // StorageService.AzureStorageService.fileReadStream()
-        StorageService.AWSStorageService.fileReadStream()
+        StorageService.CLOUD_CLIENT.fileReadStream()
         );
 
     app.get('/admin-reports/:slug/:filename',
@@ -164,7 +163,7 @@ module.exports = function (app) {
             'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
         // reportHelper.azureBlobStream()
-        StorageService.AzureStorageService.fileReadStream());
+        StorageService.CLOUD_CLIENT.fileReadStream());
 
     app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
         proxyUtils.verifyToken(),
