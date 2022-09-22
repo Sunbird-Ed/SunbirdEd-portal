@@ -5,9 +5,18 @@ const { logger }        = require('@project-sunbird/logger');
 const StorageService    = require('../helpers/cloudStorage/index');
 
 const getGeneralisedResourcesBundles = (req, res) => {
-    const container = envHelper.sunbird_azure_resourceBundle_container_name;
-    const blobName = req.params.fileName;
-    StorageService.AzureStorageService.getFileAsText(container, blobName, function (error, result, response) {
+    let container, blobName;
+    if (envHelper.sunbird_cloud_storage_provider === 'azure') {
+        container = envHelper.sunbird_azure_resourceBundle_container_name;
+        blobName = req.params.fileName;
+    }
+    if (envHelper.sunbird_cloud_storage_provider === 'aws') {
+        container = envHelper.sunbird_aws_labels + '/';
+        blobName = req.params.fileName;
+    }
+    if (envHelper.sunbird_cloud_storage_provider === 'gcloud') {
+    }
+    StorageService.CLOUD_CLIENT.getFileAsText(container, blobName, function (error, result, response) {
         if (error && error.statusCode === 404) {
             logger.error({ msg: "Blob %s wasn't found container %s", blobName, container })
             const response = {
