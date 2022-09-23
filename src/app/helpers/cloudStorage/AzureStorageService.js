@@ -1,7 +1,7 @@
 /**
  * @file        - Azure Storage Service
  * @exports     - `AzureStorageService`
- * @since       - 5.0.0
+ * @since       - 5.0.1
  * @version     - 1.0.0
  * @implements  - BaseStorageService
  */

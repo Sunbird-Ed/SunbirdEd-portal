@@ -1,7 +1,7 @@
 /**
  * @file        - Storage Service logger
  * @exports     - Different HTTP status log builder(s)
- * @since       - 5.0.0
+ * @since       - 5.0.1
  * @version     - 1.0.0
  */
 
