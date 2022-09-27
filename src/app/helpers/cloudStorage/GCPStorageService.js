@@ -17,6 +17,7 @@ const dateFormat          = require('dateformat');
 const uuidv1              = require('uuid/v1');
 const reports             = envHelper.sunbird_gcloud_reports + '/';
 
+
 const _storage = new Storage({
   credentials: {
     client_email: envHelper.sunbird_gcloud_client_email,
