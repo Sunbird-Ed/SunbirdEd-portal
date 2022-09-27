@@ -151,6 +151,12 @@ let envVariables = {
   sunbird_aws_access_key: env.sunbird_aws_access_key || '',
   sunbird_aws_secret_key: env.sunbird_aws_secret_key || '',
   sunbird_aws_region: env.sunbird_aws_region || '',
+  sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
+  sunbird_gcloud_reports: env.sunbird_gcloud_reports || 'reports',
+  sunbird_gcloud_labels: env.sunbird_gcloud_labels || 'labels',
+  sunbird_gcloud_client_email: env.sunbird_gcloud_client_email || '',
+  sunbird_gcloud_private_key: env.sunbird_gcloud_private_key || '',
+  sunbird_gcloud_projectId: env.sunbird_gcloud_projectId || '',
 
   // generic editor question set and coleections children contents limit
   SUNBIRD_QUESTIONSET_CHILDREN_LIMIT: env.sunbird_questionset_children_limit || 500,
