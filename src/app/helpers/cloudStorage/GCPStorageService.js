@@ -20,7 +20,7 @@ const reports             = envHelper.sunbird_gcloud_reports + '/';
 const _storage = new Storage({
   credentials: {
     client_email: envHelper.sunbird_gcloud_client_email,
-    private_key: envHelper.sunbird_gcloud_private_key
+    private_key: envHelper.sunbird_gcloud_private_key.toString()
   },
   projectId: envHelper.sunbird_gcloud_projectId
 });

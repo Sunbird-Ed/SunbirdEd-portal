@@ -351,13 +351,6 @@ async function runApp() {
       logger.info({ msg: `✅ Portal global Kong anonymous device register is set to   - ${envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN}` })
       logger.info({ msg: `✅ Portal global Kong admin util is set to                  - ${envHelper.KONG_DEVICE_REGISTER_TOKEN}` })
       logger.info({ msg: `✅ Portal Cloud Storage Provider is set to                  - ${envHelper.sunbird_cloud_storage_provider}` })
-      console.log('_______________________________________'); // TODO: log!
-      console.log(envHelper.sunbird_gcloud_private_key); // TODO: log!
-      console.log(envHelper.sunbird_gcloud_private_key.toString()); // TODO: log!
-      console.log(typeof envHelper.sunbird_gcloud_private_key); // TODO: log!
-      
-      console.log(envHelper.sunbird_gcloud_private_key.replace('\n', '\\n')); // TODO: log!
-      console.log('_______________________________________'); // TODO: log!
       if (envHelper.sunbird_cloud_storage_provider === 'aws') {
         process.env.AWS_ACCESS_KEY_ID = envHelper.sunbird_aws_access_key;
         process.env.AWS_SECRET_ACCESS_KEY = envHelper.sunbird_aws_secret_key;
