@@ -324,7 +324,8 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
           isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
         },
         channelData: this.frameworkService['_channelData'],
-        cloudStorageUrls : this.userService.cloudStorageUrls
+        cloudStorageUrls : this.userService.cloudStorageUrls,
+        cloudStorage: _.get(this.config, 'editorConfig.COLLECTION_EDITOR.cloudStorage', {})
       },
       config: {
         mode: this.getEditorMode(),

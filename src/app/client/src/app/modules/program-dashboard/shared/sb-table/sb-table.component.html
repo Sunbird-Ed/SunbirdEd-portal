@@ -1,0 +1,13 @@
+<ng-container #outlet [ngTemplateOutlet]="content">
+</ng-container>
+<ng-template #content>
+  <sb-dashlet [type]="'table'" [data]="(globalChange ? filtered : unfiltered )| bigData"
+    [config]="table?.config ? table.config : table.columnsConfiguration" #lib>
+    <ng-template sbTemplateRef="header" let-config>
+      <div class="chart-title">
+        {{table?.name}}
+      </div>
+      <hr>
+    </ng-template>
+  </sb-dashlet>
+</ng-template>

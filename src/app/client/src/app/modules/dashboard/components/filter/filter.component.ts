@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -22,7 +22,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() telemetryInteractObject: IInteractEventObject;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
   @Input() filterType: string;
-
   filtersFormGroup: FormGroup;
   chartLabels: any = [];
   chartConfig: any;
@@ -41,6 +40,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   previousFilters: any;
   formChartData: any = [];
+  currentReference: any;
+  firstFilter: any;
 
   @Input()
   set selectedFilter(val: any) {
@@ -124,19 +125,26 @@ export class FilterComponent implements OnInit, OnDestroy {
       previousKeys = Object.keys(this.previousFilters);
     }
     _.forEach(this.filters, filter => {
+      const { reference } = filter;
       const options = (_.sortBy(_.uniq(
-        _.map(chartData, (data) => (data && data[filter.reference]) ? data[filter.reference].toLowerCase() : ''
+        _.map(chartData, (data) => (data && data[reference]) ? data[reference].toLowerCase() : ''
         )))).filter(Boolean);
-
-      if (!filterKeys.includes(filter.reference)) {
-        filter.options = options;
-      } else {
-        if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-          if (options.length > filter.options) {
+        if(this.firstFilter && this.firstFilter[0] !== reference){
+          if (this.selectedFilters[reference] && this.selectedFilters[reference].length > 0) {
+            this.selectedFilters[reference] = options;
+          }   
+          if (this.currentReference !== reference) {
             filter.options = options;
           }
         }
+
+      if (!filterKeys.includes(reference)) {
+        filter.options = options;
+      }else if(previousKeys && previousKeys.includes(reference) && this.previousFilters && this.previousFilters[reference].length == this.selectedFilters[reference].length) {
+        if (options.length > filter.options) {
+          filter.options = options;
       }
+    }
     });
     this.previousFilters = this.selectedFilters;
   }
@@ -197,6 +205,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (this.datepicker) {
       this.datepicker.nativeElement.value = '';
     }
+    this.selectedFilters = null;
+    this.firstFilter = null;
+    this.previousFilters = null;
     this.showFilters = false;
     this.cdr.detectChanges(); // to fix change detection issue in sui select
     this.showFilters = true;
@@ -216,16 +227,32 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   filterData() {
     if (this.selectedFilters) {
+      const filterKeys = Object.keys(this.selectedFilters);
+      if((!this.previousFilters || Object.keys(this.previousFilters).length === 0)&& Object.keys(this.selectedFilters).length === 1){
+        this.firstFilter = Object.keys(this.selectedFilters);
+      }
 
+    if(this.firstFilter && this.firstFilter.length && !filterKeys.includes(this.firstFilter[0])){
+      this.chartData['selectedFilters'] = {};
+      this.filterChanged.emit({
+        allFilters: this.filters,
+        filters: {},
+        chartData: this.chartData,
+      });
+      this.showFilters = false;
+      this.resetFilter();
+      this.cdr.detectChanges();
+      this.showFilters = true;
+      return;
+    }
       const filterData = [];
       const filteredChartData = [];
       this.chartData.forEach(chart => {
 
         const id = chart.id;
-        delete chart.id;
-        delete chart.data.selectedFilters;
-        delete chart.data.id;
-
+        delete chart?.id;
+        delete chart?.data?.selectedFilters;
+        delete chart?.data?.id;
         const result: Array<{}> = _.filter(chart.data, data => {
             return _.every(this.selectedFilters, (filterValues, key) => {
               if (data && data[key]) {
@@ -234,7 +261,7 @@ export class FilterComponent implements OnInit, OnDestroy {
             });
 
         });
-
+        
         filteredChartData.push({ id: id, data: result });
         result['selectedFilters'] = this.selectedFilters;
         filterData.push(...result);
@@ -258,6 +285,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         filters: this.selectedFilters,
         chartData: filteredChartData,
       });
+
     } else {
       this.dateFilters = [];
       this.filterChanged.emit({
@@ -279,6 +307,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     const object = {};
     if (data && data.length > 0) {
       object[reference] = data;
+      this.currentReference = reference;
     }
     this.filtersFormGroup.controls[reference].setValue(data);
   }

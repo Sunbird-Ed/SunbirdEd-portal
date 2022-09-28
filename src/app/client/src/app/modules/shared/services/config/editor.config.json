@@ -1122,7 +1122,12 @@
             "FlagDraft",
             "FlagReview"
         ],
-        "mimeCollection": "application/vnd.ekstep.content-collection"
+        "mimeCollection": "application/vnd.ekstep.content-collection",
+        "cloudStorage": {
+            "presigned_headers": {
+               "x-ms-blob-type": "BlockBlob"
+            }
+        }
     },
     "CONTENT_EDITOR": {
         "contentState": [

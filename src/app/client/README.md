@@ -1,3 +1,5 @@
+# sunbird-portal
+
 [![Circle CI - master branch](https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal/tree/master.svg?style=svg)](https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal/tree/master.svg?style=svg)
 [![Circle CI Badge](https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal.svg?style=shield)]((https://circleci.com/gh/Sunbird-Ed/SunbirdEd-portal.svg?style=shield))
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Sunbird-Ed_SunbirdEd-portal&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Sunbird-Ed_SunbirdEd-portal)
@@ -7,7 +9,23 @@
 
 ---
 
-# Installing Sunbird Portal
+## What is Sunbird?
+[Sunbird](http://sunbird.org) is a next-generation scalable open-source learning solution for teachers and tutors. Built for the 21st century with [state-of-the-art technology](http://www.sunbird.org/architecture/views/physical/), Sunbird runs natively in [cloud/mobile environments](http://www.sunbird.org/features/). The [open-source governance](LICENSE) of Sunbird allows a massive community of nation-builders to co-create and extend the solution in novel ways.
+
+## What is the project mission?
+Project Sunbird has a mission to improve learning outcomes for 200 million children across India. This is a multi-dimensional problem unique to the multi-lingual offline population of India (and other developing countries). It's not a problem of any single organization or stakeholder and it cannot be realistically addressed by individual effort. 
+
+Project Sunbird is an [open, iterative and collaborative](http://www.sunbird.org/participate/) approach to bring together the best minds in pursuit of this audacious goal.
+
+## What is the Sunbird portal?
+The Sunbird portal is the browser-based interface for the Sunbird application stack. It provides a web-app through which all functionality of Sunbird can be accessed.
+
+## Getting started
+To get started with the Sunbird portal, please try out our cloud-based demo site at: https://staging.open-sunbird.org/
+
+---
+
+## Installing Sunbird Portal
 
 Installing Sunbird requires two primary software components:
 
@@ -47,7 +65,7 @@ Installing Sunbird requires two primary software components:
 | Software dependencies |  |
 | :--- | ------- |
 | **[Node](https://nodejs.org/en/download/)** | > 14.x.x (Install the latest release of LTS version) |
-| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 10.x.x (Install the latest Angular CLI version) |
+| **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 11.x.x (Install the latest Angular CLI version) |
 | **[yarn](https://classic.yarnpkg.com/en/)** | Latest version of yarn: `npm install --global yarn` |
 | **[nodemon](https://www.npmjs.com/package/nodemon)** | Latest version  of nodemon: `npm install -g nodemon` |
 
@@ -71,9 +89,8 @@ Installing Sunbird requires two primary software components:
 
     2. Sunbird services stack or the backend API interface
 
-        1. $ gulp download:editors
-        2. $ cd {PROJECT-FOLDER}/src/app
-        3. $ yarn install
+        1. $ cd {PROJECT-FOLDER}/src/app
+        2. $ yarn install
 
 3. Configuring the Environment and Services Stack
 
