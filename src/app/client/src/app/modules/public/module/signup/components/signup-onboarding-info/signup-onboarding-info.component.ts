@@ -28,7 +28,7 @@ export class SignupOnboardingInfoComponent implements OnInit {
   sbformDOMManipulation() {
     let formElement = document.getElementsByTagName('sb-form')[0];
     if (formElement) {
-      let roleElement = formElement.getElementsByClassName('cfe-multiselect-container')[0];
+      let roleElement = formElement.getElementsByClassName('sb-input')[0];
       if (roleElement) {
         roleElement.classList.add('hide');
       }
@@ -62,7 +62,9 @@ export class SignupOnboardingInfoComponent implements OnInit {
       if (_.get(res, 'result.response') === 'SUCCESS') {
         this.toasterService.success(this.resourceService?.messages?.smsg?.m0046);
         setTimeout(() => {
-          this.router.navigate(['/resources']);
+          this.router.navigate(['/resources']).then(() => {
+            window.location.reload();
+          });
         }, 1000);
       } else {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
