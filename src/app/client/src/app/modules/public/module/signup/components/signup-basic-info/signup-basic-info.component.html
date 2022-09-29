@@ -1,5 +1,4 @@
 <div [formGroup]="personalInfoForm" class="signup-form-content">
-
     <h5 tabindex="0" *ngIf="telemetryImpression" [ngClass]="{'hide': routeParams?.loginMode == 'gmail','show':routeParams?.loginMode != 'gmail'}" [appTelemetryImpression]="telemetryImpression"
     class="font-weight-bold text-center mb-24">
     {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
