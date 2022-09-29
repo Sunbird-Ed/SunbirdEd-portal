@@ -1,8 +1,9 @@
 /**
  * @file        - Azure Storage Service
  * @exports     - `AzureStorageService`
- * @since       - 5.0.0
+ * @since       - 5.0.1
  * @version     - 1.0.0
+ * @implements  - BaseStorageService
  */
 
 const BaseStorageService  = require('./BaseStorageService');
@@ -18,7 +19,7 @@ class AzureStorageService extends BaseStorageService {
 
   fileExists(container, fileToGet, callback) {
     if (!container || !fileToGet || !callback) throw new Error('Invalid arguments');
-    logger.info({ msg: 'AzureStorageService - fileExists called for container ' + container + ' for file ' + fileToGet });
+    logger.info({ msg: 'Azure__StorageService - fileExists called for container ' + container + ' for file ' + fileToGet });
     blobService.doesBlobExist(container, fileToGet, (err, response) => {
       if (err) {
         callback(err);
@@ -54,7 +55,7 @@ class AzureStorageService extends BaseStorageService {
     return (req, res, next) => {
       let container = envHelper.sunbird_azure_report_container_name;
       let fileToGet = req.params.slug.replace('__', '\/') + '/' + req.params.filename;
-      logger.info({ msg: 'AzureStorageService - fileReadStream called for container ' + container + ' for file ' + fileToGet });
+      logger.info({ msg: 'Azure__StorageService - fileReadStream called for container ' + container + ' for file ' + fileToGet });
       if (fileToGet.includes('.json')) {
         const readStream = blobService.createReadStream(container, fileToGet);
         readStream.pipe(res);
@@ -63,7 +64,7 @@ class AzureStorageService extends BaseStorageService {
         })
         readStream.on('error', error => {
           if (error && error.statusCode === 404) {
-            logger.error({ msg: 'AzureStorageService : readStream error - Error with status code 404', error: error });
+            logger.error({ msg: 'Azure__StorageService : readStream error - Error with status code 404', error: error });
             const response = {
               responseCode: "CLIENT_ERROR",
               params: {
@@ -75,7 +76,7 @@ class AzureStorageService extends BaseStorageService {
             }
             res.status(404).send(this.apiResponse(response));
           } else {
-            logger.error({ msg: 'AzureStorageService : readStream error - Error 500', error: error });
+            logger.error({ msg: 'Azure__StorageService : readStream error - Error 500', error: error });
             const response = {
               responseCode: "SERVER_ERROR",
               params: {
@@ -102,7 +103,7 @@ class AzureStorageService extends BaseStorageService {
         };
         this.fileExists(container, fileToGet, (err, resp) => {
           if (err || !(_.get(resp, 'exists'))) {
-            logger.error({ msg: 'AzureStorageService : doesBlobExist error - Error with status code 404', error: err });
+            logger.error({ msg: 'Azure__StorageService : doesBlobExist error - Error with status code 404', error: err });
             const response = {
               responseCode: "CLIENT_ERROR",
               params: {
@@ -140,7 +141,7 @@ class AzureStorageService extends BaseStorageService {
   async getBlobProperties(request, callback) {
     blobService.getBlobProperties(request.container, request.file, function (err, result, response) {
       if (err) {
-        logger.error({ msg: 'AzureStorageService : readStream error - Error with status code 404' });
+        logger.error({ msg: 'Azure__StorageService : readStream error - Error with status code 404' });
         callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname });
       }
       else if (!response.isSuccessful) {
@@ -159,7 +160,7 @@ class AzureStorageService extends BaseStorageService {
     return (req, res, next) => {
       const container = envHelper.sunbird_azure_report_container_name;
       const fileToGet = JSON.parse(req.query.fileNames);
-      logger.info({ msg: 'AzureStorageService - getFileProperties called for container ' + container + ' for file ' + fileToGet });
+      logger.info({ msg: 'Azure__StorageService - getFileProperties called for container ' + container + ' for file ' + fileToGet });
       const responseData = {};
       if (Object.keys(fileToGet).length > 0) {
         const getBlogRequest = [];
@@ -208,15 +209,15 @@ class AzureStorageService extends BaseStorageService {
   getFileAsText(container = undefined, fileToGet = undefined, callback) {
     blobService.getBlobToText(container, fileToGet, (error, result, response) => {
       if (error) {
-        logger.error({ msg: 'AzureStorageService : getFileAsText error => ', error });
+        logger.error({ msg: 'Azure__StorageService : getFileAsText error => ', error });
         callback(error);
       } else if (result) {
-        logger.info({ msg: 'AzureStorageService : getFileAsText success for container ' + container + ' for file ' + fileToGet });
+        logger.info({ msg: 'Azure__StorageService : getFileAsText success for container ' + container + ' for file ' + fileToGet });
         callback(null, result);
       } else if (response) {
         callback(null, null, response)
         logger.info({
-          msg: 'AzureStorageService : getFileAsText success response for container ' +
+          msg: 'Azure__StorageService : getFileAsText success response for container ' +
             container + ' for file ' + fileToGet + ' response ' + response
         });
       }
