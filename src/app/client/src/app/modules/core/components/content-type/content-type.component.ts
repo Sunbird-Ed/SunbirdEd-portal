@@ -138,7 +138,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   updateForm() {
     if (!this.userType) {
       if (this.userService.loggedIn) {
-        this.userService.userData$.subscribe((profileData: IUserData) => {
+        this.userService.userData$.pipe(takeUntil(this.unsubscribe$)).subscribe((profileData: IUserData) => {
           if (_.get(profileData, 'userProfile.profileUserType.type')) {
           this.userType = profileData.userProfile['profileUserType']['type'];
           }
@@ -149,6 +149,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         if (user) {
           this.userType = user;
           this.makeFormChange();
+        }else{
+          this.utilService.currentRole.pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
+          this.userType = res;
+          this.makeFormChange();
+          });
         }
       }
     }

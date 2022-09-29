@@ -22,6 +22,7 @@ export class SignupBasicInfoComponent implements OnInit {
   @Input() telemetryImpression;
   @Input() submitInteractEdata;
   @Input() telemetryCdata;
+  @Input() routeParams;
   birthYearOptions: Array<string> = [];
   filteredYOB: Observable<number[]>;
   yearOfBirth: string;

@@ -5,9 +5,10 @@
 <!-- /Loader-->
 <!-- Back Button -->
   <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-color-white back-btn-container cc-player__btn-back relative9'" class="relative position mt-0">
-    <div class="ui container py-8 px-0 d-flex flex-ai-center">
-    <div class="w-100 d-flex flex-ai-center">
-      <!-- /* Back button */ -->
+    <div class="ui container px-0 d-flex flex-ai-center">
+    <div class="w-100 d-flex flex-ai-center flex-w-wrap flex-jc-space-between">
+      <div class="d-flex flex-ai-center">
+        <!-- /* Back button */ -->
       <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
       tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
@@ -17,14 +18,14 @@
       </button>
 <!-- Textbook details with continue playing and join course button routerLink="/registration" -->
   <!-- Textbook details -->
-  <div class="textbook__details d-flex ml-16 flex-basis-1">
+  <div class="textbook__details d-flex ml-16 flex-basis-1 flex-ai-center">
     <!-- Textbook image -->
     <div class="textbook__bookimg">
       <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
     </div>
     <div class="ml-8 textbook__heading">
       <!-- Textbook title -->
-      <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name}}
+      <h5 class="sb-color-primary font-weight-bold mb-0 sb__ellipsis" tabindex="0">{{courseHierarchy?.name}}
       </h5>
       <!-- Textbook Rating with share icon -->
       <div class="textbook__rating d-flex flex-ai-center">
@@ -58,21 +59,24 @@
       </div>
     </div>
   </div>
-  <div class="batch-details__created mt-8 fsmall mx-8"
-  *ngIf="!enrolledBatchInfo && isValidEnrollmentEndDate(enrollmentEndDate)">
-  <span class="sb-label-12size"
-    *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
-    {{enrollmentEndDate | dateFormat}}</span>
-  <span class="sb-label-status-error"
-    *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':enrollmentEndDate}}</span>
-</div>
-<div *ngIf="batchEndDate && showBatchCounter" class="d-flex">
-  <span class="fnormal sb-color-gray-400">{{resourceService?.frmelmnts?.lbl?.BatchExpiringIn}}:&nbsp;</span>
-  <span class="fsmall font-weight-bold mb-8 sb-color-gray-800">
-    <h6>{{batchRemaningTime}}</h6>
-  </span>
-</div>
-  <div class="d-flex flex-w-wrap flex-ai-center textbook cc-player">
+      </div>
+
+
+  <div class="d-flex flex-w-wrap flex-ai-center textbook cc-player ml-auto">
+    <div class="batch-details__created mt-8 fsmall mx-8"
+      *ngIf="!enrolledBatchInfo && isValidEnrollmentEndDate(enrollmentEndDate)">
+      <span class="sb-label-12size"
+        *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
+        {{enrollmentEndDate | dateFormat}}</span>
+      <span class="sb-label-status-error"
+        *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':enrollmentEndDate}}</span>
+    </div>
+    <div *ngIf="batchEndDate && showBatchCounter" class="d-flex">
+      <span class="fnormal sb-color-gray-400">{{resourceService?.frmelmnts?.lbl?.BatchExpiringIn}}:&nbsp;</span>
+      <span class="fsmall font-weight-bold mb-8 sb-color-gray-800">
+        <h6>{{batchRemaningTime}}</h6>
+      </span>
+    </div>
     <div class="d-flex flex-dc flex-basis-1 mr-32">
       <!-- Info displaying if course is flagged -->
       <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
@@ -89,15 +93,16 @@
           [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
           {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
       </div>
+
       <div *ngIf="isDesktopApp && enrolledCourse && !viewDashboard" class="d-flex py-8">
         <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
           *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
           (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
         <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-          *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
+        *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
           (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
         <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-          *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
+        *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
           (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
         <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')"
           appOnlineOnly tabindex="0"

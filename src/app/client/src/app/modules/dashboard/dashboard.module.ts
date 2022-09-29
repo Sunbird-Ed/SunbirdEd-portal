@@ -63,7 +63,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
     CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent, FilterComponent, SbTableComponent],
-  exports: [CourseProgressComponent, DataTableComponent],
+  exports: [CourseProgressComponent, DataTableComponent,FilterComponent],
   providers: [
     RendererService,
     DashboardUtilsService,
