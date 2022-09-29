@@ -1,7 +1,7 @@
 /**
  * @file        - AWS Storage Service
  * @exports     - `AWSStorageService`
- * @since       - 5.0.0
+ * @since       - 5.0.1
  * @version     - 1.0.0
  * @implements  - BaseStorageService
  * @see {@link https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html | X-Amz-Credential}
@@ -176,7 +176,6 @@ class AWSStorageService extends BaseStorageService {
         resp.reportname = request.reportname;
         resp.statusCode = 200;
         logger.info({
-
           msg: 'AWS__StorageService : getBlobProperties_fileExists success with status code 200. File does exists - ' +
             request.file, statusCode: _.get(error, '$metadata.httpStatusCode')
         });

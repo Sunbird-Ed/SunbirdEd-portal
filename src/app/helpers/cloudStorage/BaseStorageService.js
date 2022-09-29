@@ -3,7 +3,7 @@
  * @description - Provides the interface and base implementation of StorageService
  * @module      - BaseStorageService
  * @exports     - `BaseStorageService`
- * @since       - 5.0.0
+ * @since       - 5.0.1
  * @version     - 1.0.0
  */
 
