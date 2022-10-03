@@ -31,7 +31,7 @@ module.exports = function (app) {
     )
     app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`],
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
+        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
@@ -133,36 +133,30 @@ module.exports = function (app) {
     app.get('/courseReports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
-        // reportHelper.azureBlobStream()
         StorageService.CLOUD_CLIENT.fileReadStream());
 
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
-        // reportHelper.getLastModifiedDate
         StorageService.CLOUD_CLIENT.getFileProperties()
         );
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
-        // reportHelper.azureBlobStream()
+        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
         StorageService.CLOUD_CLIENT.fileReadStream());
 
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
-        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
-        // reportHelper.azureBlobStream()
-        StorageService.CLOUD_CLIENT.fileReadStream()
-        );
+        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
+        StorageService.CLOUD_CLIENT.fileReadStream());
 
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
             'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
-        // reportHelper.azureBlobStream()
         StorageService.CLOUD_CLIENT.fileReadStream());
 
     app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
