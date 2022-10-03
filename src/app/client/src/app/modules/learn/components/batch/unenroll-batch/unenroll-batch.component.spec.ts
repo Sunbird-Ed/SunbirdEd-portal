@@ -132,7 +132,7 @@ describe('UnEnrollBatchComponent', () => {
     });
 
     it('should unenroll from the course', () => {
-        // assert
+        // arrange
         const request = {
             request: {
               courseId: unEnrollBatchComponent.batchDetails.courseId,
@@ -140,25 +140,11 @@ describe('UnEnrollBatchComponent', () => {
               batchId: unEnrollBatchComponent.batchDetails.identifier
             }
           };
-          mockCoursesService.revokeConsent={
-            emit:jest.fn()
-          } as any;
-
-          unEnrollBatchComponent.unsubscribe = {
-            next: jest.fn(),
-            complete: jest.fn()
-        } as any;
-
-        mockCourseBatchService.unenrollFromCourse = jest.fn().mockReturnValue(of(true)) as any;
-        jest.spyOn(mockCoursesService.revokeConsent, 'emit').mockImplementation(() => {
-            return of({}) as any;
-        });
-        jest.spyOn(mockCourseBatchService, 'unenrollFromCourse').mockImplementation(() => {
-            return of({}) as any
-        });
+        mockCourseBatchService.unenrollFromCourse = jest.fn(()=> of(true)) as any;
         //act
         unEnrollBatchComponent.unenrollFromCourse();
+        // assert
+        expect(mockCourseBatchService.unenrollFromCourse).toHaveBeenCalled();
 
-    });
-   
-});
+    });   
+}); 
