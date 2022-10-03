@@ -65,6 +65,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     reportType: new FormControl('', [Validators.required]),
     districtName: new FormControl(),
     organisationName: new FormControl(),
+    blockName: new FormControl(),
     startDate: new FormControl(),
     endDate: new FormControl()
   });
@@ -86,6 +87,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   hideElements: boolean = false;
   globalDistrict: any;
   globalOrg: any;
+  globalBlock:any;
   tabIndex: number;
   tableToCsv: boolean;
   hideTableToCsv:boolean = true;
@@ -181,6 +183,19 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  blocks = [
+    {blockId:1, name : "Block1"},
+    {blockId:2, name : "Block2"},
+    {blockId:3, name : "Block3"},
+    {blockId:4, name : "Block4"},
+    {blockId:5, name : "Block5"},
+    {blockId:6, name : "Block6"},
+    {blockId:7, name : "Block7"},
+    {blockId:8, name : "Block8"},
+    {blockId:9, name : "Block9"},
+    {blockId:10, name : "Block10"},
+    ]
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -540,6 +555,12 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.globalOrg = $event.value
     this.reportForm.controls.organisationName.setValue($event.value);
     this.displayFilters['Organisation'] = [$event?.source?.triggerValue]
+  }
+
+  blockSelection($event) {
+    this.globalOrg = $event.value
+    this.reportForm.controls.blockName.setValue($event.value);
+    this.displayFilters['Block'] = [$event?.source?.triggerValue]
   }
 
   reportChanged(selectedReportData) {

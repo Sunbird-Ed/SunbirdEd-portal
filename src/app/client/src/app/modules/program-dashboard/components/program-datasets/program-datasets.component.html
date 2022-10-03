@@ -104,6 +104,17 @@
               </mat-select>
               </mat-form-field>
           </div>
+          <div class="d-flex flex-dc">
+            <label>{{ resourceService?.frmelmnts?.lbl?.dashboardBlockLbl }}</label>      
+              <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
+              <mat-select role="radio" class="selection" valueField="blockId" formControlName="blockName"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.dashboardBlock"  (selectionChange)="blockSelection($event)">
+                <mat-option *ngFor="let block of blocks" class="mat-dropdown__options" role="option" [value]="block.blockId">
+                  {{block.name}}
+                </mat-option>
+              </mat-select>
+              </mat-form-field>
+          </div>
 
           <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
