@@ -1890,6 +1890,9 @@ const API_LIST = {
       checksNeeded: ["ROLE_CHECK"],
       ROLE_CHECK: [ROLE.ORG_ADMIN],
     },
+    "/keycloak/login": {
+      checksNeeded: []
+    }
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
