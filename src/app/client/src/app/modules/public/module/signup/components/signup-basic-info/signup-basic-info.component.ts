@@ -36,10 +36,16 @@ export class SignupBasicInfoComponent implements OnInit {
   
 
   ngOnInit(): void {
+    const endYear = new Date().getFullYear();
+    const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.personalInfoForm = this._fb.group({
       name: ['', Validators.required],
-      yearOfBirth: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]]
+      yearOfBirth: ['', [Validators.required, 
+        Validators.pattern(/^-?(0|[1-9]\d*)?$/),
+        Validators.min(startYear),
+        Validators.max(endYear), 
+      ]]
     })
     this.initiateYearSelecter();
     // @ts-ignore
