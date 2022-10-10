@@ -2,9 +2,6 @@
 @import "mixins/mixins";
 @import './pages/content-header';
 
-.devided-line {
-  border-bottom: calculateRem(0.5px) solid var(--gray-100);
-}
 .member-no-result {
   .no-result-text {
     font-size: calculateRem(14px);

@@ -15,14 +15,6 @@
     justify-content: center;
     align-items: center;
     cursor:pointer;
-    i.icon-close {
-      svg {
-
-      }
-    }
-    &:hover {
-    
-    }
   }
 
   h4 {
@@ -44,9 +36,6 @@
   .modal-custom-carousel.slick-slider {
     .slick-list {
       height: inherit !important;
-    }
-    .item-help.slick-slide, .slick-track {
-      // width:100% !important;
     }
   } 
 }
