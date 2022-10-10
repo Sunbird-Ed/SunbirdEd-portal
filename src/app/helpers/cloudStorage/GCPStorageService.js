@@ -4,6 +4,7 @@
  * @since       - 5.0.1
  * @version     - 1.0.0
  * @implements  - BaseStorageService
+ * @see {@link https://googleapis.dev/nodejs/storage/latest/Bucket.html | GCloud Bucket}
  */
 
 const BaseStorageService  = require('./BaseStorageService');

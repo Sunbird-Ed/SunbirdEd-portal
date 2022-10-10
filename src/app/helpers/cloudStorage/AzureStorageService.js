@@ -15,6 +15,7 @@ const async               = require('async');
 const _                   = require('lodash');
 const dateFormat          = require('dateformat');
 const uuidv1              = require('uuid/v1');
+const multiparty          = require('multiparty');
 class AzureStorageService extends BaseStorageService {
 
   fileExists(container, fileToGet, callback) {
@@ -145,7 +146,7 @@ class AzureStorageService extends BaseStorageService {
         callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname });
       }
       else if (!response.isSuccessful) {
-        console.error("Blob %s wasn't found container %s", file, containerName)
+        console.error("Blob %s wasn't found container %s", file, request.container)
         callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname });
       }
       else {
@@ -224,9 +225,91 @@ class AzureStorageService extends BaseStorageService {
     });
   }
 
-  apiResponse({ responseCode, result, params: { err, errmsg, status } }) {
+  blockStreamUpload(uploadContainer = undefined) {
+    return (req, res) => {
+      try {
+        const blobFolderName = new Date().toLocaleDateString()
+        let form = new multiparty.Form();
+        form.on('part', (part) => {
+          if (part.filename) {
+            var size = part.byteCount;
+            var name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
+            logger.info({
+              msg: 'Uploading file to container ' +
+                uploadContainer + ' to folder ' + blobFolderName +
+                ' for file name ' + name + ' with size ' + size
+            });
+            blobService.createBlockBlobFromStream(uploadContainer, `${blobFolderName}/${name}`, part, size, (error) => {
+              if (error && error.statusCode === 403) {
+                const response = {
+                  responseCode: "FORBIDDEN",
+                  params: {
+                    err: "FORBIDDEN",
+                    status: "failed",
+                    errmsg: "Unable to authorize to azure blob"
+                  },
+                  result: req.file
+                }
+                logger.error({
+                  msg: 'Unable to authorize to azure blob for uploading desktop crash logs',
+                  error: error
+                });
+                return res.status(403).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+              } else if (error) {
+                const response = {
+                  responseCode: "SERVER_ERROR",
+                  params: {
+                    err: "SERVER_ERROR",
+                    status: "failed",
+                    errmsg: "Failed to upload to blob"
+                  },
+                  result: {}
+                }
+                logger.error({
+                  msg: 'Failed to upload desktop crash logs to blob',
+                  error: error
+                });
+                return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+              } else {
+                const response = {
+                  responseCode: "OK",
+                  params: {
+                    err: null,
+                    status: "success",
+                    errmsg: null
+                  },
+                  result: {
+                    'message': 'Successfully uploaded to blob'
+                  }
+                }
+                return res.status(200).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+              }
+            });
+          }
+        });
+        form.parse(req);
+      } catch (error) {
+        const response = {
+          responseCode: "SERVER_ERROR",
+          params: {
+            err: "SERVER_ERROR",
+            status: "failed",
+            errmsg: "Failed to upload to blob"
+          },
+          result: {}
+        }
+        logger.error({
+          msg: 'Failed to upload desktop crash logs to blob',
+          error: error
+        });
+        return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+      }
+    }
+  }
+
+  apiResponse({ responseCode, result, params: { err, errmsg, status } }, id = 'api.report') {
     return {
-      'id': 'api.report',
+      'id': id,
       'ver': '1.0',
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
       'params': {
