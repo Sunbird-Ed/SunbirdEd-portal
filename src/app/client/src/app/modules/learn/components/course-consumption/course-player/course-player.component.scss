@@ -64,7 +64,6 @@
 }
 .chapter-box {
   border-bottom: .0625rem solid var(--gray-100);
-  // padding: calculateRem(16px);
   border-radius: calculateRem(2px);
   &:last-child{
     border-bottom: 0px solid var(--gray-100);

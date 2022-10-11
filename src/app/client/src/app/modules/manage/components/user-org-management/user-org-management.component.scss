@@ -20,24 +20,6 @@
      margin-top: calculateRem(6px);
     }
 
-    .sb-upload-file{
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        .sb-upload-btn {
-            position: absolute;
-            opacity: 0;
-            left: 0;
-            top: 0;
-            width: 100%;
-            margin: 0;
-            height: 100%;
-            cursor: pointer;
-        }
-    }
-
     .sb-pageSection-content{
         a{
             color: var(--primary-color);

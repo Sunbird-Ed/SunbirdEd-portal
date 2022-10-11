@@ -29,14 +29,6 @@
     }
   }
 
-  .text-disabled{
-    color:var(--gray-100);
-  }
-
-  .no-cert-text {
-    color:#F7B500; 
-  }
-
   ::ng-deep {
   .ui.accordion .active.title .chevron.down.icon {
       margin-top:calculateRem(6px);
@@ -54,14 +46,14 @@ ul {
 }
 li {
   display: grid;
-  grid-template-columns: 20px auto;
+  grid-template-columns: calculateRem(20px) auto;
   justify-content: start;
   align-items: center;
   margin-bottom:1rem
 }
 li::before {
   content: ">";
-  font-size: 12px;
-  color: #999;
+  font-size: calculateRem(12px);
+  color: var(--gray-200);
   font-weight:bold;
 }
