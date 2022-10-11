@@ -81,6 +81,17 @@ class BaseStorageService {
     throw new Error('BaseStorageService :: getFileAsText() must be implemented');
   }
 
+  /**
+   * @description                     - Stream upload file to storage service
+   * @throws                          - Throws Exception if method is not invoked without declaration
+   * @param {string} container        - Container name or folder name in storage service
+   * @param {string} filePath         - File path in storage service
+   * @param { function } callback     - Callback function
+   */
+   blockStreamUpload(container, filePath, callback) {
+    throw new Error('BaseStorageService :: blockStreamUpload() must be implemented');
+  }
+
 }
 
 module.exports = BaseStorageService;
