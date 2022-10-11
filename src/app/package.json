@@ -67,6 +67,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.163.0",
     "@aws-sdk/s3-request-presigner": "^3.173.0",
+    "@aws-sdk/lib-storage": "^3.182.0",
     "@google-cloud/storage": "^6.5.2",
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.28",
