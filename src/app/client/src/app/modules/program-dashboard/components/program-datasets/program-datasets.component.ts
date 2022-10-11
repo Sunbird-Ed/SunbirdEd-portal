@@ -94,6 +94,29 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   maxStartDate: any; //Start date - has to be one day less than end date
   displayFilters:any = {};
   loadash = _;
+  pdFilters = [{
+    'label':'Minimum no. of tasks in the project',
+    'placeholder':'Minimum no. of tasks in the project',
+    'controlType':'number',
+    'reference':'minTaskNumber',
+    'defaultValue':'5',
+  },
+  {
+    'label':'Minimum no. of task evidence',
+    'placeholder':'Minimum no. of task evidence',
+    'controlType':'number',
+    'reference':'minTaskEvidence',
+    'defaultValue':'2',
+  },
+  {
+    'label':'Minimum no. of project evidence',
+    'placeholder':'Minimum no. of project evidence',
+    'controlType':'number',
+    'reference':'minProjectEvidence',
+    'defaultValue':'1',
+  }
+]
+  configuredFilters:any = {}
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -545,6 +568,22 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   reportChanged(selectedReportData) {
     this.selectedReport = selectedReportData;
   }
+
+  filterChanged($event){
+    //this event will conatain data emitted by pd-filter method and will have only one property thus there will be only one key and value
+    let reference:string| unknown = Object.keys($event);
+    let value:number | unknown = Object.values($event);
+    this.configuredFilters[`${reference[0]}`] = value[0]-1;
+    // if(this.reportForm.contains(`${reference[0]}`)){
+    //   let updateControl = {};
+    //   updateControl[`${reference[0]}`] = value[0]-1
+    //   this.reportForm.patchValue(updateControl);
+    // }else{
+    //   this.reportForm.addControl(`${reference[0]}`, new FormControl(value[0]-1))
+    // }
+    console.log('from event emitter',Object.keys($event),Object.values($event))
+    console.log('configuredFilters',this.configuredFilters)
+  }
   addFilters() {
     let filterKeysObj = {
       program_id: _.get(this.reportForm, 'controls.programName.value'),
@@ -552,7 +591,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       programId: _.get(this.reportForm, 'controls.programName.value'),
       solutionId: _.get(this.reportForm, 'controls.solution.value'),
       district_externalId: _.get(this.reportForm, 'controls.districtName.value') || undefined,
-      organisation_id: _.get(this.reportForm, 'controls.organisationName.value') || undefined
+      organisation_id: _.get(this.reportForm, 'controls.organisationName.value') || undefined,
+      ...this.configuredFilters
     }
     let keys = Object.keys(filterKeysObj);
     this.selectedReport['filters'].map(data => {

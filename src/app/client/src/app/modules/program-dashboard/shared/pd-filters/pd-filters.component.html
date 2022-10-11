@@ -1,0 +1,22 @@
+<form class="d-flex flex-dr" [formGroup]="pdFiltersFormGroup">
+  <!-- <ng-container *ngFor="let filter of pdFilters"> -->
+    <div class="d-flex flex-dc">
+      <label>{{ pdFilter.label }}</label>
+      <ng-container *ngIf="pdFilter.controlType === 'number'">
+        <mat-form-field
+          appearance="fill"
+          class="sb-mat__dropdown custom_mat_dd"
+        >
+          <input
+            matInput
+            type="number"
+            [formControlName]="pdFilter.reference"
+            [placeholder]="pdFilter.placeholder"
+            [value]="pdFilter.defaultValue"
+            (input)="inputChange()"
+          />
+        </mat-form-field>
+      </ng-container>
+    </div>
+  <!-- </ng-container> -->
+</form>
