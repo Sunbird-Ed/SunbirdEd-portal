@@ -153,7 +153,7 @@ export class CreateUserComponent implements OnInit {
     this.userDetailsForm.value.name = this._sanitizer.sanitize(SecurityContext.HTML,this.userDetailsForm.value.name);
     const createUserRequest = {
       request: {
-        firstName: this.userDetailsForm.value.name,
+        firstName: this.userDetailsForm.controls?.name.value,
         managedBy: this.managedUserService.getUserId()
       }
     };
@@ -171,14 +171,14 @@ export class CreateUserComponent implements OnInit {
   registerUser(createUserRequest, userProfileData) {
     this.userService.registerUser(createUserRequest).subscribe((resp: ServerResponse) => {
         this.managedUserService.updateUserList({
-          firstName: this.userDetailsForm.value.name,
+          firstName: this.userDetailsForm.controls?.name.value,
           identifier: _.get(resp, 'result.userId'),
           id: _.get(resp, 'result.userId'),
           managedBy: this.managedUserService.getUserId()
         });
         const filterPipe = new InterpolatePipe();
         const successMessage = filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0096'),
-          '{firstName}', this.userDetailsForm.value.name);
+          '{firstName}', this.userDetailsForm.controls?.name.value);
         this.toasterService.custom({
           message: successMessage,
           class: 'sb-toaster sb-toast-success sb-toast-normal'
