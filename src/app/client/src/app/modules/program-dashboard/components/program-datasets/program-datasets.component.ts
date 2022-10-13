@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];
+
 @Component({
   selector: 'app-datasets',
   templateUrl: './program-datasets.component.html',
@@ -94,28 +95,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   maxStartDate: any; //Start date - has to be one day less than end date
   displayFilters:any = {};
   loadash = _;
-  pdFilters = [{
-    'label':'Minimum no. of tasks in the project',
-    'placeholder':'Minimum no. of tasks in the project',
-    'controlType':'number',
-    'reference':'minTaskNumber',
-    'defaultValue':'5',
-  },
-  {
-    'label':'Minimum no. of task evidence',
-    'placeholder':'Minimum no. of task evidence',
-    'controlType':'number',
-    'reference':'minTaskEvidence',
-    'defaultValue':'2',
-  },
-  {
-    'label':'Minimum no. of project evidence',
-    'placeholder':'Minimum no. of project evidence',
-    'controlType':'number',
-    'reference':'minProjectEvidence',
-    'defaultValue':'1',
-  }
-]
+  pdFilters:object[] = [];
   configuredFilters:any = {}
   constructor(
     activatedRoute: ActivatedRoute,
@@ -567,23 +547,22 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   reportChanged(selectedReportData) {
     this.selectedReport = selectedReportData;
+    console.log('Selected report',this.selectedReport)
+    if(this.selectedReport.configurableFilters){
+      this.pdFilters = this.selectedReport.uiFilters;
+      this.pdFilters.map(filter => {
+        this.configuredFilters[filter['reference']] = filter['defaultValue'] as number -1
+      })
+    }
   }
 
-  filterChanged($event){
-    //this event will conatain data emitted by pd-filter method and will have only one property thus there will be only one key and value
-    let reference:string| unknown = Object.keys($event);
-    let value:number | unknown = Object.values($event);
-    this.configuredFilters[`${reference[0]}`] = value[0]-1;
-    // if(this.reportForm.contains(`${reference[0]}`)){
-    //   let updateControl = {};
-    //   updateControl[`${reference[0]}`] = value[0]-1
-    //   this.reportForm.patchValue(updateControl);
-    // }else{
-    //   this.reportForm.addControl(`${reference[0]}`, new FormControl(value[0]-1))
-    // }
+  pdFilterChanged($event){
+    const [reference, value]= [Object.keys($event),Object.values($event)] ;
+    this.configuredFilters[reference[0]] = [0,null].includes(value[0] as number) ? 0 : value[0] as number -1;
     console.log('from event emitter',Object.keys($event),Object.values($event))
-    console.log('configuredFilters',this.configuredFilters)
+    console.log('configuredFilters',this.configuredFilters);
   }
+
   addFilters() {
     let filterKeysObj = {
       program_id: _.get(this.reportForm, 'controls.programName.value'),
@@ -594,7 +573,10 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       organisation_id: _.get(this.reportForm, 'controls.organisationName.value') || undefined,
       ...this.configuredFilters
     }
+
     let keys = Object.keys(filterKeysObj);
+    console.log('filterKeysObj','keys',filterKeysObj,keys)
+
     this.selectedReport['filters'].map(data => {
       keys.filter(key => {
         return data.dimension == key && (data.value = filterKeysObj[key]);
@@ -603,6 +585,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         this.filter.push(data);
       }
     });
+    console.log('Filters to be sent',this.filter);
   }
   submitRequest() {
     this.addFilters();
@@ -700,6 +683,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
       if (formData) {
         this.formData = formData;
+        console.log('Form Data',this.formData)
       }
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);

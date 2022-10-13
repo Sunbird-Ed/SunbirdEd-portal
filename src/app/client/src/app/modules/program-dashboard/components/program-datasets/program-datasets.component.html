@@ -121,9 +121,12 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
           </div>
-          <ng-container *ngFor="let filter of pdFilters">
-            <app-pd-filters [pdFilter]="filter" (filterChanged)="filterChanged($event)"></app-pd-filters>
+          <ng-container *ngIf="pdFilters.length">
+            <ng-container *ngFor="let filter of pdFilters">
+              <app-pd-filters [pdFilter]="filter" (filterChanged)="pdFilterChanged($event)"></app-pd-filters>
+            </ng-container>
           </ng-container>
+
           <div class="d-flex flex-dc ml-auto mt-12">
             <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
             <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">
