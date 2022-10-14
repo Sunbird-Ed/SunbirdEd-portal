@@ -50,37 +50,12 @@
         }
       }
     }
-    .change-preference {
-      position: relative;
-      z-index: 1;
-      @include respond-below(sm) {
-        padding-top: calculateRem(8px);
-      }
-    }
-    svg {
-      position: absolute;
-      right: calculateRem(32px);
-      left: inherit;
-      top: inherit;
-      bottom: calculateRem(-16px);
-      opacity: 0.55;
-      width: 180px;
-      height: auto;
-      transform: rotate(-90deg);
-      z-index: 0;
-      display: block !important;
-    }
 }
 .section-hr {
   border: calculateRem(0.5px) solid var(--rc-dad9cb);
 }
-.no-background {
-  background: none;
-}
-
 .home-container {
   padding:0;
-  // border-radius:2.5rem;
 }
 
 :host {
@@ -119,14 +94,6 @@
       margin: auto;
     }
   }
-  /*.banner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(233deg, rgba(0,0,0,0) 0%, #191919 100%);
-  }*/
   .explore-text {
     color: var(--primary-color);
     font-size: calculateRem(20px);
