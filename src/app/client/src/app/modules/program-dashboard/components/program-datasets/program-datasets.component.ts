@@ -547,7 +547,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   reportChanged(selectedReportData) {
     this.selectedReport = selectedReportData;
-    console.log('Selected report',this.selectedReport)
     if(this.selectedReport.configurableFilters){
       this.pdFilters = this.selectedReport.uiFilters;
       this.pdFilters.map(filter => {
@@ -559,8 +558,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   pdFilterChanged($event){
     const [reference, value]= [Object.keys($event),Object.values($event)] ;
     this.configuredFilters[reference[0]] = [0,null].includes(value[0] as number) ? 0 : value[0] as number -1;
-    console.log('from event emitter',Object.keys($event),Object.values($event))
-    console.log('configuredFilters',this.configuredFilters);
   }
 
   addFilters() {
@@ -575,7 +572,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     }
 
     let keys = Object.keys(filterKeysObj);
-    console.log('filterKeysObj','keys',filterKeysObj,keys)
 
     this.selectedReport['filters'].map(data => {
       keys.filter(key => {
@@ -585,7 +581,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         this.filter.push(data);
       }
     });
-    console.log('Filters to be sent',this.filter);
   }
   submitRequest() {
     this.addFilters();
@@ -683,7 +678,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
       if (formData) {
         this.formData = formData;
-        console.log('Form Data',this.formData)
       }
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);

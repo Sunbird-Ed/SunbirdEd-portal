@@ -26,7 +26,6 @@ export class PdFiltersComponent implements OnInit {
   }
 
   inputChange() {
-    this.filterChanged.emit(this.pdFiltersFormGroup.value)
-    console.log('filter group values',this.pdFiltersFormGroup.value)
+    this.filterChanged.emit(this.pdFiltersFormGroup.value);
   }
 }
