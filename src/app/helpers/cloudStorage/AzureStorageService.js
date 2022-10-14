@@ -228,14 +228,14 @@ class AzureStorageService extends BaseStorageService {
   blockStreamUpload(uploadContainer = undefined) {
     return (req, res) => {
       try {
-        const blobFolderName = new Date().toLocaleDateString()
+        const blobFolderName = new Date().toLocaleDateString();
         let form = new multiparty.Form();
         form.on('part', (part) => {
           if (part.filename) {
-            var size = part.byteCount;
-            var name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
+            let size = part.byteCount;
+            let name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
             logger.info({
-              msg: 'Uploading file to container ' +
+              msg: 'Azure__StorageService : blockStreamUpload Uploading file to container ' +
                 uploadContainer + ' to folder ' + blobFolderName +
                 ' for file name ' + name + ' with size ' + size
             });
@@ -251,7 +251,7 @@ class AzureStorageService extends BaseStorageService {
                   result: req.file
                 }
                 logger.error({
-                  msg: 'Unable to authorize to azure blob for uploading desktop crash logs',
+                  msg: 'Azure__StorageService : blockStreamUpload Unable to authorize to azure blob for uploading desktop crash logs',
                   error: error
                 });
                 return res.status(403).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
@@ -266,7 +266,7 @@ class AzureStorageService extends BaseStorageService {
                   result: {}
                 }
                 logger.error({
-                  msg: 'Failed to upload desktop crash logs to blob',
+                  msg: 'Azure__StorageService : blockStreamUpload Failed to upload desktop crash logs to blob',
                   error: error
                 });
                 return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
@@ -299,7 +299,7 @@ class AzureStorageService extends BaseStorageService {
           result: {}
         }
         logger.error({
-          msg: 'Failed to upload desktop crash logs to blob',
+          msg: 'Azure__StorageService : blockStreamUpload Failed to upload desktop crash logs to blob',
           error: error
         });
         return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
