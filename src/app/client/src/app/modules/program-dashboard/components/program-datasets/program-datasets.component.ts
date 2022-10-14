@@ -252,6 +252,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
+    this.resetConfigFilters();
     this.getSolutionList(program[0]);
     this.displayFilters['Program'] = [program[0].name]
     this.reportForm.controls.programName.setValue($event.value);
@@ -264,6 +265,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.noResult = false;
     this.districts = []
     this.organisations = [];
+    this.resetConfigFilters();
     this.globalDistrict = this.globalOrg = undefined;
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
@@ -520,6 +522,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.showPopUpModal = true;
     this.globalDistrict = this.globalOrg = undefined;
     this.timeRangeInit();
+    this.resetConfigFilters();
   }
 
   loadReports() {
@@ -546,6 +549,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   reportChanged(selectedReportData) {
+    this.resetConfigFilters();
     this.selectedReport = selectedReportData;
     if(this.selectedReport.configurableFilters){
       this.pdFilters = this.selectedReport.uiFilters;
@@ -553,6 +557,11 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         this.configuredFilters[filter['reference']] = filter['defaultValue'] as number -1
       })
     }
+  }
+  
+  resetConfigFilters(){
+    this.pdFilters = [];
+    this.configuredFilters = {};
   }
 
   pdFilterChanged($event){
