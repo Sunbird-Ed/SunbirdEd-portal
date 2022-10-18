@@ -13,7 +13,12 @@ import * as moment from 'moment';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];
-
+export interface configFilter{
+    label: string,
+    controlType: string,
+    reference: string,
+    defaultValue: number
+}
 @Component({
   selector: 'app-datasets',
   templateUrl: './program-datasets.component.html',
@@ -95,7 +100,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   maxStartDate: any; //Start date - has to be one day less than end date
   displayFilters:any = {};
   loadash = _;
-  pdFilters:object[] = [];
+  pdFilters:configFilter[] = [];
   configuredFilters:any = {}
   constructor(
     activatedRoute: ActivatedRoute,
