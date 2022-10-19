@@ -13,6 +13,12 @@ import * as moment from 'moment';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];
+export interface ConfigFilter{
+    label: string,
+    controlType: string,
+    reference: string,
+    defaultValue: number
+}
 @Component({
   selector: 'app-datasets',
   templateUrl: './program-datasets.component.html',
@@ -94,6 +100,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   maxStartDate: any; //Start date - has to be one day less than end date
   displayFilters:any = {};
   loadash = _;
+  pdFilters:ConfigFilter[] = [];
+  configuredFilters:any = {}
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -249,6 +257,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
+    this.resetConfigFilters();
     this.getSolutionList(program[0]);
     this.displayFilters['Program'] = [program[0].name]
     this.reportForm.controls.programName.setValue($event.value);
@@ -261,6 +270,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.noResult = false;
     this.districts = []
     this.organisations = [];
+    this.resetConfigFilters();
     this.globalDistrict = this.globalOrg = undefined;
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
@@ -517,6 +527,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.showPopUpModal = true;
     this.globalDistrict = this.globalOrg = undefined;
     this.timeRangeInit();
+    this.resetConfigFilters();
   }
 
   loadReports() {
@@ -543,8 +554,30 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   reportChanged(selectedReportData) {
+    this.resetConfigFilters();
     this.selectedReport = selectedReportData;
+    if(this.selectedReport.configurableFilters){
+      this.pdFilters = this.selectedReport.uiFilters;
+      this.pdFilters.map(filter => {
+        this.configuredFilters[filter['reference']] = filter['defaultValue'] as number -1
+      })
+    }
   }
+  
+  resetConfigFilters(){
+    this.pdFilters = [];
+    this.configuredFilters = {};
+  }
+
+  pdFilterChanged($event){
+    const [reference, value]= [Object.keys($event),Object.values($event)] ;
+    if([0,null].includes(value[0] as number) || value[0] < 0){
+      this.configuredFilters[reference[0]] = undefined;
+    }else{
+      this.configuredFilters[reference[0]] = value[0] as number -1;
+    }
+  }
+
   addFilters() {
     let filterKeysObj = {
       program_id: _.get(this.reportForm, 'controls.programName.value'),
@@ -552,9 +585,12 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       programId: _.get(this.reportForm, 'controls.programName.value'),
       solutionId: _.get(this.reportForm, 'controls.solution.value'),
       district_externalId: _.get(this.reportForm, 'controls.districtName.value') || undefined,
-      organisation_id: _.get(this.reportForm, 'controls.organisationName.value') || undefined
+      organisation_id: _.get(this.reportForm, 'controls.organisationName.value') || undefined,
+      ...this.configuredFilters
     }
+
     let keys = Object.keys(filterKeysObj);
+
     this.selectedReport['filters'].map(data => {
       keys.filter(key => {
         return data.dimension == key && (data.value = filterKeysObj[key]);
