@@ -311,16 +311,16 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         "reportconfig.report_status": "active"
       }
 
-      this.dashboardReport$ = this.renderReport(filtersForReport).pipe(
-        catchError(err => {
-          console.error('Error while rendering report', err);
-          this.noResultMessage = {
-            'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
-          };
-          this.noResult = true;
-          return of({});
-        })
-      );
+      // this.dashboardReport$ = this.renderReport(filtersForReport).pipe(
+      //   catchError(err => {
+      //     console.error('Error while rendering report', err);
+      //     this.noResultMessage = {
+      //       'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
+      //     };
+      //     this.noResult = true;
+      //     return of({});
+      //   })
+      // );
 
       if (types && types.length > 0) {
         types.forEach(element => {
