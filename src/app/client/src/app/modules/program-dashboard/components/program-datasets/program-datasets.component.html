@@ -121,7 +121,7 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
           </div>
-          <ng-container *ngIf="pdFilters.length">
+          <ng-container *ngIf="pdFilters.length && tabIndex !== 1 && tabIndex !== 2">
             <ng-container *ngFor="let filter of pdFilters">
               <app-pd-filters [pdFilter]="filter" (filterChanged)="pdFilterChanged($event)"></app-pd-filters>
             </ng-container>

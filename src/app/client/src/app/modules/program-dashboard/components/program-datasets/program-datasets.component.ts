@@ -542,9 +542,11 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   districtSelection($event) {
-    this.globalDistrict = $event.value
+    this.globalDistrict = $event.value;
     this.reportForm.controls.districtName.setValue($event.value);
     this.displayFilters['District'] = [$event?.source?.triggerValue]
+    this.tag =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
+    this.loadReports();
   }
 
   organisationSelection($event) {
@@ -645,7 +647,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
                 }
 
               });
-
               if (dataFound && dataFound.length > 0) {
                 this.popup = false;
                 this.isProcessed = true;
@@ -707,8 +708,12 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     let requestStatus = true;
     const selectedReportList = [];
     _.forEach(this.onDemandReportData, (value) => {
-      if (value.datasetConfig.type == this.selectedReport.datasetId && value.datasetConfig.params.solutionId == this.selectedSolution) {
-        selectedReportList.push(value);
+      if (value.datasetConfig.type == this.selectedReport.datasetId){
+        _.forEach(value.datasetConfig.params.filters, (filter) => {
+          if(['solutionId','solution_id'].includes(filter['dimension']) && filter.value  === this.selectedSolution){
+            selectedReportList.push(value);
+          }
+        });
       }
     });
     const sortedReportList = _.sortBy(selectedReportList, [(data) => {
