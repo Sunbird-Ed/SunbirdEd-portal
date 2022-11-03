@@ -104,8 +104,23 @@ Installing Sunbird requires two primary software components:
           |  sunbird_default_tenant   | sunbird |   string  |
 
     > The initialization of these environmental variables can take place in a common place like in your **.bashrc** or **.bash_profile**
+    
 
 4. Edit the Application Configuration
+
+    > These are the mandatory keys required to run the application in Local environment. Please update them with appropriatte values in `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js`
+
+        |           Environment Variable        |  Data Type |             Description                |
+        | :-------------------------------------| ---------- | -------------------------------------  |
+        |        sunbird_azure_account_name     |   string   |          Azure account Name            |
+        |        sunbird_azure_account_key      |   string   |          Azure Account Key             |
+        |          sunbird_aws_region           |   string   |        Region for AWS account          |
+        |  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN |   boolean  |   Flag value to allow anonymous user   |
+        |  sunbird_anonymous_device_register_api|   string   |The API for registering anonymous device|
+        |  sunbird_anonymous_register_token     |   string   |    Token to register anonymous device  |
+        |               SB_DOMAIN               |   string   |    The host for Sunbird Environment    |
+        |         PORTAL_API_AUTH_TOKEN         |   string   |     User generated API auth token      |
+
 
     > Open `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js` in any available text editor and update the contents of the file so that it contains exactly the following values
 
@@ -127,11 +142,7 @@ Installing Sunbird requires two primary software components:
               ...
               PORTAL_PORT: env.sunbird_port || 3000,
                 
-              // 5. PORTAL_API_AUTH_TOKEN
-              PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token || User generated API auth token
-              ...
-              
-              // 6. PORTAL_ECHO_API_URL
+              // 5. PORTAL_ECHO_API_URL
               PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || '',
               ...
           }
