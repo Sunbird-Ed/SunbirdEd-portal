@@ -241,6 +241,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       facets: this.globalSearchFacets,
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
     };
+    _.filter(Object.keys(this.queryParams),filterValue => { 
+      if(((_.get(this.allTabData , 'search.facets').indexOf(filterValue) !== -1)))
+      {
+          option.filters[filterValue] = (typeof(this.queryParams[filterValue]) === "string" ) ? this.queryParams[filterValue].split(',') : this.queryParams[filterValue];
+
+      }
+  });
     if (this.queryParams.softConstraints) {
       try {
         option.softConstraints = JSON.parse(this.queryParams.softConstraints);

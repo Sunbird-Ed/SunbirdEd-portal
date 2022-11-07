@@ -454,11 +454,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                     const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        let filterParams = ['publishedBy', 'createdBy','division'];
                         _.filter(Object.keys(params),filterValue => { 
-                            if((filterParams.indexOf(filterValue) !== -1))
+                            if(((_.get(currentPageData , 'metaData.filters').indexOf(filterValue) !== -1)))
                             {
-                                option.filters[filterValue] = [params[filterValue]];
+                                option.filters[filterValue] = (typeof(params[filterValue]) === "string" ) ? params[filterValue].split(',') : params[filterValue];
+
                             }
                         });
                     if (this.userService.loggedIn) {
