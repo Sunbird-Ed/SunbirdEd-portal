@@ -51,3 +51,5 @@ src/desktop/chromedriverlog.txt
 .prettierignore
 
 **/.DS_Store
+
+/.vscode/**
