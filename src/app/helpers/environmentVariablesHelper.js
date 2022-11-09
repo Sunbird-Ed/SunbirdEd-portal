@@ -2,6 +2,7 @@
 const env = process.env
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+const SB_DOMAIN = 'https://staging.open-sunbird.org'
 
 let envVariables = {
 
@@ -11,7 +12,7 @@ let envVariables = {
   DEFAULT_CHANNEL: env.sunbird_default_channel,
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
   PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
-  ? env.sunbird_portal_session_secret.split(',') : '',
+  ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
@@ -19,18 +20,18 @@ let envVariables = {
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
-  LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
+  LEARNER_URL: env.sunbird_learner_player_url || SB_DOMAIN + '/api/',
+  CONTENT_URL: env.sunbird_content_player_url || SB_DOMAIN + '/api/',
+  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || SB_DOMAIN,
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
-  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
+  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || SB_DOMAIN + '/auth',
   PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
   PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
-  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://staging.open-sunbird.org/api/echo/',
-  CONFIG_URL: env.sunbird_config_service_url || 'https://staging.open-sunbird.org/api/config/',
+  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || SB_DOMAIN + '/api/echo/',
+  CONFIG_URL: env.sunbird_config_service_url || SB_DOMAIN + '/api/config/',
   EKSTEP_ENV: env.ekstep_env || 'qa',
   DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
-  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.open-sunbird.org/api/v3/device/profile/',
+  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || SB_DOMAIN + '/api/v3/device/profile/',
   sunbird_theme: env.sunbird_theme || 'default',
   BUILD_NUMBER: packageObj.version + '.' + packageObj.buildHash,
   sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
@@ -43,7 +44,7 @@ let envVariables = {
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
   CRYPTO_ENCRYPTION_KEY_EXTERNAL:env.crypto_encryption_key_external || '030702me8696b8ee2aa71x9n13l4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
-  REPORT_SERVICE_URL: env.sunbird_report_service_url || 'https://staging.open-sunbird.org/api/data/v1/report-service',
+  REPORT_SERVICE_URL: env.sunbird_report_service_url || SB_DOMAIN + '/api/data/v1/report-service',
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
   sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
   sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
@@ -172,7 +173,7 @@ let envVariables = {
   content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
   CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
   LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
-  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.open-sunbird.org/api/',
+  DATASERVICE_URL: env.sunbird_dataservice_url || SB_DOMAIN + '/api/',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
 

@@ -232,8 +232,8 @@ class AzureStorageService extends BaseStorageService {
         let form = new multiparty.Form();
         form.on('part', (part) => {
           if (part.filename) {
-            var size = part.byteCount;
-            var name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
+            let size = part.byteCount;
+            let name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
             logger.info({
               msg: 'Azure__StorageService : blockStreamUpload Uploading file to container ' +
                 uploadContainer + ' to folder ' + blobFolderName +
