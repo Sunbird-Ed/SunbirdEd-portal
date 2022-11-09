@@ -39,7 +39,7 @@
          </ng-template>
         <ng-container *ngTemplateOutlet="programDataset"></ng-container>
       </mat-tab>
-      <mat-tab appTelemetryInteract>
+      <!-- <mat-tab appTelemetryInteract>
         <ng-template mat-tab-label>
            <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.graphs}}</span>
         </ng-template>
@@ -50,7 +50,7 @@
          <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.table}}</span>
       </ng-template>
      <ng-container *ngTemplateOutlet="table"></ng-container>
-   </mat-tab> 
+   </mat-tab>  -->
     </mat-tab-group>
 </div>
 
@@ -121,6 +121,12 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
           </div>
+          <ng-container *ngIf="pdFilters.length && tabIndex !== 1 && tabIndex !== 2">
+            <ng-container *ngFor="let filter of pdFilters">
+              <app-pd-filters [pdFilter]="filter" (filterChanged)="pdFilterChanged($event)"></app-pd-filters>
+            </ng-container>
+          </ng-container>
+
           <div class="d-flex flex-dc ml-auto mt-12">
             <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
             <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">

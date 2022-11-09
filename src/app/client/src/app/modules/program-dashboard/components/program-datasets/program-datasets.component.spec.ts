@@ -524,6 +524,19 @@ describe('DatasetsComponent', () => {
     expect(component.reportChanged).toHaveBeenCalled();
   });
 
+  it('should update the selected report data for Filtered task detail report ', () => {
+    jest.spyOn(component,'reportChanged');
+    component.reportChanged(mockData.selectedReportWithConfigurableFilters)
+    expect(component.selectedReport).toBe(mockData.selectedReportWithConfigurableFilters);
+    expect(component.reportChanged).toHaveBeenCalled();
+  });
+
+  it('should call pdFilterChanged method', () => {
+    jest.spyOn(component,'pdFilterChanged');
+    component.pdFilterChanged({task_count:5});
+    expect(component.pdFilterChanged).toHaveBeenCalledWith({task_count:5});
+  });
+  
   it('should request the csv', () => {
     jest.spyOn(component,'csvRequest');
     jest.spyOn(component,'submitRequest');
