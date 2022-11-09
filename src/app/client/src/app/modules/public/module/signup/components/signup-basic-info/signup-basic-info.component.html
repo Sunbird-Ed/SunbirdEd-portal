@@ -1,8 +1,11 @@
 <div [formGroup]="personalInfoForm" class="signup-form-content">
 
-    <h5 tabindex="0" *ngIf="telemetryImpression" [ngClass]="{'hide': routeParams?.loginMode === 'gmail'}" [appTelemetryImpression]="telemetryImpression"
+    <h5 tabindex="0" *ngIf="telemetryImpression" [ngClass]="{'hide': routeParams?.loginMode == 'gmail','show':routeParams?.loginMode != 'gmail'}" [appTelemetryImpression]="telemetryImpression"
     class="font-weight-bold text-center mb-24">
     {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
+    <h5 tabindex="0" *ngIf="telemetryImpression" [ngClass]="{'show': routeParams?.loginMode == 'gmail','hide': routeParams?.loginMode != 'gmail'}" [appTelemetryImpression]="telemetryImpression"
+    class="font-weight-bold text-center mb-24">
+    {{resourceService.frmelmnts.lbl.followingdetails | interpolate:'{instance}': instance}}</h5>
 
     <div class="required mb-16">
         <label for="signup-form-name" class="mb-8 font-weight-bold">
