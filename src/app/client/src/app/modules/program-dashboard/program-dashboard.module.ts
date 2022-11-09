@@ -25,6 +25,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SbBignumberComponent } from './shared/sb-bignumber/sb-bignumber.component';
 import { SbTableComponent } from './shared/sb-table/sb-table.component';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { PdFiltersComponent } from './shared/pd-filters/pd-filters.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 const TIME_RANGE_DATE_FORMAT = {
   parse: {
@@ -45,7 +48,8 @@ const TIME_RANGE_DATE_FORMAT = {
   SbChartComponent,
   FilterChartPipe,
   SbBignumberComponent,
-  SbTableComponent
+  SbTableComponent,
+  PdFiltersComponent
   ],
   imports: [
     CommonModule,
@@ -56,6 +60,8 @@ const TIME_RANGE_DATE_FORMAT = {
     TelemetryModule,
     FormsModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     programDashboardRoutingModule,
     MatCheckboxModule,
     MatTabsModule,
