@@ -165,7 +165,7 @@
     display: inline-table !important;
     width: 100% !important;
     line-height: 1.5em !important;
-    padding-top: 0.625rem;
+    padding: 0.625rem 1.5em;
   }
   .mat-option-text{
     display: flex !important;
@@ -177,7 +177,6 @@
   .mat-dropdown__options span:before {
     display: flex !important;
     align-self: flex-end !important;
-    right: 0.5rem !important;
   }
 
 }
