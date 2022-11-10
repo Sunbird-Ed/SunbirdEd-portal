@@ -119,6 +119,33 @@ export let mockData = {
         datasetId: "ml-observation-status-report",
         roles: ["PM"],
       },
+      {
+        name: "Filtered task detail report",
+        encrypt: true,
+        datasetId: "ml-filtered-task-detail-exhaust",
+        roles: ["PROGRAM_MANAGER"],
+        configurableFilters: true,
+        uiFilters: [
+          {
+            label: "Minimum no. of tasks in the project",
+            controlType: "number",
+            reference: "task_count",
+            defaultValue: 5,
+          },
+          {
+            label: "Minimum no. of task evidence",
+            controlType: "number",
+            reference: "task_evidence_count",
+            defaultValue: 2,
+          },
+          {
+            label: "Minimum no. of project evidence",
+            controlType: "number",
+            reference: "project_evidence_count",
+            defaultValue: 1,
+          },
+        ],
+      },
     ],
     observation_with_rubric: [
       {
@@ -2888,6 +2915,90 @@ export let mockData = {
       },
     ],
   },
+  selectedReportWithConfigurableFilters: {
+    name: "Filtered task detail report",
+    encrypt: true,
+    datasetId: "ml-filtered-task-detail-exhaust",
+    roles: ["PROGRAM_MANAGER"],
+    configurableFilters: true,
+    filters: [
+      {
+        type: "equals",
+        dimension: "private_program",
+        value: "false",
+      },
+      {
+        type: "equals",
+        dimension: "sub_task_deleted_flag",
+        value: "false",
+      },
+      {
+        type: "equals",
+        dimension: "task_deleted_flag",
+        value: "false",
+      },
+      {
+        type: "equals",
+        dimension: "project_deleted_flag",
+        value: "false",
+      },
+      {
+        type: "equals",
+        dimension: "program_id",
+        value: "$programId",
+      },
+      {
+        type: "equals",
+        dimension: "solution_id",
+        value: "$solutionId",
+      },
+      {
+        type: "equals",
+        dimension: "district_externalId",
+        value: "$district_externalId",
+      },
+      {
+        type: "equals",
+        dimension: "organisation_id",
+        value: "$organisation_id",
+      },
+      {
+        type: "greaterthan",
+        dimension: "task_count",
+        value: "$task_count",
+      },
+      {
+        type: "greaterthan",
+        dimension: "task_evidence_count",
+        value: "$task_evidence_count",
+      },
+      {
+        type: "greaterthan",
+        dimension: "project_evidence_count",
+        value: "$project_evidence_count",
+      },
+    ],
+    uiFilters: [
+      {
+        label: "Minimum no. of tasks in the project",
+        controlType: "number",
+        reference: "task_count",
+        defaultValue: 5,
+      },
+      {
+        label: "Minimum no. of task evidence",
+        controlType: "number",
+        reference: "task_evidence_count",
+        defaultValue: 2,
+      },
+      {
+        label: "Minimum no. of project evidence",
+        controlType: "number",
+        reference: "project_evidence_count",
+        defaultValue: 1,
+      },
+    ],
+  },
   multipleDataDownloaded: [
     {
       loaded: true,
@@ -3633,548 +3744,548 @@ export let mockData = {
       loaded: true,
     },
   ],
-  charts:[
+  charts: [
     {
-        "chartConfig": {
-            "id": "Big_Number",
-            "bigNumbers": [
-                {
-                    "footer": " ",
-                    "header": "Unique users who submitted form",
-                    "dataExpr": "Total Unique Users"
-                },
-                {
-                    "footer": " ",
-                    "header": "Unique Users who started form",
-                    "dataExpr": "Unique Users who started form"
-                },
-                {
-                    "footer": " ",
-                    "header": "Total submissions",
-                    "dataExpr": "Total submissions"
-                },
-                {
-                    "footer": " ",
-                    "header": "Total entities observed",
-                    "dataExpr": "Total entities observed"
-                }
-            ],
-            "dataSource": {
-                "ids": [
-                    "ml_total_unique_users_api_testo_pabitra_new1_one",
-                    "ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine",
-                    "total_entities_observed_new_new_new_api_test_pabitra_new1_final_three",
-                    "ml_total_submissions_api_test_pabitra_new1_final_two"
-                ],
-                "commonDimension": "Date"
-            }
+      chartConfig: {
+        id: "Big_Number",
+        bigNumbers: [
+          {
+            footer: " ",
+            header: "Unique users who submitted form",
+            dataExpr: "Total Unique Users",
+          },
+          {
+            footer: " ",
+            header: "Unique Users who started form",
+            dataExpr: "Unique Users who started form",
+          },
+          {
+            footer: " ",
+            header: "Total submissions",
+            dataExpr: "Total submissions",
+          },
+          {
+            footer: " ",
+            header: "Total entities observed",
+            dataExpr: "Total entities observed",
+          },
+        ],
+        dataSource: {
+          ids: [
+            "ml_total_unique_users_api_testo_pabitra_new1_one",
+            "ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine",
+            "total_entities_observed_new_new_new_api_test_pabitra_new1_final_three",
+            "ml_total_submissions_api_test_pabitra_new1_final_two",
+          ],
+          commonDimension: "Date",
         },
-        "downloadUrl": [
-            {
-                "id": "ml_total_unique_users_api_testo_pabitra_new1_one",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_unique_users_api_testo_pabitra_new1_one.json"
-            },
-            {
-                "id": "ml_total_submissions_api_test_pabitra_new1_final_two",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_submissions_api_test_pabitra_new1_final_two.json"
-            },
-            {
-                "id": "total_entities_observed_new_new_new_api_test_pabitra_new1_final_three",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/total_entities_observed_new_new_new_api_test_pabitra_new1_final_three.json"
-            },
-            {
-                "id": "ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four.json"
-            },
-            {
-                "id": "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five.json"
-            },
-            {
-                "id": "ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six.json"
-            },
-            {
-                "id": "ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven.json"
-            },
-            {
-                "id": "ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight.json"
-            },
-            {
-                "id": "ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine.json"
-            }
-        ],
-        "chartData": [
-            {
-                "district_externalId": "b617e607-0a5b-45a0-9894-7a325ffa45c7",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "KRISHNA",
-                "Total Unique Users": "1.0"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "unknown",
-                "organisation_id": "unknown",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR",
-                "Total Unique Users": "2.0"
-            },
-            {
-                "district_externalId": "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "CHITTOOR",
-                "Total Unique Users": "2.0"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR",
-                "Total Unique Users": "7.0"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "KirubaOrg2.1",
-                "organisation_id": "0127920475840593920",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR",
-                "Total Unique Users": "1.0"
-            },
-            null,
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Total entities observed": "10.0",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Total entities observed": "2.0",
-                "organisation_name": "unknown",
-                "organisation_id": "unknown",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR"
-            },
-            {
-                "district_externalId": "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Total entities observed": "2.0",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "CHITTOOR"
-            },
-            {
-                "district_externalId": "b617e607-0a5b-45a0-9894-7a325ffa45c7",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Total entities observed": "1.0",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "KRISHNA"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Total entities observed": "1.0",
-                "organisation_name": "KirubaOrg2.1",
-                "organisation_id": "0127920475840593920",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "unknown",
-                "organisation_id": "unknown",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR",
-                "Total submissions": "6.0"
-            },
-            {
-                "district_externalId": "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "CHITTOOR",
-                "Total submissions": "2.0"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "KirubaOrg2.1",
-                "organisation_id": "0127920475840593920",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR",
-                "Total submissions": "3.0"
-            },
-            {
-                "district_externalId": "b617e607-0a5b-45a0-9894-7a325ffa45c7",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "KRISHNA",
-                "Total submissions": "2.0"
-            },
-            {
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "parent_channel": "SHIKSHALOKAM",
-                "district_name": "ANANTAPUR",
-                "Total submissions": "19.0"
-            }
-        ],
-        "lastUpdatedOn": 1658135572000
+      },
+      downloadUrl: [
+        {
+          id: "ml_total_unique_users_api_testo_pabitra_new1_one",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_unique_users_api_testo_pabitra_new1_one.json",
+        },
+        {
+          id: "ml_total_submissions_api_test_pabitra_new1_final_two",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_submissions_api_test_pabitra_new1_final_two.json",
+        },
+        {
+          id: "total_entities_observed_new_new_new_api_test_pabitra_new1_final_three",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/total_entities_observed_new_new_new_api_test_pabitra_new1_final_three.json",
+        },
+        {
+          id: "ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four.json",
+        },
+        {
+          id: "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five.json",
+        },
+        {
+          id: "ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six.json",
+        },
+        {
+          id: "ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven.json",
+        },
+        {
+          id: "ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight.json",
+        },
+        {
+          id: "ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine.json",
+        },
+      ],
+      chartData: [
+        {
+          district_externalId: "b617e607-0a5b-45a0-9894-7a325ffa45c7",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "KRISHNA",
+          "Total Unique Users": "1.0",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "unknown",
+          organisation_id: "unknown",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+          "Total Unique Users": "2.0",
+        },
+        {
+          district_externalId: "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "CHITTOOR",
+          "Total Unique Users": "2.0",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+          "Total Unique Users": "7.0",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "KirubaOrg2.1",
+          organisation_id: "0127920475840593920",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+          "Total Unique Users": "1.0",
+        },
+        null,
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Total entities observed": "10.0",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Total entities observed": "2.0",
+          organisation_name: "unknown",
+          organisation_id: "unknown",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+        },
+        {
+          district_externalId: "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Total entities observed": "2.0",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "CHITTOOR",
+        },
+        {
+          district_externalId: "b617e607-0a5b-45a0-9894-7a325ffa45c7",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Total entities observed": "1.0",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "KRISHNA",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Total entities observed": "1.0",
+          organisation_name: "KirubaOrg2.1",
+          organisation_id: "0127920475840593920",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "unknown",
+          organisation_id: "unknown",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+          "Total submissions": "6.0",
+        },
+        {
+          district_externalId: "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "CHITTOOR",
+          "Total submissions": "2.0",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "KirubaOrg2.1",
+          organisation_id: "0127920475840593920",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+          "Total submissions": "3.0",
+        },
+        {
+          district_externalId: "b617e607-0a5b-45a0-9894-7a325ffa45c7",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "KRISHNA",
+          "Total submissions": "2.0",
+        },
+        {
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          parent_channel: "SHIKSHALOKAM",
+          district_name: "ANANTAPUR",
+          "Total submissions": "19.0",
+        },
+      ],
+      lastUpdatedOn: 1658135572000,
     },
     {
-        "chartConfig": {
-            "id": "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five",
-            "colors": [
-                {
-                    "borderColor": "rgb(0, 199, 134)",
-                    "borderWidth": 2,
-                    "backgroundColor": "rgba(0, 199, 134, 0.3)"
+      chartConfig: {
+        id: "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five",
+        colors: [
+          {
+            borderColor: "rgb(0, 199, 134)",
+            borderWidth: 2,
+            backgroundColor: "rgba(0, 199, 134, 0.3)",
+          },
+          {
+            borderColor: "rgb(255, 161, 29)",
+            borderWidth: 2,
+            backgroundColor: "rgba(255, 161, 29, 0.3)",
+          },
+          {
+            borderColor: "rgb(255, 69, 88)",
+            borderWidth: 2,
+            backgroundColor: "rgba(255, 69, 88, 0.3)",
+          },
+          {
+            borderColor: "rgb(242, 203, 28)",
+            borderWidth: 2,
+            backgroundColor: "rgba(242, 203, 28, 0.3)",
+          },
+          {
+            borderColor: "rgb(55, 70, 73)",
+            borderWidth: 2,
+            backgroundColor: "rgba(55, 70, 73, 0.3)",
+          },
+        ],
+        filters: [
+          {
+            reference: "district_name",
+            controlType: "multi-select",
+            displayName: "District",
+          },
+          {
+            reference: "organisation_name",
+            controlType: "multi-select",
+            displayName: "Organisation",
+          },
+        ],
+        options: {
+          title: {
+            text: "District-wise submissions Vs observation status",
+            display: true,
+            fontSize: 16,
+          },
+          legend: {
+            display: true,
+          },
+          scales: {
+            xAxes: [
+              {
+                stacked: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: "district_name",
                 },
-                {
-                    "borderColor": "rgb(255, 161, 29)",
-                    "borderWidth": 2,
-                    "backgroundColor": "rgba(255, 161, 29, 0.3)"
-                },
-                {
-                    "borderColor": "rgb(255, 69, 88)",
-                    "borderWidth": 2,
-                    "backgroundColor": "rgba(255, 69, 88, 0.3)"
-                },
-                {
-                    "borderColor": "rgb(242, 203, 28)",
-                    "borderWidth": 2,
-                    "backgroundColor": "rgba(242, 203, 28, 0.3)"
-                },
-                {
-                    "borderColor": "rgb(55, 70, 73)",
-                    "borderWidth": 2,
-                    "backgroundColor": "rgba(55, 70, 73, 0.3)"
-                }
+              },
             ],
-            "filters": [
-                {
-                    "reference": "district_name",
-                    "controlType": "multi-select",
-                    "displayName": "District"
+            yAxes: [
+              {
+                ticks: {
+                  precision: 0,
+                  beginAtZero: true,
                 },
-                {
-                    "reference": "organisation_name",
-                    "controlType": "multi-select",
-                    "displayName": "Organisation"
-                }
+                stacked: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: "No. of submissions",
+                },
+              },
             ],
-            "options": {
-                "title": {
-                    "text": "District-wise submissions Vs observation status",
-                    "display": true,
-                    "fontSize": 16
-                },
-                "legend": {
-                    "display": true
-                },
-                "scales": {
-                    "xAxes": [
-                        {
-                            "stacked": true,
-                            "scaleLabel": {
-                                "display": true,
-                                "labelString": "district_name"
-                            }
-                        }
-                    ],
-                    "yAxes": [
-                        {
-                            "ticks": {
-                                "precision": 0,
-                                "beginAtZero": true
-                            },
-                            "stacked": true,
-                            "scaleLabel": {
-                                "display": true,
-                                "labelString": "No. of submissions"
-                            }
-                        }
-                    ]
-                },
-                "tooltips": {
-                    "mode": "x-axis",
-                    "intersect": false,
-                    "bodySpacing": 5,
-                    "titleSpacing": 5
-                },
-                "responsive": true,
-                "showLastUpdatedOn": true
-            },
-            "datasets": [
-                {
-                    "label": "Submitted",
-                    "dataExpr": "Completed"
-                },
-                {
-                    "label": "Started",
-                    "dataExpr": "Started"
-                },
-                {
-                    "label": "In Progress",
-                    "dataExpr": "In Progress"
-                }
-            ],
-            "chartType": "bar",
-            "dataSource": {
-                "ids": [
-                    "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five"
-                ],
-                "commonDimension": "district_name"
-            },
-            "labelsExpr": "district_name"
+          },
+          tooltips: {
+            mode: "x-axis",
+            intersect: false,
+            bodySpacing: 5,
+            titleSpacing: 5,
+          },
+          responsive: true,
+          showLastUpdatedOn: true,
         },
-        "downloadUrl": [
-            {
-                "id": "ml_total_unique_users_api_testo_pabitra_new1_one",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_unique_users_api_testo_pabitra_new1_one.json"
-            },
-            {
-                "id": "ml_total_submissions_api_test_pabitra_new1_final_two",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_submissions_api_test_pabitra_new1_final_two.json"
-            },
-            {
-                "id": "total_entities_observed_new_new_new_api_test_pabitra_new1_final_three",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/total_entities_observed_new_new_new_api_test_pabitra_new1_final_three.json"
-            },
-            {
-                "id": "ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four.json"
-            },
-            {
-                "id": "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five.json"
-            },
-            {
-                "id": "ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six.json"
-            },
-            {
-                "id": "ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven.json"
-            },
-            {
-                "id": "ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight.json"
-            },
-            {
-                "id": "ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine",
-                "path": "/reports/fetch/60a245158eee6c5040d16a4a/ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine.json"
-            }
+        datasets: [
+          {
+            label: "Submitted",
+            dataExpr: "Completed",
+          },
+          {
+            label: "Started",
+            dataExpr: "Started",
+          },
+          {
+            label: "In Progress",
+            dataExpr: "In Progress",
+          },
         ],
-        "chartData": [
-            {
-                "Started": "4.0",
-                "district_externalId": "f3e5b768-9008-4073-baf5-1dffc3c12b0b",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "0.0",
-                "Completed": "0.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "0.0",
-                "organisation_name": "unknown",
-                "organisation_id": "unknown",
-                "Date": "2022-07-17",
-                "district_name": "unknown"
-            },
-            {
-                "Started": "1.0",
-                "district_externalId": "87422ed0-d2dd-4672-9d6b-10a4b565dfe3",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "0.0",
-                "Completed": "0.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "0.0",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "district_name": "GUNTUR"
-            },
-            {
-                "Started": "1.0",
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "2.0",
-                "Completed": "3.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "0.0",
-                "organisation_name": "KirubaOrg2.1",
-                "organisation_id": "0127920475840593920",
-                "Date": "2022-07-17",
-                "district_name": "ANANTAPUR"
-            },
-            {
-                "Started": "9.0",
-                "district_externalId": "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "3.0",
-                "Completed": "2.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "1.0",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "district_name": "CHITTOOR"
-            },
-            {
-                "Started": "26.0",
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "7.0",
-                "Completed": "19.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "1.0",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "district_name": "ANANTAPUR"
-            },
-            {
-                "Started": "3.0",
-                "district_externalId": "b617e607-0a5b-45a0-9894-7a325ffa45c7",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "0.0",
-                "Completed": "2.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "0.0",
-                "organisation_name": "Staging Custodian Organization",
-                "organisation_id": "0126796199493140480",
-                "Date": "2022-07-17",
-                "district_name": "KRISHNA"
-            },
-            {
-                "Started": "1.0",
-                "district_externalId": "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "0.0",
-                "Completed": "0.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "0.0",
-                "organisation_name": "unknown",
-                "organisation_id": "unknown",
-                "Date": "2022-07-17",
-                "district_name": "CHITTOOR"
-            },
-            {
-                "Started": "1.0",
-                "district_externalId": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                "Program name": "Observation led projects testing",
-                "program_id": "607d320de9cce45e22ce90c0",
-                "In Progress": "0.0",
-                "Completed": "6.0",
-                "Observation name": "Leadership Self Assessment(Percentage)",
-                "solution_id": "60a245158eee6c5040d16a4a",
-                "Rating Pending": "0.0",
-                "organisation_name": "unknown",
-                "organisation_id": "unknown",
-                "Date": "2022-07-17",
-                "district_name": "ANANTAPUR"
-            }
-        ],
-        "lastUpdatedOn": 1658121421000
-    }
-]
+        chartType: "bar",
+        dataSource: {
+          ids: [
+            "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five",
+          ],
+          commonDimension: "district_name",
+        },
+        labelsExpr: "district_name",
+      },
+      downloadUrl: [
+        {
+          id: "ml_total_unique_users_api_testo_pabitra_new1_one",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_unique_users_api_testo_pabitra_new1_one.json",
+        },
+        {
+          id: "ml_total_submissions_api_test_pabitra_new1_final_two",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_total_submissions_api_test_pabitra_new1_final_two.json",
+        },
+        {
+          id: "total_entities_observed_new_new_new_api_test_pabitra_new1_final_three",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/total_entities_observed_new_new_new_api_test_pabitra_new1_final_three.json",
+        },
+        {
+          id: "ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_users_who_submitted_form_api_test_pabitra_new1_final_four.json",
+        },
+        {
+          id: "district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/district_wise_no_of_submissions_vs_observation_status_new_new_new_api_test_pabitra_new1_final_five.json",
+        },
+        {
+          id: "ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_criteria_wise_unique_entities_at_each_level_api_test_p_new1_final_six.json",
+        },
+        {
+          id: "ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_district_wise_unique_entities_observed_new_new_api_test_pabitra_new1_final_seven.json",
+        },
+        {
+          id: "ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_domain_wise_unique_entities_at_each_level_new_new_new_new_api_test_new_pabitra_new1_final_eight.json",
+        },
+        {
+          id: "ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine",
+          path: "/reports/fetch/60a245158eee6c5040d16a4a/ml_unique_users_who_started_form_new_new_api_test_pabitra_new1_final_nine.json",
+        },
+      ],
+      chartData: [
+        {
+          Started: "4.0",
+          district_externalId: "f3e5b768-9008-4073-baf5-1dffc3c12b0b",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "0.0",
+          Completed: "0.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "0.0",
+          organisation_name: "unknown",
+          organisation_id: "unknown",
+          Date: "2022-07-17",
+          district_name: "unknown",
+        },
+        {
+          Started: "1.0",
+          district_externalId: "87422ed0-d2dd-4672-9d6b-10a4b565dfe3",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "0.0",
+          Completed: "0.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "0.0",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          district_name: "GUNTUR",
+        },
+        {
+          Started: "1.0",
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "2.0",
+          Completed: "3.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "0.0",
+          organisation_name: "KirubaOrg2.1",
+          organisation_id: "0127920475840593920",
+          Date: "2022-07-17",
+          district_name: "ANANTAPUR",
+        },
+        {
+          Started: "9.0",
+          district_externalId: "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "3.0",
+          Completed: "2.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "1.0",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          district_name: "CHITTOOR",
+        },
+        {
+          Started: "26.0",
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "7.0",
+          Completed: "19.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "1.0",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          district_name: "ANANTAPUR",
+        },
+        {
+          Started: "3.0",
+          district_externalId: "b617e607-0a5b-45a0-9894-7a325ffa45c7",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "0.0",
+          Completed: "2.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "0.0",
+          organisation_name: "Staging Custodian Organization",
+          organisation_id: "0126796199493140480",
+          Date: "2022-07-17",
+          district_name: "KRISHNA",
+        },
+        {
+          Started: "1.0",
+          district_externalId: "b5c35cfc-6c1e-4266-94ef-a425c43c7f4e",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "0.0",
+          Completed: "0.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "0.0",
+          organisation_name: "unknown",
+          organisation_id: "unknown",
+          Date: "2022-07-17",
+          district_name: "CHITTOOR",
+        },
+        {
+          Started: "1.0",
+          district_externalId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          "Program name": "Observation led projects testing",
+          program_id: "607d320de9cce45e22ce90c0",
+          "In Progress": "0.0",
+          Completed: "6.0",
+          "Observation name": "Leadership Self Assessment(Percentage)",
+          solution_id: "60a245158eee6c5040d16a4a",
+          "Rating Pending": "0.0",
+          organisation_name: "unknown",
+          organisation_id: "unknown",
+          Date: "2022-07-17",
+          district_name: "ANANTAPUR",
+        },
+      ],
+      lastUpdatedOn: 1658121421000,
+    },
+  ],
 };
