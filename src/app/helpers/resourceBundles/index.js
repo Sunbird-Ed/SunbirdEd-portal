@@ -1,9 +1,7 @@
-const envHelper = require('../environmentVariablesHelper.js')
-let HttpStatus = require('http-status-codes')
-let path = require('path')
-let fs = require('fs')
-const API_VERSION = '1.0'
-const compression = require('compression');
+const envHelper         = require('../environmentVariablesHelper.js')
+let HttpStatus          = require('http-status-codes')
+const API_VERSION       = '1.0'
+const compression       = require('compression');
 const dateFormat        = require('dateformat');
 const uuidv1            = require('uuid/v1');
 const { logger }        = require('@project-sunbird/logger');
