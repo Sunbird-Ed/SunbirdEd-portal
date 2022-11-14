@@ -311,16 +311,16 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         "reportconfig.report_status": "active"
       }
 
-      // this.dashboardReport$ = this.renderReport(filtersForReport).pipe(
-      //   catchError(err => {
-      //     console.error('Error while rendering report', err);
-      //     this.noResultMessage = {
-      //       'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
-      //     };
-      //     this.noResult = true;
-      //     return of({});
-      //   })
-      // );
+      this.dashboardReport$ = this.renderReport(filtersForReport).pipe(
+        catchError(err => {
+          console.error('Error while rendering report', err);
+          this.noResultMessage = {
+            'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
+          };
+          this.noResult = true;
+          return of({});
+        })
+      );
 
       if (types && types.length > 0) {
         types.forEach(element => {
@@ -558,10 +558,70 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   reportChanged(selectedReportData) {
     this.resetConfigFilters();
     this.selectedReport = selectedReportData;
+    if(this.selectedReport.name === 'Status Report'){
+      this.selectedReport['configurableFilters'] = true;
+      this.selectedReport['filters'] = [
+        {
+          "type": "in",
+          "dimension": "status_of_project",
+          "values": "$status_of_project"
+       },
+        {
+            "type": "equals",
+            "dimension": "private_program",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "sub_task_deleted_flag",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "task_deleted_flag",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "project_deleted_flag",
+            "value": "false"
+        },
+        {
+            "type": "equals",
+            "dimension": "program_id",
+            "value": "$programId"
+        },
+        {
+            "type": "equals",
+            "dimension": "solution_id",
+            "value": "$solutionId"
+        },
+        {
+            "type": "equals",
+            "dimension": "district_externalId",
+            "value": "$district_externalId"
+        },
+        {
+            "type": "equals",
+            "dimension": "organisation_id",
+            "value": "$organisation_id"
+        }
+    ]
+      this.selectedReport['uiFilters'] = [
+        {
+            "label": "Status",
+            "controlType": "multi-select",
+            "reference": "status_of_project",
+            "placeholder":"Select status",
+            "options":["started","submitted","inProgress"]
+        }]
+    }
     if(this.selectedReport.configurableFilters){
       this.pdFilters = this.selectedReport.uiFilters;
       this.pdFilters.map(filter => {
-        this.configuredFilters[filter['reference']] = filter['defaultValue'] as number -1
+        if(filter['controlType'] === 'number'){
+          this.configuredFilters[filter['reference']] = filter['defaultValue'] as number -1
+        }
       })
     }
   }
@@ -572,12 +632,17 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   pdFilterChanged($event){
-    const [reference, value]= [Object.keys($event),Object.values($event)] ;
-    if([0,null].includes(value[0] as number) || value[0] < 0){
-      this.configuredFilters[reference[0]] = undefined;
+    const [reference, value]= [Object.keys($event.data),Object.values($event.data)] ;
+    if($event.controlType === 'number'){
+      if([0,null].includes(value[0] as number) || value[0] < 0){
+        this.configuredFilters[reference[0]] = undefined;
+      }else{
+        this.configuredFilters[reference[0]] = value[0] as number -1;
+      }
     }else{
-      this.configuredFilters[reference[0]] = value[0] as number -1;
+      this.configuredFilters[reference[0]] = value[0]
     }
+    console.log('event',$event,'reference',reference,'value',value);
   }
 
   addFilters() {
@@ -595,9 +660,9 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
     this.selectedReport['filters'].map(data => {
       keys.filter(key => {
-        return data.dimension == key && (data.value = filterKeysObj[key]);
+        return data.dimension === key && (_.has(data,'value') ? data.value = filterKeysObj[key] : data.values = filterKeysObj[key]);
       })
-      if (data.value !== undefined) {
+      if (data.value !== undefined || data.values !== undefined) {
         this.filter.push(data);
       }
     });

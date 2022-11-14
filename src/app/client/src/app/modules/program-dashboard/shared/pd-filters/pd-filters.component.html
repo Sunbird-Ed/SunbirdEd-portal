@@ -15,5 +15,16 @@
           />
         </mat-form-field>
       </ng-container>
+      <ng-container *ngIf="pdFilter.controlType === 'multi-select'">
+        <mat-form-field
+          appearance="fill"
+          class="sb-mat__dropdown"
+        >
+          <mat-select (selectionChange)="inputChange()" multiple [formControlName]="pdFilter.reference" [placeholder]="pdFilter.placeholder" >
+          <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of pdFilter.options" [value]="option"
+          attr.aria-label="{{option}}" class="custom_mat_multi">{{option | lowercase | titlecase}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+      </ng-container>
     </div>
 </form>
