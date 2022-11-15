@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "5.0.3",
+  "version": "5.1.0",
   "buildNumber": "1",
   "private": true,
   "description": "SUNBIRD Client Backend",
@@ -42,6 +42,7 @@
     "server": "gulp update:index:file && node server",
     "validate": "npm ls",
     "precommit": "lint-staged",
+    "resource-bundles": "node helpers/resourceBundles/build.js",
     "test-with-coverage": "cd client && npm run test-coverage && cat ./coverage/lcov.info | codacy-coverage",
     "tenants-push-cdn": "gulp pushTenantsToCDN --gulpfile gulp-tenant.js",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json --port 8887",
