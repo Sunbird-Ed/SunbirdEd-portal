@@ -560,64 +560,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   reportChanged(selectedReportData) {
     this.resetConfigFilters();
     this.selectedReport = selectedReportData;
-    if(this.selectedReport.name === 'Status Report'){
-      this.selectedReport['configurableFilters'] = true;
-      this.selectedReport['filters'] = [
-        {
-          "type": "in",
-          "dimension": "status_of_project",
-          "values": "$status_of_project"
-       },
-        {
-            "type": "equals",
-            "dimension": "private_program",
-            "value": "false"
-        },
-        {
-            "type": "equals",
-            "dimension": "sub_task_deleted_flag",
-            "value": "false"
-        },
-        {
-            "type": "equals",
-            "dimension": "task_deleted_flag",
-            "value": "false"
-        },
-        {
-            "type": "equals",
-            "dimension": "project_deleted_flag",
-            "value": "false"
-        },
-        {
-            "type": "equals",
-            "dimension": "program_id",
-            "value": "$programId"
-        },
-        {
-            "type": "equals",
-            "dimension": "solution_id",
-            "value": "$solutionId"
-        },
-        {
-            "type": "equals",
-            "dimension": "district_externalId",
-            "value": "$district_externalId"
-        },
-        {
-            "type": "equals",
-            "dimension": "organisation_id",
-            "value": "$organisation_id"
-        }
-    ]
-      this.selectedReport['uiFilters'] = [
-        {
-            "label": "Status",
-            "controlType": "multi-select",
-            "reference": "status_of_project",
-            "placeholder":"Select status",
-            "options":["started","submitted","inProgress"]
-        }]
-    }
     if(this.selectedReport.configurableFilters){
       this.pdFilters = this.selectedReport.uiFilters;
       this.pdFilters.map(filter => {
