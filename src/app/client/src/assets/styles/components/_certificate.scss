@@ -1,3 +1,4 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 /* Certificate */
 $sb-certificatePage-bg-color: var(--white);
 $sb-certificatePage-padding: calculateRem(16px);

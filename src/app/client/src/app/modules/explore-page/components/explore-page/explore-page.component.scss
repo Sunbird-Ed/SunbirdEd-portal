@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .course-card-width {
   width: calculateRem(280px) !important;

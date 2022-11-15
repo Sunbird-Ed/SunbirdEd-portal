@@ -1,6 +1,6 @@
-@import "variables";
-@import "mixins/mixins";
-@import "pages/sbt-filter";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "pages/sbt-filter" as *;
+@use "components/sb-forms/facet-filters" as *;
 
 // .sb-prominent-filter {
 //   .sb-prominent-filter-container.sb-global-search {
@@ -36,6 +36,4 @@
   .ui.dropdown .menu div .selected.item, .ui.dropdown.selected{
     font-weight: 700 !important;
   }
-
-  @import "components/sb-forms/facet-filters";
 }

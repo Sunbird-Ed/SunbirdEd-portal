@@ -1,7 +1,6 @@
 
-@import "variables";
-@import "mixins/mixins";
-@import 'components/video';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'components/video' as *;
 
 .no-content-player{
     background: var(--black);

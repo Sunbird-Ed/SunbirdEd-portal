@@ -1,2 +1,2 @@
-@import './../user-onboarding/user-onboarding.component.scss';
-@import "pages/mat-modal";
+@use './../user-onboarding/user-onboarding.component.scss' as *;
+@use "pages/mat-modal" as *;

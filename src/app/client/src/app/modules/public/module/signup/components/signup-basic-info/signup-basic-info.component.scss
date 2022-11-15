@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-mat__dropdown.sb-mat__dropdown--autocmp {
   border: 1px solid var(--gray-200);

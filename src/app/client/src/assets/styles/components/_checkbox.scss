@@ -1,18 +1,19 @@
+@use "~@project-sunbird/sb-styles/assets/varSass" as *;
 // Checkbox
-$sb-checkbox-primary-background: $primary-color;
-$sb-radio-btn-primary-border: $primary-color;
+$sb-checkbox-primary-background: var(--primary-color);
+$sb-radio-btn-primary-border: var(--primary-color);
 $sb-checkbox-border-width: calculateRem(1px);
 $sb-checkbox-label-font-size: 0.8571rem;
 $sb-checkbox-border-radius: calculateRem(4px);
-$sb-checkbox-after-checked-color: $white-color;
-$sb-checkbox-before-checked-background-color: $white-color;
+$sb-checkbox-after-checked-color: var(--white);
+$sb-checkbox-before-checked-background-color: var(--white);
 
 // Radio buttons
 $sb-radio-btn-border: calculateRem(1px); //width of the border
 $sb-radio-btn-border-radius: 100%;
 $sb-radio-btn-disabled-opacity: 0.5;
-$sb-radio-btn-border-color: $primary-300;
-$sb-radio-btn-border-disabled-color: $gray-100;
+$sb-radio-btn-border-color: var(--primary-300);
+$sb-radio-btn-border-disabled-color: var(--gray-100);
 
 .sb-checkbox,
 .sb-radio-btn-checkbox {
@@ -97,7 +98,7 @@ $sb-radio-btn-border-disabled-color: $gray-100;
     }
     &.sb-checkbox-rightaligned {
       input:checked~label {
-        color: $primary-color;
+        color: var(--primary-color);
       }
       label {
         padding: 0 calculateRem(24px) 0 0;

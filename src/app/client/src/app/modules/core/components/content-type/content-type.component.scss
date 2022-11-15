@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "../main-header/main-header.component.scss";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "../main-header/main-header.component.scss" as *;
 
 :host ::ng-deep {
   .sb-linkmenu {

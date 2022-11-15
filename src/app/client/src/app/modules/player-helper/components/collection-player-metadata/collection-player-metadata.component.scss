@@ -1,3 +1,2 @@
-@import 'variables';
-@import "./mixins/mixins";
-@import 'components/metadata';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'components/metadata' as *;

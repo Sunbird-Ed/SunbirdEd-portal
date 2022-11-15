@@ -1,4 +1,3 @@
-@import"variables";
-@import 'mixins/mixins';
-@import 'pages/mat-modal';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/mat-modal' as *;
 
