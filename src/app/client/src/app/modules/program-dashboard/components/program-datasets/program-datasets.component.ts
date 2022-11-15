@@ -546,6 +546,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.reportForm.controls.districtName.setValue($event.value);
     this.displayFilters['District'] = [$event?.source?.triggerValue]
     this.tag =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
+    this.reportForm.controls.reportType.setValue('');
+    this.resetConfigFilters();
     this.loadReports();
   }
 
@@ -621,6 +623,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       this.pdFilters.map(filter => {
         if(filter['controlType'] === 'number'){
           this.configuredFilters[filter['reference']] = filter['defaultValue'] as number -1
+        }else if(filter['controlType'] === 'multi-select'){
+          this.configuredFilters[filter['reference']] = undefined
         }
       })
     }
@@ -646,6 +650,11 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   addFilters() {
+    this.pdFilters.map(filter => {
+     if(filter['controlType'] === 'multi-select' && this.configuredFilters[filter['reference']] === undefined){
+      this.configuredFilters[filter['reference']] = filter['options']
+      }
+    })
     let filterKeysObj = {
       program_id: _.get(this.reportForm, 'controls.programName.value'),
       solution_id: _.get(this.reportForm, 'controls.solution.value'),
