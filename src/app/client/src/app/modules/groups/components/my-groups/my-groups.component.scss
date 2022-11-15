@@ -1,5 +1,5 @@
-@import './mixins/mixins';
-@import './pages/page-center-view';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/page-center-view' as *;
 
 .sb-mygroups{
   .sb-bg-color-white{

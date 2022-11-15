@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import './pages/content-header';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/content-header' as *;
 
 .member-no-result {
   .no-result-text {

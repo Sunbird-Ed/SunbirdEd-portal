@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "pages/sbt-filter";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "pages/sbt-filter" as *;
 
 .sb-header-filter-bar {
   box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);

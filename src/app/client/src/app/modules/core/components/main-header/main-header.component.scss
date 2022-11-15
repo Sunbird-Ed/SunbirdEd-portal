@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "layout/header";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "layout/header" as *;
 
 .sb-header-bg{
   background: var(--sb-header-bg) !important;

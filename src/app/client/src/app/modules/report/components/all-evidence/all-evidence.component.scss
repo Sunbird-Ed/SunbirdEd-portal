@@ -1,5 +1,4 @@
-@import "mixins/mixins";
-@import 'variables';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .thumbnail-card {
   height: 98px;

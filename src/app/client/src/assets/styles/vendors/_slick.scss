@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 /***********************************************
    Hacks -
 
@@ -18,8 +20,8 @@
 $slick-font-path: "../../../node_modules/slick-carousel/slick/fonts/" !default;
 $slick-font-family: normal normal normal 14px/1 FontAwesome !default;
 $slick-loader-path: "../../../node_modules/slick-carousel/slick/" !default;
-$slick-arrow-color: $danger-color !default;
-$slick-dot-color: black !default;
+$slick-arrow-color: var(--danger-color) !default;
+$slick-dot-color: var(--black) !default;
 $slick-dot-color-active: $slick-dot-color !default;
 $slick-prev-character: "\f104" !default;
 $slick-next-character: "\f105" !default;

@@ -1,5 +1,4 @@
-@import 'variables';
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 // In workspace, course card modal 
 .sb-modal.sb-course-modal .sb-modal-content {
   .sbgrid {

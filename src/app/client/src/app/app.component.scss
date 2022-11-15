@@ -1,4 +1,4 @@
-@import 'pages/mat-modal';
+@use 'pages/mat-modal' as *;
 
 .header-block {
   display: none;

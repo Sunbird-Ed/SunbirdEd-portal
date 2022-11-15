@@ -1,4 +1,4 @@
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-add-activity-content-cards{
  @include respond-above(md){

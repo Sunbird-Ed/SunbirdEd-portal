@@ -1,4 +1,4 @@
-@import './mixins/mixins';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .state-selection {
   &__section {
