@@ -1,6 +1,4 @@
-@import "variables";
-
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 /*get dial code page responsive css*/
 .mobile-popup-dimmer {
@@ -165,7 +163,7 @@
 .header {
   display: flex;
   flex-direction: row;
-  @include margin(1rem 0 0 0);
+  margin:1rem 0 0 0;
   padding: 0px 0;
   align-items: center;
 

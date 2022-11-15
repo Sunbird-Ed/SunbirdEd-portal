@@ -1,5 +1,6 @@
-@import "components/tabs";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "components/tabs" as *;
+
 
 .sb-pageSection-activity-title {
   color: var(--primary-400);

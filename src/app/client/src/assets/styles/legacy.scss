@@ -1,5 +1,4 @@
-@import "./variables";
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .text-gray {
   color: var( --rc-9F9F9F) !important;

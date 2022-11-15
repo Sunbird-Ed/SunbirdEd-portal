@@ -1,6 +1,5 @@
-@import "variables";
-@import "./mixins/mixins";
-@import "layout/footer";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "layout/footer" as *;
 
 :host ::ng-deep{
   .new-layout-footer{

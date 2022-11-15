@@ -1,4 +1,4 @@
-@import 'mixins/mixins';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-autocomp-dropdown {
   position: relative;
@@ -84,7 +84,7 @@
   html[layout="joy"] .sb-autocomp-dropdown .mat-form-field, .sb-autocomp-dropdown__list {
     border-radius: calculateRem(24px);
   }
-  html[data-theme="Darkmode"] .sb-mat__checkbox.sb-mat__checkbox--primary .mat-checkbox-frame {
+  html[data-mode="darkmode"] .sb-mat__checkbox.sb-mat__checkbox--primary .mat-checkbox-frame {
     border-color: #ccc;
   }
   .sb-autocomp-dropdown__list {

@@ -1,4 +1,5 @@
 
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .ui.dropdown {
   &.selection {
     border-radius: calculateRem(3px);

@@ -332,7 +332,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       contentType: this.baseCategoryForm.filterEnv
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
-      const layoutType = localStorage.getItem('layoutType') || '';
+      const layoutType = localStorage.getItem('layoutType') || 'base';
       const contentTypes = _.sortBy(data, 'index');
       const defaultTab = _.find(contentTypes, ['default', true]);
       const isOldThemeDisabled = _.get(defaultTab, 'isOldThemeDisabled');

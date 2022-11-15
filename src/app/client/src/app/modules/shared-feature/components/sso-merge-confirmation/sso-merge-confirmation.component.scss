@@ -1,5 +1,5 @@
-@import "mixins/mixins";
-@import "pages/sign_in_up";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "pages/sign_in_up" as *;
 .sb-list-items{
    text-align: left;
     list-style-type: initial;

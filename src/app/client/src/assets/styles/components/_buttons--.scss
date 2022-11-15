@@ -1,16 +1,16 @@
-@import "../mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 // Dashed Buttons
-$sb-btn-dashed-border: 0.5 solid $primary-color;
-$sb-btn-dashed-background-color: $white-color;
-$sb-btn-dashed-color: $primary-400;
+$sb-btn-dashed-border: 0.5 solid var(--primary-color);
+$sb-btn-dashed-background-color: var(--white);
+$sb-btn-dashed-color: var(--primary-400);
 // Button groups
 $sb-btn-group-border-width: 0.0625rem;
 $sb-btn-group-border-width: 1px;
-$sb-btn-group-border-color: $gray-100;
-$sb-btn-group-btn-background: $white-color;
-$sb-btn-group-btn-color: $primary-400;
-$sb-btn-group-btn-active-background-color: $primary-100;
+$sb-btn-group-border-color: var(--gray-100);
+$sb-btn-group-btn-background: var(--white);
+$sb-btn-group-btn-color: var(--primary-400);
+$sb-btn-group-btn-active-background-color: var(--primary-100);
 
 /* buttons sytle guide */
 input[type="submit"],
@@ -46,7 +46,7 @@ button.sb-btn:focus {
   border: calculateRem(1px) solid;
   cursor: pointer;
   min-width: calculateRem(64px);
-  @include border-radius(0.125rem);
+  border-radius: 0.125rem;
   position: relative;
   line-height: 1;
 
@@ -66,7 +66,7 @@ button.sb-btn:focus {
     left: 50%;
     width: calculateRem(3px);
     height: calculateRem(3px);
-    background: $primary-600;
+    background: var(--primary-600);
     opacity: 0;
     border-radius: 50%;
     transform: scale(1, 1) translate(-50%);
@@ -347,7 +347,7 @@ $btnSquaresizes: "xs"1.5rem 1.5rem 1rem null,
       width: calculateRem(64px);
       height: calculateRem(24px);
       border-radius: 500rem;
-      @include btn-theme($primary-color);
+      @include btn-theme(var(--primary-color));
       transition: border 0.1s ease, opacity 0.1s ease, transform 0.1s ease,
         box-shadow 0.1s ease, -webkit-transform 0.1s ease;
     }

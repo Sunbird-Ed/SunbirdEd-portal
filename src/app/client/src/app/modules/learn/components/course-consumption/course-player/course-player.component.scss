@@ -1,7 +1,6 @@
-@import "variables";
-@import "mixins/mixins";
-@import "pages/course-player";
-@import "pages/kabab-menu";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "pages/course-player" as *;
+@use "pages/kabab-menu" as *;
 
 .course-list_title {
   color: var(--gray-800);
