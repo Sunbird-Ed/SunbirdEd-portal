@@ -1,16 +1,12 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { CoreModule, OtpService } from '@sunbird/core';
+import {  OtpService } from '@sunbird/core';
 import { ProfileService } from '@sunbird/profile';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { of, throwError } from 'rxjs';
 import { ConfigService } from '../../../../modules/shared';
 import { UserService } from '../../../../modules/core';
 import { UpdateContactDetailsComponent } from './update-contact-details.component';
-import { HttpErrorResponse } from '@angular/common/http';
 
 describe('UpdateContactDetailsComponent', () => {
     let component: UpdateContactDetailsComponent;
