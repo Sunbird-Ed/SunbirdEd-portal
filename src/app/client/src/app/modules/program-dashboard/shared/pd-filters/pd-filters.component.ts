@@ -27,12 +27,10 @@ export class PdFiltersComponent implements OnInit {
   }
 
   inputChange() {
-    console.log('Form value', this.pdFiltersFormGroup.value)
     const dataToBeEmitted = {
       data:this.pdFiltersFormGroup.value,
       controlType:this.pdFilter.controlType
     }
-    console.log('data to emit',dataToBeEmitted)
     this.filterChanged.emit(dataToBeEmitted);
   }
 }

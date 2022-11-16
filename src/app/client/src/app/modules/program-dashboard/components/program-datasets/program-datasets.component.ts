@@ -578,17 +578,18 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   pdFilterChanged($event){
-    const [reference, value]= [Object.keys($event.data),Object.values($event.data)] ;
-    if($event.controlType === 'number'){
-      if([0,null].includes(value[0] as number) || value[0] < 0){
-        this.configuredFilters[reference[0]] = undefined;
+    if($event.data){
+      const [reference, value]= [Object.keys($event.data),Object.values($event.data)] ;
+      if($event.controlType === 'number'){
+        if([0,null].includes(value[0] as number) || value[0] < 0){
+          this.configuredFilters[reference[0]] = undefined;
+        }else{
+          this.configuredFilters[reference[0]] = value[0] as number -1;
+        }
       }else{
-        this.configuredFilters[reference[0]] = value[0] as number -1;
+        this.configuredFilters[reference[0]] = value[0]
       }
-    }else{
-      this.configuredFilters[reference[0]] = value[0]
     }
-    console.log('event',$event,'reference',reference,'value',value);
   }
 
   addFilters() {

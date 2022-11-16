@@ -526,15 +526,46 @@ describe('DatasetsComponent', () => {
 
   it('should update the selected report data for Filtered task detail report ', () => {
     jest.spyOn(component,'reportChanged');
-    component.reportChanged(mockData.selectedReportWithConfigurableFilters)
-    expect(component.selectedReport).toBe(mockData.selectedReportWithConfigurableFilters);
+    component.reportChanged(mockData.selectedReportWithConfigurableFilters[0])
+    expect(component.selectedReport).toBe(mockData.selectedReportWithConfigurableFilters[0]);
     expect(component.reportChanged).toHaveBeenCalled();
+  });
+
+  it('should update the selected report data for status report ', () => {
+    jest.spyOn(component,'reportChanged');
+    component.reportChanged(mockData.selectedReportWithConfigurableFilters[1])
+    expect(component.selectedReport).toBe(mockData.selectedReportWithConfigurableFilters[1]);
+    expect(component.reportChanged).toHaveBeenCalled();
+  });
+
+  it('should call pdFilterChanged method for number type', () => {
+    jest.spyOn(component,'pdFilterChanged');
+    component.pdFilterChanged({data:{task_count:5}, controlType:'number'});
+    expect(component.pdFilterChanged).toHaveBeenCalledWith({data:{task_count:5}, controlType:'number'});
+  });
+
+  it('should call pdFilterChanged method for number type with negative value', () => {
+    jest.spyOn(component,'pdFilterChanged');
+    component.pdFilterChanged({data:{task_count:-1}, controlType:'number'});
+    expect(component.pdFilterChanged).toHaveBeenCalledWith({data:{task_count:-1}, controlType:'number'});
+  });
+
+  it('should call pdFilterChanged method for number type with zero value', () => {
+    jest.spyOn(component,'pdFilterChanged');
+    component.pdFilterChanged({data:{task_count:0}, controlType:'number'});
+    expect(component.pdFilterChanged).toHaveBeenCalledWith({data:{task_count:0}, controlType:'number'});
+  });
+
+  it('should call pdFilterChanged method for number type with null value', () => {
+    jest.spyOn(component,'pdFilterChanged');
+    component.pdFilterChanged({data:{task_count:null}, controlType:'number'});
+    expect(component.pdFilterChanged).toHaveBeenCalledWith({data:{task_count:null}, controlType:'number'});
   });
 
   it('should call pdFilterChanged method', () => {
     jest.spyOn(component,'pdFilterChanged');
-    component.pdFilterChanged({task_count:5});
-    expect(component.pdFilterChanged).toHaveBeenCalledWith({task_count:5});
+    component.pdFilterChanged({data:{status:['started']}, controlType:'multi-select'});
+    expect(component.pdFilterChanged).toHaveBeenCalledWith({data:{status:['started']}, controlType:'multi-select'});
   });
   
   it('should request the csv', () => {
