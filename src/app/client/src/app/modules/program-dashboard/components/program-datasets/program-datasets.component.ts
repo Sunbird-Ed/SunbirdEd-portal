@@ -249,6 +249,9 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   public programSelection($event) {
     this.reportForm.reset();
+    this.displayFilters = {};
+    this.districts = []
+    this.organisations = [];
     const program = this.programs.filter(data => {
       if (data._id == $event.value) {
         return data;
@@ -271,6 +274,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.districts = []
     this.organisations = [];
     this.resetConfigFilters();
+    delete this.displayFilters['District'];
+    delete this.displayFilters['Organisation'];
     this.globalDistrict = this.globalOrg = undefined;
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
@@ -526,6 +531,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.goToPrevLocation = false;
     this.showPopUpModal = true;
     this.globalDistrict = this.globalOrg = undefined;
+    this.displayFilters = {};
     this.timeRangeInit();
     this.resetConfigFilters();
   }
