@@ -17,7 +17,7 @@ const cloudProvider = envHelper.sunbird_cloud_storage_provider;
  * Based on Environment Cloud Provider value
  * Export respective Storage Service
  */
-
+if (!cloudProvider) throw new Error("Cloud Storage Service - Provider is not initialized");
 switch (cloudProvider) {
   case 'azure':
     let azureConfig = {
@@ -57,5 +57,6 @@ switch (cloudProvider) {
     exports.CLOUD_CLIENT = gcpStorage;
     break;
   default:
+    throw new Error("Cloud Storage Service - Provider is not initialized or supported");
     break;
 }
