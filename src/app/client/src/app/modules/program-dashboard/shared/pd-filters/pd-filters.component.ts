@@ -4,7 +4,8 @@ import * as _ from "lodash-es";
 
 @Component({
   selector: "app-pd-filters",
-  templateUrl: "./pd-filters.component.html"
+  templateUrl: "./pd-filters.component.html",
+  styleUrls:["./pd-filters.component.scss"]
 })
 export class PdFiltersComponent implements OnInit {
   @Input() pdFilter: any;
@@ -26,6 +27,10 @@ export class PdFiltersComponent implements OnInit {
   }
 
   inputChange() {
-    this.filterChanged.emit(this.pdFiltersFormGroup.value);
+    const dataToBeEmitted = {
+      data:this.pdFiltersFormGroup.value,
+      controlType:this.pdFilter.controlType
+    }
+    this.filterChanged.emit(dataToBeEmitted);
   }
 }

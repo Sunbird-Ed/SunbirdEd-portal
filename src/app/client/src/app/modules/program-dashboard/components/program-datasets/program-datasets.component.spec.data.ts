@@ -2915,90 +2915,162 @@ export let mockData = {
       },
     ],
   },
-  selectedReportWithConfigurableFilters: {
-    name: "Filtered task detail report",
-    encrypt: true,
-    datasetId: "ml-filtered-task-detail-exhaust",
-    roles: ["PROGRAM_MANAGER"],
-    configurableFilters: true,
-    filters: [
-      {
-        type: "equals",
-        dimension: "private_program",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "sub_task_deleted_flag",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "task_deleted_flag",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "project_deleted_flag",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "program_id",
-        value: "$programId",
-      },
-      {
-        type: "equals",
-        dimension: "solution_id",
-        value: "$solutionId",
-      },
-      {
-        type: "equals",
-        dimension: "district_externalId",
-        value: "$district_externalId",
-      },
-      {
-        type: "equals",
-        dimension: "organisation_id",
-        value: "$organisation_id",
-      },
-      {
-        type: "greaterthan",
-        dimension: "task_count",
-        value: "$task_count",
-      },
-      {
-        type: "greaterthan",
-        dimension: "task_evidence_count",
-        value: "$task_evidence_count",
-      },
-      {
-        type: "greaterthan",
-        dimension: "project_evidence_count",
-        value: "$project_evidence_count",
-      },
-    ],
-    uiFilters: [
-      {
-        label: "Minimum no. of tasks in the project",
-        controlType: "number",
-        reference: "task_count",
-        defaultValue: 5,
-      },
-      {
-        label: "Minimum no. of task evidence",
-        controlType: "number",
-        reference: "task_evidence_count",
-        defaultValue: 2,
-      },
-      {
-        label: "Minimum no. of project evidence",
-        controlType: "number",
-        reference: "project_evidence_count",
-        defaultValue: 1,
-      },
-    ],
-  },
+  selectedReportWithConfigurableFilters: [
+    {
+      name: "Filtered task detail report",
+      encrypt: true,
+      datasetId: "ml-filtered-task-detail-exhaust",
+      roles: ["PROGRAM_MANAGER"],
+      configurableFilters: true,
+      filters: [
+        {
+          type: "equals",
+          dimension: "private_program",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "sub_task_deleted_flag",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "task_deleted_flag",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "project_deleted_flag",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "program_id",
+          value: "$programId",
+        },
+        {
+          type: "equals",
+          dimension: "solution_id",
+          value: "$solutionId",
+        },
+        {
+          type: "equals",
+          dimension: "district_externalId",
+          value: "$district_externalId",
+        },
+        {
+          type: "equals",
+          dimension: "organisation_id",
+          value: "$organisation_id",
+        },
+        {
+          type: "greaterthan",
+          dimension: "task_count",
+          value: "$task_count",
+        },
+        {
+          type: "greaterthan",
+          dimension: "task_evidence_count",
+          value: "$task_evidence_count",
+        },
+        {
+          type: "greaterthan",
+          dimension: "project_evidence_count",
+          value: "$project_evidence_count",
+        },
+      ],
+      uiFilters: [
+        {
+          label: "Minimum no. of tasks in the project",
+          controlType: "number",
+          reference: "task_count",
+          defaultValue: 5,
+        },
+        {
+          label: "Minimum no. of task evidence",
+          controlType: "number",
+          reference: "task_evidence_count",
+          defaultValue: 2,
+        },
+        {
+          label: "Minimum no. of project evidence",
+          controlType: "number",
+          reference: "project_evidence_count",
+          defaultValue: 1,
+        },
+      ],
+    },
+    {
+      "name": "Status Report",
+      "encrypt": false,
+      "datasetId": "ml-project-status-exhaust",
+      "roles": [
+          "PROGRAM_MANAGER",
+          "PROGRAM_DESIGNER"
+      ],
+      "configurableFilters": true,
+      "filters": [
+          {
+              "type": "in",
+              "dimension": "status_of_project",
+              "values": "$status_of_project"
+          },
+          {
+              "type": "equals",
+              "dimension": "private_program",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "sub_task_deleted_flag",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "task_deleted_flag",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "project_deleted_flag",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "program_id",
+              "value": "$programId"
+          },
+          {
+              "type": "equals",
+              "dimension": "solution_id",
+              "value": "$solutionId"
+          },
+          {
+              "type": "equals",
+              "dimension": "district_externalId",
+              "value": "$district_externalId"
+          },
+          {
+              "type": "equals",
+              "dimension": "organisation_id",
+              "value": "$organisation_id"
+          }
+      ],
+      "uiFilters": [
+          {
+              "label": "Status",
+              "controlType": "multi-select",
+              "reference": "status_of_project",
+              "placeholder": "Select status",
+              "options": [
+                  "started",
+                  "submitted",
+                  "inProgress"
+              ]
+          }
+      ]
+  }
+  ],
   multipleDataDownloaded: [
     {
       loaded: true,
