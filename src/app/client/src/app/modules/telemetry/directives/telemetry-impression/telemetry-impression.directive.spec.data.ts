@@ -26,7 +26,7 @@ export const eventData = {
         ],
         'edata': {
           'type': 'list',
-          'subtype': 'scroll',
+          'subtype': 'pageexit',
           'pageid': 'workspace-content-draft',
           'uri': '/workspace/content/draft',
           'visits': [
