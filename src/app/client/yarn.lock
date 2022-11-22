@@ -2159,12 +2159,12 @@
     ngx-daterangepicker-material "^4.0.1"
     tslib "^1.10.0"
 
-"@project-sunbird/sb-notification@5.0.2":
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-5.0.2.tgz#8ac9d99304123f6f197289686217b40a54b6a868"
-  integrity sha512-ez2vGu1pS5iO4KsAXBSoESk+l8XHY9HYjcWCyhm7lDsuewnyUpIRF6GHt/VuXDEgJCizpvVTrENICN3uGJuCLg==
+"@project-sunbird/sb-notification@5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-5.0.4.tgz#a60ff6daeadd83b31298cf94506532fcc8d98cc4"
+  integrity sha512-oy07cFaOyX2ua5Le68egai6PyKfHgpQz9Ws/Vv7yWIFX8YdAv+/QOFN94jl/Z6Q2iUWERdno/aikFhJPS9wcAg==
   dependencies:
-    tslib "^1.10.0"
+    tslib "^2.0.0"
 
 "@project-sunbird/sb-styles@0.0.10":
   version "0.0.10"
@@ -10111,10 +10111,10 @@ moment-duration-format@2.3.2:
   resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-2.3.2.tgz#5fa2b19b941b8d277122ff3f87a12895ec0d6212"
   integrity sha512-cBMXjSW+fjOb4tyaVHuaVE/A5TqkukDWiOfxxAjY+PEqmmBQlLwn+8OzwPiG3brouXKY5Un4pBjAeB6UToXHaQ==
 
-moment@2.24.0, moment@^2.10.2, moment@^2.29.1:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+moment@2.29.1, moment@^2.10.2, moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
