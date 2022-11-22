@@ -2159,10 +2159,10 @@
     ngx-daterangepicker-material "^4.0.1"
     tslib "^1.10.0"
 
-"@project-sunbird/sb-notification@5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-5.0.4.tgz#a60ff6daeadd83b31298cf94506532fcc8d98cc4"
-  integrity sha512-oy07cFaOyX2ua5Le68egai6PyKfHgpQz9Ws/Vv7yWIFX8YdAv+/QOFN94jl/Z6Q2iUWERdno/aikFhJPS9wcAg==
+"@project-sunbird/sb-notification@5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-5.0.5.tgz#104e92a0f52c199ce3e75ed2fd1f772893804691"
+  integrity sha512-H5bE3PFOCL1E3EDcn1aIZ+DJKdRDxW9/b/GCu4Y1/ApEZzEiDwgGZNIjxytluJVnroMbe9sBPIXa3l/VaNuR2A==
   dependencies:
     tslib "^2.0.0"
 

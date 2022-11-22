@@ -61,7 +61,7 @@
     "@project-sunbird/common-form-elements-v9": "5.0.1",
     "@project-sunbird/discussions-ui-v8": "2.6.0-beta.2",
     "@project-sunbird/sb-dashlet-v9": "^1.0.4",
-    "@project-sunbird/sb-notification": "5.0.4",
+    "@project-sunbird/sb-notification": "5.0.5",
     "@project-sunbird/sb-styles": "0.0.10",
     "@project-sunbird/sb-themes": "0.0.85",
     "@project-sunbird/sunbird-collection-editor-v9": "5.0.14",
