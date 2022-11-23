@@ -592,7 +592,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         }else{
           this.configuredFilters[reference[0]] = value[0] as number -1;
         }
-      }else{
+      }else if($event.data.length){
         this.configuredFilters[reference[0]] = value[0]
       }
     }
