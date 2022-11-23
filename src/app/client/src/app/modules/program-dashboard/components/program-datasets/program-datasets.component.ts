@@ -592,8 +592,12 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         }else{
           this.configuredFilters[reference[0]] = value[0] as number -1;
         }
-      }else if($event.data.length){
-        this.configuredFilters[reference[0]] = value[0]
+      }else if($event.controlType === 'multi-select'){
+          if((value[0] as string[]).length){
+            this.configuredFilters[reference[0]] = value[0]
+          }else{
+            this.configuredFilters[reference[0]] = undefined;
+          }
       }
     }
   }
