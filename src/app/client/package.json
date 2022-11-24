@@ -58,7 +58,7 @@
     "@project-sunbird/ckeditor-build-font": "^1.0.8",
     "@project-sunbird/client-services": "4.8.13",
     "@project-sunbird/common-consumption-v9": "^4.10.3",
-    "@project-sunbird/common-form-elements-v9": "5.0.1",
+    "@project-sunbird/common-form-elements": "5.1.0",
     "@project-sunbird/discussions-ui-v8": "2.6.0-beta.2",
     "@project-sunbird/sb-dashlet-v9": "^1.0.4",
     "@project-sunbird/sb-notification": "5.0.7",
