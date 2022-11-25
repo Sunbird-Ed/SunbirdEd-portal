@@ -1,4 +1,4 @@
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .re-issue-content {
   margin-top: calculateRem(36px);

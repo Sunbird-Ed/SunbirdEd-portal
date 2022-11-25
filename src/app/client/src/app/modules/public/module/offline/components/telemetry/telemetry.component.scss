@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .profile-telemetry-title {
   font-size: calculateRem(16px);

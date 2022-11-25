@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .sb-meta-data-container {
   .sb-meta-data {
     display: flex;

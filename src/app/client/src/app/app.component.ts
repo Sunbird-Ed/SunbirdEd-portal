@@ -136,12 +136,12 @@ export class AppComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType') || '';
-    if (layoutType === '' || layoutType === 'joy') {
+    const layoutType = localStorage.getItem('layoutType') || 'base';
+    if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
     } else {
-      document.documentElement.setAttribute('layout', 'old');
+      document.documentElement.setAttribute('layout', 'base');
     }
   }
   /**
@@ -237,7 +237,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setTheme() {
-    const themeColour = localStorage.getItem('layoutColour') || 'Default';
+    const themeColour = localStorage.getItem('layoutColour') || 'default';
     if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
       this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
     }
@@ -1022,20 +1022,20 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
   getLocalTheme() {
-    const localDataThemeAttribute = localStorage.getItem('data-theme');
+    const localDataThemeAttribute = localStorage.getItem('data-mode');
     if (localDataThemeAttribute) {
       this.setLocalTheme(localDataThemeAttribute);
     }
   }
-  changeTheme() {
-    this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
-    this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
+  toggleLightDarkMode() {
+    this.dataThemeAttribute = document.documentElement.getAttribute('data-mode');
+    this.dataThemeAttribute = this.dataThemeAttribute === 'light' ? 'darkmode' : 'light';
     this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${this.dataThemeAttribute}`);
     this.setLocalTheme(this.dataThemeAttribute);
-    localStorage.setItem('data-theme', this.dataThemeAttribute);
+    localStorage.setItem('data-mode', this.dataThemeAttribute);
   }
   setLocalTheme(value: string) {
-    document.documentElement.setAttribute('data-theme', value);
+    document.documentElement.setAttribute('data-mode', value);
   }
   notifyNetworkChange() {
     this.connectionService.monitor().pipe(debounceTime(5000)).subscribe((status: boolean) => {

@@ -1,11 +1,11 @@
-const envHelper         = require('../environmentVariablesHelper.js')
-let HttpStatus          = require('http-status-codes')
-const API_VERSION       = '1.0'
-const compression       = require('compression');
-const dateFormat        = require('dateformat');
-const uuidv1            = require('uuid/v1');
-const { logger }        = require('@project-sunbird/logger');
-const StorageService    = require('../../helpers/cloudStorage/index');
+let dateFormat = require('dateformat')
+const envHelper = require('../environmentVariablesHelper.js')
+let HttpStatus = require('http-status-codes')
+let uuidv1 = require('uuid/v1')
+let path = require('path')
+let fs = require('fs')
+const API_VERSION = '1.0'
+const compression = require('compression')
 
 function sendSuccessResponse (res, id, result, code = HttpStatus.OK) {
   res.status(code)
@@ -67,37 +67,33 @@ function getErrorCode (httpCode) {
 
 module.exports = function (express) {
   var router = express.Router()
-  router.get(['/readLang/:lang?', '/read/:lang?'], compression(), (requestObj, responseObj, next) => {
-    logger.info({ msg: "Calling API - " + requestObj.url });
-    let container;
-    let blobName = requestObj['params']['lang'] ? requestObj['params']['lang'] : envHelper.sunbird_default_language;
-    blobName += '.json';
-    if (envHelper.sunbird_cloud_storage_provider === 'azure') {
-      container = envHelper.sunbird_azure_resourceBundle_container_name;
-    }
-    if (envHelper.sunbird_cloud_storage_provider === 'aws') {
-      container = envHelper.sunbird_aws_labels + '/';
-    }
-    if (envHelper.sunbird_cloud_storage_provider === 'gcloud') {
-      container = envHelper.sunbird_gcloud_labels + '/';
-    }
-    StorageService.CLOUD_CLIENT.getFileAsText(container, blobName, function (error, result, response) {
-      if (error && error.statusCode === 404) {
-        logger.error({ msg: "readLang :: Blob %s wasn't found container %s", blobName, container });
-        sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 404);
+  router.get('/read/:lang?', compression(), (requestObj, responseObj, next) => {
+    var lang = requestObj.params['lang'] || envHelper.sunbird_default_language
+
+    try {
+      var bundles = JSON.parse(fs.readFileSync(path.join(__dirname, '/./../../resourcebundles/json/', lang + '.json')))
+      sendSuccessResponse(responseObj, 'api.resoucebundles.read', bundles, HttpStatus.OK)
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 404)
       } else {
-        try {
-          const _parsedOutput = JSON.parse(result);
-          sendSuccessResponse(responseObj, 'api.resoucebundles.read', _parsedOutput, HttpStatus.OK);
-        } catch (err) {
-          if (err.code === 'ENOENT') {
-            sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 404);
-          } else {
-            sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 500);
-          }
-        }
+        sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 500)
       }
-    });
-  });
+    }
+  })
+  router.get('/readLang/:lang?', compression(), (requestObj, responseObj, next) => {
+    var lang = requestObj.params['lang'] || envHelper.sunbird_default_language
+    console.log(lang);
+    try {
+      var bundles = JSON.parse(fs.readFileSync(path.join(__dirname, '/./../../resourcebundles/json/', lang + '.json')))
+      sendSuccessResponse(responseObj, 'api.resoucebundles.read', bundles, HttpStatus.OK)
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 404)
+      } else {
+        sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 500)
+      }
+    }
+  })
   return router
 }

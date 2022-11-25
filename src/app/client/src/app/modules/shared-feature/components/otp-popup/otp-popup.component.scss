@@ -1,6 +1,5 @@
-@import "variables";
-@import 'mixins/mixins';
-@import 'pages/sign_in_up';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/sign_in_up' as *;
 
 .orange-border {
     border-color: #A30010 !important;
