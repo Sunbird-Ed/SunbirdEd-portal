@@ -2124,10 +2124,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.10.3.tgz#a2e89a22ee7c9dff157c10f1f3e57ba95d1dd0f0"
   integrity sha512-gnm12hGha7N4KBlPE+Zg5buWXpF9LnS8/D1IAk/iAlO3POcpA7zyhmzwbE5UfO2krZUyDfhz6MN5Qky57w/qpA==
 
-"@project-sunbird/common-form-elements@5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements/-/common-form-elements-5.1.0.tgz#71517453a9291eefee426a80bbe7b92c4ad216fe"
-  integrity sha512-0buTvAdALQEz7HqgKAKZmtWx0njBawSsyi5FnimlZic0M2BrJ7uUFHbzWSM/2Hlp7R6vtm2S4vXcjFWqcVowWg==
+"@project-sunbird/common-form-elements@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements/-/common-form-elements-5.1.1.tgz#4fff567e7e9f6d8bf3ba4378ef55a9e18c2549db"
+  integrity sha512-RiryQoA+PZGLfALAgAY1Ye+v1OgHrpWUNaO9XTPpvZcVu9QyWjMNfEFbWHe9K+8NkYA6twQv6J6OZxpdKsT46Q==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
