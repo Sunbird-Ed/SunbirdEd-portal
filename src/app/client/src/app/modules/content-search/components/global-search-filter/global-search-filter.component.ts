@@ -15,7 +15,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
-import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
+import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v11';
 import { UserService } from '@sunbird/core';
 import { IFacetFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-v9';
 import { CacheService } from 'ng2-cache-service';
