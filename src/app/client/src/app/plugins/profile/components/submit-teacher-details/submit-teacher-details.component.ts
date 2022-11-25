@@ -13,7 +13,7 @@ import {
   UtilService, LayoutService
 } from '@sunbird/shared';
 import { IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import { FieldConfig } from '@project-sunbird/common-form-elements-v9';
+import { FieldConfig } from '@project-sunbird/common-form-elements';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

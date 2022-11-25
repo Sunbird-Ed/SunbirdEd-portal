@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { SbNotificationService } from 'sb-notification';
+import { SbNotificationService } from '@project-sunbird/sb-notification';
 import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, BehaviorSubject } from 'rxjs';
