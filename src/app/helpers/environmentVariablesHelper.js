@@ -139,25 +139,41 @@ let envVariables = {
   SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_azure_storage_account_name,
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
-  sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
-  sunbird_azure_account_name: env.sunbird_azure_account_name,
-  sunbird_azure_account_key: env.sunbird_azure_account_key,
-  desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
+  
+  // ############# CSP Configuration #############
+  // Common key for Uploading Desktop Crash logs
+  desktop_azure_crash_container_name: env.cloud_storage_desktopCrash_bucketname || 'desktopappcrashlogs',
+
+  // Azure
+  sunbird_azure_account_name: env.cloud_private_storage_accountname,
+  sunbird_azure_account_key: env.cloud_private_storage_secret,
+  sunbird_azure_report_container_name: env.cloud_storage_privatereports_bucketname || 'reports',
+  sunbird_azure_resourceBundle_container_name: env.cloud_storage_resourceBundle_bucketname || 'label',
+
+  // AWS
+  sunbird_aws_access_key: env.cloud_private_storage_accountname || '',
+  sunbird_aws_secret_key: env.cloud_private_storage_secret || '',
+  sunbird_aws_region: env.cloud_private_storage_region || '',
+  sunbird_aws_reports: env.cloud_storage_privatereports_bucketname || 'reports',
+  sunbird_aws_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
+
+  // deprecated - Folder structure changed
+  // sunbird_aws_bucket_name: env.sunbird_aws_bucket_name || 'sunbirded',
+
+  // GCP - gcloud
+  sunbird_gcloud_client_email: env.cloud_private_storage_accountname || '',
+  sunbird_gcloud_private_key: env.cloud_private_storage_secret || '',
+  sunbird_gcloud_projectId: env.cloud_private_storage_project || '',
+  sunbird_gcloud_reports: env.cloud_storage_privatereports_bucketname || 'reports',
+  sunbird_gcloud_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
+
+  // deprecated - Folder structure changed
+  // sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
+
+  // ############# End of CSP Configuration #############
+
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
-  sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
-  sunbird_aws_bucket_name: env.sunbird_aws_bucket_name || 'sunbirded',
-  sunbird_aws_reports: env.sunbird_aws_reports || 'reports',
-  sunbird_aws_labels: env.sunbird_aws_labels || 'labels',
-  sunbird_aws_access_key: env.sunbird_aws_access_key || '',
-  sunbird_aws_secret_key: env.sunbird_aws_secret_key || '',
-  sunbird_aws_region: env.sunbird_aws_region || '',
-  sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
-  sunbird_gcloud_reports: env.sunbird_gcloud_reports || 'reports',
-  sunbird_gcloud_labels: env.sunbird_gcloud_labels || 'labels',
-  sunbird_gcloud_client_email: env.sunbird_gcloud_client_email || '',
-  sunbird_gcloud_private_key: env.sunbird_gcloud_private_key || '',
-  sunbird_gcloud_projectId: env.sunbird_gcloud_projectId || '',
 
   // generic editor question set and coleections children contents limit
   SUNBIRD_QUESTIONSET_CHILDREN_LIMIT: env.sunbird_questionset_children_limit || 500,
