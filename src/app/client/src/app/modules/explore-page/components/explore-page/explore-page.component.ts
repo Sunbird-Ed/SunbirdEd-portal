@@ -453,6 +453,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         request.channelId = this.selectedFilters['channel'];
                     }
                     const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
+                        const params = _.get(this.activatedRoute, 'snapshot.queryParams');
+                        _.filter(Object.keys(params),filterValue => { 
+                            if(((_.get(currentPageData , 'metaData.filters').indexOf(filterValue) !== -1)))
+                            {
+                                option.filters[filterValue] = (typeof(params[filterValue]) === "string" ) ? params[filterValue].split(',') : params[filterValue];
+
+                            }
+                        });
                     if (this.userService.loggedIn) {
                         option.filters['visibility'] = option.filters['channel'] = [];
                     }
@@ -464,7 +472,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                 this.searchResponse = get(response, 'result.content');
                                 if (_.has(response, 'result.QuestionSet')) {
-                                  this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
+                                 this.searchResponse = _.merge(this.searchResponse, _.get(response, 'result.QuestionSet'));
                                 }
                                 const filteredContents = omit(groupBy(this.searchResponse, content => {
                                     return content[groupByKey] || content['subject'] || 'Others';
