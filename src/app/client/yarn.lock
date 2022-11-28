@@ -2119,10 +2119,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v11@4.12.0":
+"@project-sunbird/common-consumption@4.12.0":
   version "4.12.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v11/-/common-consumption-v11-4.12.0.tgz#09e9987fa4f4ba104c52644dac1d9063940880f3"
-  integrity sha512-R196qM5WdR63FPlkR/Px1Hbatw2Qv3nxoAJxThxh4NAfYvtW9Ff1VFL36NQsqv8eKrm/bamr7nKb2CPzJAvmRg==
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-4.12.0.tgz#ef4bdf7c77445b7b0d3b46cf6d44c49d68d061ec"
+  integrity sha512-ijX69lPrG4bIV9Dprzq/mFYnTXvqLwcyTG212tshXyeTMxiwCrJ314jRwjMD/jOnV5tyTptw7s0ogDlB1M8vJA==
   dependencies:
     tslib "^2.0.0"
 
@@ -4746,10 +4746,10 @@ content-disposition@0.5.4:
   dependencies:
     safe-buffer "5.2.1"
 
-content-section-v11@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/content-section-v11/-/content-section-v11-0.0.8.tgz#f6b9acc64adeb64330837ea05e32c700aabf36ac"
-  integrity sha512-UX90UZa317UMb0uK8LiZGrrzgqIZfT4iBsS1XWBxdbmCtdYg7zmTuPHpKPRdIjM/tvKyMUI262QsU9Ns/mhiTg==
+content-section-v11@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/content-section-v11/-/content-section-v11-0.0.9.tgz#8c73c4ec75f49634ffe0f678aa3d82e5aa23c259"
+  integrity sha512-YagJEw5YbT8mwrU2tayxRCkBJNOAbf58B31dyS2ritaR7ZHvb9T787BwPkwzCLTMaUeZMb/XKbF8oQ0rN5XdTw==
   dependencies:
     tslib "^2.0.0"
 
@@ -6545,7 +6545,7 @@ file-loader@6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
