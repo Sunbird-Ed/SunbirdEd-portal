@@ -211,10 +211,10 @@ Installing Sunbird requires two primary software components:
   <summary>Portal - Frontend</summary>
 </details>
 
-|              Plugin Name              	|                         Plugin Repository                        	|                             npm package                             	| npm version 	| NG Version 	|
-|:-------------------------------------:	|:----------------------------------------------------------------:	|:-------------------------------------------------------------------:	|-------------	|------------	|
-| @project-sunbird/chatbot-client       	| https://github.com/project-sunbird/sunbird-bot-client            	| https://www.npmjs.com/package/@project-sunbird/chatbot-client       	|    3.0.3    	| NG 11      	|
-| @project-sunbird/common-consumption   	| https://github.com/Sunbird-Ed/SunbirdEd-consumption-ngcomponents 	| https://www.npmjs.com/package/@project-sunbird/common-consumption   	|    4.12.0   	| NG 11      	|
-| @project-sunbird/common-form-elements 	| https://github.com/Sunbird-Ed/SunbirdEd-forms                    	| https://www.npmjs.com/package/@project-sunbird/common-form-elements 	|    5.1.1    	| NG 11      	|
-| @project-sunbird/sb-content-section   	| https://github.com/Sunbird-Ed/sb-content-module                  	| https://www.npmjs.com/package/@project-sunbird/sb-content-section   	|    5.1.0    	| NG 11      	|
-| @project-sunbird/sb-notification      	| https://github.com/Sunbird-Ed/sb-notification                    	| https://www.npmjs.com/package/@project-sunbird/sb-notification      	|    5.0.7    	| NG 11      	|
+| Plugin Name                                                                                                  	| Plugin Repository                                                	| npm version 	| NG Version 	|
+|--------------------------------------------------------------------------------------------------------------	|------------------------------------------------------------------	|-------------	|------------	|
+| [@project-sunbird/chatbot-client](https://www.npmjs.com/package/@project-sunbird/chatbot-client)             	| https://github.com/project-sunbird/sunbird-bot-client            	| 3.0.3       	| NG 11      	|
+| [@project-sunbird/common-consumption](https://www.npmjs.com/package/@project-sunbird/common-consumption)     	| https://github.com/Sunbird-Ed/SunbirdEd-consumption-ngcomponents 	| 4.12.0      	| NG 11      	|
+| [@project-sunbird/common-form-elements](https://www.npmjs.com/package/@project-sunbird/common-form-elements) 	| https://github.com/Sunbird-Ed/SunbirdEd-forms                    	| 5.1.1       	| NG 11      	|
+| [@project-sunbird/sb-content-section](https://www.npmjs.com/package/@project-sunbird/sb-content-section)     	| https://github.com/Sunbird-Ed/sb-content-module                  	| 5.1.0       	| NG 11      	|
+| [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 5.0.7       	| NG 11      	|
