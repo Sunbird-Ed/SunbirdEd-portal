@@ -10,10 +10,10 @@ const getGeneralisedResourcesBundles = (req, res) => {
         container = envHelper.sunbird_azure_resourceBundle_container_name;
     }
     if (envHelper.sunbird_cloud_storage_provider === 'aws') {
-        container = envHelper.sunbird_aws_labels + '/';
+        container = envHelper.sunbird_aws_labels;
     }
     if (envHelper.sunbird_cloud_storage_provider === 'gcloud') {
-        container = envHelper.sunbird_gcloud_labels + '/';
+        container = envHelper.sunbird_gcloud_labels;
     }
     StorageService.CLOUD_CLIENT.getFileAsText(container, blobName, function (error, result, response) {
         if (error && error.statusCode === 404) {
