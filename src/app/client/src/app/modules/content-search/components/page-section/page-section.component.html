@@ -45,7 +45,7 @@
                             [telemetryInteractEdata]="cardInteractEdata"
                             [telemetryInteractCdata]="telemetryInteractCdata"
                             [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
-                            (cardClick)="playContent($event)" [content]="content"
+                            (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
                             [cardImg]="content?.image || 'assets/images/book.png'"></sb-library-card>
                     </ng-container>
                 </ng-template>

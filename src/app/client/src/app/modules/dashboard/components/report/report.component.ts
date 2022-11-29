@@ -11,6 +11,7 @@ import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
+import { Location } from '@angular/common';
 
 enum ReportType {
   report,
@@ -82,7 +83,8 @@ export class ReportComponent implements OnInit {
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
     private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService,
-    private cdr: ChangeDetectorRef, private userService: UserService, public tncService: TncService
+    private cdr: ChangeDetectorRef, private userService: UserService, public tncService: TncService,
+    public location:Location
   ) { }
 
 
@@ -470,7 +472,7 @@ export class ReportComponent implements OnInit {
   }
 
   public gotoListPage() {
-    this.router.navigate(['/dashBoard/reports']);
+    this.location.back();
   }
 
   public getParametersValueForDropDown(report?: object) {

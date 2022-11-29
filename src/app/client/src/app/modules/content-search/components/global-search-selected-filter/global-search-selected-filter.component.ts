@@ -1,19 +1,33 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, UtilService } from '@sunbird/shared';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/internal/Subject';
+
 @Component({
   selector: 'app-global-search-selected-filter',
   templateUrl: './global-search-selected-filter.component.html',
   styleUrls: ['./global-search-selected-filter.component.scss']
 })
-export class GlobalSearchSelectedFilterComponent {
+export class GlobalSearchSelectedFilterComponent implements OnInit {
   @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count?: number }[] }[];
   @Input() selectedFilters;
   @Input() queryParamsToOmit;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, public resourceService: ResourceService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, public resourceService: ResourceService, private utilService: UtilService) { }
+
+  ngOnInit() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      if (this.facets) {
+        this.facets.forEach((facet) => {
+          facet['label'] = this.utilService.transposeTerms(facet['label'], facet['label'], this.resourceService.selectedLang);
+        });
+      }
+    });
+  }
 
   removeFilterSelection(data) {
     _.map(this.selectedFilters, (value, key) => {

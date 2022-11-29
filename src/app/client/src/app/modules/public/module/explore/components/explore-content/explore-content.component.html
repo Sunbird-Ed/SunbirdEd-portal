@@ -31,11 +31,43 @@
                 {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
             </div>
           </div>
-      
+          
           <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column" in-view-container
             (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
-            <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+           <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+              <ng-container>
+                <!-- <ng-container *ngFor="let data of contentList;let i = index;"> -->
+                  <div class="sb-grid mb-16">
+                    <div *ngFor="let content of contentList;let i = index;" in-view-item [id]="i" [data]="content" class="sb-grid--item"
+                      [ngClass]="{'last mb-0':last}">
+                      <sb-library-card *ngIf="!isDesktopApp;else desktopCard" [indexToDisplay]="i"
+                        [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                        [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                        (cardClick)="playContent($event)" (enterKey)="playContent($event)" [content]="content"
+                        [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                      </sb-library-card>
+                      <ng-template #desktopCard>
+                        <div class="sb-desktop-library-card relative9">
+                          <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
+                            [telemetryInteractEdata]="cardIntractEdata"
+                            [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                            [hover-template]="hoverTemplate" [content]="content"
+                            [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                            <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+                              <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
+                                (hoverActionClick)="hoverActionClicked($event)">
+                              </sb-card-hover>
+                            </ng-template>
+                          </sb-library-card>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                <!-- </ng-container> -->
+              </ng-container>
+
+              <!-- <ng-container *ngIf =showBackButton>
               <div *ngFor="let section of contentList; let last = last" [ngClass]="{'last mb-0':last}">
                 <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
                   [title]="section.name" [contentList]="section.contents" [maxCardCount]="3" [viewMore]="true"
@@ -48,6 +80,7 @@
                   </sb-library-cards-grid>
                 </div>
               </div>
+            </ng-container> -->
           </div>
           <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column"
             *ngIf="contentList.length === 0 && !showLoader">

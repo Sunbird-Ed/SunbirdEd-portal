@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import * as $ from 'jquery';
 import 'datatables.net';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-list-all-reports',
@@ -25,7 +26,7 @@ export class ListAllReportsComponent implements OnInit {
 
   constructor(public resourceService: ResourceService, public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService,
-    private telemetryService: TelemetryService, private layoutService: LayoutService, public tncService: TncService) { }
+    private telemetryService: TelemetryService, private layoutService: LayoutService, public tncService: TncService, public location:Location) { }
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
@@ -74,7 +75,7 @@ export class ListAllReportsComponent implements OnInit {
   }
 
   goBack() {
-    this.navigationhelperService.goBack();
+    this.location.back();
   }
 
   private filterReportsBasedOnRoles = (reports: any[]) => {

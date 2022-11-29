@@ -14,12 +14,12 @@ import {
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
-  OfflineCardService, RecaptchaService, ConnectionService
+  OfflineCardService, RecaptchaService, ConnectionService, GenericResourceService
 } from './services';
 import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe } from './pipes';
+import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe, TransposeTermsPipe } from './pipes';
 import { CacheService } from 'ng2-cache-service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -70,7 +70,7 @@ import { MaterialModule } from './modules/material/material.module';
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
     TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe, MaterialAutoCompleteComponent
+    AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe
   ],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
@@ -81,7 +81,7 @@ import { MaterialModule } from './modules/material/material.module';
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
     AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule
+    AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe
   ],
   entryComponents: [AlertModalComponent]
 })
@@ -91,7 +91,7 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [ResourceService, ConfigService, ToasterService, PaginationService, RecaptchaService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
-        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService, TranslateStore, TitleCasePipe, ConnectionService]
+        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService, TranslateStore, TitleCasePipe, ConnectionService, GenericResourceService]
     };
   }
 }

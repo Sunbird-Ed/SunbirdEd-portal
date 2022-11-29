@@ -4,7 +4,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
-    OfflineCardService, BrowserCacheTtlService, IUserData
+    OfflineCardService, BrowserCacheTtlService, IUserData, GenericResourceService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
@@ -117,7 +117,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
-        private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService) {
+        private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
+        private genericResourceService: GenericResourceService) {
+            this.genericResourceService.initialize();
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         this.subscription = this.utilService.currentRole.subscribe(async (result) => {
@@ -162,8 +164,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
                     if (this.isUserLoggedIn()) {
-                        this.defaultFilters = this.userService.defaultFrameworkFilters;
-                        this.userProfile = this.userService.userProfile;
+                       // this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
+                       this.defaultFilters =  this.userService.defaultFrameworkFilters;
+                       this.userProfile = this.userService.userProfile;
                     } else {
                         this.userService.getGuestUser().subscribe((response) => {
                             const guestUserDetails: any = response;
@@ -349,7 +352,28 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public getFilters({ filters, status }) {
         if (!filters || status === 'FETCHING') { return; }
+        // If filter are available in cache; merge with incoming filters
+        /* istanbul ignore if */
+        // if (this.cacheService.exists('searchFilters')) {
+        //     const _searchFilters = this.cacheService.get('searchFilters');
+        //     const _cacheFilters = {
+        //         gradeLevel: [..._.intersection(filters['gradeLevel'], _searchFilters['gradeLevel']), ..._.difference(filters['gradeLevel'], _searchFilters['gradeLevel'])],
+        //         subject: [..._.intersection(filters['subject'], _searchFilters['subject']),
+        //             ..._.difference(filters['subject'], _searchFilters['subject'])],
+        //         medium: [..._.intersection(filters['medium'], _searchFilters['medium']), ..._.difference(filters['medium'], _searchFilters['medium'])],
+        //         publisher: [..._.intersection(filters['publisher'], _searchFilters['publisher']), ..._.difference(filters['publisher'], _searchFilters['publisher'])],
+        //         audience: [..._.intersection(filters['audience'], _searchFilters['audience']), ..._.difference(filters['audience'], _searchFilters['audience'])],
+        //         channel: [..._.intersection(filters['channel'], _searchFilters['channel']), ..._.difference(filters['channel'], _searchFilters['channel'])],
+        //         audienceSearchFilterValue: [..._.intersection(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue']),
+        //             ..._.difference(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue'])],
+        //         board: filters['board'],
+        //         selectedTab: this.getSelectedTab()
+        //     };
+        //     filters = _cacheFilters;
+        // }
         const currentPageData = this.getCurrentPageData();
+       // const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
+        //this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
         this.showLoader = true;
         this.selectedFilters = pick(filters, _.get(currentPageData , 'metaData.filters'));
         if (this.selectedFilters && this.selectedFilters['board'] && this.selectedFilters['board'][0] === 'CBSE/NCERT') {
@@ -693,8 +717,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private setNoResultMessage() {
         const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
-        let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
-            desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
+        let {
+            noBookfoundTitle: title,
+            noBookfoundTitle: subTitle,
+            noBookfoundTitle: buttonText,
+            noContentfoundTitle,
+            noContentfoundSubTitle,
+            noContentfoundButtonText,
+            desktop: { yourSearch = '', notMatchContent = '' } = {} 
+        } = get(this.resourceService, 'frmelmnts.lbl');
+            title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', this.resourceService.selectedLang);
+            subTitle = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', this.resourceService.selectedLang);
+            buttonText = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', this.resourceService.selectedLang);
+            noContentfoundSubTitle = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noContentfoundSubTitle'), 'frmelmnts.lbl.noContentfoundSubTitle', this.resourceService.selectedLang);
+            noContentfoundTitle = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noContentfoundTitle'), 'frmelmnts.lbl.noContentfoundTitle', this.resourceService.selectedLang);
+
         if (key) {
             const title_part1 = replace(yourSearch, '{key}', key);
             const title_part2 = notMatchContent;
@@ -1097,7 +1134,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     getSectionTitle (title) {
-        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+        let _sectionTitle = this.utilService.transposeTerms(get(this.resourceService, title), get(this.resourceService, title) || '', this.resourceService.selectedLang);
+        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + _sectionTitle;
+        
     }
 
     getSectionCategoryTitle (title) {

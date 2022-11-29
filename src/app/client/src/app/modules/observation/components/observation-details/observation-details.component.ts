@@ -21,6 +21,8 @@ export class ObservationDetailsComponent implements OnInit {
   layoutConfiguration: any;
   submissions;
   programName;
+  disableAddEntity:boolean = true;
+  entityType;
   actions = [{
     name: this.resourceService.frmelmnts.lbl.edit,
     icon: 'pencil alternate large icon',
@@ -60,6 +62,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.observationId = data.observationId;
       this.solution = data.solutionName;
       this.programName = data.programName;
+      this.entityType = data.entityType;
     });
   }
 
@@ -98,6 +101,7 @@ export class ObservationDetailsComponent implements OnInit {
     this.observationService.post(paramOptions).subscribe(data => {
       this.showLoader = false;
       if (data.result ) {
+        this.disableAddEntity = false;
         this.entities = data.result;
         if (!this.selectedEntity._id && data.result.entities && data.result.entities.length) {
           this.selectedEntity = this.entities.entities[0];
@@ -113,6 +117,7 @@ export class ObservationDetailsComponent implements OnInit {
        }
 
     }, error => {
+      this.toasterService.error(error?.error?.message)
       this.showLoader = false;
     });
   }

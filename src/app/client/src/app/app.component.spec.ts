@@ -4,7 +4,7 @@ import { CacheService } from "ng2-cache-service";
 import { BehaviorSubject, Observable, of, throwError } from "rxjs";
 import { AppComponent } from "./app.component"
 import { CoursesService, DeviceRegisterService, FormService, GeneraliseLabelService, LearnerService, OrgDetailsService, PermissionService, PublicDataService, SessionExpiryInterceptor, TenantService, UserService } from "./modules/core";
-import { BrowserCacheTtlService, ConfigService, ConnectionService, IUserData, IUserProfile, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService } from "./modules/shared";
+import { BrowserCacheTtlService, ConfigService, ConnectionService, IUserData, IUserProfile, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService, GenericResourceService } from "./modules/shared";
 import { TelemetryService } from "./modules/telemetry";
 import { ProfileService } from "./plugins/profile";
 import { mockData } from './app.component.spec.data';
@@ -36,6 +36,9 @@ describe("App Component", () => {
   };
   const mockPermissionService: Partial<PermissionService> = {};
   const mockResourceService: Partial<ResourceService> = {};
+  const mockGenericResourceService: Partial<GenericResourceService> = {
+    initialize: jest.fn()
+  };
   const mockDeviceRegisterService: Partial<DeviceRegisterService> = {};
   const mockCoursesService: Partial<CoursesService> = {};
   const mockTenantService: Partial<TenantService> = {
@@ -117,7 +120,8 @@ describe("App Component", () => {
       mockGeneraliseLabelService as GeneraliseLabelService,
       mockRenderer2 as Renderer2,
       mockNgZone as NgZone,
-      mockConnectionService as ConnectionService
+      mockConnectionService as ConnectionService,
+      mockGenericResourceService as GenericResourceService
     );
   });
 

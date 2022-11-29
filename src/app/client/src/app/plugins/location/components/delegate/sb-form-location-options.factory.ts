@@ -1,4 +1,4 @@
-import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements-web-v9';
+import { FieldConfig, FieldConfigOptionsBuilder } from '@project-sunbird/common-form-elements-v9';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
 import { concat, defer, iif, of } from 'rxjs';
@@ -111,7 +111,8 @@ export class SbFormLocationOptionsFactory {
       return this.orgDetailsService.searchOrgDetails({
         filters: {
           'orgLocation.id': (value as SbLocation).id,
-          isSchool: true
+          isSchool: true,
+          'status': 1
         }
       }).pipe(
         map((list: any) => list.content.map(ele => {

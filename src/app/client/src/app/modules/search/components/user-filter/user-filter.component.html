@@ -37,7 +37,7 @@
       <div *ngIf="medium" class="sb-prominent-filter-field">
         
         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.medium | translate}}</mat-label>
+          <mat-label>{{resourceService.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.medium" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.medium"
             class="selection" (selectionChange)="selectedMultiValues($event, medium?.code)">
             <mat-select-trigger>
@@ -56,7 +56,7 @@
       <div *ngIf="class" class="sb-prominent-filter-field">
 
          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.class | translate}}</mat-label>
+          <mat-label>{{resourceService.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.gradeLevel" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.class"
             class="selection" (selectionChange)="selectedMultiValues($event, class?.code)">
             <mat-select-trigger>
@@ -74,7 +74,7 @@
       <div *ngIf="subject" class="sb-prominent-filter-field">
         
          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-          <mat-label>{{resourceService.frmelmnts?.lbl?.subject | translate}}</mat-label>
+          <mat-label>{{resourceService.frmelmnts?.lbl?.subject | transposeTerms: 'frmelmnts.lbl.subject': resourceService?.selectedLang | translate}}</mat-label>
           <mat-select [(ngModel)]="inputData.subject" role="listbox" multiple [aria-label]="resourceService.frmelmnts?.lbl?.subject"
             class="selection" (selectionChange)="selectedMultiValues($event, subject?.code)">
             <mat-select-trigger>

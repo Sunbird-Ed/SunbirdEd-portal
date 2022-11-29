@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Component, OnInit, Input } from '@angular/core';
-import { ResourceService, UtilService, LayoutService } from '@sunbird/shared';
+import { ResourceService, UtilService, LayoutService, GenericResourceService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 
@@ -22,7 +22,8 @@ export class LanguageDropdownComponent implements OnInit {
     public resourceService: ResourceService,
     public router: Router,
     public utilService: UtilService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public genericResourceService: GenericResourceService
   ) { }
 
   ngOnInit() {
@@ -35,12 +36,14 @@ export class LanguageDropdownComponent implements OnInit {
     if (localStorage.getItem('portalLanguage')) {
       this._cacheService.set('portalLanguage', tenantPageLang);
       this.resourceService.initialize();
+      this.genericResourceService.initialize();
     } else {
       // If user directly open portal then set lang to storage for website
       localStorage.setItem('portalLanguage', tenantPageLang);
     }
     this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
     this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
+    this.genericResourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     window['TagManager']?.SBTagService?.pushTag({portalLanguage: this.selectedLanguage}, 'USERLANG_', true);
   }
 
@@ -51,6 +54,7 @@ export class LanguageDropdownComponent implements OnInit {
     window['TagManager']?.SBTagService?.pushTag({portalLanguage: event}, 'USERLANG_', true);
     this.utilService.emitLanguageChangeEvent(language);
     this.resourceService.getResource(event, language);
+    this.genericResourceService.getResource(event, language);
   }
 
   getTelemetryInteractEdata(language): IInteractEventEdata {

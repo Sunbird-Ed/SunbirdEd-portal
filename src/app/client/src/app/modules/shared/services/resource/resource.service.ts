@@ -47,6 +47,7 @@ export class ResourceService {
    * Contains instance name
    */
   private _instance: string;
+  private _selectedLang: string;
   // Observable navItem source
   _languageSelected = new BehaviorSubject<any>({});
   // Observable navItem stream
@@ -83,6 +84,7 @@ export class ResourceService {
    * method to fetch resource bundle
   */
   public getResource(language = 'en', range: any = {}): void {
+    this._selectedLang = language;
     const option = {
       url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
     };
@@ -140,6 +142,10 @@ export class ResourceService {
  */
   get instance(): string {
     return _.upperCase(this._instance);
+  }
+
+  get selectedLang(): string {
+    return this._selectedLang;
   }
 
   getLanguageChange(language) {
