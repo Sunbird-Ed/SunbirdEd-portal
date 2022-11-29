@@ -22,6 +22,7 @@ export class SignupBasicInfoComponent implements OnInit {
   @Input() telemetryImpression;
   @Input() submitInteractEdata;
   @Input() telemetryCdata;
+  @Input() routeParams;
   birthYearOptions: Array<string> = [];
   filteredYOB: Observable<number[]>;
   yearOfBirth: string;
@@ -46,7 +47,7 @@ export class SignupBasicInfoComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value)),
     );
-    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
   }
 
   private _filter(value: string): string[] {
@@ -97,6 +98,7 @@ export class SignupBasicInfoComponent implements OnInit {
     let _selectedYOB = parseInt(_.get(selectedBirthYear, 'option.value'));
     if (this.isIOSDevice) {
       _selectedYOB = parseInt(selectedBirthYear.target.value);
+      this.personalInfoForm.controls.yearOfBirth.setValue(_selectedYOB);
     }
     const currentYear = new Date().getFullYear();
     this.yearOfBirth = `${_selectedYOB}`;

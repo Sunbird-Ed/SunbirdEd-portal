@@ -64,19 +64,18 @@
                 <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
                   <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
                 </p>
-                <!-- <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p> -->
                 <p>
                   <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}:
+                    <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
                     </span>
                     <span *ngIf="userPreference?.framework?.board?.length"
                       class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
                   </span>
 
                   <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}:
+                    <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
                     </span>
-                    <span class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
+                    <span  *ngIf="userPreference?.framework?.medium?.length" class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
                     <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
                       ... + {{userPreference?.framework?.medium?.length-1}}
                     </span>
@@ -84,9 +83,9 @@
 
                   <span class="mr-24">
                     <span
-                      *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}:
+                      *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}}:
                     </span>
-                    <span class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
+                    <span *ngIf="userPreference?.framework?.gradeLevel?.length" class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
                     <span class="font-weight-bold" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
                       ... + {{userPreference?.framework?.gradeLevel?.length-1}}
                     </span>
@@ -187,7 +186,7 @@
             <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration"
               [type]="'infinite_card_grid'" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
+              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)" (enterKey)="playContent($event, section.name)">
             </sb-library-cards-grid>
             <div class="sb-desktop-library-card relative9">
               <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration"

@@ -30,7 +30,7 @@ module.exports = function (app) {
     )
     app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`],
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
+        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
@@ -141,13 +141,13 @@ module.exports = function (app) {
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
+        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
         reportHelper.azureBlobStream());
 
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
-        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
+        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
         reportHelper.azureBlobStream());
 
     app.get('/admin-reports/:slug/:filename',

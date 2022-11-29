@@ -254,43 +254,50 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
-          const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-          const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
-            return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
-        }), ['undefined']);
-        for (const [key, value] of Object.entries(filteredContents)) {
-            const isMultipleSubjects = key && key.split(',').length > 1;
-            if (isMultipleSubjects) {
-                const subjects = key && key.split(',');
-                subjects.forEach((subject) => {
-                    if (filteredContents[subject]) {
-                        filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
-                    } else {
-                        filteredContents[subject] = value;
-                    }
-                });
-                delete filteredContents[key];
-            }
+        //   const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
+        //   const filteredContents = omit(groupBy(get(data, 'result.content') || get(data, 'result.QuestionSet'), content => {
+        //     return ((this.queryParams['primaryCategory'] && this.queryParams['primaryCategory'].length > 0) ? content['subject'] : content['primaryCategory']);
+        // }), ['undefined']);
+        // for (const [key, value] of Object.entries(filteredContents)) {
+        //     const isMultipleSubjects = key && key.split(',').length > 1;
+        //     if (isMultipleSubjects) {
+        //         const subjects = key && key.split(',');
+        //         subjects.forEach((subject) => {
+        //             if (filteredContents[subject]) {
+        //                 filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+        //             } else {
+        //                 filteredContents[subject] = value;
+        //             }
+        //         });
+        //         delete filteredContents[key];
+        //     }
+        // }
+       // const sections = [];
+        // for (const section in filteredContents) {
+        //     if (section) {
+        //         if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
+        //             continue;
+        //         }
+        //         sections.push({
+        //             name: section,
+        //             contents: filteredContents[section]
+        //         });
+        //     }
+        // }
+        // _map(sections, (section) => {
+        //     forEach(section.contents, contents => {
+        //         contents.cardImg = contents.appIcon || 'assets/images/book.png';
+        //     });
+        //     return section;
+        // });
+        //this.contentList = sections;
+        if(get(data, 'result.content') && get(data, 'result.QuestionSet')){
+          this.contentList = _.concat(get(data, 'result.content'), get(data, 'result.QuestionSet'));
+        } else if(get(data, 'result.content')){
+          this.contentList = get(data, 'result.content');
+        } else {
+          this.contentList = get(data, 'result.QuestionSet');
         }
-        const sections = [];
-        for (const section in filteredContents) {
-            if (section) {
-                if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
-                    continue;
-                }
-                sections.push({
-                    name: section,
-                    contents: filteredContents[section]
-                });
-            }
-        }
-        _map(sections, (section) => {
-            forEach(section.contents, contents => {
-                contents.cardImg = contents.appIcon || 'assets/images/book.png';
-            });
-            return section;
-        });
-        this.contentList = sections;
         this.addHoverData();
           const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
@@ -327,14 +334,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   addHoverData() {
-    each(this.contentList, (contentSection) => {
-      forEach(contentSection.contents, content => {
-          if (this.contentDownloadStatus[content.identifier]) {
-              content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-          }
-      });
-      this.contentList[contentSection] = this.utilService.addHoverData(contentSection.contents, true);
-   });
+    this.contentList = this.utilService.addHoverData(this.contentList, true);  
   }
   moveToTop() {
     window.scroll({
@@ -415,18 +415,22 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private setNoResultMessage() {
-    let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+    this.resourceService.languageSelected$.subscribe(item => {
+    let title = this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundTitle'), 'frmelmnts.lbl.noBookfoundTitle', get(item, 'value'));    
     if (this.queryParams.key) {
       const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
       const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
       title = title_part1 + ' ' + title_part2;
     }
-    this.noResultMessage = {
-      'title': title,
-      'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-      'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-      'showExploreContentButton': false
-    };
+      this.noResultMessage = {
+        'title': title,
+        'subTitle': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundSubTitle'), 'frmelmnts.lbl.noBookfoundSubTitle', get(item, 'value')),
+        'buttonText': this.utilService.transposeTerms(get(this.resourceService, 'frmelmnts.lbl.noBookfoundButtonText'), 'frmelmnts.lbl.noBookfoundButtonText', get(item, 'value')),
+        'showExploreContentButton': false
+      };
+      
+    });
+    
   }
 
   updateCardData(downloadListdata) {

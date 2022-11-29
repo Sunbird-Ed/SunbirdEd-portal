@@ -1,0 +1,30 @@
+<form class="d-flex flex-dr" [formGroup]="pdFiltersFormGroup">
+    <div class="d-flex flex-dc">
+      <label>{{ pdFilter.label }}</label>
+      <ng-container *ngIf="pdFilter.controlType === 'number'">
+        <mat-form-field
+          appearance="fill"
+          class="sb-mat__dropdown custom_mat_dd"
+        >
+          <input
+            matInput
+            type="number"
+            [formControlName]="pdFilter.reference"
+            [value]="pdFilter.defaultValue"
+            (input)="inputChange()"
+          />
+        </mat-form-field>
+      </ng-container>
+      <ng-container *ngIf="pdFilter.controlType === 'multi-select'">
+        <mat-form-field
+          appearance="fill"
+          class="sb-mat__dropdown"
+        >
+          <mat-select (selectionChange)="inputChange()" multiple [formControlName]="pdFilter.reference" [placeholder]="pdFilter.placeholder" >
+          <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of pdFilter.options" [value]="option"
+          attr.aria-label="{{option}}" class="custom_mat_multi">{{option | lowercase | titlecase}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+      </ng-container>
+    </div>
+</form>

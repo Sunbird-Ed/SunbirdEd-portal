@@ -1,8 +1,11 @@
 <div [formGroup]="personalInfoForm" class="signup-form-content">
 
-    <h5 tabindex="0" *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
+    <h5 tabindex="0" *ngIf="telemetryImpression" [ngClass]="{'hide': routeParams?.loginMode == 'gmail','show':routeParams?.loginMode != 'gmail'}" [appTelemetryImpression]="telemetryImpression"
     class="font-weight-bold text-center mb-24">
     {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</h5>
+    <h5 tabindex="0" *ngIf="telemetryImpression" [ngClass]="{'show': routeParams?.loginMode == 'gmail','hide': routeParams?.loginMode != 'gmail'}" [appTelemetryImpression]="telemetryImpression"
+    class="font-weight-bold text-center mb-24">
+    {{resourceService.frmelmnts.lbl.followingdetails | interpolate:'{instance}': instance}}</h5>
 
     <div class="required mb-16">
         <label for="signup-form-name" class="mb-8 font-weight-bold">
@@ -11,7 +14,7 @@
         
         <input id="signup-form-name" class="sb-form-control"
             [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
-            formControlName="name" type="text" name="name" aria-required="true" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
+            formControlName="name" type="text" name="name" autocomplete="off" aria-required="true" placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
         
         <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</div>
         <div class="sb-color-red pt-0" aria-describedby="signup-form-name" tabindex="0" aria-label="enter a valid name" *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</div>

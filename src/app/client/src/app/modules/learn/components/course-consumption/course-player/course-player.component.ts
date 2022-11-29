@@ -702,7 +702,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   getDataSetting() {
     const userId = _.get(this.userService, 'userid');
     const isConsentGiven = _.upperCase(_.get(this.courseHierarchy, 'userConsent')) === 'YES';
-    const isMinor = _.get(this.userService, 'userProfile').isMinor;
+    const isMinor = _.get(this.userService, 'userProfile')?.isMinor;
     const isManagedUser = _.get(this.userService, 'userProfile').managedBy;
     const canViewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
     return (userId && isConsentGiven && (!isMinor || isManagedUser) && !canViewDashboard && this.enrolledCourse);

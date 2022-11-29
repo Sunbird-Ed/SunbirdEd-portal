@@ -60,6 +60,8 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
   @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() startingForm: object;
+  updateSignUpForm: FormGroup;
+  showUpdateSignUpForm: boolean = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -72,7 +74,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   }
 
   ngOnInit() {
-    console.log('Global Object data => ', this.startingForm); // TODO: log!
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
     this.isMinor = _.get(this.startingForm, 'basicInfo.isMinor') ? _.get(this.startingForm, 'basicInfo.isMinor') : false;
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
@@ -90,7 +92,12 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
     } catch (error) {
       this.googleCaptchaSiteKey = '';
     }
-    this.initializeFormFields();
+    if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+      this.showUpdateSignUpForm = true;
+      this.initializeUpdateForm();
+    } else {
+      this.initializeFormFields();
+    }
     this.setInteractEventData();
     // Telemetry Start
     this.signUpTelemetryStart();
@@ -180,18 +187,22 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   }
 
   onContactTypeValueChanges(): void {
-    const emailControl = this.signUpForm.get('email');
-    const phoneControl = this.signUpForm.get('phone');
-    this.signUpForm.get('contactType').valueChanges.subscribe(
+    let _form = this.signUpForm;
+    if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+      _form = this.updateSignUpForm;
+    }
+    const emailControl = _form.get('email');
+    const phoneControl = _form.get('phone');
+    _form.get('contactType').valueChanges.subscribe(
       (mode: string) => {
         this.setInteractEventData();
-        this.signUpForm.controls['uniqueContact'].setValue('');
+        _form.controls['uniqueContact'].setValue('');
         if (mode === 'email') {
-          this.signUpForm.controls['phone'].setValue('');
+          _form.controls['phone'].setValue('');
           emailControl.setValidators([Validators.required, Validators.email]);
           phoneControl.clearValidators();
         } else if (mode === 'phone') {
-          this.signUpForm.controls['email'].setValue('');
+          _form.controls['email'].setValue('');
           emailControl.clearValidators();
           phoneControl.setValidators([Validators.required, Validators.pattern('^\\d{10}$')]);
         }
@@ -201,8 +212,12 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   }
 
   enableSignUpSubmitButton() {
-    this.signUpForm.valueChanges.subscribe(val => {
-      if (this.signUpForm.status === 'VALID') {
+    let _form = this.signUpForm;
+    if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+      _form = this.updateSignUpForm;
+    }
+    _form.valueChanges.subscribe(val => {
+      if (_form.status === 'VALID') {
         this.disableSubmitBtn = false;
       } else {
         this.disableSubmitBtn = true;
@@ -252,19 +267,23 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
    * @since - release-3.0.1
    */
   getReCaptchaToken(inputType: string) {
+    let _form = this.signUpForm;
+    if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+      _form = this.updateSignUpForm;
+    }
     if (this.isP1CaptchaEnabled === 'true') {
       this.resetGoogleCaptcha();
       this.formInputType = inputType;
-      const emailControl = this.signUpForm.get('email');
-      const phoneControl = this.signUpForm.get('phone');
+      const emailControl =_form.get('email');
+      const phoneControl =_form.get('phone');
       if (inputType === 'email' && emailControl.status === 'VALID' && emailControl.value !== '') {
-         this.signUpForm.controls['uniqueContact'].setValue('');
+        _form.controls['uniqueContact'].setValue('');
         this.captchaRef.execute();
       } else if (inputType === 'phone' && phoneControl.status === 'VALID' && phoneControl.value !== '') {
-         this.signUpForm.controls['uniqueContact'].setValue('');
+        _form.controls['uniqueContact'].setValue('');
         this.captchaRef.execute();
       }
-    } else {
+    } else if (_.get(this.startingForm, 'routeParams.loginMode') !== 'gmail') {
       this.vaidateUserContact();
     }
   }
@@ -284,7 +303,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   resolved(captchaResponse: string) {
     if (captchaResponse) {
-      if (this.formInputType) {
+      if (this.formInputType && _.get(this.startingForm, 'routeParams.loginMode') !== 'gmail') {
         this.vaidateUserContact(captchaResponse);
         this.formInputType = undefined;
       } else {
@@ -299,11 +318,15 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   }
 
   generateOTP(captchaResponse?) {
+    let _form = this.signUpForm;
+    if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+      _form = this.updateSignUpForm;
+    }
     const request = {
       'request': {
-        'key': this.signUpForm.controls.contactType.value === 'phone' ?
-          this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value,
-        'type': this.signUpForm.controls.contactType.value.toString()
+        'key': _form.controls.contactType.value === 'phone' ?
+          _form.controls.phone.value.toString() : _form.controls.email.value,
+        'type': _form.controls.contactType.value.toString()
       }
     };
     if (this.isMinor) {
@@ -313,7 +336,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
       (data: ServerResponse) => {
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
-        request.request['password'] = this.signUpForm.controls.password.value.toString();
+        request.request['password'] = _form?.controls?.password?.value?.toString();
         this.subformInitialized.emit(request.request);
         this.triggerNext.emit();
       },
@@ -356,12 +379,16 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   }
 
   setInteractEventData() {
+    let _form = this.signUpForm;
+    if (_.get(this.startingForm, 'routeParams.loginMode') === 'gmail') {
+      _form = this.updateSignUpForm;
+    }
     this.submitInteractEdata = {
       id: 'submit-signup',
       type: 'click',
       pageid: 'signup',
       extra: {
-        'contactType': this.signUpForm.controls.contactType.value.toString()
+        'contactType': _form.controls.contactType.value.toString()
       }
     };
   }
@@ -408,5 +435,21 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   showAndHidePopup(mode: boolean) {
     this.showTncPopup = mode;
+  }
+
+  initializeUpdateForm() {
+    this.updateSignUpForm = this.sbFormBuilder.group({
+      phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
+      email: new FormControl(null, [Validators.email]),
+      contactType: new FormControl('phone'),
+      uniqueContact: new FormControl(null),
+    });
+    this.onContactTypeValueChanges();
+    this.enableSignUpSubmitButton();
+  }
+
+  resetInput() {
+    this.updateSignUpForm.controls.phone.reset();
+    this.updateSignUpForm.controls.email.reset();
   }
 }

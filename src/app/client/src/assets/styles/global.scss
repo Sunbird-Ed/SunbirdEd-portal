@@ -1169,6 +1169,9 @@ a.ui.labels .label:hover {
   .multi-select-container .list-border .placeholder {
     color: var(--black) !important;
   }
+  .multi-select-container .list-border ul{
+    padding-left: 1rem;
+  }
 }
 
 .sb-notification-container {
@@ -1189,10 +1192,10 @@ a.ui.labels .label:hover {
 .five.wide.column .logo.flex-jc-ai-center,
 .five.wide.column .list-items .logo.list-items__bar,
 .list-items .five.wide.column .logo.list-items__bar,
-.sb-onboard .brand-logo,
 .terms-modal-logo {
   padding: 0.5rem;
 }
+
 
 .sb-slider-pills-container .sb-grade-pills-container .pill.active:hover {
   background-color: var(--cc-grade-pill-bg-hover) !important;
@@ -1236,7 +1239,6 @@ html[layout='joy'] {
   .sbt-dropdown-language {
     @include respond-below(sm) {
       width: 100%;
-      margin-bottom: calculateRem(8px);
     }
   }
 
@@ -1498,10 +1500,7 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   padding: 0 0;
   margin-top: 0;
 }
-html[layout=joy] sb-form .multi-select-container .list-border {
-  padding: 0px !important;
-  border: inherit !important;
-}
+
 
 /* error page */
 .error-page {
@@ -1526,4 +1525,17 @@ html[layout=joy] sb-form .multi-select-container .list-border {
     }
   }
 
+}
+
+.slick-prev,
+.slick-next {
+  &.slick-arrow.slick-disabled {
+    display: none;
+    &:focus-visible {
+      border: none !important;
+    }
+    &::before {
+      cursor: no-drop;
+    }
+  }
 }

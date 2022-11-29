@@ -33,18 +33,17 @@
         </div>
       </mat-dialog-content>
 
-      <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center">
+      <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center d-block">
         <div class="sb-onboard__footer mt-0">
           <ng-content select="[slot=popup-footer]"></ng-content>
         </div>
-        <div class="sb-onboard__footer d-flex">
+        <div class="sb-onboard__footer d-flex flex-ai-center flex-jc-center w-80 m-auto">
           <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
             [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
             [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
             tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
           </button>
-          <div class="w-10"></div>
-          <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
+          <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1 ml-24" type="submit"
             [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
             [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
             (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
@@ -85,7 +84,7 @@
               *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
               [config]="sbFormLocationSelectionDelegate.locationFormConfig"
               (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
-              (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
+              (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event); onSbFormValueChange($event);"
               (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal)">
             </sb-form>
           </div>
@@ -94,7 +93,7 @@
     </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center">
+  <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center d-block">
     <div class="sb-onboard__footer mt-0">
       <ng-content select="[slot=popup-footer]"></ng-content>
     </div>

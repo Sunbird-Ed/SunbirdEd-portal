@@ -24,7 +24,8 @@ describe('SignupComponent', () => {
           type: 'view', mode: 'self', uuid: 'hadfisgefkjsdvv'
         }
       }
-    } as any
+    } as any,
+    queryParams: of({}) as any
   };
   const mockTelemetryService: Partial<TelemetryService> = {};
   const mockNavigationHelperService: Partial<NavigationHelperService> = {};
@@ -93,7 +94,6 @@ describe('SignupComponent', () => {
     component.subformInitialized('basicInfo', basicFormFields);
     expect(component.signUpForm.basicInfo).toEqual(basicFormFields);
   });
-
 
   describe("ngOnInit", () => {
     it('initialize Form Fields and telemetry', () => {
@@ -181,8 +181,4 @@ describe('SignupComponent', () => {
         expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
     });
   });
-
-  
-
-
 });

@@ -40,6 +40,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   formInputType: string;
   isIOSDevice = false;
   signupStage: SignUpStage;
+  routeParams: any;
   get Stage() { return SignUpStage; }
 
   constructor(public resourceService: ResourceService, public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
@@ -48,6 +49,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.routeParams = params;
+    });
     this.signupStage = SignUpStage.BASIC_INFO;
     this.isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
@@ -65,7 +69,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Telemetry Start
     this.signUpTelemetryStart();
-
   }
 
   signUpTelemetryStart() {
@@ -109,7 +112,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.signUpForm = {
       basicInfo: null,
       onboardingInfo: null,
-      emailPassInfo: null
+      emailPassInfo: null,
+      routeParams: this.routeParams
     };
   }
 
