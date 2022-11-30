@@ -259,8 +259,8 @@
 
 // cbse
 .sb-status-label {
-  width: 8px;
-  height: 8px;
+  width: calculateRem(8px);
+  height: calculateRem(8px);
   display: inline-block;
   &.sb-shape-circle {
     border-radius: 100%;

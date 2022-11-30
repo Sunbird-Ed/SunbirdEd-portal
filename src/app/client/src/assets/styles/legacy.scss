@@ -163,7 +163,7 @@ div:focus {
   outline: none;
 }
 .ui.cards > .card > .content {
-  padding-right: 3px;
+  padding-right: calculateRem(3px);
 }
 /*three stackable cards width reduced to match design*/
 /*using ~ in calc because of Less issue with clac function */
@@ -197,19 +197,15 @@ i.large.icon.limitedPublishingLinkIcon {
 }
 .ui.segment.content-player-header {
   padding: calculateRem(5px);
-  border: gray;
+  border: var(--gray-300);
 }
 .contentViewerIframeShadow {
   width: 100%;
   border: 0px;
   height: 100%;
 }
-#help-video-aspect-ratio,.content-video__player {
-  // transition: all ease .3s;
-}
+
 /*semantic ui modal form field changes*/
-
-
 .ui.modal.ui.dropdown > .text {
   margin-left: -1.1em;
 }
@@ -955,7 +951,7 @@ iframe.iziModal-iframe {
   td:first-child,
 .ui[class*="basic"].border-less.table:not(.sortable):not(.striped)
   th:first-child {
-  padding-left: 25px;
+  padding-left: calculateRem(25px);
 }
 .ui.basic.border-less.table {
   border: 0;
@@ -1061,7 +1057,7 @@ i.blue.icon {
 }
 .search-content-header {
   .ui.floated.header {
-    margin: 5px 0 0 5px !important;
+    margin: calculateRem(5px) 0 0 calculateRem(5px) !important;
     font-size: 1.143rem !important;
     font-weight: 600;
   }
