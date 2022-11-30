@@ -2332,24 +2332,24 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-1.5.0.tgz#e46571cf744aa2972e35accecdd611bafb7a8bac"
-  integrity sha512-eoSRYWDS4oxprWZUIJ/zqyElPvAm+3wz631Da1oH40ploKSJFua0ZonSts48BnF6vOuIwwiOgAzrzGuiNof2Yw==
+"@shikshalokam/sl-questionnaire@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.1.0.tgz#07683cfc176d820ab6f8c92fbf0e8e0621c860ba"
+  integrity sha512-Y4R0FT5YYS0Zrhr6h0f6vlWSAqkuZuAUp2ptPtZpf2iCo4ELxPBspI3wuIoItQcg6JB8QyWPQg34DbCrmAgcnw==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^2.0.0"
 
-"@shikshalokam/sl-reports-library@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.7.tgz#8164cd522759be04dd66818f57ddd6f6ed972a5a"
-  integrity sha512-wyeUkXPaQWuGpe11VsEC5MS/3n9cuxbF6bVpcrG1OhnNKS6mFXCY4GsPsLnMyESjtvD+XRG0/ovmmJTd/9yvfg==
+"@shikshalokam/sl-reports-library@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-2.0.0.tgz#67dd3e4f0fe6ae5572741cfa05611ef7bd854bd9"
+  integrity sha512-N8LSxJsxoJBvJ1EMcx/ejumSsAA3Qt2X9+aeOr21hI2DMzQx5HClTcoEq1l4JxB5XlcQIr/IfWNp2JZxsui8SA==
   dependencies:
     chart.js "^2.9.4"
     chartjs-plugin-datalabels "^0.7.0"
     chartjs-plugin-stacked100 "^0.7.1"
     ng2-charts "^2.4.2"
-    tslib "^1.10.0"
+    tslib "^2.0.0"
 
 "@sideway/address@^4.1.0":
   version "4.1.4"
