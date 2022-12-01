@@ -218,3 +218,5 @@ Installing Sunbird requires two primary software components:
 | [@project-sunbird/common-form-elements](https://www.npmjs.com/package/@project-sunbird/common-form-elements) 	| https://github.com/Sunbird-Ed/SunbirdEd-forms                    	| 5.1.1       	| NG 11      	|
 | [@project-sunbird/sb-content-section](https://www.npmjs.com/package/@project-sunbird/sb-content-section)     	| https://github.com/Sunbird-Ed/sb-content-module                  	| 5.1.0       	| NG 11      	|
 | [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 5.0.7       	| NG 11      	|
+| [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.1.0       	| NG 11      	|
+| [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 2.0.0       	| NG 11      	|
