@@ -121,7 +121,7 @@
 }
 .ui.button.qr-code-btn {
   background: var(--sb-header-qrcode-btn-bg);;
-  color: var(--sb-header-qrcode-btn);
+  color: var(--primary-color);
   border-radius: calculateRem(4px);
   font-weight: normal;
   border: calculateRem(0.5px) solid ar(--sb-header-qrcode-btn-border);;
