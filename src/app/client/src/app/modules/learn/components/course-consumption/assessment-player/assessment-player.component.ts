@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
-import { TocCardType } from '@project-sunbird/common-consumption-v9';
+import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';

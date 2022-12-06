@@ -11,11 +11,11 @@ import {
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule
 } from 'ng2-semantic-ui-v9';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
 import { ExplorePageComponent } from './components';
-import { ContentSectionModule } from 'content-section';
+import { ContentSectionModule } from 'content-section-v11';
 import {ObservationModule} from '../observation/observation.module';
 
 @NgModule({

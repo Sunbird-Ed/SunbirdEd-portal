@@ -16,7 +16,7 @@ import {
 } from 'ng2-semantic-ui-v9';
 import { BatchDetailsComponent,  } from './components/batch/batch-details/batch-details.component';
 import { UnEnrollBatchComponent} from './components/batch/unenroll-batch/unenroll-batch.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { AssessmentPlayerComponent } from './components/course-consumption/assessment-player/assessment-player.component';
 import { CourseCompletionComponent } from './components/course-consumption/course-completion/course-completion.component';
 import { CertificateNameUpdatePopupComponent } from './components/course-consumption/certificate-name-update-popup/certificate-name-update-popup.component';

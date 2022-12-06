@@ -1,3 +1,4 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "~@project-sunbird/sb-styles/assets/varSass" as *;
 // Checkbox
 $sb-checkbox-primary-background: var(--primary-color);

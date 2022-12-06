@@ -1,12 +1,7 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 @font-face {
   font-family: "icomoon";
-  // src: url("./fonts/sb-icons/icomoon.eot?q5fmh5");
-  // // src: url('../../../assets/styles/fonts/sb-icons/icomoon.eot');
-  // src: url("./fonts/sb-icons/icomoon.eot?q5fmh5#iefix")
-  //     format("embedded-opentype"),
-  //   url("./fonts/sb-icons/icomoon.ttf?q5fmh5") format("truetype"),
-  //   url("./fonts/sb-icons/icomoon.woff?q5fmh5") format("woff"),
-  //   url("./fonts/sb-icons/icomoon.svg?q5fmh5#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
 }
