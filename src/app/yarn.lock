@@ -2312,10 +2312,10 @@
     typescript-ioc "^1.2.4"
     uuid "^3.2.1"
 
-"@project-sunbird/form-service@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/form-service/-/form-service-0.0.14.tgz#80bef402bc8634fec411530da7b4c7484fe59a4c"
-  integrity sha512-+y76F/076xUeNxGAJIvyAVCxF9vGgQ64gBVhTZhsTrwKmovX2jw0Af7Adc0kHgJ20vzV4TD/U/2InmY8zYPa/g==
+"@project-sunbird/form-service@0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/form-service/-/form-service-0.0.15.tgz#4dd5cb1612da463d413d8b3db83460e211afddeb"
+  integrity sha512-nkC0CFqY06BpCJmgCrjDFMUpZeUMWkCJ7q3/7G3dP61HB9xIKYECl2c68f0IqPwIy/4a+Iajmx2MB/uzMPTogw==
   dependencies:
     joi "^13.4.0"
     lodash "^4.17.10"
