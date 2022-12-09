@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .notification-bell{
   box-shadow: var(--sbt-box-shadow-6px);

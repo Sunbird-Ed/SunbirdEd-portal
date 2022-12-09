@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "~@project-sunbird/sb-styles/assets/flexbox" as *;
 .list-heading {
   padding: calculateRem(16px);
   display: flex;
@@ -39,32 +41,8 @@
       text-align: center !important;
       margin: calculateRem(4px) 0px !important;
     }
-    // &:first-child{
-    //   flex: 1 1 45%;
-    //   text-align: left;
-    //   @include respond-below(xl) {
-    //     flex: 1 1 35%;
-    //   }
-    //   @include respond-below(sm) {
-    //     flex:0 0 100%;
-    //   }
-    // }
-    // &:nth-child(2){
-    //   flex:1 1 20%;
-    // }
-    // &:nth-child(3){
-    //   flex:1 1 20%;
-    // }
-    // &:nth-child(4){
-    //   flex:1 1 5%;
-    // }
     &:last-child {
       text-align: right;
-      // flex: 1 1 15%;
-      // min-width: calculateRem(172px);
-      // @include respond-below(xl) {
-      //   flex: 1 1 25%;
-      // }
       html[dir="rtl"] & {
         text-align: left;
       }
@@ -74,11 +52,9 @@
   label {
     font-size: calculateRem(14px);
     font-weight: normal;
-    // flex: 2;
 
     @include respond-below(md) {
       margin-bottom: calculateRem(20px) !important;
-      // flex: 1 1 50%;
       font-size: var(--font-size-base);
     }
   }

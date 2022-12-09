@@ -1,7 +1,6 @@
-@import './mixins/mixins';
-@import './pages/page-center-view';
-@import './pages/custom-carousel.scss';
-@import 'pages/mat-modal';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/page-center-view' as *;
+@use 'pages/custom-carousel.scss' as *;
 
   /* can be remove, comes from CC */
   .close {
@@ -15,14 +14,6 @@
     justify-content: center;
     align-items: center;
     cursor:pointer;
-    i.icon-close {
-      svg {
-
-      }
-    }
-    &:hover {
-    
-    }
   }
 
   h4 {
@@ -44,9 +35,6 @@
   .modal-custom-carousel.slick-slider {
     .slick-list {
       height: inherit !important;
-    }
-    .item-help.slick-slide, .slick-track {
-      // width:100% !important;
     }
   } 
 }

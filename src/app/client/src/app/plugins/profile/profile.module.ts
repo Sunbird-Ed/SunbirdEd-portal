@@ -16,11 +16,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { AvatarModule } from 'ngx-avatar';
 import { ContentSearchModule } from '@sunbird/content-search';
-import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
+import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
 import { CertificateDirectivesModule } from 'sb-svg2pdf';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
-import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-v9';
+import { CommonFormElementsModule } from '@project-sunbird/common-form-elements';
 import {LocationModule} from '../location';
 import { MatTooltipModule } from '@angular/material/tooltip';
 

@@ -27,7 +27,7 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/common-consumption-v9/assets",
+                "input": "./node_modules/@project-sunbird/common-consumption/assets",
                 "output": "./assets/common-consumption"
               },
               {
@@ -67,7 +67,7 @@
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss",
+              "./node_modules/@project-sunbird/sb-styles/assets/styles.scss",
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",

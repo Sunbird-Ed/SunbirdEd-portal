@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "pages/sign_in_up";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'pages/sign_in_up' as *;
 
 .ui.raised.shadow.container.segment {
     margin: calculateRem(20px) auto !important;

@@ -17,7 +17,6 @@ mochawesome-report
 /src/app/coverage
 .idea
 /src/app/helpers/devConfig.js
-/.vscode/launch.json
 logs
 keys
 #DESKTOP APP
@@ -51,3 +50,5 @@ src/desktop/chromedriverlog.txt
 .prettierignore
 
 **/.DS_Store
+
+.vscode/*

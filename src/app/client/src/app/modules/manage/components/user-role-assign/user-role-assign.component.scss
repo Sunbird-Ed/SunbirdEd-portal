@@ -1,4 +1,4 @@
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 :host::ng-deep {
   .sbt-header-menu-bar {
@@ -6,9 +6,7 @@
     background: none;
     padding: 0px;
     display: flex;
-    /* align-items: center; */
-    /* justify-content: center; */
-    border-radius: 24px 24px 0 0;
+    border-radius: 1.5rem 1.5rem 0 0;
     padding: 1rem 1rem 1rem 1rem;
     overflow: hidden;
     overflow-x: auto;
@@ -38,7 +36,7 @@
 
     &__content {
       background: var(--white);
-      box-shadow: 6px 6px 2px 0 rgb(0 0 0 / 10%);
+      box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 rgb(0 0 0 / 10%);
       border-radius: calculateRem(12px);
     }
   }
@@ -53,7 +51,7 @@
 
   .user-details {
     padding: calculateRem(24px);
-    border-bottom: 1px solid #D7D7D7;
+    border-bottom: calculateRem(1px) solid #D7D7D7;
 
     .user-img {
       height: calculateRem(48px);
@@ -88,7 +86,7 @@
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
-    min-height: 400px;
+    min-height: calculateRem(400px);
 
     .user-workexp-card {
       flex-basis: 25%;
@@ -101,8 +99,8 @@
     }
 
     .user-workexp {
-      border: 1px solid #D7D7D7;
-      border-radius: 16px;
+      border: calculateRem(1px) solid #D7D7D7;
+      border-radius: calculateRem(16px);
       height: calculateRem(120px);
       padding: calculateRem(16px);
       font-size: calculateRem(14px);
@@ -120,14 +118,15 @@
     }
   }
 
-  .sb-search-box .icon.search {
-    right: 1.5rem;
-    left: inherit;
-  }
-
-  .sb-search-box .sb-search-input {
-    width: 100%;
-    font-size: 0.875rem;
+  .sb-search-box{
+    .sb-search-input {
+      width: 100%;
+      font-size: 0.875rem;
+    }
+    .icon.search {
+      right: 1.5rem;
+      left: inherit;
+    }
   }
 
   .no-result-container {

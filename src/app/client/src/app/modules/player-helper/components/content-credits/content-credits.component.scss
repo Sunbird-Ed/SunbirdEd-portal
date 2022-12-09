@@ -1,5 +1,4 @@
-@import 'variables';
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .ui.popup::after {
    background-color: var(--rc-007AFF) !important;

@@ -1,4 +1,4 @@
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 ::ng-deep {
   .sb-modal .ui.modal.fullscreen .sb-modal-content {

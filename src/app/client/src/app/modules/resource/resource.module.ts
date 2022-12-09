@@ -10,7 +10,7 @@ import { CoreModule } from '@sunbird/core';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({
   imports: [

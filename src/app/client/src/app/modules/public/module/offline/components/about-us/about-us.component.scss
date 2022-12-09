@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-about-title {
   border-bottom: calculateRem(1px) solid var(--primary-color);

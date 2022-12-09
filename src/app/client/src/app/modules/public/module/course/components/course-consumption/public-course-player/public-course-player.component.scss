@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "pages/course-player";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "pages/course-player" as *;
 
 .course-list_title {
   color: var(--gray-800);

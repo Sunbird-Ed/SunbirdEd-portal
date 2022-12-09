@@ -1,7 +1,7 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .sb-toaster {
   width: 100%;
   max-width: calculateRem(448px);
-  // min-height: calculateRem(48px);
   padding: calculateRem(24px) calculateRem(24px) calculateRem(24px) calculateRem(16px);
   border-radius: calculateRem(8px);
   border: 1px solid var(--primary-300);

@@ -47,3 +47,14 @@
 .white-space-wrap {
   text-overflow: ellipsis;
 }
+
+::ng-deep{
+  .sb-mat-accordion__title span{
+    line-break: anywhere;
+  }
+  
+  .sb-mat-accordion__title div{
+    display: flex;
+    align-items: inherit;
+  }
+}
