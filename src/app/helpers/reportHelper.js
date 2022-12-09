@@ -68,10 +68,16 @@ const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) 
     }
 }
 
+/**
+ * @deprecated  - From release-5.0.1
+ * @reference   - Base Storage Service
+ */
+
 function azureBlobStream() {
     return function (req, res, next) {
         let container = envHelper.sunbird_azure_report_container_name;
         let fileToGet = req.params.slug.replace('__', '\/') + '/' + req.params.filename;
+        logger.info({msg: 'Azure service called for container ' + container + ' for file ' + fileToGet});
         if (fileToGet.includes('.json')) {
             const readStream = blobService.createReadStream(container, fileToGet);
             readStream.pipe(res);
