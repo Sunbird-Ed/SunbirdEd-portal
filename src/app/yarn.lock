@@ -3625,10 +3625,10 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-client-cloud-services@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/client-cloud-services/-/client-cloud-services-2.0.0.tgz#3c34c97669d99c9b1a63690c5b28f5b2ee510ad7"
-  integrity sha512-WoMzxpuYC6gzJt/SCuVLamyFn56nMAlna9yhgWeK9qNjpNNXHgJ02uqLI6x9R7BV6NlV3D5goiD0iTYkwTJsZA==
+client-cloud-services@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/client-cloud-services/-/client-cloud-services-2.0.2.tgz#3819cd707d212458b809d624d040a7388e1c574f"
+  integrity sha512-L5dMUyWB2GtVjOoek53Mn8L1pCxf0y72kRcWu2me90o3NAO0JPiosC3tn/QGrXysVUCMKLPNrJlYjDWYfmX5eg==
   dependencies:
     "@aws-sdk/client-s3" "3.163.0"
     "@aws-sdk/lib-storage" "3.182.0"
