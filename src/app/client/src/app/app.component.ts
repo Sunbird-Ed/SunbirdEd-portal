@@ -118,6 +118,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public isIOS = false;
   loadPopUps = true;
   FORM_CONFIG_ENABLED = false;
+  isStepperCompleted = false;
+  OnboardingFormConfig:any;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -280,9 +282,31 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     ));
   }
-  
+  getStepperInfo() { 
+    const isStepperCompleted = localStorage.getItem('isStepperCompleted');
+    if(isStepperCompleted) {
+      this.isStepperCompleted = true;
+    }
+    else {
+      this.isStepperCompleted = false;
+    }
+  }
+  getOnboardingList() {
+    const formReadInputParams = {
+      formType: 'useronboardingsteps',
+      formAction: 'onboarding',
+      contentType: 'global',
+      component: 'portal'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        this.OnboardingFormConfig = formResponsedata;
+      });
+  }
   ngOnInit() {
+    this.getOnboardingList();
     this.checkToShowPopups();
+    this.getStepperInfo();
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
@@ -1048,5 +1072,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   onActivate(event) {
     this.layoutService.scrollTop();
+  }
+  isStepper(event) { // to close the stepper dialog
+    this.isStepperCompleted = event;
+    localStorage.setItem('isStepperCompleted', JSON.stringify(this.isStepperCompleted));
   }
 }

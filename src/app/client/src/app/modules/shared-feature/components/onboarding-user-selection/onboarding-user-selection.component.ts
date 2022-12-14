@@ -28,6 +28,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
 
   @Input() tenantInfo: ITenantData;
   @Output() userSelect = new EventEmitter<boolean>();
+  @Input() isStepper: boolean = false;
 
   guestList: IGuest[] = [];
   selectedUserType: IGuest;
@@ -53,6 +54,16 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setPopupInteractEdata();
     this.initialize().subscribe();
+    if(this.isStepper) {
+      this.tenantService.tenantData$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        if (_.get(data, 'tenantData')) {
+          this.tenantInfo = data.tenantData;
+          this.tenantInfo.titleName = data.tenantData.titleName || this.resourceService.instance;
+        }
+      });
+    }
   }
 
   private initialize() {

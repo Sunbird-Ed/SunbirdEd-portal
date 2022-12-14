@@ -1,0 +1,174 @@
+<div *ngIf="OnboardingFormConfig.length">
+    <app-modal-wrapper #modal>
+        <ng-template sbModalContent>
+            <mat-horizontal-stepper style="background: var(--sbt-body-bg);" [linear]="true" #stepper>
+                <ng-container *ngFor="let configData of OnboardingFormConfig | sortBy:'sequence':'asc'">
+                    <h3>Your preferences</h3>
+                    <!-- component -->
+                    <!-- #1 -->
+                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type?.component">
+                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
+                        <mat-label *ngIf="configData?.description">{{configData?.description}}</mat-label>
+                        <app-onboarding-user-selection *ngIf="configData?.renderOptions?.type?.component === 'UserType'"
+                            [tenantInfo]="tenantInfo"  [isStepper]="true" (userSelect)="userTypeSubmit(stepper)">
+                        </app-onboarding-user-selection>
+
+                        <!-- #2 -->
+                        <app-location-selection *ngIf="configData?.renderOptions?.type?.component === 'Location'"
+                            [deviceProfile]="deviceProfile" [isClosable]="false" [isStepper]="true"
+                            (close)="locationSubmit(stepper)">
+                            <img [src]="tenantInfo?.logo" class="b\rand-logo" height="40"
+                                alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
+                            <h1 class="mb-0 header-text">{{resourceService?.frmelmnts?.lbl?.welcomeToInstance |
+                                interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+                        </app-location-selection>
+
+                        <!-- #3 -->
+                        <app-popup *ngIf="configData?.renderOptions?.type?.component === 'BMGS'"
+                            [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
+                            [isGuestUser]="isGuestUser" [isStepper]="true"
+                            (submit)="updateFrameWork(stepper)">
+                        </app-popup>
+                          <!-- <button *ngIf = "isBackButton === 1" class="sb-btn sb-btn-normal sb-btn-primary" (click)="onBack()" >&#8249; Back</button> -->
+
+                        <button *ngIf="!configData?.isMandatory" class="sb-btn sb-btn-normal sb-btn-primary" 
+                            (click)="isStepSkipped()" matStepperNext>Skip/Next &#8250;</button>
+                        <button  *ngIf = "configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary"  matStepperPrevious>&#8249; Back</button>
+                    </mat-step>
+
+                    <!-- html code snippits -->
+                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.HTML">
+                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
+                        <mat-label>{{configData?.description}} </mat-label>
+                        <div [innerHTML]="configData?.renderOptions?.content">
+                        </div>
+                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
+                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+                    </mat-step>
+
+                    <!-- url based screen -->
+                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.URL">
+                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
+                        <mat-label *ngIf="configData?.description">{{configData?.description}} </mat-label>
+                        <div [innerHTML]="configData?.component">
+                        </div>
+                        <div>
+                            <iframe width="580" height="330" frameborder="0" class="dashboard-iframe"
+                                [src]="getSanitizedURL(configData?.url)">
+                            </iframe>
+                        </div>
+                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
+                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+
+                    </mat-step>
+
+                    <!-- video type -->
+                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.VIDEO">
+                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
+                        <mat-label *ngIf="configData?.description">{{configData?.description}} </mat-label>
+                        <div>
+                            <iframe width="580" height="330" allow="autoplay" frameborder="0" class="dashboard-iframe"
+                                [src]="getSanitizedURL(configData?.renderOptions?.url)">
+                            </iframe>
+                        </div>
+                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
+                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+
+                    </mat-step>
+
+                    <!-- Audio type -->
+                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.AUDIO">
+                        <div [innerHTML]="configData?.component">
+                        </div>
+                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
+                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+
+                    </mat-step>
+
+                    <!-- pdf type -->
+                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.PDF">
+                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
+                        <mat-label>{{configData?.description}} </mat-label>
+                        <div [innerHTML]="configData?.component">
+                        </div>
+                        <div>
+                            <iframe width="580" height="330" allow="autoplay" frameborder="0" class="dashboard-iframe"
+                                [src]="getSanitizedURL(configData?.renderOptions?.url)">
+                            </iframe>
+                        </div>
+                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
+                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+
+                    </mat-step>
+
+                    <!-- image type -->
+                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.IMAGE">
+                        <div [innerHTML]="configData?.component">
+                        </div>
+                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
+                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+
+                    </mat-step>
+                </ng-container>
+                <!-- by default preview screen -->
+                <mat-step>
+                    <ng-template matStepLabel>Preview</ng-template>
+                    <p *ngIf="!isSkipped">You have selected these below data in previous section !!</p>
+                    <p *ngIf="isSkipped">You have skipped all previous sections !!</p>
+                    <div *ngIf="guestUserStoredData || deviceProfile || userTypeStoredData"
+                        class="user-detail-container p-24 my-16" role="list">
+                        <div class="user-detail-list" role="listitem" tabindex="0"
+                            attr.aria-label="Name:{{guestUserStoredData?.formatedName}}"
+                            *ngIf="guestUserStoredData && guestUserStoredData?.formatedName">
+                            <label class="label-names fnormal font-weight-normal pr-8" role="heading">Name:</label>
+                            <label
+                                class="label-values fnormal font-weight-bold">{{guestUserStoredData?.formatedName}}</label>
+                        </div>
+                        <div class="user-detail-list" role="listitem" tabindex="1"
+                            attr.aria-label="Role:{{userTypeStoredData}}" *ngIf="userTypeStoredData">
+                            <label class="label-names fnormal font-weight-normal pr-8" role="heading">Role:</label>
+                            <label class="label-values fnormal font-weight-bold">{{userTypeStoredData}}</label>
+                        </div>
+                        <div class="user-detail-list" role="listitem" tabindex="0"
+                            attr.aria-label="Board:{{guestUserStoredData?.framework?.board}}"
+                            *ngIf="guestUserStoredData && guestUserStoredData?.framework?.board">
+                            <label class="label-names fnormal font-weight-normal pr-8" role="heading">Board:</label>
+                            <label
+                                class="label-values fnormal font-weight-bold">{{guestUserStoredData?.framework?.board}}</label>
+                        </div>
+                        <div class="user-detail-list" role="listitem" tabindex="0"
+                            attr.aria-label="Medium:{{guestUserStoredData?.framework?.medium}}"
+                            *ngIf="guestUserStoredData && guestUserStoredData?.framework?.medium">
+                            <label class="label-names fnormal font-weight-normal pr-8" role="heading">Medium:</label>
+                            <label
+                                class="label-values fnormal font-weight-bold">{{guestUserStoredData?.framework?.medium}}</label>
+                        </div>
+                        <div class="user-detail-list" role="listitem" tabindex="0"
+                            attr.aria-label="Grade:{{guestUserStoredData?.framework?.gradeLevel}}"
+                            *ngIf="guestUserStoredData && guestUserStoredData?.framework?.gradeLevel">
+                            <label class="label-names fnormal font-weight-normal pr-8" role="heading">Grade:</label>
+                            <label
+                                class="label-values fnormal font-weight-bold">{{guestUserStoredData?.framework?.gradeLevel}}</label>
+                        </div>
+                        <div class="user-detail-list" role="listitem" tabindex="0"
+                            attr.aria-label="District:{{deviceProfile?.userDeclaredLocation?.district}}"
+                            *ngIf="deviceProfile && deviceProfile?.userDeclaredLocation?.district">
+                            <label class="label-names fnormal font-weight-normal pr-8" role="heading">District:</label>
+                            <label
+                                class="label-values fnormal font-weight-bold">{{deviceProfile?.userDeclaredLocation?.district}}</label>
+                        </div>
+                        <div class="user-detail-list" role="listitem" tabindex="0"
+                            attr.aria-label="State:{{deviceProfile?.userDeclaredLocation?.state}}"
+                            *ngIf="deviceProfile && deviceProfile?.userDeclaredLocation?.state">
+                            <label class="label-names fnormal font-weight-normal pr-8" role="heading">State:</label>
+                            <label
+                                class="label-values fnormal font-weight-bold">{{deviceProfile?.userDeclaredLocation?.state}}</label>
+                        </div>
+                    </div>
+                    <button  class="sb-btn sb-btn-normal sb-btn-primary" (click)="onProcessComplete()">Done</button>
+                    <button *ngIf="configData?.sequence != 1" class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+                </mat-step>
+            </mat-horizontal-stepper>
+        </ng-template>
+    </app-modal-wrapper>
+</div>
