@@ -51,7 +51,7 @@
       /* align-items: center; */
       /* justify-content: center; */
       background: var(--sbt-header-bg) !important;
-      border-radius: 24px 24px 0 0;
+      border-radius: calculateRem(24px) calculateRem(24px) 0 0;
       padding: 1rem 1rem 1rem 1rem;
       overflow: hidden;
       overflow-x: auto;
@@ -70,15 +70,9 @@
   position: relative;
   margin:0 auto;
   @include respond-above(sm) {
-  // position: absolute;
-  // left: 0px;
-  // right: 0px;
-  // top: 50%;
-  // transform: translateY(-50%);
   }
 }
 .ui.menu {
-  // position: sticky;
   z-index: 999;
   border: 0;
   margin-bottom: calculateRem(-1px);
@@ -127,7 +121,7 @@
 }
 .ui.button.qr-code-btn {
   background: var(--sb-header-qrcode-btn-bg);;
-  color: var(--sb-header-qrcode-btn);
+  color: var(--primary-color);
   border-radius: calculateRem(4px);
   font-weight: normal;
   border: calculateRem(0.5px) solid ar(--sb-header-qrcode-btn-border);;

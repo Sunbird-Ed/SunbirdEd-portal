@@ -203,7 +203,7 @@ $slick-opacity-not-active: 0 !default;
     opacity: $slick-opacity-on-hover;
 
     &:before {
-      box-shadow: 0 calculateRem(4px) calculateRem(9px) 0 rgba(0, 0, 0, 0.29);
+      box-shadow: 0 calculateRem(4px) calculateRem(9px) 0 rgba(var(--rc-rgba-black), 0.29);
     }
   }
 
@@ -225,7 +225,7 @@ $slick-opacity-not-active: 0 !default;
     color: $slick-arrow-color;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    box-shadow: 0 calculateRem(5px) calculateRem(6px) 0 rgba(0, 0, 0, 0.29);
+    box-shadow: 0 calculateRem(5px) calculateRem(6px) 0 rgba(var(--rc-rgba-black), 0.29);
   }
 }
 

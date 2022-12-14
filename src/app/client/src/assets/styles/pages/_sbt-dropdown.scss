@@ -190,7 +190,7 @@
         background: var(--sbt-theme-purple-selectbox-lbg);
         color: var(--sbt-theme-purple-selectbox);
         font-weight: bold;
-        background: rgba(0,0,0,.05);
+        background: rgba(var(--rc-rgba-black),.05);
       }
 
       .sbt-dropdown-section .item.active::after {

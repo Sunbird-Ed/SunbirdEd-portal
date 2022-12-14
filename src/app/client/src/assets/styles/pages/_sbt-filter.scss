@@ -27,7 +27,7 @@
           color: var(--sbt-pill-text) !important;
           margin: 0 calculateRem(8px) calculateRem(8px) 0 !important;
           background-color: var(--sbt-pill-bg) !important;
-          font-size: 12px !important;
+          font-size: calculateRem(12px) !important;
           display: unset !important;
           width: 100px;
           flex-basis: 100px;
@@ -67,7 +67,7 @@
     .treepicker-parent input {
       width: 100%;
       border-radius: calculateRem(24px);
-      border: 1px solid #999;
+      border: calculateRem(1px) solid var(--gray-200);
       height: calculateRem(32px);
       font-size: calculateRem(14px);
     }
@@ -148,8 +148,8 @@
     background: var(--white);
     box-shadow: var(--sbt-box-shadow-3px);
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: calculateRem(24px);
+    height: calculateRem(24px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,7 +163,7 @@
     --primary-color: #024F9D;
     width: calculateRem(40px);
     height: calculateRem(40px);
-    background-color: var(--sbt-filter-switcher-bg);
+    background-color: var(--primary-theme);
     box-shadow: var(--sbt-box-shadow-3px);
     display: flex;
     align-items: center;
@@ -189,8 +189,6 @@
   }
 
   @include respond-above(md) {
-    // position: sticky;
-    //top: calculateRem(160px);
     margin-top: calculateRem(-64px);
   }
 
