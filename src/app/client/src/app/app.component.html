@@ -72,12 +72,9 @@
       </div>
     </div>
     <!-- onboarding stepper -->
-    <app-onboarding-popup  *ngIf = "OnboardingFormConfig && !isStepperCompleted" 
-      [guestUserDetails] = "guestUserDetails" 
-      [isGuestUser] = "isGuestUser" 
-      [OnboardingFormConfig] = "OnboardingFormConfig"
-      [deviceProfile] = "deviceProfile"
-      (isStepperCompleted) = "isStepper($event)">
+    <app-onboarding-popup *ngIf="OnboardingFormConfig && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
+      [isGuestUser]="isGuestUser" [OnboardingFormConfig]="OnboardingFormConfig" [deviceProfile]="deviceProfile"
+      (isStepperCompleted)="isStepper($event)">
     </app-onboarding-popup>
     
     <!-- popup disabled  -->
