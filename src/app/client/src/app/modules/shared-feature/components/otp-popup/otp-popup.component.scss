@@ -1,13 +1,6 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'pages/sign_in_up' as *;
 
-.orange-border {
-    border-color: #A30010 !important;
-}
-.blue.text {
-    color: var(--primary-color);
-}
-
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
