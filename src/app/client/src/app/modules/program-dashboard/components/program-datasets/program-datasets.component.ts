@@ -291,8 +291,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       this.reportForm.controls.solution.setValue($event.value);
       this.reportForm.controls.programName.setValue(program);
       this.displayFilters['Resource'] = [$event?.source?.triggerValue]
-      if (solution[0].isRubricDriven == true && solution[0].type == 'observation') {
-        const type = solution[0].type + '_with_rubric';
+      if (solution[0].isRubricDriven === true && solution[0].type === 'observation') {
+        const type = solution[0].criteriaLevelReport ? solution[0].type + '_with_rubric' : solution[0].type + '_with_rubric_no_criteria_level_report'
         this.getReportTypes(this.programSelected, type);
       } else {
         this.getReportTypes(this.programSelected, solution[0].type);
