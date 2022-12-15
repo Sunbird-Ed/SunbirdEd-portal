@@ -1551,3 +1551,40 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
     }
   }
 }
+//Common Css
+
+.sb-label-value {
+  border-radius: calculateRem(24px);
+  padding: calculateRem(7px);
+  padding-right: calculateRem(9px);
+  padding-left: calculateRem(9px);
+  background-color: var(--sbt-body-bg) !important;
+  box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(3px) 0 var(--rc-c2c2c2) !important;
+  color: var(--gray-800);
+  margin-bottom: 0.25rem;
+  margin-right: 0.25rem;
+
+}
+.orange.text {
+  color: var(--accessibility-red);
+}
+.orange-border {
+  border-color: var(--accessibility-red) !important;
+}
+.blue.text {
+  color: var(--primary-color);
+}
+.label-success {
+  color: var(--secondary-color);
+  padding-left: calculateRem(10px);
+  padding-right: calculateRem(10px);
+  font-size: calculateRem(14px);
+  font-weight: 300;
+}
+.label-warning {
+  color: var(--accessibility-red);
+  padding-left: calculateRem(10px);
+  padding-right: calculateRem(10px);
+  font-size: calculateRem(14px);
+  font-weight: 300;
+}

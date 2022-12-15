@@ -24,26 +24,10 @@
   background: var(--sbt-body-bg) !important;
 }
 
-.label-success {
-  color: var(--success-color);
-  padding-left: calculateRem(10px);
-  padding-right: calculateRem(10px);
-  font-size: calculateRem(14px);
-  font-weight: 300;
-}
-
 .sb-label-primary-100 {
   background: none !important;
   font-size: calculateRem(14px) !important;
 
-}
-
-.label-warning {
-  color: var(--accessibility-red);
-  padding-left: calculateRem(10px);
-  padding-right: calculateRem(10px);
-  font-size: calculateRem(14px);
-  font-weight: 300;
 }
 
 .sbt-container {
