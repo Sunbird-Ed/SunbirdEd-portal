@@ -71,7 +71,15 @@
         </div>
       </div>
     </div>
-    <div *ngIf="loadPopUps">
+    <!-- onboarding stepper -->
+    <app-onboarding-popup *ngIf="OnboardingFormConfig && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
+      [isGuestUser]="isGuestUser" [OnboardingFormConfig]="OnboardingFormConfig" [deviceProfile]="deviceProfile"
+      (isStepperCompleted)="isStepper($event)">
+    </app-onboarding-popup>
+    
+    <!-- popup disabled  -->
+    <div *ngIf="loadPopUps && !OnboardingFormConfig">
+      <!-- 2nd popup BMGS  -->
       <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
         [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
         <ng-template sbModalContent let-data>
@@ -81,6 +89,7 @@
       </app-modal-wrapper>
       <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
         [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
+        <!-- 1 & 3rd popup User Type & location -->
       <app-user-onboarding (close)="onLocationSubmit()"
         *ngIf="isGuestUser ? showUserTypePopup :(showUserTypePopup || !isLocationConfirmed)"
         [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>

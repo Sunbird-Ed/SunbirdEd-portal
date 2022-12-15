@@ -118,6 +118,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public isIOS = false;
   loadPopUps = true;
   FORM_CONFIG_ENABLED = false;
+  isStepperCompleted = false;
+  OnboardingFormConfig:any;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -280,9 +282,29 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     ));
   }
-  
+  /**
+   * @description - get the stepper flag from localstorage to check weather stepper process completes or not
+   */
+  getStepperInfo() { 
+    const isStepperCompleted = localStorage.getItem('isStepperCompleted');
+    this.isStepperCompleted = isStepperCompleted ? true : false;
+  }
+  getOnboardingList() {
+    const formReadInputParams = {
+      formType: 'useronboardingsteps',
+      formAction: 'onboarding',
+      contentType: 'global',
+      component: 'portal'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        this.OnboardingFormConfig = formResponsedata;
+      });
+  }
   ngOnInit() {
+    this.getOnboardingList();
     this.checkToShowPopups();
+    this.getStepperInfo();
     this.isIOS = this.utilService.isIos;
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
@@ -1048,5 +1070,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   onActivate(event) {
     this.layoutService.scrollTop();
+  }
+  /**
+   * @param  {boolean} event
+   * @description  - set the flag in localstorage when stepper process completes
+   */
+  isStepper(event) { 
+    this.isStepperCompleted = event;
+    localStorage.setItem('isStepperCompleted', JSON.stringify(this.isStepperCompleted));
   }
 }

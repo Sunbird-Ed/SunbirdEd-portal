@@ -23,6 +23,9 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
+import { UserOnboardingModule} from '../app/modules/user-onboarding';
+import { MatStepperModule} from '@angular/material/stepper';
+import { CdkStepperModule} from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
@@ -48,6 +51,9 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
     SbSearchFilterModule.forRoot('web'),
     ChatLibModule,
     SharedFeatureModule,
+    UserOnboardingModule,
+    MatStepperModule,
+    CdkStepperModule,
     ...PluginModules,
      // ngx-translate and the loader module
      HttpClientModule,
