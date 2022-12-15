@@ -374,7 +374,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         //     filters = _cacheFilters;
         // }
         const currentPageData = this.getCurrentPageData();
-        currentPageData.metaData.filters.push('organisation')
         // const _cacheTimeout = _.get(currentPageData, 'metaData.cacheTimeout') || 86400000;
         //this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
         this.showLoader = true;
