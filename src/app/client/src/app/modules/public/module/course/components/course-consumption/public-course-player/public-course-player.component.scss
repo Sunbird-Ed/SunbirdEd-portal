@@ -1,5 +1,6 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "pages/course-player" as *;
+@use 'pages/content-header' as *;
 
 .course-list_title {
   color: var(--gray-800);
@@ -7,26 +8,6 @@
   font-weight: bold;
   line-height: calculateRem(24px);
 }
-
-// content header bar
-.content-header {
-  &__img {
-    overflow: hidden;
-    img {
-      width: calculateRem(48px);
-    }
-  }
-  &__title {
-    color: var(--primary-color);
-    font-size: calculateRem(18px);
-    font-weight: bold;
-  }
-  &__info {
-    color: var(--gray-800);
-    font-size: calculateRem(14px);
-  }
-}
-
 .course-list-progress {
   padding: calculateRem(16px);
   &__title {
@@ -63,7 +44,6 @@
 
 .chapter-box {
   border-bottom: .0625rem solid var(--gray-100);
-  // padding: calculateRem(16px);
   border-radius: calculateRem(2px);
   &:last-child{
     border-bottom: 0px solid var(--gray-100);

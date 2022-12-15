@@ -1,31 +1,13 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "pages/course-player" as *;
 @use "pages/kabab-menu" as *;
+@use 'pages/content-header' as *;
 
 .course-list_title {
   color: var(--gray-800);
   font-size: calculateRem(14px);
   font-weight: bold;
   line-height: calculateRem(24px);
-}
-
-// content header bar
-.content-header {
-  &__img {
-    overflow: hidden;
-    img {
-      width: calculateRem(48px);
-    }
-  }
-  &__title {
-    color: var(--primary-color);
-    font-size: calculateRem(18px);
-    font-weight: bold;
-  }
-  &__info {
-    color: var(--gray-800);
-    font-size: calculateRem(14px);
-  }
 }
 
 .course-list-progress {
