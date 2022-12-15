@@ -52,7 +52,7 @@ export class SbFormLocationSelectionDelegate {
     );
   }
 
-  async init(deviceProfile?: IDeviceProfile, showModal = true, isStepper?:boolean) {
+  async init(deviceProfile?: IDeviceProfile, showModal = true, isStepper= false) {
     if (deviceProfile) {
       this.deviceProfile = deviceProfile;
     }
@@ -105,7 +105,7 @@ export class SbFormLocationSelectionDelegate {
     }
   }
 
-  async onDataLoadStatusChange($event, showModal = true) {
+  async onDataLoadStatusChange($event, showModal = true, isStepper = false) {
     if ('LOADED' === $event) {
       this.isLocationFormLoading = false;
 
@@ -143,12 +143,12 @@ export class SbFormLocationSelectionDelegate {
               ...SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
               contentType: (newStateValue as SbLocation).code,
             },
-            false, showModal
+            false, showModal, isStepper
           ).catch((e) => {
             console.error(e);
             this.loadForm(
               SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
-              false, showModal
+              false, showModal, isStepper
             );
           });
         });
@@ -276,7 +276,7 @@ export class SbFormLocationSelectionDelegate {
     }
   }
 
-  private async loadForm(formInputParams, initial = false, showModal = true, isStepper?:boolean) {
+  private async loadForm(formInputParams, initial = false, showModal = true, isStepper = false) {
     let useCases: UseCase[];
     // If user register workflow
     if (!showModal) {

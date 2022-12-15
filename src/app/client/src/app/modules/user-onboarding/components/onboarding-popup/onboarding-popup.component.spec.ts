@@ -1,6 +1,6 @@
 import { OnboardingPopupComponent } from "./onboarding-popup.component"
 import { DomSanitizer } from '@angular/platform-browser';
-import { DeviceRegisterService, FormService } from '@sunbird/core';
+import { DeviceRegisterService, FormService,UserService} from '@sunbird/core';
 import { of } from "rxjs";
 import {mockData} from './onboarding-popup.component.spec.data'
 import { MatStepper } from '@angular/material/stepper';
@@ -18,12 +18,14 @@ describe("Onboarding Component", () => {
     
   };
   const mockFormService: Partial<FormService> ={};
+  const mockUserService: Partial<UserService> = {};
   beforeAll(() => {
     onboardingPopupComponent = new OnboardingPopupComponent(
       mockDomSanitizer as  DomSanitizer,
       mockDeviceRegisterService as DeviceRegisterService,
       mockFormService as FormService,
-      mockResourceService as ResourceService
+      mockResourceService as ResourceService,
+      mockUserService as UserService
 
     );
   });
@@ -86,19 +88,37 @@ describe("Onboarding Component", () => {
       expect(onboardingPopupComponent.isGuestUser).toBeTruthy();
     });
   });
-
+  describe('updateGuestUser', ()=> {
+    // arrange
+    it('should update the guestUser Service with default value', ()=> {
+      let event = {
+        "board": ["State (Tamil Nadu)"],
+        "medium": ["Tamil"],
+        "gradeLevel": ["Class 3"],
+        "subject": [],
+        "id": "tn_k-12_5"
+      };
+      Storage.prototype.getItem = jest.fn(() => JSON.stringify('userType'));
+      let defaultVal = { name: 'guest', formatedName: 'Guest', framework: event };
+      mockUserService.createGuestUser = jest.fn().mockReturnValue(of(true)) as any;
+      //act
+      onboardingPopupComponent.updateGuestUser(defaultVal);
+      //assert
+      expect(Storage.prototype.getItem).toBeCalled();
+    })
+  });
   describe('getOnboardingFormConfig', () => {
     it('should check if BMGS is disabled and having default data in form config', () => {
       //arrange
       onboardingPopupComponent.OnboardingFormConfig = mockData.onboardingDisabled as any;
-      jest.spyOn(onboardingPopupComponent, 'updateFrameWork').mockImplementation( () => { return; }) 
+      jest.spyOn(onboardingPopupComponent, 'updateGuestUser').mockImplementation( () => { return; }) 
       jest.spyOn(onboardingPopupComponent, 'isAllScreenDisabled').mockImplementation(()=> { return ; })
       const defaultData = {"board": ["State (Tamil Nadu)"], "gradeLevel": ["Class 1"], "medium": ["Tamil"]}
       //act
       onboardingPopupComponent.getOnboardingFormConfig(false,false,false);
       //assert
       expect(onboardingPopupComponent.isAllScreenDisabled).toBeCalled();
-      expect(onboardingPopupComponent.updateFrameWork).toHaveBeenCalledWith(defaultData);
+      expect(onboardingPopupComponent.updateGuestUser).toHaveBeenCalledWith(defaultData);
 
     });
 
@@ -150,12 +170,12 @@ describe("Onboarding Component", () => {
       //arrange
       const defaultData = {"board": ["State (Tamil Nadu)"], "gradeLevel": ["Class 1"], "medium": ["Tamil"]}
       onboardingPopupComponent.OnboardingFormConfig = mockData.onboardingEnabled as any;
-      jest.spyOn(onboardingPopupComponent, 'updateFrameWork').mockImplementation( () => { return; }); 
+      jest.spyOn(onboardingPopupComponent, 'updateGuestUser').mockImplementation( () => { return; }); 
       //act
       onboardingPopupComponent.getOnboardingFormConfig(true,false,false);
       // assert
       expect(onboardingPopupComponent.isAllScreenDisabled).toBeCalled();
-      expect(onboardingPopupComponent.updateFrameWork).toHaveBeenCalledWith(defaultData);
+      expect(onboardingPopupComponent.updateGuestUser).toHaveBeenCalledWith(defaultData);
     });
     
     it('should check if userType is enabaled & having default data but skipped by user', () => {

@@ -282,14 +282,12 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     ));
   }
+  /**
+   * @description - get the stepper flag from localstorage to check weather stepper process completes or not
+   */
   getStepperInfo() { 
     const isStepperCompleted = localStorage.getItem('isStepperCompleted');
-    if(isStepperCompleted) {
-      this.isStepperCompleted = true;
-    }
-    else {
-      this.isStepperCompleted = false;
-    }
+    this.isStepperCompleted = isStepperCompleted ? true : false;
   }
   getOnboardingList() {
     const formReadInputParams = {
@@ -1073,7 +1071,11 @@ export class AppComponent implements OnInit, OnDestroy {
   onActivate(event) {
     this.layoutService.scrollTop();
   }
-  isStepper(event) { // to close the stepper dialog
+  /**
+   * @param  {boolean} event
+   * @description  - set the flag in localstorage when stepper process completes
+   */
+  isStepper(event) { 
     this.isStepperCompleted = event;
     localStorage.setItem('isStepperCompleted', JSON.stringify(this.isStepperCompleted));
   }

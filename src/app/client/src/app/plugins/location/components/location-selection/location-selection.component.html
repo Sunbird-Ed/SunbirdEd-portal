@@ -85,7 +85,7 @@
               [config]="sbFormLocationSelectionDelegate.locationFormConfig"
               (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
               (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event); onSbFormValueChange($event);"
-              (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal)">
+              (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal,isStepper)">
             </sb-form>
           </div>
         </div>
