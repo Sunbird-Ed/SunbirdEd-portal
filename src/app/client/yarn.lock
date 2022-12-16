@@ -2119,10 +2119,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@4.12.0":
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-4.12.0.tgz#ef4bdf7c77445b7b0d3b46cf6d44c49d68d061ec"
-  integrity sha512-ijX69lPrG4bIV9Dprzq/mFYnTXvqLwcyTG212tshXyeTMxiwCrJ314jRwjMD/jOnV5tyTptw7s0ogDlB1M8vJA==
+"@project-sunbird/common-consumption@4.12.1":
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-4.12.1.tgz#2e450a158c18f94fbd41cc6848df00ebbf7343ba"
+  integrity sha512-bMbre57F65mghGQnBE0Mlj2YvRcEoIsKTCvD+zdga40SG+MSJSiJvHYj6o7eDiPgvegphaTi+w/yqJDM9+4q9g==
   dependencies:
     tslib "^2.0.0"
 
@@ -2168,15 +2168,17 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-styles@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.10.tgz#45add8f8917e300dccadb893167703e1c2729290"
-  integrity sha512-JEyHbYmSlX887deJ7gsNHxNSUwDR7B6sVHRQR00bQ05UywtwDoBrSgBof0kNcYAE+iAyCYUyy2slHm5JeXmltQ==
+"@project-sunbird/sb-styles@0.0.14", "@project-sunbird/sb-styles@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.14.tgz#f682ec7c03d7f3023c50e44973592edb51d03247"
+  integrity sha512-pq4RqXPoqcTyncLz64gHu0AFVgl4KoL3yr+ocgdO4n26BkQZBgQG0xtuYqscUPPWVBg/BS4TCsjzMO+ifunRaA==
 
-"@project-sunbird/sb-themes@0.0.85":
-  version "0.0.85"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.85.tgz#9d975aaf39d23100127faf37f2bdef33c0a17c0f"
-  integrity sha512-wHPJwPn9TfWJ/lSb+loRDA6mEdD4BM5T+D14v/VF0OTkKC7cdVcjZwl5jTtg+YbpyWYCTGns6dMgIC3mCd5dfA==
+"@project-sunbird/sb-themes@0.0.88":
+  version "0.0.88"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.88.tgz#cd11ac1f3da915c7c433e6ac9e20ee29b6c52616"
+  integrity sha512-12eKzpToyjJAKTLLFWq9Zo3+Y6tzi2GE0YBNbErfMxs9iAubliqApkwGMH/ry2qYhV8S/uiEcE4JPwtX2HZcYA==
+  dependencies:
+    "@project-sunbird/sb-styles" "0.0.14"
 
 "@project-sunbird/sunbird-collection-editor-v9@5.0.14":
   version "5.0.14"
@@ -4285,7 +4287,7 @@ chartjs-plugin-stacked100@^0.7.1:
   dependencies:
     chart.js "^2.4.0"
 
-"chokidar@>=2.0.0 <4.0.0", chokidar@^3.0.0, chokidar@^3.4.1:
+"chokidar@>=2.0.0 <4.0.0", "chokidar@>=3.0.0 <4.0.0", chokidar@^3.0.0, chokidar@^3.4.1:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -7733,7 +7735,7 @@ immediate@~3.0.5:
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==
 
-immutable@^4.0.0-rc.12:
+immutable@^4.0.0, immutable@^4.0.0-rc.12:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.1.0.tgz#f795787f0db780183307b9eb2091fcac1f6fafef"
   integrity sha512-oNkuqVTA8jqG1Q6c+UglTOD1xhC1BtjKI7XkCXRkZHrN5m18/XsnUp8Q89GkQO/z+0WjonSvl0FLhDYftp46nQ==
@@ -10112,6 +10114,11 @@ moment-duration-format@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-2.3.2.tgz#5fa2b19b941b8d277122ff3f87a12895ec0d6212"
   integrity sha512-cBMXjSW+fjOb4tyaVHuaVE/A5TqkukDWiOfxxAjY+PEqmmBQlLwn+8OzwPiG3brouXKY5Un4pBjAeB6UToXHaQ==
+
+moment@2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 moment@2.29.1, moment@^2.10.2, moment@^2.29.1:
   version "2.29.1"
@@ -12733,6 +12740,15 @@ sass@1.32.6:
   dependencies:
     chokidar ">=2.0.0 <4.0.0"
 
+sass@^1.56.1:
+  version "1.56.2"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.56.2.tgz#9433b345ab3872996c82a53a58c014fd244fd095"
+  integrity sha512-ciEJhnyCRwzlBCB+h5cCPM6ie/6f8HrhZMQOf5vlU60Y1bI1rx5Zb0vlDZvaycHsg/MqFfF1Eq2eokAa32iw8w==
+  dependencies:
+    chokidar ">=3.0.0 <4.0.0"
+    immutable "^4.0.0"
+    source-map-js ">=0.6.2 <2.0.0"
+
 saucelabs@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/saucelabs/-/saucelabs-1.5.0.tgz#9405a73c360d449b232839919a86c396d379fd9d"
@@ -13211,7 +13227,7 @@ source-list-map@^2.0.0, source-list-map@^2.0.1:
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
   integrity sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==
 
-source-map-js@^1.0.2:
+"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
