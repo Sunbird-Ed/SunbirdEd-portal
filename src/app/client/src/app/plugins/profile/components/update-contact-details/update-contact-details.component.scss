@@ -1,4 +1,4 @@
-
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "~@project-sunbird/sb-styles/assets/varSass" as *;
 @use 'components/form' as *;
 
@@ -31,6 +31,7 @@
 .ui.left.icon.input .icon {
   font-size: 1rem;
   font-family: inherit;
+  margin-top: calculateRem(12px);
 }
 
 .height-200 {
