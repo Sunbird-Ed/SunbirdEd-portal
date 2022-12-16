@@ -79,15 +79,15 @@
 
 .chart-container {
   display: block;
-  max-height: 400px;
-  max-width: 400px;
+  max-height: calculateRem(400px);
+  max-width: calculateRem(400px);
   margin: 0 auto;
 }
 
 .bar-chart-container {
   display: block;
-  max-width: 900px;
-  max-height: 450px;
+  max-width: calculateRem(900px);
+  max-height: calculateRem(450px);
   margin: 0 auto;
 }
 
@@ -111,7 +111,7 @@
   &__container {
     width: 100%;
     height: 100vh;
-    min-height: 400px;
+    min-height: calculateRem(400px);
     background-color: var(--sbt-body-bg) !important;
     padding: calculateRem(24px);
     margin: 0 auto;
@@ -212,9 +212,9 @@ input[type="checkbox"] {
 }
 
 .card-images {
-  width: 90px;
-  height: 90px;
-  margin-right: 5px;
+  width: calculateRem(90px);
+  height: calculateRem(90px);
+  margin-right: calculateRem(5px);
 }
 
 .dropdown {
@@ -225,7 +225,7 @@ input[type="checkbox"] {
 .dropdown-content {
   display: none;
   position: absolute;
-  width: 100px;
+  width: calculateRem(100px);
   z-index: 3;
 }
 
