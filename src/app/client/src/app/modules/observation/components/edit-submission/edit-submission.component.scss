@@ -1,5 +1,7 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .header {
-  padding: 15px;
+  padding: calculateRem(15px);
   background: var(--sb-modal-content-bg);
   color: var(--sb-linkmenu-text);
 }
@@ -7,10 +9,10 @@
 input.edit-sub-input:focus-visible {
   width: 100%;
   height: 2rem;
-  padding: 10px;
+  padding: calculateRem(10px);
   border: 0 !important;
   background: transparent;
-  border-bottom: 2px solid var(--primary-color) !important;
+  border-bottom: calculateRem(2px) solid var(--primary-color) !important;
   color: var(--body-color);
 }
 .footer {
@@ -26,8 +28,8 @@ input.edit-sub-input:focus-visible {
 .sb-onboard {
   &__header {
     width: 100%;
-    margin: 20px 0px;
-    padding-left : 15px;
+    margin: calculateRem(20px) 0px;
+    padding-left : calculateRem(15px);
   }
 
   &__content {

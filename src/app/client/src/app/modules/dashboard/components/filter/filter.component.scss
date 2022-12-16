@@ -62,21 +62,21 @@
   border-bottom: 0px;
   width: 100%;
   .sb-label-value {
-    border-radius: 24px;
-    padding: 7px !important;
-    padding-left: 9px !important;
-    padding-right: 9px !important;
+    border-radius: calculateRem(24px);
+    padding: calculateRem(7px) !important;
+    padding-left: calculateRem(9px) !important;
+    padding-right: calculateRem(9px) !important;
 
-    background-color: #F2F2EA !important;
-    box-shadow: 4px 4px 3px 0 #C2C2C2 !important;
-    color: #333;
+    background-color: var(---rc-e9e8d9) !important;
+    box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(3px) 0 var(--gray-100) !important;
+    color: var(--gray-800);
 
     margin-bottom: calculateRem(4px);
     margin-right: calculateRem(4px);
    
   }
   .sb-label-name {
-    font-size: 16px;
+    font-size: calculateRem(16px);
   }
 }
 
@@ -141,9 +141,9 @@
 .sb-prominent-filter-field {
   ::ng-deep {
     label {
-      padding-bottom: 2px;
+      padding-bottom: calculateRem(2px);
       margin-bottom: 0px !important;
-      margin-left: 10px !important;
+      margin-left: calculateRem(10px) !important;
     }
     .md-drppicker {
       padding: calculateRem(16px) calculateRem(8px);
@@ -168,8 +168,8 @@
 .ui.dropdown.selection 
 ::ng-deep {
   .menu {
-    padding-top: 16px;
-    border-radius: 16px !important;
+    padding-top: calculateRem(16px);
+    border-radius: calculateRem(16px) !important;
   }
 } 
 
@@ -188,27 +188,27 @@
 .ui.selection.dropdown {
   color: var(--ui-dropdown-selection-icon) !important;  
   box-sizing: border-box;
-  height: 40px !important;
-  border: 1px solid #D7D7D7;
-  border-radius: 24px;
-  background-color: #FFFFFF; 
+  height: calculateRem(40px) !important;
+  border: calculateRem(1px) solid var(--rc-dededf);
+  border-radius: calculateRem(24px);
+  background-color: var(--white); 
 }
 
 .ui.selection.dropdown {
   ::ng-deep { 
     .text {
-      font-size: 18px !important;
+      font-size: calculateRem(18px) !important;
     }
  }
 }
 
 sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
-  min-width: 250px !important;
-  min-height: 40px !important;
-  font-size: 16px !important;
+  min-width: calculateRem(250px) !important;
+  min-height: calculateRem(40px) !important;
+  font-size: calculateRem(16px) !important;
 }
 .sb-prominent-filter {
- background: #E9E8D9 !important; 
+ background: var(---rc-e9e8d9) !important; 
 }
 
 ::ng-deep{
@@ -221,5 +221,5 @@ sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
   font-size: 0.75em;
 }
 .select-container{
-  margin-top:10px;
+  margin-top:calculateRem(10px);
 }

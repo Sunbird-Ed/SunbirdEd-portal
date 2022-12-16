@@ -24,7 +24,7 @@
     }
 
     .sb-treePicker-selectedSection {
-        width: calc(100% - 400px);
+        width: calc(100% - calculateRem(400px));
         padding: calculateRem(16px);
         .list {
             .node {

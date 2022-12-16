@@ -7,7 +7,7 @@
 
 .cert-img-sb-card {
     width: 6.375rem;
-    margin-bottom: 16px;
+    margin-bottom: calculateRem(16px);
     background-color: var(--white);
     border: .0625rem solid var(--rc-dedede);
     border-radius: .25rem;
@@ -18,7 +18,7 @@
     transition: box-shadow .3s ease-out,transform .3s ease-out,opacity .2s ease-out;
     transition-delay: .1s;
     &.active {
-      border: 2px solid var(--primary-300);
+      border: calculateRem(2px) solid var(--primary-300);
       transform: scale(1.03, 1.03);
       .selected-mark{
         position: absolute;
@@ -28,7 +28,7 @@
       }
     }
       &:hover{
-        border: 2px solid var(--primary-300);
+        border: calculateRem(2px) solid var(--primary-300);
         transform: scale(1.03, 1.03);
     }
 	&__content {
@@ -60,7 +60,7 @@
       background: var(--white);
      &__description{
       width: 100%;
-      min-height: 418px;
+      min-height: calculateRem(418px);
       text-align: center;
       border-style: dashed;
       border-color: var(--gray-100);
@@ -116,8 +116,8 @@ font-size: calculateRem(20px);
   overflow: hidden;
   margin-top: calculateRem(3px);
   cursor: pointer;
-  border-radius: 24px;
-  border: 2px solid var(--primary-300);
+  border-radius: calculateRem(16px);
+  border: calculateRem(2px) solid var(--primary-300);
   color: var(--primary-300);
   font-weight: bold;
   background:var(--primary-100);

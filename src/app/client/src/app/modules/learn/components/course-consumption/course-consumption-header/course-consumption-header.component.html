@@ -9,8 +9,7 @@
     <div class="w-100 d-flex flex-ai-center flex-w-wrap flex-jc-space-between">
       <div class="d-flex flex-ai-center">
         <!-- /* Back button */ -->
-      <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-round' : ''" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
-      tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+      <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>

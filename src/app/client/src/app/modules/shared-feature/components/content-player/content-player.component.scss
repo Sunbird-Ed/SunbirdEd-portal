@@ -28,7 +28,7 @@
   box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
   z-index: 99; 
     &__info {
-      max-height: 48px;
+      max-height: calculateRem(48px);
       overflow-y: auto;
     }
 }

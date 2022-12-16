@@ -3,7 +3,7 @@
 :host{
   .sb-md-container {
     max-width: calculateRem(720px);
-    width: calc(100% - 32px);
+    width: calc(100% - calculateRem(32px));
     background: var(--white);
     margin: 0 auto;
     border-radius: calculateRem(4px);

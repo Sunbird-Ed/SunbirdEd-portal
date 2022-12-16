@@ -6,7 +6,7 @@
   padding: 0;
   padding: calculateRem(10px);
   width: calc(100% - 4%) !important;
-  min-height: calc(100vh - 48px);
+  min-height: calc(100vh - calculateRem(48px));
 }
 
 @media only screen and (min-width: 1024px) {

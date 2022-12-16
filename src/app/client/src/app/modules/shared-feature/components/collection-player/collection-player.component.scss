@@ -13,7 +13,6 @@
 
   .main-side-toc-content {
     overflow-y: auto;
-
     @include respond-below(sm) {
       height: auto;
       max-height: 100%;

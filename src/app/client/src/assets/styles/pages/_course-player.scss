@@ -19,7 +19,7 @@
       grid-template-areas:
         'head card'
         'content card';
-      grid-template-columns: 1fr 340px;
+      grid-template-columns: 1fr calculateRem(340px);
       grid-gap: calculateRem(24px);
   
       &--header {

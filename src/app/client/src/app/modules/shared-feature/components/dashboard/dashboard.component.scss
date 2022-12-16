@@ -9,7 +9,6 @@
   ::ng-deep {
     .dataTables_wrapper {
       white-space: nowrap;
-      // height: calc(100vh - 100px);
       display: block;
       overflow: inherit;
   } 
@@ -25,7 +24,7 @@
       box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
       border-bottom: 0px !important;
       background:var(--white);
-      border: 1px solid var(--rc-dddddd);
+      border: calculateRem(1px) solid var(--rc-dddddd);
       cursor:pointer;
   }
   table.dataTable thead .sorting {

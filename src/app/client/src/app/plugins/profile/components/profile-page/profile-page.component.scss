@@ -106,7 +106,7 @@
 
 .ui.semi-circular.update.basic.label,
 .ui.semi-circular.basic.label {
-  border: 1px solid var(--primary-color);
+  border: calculateRem(1px) solid var(--primary-color);
   border-radius: calculateRem(18.5px);
   font-size: 1.16rem;
   padding: calculateRem(8px) calculateRem(16px);

@@ -85,7 +85,7 @@
 .files-block {
   background: var(--sbt-body-bg) !important;
   margin: 0px !important;
-  border-radius: 0px 0px 24px 24px !important;
+  border-radius: 0px 0px calculateRem(24px) calculateRem(24px) !important;
   box-shadow: none;
   border-top: calculateRem(1px) solid var(--gray-100);
 }

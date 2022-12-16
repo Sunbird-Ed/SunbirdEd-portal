@@ -1,5 +1,7 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .submissions {
-    border-radius: 24px;
+    border-radius: calculateRem(24px);
     margin: 0.5rem 0;
 
     h5 {
@@ -14,10 +16,10 @@
     }
 
     .evidences-list {
-        margin: 5px 0px;
+        margin: calculateRem(5px) 0px;
         background: var(--sbt-compt-bg) !important;
         border-radius: var(--sbt-bradius-24);
-        padding: 8px 24px;
+        padding: calculateRem(8px) calculateRem(24px);
     }
 }
 
@@ -47,13 +49,13 @@
 
 .icon {
     color: var(--primary-400) !important;
-    padding-left: 15px;
+    padding-left: calculateRem(15px);
 }
 
 .center-align {
     align-self: center;
     justify-self: center;
-    padding: 5px 0;
+    padding: calculateRem(5px) 0;
 }
 
 .white-space-wrap {

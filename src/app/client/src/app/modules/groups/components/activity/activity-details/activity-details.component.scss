@@ -67,7 +67,7 @@
 }
 
 .download-text{
-  font-size:12px;
+  font-size:calculateRem(12px);
   color:var(--primary-400);
   font-weight: bold;
 }

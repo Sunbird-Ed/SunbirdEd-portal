@@ -67,45 +67,45 @@
 }
 
 .pad5 {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: calculateRem(5px);
+  padding-bottom: calculateRem(5px);
 }
 
 .filter-btn {
-  min-width: 96px;
+  min-width: calculateRem(96px);
 }
 
 .sb-btn-normal {
-  min-width: 96px !important;
+  min-width: calculateRem(96px) !important;
   font-weight: 500 !important;
-  font-size: 15px !important;
-  padding-left: 18px !important;
-  padding-right: 18px !important;
+  font-size: calculateRem(15px) !important;
+  padding-left: calculateRem(18px) !important;
+  padding-right: calculateRem(18px) !important;
 
 }
 
 .sb-label-value {
-  border-radius: 24px;
-  padding: 7px;
-  padding-right: 9px;
-  padding-left: 9px;
-  background-color: #E9E8D9 !important;
-  box-shadow: 4px 4px 3px 0 #C2C2C2 !important;
-  color: #333;
+  border-radius: calculateRem(24px);
+  padding: calculateRem(7px);
+  padding-right: calculateRem(9px);
+  padding-left: calculateRem(9px);
+  background-color: var(--rc-e9e8d9) !important;
+  box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(3px) 0 var(--gray-100) !important;
+  color: var(--gray-800);
   margin-bottom: 0.25rem;
   margin-right: 0.25rem;
 
 }
 
 .chart-title {
-  font-size: 16px;
+  font-size: calculateRem(16px);
   font-weight: 500;
   margin-bottom: 0px !important;
-  padding-top: 5px;
+  padding-top: calculateRem(5px);
 }
 
 .sb-label-name {
-  font-size: 16px;
+  font-size: calculateRem(16px);
 }
 
 ::ng-deep {
@@ -120,30 +120,30 @@
 }
 
 .selection-block {
-  margin-bottom: 8px;
+  margin-bottom: calculateRem(8px);
 }
 
 .filter-select-title {
-  font-size: 20px;
+  font-size: calculateRem(20px);
   font-weight: 600;
 }
 
 
 .sb-label-primary-100 {
-  padding: 7px !important;
-  padding-left: 9px !important;
-  padding-right: 9px !important;
-  color: #333 !important;
-  border-radius: 24px;
+  padding: calculateRem(7px) !important;
+  padding-left: calculateRem(9px) !important;
+  padding-right: calculateRem(9px) !important;
+  color: var(--gray-800) !important;
+  border-radius: calculateRem(24px);
 }
 
 .date-range-label {
-  padding: 7px !important;
-  padding-left: 9px !important;
-  padding-right: 9px !important;
-  color: #333 !important;
-  border-radius: 24px;
-  background-color: #E9E8D9 !important;
+  padding: calculateRem(7px) !important;
+  padding-left: calculateRem(9px) !important;
+  padding-right: calculateRem(9px) !important;
+  color: var(--gray-800) !important;
+  border-radius: calculateRem(24px);
+  background-color: var(---rc-e9e8d9) !important;
 }
 
 
@@ -151,8 +151,8 @@
   &__container {
     width: 100%;
     height: 100vh;
-    min-height: 400px;
-    background-color: #E9E8D9 !important;
+    min-height: calculateRem(400px);
+    background-color: var(--sbt-body-bg) !important;
     padding: calculateRem(24px);
     margin: 0 auto;
     display: flex;
@@ -226,7 +226,7 @@
   ::ng-deep {
     .sb-prominent-filter-field {
       width: 48%;
-      margin-bottom: 10px;
+      margin-bottom: calculateRem(10px);
     }
 
   }
@@ -234,8 +234,8 @@
 
 ::ng-deep {
   .mat-dialog-container {
-      background-color: #E9E8D9 !important;
-      border-radius: 24px;
+      background-color: var(---rc-e9e8d9) !important;
+      border-radius: calculateRem(24px);
   }
 }
 
