@@ -1,3 +1,4 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .sb-desktop-content-manager {
     z-index: 999;
     position: fixed;
@@ -14,11 +15,11 @@
   }
   
   .sb-desktop-content-manager.sb-mat-accordion .mat-expansion-panel .mat-expansion-panel-header {
-    background: #5630dc;
+    background: var(--primary-color);
     border-radius: 0;
     height:3rem !important;
     &:hover {
-      background: #5630dc;
+      background: var(--primary-color);
     }
   }
   

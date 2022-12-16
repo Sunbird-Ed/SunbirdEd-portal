@@ -18,8 +18,8 @@
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
-    width:calc(100% - 48px);
-    height:calc(100vh - 48px);
+    width:calc(100% - calculateRem(48px));
+    height:calc(100vh - calculateRem(48px));
     overflow-y: auto;
     text-align:center;
     margin:0 auto;

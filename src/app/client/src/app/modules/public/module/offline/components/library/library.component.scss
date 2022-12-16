@@ -1,7 +1,7 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 :host {
   .page {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(var(--rc-rgba-black), 0.6);
     h6 {
       color: var(--gray-0);
       font-weight: normal;
@@ -41,7 +41,7 @@
 }
 
 .ui.dimmer .ui.loader:before {
-  border-color: rgba(255, 255, 255, 0.01);
+  border-color: rgba(var(--rc-rgba-white), 0.01);
 }
 .ui.dimmer .ui.loader:after {
   border-color: var(--primary-200) transparent transparent;

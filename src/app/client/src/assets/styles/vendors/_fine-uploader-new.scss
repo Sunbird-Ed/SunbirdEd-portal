@@ -71,17 +71,17 @@
     display: inline;
     width: calculateRem(105px);
     margin-bottom: calculateRem(10px);
-    padding: 7px calculateRem(10px);
+    padding: calculateRem(7px) calculateRem(10px);
     text-align: center;
     float: left;
     background: var(--rc-00abc7);
     color: var(--white);
     border-radius: calculateRem(2px);
-    border: 1px solid var(--rc-2dadc2);
-    box-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(255, 255, 255, 0.37) inset,
-    calculateRem(1px) 0 calculateRem(1px) rgba(255, 255, 255, 0.07) inset,
-                0 calculateRem(1px) 0 rgba(0, 0, 0, 0.36),
-                0 calculateRem(-2px) calculateRem(12px) rgba(0, 0, 0, 0.08) inset;
+    border: calculateRem(1px) solid var(--rc-2dadc2);
+    box-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(var(--rc-rgba-white), 0.37) inset,
+    calculateRem(1px) 0 calculateRem(1px) rgba(var(--rc-rgba-white), 0.07) inset,
+                0 calculateRem(1px) 0 rgba(var(--rc-rgba-black), 0.36),
+                0 calculateRem(-2px) calculateRem(12px) rgba(var(--rc-rgba-black), 0.08) inset;
 }
 .qq-upload-button-hover {
     background: var(--rc-33B6CC);

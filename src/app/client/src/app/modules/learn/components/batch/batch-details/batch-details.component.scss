@@ -23,7 +23,7 @@
     }
     &__body {
       padding: calculateRem(8px) calculateRem(8px) calculateRem(8px) calculateRem(16px);
-      border: 1px solid var(--gray-100);
+      border: calculateRem(1px) solid var(--gray-100);
       font-size: calculateRem(14px);
       margin-bottom: calculateRem(16px);
     }

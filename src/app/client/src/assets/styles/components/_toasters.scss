@@ -4,7 +4,7 @@
   max-width: calculateRem(448px);
   padding: calculateRem(24px) calculateRem(24px) calculateRem(24px) calculateRem(16px);
   border-radius: calculateRem(8px);
-  border: 1px solid var(--primary-300);
+  border: calculateRem(1px) solid var(--primary-300);
   border-left-width: calculateRem(8px);
   color: var(--gray);
   background: var(--white);

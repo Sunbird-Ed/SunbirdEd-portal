@@ -104,7 +104,7 @@ a {
 
       &__divider {
         width: calculateRem(1px);
-        border-left: calculateRem(1px) solid #cccccc;
+        border-left: calculateRem(1px) solid var(--gray-100);
         height: calculateRem(32px);
         margin: 0 calculateRem(16px);
         @include respond-below(sm) {

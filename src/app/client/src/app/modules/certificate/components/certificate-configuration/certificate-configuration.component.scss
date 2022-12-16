@@ -37,7 +37,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: 18px;
+        font-size: calculateRem(18px);
       }
     }
 
@@ -64,7 +64,7 @@
     .certificates-label {
       font-size: calculateRem(18px);
       letter-spacing: 0;
-      line-height: 20px;
+      line-height: calculateRem(20px);
     }
 
     .certificate-content-area {
@@ -84,10 +84,9 @@
 
       .certificate-sbcard {
         color: var(--gray-400);
-        font-family: "Noto Sans";
         font-size: calculateRem(12px);
         min-height: calculateRem(52px);
-        box-shadow: 0 3px 4px 0 rgba(2, 79, 157, 0.1);
+        box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
         background-color: var(--white);
         border: .0625rem solid var(--rc-dedede);
         border-radius: calculateRem(12px);
@@ -98,8 +97,6 @@
         transition-delay: .1s;
 
         &:active {
-          // border: .0625rem solid var(--primary-400);
-          // background-color: rgba(2, 79, 157, 0.1);
           color: var(--primary-400);
           font-weight: bold;
 
@@ -175,7 +172,7 @@
           width: 100%;
           border-radius: calculateRem(8px);
           cursor: pointer;
-          border: calculateRem(1px) solid #E8E8E8;
+          border: calculateRem(1px) solid var(--rc-e0e0e0);
 
           &:nth-child(1) {
             grid-area: smallcard;
@@ -189,7 +186,7 @@
             height: 100%;
 
             .certificate-frame {
-              box-shadow: 0 0.125rem 0.4375rem 0 rgba(0, 0, 0, .16);
+              box-shadow: 0 0.125rem 0.4375rem 0 rgba(var(--rc-rgba-black), .16);
               position: relative;
               width: 100%;
 
@@ -214,10 +211,10 @@
       cursor: text;
       font-weight: bold;
       position: relative;
-      left: 8px;
+      left: calculateRem(8px);
 
       html[dir="rtl"] & {
-        right: 8px;
+        right: calculateRem(8px);
         left: 0px;
       }
     }

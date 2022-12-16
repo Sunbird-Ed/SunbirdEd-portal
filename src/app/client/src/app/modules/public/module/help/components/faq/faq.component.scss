@@ -34,10 +34,10 @@
         }
 
         code {
-            background-color: #eee;
-            border-radius: 3px;
+            background-color: var(--rc-eeeeee);
+            border-radius: calculateRem(3px);
             font-family: courier, monospace;
-            padding: 0 3px;
+            padding: 0 calculateRem(3px);
         }
     }
 ​
@@ -48,7 +48,7 @@
                 flex-basis: 100%;
             }
             .visit-helpcenter__btn {
-                margin-top: 16px;
+                margin-top: calculateRem(16px);
             }
         }
     }
@@ -78,10 +78,10 @@
                 margin-bottom: auto;
             }
             code {
-                background-color: #eee;
-                border-radius: 3px;
+                background-color: var(--rc-eeeeee);
+                border-radius: calculateRem(3px);
                 font-family: courier, monospace;
-                padding: 0 3px;
+                padding: 0 calculateRem(3px);
             }
         }
     }
@@ -181,7 +181,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background-color: #ccc;
+                background-color: var(--gray-100);
                 -webkit-transition: .4s;
                 transition: .4s;
               }
