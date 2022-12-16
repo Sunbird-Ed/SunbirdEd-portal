@@ -57,7 +57,7 @@
               },
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@samagra-x/uci-console/assets/",
+                "input": "./node_modules/ed-uci-console/assets/",
                 "output": "/assets/uci-console"
               }
             ],
