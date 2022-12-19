@@ -219,7 +219,10 @@
   }
 
   &.sb-toast-normal,
-  &.sb-toast-success {
+  &.sb-toast-info,
+  &.sb-toast-success,
+  &.sb-toast-warning,
+  &.sb-toast-error {
 
     .iziToast-icon,
     .sb-toast-icon {
