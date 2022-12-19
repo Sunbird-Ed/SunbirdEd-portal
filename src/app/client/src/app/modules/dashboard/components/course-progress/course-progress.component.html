@@ -1,26 +1,23 @@
-<app-modal-wrapper *ngIf="showDownloadModal" [config]="{disableClose: true, size: 'large'}"
+<app-modal-wrapper *ngIf="showDownloadModal" [config]="{disableClose: true, size: 'large', panelClass: 'material-modal'}"
   (dismiss)="modal.deny(); showDownloadModal = false;" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible large">
+    <div class="sb-mat__modal">
 
-          <!-- Download report popup-->
-          <div class="header">
-            <div class="ui grid">
-              <div class="eleven wide column">
-                <span class="ui header">{{resourceService?.frmelmnts?.instn?.t0060}}</span>
-              </div>
-            </div>
-          </div>
-          <!--/Header-->
-          <!--Content-->
-          <div class="sb-modal-content">
-            <p class="meta">{{resourceService?.messages?.stmsg?.m0132}}</p>
-          </div>
-          <!--/Content-->
-        </div>
+      <!-- Download report popup-->
+      <div mat-dialog-title class="mb-0">
+        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.instn?.t0060}}</div>
+        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn"></button>
       </div>
+
+      <!--/Header-->
+      <!--Content-->
+      <div class="sb-mat__modal__content">
+        <p class="meta">{{resourceService?.messages?.stmsg?.m0132}}</p>
+      </div>
+      <!--/Content-->
+
+      <mat-dialog-actions class="sb-mat__modal__actions"></mat-dialog-actions>
+
     </div>
   </ng-template>
 </app-modal-wrapper>

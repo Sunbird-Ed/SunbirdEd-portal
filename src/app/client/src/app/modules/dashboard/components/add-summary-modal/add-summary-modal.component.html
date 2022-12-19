@@ -1,29 +1,25 @@
-<div class="sb-modal sb-modal-addsummary">
-  <div class="transition ui dimmer page modals active visible">
-    <div class="ui modal transition active visible large">
-      <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-        <span>&times;</span>
-      </button>
-      <div class="sb-modal-header">
-        {{input?.title}}
-      </div>
-      <div class="sb-modal-content o-x-hide">
-        <div class="sb-field-group" [formGroup]="summaryFormGroup">
-          <div class="sb-field relative" #editor>
-            <textarea #editor required name="moretext" class="sb-form-control" [placeholder]="input?.title" rows="5"
-              style="resize: none;"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="sb-modal-actions">
-        <button (click)="handleSubmitButton()" tabindex="0" [disabled]="!summaryFormGroup.valid"
-          class="sb-btn sb-btn-normal sb-btn-primary" #submitButton>
-          Submit
-        </button>
-        <button (click)="resetForm()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
-          Reset
-        </button>
+<div class="sb-mat__modal sb-modal-addsummary">
+  <div mat-dialog-title class="mb-0">
+    <div class="title" tabindex="0">{{input?.title}}</div>
+    <button aria-label="close dialog" mat-dialog-close class="mat-close-btn"></button>
+  </div>
+
+  <div class="sb-mat__modal__content o-x-hide">
+    <div class="sb-field-group" [formGroup]="summaryFormGroup">
+      <div class="sb-field relative" #editor>
+        <textarea #editor required name="moretext" class="sb-form-control" [placeholder]="input?.title" rows="5"
+          style="resize: none;"></textarea>
       </div>
     </div>
   </div>
+
+  <mat-dialog-actions class="sb-mat__modal__actions">
+    <button (click)="handleSubmitButton()" tabindex="0" [disabled]="!summaryFormGroup.valid"
+      class="sb-btn sb-btn-normal sb-btn-primary" #submitButton>
+      Submit
+    </button>
+    <button (click)="resetForm()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Reset
+    </button>
+  </mat-dialog-actions>
 </div>
