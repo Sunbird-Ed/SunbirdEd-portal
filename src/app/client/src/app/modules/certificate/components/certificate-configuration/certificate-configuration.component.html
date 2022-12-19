@@ -324,60 +324,55 @@
 </app-cert-preview-popup>
 
 <!-- footer certificate -->
-<app-modal-wrapper *ngIf="isTemplateChanged" [config]="{disableClose: true, size: 'normal'}"
-  (dismiss)="closeTemplateDetectModal()" #templateChangeModal>
+<app-modal-wrapper *ngIf="isTemplateChanged"
+  [config]="{disableClose: true, size: 'normal', panelClass: 'material-modal'}" (dismiss)="closeTemplateDetectModal()"
+  #templateChangeModal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
+    <div class="sb-mat__modal">
+      <div mat-dialog-title class="mb-0">
+        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.cert?.lbl?.changeDetected}}</div>
+      </div>
 
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.cert?.lbl?.changeDetected}}
+      <div class="sb-mat__modal__content">
+        <div class="ui stackable grid mt-16 mb-8">
+          <div class="two wide column p-0">
+            <div class="checkbox-img"></div>
           </div>
-          <div class="sb-modal-content">
-            <div class="ui stackable grid mt-16 mb-8">
-              <div class="two wide column p-0">
-                <div class="checkbox-img"></div>
-              </div>
-              <div class="nine wide column p-0">
-                <p class="fnormal">{{resourceService?.frmelmnts?.cert?.lbl?.templateChange}}</p>
-              </div>
-            </div>
-          </div>
-          <div class="sb-modal-actions">
-            <button (click)="attachCertificateToBatch()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
-              {{resourceService?.frmelmnts?.lbl?.continue}}
-            </button>
-            <button (click)="closeTemplateDetectModal()" tabindex="0"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary">
-              {{resourceService?.frmelmnts?.btn?.cancel}}
-            </button>
+          <div class="nine wide column p-0">
+            <p class="fnormal">{{resourceService?.frmelmnts?.cert?.lbl?.templateChange}}</p>
           </div>
         </div>
       </div>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button (click)="attachCertificateToBatch()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+          {{resourceService?.frmelmnts?.lbl?.continue}}
+        </button>
+        <button (click)="closeTemplateDetectModal()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+          {{resourceService?.frmelmnts?.btn?.cancel}}
+        </button>
+      </mat-dialog-actions>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showAlertModal" [config]="{disableClose: true, size: 'small'}"
+<app-modal-wrapper *ngIf="showAlertModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
   (dismiss)="showAlertModal = false" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-            <span>&times;</span>
-          </button>
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.cert?.lbl?.alertHeader}}
-          </div>
-          <div class="sb-modal-content">
-            <div class="ui center aligned segment text-left">
-              <p>{{resourceService?.frmelmnts?.cert?.imsg?.alertMessageForCert}}</p>
-            </div>
-          </div>
+    <div class="sb-mat__modal">
+      <div mat-dialog-title class="mb-0">
+        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.cert?.lbl?.alertHeader}}</div>
+        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn"></button>
+      </div>
+
+      <div class="sb-mat__modal__content">
+        <div class="ui center aligned segment text-left">
+          <p>{{resourceService?.frmelmnts?.cert?.imsg?.alertMessageForCert}}</p>
         </div>
       </div>
+
+      <mat-dialog-actions class="sb-mat__modal__actions"></mat-dialog-actions>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
