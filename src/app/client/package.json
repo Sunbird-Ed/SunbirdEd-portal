@@ -73,7 +73,7 @@
     "@project-sunbird/sunbird-video-player-v9": "5.1.0",
     "@project-sunbird/telemetry-sdk": "0.0.29",
     "@project-sunbird/web-extensions": "^0.0.2",
-    "ed-uci-console": "1.0.0",
+    "ed-uci-console": "1.0.1",
     "@shikshalokam/sl-questionnaire": "1.5.0",
     "@shikshalokam/sl-reports-library": "^1.0.7",
     "@swimlane/ngx-datatable": "16.1.1",
