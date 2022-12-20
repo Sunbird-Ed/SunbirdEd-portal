@@ -153,7 +153,7 @@ describe('SearchFilterComponent', () => {
     });
 
     describe('ngOnInit', () => {
-        it('should invoked ngOnInit for reset filters', (done) => {
+        it('should invoked ngOnInit for reset filters', () => {
             component.selectedFilters = {
                 board: ['sample-board'],
                 audience: ['sample-audience'],
