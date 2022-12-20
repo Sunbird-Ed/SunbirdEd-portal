@@ -5,16 +5,20 @@
                 <ng-container *ngFor="let configData of OnboardingFormConfig | sortBy:'sequence':'asc'">
                     <h3>Your preferences</h3>
                     <!-- component -->
-                    <!-- #1 -->
-                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type?.component">
+                    <mat-step
+                        *ngIf="configData?.isEnabled && [onboardingScreenType.HTML, onboardingScreenType.URL,onboardingScreenType.VIDEO,onboardingScreenType.PDF,onboardingScreenType.COMPONENT ].includes(configData?.renderOptions?.type)">
                         <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
                         <mat-label *ngIf="configData?.description">{{configData?.description}}</mat-label>
-                        <app-onboarding-user-selection *ngIf="configData?.renderOptions?.type?.component === 'UserType'"
-                            [tenantInfo]="tenantInfo"  [isStepper]="true" (userSelect)="userTypeSubmit(stepper)">
+
+                        <!-- #1 userType -->
+                        <app-onboarding-user-selection
+                            *ngIf="configData?.renderOptions?.name === onboardingScreenType.USERTYPE"
+                            [tenantInfo]="tenantInfo" [isStepper]="true" (userSelect)="userTypeSubmit(stepper)">
                         </app-onboarding-user-selection>
 
-                        <!-- #2 -->
-                        <app-location-selection *ngIf="configData?.renderOptions?.type?.component === 'Location'"
+                        <!-- #2 Location -->
+                        <app-location-selection
+                            *ngIf="configData?.renderOptions?.name === onboardingScreenType.LOCATION"
                             [deviceProfile]="deviceProfile" [isClosable]="false" [isStepper]="true"
                             (close)="locationSubmit(stepper)">
                             <img [src]="tenantInfo?.logo" class="b\rand-logo" height="40"
@@ -23,100 +27,55 @@
                                 interpolate:'{instance}': tenantInfo?.titleName}}</h1>
                         </app-location-selection>
 
-                        <!-- #3 -->
-                        <app-popup *ngIf="configData?.renderOptions?.type?.component === 'BMGS'"
+                        <!-- #3 BMGS -->
+                        <app-popup *ngIf="configData?.renderOptions?.name === onboardingScreenType.BMGS"
                             [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
-                            [isGuestUser]="isGuestUser" [isStepper]="true"
-                            (submit)="updateFrameWork(stepper)">
+                            [isGuestUser]="isGuestUser" [isStepper]="true" (submit)="updateFrameWork(stepper)">
                         </app-popup>
-                          <!-- <button *ngIf = "isBackButton === 1" class="sb-btn sb-btn-normal sb-btn-primary" (click)="onBack()" >&#8249; Back</button> -->
 
-                        <button *ngIf="!configData?.isMandatory" class="sb-btn sb-btn-normal sb-btn-primary" 
-                            (click)="isStepSkipped()" matStepperNext>Skip/Next &#8250;</button>
-                        <button  *ngIf = "configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary"  matStepperPrevious>&#8249; Back</button>
-                    </mat-step>
-
-                    <!-- html code snippits -->
-                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.HTML">
-                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
-                        <mat-label>{{configData?.description}} </mat-label>
-                        <div [innerHTML]="configData?.renderOptions?.content">
+                        <!-- html code snippits -->
+                        <div *ngIf="configData?.renderOptions?.type === onboardingScreenType.HTML"
+                            [innerHTML]="configData?.renderOptions?.content">
                         </div>
-                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
-                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
-                    </mat-step>
 
-                    <!-- url based screen -->
-                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.URL">
-                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
-                        <mat-label *ngIf="configData?.description">{{configData?.description}} </mat-label>
-                        <div [innerHTML]="configData?.component">
-                        </div>
-                        <div>
+                        <!-- url based screen -->
+                        <div *ngIf="configData?.renderOptions?.type === onboardingScreenType.URL">
                             <iframe width="580" height="330" frameborder="0" class="dashboard-iframe"
                                 [src]="getSanitizedURL(configData?.url)">
                             </iframe>
                         </div>
-                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
-                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
 
-                    </mat-step>
+                        <!-- SunBird video Player -->
 
-                    <!-- video type -->
-                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.VIDEO">
-                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
-                        <mat-label *ngIf="configData?.description">{{configData?.description}} </mat-label>
-                        <div>
-                            <iframe width="580" height="330" allow="autoplay" frameborder="0" class="dashboard-iframe"
-                                [src]="getSanitizedURL(configData?.renderOptions?.url)">
-                            </iframe>
+                        <div *ngIf="configData?.renderOptions?.type === onboardingScreenType.VIDEO" class="aspectratio"
+                            data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+                            <sunbird-video-player [playerConfig]="configData?.renderOptions?.videoPlayerConfig">
+                            </sunbird-video-player>
                         </div>
-                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
-                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
 
-                    </mat-step>
-
-                    <!-- Audio type -->
-                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.AUDIO">
-                        <div [innerHTML]="configData?.component">
+                        <!-- SunBird pdf Player -->
+                        <div *ngIf="configData?.renderOptions?.type === onboardingScreenType.PDF" class="aspectratio"
+                            data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+                            <sunbird-pdf-player [playerConfig]="configData?.renderOptions?.pdfPlayerConfig">
+                            </sunbird-pdf-player>
                         </div>
-                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
-                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+                        <!-- action button -->
+                        <button *ngIf="!configData?.isMandatory" class="sb-btn sb-btn-normal sb-btn-primary"
+                            (click)="onClickNext()" matStepperNext>Skip/Next &#8250;</button>
+                        <div *ngIf="isPreview">
 
-                    </mat-step>
-
-                    <!-- pdf type -->
-                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.PDF">
-                        <ng-template matStepLabel>{{configData?.stepLabel}}</ng-template>
-                        <mat-label>{{configData?.description}} </mat-label>
-                        <div [innerHTML]="configData?.component">
+                            <button *ngIf="configData?.sequence != 1" class="sb-btn sb-btn-normal sb-btn-primary"
+                                matStepperPrevious>&#8249; Back</button>
                         </div>
-                        <div>
-                            <iframe width="580" height="330" allow="autoplay" frameborder="0" class="dashboard-iframe"
-                                [src]="getSanitizedURL(configData?.renderOptions?.url)">
-                            </iframe>
-                        </div>
-                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
-                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
-
-                    </mat-step>
-
-                    <!-- image type -->
-                    <mat-step *ngIf="configData?.isEnabled && configData?.renderOptions?.type === onboardingScreenType.IMAGE">
-                        <div [innerHTML]="configData?.component">
-                        </div>
-                        <button  class="sb-btn sb-btn-normal sb-btn-primary" matStepperNext>Skip/Next &#8250;</button>
-                        <button *ngIf="configData?.sequence != 1"  class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
-
                     </mat-step>
                 </ng-container>
+
                 <!-- by default preview screen -->
-                <mat-step>
+                <mat-step *ngIf="isPreview">
                     <ng-template matStepLabel>Preview</ng-template>
                     <p *ngIf="!isSkipped">You have selected these below data in previous section !!</p>
                     <p *ngIf="isSkipped">You have skipped all previous sections !!</p>
-                    <div *ngIf="guestUserStoredData || deviceProfile || userTypeStoredData"
-                        class="user-detail-container p-24 my-16" role="list">
+                    <div *ngIf="!isSkipped" class="user-detail-container p-24 my-16" role="list">
                         <div class="user-detail-list" role="listitem" tabindex="0"
                             attr.aria-label="Name:{{guestUserStoredData?.formatedName}}"
                             *ngIf="guestUserStoredData && guestUserStoredData?.formatedName">
@@ -165,8 +124,9 @@
                                 class="label-values fnormal font-weight-bold">{{deviceProfile?.userDeclaredLocation?.state}}</label>
                         </div>
                     </div>
-                    <button  class="sb-btn sb-btn-normal sb-btn-primary" (click)="onProcessComplete()">Done</button>
-                    <button *ngIf="configData?.sequence != 1" class="sb-btn sb-btn-normal sb-btn-primary" matStepperPrevious>&#8249; Back</button>
+                    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="onProcessComplete()">Done</button>
+                    <button *ngIf="configData?.sequence != 1" class="sb-btn sb-btn-normal sb-btn-primary"
+                        matStepperPrevious>&#8249; Back</button>
                 </mat-step>
             </mat-horizontal-stepper>
         </ng-template>

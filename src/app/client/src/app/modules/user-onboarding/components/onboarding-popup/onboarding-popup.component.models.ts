@@ -4,8 +4,9 @@ export enum onboardingScreenType{
     LOCATION = 'Location',
     HTML = 'html',
     URL = 'url',
-    VIDEO = 'video',
+    VIDEO = 'video-player',
     AUDIO = 'audio',
     IMAGE = 'image',
-    PDF = 'pdf'
+    PDF = 'pdf-player',
+    COMPONENT = 'component'
 }

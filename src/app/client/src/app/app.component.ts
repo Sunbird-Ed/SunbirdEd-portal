@@ -120,6 +120,8 @@ export class AppComponent implements OnInit, OnDestroy {
   FORM_CONFIG_ENABLED = false;
   isStepperCompleted = false;
   OnboardingFormConfig:any;
+  isStepperEnabled = false;
+  isPopupEnabled = false;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -289,6 +291,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const isStepperCompleted = localStorage.getItem('isStepperCompleted');
     this.isStepperCompleted = isStepperCompleted ? true : false;
   }
+  /**
+   * @description -  to fetch all form config data list for onboarding stepper flow
+   */
   getOnboardingList() {
     const formReadInputParams = {
       formType: 'useronboardingsteps',
@@ -298,8 +303,12 @@ export class AppComponent implements OnInit, OnDestroy {
     };
     this.formService.getFormConfig(formReadInputParams).subscribe(
       (formResponsedata) => {
-        this.OnboardingFormConfig = formResponsedata;
-      });
+        if (formResponsedata) {
+          this.OnboardingFormConfig = formResponsedata;
+          this.isStepperEnabled = true;
+        }
+        else { this.isPopupEnabled = true; }
+      }, error => { this.isPopupEnabled = true; });
   }
   ngOnInit() {
     this.getOnboardingList();

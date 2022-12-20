@@ -1,4 +1,5 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "components/video" as *;
 
 ::ng-deep .mat-step-header .mat-step-icon-selected {
     border-color: #024f9d;

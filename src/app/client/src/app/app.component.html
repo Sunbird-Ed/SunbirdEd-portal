@@ -72,13 +72,13 @@
       </div>
     </div>
     <!-- onboarding stepper -->
-    <app-onboarding-popup *ngIf="OnboardingFormConfig && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
+    <app-onboarding-popup *ngIf="isStepperEnabled && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
       [isGuestUser]="isGuestUser" [OnboardingFormConfig]="OnboardingFormConfig" [deviceProfile]="deviceProfile"
       (isStepperCompleted)="isStepper($event)">
     </app-onboarding-popup>
     
     <!-- popup disabled  -->
-    <div *ngIf="loadPopUps && !OnboardingFormConfig">
+    <div *ngIf="loadPopUps && isPopupEnabled">
       <!-- 2nd popup BMGS  -->
       <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
         [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
