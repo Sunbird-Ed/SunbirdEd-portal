@@ -83,7 +83,7 @@
           </div>
           <button (click)="resetFilters()" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata()"
             tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto">{{resourceService.frmelmnts?.btn?.reset
-                        | translate}}
+            | translate}}
           </button>
         </div>
       </div>
@@ -91,7 +91,7 @@
   </div>
 </ng-container>
 <div *ngIf="isLayoutAvailable()" class="sbt-filter" tabindex="-1">
-<mat-accordion class="sb-mat-accordion sbt-filter-accordion">
+  <mat-accordion class="sb-mat-accordion sbt-filter-accordion">
     <mat-expansion-panel [expanded]="isOpen">
       <mat-expansion-panel-header>
         <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
@@ -109,7 +109,7 @@
             <button (click)="onSearchFrameworkFilterReset()" tabindex="0" appTelemetryInteract
               [telemetryInteractEdata]="getInteractEdata()"
               class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer">{{resourceService.frmelmnts?.btn?.reset
-                            | translate}}
+              | translate}}
               <i class="icon undo"></i></button>
             <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer"
                 (click)="isOpen = !isOpen" tabindex="0" attr.aria-label="{{resourceService.frmelmnts?.btn?.close}}">
@@ -125,7 +125,8 @@
             <ng-container *ngIf="filterFormTemplateConfig && refreshSearchFilterComponent">
               <sb-search-framework-filter [frameworkAssociations]="allValues"
                 [frameworkCategoryFilterFieldTemplateConfig]="filterFormTemplateConfig"
-                [baseSearchFilter]="defaultFilters" #sbSearchFrameworkFilterComponent>
+                [supportedFilterAttributes]="pageData?.metaData?.filters" [baseSearchFilter]="defaultFilters"
+                #sbSearchFrameworkFilterComponent>
               </sb-search-framework-filter>
             </ng-container>
           </div>
