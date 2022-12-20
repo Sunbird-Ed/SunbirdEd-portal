@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .sb-last-update-status {
     font-size: calculateRem(12px);
     font-weight: bold;

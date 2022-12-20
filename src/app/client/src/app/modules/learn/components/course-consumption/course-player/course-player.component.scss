@@ -1,6 +1,7 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "pages/course-player" as *;
 @use "pages/kabab-menu" as *;
+@use 'pages/content-header' as *;
 
 .course-list_title {
   color: var(--gray-800);
@@ -9,29 +10,10 @@
   line-height: calculateRem(24px);
 }
 
-// content header bar
-.content-header {
-  &__img {
-    overflow: hidden;
-    img {
-      width: calculateRem(48px);
-    }
-  }
-  &__title {
-    color: var(--primary-color);
-    font-size: calculateRem(18px);
-    font-weight: bold;
-  }
-  &__info {
-    color: var(--gray-800);
-    font-size: calculateRem(14px);
-  }
-}
-
 .course-list-progress {
   padding: calculateRem(16px);
   &__title {
-    color: var(--gray-800);
+    color: var(--primary-theme-contrast);
     font-size: calculateRem(12px);
   }
   &__status {
@@ -200,7 +182,7 @@ xxl calculateRem(88px) 24px 20px;
 
 .sb-no-course-found{
   background-color: var(--tertiary-0);
-  border: 1px solid var(--tertiary-100);
+  border: calculateRem(1px) solid var(--tertiary-100);
   padding: calculateRem(16px) calculateRem(24px);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);

@@ -17,7 +17,7 @@
     }
   }
   .side-toc-content {
-    max-height: calc(100vh - 320px);
+    max-height: calc(100vh - 20rem);
     overflow-y: auto;
     padding-bottom: calculateRem(24px);
   }

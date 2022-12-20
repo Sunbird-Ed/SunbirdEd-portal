@@ -23,8 +23,8 @@ div.content {
     grid-template-areas:
       "smallcard largecard"
       "smallcard2 largecard";
-    grid-gap: 16px;
-    grid-template-columns: 392px 1fr;
+    grid-gap: calculateRem(16px);
+    grid-template-columns: calculateRem(392px) 1fr;
 
     @include respond-below(sm) {
       grid-template-columns: 1fr 2fr;
@@ -36,8 +36,8 @@ div.content {
       background-color: var(--white);
       box-shadow: none;
       cursor: pointer;
-      border: 2px solid var(--white);
-      box-shadow: 0 0.125rem 0.4375rem 0 rgba(0, 0, 0, .16);
+      border: calculateRem(2px) solid var(--white);
+      box-shadow: 0 0.125rem 0.4375rem 0 rgba(var(--rc-rgba-black), .16);
 
       &:nth-child(1) {
         grid-area: smallcard;
@@ -75,7 +75,7 @@ div.content {
 
 ::ng-deep {
   .course-dashboard-select {
-    width: 300px;
+    width: calculateRem(300px);
   }
 
   .ui.selection.dropdown {

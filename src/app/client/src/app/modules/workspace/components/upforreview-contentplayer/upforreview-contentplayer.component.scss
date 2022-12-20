@@ -1,3 +1,4 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 //aspect ratio
 .aspectratio {
@@ -23,12 +24,11 @@
       video,iframe {
         width: 100%;
         height: 100% !important;
-        // border: calculateRem(6px) solid var(--black);
       }
     }
     &.player-fullscreen {
       width: 100%;
-      height: calc(100vh - 50px) !important;
+      height: calc(100vh - 3.125rem) !important;
       position:fixed;
       top:calculateRem(50px);
       left:0;
@@ -41,7 +41,7 @@
      }
      &.player-fullscreen iframe, &.player-fullscreen video {
       width: 100%;
-      height: calc(100vh - 50px) !important;
+      height: calc(100vh - 3.125rem) !important;
    }
   }
   

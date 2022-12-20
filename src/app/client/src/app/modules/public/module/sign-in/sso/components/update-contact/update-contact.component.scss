@@ -54,10 +54,10 @@
   color: var(--gray-400);
 }
 .orange.text {
-  color: #A30010;
+  color: var(--accessibility-red);
 }
 .orange-border {
-  border-color: #A30010 !important;
+  border-color: var(--accessibility-red) !important;
 }
 .blue.text {
   color: var(--primary-color);
@@ -73,7 +73,7 @@
 }
 .ui.basic.error.label {
   background: none !important;
-  color: #A30010 !important;
+  color: var(--accessibility-red) !important;
   border: 0 !important;
   padding-left: 0;
   font-size: 1rem;
@@ -128,7 +128,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .ui.radio.checkbox input:checked ~ label:before {
-  border: 2px solid var(--primary-400);
+  border: calculateRem(2px) solid var(--primary-400);
 }
 .ui.radio.checkbox input:checked ~ label:after {
   background: var(--primary-400);

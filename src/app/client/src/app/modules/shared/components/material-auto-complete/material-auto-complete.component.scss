@@ -12,9 +12,9 @@
     border-radius: calculateRem(4px);
     z-index: 1;
     width: 100%;
-    max-height: 280px;
+    max-height: calculateRem(280px);
     overflow: auto;
-    box-shadow: 0 2px 3px 0 rgb(34 36 38 / 15%);
+    box-shadow: 0 calculateRem(2px) calculateRem(3px) 0 rgb(34 36 38 / 15%);
 
     ::ng-deep {
       ul {
@@ -42,7 +42,7 @@
       width: 100%;
       height: calculateRem(32px);
       padding: 0 calculateRem(20px);
-      border: 1px solid #ccc;
+      border: calculateRem(1px) solid var(--gray-100);
       background: var(--sb-dropdown-menu-bg);
       border-radius: calculateRem(4px);
 
@@ -85,7 +85,7 @@
     border-radius: calculateRem(24px);
   }
   html[data-mode="darkmode"] .sb-mat__checkbox.sb-mat__checkbox--primary .mat-checkbox-frame {
-    border-color: #ccc;
+    border-color: var(--gray-100);
   }
   .sb-autocomp-dropdown__list {
     top: 0px !important;

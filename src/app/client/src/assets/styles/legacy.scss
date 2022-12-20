@@ -338,7 +338,7 @@ body ::-webkit-scrollbar {
   height: calculateRem(5px);
 }
 .qq-upload-file {
-  width: calc(100% - 40px);
+  width: calc(100% - 2.5rem);
 }
 .qq-upload-list {
   overflow-y: hidden;
@@ -955,7 +955,7 @@ iframe.iziModal-iframe {
   td:first-child,
 .ui[class*="basic"].border-less.table:not(.sortable):not(.striped)
   th:first-child {
-  padding-left: 25px;
+  padding-left: calculateRem(25px);
 }
 .ui.basic.border-less.table {
   border: 0;
@@ -1061,7 +1061,7 @@ i.blue.icon {
 }
 .search-content-header {
   .ui.floated.header {
-    margin: 5px 0 0 5px !important;
+    margin: calculateRem(5px) 0 0 calculateRem(5px) !important;
     font-size: 1.143rem !important;
     font-weight: 600;
   }

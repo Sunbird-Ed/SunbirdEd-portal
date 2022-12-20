@@ -69,9 +69,9 @@
 
   .sbt-user-management {
     .sb-multi-rows {
-      border-radius: 24px;
-      padding: 0px 16px;
-      margin-top: 16px;
+      border-radius: calculateRem(24px);
+      padding: 0px calculateRem(16px);
+      margin-top: calculateRem(16px);
       background: var(--sbt-compt-bg);
     }
     .sb-manage-section .sb-multi-rows:nth-child(odd) {

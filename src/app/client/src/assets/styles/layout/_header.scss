@@ -48,10 +48,8 @@
       background: none;
       padding: 0px;
       display: flex;
-      /* align-items: center; */
-      /* justify-content: center; */
       background: var(--sbt-header-bg) !important;
-      border-radius: 24px 24px 0 0;
+      border-radius: calculateRem(24px) calculateRem(24px) 0 0;
       padding: 1rem 1rem 1rem 1rem;
       overflow: hidden;
       overflow-x: auto;
@@ -70,15 +68,9 @@
   position: relative;
   margin:0 auto;
   @include respond-above(sm) {
-  // position: absolute;
-  // left: 0px;
-  // right: 0px;
-  // top: 50%;
-  // transform: translateY(-50%);
   }
 }
 .ui.menu {
-  // position: sticky;
   z-index: 999;
   border: 0;
   margin-bottom: calculateRem(-1px);
@@ -117,7 +109,7 @@
 .searchbox {
   width: 100%;
   @media only screen and (min-width: 1024px) {
-    width: calc(100% - 284px);
+    width: calc(100% - 17.75rem);
     max-width: calculateRem(490px);
   }
   .ui.icon.button {
@@ -130,7 +122,7 @@
   color: var(--sb-header-qrcode-btn);
   border-radius: calculateRem(4px);
   font-weight: normal;
-  border: calculateRem(0.5px) solid ar(--sb-header-qrcode-btn-border);;
+  border: calculateRem(0.5px) solid var(--sb-header-qrcode-btn-border);
   box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.5);
   height: calculateRem(32px);
   padding: calculateRem(8px) calculateRem(16px);
@@ -185,7 +177,7 @@
   .ui.menu .language-selector {
     font-size: 0.86rem;
     @include respond-above(md) {
-      color: var(--white);
+      color: var(--primary-theme-contrast);
     }
     .ui.dropdown {
       border: calculateRem(1px) solid var(--gray-100);
@@ -198,7 +190,7 @@
         margin: 0 0 0 calculateRem(8px);
       }
       @media screen and (min-width: 1024px) {
-        color: var(--white);
+        color: var(--primary-theme-contrast);
         border: 0;
         font-weight: 500;
         padding: calculateRem(8px) 0;

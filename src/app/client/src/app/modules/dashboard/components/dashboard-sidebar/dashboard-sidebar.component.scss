@@ -1,20 +1,6 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 :host{
-  // .sidebar {
-  //   margin: 0;
-  //   padding: 0;
-  //   background-color: var(--white);
-  //   height: 100vh;
-  //   overflow: auto;
-  //   padding-left: 40%;
-  //   padding-right: 0px;
-  //   [dir="rtl"] & {
-  //     padding-left: 0px;
-  //     padding-right: 40%;
-  //   }
-  // }
-  
   .sidebar a ,.dashboard-title{
     display: block;
     color: var(--gray-800) !important;

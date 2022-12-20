@@ -332,7 +332,7 @@ select:-internal-autofill-selected {
 
 .sbt-search-box{
   .search-fill{
-    fill: #0531FF;
+    fill: var(--primary-color);
   }
 }
 
@@ -367,7 +367,7 @@ select:-internal-autofill-selected {
   z-index: 9999;
   border-radius: 0 0 calculateRem(32px) calculateRem(32px);
   padding: calculateRem(20px) calculateRem(24px);
-  background-color: #F3F3E5;
+  background-color: var(--sbt-body-bg);
   box-shadow: calculateRem(6px) calculateRem(16px) calculateRem(24px) 0 rgb(0 0 0 / 10%);
   .search-title{
     color: var(--primary-color);

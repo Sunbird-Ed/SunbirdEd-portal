@@ -1,9 +1,5 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
-.content-header__title {
-  color: var(--primary-400);
-  font-size: 1.125rem;
-}
+@use 'pages/content-header' as *;
 .avatar-container {
   width: calculateRem(98px);
   height: calculateRem(98px);

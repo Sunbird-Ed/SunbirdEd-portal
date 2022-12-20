@@ -20,7 +20,7 @@
   }
 
   .sb-btn-round {
-    background: var(--white);
+    // background: var(--white);
     border-radius: 50% !important;
     box-shadow: var(--sbt-box-shadow-6px) !important;
     min-width: auto !important;
@@ -51,12 +51,12 @@
 
   .user-details {
     padding: calculateRem(24px);
-    border-bottom: calculateRem(1px) solid #D7D7D7;
+    border-bottom: calculateRem(1px) solid var(--rc-e5e5e5);
 
     .user-img {
       height: calculateRem(48px);
       width: calculateRem(48px);
-      background-color: #FDEAFF;
+      background-color: var(--rc-E0EFFF);
       justify-content: center;
       border-radius: 50%;
       font-weight: bold;
@@ -69,13 +69,13 @@
 
     .user-info {
       font-size: calculateRem(14px);
-      color: #666;
+      color: var(--gray-400);
     }
 
     .dot-separator {
       width: calculateRem(6px);
       height: calculateRem(6px);
-      background: #666;
+      background: var(--gray-400);
       margin: 0 calculateRem(8px);
       border-radius: 50%;
     }
@@ -99,7 +99,7 @@
     }
 
     .user-workexp {
-      border: calculateRem(1px) solid #D7D7D7;
+      border: calculateRem(1px) solid var(--rc-dedede);
       border-radius: calculateRem(16px);
       height: calculateRem(120px);
       padding: calculateRem(16px);
@@ -136,7 +136,7 @@
     margin: 0 auto;
 
     .no-result-text {
-      color: #333;
+      color: var(--gray-800);
     }
   }
 

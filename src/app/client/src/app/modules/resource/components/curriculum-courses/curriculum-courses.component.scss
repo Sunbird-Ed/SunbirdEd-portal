@@ -1,26 +1,5 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
-.content-header {
-    &__img {
-      overflow: hidden;
-      width: calculateRem(48px);
-      height:calculateRem(48px);
-      img {
-      height: 100%;
-    }
-    }
-    &__title{
-      color: var(--primary-color);
-      font-size: calculateRem(18px);
-      font-weight: bold;
-    }
-    &__info {
-      color:var(--gray-800);
-      font-size: calculateRem(14px);
-      
-    }
-  }
-
+@use 'pages/content-header' as *;
 .sbgrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));

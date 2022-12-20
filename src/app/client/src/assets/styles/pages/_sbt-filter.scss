@@ -27,19 +27,15 @@
           color: var(--sbt-pill-text) !important;
           margin: 0 calculateRem(8px) calculateRem(8px) 0 !important;
           background-color: var(--sbt-pill-bg) !important;
-          font-size: 12px !important;
+          font-size: calculateRem(12px) !important;
           display: unset !important;
-          width: 100px;
-          flex-basis: 100px;
+          width: calculateRem(100px);
+          flex-basis: calculateRem(100px);
           flex-grow: 1;
 
           html[dir="rtl"] & {
             margin: 0 0 calculateRem(8px) calculateRem(8px) !important;
           }
-
-          // &:last-child{
-          //   flex:inherit;
-          // }
           &.active,
           &:hover {
             color: var(--sbt-pill-text-hover) !important;
@@ -67,7 +63,7 @@
     .treepicker-parent input {
       width: 100%;
       border-radius: calculateRem(24px);
-      border: 1px solid #999;
+      border: calculateRem(1px) solid var(--gray-200);
       height: calculateRem(32px);
       font-size: calculateRem(14px);
     }
@@ -148,8 +144,8 @@
     background: var(--white);
     box-shadow: var(--sbt-box-shadow-3px);
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: calculateRem(24px);
+    height: calculateRem(24px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -160,17 +156,16 @@
   }
 
   &-switcher {
-    --primary-color: #024F9D;
     width: calculateRem(40px);
     height: calculateRem(40px);
-    background-color: var(--sbt-filter-switcher-bg);
+    background-color: var(--primary-theme);
     box-shadow: var(--sbt-box-shadow-3px);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: calculateRem(-20px);
     border-radius: 100%;
-    color: var(--primary-color);
+    color: var(--primary-theme-contrast);
     position: absolute;
     left: calculateRem(24px);
     top: 0px;
@@ -278,25 +273,22 @@
       position: relative;
       width: auto;
       height: auto;
-      // margin-top:calculateRem(-72px);
     }
   }
 
   &-scrollable {
     position: relative;
     overflow-y: auto;
-    height: calc(100vh - 95px);
+    height: calc(100vh - 5.938rem);
     padding-bottom: calculateRem(8px);
 
     @include respond-between(sm, md) {
-      height: calc(100vh - 280px);
+      height: calc(100vh - 17.5rem);
     }
 
     @include respond-above(md) {
-      //max-height: calc(100vh - 256px);
       height: auto;
       overflow: initial;
-      // max-height: inherit;
     }
   }
 

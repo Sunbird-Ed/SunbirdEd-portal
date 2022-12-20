@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .sb-gray-loader{
        &:after{
         content: '';
@@ -18,25 +20,25 @@
 .sb-table-blue-strip{
         background: none;
         border: none;
-        border-bottom: solid 1px var(--primary-400);
+        border-bottom: solid calculateRem(1px) var(--primary-400);
         th{
                 background: none;
                 color: var(--primary-400);
-                border-bottom: solid 1px  var(--primary-400);    
+                border-bottom: solid calculateRem(1px)  var(--primary-400);    
         }
         tbody{
                 tr:nth-child(odd){
                         background:  var(--primary-100);
                 }
                 tr:nth-child(even){
-                        background: white;
+                        background:var(--white);
                 }
                 tr{
                         td:first-child{
-                           border-left: solid 1px  var(--primary-400);     
+                           border-left: solid calculateRem(1px)  var(--primary-400);     
                         }
                         td:last-child{
-                                border-right:  solid 1px var(--primary-400);     
+                                border-right:  solid calculateRem(1px) var(--primary-400);     
                         }
                 }
         }
@@ -53,9 +55,9 @@
 .white-space-inherit {
         white-space: inherit !important;
         word-wrap: break-word;
-        max-width: 1px;
+        max-width: calculateRem(1px);
 }
 
 .max-h-360 {
-        max-height:360px;
+        max-height:calculateRem(360px);
 }

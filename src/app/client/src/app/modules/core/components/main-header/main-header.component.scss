@@ -338,11 +338,10 @@ __textbooks {
 }
 
 .explore-description-info{
-  color: #333333;
-    font-family: "Noto Sans";
-    font-size: 14px;
+  color: var(--gray-800);
+    font-size: calculateRem(14px);
     letter-spacing: 0;
-    line-height: 19px;
+    line-height: calculateRem(19px);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

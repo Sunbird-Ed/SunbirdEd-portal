@@ -1,5 +1,5 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
+@use 'pages/content-header' as *;
 .sb-single-resource {
 	width: 100%;
 	height: 100%;
@@ -23,47 +23,14 @@
 }
 
 .content-header {
-  // background: var(--rc-FAFAFA);
   min-height: calculateRem(80px);
   background-color: var(--rc-FAFAFA);
   box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
-  z-index: 99;
-
-    &__content{
-        display:flex;
-        align-items: center;
-        justify-content: space-between;
-        @include respond-below(sm) {
-          display: block;
-        }
-    }
-    &__title {
-        color: var(--primary-400);
-        font-size: calculateRem(18px);
-    }
-    
+  z-index: 99; 
     &__info {
-      color: var(--gray-800);
-      font-size: 0.875rem;
-      max-height: 48px;
+      max-height: calculateRem(48px);
       overflow-y: auto;
     }
-    
-    .dot-divider {
-        width: 0.25rem;
-        height: 0.25rem;
-        border-radius: 100%;
-        background-color: var(--gray-800);
-        display: inline-block;
-        margin: 0px 0.5rem;
-        vertical-align: middle;
-    }
-  
-  @include respond-below(sm) {
-    &__buttons {
-      margin-top: calculateRem(8px);
-    }
-  }
 }
 
 @include respond-below(sm) {

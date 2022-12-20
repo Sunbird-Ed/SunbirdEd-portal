@@ -66,10 +66,10 @@
     font-size: calculateRem(14px);
 }
 .orange.text {
-    color: #A30010;
+    color: var(--accessibility-red);
 }
 .orange-border {
-    border-color: #A30010 !important;
+    border-color: var(--accessibility-red) !important;
 }
 .blue.text {
     color: var(--primary-color);
@@ -85,7 +85,7 @@
 }
 .ui.basic.error.label {
     background: none !important;
-    color: #A30010 !important;
+    color: var(--accessibility-red) !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
@@ -181,7 +181,7 @@ input[type=number]::-webkit-inner-spin-button {
     color: var(--gray-200) !important;
 }
 .sb-btn-disabled {
-    color: #555;
+    color: var(--gray-400);
   }
 
   // user-details gray box new design css

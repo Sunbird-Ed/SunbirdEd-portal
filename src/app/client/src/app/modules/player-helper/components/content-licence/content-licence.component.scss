@@ -27,7 +27,7 @@
 }
 
 .contentdata-description {
-  border-bottom: 0.5px solid var(--rc-979797);
+  border-bottom: calculateRem(0.5px) solid var(--rc-979797);
 }
 
 .credits-section {
