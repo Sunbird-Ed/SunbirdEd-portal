@@ -63,8 +63,7 @@ export class OnboardingPopupComponent implements OnInit {
     this.isSkipped = false;
     if (this.onboardingFilterData.length === 1) {
       this.isStepperCompleted.emit(true);
-    }
-    else {
+    } else {
       stepper.next();
     }
   }
@@ -81,8 +80,7 @@ export class OnboardingPopupComponent implements OnInit {
     this.getLocation();
     if (this.onboardingFilterData.length === 1) {
       this.isStepperCompleted.emit(true);
-    }
-    else {
+    } else {
       stepper.next();
     }
   }
@@ -105,8 +103,7 @@ export class OnboardingPopupComponent implements OnInit {
     this.isSkipped = false;
     if (this.onboardingFilterData.length === 1) {
       this.isStepperCompleted.emit(true);
-    }
-    else {
+    } else {
       stepper.next();
     }
   }
@@ -120,14 +117,12 @@ export class OnboardingPopupComponent implements OnInit {
    */
   getOnboardingFormConfig(isBMGSkipped, isUserTypeSkipped, isLocationSkipped) { // condition for form config
     _.map(this.OnboardingFormConfig, (formConfigRes) => {
-      if(_.get(formConfigRes, 'renderOptions.name') === onboardingScreenType.BMGS && ((_.get(formConfigRes, 'isEnabled') === false && _.get(formConfigRes, 'defaults')) || (isBMGSkipped && _.get(formConfigRes, 'defaults')))) {
+      if (_.get(formConfigRes, 'renderOptions.name') === onboardingScreenType.BMGS && ((_.get(formConfigRes, 'isEnabled') === false && _.get(formConfigRes, 'defaults')) || (isBMGSkipped && _.get(formConfigRes, 'defaults')))) {
         this.updateGuestUser(_.get(formConfigRes, 'defaults'));
-      }
-      else if(_.get(formConfigRes, 'renderOptions.name') === onboardingScreenType.USERTYPE && ((_.get(formConfigRes, 'isEnabled') === false && _.get(formConfigRes, 'defaults.role')) || (isUserTypeSkipped && _.get(formConfigRes, 'defaults.role')))) {
+      } else if (_.get(formConfigRes, 'renderOptions.name') === onboardingScreenType.USERTYPE && ((_.get(formConfigRes, 'isEnabled') === false && _.get(formConfigRes, 'defaults.role')) || (isUserTypeSkipped && _.get(formConfigRes, 'defaults.role')))) {
         localStorage.setItem('guestUserType', _.get(formConfigRes, 'defaults.role'));
         this.userTypeStoredData = localStorage.getItem('guestUserType')
-      }
-      else if(_.get(formConfigRes, 'renderOptions.name') === onboardingScreenType.LOCATION && ((_.get(formConfigRes, 'isEnabled') === false && _.get(formConfigRes, 'defaults')) || (isLocationSkipped && _.get(formConfigRes, 'defaults')))) {
+      } else if (_.get(formConfigRes, 'renderOptions.name') === onboardingScreenType.LOCATION && ((_.get(formConfigRes, 'isEnabled') === false && _.get(formConfigRes, 'defaults')) || (isLocationSkipped && _.get(formConfigRes, 'defaults')))) {
         this.deviceRegisterService.updateDeviceProfile(_.get(formConfigRes, 'defaults')).subscribe();
       }
       this.isAllScreenDisabled();
