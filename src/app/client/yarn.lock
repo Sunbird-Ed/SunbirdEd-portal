@@ -5713,10 +5713,10 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-ed-uci-console@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ed-uci-console/-/ed-uci-console-1.0.1.tgz#4c4779c49efa6d8a5f09ef2a15c87a73100503c8"
-  integrity sha512-CYKt5Fg4pdKm+CgCqvI1sHSqEP4+EBBJfZUdpmxEC6TtMXKBbeT3zxl3MCR5gaKuqj6J99rpN22E30MYzcgZsw==
+ed-uci-console@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ed-uci-console/-/ed-uci-console-1.0.2.tgz#9c4778ffb5d4c4331b3fb4b8765826cbaed95c04"
+  integrity sha512-cKQfjrX7D85BVXPbceAsdQBN/nnv4vx1o+xDBfmpRMuEgPXRbMPH8a790mc/ZVUUPm8kJxPZ9Smw4vs8EJ2fQA==
   dependencies:
     tslib "^2.0.0"
 
