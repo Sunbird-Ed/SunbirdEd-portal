@@ -279,11 +279,11 @@
   &-scrollable {
     position: relative;
     overflow-y: auto;
-    height: calc(100vh - calculateRem(95px));
+    height: calc(100vh - 5.938rem);
     padding-bottom: calculateRem(8px);
 
     @include respond-between(sm, md) {
-      height: calc(100vh - calculateRem(280px));
+      height: calc(100vh - 17.5rem);
     }
 
     @include respond-above(md) {
