@@ -153,7 +153,6 @@ describe('SearchFilterComponent', () => {
     });
 
     describe('ngOnInit', () => {
-        jest.useFakeTimers();
         it('should invoked ngOnInit for reset filters', (done) => {
             component.selectedFilters = {
                 board: ['sample-board'],
@@ -182,7 +181,6 @@ describe('SearchFilterComponent', () => {
             expect(mockFormService.getFormConfig).toHaveBeenCalled();
             expect(mockChangeDetectionRef.detectChanges).toHaveBeenCalled();
             expect(mockUtilService.transposeTerms).toHaveBeenNthCalledWith(1, undefined, undefined, 'sample-language');
-            jest.advanceTimersByTime(1000 * 2);
         });
 
         it('should return error for catch part', () => {
