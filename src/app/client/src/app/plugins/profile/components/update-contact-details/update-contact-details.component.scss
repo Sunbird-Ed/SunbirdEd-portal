@@ -30,8 +30,6 @@
 
 .ui.left.icon.input .icon {
   font-size: 1rem;
-  font-family: inherit;
-  margin-top: calculateRem(12px);
 }
 
 .height-200 {
@@ -43,7 +41,7 @@
 
   .icon {
     left: 0;
-    top: calculateRem(10px);
+    top: 0.625rem;
   }
 
   .sb-form-control {
