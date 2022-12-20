@@ -151,7 +151,7 @@
 
     // learning out come styles
     &.sb-learning-outcome {
-      height: calc(100% - calculateRem(44px));
+      height: calc(100% - 2.75rem);
 
       .question-bg {
         background-image: linear-gradient(-90deg, var(--secondary-100), var(--secondary-0));

@@ -46,7 +46,7 @@ body {
 @include respond-above(sm) {
   body {
     .sb-mid-container-min-height {
-      min-height: calc(100vh - calculateRem(288px));
+      min-height: calc(100vh - 18rem);
       margin-bottom: -2rem !important;
     }
   }
@@ -241,8 +241,8 @@ app-workspace {
 
 .sb-modal-addsummary {
   .ck.ck-editor__editable_inline {
-    min-height: calc(100vh - calculateRem(300px));
-    max-height: calc(100vh - calculateRem(300px));
+    min-height: calc(100vh - 18.75rem);
+    max-height: calc(100vh - 18.75rem);
     overflow: auto;
   }
 
@@ -250,10 +250,6 @@ app-workspace {
     position: relative;
     top: 0;
   }
-
-  // .ck.ck-editor__main {
-  //   padding-top: calculateRem(76px);
-  // }
 
   ul {
     list-style: disc;
@@ -383,7 +379,7 @@ app-workspace {
 
 .sbt-page-content {
   position: relative;
-  min-height: calc(100vh - calculateRem(320px));
+  min-height: calc(100vh - 20rem);
 }
 
 .sbt-page-content-area {
@@ -519,12 +515,12 @@ app-workspace {
 }
 
 .new-footer {
-  min-height: calc(100vh - calculateRem(296px));
+  min-height: calc(100vh - 18.5rem);
 }
 
 .footer-fix {
   padding-bottom: calculateRem(160px);
-  min-height: calc(100vh - calculateRem(100px));
+  min-height: calc(100vh - 6.25rem);
 }
 
 .sb-table-hover tbody tr.non-clickable-row:hover {

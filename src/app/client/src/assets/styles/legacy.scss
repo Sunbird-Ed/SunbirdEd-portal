@@ -338,7 +338,7 @@ body ::-webkit-scrollbar {
   height: calculateRem(5px);
 }
 .qq-upload-file {
-  width: calc(100% - calculateRem(40px));
+  width: calc(100% - 2.5rem);
 }
 .qq-upload-list {
   overflow-y: hidden;
