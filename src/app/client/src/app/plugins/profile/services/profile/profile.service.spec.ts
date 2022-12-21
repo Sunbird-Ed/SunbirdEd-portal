@@ -21,7 +21,12 @@ describe('ProfileService', () => {
                     SKILLS: "data/v1/skills",
                 },
             }
-        }
+        },
+        appConfig: {
+            timeOutConfig: {
+                setTime: 1000
+            }
+        },
     };
     const mockFormService: Partial<FormService> = {
         getFormConfig: jest.fn()
