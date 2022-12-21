@@ -132,6 +132,7 @@ let envVariables = {
 
   // BLOB and Storage Configuration
   CACHE_STORE: env.sunbird_cache_store || 'memory',
+  sunbird_cloud_storage_provider: env.sunbird_cloud_storage_provider || 'azure',
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
   CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
   SUNBIRD_PUBLIC_STORAGE_ACCOUNT_NAME: env.sunbird_azure_storage_account_name,
@@ -144,6 +145,18 @@ let envVariables = {
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
   sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
+  sunbird_aws_bucket_name: env.sunbird_aws_bucket_name || 'sunbirded',
+  sunbird_aws_reports: env.sunbird_aws_reports || 'reports',
+  sunbird_aws_labels: env.sunbird_aws_labels || 'labels',
+  sunbird_aws_access_key: env.sunbird_aws_access_key || '',
+  sunbird_aws_secret_key: env.sunbird_aws_secret_key || '',
+  sunbird_aws_region: env.sunbird_aws_region || '',
+  sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
+  sunbird_gcloud_reports: env.sunbird_gcloud_reports || 'reports',
+  sunbird_gcloud_labels: env.sunbird_gcloud_labels || 'labels',
+  sunbird_gcloud_client_email: env.sunbird_gcloud_client_email || '',
+  sunbird_gcloud_private_key: env.sunbird_gcloud_private_key || '',
+  sunbird_gcloud_projectId: env.sunbird_gcloud_projectId || '',
 
   // generic editor question set and coleections children contents limit
   SUNBIRD_QUESTIONSET_CHILDREN_LIMIT: env.sunbird_questionset_children_limit || 500,

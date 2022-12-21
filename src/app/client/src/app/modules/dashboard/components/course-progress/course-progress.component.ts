@@ -344,8 +344,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     const request = {
       'request': {
         'filters': {
-          'collectionId': this.currentBatch.collectionId || this.currentBatch.courseId,
-          'batchId': this.currentBatch.batchId
+          'collectionId': _.get(this.currentBatch, 'collectionId') || _.get(this.currentBatch, 'courseId'),
+          'batchId': _.get(this.currentBatch, 'batchId')
         },
         'groupBy': ['dist', 'state'],
         'granularity': 'ALL' // data conformation
@@ -659,8 +659,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * @description - This will set completedCount and participantCount to the currentBatch object;
    */
     setCounts(currentBatch) {
-      this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
-      this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
+      if (currentBatch) {
+        this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
+        this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
+      }
     }
 
   setInteractEventData() {
