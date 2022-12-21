@@ -180,7 +180,6 @@ describe('SearchFilterComponent', () => {
             expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
             expect(mockFormService.getFormConfig).toHaveBeenCalled();
             expect(mockChangeDetectionRef.detectChanges).toHaveBeenCalled();
-            expect(mockUtilService.transposeTerms).toHaveBeenNthCalledWith(1, undefined, undefined, 'sample-language');
         });
 
         it('should return error for catch part', () => {
@@ -214,5 +213,75 @@ describe('SearchFilterComponent', () => {
         expect(mockCacheService.exists).toHaveBeenCalled();
         expect(mockCacheService.remove).toHaveBeenCalled();
         expect(component.searchFrameworkFilterComponent.resetFilter).toHaveBeenCalled();
+    });
+
+
+    it('should call getFilterForm$', () => {
+        component.filterResponseData=[
+            {
+              category: 'board',
+              type: 'dropdown',
+              labelText: 'frmelmnts.lbl.boards',
+              defaultLabelText: 'board',
+              placeholderText: 'frmelmnts.lbl.selectBoard',
+              defaultPlaceholderText: 'select board',
+              multiple: false,
+              dataSource: 'framework'
+            },
+            {
+              category: 'medium',
+              type: 'dropdown',
+              labelText: 'frmelmnts.lbl.medium',
+              defaultLabelText: 'medium',
+              placeholderText: 'frmelmnts.lbl.selectMedium',
+              defaultPlaceholderText: 'select medium',
+              multiple: true,
+              dataSource: 'framework'
+            },
+            {
+              category: 'gradeLevel',
+              type: 'dropdown',
+              labelText: 'frmelmnts.lbl.class',
+              defaultLabelText: 'grade',
+              placeholderText: 'frmelmnts.lbl.selectClass',
+              defaultPlaceholderText: 'select grade',
+              multiple: true,
+              dataSource: 'framework'
+            },
+            {
+              category: 'subject',
+              type: 'dropdown',
+              labelText: 'frmelmnts.lbl.subject',
+              defaultLabelText: 'subject',
+              placeholderText: 'frmelmnts.lbl.selectSubject',
+              defaultPlaceholderText: 'select subject',
+              multiple: true,
+              dataSource: 'facet'
+            },
+            {
+              category: 'audience',
+              type: 'dropdown',
+              labelText: 'frmelmnts.lbl.publishedUserType',
+              defaultLabelText: 'audience',
+              placeholderText: 'Select User Type',
+              defaultPlaceholderText: "Select User Type",
+              multiple: true,
+              dataSource: 'framework'
+            },
+            {
+              category: 'organisation',
+              type: 'dropdown',
+              labelText: 'Organization',
+              defaultLabelText: 'Organisation',
+              placeholderText: 'Select Organisation',
+              defaultPlaceholderText: "Select Organisatiion",
+              multiple: false,
+              dataSource: 'framework'
+            }
+          ]
+        component.ngOnInit();
+              //@ts-ignore
+        expect(component._filterConfig$).toBeDefined();
+       
     });
 });
