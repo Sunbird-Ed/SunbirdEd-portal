@@ -97,7 +97,7 @@
                   <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label> -->
                   <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" matInput
                     [matDatepicker]="startDatePicker" formControlName="startDate"
-                    [min]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'>
+                    [min]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate' (dateChange)="onStartDateChange($event)">
                   <mat-datepicker-toggle matSuffix [for]="startDatePicker"
                     [disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null">
                   </mat-datepicker-toggle>
