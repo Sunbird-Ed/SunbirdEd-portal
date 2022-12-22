@@ -6,6 +6,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ContentSearchService } from './../../services';
+import * as _ from 'lodash-es';
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -15,7 +16,8 @@ describe('SearchFilterComponent', () => {
             medium: 'se_mediums',
             gradeLevel: 'se_gradeLevels',
             board: 'se_boards'
-        }
+        },
+        fetchFilter:jest.fn()
     };
     const mockFormService: Partial<FormService> = {};
 
@@ -103,12 +105,16 @@ describe('SearchFilterComponent', () => {
         const returnData = component.getInteractEdata();
         expect(returnData).toEqual({
             'id': 'reset-filter', 'type': 'click',
-            'pageid': 'resource-search', 'extra': { 'filters': { board: ['AP Board'],
-            channel: [],
-            medium: [],
-            publisher: [],
-            subject: ['subject-1'],
-             selectedTab: 'textbook' } }
+            'pageid': 'resource-search', 'extra': {
+                'filters': {
+                    board: ['AP Board'],
+                    channel: [],
+                    medium: [],
+                    publisher: [],
+                    subject: ['subject-1'],
+                    selectedTab: 'textbook'
+                }
+            }
         });
     });
 
@@ -151,6 +157,7 @@ describe('SearchFilterComponent', () => {
         component['checkForWindowSize']();
         expect(component.isOpen).toBeFalsy();
     });
+    
 
     describe('ngOnInit', () => {
         it('should invoked ngOnInit for reset filters', () => {
@@ -162,7 +169,7 @@ describe('SearchFilterComponent', () => {
             component.selectedNgModels = {
                 selected_subjects: ['subject-1']
             };
-            component.filterChangeEvent.next({board: 'sample-board'});
+            component.filterChangeEvent.next({ board: 'sample-board' });
             mockContentSearchService.fetchFilter = jest.fn(() => of({ board: ['sample-board'] }));
             mockFormService.getFormConfig = jest.fn(() => of([{ visibility: { data: {} } }]));
             mockResourceService.languageSelected$ = of({
@@ -183,7 +190,7 @@ describe('SearchFilterComponent', () => {
         });
 
         it('should return error for catch part', () => {
-            mockContentSearchService.fetchFilter = jest.fn(() => throwError({error: ''}));
+            mockContentSearchService.fetchFilter = jest.fn(() => throwError({ error: '' }));
             mockFormService.getFormConfig = jest.fn(() => throwError([{ visibility: { data: {} } }]));
             component.facets$ = of({ id: 'sample-id' }) as any;
             mockChangeDetectionRef.detectChanges = jest.fn();
@@ -217,71 +224,68 @@ describe('SearchFilterComponent', () => {
 
 
     it('should call getFilterForm$', () => {
-        component.filterResponseData=[
+        component.filterResponseData = [
             {
-              category: 'board',
-              type: 'dropdown',
-              labelText: 'frmelmnts.lbl.boards',
-              defaultLabelText: 'board',
-              placeholderText: 'frmelmnts.lbl.selectBoard',
-              defaultPlaceholderText: 'select board',
-              multiple: false,
-              dataSource: 'framework'
+                category: 'board',
+                type: 'dropdown',
+                labelText: 'frmelmnts.lbl.boards',
+                defaultLabelText: 'board',
+                placeholderText: 'frmelmnts.lbl.selectBoard',
+                defaultPlaceholderText: 'select board',
+                multiple: false,
+                dataSource: 'framework'
             },
             {
-              category: 'medium',
-              type: 'dropdown',
-              labelText: 'frmelmnts.lbl.medium',
-              defaultLabelText: 'medium',
-              placeholderText: 'frmelmnts.lbl.selectMedium',
-              defaultPlaceholderText: 'select medium',
-              multiple: true,
-              dataSource: 'framework'
+                category: 'medium',
+                type: 'dropdown',
+                labelText: 'frmelmnts.lbl.medium',
+                defaultLabelText: 'medium',
+                placeholderText: 'frmelmnts.lbl.selectMedium',
+                defaultPlaceholderText: 'select medium',
+                multiple: true,
+                dataSource: 'framework'
             },
             {
-              category: 'gradeLevel',
-              type: 'dropdown',
-              labelText: 'frmelmnts.lbl.class',
-              defaultLabelText: 'grade',
-              placeholderText: 'frmelmnts.lbl.selectClass',
-              defaultPlaceholderText: 'select grade',
-              multiple: true,
-              dataSource: 'framework'
+                category: 'gradeLevel',
+                type: 'dropdown',
+                labelText: 'frmelmnts.lbl.class',
+                defaultLabelText: 'grade',
+                placeholderText: 'frmelmnts.lbl.selectClass',
+                defaultPlaceholderText: 'select grade',
+                multiple: true,
+                dataSource: 'framework'
             },
             {
-              category: 'subject',
-              type: 'dropdown',
-              labelText: 'frmelmnts.lbl.subject',
-              defaultLabelText: 'subject',
-              placeholderText: 'frmelmnts.lbl.selectSubject',
-              defaultPlaceholderText: 'select subject',
-              multiple: true,
-              dataSource: 'facet'
+                category: 'subject',
+                type: 'dropdown',
+                labelText: 'frmelmnts.lbl.subject',
+                defaultLabelText: 'subject',
+                placeholderText: 'frmelmnts.lbl.selectSubject',
+                defaultPlaceholderText: 'select subject',
+                multiple: true,
+                dataSource: 'facet'
             },
             {
-              category: 'audience',
-              type: 'dropdown',
-              labelText: 'frmelmnts.lbl.publishedUserType',
-              defaultLabelText: 'audience',
-              placeholderText: 'Select User Type',
-              defaultPlaceholderText: "Select User Type",
-              multiple: true,
-              dataSource: 'framework'
-            },
-            {
-              category: 'organisation',
-              type: 'dropdown',
-              labelText: 'Organization',
-              defaultLabelText: 'Organisation',
-              placeholderText: 'Select Organisation',
-              defaultPlaceholderText: "Select Organisatiion",
-              multiple: false,
-              dataSource: 'framework'
+                category: 'audience',
+                type: 'dropdown',
+                labelText: 'frmelmnts.lbl.publishedUserType',
+                defaultLabelText: 'audience',
+                placeholderText: 'Select User Type',
+                defaultPlaceholderText: "Select User Type",
+                multiple: true,
+                dataSource: 'framework'
             }
-          ]
-        component.ngOnInit();
-              //@ts-ignore
+        ]
+        //@ts-ignore
+        component.getFilterForm$()
+        //@ts-ignore
         expect(component._filterConfig$).toBeDefined();
-       
+    });
+
+    it('should call getFramework when no boardname is present', () => {
+        let obj={}
+    //@ts-ignore
+     component.getFramework(obj);
+     expect(mockContentSearchService.fetchFilter).toHaveBeenCalled();
     });
 });
