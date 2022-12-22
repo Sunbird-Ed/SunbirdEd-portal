@@ -55,6 +55,7 @@ export let mockData = {
       {
         _id: "5f34ec17585244939f89f90d",
         isRubricDriven: true,
+        criteriaLevelReport:true,
         externalId:
           "cbd074fa-dd11-11ea-a3bf-000d3af02677-OBSERVATION-TEMPLATE-1597303831612",
         name: "MH01-Mantra4Change-APSWREIS School Leader Feedback",
@@ -66,6 +67,7 @@ export let mockData = {
         _id: "5fbb75537380505718640436",
         type: "improvementproject",
         isRubricDriven: false,
+        criteriaLevelReport:false,
         subType: "",
         externalId: "7146aa30-2d67-11eb-b70e-55ade5205c81",
         name: "Health Awareness Project",
@@ -75,6 +77,7 @@ export let mockData = {
         _id: "5fbb75537380505718640437",
         type: "improvementproject",
         isRubricDriven: false,
+        criteriaLevelReport:false,
         subType: "",
         externalId: "71471f60-2d67-11eb-b70e-55ade5205c81",
         name: "Safe School Project",
@@ -84,6 +87,7 @@ export let mockData = {
         _id: "5fbb75537380505718640438",
         type: "survey",
         isRubricDriven: false,
+        criteriaLevelReport:false,
         subType: "",
         externalId: "71471f60-2d67-11eb-b70e-55ade5205c82",
         name: "Safe School survey",
@@ -103,20 +107,6 @@ export let mockData = {
         name: "Status Report",
         encrypt: false,
         datasetId: "ml-improvementproject-status-report",
-        roles: ["PM"],
-      },
-    ],
-    observation: [
-      {
-        name: "Question Report",
-        encrypt: true,
-        datasetId: "ml-observation-question-report",
-        roles: ["PM"],
-      },
-      {
-        name: "Status Report",
-        encrypt: false,
-        datasetId: "ml-observation-status-report",
         roles: ["PM"],
       },
       {
@@ -145,7 +135,21 @@ export let mockData = {
             defaultValue: 1,
           },
         ],
+      }
+    ],
+    observation: [
+      {
+        name: "Question Report",
+        encrypt: true,
+        datasetId: "ml-observation-question-report",
+        roles: ["PM"],
       },
+      {
+        name: "Status Report",
+        encrypt: false,
+        datasetId: "ml-observation-status-report",
+        roles: ["PM"],
+      }
     ],
     observation_with_rubric: [
       {
@@ -2915,90 +2919,162 @@ export let mockData = {
       },
     ],
   },
-  selectedReportWithConfigurableFilters: {
-    name: "Filtered task detail report",
-    encrypt: true,
-    datasetId: "ml-filtered-task-detail-exhaust",
-    roles: ["PROGRAM_MANAGER"],
-    configurableFilters: true,
-    filters: [
-      {
-        type: "equals",
-        dimension: "private_program",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "sub_task_deleted_flag",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "task_deleted_flag",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "project_deleted_flag",
-        value: "false",
-      },
-      {
-        type: "equals",
-        dimension: "program_id",
-        value: "$programId",
-      },
-      {
-        type: "equals",
-        dimension: "solution_id",
-        value: "$solutionId",
-      },
-      {
-        type: "equals",
-        dimension: "district_externalId",
-        value: "$district_externalId",
-      },
-      {
-        type: "equals",
-        dimension: "organisation_id",
-        value: "$organisation_id",
-      },
-      {
-        type: "greaterthan",
-        dimension: "task_count",
-        value: "$task_count",
-      },
-      {
-        type: "greaterthan",
-        dimension: "task_evidence_count",
-        value: "$task_evidence_count",
-      },
-      {
-        type: "greaterthan",
-        dimension: "project_evidence_count",
-        value: "$project_evidence_count",
-      },
-    ],
-    uiFilters: [
-      {
-        label: "Minimum no. of tasks in the project",
-        controlType: "number",
-        reference: "task_count",
-        defaultValue: 5,
-      },
-      {
-        label: "Minimum no. of task evidence",
-        controlType: "number",
-        reference: "task_evidence_count",
-        defaultValue: 2,
-      },
-      {
-        label: "Minimum no. of project evidence",
-        controlType: "number",
-        reference: "project_evidence_count",
-        defaultValue: 1,
-      },
-    ],
-  },
+  selectedReportWithConfigurableFilters: [
+    {
+      name: "Filtered task detail report",
+      encrypt: true,
+      datasetId: "ml-filtered-task-detail-exhaust",
+      roles: ["PROGRAM_MANAGER"],
+      configurableFilters: true,
+      filters: [
+        {
+          type: "equals",
+          dimension: "private_program",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "sub_task_deleted_flag",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "task_deleted_flag",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "project_deleted_flag",
+          value: "false",
+        },
+        {
+          type: "equals",
+          dimension: "program_id",
+          value: "$programId",
+        },
+        {
+          type: "equals",
+          dimension: "solution_id",
+          value: "$solutionId",
+        },
+        {
+          type: "equals",
+          dimension: "district_externalId",
+          value: "$district_externalId",
+        },
+        {
+          type: "equals",
+          dimension: "organisation_id",
+          value: "$organisation_id",
+        },
+        {
+          type: "greaterthan",
+          dimension: "task_count",
+          value: "$task_count",
+        },
+        {
+          type: "greaterthan",
+          dimension: "task_evidence_count",
+          value: "$task_evidence_count",
+        },
+        {
+          type: "greaterthan",
+          dimension: "project_evidence_count",
+          value: "$project_evidence_count",
+        },
+      ],
+      uiFilters: [
+        {
+          label: "Minimum no. of tasks in the project",
+          controlType: "number",
+          reference: "task_count",
+          defaultValue: 5,
+        },
+        {
+          label: "Minimum no. of task evidence",
+          controlType: "number",
+          reference: "task_evidence_count",
+          defaultValue: 2,
+        },
+        {
+          label: "Minimum no. of project evidence",
+          controlType: "number",
+          reference: "project_evidence_count",
+          defaultValue: 1,
+        },
+      ],
+    },
+    {
+      "name": "Status Report",
+      "encrypt": false,
+      "datasetId": "ml-project-status-exhaust",
+      "roles": [
+          "PROGRAM_MANAGER",
+          "PROGRAM_DESIGNER"
+      ],
+      "configurableFilters": true,
+      "filters": [
+          {
+              "type": "in",
+              "dimension": "status_of_project",
+              "values": "$status_of_project"
+          },
+          {
+              "type": "equals",
+              "dimension": "private_program",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "sub_task_deleted_flag",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "task_deleted_flag",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "project_deleted_flag",
+              "value": "false"
+          },
+          {
+              "type": "equals",
+              "dimension": "program_id",
+              "value": "$programId"
+          },
+          {
+              "type": "equals",
+              "dimension": "solution_id",
+              "value": "$solutionId"
+          },
+          {
+              "type": "equals",
+              "dimension": "district_externalId",
+              "value": "$district_externalId"
+          },
+          {
+              "type": "equals",
+              "dimension": "organisation_id",
+              "value": "$organisation_id"
+          }
+      ],
+      "uiFilters": [
+          {
+              "label": "Status",
+              "controlType": "multi-select",
+              "reference": "status_of_project",
+              "placeholder": "Select status",
+              "options": [
+                  "started",
+                  "submitted",
+                  "inProgress"
+              ]
+          }
+      ]
+  }
+  ],
   multipleDataDownloaded: [
     {
       loaded: true,
