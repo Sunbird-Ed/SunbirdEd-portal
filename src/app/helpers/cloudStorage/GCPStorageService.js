@@ -4,6 +4,7 @@
  * @since       - 5.0.1
  * @version     - 1.0.0
  * @implements  - BaseStorageService
+ * @see {@link https://googleapis.dev/nodejs/storage/latest/Bucket.html | GCloud Bucket}
  */
 
 const BaseStorageService  = require('./BaseStorageService');
@@ -15,6 +16,7 @@ const async               = require('async');
 const _                   = require('lodash');
 const dateFormat          = require('dateformat');
 const uuidv1              = require('uuid/v1');
+const multiparty          = require('multiparty');
 const reports             = envHelper.sunbird_gcloud_reports + '/';
 
 
@@ -235,9 +237,80 @@ class GCPStorageService extends BaseStorageService {
     });
   }
 
-  apiResponse({ responseCode, result, params: { err, errmsg, status } }) {
+  blockStreamUpload(uploadContainer = undefined) {
+    return (req, res) => {
+      try {
+        const bucket = _storage.bucket(envHelper.sunbird_gcloud_bucket_name);
+        const blobFolderName = new Date().toLocaleDateString();
+        let form = new multiparty.Form();
+        form.on('part', async (part) => {
+          if (part.filename) {
+            const size = part.byteCount;
+            const name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
+            let keyPath = uploadContainer + '/' + blobFolderName + '/' + name;
+            logger.info({
+              msg: 'GCLOUD__StorageService : blockStreamUpload Uploading file to container ' +
+                uploadContainer + ' to folder ' + blobFolderName +
+                ' for file name ' + name + ' with size ' + size
+            });
+            const fileBucket = bucket.file(keyPath);
+            part.setMaxListeners(0);
+            await part.pipe(fileBucket.createWriteStream({
+              resumable: false
+            })).on('error', (error, d) => {
+              const response = {
+                responseCode: "SERVER_ERROR",
+                params: {
+                  err: "SERVER_ERROR",
+                  status: "failed",
+                  errmsg: "Failed to upload to blob"
+                },
+                result: {}
+              };
+              logger.error({
+                msg: 'GCLOUD__StorageService : blockStreamUpload on error Failed to upload desktop crash logs to blob',
+                error: error
+              });
+              return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+            }).on('finish', (error, d) => {
+              const response = {
+                responseCode: "OK",
+                params: {
+                  err: null,
+                  status: "success",
+                  errmsg: null
+                },
+                result: {
+                  'message': 'Successfully uploaded to blob'
+                }
+              };
+              return res.status(200).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+            });
+          }
+        });
+        form.parse(req);
+      } catch (error) {
+        const response = {
+          responseCode: "SERVER_ERROR",
+          params: {
+            err: "SERVER_ERROR",
+            status: "failed",
+            errmsg: "Failed to upload to blob"
+          },
+          result: {}
+        };
+        logger.error({
+          msg: 'GCLOUD__StorageService : blockStreamUpload try catch Failed to upload desktop crash logs to blob',
+          error: error
+        });
+        return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+      }
+    }
+  }
+
+  apiResponse({ responseCode, result, params: { err, errmsg, status } }, id = 'api.report') {
     return {
-      'id': 'api.report',
+      'id': id,
       'ver': '1.0',
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
       'params': {

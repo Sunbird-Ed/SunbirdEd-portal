@@ -21,7 +21,8 @@ const storageLogger       = require('./storageLogger');
 const { getSignedUrl }    = require("@aws-sdk/s3-request-presigner");
 const { S3Client, GetObjectCommand, HeadObjectCommand } = require("@aws-sdk/client-s3");
 const client              = new S3Client({ region });
-
+const { Upload }          = require("@aws-sdk/lib-storage");
+const multiparty          = require('multiparty');
 class AWSStorageService extends BaseStorageService {
 
   /**
@@ -219,9 +220,112 @@ class AWSStorageService extends BaseStorageService {
     });
   }
 
-  apiResponse({ responseCode, result, params: { err, errmsg, status } }) {
+  blockStreamUpload(uploadContainer = undefined) {
+    return (req, res) => {
+      try {
+        const bucketName = envHelper.sunbird_aws_bucket_name;
+        const blobFolderName = new Date().toLocaleDateString();
+        let form = new multiparty.Form();
+        form.on('part', async (part) => {
+          if (part.filename) {
+            let size = part.byteCount - part.byteOffset;
+            let name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
+            logger.info({
+              msg: 'AWS__StorageService : blockStreamUpload Uploading file to container ' +
+                uploadContainer + ' to folder ' + blobFolderName +
+                ' for file name ' + name + ' with size ' + size
+            });
+            let keyPath = uploadContainer + '/' + blobFolderName + '/' + name;
+            logger.info({
+              msg: 'AWS__StorageService : blockStreamUpload Uploading file to ' + keyPath
+            });
+            try {
+              const parallelUploads3 = new Upload({
+                client: client,
+                params: { Bucket: bucketName, Key: keyPath, Body: part },
+                leavePartsOnError: false,
+              });
+              parallelUploads3.on("httpUploadProgress", (progress) => {
+                let toStr;
+                for (let key in progress) {
+                  if (progress.hasOwnProperty(key)) {
+                    toStr += `${key}: ${progress[key]}` + ", ";
+                  }
+                }
+                logger.info({
+                  msg: 'AWS__StorageService : blockStreamUpload Uploading progress ' + toStr
+                });
+              });
+              await parallelUploads3.done().then((data) => {
+                const response = {
+                  responseCode: "OK",
+                  params: {
+                    err: null,
+                    status: "success",
+                    errmsg: null
+                  },
+                  result: {
+                    'message': 'Successfully uploaded to blob'
+                  }
+                }
+                return res.status(200).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+              }).catch((err) => {
+                const response = {
+                  responseCode: "SERVER_ERROR",
+                  params: {
+                    err: "SERVER_ERROR",
+                    status: "failed",
+                    errmsg: "Failed to upload to blob"
+                  },
+                  result: {}
+                }
+                logger.error({
+                  msg: 'AWS__StorageService : blockStreamUpload parallelUploads3 Failed to upload desktop crash logs to blob',
+                  error: err
+                });
+                return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+              })
+            } catch (e) {
+              const response = {
+                responseCode: "SERVER_ERROR",
+                params: {
+                  err: "SERVER_ERROR",
+                  status: "failed",
+                  errmsg: "Failed to upload to blob"
+                },
+                result: {}
+              }
+              logger.error({
+                msg: 'AWS__StorageService : blockStreamUpload try catch Failed to upload desktop crash logs to blob',
+                error: e
+              });
+              return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+            }
+          }
+        });
+        form.parse(req);
+      } catch (error) {
+        const response = {
+          responseCode: "SERVER_ERROR",
+          params: {
+            err: "SERVER_ERROR",
+            status: "failed",
+            errmsg: "Failed to upload to blob"
+          },
+          result: {}
+        }
+        logger.error({
+          msg: 'AWS__StorageService : blockStreamUpload Failed to upload desktop crash logs to blob',
+          error: error
+        });
+        return res.status(500).send(this.apiResponse(response, 'api.desktop.upload.crash.log'));
+      }
+    }
+  }
+
+  apiResponse({ responseCode, result, params: { err, errmsg, status } }, id = 'api.report') {
     return {
-      'id': 'api.report',
+      'id': id,
       'ver': '1.0',
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
       'params': {
