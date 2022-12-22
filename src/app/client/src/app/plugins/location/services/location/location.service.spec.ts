@@ -12,7 +12,9 @@ describe('LocationService', () => {
         post: jest.fn(),
         patch: jest.fn()
     };
-    const mockUserService: Partial<UserService> = {};
+    const mockUserService: Partial<UserService> = {
+        getUserProfile: jest.fn()
+    };
     const mockConfigService: Partial<ConfigService> = {
         urlConFig: {
             URLS: {
@@ -20,6 +22,11 @@ describe('LocationService', () => {
                     "LOCATION_SEARCH": "data/v1/location/search",
 
                 }
+            }
+        },
+        appConfig: {
+            timeOutConfig: {
+                setTime: 1000
             }
         }
     };
@@ -51,8 +58,8 @@ describe('LocationService', () => {
         });
     });
 
-    it('should call updateProfile method', () => {
-        jest.spyOn(mockLearnerService, 'patch').mockReturnValue(of(mockRes.successData));
+    it('should call updateProfile method', (done) => {
+        jest.spyOn(mockLearnerService, 'patch').mockImplementation(() => of(mockRes.successData));
         const request = {
             profileSummary: 'summary',
             userId: '159e93d1-da0c-4231-be94-e75b0c226d7c'
@@ -61,6 +68,9 @@ describe('LocationService', () => {
         locationService.updateProfile(request).subscribe(apiResponse => {
             expect(apiResponse.responseCode).toBe('OK');
             expect(apiResponse.result.response).toBe('SUCCESS');
+            setTimeout(() => {
+                done();
+            }, 1000)
         });
     });
 });
