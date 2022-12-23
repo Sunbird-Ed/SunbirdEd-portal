@@ -41,10 +41,6 @@
     color: var(--white);
 }
 .ui.grey.button {
-    background: var(--gray-200);
-    color: var(--white);
-    pointer-events: none !important;
-    cursor: not-allowed !important; 
     font-size: var(--font-size-sm);
     height: calculateRem(32px);
 }
@@ -65,28 +61,10 @@
     cursor: not-allowed !important;
     font-size: calculateRem(14px);
 }
-.orange.text {
-    color: var(--accessibility-red);
-}
-.orange-border {
-    border-color: var(--accessibility-red) !important;
-}
-.blue.text {
-    color: var(--primary-color);
-}
 .ui.basic.blue.navigation.label {
     background: var(--white) !important;
     color: var(--primary-color) !important;
     border: 0  !important;
-    padding-left: 0;
-    font-size: 1rem;
-    font-weight: normal;
-    padding: calculateRem(10px) 0;
-}
-.ui.basic.error.label {
-    background: none !important;
-    color: var(--accessibility-red) !important;
-    border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
     font-weight: normal;
