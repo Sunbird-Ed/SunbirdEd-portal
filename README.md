@@ -49,7 +49,7 @@ Sunbird dev has 2 parts
     yarn install
     npm run start
     # For Developer's local setup Run below command
-    ./local-setup.sh
+    ./local_setup.sh
     ng build --watch=true
     
 ### Installing and running Node server
