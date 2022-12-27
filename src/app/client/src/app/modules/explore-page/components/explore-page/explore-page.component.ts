@@ -1137,6 +1137,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             if(pillData.name === 'observation'){
                 this.router.navigate(['observation']);
             }
+        }else{
+            window.location.href = pillData.name === 'observation' ? '/observation': '/resources'
         }
     }
 
