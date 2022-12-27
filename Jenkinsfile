@@ -26,9 +26,9 @@ node('build-slave') {
                         println("Skipping customization")
                     } else {
                       sh """
-                      cd ${WORKSPACE}/src/app/client/src/assets/
                       git clone --recurse-submodules ${WL_Cutomization} 
-                      cp -r upsmf/ ../
+                      ls
+                      cp -r ${WORKSPACE}/upsmf/* ${WORKSPACE}/src/app/client/src/assets
                       """
                     }
                 }
