@@ -22,7 +22,7 @@ node('build-slave') {
                 echo "build_tag: " + build_tag
 
                 stage('Customize dependencies') {
-                    if (params.WL_Cutomization== null) {
+                    if (params.WL_Cutomization== 'null') {
                         println("Skipping customization")
                     } else {
                       git branch: 'main', url: '${params.WL_Cutomization}'                
