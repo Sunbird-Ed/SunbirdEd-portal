@@ -34,7 +34,8 @@
 
 ::ng-deep {
   .double-btn{
-    justify-content: center !important;
+    justify-content: flex-start !important;
+    flex-direction: row-reverse;
   }
   .question-card.sb--card {
     border-radius: calculateRem(28px);
