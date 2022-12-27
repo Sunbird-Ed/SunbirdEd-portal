@@ -33,6 +33,9 @@
 }
 
 ::ng-deep {
+  .double-btn{
+    justify-content: center !important;
+  }
   .question-card.sb--card {
     border-radius: calculateRem(28px);
     padding: calculateRem(20px);
