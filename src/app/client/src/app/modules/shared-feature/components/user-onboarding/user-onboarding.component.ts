@@ -82,9 +82,9 @@ export class UserOnboardingComponent implements OnInit {
       takeUntil(this.unsubscribe$),
       tap(userType => {
         const showUserSelectionPopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : !userType;
-        this.stage = showUserSelectionPopup ? Stage.USER_SELECTION : Stage.LOCATION_SELECTION;
+   //     this.stage = showUserSelectionPopup ? Stage.USER_SELECTION : Stage.LOCATION_SELECTION;
       }, _ => {
-        this.stage = Stage.USER_SELECTION;
+   //     this.stage = Stage.USER_SELECTION;
       })
     );
   }
