@@ -1531,3 +1531,32 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
     }
   }
 }
+
+.ui.basic.error.label {
+  background: none !important;
+  color: var(--accessibility-red) !important;
+  border: 0 !important;
+  padding-left: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  padding: calculateRem(10px) 0;
+}
+.ui.grey.button {
+  background: var(--gray-200);
+  color: var(--white);
+  pointer-events: none !important;
+  cursor: not-allowed !important; 
+  height: calculateRem(38px) !important;
+}
+.grey.text {
+  color: var(--gray-400);
+}
+.orange.text {
+  color: var(--accessibility-red);
+}
+.orange-border {
+  border-color: var(--accessibility-red) !important;
+}
+.blue.text {
+  color: var(--primary-color);
+}

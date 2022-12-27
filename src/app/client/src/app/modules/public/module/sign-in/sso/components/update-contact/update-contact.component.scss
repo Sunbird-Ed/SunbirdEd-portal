@@ -43,13 +43,6 @@
   color: var(--white);
   height: calculateRem(38px) !important;
 }
-.ui.grey.button {
-  background: var(--gray-200);
-  color: var(--white);
-  pointer-events: none !important;
-  cursor: not-allowed !important;
-  height: calculateRem(38px) !important;
-}
 .grey.text {
   color: var(--gray-400);
 }
@@ -65,15 +58,6 @@
 .ui.basic.blue.navigation.label {
   background: var(--white) !important;
   color: var(--primary-color) !important;
-  border: 0 !important;
-  padding-left: 0;
-  font-size: 1rem;
-  font-weight: normal;
-  padding: calculateRem(10px) 0;
-}
-.ui.basic.error.label {
-  background: none !important;
-  color: var(--accessibility-red) !important;
   border: 0 !important;
   padding-left: 0;
   font-size: 1rem;

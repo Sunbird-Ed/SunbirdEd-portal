@@ -3,11 +3,6 @@
 @use 'components/form' as *;
 
 .ui.grey.button {
-  background: var(--gray-200);
-  color: var(--white);
-  pointer-events: none !important;
-  cursor: not-allowed !important;
-  height: calculateRem(38px) !important;
   font-size: 1rem;
 }
 
@@ -16,16 +11,6 @@
   color: var(--white);
   font-size: 1rem;
   height: calculateRem(38px) !important;
-}
-
-.ui.basic.error.label {
-  background: none !important;
-  color: var(--accessibility-red) !important;
-  border: 0 !important;
-  padding-left: 0;
-  font-size: 1rem;
-  font-weight: normal;
-  padding: calculateRem(10px) 0;
 }
 
 .ui.left.icon.input .icon {
