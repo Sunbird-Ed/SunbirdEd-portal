@@ -34,7 +34,7 @@ node('build-slave') {
                     if (params.WL_Cutomization== null) {
                         println("Skipping customization")
                     } else {
-                        git branch: 'main', url: '${params.MYPARAM}'                
+                        git branch: 'main', url: 'params.WL_Cutomization'                
                         
                     }
                 }
