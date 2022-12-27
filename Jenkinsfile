@@ -25,8 +25,11 @@ node('build-slave') {
                     if (params.WL_Cutomization== 'null') {
                         println("Skipping customization")
                     } else {
-                      git branch: 'main', url: '${WL_Cutomization}'                
-                        
+                      sh """
+                      cd ${WORKSPACE}/src/app/client/src/assets/
+                      git clone --recurse-submodules ${WL_Cutomization} 
+                      cp -r upsmf/ ../
+                      """
                     }
                 }
 
