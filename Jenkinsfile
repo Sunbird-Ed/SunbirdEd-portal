@@ -21,23 +21,32 @@ node('build-slave') {
                 build_tag = sh(script: "echo " + params.github_release_tag.split('/')[-1] + "_" + commit_hash + "_" + env.BUILD_NUMBER, returnStdout: true).trim()
                 echo "build_tag: " + build_tag
 
-                stage('Build') {
-                    sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
+                stage('Customize dependencies') {
+                    if (param.WL_Cutomization== null) {
+                        println("Skipping customization")
+                    } else {
+                        git branch: 'main', url: '${params.MYPARAM}'                
+                        
+                    }
                 }
 
-                stage('ArchiveArtifacts') {
-                    archiveArtifacts "metadata.json"
-                    if (params.buildCdnAssests == 'true') {
-                        sh """
-                        rm -rf cdn_assets
-                        mkdir cdn_assets
-                        cp -r src/app/dist-cdn/* cdn_assets/
-                        zip -Jr cdn_assets.zip cdn_assets
-                        """
-                        archiveArtifacts "src/app/dist-cdn/index_cdn.ejs, cdn_assets.zip"
-                    }
-                    currentBuild.description = "${build_tag}"
-                }
+                // stage('Build') {
+                //     sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
+                // }
+
+                // stage('ArchiveArtifacts') {
+                //     archiveArtifacts "metadata.json"
+                //     if (params.buildCdnAssests == 'true') {
+                //         sh """
+                //         rm -rf cdn_assets
+                //         mkdir cdn_assets
+                //         cp -r src/app/dist-cdn/* cdn_assets/
+                //         zip -Jr cdn_assets.zip cdn_assets
+                //         """
+                //         archiveArtifacts "src/app/dist-cdn/index_cdn.ejs, cdn_assets.zip"
+                //     }
+                //     currentBuild.description = "${build_tag}"
+                // }
             }
         }
     }
