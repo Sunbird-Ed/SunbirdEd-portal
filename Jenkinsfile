@@ -33,23 +33,23 @@ node('build-slave') {
                     }
                 }
 
-                // stage('Build') {
-                //     sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
-                // }
+                stage('Build') {
+                    sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
+                }
 
-                // stage('ArchiveArtifacts') {
-                //     archiveArtifacts "metadata.json"
-                //     if (params.buildCdnAssests == 'true') {
-                //         sh """
-                //         rm -rf cdn_assets
-                //         mkdir cdn_assets
-                //         cp -r src/app/dist-cdn/* cdn_assets/
-                //         zip -Jr cdn_assets.zip cdn_assets
-                //         """
-                //         archiveArtifacts "src/app/dist-cdn/index_cdn.ejs, cdn_assets.zip"
-                //     }
-                //     currentBuild.description = "${build_tag}"
-                // }
+                stage('ArchiveArtifacts') {
+                    archiveArtifacts "metadata.json"
+                    if (params.buildCdnAssests == 'true') {
+                        sh """
+                        rm -rf cdn_assets
+                        mkdir cdn_assets
+                        cp -r src/app/dist-cdn/* cdn_assets/
+                        zip -Jr cdn_assets.zip cdn_assets
+                        """
+                        archiveArtifacts "src/app/dist-cdn/index_cdn.ejs, cdn_assets.zip"
+                    }
+                    currentBuild.description = "${build_tag}"
+                }
             }
         }
     }
