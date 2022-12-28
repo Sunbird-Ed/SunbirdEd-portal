@@ -2349,10 +2349,10 @@
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^2.0.0"
 
-"@shikshalokam/sl-reports-library@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-2.0.0.tgz#67dd3e4f0fe6ae5572741cfa05611ef7bd854bd9"
-  integrity sha512-N8LSxJsxoJBvJ1EMcx/ejumSsAA3Qt2X9+aeOr21hI2DMzQx5HClTcoEq1l4JxB5XlcQIr/IfWNp2JZxsui8SA==
+"@shikshalokam/sl-reports-library@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-2.1.0.tgz#68ed2685b125af9f8b1c775399d66b30979e40c9"
+  integrity sha512-6uEhQyxqfgMUoSX7JmxBEzeCRnGLntfXymClbpOt6u1Fz06AWLXeqcuFsSGRBzPAKkMTbVasrA0k91nkOrNdfA==
   dependencies:
     chart.js "^2.9.4"
     chartjs-plugin-datalabels "^0.7.0"
