@@ -28,7 +28,7 @@ node('build-slave') {
                       sh """
                       git clone --recurse-submodules ${WL_Cutomization} 
                       cp -r ${WORKSPACE}/upsmf/images/ ${WORKSPACE}/src/app/client/src/assets
-                      cp -r ${WORKSPACE}/upsmf/resourceBundles/json ${WORKSPACE}/src/app/resourcebundles/
+                      cp -r ${WORKSPACE}/upsmf/resourceBundles/data/ ${WORKSPACE}/src/app/resourcebundles/
                       """
                     }
                 }
