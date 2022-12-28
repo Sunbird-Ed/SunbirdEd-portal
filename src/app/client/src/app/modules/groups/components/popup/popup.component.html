@@ -1,66 +1,62 @@
-<app-modal-wrapper *ngIf="!type" [config]="{disableClose: true, size: 'small', id: 'groupsModal'}"
+<app-modal-wrapper *ngIf="!type"
+  [config]="{disableClose: true, size: 'small', id: 'groupsModal', panelClass: 'material-modal'}"
   (dismiss)="emitEvent(false);">
   <ng-template sbModalContent let-data>
-    <div class="sb-modal" [ngClass]="{'sb-error': (name !== 'activate')}">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-            <span>&times;</span>
-          </button>
-          <div class="sb-modal-header">
-            {{title}}
-          </div>
-          <div class="sb-modal-content">
-            <p> {{msg}} ?</p>
-          </div>
-          <div class="sb-modal-actions">
-            <button *ngIf="name === 'delete'" class="sb-btn sb-btn-normal
-          sb-btn-outline-error" (click)="emitEvent(true)"
-              tabindex="0">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-
-            <button *ngIf="name === 'deActivate'" class="sb-btn sb-btn-normal
-          sb-btn-outline-error" (click)="emitEvent(true)"
-              tabindex="0">{{resourceService?.frmelmnts?.btn?.deactivategrp}}</button>
-
-            <button *ngIf="name === 'activate'" class="sb-btn sb-btn-normal sb-btn-primary" (click)="emitEvent(true)"
-              tabindex="0">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
-
-            <button *ngIf="name === 'disableDiscussionForum'" class="sb-btn sb-btn-normal sb-btn-primary"
-              (click)="emitEvent(true)"
-              tabindex="0">{{resourceService?.frmelmnts?.lbl?.disableDiscussionForum}}</button>
-
-            <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-error': (name !== 'activate'),
-        'sb-btn-outline-primary': (name === 'activate')}" (click)="emitEvent(false)"
-              tabindex="0">{{resourceService?.frmelmnts?.btn?.no}}</button>
-          </div>
-        </div>
+    <div class="sb-mat__modal" [ngClass]="{'sb-error': (name !== 'activate')}">
+      <div mat-dialog-title class="mb-0">
+        <div class="title" tabindex="0">{{title}}</div>
+        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn"></button>
       </div>
+
+      <div class="sb-mat__modal__content">
+        <p> {{msg}} ?</p>
+      </div>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button *ngIf="name === 'delete'" class="sb-btn sb-btn-normal
+          sb-btn-outline-error" (click)="emitEvent(true)"
+          tabindex="0">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+
+        <button *ngIf="name === 'deActivate'" class="sb-btn sb-btn-normal
+          sb-btn-outline-error" (click)="emitEvent(true)"
+          tabindex="0">{{resourceService?.frmelmnts?.btn?.deactivategrp}}</button>
+
+        <button *ngIf="name === 'activate'" class="sb-btn sb-btn-normal sb-btn-primary" (click)="emitEvent(true)"
+          tabindex="0">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
+
+        <button *ngIf="name === 'disableDiscussionForum'" class="sb-btn sb-btn-normal sb-btn-primary"
+          (click)="emitEvent(true)" tabindex="0">{{resourceService?.frmelmnts?.lbl?.disableDiscussionForum}}</button>
+
+        <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-error': (name !== 'activate'),
+        'sb-btn-outline-primary': (name === 'activate')}" (click)="emitEvent(false)"
+          tabindex="0">{{resourceService?.frmelmnts?.btn?.no}}</button>
+      </mat-dialog-actions>
+
     </div>
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="type" [config]="{disableClose: true, size: 'small', id: 'groupTncModal'}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="type"
+  [config]="{disableClose: true, size: 'small', id: 'groupTncModal', panelClass: ['overflow-visible', 'material-modal']}"
+  (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn" *ngIf="type === acceptTncType.GROUP">
-            <span>&times;</span>
-          </button>
-          <div class="sb-modal-header">{{resourceService?.frmelmnts?.lbl?.groupGuidelinesold}}</div>
-          <div class="sb-modal-content o-y-visible">
-            <input [(ngModel)]="checked" type="checkbox" role="checkbox" class="mr-8 cursor-pointer">
-            {{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': channel }} <a
-              href="{{url}}/term-of-use.html#groupGuidelines" target="_blank"
-              class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" [disabled]="!checked"
-              [ngClass]="{'sb-btn-disabled': !checked}"
-              (click)="acceptGroupTnc();">{{resourceService?.frmelmnts?.btn?.yes}}</button>
-          </div>
-        </div>
+    <div class="sb-mat__modal">
+      <div mat-dialog-title class="mb-0">
+        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.groupGuidelinesold}}</div>
+        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn" *ngIf="type === acceptTncType.GROUP">
+        </button>
       </div>
+      <div class="sb-mat__modal__content o-y-visible">
+        <input [(ngModel)]="checked" type="checkbox" role="checkbox" class="mr-8 cursor-pointer">
+        {{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': channel }} <a
+          href="{{url}}/term-of-use.html#groupGuidelines" target="_blank"
+          class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>
+      </div>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" [disabled]="!checked"
+          [ngClass]="{'sb-btn-disabled': !checked}"
+          (click)="acceptGroupTnc();">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+      </mat-dialog-actions>
+
     </div>
   </ng-template>
 </app-modal-wrapper>

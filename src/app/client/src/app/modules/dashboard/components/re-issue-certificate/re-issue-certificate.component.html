@@ -94,27 +94,23 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'small'}"
+<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
   (dismiss)="toggleModal(false);addTelemetry('close-re-issue-popup', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })"
   #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.lbl?.cert}} ?
-          </div>
-          <div class="sb-modal-content">
-            <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}}</p>
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-              (click)="reIssueCert(userBatch);addTelemetry('re-issue-cert-confirm', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.yes}}</button>
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-              (click)="toggleModal(false);addTelemetry('re-issue-cert-cancel', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.no}}</button>
-          </div>
-        </div>
+    <div class="sb-mat__modal">
+      <div mat-dialog-title class="mb-0">
+        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.cert}} ?</div>
       </div>
+      <div class="sb-mat__modal__content">
+        <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}}</p>
+      </div>
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+          (click)="reIssueCert(userBatch);addTelemetry('re-issue-cert-confirm', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
+          (click)="toggleModal(false);addTelemetry('re-issue-cert-cancel', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.no}}</button>
+      </mat-dialog-actions>
     </div>
   </ng-template>
 </app-modal-wrapper>

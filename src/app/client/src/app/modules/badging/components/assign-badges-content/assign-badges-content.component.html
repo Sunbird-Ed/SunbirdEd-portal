@@ -7,42 +7,39 @@
       (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
   </div>
 </div>
-<app-modal-wrapper *ngIf="showBadgeAssingModel" [config]="{disableClose: true, size: 'small'}"
-  (dismiss)="showBadgeAssingModel=false" #modal> 
-  <ng-template sbModalContent> 
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <!--Header-->
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.lbl?.markas}} '{{badge.name | uppercase}}'
-          </div>
-          <!--/Header-->
+<app-modal-wrapper *ngIf="showBadgeAssingModel"
+  [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}" (dismiss)="showBadgeAssingModel=false"
+  #modal>
+  <ng-template sbModalContent>
+    <div class="sb-mat__modal">
 
-          <!--Content-->
-          <div class="sb-modal-content">
-            {{resourceService?.frmelmnts?.lbl?.badgeassignconfirmation}}
-          </div>
-          <!--/Content-->
-
-          <!--Actions-->
-          <div class="sb-modal-actions">
-            <button appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
-              [telemetryInteractEdata]="assignBadgeInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
-              (click)="assignBadge(badge)" tabindex="0">
-              {{resourceService?.frmelmnts?.btn?.yesiamsure}}
-            </button>
-            <button tabindex="0" appTelemetryInteract
-              [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
-              [telemetryInteractEdata]="cancelBadgeInteractEdata" class="sb-btn sb-btn-normal sb-btn-outline-primary"
-              (click)="showBadgeAssingModel=false;">
-              {{resourceService?.frmelmnts?.btn?.cancel}}
-            </button>
-          </div>
-          <!--/Actions-->
-
-        </div>
+      <!--Header-->
+      <div mat-dialog-title class="mb-0">
+        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.markas}} '{{badge.name | uppercase}}'</div>
       </div>
+      <!--/Header-->
+
+      <!--Content-->
+      <div class="sb-mat__modal__content">
+        {{resourceService?.frmelmnts?.lbl?.badgeassignconfirmation}}
+      </div>
+      <!--/Content-->
+
+      <!--Actions-->
+      <mat-dialog-actions class="sb-mat__modal__actions">
+        <button appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
+          [telemetryInteractEdata]="assignBadgeInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
+          (click)="assignBadge(badge)" tabindex="0">
+          {{resourceService?.frmelmnts?.btn?.yesiamsure}}
+        </button>
+        <button tabindex="0" appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
+          [telemetryInteractEdata]="cancelBadgeInteractEdata" class="sb-btn sb-btn-normal sb-btn-outline-primary"
+          (click)="showBadgeAssingModel=false;">
+          {{resourceService?.frmelmnts?.btn?.cancel}}
+        </button>
+      </mat-dialog-actions>
+      <!--/Actions-->
+
     </div>
   </ng-template>
 </app-modal-wrapper>

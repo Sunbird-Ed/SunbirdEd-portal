@@ -146,27 +146,23 @@
           </p>
         </div>
 
-        <app-modal-wrapper *ngIf="showDownloadSuccessModal" [config]="{disableClose: false, size: 'small'}"
+        <app-modal-wrapper *ngIf="showDownloadSuccessModal"
+          [config]="{disableClose: false, size: 'small', panelClass: 'material-modal'}"
           (dismiss)="showDownloadSuccessModal = false">
           <ng-template sbModalContent>
-            <div class="sb-modal sb-success">
-              <div class="transition ui dimmer page modals active visible">
-                <div class="ui modal transition active visible small">
-                  <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-                    <span>&times;</span>
-                  </button>
-                  <!--Header-->
-                  <div class="sb-modal-header">
-                    {{resourceService?.frmelmnts?.instn?.t0060}}
-                  </div>
-                  <!--/Header-->
-                  <!--Content-->
-                  <div class="sb-modal-content">
-                    <p>{{resourceService?.messages?.stmsg?.m0095}}</p>
-                  </div>
-                  <!--/Content-->
-                </div>
+            <div class="sb-mat__modal sb-success">
+              <!--Header-->
+              <div mat-dialog-title class="mb-0">
+                <div class="title" tabindex="0">{{resourceService?.frmelmnts?.instn?.t0060}}</div>
+                <button aria-label="close dialog" mat-dialog-close class="mat-close-btn"></button>
               </div>
+              <!--/Header-->
+              <!--Content-->
+              <div class="sb-mat__modal__content">
+                <p>{{resourceService?.messages?.stmsg?.m0095}}</p>
+              </div>
+              <!--/Content-->
+              <mat-dialog-actions class="sb-mat__modal__actions"></mat-dialog-actions>
             </div>
           </ng-template>
         </app-modal-wrapper>
