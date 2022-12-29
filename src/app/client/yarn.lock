@@ -2201,6 +2201,13 @@
   dependencies:
     ally.js "1.4.1"
 
+"@project-sunbird/sunbird-player-sdk-v9@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-5.1.0.tgz#77cd3b47a8f08fda111540b9f38448371be3bf5d"
+  integrity sha512-Vg3MXOkBC7c1px9pTX58T0wqkseLAw0kWLflA8CpttIUQYFJBxxu5wEB8z8Y5zb6zDFrykxWRbPEcbdYdfOKRw==
+  dependencies:
+    ally.js "1.4.1"
+
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
@@ -2222,12 +2229,12 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-video-player-v9@5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.0.4.tgz#bfdd2ef5d310725fa13b7872afd51f54e23fc0b1"
-  integrity sha512-0OhQi8Ahjo1uHlPgx73a+qFIKgpGmn/8pOXTHtbsZ7N0yY/yd9PLnLUbJbWFPMa3gfQQJlei2dCUwrYN26n8kA==
+"@project-sunbird/sunbird-video-player-v9@5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.1.2.tgz#1ea9ab9251abf1c433f12a91381e674823c54656"
+  integrity sha512-NoK/KtY6mnWX9/stDyK6LAHcBKvdf2oTo8Me9Pxvl5fbhfXQEiYwWrl4GxCw2SqXo8ql0qKYQS3v+q1S3Db5oA==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.6.4"
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
