@@ -65,7 +65,7 @@
   &.selection:focus,
   &.multiple:focus,
   &.selection:focus .menu {
-    border-color: var(--rc-96C8DA);
+    border-color: var(--rc-add8e6);
   }
   &:not(.button) {
     &.default>.text,
@@ -83,11 +83,11 @@
   .ui.selection.dropdown.fields-dropdown {
     min-height: 2rem !important;
     &:focus {
-      border: calculateRem(1px) solid var(--rc-0076FE);
-      color: var(--rc-0076FE) !important;
+      border: calculateRem(1px) solid var(--rc-007AFF);
+      color: var(--rc-007AFF) !important;
       ~label {
         border: 0px;
-        color: var(--rc-0076FE);
+        color: var(--rc-007AFF);
         font-weight: normal;
       }
     }

@@ -58,11 +58,11 @@
 .qq-upload-pause, .qq-upload-continue {
     background-color: var(--rc-00abc7);
     color: var(--rc-FAFAFA);
-    border-color: var(--rc-2dadc2);
+    border-color: var(--rc-00abc7);
     text-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(0, 0, 0, 0.55);
 }
 .qq-upload-pause:hover, .qq-upload-continue:hover {
-    background-color: var(--rc-0fbad6);
+    background-color: var(--rc-33B6CC);
 }
 
 /* Upload Button
@@ -100,7 +100,7 @@
     overflow-y: hidden;
     width: inherit;
     border-radius: calculateRem(6px);
-    background-color: var(--rc-fdfdfd);
+    background-color: var(--rc-f9f9f9);
     border: calculateRem(1px) dashed var(--gray-100);
     padding: calculateRem(20px);
 }
@@ -144,7 +144,7 @@
     min-height: calculateRem(40px);
 }
 .qq-upload-drop-area-active {
-    background: var(--rc-fdfdfd);
+    background: var(--rc-f9f9f9);
     border-radius: calculateRem(4px);
     border: calculateRem(1px) dashed var(--gray-100);
 }

@@ -205,11 +205,11 @@
   }
 
   .sb-field .ui.selection.active.dropdown {
-    border-color: var(--rc-96C8DA);
+    border-color: var(--rc-add8e6);
   }
 
   .sb-field .ui.selection.active.dropdown .text {
-    color: var(--rc-0076FE) !important;
+    color: var(--rc-007AFF) !important;
   }
 
   .sb-field {
@@ -232,7 +232,7 @@
   }
 
   .textColorChange {
-    color: var(--rc-0076FE);
+    color: var(--rc-007AFF);
   }
 }
 
@@ -246,14 +246,14 @@
   height: 2rem !important;
 
   &:focus {
-    border: calculateRem(1px) solid var(--rc-0076FE);
-    color: var(--rc-0076FE) !important;
+    border: calculateRem(1px) solid var(--rc-007AFF);
+    color: var(--rc-007AFF) !important;
   }
 }
 
 .ui.selection.dropdown.fields-dropdown:focus~label {
   border: 0px;
-  color: var(--rc-0076FE);
+  color: var(--rc-007AFF);
   font-weight: normal;
 }
 
