@@ -218,7 +218,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 createdBy: this.userService.userid,
                 // tslint:disable-next-line:max-line-length
                 primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-                mimeType: this.config.appConfig.WORKSPACE.mimeType,
+                // mimeType: this.config.appConfig.WORKSPACE.mimeType,
                 board: bothParams['queryParams'].board,
                 subject: bothParams['queryParams'].subject,
                 medium: bothParams['queryParams'].medium,
@@ -231,13 +231,14 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         };
         this.searchContentWithLockStatus(searchParams).subscribe(
             (data: ServerResponse) => {
-                if (data.result.count && !_.isEmpty(data.result.content)) {
+                const allContent= this.workSpaceService.getAllContent(data);
+                if (allContent.length > 0) {
                     this.totalCount = data.result.count;
                     this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
                     const constantData = this.config.appConfig.WORKSPACE.Draft.constantData;
                     const metaData = this.config.appConfig.WORKSPACE.Draft.metaData;
                     const dynamicFields = this.config.appConfig.WORKSPACE.Draft.dynamicFields;
-                    this.draftList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+                    this.draftList = this.workSpaceService.getDataForCard(allContent, constantData, dynamicFields, metaData);
                     this.showLoader = false;
                 } else {
                     this.showError = false;

@@ -223,7 +223,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       sort_by: { lastUpdatedOn: 'desc' }
     };
       this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
-       if (data.result.content.length > 0) {
+       if (data.result.content && data.result.conten.length > 0) {
          this.showCourseQRCodeBtn = true;
        }
       });
@@ -283,14 +283,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content.length > 0) {
-          this.publishedContent = data.result.content;
+        const allContent= this.workSpaceService.getAllContent(data);
+        if (allContent.length > 0) {
+          this.publishedContent = allContent;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           const constantData = this.config.appConfig.WORKSPACE.Published.constantData;
           const metaData = this.config.appConfig.WORKSPACE.Published.metaData;
           const dynamicFields = this.config.appConfig.WORKSPACE.Published.dynamicFields;
-          this.publishedContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+          this.publishedContent = this.workSpaceService.getDataForCard(allContent, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;

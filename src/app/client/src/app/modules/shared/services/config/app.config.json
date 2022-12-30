@@ -923,7 +923,7 @@
       "application/vnd.ekstep.ecml-archive",
       "application/vnd.ekstep.content-collection"
     ],
-    "objectType": "Content",
+    "objectType": ["Content", "QuestionSet"],
     "lastUpdatedOn": "desc",
     "createdOn": "asc",
     "createdDate": "desc",

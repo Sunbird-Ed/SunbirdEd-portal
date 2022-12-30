@@ -214,8 +214,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     searchParams.filters['primaryCategory'] = _.get(bothParams, 'queryParams.primaryCategory') || this.getContentType();
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content.length > 0) {
-          this.upForReviewContentData = data.result.content;
+        const allContent= this.workSpaceService.getAllContent(data);
+        if (allContent.length > 0) {
+          this.upForReviewContentData = allContent;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
           this.showLoader = false;
