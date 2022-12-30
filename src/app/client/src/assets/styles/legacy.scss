@@ -321,7 +321,7 @@ h5.ui.header {
 }
 .searchicon.ui.icon.input input.upForReviewSearchBox {
   width: calculateRem(450px);
-  background: var(--rc-fdfdfd);
+  background: var(--rc-f9f9f9);
   border: none;
   border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.33);
   border-radius: 0;
@@ -548,7 +548,7 @@ li.subStr::after {
   font-size: 1.6em;
 }
 .profileheader.ui.items > .item .meta:last-child {
-  color: var(--rc-fdfdfd);
+  color: var(--rc-f9f9f9);
 }
 
 
@@ -620,7 +620,7 @@ li.subStr::after {
   border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.15) !important;
 }
 .ui.basic.label {
-  border: calculateRem(1px) solid var(--rc-fdfdfd);
+  border: calculateRem(1px) solid var(--rc-f9f9f9);
 }
 .ui.basic.label:hover {
   border-color: var(--primary-color) !important;
