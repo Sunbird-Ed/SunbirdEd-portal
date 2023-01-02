@@ -41,7 +41,7 @@
 }
 
 .text-lightGray {
-  color: var(--rc-979797) !important;
+  color: var(--gray-200) !important;
 }
 
 .ui.basic.button,
@@ -71,7 +71,7 @@
 }
 
 .img-cover {
-  border: calculateRem(1px) solid var(--rc-bbbbbb);
+  border: calculateRem(1px) solid var(--rc-a9a9a9);
   border-radius: calculateRem(2px);
   background-color: var(--rc-FAFAFA);
   display: inline-flex;
