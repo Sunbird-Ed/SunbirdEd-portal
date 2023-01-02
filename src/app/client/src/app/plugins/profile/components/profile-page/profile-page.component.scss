@@ -59,7 +59,7 @@
 }
 
 .text-warm-grey {
-  color: var(--rc-9b9b9b);
+  color: var(--gray-300);
 }
 
 .name-info {
@@ -110,12 +110,12 @@
   border-radius: calculateRem(18.5px);
   font-size: 1.16rem;
   padding: calculateRem(8px) calculateRem(16px);
-  color: var(--rc-9b9b9b);
+  color: var(--gray-300);
   background: var(--sb-profile-page-basic-label-bg);
 }
 
 .ui.label>.recovery-img {
-  background-color: var(--rc-9b9b9b);
+  background-color: var(--gray-300);
   -webkit-mask-image: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
   -webkit-mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
   mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
