@@ -100,8 +100,8 @@
 ::ng-deep {
   
   .cdk-overlay-container{
-    z-index: 1 !important;
-}
+    z-index: 9 !important;
+  }
 
   .customTable{
     sb-dashlets-filters{
