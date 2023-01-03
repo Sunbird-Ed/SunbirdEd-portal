@@ -2231,10 +2231,10 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-video-player-v9@5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.1.0.tgz#b4b5c964bd76bdc292926926b20035e83e6e4940"
-  integrity sha512-0F0an+MS7vYzGNP3IXDBMWKgJRoODLNn9CQ+GrlP5jmlAmSuCMSB1wG+WWKosCoN6qg7yPEzxVtXrwPkNlBMCA==
+"@project-sunbird/sunbird-video-player-v9@5.1.3":
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.1.3.tgz#98a5e56eb68eafe1268d12caa99de649d7b5f578"
+  integrity sha512-4aruDiyXNiEG4dZLDxlXtCSDYlq/VDNMeaGdH/0WcBCfBfH78XrsFAcvd+UPR1A4vm8mWOZSDKSXZZ092frCwQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
 
