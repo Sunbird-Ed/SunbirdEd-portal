@@ -34,7 +34,7 @@
         }
 
         code {
-            background-color: var(--rc-eeeeee);
+            background-color: var(--gray-0);
             border-radius: calculateRem(3px);
             font-family: courier, monospace;
             padding: 0 calculateRem(3px);
@@ -78,7 +78,7 @@
                 margin-bottom: auto;
             }
             code {
-                background-color: var(--rc-eeeeee);
+                background-color: var(--gray-0);
                 border-radius: calculateRem(3px);
                 font-family: courier, monospace;
                 padding: 0 calculateRem(3px);

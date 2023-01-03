@@ -124,7 +124,7 @@
     &__item {
       border-radius: calculateRem(4px);
       background-color: var(--white);
-      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d8d8d8);
+      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d0d0d0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -167,7 +167,7 @@
     &__item {
       border-radius: calculateRem(4px);
       background-color: var(--white);
-      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d8d8d8);
+      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d0d0d0);
       text-align: center;
       position: relative;
       border: calculateRem(2px) solid var(--white);

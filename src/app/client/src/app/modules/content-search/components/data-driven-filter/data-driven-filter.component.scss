@@ -21,7 +21,7 @@
   }
 
   &:hover {
-    background: var(--rc-E5EDF5);
+    background: var(--rc-E0F1FD);
   }
 }
 
@@ -40,7 +40,7 @@
   border: calculateRem(0.5px) solid var(--primary-400);
 
   &.active {
-    background: var(--rc-E5EDF5) !important;
+    background: var(--rc-E0F1FD) !important;
     color: var(--primary-400) !important;
     border-color: var(--primary-400);
     box-shadow: none;
@@ -50,7 +50,7 @@
     color: var(--primary-400) !important;
     box-sizing: border-box;
     border-radius: calculateRem(2px);
-    background-color: var(--rc-E5EDF5);
+    background-color: var(--rc-E0F1FD);
     box-shadow: none;
   }
 

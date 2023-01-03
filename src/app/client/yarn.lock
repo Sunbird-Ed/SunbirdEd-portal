@@ -2168,10 +2168,15 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-styles@0.0.14", "@project-sunbird/sb-styles@^0.0.14":
+"@project-sunbird/sb-styles@0.0.14":
   version "0.0.14"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.14.tgz#f682ec7c03d7f3023c50e44973592edb51d03247"
   integrity sha512-pq4RqXPoqcTyncLz64gHu0AFVgl4KoL3yr+ocgdO4n26BkQZBgQG0xtuYqscUPPWVBg/BS4TCsjzMO+ifunRaA==
+
+"@project-sunbird/sb-styles@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.15.tgz#7e59900fe0f1033b53ffde7cf5d6e95dea19cfdc"
+  integrity sha512-YzG3EzZOYoRfl374uCDcfUzBNmkVF8YPTN12lrKjFbTI694GpDMqb6Gge83rtwCtT+hRxw5r/OPftFTguQnBCA==
 
 "@project-sunbird/sb-themes@0.0.88":
   version "0.0.88"

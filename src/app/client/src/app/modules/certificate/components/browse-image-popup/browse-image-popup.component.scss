@@ -22,7 +22,7 @@
       padding: calculateRem(14px) calculateRem(24px);
       font-weight: 600;
       text-align: center;
-      color: var(--rc-a9a9a9);
+      color: var(--gray-200);
       border: calculateRem(1px) solid transparent;
     }
 
@@ -38,7 +38,7 @@
     }
 
     .image-input:checked+.image-label {
-      color: var(--rc-424242);
+      color: var(--gray-800);
       border-bottom: calculateRem(3px) solid var(--primary-400);
     }
 
@@ -113,7 +113,7 @@
         padding: 0;
         border: none;
         border-radius: .28571429rem;
-        box-shadow: 0 calculateRem(1px) calculateRem(3px) 0 var(--rc-d4d4d5), 0 0 0 calculateRem(1px) var(--rc-d4d4d5);
+        box-shadow: 0 calculateRem(1px) calculateRem(3px) 0 var(--gray-100), 0 0 0 calculateRem(1px) var(--gray-100);
         transition: box-shadow .1s ease, transform .1s ease;
         z-index: '';
         position: relative;
