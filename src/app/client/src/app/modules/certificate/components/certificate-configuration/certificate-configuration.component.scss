@@ -12,7 +12,7 @@
     &-container {
       z-index: 2;
       position: relative;
-      background-color: var(--rc-FAFAFA);
+      background-color: var(--gray-0);
     }
 
     &__details {
@@ -88,7 +88,7 @@
         min-height: calculateRem(52px);
         box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
         background-color: var(--white);
-        border: .0625rem solid var(--rc-dedede);
+        border: .0625rem solid var(--rc-e2e3e5);
         border-radius: calculateRem(12px);
         cursor: pointer;
         position: relative;
@@ -271,7 +271,7 @@
       box-sizing: border-box;
       width: calculateRem(2px);
       opacity: 0.3;
-      background-color: var(--rc-d8d8d8);
+      background-color: var(--rc-d0d0d0);
     }
   
     .completion-text {
@@ -307,7 +307,7 @@
 .progess-add-content {
   .left-border {
     width: calculateRem(1px);
-    background-color: var(--rc-bdbdbd);
+    background-color: var(--gray-100);
     height: 2.0rem;
     margin-left: calculateRem(20px);
   }

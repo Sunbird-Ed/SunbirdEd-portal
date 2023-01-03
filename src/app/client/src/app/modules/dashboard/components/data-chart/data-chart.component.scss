@@ -18,7 +18,7 @@
 
   .graph-stat-block {
     flex: 1;
-    border-right: calculateRem(1px) solid var(--rc-d4d8da) !important;
+    border-right: calculateRem(1px) solid var(--gray-100) !important;
 
     .graph-stat-label {
       font-size: calculateRem(18px);
@@ -35,7 +35,7 @@
     }
 
     &:nth-child(3n + 3) {
-      border-right: 0px solid var(--rc-d4d8da) !important;
+      border-right: 0px solid var(--gray-100) !important;
     }
   }
 }

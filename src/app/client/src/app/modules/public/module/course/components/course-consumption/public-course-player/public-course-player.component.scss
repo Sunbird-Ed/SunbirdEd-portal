@@ -37,7 +37,7 @@
 
 .header-shadow {
   min-height: calculateRem(80px);
-  background-color: var(--rc-FAFAFA);
+  background-color: var(--gray-0);
   box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.025);
   z-index: 99;
 }
@@ -52,5 +52,5 @@
 }
 
 .certified-course__certificate {
-  background-color: var(--rc-E5EDF5);
+  background-color: var(--rc-E0F1FD);
 }

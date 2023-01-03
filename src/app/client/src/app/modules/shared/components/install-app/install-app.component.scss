@@ -71,9 +71,9 @@
 }
 
 .img-cover {
-  border: calculateRem(1px) solid var(--rc-a9a9a9);
+  border: calculateRem(1px) solid var(--gray-200);
   border-radius: calculateRem(2px);
-  background-color: var(--rc-FAFAFA);
+  background-color: var(--gray-0);
   display: inline-flex;
   align-items: center;
   justify-content: center;

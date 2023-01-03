@@ -25,20 +25,20 @@
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: var(--rc-1b1c1d);
+        background: var(--black);
         border-radius: 50%;
       }
       .speaker {
         width: ($base-block-space - 3);
         height: calculateRem(74px);
-        background: var(--rc-1b1c1d);
+        background: var(--black);
         border-radius: ($base-block-space + 2);
         margin: ($base-block-space + 2) 0 ($base-block-space + 2) calculateRem(1px);
       }
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: var(--rc-1b1c1d);
+        background: var(--black);
         border-radius: 50%;
       }
     }
@@ -454,7 +454,7 @@
       border-bottom-right-radius: 0;	
       font-size: $font-size-sm;	
       .chevron-icon {	
-        background: var(--rc-D9E4F2);	
+        background: var( --rc-E0F1FD);	
         border-left: none;	
       }	
       .chapter-status {	
