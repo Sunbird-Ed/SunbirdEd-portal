@@ -9,7 +9,7 @@ import { UsageService } from '../usage/usage.service';
 import { map, catchError, pluck, mergeMap, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Observable, of, forkJoin } from 'rxjs';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { UUID } from 'angular2-uuid';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
@@ -383,7 +383,7 @@ export class ReportService  {
   }
 
   public getFormattedDate(dateString) {
-    return moment(dateString).format('DD-MMMM-YYYY');
+    return dayjs(dateString).format('DD-MMMM-YYYY');
   }
 
   /**
