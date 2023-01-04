@@ -9,7 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { DatasetsComponent } from './components/program-datasets/program-datasets.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import { DashletModule } from 'sb-dashlet-v11';
 import { DashboardModule} from '../dashboard';
 import { BigDataPipe } from './pipes/bigData/big-data.pipe';
 import { ChartTypePipe } from './pipes/chartType/chart-type.pipe';
