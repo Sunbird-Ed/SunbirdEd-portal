@@ -217,24 +217,30 @@ export class FilterComponent implements OnInit, OnDestroy {
   getDateRange({ startDate, endDate }, columnRef) {
     console.log("startDate", startDate);
     console.log('EndDate', endDate);
-    console.log('columnRef',columnRef);
+    // console.log('columnRef',columnRef);
     this.selectedStartDate = dayjs(startDate).subtract(1, 'day');
     console.log('selectedStartDate', this.selectedStartDate);
     this.selectedEndDate = dayjs(endDate).add(1, 'day');
     console.log('selectedEndDate', this.selectedEndDate);
     const dateRange = [];
-    const currDate = dayjs(this.selectedStartDate).startOf('day');
-    console.log('currDate',currDate);
-    const lastDate = dayjs(this.selectedEndDate).startOf('day');
-    console.log('lastDate', lastDate);
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
-      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
-      console.log('whileloopcall', currDate.clone().format('DD-MM-YYYY'));
-      break;
+    // const currDate = dayjs(this.selectedStartDate).startOf('day');
+    // console.log('currDate',currDate);
+    // const lastDate = dayjs(this.selectedEndDate).startOf('day');
+    // console.log('lastDate', lastDate);
+    const dateDiff = this.selectedEndDate.diff(this.selectedEndDate, 'd');
+    console.log('date diff ', dateDiff)
+    for (let i = 0; i < dateDiff; i++) {
+      dateRange.push(dayjs(startDate).add(i, 'days').format('DD-MM-YYYY'))
     }
-    this.filtersFormGroup.get(columnRef).setValue(dateRange);
+
+    // while (currDate.add(1, 'days').diff(lastDate) < 0) {
+    //   dateRange.push(currDate.clone().format('DD-MM-YYYY'));
+    //   console.log('whileloopcall', currDate.clone().format('DD-MM-YYYY'));
+    //   break;
+    // }
     console.log('dateRange', dateRange );
-    console.log('columnRef2',columnRef );
+    this.filtersFormGroup.get(columnRef).setValue(dateRange);
+    // console.log('columnRef2',columnRef );
     console.log('filtersFormGroup', this.filtersFormGroup.get(columnRef).setValue(dateRange));
   }
 
