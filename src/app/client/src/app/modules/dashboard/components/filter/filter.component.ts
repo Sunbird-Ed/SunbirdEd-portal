@@ -230,6 +230,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     while (currDate.add(1, 'days').diff(lastDate) < 0) {
       dateRange.push(currDate.clone().format('DD-MM-YYYY'));
       console.log('whileloopcall', currDate.clone().format('DD-MM-YYYY'));
+      break;
     }
     this.filtersFormGroup.get(columnRef).setValue(dateRange);
     console.log('dateRange', dateRange );
