@@ -191,6 +191,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   setTelemetryInteractEdata(val) {
+    console.log('setTelemetryInteractEdata', val)
     return {
       id: _.join(_.split(val, ' '), '-').toLowerCase(),
       type: 'click',
@@ -214,15 +215,26 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   getDateRange({ startDate, endDate }, columnRef) {
+    console.log("startDate", startDate);
+    console.log('EndDate', endDate);
+    console.log('columnRef',columnRef);
     this.selectedStartDate = dayjs(startDate).subtract(1, 'day');
+    console.log('selectedStartDate', this.selectedStartDate);
     this.selectedEndDate = dayjs(endDate).add(1, 'day');
+    console.log('selectedEndDate', this.selectedEndDate);
     const dateRange = [];
     const currDate = dayjs(this.selectedStartDate).startOf('day');
+    console.log('currDate',currDate);
     const lastDate = dayjs(this.selectedEndDate).startOf('day');
+    console.log('lastDate', lastDate);
     while (currDate.add(1, 'days').diff(lastDate) < 0) {
       dateRange.push(currDate.clone().format('DD-MM-YYYY'));
+      console.log('whileloopcall', currDate.clone().format('DD-MM-YYYY'));
     }
     this.filtersFormGroup.get(columnRef).setValue(dateRange);
+    console.log('dateRange', dateRange );
+    console.log('columnRef2',columnRef );
+    console.log('filtersFormGroup', this.filtersFormGroup.get(columnRef).setValue(dateRange));
   }
 
   filterData() {
