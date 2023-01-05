@@ -227,7 +227,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     // console.log('currDate',currDate);
     // const lastDate = dayjs(this.selectedEndDate).startOf('day');
     // console.log('lastDate', lastDate);
-    const dateDiff = this.selectedEndDate.diff(this.selectedEndDate, 'd');
+    const dateDiff = this.selectedEndDate.diff(this.selectedStartDate, 'd');
     console.log('date diff ', dateDiff)
     for (let i = 0; i < dateDiff; i++) {
       dateRange.push(dayjs(startDate).add(i, 'days').format('DD-MM-YYYY'))
