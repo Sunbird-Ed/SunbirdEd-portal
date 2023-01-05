@@ -15,11 +15,23 @@ node('build-slave') {
                     } else
                         println(ANSI_BOLD + ANSI_GREEN + "Found environment variable named hub_org with value as: " + hub_org + ANSI_NORMAL)
                 }
-                // cleanWs()
+                cleanWs()
                 checkout scm
                 commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                 build_tag = sh(script: "echo " + params.github_release_tag.split('/')[-1] + "_" + commit_hash + "_" + env.BUILD_NUMBER, returnStdout: true).trim()
                 echo "build_tag: " + build_tag
+
+                stage('Customize dependencies') {
+                    if (params.WL_Cutomization== 'null') {
+                        println("Skipping customization")
+                    } else {
+                      sh """
+                      git clone --recurse-submodules ${WL_Cutomization} 
+                      cp -r ${WORKSPACE}/upsmf/images/ ${WORKSPACE}/src/app/client/src/assets
+                      cp -r ${WORKSPACE}/upsmf/resourceBundles/data/ ${WORKSPACE}/src/app/resourcebundles/
+                      """
+                    }
+                }
 
                 stage('Build') {
                     sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
