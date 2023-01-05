@@ -114,6 +114,10 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
   * To show toaster(error, success etc) after any API calls
   */
   private toasterService: ToasterService;
+   /**
+   * To check if questionSet enabled
+   */
+  public isQuestionSetEnabled: boolean;
   /**
    * Constructor to create injected service(s) object
    Default method of Review submission  Component class
@@ -148,6 +152,11 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
   }
 
   ngOnInit() {
+    this.workSpaceService.questionSetEnabled$.subscribe(
+      (response: any) => {
+          this.isQuestionSetEnabled = response.questionSetEnablement;
+        }
+    );
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.fetchReviewContents(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
@@ -167,7 +176,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
         status: ['Review', 'FlagReview'],
         createdBy: this.userService.userid,
         primaryCategory: (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-        objectType: this.config.appConfig.WORKSPACE.objectType,
+        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allObjectType : this.config.appConfig.WORKSPACE.objectType,
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
@@ -175,7 +184,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        const allContent= this.workSpaceService.getAllContent(data);
+        const allContent= this.workSpaceService.getAllContent(data, this.isQuestionSetEnabled);
         if (allContent.length > 0) {
           this.reviewContent = allContent;
           this.totalCount = data.result.count;
