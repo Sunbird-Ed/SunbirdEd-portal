@@ -24,7 +24,10 @@
     "test-coverage": "jest --silent --ci --w 2 --collectCoverage=true --coverageReporters=lcov",
     "build-cdn": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../dist-cdn",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
-    "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --prod --stats-json"
+    "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --prod --stats-json",
+    "build:stats": "ng build --stats-json",
+    "analyze": "webpack-bundle-analyzer dist/stats.json"
+    
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
