@@ -223,7 +223,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     // console.log('columnRef',columnRef);
     this.selectedStartDate = dayjs(startDate).subtract(1, 'day');
     console.log('selectedStartDate', this.selectedStartDate);
-    this.selectedEndDate = dayjs(endDate).add(1, 'day');
+    this.selectedEndDate = dayjs(endDate);
     console.log('selectedEndDate', this.selectedEndDate);
     const dateRange = [];
     // const currDate = dayjs(this.selectedStartDate).startOf('day');
