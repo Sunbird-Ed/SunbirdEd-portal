@@ -166,7 +166,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
   ngOnInit() {
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
-          this.isQuestionSetEnabled = response.questionSetEnablement;
+          this.isQuestionSetEnabled = response?.questionSetEnablement;
         }
     );
     combineLatest(

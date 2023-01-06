@@ -201,7 +201,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   ngOnInit() {
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
-          this.isQuestionSetEnabled = response.questionSetEnablement;
+          this.isQuestionSetEnabled = response?.questionSetEnablement;
         }
     );
     combineLatest(

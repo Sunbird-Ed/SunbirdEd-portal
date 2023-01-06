@@ -154,7 +154,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
   ngOnInit() {
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
-          this.isQuestionSetEnabled = response.questionSetEnablement;
+          this.isQuestionSetEnabled = response?.questionSetEnablement;
         }
     );
     this.activatedRoute.params.subscribe(params => {

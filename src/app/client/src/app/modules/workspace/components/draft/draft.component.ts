@@ -183,7 +183,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
     ngOnInit() {
         this.workSpaceService.questionSetEnabled$.subscribe(
             (response: any) => {
-              this.isQuestionSetEnabled = response.questionSetEnablement;
+              this.isQuestionSetEnabled = response?.questionSetEnablement;
             }
         );
         combineLatest(
