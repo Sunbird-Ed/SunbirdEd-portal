@@ -237,6 +237,9 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
             query: _.toString(bothParams['queryParams'].query),
             sort_by: this.sort
         };
+        /**
+         * mimeType is not passed when isQuestionSetEnabled is set to true to get QuestionSets along with content
+         */
         if(!this.isQuestionSetEnabled) {
             searchParams.filters["mimeType"] = this.config.appConfig.WORKSPACE.mimeType;
         }
