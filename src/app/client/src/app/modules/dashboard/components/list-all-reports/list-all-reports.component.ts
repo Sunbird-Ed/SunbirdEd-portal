@@ -224,6 +224,7 @@ export class ListAllReportsComponent implements OnInit {
           title: 'Last Published Date', data: 'updatedon',
           render: (value) => {
             const date = dayjs(value);
+            console.log('listallreports_date', date);
             if (date.isValid()) {
               return `<td> ${dayjs(value).format('YYYY/MM/DD')} </td>`;
             }

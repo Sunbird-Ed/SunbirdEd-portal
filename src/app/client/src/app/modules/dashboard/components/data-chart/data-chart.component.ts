@@ -102,6 +102,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartSummarylabel = 'Add ' + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = dayjs(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
+      console.log('datachart_lastupdatedOn', this.lastUpdatedOn);
     }
 
     this.prepareChart();
