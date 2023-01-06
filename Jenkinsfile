@@ -22,11 +22,11 @@ node('build-slave') {
                 echo "build_tag: " + build_tag
 
                 stage('Customize dependencies') {
-                    if (params.WL_Cutomization== 'null') {
+                    if (params.WL_Customization== 'null') {
                         println("Skipping customization")
                     } else {
                       sh """
-                      git clone --recurse-submodules ${WL_Cutomization} sunbirded-portal
+                      git clone --recurse-submodules ${WL_Customization} sunbirded-portal
                       cp -r ${WORKSPACE}/sunbirded-portal/images/ ${WORKSPACE}/src/app/client/src/assets
                       cp -r ${WORKSPACE}/sunbirded-portal/resourceBundles/data/ ${WORKSPACE}/src/app/resourcebundles/
                       """
