@@ -26,9 +26,9 @@ node('build-slave') {
                         println("Skipping customization")
                     } else {
                       sh """
-                      git clone --recurse-submodules ${WL_Cutomization} 
-                      cp -r ${WORKSPACE}/upsmf/images/ ${WORKSPACE}/src/app/client/src/assets
-                      cp -r ${WORKSPACE}/upsmf/resourceBundles/data/ ${WORKSPACE}/src/app/resourcebundles/
+                      git clone --recurse-submodules ${WL_Cutomization} sunbirded-portal
+                      cp -r ${WORKSPACE}/sunbirded-portal/images/ ${WORKSPACE}/src/app/client/src/assets
+                      cp -r ${WORKSPACE}/sunbirded-portal/resourceBundles/data/ ${WORKSPACE}/src/app/resourcebundles/
                       """
                     }
                 }
