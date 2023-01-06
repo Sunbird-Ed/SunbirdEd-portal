@@ -361,6 +361,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
           this.lastUpdatedOn = dayjs(_.get(result, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
+          console.log('pg_Dataset_lastUpdatedOn', this.lastUpdatedOn);
           this.chartsReportData = JSON.parse(JSON.stringify(result));
           return result;
         }))
@@ -753,15 +754,18 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   dateChanged($event, type) {
+    console.log('dateChanged', dayjs($event.value).isValid());
     if (dayjs($event.value).isValid()) {
       const year = new Date($event.value._d).getFullYear();
       const month = new Date($event.value._d).getMonth();
       const day = new Date($event.value._d).getDate();
       if(type === 'startDate'){
         this.minEndDate = new Date(year, month, day + 1);
+        console.log('dateChangedMinDate', dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
         this.reportForm.controls.startDate.setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
       }else{
         this.maxStartDate = new Date(year, month, day - 1);
+        console.log('dateChangedmaxStartDate', dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
         this.reportForm.controls.endDate.setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
       }
     }

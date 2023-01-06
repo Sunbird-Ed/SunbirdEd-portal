@@ -101,6 +101,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    console.log('DatePicker_range',JSON.stringify(this.ranges))
     const charts = [];
     if (this.chartData && this.chartData.length > 0) {
       this.chartData.map(function(data) {
@@ -155,7 +156,9 @@ export class FilterComponent implements OnInit, OnDestroy {
         if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
           const dateRange = _.uniq(_.map(chartData, _.get(filter, 'reference')));
           this.pickerMinDate = dayjs(dateRange[0], 'DD-MM-YYYY');
+          console.log('pickerMinDate', this.pickerMinDate);
           this.pickerMaxDate = dayjs(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+          console.log('pickerMaxDate', this.pickerMaxDate);
           this.dateFilterReferenceName = filter.reference;
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
