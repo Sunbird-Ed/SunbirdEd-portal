@@ -209,7 +209,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
           rolesMap['BOOK_REVIEWER'],
           rolesMap['CONTENT_REVIEW'])),
         createdBy: { '!=': this.userService.userid },
-        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allObjectType : this.config.appConfig.WORKSPACE.objectType,
+        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allowedObjectType : this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,

@@ -272,7 +272,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       filters: {
         status: ['Live'],
         createdBy: this.userService.userid,
-        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allObjectType : this.config.appConfig.WORKSPACE.objectType,
+        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allowedObjectType : this.config.appConfig.WORKSPACE.objectType,
         // tslint:disable-next-line:max-line-length
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
         // mimeType: this.config.appConfig.WORKSPACE.mimeType,

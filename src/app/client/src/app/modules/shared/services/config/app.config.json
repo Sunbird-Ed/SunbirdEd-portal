@@ -924,7 +924,7 @@
       "application/vnd.ekstep.content-collection"
     ],
     "objectType": "Content",
-    "allObjectType": ["Content", "QuestionSet"],
+    "allowedObjectType": ["Content", "QuestionSet"],
     "lastUpdatedOn": "desc",
     "createdOn": "asc",
     "createdDate": "desc",

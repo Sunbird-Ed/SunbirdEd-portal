@@ -176,7 +176,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
         status: ['Review', 'FlagReview'],
         createdBy: this.userService.userid,
         primaryCategory: (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allObjectType : this.config.appConfig.WORKSPACE.objectType,
+        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allowedObjectType : this.config.appConfig.WORKSPACE.objectType,
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
