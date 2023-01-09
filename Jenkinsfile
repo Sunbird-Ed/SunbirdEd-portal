@@ -21,6 +21,18 @@ node('build-slave') {
                 build_tag = sh(script: "echo " + params.github_release_tag.split('/')[-1] + "_" + commit_hash + "_" + env.BUILD_NUMBER, returnStdout: true).trim()
                 echo "build_tag: " + build_tag
 
+                stage('Customize dependencies') {
+                    if (params.WL_Customization== 'null') {
+                        println("Skipping customization")
+                    } else {
+                      sh """
+                      git clone --recurse-submodules ${WL_Customization} sunbirded-portal
+                      cp -r ${WORKSPACE}/sunbirded-portal/images/ ${WORKSPACE}/src/app/client/src/assets
+                      cp -r ${WORKSPACE}/sunbirded-portal/resourceBundles/data/ ${WORKSPACE}/src/app/resourcebundles/
+                      """
+                    }
+                }
+
                 stage('Build') {
                     sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
                 }
