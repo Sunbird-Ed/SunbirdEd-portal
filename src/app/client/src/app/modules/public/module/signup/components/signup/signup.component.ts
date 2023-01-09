@@ -41,6 +41,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   isIOSDevice = false;
   signupStage: SignUpStage;
   routeParams: any;
+  secondaryLogo:string;
   get Stage() { return SignUpStage; }
 
   constructor(public resourceService: ResourceService, public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
@@ -58,6 +59,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
+          this.secondaryLogo = data.tenantData.secondaryLogo;
           this.logo = data.tenantData.logo;
           this.tenantName = data.tenantData.titleName;
         }

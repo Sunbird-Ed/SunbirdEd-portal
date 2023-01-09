@@ -10,6 +10,7 @@ export interface ITenantData {
     logo: string;
     poster: string;
     titleName: string;
+    secondaryLogo:string
 }
 
 export interface ITenantSettings {
