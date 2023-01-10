@@ -231,7 +231,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       sort_by: { lastUpdatedOn: 'desc' }
     };
       this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
-        if (data.result.content && data.result.conten.length > 0) {
+        if (data?.result?.content && data?.result?.content?.length > 0) {
          this.showCourseQRCodeBtn = true;
        }
       });

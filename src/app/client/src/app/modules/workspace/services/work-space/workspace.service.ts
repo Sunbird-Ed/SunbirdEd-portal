@@ -397,7 +397,7 @@ export class WorkSpaceService {
    */
   getAllContent(contentData: ServerResponse, isQuestionSetEnabled: boolean) {
     let contentList= [];
-    if(contentData.result.count) {
+    if(contentData?.result?.count) {
       if(isQuestionSetEnabled) {
         let objectTypes = _.keys(contentData.result);
         objectTypes= _.filter(objectTypes, function(objectType) { return objectType !== 'count'; });
