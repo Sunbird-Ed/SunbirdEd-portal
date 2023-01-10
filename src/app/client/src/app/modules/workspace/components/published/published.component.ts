@@ -164,7 +164,10 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
    * To show/hide collection modal
    */
   public collectionListModal = false;
-
+  /**
+   * To check if questionSet enabled
+   */
+   public isQuestionSetEnabled: boolean;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -196,6 +199,11 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   }
 
   ngOnInit() {
+    this.workSpaceService.questionSetEnabled$.subscribe(
+      (response: any) => {
+          this.isQuestionSetEnabled = response?.questionSetEnablement;
+        }
+    );
     combineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams).pipe(
@@ -223,7 +231,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       sort_by: { lastUpdatedOn: 'desc' }
     };
       this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
-       if (data.result.content.length > 0) {
+        if (data?.result?.content && data?.result?.content?.length > 0) {
          this.showCourseQRCodeBtn = true;
        }
       });
@@ -264,7 +272,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       filters: {
         status: ['Live'],
         createdBy: this.userService.userid,
-        objectType: this.config.appConfig.WORKSPACE.objectType,
+        objectType: this.isQuestionSetEnabled ? this.config.appConfig.WORKSPACE.allowedObjectType : this.config.appConfig.WORKSPACE.objectType,
         // tslint:disable-next-line:max-line-length
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
         // mimeType: this.config.appConfig.WORKSPACE.mimeType,
@@ -283,14 +291,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     };
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content.length > 0) {
-          this.publishedContent = data.result.content;
+        const allContent= this.workSpaceService.getAllContent(data, this.isQuestionSetEnabled);
+        if (allContent.length > 0) {
+          this.publishedContent = allContent;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, this.pageNumber, this.pageLimit);
           const constantData = this.config.appConfig.WORKSPACE.Published.constantData;
           const metaData = this.config.appConfig.WORKSPACE.Published.metaData;
           const dynamicFields = this.config.appConfig.WORKSPACE.Published.dynamicFields;
-          this.publishedContent = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+          this.publishedContent = this.workSpaceService.getDataForCard(allContent, constantData, dynamicFields, metaData);
           this.showLoader = false;
         } else {
           this.showError = false;
