@@ -101,7 +101,6 @@ export class FilterComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log('DatePicker_range',JSON.stringify(this.ranges))
     const charts = [];
     if (this.chartData && this.chartData.length > 0) {
       this.chartData.map(function(data) {
@@ -156,9 +155,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
           const dateRange = _.uniq(_.map(chartData, _.get(filter, 'reference')));
           this.pickerMinDate = dayjs(dateRange[0], 'DD-MM-YYYY');
-          console.log('pickerMinDate', this.pickerMinDate);
           this.pickerMaxDate = dayjs(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-          console.log('pickerMaxDate', this.pickerMaxDate);
           this.dateFilterReferenceName = filter.reference;
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
@@ -185,7 +182,6 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.selectedFilters = filters;
         this.filterData();
       }, (err) => {
-        console.log(err);
       });
       if (this.chartData.selectedFilters) {
           this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
@@ -194,7 +190,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   setTelemetryInteractEdata(val) {
-    console.log('setTelemetryInteractEdata', val)
     return {
       id: _.join(_.split(val, ' '), '-').toLowerCase(),
       type: 'click',
@@ -218,33 +213,14 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   getDateRange({ startDate, endDate }, columnRef) {
-    console.log("startDate", startDate);
-    console.log('EndDate', endDate);
-    // console.log('columnRef',columnRef);
     this.selectedStartDate = dayjs(startDate).subtract(1, 'day');
-    console.log('selectedStartDate', this.selectedStartDate);
     this.selectedEndDate = dayjs(endDate);
-    console.log('selectedEndDate', this.selectedEndDate);
     const dateRange = [];
-    // const currDate = dayjs(this.selectedStartDate).startOf('day');
-    // console.log('currDate',currDate);
-    // const lastDate = dayjs(this.selectedEndDate).startOf('day');
-    // console.log('lastDate', lastDate);
     const dateDiff = this.selectedEndDate.diff(this.selectedStartDate, 'd');
-    console.log('date diff ', dateDiff)
     for (let i = 0; i < dateDiff; i++) {
       dateRange.push(dayjs(startDate).add(i, 'days').format('DD-MM-YYYY'))
     }
-
-    // while (currDate.add(1, 'days').diff(lastDate) < 0) {
-    //   dateRange.push(currDate.clone().format('DD-MM-YYYY'));
-    //   console.log('whileloopcall', currDate.clone().format('DD-MM-YYYY'));
-    //   break;
-    // }
-    console.log('dateRange', dateRange );
     this.filtersFormGroup.get(columnRef).setValue(dateRange);
-    // console.log('columnRef2',columnRef );
-    console.log('filtersFormGroup', this.filtersFormGroup.get(columnRef).setValue(dateRange));
   }
 
   filterData() {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as dayjs from 'dayjs';
 // import 'moment-duration-format';
 import 'dayjs/plugin/duration';
-
+declare var require: any
 /**
  * Dashboard utils service
  *
@@ -28,6 +28,9 @@ export class DashboardUtilsService {
    * @param {any} numericData dashboard snapshot numeric data
    */
   secondToMinConversion(numericData: any) {
+    var duration = require('dayjs/plugin/duration');
+    console.log('duration', duration);
+    dayjs.extend(duration);    
     numericData.value = +numericData.value;
     console.log('numericData.value', numericData.value );
     const dayjsFormat: any = dayjs.duration(numericData.value, 'seconds');
