@@ -35,11 +35,11 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
     outline: 0;
     font-size: $sb-checkbox-label-font-size;
     font-weight: normal;
-    margin-right: $base-block-space;
+    margin-right: 0.5rem;
     html[dir='rtl'] & {
       padding-right: calculateRem(24px);
       padding-left: 0;
-      margin-left: $base-block-space;
+      margin-left: 0.5rem;
       margin-right: 0;
     }
   }
@@ -176,11 +176,11 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
 
   label:after {
     position: absolute;
-    left: $base-block-space/2;
-    top: $base-block-space/2;
+    left: 0.25rem;
+    top: 0.25rem;
     border-radius: 50%;
-    height: $base-block-space;
-    width: $base-block-space;
+    height: 0.5rem;
+    width: 0.5rem;
     opacity: 0;
   }
 
