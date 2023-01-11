@@ -382,6 +382,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   public getCurrentContent() {
    return this.previousContent ? this.previousContent : this.activeContent;
   }
+  public getActiveContent() {
+    return this.previousContent ? this.previousContent : this.activeContent;
+   }
   public contentProgressEvent(event) {
     /* istanbul ignore else */
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
@@ -423,6 +426,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (request.status === 2 && !this.isUnitCompleted) {
       this.logAuditEvent();
     }
+    const currentContent  = this.getActiveContent();
     const summary = _.get(telObject, 'edata.summary');
       let totallength;
       summary?.forEach((k) => {
@@ -430,7 +434,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           totallength = k['totallength'];
         }
     });
-    if ((_.get(this.activeContent, 'mimeType') === 'application/pdf') && eid === 'END' && totallength === 1) {
+    if ((_.get(currentContent, 'mimeType') === 'application/pdf') && eid === 'END' && totallength === 1) {
       request['status'] = 2;
     }
 
