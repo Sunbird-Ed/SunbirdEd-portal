@@ -423,6 +423,16 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (request.status === 2 && !this.isUnitCompleted) {
       this.logAuditEvent();
     }
+    const summary = _.get(telObject, 'edata.summary');
+      let totallength;
+      summary?.forEach((k) => {
+        if (k['totallength']) {
+          totallength = k['totallength'];
+        }
+    });
+    if ((_.get(this.activeContent, 'mimeType') === 'application/pdf') && eid === 'END' && totallength === 1) {
+      request['status'] = 2;
+    }
 
     this.courseConsumptionService.updateContentsState(request)
       .pipe(takeUntil(this.unsubscribe))
