@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization } from '@sunbird/shared';
+import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization,BrowserCacheTtlService } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
-import { Observable, BehaviorSubject, iif, of, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, iif, of, throwError, of as observableOf } from 'rxjs';
 import { map, mergeMap, shareReplay } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
@@ -119,6 +119,7 @@ export class UserService {
   */
   constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
+    private browserCacheTtlService: BrowserCacheTtlService,
     @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
     this.config = config;
     this.learnerService = learner;
@@ -546,5 +547,33 @@ export class UserService {
       userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
     }
     return { board: ['CBSE'], ...userFramework };
+  }
+  setData(data, name) {
+    this.cacheService.set(name, data, {
+      maxAge: this.browserCacheTtlService.browserCacheTtl
+    });
+  }
+
+  getFormData(formInputParams): Observable<ServerResponse> {
+    const pageData: any = this.cacheService.get(formInputParams.formAction + formInputParams.subType);
+    if (pageData) {
+      return observableOf(pageData);
+    } else {
+      const channelOptions = {
+        url: this.config.urlConFig.URLS.dataDrivenForms.READ,
+        data: {
+          request: {
+            type: formInputParams.formType,
+            action: formInputParams.formAction,
+            subType: formInputParams.subType,
+            component: formInputParams.component
+          }
+        }
+      };
+      return this.publicDataService.post(channelOptions).pipe(map((data) => {
+        this.setData(data, formInputParams.formAction + formInputParams.subType);
+        return data;
+      }));
+    }
   }
 }

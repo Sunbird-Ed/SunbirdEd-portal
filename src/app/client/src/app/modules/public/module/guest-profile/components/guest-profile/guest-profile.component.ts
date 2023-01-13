@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
-import { ResourceService, UtilService, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { ResourceService, UtilService, NavigationHelperService, ToasterService,ServerResponse } from '@sunbird/shared';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
 
 const USER_DETAILS_KEY = 'guestUserDetails';
 @Component({
@@ -33,6 +34,8 @@ export class GuestProfileComponent implements OnInit {
   deviceProfile;
   isDesktop = false;
   userRole: string;
+  guestProfileConfig:{}
+  showGuestProfileConfig:boolean = true
 
   editProfileInteractEdata: IInteractEventEdata;
   editFrameworkInteractEData: IInteractEventEdata;
@@ -48,6 +51,7 @@ export class GuestProfileComponent implements OnInit {
     public router: Router,
     public navigationHelperService: NavigationHelperService,
     public toasterService: ToasterService
+    
   ) { }
 
   ngOnInit() {
@@ -56,6 +60,7 @@ export class GuestProfileComponent implements OnInit {
     this.initLayout();
     this.getLocation();
     this.setInteractEventData();
+    this.getGuestContentConfig();
   }
 
   getGuestUser() {
@@ -73,6 +78,27 @@ export class GuestProfileComponent implements OnInit {
         this.layoutConfiguration = layoutConfig.layout;
       }
     });
+  }
+
+  getGuestContentConfig() {
+    const formInputParams = {
+      formType: 'user',
+      subType: 'profile',
+      formAction: 'display',
+      component:'portal',
+    };
+    this.userService.getFormData(formInputParams).subscribe(
+      (data: ServerResponse) => {
+        if (data.result.form.data) {
+          this.guestProfileConfig = data.result.form.data.fields[0]
+          this.showGuestProfileConfig = this.guestProfileConfig['guestUserVisibiliity']
+        } else {
+           this.showGuestProfileConfig  = true
+        }
+      },
+      (err: ServerResponse) => {
+      }
+    );
   }
 
   getLocation() {
