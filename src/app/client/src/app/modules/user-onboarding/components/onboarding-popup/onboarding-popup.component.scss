@@ -150,6 +150,11 @@ button {
     background: var(--white);
   }
 
+  .mat-step-header .mat-step-icon.mat-step-icon-state-done{
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: 0.0625rem solid var(--primary-color);
+  }
   .mat-step-header .mat-step-icon {
     background-color: var(--gray-800);
     color: var(--white);
