@@ -18,6 +18,7 @@ import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+
 /**
  * main app component
  */
@@ -26,6 +27,7 @@ import { SBTagModule } from 'sb-tag-manager';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
@@ -99,6 +101,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public botObject: any = {};
   isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
     ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+  showNavAccessibility: any = (<HTMLInputElement>document.getElementById('sunbirdNavAccessibility'))
+    ? (<HTMLInputElement>document.getElementById('sunbirdNavAccessibility')).value : 'true';
   botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
     ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
@@ -119,7 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
   loadPopUps = true;
   FORM_CONFIG_ENABLED = false;
   isStepperCompleted = false;
-  OnboardingFormConfig:any;
+  OnboardingFormConfig: any;
   isStepperEnabled = false;
   isPopupEnabled = false;
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
@@ -148,6 +152,7 @@ export class AppComponent implements OnInit, OnDestroy {
       document.documentElement.setAttribute('layout', 'base');
     }
   }
+  
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -277,7 +282,7 @@ export class AppComponent implements OnInit, OnDestroy {
     };
     return of(this.formService.getFormConfig(formReadInputParams).subscribe(
       (formResponsedata) => {
-        console.log('userOnboarding Form is called and we are trying to get the update',formResponsedata);
+        console.log('userOnboarding Form is called and we are trying to get the update', formResponsedata);
         if (_.get(formResponsedata, 'shownewUserOnboarding') === 'false') {
           this.FORM_CONFIG_ENABLED = true;
         }
@@ -287,7 +292,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    * @description - get the stepper flag from localstorage to check weather stepper process completes or not
    */
-  getStepperInfo() { 
+  getStepperInfo() {
     const isStepperCompleted = localStorage.getItem('isStepperCompleted');
     this.isStepperCompleted = isStepperCompleted ? true : false;
   }
@@ -356,7 +361,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.userService.startSession();
             this.checkForCustodianUser();
             return this.setUserDetails();
-          } else if(this.userService.loggedIn && this.FORM_CONFIG_ENABLED){
+          } else if (this.userService.loggedIn && this.FORM_CONFIG_ENABLED) {
             this.setUserOptions();
           } else {
             this.isGuestUser = true;
@@ -397,18 +402,18 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
-  // keyboard accessibility enter key click event
-    document.onkeydown = function(e) {
+    // keyboard accessibility enter key click event
+    document.onkeydown = function (e) {
       const element = document.getElementById('overlay-button') as HTMLElement;
       if (e.keyCode === 13 && document.activeElement !== element) { // The Enter/Return key
-        (document.activeElement  as HTMLElement).click();
+        (document.activeElement as HTMLElement).click();
       }
     };
   }
   setUserOptions() {
     const userStoredData = JSON.parse(localStorage.getItem('guestUserDetails'));
     if (userStoredData) {
-      const userFrameworkData = _.get(userStoredData , 'framework');
+      const userFrameworkData = _.get(userStoredData, 'framework');
       if (userFrameworkData && !(_.get(this.userService.userProfile, 'framework'))) {
         const req = {
           framework: userFrameworkData
@@ -509,24 +514,24 @@ export class AppComponent implements OnInit, OnDestroy {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           // if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
 
-            let userType;
-            if (this.isDesktopApp && this.isGuestUser) {
-               userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
-               this.showUserTypePopup = userType ? false : true;
-            } else if(this.isGuestUser) {
-              userType = localStorage.getItem('userType');
-              if(!this.showUserTypePopup && this.isLocationConfirmed){
-                this.checkFrameworkSelected();
-              }
-              if(!this.isLocationConfirmed){
-                this.zone.run(() => {
-                  this.showUserTypePopup = true
-                  })              
-                }
-            } else {
-              userType = localStorage.getItem('userType');
+          let userType;
+          if (this.isDesktopApp && this.isGuestUser) {
+            userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
+            this.showUserTypePopup = userType ? false : true;
+          } else if (this.isGuestUser) {
+            userType = localStorage.getItem('userType');
+            if (!this.showUserTypePopup && this.isLocationConfirmed) {
+              this.checkFrameworkSelected();
             }
-            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : this.showUserTypePopup;
+            if (!this.isLocationConfirmed) {
+              this.zone.run(() => {
+                this.showUserTypePopup = true
+              })
+            }
+          } else {
+            userType = localStorage.getItem('userType');
+          }
+          this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : this.showUserTypePopup;
           // }
         }
       });
@@ -825,7 +830,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  closeFrameworkPopup () {
+  closeFrameworkPopup() {
     this.frameWorkPopUp && this.frameWorkPopUp.deny();
     this.showFrameWorkPopUp = false;
   }
@@ -834,7 +839,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public updateFrameWork(event) {
     if (this.isGuestUser && !this.guestUserDetails) {
-      const user:any = { name: 'guest', formatedName: 'Guest', framework: event };
+      const user: any = { name: 'guest', formatedName: 'Guest', framework: event };
       const userType = localStorage.getItem('userType');
       if (userType) {
         user.role = userType;
@@ -901,8 +906,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
-    if( this.isGuestUser){
-      this.showUserTypePopup=false;
+    if (this.isGuestUser) {
+      this.showUserTypePopup = false;
       this.checkFrameworkSelected();
     }
     this.showYearOfBirthPopup = true;
@@ -1021,12 +1026,12 @@ export class AppComponent implements OnInit, OnDestroy {
       if (headerElement.length > 0) {
         const headerHeight = headerElement[headerElement.length - 1].clientHeight;
         if (typeof window.orientation !== 'undefined') {
-          this.scrollHeight =  headerElement[0].clientHeight + 150;
+          this.scrollHeight = headerElement[0].clientHeight + 150;
         } else {
-          this.scrollHeight =  headerHeight * 2;
+          this.scrollHeight = headerHeight * 2;
         }
         this.scrollTo(this.scrollHeight);
-       }
+      }
     } else {
       const header = document.getElementsByTagName('app-header');
       const headerElement = header[0].children[0].children[0].clientHeight;
@@ -1084,7 +1089,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param  {boolean} event
    * @description  - set the flag in localstorage when stepper process completes
    */
-  isStepper(event) { 
+  isStepper(event) {
     this.isStepperCompleted = event;
     localStorage.setItem('isStepperCompleted', JSON.stringify(this.isStepperCompleted));
   }

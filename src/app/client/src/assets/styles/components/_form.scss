@@ -54,11 +54,11 @@ $sb-selection-line-height: calculateRem(18px);
   }
   .sb-input-icon {
     position: absolute;
-    top: $base-block-space;
+    top: 0.5rem;
     right: 0;
     display: block;
-    width: $base-block-space * 4;
-    height: $base-block-space * 4;
+    width: 2rem;
+    height: 2rem;
     text-align: center;
     pointer-events: none;
   }
@@ -74,7 +74,7 @@ $sb-selection-line-height: calculateRem(18px);
     font-size: calculateRem(12px);
     width: 100%;
     min-height: $sb-selection-dropdown-min-height;
-    padding: ($base-block-space / 2) ($base-block-space * 1);
+    padding: 0.25rem 0.5rem;
     border-color: var(--gray-200);
     display: flex;
     align-items: center;
@@ -116,7 +116,7 @@ $sb-selection-line-height: calculateRem(18px);
   padding: calculateRem(4px) calculateRem(8px);
   position: relative;
   width: 100%;
-  min-height: ($base-block-space * 4);
+  min-height: 2rem;
   &.sb-fluid {
     width: 100%;
   }
@@ -172,14 +172,14 @@ input.required {
 
 label {
   display: inline-block;
-  margin-bottom: $base-block-space * 1;
+  margin-bottom: 0.5rem;
   font-size: $sb-label-font-size;
   font-weight: bold;
 }
 
 .sb-footer-license {
   display: flex;
-  margin-bottom: $base-block-space * 1;
+  margin-bottom: 0.5rem;
   font-size: $sb-label-font-size;
   font-weight: normal;
   align-items: flex-start;
@@ -192,7 +192,7 @@ small {
 }
 
 .sb-error-text {
-  margin-top: $base-block-space * 1;
+  margin-top: 0.5rem;
   color: $sb-error-text;
 }
 
