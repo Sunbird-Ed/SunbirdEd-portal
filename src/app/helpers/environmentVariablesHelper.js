@@ -286,6 +286,9 @@ let envVariables = {
 
   // UCI
   sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
+
+  // Accessibility links (from NAV) configuration
+  sunbird_portal_nav_accessibility: env.sunbird_portal_nav_accessibility || 'true',
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
