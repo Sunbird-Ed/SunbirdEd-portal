@@ -280,10 +280,6 @@ export class OtpComponent implements OnInit {
         'type': this.mode
       }
     };
-    // if (this.isMinor) {
-    if (false) {
-      request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
-    }
     this.signupService.generateOTPforAnonymousUser(request, captchaResponse).subscribe(
       (data: ServerResponse) => {
         this.resendOtpEnablePostTimer();
