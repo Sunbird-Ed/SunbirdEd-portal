@@ -25,7 +25,7 @@ describe('BaseReportService', () => {
       jest.resetAllMocks();
     });
 
-    it('should create a instance of PublicDataService', () => {
+    it('should create a instance of BaseReportService', () => {
       expect(baseReportService).toBeTruthy();
       expect(baseReportService.baseUrl).toBe('/report');
     });
