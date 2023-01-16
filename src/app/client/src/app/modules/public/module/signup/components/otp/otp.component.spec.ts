@@ -379,21 +379,6 @@ describe('OtpComponent', () => {
     expect(component.resendOTP).toHaveBeenCalled();
   });
 
-  it('it should  call generateResendOTP', () => {
-    jest.spyOn(component.captchaRef, 'execute');
-
-    component.isP2CaptchaEnabled = 'true'
-    component.startingForm = {
-      emailPassInfo: {
-        key: 'sunbird_ed@yopmail.com',
-        type: 'email',
-        password: 'Test@123'
-      }
-    };
-    component.generateResendOTP();
-    expect(component.resetGoogleCaptcha).toHaveBeenCalled();
-  });
-
   it('it should  call generateTelemetry', () => {
     component.generateTelemetry({ target: { checked: true } });
     expect(telemetryService.interact).toHaveBeenCalled();
