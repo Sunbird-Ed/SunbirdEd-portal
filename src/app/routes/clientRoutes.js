@@ -204,6 +204,7 @@ function getLocals(req) {
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
   locals.sunbirdQuestionSetChildrenLimit = envHelper.sunbird_questionset_children_limit,
   locals.sunbirdCollectionChildrenLimit =  envHelper.sunbird_collection_children_limit,
+  locals.sunbirdNavAccessibility = envHelper.sunbird_portal_nav_accessibility,
   locals.enableSSO = envHelper.sunbird_enable_sso;
   locals.reportsListVersion = envHelper.reportsListVersion;
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;

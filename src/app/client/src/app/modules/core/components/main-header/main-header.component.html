@@ -128,7 +128,7 @@
           <!--/Load content -->
           <!--Language Dropdown-->
           <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
-            class="computer only ml-auto d-flex" *ngIf="languages && showLanguageDropdown()">
+            class="computer only ml-auto d-flex" *ngIf="isLanguageDropdown && languages && showLanguageDropdown()">
           </app-language-dropdown>
           <!--/Language Dropdown-->
         </div>
@@ -264,7 +264,7 @@
             <div class="d-flex flex-ai-center sbt-dropdown-profile-area">
               <!-- language dropdown -->
               <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
-                *ngIf="languages && showLanguageDropdown()">
+                *ngIf=" isLanguageDropdown && languages && showLanguageDropdown()">
               </app-language-dropdown>
               <!-- Notification dropdown -->
               <a class="profile-avtar p-0 ml-16">
