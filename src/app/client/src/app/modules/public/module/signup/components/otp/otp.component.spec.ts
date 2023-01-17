@@ -130,6 +130,8 @@ describe('OtpComponent', () => {
 
     resourceService.frmelmnts = OtpComponentMockResponse.resourceBundle.frmelmnts;
     jest.spyOn(component, 'enableSignUpSubmitButton');
+    // @ts-ignore
+    window.setInterval = jest.fn((fn) => fn(), 1000) as any;
     component.ngOnInit();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
   });
@@ -286,6 +288,8 @@ describe('OtpComponent', () => {
         password: 'Test@123'
       },
     };
+    // @ts-ignore
+    window.setTimeout = jest.fn((fn) => fn(), 1000) as any;
     profileService.updateProfile = jest.fn(() => of({
       'result': {
         'response': 'SUCCESS'
