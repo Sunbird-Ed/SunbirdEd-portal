@@ -114,7 +114,7 @@ describe("PageApiService", () => {
 
     describe('createAsset', () => {
         it('should create asset', () => {
-            //assert
+            //arrange
             const body = {
                 'request':
                 {
