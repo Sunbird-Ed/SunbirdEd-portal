@@ -8,5 +8,5 @@
 }
 
 .badges-container {
-  max-width: calc(195px * 4);
+  max-width: calc(calculateRem(195px) * 4);
 }

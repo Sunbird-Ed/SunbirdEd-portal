@@ -1,43 +1,6 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-.content-header {
-  // background: var(--rc-FAFAFA);
-  min-height: calculateRem(14px);
-    &__content{
-        display:flex;
-        align-items: center;
-        justify-content: space-between;
-        @include respond-below(sm) {
-          display: block;
-        }
-    }
-    &__title {
-        color: var(--primary-400);
-        font-size: calculateRem(18px);
-    }
-    
-    &__info {
-      color: var(--gray-800);
-      font-size: 0.875rem;
-      max-height: 48px;
-      overflow-y: auto;
-    }
-    
-    .dot-divider {
-        width: 0.25rem;
-        height: 0.25rem;
-        border-radius: 100%;
-        background-color: var(--gray-800);
-        display: inline-block;
-        margin: 0px 0.5rem;
-        vertical-align: middle;
-    }
-  
-  @include respond-below(sm) {
-    &__buttons {
-      margin-top: calculateRem(8px);
-    }
-  }
-}
+@use 'pages/content-header' as *;
+
 
 :host {
 
@@ -50,9 +13,6 @@
 
   .main-side-toc-content {
     overflow-y: auto;
-    // max-height: calc(100vh - 265px);
-    // height: auto;
-
     @include respond-below(sm) {
       height: auto;
       max-height: 100%;

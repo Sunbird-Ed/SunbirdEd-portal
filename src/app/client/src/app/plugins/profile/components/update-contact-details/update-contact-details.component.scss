@@ -1,13 +1,8 @@
-
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "~@project-sunbird/sb-styles/assets/varSass" as *;
 @use 'components/form' as *;
 
 .ui.grey.button {
-  background: var(--gray-200);
-  color: var(--white);
-  pointer-events: none !important;
-  cursor: not-allowed !important;
-  height: calculateRem(38px) !important;
   font-size: 1rem;
 }
 
@@ -18,19 +13,8 @@
   height: calculateRem(38px) !important;
 }
 
-.ui.basic.error.label {
-  background: none !important;
-  color: #A30010 !important;
-  border: 0 !important;
-  padding-left: 0;
-  font-size: 1rem;
-  font-weight: normal;
-  padding: calculateRem(10px) 0;
-}
-
 .ui.left.icon.input .icon {
   font-size: 1rem;
-  font-family: inherit;
 }
 
 .height-200 {
@@ -42,7 +26,7 @@
 
   .icon {
     left: 0;
-    top: calculateRem(10px);
+    top: 0.625rem;
   }
 
   .sb-form-control {

@@ -1,3 +1,4 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 // Card component
 
 /* sb card styles */
@@ -15,7 +16,7 @@
   transition-delay: 0.1s;
 
   &:hover {
-    transform: translate(0, -calculateRem(3px));
+    transform: translate(0, calculateRem(-3px));
     box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
   }
 
@@ -238,11 +239,11 @@ app-card[lang="ur"] {
 
 // Batch Card
 .ui.card.sb-batch-card {
-  border: 1px solid var(--primary-200);
+  border: calculateRem(1px) solid var(--primary-200);
   box-shadow: none;
 
   .item {
-    padding: 10px 0;
+    padding: calculateRem(10px) 0;
 
     .content>.header {
       padding-bottom: calculateRem(5px);

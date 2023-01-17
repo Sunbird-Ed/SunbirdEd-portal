@@ -2,7 +2,7 @@
 @use 'pages/sign_in_up' as *;
 
 .orange-border {
-    border-color: #A30010 !important;
+    border-color: var(--accessibility-red) !important;
 }
 .blue.text {
     color: var(--primary-color);

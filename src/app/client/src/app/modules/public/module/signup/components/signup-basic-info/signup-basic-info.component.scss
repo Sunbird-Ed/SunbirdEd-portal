@@ -1,14 +1,14 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-mat__dropdown.sb-mat__dropdown--autocmp {
-  border: 1px solid var(--gray-200);
+  border: calculateRem(1px) solid var(--gray-200);
   border-radius: calculateRem(24px);
 }
 
 ::ng-deep {
     html[layout=joy] .sb-form-control {
         min-height: 2.5rem !important;
-        border-radius: 40px !important;
+        border-radius: calculateRem(40px) !important;
     }
   html[layout="joy"] .sb-form-control:hover {
     border: 0.0625rem solid var(--gray-200);

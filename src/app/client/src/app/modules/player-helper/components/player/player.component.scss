@@ -92,7 +92,7 @@
   transition: all ease .3s;
   iframe {
     height: calc(100vh - 4rem) !important;
-  border:10px solid rebeccapurple;
+    border:calculateRem(10px) solid var(--primary-400);
   }
 } 
 

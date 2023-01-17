@@ -177,14 +177,6 @@ label {
   font-weight: bold;
 }
 
-.sb-footer-license {
-  display: flex;
-  margin-bottom: 0.5rem;
-  font-size: $sb-label-font-size;
-  font-weight: normal;
-  align-items: flex-start;
-  justify-content: center;
-}
 
 small {
   font-size: 80%;
@@ -236,7 +228,7 @@ select:-internal-autofill-selected {
   margin-bottom: calculateRem(4px) !important;
 }
 .sb-form .sb-field-group.error input {
-  background: var(--rc-fff6f6);
+  background: var(--gray-0);
   border-color: var(--red-0);
   color: var(--red-100);
   border-radius: "";

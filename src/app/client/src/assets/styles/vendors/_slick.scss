@@ -26,7 +26,7 @@ $slick-dot-color-active: $slick-dot-color !default;
 $slick-prev-character: "\f104" !default;
 $slick-next-character: "\f105" !default;
 $slick-dot-character: "\2022" !default;
-$slick-dot-size: 6px !default;
+$slick-dot-size: calculateRem(6px) !default;
 $slick-opacity-default: 1 !default;
 $slick-opacity-on-hover: 1 !default;
 $slick-opacity-not-active: 0 !default;
@@ -80,12 +80,6 @@ $slick-opacity-not-active: 0 !default;
 }
 
 .slick-list {
-  .slick-loading & {
-    // background: var(--white) slick-image-url("ajax-loader.gif") center center no-repeat;
-  }
-}
-
-.slick-list {
   position: relative;
   overflow: hidden;
   display: block;
@@ -116,7 +110,7 @@ $slick-opacity-not-active: 0 !default;
   left: 0;
   top: 0;
   display: block;
-  padding-top: 3px;
+  padding-top: calculateRem(3px);
 
   &:before,
   &:after {

@@ -13,13 +13,13 @@
   bottom: 0;
   z-index: 2;
   background-color: var(--sb-card-bg);
-  padding: 15px 0;
-  border-radius: 5px;
-  margin: 15px 0;
+  padding: calculateRem(15px) 0;
+  border-radius: calculateRem(5px);
+  margin: calculateRem(15px) 0;
 }
 
 .section-list {
-  margin-bottom: 20px;
+  margin-bottom: calculateRem(20px);
   z-index: 9;
   position: relative;
 }
@@ -33,11 +33,15 @@
 }
 
 ::ng-deep {
+  .double-btn{
+    justify-content: flex-start !important;
+    flex-direction: row-reverse;
+  }
   .question-card.sb--card {
-    border-radius: 28px;
-    padding: 20px;
+    border-radius: calculateRem(28px);
+    padding: calculateRem(20px);
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: calculateRem(20px);
 
     .sb-checkbox label,
     .sb-radio-btn-checkbox label {
@@ -66,7 +70,7 @@
   }
 
   .question-card.sb--card:last-child {
-    margin-bottom: 20px;
+    margin-bottom: calculateRem(20px);
   }
   .question-card.sb--card,
   .sb-radio-btn-checkbox {
@@ -83,7 +87,7 @@
 }
 
 .remarks {
-  margin-top: 15px;
+  margin-top: calculateRem(15px);
 }
 
 .overlay {
@@ -97,7 +101,7 @@
 }
 
 .adjust {
-  margin: 15px 5px;
+  margin: calculateRem(15px) calculateRem(5px);
 }
 .sticky-block {
   position: sticky;

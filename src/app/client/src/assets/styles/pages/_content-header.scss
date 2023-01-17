@@ -22,11 +22,11 @@
     }
   }
   &__title {
-    color: var(--primary-400);
-    font-size: calculateRem(18px);
+    color: var(--primary-theme-contrast);
+      font-size: 1.125rem;
   }
   &__info {
-    color: var(--gray-800);
+    color: var(--primary-theme-contrast);
     font-size: calculateRem(14px);
     align-items: center;
 
