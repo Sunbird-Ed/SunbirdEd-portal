@@ -3,8 +3,8 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 // from portal
-@use "./components/components" as *;
 @use "./vendors/vendors" as *;
+@use "./components/components" as *;
 @use "./layout/layout" as *;
 @use "./legacy" as *;
 @use "./global" as *;

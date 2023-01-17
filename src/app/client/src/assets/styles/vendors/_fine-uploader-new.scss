@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 /***********************************************
    Hacks -
 
@@ -29,21 +31,21 @@
 }
 .qq-upload-delete
 {
-    background-color: var(--rc-e65c47);
-    color: var(--rc-FAFAFA);
-    border-color: var(--rc-dc523d);
+    background-color: var(--tertiary-color);
+    color: var(--gray-0);
+    border-color: var(--tertiary-color);
     text-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(0, 0, 0, 0.55);
 }
 .qq-upload-delete:hover {
-    background-color: var(--rc-f56b56);
+    background-color: var(--tertiary-100);
  }
 .qq-upload-cancel
 {
     background-color: var(--rc-F5D7D7);
-    border-color: var(--rc-e6c8c8);
+    border-color: var(--rc-F5D7D7);
 }
 .qq-upload-cancel:hover {
-    background-color: var(--rc-ffe1e1);
+    background-color: var(--rc-FCE6E6);
 }
 .qq-upload-retry
 {
@@ -51,16 +53,16 @@
     border-color: var(--rc-d2ddc7);
 }
 .qq-upload-retry:hover {
-    background-color: var(--rc-f7ffec);
+    background-color: var(--rc-F7FFF5);
 }
 .qq-upload-pause, .qq-upload-continue {
     background-color: var(--rc-00abc7);
-    color: var(--rc-FAFAFA);
-    border-color: var(--rc-2dadc2);
+    color: var(--gray-0);
+    border-color: var(--rc-00abc7);
     text-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(0, 0, 0, 0.55);
 }
 .qq-upload-pause:hover, .qq-upload-continue:hover {
-    background-color: var(--rc-0fbad6);
+    background-color: var(--rc-33B6CC);
 }
 
 /* Upload Button
@@ -69,17 +71,17 @@
     display: inline;
     width: calculateRem(105px);
     margin-bottom: calculateRem(10px);
-    padding: 7px calculateRem(10px);
+    padding: calculateRem(7px) calculateRem(10px);
     text-align: center;
     float: left;
     background: var(--rc-00abc7);
     color: var(--white);
     border-radius: calculateRem(2px);
-    border: 1px solid var(--rc-2dadc2);
-    box-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(255, 255, 255, 0.37) inset,
-    calculateRem(1px) 0 calculateRem(1px) rgba(255, 255, 255, 0.07) inset,
-                0 calculateRem(1px) 0 rgba(0, 0, 0, 0.36),
-                0 calculateRem(-2px) calculateRem(12px) rgba(0, 0, 0, 0.08) inset;
+    border: calculateRem(1px) solid var(--rc-00abc7);
+    box-shadow: 0 calculateRem(1px) calculateRem(1px) rgba(var(--rc-rgba-white), 0.37) inset,
+    calculateRem(1px) 0 calculateRem(1px) rgba(var(--rc-rgba-white), 0.07) inset,
+                0 calculateRem(1px) 0 rgba(var(--rc-rgba-black), 0.36),
+                0 calculateRem(-2px) calculateRem(12px) rgba(var(--rc-rgba-black), 0.08) inset;
 }
 .qq-upload-button-hover {
     background: var(--rc-33B6CC);
@@ -98,7 +100,7 @@
     overflow-y: hidden;
     width: inherit;
     border-radius: calculateRem(6px);
-    background-color: var(--rc-fdfdfd);
+    background-color: var(--rc-f9f9f9);
     border: calculateRem(1px) dashed var(--gray-100);
     padding: calculateRem(20px);
 }
@@ -142,7 +144,7 @@
     min-height: calculateRem(40px);
 }
 .qq-upload-drop-area-active {
-    background: var(--rc-fdfdfd);
+    background: var(--rc-f9f9f9);
     border-radius: calculateRem(4px);
     border: calculateRem(1px) dashed var(--gray-100);
 }
@@ -164,8 +166,8 @@
     padding: calculateRem(9px);
     line-height: calculateRem(15px);
     font-size: calculateRem(16px);
-    color: var(--rc-424242);
-    background-color: var(--rc-F6F6F6);
+    color: var(--gray-800);
+    background-color: var(--gray-0);
     border-top: calculateRem(1px) solid var(--white);
     border-bottom: calculateRem(1px) solid var(--rc-dddddd);
 }
@@ -239,13 +241,13 @@
 }
 .qq-upload-list li.qq-upload-success {
     background-color: var(--rc-EBF6E0);
-    color: var(--rc-424242);
+    color: var(--gray-800);
     border-bottom: calculateRem(1px) solid var(--rc-D3DED1);
     border-top: calculateRem(1px) solid var(--rc-F7FFF5);
 }
 .qq-upload-list li.qq-upload-fail {
     background-color: var(--rc-F5D7D7);
-    color: var(--rc-424242);
+    color: var(--gray-800);
     border-bottom: calculateRem(1px) solid var(--rc-DECACA);
     border-top: calculateRem(1px) solid var(--rc-FCE6E6);
 }

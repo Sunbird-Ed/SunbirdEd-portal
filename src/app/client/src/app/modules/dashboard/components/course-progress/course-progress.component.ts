@@ -341,70 +341,72 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   getSummaryReports() {
-    const request = {
-      'request': {
-        'filters': {
-          'collectionId': _.get(this.currentBatch, 'collectionId') || _.get(this.currentBatch, 'courseId'),
-          'batchId': _.get(this.currentBatch, 'batchId')
-        },
-        'groupBy': ['dist', 'state'],
-        'granularity': 'ALL' // data conformation
-      }
-    };
-    this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
-      if (reports && reports.result && !_.isEmpty(reports.result)) {
-        const result = _.get(reports, 'result');
-        const groupData = _.get(result, 'groupBy');
-        this.stateWiseReportData = _.map(groupData, (x) => {
-          return {
-            state: x.state,
-            district: x.district,
-            noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
-          };
-        });
-        this.stateWiseReportData = [...this.stateWiseReportData];
-        const metrics = _.get(result, 'metrics');
-        this.currentBatch.participantCount = this.getFieldValue(metrics, 'enrolment');
-        this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete');
-        this.currentBatch.lastUpdatedOn = _.get(result, 'lastUpdatedOn') || '';
-      }
-      this.generateDataForDF(this.currentBatch);
-    }, error => {
-      this.stateWiseReportData = [
-        {
-          state: 'Andhra Pradesh',
-          district: 'Chittoor',
-          noOfEnrollments: 20
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Vishakapatanam',
-          noOfEnrollments: 50
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Guntur',
-          noOfEnrollments: 70
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Kadapa',
-          noOfEnrollments: 65
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Nellore',
-          noOfEnrollments: 100
-        },
-        {
-          state: 'Telengana',
-          district: 'Hydrabad',
-          noOfEnrollments: 45
+    if (_.get(this.currentBatch, 'collectionId') || _.get(this.currentBatch, 'courseId')) {
+      const request = {
+        'request': {
+          'filters': {
+            'collectionId': _.get(this.currentBatch, 'collectionId') || _.get(this.currentBatch, 'courseId'),
+            'batchId': _.get(this.currentBatch, 'batchId')
+          },
+          'groupBy': ['dist', 'state'],
+          'granularity': 'ALL' // data conformation
         }
-      ];
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      this.generateDataForDF(this.currentBatch);
-    });
+      };
+      this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
+        if (reports && reports.result && !_.isEmpty(reports.result)) {
+          const result = _.get(reports, 'result');
+          const groupData = _.get(result, 'groupBy');
+          this.stateWiseReportData = _.map(groupData, (x) => {
+            return {
+              state: x.state,
+              district: x.district,
+              noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
+            };
+          });
+          this.stateWiseReportData = [...this.stateWiseReportData];
+          const metrics = _.get(result, 'metrics');
+          this.currentBatch.participantCount = this.getFieldValue(metrics, 'enrolment');
+          this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete');
+          this.currentBatch.lastUpdatedOn = _.get(result, 'lastUpdatedOn') || '';
+        }
+        this.generateDataForDF(this.currentBatch);
+      }, error => {
+        this.stateWiseReportData = [
+          {
+            state: 'Andhra Pradesh',
+            district: 'Chittoor',
+            noOfEnrollments: 20
+          },
+          {
+            state: 'Andhra Pradesh',
+            district: 'Vishakapatanam',
+            noOfEnrollments: 50
+          },
+          {
+            state: 'Andhra Pradesh',
+            district: 'Guntur',
+            noOfEnrollments: 70
+          },
+          {
+            state: 'Andhra Pradesh',
+            district: 'Kadapa',
+            noOfEnrollments: 65
+          },
+          {
+            state: 'Andhra Pradesh',
+            district: 'Nellore',
+            noOfEnrollments: 100
+          },
+          {
+            state: 'Telengana',
+            district: 'Hydrabad',
+            noOfEnrollments: 45
+          }
+        ];
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        this.generateDataForDF(this.currentBatch);
+      });
+    }
   }
 
   /**

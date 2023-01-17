@@ -1,8 +1,8 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .thumbnail-card {
-  height: 98px;
-  margin-top: 10px;
+  height: calculateRem(98px);
+  margin-top: calculateRem(10px);
   display: inline;
   justify-content: space-around;
   align-items: center;
@@ -11,10 +11,10 @@
 .evidence-modal {
   .content {
     height: 70vh;
-    padding: 10px;
+    padding: calculateRem(10px);
     overflow-y: auto;
     background: var(--sb-modal-content-bg);
-    border-radius: 24px;
+    border-radius: calculateRem(24px);
     label{
         color: var(--sb-prominent-filter-title);
       }
@@ -29,22 +29,21 @@
 }
 
 .ui.secondary.pointing.menu .item {
-  font-size: 16px !important;
-  color: #333333;
+  font-size: calculateRem(16px) !important;
+  color: var(--gray-800);
   opacity: 0.3;
-  font-family: "Noto Sans";
   font-weight: 600;
   overflow: hidden;
 }
 .ui.secondary.pointing.menu .active.item {
-  color: #024f9d !important;
+  color: var(--primary-color) !important;
   opacity: 1 !important;
-  border-bottom-width: 4px !important;
-  border-color: #024f9d !important;
+  border-bottom-width: calculateRem(4px) !important;
+  border-color: var(--primary-color) !important;
   overflow: hidden;
 }
 .ui.secondary.pointing.menu {
-  height: 60px !important;
+  height: calculateRem(60px) !important;
   overflow: hidden;
 }
 .sbt-report-btns-panel-new {
@@ -54,15 +53,15 @@
 
 
 .report-block {
-    padding-top: 10px;
+    padding-top: calculateRem(10px);
     padding-bottom: 0px;
-    margin-top:10px !important;
+    margin-top:calculateRem(10px) !important;
     background-color: transparent;
     color: var(--sb-text);
   }
 
   .item{
-      margin-top: 15px;
+      margin-top: calculateRem(15px);
   }
 
   

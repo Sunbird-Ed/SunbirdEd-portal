@@ -97,15 +97,15 @@
     cursor: pointer !important;
     position: absolute !important;
     top: 0 !important;
-    bottom: 24px !important;
-    right: 10px !important;
+    bottom: calculateRem(24px) !important;
+    right: calculateRem(10px) !important;
     left: 0 !important;
-    padding-top: 19px !important;
+    padding-top: calculateRem(19px) !important;
     text-align: right !important;
 }
 
 .ngx-datatable.scroll-vertical .datatable-body{
-  height: 200px !important;
+  height: calculateRem(200px) !important;
 }
 
 .ngx-datatable.material .datatable-header .datatable-header-cell{
@@ -150,6 +150,6 @@ text-align: center !important;
 
 .download-report{
   position: relative;
-  bottom: 10px;
-  padding-bottom: 12px;
+  bottom: calculateRem(10px);
+  padding-bottom: calculateRem(12px);
 }

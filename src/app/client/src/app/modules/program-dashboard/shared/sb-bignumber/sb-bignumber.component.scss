@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .sb-last-update-status {
     font-size: calculateRem(12px);
     font-weight: bold;
@@ -15,7 +17,7 @@
         border-right: 0.0625rem solid var(--rc-dddddd) !important;
   
         &:nth-child(3n + 3) {
-          border-right: 0rem solid var(--rc-d4d8da) !important;
+          border-right: 0rem solid var(--gray-100) !important;
         }
       }
   

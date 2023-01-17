@@ -25,6 +25,7 @@ export class ContentManagerService {
   contentDownloadStatus$ = new BehaviorSubject<any>({});
   contentDownloadStatus = {};
   deletedContentIds = [];
+  deleteContentTimeStamps: undefined;
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
     public electronDialogService: ElectronDialogService,
@@ -64,6 +65,17 @@ export class ContentManagerService {
     };
     return this.publicDataService.post(downloadListOptions).pipe(
       map((respData: any) => {
+        const _res = _.get(respData, 'result.response.contents');
+        if (this.deleteContentTimeStamps) {
+          for (let i = 0; i < _res.length; i++) {
+            // @ts-ignore
+            if ( _res[i]['createdOn'] > this.deleteContentTimeStamps[_res[i]['identifier']]) {
+              this.deletedContentIds = _.filter(this.deletedContentIds, (id) => {
+                return id !== _res[i]['identifier'];
+              });
+            }
+          }
+        }
         respData.result.response.contents = _.filter(_.get(respData, 'result.response.contents'), (o) => {
           return !_.includes(this.deletedContentIds, o.contentId);
         });
@@ -210,6 +222,13 @@ export class ContentManagerService {
     return this.publicDataService.post(options).pipe(
       tap((data) => {
         this.deletedContentIds = _.uniq(_.concat(this.deletedContentIds, _.get(data, 'result.deleted')));
+        if (!this.deleteContentTimeStamps) {
+          this.deleteContentTimeStamps = _.get(data, 'result.deletedContentMeta');
+        } else {
+          const deletedContent = _.keys(_.get(data, "result.deletedContentMeta"));
+          // @ts-ignore
+          this.deleteContentTimeStamps[deletedContent] = _.get(data, "result.deletedContentMeta")[deletedContent];
+        }
         this.deletedContent.emit(this.deletedContentIds);
       }));
   }

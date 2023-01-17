@@ -16,6 +16,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { IFetchForumConfig } from '../../../../groups/interfaces';
 import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-update-course-batch',
@@ -201,11 +202,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         const userList = this.sortUsers(data.userDetails);
         this.participantList = userList.participantList;
         this.mentorList = userList.mentorList;
+        if (_.get(this.batchDetails, 'startDate')) this.pickerMinDateForEndDate = new Date(_.get(this.batchDetails, 'startDate'));
         this.initializeUpdateForm();
         this.getEnabledForumId();
         this.fetchParticipantDetails();
       }, (err) => {
-        if (err.error && err.error.params.errmsg) {
+        if (err?.error && err.error?.params?.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0054);
@@ -666,5 +668,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         }
       });
     }
+  }
+
+  /**
+   * @param  {MatDatepickerInputEvent<Date>} event
+   * @description - Function to reset the end date picker value on start date change
+   */
+  onStartDateChange(event: MatDatepickerInputEvent<Date>) {
+    this.pickerMinDateForEndDate = new Date(event.value);
+    this.batchUpdateForm.controls['endDate'].reset();
   }
 }

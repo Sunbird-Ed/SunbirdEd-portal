@@ -1,13 +1,13 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 h6 {
-  color: #333333;
+  color: var(--gray-800);
   font-size: 1.125rem;
   font-weight: bold;
 }
 
 p {
-  color: #666666;
+  color: var(--gray-400);
   font-size: 0.75rem;
 }
 
@@ -16,7 +16,7 @@ sb-form.faq-sbforms {}
 ::ng-deep {
   sb-form.faq-sbforms .multi-select-container .list-border {
     background: var(--white);
-    border: 0px solid #ddd !important;
+    border: 0px solid var(--rc-dddddd) !important;
   }
 
   .sb-textarea {
@@ -24,12 +24,12 @@ sb-form.faq-sbforms {}
   }
 
   .sb-modal-dropdown-web ul {
-    border: 0 solid #ddd !important;
+    border: 0 solid var(--rc-dddddd) !important;
   }
 
   sb-form.faq-sbforms>div:first-child {
     display: grid;
-    gap: 16px;
+    gap: calculateRem(16px);
     grid-template-columns: auto;
 
     @include respond-above(sm) {
@@ -86,7 +86,7 @@ sb-form.faq-sbforms {}
 
         > div {
           cursor: pointer;
-          padding: 16px;
+          padding: calculateRem(16px);
         }
       }
     }
@@ -96,7 +96,7 @@ sb-form.faq-sbforms {}
         height: 16rem;
       }
       .remaining-length {
-        color: #575757 !important;
+        color: var(--gray-400) !important;
       }
     }
   }

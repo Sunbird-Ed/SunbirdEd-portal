@@ -85,7 +85,7 @@
       max-width: calculateRem(900px);
 
       .sb-modal-content {
-        height: calc(100vh - 200px);
+        height: calc(100vh - 12.5rem);
       }
     }
 
@@ -306,7 +306,7 @@
     display: inline;
     width: 2rem;
     height: 2rem;
-    background-color: var(--rc-009D53);
+    background-color: var(--secondary-400);
     -webkit-mask-image: url(../../../assets/images/checkbox-icon.svg);
     mask-image: url(../../../assets/images/checkbox-icon.svg);
     -webkit-mask-size: contain;
