@@ -12,7 +12,7 @@
     &-container {
       z-index: 2;
       position: relative;
-      background-color: var(--rc-FAFAFA);
+      background-color: var(--gray-0);
     }
 
     &__details {
@@ -66,7 +66,7 @@
     .certificates-label {
       font-size: calculateRem(18px);
       letter-spacing: 0;
-      line-height: 20px;
+      line-height: calculateRem(20px);
     }
 
     .certificate-content-area {
@@ -86,12 +86,11 @@
 
       .certificate-sbcard {
         color: var(--gray-400);
-        font-family: "Noto Sans";
         font-size: calculateRem(12px);
         min-height: calculateRem(52px);
-        box-shadow: 0 3px 4px 0 var(--sbt-box-shadow-black);
+        box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
         background-color: var(--white);
-        border: .0625rem solid var(--rc-dedede);
+        border: .0625rem solid var(--rc-e2e3e5);
         border-radius: calculateRem(12px);
         cursor: pointer;
         position: relative;
@@ -174,7 +173,7 @@
           width: 100%;
           border-radius: calculateRem(8px);
           cursor: pointer;
-          border: calculateRem(1px) solid var(--rc-e5e5e5);
+          border: calculateRem(1px) solid var(--rc-e0e0e0);
 
           &:nth-child(1) {
             grid-area: smallcard;
@@ -188,7 +187,7 @@
             height: 100%;
 
             .certificate-frame {
-              box-shadow: 0 0.125rem 0.4375rem 0 var(--sbt-box-shadow-black);
+              box-shadow: 0 0.125rem 0.4375rem 0 rgba(var(--rc-rgba-black), .16);
               position: relative;
               width: 100%;
 
@@ -213,12 +212,32 @@
       cursor: text;
       font-weight: bold;
       position: relative;
-      left: 8px;
+      left: calculateRem(8px);
 
       html[dir="rtl"] & {
-        right: 8px;
+        right: calculateRem(8px);
         left: 0px;
       }
+    }
+  }
+
+  .sb-batch-update-modal {
+    .checkbox-img {
+      position: absolute;
+      top: 0.5rem;
+      left: 3rem;
+      display: inline;
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--secondary-400);
+      -webkit-mask-image: url(../../../../../assets/images/warning.svg);
+      mask-image: url(../../../../../assets/images/warning.svg);
+      -webkit-mask-size: contain;
+      -webkit-mask-position: 50% 50%;
+      -webkit-mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-position: 50% 50%;
+      mask-repeat: no-repeat;
     }
   }
 
@@ -253,7 +272,7 @@
       box-sizing: border-box;
       width: calculateRem(2px);
       opacity: 0.3;
-      background-color: var(--rc-d8d8d8);
+      background-color: var(--rc-d0d0d0);
     }
 
     .completion-text {
@@ -290,8 +309,8 @@
 .progess-add-content {
   .left-border {
     width: calculateRem(1px);
-    background-color: var(--rc-bdbdbd);
-    height: 2rem;
+    background-color: var(--gray-100);
+    height: 2.0rem;
     margin-left: calculateRem(20px);
   }
 

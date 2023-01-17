@@ -11,14 +11,14 @@
   cursor: pointer;
   position: relative;
   border-bottom: calculateRem(1px) solid var(--gray-0);
-  box-shadow: 0 calculateRem(3px) calculateRem(5px) 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 calculateRem(3px) calculateRem(5px) 0 rgba(var(--rc-rgba-black), 0.12);
   contain: content;
   &.active {
     background: var(--primary-100);
   }
   @include respond-above(sm) {
     border-radius: calculateRem(2px);
-    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(0, 0, 0, 0.16);
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
     border-bottom: 0px solid var(--gray-0);
   }
   &__main-area {
@@ -32,7 +32,6 @@
     height: calculateRem(72px);
     width: calculateRem(72px);
     overflow: hidden;
-    /* margin-right: 8px; */
     flex: 0 0 calculateRem(72px);
     padding: calculateRem(8px);
 

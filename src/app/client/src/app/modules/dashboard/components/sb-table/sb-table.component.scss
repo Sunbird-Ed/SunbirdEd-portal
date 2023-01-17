@@ -5,7 +5,7 @@
         align-self: flex-start;
     }
     .selected-item {
-        margin-bottom: 5px;
+        margin-bottom: calculateRem(5px);
         white-space: nowrap;
     }
     .dataTable{
@@ -15,52 +15,52 @@
         border: none !important;
     }
     .multiselect-dropdown .dropdown-btn {
-        padding: 7px 18px !important;
+        padding: calculateRem(7px) calculateRem(18px) !important;
         border: none !important;
     }
     .sb-filter-g__item {
-        border-radius: 24px;
-        min-width: 250px!important;
-        min-height: 40px!important;
-        font-size: 15px!important;
+        border-radius: calculateRem(24px);
+        min-width: calculateRem(250px)!important;
+        min-height: calculateRem(40px)!important;
+        font-size: calculateRem(15px)!important;
         padding: 0px;
-        margin-right: 18px;
-        border: 1px solid #ccc;
+        margin-right: calculateRem(18px);
+        border: calculateRem(1px) solid var(--gray-200);
     }
     .dropdown-list {
        border: none !important;
     }
     li.multiselect-item-checkbox {
-        margin: 10px;
+        margin: calculateRem(10px);
     }
     .dataTables_wrapper .dataTables_filter input {
-        background-color: #fff !important;
-        border: 1px solid var(--gray-200) !important;
+        background-color: var(--white) !important;
+        border: calculateRem(1px) solid var(--gray-200) !important;
     }
     
     .dropdown-multiselect__caret {
-        height: 40px !important;
+        height: calculateRem(40px) !important;
        
     }
     .dropdown-multiselect__caret::before {
         border-color: var(--ui-dropdown-selection-icon) transparent !important;
-        border-width: 4px 5px 0 !important;
+        border-width: calculateRem(4px) calculateRem(5px) 0 !important;
     }
     .dataTables_wrapper {
-        padding-top: 30px;
-        border-top: 1px solid #ccc;
-        padding: 20px;
+        padding-top: calculateRem(30px);
+        border-top: calculateRem(1px) solid var(--gray-200);
+        padding: calculateRem(20px);
     }
     table.dataTable {
         width: 100% !important;
     }
     .export-btn {
-        color: #fff !important;
+        color: var(--white) !important;
         background-color: var(--primary-400);
     }
     .sb-btn-normal {
         font-weight: 500 !important;
-        font-size: 15px !important;
+        font-size: calculateRem(15px) !important;
     }
     table.dataTable.no-footer {
         overflow-x: auto;
@@ -68,18 +68,18 @@
         display: block;
     }
     table.dataTable th, table.dataTable td {
-        min-width: 131px !important;
+        min-width: calculateRem(131px) !important;
    
     }   
     .sb-filter-g {
         grid-template-columns :repeat(auto-fill,minmax(300px,1fr)) !important;
-        margin-left: 20px;
-        margin-right: 20px;
-        margin-bottom: 25px !important;
+        margin-left: calculateRem(20px);
+        margin-right: calculateRem(20px);
+        margin-bottom: calculateRem(25px) !important;
         gap: 0px !important;
     }
     .dataTables_wrapper .dataTables_filter input {
-        border-radius: 24px !important;
+        border-radius: calculateRem(24px) !important;
     }
     table.dataTable th, table.dataTable td {
         text-align: center !important;
@@ -88,6 +88,6 @@
   
 }
 .filter-label {
-    font-size: 24px;
-    color: #024f9d;
+    font-size: calculateRem(24px);
+    color: var(--primary-400);
 }

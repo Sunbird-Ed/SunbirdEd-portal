@@ -3,11 +3,11 @@
 .warning-ecar-list {
     width: 100%;
     line-height: normal;
-    border-top: calculateRem(1px) solid #ddd;
+    border-top: calculateRem(1px) solid var(--rc-dddddd);
     font-size:calculateRem(14px);
 }
 .sb-modal-content .warning-ecar-list:last-of-type{
-    border-bottom: calculateRem(1px) solid #ddd;
+    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
 }
 .import-content{
     color:var(--tertiary-100); 

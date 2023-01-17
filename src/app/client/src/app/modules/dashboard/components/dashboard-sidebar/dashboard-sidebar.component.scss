@@ -1,9 +1,7 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
-:host {
-
-  .sidebar a,
-  .dashboard-title {
+:host{
+  .sidebar a ,.dashboard-title{
     display: block;
     color: var(--gray-800) !important;
     padding: calculateRem(8px);

@@ -57,7 +57,7 @@
   line-height: calculateRem(40px);
   border: none;
   padding: 0 calculateRem(20px);
-  border-radius: 28px;
+  border-radius: calculateRem(28px);
   box-shadow: var(--sbt-box-shadow-3px);
 
   .default.text {

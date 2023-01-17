@@ -31,7 +31,7 @@ body {
   text-rendering: optimizeLegibility;
 
   &.pushable {
-    background: var(--rc-E5EDF5) !important;
+    background: var(--rc-E0F1FD) !important;
 
     &>.pusher {
       background: transparent !important;
@@ -46,7 +46,7 @@ body {
 @include respond-above(sm) {
   body {
     .sb-mid-container-min-height {
-      min-height: calc(100vh - 288px);
+      min-height: calc(100vh - 18rem);
       margin-bottom: -2rem !important;
     }
   }
@@ -170,13 +170,13 @@ ol.ui.list ol {
 .ui.basic.primary.button,
 .ui.basic.primary.buttons .button {
   color: var(--primary-color) !important;
-  border: 1px solid var(--primary-color);
+  border: calculateRem(1px) solid var(--primary-color);
   box-shadow: none !important;
 }
 
 .ui.selection.dropdown:focus,
 .ui.selection.dropdown:focus~label {
-  border: 1px solid var(--primary-300);
+  border: calculateRem(1px) solid var(--primary-300);
 }
 
 /* language selector */
@@ -241,8 +241,8 @@ app-workspace {
 
 .sb-modal-addsummary {
   .ck.ck-editor__editable_inline {
-    min-height: calc(100vh - 300px);
-    max-height: calc(100vh - 300px);
+    min-height: calc(100vh - 18.75rem);
+    max-height: calc(100vh - 18.75rem);
     overflow: auto;
   }
 
@@ -250,10 +250,6 @@ app-workspace {
     position: relative;
     top: 0;
   }
-
-  // .ck.ck-editor__main {
-  //   padding-top: calculateRem(76px);
-  // }
 
   ul {
     list-style: disc;
@@ -383,7 +379,7 @@ app-workspace {
 
 .sbt-page-content {
   position: relative;
-  min-height: calc(100vh - 320px);
+  min-height: calc(100vh - 20rem);
 }
 
 .sbt-page-content-area {
@@ -470,7 +466,7 @@ app-workspace {
   position: absolute;
   bottom: 0px;
   left: calculateRem(-24px);
-  height: 112px;
+  height: calculateRem(112px);
   width: auto;
   transform: rotate(0deg);
 
@@ -519,12 +515,12 @@ app-workspace {
 }
 
 .new-footer {
-  min-height: calc(100vh - 296px);
+  min-height: calc(100vh - 18.5rem);
 }
 
 .footer-fix {
   padding-bottom: calculateRem(160px);
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 6.25rem);
 }
 
 .sb-table-hover tbody tr.non-clickable-row:hover {
@@ -536,13 +532,13 @@ app-workspace {
 .sbt-mygroups {
   .sb-bg-color-white {
     margin-top: 0px;
-    border-radius: calculateRem(24px);
+    border-radius: 1.5rem;
     background: var(--sbt-compt-bg) !important;
-    padding: 0px calculateRem(16px);
+    padding: 0px 1rem;
   }
 
   .content-header {
-    border-radius: 0px 0px calculateRem(24px) calculateRem(24px);
+    border-radius: 0px 0px 1.5rem 1.5rem;
     padding: 0px calculateRem(16px);
     background: var(--sbt-compt-bg) !important;
   }
@@ -594,10 +590,9 @@ html[dir="rtl"] {
 }
 
 .infoControl {
-  padding: 6px 8px;
-  background: var(--white);
-  background: var(--gray-0);
-  box-shadow: 0 0 15px rgba(var(--rc-rgba-black), 0.2);
+  padding: calculateRem(6px) calculateRem(8px);
+  background:var(--white);
+  box-shadow: 0 0 calculateRem(15px) rgba(var(--rc-rgba-black), 0.2);
   border-radius: calculateRem(5px);
 }
 
@@ -643,7 +638,7 @@ html[dir="rtl"] {
 
 html.PlayerMediaQueryClass {
   @include respond-above(xl) {
-    font-size: calc(12px + (18 - 12) * ((100vw - 320px) / (1920 - 320)));
+    font-size: calc(calculateRem(12px) + (18 - 12) * ((100vw - calculateRem(320px)) / (1920 - 320)));
   }
 }
 
@@ -792,7 +787,7 @@ quml-player {
 }
 
 .sbt-accessbility-bar {
-  background-color: #000;
+  background-color: var(--black);
 }
 
 .ui.text.menu .item {
@@ -950,7 +945,7 @@ app-landing-page {
     }
 
     .fontResizeBtn {
-      border: 0.0625rem solid #484848;
+      border: 0.0625rem solid var(--gray-400);
       background: none;
       color: var(--white);
       width: 2rem;
@@ -1104,7 +1099,7 @@ a.ui.labels .label:hover {
     }
 
     .sb-textbox {
-      padding: calculateRem(4px) calculateRem(16px) !important;
+      padding: calculateRem(4px) 1rem !important;
     }
   }
 
@@ -1189,9 +1184,9 @@ html[layout="joy"] {
     }
   }
 
-  .sb--card__img.sb--card__image-pos {
-    z-index: unset;
-  }
+  // .sb--card__img.sb--card__image-pos {
+  //   z-index: unset;
+  // }
 }
 
 html[data-mode="darkmode"][layout="base"] {
@@ -1285,15 +1280,26 @@ html[data-mode="darkmode"][layout="base"] {
 }
 
 // tab index css
-*:focus-visible, .profile-avtar:focus-within {
-  border: 0.0625rem var(--red-400) solid !important;
+*:focus-visible {
+  border: 0.0625rem var(--red) solid !important;
   border-radius: 0.25rem;
   outline: none;
 }
 
+.profile-avtar:focus-within {
+  border: calculateRem(1px) var(--accessibility-red2) solid !important;
+  border-radius: calculateRem(5px);
+  outline: none;
+}
+
 input[type="radio"]:focus-visible,
-input[type="checkbox"]:focus-visible, .sb-checkbox.sb-checkbox-primary.sb-checkbox-rightaligned label:focus-within  {
-  outline: calculateRem(2px) solid var(--red-400);
+input[type="checkbox"]:focus-visible {
+  outline: calculateRem(2px) solid var(--accessibility-red2);
+  border-radius: calculateRem(5px);
+}
+
+.sb-checkbox.sb-checkbox-primary.sb-checkbox-rightaligned label:focus-within {
+  outline: calculateRem(2px) solid var(--accessibility-red2);
   border-radius: calculateRem(5px);
 }
 
@@ -1419,7 +1425,7 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 }
 
 .required-asterisk {
-  color: #A30010;
+  color: var(--accessibility-red);
 }
 
 .dot-divider {
@@ -1489,4 +1495,51 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
       cursor: no-drop;
     }
   }
+}
+
+.ui.basic.error.label {
+  background: none !important;
+  color: var(--accessibility-red) !important;
+  border: 0 !important;
+  padding-left: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  padding: calculateRem(10px) 0;
+}
+.ui.grey.button {
+  background: var(--gray-200);
+  color: var(--white);
+  pointer-events: none !important;
+  cursor: not-allowed !important; 
+  height: calculateRem(38px) !important;
+}
+.grey.text {
+  color: var(--gray-400);
+}
+.orange.text {
+  color: var(--accessibility-red);
+}
+.orange-border {
+  border-color: var(--accessibility-red) !important;
+}
+.blue.text {
+  color: var(--primary-color);
+}
+
+.ui.form.borderd input:focus {
+  border-color: var(--primary-400) !important;
+}
+.ui.light-sea-green.button {
+  background: var(--secondary-400);
+  color: var(--white);
+  height: calculateRem(38px) !important;
+}
+.ui.basic.blue.navigation.label {
+  background: var(--white) !important;
+  color: var(--primary-color) !important;
+  border: 0  !important;
+  padding-left: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  padding: calculateRem(10px) 0;
 }

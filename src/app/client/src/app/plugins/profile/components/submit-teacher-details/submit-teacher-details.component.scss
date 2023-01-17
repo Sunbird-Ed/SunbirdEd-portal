@@ -3,17 +3,15 @@
 :host{
   .sb-md-container {
     max-width: calculateRem(720px);
-    width: calc(100% - 32px);
+    width: calc(100% - 2rem);
     background: var(--white);
     margin: 0 auto;
     border-radius: calculateRem(4px);
   
     .teacher-header{
-      border-bottom: calculateRem(0.5px) solid var(--rc-979797);
+      border-bottom: calculateRem(0.5px) solid var(--gray-200);
     }
-    .teacher-buttons{
-      // border-top: calculateRem(0.5px) solid var(--rc-979797);
-    }
+    
     .is-invalid {
       border-color: var(--red-400) !important;
     }

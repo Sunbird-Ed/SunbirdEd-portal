@@ -23,8 +23,8 @@ div.content {
     grid-template-areas:
       "smallcard largecard"
       "smallcard2 largecard";
-    grid-gap: 16px;
-    grid-template-columns: 392px 1fr;
+    grid-gap: calculateRem(16px);
+    grid-template-columns: calculateRem(392px) 1fr;
 
     @include respond-below(sm) {
       grid-template-columns: 1fr 2fr;

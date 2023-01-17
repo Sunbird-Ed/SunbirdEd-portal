@@ -1,9 +1,6 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .add-entity-modal{
-  // .sb-modal-content {
-  //   height: calc(100vh - 350px) !important;
-  //   }
   .content{
     max-height: 60vh;
     label{
@@ -20,15 +17,15 @@
     border-top: none;
   }
   .search-box{
-    margin-top: 15px;
+    margin-top: calculateRem(15px);
   }
 }
 
 .sb-onboard {
   &__header {
     width: 100%;
-    margin: 20px 0px;
-    padding-left : 15px;
+    margin: calculateRem(20px) 0px;
+    padding-left : calculateRem(15px);
   }
 
   &__content {

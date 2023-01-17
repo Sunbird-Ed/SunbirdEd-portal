@@ -1,4 +1,4 @@
-
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "~@project-sunbird/sb-styles/assets/varSass" as *;
 /* circular list*/
 $sb-circular-list-item-padding-ltr: 0.5rem 0 0.5rem 2rem;
@@ -32,7 +32,7 @@ $sb-bordered-list-border-radius: calculateRem(4px) calculateRem(4px) 0 0;
 $sb-bordered-list-item-font-size: 1rem;
 $sb-bordered-list-item-padding: 1rem 1.5rem;
 $sb-bordered-list-item-border-bottom: calculateRem(1px) solid var(--gray-100);
-$sb-bordered-list-item-border-background: var(--rc-f7f7f7);
+$sb-bordered-list-item-border-background: var(--gray-0);
 $sb-bordered-list-item-title-font-size: calculateRem(14px);
 $sb-bordered-list-item-title-color: var(--primary-color);
 $sb-bordered-list-item-title-extra-font-size: calculateRem(12px);
