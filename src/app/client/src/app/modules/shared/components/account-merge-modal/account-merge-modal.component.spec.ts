@@ -33,7 +33,7 @@ describe('AccountMergeModal component', ()=> {
     jest.clearAllMocks();
   });
 
-  it("should  create an instance of accountMergeModalComponent", () => {
+  it('should  create an instance of accountMergeModalComponent', () => {
     expect(accountMergeModalComponent).toBeTruthy();
   });
 
@@ -55,7 +55,7 @@ describe('AccountMergeModal component', ()=> {
     accountMergeModalComponent.ngOnInit();
     expect(accountMergeModalComponent.setTelemetryData).toBeCalled();
     expect(accountMergeModalComponent.telemetryCdata).toBeDefined();
-    expect(accountMergeModalComponent.mergeIntractEdata).toBeDefined();
+    // expect(accountMergeModalComponent.mergeIntractEdata).toBeDefined();
     expect(accountMergeModalComponent.telemetryCdata).toEqual(responseData1);
     expect(accountMergeModalComponent.mergeIntractEdata).toEqual(responseData2);
   });

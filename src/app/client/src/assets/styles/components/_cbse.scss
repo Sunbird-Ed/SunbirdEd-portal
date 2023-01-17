@@ -318,11 +318,7 @@
         position: initial;
         max-height: 100vh;
         overflow-y: auto;
-<<<<<<< HEAD
-        padding: 1rem 0.5rem 1rem 1.5rem;
-=======
         padding: ($base-block-space * 2) calculateRem(8px) ($base-block-space * 2) calculateRem(24px);
->>>>>>> upstream/release-5.1.0
         height: 100%;
       }
 
