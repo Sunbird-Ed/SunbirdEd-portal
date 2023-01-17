@@ -126,6 +126,7 @@ export class AppComponent implements OnInit, OnDestroy {
   OnboardingFormConfig: any;
   isStepperEnabled = false;
   isPopupEnabled = false;
+  hrefPath = '/resources';    // Added this variable to use for Login - Accessibility links 
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -1019,6 +1020,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     }
   }
+
   skipToMainContent() {
     const getTheme = document.documentElement.attributes['layout'].value;
     if (getTheme == 'joy') {
@@ -1051,6 +1053,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   scrollTo(height) {
     window.scroll({
       top: height,
