@@ -1,8 +1,5 @@
-import { Injectable } from '@angular/core';
 import { FormService } from '../form/form.service';
-import { tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { reduce } from 'lodash-es';
 import { SchemaService } from './schema.service';
 import { response} from './schema.service.spec.data';
 
