@@ -32,24 +32,8 @@ export const response = {
       }
    },
 
-   downloadSuccess: {
-
-      'id': 'api.content.download',
-      'ver': '1.0',
-      'ts': '2019-06-26T12:48:40.459Z',
-      'params': {
-         'resmsgid': 'bc7bc38f-c20d-4017-8b3d-d2d96cb9276d',
-         'msgid': 'd4c81b77-660f-4c37-a463-ce8497f90b31',
-         'status': 'successful',
-         'err': null,
-         'errmsg': null
-      },
-      'responseCode': 'OK',
-      'result': {
-         'downloadId': '18debcd2-55dc-4d88-8a15-ecc3170546d5'
-      }
-
-
+   response: {
+      destFolder: '/file_to_save/'
    },
 
    exportSuccess: {
@@ -78,32 +62,30 @@ export const response = {
       params: 'params',
       responseCode: 'OK',
       result: {
-         content: {
-            downloadStatus: '',
-            mimeType: 'application/vnd.ekstep.ecml-archive',
-            body: 'body',
-            identifier: 'domain_66675',
-            versionKey: '1497028761823',
-            status: 'Live',
-            me_averageRating: '4',
-            description: 'ffgg',
-            name: 'ffgh',
-            concepts: ['AI', 'ML'],
-            contentType: '',
-            code: '',
-            framework: '',
-            userId: '',
-            userName: '',
-            desktopAppMetadata: {
-               addedUsing: 'download',
-               createdOn: 1569830943591,
-               ecarFile: 'domain_66675.ecar',
-               lastUpdateCheckedOn: 1569832294531,
-               updatedOn: 1569832294531,
-               updateAvailable: true
-            }
-         }
+         response: {
+            contents : [
+               {
+                  createdOn : '12345',
+                  identifier: 'do_3129981407884492801158'
+               },
+               {
+                  createdOn : '12345678',
+                  identifier: 'do_3129981407884492801159'
+               },
+               {
+                  createdOn : '1234567890',
+                  identifier: 'do_3129981407884492801160'
+               }
+            ]
       }
+      }
+   },
+   error:{
+      id: 'api.content.read',
+      ver: '1.0',
+      ts: '2018-05-03T10:51:12.648Z',
+      params: 'params',
+      responseCode: 'error'
    },
    content_update_success:
    {
@@ -163,5 +145,23 @@ export const response = {
         'responseCode': 'CLIENT_ERROR',
         'result': {}
       }
-    }
+    },
+   contentDownloadLists: [
+      {
+         contentDownloadList: [
+            {
+               step: 'COMPLETE',
+               identifier: 'do_3129981407884492801158',
+               status: 'DOWNLOADED'
+            },
+            {
+               step: 'INPROCESS',
+               identifier: 'do_3129981407884492801159',
+               status: 'INPROCESS'
+            }
+         ],
+         status: 'INPROCESS',
+         contentId: 'do_3129981407884492801160',
+      }
+   ]
 };
