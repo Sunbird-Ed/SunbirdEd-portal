@@ -95,8 +95,8 @@ module.exports = {
             if (err) { }
             responseObj.logo = results.logo
               ? results.logo : baseUrl + '/assets/images/sunbird_logo.png'
-              responseObj.secondaryLogo = results.secondaryLogo ? 
-              results.secondaryLogo : envHelper.SECONDARY_LOGO ? baseUrl + '/assets/images/sunbird_secondarylogo.png': baseUrl + '/assets/images/sunbird_logo.png'
+              responseObj.secondaryLogo = results.secondaryLogo ? results.secondaryLogo :
+               (envHelper.SECONDARY_LOGO ? baseUrl + '/assets/images/sunbird_secondarylogo.png': baseUrl + '/assets/images/sunbird_logo.png')
             responseObj.poster = results.poster
               ? results.poster : baseUrl + '/assets/images/sunbird_logo.png'
             responseObj.favicon = results.favicon
