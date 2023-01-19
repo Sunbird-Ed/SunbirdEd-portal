@@ -235,7 +235,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         (error) => {
           this.showUserMergeAccount = true
           this.showUserMyGroup =  true
-          // this.showDownloadMobileApp = true;
         }
       );
   }
