@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '../../../../../shared';
-import {  TelemetryService } from '../../../../../telemetry';
+import { TelemetryService } from '../../../../../telemetry';
 import { OtpComponent } from './otp.component';
 import { OtpComponentMockResponse } from './otp.component.spec.data';
 import { SignupService } from '../../services';
@@ -14,7 +14,12 @@ import { ProfileService } from '../../../../../../plugins/profile';
 
 describe('OtpComponent', () => {
   let component: OtpComponent;
-  const resourceService: Partial<ResourceService> = {};
+  const resourceService: Partial<ResourceService> = {
+    imsg: {
+      "m0086": "Incorrect OTP. Number of attempts remaining : {remainingAttempt}"
+    },
+    frmelmnts: { lbl: { resendOTP: "Resend OTP" } },
+  } as any;
   const signupService: Partial<SignupService> = {
     verifyOTP: jest.fn(),
     generateOTPforAnonymousUser: jest.fn(),
@@ -37,7 +42,8 @@ describe('OtpComponent', () => {
   };
   const telemetryService: Partial<TelemetryService> = {
     interact: jest.fn(),
-    log: jest.fn()
+    log: jest.fn(),
+    end: jest.fn()
   };
   const deviceDetectorService: Partial<DeviceDetectorService> = {};
   const router: Partial<Router> = {
@@ -46,7 +52,13 @@ describe('OtpComponent', () => {
   const utilService: Partial<UtilService> = {
     parseJson: jest.fn()
   };
-  const configService: Partial<ConfigService> = {};
+  const configService: Partial<ConfigService> = {
+    constants: {
+      HTTP_STATUS_CODES: {
+        "OTP_VERIFICATION_FAILED": "OTP_VERIFICATION_FAILED"
+      }
+    }
+  } as any
   const tncService: Partial<TncService> = {
     getTncConfig: jest.fn().mockReturnValue(observableOf({
       'id': 'api',
@@ -81,9 +93,7 @@ describe('OtpComponent', () => {
       }
     }
   };
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
+
 
   beforeEach(() => {
     component = new OtpComponent(
@@ -98,6 +108,7 @@ describe('OtpComponent', () => {
       tncService as TncService,
       toasterService as ToasterService,
       profileService as ProfileService);
+
     const fb = new FormBuilder();
     component.signUpdata = fb.group({
       name: ['test'],
@@ -127,6 +138,8 @@ describe('OtpComponent', () => {
         password: 'Test@123'
       }
     };
+
+
 
     resourceService.frmelmnts = OtpComponentMockResponse.resourceBundle.frmelmnts;
     jest.spyOn(component, 'enableSignUpSubmitButton');
@@ -209,6 +222,23 @@ describe('OtpComponent', () => {
     });
     component.verifyOTP();
     expect(signupService.verifyOTP).toHaveBeenCalled();
+    expect(component.infoMessage).toBe('')
+  });
+
+  it('should not verify the OTP for phone', () => {
+    component.mode = 'phone';
+    resourceService.frmelmnts = OtpComponentMockResponse.resourceBundle.frmelmnts;
+    resourceService.messages = OtpComponentMockResponse.resourceBundle.messages;
+    component.disableResendButton = true;
+    OtpComponentMockResponse.verifyOtpErrorResponse.error.params.status = "OTP_VERIFICATION_FAILED";
+    jest.spyOn(signupService, 'verifyOTP').mockImplementation(() => throwError(OtpComponentMockResponse.verifyOtpErrorResponse));
+    component.otpForm = new FormGroup({
+      otp: new FormControl('895136', [Validators.required]),
+      tncAccepted: new FormControl(false, [Validators.requiredTrue])
+    });
+    component.verifyOTP();
+    expect(signupService.verifyOTP).toHaveBeenCalled();
+    expect(component.infoMessage).toBe('')
   });
 
   it('should not verify the OTP for email', () => {
@@ -225,6 +255,7 @@ describe('OtpComponent', () => {
     expect(signupService.verifyOTP).toHaveBeenCalled();
 
   });
+
   it('it should resend otp', () => {
     jest.spyOn(signupService, 'generateOTPforAnonymousUser').mockReturnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
     jest.spyOn(component, 'resendOTP').mockImplementation(((captcha) => {
@@ -339,7 +370,12 @@ describe('OtpComponent', () => {
   });
 
   it('it should call redirectToSignUp', () => {
-    jest.spyOn(component.redirectToParent, 'emit')
+    jest.spyOn(component.redirectToParent, 'emit');
+    Object.defineProperty(window, 'location', {
+      get() {
+        return { href: 'test.com' };
+      },
+    });
     component.redirectToSignUp();
     expect(component.redirectToParent.emit).toHaveBeenCalled()
   });
@@ -370,7 +406,24 @@ describe('OtpComponent', () => {
   });
 
   it('it should  call generateResendOTP', () => {
-    component.isP2CaptchaEnabled = 'false'
+    component.isP2CaptchaEnabled = 'true';
+    component.captchaRef = {
+      execute: jest.fn()
+    } as any
+    component.startingForm = {
+      emailPassInfo: {
+        key: 'sunbird_ed@yopmail.com',
+        type: 'email',
+        password: 'Test@123'
+      }
+    };
+    jest.spyOn(component, 'resendOTP')
+    component.generateResendOTP();
+    expect(component.resendOTP).not.toHaveBeenCalled();
+  });
+
+  it('it should not call generateResendOTP', () => {
+    component.isP2CaptchaEnabled = 'false';
     component.startingForm = {
       emailPassInfo: {
         key: 'sunbird_ed@yopmail.com',
@@ -590,5 +643,29 @@ describe('OtpComponent', () => {
     expect(component.redirectToSignPage).toHaveBeenCalled();
     expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryCreateUserSuccess);
     expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryTncSuccess);
+  });
+
+  it('it should enable submit button', () => {
+    component.otpForm = {
+      valueChanges: of({}),
+      status: 'VALID',
+      controls: {
+        identifier: { valueChanges: of({}), }
+      },
+    } as any;
+    component.enableSignUpSubmitButton()
+    expect(component.disableSubmitBtn).toBeFalsy();
+  });
+
+  it('it should disable submit button', () => {
+    component.otpForm = {
+      valueChanges: of({}),
+      status: '',
+      controls: {
+        identifier: { valueChanges: of({}), }
+      },
+    } as any;
+    component.enableSignUpSubmitButton()
+    expect(component.disableSubmitBtn).toBeTruthy();
   });
 });
