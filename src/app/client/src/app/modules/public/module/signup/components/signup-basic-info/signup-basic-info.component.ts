@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit,Input, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { ResourceService, UtilService, ConfigService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -10,7 +10,7 @@ import * as _ from 'lodash-es';
 @Component({
   selector: 'app-signup-basic-info',
   templateUrl: './signup-basic-info.component.html',
-  styleUrls: ['./signup-basic-info.component.scss' , '../signup/signup_form.component.scss']
+  styleUrls: ['./signup-basic-info.component.scss', '../signup/signup_form.component.scss']
 })
 export class SignupBasicInfoComponent implements OnInit {
 
@@ -23,17 +23,18 @@ export class SignupBasicInfoComponent implements OnInit {
   @Input() submitInteractEdata;
   @Input() telemetryCdata;
   @Input() routeParams;
+  @Input() registerConfig;
   birthYearOptions: Array<string> = [];
   filteredYOB: Observable<number[]>;
   yearOfBirth: string;
   isMinor: boolean;
   @Input() startingForm: object;
   instance: ''
-  
+
   constructor(
     public resourceService: ResourceService, public telemetryService: TelemetryService,
     public utilService: UtilService, public configService: ConfigService, private _fb: FormBuilder) { }
-  
+
 
   ngOnInit(): void {
     const endYear = new Date().getFullYear();
@@ -41,11 +42,7 @@ export class SignupBasicInfoComponent implements OnInit {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.personalInfoForm = this._fb.group({
       name: ['', Validators.required],
-      yearOfBirth: ['', [Validators.required, 
-        Validators.pattern(/^-?(0|[1-9]\d*)?$/),
-        Validators.min(startYear),
-        Validators.max(endYear), 
-      ]]
+      yearOfBirth: ['', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/), Validators.min(startYear), Validators.max(endYear),]]
     })
     this.initiateYearSelecter();
     // @ts-ignore
@@ -71,12 +68,12 @@ export class SignupBasicInfoComponent implements OnInit {
   }
 
   next() {
-    if(this.personalInfoForm.valid) {
+    if (this.personalInfoForm.valid) {
       let userDetails;
-      if(localStorage.getItem('guestUserDetails')) {
+      if (localStorage.getItem('guestUserDetails')) {
         userDetails = JSON.parse(localStorage.getItem('guestUserDetails'));
       } else {
-        userDetails = {name: this.personalInfoForm.controls.name.value}
+        userDetails = { name: this.personalInfoForm.controls.name.value }
       }
       userDetails.name = this.personalInfoForm.controls.name.value;
       localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
@@ -93,7 +90,10 @@ export class SignupBasicInfoComponent implements OnInit {
   }
 
   initiateYearSelecter() {
-    const endYear = new Date().getFullYear();
+    let endYear = new Date().getFullYear();
+    if (this.registerConfig?.ageAboveEighteen) {
+      endYear = new Date().getFullYear() - 18;
+    }
     const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
     for (let year = endYear; year > startYear; year--) {
       this.birthYearOptions.push(year.toString());

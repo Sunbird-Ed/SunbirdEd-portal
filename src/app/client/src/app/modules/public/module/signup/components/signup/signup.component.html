@@ -2,7 +2,8 @@
 
 <div class="layout">
   <div class="left-panel">
-    <div class="image"><img alt={{tenantName}} src="{{logo}}">
+    <div class="image">
+      <img alt={{tenantName}} src="{{logo}}" />
     </div>
   </div>
 
@@ -16,29 +17,30 @@
     </div>
 
     <div class="content-center-container">
-    <div class="logo-content">
+      <div class="logo-content">
         <div class="text-center mb-8">
-          <img class="image centered" tabindex="0" aria-label="" alt={{tenantName}} height="56" src="{{logo}}">
+          <img class="image centered" tabindex="0" aria-label="" alt={{tenantName}} height="56" src="{{ logo }}" />
         </div>
         <h3 tabindex="0" class="sb-color-primary text-center font-weight-bold mb-8" *ngIf="!routeParams?.loginMode">
           {{resourceService.frmelmnts.lbl.welcomeToInstance | interpolate:'{instance}': instance}}</h3>
-    </div>
+      </div>
 
-    <ng-container [ngSwitch]="signupStage">
-              <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
-                [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" [routeParams]="routeParams"
-                (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
-              </app-signup-basic-info>
-              <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm" 
-                (subformInitialized)="subformInitialized('onboardingInfo', $event)" (triggerNext)="changeStep()">
-              </app-signup-onboarding-info>
-              <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" [startingForm]="signUpForm" 
-                (subformInitialized)="subformInitialized('emailPassInfo', $event)" (triggerNext)="changeStep()">
-              </app-signup-email-password>
-              <app-otp class="w-100" *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm" (triggerNext)="changeStep()"></app-otp>
-    </ng-container>
-  </div>
+      <ng-container [ngSwitch]="signupStage">
+        <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
+          [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata" *ngSwitchCase="Stage.BASIC_INFO"
+          [startingForm]="signUpForm" [routeParams]="routeParams" [registerConfig]="registerConfig"
+          (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
+        </app-signup-basic-info>
+        <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm"
+          (subformInitialized)="subformInitialized('onboardingInfo', $event)" (triggerNext)="changeStep()">
+        </app-signup-onboarding-info>
+        <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" [startingForm]="signUpForm"
+          (subformInitialized)="subformInitialized('emailPassInfo', $event)" (triggerNext)="changeStep()">
+        </app-signup-email-password>
+        <app-otp class="w-100" *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm"
+          (triggerNext)="changeStep()"></app-otp>
+      </ng-container>
+    </div>
   </div>
 
 </div>
