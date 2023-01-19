@@ -86,11 +86,12 @@ describe('BadgesService', () => {
       });
       const assertions = {};
       // act
-      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
+      badgesService.getDetailedBadgeAssertions(req, assertions).subscribe((data) => {
+        expect(badgesService['learner'].post).toBeCalled();
       });
     });
   });
-  xit('should return detailed badge Assertions', (done) => {
+  it('should return detailed badge Assertions', () => {
     jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
       id: 'id',
       params: {
@@ -98,15 +99,22 @@ describe('BadgesService', () => {
         status: 'staus'
       },
       responseCode: 'OK',
-      result: {},
+      result: {
+        badges: [{
+          badgeName: 'test',
+          badgeId: '12345',
+          badgeStatus: 'Issued'
+        }]
+      },
       ts: '',
       ver: ''
     }));
-    const assertions = {};
+    const assertions = [{
+      badgeId: '12345'
+    }];
     // act
-    badgesService.getDetailedBadgeAssertions(req, assertions).subscribe(() => {
-      done();
+    badgesService.getDetailedBadgeAssertions(req, assertions).subscribe((data) => {
+      expect(badgesService['learner'].post).toBeCalled();
     });
   });
-
 });

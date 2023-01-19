@@ -7,7 +7,7 @@ describe('Test spec to create actionService', () => {
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
       URLS: {
-        DEVICE_PREFIX: '/device/',
+        ACTION_PREFIX: '/action/',
         DEVICE: {
           PROFILE: 'profile/'
         }
@@ -31,5 +31,6 @@ describe('Test spec to create actionService', () => {
 
   it('should create a instance of ActionService', () => {
     expect(actionService).toBeTruthy();
+    expect(actionService.baseUrl).toBe('/action/');
   });
 });
