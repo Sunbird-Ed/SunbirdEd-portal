@@ -12,19 +12,19 @@
     "ng": "ng",
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "start-desktop": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --output-path=../../desktop/public/portal --watch=true --configuration=desktop-staging && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
-    "prod-desktop": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --output-path=../../desktop/public/portal --configuration=desktop-production && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
+    "prod-desktop": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --output-path=../../desktop/public/portal --configuration=desktop-production && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
-    "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
+    "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
     "post-build": "gulp post:build",
-    "build-dev": "ng build --prod --build-optimizer=false --deployUrl dist/",
+    "build-dev": "ng build --configuration production --build-optimizer=false --deployUrl dist/",
     "test": "jest --collectCoverage=true --coverageReporters=lcov",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
     "test-coverage": "jest --silent --ci --w 2 --collectCoverage=true --coverageReporters=lcov",
-    "build-cdn": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../dist-cdn",
+    "build-cdn": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --progress=false --outputPath=./../dist-cdn",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
-    "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --prod --stats-json"
+    "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --configuration production --stats-json"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
@@ -35,22 +35,22 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/build-angular": "0.1102.19",
-    "@angular/animations": "^11.2.14",
+    "@angular-devkit/build-angular": "12.2.18",
+    "@angular/animations": "^12.2.17",
     "@angular/cdk": "11.2.13",
-    "@angular/cli": "^11.2.19",
-    "@angular/common": "^11.2.14",
-    "@angular/compiler": "^11.2.14",
-    "@angular/compiler-cli": "^11.2.14",
-    "@angular/core": "^11.2.14",
-    "@angular/forms": "^11.2.14",
+    "@angular/cli": "^12.2.18",
+    "@angular/common": "^12.2.17",
+    "@angular/compiler": "^12.2.17",
+    "@angular/compiler-cli": "^12.2.17",
+    "@angular/core": "^12.2.17",
+    "@angular/forms": "^12.2.17",
     "@angular/http": "^7.2.10",
-    "@angular/localize": "11.2.14",
+    "@angular/localize": "12.2.17",
     "@angular/material": "11.2.13",
     "@angular/material-moment-adapter": "11.2.13",
-    "@angular/platform-browser": "^11.2.14",
-    "@angular/platform-browser-dynamic": "^11.2.14",
-    "@angular/router": "^11.2.14",
+    "@angular/platform-browser": "^12.2.17",
+    "@angular/platform-browser-dynamic": "^12.2.17",
+    "@angular/router": "^12.2.17",
     "@ngx-translate/core": "12.0.0",
     "@ngx-translate/http-loader": "^5.0.0",
     "@project-sunbird/chatbot-client": "3.0.3",
@@ -143,11 +143,10 @@
     "video.js": "7.18.1",
     "videojs-contrib-quality-levels": "2.1.0",
     "videojs-http-source-selector": "1.1.6",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.18",
-    "@angular/language-service": "^11.2.14",
+    "@angular/language-service": "^12.2.17",
     "@types/jest": "^27.4.1",
     "@types/jquery": "^3.3.38",
     "@types/jquery.fancytree": "2.7.34",
@@ -161,7 +160,7 @@
     "protractor": "~7.0.0",
     "ts-node": "^4.1.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.8"
+    "typescript": "~4.3.5"
   },
   "resolutions": {
     "moment": "2.29.1"
