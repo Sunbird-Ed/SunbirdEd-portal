@@ -4,12 +4,13 @@ import { ResourceService, ConfigService, NavigationHelperService, UtilService, L
 import { UserService } from '../../../core';
 import { MainFooterComponent } from './main-footer.component';
 import { of } from 'rxjs';
-import { TenantService } from '../../services';
+import { TenantService, FormService } from '../../services';
 import { ChangeDetectorRef, Renderer2 } from '@angular/core';
 
 describe('MainFooterComponent', () => {
     let component: MainFooterComponent;
     const mockResourceService: Partial<ResourceService> = {};
+    const mockFormService: Partial<FormService> = {};
     const mockRouter: Partial<Router> = {
         navigate: jest.fn(),
         url: '/home'
@@ -97,6 +98,7 @@ describe('MainFooterComponent', () => {
             mockLayoutService as LayoutService,
             mockNavigationhelperService as NavigationHelperService,
             mockUtilService as UtilService,
+            mockFormService as FormService,
         )
     });
 
