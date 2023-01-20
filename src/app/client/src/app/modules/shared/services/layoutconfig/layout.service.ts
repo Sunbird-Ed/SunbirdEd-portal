@@ -1,6 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ConfigService } from '../config/config.service';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { ServerResponse,ConfigService, BrowserCacheTtlService} from '@sunbird/shared'
+import { CacheService } from 'ng2-cache-service';
+import { PublicDataService } from '@sunbird/core';
+import { map } from 'rxjs/operators';
 
 export const COLUMN_TYPE = {
   threeToNine: [3, 9],
@@ -15,6 +18,7 @@ export const COLUMN_TYPE = {
 })
 export class LayoutService {
 
+
   /**
    * BehaviorSubject Containing Layout Config.
    */
@@ -22,7 +26,10 @@ export class LayoutService {
   public _layoutConfigData$: Observable<any> = this._layout$.asObservable();
   updateSelectedContentType = new EventEmitter<any>();
 
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService,
+    private cacheService: CacheService,
+    public publicDataService: PublicDataService,
+    private browserCacheTtlService: BrowserCacheTtlService,) { }
 
   layoutConfig: any;
   acessibleLayoutEnabled: boolean;
@@ -105,5 +112,34 @@ export class LayoutService {
       left: 0,
       behavior: 'smooth'
     });
+  }
+
+  setData(data, name) {
+    this.cacheService.set(name, data, {
+      maxAge: this.browserCacheTtlService.browserCacheTtl
+    });
+  }
+
+  getFormData(formInputParams): Observable<ServerResponse> {
+    const pageData: any = this.cacheService.get(formInputParams.formAction + formInputParams.subType);
+    if (pageData) {
+      return observableOf(pageData);
+    } else {
+      const channelOptions = {
+        url: this.configService.urlConFig.URLS.dataDrivenForms.READ,
+        data: {
+          request: {
+            type: formInputParams.formType,
+            action: formInputParams.formAction,
+            subType: formInputParams.subType,
+            component: formInputParams.component
+          }
+        }
+      };
+      return this.publicDataService.post(channelOptions).pipe(map((data) => {
+        this.setData(data, formInputParams.formAction + formInputParams.subType);
+        return data;
+      }));
+    }
   }
 }
