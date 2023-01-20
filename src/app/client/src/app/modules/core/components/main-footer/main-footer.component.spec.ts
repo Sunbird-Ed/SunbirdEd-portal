@@ -6,11 +6,14 @@ import { MainFooterComponent } from './main-footer.component';
 import { of } from 'rxjs';
 import { TenantService, FormService } from '../../services';
 import { ChangeDetectorRef, Renderer2 } from '@angular/core';
-
+import { mockData } from './main-footer.component.spec.data';
+ 
 describe('MainFooterComponent', () => {
     let component: MainFooterComponent;
     const mockResourceService: Partial<ResourceService> = {};
-    const mockFormService: Partial<FormService> = {};
+    const mockFormService: Partial<FormService> = {
+        getFormConfig: jest.fn().mockReturnValue(of(mockData.formData)) as any
+    };
     const mockRouter: Partial<Router> = {
         navigate: jest.fn(),
         url: '/home'
