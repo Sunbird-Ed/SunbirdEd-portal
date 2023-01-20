@@ -1,5 +1,7 @@
 <!-- New Pop up -->
-<app-modal-wrapper *ngIf="showModal && !isStepper" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showModal && !isStepper"
+  [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}"
+  (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">
@@ -93,7 +95,8 @@
     </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center d-block">
+  <!--show this buttons for previous main modal -->
+  <!-- <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center d-block">
     <div class="sb-onboard__footer mt-0">
       <ng-content select="[slot=popup-footer]"></ng-content>
     </div>
@@ -117,5 +120,32 @@
         </span>
       </button>
     </div>
+  </mat-dialog-actions> -->
+
+  <!--show this buttons for modal stepper -->
+  <mat-dialog-actions class="mb-0 sb-mat__modal__actions">
+    <button type="button"
+      class="stepper-back-btn mx-8 sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn text-uppercase">
+      <i class="icon-svg icon-svg--xxs icon-back mr-4">
+        <svg class="icon icon-svg--primary">
+          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+        </svg></i>Back</button>
+    <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase stepper-clear-btn mx-8" type="submit"
+      [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+      [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
+      tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
+    </button>
+    <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase stepper-next-btn" type="submit"
+      [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+      [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+      (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
+      <span class='arrow-icon'>
+        <em class="icon-svg icon-svg--xxs icon-back">
+          <svg class="icon icon-svg--white">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
+          </svg>
+        </em>
+      </span>
+    </button>
   </mat-dialog-actions>
 </div>

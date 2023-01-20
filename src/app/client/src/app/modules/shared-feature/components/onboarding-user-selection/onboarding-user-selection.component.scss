@@ -1,1 +1,13 @@
 @use './../user-onboarding/user-onboarding.component.scss' as *;
+
+      .sb-mat__modal__actions {
+        justify-content: flex-end;
+        .stepper-next-btn{
+         width: 10.5rem;
+        }
+        .stepper-back-btn{
+          width: 6.375rem;
+        }
+      }
+
+

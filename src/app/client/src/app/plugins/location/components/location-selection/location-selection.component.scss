@@ -3,3 +3,16 @@
     border-color: var(--gray-200);
   }
 }
+
+.sb-mat__modal__actions {
+  justify-content: flex-end;
+
+    .stepper-clear-btn , .stepper-next-btn {
+      width: 10.5rem;
+    }
+    .stepper-back-btn {
+      width: 6.375rem;
+    }
+  }
+
+
