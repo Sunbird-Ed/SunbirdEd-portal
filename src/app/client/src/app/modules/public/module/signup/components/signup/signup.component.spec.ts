@@ -158,26 +158,26 @@ describe('SignupComponent', () => {
 
   describe("ngOnDestroy", () => {
     it('should destroy sub', () => {
-        component.unsubscribe = {
+        component.unsubscribe$ = {
             next: jest.fn(),
             complete: jest.fn()
         } as any;
         component.ngOnDestroy();
-        expect(component.unsubscribe.next).toHaveBeenCalled();
-        expect(component.unsubscribe.complete).toHaveBeenCalled();
+        expect(component.unsubscribe$.next).toHaveBeenCalled();
+        expect(component.unsubscribe$.complete).toHaveBeenCalled();
     });
 
     it('should unsubscribe tenantDataSubscription', () => {
         component.tenantDataSubscription = {
           unsubscribe: jest.fn()
         } as any;
-        component.unsubscribe = {
+        component.unsubscribe$ = {
             next: jest.fn(),
             complete: jest.fn()
         } as any;
         component.ngOnDestroy();
-        expect(component.unsubscribe.next).toHaveBeenCalled();
-        expect(component.unsubscribe.complete).toHaveBeenCalled();
+        expect(component.unsubscribe$.next).toHaveBeenCalled();
+        expect(component.unsubscribe$.complete).toHaveBeenCalled();
         expect(component.tenantDataSubscription.unsubscribe).toHaveBeenCalled();
     });
   });
