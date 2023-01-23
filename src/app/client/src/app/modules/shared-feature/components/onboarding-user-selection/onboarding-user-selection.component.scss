@@ -1,1 +1,10 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 @use './../user-onboarding/user-onboarding.component.scss' as *;
+
+      .sb-mat__modal__actions {
+        .stepper-next-btn{
+         width: 10.5rem;
+        }
+      }
+
+
