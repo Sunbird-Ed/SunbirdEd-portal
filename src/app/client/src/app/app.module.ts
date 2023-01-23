@@ -13,7 +13,7 @@ import { WebExtensionsConfig } from './framework.config';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
-import { DeviceDetectorModule } from 'ngx-device-detector';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
 import {ChatLibModule, ChatLibService} from '@project-sunbird/chatbot-client';
 import { RouteReuseStrategy } from '@angular/router';
@@ -47,7 +47,6 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
           deps: [HttpClient]
       }
     }),
-    DeviceDetectorModule.forRoot(),
     SbSearchFilterModule.forRoot('web'),
     ChatLibModule,
     SharedFeatureModule,
@@ -65,6 +64,7 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
     CacheService,
     ChatLibService,
     TranslateStore,
+    DeviceDetectorService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }

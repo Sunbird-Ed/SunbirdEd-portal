@@ -10,7 +10,7 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
+import { NgInviewModule } from '@stockopedia/angular-inport';
 // import { Angular2CsvModule } from 'angular2-csv';  Angular2CsvModule removed TODO: use Blob object to generate csv file
 
 @NgModule({

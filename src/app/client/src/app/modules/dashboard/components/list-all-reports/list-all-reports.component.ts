@@ -8,7 +8,7 @@ import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import 'datatables.net';
 import { Location } from '@angular/common';
 

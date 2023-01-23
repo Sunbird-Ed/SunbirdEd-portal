@@ -19,13 +19,14 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./choose-user.component.scss']
 })
 export class ChooseUserComponent implements OnInit, OnDestroy {
+  isFullScreenView: any;
 
   constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
               public toasterService: ToasterService, public router: Router, private utilService: UtilService,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute, public courseService: CoursesService,
-              private connectionService: ConnectionService, public layoutService: LayoutService) {
+              private connectionService: ConnectionService, public layoutService: LayoutService,private navigationHelperService: NavigationHelperService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -209,5 +210,11 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.utilService.redirect('/resources');
     }, 5100);
+  }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
   }
 }

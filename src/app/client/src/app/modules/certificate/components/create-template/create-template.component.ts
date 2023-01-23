@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
 import {ActivatedRoute} from '@angular/router';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
@@ -267,7 +267,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   editSVG(logosArray, stateLogos) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       for (let i = 0; i < logosArray.length; i++) {
         const logo = logosArray[i];
         if (logo) {

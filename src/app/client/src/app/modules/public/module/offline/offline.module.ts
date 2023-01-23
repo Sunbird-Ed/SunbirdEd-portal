@@ -17,11 +17,11 @@ import {
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
-import { SlickModule } from 'ngx-slick';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { NgInviewModule } from 'angular-inport';
+import { NgInviewModule } from '@stockopedia/angular-inport';
 import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({
     imports: [
@@ -38,7 +38,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
         SuiAccordionModule,
         SuiTabsModule,
         OrderModule,
-        SlickModule,
+        SlickCarouselModule,
         ReactiveFormsModule,
         CommonConsumptionModule,
         SuiDimmerModule,

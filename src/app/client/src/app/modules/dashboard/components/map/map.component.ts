@@ -70,7 +70,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private toasterService: ToasterService, private reportService: ReportService) {
-    this.mappingConfig = (<any>mappingConfig.default);
+    this.mappingConfig = (<any>mappingConfig);
     this.mapId = `map-${random(0, 1000)}`;
   }
 

@@ -1,13 +1,7 @@
 {
   "compileOnSave": false,
-  "angularCompilerOptions": {
-    "genDir": "aot",
-    "debug": true,
-    "enableIvy": false
-  },
   "compilerOptions": {
     "baseUrl": "./",
-    "module": "esnext",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -15,7 +9,11 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es5",
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "target": "es2017",
+    "module": "es2020",    
     "paths": {
       "@sunbird/core": [
         "app/modules/core"
@@ -98,8 +96,7 @@
     ],
     "removeComments": true,
     "lib": [
-      "es2017",
-      "es6",
+      "es2018",
       "dom"
     ]
   },

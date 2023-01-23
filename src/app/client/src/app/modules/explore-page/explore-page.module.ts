@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgInviewModule } from 'angular-inport';
+import { NgInviewModule } from '@stockopedia/angular-inport';
 import { ExplorePageRoutingModule } from './explore-page-routing.module';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import {
@@ -13,7 +13,7 @@ import {
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
-import { SlickModule } from 'ngx-slick';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ExplorePageComponent } from './components';
 import { ContentSectionModule } from 'content-section-v11';
 import {ObservationModule} from '../observation/observation.module';
@@ -30,7 +30,7 @@ import {ObservationModule} from '../observation/observation.module';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule, SlickModule, ContentSectionModule, ObservationModule
+    CommonConsumptionModule, ContentSearchModule, SlickCarouselModule, ContentSectionModule, ObservationModule
   ]
 })
 export class ExplorePageModule { }
