@@ -1,5 +1,7 @@
 /* eslint-disable */
-import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization } from '@sunbird/shared';
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { ServerResponse } from '../../../shared/interfaces/serverResponse';
+import {  IUserProfile,IUserData,IOrganization} from '../../../shared/interfaces/userProfile';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';

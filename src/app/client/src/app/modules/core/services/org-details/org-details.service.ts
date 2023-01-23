@@ -1,7 +1,11 @@
 import {throwError, of, Observable, BehaviorSubject } from 'rxjs';
 import { mergeMap, map, catchError, skipWhile, shareReplay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { ToasterService } from '../../../shared/services/toaster/toaster.service';
+import { ResourceService } from '../../../shared/services/resource/resource.service';
+import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-ttl/browser-cache-ttl.service';
+import { ServerResponse } from '../../../shared/interfaces/serverResponse';
 import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
