@@ -10,13 +10,38 @@
   text-align: center;
 }
 
-button {
-  float: right;
+.stepper-btns {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  left:1.5rem;
+  justify-content: flex-end;
+  @include respond-below(sm){
+    justify-content: center;
+  }
+
+  .stepper-done-btn , .stepper-next-btn{
+    width: 10.5rem;
+  }
 }
 
+.stepper-screen{
+  max-height: 65vh;
+  position: relative;
+  & .aspectratio[data-ratio="16:9"] {
+    padding-top: 48.25%;
+  }
+
+}
+
+.preview-content {
+  height: 100vh;
+}
 
 // user-details gray box new design css
 .user-detail-container {
+  overflow-y: auto;
+  max-height: 11.8rem;
   border-radius: 1.5rem;
   background: var(--rc-e9e5e5);
   display: grid;
@@ -31,7 +56,7 @@ button {
     display: flex;
 
     @include respond-below(sm) {
-      flex-direction: column;
+      flex-direction: row;
     }
 
     .label-values {
@@ -105,42 +130,61 @@ button {
 }
 
 ::ng-deep {
-  .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal {
-    margin: 0 auto;
+  .cdk-overlay-pane.modal-stepper .mat-dialog-container .sb-mat__modal {
+    max-height: 36rem;
+    height: 100%;
+    position: relative;
 
+    @include respond-below(sm){
+      max-height: 100%;
+    }
     & .mat-dialog-title {
       text-align: center;
     }
 
     & .sb-mat__modal__content {
-      padding: 0;
+      max-height: 29rem;
+      height: 100%;
+      border-bottom-left-radius: 1.5rem;
+      border-bottom-right-radius: 1.5rem;
       overflow: hidden;
-      max-height: 100%;
-
-      & .ui.form {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(20.5rem, 20.5rem));
-        grid-column-gap: 1rem;
-        align-items: center;
-
-        padding-top: 1rem;
-        @include respond-below(sm) {
-          grid-template-columns: 1fr;
-        }
-        & .sb-field-form-group {
-         margin-top: 0 !important;
-        }
+      @include respond-below(sm){
+        max-height: 100%;
+        height: 100%;
       }
     }
+  }
+
+  .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal {
+    & .sb-mat__modal__content {
+      padding: 0;
+      @include respond-below(sm){
+        max-height: 55rem;
+      }
+    }
+
+    & .mat-dialog-content {
+      padding: 0;
+      max-height: 50vh;
+    }
+  }
+
+  .cdk-overlay-container .cdk-global-overlay-wrapper .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal .mat-dialog-title {
+    text-align: center;
+    padding: 0 0 1rem 0;
   }
 
   .mat-horizontal-stepper-header {
     pointer-events: none;
   }
 
+  .mat-stepper-horizontal.mat-stepper-label-position-bottom .mat-horizontal-stepper-header .mat-step-label {
+    padding: 0.25rem 0 0 0;
+  }
+
   .mat-stepper-label-position-bottom .mat-horizontal-stepper-header,
   .mat-vertical-stepper-header {
-    padding: 1rem;
+    padding: 0.25rem;
   }
 
   .mat-step-header .mat-step-icon.mat-step-icon-selected,
@@ -168,23 +212,24 @@ button {
     color: var(--primary-color);
   }
 
-  .mat-step-header .mat-step-label{
-    padding: 0.25rem 0 0 0;
-  }
-
-  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header,
-  .mat-vertical-stepper-header {
-    padding: 1rem;
-  }
-
   .sb-mat__modal__content .mat-stepper-horizontal .mat-horizontal-content-container {
     padding: 0;
-    max-height: 18.75rem;
-    overflow: auto;
   }
 
-  mat-label {
-    display: none;
+  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::after,
+  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::before {
+    top: 1.25rem;
   }
 
+  .mat-stepper-label-position-bottom .mat-stepper-horizontal-line {
+    top: 1.25rem;
+  }
+
+  .mat-step-header.cdk-keyboard-focused, .mat-step-header.cdk-program-focused, .mat-step-header:hover {
+    background: none;
+ }
+
+ *:focus-visible {
+   border: none !important;
+ }
 }
