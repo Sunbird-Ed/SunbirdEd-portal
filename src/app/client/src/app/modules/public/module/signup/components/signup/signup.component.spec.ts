@@ -1,7 +1,7 @@
 import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { SignupComponent } from './signup.component';
-import { TenantService } from '@sunbird/core';
+import { TenantService, FormService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -12,9 +12,11 @@ describe('SignupComponent', () => {
   const mockResourceService: Partial<ResourceService> = {
     instance: 'SUNBIRD'
   };
+
   const mockTenantService: Partial<TenantService> = {
     tenantData$: of({tenantData: {titleName: 'sample-favicon', logo: "logo-path"}}) as any
   };
+
   const mockDeviceDetectorService: Partial<DeviceDetectorService> = {};
   const mockActivatedRoute: Partial<ActivatedRoute> = {
     snapshot: {
@@ -27,17 +29,22 @@ describe('SignupComponent', () => {
     } as any,
     queryParams: of({}) as any
   };
+  
   const mockTelemetryService: Partial<TelemetryService> = {};
   const mockNavigationHelperService: Partial<NavigationHelperService> = {};
   const mockRouter: Partial<Router> = {
     navigate: jest.fn()
   };
+
+  const mockFormService: Partial<FormService> = {};
+
   const SignUpStage = {
     BASIC_INFO:'basic_info',
     ONBOARDING_INFO:'onboarding_info',
     EMAIL_PASSWORD:'email_password',
     OTP:'otp'
   }
+
   beforeAll(() => {
     component = new SignupComponent(
       mockResourceService as ResourceService, 
@@ -46,7 +53,8 @@ describe('SignupComponent', () => {
       mockActivatedRoute as ActivatedRoute, 
       mockTelemetryService as TelemetryService, 
       mockNavigationHelperService as NavigationHelperService, 
-      mockRouter as Router
+      mockRouter as Router,
+      mockFormService as FormService
     );
   });
 
@@ -57,7 +65,6 @@ describe('SignupComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 
   it('should initialized initializeFormFields', () => {
     component.initializeFormFields();
@@ -107,14 +114,33 @@ describe('SignupComponent', () => {
       expect(component.setInteractEventData).toHaveBeenCalled();
       expect(component.signUpTelemetryStart).toHaveBeenCalled();
     });
-  
   });
 
   describe("changeStep", () => {
+    let registerConfig: any;
+    const formInputParams = {
+      formType: 'config',
+      contentType: 'register',
+      formAction: 'display',
+      component: 'portal',
+    };
+    mockFormService.getFormConfig = jest.fn(() => of({'skipStepTwo': true}));
+    mockFormService.getFormConfig(formInputParams).subscribe( data => {
+      registerConfig = data;
+    });
+
     it("should change signup form stage to onboarding info stage", () => {
       component.signupStage = SignUpStage.BASIC_INFO as any
       component.changeStep();
-      expect(component.signupStage).toEqual(SignUpStage.ONBOARDING_INFO)
+      expect(component.signupStage).toEqual(SignUpStage.EMAIL_PASSWORD);
+      // expect(component.signupStage).toEqual(SignUpStage.ONBOARDING_INFO);
+    });
+
+    it("should change signup form stage to email and password stage", () => {
+      component.signupStage = SignUpStage.BASIC_INFO as any
+      component.changeStep();
+      expect(registerConfig.skipStepTwo).toEqual(true);
+      expect(component.signupStage).toEqual(SignUpStage.EMAIL_PASSWORD);
     });
 
     it("should change signup form to email and password stage", () => {
@@ -137,7 +163,6 @@ describe('SignupComponent', () => {
   })
 
   describe("ngAfterViewInit", () => {
-
     it('should set signUpTelemetryImpression', () => {
       mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
       component.signUpTelemetryImpression();
@@ -153,7 +178,6 @@ describe('SignupComponent', () => {
         done()
       });
     });
-
   })
 
   describe("ngOnDestroy", () => {

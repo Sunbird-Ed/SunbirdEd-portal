@@ -140,8 +140,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   changeStep() {
     switch(this.signupStage) {
       case this.Stage.BASIC_INFO:
-        // this.signupStage = this.Stage.ONBOARDING_INFO;
-        this.signupStage = (this.registerConfig?.skipStepTwo) ? this.Stage.EMAIL_PASSWORD : this.Stage.ONBOARDING_INFO;
+        this.signupStage = this.Stage.ONBOARDING_INFO;
+        if (this.registerConfig?.skipStepTwo) {
+          this.signupStage = this.Stage.EMAIL_PASSWORD;
+        }
         break;
       case this.Stage.ONBOARDING_INFO:
         this.signupStage = this.Stage.EMAIL_PASSWORD;
