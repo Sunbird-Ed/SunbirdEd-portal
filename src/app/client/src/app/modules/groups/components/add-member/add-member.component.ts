@@ -12,7 +12,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { TelemetryService } from '@sunbird/telemetry';
 import { VERIFY_USER, USER_SEARCH } from '../../interfaces/telemetryConstants';
-import { sessionKeys } from '../../../../modules/groups';
+import { sessionKeys } from '../../../../modules/groups/interfaces/group';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
