@@ -2,7 +2,9 @@
 import { map, mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
-import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService } from '../../../shared/services/config/config.service';
+import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-ttl/browser-cache-ttl.service';
+import {  ServerResponse } from '../../../shared/interfaces/serverResponse';
 import { Observable, of } from 'rxjs';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';

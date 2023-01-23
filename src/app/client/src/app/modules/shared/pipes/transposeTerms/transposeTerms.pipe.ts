@@ -7,7 +7,7 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { get } from 'lodash-es';
-import { GenericResourceService } from '@sunbird/shared';
+import { GenericResourceService } from '../../services/genericResource/genericResource.service';
 
 @Pipe({
   name: 'transposeTerms'
