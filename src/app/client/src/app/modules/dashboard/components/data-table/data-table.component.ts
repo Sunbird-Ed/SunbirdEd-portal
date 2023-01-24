@@ -3,7 +3,7 @@ import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/
 import $ from 'jquery';
 import 'datatables.net';
 import * as naturalSortDataTablePlugin from './../../../../../assets/libs/naturalSortDataTablePlugin';
-import * as dayjs from 'dayjs';
+import  dayjs from 'dayjs';
 const GRADE_HEADER = 'Grade';
 import * as _ from 'lodash-es';
 

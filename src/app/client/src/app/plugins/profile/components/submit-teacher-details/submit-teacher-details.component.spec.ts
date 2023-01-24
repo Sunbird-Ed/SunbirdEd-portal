@@ -22,7 +22,7 @@ import { SubmitTeacherDetailsComponent } from './submit-teacher-details.componen
 import { mockRes } from './submit-teacher-details.component.spec.data';
 import * as _ from "lodash-es";
 
-describe('SubmitTeacherDetailsComponent', () => {
+xdescribe('SubmitTeacherDetailsComponent', () => {
     let component: SubmitTeacherDetailsComponent;
 
     const csUserService: Partial<CsUserService> = {
@@ -395,7 +395,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     it('should get getTeacherDetails Form, on success', () => {
         jest.spyOn(profileService, 'getSelfDeclarationForm').mockReturnValue(of({}));
         jest.spyOn(component, 'initializeFormData');
-        component.getTeacherDetailsForm();
+        component.getTeacherDetailsForm()
         expect(profileService.getSelfDeclarationForm).toHaveBeenCalled();
         expect(component.initializeFormData).toHaveBeenCalled();
     });

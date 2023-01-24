@@ -13,7 +13,7 @@ import * as _ from 'lodash-es';
 import { FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer, of } from 'rxjs';
 import { map, takeUntil, switchMap } from 'rxjs/operators';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
 import { MatDialog } from '@angular/material/dialog';

@@ -3,7 +3,7 @@ import { IInteractEventObject } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
