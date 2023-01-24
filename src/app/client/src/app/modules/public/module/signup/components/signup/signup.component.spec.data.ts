@@ -89,6 +89,5 @@ export const SignUpComponentMockData = {
       'key': '9999999999',
       'type': 'phone'
     }
-  },
+  }
 };
-
