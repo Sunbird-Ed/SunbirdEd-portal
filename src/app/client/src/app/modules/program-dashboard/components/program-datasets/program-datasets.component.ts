@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
 import { ReportService } from '../../../dashboard/services';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];

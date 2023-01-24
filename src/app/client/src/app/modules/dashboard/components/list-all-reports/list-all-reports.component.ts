@@ -7,8 +7,8 @@ import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as dayjs from 'dayjs';
-import * as $ from 'jquery';
+import dayjs from 'dayjs';
+import  $ from 'jquery';
 import 'datatables.net';
 import { Location } from '@angular/common';
 
