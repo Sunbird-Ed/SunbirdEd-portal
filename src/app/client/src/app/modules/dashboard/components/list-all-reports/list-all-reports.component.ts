@@ -7,8 +7,8 @@ import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment';
-import $ from 'jquery';
+import * as dayjs from 'dayjs';
+import * as $ from 'jquery';
 import 'datatables.net';
 import { Location } from '@angular/common';
 
@@ -223,9 +223,9 @@ export class ListAllReportsComponent implements OnInit {
         {
           title: 'Last Published Date', data: 'updatedon',
           render: (value) => {
-            const date = moment(value);
+            const date = dayjs(value);
             if (date.isValid()) {
-              return `<td> ${moment(value).format('YYYY/MM/DD')} </td>`;
+              return `<td> ${dayjs(value).format('YYYY/MM/DD')} </td>`;
             }
             return _.startCase(_.toLower(value));
           }

@@ -26,7 +26,6 @@ import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
 
-declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
 
 @Component({
@@ -576,13 +575,13 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       }
     };
   }
-  showSideBar() {
-    if (this.userService.loggedIn) {
-      this.toggleSideMenu(true);
-    } else {
-      jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
-    }
-  }
+  // showSideBar() {
+  //   if (this.userService.loggedIn) {
+  //     this.toggleSideMenu(true);
+  //   } else {
+  //     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+  //   }
+  // }
 
   switchUser(event) {
     let userSubscription;

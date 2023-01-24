@@ -8,7 +8,6 @@ import { CacheService } from 'ng2-cache-service';
 import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { merge } from 'rxjs';
-declare var jQuery: any;
 
 /**
  * Main menu component
