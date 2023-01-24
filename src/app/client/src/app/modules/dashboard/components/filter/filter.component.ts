@@ -3,7 +3,7 @@ import { IInteractEventObject } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
@@ -79,12 +79,12 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   ranges: any = {
-    'Today': [moment(), moment()],
-    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    'Today': [dayjs(), dayjs()],
+    'Yesterday': [dayjs().subtract(1, 'days'), dayjs().subtract(1, 'days')],
+    'Last 7 Days': [dayjs().subtract(6, 'days'), dayjs()],
+    'Last 30 Days': [dayjs().subtract(29, 'days'), dayjs()],
+    'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
+    'Last Month': [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')]
   };
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
   @ViewChild('matAutocomplete') matAutocomplete: MatAutocomplete;
@@ -154,8 +154,8 @@ export class FilterComponent implements OnInit, OnDestroy {
 
         if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
           const dateRange = _.uniq(_.map(chartData, _.get(filter, 'reference')));
-          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+          this.pickerMinDate = dayjs(dateRange[0], 'DD-MM-YYYY');
+          this.pickerMaxDate = dayjs(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
           this.dateFilterReferenceName = filter.reference;
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
@@ -182,7 +182,6 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.selectedFilters = filters;
         this.filterData();
       }, (err) => {
-        console.log(err);
       });
       if (this.chartData.selectedFilters) {
           this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
@@ -214,13 +213,12 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   getDateRange({ startDate, endDate }, columnRef) {
-    this.selectedStartDate = moment(startDate).subtract(1, 'day');
-    this.selectedEndDate = moment(endDate).add(1, 'day');
+    this.selectedStartDate = dayjs(startDate).subtract(1, 'day');
+    this.selectedEndDate = dayjs(endDate);
     const dateRange = [];
-    const currDate = moment(this.selectedStartDate).startOf('day');
-    const lastDate = moment(this.selectedEndDate).startOf('day');
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
-      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
+    const dateDiff = this.selectedEndDate.diff(this.selectedStartDate, 'd');
+    for (let i = 0; i < dateDiff; i++) {
+      dateRange.push(dayjs(startDate).add(i, 'days').format('DD-MM-YYYY'))
     }
     this.filtersFormGroup.get(columnRef).setValue(dateRange);
   }

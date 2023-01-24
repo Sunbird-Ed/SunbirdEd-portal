@@ -3,7 +3,7 @@ import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/
 import $ from 'jquery';
 import 'datatables.net';
 import * as naturalSortDataTablePlugin from './../../../../../assets/libs/naturalSortDataTablePlugin';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 const GRADE_HEADER = 'Grade';
 import * as _ from 'lodash-es';
 
@@ -26,10 +26,10 @@ export class DataTableComponent implements AfterViewInit {
         const columnDefs: any = [{
             'targets': 0,
             'render': (data) => {
-                const date = moment(data, 'DD-MM-YYYY');
+                const date = dayjs(data, 'DD-MM-YYYY');
                 if (date.isValid()) {
                     return `<td><span style="display:none">
-                    ${moment(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
+                    ${dayjs(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
                 }
                 return data;
             }
@@ -49,10 +49,10 @@ export class DataTableComponent implements AfterViewInit {
                     {
                         'targets': 0,
                         'render': (data) => {
-                            const date = moment(data, 'DD-MM-YYYY');
+                            const date = dayjs(data, 'DD-MM-YYYY');
                             if (date.isValid()) {
                                 return `<td><span style="display:none">
-                                ${moment(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
+                                ${dayjs(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
                             }
                             return data;
                         },
