@@ -8,7 +8,7 @@ import { UserOrgManagementComponent } from './components/user-org-management/use
 import { ManageRoutingModule } from './manage-routing.module';
 import { ManageService } from './services/manage/manage.service';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
+import { NgInviewModule } from '@stockopedia/angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
 import { AvatarModule } from 'ngx-avatar';

@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ObservationRoutingModule } from './observation-routing.module';
 import { MlGuard } from './guards';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
+import { NgInviewModule } from '@stockopedia/angular-inport';
 import { AvatarModule } from 'ngx-avatar';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';

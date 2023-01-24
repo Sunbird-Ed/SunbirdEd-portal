@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgInviewModule } from 'angular-inport';
+import { NgInviewModule } from '@stockopedia/angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { PublicCourseConsumptionPageComponent,
   ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from './components';

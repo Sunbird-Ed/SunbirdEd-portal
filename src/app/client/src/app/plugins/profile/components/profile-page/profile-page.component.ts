@@ -97,6 +97,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
+  isFullScreenView: any;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -692,6 +693,12 @@ public onLocationModalClose(event) {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     }
   }, 5000);
+}
+
+checkFullScreenView() {
+  this.navigationhelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+    this.isFullScreenView = isFullScreen;
+  });
 }
 
 }

@@ -33,12 +33,12 @@
         <div *ngIf="false" [ngClass]="{'relative9': isUserLoggedIn()}">
           <div class="sb-bg-color-white py-16 mb-24">
             <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
-            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
               <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
                 <sb-course-curiculum-card ngClass="{'sb--card--seperator': !isUserLoggedIn()}" [index]="index"
                   [cardData]="content" (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>
               </div>
-            </ngx-slick>
+            </ngx-slick-carousel>
           </div>
         </div>
         <div class="sb-library-cards relative9">
@@ -113,8 +113,8 @@
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
               <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
               </div>
-              <ngx-slick *ngIf="displayBanner " class="carousel banner-carousel relative9 mt-24"
-                #slickModal="slick-modal" [config]="bannerSlideConfig">
+              <ngx-slick-carousel *ngIf="displayBanner " class="carousel banner-carousel relative9 mt-24"
+                #slickModal="slick-carousel" [config]="bannerSlideConfig">
                 <div ngxSlickItem *ngFor="let banner of primaryBanner;" class="mr-16">
                   <!-- <div class="sb--card sb--card--theme2 banner-image" role="link" tabindex="0" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
                                     <div class="banner-overlay"></div>
@@ -125,15 +125,15 @@
                     (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
 
                 </div>
-              </ngx-slick>
-              <ngx-slick class="carousel banner-carousel relative9 mt-24"
-                *ngIf="displayBanner && secondaryBanner.length>0" #slickModal="slick-modal"
+              </ngx-slick-carousel>
+              <ngx-slick-carousel class="carousel banner-carousel relative9 mt-24"
+                *ngIf="displayBanner && secondaryBanner.length>0" #slickModal="slick-carousel"
                 [config]="secondaryBannerSlideConfig">
                 <div ngxSlickItem *ngFor="let banner of secondaryBanner" class="banner-image">
                   <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'"
                     (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
                 </div>
-              </ngx-slick>
+              </ngx-slick-carousel>
               <hr
                 *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
                 class="section-hr my-32" />

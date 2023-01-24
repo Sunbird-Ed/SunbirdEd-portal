@@ -11,7 +11,7 @@ import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { combineLatest, merge, Subject } from 'rxjs';
 import { map, mergeMap, takeUntil } from 'rxjs/operators';
-import * as TreeModel from 'tree-model';
+import TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';

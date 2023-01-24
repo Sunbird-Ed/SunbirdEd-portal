@@ -20,7 +20,7 @@
 
     <!--Content-->
     <div *ngIf="refresh" class="sb-pageSection-content pt-8">
-        <ngx-slick (afterChange)="handleAfterChange($event)" class="carousel" #slickModal="slick-modal"
+        <ngx-slick-carousel (afterChange)="handleAfterChange($event)" class="carousel" #slickModal="slick-carousel"
             [config]="slideConfig">
             <div ngxSlickItem *ngFor="let content of contentList; let i=index" class="mr-16">
                 <!--Batch Card-->
@@ -51,7 +51,7 @@
                 </ng-template>
                 <!--/Course & Resourse Card-->
             </div>
-        </ngx-slick>
+        </ngx-slick-carousel>
     </div>
     <!--/Content-->
     <!--Page Section Divider-->
