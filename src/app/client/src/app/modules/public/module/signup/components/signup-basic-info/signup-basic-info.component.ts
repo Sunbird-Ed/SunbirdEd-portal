@@ -23,7 +23,7 @@ export class SignupBasicInfoComponent implements OnInit {
   @Input() submitInteractEdata;
   @Input() telemetryCdata;
   @Input() routeParams;
-  @Input() registerConfig;
+  @Input() registerFormConfig;
   birthYearOptions: Array<string> = [];
   filteredYOB: Observable<number[]>;
   yearOfBirth: string;
@@ -90,10 +90,7 @@ export class SignupBasicInfoComponent implements OnInit {
   }
 
   initiateYearSelecter() {
-    let endYear = new Date().getFullYear();
-    if (this.registerConfig?.ageAboveEighteen) {
-      endYear = new Date().getFullYear() - 18;
-    }
+    let endYear = (this.registerFormConfig?.ageAboveEighteen) ? (new Date().getFullYear() - this.configService.constants.SIGN_UP.MINIMUN_AGE) : new Date().getFullYear();
     const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
     for (let year = endYear; year > startYear; year--) {
       this.birthYearOptions.push(year.toString());
