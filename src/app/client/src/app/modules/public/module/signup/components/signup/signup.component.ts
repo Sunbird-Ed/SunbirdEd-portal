@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   isIOSDevice = false;
   signupStage: SignUpStage;
   routeParams: any;
-  registerConfig: any = {};
+  registerFormConfig: any = {};
   get Stage() { return SignUpStage; }
 
   constructor(
@@ -77,7 +77,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Telemetry Start
     this.signUpTelemetryStart();
-    this.getRegisterConfig();
+    this.getRegisterFormConfig();
   }
 
   ngAfterViewInit () {
@@ -141,7 +141,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     switch(this.signupStage) {
       case this.Stage.BASIC_INFO:
         this.signupStage = this.Stage.ONBOARDING_INFO;
-        if (this.registerConfig?.skipStepTwo) {
+        if (this.registerFormConfig?.skipStepTwo) {
           this.signupStage = this.Stage.EMAIL_PASSWORD;
         }
         break;
@@ -168,7 +168,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
-  getRegisterConfig(): void {
+  getRegisterFormConfig(): void {
     const formInputParams = {
       formType: 'config',
       contentType: 'register',
@@ -179,7 +179,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.formService.getFormConfig(formInputParams)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((responseData) => {
-        this.registerConfig = responseData;
+        this.registerFormConfig = responseData;
       })
   }
 
