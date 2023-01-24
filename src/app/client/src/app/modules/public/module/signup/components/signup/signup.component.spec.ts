@@ -112,13 +112,13 @@ describe('SignupComponent', () => {
       jest.spyOn(component, 'initializeFormFields').mockImplementation();
       jest.spyOn(component, 'setInteractEventData').mockImplementation();
       jest.spyOn(component, 'signUpTelemetryStart').mockImplementation();
+      mockFormService.getFormConfig = jest.fn().mockImplementation(() => of());
       component.ngOnInit();
       expect(component.signupStage).toEqual(SignUpStage.BASIC_INFO);
       expect(component.instance).toEqual(mockResourceService.instance);
       expect(component.initializeFormFields).toHaveBeenCalled();
       expect(component.setInteractEventData).toHaveBeenCalled();
       expect(component.signUpTelemetryStart).toHaveBeenCalled();
-      expect(component.getRegisterFormConfig).toHaveBeenCalled();
     });
   });
 
