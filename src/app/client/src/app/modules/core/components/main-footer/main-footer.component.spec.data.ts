@@ -1,6 +1,9 @@
 export const mockData = {
-    formData: {
+    showDownloadLink: {
         "showDownloadAppLink": true
+    },
+    hideDownloadLink: {
+        "showDownloadAppLink": false
     }
   };
   
