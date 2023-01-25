@@ -166,9 +166,8 @@ describe('MainFooterComponent', () => {
 
     describe("getFooterConfig", () => {
         it('should call getFooterConfig', () => {
-            mockFormService.getFormConfig = jest.fn().mockImplementation(() => of(mockData.showDownloadLink))
             jest.spyOn(mockFormService, 'getFormConfig');
-            component.getFooterConfig();
+            component.ngOnInit();
             expect(mockFormService.getFormConfig).toHaveBeenCalled();
         });
 
