@@ -173,9 +173,12 @@ export class AppComponent implements OnInit, OnDestroy {
     while (child.firstChild) {
       child = child.firstChild;
     }
-    const pageTitle = _.get(child, 'snapshot.data.pageTitle') || _.get(child, 'snapshot.data.telemetry.pageid') || _.get(this.userService, 'rootOrgName');
+    let pageTitle = _.get(child, 'snapshot.data.pageTitle') || _.get(child, 'snapshot.data.telemetry.pageid') || _.get(this.userService, 'rootOrgName');
     if (pageTitle) {
+      pageTitle = this.instance + ": "+ pageTitle;
       document.title = pageTitle;
+    } else {
+      document.title = this.instance;
     }
   }
 
