@@ -33,12 +33,12 @@ export class LandingPageComponent implements OnInit {
     this.layoutService.getFormData(formInputParams).subscribe(
       (data:ServerResponse)=>{
         if(data.result.form.data){
-          this.UserArticle= data.result.form.data.fields[0]
+          this.UserArticle= data.result.form.data?.fields[0]
           this.showUserArticle = this.UserArticle['showFeatureArticle']
           if(!this.showUserArticle){
               this.showAnnoucements = false
           }
-          this.userCalender = data.result.form.data.fields[1]
+          this.userCalender = data.result?.form.data?.fields[1]
           this.showUserCalender = this.userCalender['showCalender']
         }   
       },
