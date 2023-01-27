@@ -126,6 +126,7 @@ export class AppComponent implements OnInit, OnDestroy {
   OnboardingFormConfig: any;
   isStepperEnabled = false;
   isPopupEnabled = false;
+  hrefPath = '/resources';    // Added this variable to use for Login - Accessibility links 
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
