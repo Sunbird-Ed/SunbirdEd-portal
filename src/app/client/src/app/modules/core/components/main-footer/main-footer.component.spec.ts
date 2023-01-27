@@ -3,13 +3,17 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { ResourceService, ConfigService, NavigationHelperService, UtilService, LayoutService, } from '../../../shared';
 import { UserService } from '../../../core';
 import { MainFooterComponent } from './main-footer.component';
-import { of } from 'rxjs';
-import { TenantService } from '../../services';
+import { of, throwError } from 'rxjs';
+import { TenantService, FormService } from '../../services';
 import { ChangeDetectorRef, Renderer2 } from '@angular/core';
+import { mockData } from './main-footer.component.spec.data';
 
 describe('MainFooterComponent', () => {
     let component: MainFooterComponent;
     const mockResourceService: Partial<ResourceService> = {};
+    const mockFormService: Partial<FormService> = {
+        getFormConfig: jest.fn().mockImplementation(() => of(mockData.showDownloadLink))
+    };
     const mockRouter: Partial<Router> = {
         navigate: jest.fn(),
         url: '/home'
@@ -97,6 +101,7 @@ describe('MainFooterComponent', () => {
             mockLayoutService as LayoutService,
             mockNavigationhelperService as NavigationHelperService,
             mockUtilService as UtilService,
+            mockFormService as FormService,
         )
     });
 
@@ -157,6 +162,34 @@ describe('MainFooterComponent', () => {
     it('should call checkRouterPath', () => {
         component.checkRouterPath();
         expect(component.showDownloadmanager).toBeDefined();
+    });
+
+    describe("getFooterConfig", () => {
+        it('should call getFooterConfig', () => {
+            jest.spyOn(mockFormService, 'getFormConfig');
+            component.ngOnInit();
+            expect(mockFormService.getFormConfig).toHaveBeenCalled();
+        });
+
+        it('should show download link when form config returns true flag', () => {
+            mockFormService.getFormConfig = jest.fn().mockImplementation(() => of(mockData.showDownloadLink))
+            jest.spyOn(mockFormService, 'getFormConfig');
+            component.getFooterConfig();
+            expect(mockFormService.getFormConfig).toHaveBeenCalled();
+            expect(component.showDownloadMobileApp).toBeTruthy();
+        });
+
+        it('should hide download link when form config returns false flag', () => {
+            mockFormService.getFormConfig = jest.fn().mockImplementation(() => of(mockData.hideDownloadLink))
+            component.getFooterConfig();
+            expect(component.showDownloadMobileApp).toBeFalsy();
+        });
+
+        it('should show download link when form config service returns error', () => {
+            mockFormService.getFormConfig = jest.fn(() => throwError({}))
+            component.getFooterConfig();
+            expect(component.showDownloadMobileApp).toBeTruthy();
+        });
     });
 
 });
