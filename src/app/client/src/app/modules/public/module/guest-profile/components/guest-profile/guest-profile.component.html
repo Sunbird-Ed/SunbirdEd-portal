@@ -30,7 +30,7 @@
     </div>
 
   </section>
-  <section class="d-flex flex-ai-center flex-dc pb-24 content-preference">
+  <section class="d-flex flex-ai-center flex-dc pb-24 content-preference" *ngIf="showGuestProfileConfig">
     <h3 class="content-header-info font-weight-bold mb-16 d-flex flex-jc-center">
       {{resourceService?.frmelemnts?.lbl?.profiledetails}}</h3>
     <div class="ui container content-preference__info pt-16">
