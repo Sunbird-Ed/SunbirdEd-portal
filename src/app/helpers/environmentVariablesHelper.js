@@ -205,6 +205,9 @@ let envVariables = {
   sunbird_bot_configured: env.sunbird_bot_configured,
   sunbird_bot_service_URL: env.sunbird_bot_service_URL,
 
+    //secondary
+    SECONDARY_LOGO: env.secondary_logo ||  'false',
+
 
   // Desktop App Configuration
   sunbird_portal_offline_tenant: env.sunbird_portal_offline_tenant,
@@ -286,6 +289,9 @@ let envVariables = {
 
   // UCI
   sunbird_portal_uci_bot_phone_number: env.sunbird_portal_uci_bot_phone_number || '',
+
+  // Accessibility links (from NAV) configuration
+  sunbird_portal_nav_accessibility: env.sunbird_portal_nav_accessibility || 'true',
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

@@ -184,8 +184,6 @@
   }
 
   @include respond-above(md) {
-    // position: sticky;
-    //top: calculateRem(160px);
     margin-top: calculateRem(-64px);
   }
 

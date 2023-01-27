@@ -31,7 +31,7 @@ body {
   text-rendering: optimizeLegibility;
 
   &.pushable {
-    background: var(--rc-E5EDF5) !important;
+    background: var(--rc-E0F1FD) !important;
 
     &>.pusher {
       background: transparent !important;
@@ -156,7 +156,7 @@ ol.ui.list ol {
 }
 
 .ui.info.message {
-  color: black !important;
+  color: var(--black) !important;
 }
 
 .cursor-default {
@@ -529,12 +529,6 @@ app-workspace {
   cursor: initial;
 }
 
-/* my groups */
-// .sbt-center-container {
-//   width: calc(100% - 4%);
-//   margin: 0 auto;
-// }
-
 .sbt-mygroups {
   .sb-bg-color-white {
     margin-top: 0px;
@@ -801,7 +795,7 @@ quml-player {
 
   &:hover,
   &:active {
-    color: var(--sb-menu-item-hover) !important;
+    color: var(--primary-color) !important;
   }
 }
 
@@ -865,12 +859,6 @@ app-landing-page {
     padding: 0 0.5rem;
   }
 
-  @include respond-below(md) {
-    & div:first-child {
-      // margin: 0 auto;
-    }
-  }
-
   @include respond-below(xs) {
     flex-direction: column;
     align-items: initial;
@@ -878,7 +866,6 @@ app-landing-page {
 
   @include respond-below(sm) {
     .head-tail-right-side {
-      // margin-top: 0.5rem;
       align-self: flex-end;
       width: 100%;
     }
@@ -942,13 +929,6 @@ app-landing-page {
         }
       }
     }
-
-    .skip-content-link {}
-
-    .screen-reader-link,
-    .sitemap-link {}
-
-    .sitemap-link {}
   }
 
   .fontResize-container {
@@ -983,7 +963,6 @@ app-landing-page {
         background: var(--tertiary-color);
         color: var(--white);
         cursor: pointer;
-        // outline: 0px;
       }
 
       &:disabled,
@@ -1114,7 +1093,6 @@ a.ui.labels .label:hover {
   .sb-md-container {
     .async-text {
       border: none !important;
-
       input {
         border: calculateRem(1px) solid var(--gray-800) !important;
       }
@@ -1126,7 +1104,6 @@ a.ui.labels .label:hover {
   }
 
   .sbt-sticky-topbar {
-    // To hide top(screen reader) space
     top: 0;
   }
 }
@@ -1451,18 +1428,6 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   color: var(--accessibility-red);
 }
 
-// .mat-dialog-container{
-//   box-shadow: none;
-//   background: transparent;
-//   overflow:hidden !important;
-// }
-
-// @include respond-below(md) {
-//   .cdk-overlay-pane {
-//     min-width: auto !important;
-//   }
-// }
-
 .dot-divider {
   width: 0.25rem;
   height: 0.25rem;
@@ -1559,4 +1524,22 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
 }
 .blue.text {
   color: var(--primary-color);
+}
+
+.ui.form.borderd input:focus {
+  border-color: var(--primary-400) !important;
+}
+.ui.light-sea-green.button {
+  background: var(--secondary-400);
+  color: var(--white);
+  height: calculateRem(38px) !important;
+}
+.ui.basic.blue.navigation.label {
+  background: var(--white) !important;
+  color: var(--primary-color) !important;
+  border: 0  !important;
+  padding-left: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  padding: calculateRem(10px) 0;
 }

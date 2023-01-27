@@ -45,8 +45,10 @@ export default class ContentDelete {
                 this.standardLog.error({id: 'CONTENT_DELETE_DB_BULK_UPDATE_FAILED', message: `Received Error while deleting contents in a bulk`, error: err });
                 failed.push(err.message || err.errMessage);
             });
+            let deletedContentMeta = {};
             deleted =  _.map(deleted, (content) => content.id);
             _.forEach(contentsToDelete, (content) => {
+                deletedContentMeta[content.identifier] = new Date().getTime();
                 if(content.mimeType === 'application/vnd.sunbird.questionset') {
                     _.forEach(content.children, (child) => {
                         if(child.mimeType === 'application/vnd.sunbird.questionset' && !_.includes(deleted, child.identifier)) {
@@ -63,7 +65,7 @@ export default class ContentDelete {
             if (contentPaths) {
                 await this.add(contentPaths, contentsToDelete[0]["name"]);
             }
-            res.send(Response.success("api.content.delete", {deleted, failed}, req));
+            res.send(Response.success("api.content.delete", {deleted, failed, deletedContentMeta}, req));
             } catch (err) {
                 this.standardLog.error({ id: 'CONTENT_DELETE_FAILED', message: 'Received Error while Deleting content', error: err });
                 res.status(500);

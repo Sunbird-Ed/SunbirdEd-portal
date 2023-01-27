@@ -27,9 +27,9 @@ $sb-collectionTree-disabled-border: calculateRem(1px) solid var(--gray-100);
 $sb-collectionTree-disabled-title-icon-color: var(--gray-100);
 
 // Fancy Tree
-$sb-fancyTree-margin-ltr: 0 0 0 ($base-block-space * 1.25);
-$sb-fancyTree-margin-rtl: 0 ($base-block-space * 1.25) 0 0;
-$sb-fancyTree-padding: ($base-block-space * 2) 0 0 0;
+$sb-fancyTree-margin-ltr: 0 0 0 0.625rem;
+$sb-fancyTree-margin-rtl: 0 0.625rem 0 0;
+$sb-fancyTree-padding: 1rem 0 0 0;
 $sb-fancyTree-list-border-color: var(--primary-200);
 $sb-fancyTree-list-border-width: calculateRem(1px);
 $sb-fancyTree-list-item-margin: 0 0 (2 * $base-block-space) 0;
@@ -41,10 +41,10 @@ $sb-fancyTree-default-list-item-icon-color: var(--tertiary-100);
 $sb-fancyTree-completed-list-item-icon-color: var(--success-color);
 $sb-fancyTree-inprogress-list-item-icon-color: var(--primary-color);
 $sb-fancyTree-disabled-list-item-icon-color: var(--gray-100);
-$sb-fancyTree-list-item-title-padding: 0 ($base-block-space);
+$sb-fancyTree-list-item-title-padding: 0 0.5rem;
 $sb-fancyTree-list-item-title-font-size: $h6-font-size;
 $sb-fancyTree-list-item-title-commingSoonMessage-spacing: 0
-  ($base-block-space / 2);
+  0.25rem;
   
 .sb-collectionTree {
   width: 100%;

@@ -42,6 +42,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   signupStage: SignUpStage;
   routeParams: any;
   get Stage() { return SignUpStage; }
+  secondaryLogo:string;
 
   constructor(public resourceService: ResourceService, public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
@@ -59,6 +60,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       data => {
         if (data && !data.err) {
           this.logo = data.tenantData.logo;
+          this.secondaryLogo = data?.tenantData.secondaryLogo;
           this.tenantName = data.tenantData.titleName;
         }
       }

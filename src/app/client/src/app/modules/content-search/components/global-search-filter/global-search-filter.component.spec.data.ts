@@ -2,8 +2,8 @@ export const MockData = {
   facets: [
     {
       'index': '1',
-      'label': 'Organization Name',
-      'placeholder': 'Organization Name',
+      'labelText': 'Organization Name',
+      'placeholderText': 'Organization Name',
       'values': [
         {
           'identifier': '01258043108936908899',

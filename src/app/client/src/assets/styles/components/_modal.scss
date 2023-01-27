@@ -24,7 +24,7 @@
     }
 
     .sb-modal-content {
-      min-height: 100px;
+      min-height: calculateRem(100px);
       padding: calculateRem(16px);
 
       overflow-y: auto;
@@ -306,7 +306,7 @@
     display: inline;
     width: 2rem;
     height: 2rem;
-    background-color: var(--rc-009D53);
+    background-color: var(--secondary-400);
     -webkit-mask-image: url(../../../assets/images/checkbox-icon.svg);
     mask-image: url(../../../assets/images/checkbox-icon.svg);
     -webkit-mask-size: contain;
@@ -351,11 +351,11 @@
     outline: 0px;
     border: 0;
     margin: 1rem;
-    color: red;
+    color: var(--red-400);
     span{
       font-size: 1.6rem;
       position: relative;
-      bottom: 2px;
+      bottom: calculateRem(2px);
     }
   }
 
@@ -390,11 +390,11 @@
     outline: 0px;
     border: 0;
     margin: 1rem;
-    color: red;
+    color: var(--red-400);
     span{
       font-size: 1.6rem;
       position: relative;
-      bottom: 2px;
+      bottom: calculateRem(2px);
     }
   }
 }

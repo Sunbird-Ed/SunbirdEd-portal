@@ -408,13 +408,10 @@ select:-internal-autofill-selected {
 }
 .sbt-search-bar-panel:focus-within{
   ~ .search-box-dropdown-list{
-    // display: block;  //dropdown suggestion list
     display: none;
   }
 }
 @media screen and (min-width: 768px){
-  .sbt-search-bar-panel:focus-within{
-  }
   .sbt-search-bar-panel{
     .sbt-search-box.large {
       max-width: 60%;

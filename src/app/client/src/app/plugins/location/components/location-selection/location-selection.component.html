@@ -1,5 +1,5 @@
 <!-- New Pop up -->
-<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showModal && !isStepper" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">
@@ -62,7 +62,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<div *ngIf="!showModal" class="sb-mat__modal sb-onboard">
+<div *ngIf="!showModal || isStepper" class="sb-mat__modal sb-onboard">
 
   <!-- <div mat-dialog-title class="flex-jc-center">
     <div class="sb-onboard__header">
@@ -85,7 +85,7 @@
               [config]="sbFormLocationSelectionDelegate.locationFormConfig"
               (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
               (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event); onSbFormValueChange($event);"
-              (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal)">
+              (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal,isStepper)">
             </sb-form>
           </div>
         </div>

@@ -52,7 +52,7 @@ export class SbFormLocationSelectionDelegate {
     );
   }
 
-  async init(deviceProfile?: IDeviceProfile, showModal = true) {
+  async init(deviceProfile?: IDeviceProfile, showModal = true, isStepper= false) {
     if (deviceProfile) {
       this.deviceProfile = deviceProfile;
     }
@@ -78,11 +78,11 @@ export class SbFormLocationSelectionDelegate {
             SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
       } 
-      await this.loadForm(formInputParams, true, showModal);
+      await this.loadForm(formInputParams, true, showModal, isStepper);
     } catch (e) {
       // load default form
       console.error(e);
-      await this.loadForm(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST, true, showModal);
+      await this.loadForm(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST, true, showModal, isStepper);
     }
   }
 
@@ -105,7 +105,7 @@ export class SbFormLocationSelectionDelegate {
     }
   }
 
-  async onDataLoadStatusChange($event, showModal = true) {
+  async onDataLoadStatusChange($event, showModal = true, isStepper = false) {
     if ('LOADED' === $event) {
       this.isLocationFormLoading = false;
 
@@ -143,12 +143,12 @@ export class SbFormLocationSelectionDelegate {
               ...SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
               contentType: (newStateValue as SbLocation).code,
             },
-            false, showModal
+            false, showModal, isStepper
           ).catch((e) => {
             console.error(e);
             this.loadForm(
               SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
-              false, showModal
+              false, showModal, isStepper
             );
           });
         });
@@ -276,7 +276,7 @@ export class SbFormLocationSelectionDelegate {
     }
   }
 
-  private async loadForm(formInputParams, initial = false, showModal = true) {
+  private async loadForm(formInputParams, initial = false, showModal = true, isStepper = false) {
     let useCases: UseCase[];
     // If user register workflow
     if (!showModal) {
@@ -293,7 +293,7 @@ export class SbFormLocationSelectionDelegate {
       tempLocationFormConfig = await this.formService.getFormConfig(formInputParams)
         .toPromise();
     }
-    if (!this.userService.loggedIn) {
+    if (!this.userService.loggedIn && !isStepper) {
       this.guestUserDetails = await this.userService.getGuestUser().toPromise();
     }
 
@@ -310,7 +310,11 @@ export class SbFormLocationSelectionDelegate {
         } else if (this.guestUserDetails) {
           config.templateOptions.hidden = false;
           config.default = (_.get(this.guestUserDetails, 'formatedName') || 'Guest');
-        } else {
+        } else if (!this.userService.loggedIn && !this.guestUserDetails && isStepper) {
+          config.templateOptions.hidden = false;
+          config.default = 'Guest';
+        }
+        else {
           config.validations = [];
         }
       }

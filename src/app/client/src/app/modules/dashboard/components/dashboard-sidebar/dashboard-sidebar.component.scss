@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
 :host{
   .sidebar a ,.dashboard-title{
@@ -7,40 +7,43 @@
     padding: calculateRem(8px);
     text-decoration: none;
     font-size: calculateRem(16px);
-    margin:calculateRem(16px) 0px;
-    
-    &:hover{
-        color:var(--black);
-        font-weight: bold;
+    margin: calculateRem(16px) 0px;
+
+    &:hover {
+      color: var(--black);
+      font-weight: bold;
     }
   }
-  
+
   .sidebar a.active {
-      border-left:calculateRem(4px) solid var(--primary-400);
-      background: var(--sbt-body-bg);
-      color:var(--primary-color) !important;
-      font-weight: bold;
-      [dir="rtl"] & {
-        border-left:none;
-        border-right:calculateRem(4px) solid var(--primary-400);
-      }
+    border-left: calculateRem(4px) solid var(--primary-400);
+    background: var(--sbt-body-bg);
+    color: var(--primary-color) !important;
+    font-weight: bold;
+
+    [dir="rtl"] & {
+      border-left: none;
+      border-right: calculateRem(4px) solid var(--primary-400);
+    }
   }
-  
+
   @media screen and (max-width: 768px) {
     .sidebar {
       width: 100%;
       height: auto;
       padding-left: 0;
+
       [dir="rtl"] & {
-        padding-right:0px;
+        padding-right: 0px;
       }
     }
-  
-    .sidebar a ,.dashboard-title{
+
+    .sidebar a,
+    .dashboard-title {
       text-align: center;
       float: none;
     }
-  
+
   }
 }
 

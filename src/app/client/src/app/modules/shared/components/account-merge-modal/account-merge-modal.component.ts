@@ -37,11 +37,13 @@ export class AccountMergeModalComponent implements OnInit, OnDestroy {
     this.telemetryCdata = [
       {id: 'user:account:merge', type: 'Feature'}, {id: 'SB-13927', type: 'Task'}
     ];
-    this.mergeIntractEdata = {
-      id: 'merge-account-button',
-      type: 'click',
-      pageid: this.router.url.split('/')[1],
-    };
+    setTimeout(() => {
+      this.mergeIntractEdata = {
+        id: 'merge-account-button',
+        type: 'click',
+        pageid: this.router.url.split('/')[1],
+      };
+    }, 500);
   }
 
   initiateMerge() {

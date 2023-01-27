@@ -1,9 +1,7 @@
 import { of, throwError } from "rxjs";
 import { ConfigService } from '../../../shared/services/config/config.service';
 import { CoursesService } from "./course.service";
-import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
-import { FrameworkService } from './../framework/framework.service';
 import { ContentService } from './../content/content.service';
 import { LearnerService } from './../learner/learner.service';
 

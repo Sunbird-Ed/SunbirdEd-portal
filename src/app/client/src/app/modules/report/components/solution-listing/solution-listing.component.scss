@@ -51,7 +51,7 @@
 
 select.search-entity {
   width: calculateRem(120px);
-  border: calculateRem(1px) solid var(--rc-aaaaaa);
+  border: calculateRem(1px) solid var(--gray-200);
   color: var(--gray-800);
   border-radius: calculateRem(3px);
   padding: calculateRem(4px);
@@ -62,7 +62,7 @@ select.search-entity {
 }
 
 select .select-entries{
-  border: calculateRem(1px) solid var(--rc-aaaaaa);
+  border: calculateRem(1px) solid var(--gray-200);
   border-radius: calculateRem(3px);
   background-color: transparent;
   padding: calculateRem(4px);

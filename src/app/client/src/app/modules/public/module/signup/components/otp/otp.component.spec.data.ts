@@ -87,7 +87,10 @@ export const OtpComponentMockResponse = {
         'frmelmnts': {
             'lbl': {
                 'unableToVerifyPhone': 'Unable to verify Phone Number?',
-                'createUserSuccessWithPhone': 'Your Phone Number has been verified. Sign in to continue.'
+                'unableToVerifyEmail':'Unable to verify email address?',
+                'createUserSuccessWithPhone': 'Your Phone Number has been verified. Sign in to continue.',
+                'OTPresendMaxretry': 'You can request for an OTP only 4 times. You have to register again',
+                'wrongPhoneOTP':'You have entered an incorrect OTP. Enter the OTP received on your mobile number. The OTP is valid only for 30 minutes.'
             },
             'instn': {
                 't0081': `Thank you for signing up on {instance}. We have sent an sms OTP for verification.
@@ -130,7 +133,7 @@ export const OtpComponentMockResponse = {
                 'errmsg': 'Invalid OTP.'
             },
             'responseCode': 'CLIENT_ERROR',
-            'result': {}
+            'result': {'remainingAttempt':1}
         }
     },
     verifyOtpSuccessResponse: {
