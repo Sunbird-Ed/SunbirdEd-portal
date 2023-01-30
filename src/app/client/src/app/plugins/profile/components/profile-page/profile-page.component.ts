@@ -170,7 +170,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   getUserContentConfig(){
-    this.userService._userProfileContent$.subscribe((data)=>{
+    this.userService.userProfileContent$.subscribe((data)=>{
       if(data){
         this.showUserProfileConfig = data['userProfileContent']['loggedInUserVisibiliity']
       } 
