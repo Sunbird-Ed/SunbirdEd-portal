@@ -102,7 +102,7 @@ export class UserService {
     .pipe(skipWhile(data => data === undefined || data === null));
 
 
-    public _userProfileContent$ = new BehaviorSubject<any>(false);
+    public _userProfileContent$ = new BehaviorSubject<any>(undefined);
 
     public readonly userProfileContent$: Observable<any> = this._userProfileContent$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
@@ -126,7 +126,7 @@ export class UserService {
   constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
     private browserCacheTtlService: BrowserCacheTtlService,
-    @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
+    @Inject(APP_BASE_HREF) baseHref: string) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
@@ -573,7 +573,7 @@ export class UserService {
       this._userProfileContent$.next({err: null, userProfileContent: formValue});
     },
     (error) => {
-      this._userProfileContent$.next({err: error, userProfileContent: false});
+      this._userProfileContent$.next({err: error, userProfileContent: undefined});
       console.log(`Unable to fetch form details - ${error}`);
     }
     )

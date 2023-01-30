@@ -165,7 +165,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.setInteractEventData();
-    this.userService.getUserProfileContentData()
     this.getUserContentConfig();
   } 
 
@@ -175,12 +174,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       if(data){
         this.showUserProfileConfig = data['userProfileContent']['loggedInUserVisibiliity']
       } 
-    },
-      (err: ServerResponse) => {
-        this.showUserProfileConfig = true
-    }
-    
-    )
+    });
+    this.userService.getUserProfileContentData();
   }
 
 

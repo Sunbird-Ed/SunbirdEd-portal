@@ -1,8 +1,8 @@
 import { of, throwError } from 'rxjs';
-import { ConfigService } from '../../../shared/services/config/config.service';
+import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
-import { ContentService, DataService, LearnerService, PublicDataService } from '../../../core';
+import { ContentService, LearnerService, PublicDataService } from '../../../core';
 import { CacheService } from 'ng2-cache-service';
 import { Inject } from '@angular/core';
 import { mockUserData } from './user.mock.spec.data';
@@ -55,8 +55,10 @@ describe('UserService', () => {
     post: jest.fn().mockImplementation(() => { }),
     get: jest.fn().mockImplementation(() => { })
   };
-  const mockDataService: Partial<DataService> = {};
   const mockbaseHref = 'sunbird.org';
+  const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {
+    browserCacheTtl: 10000,
+  }
   beforeAll(() => {
     userService = new UserService(
       mockConfigService as ConfigService,
@@ -65,8 +67,8 @@ describe('UserService', () => {
       mockHttpClient as HttpClient,
       mockContentService as ContentService,
       mockPublicDataService as PublicDataService,
-      mockbaseHref as typeof window.location.href as any,
-      mockDataService as DataService
+      mockBrowserCacheTtlService as BrowserCacheTtlService,
+      mockbaseHref as typeof window.location.href as string,
     );
   });
 

@@ -58,7 +58,6 @@ export class GuestProfileComponent implements OnInit {
     this.initLayout();
     this.getLocation();
     this.setInteractEventData();
-    this.userService.getUserProfileContentData()
     this.getGuestContentConfig();
   }
 
@@ -69,15 +68,12 @@ export class GuestProfileComponent implements OnInit {
     });
   }
   getGuestContentConfig(){
-    this.userService._userProfileContent$.subscribe((data)=>{
+    this.userService.userProfileContent$.subscribe((data)=>{
       if(data){
         this.showGuestProfileConfig = data['userProfileContent']['guestUserVisibiliity']
       } 
-    },
-    (err: ServerResponse) => {
-      this.showGuestProfileConfig = true
-  }
-    )
+    });
+    this.userService.getUserProfileContentData();
   }
 
 
