@@ -97,6 +97,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
+  userProfileConfig:{}
+  showUserProfileConfig:boolean = true
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -163,6 +165,28 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.setInteractEventData();
+    this.getUserContentConfig();
+  }
+
+  getUserContentConfig() {
+    const formInputParams = {
+      formType: 'user',
+      subType: 'profile',
+      formAction: 'display',
+      component:'portal',
+    };
+    this.userService.getFormData(formInputParams).subscribe(
+      (data: ServerResponse) => {
+        if (data.result.form.data) {
+          this.userProfileConfig = data.result.form.data.fields[0]
+          this.showUserProfileConfig = this.userProfileConfig['loggedInUserVisibiliity']
+        } else {
+           this.showUserProfileConfig  = true
+        }
+      },
+      (err: ServerResponse) => {
+      }
+    );
   }
 
   initLayout() {
