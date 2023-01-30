@@ -178,7 +178,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userService.getFormData(formInputParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.form.data) {
-          this.userProfileConfig = data.result.form.data.fields[0]
+          this.userProfileConfig = data.result.form.data?.fields[0]
           this.showUserProfileConfig = this.userProfileConfig['loggedInUserVisibiliity']
         } else {
            this.showUserProfileConfig  = true
