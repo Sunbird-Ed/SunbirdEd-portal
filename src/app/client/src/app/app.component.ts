@@ -126,7 +126,7 @@ export class AppComponent implements OnInit, OnDestroy {
   OnboardingFormConfig: any;
   isStepperEnabled = false;
   isPopupEnabled = false;
-  hrefPath = '/resources';    // Added this variable to use for Login - Accessibility links 
+  hrefPath = '/resources'; // Added this variable to use for Login - Accessibility links
   @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
@@ -174,9 +174,12 @@ export class AppComponent implements OnInit, OnDestroy {
     while (child.firstChild) {
       child = child.firstChild;
     }
-    const pageTitle = _.get(child, 'snapshot.data.pageTitle') || _.get(child, 'snapshot.data.telemetry.pageid') || _.get(this.userService, 'rootOrgName');
+    let pageTitle = _.get(child, 'snapshot.data.pageTitle') || _.get(child, 'snapshot.data.telemetry.pageid') || _.get(this.userService, 'rootOrgName');
     if (pageTitle) {
+      pageTitle = this.instance + ": "+ pageTitle;
       document.title = pageTitle;
+    } else {
+      document.title = this.instance;
     }
   }
 

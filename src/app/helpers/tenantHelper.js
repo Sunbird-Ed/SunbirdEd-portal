@@ -87,11 +87,16 @@ module.exports = {
             },
             appLogo: function (callback) {
               module.exports.getImagePath(baseUrl, tenantId, 'appLogo.png', callback)
+            },
+            secondaryLogo: function (callback) {
+              module.exports.getImagePath(baseUrl, tenantId, 'secondaryLogo.png', callback)
             }
           }, function (err, results) {
             if (err) { }
             responseObj.logo = results.logo
               ? results.logo : baseUrl + '/assets/images/sunbird_logo.png'
+              responseObj.secondaryLogo = results.secondaryLogo ? results.secondaryLogo :
+              (envHelper.SECONDARY_LOGO ? baseUrl + '/assets/images/sunbird_secondarylogo.png': baseUrl + '/assets/images/sunbird_logo.png')
             responseObj.poster = results.poster
               ? results.poster : baseUrl + '/assets/images/sunbird_logo.png'
             responseObj.favicon = results.favicon

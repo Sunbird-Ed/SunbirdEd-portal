@@ -15,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import * as _ from 'lodash-es';
-import {UserService, TenantService} from './../../services';
+import {UserService, TenantService, FormService} from './../../services';
 import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-footer',
@@ -29,6 +29,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
    * reference of resourceService service.
    */
   public resourceService: ResourceService;
+  /**
+   * reference of formService service.
+   */
+   public formService: FormService;
   /*
   Date to show copyright year
   */
@@ -49,18 +53,25 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
   isFullScreenView;
   isDesktopApp = false;
   appBaseUrl: string;
+  /*
+  Hide or show download mobile app link
+  */
+  showDownloadMobileApp = true;
 
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
       public tenantService: TenantService, public layoutService: LayoutService,
-      public navigationHelperService: NavigationHelperService, private utilService: UtilService
+      public navigationHelperService: NavigationHelperService, private utilService: UtilService,
+      formService: FormService
     ) {
     this.resourceService = resourceService;
+    this.formService= formService;
   }
 
   ngOnInit() {
     this.initlayout();
     this.checkFullScreenView();
+    this.getFooterConfig();
     this.isDesktopApp = this.utilService.isDesktopApp;
 
     if (this.isDesktopApp) {
@@ -87,6 +98,28 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * @description -  to fetch footer config to display relevant content in footer
+   */
+   getFooterConfig() {
+    const formReadInputParams = { 
+      formType: 'config',
+      formAction: 'display',
+      contentType: 'footer',
+      component: 'portal'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        if (formResponsedata && !_.get(formResponsedata, 'showDownloadAppLink')) {
+          this.showDownloadMobileApp = false;
+        }
+        },
+        (error) => {
+          this.showDownloadMobileApp = true;
+        }
+      );
+  }
+  
   initlayout() {
     this.redoLayout();
   }

@@ -2,7 +2,7 @@
 
 <div class="layout">
   <div class="left-panel">
-    <div class="image"><img alt={{tenantName}} src="{{logo}}">
+    <div class="image"><img alt={{tenantName}} src="{{secondaryLogo}}">
     </div>
   </div>
 
@@ -27,7 +27,8 @@
     <ng-container [ngSwitch]="signupStage">
               <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
                 [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" [routeParams]="routeParams"
+                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" [routeParams]="routeParams" 
+                [registerFormConfig]="registerFormConfig" 
                 (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
               </app-signup-basic-info>
               <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm" 

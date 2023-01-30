@@ -2,15 +2,17 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular
 import { Subject, Subscription } from 'rxjs';
 import {
   ResourceService,
-  NavigationHelperService
+  NavigationHelperService,
+  ServerResponse
 } from '@sunbird/shared';
-import { TenantService } from '@sunbird/core';
+import { TenantService, FormService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { takeUntil } from 'rxjs/operators';
 
 export enum SignUpStage {
   BASIC_INFO = 'basic_info',
@@ -26,7 +28,7 @@ export enum SignUpStage {
 })
 export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
-  public unsubscribe = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   signUpForm;
   tenantDataSubscription: Subscription;
   logo: string;
@@ -41,11 +43,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   isIOSDevice = false;
   signupStage: SignUpStage;
   routeParams: any;
+  registerFormConfig: any = {};
   get Stage() { return SignUpStage; }
+  secondaryLogo:string;
 
   constructor(public resourceService: ResourceService, public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService, private router: Router) {
+    public navigationhelperService: NavigationHelperService, private router: Router, private formService: FormService) {
   }
 
   ngOnInit() {
@@ -59,6 +63,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       data => {
         if (data && !data.err) {
           this.logo = data.tenantData.logo;
+          this.secondaryLogo = data?.tenantData.secondaryLogo;
           this.tenantName = data.tenantData.titleName;
         }
       }
@@ -69,6 +74,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Telemetry Start
     this.signUpTelemetryStart();
+    this.getRegisterFormConfig();
   }
 
   signUpTelemetryStart() {
@@ -125,6 +131,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     switch(this.signupStage) {
       case this.Stage.BASIC_INFO:
         this.signupStage = this.Stage.ONBOARDING_INFO;
+        if (this.registerFormConfig?.skipStepTwo) {
+          this.signupStage = this.Stage.EMAIL_PASSWORD;
+        }
         break;
       case this.Stage.ONBOARDING_INFO:
         this.signupStage = this.Stage.EMAIL_PASSWORD;
@@ -149,8 +158,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.tenantDataSubscription) {
       this.tenantDataSubscription.unsubscribe();
     }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   setInteractEventData() {
@@ -162,6 +171,21 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         // 'contactType': this.signUpForm.controls.contactType.value.toString()
       }
     };
+  }
+
+  getRegisterFormConfig(): void {
+    const formInputParams = {
+      formType: 'config',
+      contentType: 'register',
+      formAction: 'display',
+      component: 'portal',
+    };
+
+    this.formService.getFormConfig(formInputParams)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((responseData) => {
+        this.registerFormConfig = responseData;
+      })
   }
 
   redirectToLogin () {

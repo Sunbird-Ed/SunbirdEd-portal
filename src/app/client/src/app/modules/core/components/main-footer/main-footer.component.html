@@ -5,7 +5,7 @@
         <div class="four wide column footerMenu mr-auto">
         </div>
   
-        <div class="download-mobile-app">
+        <div *ngIf="showDownloadMobileApp" class="download-mobile-app">
           <div class="download-mobile-app-logo p-16">
             <div class="mobile-circles">
               <div class="big-box border-round border-r50"></div>
@@ -69,7 +69,7 @@
             </label>
           </div>
           </div>
-          <div class="six wide column p-0 d-flex sbt-footer-download-app">
+          <div *ngIf="showDownloadMobileApp" class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
               <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
               <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
