@@ -67,6 +67,15 @@ export class GuestProfileComponent implements OnInit {
       this.userRole = this.isDesktop && _.get(this.guestUser, 'role') ? this.guestUser.role : localStorage.getItem('guestUserType');
     });
   }
+  getGuestContentConfig(){
+    this.userService.userProfileContent$.subscribe((data)=>{
+      if(data){
+        this.showGuestProfileConfig = data['userProfileContent']['guestUserVisibiliity']
+      } 
+    });
+    this.userService.getUserProfileContentData();
+  }
+
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -84,26 +93,6 @@ export class GuestProfileComponent implements OnInit {
     });
   }
 
-  getGuestContentConfig() {
-    const formInputParams = {
-      formType: 'user',
-      subType: 'profile',
-      formAction: 'display',
-      component:'portal',
-    };
-    this.userService.getFormData(formInputParams).subscribe(
-      (data: ServerResponse) => {
-        if (data.result.form.data) {
-          this.guestProfileConfig = data.result.form.data.fields[0]
-          this.showGuestProfileConfig = this.guestProfileConfig['guestUserVisibiliity']
-        } else {
-           this.showGuestProfileConfig  = true
-        }
-      },
-      (err: ServerResponse) => {
-      }
-    );
-  }
 
   updateProfile(event) {
     // this.showEdit = !this.showEdit;

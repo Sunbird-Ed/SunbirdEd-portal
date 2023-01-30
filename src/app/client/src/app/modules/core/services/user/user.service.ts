@@ -100,6 +100,12 @@ export class UserService {
   public guestUserProfile;
   public readonly guestData$: Observable<any> = this._guestData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
+
+
+    public _userProfileContent$ = new BehaviorSubject<any>(undefined);
+
+    public readonly userProfileContent$: Observable<any> = this._userProfileContent$.asObservable()
+    .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * Reference of public data service.
    */
@@ -120,7 +126,7 @@ export class UserService {
   constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
     private browserCacheTtlService: BrowserCacheTtlService,
-    @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
+    @Inject(APP_BASE_HREF) baseHref: string) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
@@ -554,6 +560,24 @@ export class UserService {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });
   }
+
+   getUserProfileContentData(){
+    const formInputParams = {
+      formType: 'user',
+      subType: 'profile',
+      formAction: 'display',
+      component:'portal',
+    };
+    this.getFormData(formInputParams).subscribe((response)=>{
+      const formValue = _.first(_.get(response, 'result.form.data.fields'));
+      this._userProfileContent$.next({err: null, userProfileContent: formValue});
+    },
+    (error) => {
+      this._userProfileContent$.next({err: error, userProfileContent: undefined});
+      console.log(`Unable to fetch form details - ${error}`);
+    }
+    )
+   }
 
   getFormData(formInputParams): Observable<ServerResponse> {
     const pageData: any = this.cacheService.get(formInputParams.formAction + formInputParams.subType);
