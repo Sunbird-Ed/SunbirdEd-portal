@@ -116,6 +116,7 @@ export class WorkspacesidebarComponent implements OnInit {
   ngOnInit() {
     const getQuestionSet = this.workSpaceService.getQuestionSetCreationStatus();
     const getWorkspaceSet = this.workSpaceService.getWorkspaceCreationStatus();
+    this.workSpaceService.getWorkspaceSearchLabelConfig();
     this.alltextbookRole = this.config.rolesConfig.workSpaceRole.alltextbookRole;
     this.createRole = this.config.rolesConfig.workSpaceRole.createRole;
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;

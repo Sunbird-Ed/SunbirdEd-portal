@@ -5,6 +5,7 @@ import * as _ from 'lodash-es';
 import { Subject, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { WorkSpaceService } from './../../services';
 
 @Component({
   selector: 'app-workspace-content-filter',
@@ -42,6 +43,10 @@ export class WorkspaceContentFilterComponent implements OnInit {
     * To call resource service which helps to use language constant
   */
   public resourceService: ResourceService;
+   /**
+    * To call workSpace service 
+  */
+    public workspaceService: WorkSpaceService;
   /**
   * To get url, app configs
   */
@@ -76,6 +81,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
     public navigationHelperService: NavigationHelperService,
+    workspaceService: WorkSpaceService,
     route: Router) {
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -85,6 +91,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.workspaceService= workspaceService;
   }
 
   ngOnInit() {
@@ -113,6 +120,11 @@ export class WorkspaceContentFilterComponent implements OnInit {
         type: 'click',
         pageid: 'all-my-content-page'
       };
+      this.workspaceService.workspaceSearchLabelConfig$.subscribe((searchLabelConfig) => {
+        if(searchLabelConfig.searchLabel?.label && searchLabelConfig.searchLabel?.label.length) {
+          this.label = searchLabelConfig.searchLabel?.label;
+        }
+      })
   }
 
   setFilterTypeAndRedirectURL() {
