@@ -1,5 +1,7 @@
 <!-- New Pop up -->
-<app-modal-wrapper *ngIf="showModal && !isStepper" [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showModal && !isStepper"
+  [config]="{disableClose: true, id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}"
+  (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div class="sb-mat__modal sb-onboard">
@@ -94,7 +96,7 @@
   </mat-dialog-content>
 
   <!--show this buttons for previous main modal -->
- <!-- <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center d-block">
+  <!-- <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center d-block">
     <div class="sb-onboard__footer mt-0">
       <ng-content select="[slot=popup-footer]"></ng-content>
     </div>
@@ -121,7 +123,7 @@
   </mat-dialog-actions>  -->
 
   <!--show this buttons for modal stepper -->
-  <mat-dialog-actions class="mb-0 p-0 sb-mat__modal__actions d-flex flex-jc-center">
+  <mat-dialog-actions class="mb-0 pt-16 pb-0 sb-mat__modal__actions d-flex flex-jc-center">
     <button type="button"
       class="stepper-back-btn mx-8 sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn text-uppercase">
       <i class="icon-svg icon-svg--xxs icon-back mr-4">
