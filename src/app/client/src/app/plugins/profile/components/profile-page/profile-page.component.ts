@@ -165,29 +165,24 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.setInteractEventData();
+    this.userService.getUserProfileContentData()
     this.getUserContentConfig();
+  } 
+
+
+  getUserContentConfig(){
+    this.userService._userProfileContent$.subscribe((data)=>{
+      if(data){
+        this.showUserProfileConfig = data['userProfileContent']['loggedInUserVisibiliity']
+      } 
+    },
+      (err: ServerResponse) => {
+        this.showUserProfileConfig = true
+    }
+    
+    )
   }
 
-  getUserContentConfig() {
-    const formInputParams = {
-      formType: 'user',
-      subType: 'profile',
-      formAction: 'display',
-      component:'portal',
-    };
-    this.userService.getFormData(formInputParams).subscribe(
-      (data: ServerResponse) => {
-        if (data.result.form.data) {
-          this.userProfileConfig = data.result.form.data?.fields[0]
-          this.showUserProfileConfig = this.userProfileConfig['loggedInUserVisibiliity']
-        } else {
-           this.showUserProfileConfig  = true
-        }
-      },
-      (err: ServerResponse) => {
-      }
-    );
-  }
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
