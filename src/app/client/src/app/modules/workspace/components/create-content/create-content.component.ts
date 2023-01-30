@@ -60,6 +60,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 	*/
   telemetryImpression: IImpressionEventInput;
   public enableQuestionSetCreation;
+  public enableWorkspaceList;
   /**
   * Constructor to create injected service(s) object
   *
@@ -90,6 +91,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.workSpaceService.questionSetEnabled$.subscribe(
       (response: any) => {
         this.enableQuestionSetCreation = response.questionSetEnablement;
+      }
+    );
+    this.workSpaceService.workspaceListEnabled$.subscribe(
+      (response: any) => {
+        this.enableWorkspaceList = response.workspaceSetEnablement;
       }
     );
   }

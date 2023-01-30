@@ -3,6 +3,9 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
 import {Router} from '@angular/router';
 import { WorkSpaceService } from './../../services';
+import { Observable, observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 /**
  * The Workspace side  component shows the sidebar for workspace
  */
@@ -111,7 +114,8 @@ export class WorkspacesidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.workSpaceService.getQuestionSetCreationStatus();
+    const getQuestionSet = this.workSpaceService.getQuestionSetCreationStatus();
+    const getWorkspaceSet = this.workSpaceService.getWorkspaceCreationStatus();
     this.alltextbookRole = this.config.rolesConfig.workSpaceRole.alltextbookRole;
     this.createRole = this.config.rolesConfig.workSpaceRole.createRole;
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;

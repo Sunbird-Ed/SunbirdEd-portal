@@ -32,6 +32,9 @@ export class WorkSpaceService {
   public readonly questionSetEnabled$: Observable<any> = this._questionSetEnabled$.asObservable()
   .pipe(skipWhile(data => data === undefined || data === null));
 
+  private _workspaceListEnabled$ = new BehaviorSubject<any>(false);
+
+  public readonly workspaceListEnabled$: Observable<any> = this._workspaceListEnabled$.asObservable()
   /**
     * Constructor - default method of WorkSpaceService class
     *
@@ -365,6 +368,25 @@ export class WorkSpaceService {
       },
       (error) => {
         this._questionSetEnabled$.next({err: error, questionSetEnablement: false});
+        console.log(`Unable to fetch form details - ${error}`);
+      }
+    );
+  }
+
+  getWorkspaceCreationStatus() {
+    const formInputParams = {
+      formType: 'workspace',
+      subType: 'list',
+      formAction: 'display',
+    };
+    this.getFormData(formInputParams).subscribe(
+      (response) => {
+        const formValues = _.get(response, 'result.form.data.fields');
+        const displayValue = formValues? _.chain(formValues).keyBy('type').mapValues('display').value(): {}
+        this._workspaceListEnabled$.next({err: null, workspaceSetEnablement:displayValue});
+      },
+      (error) => {
+        this._workspaceListEnabled$.next({err: error, workspaceSetEnablement:{}});
         console.log(`Unable to fetch form details - ${error}`);
       }
     );
