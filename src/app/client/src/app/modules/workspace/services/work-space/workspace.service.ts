@@ -33,8 +33,12 @@ export class WorkSpaceService {
   .pipe(skipWhile(data => data === undefined || data === null));
 
   private _workspaceListEnabled$ = new BehaviorSubject<any>(false);
+  public readonly workspaceListEnabled$: Observable<any> = this._workspaceListEnabled$.asObservable();
 
-  public readonly workspaceListEnabled$: Observable<any> = this._workspaceListEnabled$.asObservable()
+  private _workspaceSearchLabelConfig$ = new BehaviorSubject<any>(false);
+
+  public readonly workspaceSearchLabelConfig$: Observable<any> = this._workspaceSearchLabelConfig$.asObservable()
+
   /**
     * Constructor - default method of WorkSpaceService class
     *
@@ -387,6 +391,24 @@ export class WorkSpaceService {
       },
       (error) => {
         this._workspaceListEnabled$.next({err: error, workspaceSetEnablement:{}});
+        console.log(`Unable to fetch form details - ${error}`);
+      }
+    );
+  }
+
+  getWorkspaceSearchLabelConfig() {
+    const formInputParams = {
+      formType: 'config',
+      subType: 'workspace',
+      formAction: 'search',
+    };
+    this.getFormData(formInputParams).subscribe(
+      (response) => {
+        const searchLabel = _.get(response, 'result.form.data.fields');
+        this._workspaceSearchLabelConfig$.next({err: null, searchLabel: searchLabel});
+      },
+      (error) => {
+        this._workspaceSearchLabelConfig$.next({err: error, searchLabel:{}});
         console.log(`Unable to fetch form details - ${error}`);
       }
     );
