@@ -23,10 +23,13 @@ module.exports = (app) => {
       formData.password = _.get(req, 'body.password');
       let queryArr = [];
       (config.params).forEach(item => {
+        let arr = [];
         if (item['key'] == 'redirect_uri') {
           redirect_uri = item['value'];
         }
-        queryArr.push((Object.values(item)))
+        arr.push(item['key'])
+        arr.push(item['value']);
+        queryArr.push(arr)
       });
       let reqOption = getRequestOptions(config.host+config.path, getHeaders(), qs.stringify(Object.fromEntries(queryArr)));
       handleRequest(reqOption, "reqLogin", res);
