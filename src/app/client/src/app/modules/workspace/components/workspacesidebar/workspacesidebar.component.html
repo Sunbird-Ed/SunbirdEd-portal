@@ -3,28 +3,30 @@
       {{resourceService?.frmelmnts?.scttl?.myworkspace}}
     </span>
 </h4>
-<div class="publicmenusection ui secondary vertical menu">
-  
-  <a  appTelemetryInteract [telemetryInteractEdata]="setInteractData('create-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole' class="item" [routerLink]="['create']" routerLinkActive="active"  matTooltip="Create Resource, Course, Book, Collection, Lesson Plan or Upload"
-  [matTooltipPosition]="'right'">
-      {{resourceService?.frmelmnts?.snav?.start}}
-    </a>
 
+<div class="publicmenusection ui secondary vertical menu">
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('create-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole' class="item" [routerLink]="['create']" routerLinkActive="active"  matTooltip="Create Resource, Course, Book, Collection, Lesson Plan or Upload"
+  [matTooltipPosition]="'right'">
+    {{resourceService?.frmelmnts?.snav?.start}}
+  </a>
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allassessments-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole' class="item" [routerLink]="['assessments']" routerLinkActive="active"  matTooltip="List of Assessments, Assign Assessment"
+  [matTooltipPosition]="'right'">
+    {{resourceService?.frmelmnts?.snav?.assessment}}
+  </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks') " 
     appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]"  matTooltip="View all Textbooks"
     [matTooltipPosition]="'right'">
-         {{resourceService?.frmelmnts?.snav?.alltextbook}}
+      {{resourceService?.frmelmnts?.snav?.alltextbook}}
   </a>  
-
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allmycontents-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
   appPermission [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]"  matTooltip="View all your content in draft, review, published and more"
   [matTooltipPosition]="'right'">
-       {{resourceService?.frmelmnts?.snav?.allmycontents}}
+      {{resourceService?.frmelmnts?.snav?.allmycontents}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('draft-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/draft') " appPermission
     [permission]='draftRole' class="item" [routerLink]="['draft',1]"   matTooltip="View drafts you are working on. Submit them for review when completed"
     [matTooltipPosition]="'right'">
-       {{resourceService?.frmelmnts?.snav?.draft}}
+      {{resourceService?.frmelmnts?.snav?.draft}}
     </a>
   <a class="item" appTelemetryInteract [telemetryInteractEdata]="setInteractData('submittedForReview-button')"  *ngIf='permissionService.permissionAvailable' appPermission [permission]='inreviewRole' [routerLink]="['review',1]"
     [class.active]="router.isActive('/workspace/content/review')"  matTooltip="View all content you have submitted for review"
@@ -74,7 +76,7 @@
    {{resourceService?.frmelmnts?.snav?.shareViaLink}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('collaborations-button')"  class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='collaboratingRole' [routerLink]="['collaborating-on',1]"
-  [class.active]="router.isActive('/workspace/content/collaborating-on')"  matTooltip="View content you are collaborating on" [matTooltipPosition]="'right'">
- {{resourceService?.frmelmnts?.snav?.Collaboratingon}}
-</a>
+    [class.active]="router.isActive('/workspace/content/collaborating-on')"  matTooltip="View content you are collaborating on" [matTooltipPosition]="'right'">
+    {{resourceService?.frmelmnts?.snav?.Collaboratingon}}
+  </a>
 </div>

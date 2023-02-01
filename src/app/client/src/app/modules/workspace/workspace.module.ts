@@ -17,7 +17,7 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent, AssessmentsComponent, StudentsListComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
@@ -67,7 +67,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
     WorkspaceContentFilterComponent,
-    NewCollectionEditorComponent
+    NewCollectionEditorComponent,
+    AssessmentsComponent,
+    StudentsListComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })
