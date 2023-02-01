@@ -1,9 +1,13 @@
 export const mockData = {
     showDownloadLink: {
-        "showDownloadAppLink": true
+        footer: {
+            "showDownloadAppLink": true
+        }
     },
     hideDownloadLink: {
-        "showDownloadAppLink": false
+        footer: {
+            "showDownloadAppLink": false
+        }
     }
   };
   

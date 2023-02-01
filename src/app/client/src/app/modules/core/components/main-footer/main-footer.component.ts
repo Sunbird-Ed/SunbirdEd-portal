@@ -105,12 +105,12 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
     const formReadInputParams = { 
       formType: 'config',
       formAction: 'display',
-      contentType: 'footer',
+      contentType: 'global',
       component: 'portal'
     };
     this.formService.getFormConfig(formReadInputParams).subscribe(
       (formResponsedata) => {
-        if (formResponsedata && !_.get(formResponsedata, 'showDownloadAppLink')) {
+        if (formResponsedata && !_.get(_.get(formResponsedata, "footer"), 'showDownloadAppLink')) {
           this.showDownloadMobileApp = false;
         }
         },
