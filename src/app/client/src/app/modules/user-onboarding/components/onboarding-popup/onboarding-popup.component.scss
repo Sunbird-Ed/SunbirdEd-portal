@@ -12,30 +12,24 @@
 
 .stepper-btns {
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 1rem;
   right: 1.5rem;
-  left:1.5rem;
-  justify-content: flex-end;
-  @include respond-below(sm){
+
+  @include respond-below(sm) {
+    left: 0;
+    right: 0;
+    padding: 0 1.5rem;
     justify-content: center;
   }
 
-  .stepper-done-btn , .stepper-next-btn{
+  .stepper-done-btn,
+  .stepper-next-btn {
     width: 10.5rem;
   }
 }
 
-.stepper-screen{
-  max-height: 65vh;
-  position: relative;
-  & .aspectratio[data-ratio="16:9"] {
-    padding-top: 48.25%;
-  }
-
-}
-
-.preview-content {
-  height: 100vh;
+.stepper-screen .aspectratio[data-ratio="16:9"] {
+  padding-top: 48.25%;
 }
 
 // user-details gray box new design css
@@ -97,6 +91,7 @@
   .user-detail-container {
     grid-template-columns: 1fr;
     border-radius: 0;
+    max-height: 16rem;
 
     .user-detail-list:nth-child(1) {
       order: 1;
@@ -135,38 +130,31 @@
     height: 100%;
     position: relative;
 
-    @include respond-below(sm){
+    @include respond-below(sm) {
       max-height: 100%;
     }
+
     & .mat-dialog-title {
       text-align: center;
-    }
-
-    & .sb-mat__modal__content {
-      max-height: 29rem;
-      height: 100%;
-      border-bottom-left-radius: 1.5rem;
-      border-bottom-right-radius: 1.5rem;
-      overflow: hidden;
-      @include respond-below(sm){
-        max-height: 100%;
-        height: 100%;
-      }
     }
   }
 
   .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal {
     & .sb-mat__modal__content {
       padding: 0;
-      @include respond-below(sm){
-        max-height: 55rem;
+      overflow-x: hidden;
+      max-height: 18.75rem;
+
+      @include respond-below(sm) {
+        max-height: 55vh;
+        height: 100%;
       }
     }
+  }
 
-    & .mat-dialog-content {
-      padding: 0;
-      max-height: 50vh;
-    }
+  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header-container {
+    align-items: flex-start;
+    padding: 0 1.5rem;
   }
 
   .cdk-overlay-container .cdk-global-overlay-wrapper .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal .mat-dialog-title {
@@ -194,26 +182,43 @@
     background: var(--white);
   }
 
-  .mat-step-header .mat-step-icon.mat-step-icon-state-done{
+  .mat-step-header .mat-step-icon.mat-step-icon-state-done {
     background-color: var(--primary-color);
     color: var(--white);
     border: 0.0625rem solid var(--primary-color);
   }
+
   .mat-step-header .mat-step-icon {
     background-color: var(--gray-800);
     color: var(--white);
     border: 0.0625rem solid var(--gray-800);
     color: var(--gray-800);
     background: none;
-    margin-top: 0.5rem;
+    width: 2rem;
+    height: 2rem;
   }
 
   .mat-step-header .mat-step-label.mat-step-label-active {
     color: var(--primary-color);
   }
 
-  .sb-mat__modal__content .mat-stepper-horizontal .mat-horizontal-content-container {
-    padding: 0;
+  .modal-stepper .mat-dialog-container .sb-mat__modal .mat-stepper-horizontal .mat-horizontal-content-container {
+    padding: 0 1.5rem 1.5rem;
+    height: 25rem;
+
+    @include respond-below(sm) {
+      height: 100%;
+    }
+  }
+
+  .modal-stepper .sb-mat__modal .mat-stepper-vertical,
+  .mat-stepper-horizontal.mat-stepper-label-position-bottom {
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+
+    @include respond-below(sm) {
+      height: 100%;
+    }
   }
 
   .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::after,
@@ -225,11 +230,13 @@
     top: 1.25rem;
   }
 
-  .mat-step-header.cdk-keyboard-focused, .mat-step-header.cdk-program-focused, .mat-step-header:hover {
+  .mat-step-header.cdk-keyboard-focused,
+  .mat-step-header.cdk-program-focused,
+  .mat-step-header:hover {
     background: none;
- }
+  }
 
- *:focus-visible {
-   border: none !important;
- }
+  *:focus-visible {
+    border: none !important;
+  }
 }
