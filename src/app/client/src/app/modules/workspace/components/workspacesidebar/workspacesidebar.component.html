@@ -11,7 +11,7 @@
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allassessments-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole' class="item" [routerLink]="['assessments']" routerLinkActive="active"  matTooltip="List of Assessments, Assign Assessment"
   [matTooltipPosition]="'right'">
-    {{resourceService?.frmelmnts?.snav?.assessment}}
+    {{resourceService?.frmelmnts?.snav?.assessments}}
   </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks') " 
     appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]"  matTooltip="View all Textbooks"

@@ -250,15 +250,25 @@ const routes: Routes = [
           }, roles: 'alltextbookRole',
           // breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         },
-        children: [{
-          path: 'assign', component: StudentsListComponent,
-          data: {
-            telemetry: {
-              env: telemetryEnv, pageid: 'workspace-content-studentsList', uri: '/workspace/content/assessment/assign',
-              type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
-            },
-          }
-        }]
+        // children: [{
+        //   path: 'assign', component: StudentsListComponent,
+        //   data: {
+        //     telemetry: {
+        //       env: telemetryEnv, pageid: 'workspace-content-studentsList', uri: '/workspace/content/assign',
+        //       type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+        //     },
+        //   }
+        // }]
+      },
+      {
+        path: 'assign', component: StudentsListComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-studentsList', subtype: 'paginate', uri: 'workspace/content/assign',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'alltextbookRole',
+          // breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+        },
       },
       {
         path: 'alltextbooks/:pageNumber', component: AllTextbooksComponent, canActivate: [AuthGuard],
