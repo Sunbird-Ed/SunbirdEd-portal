@@ -12,27 +12,27 @@
 
   <mat-dialog-content>
     <div class="sb-mat__modal__content">
-        <div class="animation">
-          <div class="sb-onbrd-g-box px-32 pb-32">
-            <p class="subtitle" id="SelectUser">{{resourceService?.frmelmnts?.lbl?.youAre}}</p>
-            <div class="sb-onbrd-g-box__guest" role="radiogroup" attr.aria-labelledby="SelectUser">
-              <div *ngFor="let guest of guestList; let index=index;" class="sb-onbrd-g-box__guest__item"
-                [ngClass]="{'active': guest?.isActive}" role="radio" attr.aria-label="{{guest?.label}} Selected"
-                [attr.aria-checked]="guest?.isActive" [attr.aria-selected]="guest?.isActive"
-                (click)="selectUserType(guest)" tabindex="0">
-                <div class="p-16">
-                  <img [src]="guest?.icon" alt="{{guest?.label}}" />
-                  <img src="assets/images/round-check2.svg" class="check-icon" alt="check-mark" />
-                  <div class="title mt-4">{{guest?.label}}</div>
-                </div>
+      <div class="animation">
+        <div class="sb-onbrd-g-box px-32 pb-32">
+          <p class="subtitle" id="SelectUser">{{resourceService?.frmelmnts?.lbl?.youAre}}</p>
+          <div class="sb-onbrd-g-box__guest" role="radiogroup" attr.aria-labelledby="SelectUser">
+            <div *ngFor="let guest of guestList; let index=index;" class="sb-onbrd-g-box__guest__item"
+              [ngClass]="{'active': guest?.isActive}" role="radio" attr.aria-label="{{guest?.label}} Selected"
+              [attr.aria-checked]="guest?.isActive" [attr.aria-selected]="guest?.isActive"
+              (click)="selectUserType(guest)" tabindex="0">
+              <div class="p-16">
+                <img [src]="guest?.icon" alt="{{guest?.label}}" />
+                <img src="assets/images/round-check2.svg" class="check-icon" alt="check-mark" />
+                <div class="title mt-4">{{guest?.label}}</div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     </div>
   </mat-dialog-content>
 
-   <!--show this buttons for previous modal-->
+  <!--show this buttons for previous modal-->
   <!-- <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center">
     <div class="sb-onboard__footer">
       <button type="button" *ngIf="selectedUserType" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100"
@@ -51,7 +51,7 @@
   </mat-dialog-actions>  -->
 
   <!--show this buttons for modal stepper -->
-  <mat-dialog-actions class="mb-0 p-0 sb-mat__modal__actions d-flex flex-jc-center">
+  <mat-dialog-actions class="mb-0 pt-16 pb-0 sb-mat__modal__actions d-flex flex-jc-center">
     <button type="button"
       class="stepper-back-btn mx-8 sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn text-uppercase">
       <i class="icon-svg icon-svg--xxs icon-back mr-4">
