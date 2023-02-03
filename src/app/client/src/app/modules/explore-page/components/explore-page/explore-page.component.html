@@ -4,7 +4,7 @@
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
-    <div *ngIf="!isDesktopApp && isFilterEnabled" [ngClass]="FIRST_PANEL_LAYOUT">
+    <div *ngIf="!isDesktopApp && isFilterEnabled && refreshFilter " [ngClass]="FIRST_PANEL_LAYOUT">
       <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
         *ngIf="initFilter" (filterChange)="getFilters($event)" [defaultTab]="defaultTab"
         [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'"
