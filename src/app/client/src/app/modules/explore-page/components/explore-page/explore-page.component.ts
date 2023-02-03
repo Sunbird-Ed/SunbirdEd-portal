@@ -1,7 +1,7 @@
 import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService, ObservationUtilService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
-import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
     OfflineCardService, BrowserCacheTtlService, IUserData, GenericResourceService
@@ -89,6 +89,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     secondaryBanner = [];
     Categorytheme: any;
     filterResponseData = {};
+    refreshFilter: boolean = true;
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
@@ -119,7 +120,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
         private segmentationTagService: SegmentationTagService, private observationUtil: ObservationUtilService,
-        private genericResourceService: GenericResourceService) {
+        private genericResourceService: GenericResourceService, private cdr: ChangeDetectorRef) {
         this.genericResourceService.initialize();
         this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -211,14 +212,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.setUserPreferences();
-        this.setFilterConfig();
         this.subscription$ = this.activatedRoute.queryParams.subscribe(queryParams => {
             this.selectedTab = queryParams.selectedTab;
             this.showTargetedCategory = false;
             this.getFormConfigs();
         });
         this.initConfiguration();
-
         this.segmentationTagService.getSegmentCommand();
         const enrolledSection$ = this.getQueryParams().pipe(
             tap(() => {
@@ -231,6 +230,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
                     this.fetchContents$.next(currentPage);
                 }
+                this.setFilterConfig(currentPage);
             }),
             switchMap(this.fetchEnrolledCoursesSection.bind(this))
         );
@@ -1138,8 +1138,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             if (pillData.name === 'observation') {
                 this.router.navigate(['observation']);
             }
-        }else{
-            window.location.href = pillData.name === 'observation' ? '/observation': '/resources'
+        } else {
+            window.location.href = pillData.name === 'observation' ? '/observation' : '/resources'
         }
     }
 
@@ -1328,19 +1328,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
     /**
-     * @description - Method to get the formconfig for search filter component and set the value
+     * @description - Method to get the filterconfig from current page metadata for search filter component and set the value
      */
-    private setFilterConfig() {
-        const formReadInputParams = {
-            formType: 'profileconfig_v3',
-            formAction: 'get',
-            contentType: 'global',
-            component: 'portal'
-        };
-        this.formService.getFormConfig(formReadInputParams).subscribe((response) => {
-            if (response) {
-                this.filterResponseData = response;
-            }
-        })
+    private setFilterConfig(currentPage) {
+        this.filterResponseData = {};
+        const currentPageData = currentPage ? currentPage : this.getCurrentPageData();
+        if (currentPageData) {
+            const filterResponseData = _.get(currentPageData, 'metaData.searchFilterConfig');
+            this.filterResponseData = filterResponseData;
+            this.refreshFilter = false;
+            this.cdr.detectChanges();
+            this.refreshFilter = true;
+        }
     }
 }

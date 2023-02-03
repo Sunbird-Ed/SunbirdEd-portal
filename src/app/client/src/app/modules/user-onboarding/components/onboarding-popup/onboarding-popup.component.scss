@@ -1,190 +1,67 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
-@use "components/video"as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "components/video" as *;
 
-.stepper-logo {
-  color: var(--primary-400);
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 2rem;
-  text-align: center;
+::ng-deep .mat-step-header .mat-step-icon-selected {
+    border-color: #024f9d;
+    background-color: #024f9d;
+}
+
+::ng-deep .mat-step-header .mat-step-icon {
+    border-color: #024f9d;
+    background-color: #024f9d;
 }
 
 button {
-  float: right;
+    float: right;
 }
-
-
-// user-details gray box new design css
-.user-detail-container {
-  border-radius: 1.5rem;
-  background: var(--rc-e9e5e5);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 0.5rem;
-  text-transform: capitalize;
-  width: 100%;
-  max-width: 36rem;
-  margin: 1rem auto;
-
-  .user-detail-list {
-    display: flex;
-
-    @include respond-below(sm) {
-      flex-direction: column;
-    }
-
-    .label-values {
-      word-break: break-word;
-    }
+// to disable the stepper tab
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
   }
 
-  .user-detail-list:nth-child(1) {
-    order: 1;
-  }
+    // user-details gray box new design css
+.user-detail-container{
+    border-radius: 1.5rem;
+    background: var(--rc-e9e5e5);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5rem;
+    text-transform: capitalize;
+    width: 100%;
+    max-width: 36rem;
+    margin: 1rem auto;
 
-  .user-detail-list:nth-child(2) {
-    order: 2;
-  }
-
-  .user-detail-list:nth-child(3) {
-    order: 3;
-  }
-
-  .user-detail-list:nth-child(4) {
-    order: 4;
-  }
-
-  .user-detail-list:nth-child(5) {
-    order: 1;
-  }
-
-  .user-detail-list:nth-child(6) {
-    order: 2;
-  }
-
-  .user-detail-list:nth-child(7) {
-    order: 3;
-  }
-}
-
-@include respond-below(sm) {
-  .user-detail-container {
-    grid-template-columns: 1fr;
-    border-radius: 0;
-
-    .user-detail-list:nth-child(1) {
-      order: 1;
-    }
-
-    .user-detail-list:nth-child(2) {
-      order: 2;
-    }
-
-    .user-detail-list:nth-child(3) {
-      order: 3;
-    }
-
-    .user-detail-list:nth-child(4) {
-      order: 4;
-    }
-
-    .user-detail-list:nth-child(5) {
-      order: 5;
-    }
-
-    .user-detail-list:nth-child(6) {
-      order: 6;
-    }
-
-    .user-detail-list:nth-child(7) {
-      order: 7;
-    }
-
-  }
-}
-
-::ng-deep {
-  .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal {
-    margin: 0 auto;
-
-    & .mat-dialog-title {
-      text-align: center;
-    }
-
-    & .sb-mat__modal__content {
-      padding: 0;
-      overflow: hidden;
-      max-height: 100%;
-
-      & .ui.form {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(20.5rem, 20.5rem));
-        grid-column-gap: 1rem;
-        align-items: center;
-
-        padding-top: 1rem;
-        @include respond-below(sm) {
-          grid-template-columns: 1fr;
+    .user-detail-list{
+        display: flex;
+        @include respond-below(sm){
+            flex-direction: column;
         }
-        & .sb-field-form-group {
-         margin-top: 0 !important;
+        .label-values{
+            word-break: break-word;
         }
-      }
     }
-  }
 
-  .mat-horizontal-stepper-header {
-    pointer-events: none;
+    .user-detail-list:nth-child(1){ order: 1; }
+    .user-detail-list:nth-child(2) { order: 2; }
+    .user-detail-list:nth-child(3) { order: 3; }
+    .user-detail-list:nth-child(4){ order: 4; }
+    .user-detail-list:nth-child(5){ order: 1; }
+    .user-detail-list:nth-child(6) { order: 2; }
+    .user-detail-list:nth-child(7) { order: 3; }
   }
+  
+  @include respond-below(sm){
+    .user-detail-container {
+      grid-template-columns: 1fr;
+      border-radius:0;
 
-  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header,
-  .mat-vertical-stepper-header {
-    padding: 1rem;
+      .user-detail-list:nth-child(1){ order: 1; }
+      .user-detail-list:nth-child(2) { order: 2; }
+      .user-detail-list:nth-child(3) { order: 3; }
+      .user-detail-list:nth-child(4){ order: 4; }
+      .user-detail-list:nth-child(5){ order: 5; }
+      .user-detail-list:nth-child(6) { order: 6; }
+      .user-detail-list:nth-child(7) { order: 7; }
+  
+   }
   }
-
-  .mat-step-header .mat-step-icon.mat-step-icon-selected,
-  .mat-step-header .mat-step-icon.mat-step-icon-state-edit {
-    border: 0.0625rem solid var(--primary-color);
-    color: var(--primary-color);
-    background: var(--white);
-  }
-
-  .mat-step-header .mat-step-icon.mat-step-icon-state-done{
-    background-color: var(--primary-color);
-    color: var(--white);
-    border: 0.0625rem solid var(--primary-color);
-  }
-  .mat-step-header .mat-step-icon {
-    background-color: var(--gray-800);
-    color: var(--white);
-    border: 0.0625rem solid var(--gray-800);
-    color: var(--gray-800);
-    background: none;
-    margin-top: 0.5rem;
-  }
-
-  .mat-step-header .mat-step-label.mat-step-label-active {
-    color: var(--primary-color);
-  }
-
-  .mat-step-header .mat-step-label{
-    padding: 0.25rem 0 0 0;
-  }
-
-  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header,
-  .mat-vertical-stepper-header {
-    padding: 1rem;
-  }
-
-  .sb-mat__modal__content .mat-stepper-horizontal .mat-horizontal-content-container {
-    padding: 0;
-    max-height: 18.75rem;
-    overflow: auto;
-  }
-
-  mat-label {
-    display: none;
-  }
-
-}
