@@ -170,7 +170,9 @@ describe('FrameworkService', () => {
           status: 'staus'
         },
         responseCode: 'OK',
-        result: {},
+        result: {
+          framework: 'NTP'
+        },
         ts: '',
         ver: ''
       }));
@@ -199,4 +201,31 @@ describe('FrameworkService', () => {
       expect(defaultLicense).toBe('ABCD');
     });
   });
-});
+  describe('should call the framework initialize', () => {
+    it('should call the initialize method', () => {
+      const res = {
+        id: 'id',
+        params: {
+          resmsgid: '',
+          status: 'staus'
+        },
+        responseCode: 'OK',
+        result: {
+          framework:'ntp'
+        },
+        ts: '',
+        ver: ''
+      };
+      jest.spyOn(frameworkService['publicDataService'], 'get').mockReturnValue(of(res));
+      frameworkService.initialize('NTP', '1234567');
+      frameworkService.getFrameworkCategories('NTP').subscribe((data) => {
+        expect(JSON.stringify(data)).toBe(JSON.stringify(res));
+      });
+    });
+    it('should call the initialize method with _frameworkData having some framework', () => {
+      frameworkService['_frameworkData'].framework = {test: '123'};
+      frameworkService.initialize('framework', '1234567');
+      expect(JSON.stringify(frameworkService['_frameworkData'])).toBe(JSON.stringify({NTP: 'ntp', framework: {test: '123'}}));
+    });
+  });
+})
