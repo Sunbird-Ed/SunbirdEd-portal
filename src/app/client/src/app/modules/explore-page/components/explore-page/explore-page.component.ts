@@ -456,10 +456,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                         const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
-                        _.filter(Object.keys(params), filterValue => {
+                        _.filter(Object.keys(params),filterValue => { 
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
+                                if (params[filterValue].length === 1 && params[filterValue][0] === 'CBSE/NCERT') {
+                                    params[filterValue][0] = "CBSE";
+                                }
                                 option.filters[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
-
                             }
                         });
                         if (this.userService.loggedIn) {
