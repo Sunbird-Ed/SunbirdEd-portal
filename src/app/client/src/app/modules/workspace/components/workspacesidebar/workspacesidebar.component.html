@@ -9,7 +9,7 @@
   [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.snav?.start}}
   </a>
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allassessments-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole' class="item" [routerLink]="['assessments']" routerLinkActive="active"  matTooltip="List of Assessments, Assign Assessment"
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allassessments-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='nodalOfficerRole' class="item" [routerLink]="['assessments']" routerLinkActive="active"  matTooltip="List of Assessments, Assign Assessment"
   [matTooltipPosition]="'right'">
     {{resourceService?.frmelmnts?.snav?.assessments}}
   </a>
