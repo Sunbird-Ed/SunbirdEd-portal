@@ -5,6 +5,8 @@ import * as _ from 'lodash-es';
 import { Subject, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
+import { WorkSpaceService } from './../../services';
+
 @Component({
   selector: 'app-collaboration-content-filter',
   templateUrl: './collaboration-content-filter.component.html',
@@ -46,6 +48,11 @@ export class CollaborationContentFilterComponent implements OnInit {
   */
   public config: ConfigService;
 
+  /**
+  * To call workSpace service
+  */
+  public workspaceService: WorkSpaceService;
+
   sortByOption: string;
   /**
   * type of filter
@@ -85,7 +92,7 @@ export class CollaborationContentFilterComponent implements OnInit {
  */
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
-    route: Router, telemetryService: TelemetryService) {
+    route: Router, telemetryService: TelemetryService, workspaceService: WorkSpaceService,) {
     this.telemetryService = telemetryService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -95,6 +102,7 @@ export class CollaborationContentFilterComponent implements OnInit {
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.collaboratingOnSortingOptions;
+    this.workspaceService= workspaceService;
   }
 
   ngOnInit() {
@@ -123,6 +131,12 @@ export class CollaborationContentFilterComponent implements OnInit {
         type: 'click',
         pageid: 'collaboration-content-page'
       };
+    
+    this.workspaceService.workspaceSearchLabelConfig$.subscribe((searchLabelConfig) => {
+      if(searchLabelConfig.searchLabel?.label && searchLabelConfig.searchLabel?.label.length) {
+        this.label = searchLabelConfig.searchLabel?.label;
+      }
+    })
   }
   public handleSearch() {
     if (this.query.length > 0) {
