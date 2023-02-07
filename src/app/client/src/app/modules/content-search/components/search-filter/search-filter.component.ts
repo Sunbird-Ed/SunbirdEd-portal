@@ -40,6 +40,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   @Input() facets$ = new BehaviorSubject({});
   @Input() defaultTab = {};
   @Input() filterResponseData;
+  @Input() userSelectedPreference;
   selectedFilters = {};
   allValues = {};
   selectedNgModels = {};
@@ -350,7 +351,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.cacheService.remove('searchFilters');
     }
     if (this.searchFrameworkFilterComponent) {
-      this.searchFrameworkFilterComponent.resetFilter();
+      const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
+      this.router.navigate([], {
+        queryParams: { ...this.userSelectedPreference, selectedTab },
+        relativeTo: this.activatedRoute.parent
+      });
     }
   }
 
