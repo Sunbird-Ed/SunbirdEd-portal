@@ -8,7 +8,6 @@ import {
 } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { AvatarModule } from 'ngx-avatar';
 import {
   MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, ErrorPageComponent,
   LanguageDropdownComponent
@@ -34,7 +33,6 @@ import { TelemetryErrorModalComponent } from '../shared/components/telemetry-err
     ReactiveFormsModule,
     WebExtensionModule,
     TelemetryModule,
-    AvatarModule,
     CommonConsumptionModule,
     LocationModule,
     NotificationModule

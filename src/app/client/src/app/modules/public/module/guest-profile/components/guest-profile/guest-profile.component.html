@@ -20,9 +20,9 @@
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
-        <ngx-avatar class="my-avatar" [style]="avatarStyle" size="98" initialsSize="1" textSizeRatio="2"
-          [name]="guestUser?.formatedName">
-        </ngx-avatar>
+        <sb-member-card class="my-avatar"  [config]=cardConfig initialsSize="1"
+          [initial]="guestUser?.formatedName[0]" [title]="guestUser?.formatedName">
+        </sb-member-card>
       </div>
     </div>
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{guestUser?.formatedName |

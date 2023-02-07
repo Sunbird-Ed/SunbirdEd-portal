@@ -351,3 +351,21 @@ __textbooks {
 .explore-title {
   font-weight: bold;
 }
+
+::ng-deep {
+  .profile-avtar {
+
+    .sb-members-list-item .sb-member__img {
+      box-shadow: var(--sbt-box-shadow-6px) !important;
+    }
+
+    .sb-members-list-item .sb-member .sb-member__name {
+      display: none
+    }
+
+    .sb-members-list-item .sb-member {
+      padding: 0px
+    }
+
+  }
+}

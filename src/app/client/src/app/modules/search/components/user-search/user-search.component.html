@@ -33,8 +33,11 @@
               <div class="ui items">
                 <div class="item">
                   <div class="ui tiny image userSearchImage">
-                    <ngx-avatar class="my-avatar" [style]="customStyle" [size]="80" initialsSize="1" [textSizeRatio]="2" name="{{user.firstName}} ">
-                    </ngx-avatar>
+
+                    <sb-member-card class="my-avatar" [config]=cardConfig initialsSize="1" [initial]="user?.firstName[0]"
+                      [title]="user?.firstName">
+                    </sb-member-card>
+
                   </div>
                   <div class="content userSearchContent">
                     <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
