@@ -146,3 +146,24 @@
     }
   }
 }
+::ng-deep {
+  
+  .sb-members-list-item--medium .sb-member__img {
+    width: 5rem !important;
+    height: 5rem !important;
+    font-size: 3.125rem !important;
+  }
+
+  .sb-members-list-item .sb-member .sb-member__name {
+    display: none
+  }
+
+  .my-avatar .sb-members-list-item .sb-member__img {
+    box-shadow: var(--sbt-box-shadow-6px);
+  }
+
+  .sb-members-list-item .sb-member {
+    padding: 0px
+  }
+
+}

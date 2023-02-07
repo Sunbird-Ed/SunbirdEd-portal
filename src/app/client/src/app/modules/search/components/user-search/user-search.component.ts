@@ -126,6 +126,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   };
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
+  cardConfig: { size: any; isSelectable: boolean; view: any; isBold: boolean; };
 
   /**
      * Constructor to create injected service(s) object
@@ -151,6 +152,13 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userSearchService = userSearchService;
     this.config = config;
     this.user = user;
+    this.cardConfig = {
+      size: this.config.constants.SIZE.MEDIUM,
+      isSelectable: false,
+      view: this.config.constants.VIEW.VERTICAL,
+      isBold: true
+    };
+   
   }
   /**
    * This method sets the make an api call to get all search data with page No and offset
@@ -311,7 +319,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.user.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
-        this.rootOrgId = this.userProfile.rootOrgId;
+        this.rootOrgId = this.rootOrgId;
         observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
           (params: any, queryParams: any) => {
             return {

@@ -117,7 +117,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     isBold: false
   };
   cardConfig = {
-    size: this.config.constants.SIZE.SMALL,
+    size: this.config.constants.SIZE.MEDIUM,
     isSelectable: false,
     view: this.config.constants.VIEW.HORIZONTAL,
     isBold: true

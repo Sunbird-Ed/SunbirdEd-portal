@@ -8257,11 +8257,6 @@ is-relative@^1.0.0:
   dependencies:
     is-unc-path "^1.0.0"
 
-is-retina@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/is-retina/-/is-retina-1.0.3.tgz#d7401b286bea2ae37f62477588de504d0b8647e3"
-  integrity sha512-/tCmbIETZwCd8uHWO+GvbRa7jxwHFHdfetHfiwoP0aN9UDf3prUJMtKn7iBFYipYhqY1bSTjur8hC/Dakt8eyw==
-
 is-shared-array-buffer@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-shared-array-buffer/-/is-shared-array-buffer-1.0.2.tgz#8f259c573b60b6a32d4058a1a07430c0a7344c79"
@@ -10344,15 +10339,6 @@ ng2-semantic-ui-v9@0.0.6:
     is-ua-webview "^1.0.0"
     popper.js "^1.14.0"
     tslib "^1.10.0"
-
-ngx-avatar@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/ngx-avatar/-/ngx-avatar-3.7.0.tgz#43857ad017af42ed0ba26d0dafc45948285a8af7"
-  integrity sha512-M/fBymbjCN/iyEQ6hJc1N5JsYJEM7riIKN7KsTjLN83MzhKzffaz0BDea1iqVQQSqwYObF5HWJKm1sBLwuigHQ==
-  dependencies:
-    is-retina "^1.0.3"
-    ts-md5 "^1.2.4"
-    tslib "^1.9.0"
 
 ngx-bootstrap@^5.6.2:
   version "5.6.2"
@@ -14278,11 +14264,6 @@ ts-jest@^27.0.0:
     make-error "1.x"
     semver "7.x"
     yargs-parser "20.x"
-
-ts-md5@^1.2.4:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/ts-md5/-/ts-md5-1.3.1.tgz#f5b860c0d5241dd9bb4e909dd73991166403f511"
-  integrity sha512-DiwiXfwvcTeZ5wCE0z+2A9EseZsztaiZtGrtSaY5JOD7ekPnR/GoIVD5gXZAlK9Na9Kvpo9Waz5rW64WKAWApg==
 
 ts-node@^4.1.0:
   version "4.1.0"

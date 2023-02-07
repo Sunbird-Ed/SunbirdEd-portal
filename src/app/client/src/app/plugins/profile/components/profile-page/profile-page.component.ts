@@ -98,6 +98,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   isConnected = true;
   showFullScreenLoader = false;
   isFullScreenView: any;
+  cardConfig = {
+    size: this.config.constants.SIZE.MEDIUM,
+    isSelectable: false,
+    view: this.config.constants.VIEW.VERTICAL,
+    isBold: true
+  };
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -106,7 +112,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService, private config: ConfigService,
     @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
