@@ -3,9 +3,7 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
 import {Router} from '@angular/router';
 import { WorkSpaceService } from './../../services';
-import { Observable, observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
+
 /**
  * The Workspace side  component shows the sidebar for workspace
  */
