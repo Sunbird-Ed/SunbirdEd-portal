@@ -150,5 +150,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.uciBotPhoneNumber = null;
     locals.sunbirdQuestionSetChildrenLimit = null;
     locals.sunbirdCollectionChildrenLimit = null;
+    locals.sunbirdNavAccessibility=null;
     return locals;
   }
