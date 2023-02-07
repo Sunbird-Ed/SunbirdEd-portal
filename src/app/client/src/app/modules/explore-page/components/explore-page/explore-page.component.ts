@@ -34,6 +34,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public channelId: string;
     public custodianOrg = true;
     public defaultFilters;
+    public userSelectedPreference;
     public selectedFilters = {};
     exploreMoreButtonEdata: IInteractEventEdata;
     public numberOfSections;
@@ -1338,6 +1339,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (currentPageData) {
             const filterResponseData = _.get(currentPageData, 'metaData.searchFilterConfig');
             this.filterResponseData = filterResponseData;
+            this.userSelectedPreference=_.get(this, 'userPreference.framework');
             this.refreshFilter = false;
             this.cdr.detectChanges();
             this.refreshFilter = true;

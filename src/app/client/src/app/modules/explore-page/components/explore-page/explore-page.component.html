@@ -8,7 +8,7 @@
       <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
         *ngIf="initFilter" (filterChange)="getFilters($event)" [defaultTab]="defaultTab"
         [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'"
-        [defaultFilters]="defaultFilters" [filterResponseData]="filterResponseData">
+        [defaultFilters]="defaultFilters" [userSelectedPreference]="userSelectedPreference" [filterResponseData]="filterResponseData">
       </app-search-filter>
     </div>
     <!-- Filter for desktop version -->
