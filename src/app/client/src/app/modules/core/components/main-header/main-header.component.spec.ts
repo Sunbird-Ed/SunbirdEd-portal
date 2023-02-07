@@ -22,7 +22,8 @@ describe('MainHeaderComponent', () => {
   const mockconfig: Partial<ConfigService> = {
     constants: {
       SIZE: {
-        SMALL: 1
+        SMALL: 1,
+        MEDIUM: 2
       },
       VIEW: {
         VERTICAL: {
