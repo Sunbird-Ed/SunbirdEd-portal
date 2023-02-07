@@ -14,6 +14,7 @@ cd ..
 yarn --update-checksums
 yarn install
 npm run build-ts
+npm install fs-extra@8.1.0 --save
 node scripts/copy.js
 
 # Tar the generic build files
