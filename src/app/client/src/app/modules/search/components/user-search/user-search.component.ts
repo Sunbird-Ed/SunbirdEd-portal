@@ -319,7 +319,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.user.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
-        this.rootOrgId = this.rootOrgId;
+        this.rootOrgId = this.userProfile.rootOrgId;
         observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
           (params: any, queryParams: any) => {
             return {
