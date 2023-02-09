@@ -4,6 +4,9 @@ import { ResourceService, ConfigService, NavigationHelperService } from '@sunbir
 import { FrameworkService, PermissionService, UserService } from '@sunbird/core';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { WorkSpaceService } from './../../services';
+import { catchError } from 'rxjs/operators';
+import {  combineLatest, of } from 'rxjs';
+import _ from 'lodash';
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html'
@@ -60,6 +63,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 	*/
   telemetryImpression: IImpressionEventInput;
   public enableQuestionSetCreation;
+  public enableWorkspaceList;
   /**
   * Constructor to create injected service(s) object
   *
@@ -87,13 +91,27 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
-    this.workSpaceService.questionSetEnabled$.subscribe(
-      (response: any) => {
-        this.enableQuestionSetCreation = response.questionSetEnablement;
-      }
-    );
+    combineLatest([
+      this.workSpaceService.questionSetEnabled$.pipe(
+        catchError(() => of({}))
+      ),
+      this.workSpaceService.workspaceListEnabled$.pipe(
+        catchError(() => of({}))
+      )]
+    ).subscribe((response) => {
+      this.enableQuestionSetCreation = response[0].questionSetEnablement? response[0].questionSetEnablement: false;
+      this.enableWorkspaceList = _.isEmpty(response[1].workspaceSetEnablement)? null: response[1].workspaceSetEnablement;
+    });
   }
-
+  
+  
+  
+  // Output:
+  // [
+  //   "Service 1 response",
+  //   "Service 2 response"
+  // ]
+  
 
 
   ngAfterViewInit () {
