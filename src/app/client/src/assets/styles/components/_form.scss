@@ -75,7 +75,7 @@ $sb-selection-line-height: calculateRem(18px);
     font-size: calculateRem(12px);
     width: 100%;
     min-height: $sb-selection-dropdown-min-height;
-    padding: ($base-block-space / 2) ($base-block-space * 1);
+    padding: 0.25rem 0.25rem;
     border-color: var(--gray-200);
     display: flex;
     align-items: center;
