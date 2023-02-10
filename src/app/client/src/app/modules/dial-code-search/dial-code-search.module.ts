@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui-v9';
@@ -20,7 +19,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     TelemetryModule,
     CoreModule,
     SharedModule,
-    NgInviewModule,
     DialCodeSearchRoutingModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiDimmerModule,
     SuiRatingModule, SuiCollapseModule,

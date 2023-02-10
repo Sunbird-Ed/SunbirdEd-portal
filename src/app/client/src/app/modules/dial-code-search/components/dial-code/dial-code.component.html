@@ -20,7 +20,7 @@
 <!-- Main container -->
 <div class="ui container py-24" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-grid" *ngIf="showLoader">
-    <div in-view-item [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
+    <div [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
       <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [isLoading]="true"></sb-library-card>
     </div>
   </div>
@@ -48,7 +48,7 @@
   <div [appTelemetryImpression]="dialResultImpression">
     <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
       (scrolled)="onScrollDown()">
-      <div *ngIf="!showLoader && textbookList?.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
+      <div *ngIf="!showLoader && textbookList?.length" throttle]="[1000]"
         [trigger]="textbookList" class="twelve wide column mb-16">
         <div class="header" *ngIf="!isTextbookDetailsPage">
           <div class="title">
@@ -57,7 +57,7 @@
           </div>
         </div>
         <div class="sb-grid mt-16">
-          <div in-view-item [id]="i" [data]="content" class="sb-grid--item grey-background"
+          <div [id]="i" [data]="content" class="sb-grid--item grey-background"
             *ngFor="let content of textbookList;let i = index;">
 
             <!-- START - Results page -->
@@ -92,7 +92,7 @@
   <div [appTelemetryImpression]="dialResultImpression">
     <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
       (scrolled)="onScrollDown()" class="content-grid">
-      <div *ngIf="!showLoader && courseList?.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
+      <div *ngIf="!showLoader && courseList?.length" [throttle]="[1000]"
         [trigger]="courseList" class="twelve wide column">
         <div class="header" *ngIf="!isTextbookDetailsPage">
           <div class="title">
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div class="sb-card-grid mt-16">
-          <div in-view-item [id]="i" [data]="content" *ngFor="let content of courseList;let i = index;">
+          <div [id]="i" [data]="content" *ngFor="let content of courseList;let i = index;">
             <sb-course-card appContentDirection [data]="content" class="sb-card-grid__item" [course]="content"
               [cardImg]="content?.image || 'assets/images/book.png'" (cardClick)="playCourse($event)" [section]="null"
               appTelemetryInteract [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]"

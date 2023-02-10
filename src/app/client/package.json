@@ -82,7 +82,6 @@
     "@types/jquery.fancytree": "2.7.34",
     "@types/lodash": "^4.14.104",
     "angular-datatables": "8.0.0",
-    "@stockopedia/angular-inport": "^3.0.0",
     "angular2-uuid": "1.1.1",
     "chart.js": "2.9.4",
     "common-form-elements-v9": "4.5.0",

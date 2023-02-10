@@ -300,6 +300,7 @@ export class ObservationListingComponent
   ngAfterViewInit() {
     setTimeout(() => {
       this.setTelemetryData();
+      this.inView({ inview: [] });
     });
   }
 

@@ -21,7 +21,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({
     imports: [
@@ -42,7 +41,6 @@ import { ContentSearchModule } from '@sunbird/content-search';
         ReactiveFormsModule,
         CommonConsumptionModule,
         SuiDimmerModule,
-        NgInviewModule,
         SuiCollapseModule,
         SuiDropdownModule,
         ContentSearchModule,

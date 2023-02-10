@@ -2345,11 +2345,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stockopedia/angular-inport@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@stockopedia/angular-inport/-/angular-inport-3.0.0.tgz#ce7f748bba227380f818bb5c2f4c7a2a9d966daa"
-  integrity sha512-QV64Uifj+iFWT+W3iWVVtJTZnmrNaQp9oI8Tzt9iD4Gv59yIkM838jkCwHFWF/qEf/5/18UXZl9YkWXWDET9Fg==
-
 "@swimlane/ngx-datatable@16.1.1":
   version "16.1.1"
   resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-16.1.1.tgz#1215e81f51400314ba6899f66acdbd4e3bde2915"
