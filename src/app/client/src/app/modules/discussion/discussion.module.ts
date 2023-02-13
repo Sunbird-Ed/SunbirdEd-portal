@@ -3,7 +3,7 @@ import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ForumComponent } from './components/forum/forum.component';
-import { DiscussionUiModule, DiscussionEventsService } from '@project-sunbird/discussions-ui-v8';
+// import { DiscussionUiModule, DiscussionEventsService } from '@project-sunbird/discussions-ui-v8';
 import { DiscussionTelemetryService } from '../shared/services/discussion-telemetry/discussion-telemetry.service';
 import { NavigationHelperService, SharedModule } from '@sunbird/shared';
 import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
@@ -12,14 +12,14 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
 @NgModule({
-  imports: [CommonModule, SuiModalModule, DiscussionUiModule, SharedModule.forRoot()],
-  exports: [DiscussionUiModule, AccessDiscussionComponent],
+  imports: [CommonModule, SuiModalModule, SharedModule.forRoot()],
+  exports: [ AccessDiscussionComponent],
   declarations: [ForumComponent, AccessDiscussionComponent],
   providers: [DiscussionService],
 })
 export class DiscussionModule {
   constructor(
-    private discussionEvents: DiscussionEventsService,
+    // private discussionEvents: DiscussionEventsService,
     private discussionTelemetryService: DiscussionTelemetryService,
     private navigationHelperService: NavigationHelperService,
     private router: Router,
@@ -28,9 +28,9 @@ export class DiscussionModule {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
     }
-    this.discussionEvents.telemetryEvent.subscribe((event) => {
-      this.discussionTelemetryService.logTelemetryEvent(event);
-    });
+    // this.discussionEvents.telemetryEvent.subscribe((event) => {
+    //   this.discussionTelemetryService.logTelemetryEvent(event);
+    // });
 
     // Remove DF routes from history
     if (this.router.events) {

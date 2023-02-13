@@ -16,7 +16,6 @@ import {
   AddEntityComponent, SubmissionsComponent, ObservationListingComponent, ObservationDetailsComponent,
   EntityListComponent, EditSubmissionComponent
 } from './components';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LocationModule } from '../../plugins/location/location.module';
 import {PlayerHelperModule} from '../player-helper';
 
@@ -52,7 +51,6 @@ import {PlayerHelperModule} from '../player-helper';
     CoreModule,
     SharedFeatureModule,
     LocationModule,
-    InfiniteScrollModule,
     PlayerHelperModule
   ],
   providers: [MlGuard]

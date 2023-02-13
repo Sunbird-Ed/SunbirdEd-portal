@@ -10,8 +10,7 @@
       </div>
       <mat-dialog-content>
         <div class="sb-mat__modal__content">
-          <div class="content search-results" infinite-scroll [infiniteScrollDistance]="scrollDistance"
-            [scrollWindow]="false" [infiniteScrollThrottle]="throttle">
+            <div class="content search-results">
             <div *ngIf="solution.entities?.length">
               <div *ngFor="let entity of solution.entities; let i = index">
                 <div class="sb-radio-btn-checkbox sb-radio-btn-primary checked-box">

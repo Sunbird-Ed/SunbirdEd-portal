@@ -74,12 +74,6 @@
       "@sunbird/location": [
         "app/modules/location"
       ],
-      "sunbird-collection-editor": [
-        "../node_modules/@project-sunbird/sunbird-collection-editor"
-      ],
-      "sunbird-collection-editor/*": [
-        "../node_modules/@project-sunbird/sunbird-collection-editor/*"
-      ]
     },
     "types": []
   },

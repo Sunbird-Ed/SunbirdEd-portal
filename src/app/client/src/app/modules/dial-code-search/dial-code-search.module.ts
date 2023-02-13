@@ -10,7 +10,6 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui-v9';
 import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
@@ -25,7 +24,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiDimmerModule,
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
-    InfiniteScrollModule,
     PlayerHelperModule,
     SharedFeatureModule,
     CommonConsumptionModule
