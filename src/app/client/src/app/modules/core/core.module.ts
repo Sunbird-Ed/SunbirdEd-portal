@@ -14,7 +14,7 @@ import {
 } from './components';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { AuthGuard } from './guard/auth-gard.service';
-import { CacheService } from '../../../shared/services/cache-service/cache.service';
+import { CacheService } from '../../modules/shared/services/cache-service/cache.service';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '../telemetry/telemetry.module';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
