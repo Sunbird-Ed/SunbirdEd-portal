@@ -15,7 +15,7 @@ import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
 import { Subject } from 'rxjs';
 import { takeUntil} from 'rxjs/operators';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 
 @Component({
   selector: 'app-data-driven',
@@ -600,7 +600,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],
           framework: this.framework,
           // creator: name,
-          code: UUID.UUID()
+          code: UUID()
         }
     };
   }

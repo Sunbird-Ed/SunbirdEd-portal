@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SignupComponent } from './components';
 const telemetryEnv = 'signup';
-import { UUID } from 'angular2-uuid';
-const uuid = UUID.UUID();
+import { v4 as UUID } from 'uuid';
+const uuid = UUID();
 
 const routes: Routes = [
   {

@@ -1,6 +1,6 @@
 import { Component, ContentChild, OnInit, Directive, TemplateRef, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import { Overlay } from '@angular/cdk/overlay';
 
 
@@ -47,7 +47,7 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
   constructor(private matDialog: MatDialog, private overlay: Overlay) { }
 
   private getDialogConfig(): MatDialogConfig {
-    const { size: modalSize = 'normal', id = UUID.UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
+    const { size: modalSize = 'normal', id = UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
     return {
       id,
       ...this.getDefaultConfig(),
