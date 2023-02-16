@@ -2157,6 +2157,13 @@
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
+"@project-sunbird/sunbird-collection-editor@5.1.3":
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.1.3.tgz#d593eaf4af9d4bae9e9920607bedbc9ca4f599bb"
+  integrity sha512-ugeLZ9FMFB31i3Qp2X3GqyXx2CJlLZF+yApAwbJigLR3Sp7qwtqJaQzt43ByT7G+OGstVkuUl5Z1z4jWmAJMgQ==
+  dependencies:
+    tslib "^2.0.0"
+
 "@project-sunbird/sunbird-epub-player-v9@5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-5.1.0.tgz#c4cfe57a6aa8e36698d1995ddb15f8de8069c212"
@@ -6548,7 +6555,7 @@ figures@^3.0.0:
   dependencies:
     escape-string-regexp "^1.0.5"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -10362,6 +10369,11 @@ ng2-ace-editor@0.3.9:
   dependencies:
     ace-builds "^1.4.2"
     brace "^0.11.1"
+
+ng2-cache-service@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ng2-cache-service/-/ng2-cache-service-1.1.1.tgz#e35e1e8dc60e415023d82df82e2157ad73bee9b6"
+  integrity sha512-daWBgtWG7OX5POYyCPvrxrYIYJFLSx0Bp55+58Y6mZuroTr10LF/ETdgrD1SEnWSlO4CDupje5/t3MJ6IddU9g==
 
 ng2-charts@2.4.2:
   version "2.4.2"
