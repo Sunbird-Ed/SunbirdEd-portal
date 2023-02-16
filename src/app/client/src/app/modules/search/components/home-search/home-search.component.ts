@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, delay, debounceTime, tap, mergeMap } from 'rxjs/operators';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {omit, groupBy, get, uniqBy, toLower, find, map as _map, forEach, each} from 'lodash-es';
 

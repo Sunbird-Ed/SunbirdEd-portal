@@ -2,7 +2,7 @@
 import { of } from 'rxjs';
 import { ResourceService, LayoutService, UtilService, GenericResourceService } from '../../../shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { LanguageDropdownComponent } from './language-dropdown.component';
 

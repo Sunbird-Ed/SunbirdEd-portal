@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
 import dayjs from 'dayjs';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../../core/services/form/form.service';
