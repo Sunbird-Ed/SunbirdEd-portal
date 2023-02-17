@@ -1,15 +1,13 @@
 import { jest } from '@jest/globals';
 import { SearchComponent } from './search.component';
 import {
-  ConfigService, ResourceService, ToasterService, UtilService,
-  LayoutService, NavigationHelperService, ConnectionService
+  ConfigService, ResourceService, UtilService,
+  LayoutService, ConnectionService
 } from '../../../shared';
-import { Observable, of, Subscriber, Subscription, throwError as observableThrowError } from 'rxjs';
-import { UserService, PermissionService, ManagedUserService, CoursesService, ElectronService, FormService, LearnerService } from '../../../core';
+import { of } from 'rxjs';
+import { UserService } from '../../../core';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
-import { TelemetryService } from '@sunbird/telemetry';
 import { ChangeDetectorRef } from '@angular/core';
 import { mockResponse } from './search.component.spec.data';
 

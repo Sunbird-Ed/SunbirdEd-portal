@@ -7,7 +7,7 @@ import {
 } from '../../../shared';
 import { UserService, PermissionService, ManagedUserService, CoursesService, ElectronService, FormService, LearnerService } from '../../../core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { mockData } from './main-header.component.spec.data';
 import { DeviceRegisterService, ObservationUtilService, OrgDetailsService, TenantService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';

@@ -14,7 +14,7 @@ import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject } from 'rxjs';
 import { first, filter, mergeMap, tap, skipWhile, startWith, takeUntil, debounceTime } from 'rxjs/operators';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../app/modules/shared/services/cache-service/cache.service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
