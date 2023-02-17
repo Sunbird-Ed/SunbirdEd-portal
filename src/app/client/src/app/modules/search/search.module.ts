@@ -10,7 +10,6 @@ import { OrderModule } from 'ngx-order-pipe';
 import { UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent,
    UserProfileComponent, UserSearchComponent } from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 // import { Angular2CsvModule } from 'angular2-csv'; Angular2CsvModule removed TODO: use Blob object to generate csv file
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
@@ -28,7 +27,6 @@ import { TranslateModule } from '@ngx-translate/core';
     CoreModule,
     OrderModule,
     TelemetryModule,
-    NgInviewModule,
     SharedFeatureModule,
     ReactiveFormsModule,
     CommonConsumptionModule,

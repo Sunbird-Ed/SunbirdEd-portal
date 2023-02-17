@@ -251,6 +251,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
   /**

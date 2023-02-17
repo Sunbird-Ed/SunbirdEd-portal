@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { ExplorePageRoutingModule } from './explore-page-routing.module';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import {
@@ -26,7 +25,6 @@ import {ObservationModule} from '../observation/observation.module';
     TelemetryModule,
     CoreModule,
     SharedModule,
-    NgInviewModule,
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
