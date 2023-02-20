@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { v4 as UUID } from 'uuid';
 import dayjs from 'dayjs';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 import { TranslateService } from '@ngx-translate/core';
 /**
