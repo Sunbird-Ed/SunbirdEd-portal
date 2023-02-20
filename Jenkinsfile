@@ -22,7 +22,7 @@ node('build-slave') {
                 echo "build_tag: " + build_tag
 
                 stage('Customize dependencies') {
-                    if (params.WL_Customization== 'null') {
+                    if (params.WL_Customization == null) {
                         println("Skipping customization")
                     } else {
                       sh """
