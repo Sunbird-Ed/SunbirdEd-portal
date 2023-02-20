@@ -11,7 +11,7 @@ import { ReportRoutingModule } from './report-routing.module';
 import { SolutionListingComponent, EntityListComponent, ReportViewComponent, AllEvidenceComponent } from './components';
 import { DataTablesModule } from 'angular-datatables';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { DashletModule } from 'sb-dashlet-v11';
+import { DashletModule } from 'sb-dashlet-v12';
 import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
 import { MatTabsModule } from '@angular/material/tabs';
 
