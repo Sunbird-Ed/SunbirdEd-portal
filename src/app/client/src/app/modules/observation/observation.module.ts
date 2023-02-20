@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ObservationRoutingModule } from './observation-routing.module';
 import { MlGuard } from './guards';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
@@ -43,7 +42,6 @@ import {PlayerHelperModule} from '../player-helper';
     ContentSearchModule,
     CommonConsumptionModule,
     SharedFeatureModule,
-    NgInviewModule,
     TelemetryModule,
     FormsModule,
     ReactiveFormsModule,

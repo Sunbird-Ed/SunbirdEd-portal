@@ -2,7 +2,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, UtilService, LayoutService, GenericResourceService } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 
 @Component({

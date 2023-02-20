@@ -8,7 +8,6 @@ import { UserOrgManagementComponent } from './components/user-org-management/use
 import { ManageRoutingModule } from './manage-routing.module';
 import { ManageService } from './services/manage/manage.service';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
@@ -31,7 +30,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     ReactiveFormsModule,
     ManageRoutingModule,
     CommonConsumptionModule,
-    NgInviewModule
   ],
   providers: [
     ResourceService,

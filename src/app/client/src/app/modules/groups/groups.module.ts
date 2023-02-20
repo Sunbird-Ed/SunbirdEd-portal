@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule, SuiModalModule, SuiRatingModule } from 'ng2-semantic-ui-v9';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyGroupsComponent, AddMemberComponent, GroupHeaderComponent, NoGroupResultComponent,
   AddActivityComponent, MemberActionsComponent, GroupMembersComponent, FtuPopupComponent,
@@ -31,7 +30,6 @@ import { ActivityDashboardDirective } from './directive/activity-dashboard/activ
     CoreModule,
     ReactiveFormsModule,
     TelemetryModule,
-    NgInviewModule,
     SharedFeatureModule,
     GroupsRoutingModule,
     CommonConsumptionModule,

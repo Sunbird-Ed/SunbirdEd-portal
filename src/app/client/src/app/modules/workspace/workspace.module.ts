@@ -20,7 +20,6 @@ import {
   CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
 import { OrderModule } from 'ngx-order-pipe';
@@ -39,7 +38,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     CoreModule,
     ReactiveFormsModule,
-    NgInviewModule,
     TelemetryModule,
     OrderModule,
     PlayerHelperModule,

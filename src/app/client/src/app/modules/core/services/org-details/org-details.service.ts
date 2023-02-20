@@ -9,7 +9,7 @@ import { ServerResponse } from '../../../shared/interfaces/serverResponse';
 import { Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { PublicDataService } from './../public-data/public-data.service';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { LearnerService } from './../learner/learner.service';
 import * as _ from 'lodash-es';
 

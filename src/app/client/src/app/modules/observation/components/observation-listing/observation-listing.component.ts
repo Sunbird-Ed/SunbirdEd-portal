@@ -39,7 +39,7 @@ import {
 import {
   takeUntil,
 } from 'rxjs/operators';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 import {Location} from '@angular/common';
 
@@ -300,6 +300,7 @@ export class ObservationListingComponent
   ngAfterViewInit() {
     setTimeout(() => {
       this.setTelemetryData();
+      this.inView({ inview: [] });
     });
   }
 
