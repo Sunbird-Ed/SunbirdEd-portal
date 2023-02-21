@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserSearchService } from './services';
-import { OrderModule } from 'ngx-order-pipe';
 import { UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent,
    UserProfileComponent, UserSearchComponent } from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -25,7 +24,6 @@ import { TranslateModule } from '@ngx-translate/core';
     SuiModule,
     FormsModule,
     CoreModule,
-    OrderModule,
     TelemetryModule,
     SharedFeatureModule,
     ReactiveFormsModule,

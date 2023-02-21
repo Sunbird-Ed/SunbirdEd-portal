@@ -22,7 +22,6 @@ import {
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
-import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 // import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor'; //commented for infinite-scroll
@@ -39,7 +38,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CoreModule,
     ReactiveFormsModule,
     TelemetryModule,
-    OrderModule,
     PlayerHelperModule,
     ContentSearchModule,
     // CollectionEditorLibraryModule, //commented for infinte-scroll

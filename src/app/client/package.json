@@ -122,7 +122,6 @@
     "ngx-daterangepicker-material": "5.0.2",
     "ngx-device-detector": "2.0.5",
     "ngx-filesize": "2.0.16",
-    "ngx-order-pipe": "^2.0.4",
     "ngx-slick-carousel": "0.5.0",
     "rxjs": "^6.5.5",
     "sass": "^1.56.1",

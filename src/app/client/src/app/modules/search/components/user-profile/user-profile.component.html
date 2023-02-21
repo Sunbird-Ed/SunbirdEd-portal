@@ -147,7 +147,7 @@
             <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags | translate}}</span>
           </div>
           <div class="profileitems profile-des ui relaxed aligned list">
-            <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit | orderBy:'addedAt':true">
+            <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit">
               <div class="ui label">
                 {{skill.skillName}} {{skill.endorsementCount}}
                 <div class="detail">

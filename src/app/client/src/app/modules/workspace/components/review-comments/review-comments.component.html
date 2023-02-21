@@ -1,6 +1,6 @@
 <div *ngIf="playerLoaded" class="review-comments-box br-4 bs-2 p-8">
   <div class="ui small comments scrolling p-5" *ngIf="sortedComments[stageId] && sortedComments[stageId].length else emptyComments" >
-    <div class="comment" *ngFor="let commentList of sortedComments[stageId] | orderBy: 'createdOn'">
+    <div class="comment" *ngFor="let commentList of sortedComments[stageId]">
       <span class="avatar">
         <img *ngIf="commentList.userInfo.logo" src="{{commentList.userInfo.logo | cdnprefixurl}}">
         <i *ngIf="!commentList.userInfo.logo" class="icon sb-icon-reviewer" aria-hidden="true"></i>
