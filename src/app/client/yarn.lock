@@ -10309,11 +10309,6 @@ ngx-filesize@2.0.16:
     filesize ">= 4.0.0"
     tslib "^2.0.0"
 
-ngx-slick-carousel@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/ngx-slick-carousel/-/ngx-slick-carousel-0.5.0.tgz#df045c875e83b4bfd96804abb861d1b7401aafd4"
-  integrity sha512-p6vrnrrbcjrcusTgS/mLsa92cSCQt8rV7cKwGsWFCmW5p1M6twkU7rFvhG/RcD02oW+0mLTMLxIq43sF4VfdZA==
-
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nice-napi/-/nice-napi-1.0.2.tgz#dc0ab5a1eac20ce548802fc5686eaa6bc654927b"
@@ -13103,11 +13098,6 @@ slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
-
-slick-carousel@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/slick-carousel/-/slick-carousel-1.8.1.tgz#a4bfb29014887bb66ce528b90bd0cda262cc8f8d"
-  integrity sha512-XB9Ftrf2EEKfzoQXt3Nitrt/IPbT+f1fgqBdoxO3W/+JYvtEOW6EgxnWfr9GH6nmULv7Y2tPmEX3koxThVmebA==
 
 smart-buffer@^4.1.0, smart-buffer@^4.2.0:
   version "4.2.0"
