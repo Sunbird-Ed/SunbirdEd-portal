@@ -4,14 +4,13 @@ import { Component, Input, EventEmitter, Output, OnDestroy, ChangeDetectorRef, O
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
-import * as slick from './../../../../../assets/libs/slick-carousel';
-slick(jQuery);
 /**
  * This display a a section
  */
 @Component({
   selector: 'app-page-section',
-  templateUrl: './page-section.component.html'
+  templateUrl: './page-section.component.html',
+  styleUrls: ['./page-section.component.scss']
 })
 export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
 

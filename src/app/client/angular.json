@@ -87,7 +87,6 @@
               "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",

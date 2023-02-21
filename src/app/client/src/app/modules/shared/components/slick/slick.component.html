@@ -1,0 +1,22 @@
+<section class="horizontal-scroll-container h-full">
+  <button *ngIf="enablePrev && viewType == 'arrow'" i18n-aria-label aria-label="back" name="content-backward-button" mat-mini-fab color="primary" (click)="showPrev()"
+    class="prevBtn hidden-touch border-radius-xs" [hidden]="!enablePrev" [ngClass]="{'prevBtnHover': onHover}">
+    <mat-icon><</mat-icon>
+  </button>
+  <div id="ngxScroller" name="horizontal-scroll-content-strip" class="horizontal-scroll-content" #horizontalScrollElem>
+    <ng-content></ng-content>
+  </div>
+  <button *ngIf="enableNext && viewType == 'arrow'"  i18n-aria-label aria-label="next" name="content-forward-button" mat-mini-fab (click)="showNext()" color="primary"
+    class="nextBtn hidden-touch border-radius-xs" [ngClass]="{'nextBtnHover': onHover}"
+    [hidden]="!enableNext || loadStatus === 'fetching'">
+    <mat-icon>></mat-icon>
+  </button>
+  <div class="nextLoading" *ngIf="loadStatus === 'fetching'">
+    <mat-spinner></mat-spinner>
+  </div>
+</section>
+<div class="pagination" *ngIf="viewType == 'dots'">
+  <ng-container *ngFor="let dot of [].constructor(dotViewCount); first as isFirst; index as i">
+    <span [ngClass]="(selectedDot == i) ? 'active': ''" class="slickDots" (click)="computeDotSlide(i)"></span>
+  </ng-container>
+</div>

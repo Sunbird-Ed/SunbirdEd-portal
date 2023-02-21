@@ -11,7 +11,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { RouterModule } from '@angular/router';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
@@ -27,7 +26,6 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
         FormsModule,
         TelemetryModule,
         CommonModule,
-        SlickCarouselModule,
         CommonConsumptionModule,
         SharedModule,
         TranslateModule,

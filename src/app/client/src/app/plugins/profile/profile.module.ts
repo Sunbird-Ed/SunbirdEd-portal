@@ -2,7 +2,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
@@ -50,7 +49,6 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
     ReactiveFormsModule,
     // WebExtensionModule,
     TelemetryModule,
-    SlickCarouselModule,
     SharedFeatureModule,
     ContentSearchModule,
     CommonConsumptionModule,
