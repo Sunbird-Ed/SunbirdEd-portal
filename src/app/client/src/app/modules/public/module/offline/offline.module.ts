@@ -17,7 +17,6 @@ import {
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
@@ -37,7 +36,6 @@ import { ContentSearchModule } from '@sunbird/content-search';
         SuiAccordionModule,
         SuiTabsModule,
         OrderModule,
-        SlickCarouselModule,
         ReactiveFormsModule,
         CommonConsumptionModule,
         SuiDimmerModule,
