@@ -29,11 +29,7 @@
                 "input": "./node_modules/@project-sunbird/common-consumption/assets",
                 "output": "./assets/common-consumption"
               },
-              {
-                "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/discussions-ui-v8/assets",
-                "output": "./assets/discussion-ui"
-              },
+           
               {
                 "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v9/lib/assets/",
@@ -46,18 +42,8 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
-                "output": "/assets/"
-              },
-              {
-                "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-quml-player-v9/lib/assets/",
                 "output": "/assets/"
-              },
-              {
-                "glob": "**/*.*",
-                "input": "./node_modules/@samagra-x/uci-console/assets/",
-                "output": "/assets/uci-console"
               }
             ],
             "styles": [
@@ -74,7 +60,6 @@
               "./node_modules/@project-sunbird/sb-themes/themes/themes-material_UI.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
               "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
-              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css"
             ],

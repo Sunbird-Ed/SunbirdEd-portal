@@ -19,14 +19,12 @@ import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
 import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
-import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
 
 
 
 @NgModule({
   providers: [
     { provide: QuestionCursor, useExisting: QumlPlayerService },
-    { provide: EditorCursor, useExisting: QumlPlayerService }
   ],
   imports: [
     CommonModule,

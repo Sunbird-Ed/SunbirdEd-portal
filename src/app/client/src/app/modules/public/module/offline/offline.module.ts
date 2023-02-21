@@ -15,7 +15,7 @@ import {
     AboutUsComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { FileSizeModule } from 'ngx-filesize';
+import { NgxFilesizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -32,7 +32,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
         SuiProgressModule,
         SuiSelectModule,
         WebExtensionModule,
-        FileSizeModule,
+        NgxFilesizeModule,
         SuiAccordionModule,
         SuiTabsModule,
         OrderModule,
