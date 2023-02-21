@@ -10309,13 +10309,6 @@ ngx-filesize@2.0.16:
     filesize ">= 4.0.0"
     tslib "^2.0.0"
 
-ngx-order-pipe@^2.0.4:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/ngx-order-pipe/-/ngx-order-pipe-2.2.0.tgz#14ab50dfe0a679e5216138ff9a0820a83173a4fe"
-  integrity sha512-fym4A3j0XMqETskCm0tHUHQWCgB1p1MrIstFA3jCClJqNU9KjtQh/AE4C7srUkz9U3HIBIAN9D3ty2L9l/jvmA==
-  dependencies:
-    tslib "^2.0.0"
-
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nice-napi/-/nice-napi-1.0.2.tgz#dc0ab5a1eac20ce548802fc5686eaa6bc654927b"
