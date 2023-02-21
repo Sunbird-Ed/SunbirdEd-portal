@@ -121,7 +121,8 @@ describe("ChooseUserComponent", () => {
             mockActivatedRoute as ActivatedRoute,
             mockCoursesService as CoursesService,
             mockConnectionService as ConnectionService,
-            mockLayoutService as LayoutService
+            mockLayoutService as LayoutService,
+            mockNavigationHelperService as NavigationHelperService
         );
     });
     beforeEach(() => {

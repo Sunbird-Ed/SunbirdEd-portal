@@ -21,8 +21,8 @@ import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
-import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
+import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service'
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v12';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 import { ProfilePageComponent } from './profile-page.component';
@@ -128,6 +128,18 @@ describe("ProfilePageComponent", () => {
         monitor: jest.fn()
     };
     const mockCsCertificateService: Partial<CsCertificateService> = {};
+    const mockConfig: Partial<ConfigService> = {
+        constants: {
+            "SIZE": {
+                "MEDIUM": "medium",
+                "SMALL": "small"
+            },
+            "VIEW": {
+                "HORIZONTAL": "horizontal",
+                "VERTICAL": "vertical"
+            },
+        }
+    };
 
     beforeAll(() => {
         profilePageComponent = new ProfilePageComponent(
@@ -152,6 +164,7 @@ describe("ProfilePageComponent", () => {
             mockFormService as FormService,
             mockCertificateDownloadAsPdfService as CertificateDownloadAsPdfService,
             mockConnectionService as ConnectionService,
+            mockConfig as ConfigService,
             mockCsCertificateService as CsCertificateService
         );
     });
