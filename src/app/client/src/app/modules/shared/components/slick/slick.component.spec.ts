@@ -3,23 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SlickComponent } from './slick.component';
 
 describe('SlickComponent', () => {
-  let component: SlickComponent;
-  let fixture: ComponentFixture<SlickComponent>;
+  let slickComponent: SlickComponent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SlickComponent ]
-    })
-    .compileComponents();
+  beforeAll(() => {
+    slickComponent = new SlickComponent(
+    );
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SlickComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(slickComponent).toBeTruthy();
   });
 });
