@@ -14,7 +14,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ExplorePageComponent } from './components';
-import { ContentSectionModule } from 'content-section-v11';
+import { ContentSectionModule } from 'content-section-v12';
 import {ObservationModule} from '../observation/observation.module';
 
 @NgModule({
