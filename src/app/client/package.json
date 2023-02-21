@@ -1,6 +1,6 @@
 {
   "name": "src",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "license": "MIT",
   "description": "SUNBIRD Client Portal",
   "keywords": [
@@ -162,3 +162,4 @@
   },
   "resolutions": {}
 }
+
