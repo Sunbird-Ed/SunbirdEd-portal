@@ -6,8 +6,7 @@ describe('SlickComponent', () => {
   let slickComponent: SlickComponent;
 
   beforeAll(() => {
-    slickComponent = new SlickComponent(
-    );
+    slickComponent = new SlickComponent();
   });
 
   beforeEach(() => {
