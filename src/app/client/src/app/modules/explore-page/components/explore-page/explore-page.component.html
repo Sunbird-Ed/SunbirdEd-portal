@@ -103,7 +103,8 @@
               <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
               </div>
 
-              <app-slick [viewType]="'dots'" [loadStatus]="'done'">
+
+              <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
                 <ng-container *ngIf="displayBanner">
                   <div *ngFor="let banner of primaryBanner;" class="mr-16">
                     <img [src]="banner?.ui?.background" class="w-100 banner-image" alt="{{banner?.ui?.text}}"
@@ -121,11 +122,9 @@
                       (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
                   </div>
                 </ng-container>
-              
               </app-slick>
 
-              <hr
-                *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
+              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
                 class="section-hr my-32" />
               </div>
               <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
