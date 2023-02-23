@@ -1,235 +1,67 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
-@use "components/video"as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "components/video" as *;
 
-.stepper-logo {
-  color: var(--primary-400);
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 2rem;
-  text-align: center;
+::ng-deep .mat-step-header .mat-step-icon-selected {
+    border-color: #024f9d;
+    background-color: #024f9d;
 }
 
-.stepper-btns {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  left:1.5rem;
-  justify-content: flex-end;
+::ng-deep .mat-step-header .mat-step-icon {
+    border-color: #024f9d;
+    background-color: #024f9d;
+}
+
+button {
+    float: right;
+}
+// to disable the stepper tab
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+  }
+
+    // user-details gray box new design css
+.user-detail-container{
+    border-radius: 1.5rem;
+    background: var(--rc-e9e5e5);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5rem;
+    text-transform: capitalize;
+    width: 100%;
+    max-width: 36rem;
+    margin: 1rem auto;
+
+    .user-detail-list{
+        display: flex;
+        @include respond-below(sm){
+            flex-direction: column;
+        }
+        .label-values{
+            word-break: break-word;
+        }
+    }
+
+    .user-detail-list:nth-child(1){ order: 1; }
+    .user-detail-list:nth-child(2) { order: 2; }
+    .user-detail-list:nth-child(3) { order: 3; }
+    .user-detail-list:nth-child(4){ order: 4; }
+    .user-detail-list:nth-child(5){ order: 1; }
+    .user-detail-list:nth-child(6) { order: 2; }
+    .user-detail-list:nth-child(7) { order: 3; }
+  }
+  
   @include respond-below(sm){
-    justify-content: center;
+    .user-detail-container {
+      grid-template-columns: 1fr;
+      border-radius:0;
+
+      .user-detail-list:nth-child(1){ order: 1; }
+      .user-detail-list:nth-child(2) { order: 2; }
+      .user-detail-list:nth-child(3) { order: 3; }
+      .user-detail-list:nth-child(4){ order: 4; }
+      .user-detail-list:nth-child(5){ order: 5; }
+      .user-detail-list:nth-child(6) { order: 6; }
+      .user-detail-list:nth-child(7) { order: 7; }
+  
+   }
   }
-
-  .stepper-done-btn , .stepper-next-btn{
-    width: 10.5rem;
-  }
-}
-
-.stepper-screen{
-  max-height: 65vh;
-  position: relative;
-  & .aspectratio[data-ratio="16:9"] {
-    padding-top: 48.25%;
-  }
-
-}
-
-.preview-content {
-  height: 100vh;
-}
-
-// user-details gray box new design css
-.user-detail-container {
-  overflow-y: auto;
-  max-height: 11.8rem;
-  border-radius: 1.5rem;
-  background: var(--rc-e9e5e5);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 0.5rem;
-  text-transform: capitalize;
-  width: 100%;
-  max-width: 36rem;
-  margin: 1rem auto;
-
-  .user-detail-list {
-    display: flex;
-
-    @include respond-below(sm) {
-      flex-direction: row;
-    }
-
-    .label-values {
-      word-break: break-word;
-    }
-  }
-
-  .user-detail-list:nth-child(1) {
-    order: 1;
-  }
-
-  .user-detail-list:nth-child(2) {
-    order: 2;
-  }
-
-  .user-detail-list:nth-child(3) {
-    order: 3;
-  }
-
-  .user-detail-list:nth-child(4) {
-    order: 4;
-  }
-
-  .user-detail-list:nth-child(5) {
-    order: 1;
-  }
-
-  .user-detail-list:nth-child(6) {
-    order: 2;
-  }
-
-  .user-detail-list:nth-child(7) {
-    order: 3;
-  }
-}
-
-@include respond-below(sm) {
-  .user-detail-container {
-    grid-template-columns: 1fr;
-    border-radius: 0;
-
-    .user-detail-list:nth-child(1) {
-      order: 1;
-    }
-
-    .user-detail-list:nth-child(2) {
-      order: 2;
-    }
-
-    .user-detail-list:nth-child(3) {
-      order: 3;
-    }
-
-    .user-detail-list:nth-child(4) {
-      order: 4;
-    }
-
-    .user-detail-list:nth-child(5) {
-      order: 5;
-    }
-
-    .user-detail-list:nth-child(6) {
-      order: 6;
-    }
-
-    .user-detail-list:nth-child(7) {
-      order: 7;
-    }
-
-  }
-}
-
-::ng-deep {
-  .cdk-overlay-pane.modal-stepper .mat-dialog-container .sb-mat__modal {
-    max-height: 36rem;
-    height: 100%;
-    position: relative;
-
-    @include respond-below(sm){
-      max-height: 100%;
-    }
-    & .mat-dialog-title {
-      text-align: center;
-    }
-
-    & .sb-mat__modal__content {
-      max-height: 29rem;
-      height: 100%;
-      border-bottom-left-radius: 1.5rem;
-      border-bottom-right-radius: 1.5rem;
-      overflow: hidden;
-      @include respond-below(sm){
-        max-height: 100%;
-        height: 100%;
-      }
-    }
-  }
-
-  .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal {
-    & .sb-mat__modal__content {
-      padding: 0;
-      @include respond-below(sm){
-        max-height: 55rem;
-      }
-    }
-
-    & .mat-dialog-content {
-      padding: 0;
-      max-height: 50vh;
-    }
-  }
-
-  .cdk-overlay-container .cdk-global-overlay-wrapper .cdk-overlay-pane.material-modal .mat-dialog-container .sb-mat__modal .mat-dialog-title {
-    text-align: center;
-    padding: 0 0 1rem 0;
-  }
-
-  .mat-horizontal-stepper-header {
-    pointer-events: none;
-  }
-
-  .mat-stepper-horizontal.mat-stepper-label-position-bottom .mat-horizontal-stepper-header .mat-step-label {
-    padding: 0.25rem 0 0 0;
-  }
-
-  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header,
-  .mat-vertical-stepper-header {
-    padding: 0.25rem;
-  }
-
-  .mat-step-header .mat-step-icon.mat-step-icon-selected,
-  .mat-step-header .mat-step-icon.mat-step-icon-state-edit {
-    border: 0.0625rem solid var(--primary-color);
-    color: var(--primary-color);
-    background: var(--white);
-  }
-
-  .mat-step-header .mat-step-icon.mat-step-icon-state-done{
-    background-color: var(--primary-color);
-    color: var(--white);
-    border: 0.0625rem solid var(--primary-color);
-  }
-  .mat-step-header .mat-step-icon {
-    background-color: var(--gray-800);
-    color: var(--white);
-    border: 0.0625rem solid var(--gray-800);
-    color: var(--gray-800);
-    background: none;
-    margin-top: 0.5rem;
-  }
-
-  .mat-step-header .mat-step-label.mat-step-label-active {
-    color: var(--primary-color);
-  }
-
-  .sb-mat__modal__content .mat-stepper-horizontal .mat-horizontal-content-container {
-    padding: 0;
-  }
-
-  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::after,
-  .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::before {
-    top: 1.25rem;
-  }
-
-  .mat-stepper-label-position-bottom .mat-stepper-horizontal-line {
-    top: 1.25rem;
-  }
-
-  .mat-step-header.cdk-keyboard-focused, .mat-step-header.cdk-program-focused, .mat-step-header:hover {
-    background: none;
- }
-
- *:focus-visible {
-   border: none !important;
- }
-}
