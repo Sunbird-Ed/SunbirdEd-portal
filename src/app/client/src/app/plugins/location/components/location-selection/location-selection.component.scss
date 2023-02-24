@@ -1,17 +1,5 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 ::ng-deep {
   html[layout=joy] app-location-selection .sb-mat__dropdown.mat-form-field-appearance-fill .mat-form-field-flex {
     border-color: var(--gray-200);
   }
 }
-
-.sb-mat__modal__actions {
-   .stepper-next-btn {
-      width: 10.5rem;
-    }
-    .stepper-back-btn {
-      width: 6.375rem;
-    }
-  }
-
-
