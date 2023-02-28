@@ -7,9 +7,23 @@
       <div tabindex="0" class="fmedium board-title pt-24 font-weight-bold">{{title}}</div>
       <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
       <div tabindex="0" *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
-      <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
+      <!-- <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
         {{buttonText}}
-      </button> 
+      </button>  -->
+      <button mat-raised-button color="primary" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="" (click)="handleEvent()">
+        {{buttonText}}</button>
+
+
+
+        <mat-form-field [color]="colorControl.value!">
+          <mat-label>Color</mat-label>
+          <mat-select [formControl]="colorControl">
+            <mat-option value="primary">Primary</mat-option>
+            <mat-option value="accent">Accent</mat-option>
+            <mat-option value="warn">Warn</mat-option>
+          </mat-select>
+        </mat-form-field>
+
     </div>
   </div>
 </div>

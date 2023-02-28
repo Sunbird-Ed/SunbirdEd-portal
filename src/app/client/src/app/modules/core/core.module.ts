@@ -22,6 +22,7 @@ import { ContentTypeComponent } from './components/content-type/content-type.com
 import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
 import { TelemetryErrorModalComponent } from '../shared/components/telemetry-error-modal/telemetry-error-modal.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,6 +30,7 @@ import { TelemetryErrorModalComponent } from '../shared/components/telemetry-err
     SuiRatingModule, SuiCollapseModule,
     SharedModule,
     RouterModule,
+    MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,
     WebExtensionModule,

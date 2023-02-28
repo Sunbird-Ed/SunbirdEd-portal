@@ -24,7 +24,8 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
 import { UserOnboardingModule} from '../app/modules/user-onboarding';
 import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
-
+import {MatNativeDateModule} from '@angular/material/core';
+import { MaterialExampleModule } from './material.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -33,6 +34,8 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
     BrowserAnimationsModule, // used this instaed of browser module since it includes in it.
     CoreModule,
     CommonModule,
+    MatNativeDateModule,
+    MaterialExampleModule,
     HttpClientModule,
     SuiModalModule,
     SharedModule.forRoot(),

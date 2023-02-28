@@ -60,7 +60,7 @@
                     [config]=cardConfig initialsSize="1" [initial]="guestUser?.formatedName[0] || 'G'"
                     [title]="guestUser?.formatedName || 'Guest'">
                   </sb-member-card>
-                  <sb-member-card tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)"  [style]="avtarDesktopStyle"
+                  <sb-member-card tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)" 
                      [config]=cardConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
                     [title]="userProfile?.firstName">
                   </sb-member-card>
@@ -203,7 +203,7 @@
                     [config]=cardConfig initialsSize="1" [initial]="guestUser?.formatedName[0] || 'G'"
                     [title]="guestUser?.formatedName || 'Guest'">
                   </sb-member-card>
-                  <sb-member-card tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)"  [style]="avtarDesktopStyle"
+                  <sb-member-card tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)"
                      [config]=cardConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
                     [title]="userProfile?.firstName">
                   </sb-member-card>
@@ -282,7 +282,7 @@
                     (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                       width="48"></div>
                   <sb-member-card aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser' tabindex="0"
-                    (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [config]=cardConfig initialsSize="1" [initial]="guestUser?.formatedName[0] || 'G'"
+                    (click)="toggleSideMenu(true)" [config]=cardConfig initialsSize="1" [initial]="guestUser?.formatedName[0] || 'G'"
                     [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
                     [title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
                   </sb-member-card>
@@ -298,6 +298,18 @@
           </div>
         </div>
       </header>
+
+      <mat-toolbar color="accent" style="border-radius: 1.5rem 1.5rem 0 0;display: flex;align-items: center;justify-content: center;height: 80px;">
+        <button mat-button class="mr-8">Basic</button>
+        <button mat-raised-button color="primary" aria-label="Home button with icon" class="mr-8"><mat-icon>home</mat-icon> Home</button>
+        <button mat-raised-button aria-label="digital textbook button with icon" class="mr-8"><mat-icon>menu_book</mat-icon> Digital Textbooks</button>
+        <button mat-raised-button aria-label="Home button with icon" class="mr-8"><mat-icon>school</mat-icon> Coures</button>
+        <button mat-raised-button aria-label="digital textbook button with icon" class="mr-8"><mat-icon>live_tv</mat-icon> TV classes</button>
+        <button mat-raised-button aria-label="Home button with icon" class="mr-8"><mat-icon>quiz</mat-icon> Question Sets</button>
+        <button mat-raised-button aria-label="digital textbook button with icon" class="mr-8"><mat-icon>apps</mat-icon> All</button>
+        <button mat-raised-button aria-label="digital textbook button with icon" class="mr-8"><mat-icon>person</mat-icon> Member</button>
+      </mat-toolbar>
+
       <nav title="menu-bar">
         <div class="sbt-header-menu-bar" *ngIf="showMainMenuBar">
           <!--  sb-g <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>

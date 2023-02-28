@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile, ConnectionService,
   NavigationHelperService, ConfigService, BrowserCacheTtlService, LayoutService, GenericResourceService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, ChangeDetectorRef, ElementRef, Renderer2, NgZone } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, ChangeDetectorRef, ElementRef, Renderer2, NgZone, HostBinding } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor, FormService, GeneraliseLabelService
@@ -18,6 +18,9 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
+import {OverlayContainer} from "@angular/cdk/overlay";
+
+const THEME_DARKNESS_SUFFIX = `-dark`;
 
 /**
  * main app component
@@ -29,6 +32,44 @@ import { SBTagModule } from 'sb-tag-manager';
 })
 
 export class AppComponent implements OnInit, OnDestroy {
+
+  themes: string[] = [
+		"deeppurple-amber",
+		"indigo-pink",
+		"pink-bluegrey",
+		"purple-green",
+    "joy",
+	];
+	
+	@HostBinding('class') activeThemeCssClass: string;
+	isThemeDark = false;
+	activeTheme: string;
+  
+  setTheme(theme: string, darkness: boolean = null) {
+		if (darkness === null)
+			darkness = this.isThemeDark;
+		else if (this.isThemeDark === darkness) {
+			if (this.activeTheme === theme) return;
+		} else
+			this.isThemeDark = darkness;
+		
+		this.activeTheme = theme;
+		
+		const cssClass = darkness === true ? theme + THEME_DARKNESS_SUFFIX : theme;
+		
+		const classList = this.overlayContainer.getContainerElement().classList;
+		if (classList.contains(this.activeThemeCssClass))
+			classList.replace(this.activeThemeCssClass, cssClass);
+		else
+			classList.add(cssClass);
+		
+		this.activeThemeCssClass = cssClass;
+	}
+	
+	toggleDarkness() {
+		this.setTheme(this.activeTheme, !this.isThemeDark);
+	}
+
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -131,7 +172,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
   @ViewChild('darkModeToggle') darkModeToggle: ElementRef;
 
-  constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+  constructor(private overlayContainer: OverlayContainer,private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
@@ -142,7 +183,10 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
-    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+    
+      this.setTheme('indigo-pink', false); // Default Theme
+    
+      this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || 'base';
     if (layoutType === 'base' || layoutType === 'joy') {
@@ -153,6 +197,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource = ELEMENT_DATA;
+
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
@@ -208,7 +255,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     }
-    this.setTheme();
+    // this.setTheme();
     // themeing code
     this.getLocalFontSize();
     // dark theme
@@ -245,7 +292,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  setTheme() {
+  setThemes() {
     const themeColour = localStorage.getItem('layoutColour') || 'default';
     if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
       this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
@@ -1094,3 +1141,17 @@ export class AppComponent implements OnInit, OnDestroy {
     localStorage.setItem('isStepperCompleted', JSON.stringify(this.isStepperCompleted));
   }
 }
+
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+
+const ELEMENT_DATA: PeriodicElement[] = [
+  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
+  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
+];

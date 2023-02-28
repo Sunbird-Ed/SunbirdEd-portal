@@ -1,0 +1,70 @@
+/**
+* Created at 1397/12/14 (2019/3/5).
+* @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
+*/
+
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+@mixin define-css-classes($theme) {
+	@include angular-material-theme($theme);
+
+	$primary: map-get($theme, primary);
+	$accent: map-get($theme, accent);
+	$warn: map-get($theme, warn);
+	$background: map-get($theme, background);
+	$foreground: map-get($theme, foreground);
+	
+  // CSS THEME-DEPENDENT-STYLES ARE HERE:
+  .theme-dependent-colors {
+      background: mat-color($primary);
+      color: mat-color($accent);
+  }
+}
+
+@import './ng-color-palette.scss';
+
+/**
+* Define your custom themes in this map. 
+* The `key` of each member is the name of CSS class for that theme. 
+* To better understanding the schema of the map, see `@each` loop below and especially pay attention to 
+* `map-has-key()` functions.
+*/
+$app-themes: (
+		indigo-pink : (primary-base: $mat-indigo, accent-base: $mat-pink),
+		deeppurple-amber: (primary-base: $mat-deep-purple, accent-base: $mat-amber),
+		pink-bluegrey : (primary-base: $mat-pink, accent-base: $mat-blue-gray),
+		purple-green : (primary-base: $mat-purple, accent-base: $mat-green),
+        joy:(primary-base: $mat-joy, accent-base: $mat-joy-accent)
+);
+
+@each $css-class, $theme in $app-themes {
+	$primary: if(map-has-key($theme, primary), map-get($theme, primary), mat-palette(map-get($theme, primary-base)));
+
+	$accent: if(map-has-key($theme, accent), map-get($theme, accent), mat-palette(map-get($theme, accent-base)));
+
+	$warn: if(map-has-key($theme, warn), map-get($theme, warn), mat-palette(
+			if(map-has-key($theme, warn-base), map-get($theme, warn-base), $mat-red)
+	));
+
+	.#{$css-class} {
+		@include define-css-classes(mat-light-theme($primary, $accent, $warn));
+	}
+
+	.#{$css-class}-dark {
+		@include define-css-classes(mat-dark-theme($primary, $accent, $warn));
+	}
+
+	.theme-primary.#{$css-class} {
+		background-color: mat-color($primary);
+	}
+
+	.theme-accent.#{$css-class} {
+		background-color: mat-color($accent);
+	}
+
+	.theme-warn.#{$css-class} {
+		background-color: mat-color($warn);
+	}
+}

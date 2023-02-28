@@ -3,3 +3,24 @@
 .header-block {
   display: none;
 }
+
+
+
+
+
+/* theme */
+::ng-deep {
+  .mat-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+  }
+}
+.theme-check {
+	color: #333;
+	font-size: 1.5rem;
+}
+.theme-selector-is-dark {
+	font-weight: bold;
+	font-size: 1.2em;
+}
