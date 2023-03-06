@@ -10,19 +10,8 @@
       <!-- <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
         {{buttonText}}
       </button>  -->
-      <button mat-raised-button color="primary" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="" (click)="handleEvent()">
+      <button mat-raised-button color="accent" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="" (click)="handleEvent()">
         {{buttonText}}</button>
-
-
-
-        <mat-form-field [color]="colorControl.value!">
-          <mat-label>Color</mat-label>
-          <mat-select [formControl]="colorControl">
-            <mat-option value="primary">Primary</mat-option>
-            <mat-option value="accent">Accent</mat-option>
-            <mat-option value="warn">Warn</mat-option>
-          </mat-select>
-        </mat-form-field>
 
     </div>
   </div>

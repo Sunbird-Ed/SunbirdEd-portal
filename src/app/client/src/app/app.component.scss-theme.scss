@@ -1,0 +1,19 @@
+@import '~@angular/material/theming';
+
+@mixin app-root-theme($theme){
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  $text: map-get($foreground, text);
+  $card: map-get($background, card);
+
+  app-root {
+    background-color: mat-color($background, background);
+  .background{
+    font-size: 2em;
+    color: $text;
+    background-color: mat-color($background, background);
+  }
+}
+}

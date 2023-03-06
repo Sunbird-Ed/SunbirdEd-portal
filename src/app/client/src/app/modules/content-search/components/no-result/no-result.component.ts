@@ -14,7 +14,6 @@ import {ThemePalette} from '@angular/material/core';
   styleUrls: ['./no-result.component.scss']
 })
 export class NoResultComponent implements OnInit {
-  colorControl = new FormControl('primary' as ThemePalette);
   @Input() title: string;
   @Input() subTitle: string;
   @Input() buttonText: string;

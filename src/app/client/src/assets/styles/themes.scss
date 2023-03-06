@@ -1,0 +1,211 @@
+/**
+* Created at 1397/12/14 (2019/3/5).
+* @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
+*/
+
+// @import '~@angular/material/theming';
+// @include mat-core();
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '~@angular/material' as mat;
+// Plus imports for other components in your app.
+@use './color-palette.scss' as cmat;
+@use 'sass:map';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$theme-primary: mat.define-palette(cmat.$mat-joy);
+$theme-accent: mat.define-palette(cmat.$mat-joy-accent, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$theme-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$theme: mat.define-light-theme((
+  color: (
+    primary: $theme-primary,
+    accent: $theme-accent,
+    warn: $theme-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: monospace !important,
+  ),
+  density: 0,
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($theme);
+// @include mat.angular-material-theme($theme);
+/* You can add global styles to this file, and also import other style files */
+
+
+@import './../../app/app.component.scss-theme.scss';
+
+// @mixin define-css-classes($theme) {
+
+// 	@include angular-material-theme($theme);
+
+// 	$primary: map-get($theme, primary);
+// 	$accent: map-get($theme, accent);
+// 	$warn: map-get($theme, warn);
+
+// 	$background: map-get($theme, background);
+// 	$foreground: map-get($theme, foreground);
+
+
+// 	// CSS THEME-DEPENDENT-STYLES ARE HERE:
+// 	.theme-dependent-colors {
+// 		background: mat-color($primary);
+// 		color: mat-color($accent);
+// 	}
+
+// 	.background {
+// 		padding: 0rem;
+// 		background-color: mat-color($background, background);
+// 		color: mat-color($accent);
+// 	}
+
+// 	.sb-icon {
+// 		background-color: mat-color($accent);
+// 	}
+
+// 	.mat-app-background, .sbt-mat-background,
+// 	.sbt-filter-bar {
+// 		background: mat-color($primary, 100) !important;
+// 		//background: mat-color($background, background) !important;
+// 	}
+
+// 	.sbt-mat-surface,
+// 	.sbt-page-content-area {
+// 		background: mat-color($primary, 50) !important;
+// 		//background: mat-color($background, background) !important;
+// 	}
+
+// }
+
+@mixin candy-carousel-theme($dbgtheme) {
+  // Extract the palettes you need from the theme definition.
+  $primary: map-get($dbgtheme, primary);
+  $accent: map-get($dbgtheme, accent);
+
+  // Define any styles affected by the theme.
+  .mat-app-background, .sbt-mat-background,
+  .sbt-filter-bar {
+    // Use mat-color to extract individual colors from a palette.
+    background-color: mat-color($primary, 900) !important;
+    border-color: mat-color($accent, 700) !important;
+  }
+
+  .sbt-mat-surface,
+  .sbt-page-content-area {
+    background: mat-color($accent, 700) !important;
+  }
+}
+$dbgprimary: mat-palette(mat.$grey-palette, 900);
+$dbgaccent:  mat-palette(mat.$grey-palette, 700);
+$dbgtheme: mat-dark-theme($dbgprimary, $dbgaccent);
+// @include candy-carousel-theme($dbgtheme);
+/**
+* Define your custom themes in this map. 
+* The `key` of each member is the name of CSS class for that theme. 
+* To better understanding the schema of the map, see `@each` loop below and especially pay attention to 
+* `map-has-key()` functions.
+*/
+$app-themes: (
+	deeppurple-amber: (primary-base: $mat-deep-purple, accent-base: $mat-amber),
+	indigo-pink : (primary-base: $mat-indigo, accent-base: $mat-pink),
+	pink-bluegrey : (primary-base: $mat-pink, accent-base: $mat-blue-gray),
+	purple-green : (primary-base: $mat-purple, accent-base: $mat-green),
+	joy: (
+    primary-base: cmat.$mat-joy, 
+    accent-base: cmat.$mat-joy-accent, 
+    font-base: mat.define-typography-config(
+      $font-family: cursive !important,
+    )
+  )
+);
+
+@each $css-class,
+$theme in $app-themes {
+	$primary: if(map-has-key($theme, primary), map-get($theme, primary), mat-palette(map-get($theme, primary-base)));
+	$accent: if(map-has-key($theme, accent), map-get($theme, accent), mat-palette(map-get($theme, accent-base)));
+	$warn: if(map-has-key($theme, warn), map-get($theme, warn), mat-palette(if(map-has-key($theme, warn-base), map-get($theme, warn-base), $mat-red)));
+
+	.#{$css-class} {
+		@include mat.all-component-themes(mat-light-theme($primary, $accent, $warn));
+		@include app-root-theme(mat-light-theme($primary, $accent, $warn));
+
+  .theme-dependent-colors {
+		background: mat-color($primary);
+		color: mat-color($accent);
+	}
+
+	.background {
+		padding: 0rem;
+    // background-color: mat-color($background, background);
+		color: mat-color($accent);
+	}
+
+	.sb-icon {
+		background-color: mat-color($accent);
+	}
+
+	.mat-app-background, .sbt-mat-background,
+	.sbt-filter-bar {
+		background: mat-color($primary, 100) !important;
+		//background: mat-color($background, background) !important;
+	}
+
+	.sbt-mat-surface,
+	.sbt-page-content-area {
+		background: mat-color($primary, 50) !important;
+		//background: mat-color($background, background) !important;
+	}
+
+	}
+
+	.#{$css-class}-dark {
+		@include mat.all-component-themes(mat-dark-theme($primary, $accent, $warn));
+		@include app-root-theme(mat-dark-theme($primary, $accent, $warn));
+    @include candy-carousel-theme($dbgtheme);
+
+
+    // $background: map-get($grey-palette);
+
+    // .mat-app-background, .sbt-mat-background,
+    // .sbt-filter-bar {
+    //   background: mat-color($background, 900) !important;
+    // }
+    // .sbt-mat-surface,
+    // .sbt-page-content-area {
+    //   background: mat-color($background, 700) !important;
+    // }
+
+ 
+	}
+
+	//   .theme-primary.#{$css-class} {
+	//     background-color: mat-color($primary);
+	//   }
+
+	//   .theme-accent.#{$css-class} {
+	//     background-color: mat-color($accent);
+	//   }
+
+	//   .theme-warn.#{$css-class} {
+	//     background-color: mat-color($warn);
+	//   }
+
+}

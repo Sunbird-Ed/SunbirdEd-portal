@@ -12,7 +12,7 @@
 
  <!-- language dropdown --> 
  <div *ngIf="isLayoutAvailable()">
-  <mat-form-field class="sb-mat__dropdown sb-mat__dropdown--nolabel sb-mat__dropdown--language w-100 my-16">
+  <mat-form-field color="accent" class="sb-mat__dropdown sb-mat__dropdown--nolabel sb-mat__dropdown--language w-100 my-16">
     <mat-label>{{resourceService.frmelmnts?.btn?.selectLanguage}}</mat-label>
     <mat-select role="listbox" aria-label="Select Language" [(value)]="selectedLanguage" class="selection" [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event?.value)">
       <mat-option class="mat-dropdown__options mat-dropdown__options--language" role="option" *ngFor="let option of languageRange" [value]="option.value" appTelemetryInteract
