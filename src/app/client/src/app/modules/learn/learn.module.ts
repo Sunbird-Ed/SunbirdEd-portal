@@ -3,7 +3,6 @@ import { LearnRoutingModule } from './learn-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { FormsModule } from '@angular/forms';
 import { CoursePageComponent } from './components';
 import { CoreModule } from '@sunbird/core';
@@ -20,7 +19,6 @@ import {
   imports: [
     CommonModule,
     SharedModule,
-    SlickCarouselModule,
     FormsModule,
     LearnRoutingModule,
     CoreModule,

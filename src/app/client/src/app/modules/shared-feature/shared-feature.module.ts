@@ -8,7 +8,6 @@ import {
   UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
   ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent, YearOfBirthComponent
 } from './components';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,7 +39,6 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
 @NgModule({
   imports: [
     CommonModule,
-    SlickCarouselModule,
     SharedModule,
     CoreModule,
     TelemetryModule,

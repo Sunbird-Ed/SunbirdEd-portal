@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { SharedModule } from '@sunbird/shared';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { WorkSpaceService, EditorService , BatchService, ReviewCommentsService} from './services';
@@ -22,7 +21,6 @@ import {
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
-import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 // import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor'; //commented for infinite-scroll
@@ -31,7 +29,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   imports: [
     CommonModule,
-    SlickCarouselModule,
     WorkspaceRoutingModule,
     SharedModule,
     SuiModule,
@@ -39,7 +36,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CoreModule,
     ReactiveFormsModule,
     TelemetryModule,
-    OrderModule,
     PlayerHelperModule,
     ContentSearchModule,
     // CollectionEditorLibraryModule, //commented for infinte-scroll

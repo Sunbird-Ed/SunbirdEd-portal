@@ -24,7 +24,6 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
@@ -46,7 +45,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ChartsModule,
     SuiModule,
     SharedModule,
-    OrderModule,
     CommonConsumptionModule,
     TelemetryModule,
     NgxDaterangepickerMd.forRoot(),
