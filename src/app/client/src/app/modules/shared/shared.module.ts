@@ -50,39 +50,38 @@ import { MaterialModule } from './modules/material/material.module';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule,
-    FormsModule, ReactiveFormsModule, NgxDatatableModule,
-    TelemetryModule,
-    TranslateModule.forChild(),
-    MatTooltipModule, MatTabsModule, MatDialogModule,
-    MatAutocompleteModule, MatFormFieldModule, MatInputModule,
-    MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule, MaterialModule
-  ],
-  declarations: [AppLoaderComponent, DateFormatPipe,
-    BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
-    ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
-    InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
-    ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
-    SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
-    TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe, SlickComponent
-  ],
-  exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
-    BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
-    OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
-    ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
-    ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
-    CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
-    InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
-    AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe, SlickComponent
-  ],
-  entryComponents: [AlertModalComponent]
+    imports: [
+        CommonModule,
+        SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+        SuiRatingModule, SuiCollapseModule,
+        FormsModule, ReactiveFormsModule, NgxDatatableModule,
+        TelemetryModule,
+        TranslateModule.forChild(),
+        MatTooltipModule, MatTabsModule, MatDialogModule,
+        MatAutocompleteModule, MatFormFieldModule, MatInputModule,
+        MatChipsModule, MatIconModule, MatSelectModule, MatListModule, MatButtonModule, MatCheckboxModule, MaterialModule
+    ],
+    declarations: [AppLoaderComponent, DateFormatPipe,
+        BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
+        ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
+        InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
+        OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
+        ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
+        SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
+        TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
+        AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe, SlickComponent
+    ],
+    exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
+        BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
+        OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
+        ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
+        ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
+        CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
+        MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
+        InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
+        AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
+        AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe, SlickComponent
+    ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {
