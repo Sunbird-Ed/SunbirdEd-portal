@@ -4,8 +4,12 @@ import { Injectable } from '@angular/core';
 export class CacheService {
 
     public get(key?: string) {
-        let value = localStorage.getItem(key);
+        try {
+            let value = localStorage.getItem(key);
         return value ? JSON.parse(value) : null;
+    } catch (e) {
+        return false;
+    }
     }
 
     public set(key: string, value: any, options?:  any) {

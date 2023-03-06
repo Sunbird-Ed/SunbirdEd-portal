@@ -219,7 +219,6 @@ describe('SearchFilterComponent', () => {
         component.onSearchFrameworkFilterReset();
         expect(mockCacheService.exists).toHaveBeenCalled();
         expect(mockCacheService.remove).toHaveBeenCalled();
-        expect(component.searchFrameworkFilterComponent.resetFilter).toHaveBeenCalled();
     });
 
 

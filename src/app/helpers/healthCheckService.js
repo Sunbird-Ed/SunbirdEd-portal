@@ -4,6 +4,7 @@
  * @author      :: Rajath V B
  */
 
+const { logger } = require('@project-sunbird/logger');
 var async = require('async')
 var request = require('request')
 var uuidv1 = require('uuid/v1')
@@ -255,6 +256,7 @@ function checkSunbirdPortalHealth (req, response) {
  */
 function checkDependantServiceHealth (dependancyServices) {
   return function (req, res, next) {
+    logger.info({ msg: 'health check called - ' + req.method + ' - ' + req.url });
     if (envHelper.sunbird_portal_health_check_enabled === 'false') {
       next()
     } else {
@@ -270,6 +272,7 @@ function checkDependantServiceHealth (dependancyServices) {
       });
 
       if (dependancyServices.length !== heathyServiceCount) {
+        logger.info({ msg: '❌ HEALTH CHECK FAILED'});
         res.status(503)
         res.send({
           'id': 'api.error',
@@ -280,7 +283,7 @@ function checkDependantServiceHealth (dependancyServices) {
             'msgid': null,
             'status': 'failed',
             'err': 'SERVICE_UNAVAILABLE',
-            'errmsg': 'Service is unavailable'
+            'errmsg': 'Health Service is unavailable'
           },
           'responseCode': 'SERVICE_UNAVAILABLE',
           'result': { check: checksArrayObj}

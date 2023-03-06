@@ -40,6 +40,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   @Input() facets$ = new BehaviorSubject({});
   @Input() defaultTab = {};
   @Input() filterResponseData;
+  @Input() userSelectedPreference;
   selectedFilters = {};
   allValues = {};
   selectedNgModels = {};
@@ -119,7 +120,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets(), this.filterConfig$)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(null, error => {
-        console.error('Error while fetching filters');
+        console.error('Error while fetching filters', error);
       });
 
     if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
@@ -350,7 +351,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.cacheService.remove('searchFilters');
     }
     if (this.searchFrameworkFilterComponent) {
-      this.searchFrameworkFilterComponent.resetFilter();
+      const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
+      this.router.navigate([], {
+        queryParams: { ...this.userSelectedPreference, selectedTab },
+        relativeTo: this.activatedRoute.parent
+      });
     }
   }
 

@@ -1287,19 +1287,19 @@ html[data-mode="darkmode"][layout="base"] {
 }
 
 .profile-avtar:focus-within {
-  border: calculateRem(1px) var(--accessibility-red2) solid !important;
+  border: calculateRem(1px) var(--red) solid !important;
   border-radius: calculateRem(5px);
   outline: none;
 }
 
 input[type="radio"]:focus-visible,
 input[type="checkbox"]:focus-visible {
-  outline: calculateRem(2px) solid var(--accessibility-red2);
+  outline: calculateRem(2px) solid var(--red);
   border-radius: calculateRem(5px);
 }
 
 .sb-checkbox.sb-checkbox-primary.sb-checkbox-rightaligned label:focus-within {
-  outline: calculateRem(2px) solid var(--accessibility-red2);
+  outline: calculateRem(2px) solid var(--red);
   border-radius: calculateRem(5px);
 }
 

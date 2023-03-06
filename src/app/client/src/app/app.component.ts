@@ -300,20 +300,21 @@ export class AppComponent implements OnInit, OnDestroy {
    * @description -  to fetch all form config data list for onboarding stepper flow
    */
   getOnboardingList() {
-    const formReadInputParams = {
-      formType: 'useronboardingsteps',
-      formAction: 'onboarding',
-      contentType: 'global',
-      component: 'portal'
-    };
-    this.formService.getFormConfig(formReadInputParams).subscribe(
-      (formResponsedata) => {
-        if (formResponsedata) {
-          this.OnboardingFormConfig = formResponsedata;
-          this.isStepperEnabled = true;
-        }
-        else { this.isPopupEnabled = true; }
-      }, error => { this.isPopupEnabled = true; });
+    // const formReadInputParams = {
+    //   formType: 'useronboardingsteps',
+    //   formAction: 'onboarding',
+    //   contentType: 'global',
+    //   component: 'portal'
+    // };
+    // this.formService.getFormConfig(formReadInputParams).subscribe(
+    //   (formResponsedata) => {
+    //     if (formResponsedata) {
+    //       this.OnboardingFormConfig = formResponsedata;
+    //       this.isStepperEnabled = true;
+    //     }
+    //     else { this.isPopupEnabled = true; }
+    //   }, error => { this.isPopupEnabled = true; });
+    this.isPopupEnabled = true;
   }
   ngOnInit() {
     this.getOnboardingList();
