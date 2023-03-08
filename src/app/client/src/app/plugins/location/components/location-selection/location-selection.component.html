@@ -64,28 +64,17 @@
 
 <div *ngIf="!showModal || isStepper" class="sb-mat__modal sb-onboard">
 
-  <!-- <div mat-dialog-title class="flex-jc-center">
-    <div class="sb-onboard__header">
-      <ng-content select="[slot=popup-header]"></ng-content>
-    </div>
-    <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="isClosable">
-    </button>
-  </div> -->
-
   <mat-dialog-content>
     <div class="sb-mat__modal__content">
-      <!-- <div>
-        <ng-content select="[slot=popup-sub-header]"></ng-content>
-      </div> -->
       <div>
         <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
           <div class="w-100">
             <sb-form
-              *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
-              [config]="sbFormLocationSelectionDelegate.locationFormConfig"
-              (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
-              (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event); onSbFormValueChange($event);"
-              (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event, showModal,isStepper)">
+              *ngIf="sbFormLocationSelectionDelegate && sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
+              [config]="sbFormLocationSelectionDelegate?.locationFormConfig"
+              (initialize)="sbFormLocationSelectionDelegate?.onFormInitialize($event)"
+              (valueChanges)="sbFormLocationSelectionDelegate?.onFormValueChange($event); onSbFormValueChange($event);"
+              (dataLoadStatus)="sbFormLocationSelectionDelegate?.onDataLoadStatusChange($event, showModal,isStepper)">
             </sb-form>
           </div>
         </div>
