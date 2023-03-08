@@ -4,7 +4,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -24,7 +24,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { AceEditorModule } from 'ng2-ace-editor';
+import { AceEditorModule } from '@derekbaker/ngx-ace-editor-wrapper';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
 import { DashletModule } from 'sb-dashlet-v12';
@@ -42,7 +42,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     DashboardRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ChartsModule,
+    NgChartsModule,
     SuiModule,
     SharedModule,
     CommonConsumptionModule,
