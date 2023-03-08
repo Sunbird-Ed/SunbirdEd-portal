@@ -15,7 +15,7 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   const mockRouter: Partial<Router> = {
     url: '/resources/view-all/Course-Unit/1?&selectedTab=course&board=CBSE%2FNCERT&medium=English&publisher=NCERT&',
-    navigate: jest.fn(),
+    navigate: jest.fn() as any,
     events: of({}) as any
   };
   const mockActivatedRoute: Partial<ActivatedRoute> = {

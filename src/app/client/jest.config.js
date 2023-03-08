@@ -7,9 +7,9 @@
  * - https://jestjs.io/docs/configuration
  */
 
-const { defaults }                = require('jest-config');
+const { defaults } = require('jest-config');
 const { pathsToModuleNameMapper } = require('ts-jest');
-const { paths }                   = require('./tsconfig.json').compilerOptions;
+const { paths } = require('./tsconfig.json').compilerOptions;
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
@@ -24,25 +24,30 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  transform: {
-    '^.+\\.ts?$': 'ts-jest',
-  },
+  transform: { '^.+.(ts|mjs|js|html)$': 'jest-preset-angular' },
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@project-sunbird)'],
+  snapshotSerializers: [
+    'jest-preset-angular/build/serializers/no-ng-attributes',
+    'jest-preset-angular/build/serializers/ng-snapshot',
+    'jest-preset-angular/build/serializers/html-comment',
+  ],
   collectCoverage: true,
   coverageReporters: ['text', 'html'],
   coverageDirectory: '<rootDir>/coverage/',
   testMatch: [
-  '**/?(*.)(spec).ts'
+    '**/?(*.)(spec).ts'
   ],
   moduleFileExtensions: [
     'js',
     'jsx',
     'json',
     'ts',
-    'tsx'
+    'tsx',
+    'html',
+    'mjs',
+    'd.ts'
   ],
-  transformIgnorePatterns: [
-    '<rootDir>/node_modules/'
-  ],
+
   testPathIgnorePatterns: [
     '/node_modules/',
     '.data.spec.ts',

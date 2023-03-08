@@ -17,7 +17,7 @@
     "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
     "post-build": "gulp post:build",
     "build-dev": "ng build --configuration production --build-optimizer=false --deployUrl dist/",
-    "test": "jest --collectCoverage=true --coverageReporters=lcov",
+    "test": "jest --clearCache && jest --collectCoverage=true --coverageReporters=lcov",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
@@ -26,7 +26,9 @@
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
     "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --configuration production --stats-json",
     "build:stats": "ng build --stats-json",
-    "analyze": "webpack-bundle-analyzer dist/stats.json"
+    "analyze": "webpack-bundle-analyzer dist/stats.json",
+    "postinstall": "ngcc"
+  
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
@@ -52,11 +54,11 @@
     "@angular/platform-browser": "^13.3.12",
     "@angular/platform-browser-dynamic": "^13.3.12",
     "@angular/router": "^13.3.12",
-    "@ngx-translate/core": "12.0.0",
-    "@ngx-translate/http-loader": "^5.0.0",
+    "@ngx-translate/core": "14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
     "@project-sunbird/chatbot-client": "3.0.5",
     "@project-sunbird/ckeditor-build-classic": "4.1.3",
-    "@project-sunbird/client-services": "4.8.13",
+    "@project-sunbird/client-services": "5.1.2",
     "@project-sunbird/common-consumption": "5.1.0",
     "@project-sunbird/common-form-elements": "5.1.2",
     "@project-sunbird/sb-notification": "5.0.9",
@@ -136,21 +138,22 @@
   },
   "devDependencies": {
     "@angular/language-service": "^13.3.12",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^28.0.3",
     "@types/jquery": "^3.3.38",
     "@types/jquery.fancytree": "2.7.34",
     "@types/node": "^12.20.15",
     "codelyzer": "^6.0.0",
     "husky": "^4.2.5",
-    "jest": "^27.5.1",
-    "jest-preset-angular": "^11.1.1",
+    "jest": "^28.0.3 ",
+    "jest-preset-angular": "12.2.6",
     "md5": "2.2.1",
     "minimist": "^1.2.5",
     "protractor": "~7.0.0",
-    "ts-node": "^4.1.0",
+    "ts-node": "^10.9.1",
     "tslint": "~6.1.0",
     "typescript": "~4.6.4",
     "webpack-bundle-analyzer": "^4.7.0"
   },
   "resolutions": {}
+
 }
