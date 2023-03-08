@@ -24,7 +24,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { AceEditorModule } from 'ng2-ace-editor';
+import { AceEditorModule } from '@derekbaker/ngx-ace-editor-wrapper';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
 import { DashletModule } from 'sb-dashlet-v12';

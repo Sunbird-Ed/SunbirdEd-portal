@@ -52,9 +52,6 @@ import { ContentSearchModule } from '@sunbird/content-search';
         ContentManagerComponent,
         AboutUsComponent
     ],
-    entryComponents: [
-        ContentManagerComponent,
-    ],
     exports: [InfoCardComponent]
 })
 export class OfflineModule { }

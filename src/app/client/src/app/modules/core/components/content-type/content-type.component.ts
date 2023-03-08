@@ -174,7 +174,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
 
   getTitle(contentType) {
-    return _.get(this.resourceService, _.get(contentType, 'title'));
+    return _.get(this.resourceService, _.get(contentType, 'title')) || _.get(contentType, 'title');
   }
 
   getIcon(contentType) {

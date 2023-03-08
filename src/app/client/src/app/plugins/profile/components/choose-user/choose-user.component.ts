@@ -21,12 +21,12 @@ import { takeUntil } from 'rxjs/operators';
 export class ChooseUserComponent implements OnInit, OnDestroy {
   isFullScreenView: any;
 
-  constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
+  constructor(public userService: UserService, public navigationHelperService: NavigationHelperService,
               public toasterService: ToasterService, public router: Router, private utilService: UtilService,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute, public courseService: CoursesService,
-              private connectionService: ConnectionService, public layoutService: LayoutService,private navigationHelperService: NavigationHelperService) {
+              private connectionService: ConnectionService, public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -48,7 +48,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
 
   ngOnInit() {
-    this.navigationhelperService.setNavigationUrl();
+    this.navigationHelperService.setNavigationUrl();
     this.userDataSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       this.getManagedUserList();
     });
@@ -78,7 +78,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.navigationhelperService.goBack();
+    this.navigationHelperService.goBack();
   }
 
   switchUser() {
@@ -115,7 +115,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.activatedRoute.snapshot.data.telemetry.uri,
-        duration: this.navigationhelperService.getPageLoadTime()
+        duration: this.navigationHelperService.getPageLoadTime()
       }
     });
   }
@@ -194,7 +194,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   closeSwitchUser() {
-    this.navigationhelperService.navigateToLastUrl();
+    this.navigationHelperService.navigateToLastUrl();
   }
 
   initializeManagedUser() {

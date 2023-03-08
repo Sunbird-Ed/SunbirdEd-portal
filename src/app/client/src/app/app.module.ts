@@ -26,46 +26,45 @@ import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserAnimationsModule, // used this instaed of browser module since it includes in it.
-    CoreModule,
-    CommonModule,
-    HttpClientModule,
-    SuiModalModule,
-    SharedModule.forRoot(),
-    WebExtensionModule.forRoot(),
-    TelemetryModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient]
-      }
-    }),
-    SbSearchFilterModule.forRoot('web'),
-    ChatLibModule,
-    SharedFeatureModule,
-    UserOnboardingModule,
-    MatStepperModule,
-    CdkStepperModule,
-    ...PluginModules,
-     // ngx-translate and the loader module
-     HttpClientModule,
-    AppRoutingModule // don't add any module below this because it contains wildcard route
-  ],
-  entryComponents: [AppComponent],
-  bootstrap: [AppComponent],
-  providers: [
-    CacheService,
-    ChatLibService,
-    TranslateStore,
-    DeviceDetectorService,
-    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
-  ]
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserAnimationsModule,
+        CoreModule,
+        CommonModule,
+        HttpClientModule,
+        SuiModalModule,
+        SharedModule.forRoot(),
+        WebExtensionModule.forRoot(),
+        TelemetryModule.forRoot(),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        SbSearchFilterModule.forRoot('web'),
+        ChatLibModule,
+        SharedFeatureModule,
+        UserOnboardingModule,
+        MatStepperModule,
+        CdkStepperModule,
+        ...PluginModules,
+        // ngx-translate and the loader module
+        HttpClientModule,
+        AppRoutingModule // don't add any module below this because it contains wildcard route
+    ],
+    bootstrap: [AppComponent],
+    providers: [
+        CacheService,
+        ChatLibService,
+        TranslateStore,
+        DeviceDetectorService,
+        { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
+        { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
+    ]
 })
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {
