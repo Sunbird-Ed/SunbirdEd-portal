@@ -173,7 +173,7 @@
 
 <div *ngIf="layoutConfiguration"
   [ngClass]="{'player-fullscreen-header': isFullScreenView}">
-  <div class="sbt-header sbt-fluid-header-bg mat-app-background">
+  <div class="sbt-header sbt-fluid-header-bg  mat-app-background">
     <div class="sbt-container">
       <!--Header section-->
       <header>
@@ -216,8 +216,8 @@
           </div>
           <div
             class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-5 sb-g-col-xxxl-8 sbt-header-tool-bar flex-jc-center relative">
-            <div class="sbt-search-bar-panel">
-              <app-search [layoutConfiguration]="layoutConfiguration" class="sbt-search-box large">
+            <div class="w-100">
+              <app-search [layoutConfiguration]="layoutConfiguration" class="">
               </app-search>
             </div>
             <div class="search-box-dropdown-list">
@@ -299,9 +299,8 @@
         </div>
       </header>
 
-      <!-- <mat-toolbar color="accent" style="border-radius: 1.5rem 1.5rem 0 0;display: flex;align-items: center;height: 80px;">
-        <mat-toolbar-row style="margin:0 auto;position:relative;display: inherit;width: auto;height: 88px;">
-        <button mat-button class="mr-8"><span>Basic</span></button>
+      <!-- <mat-toolbar color="accent" style="border-radius: 1.5rem 1.5rem 0 0;display: flex;align-items: center;justify-content: center;height: 80px;">
+        <button mat-button class="mr-8">Basic</button>
         <button mat-raised-button color="primary" aria-label="Home button with icon" class="mr-8"><mat-icon>home</mat-icon> Home</button>
         <button mat-raised-button aria-label="digital textbook button with icon" class="mr-8"><mat-icon>menu_book</mat-icon> Digital Textbooks</button>
         <button mat-raised-button aria-label="Home button with icon" class="mr-8"><mat-icon>school</mat-icon> Coures</button>
@@ -309,7 +308,6 @@
         <button mat-raised-button aria-label="Home button with icon" class="mr-8"><mat-icon>quiz</mat-icon> Question Sets</button>
         <button mat-raised-button aria-label="digital textbook button with icon" class="mr-8"><mat-icon>apps</mat-icon> All</button>
         <button mat-raised-button aria-label="digital textbook button with icon" class="mr-8"><mat-icon>person</mat-icon> Member</button>
-      </mat-toolbar-row>
       </mat-toolbar> -->
 
       <nav title="menu-bar">
