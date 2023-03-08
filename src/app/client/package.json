@@ -26,7 +26,8 @@
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
     "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --configuration production --stats-json",
     "build:stats": "ng build --stats-json",
-    "analyze": "webpack-bundle-analyzer dist/stats.json"  
+    "analyze": "webpack-bundle-analyzer dist/stats.json",
+    "postinstall": "ngcc"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
@@ -114,7 +115,7 @@
     "md5": "2.2.1",
     "ng-recaptcha": "^9.0.0",
     "@derekbaker/ngx-ace-editor-wrapper": "12.2.16",
-    "ng2-charts": "3.1.2",
+    "ng2-charts": "2.4.2",
     "ng2-semantic-ui-v9": "0.0.6",
     "ngx-bootstrap": "^8.0.0",
     "ngx-chips": "2.1.0",

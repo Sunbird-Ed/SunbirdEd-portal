@@ -4,7 +4,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
-import { NgChartsModule } from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -42,7 +42,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     DashboardRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgChartsModule,
+    ChartsModule,
     SuiModule,
     SharedModule,
     CommonConsumptionModule,
