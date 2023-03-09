@@ -14,7 +14,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { RouterModule } from '@angular/router';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
-import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
+import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent,

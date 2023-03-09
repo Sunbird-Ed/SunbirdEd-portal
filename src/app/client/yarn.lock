@@ -2206,10 +2206,10 @@
   dependencies:
     tslib "^2.2.0"
 
-"@project-sunbird/common-form-elements@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements/-/common-form-elements-5.1.2.tgz#a8cc507ea09ffbb8ad9f52b441b9cada03b1e94e"
-  integrity sha512-B/U3B4o0MhU0PPEBJtT5eAG5TjDVge973A16UjWuIL+cB8KiECSx7egQyuTZNGapEpbb+Na3DJeZ1jdBmt0/7Q==
+"@project-sunbird/common-form-elements-full@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements-full/-/common-form-elements-full-6.0.0.tgz#1126aee9a481a8e98fa97e41e3922b709d815a4d"
+  integrity sha512-83dkBR0BoTHGWIZz93VOOQg4UlCGy6O2xMQFtsomtIISe+M23nvnSRvsm7z+BGVg+HuYujn5MhZ0g9XRmJTpkg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -6480,7 +6480,7 @@ figures@^3.0.0:
   dependencies:
     escape-string-regexp "^1.0.5"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 

@@ -1,4 +1,4 @@
-import { FieldConfig, FieldConfigOptionsBuilder } from '@project-sunbird/common-form-elements';
+import { FieldConfig, FieldConfigOptionsBuilder } from '@project-sunbird/common-form-elements-full';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
 import { concat, defer, iif, of } from 'rxjs';
@@ -18,7 +18,7 @@ export class SbFormLocationOptionsFactory {
     private orgDetailsService: OrgDetailsService
   ) {}
 
-  buildStateListClosure(config: FieldConfig<any>, initial = false): FieldConfigOptionsBuilder<SbLocation> {
+  buildStateListClosure(config: FieldConfig<any>, initial = false) {
     return (formControl: FormControl, __: FormControl, notifyLoading, notifyLoaded) => {
       return defer(async () => {
         notifyLoading();
@@ -45,7 +45,7 @@ export class SbFormLocationOptionsFactory {
     };
   }
 
-  buildLocationListClosure(config: FieldConfig<any>, initial = false): FieldConfigOptionsBuilder<SbLocation> {
+  buildLocationListClosure(config: FieldConfig<any>, initial = false) {
     const locationType = (() => {
       if (config.code === 'state') {
         return 'state';
