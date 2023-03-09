@@ -20,8 +20,10 @@ import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
 import {OverlayContainer} from "@angular/cdk/overlay";
 
+ /* angular material theme  */
 const THEME_DARKNESS_SUFFIX = `-dark`;
-
+ /* angular material theme  */
+ 
 /**
  * main app component
  */
@@ -33,6 +35,7 @@ const THEME_DARKNESS_SUFFIX = `-dark`;
 
 export class AppComponent implements OnInit, OnDestroy {
 
+   /* angular material theme  */
   themes: string[] = [
 		"deeppurple-amber",
 		"indigo-pink",
@@ -45,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	isThemeDark = false;
 	activeTheme: string;
   
+ 
   setTheme(theme: string, darkness: boolean = null) {
 		if (darkness === null)
 			darkness = this.isThemeDark;

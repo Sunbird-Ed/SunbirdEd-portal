@@ -1,0 +1,67 @@
+@use "~@angular/material" as mat;
+
+
+// Define a custom mixin that takes in the current theme
+@mixin theme-color-grabber($theme) {
+  // Parse the theme and create variables for each color in the pallete
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+
+  // Create theme specfic styles
+  .sb-mat-primary {
+    background-color: mat-color($primary);
+  }
+  .sb-mat-accent {
+    background-color: mat-color($accent);
+  }
+  .sb-mat-warn {
+    background-color: mat-color($warn);
+  }
+  .sb-mat-background {
+    background-color: mat-color($background, background);
+  }
+}
+
+
+// dark background related
+@mixin darkbgTheme($dbgtheme) {
+    // Extract the palettes you need from the theme definition.
+    $primary: map-get($dbgtheme, primary);
+    $accent: map-get($dbgtheme, accent);
+  
+    // Define any styles affected by the theme.
+    .mat-app-background,
+    .sbt-mat-background,.sbt-fluid-content-bg, .sb-section-preference,
+    .sbt-filter-bar,.new-layout-footer {
+      // Use mat-color to extract individual colors from a palette.
+      background-color: mat-color($primary, 900) !important;
+    }
+  
+    .sbt-mat-surface, .new-layout-footer .sbt-container,
+    .sbt-page-content-area {
+      background: mat-color($primary, 800) !important;
+    }
+  }
+
+
+  // accessbility bar theme (note: when we are using primary, accent color attributes)
+  .accessibility-toolbar-theme {
+    $primary: mat.define-palette(mat.$grey-palette);
+    $accent: mat.define-palette(mat.$grey-palette, 500);
+    $warn: mat.define-palette(mat.$grey-palette);
+    $accessibility-toolbar-theme: mat.define-light-theme($primary, $accent, $warn);
+    $accessibility-toolbar-theme: mat.define-dark-theme($primary, $accent, $warn);
+    @include mat.all-component-themes($accessibility-toolbar-theme);
+  }
+
+  // .my-alternate-theme {
+  //   $my-alternate-primary: mat.define-palette(mat.$red-palette);
+  //   $my-alternate-accent: mat.define-palette(mat.$green-palette, 400);
+  //   $my-alternate-warn: mat.define-palette(mat.$grey-palette);
+  //   $my-alternate-theme: mat.define-light-theme($my-alternate-primary, $my-alternate-accent, $my-alternate-warn);
+    
+  //   @include mat.all-component-themes($my-alternate-theme);
+
+  // }

@@ -1,6 +1,10 @@
+@import './../assets/styles/themes.scss';
+@import "./../assets/styles/themes.scss-universal.scss";
+
 .header-block {
   display: none;
 }
+
 
 /* theme */
 ::ng-deep {
@@ -9,6 +13,11 @@
     flex-direction: column;
     align-items: baseline;
   }
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
 }
 .theme-check {
 	color: #333;
@@ -18,4 +27,3 @@
 	font-weight: bold;
 	font-size: 1.2em;
 }
-

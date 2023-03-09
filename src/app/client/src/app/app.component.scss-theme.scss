@@ -10,14 +10,13 @@
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
   
-
-.example-spacer {
-  flex: 1 1 auto;
-}
-  // all of these variables contain many additional variables
-  mat-card.big-input {
-    background-color: mat-color($background, background);
+  .ssb-mat-accent {
+    background-color: mat-color($primary, 100);
   }
+
+  // mat-card.big-input {
+  //   background-color: mat-color($background, background);
+  // }
   .big-input {
     input {
       // retrieve particular color from variable, rg: text, base, divider, ...
@@ -27,4 +26,5 @@
       border: 1px solid mat-color($primary, 900);
     }
   }
+
 }
