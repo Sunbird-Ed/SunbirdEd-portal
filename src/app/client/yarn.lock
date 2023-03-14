@@ -2151,10 +2151,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@project-sunbird/chatbot-client@3.0.5":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client/-/chatbot-client-3.0.5.tgz#a4fff894f1c4526a24460d4514703fd336ae2c14"
-  integrity sha512-h7V/h+2g393li02M5atqMux1ucgwLsvxLEDHyIH64BWeJg3rr1b4LmnPpbwuqPKW+zrcAAgl6G8wYys1e9ZQ5Q==
+"@project-sunbird/chatbot-client@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client/-/chatbot-client-4.0.0.tgz#13cb3afab11c595d66df9c33414375e9550f1b2e"
+  integrity sha512-1rog9xXHkQZG/SiRDR9LfcXYcAvgiw1sooa01PNuP5DpAkLyDPnfKOpHmg5ngEhXHvLBTTNBnKlaxpkFKx11gg==
   dependencies:
     tslib "^2.0.0"
 
@@ -2206,10 +2206,10 @@
   dependencies:
     tslib "^2.2.0"
 
-"@project-sunbird/common-form-elements@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements/-/common-form-elements-5.1.2.tgz#a8cc507ea09ffbb8ad9f52b441b9cada03b1e94e"
-  integrity sha512-B/U3B4o0MhU0PPEBJtT5eAG5TjDVge973A16UjWuIL+cB8KiECSx7egQyuTZNGapEpbb+Na3DJeZ1jdBmt0/7Q==
+"@project-sunbird/common-form-elements-full@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements-full/-/common-form-elements-full-6.0.0.tgz#1126aee9a481a8e98fa97e41e3922b709d815a4d"
+  integrity sha512-83dkBR0BoTHGWIZz93VOOQg4UlCGy6O2xMQFtsomtIISe+M23nvnSRvsm7z+BGVg+HuYujn5MhZ0g9XRmJTpkg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -6480,7 +6480,7 @@ figures@^3.0.0:
   dependencies:
     escape-string-regexp "^1.0.5"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 

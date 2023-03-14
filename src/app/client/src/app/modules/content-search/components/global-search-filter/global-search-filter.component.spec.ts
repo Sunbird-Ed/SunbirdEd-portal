@@ -272,7 +272,7 @@ describe('GlobalSearchFilterComponent', () => {
             }, 10);
         });
 
-        it('should invoked ngOnInit for catch part', (done) => {
+        it('should invoked ngOnInit for catch part', () => {
             mockActivatedRoute.snapshot = {
                 data: {
                     telemetry: {
@@ -292,7 +292,6 @@ describe('GlobalSearchFilterComponent', () => {
                 expect(globalSearchFilterComponent.refresh).toBeTruthy();
                 expect(globalSearchFilterComponent.isOpen).toBeFalsy();
                 expect(mockConnectionService.monitor).toHaveBeenCalled();
-                done();
             }, 10);
         });
     });
