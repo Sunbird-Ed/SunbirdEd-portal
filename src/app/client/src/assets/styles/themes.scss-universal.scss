@@ -30,18 +30,26 @@
     // Extract the palettes you need from the theme definition.
     $primary: map-get($dbgtheme, primary);
     $accent: map-get($dbgtheme, accent);
-  
+    // $foreground: map-get($dbgtheme, foreground);
+    // $background: map-get($dbgtheme, background);
+
+    $dbgprimary: mat-palette(mat.$grey-palette, 500, 800, 900);
+    $dbgaccent: mat-palette(mat.$grey-palette, 700);
+    $dbgtheme: mat-dark-theme($dbgprimary, $dbgaccent);
+    
     // Define any styles affected by the theme.
     .mat-app-background,
     .sbt-mat-background,.sbt-fluid-content-bg, .sb-section-preference,
     .sbt-filter-bar,.new-layout-footer {
       // Use mat-color to extract individual colors from a palette.
       background-color: mat-color($primary, 900) !important;
+      // color: mat-color($foreground, text) !important;
     }
   
     .sbt-mat-surface, .new-layout-footer .sbt-container,
     .sbt-page-content-area {
       background: mat-color($primary, 800) !important;
+      // color: mat-color($foreground, text) !important;
     }
   }
 
@@ -88,3 +96,49 @@
   //   @include mat.all-component-themes($my-alternate-theme);
 
   // }
+
+
+  // @mixin panel-theme($theme) {
+  //   $primary: map-get($theme, primary);
+  //   $accent: map-get($theme, accent);
+  //   $warn: map-get($theme, warn);
+  //   $background: map-get($theme, background);
+  //   $foreground: map-get($theme, foreground);
+  //   .panel {
+  //       border: none;
+  //       &-heading {
+  //           background: mat-color($mat-grey, 0) !important;
+  //           h4 span {
+  //               color: mat-color($mat-grey, 700);
+  //               border-bottom: 1px solid mat-color($primary, 500);
+  //           }
+  //       }
+  //       &-body {
+  //           background: mat-color($mat-grey, 0);
+  //       }
+  //       &-footer {
+  //           background: mat-color($mat-grey, 100) !important;
+  //       }
+  //   }
+
+
+
+
+//   // Theme configuration merge
+// $primary: mat-palette($mat-blue, 800, 500, 900);
+// $accent:  mat-palette($mat-blue, A200, A100, A400);
+// $warn: mat-palette($mat-red);
+
+// $theme: mat-light-theme($primary, $accent, $warn);
+
+// // Custom colors
+// $custom-colors: (
+//   custom-color-a: mat-color($mat-green, 700),
+//   custom-color-b: mat-color($mat-red, 400),
+// );
+// $theme: map-merge($theme, (custom-colors: $custom-colors));
+
+// .custom-class-a {
+//   background-color: map-get($custom-colors, custom-color-a);
+//   color: map-get($custom-colors, custom-color-b);
+// }

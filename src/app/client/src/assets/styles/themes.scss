@@ -112,11 +112,12 @@ $app-themes: (
     @include no-result-component(mat-light-theme($primary, $accent, $warn));
     @include mat.all-component-typographies($typography);
 
-
     $ColorGrabber: mat-light-theme($primary, $accent, $warn);
     @include theme-color-grabber($ColorGrabber);
+    
     $matCardTheme: mat-light-theme($primary, $accent, $warn);
     @include theme-mat-card($matCardTheme);
+
     // .theme-dependent-colors {
     // 	background: mat-color($primary);
     // 	color: mat-color($accent);
@@ -128,9 +129,23 @@ $app-themes: (
     // 	color: mat-color($accent);
     // }
 
-   :root {
-    --sbt-footer-bg: #{mat-color($primary, 100)};
-   }
+    $primary1: mat-color($primary);
+    $accent1: mat-color($accent);
+    $warn1: mat-color($warn);
+    // $fg_palette:map-get($my-theme-dark, foreground);
+    // $bg_palette:map-get($my-theme-dark, background);
+    // $fg:map-get($fg_palette, text);
+    // $bg:map-get($bg_palette, background);
+  
+    // --primary: #{$primary};
+    // --accent: #{$accent};
+    // --warn: #{$warn};
+    // --fg: #{$fg};
+    // --bg: #{$bg};
+    --sbt-body-bg: #{$primary1, 100}; //
+    --sbt-body-bg2: #{$primary1, 200}; //
+    // --sbt-footer-bg: #{$primary, 100};
+
 
     .accessibility_toolbar {
       // background-color: mat-color($status-bar, status-bar);

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, EventEmitter, NgZone, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, NgZone, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from './../app/modules/shared/services/cache-service/cache.service';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
@@ -9,10 +9,13 @@ import { TelemetryService } from './modules/telemetry';
 import { ProfileService } from './plugins/profile';
 import { mockData } from './app.component.spec.data';
 import { mockRes } from './modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data';
+import {OverlayContainer} from "@angular/cdk/overlay";
 
 describe('App Component', () => {
   let appComponent: AppComponent;
-
+  const mockOverlayContainer: Partial<OverlayContainer> = {
+    // getContainerElement:jest.fn(() => { classList: 'deeppurple-amber'}) as any
+  };
   const mockCacheService: Partial<CacheService> = {
     set: jest.fn()
   };
@@ -87,7 +90,7 @@ describe('App Component', () => {
   const mockPublicDataService: Partial<PublicDataService> = {};
   const mockLearnerService: Partial<LearnerService> = {};
   const mockDocument: Partial<Document> = {};
-
+  
   const mockUserRoles = {
     userRoles: ['PUBLIC'],
     userOrgDetails: 'testing123'
@@ -95,6 +98,7 @@ describe('App Component', () => {
 
   beforeAll(() => {
     appComponent = new AppComponent(
+      mockOverlayContainer as OverlayContainer,
       mockCacheService as CacheService,
       mockBrowserCacheTtlService as BrowserCacheTtlService,
       mockUserService as UserService,
@@ -289,11 +293,16 @@ describe('App Component', () => {
     appComponent.darkModeToggle = {
       nativeElement: true
     };
+    // let theme = 'mattheme';
+    // let darkness = false;
+    // const classList = mockOverlayContainer.getContainerElement().classList;
     mockRenderer2.setAttribute = jest.fn();
     jest.spyOn(appComponent, 'setSelectedThemeColour').mockImplementation();
     mockLayoutService.setLayoutConfig = jest.fn(() => 'sample-layout');
     // act
+    
     appComponent.setTheme();
+    // appComponent.setMatTheme(theme, darkness);
     // assert
     expect(Storage.prototype.getItem).toHaveBeenCalled();
     expect(mockRenderer2.setAttribute).toHaveBeenCalled();

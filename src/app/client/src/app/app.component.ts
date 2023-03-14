@@ -49,7 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
 	activeTheme: string;
   
  
-  setTheme(theme: string, darkness: boolean = null) {
+  setMatTheme(theme: string, darkness: boolean = null) {
+    localStorage.setItem('selectedTheme', theme);
 		if (darkness === null)
 			darkness = this.isThemeDark;
 		else if (this.isThemeDark === darkness) {
@@ -71,7 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 	
 	toggleDarkness() {
-		this.setTheme(this.activeTheme, !this.isThemeDark);
+		this.setMatTheme(this.activeTheme, !this.isThemeDark);
 	}
 
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
@@ -188,8 +189,16 @@ export class AppComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
     
-      this.setTheme('indigo-pink', false); // Default Theme
-    
+      
+      const selectedMatTheme = localStorage.getItem('selectedTheme');
+      
+      console.log(selectedMatTheme);
+      if (selectedMatTheme) {
+        this.setMatTheme(selectedMatTheme, false); 
+      } else {
+        this.setMatTheme('indigo-pink', false); // Default Theme
+      }
+
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || 'base';
@@ -259,7 +268,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     }
-    // this.setTheme();
+    this.setTheme();
     // themeing code
     this.getLocalFontSize();
     // dark theme
@@ -296,7 +305,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  setThemes() {
+  setTheme() {
     const themeColour = localStorage.getItem('layoutColour') || 'default';
     if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
       this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
@@ -1012,7 +1021,8 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   changeFontSize(value: string) {
-
+    console.log(value);
+    console.log(this.increaseFontSize.nativeElement);
     const elFontSize = window.getComputedStyle(document.documentElement).getPropertyValue('font-size');
 
     const localFontSize = localStorage.getItem('fontSize');
