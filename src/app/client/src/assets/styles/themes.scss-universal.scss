@@ -53,7 +53,30 @@
     $warn: mat.define-palette(mat.$grey-palette);
     $accessibility-toolbar-theme: mat.define-light-theme($primary, $accent, $warn);
     $accessibility-toolbar-theme: mat.define-dark-theme($primary, $accent, $warn);
-    @include mat.all-component-themes($accessibility-toolbar-theme);
+    @include mat.toolbar-theme($accessibility-toolbar-theme);
+  }
+
+  @mixin theme-mat-card($theme) {
+    // Parse the theme and create variables for each color in the pallete
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+    $background: map-get($theme, background);
+    $primary: mat.define-palette(mat.$cyan-palette);
+    $accent: mat.define-palette(mat.$cyan-palette, 500);
+    .cardSlick .mat-card{
+      width: 20rem;
+    }
+    .mat-card{
+      background-color: mat-color($primary, 50);
+    }
+    .mat-card .mat-chip-list-wrapper{
+      display: initial;
+      margin: 0;
+    }
+    .mat-card-header-text{
+      overflow: hidden;
+    }
   }
 
   // .my-alternate-theme {
