@@ -2151,10 +2151,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@project-sunbird/chatbot-client@3.0.5":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client/-/chatbot-client-3.0.5.tgz#a4fff894f1c4526a24460d4514703fd336ae2c14"
-  integrity sha512-h7V/h+2g393li02M5atqMux1ucgwLsvxLEDHyIH64BWeJg3rr1b4LmnPpbwuqPKW+zrcAAgl6G8wYys1e9ZQ5Q==
+"@project-sunbird/chatbot-client@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client/-/chatbot-client-4.0.0.tgz#13cb3afab11c595d66df9c33414375e9550f1b2e"
+  integrity sha512-1rog9xXHkQZG/SiRDR9LfcXYcAvgiw1sooa01PNuP5DpAkLyDPnfKOpHmg5ngEhXHvLBTTNBnKlaxpkFKx11gg==
   dependencies:
     tslib "^2.0.0"
 
