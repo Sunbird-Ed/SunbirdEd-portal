@@ -16,6 +16,7 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
+import {AvatarModule} from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedFeatureModule,
     ReactiveFormsModule,
     CommonConsumptionModule,
-    ContentSearchModule
+    ContentSearchModule,
+    AvatarModule
   ],
   declarations: [ UserSearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent,

@@ -7,6 +7,7 @@ import { GuestProfileRoutingModule } from './guest-profile-routing.module';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { LocationModule } from '../../../../plugins/location/location.module';
 import { CommonConsumptionModule } from  '@project-sunbird/common-consumption';
+import {AvatarModule} from '@project-sunbird/common-consumption';
 @NgModule({
   declarations: [GuestProfileComponent],
   imports: [
@@ -16,7 +17,8 @@ import { CommonConsumptionModule } from  '@project-sunbird/common-consumption';
     CommonConsumptionModule,
     SharedFeatureModule,
     LocationModule,
-    GuestProfileRoutingModule
+    GuestProfileRoutingModule,
+    AvatarModule
   ]
 })
 export class GuestProfileModule { }

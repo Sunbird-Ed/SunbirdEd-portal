@@ -11,7 +11,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from '@stockopedia/angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { AvatarModule } from '@project-sunbird/common-consumption';
 
 
 @NgModule({
@@ -30,7 +30,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     FormsModule,
     ReactiveFormsModule,
     ManageRoutingModule,
-    CommonConsumptionModule,
+    AvatarModule,
     NgInviewModule
   ],
   providers: [
