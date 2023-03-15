@@ -22,7 +22,6 @@ import { ContentTypeComponent } from './components/content-type/content-type.com
 import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
 import { TelemetryErrorModalComponent } from '../shared/components/telemetry-error-modal/telemetry-error-modal.component';
-import {AvatarModule} from '@project-sunbird/common-consumption';
 @NgModule({
   imports: [
     CommonModule,
@@ -37,7 +36,6 @@ import {AvatarModule} from '@project-sunbird/common-consumption';
     CommonConsumptionModule,
     LocationModule,
     NotificationModule,
-    AvatarModule
     
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,

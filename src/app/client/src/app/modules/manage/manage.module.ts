@@ -10,7 +10,7 @@ import { ManageService } from './services/manage/manage.service';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
-import { AvatarModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 
 @NgModule({
@@ -29,7 +29,7 @@ import { AvatarModule } from '@project-sunbird/common-consumption';
     FormsModule,
     ReactiveFormsModule,
     ManageRoutingModule,
-    AvatarModule,
+    CommonConsumptionModule
   ],
   providers: [
     ResourceService,
