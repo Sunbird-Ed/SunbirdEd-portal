@@ -10,7 +10,7 @@ import { map, catchError, pluck, mergeMap, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Observable, of, forkJoin } from 'rxjs';
 import  dayjs from 'dayjs';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
@@ -179,7 +179,7 @@ export class ReportService  {
       const chartObj: any = {};
       chartObj.chartConfig = chart;
       if (!chartObj.chartConfig['id']) {
-        chartObj.chartConfig['id']  = UUID.UUID();
+        chartObj.chartConfig['id']  = UUID();
       }
       chartObj.downloadUrl = downloadUrl;
       chartObj.chartData = dataSource ? this.getChartData(data, chart) :

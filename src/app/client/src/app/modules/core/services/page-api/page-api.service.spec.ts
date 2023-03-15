@@ -1,7 +1,7 @@
 import { PageApiService } from "./page-api.service";
 import { UserService } from './../user/user.service';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { of } from "rxjs";
 import { testData } from './page-api.service.spec.data';

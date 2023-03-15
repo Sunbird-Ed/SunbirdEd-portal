@@ -15,13 +15,10 @@ import {
     AboutUsComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { FileSizeModule } from 'ngx-filesize';
-import { OrderModule } from 'ngx-order-pipe';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { NgxFilesizeModule } from 'ngx-filesize';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { NgInviewModule } from '@stockopedia/angular-inport';
 import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({
     imports: [
@@ -34,15 +31,12 @@ import { ContentSearchModule } from '@sunbird/content-search';
         SuiProgressModule,
         SuiSelectModule,
         WebExtensionModule,
-        FileSizeModule,
+        NgxFilesizeModule,
         SuiAccordionModule,
         SuiTabsModule,
-        OrderModule,
-        SlickCarouselModule,
         ReactiveFormsModule,
         CommonConsumptionModule,
         SuiDimmerModule,
-        NgInviewModule,
         SuiCollapseModule,
         SuiDropdownModule,
         ContentSearchModule,

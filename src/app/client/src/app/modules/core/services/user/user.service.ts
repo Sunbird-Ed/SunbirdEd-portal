@@ -7,13 +7,13 @@ import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
 import { Observable, BehaviorSubject, iif, of, throwError } from 'rxjs';
 import { map, mergeMap, shareReplay } from 'rxjs/operators';
-import { UUID } from 'angular2-uuid';
+import { v4 as UUID } from 'uuid';
 import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { DataService } from './../data/data.service';
 import { environment } from '@sunbird/environment';
 
@@ -135,7 +135,7 @@ export class UserService {
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
-      this._anonymousSid = UUID.UUID();
+      this._anonymousSid = UUID();
       DataService.sessionId = this._anonymousSid;
     }
     try {

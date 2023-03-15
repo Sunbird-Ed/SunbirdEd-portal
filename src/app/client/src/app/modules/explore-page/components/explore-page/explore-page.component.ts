@@ -13,7 +13,7 @@ import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { ProfileService } from '@sunbird/profile';
 import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 

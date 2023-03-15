@@ -8,7 +8,6 @@ import {
   UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
   ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent, YearOfBirthComponent
 } from './components';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +21,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashletModule } from  'sb-dashlet-v11';
+import { DashletModule } from  'sb-dashlet-v12';
 import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
@@ -40,7 +39,6 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
 @NgModule({
   imports: [
     CommonModule,
-    SlickCarouselModule,
     SharedModule,
     CoreModule,
     TelemetryModule,

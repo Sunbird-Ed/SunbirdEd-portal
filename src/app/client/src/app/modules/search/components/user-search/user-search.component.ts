@@ -395,6 +395,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
   inview(event) {

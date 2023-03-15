@@ -1,6 +1,6 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { promise } from 'protractor';
 import { of, throwError } from 'rxjs';
 import { UserService } from '../../../core';
