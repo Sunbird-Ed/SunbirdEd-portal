@@ -48,9 +48,10 @@ export class AppComponent implements OnInit, OnDestroy {
 	isThemeDark = false;
 	activeTheme: string;
   
- 
   setMatTheme(theme: string, darkness: boolean = null) {
     localStorage.setItem('selectedTheme', theme);
+    // this._document.body.classList.remove(this.activeThemeCssClass);
+    // this._document.body.classList.add(this.activeThemeCssClass);
 		if (darkness === null)
 			darkness = this.isThemeDark;
 		else if (this.isThemeDark === darkness) {
@@ -70,7 +71,8 @@ export class AppComponent implements OnInit, OnDestroy {
 		
 		this.activeThemeCssClass = cssClass;
 	}
-	
+
+/* material dark themes */
 	toggleDarkness() {
 		this.setMatTheme(this.activeTheme, !this.isThemeDark);
 	}
@@ -191,13 +193,12 @@ export class AppComponent implements OnInit, OnDestroy {
     
       
       const selectedMatTheme = localStorage.getItem('selectedTheme');
-      
-      console.log(selectedMatTheme);
-      if (selectedMatTheme) {
-        this.setMatTheme(selectedMatTheme, false); 
-      } else {
-        this.setMatTheme('indigo-pink', false); // Default Theme
-      }
+      // console.log(selectedMatTheme);
+      // if (selectedMatTheme) {
+      //   this.setMatTheme(selectedMatTheme, false); 
+      // } else {
+      //   this.setMatTheme('indigo-pink', false); // Default Theme
+      // }
 
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
@@ -376,6 +377,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }, error => { this.isPopupEnabled = true; });
   }
   ngOnInit() {
+    // this._document.body.classList.add(this.activeThemeCssClass);
     this.getOnboardingList();
     this.checkToShowPopups();
     this.getStepperInfo();

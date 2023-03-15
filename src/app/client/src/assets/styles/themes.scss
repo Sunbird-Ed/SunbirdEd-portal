@@ -129,7 +129,8 @@ $app-themes: (
     // 	color: mat-color($accent);
     // }
 
-    $primary1: mat-color($primary);
+    $primary100: mat-color($primary, 100);
+    $primary200: mat-color($primary, 200);
     $accent1: mat-color($accent);
     $warn1: mat-color($warn);
     // $fg_palette:map-get($my-theme-dark, foreground);
@@ -142,11 +143,14 @@ $app-themes: (
     // --warn: #{$warn};
     // --fg: #{$fg};
     // --bg: #{$bg};
-    --sbt-body-bg: #{$primary1, 100}; //
-    --sbt-body-bg2: #{$primary1, 200}; //
+
+    --sbt-body-bg: #{$primary100}; 
+    --sbt-body-bg2: #{$primary200}; 
     // --sbt-footer-bg: #{$primary, 100};
-
-
+    --sb-profile-bg-c-4:var(--sbt-body-bg);
+    .mat-app-background, .new-layout-footer {
+      background: mat-color($primary, 100) !important;
+    }
     .accessibility_toolbar {
       // background-color: mat-color($status-bar, status-bar);
       // background-color: mat-color($dbgprimary, 800);
@@ -156,19 +160,19 @@ $app-themes: (
       background-color: mat-color($accent);
     }
 
-    .mat-app-background,
-    .sbt-mat-background,
-    .sbt-filter-bar,
-    footer, .sb-section-preference {
-      background: mat-color($primary, 100) !important;
-      //background: mat-color($background, background) !important;
-    }
+    // .mat-app-background,
+    // .sbt-mat-background,
+    // .sbt-filter-bar,
+    // footer, .sb-section-preference {
+    //   background: mat-color($primary, 100) !important;
+    //   //background: mat-color($background, background) !important;
+    // }
     
-    .sbt-mat-surface,
-    .sbt-page-content-area, .new-layout-footer .sbt-container {
-      background: mat-color($primary, 200) !important;
-      //background: mat-color($background, background) !important;
-    }
+    // .sbt-mat-surface,
+    // .sbt-page-content-area, .new-layout-footer .sbt-container {
+    //   background: mat-color($primary, 200) !important;
+    //   //background: mat-color($background, background) !important;
+    // }
   }
 
   .#{$css-class}-dark {
@@ -183,6 +187,8 @@ $app-themes: (
     @include darkbgTheme($dbgtheme);
 
     @include no-result-component(mat-dark-theme($primary, $accent, $warn));
+
+    --sb-section-preference:var(--white);
   }
 
     // .theme-primary.#{$css-class} {

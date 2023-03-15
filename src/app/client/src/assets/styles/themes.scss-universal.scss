@@ -33,10 +33,6 @@
     // $foreground: map-get($dbgtheme, foreground);
     // $background: map-get($dbgtheme, background);
 
-    $dbgprimary: mat-palette(mat.$grey-palette, 500, 800, 900);
-    $dbgaccent: mat-palette(mat.$grey-palette, 700);
-    $dbgtheme: mat-dark-theme($dbgprimary, $dbgaccent);
-    
     // Define any styles affected by the theme.
     .mat-app-background,
     .sbt-mat-background,.sbt-fluid-content-bg, .sb-section-preference,
@@ -70,6 +66,7 @@
     $accent: map-get($theme, accent);
     $warn: map-get($theme, warn);
     $background: map-get($theme, background);
+
     $primary: mat.define-palette(mat.$cyan-palette);
     $accent: mat.define-palette(mat.$cyan-palette, 500);
     .cardSlick .mat-card{
