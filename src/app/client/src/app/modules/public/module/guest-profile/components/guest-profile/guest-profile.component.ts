@@ -33,11 +33,10 @@ export class GuestProfileComponent implements OnInit {
   deviceProfile;
   isDesktop = false;
   userRole: string;
-  cardConfig = {
-    size: this.config.constants.SIZE.MEDIUM,
-    isSelectable: false,
+  avatarConfig = {
+    size: this.config.constants.SIZE.LARGE,
     view: this.config.constants.VIEW.VERTICAL,
-    isBold: true
+    isTitle:false
   };
   editProfileInteractEdata: IInteractEventEdata;
   editFrameworkInteractEData: IInteractEventEdata;

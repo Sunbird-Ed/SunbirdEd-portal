@@ -58,7 +58,7 @@
     "@project-sunbird/chatbot-client": "4.0.0",
     "@project-sunbird/ckeditor-build-classic": "4.1.3",
     "@project-sunbird/client-services": "5.1.2",
-    "@project-sunbird/common-consumption": "5.1.0",
+    "@project-sunbird/common-consumption": "5.1.1",
     "@project-sunbird/common-form-elements-full": "6.0.0",
     "@project-sunbird/sb-notification": "6.0.0",
     "@project-sunbird/sb-styles": "^0.0.15",

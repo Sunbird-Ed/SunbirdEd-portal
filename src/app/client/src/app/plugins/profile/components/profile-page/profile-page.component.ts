@@ -98,11 +98,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   isConnected = true;
   showFullScreenLoader = false;
   isFullScreenView: any;
-  cardConfig = {
-    size: this.configService.constants.SIZE.MEDIUM,
-    isSelectable: false,
+  avatarConfig = {
+    size: this.configService.constants.SIZE.LARGE,
     view: this.configService.constants.VIEW.VERTICAL,
-    isBold: true
+    isTitle:false
   };
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
