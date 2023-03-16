@@ -2253,12 +2253,12 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-resource-library@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.19.tgz#cc9b12dbbd4ab1bce7d136f29bc567d2ae6e9e2d"
-  integrity sha512-yn24LCq6PAoBrosdJFM0T+j19vopjpxKTkYUtSLZAbFhlYqeKLnZCaBNQNvnwen9A2E9i1fw5UPxfNGOAYhMcw==
+"@project-sunbird/sunbird-resource-library@5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-5.5.2.tgz#31f14e5272c827a3af68a442255b06787652328d"
+  integrity sha512-NpqN9euX1HqYTL9aUgei4IzoZBfwagYAkFilxTzbgYmvW/g1IoLD27YsS1fjRgJZoreU3ZBQQ1a+tUrajylQ3w==
   dependencies:
-    tslib "^1.10.0"
+    tslib "^2.0.0"
 
 "@project-sunbird/sunbird-video-player-v9@5.1.3":
   version "5.1.3"
