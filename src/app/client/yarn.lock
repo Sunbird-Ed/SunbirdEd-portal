@@ -2208,12 +2208,12 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-5.1.1.tgz#a859df8cb737650077e2fc3edfa1d3ca688f3e8f"
-  integrity sha512-NkvUpfsCwD5TMA5JRDdA8qOJfGmOFrqDO/hw1TsCTiaW1laxivFFSBqiiATEUXexFFV+G7rDY4UcWpIT7pwBgQ==
+"@project-sunbird/common-consumption@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-6.0.0.tgz#8ec0154453ebbcee68ec526683bcc4d00b9cc67e"
+  integrity sha512-qjF4VzUGi0J5jYNtKxOz9w3EmE0PcvZrgd3T5e0EBXeJQmwxGLtlVlcrmgxcsagGV/kZVSn7osdQWJlKpHxx5w==
   dependencies:
-    tslib "^2.2.0"
+    tslib "^2.3.0"
 
 "@project-sunbird/common-form-elements-full@6.0.0":
   version "6.0.0"
@@ -2222,6 +2222,13 @@
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
+    tslib "^2.0.0"
+
+"@project-sunbird/sb-content-section@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-content-section/-/sb-content-section-6.0.0.tgz#1100c2b9fd2735faacb44cf6de9e1f8ce3cc4606"
+  integrity sha512-DmUhDk6wfvqyGIFF95rVcuPiTElycyUO3tqp45QPkUnVkh2HXdri77cbmt8pXXg/S9y5APZ5TR4ajwcxof67+Q==
+  dependencies:
     tslib "^2.0.0"
 
 "@project-sunbird/sb-notification@6.0.0":
@@ -2318,12 +2325,12 @@
     grunt-karma "^0.12.2"
     karma "^3.0.0"
 
-"@project-sunbird/web-extensions@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/web-extensions/-/web-extensions-0.0.2.tgz#d61cd382713ce7f6bb7cb205d65f120bf145c16a"
-  integrity sha512-XVT0gN/qFSv+mgCQQ3Db1m1IGd4ARsDvLx+63Evp/T91tYt8vMq/oBpDGH0pJkE2mpb7kLh+GDWNupmBBIxX/A==
+"@project-sunbird/web-extensions@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/web-extensions/-/web-extensions-6.0.0.tgz#717bb48fb36ad1afa14a90fca82f87e0a7aefea0"
+  integrity sha512-hT5mQLojABSPXFaafX0lKw73+6iO2p9l632UBGUgpcJvhf5GEIkATjmr5ohIIHt8hG5jUqaXIzPU+//iSwNV1w==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.0.0"
 
 "@schematics/angular@13.3.10":
   version "13.3.10"
@@ -4833,13 +4840,6 @@ content-disposition@0.5.4:
   integrity sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==
   dependencies:
     safe-buffer "5.2.1"
-
-content-section-v13@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/content-section-v13/-/content-section-v13-2.0.0.tgz#46b9ece4bc3c9e502fc04065ad45dda3b26dc80f"
-  integrity sha512-ekTI+PscOGLeoTsglHyYLSsav6YtJ4zq1hg+qysU7XKKA68EjRCzsUBCGsLat/v7Z7CMEFowCotUv1xrNNIGSw==
-  dependencies:
-    tslib "^2.0.0"
 
 content-type@~1.0.4, content-type@~1.0.5:
   version "1.0.5"
