@@ -55,7 +55,7 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
     CertificateDirectivesModule,
     CommonFormElementsModule,
     LocationModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
    AccountRecoveryInfoComponent,
