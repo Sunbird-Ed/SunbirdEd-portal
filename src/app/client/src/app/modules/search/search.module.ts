@@ -28,7 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SharedFeatureModule,
     ReactiveFormsModule,
     CommonConsumptionModule,
-    ContentSearchModule
+    ContentSearchModule,
   ],
   declarations: [ UserSearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent,

@@ -122,6 +122,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     view: this.config.constants.VIEW.HORIZONTAL,
     isBold: true
   };
+  avatarConfig = {
+    size: this.config.constants.SIZE.MEDIUM,
+    view: this.config.constants.VIEW.HORIZONTAL,
+    isTitle:false
+  };
   isLanguageDropdown:boolean = true
   totalUsersCount: number;
   libraryMenuIntractEdata: IInteractEventEdata;

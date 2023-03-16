@@ -56,14 +56,14 @@
             <div class="ui dropdown right top pointing">
               <div class="" name="Guest" *ngIf='!userProfile && !guestUser' tabindex="0" (click)="toggleSideMenu(true)"><img
                 src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-                <sb-member-card tabindex="0"  *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" class ="avtarDesktopStyle"
-                    [config]=cardConfig initialsSize="1" [initial]="guestUser?.formatedName[0] || 'G'"
+                <sb-avatar tabindex="0"  *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" class ="avtarDesktopStyle"
+                    [config]=avatarConfig initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
                     [title]="guestUser?.formatedName || 'Guest'">
-                  </sb-member-card>
-                  <sb-member-card tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)"  [style]="avtarDesktopStyle"
-                     [config]=cardConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
+                  </sb-avatar>
+                  <sb-avatar tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)" 
+                     [config]=avatarConfig initialsSize="2" [initial]="userProfile?.firstName[0]"
                     [title]="userProfile?.firstName">
-                  </sb-member-card>
+                  </sb-avatar>
             </div>
           </a>
           <!--/Avtar Dropdown-->
@@ -199,14 +199,14 @@
                     <div class="sbt-guest-profile" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
                       (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                         width="48"></div>
-                <sb-member-card tabindex="0"  *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" class ="avtarDesktopStyle"
-                    [config]=cardConfig initialsSize="1" [initial]="guestUser?.formatedName[0] || 'G'"
+                <sb-avatar tabindex="0"  *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" class ="avtarDesktopStyle"
+                    [config]=avatarConfig initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
                     [title]="guestUser?.formatedName || 'Guest'">
-                  </sb-member-card>
-                  <sb-member-card tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)"  [style]="avtarDesktopStyle"
-                     [config]=cardConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
+                </sb-avatar>
+                  <sb-avatar tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)"  
+                     [config]=avatarConfig initialsSize="2" [initial]="userProfile?.firstName[0]"
                     [title]="userProfile?.firstName">
-                  </sb-member-card>
+                  </sb-avatar>
                   </div>
                 </a>
                 <!--/Avtar Dropdown-->
@@ -281,16 +281,16 @@
                     aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
                     (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"
                       width="48"></div>
-                  <sb-member-card aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser' tabindex="0"
-                    (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [config]=cardConfig initialsSize="1" [initial]="guestUser?.formatedName[0] || 'G'"
+                  <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='!userProfile && guestUser' tabindex="0"
+                    (click)="toggleSideMenu(true)"  [config]=avatarConfig initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
                     [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
-                    [title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
-                  </sb-member-card>
-                  <sb-member-card aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0"
-                    (click)="toggleSideMenu(true)" [config]=cardConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
-                    [attr.aria-label]="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
-                    [title]="userProfile?.firstName">
-                  </sb-member-card>
+                    [attr.title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
+                  </sb-avatar>
+                  <sb-avatar aria-haspopup="true" aria-controls="overlaySidebarID" *ngIf='userProfile' tabindex="0"
+                    (click)="toggleSideMenu(true)" [config]=avatarConfig initialsSize="2" [initial]="userProfile?.firstName[0]"
+                    title="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"
+                    [attr.title]="userProfile?.firstName">
+                  </sb-avatar>
                 </div>
               </a>
               <!--/Avtar Dropdown-->
