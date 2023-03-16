@@ -2215,10 +2215,10 @@
     moment "^2.29.1"
     tslib "^2.0.0"
 
-"@project-sunbird/sb-notification@5.0.9":
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-5.0.9.tgz#9584bfaf0161cb0a9e80f2914345ccdc4d4dcdc7"
-  integrity sha512-bDLuA2XAEjCbrP1o5LoUOjHJYX7jhT5TSK+szCek6lPazjnapeYNtMyhggp0YZ47s0g5ZEhDMKZp/PvxblMGRw==
+"@project-sunbird/sb-notification@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-6.0.0.tgz#6be4204ff190d526a6b1dad18f3293ccdf2505cd"
+  integrity sha512-uj6oNn5jXkZYp2eU4+tLR0eCHxfAhnSOnLq6uWyfaMfP/xb5Xb/8vw9XUvQuzlwc3XhCAst78Y6CN50rHv/gHg==
   dependencies:
     tslib "^2.0.0"
 
