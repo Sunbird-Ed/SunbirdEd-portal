@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, OnDestroy, AfterViewInit, ViewChild, Output, Input } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup, UntypedFormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import {
   ResourceService,
@@ -28,8 +28,8 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public unsubscribe = new Subject<void>();
-  signUpForm: FormGroup;
-  sbFormBuilder: FormBuilder;
+  signUpForm: UntypedFormGroup;
+  sbFormBuilder: UntypedFormBuilder;
   showContact = 'phone';
   disableSubmitBtn = true;
   disableForm = false;
@@ -60,10 +60,10 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
   @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
   @Output() triggerNext: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() startingForm: object;
-  updateSignUpForm: FormGroup;
+  updateSignUpForm: UntypedFormGroup;
   showUpdateSignUpForm: boolean = false;
 
-  constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
+  constructor(formBuilder: UntypedFormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
@@ -144,12 +144,12 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   initializeFormFields() {
     this.signUpForm = this.sbFormBuilder.group({
-      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
-      email: new FormControl(null, [Validators.email]),
-      contactType: new FormControl('phone'),
-      uniqueContact: new FormControl(null, [Validators.required]),
+      password: new UntypedFormControl(null, [Validators.required, Validators.minLength(8)]),
+      confirmPassword: new UntypedFormControl(null, [Validators.required, Validators.minLength(8)]),
+      phone: new UntypedFormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
+      email: new UntypedFormControl(null, [Validators.email]),
+      contactType: new UntypedFormControl('phone'),
+      uniqueContact: new UntypedFormControl(null, [Validators.required]),
     }, {
       validator: (formControl) => {
         const passCtrl = formControl.controls.password;
@@ -167,7 +167,7 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
     this.enableSignUpSubmitButton();
   }
 
-  onPasswordChange(passCtrl: FormControl): void {
+  onPasswordChange(passCtrl: UntypedFormControl): void {
     let emailVal;
     if (this.showContact === 'email') {
       emailVal = this.signUpForm.get('email').value;
@@ -439,10 +439,10 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   initializeUpdateForm() {
     this.updateSignUpForm = this.sbFormBuilder.group({
-      phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
-      email: new FormControl(null, [Validators.email]),
-      contactType: new FormControl('phone'),
-      uniqueContact: new FormControl(null),
+      phone: new UntypedFormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
+      email: new UntypedFormControl(null, [Validators.email]),
+      contactType: new UntypedFormControl('phone'),
+      uniqueContact: new UntypedFormControl(null),
     });
     this.onContactTypeValueChanges();
     this.enableSignUpSubmitButton();

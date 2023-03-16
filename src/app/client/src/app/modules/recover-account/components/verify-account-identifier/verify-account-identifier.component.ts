@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {ResourceService, ToasterService, ConfigService, InterpolatePipe, UtilService} from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 
@@ -15,7 +15,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   disableFormSubmit = true;
   disableResendOtp = false;
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorCount = 0;
   counter;
   resendOTPbtn: string;
@@ -33,7 +33,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   googleCaptchaSiteKey: string;
   isCaptchaEnabled = true;
   isP2CaptchaEnabled: any;
-  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
+  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: UntypedFormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
               public utilService: UtilService, public configService: ConfigService) {
   }
@@ -69,7 +69,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }
   initializeForm() {
     this.form = this.formBuilder.group({
-      otp: new FormControl(null, [Validators.required])
+      otp: new UntypedFormControl(null, [Validators.required])
     });
     this.form.valueChanges.subscribe(val => {
       if (this.form.status === 'VALID') {

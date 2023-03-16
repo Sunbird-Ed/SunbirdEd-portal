@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { OrgTypeService } from './../../services/';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
@@ -41,7 +41,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy, AfterViewInit 
   /**
 	 * Creates a object of the form control
 	 */
-  orgName = new FormControl();
+  orgName = new UntypedFormControl();
 
   /**
 	 * Contains the organisation type identifier
@@ -175,7 +175,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy, AfterViewInit 
             _.find(orgTypeList.orgTypeData.result.response, (orgList) => {
               this.orgTypeId = this.activatedRoute.snapshot.params.orgId;
               if (orgList.id === this.orgTypeId) {
-                this.orgName = new FormControl(orgList.name);
+                this.orgName = new UntypedFormControl(orgList.name);
                 return true;
               }
             });

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { OrgManagementService } from '../../services';
 import { IUserUploadStatusResponse, IOrgUploadStatusResponse } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
@@ -52,11 +52,11 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
  * status check form name
  */
-  statusForm: FormGroup;
+  statusForm: UntypedFormGroup;
   /**
 * Contains reference of FormBuilder
 */
-  sbFormBuilder: FormBuilder;
+  sbFormBuilder: UntypedFormBuilder;
   /**
 * Contains redirect url
 */
@@ -76,7 +76,7 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
 *
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
-  constructor(orgManagementService: OrgManagementService, private router: Router, formBuilder: FormBuilder,
+  constructor(orgManagementService: OrgManagementService, private router: Router, formBuilder: UntypedFormBuilder,
     toasterService: ToasterService, resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService,
     public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;

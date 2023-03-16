@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { ActivatedRoute } from '@angular/router';
@@ -22,7 +22,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() telemetryInteractObject: IInteractEventObject;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
   @Input() filterType: string;
-  filtersFormGroup: FormGroup;
+  filtersFormGroup: UntypedFormGroup;
   chartLabels: any = [];
   chartConfig: any;
   pickerMinDate: any; // min date that can be selected in the datepicker
@@ -92,7 +92,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   constructor(
     public resourceService: ResourceService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef
   ) {

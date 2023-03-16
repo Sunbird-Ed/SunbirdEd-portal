@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { SearchService, UserService, PermissionService, RolesAndPermissions } from '@sunbird/core';
 import { ToasterService, ResourceService, ServerResponse,ConfigService } from '@sunbird/shared';
 import { ManageService } from '../../services/manage/manage.service';
@@ -11,8 +11,8 @@ import * as _ from 'lodash-es';
   styleUrls: ['./user-role-assign.component.scss']
 })
 export class UserRoleAssignComponent implements OnInit {
-  userDetailsForm: FormGroup;
-  sbFormBuilder: FormBuilder;
+  userDetailsForm: UntypedFormGroup;
+  sbFormBuilder: UntypedFormBuilder;
   showingResults = false;
   showCards = false;
   showAssignRole = false;
@@ -45,7 +45,7 @@ export class UserRoleAssignComponent implements OnInit {
   constructor(searchService: SearchService,
     userService: UserService,
     resourceService: ResourceService, private permissionService: PermissionService,
-    toasterService: ToasterService, formBuilder: FormBuilder,
+    toasterService: ToasterService, formBuilder: UntypedFormBuilder,
     private route: Router,
     private manageService: ManageService,
     private config: ConfigService) {
@@ -64,9 +64,9 @@ export class UserRoleAssignComponent implements OnInit {
     this.getOrgDetails();
   }
   initializeFormFields() {
-    this.userDetailsForm = new FormGroup({
-      role: new FormControl(''),
-      orgName: new FormControl('')
+    this.userDetailsForm = new UntypedFormGroup({
+      role: new UntypedFormControl(''),
+      orgName: new UntypedFormControl('')
     });
   }
   enableAssignRole() {

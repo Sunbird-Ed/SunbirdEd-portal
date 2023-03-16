@@ -2,7 +2,7 @@ import { Component, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {InterpolatePipe, ResourceService, ToasterService, ServerResponse, UtilService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -26,8 +26,8 @@ import { Subject } from 'rxjs';
 })
 export class CreateUserComponent implements OnInit {
 
-  userDetailsForm: FormGroup;
-  sbFormBuilder: FormBuilder;
+  userDetailsForm: UntypedFormGroup;
+  sbFormBuilder: UntypedFormBuilder;
   enableSubmitBtn = false;
   instance: string;
   formData;
@@ -43,7 +43,7 @@ export class CreateUserComponent implements OnInit {
   isFullScreenView: any;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-    public profileService: ProfileService, formBuilder: FormBuilder, public router: Router,
+    public profileService: ProfileService, formBuilder: UntypedFormBuilder, public router: Router,
     public userService: UserService, public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
     public frameworkService: FrameworkService, public utilService: UtilService, public formService: FormService,
     private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
@@ -119,9 +119,9 @@ export class CreateUserComponent implements OnInit {
     const formGroupObj = {};
     for (const key of this.formData) {
       if (key.visible && key.required) {
-        formGroupObj[key.code] = new FormControl(null, [Validators.required]);
+        formGroupObj[key.code] = new UntypedFormControl(null, [Validators.required]);
       } else if (key.visible) {
-        formGroupObj[key.code] = new FormControl(null);
+        formGroupObj[key.code] = new UntypedFormControl(null);
       }
     }
 

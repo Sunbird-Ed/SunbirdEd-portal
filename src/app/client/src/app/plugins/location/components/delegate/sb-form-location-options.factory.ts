@@ -1,6 +1,6 @@
 import { FieldConfig, FieldConfigOptionsBuilder } from '@project-sunbird/common-form-elements-full';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { concat, defer, iif, of } from 'rxjs';
 import { distinctUntilChanged, mergeMap, map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -19,7 +19,7 @@ export class SbFormLocationOptionsFactory {
   ) {}
 
   buildStateListClosure(config: FieldConfig<any>, initial = false) {
-    return (formControl: FormControl, __: FormControl, notifyLoading, notifyLoaded) => {
+    return (formControl: UntypedFormControl, __: UntypedFormControl, notifyLoading, notifyLoaded) => {
       return defer(async () => {
         notifyLoading();
         return this.fetchUserLocation({
@@ -53,7 +53,7 @@ export class SbFormLocationOptionsFactory {
       return _.get(config, 'templateOptions.dataSrc.params.id');
     })();
 
-    return (formControl: FormControl, contextFormControl: FormControl, notifyLoading, notifyLoaded) => {
+    return (formControl: UntypedFormControl, contextFormControl: UntypedFormControl, notifyLoading, notifyLoaded) => {
       if (!contextFormControl) {
         return of([]);
       }
