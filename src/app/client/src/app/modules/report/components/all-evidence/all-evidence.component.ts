@@ -1,7 +1,9 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   ViewChild,
@@ -9,6 +11,7 @@ import {
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { DhitiService } from '@sunbird/core';
 import { LocationStrategy } from '@angular/common';
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-all-evidence',
@@ -21,6 +24,7 @@ export class AllEvidenceComponent implements OnInit {
   @Input() data: any;
   public throttle = 50;
   public scrollDistance = 2;
+  activeIndex:any = 0;
   config;
   remarks: any = [];
   images: any = [];
@@ -58,8 +62,11 @@ export class AllEvidenceComponent implements OnInit {
     );
   }
 
+  tabChanged(tabChangeEvent: MatTabChangeEvent): void {
+    this.activeIndex = tabChangeEvent.index
+  }
+
   public closeModal() {
-    this.modal.approve();
     this.closeEvent.emit({ value: null });
   }
 }
