@@ -2286,20 +2286,20 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-quml-player@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-5.1.1.tgz#e6f4706e449fd9083345b6be29ae668bae67a11c"
-  integrity sha512-DVtGG0xE6GH9Gkt8WigMyZ/tUGXNS+da4m9BRikHu2oD0N/IAH3y4CRwPYYGU0AKeu9V2rjQeT+Dx9IEzsc4IA==
+"@project-sunbird/sunbird-quml-player@5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-5.3.0.tgz#c82285598511809c03c576e420cc6d2d70745dbf"
+  integrity sha512-UdkNqwRp5/Xf8b+m+dfNgtU6CafKruupbqm2GLEK+hm2P8nFEeCfuo4zrjARvjrsaZv/moifAQJYgbhpERUPRg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-resource-library@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.19.tgz#cc9b12dbbd4ab1bce7d136f29bc567d2ae6e9e2d"
-  integrity sha512-yn24LCq6PAoBrosdJFM0T+j19vopjpxKTkYUtSLZAbFhlYqeKLnZCaBNQNvnwen9A2E9i1fw5UPxfNGOAYhMcw==
+"@project-sunbird/sunbird-resource-library@5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-5.5.2.tgz#31f14e5272c827a3af68a442255b06787652328d"
+  integrity sha512-NpqN9euX1HqYTL9aUgei4IzoZBfwagYAkFilxTzbgYmvW/g1IoLD27YsS1fjRgJZoreU3ZBQQ1a+tUrajylQ3w==
   dependencies:
-    tslib "^1.10.0"
+    tslib "^2.0.0"
 
 "@project-sunbird/sunbird-video-player-v9@5.2.3":
   version "5.2.3"
