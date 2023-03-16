@@ -1,9 +1,7 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
   ViewChild,
@@ -11,7 +9,7 @@ import {
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { DhitiService } from '@sunbird/core';
 import { LocationStrategy } from '@angular/common';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-all-evidence',
