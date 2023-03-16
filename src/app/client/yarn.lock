@@ -4817,10 +4817,10 @@ content-disposition@0.5.4:
   dependencies:
     safe-buffer "5.2.1"
 
-content-section-v12@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/content-section-v12/-/content-section-v12-1.0.0.tgz#61e1604a13665dceb22de07c55996e0beb6cb82a"
-  integrity sha512-WV48aELVOdIz567cTf4AvtQEqf3IN3R4eJTJzvDc1+J3MyxIk1DQ09Bl9AO8h7aSYZxS0jIM1b27mlg5ZEeOJg==
+content-section-v13@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/content-section-v13/-/content-section-v13-2.0.0.tgz#46b9ece4bc3c9e502fc04065ad45dda3b26dc80f"
+  integrity sha512-ekTI+PscOGLeoTsglHyYLSsav6YtJ4zq1hg+qysU7XKKA68EjRCzsUBCGsLat/v7Z7CMEFowCotUv1xrNNIGSw==
   dependencies:
     tslib "^2.0.0"
 
@@ -12387,10 +12387,10 @@ sb-dashlet-v12@5.1.3:
     ngx-daterangepicker-material "6.0.4"
     tslib "^2.0.0"
 
-sb-svg2pdf-v12@0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/sb-svg2pdf-v12/-/sb-svg2pdf-v12-0.0.14.tgz#8a1120b1c74beff8a87ba82b04ea33b1de09ada0"
-  integrity sha512-95BU7RLilBqhdSMZRUDV/x4brnmsJrtT2DNQ78LQn/oIqxhoJW2TNrZrb+VxlDHsQJuCELPeCYdF5aZfii3jLA==
+sb-svg2pdf-v13@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sb-svg2pdf-v13/-/sb-svg2pdf-v13-1.0.0.tgz#ca1f0bd6b699753eaa7ac203125947996d05a54c"
+  integrity sha512-mzmuHNlTdZ/2QyGLJnQ+7yGUgp5pwG5KelaV1SdwyGrN3b+Rn0d2prPR00uJh2uLnFdzVRrYbydlfcHC000XQw==
   dependencies:
     tslib "^2.0.0"
 
