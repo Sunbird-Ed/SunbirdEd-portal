@@ -2370,10 +2370,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.1.0.tgz#07683cfc176d820ab6f8c92fbf0e8e0621c860ba"
-  integrity sha512-Y4R0FT5YYS0Zrhr6h0f6vlWSAqkuZuAUp2ptPtZpf2iCo4ELxPBspI3wuIoItQcg6JB8QyWPQg34DbCrmAgcnw==
+"@shikshalokam/sl-questionnaire@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.3.0.tgz#e4115787c6d13e9c35083b9b059caccc88230c4a"
+  integrity sha512-3B7esfrTpHsYAomsicpEsCTVo2/rBwNStJ8H/rH0OR2DFUMJInq97SAB6pSFrZamVVIAI4QBE3gtx0eFchVhYg==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^2.0.0"
