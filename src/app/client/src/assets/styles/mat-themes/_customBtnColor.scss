@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+.sb-secondary-btn {
+ $secondary-btn-primary: mat.define-palette(mat.$green-palette);
+ $secondary-btn-accent: mat.define-palette(mat.$green-palette);
+ $secondary-btn-theme: mat.define-dark-theme((
+   color: (primary: $secondary-btn-primary, accent: $secondary-btn-accent),
+ ));
+
+ @include mat.button-color($secondary-btn-theme);
+}

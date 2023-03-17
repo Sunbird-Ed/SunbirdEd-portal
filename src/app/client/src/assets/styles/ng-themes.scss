@@ -96,3 +96,38 @@ $theme in $app-themes {
 	//   }
 
 }
+
+
+
+// custom color https://stackoverflow.com/questions/49642098/angular-material-global-color-variables
+
+// @import '~@angular/material/theming';
+// // Theme configuration
+// $primary: mat-palette($mat-blue, 800, 500, 900);
+// $accent:  mat-palette($mat-blue, A200, A100, A400);
+// $warn: mat-palette($mat-red);
+
+// $theme: mat-light-theme($primary, $accent, $warn);
+
+// // Custom colors
+// $custom-colors: (
+//   custom-color-a: mat-color($mat-green, 700),
+//   custom-color-b: mat-color($mat-red, 400),
+// );
+// $theme: map-merge($theme, (custom-colors: $custom-colors));
+
+// @import 'variables';
+
+// .custom-class-a {
+//   background-color: map-get($custom-colors, custom-color-a);
+//   color: map-get($custom-colors, custom-color-b);
+// }
+
+// @mixin custom-component-theme($theme) {
+// 	$custom-colors: map-get($theme, custom-colors);
+  
+// 	.custom-class-a {
+// 	  background-color: map-get($custom-colors, custom-color-a);
+// 	  color: map-get($custom-colors, custom-color-b);
+// 	}
+//   }

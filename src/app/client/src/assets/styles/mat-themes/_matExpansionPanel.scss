@@ -1,0 +1,58 @@
+
+@use "~@angular/material" as mat;
+@use "sass:map";
+
+@mixin mat-expansion-panel($theme) {
+  // Extract the palettes you need from the theme definition.
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  // $foreground: map-get($theme, foreground);
+  // $background: map-get($theme, background);
+
+  $primary: mat.define-palette(mat.$cyan-palette);
+  $accent: mat.define-palette(mat.$cyan-palette, 500);
+  
+  .mat-expansion-panel {
+    background: mat-color($primary, 100);
+    // @include private.private-theme-overridable-elevation(2, $config);
+    // background: theming.get-color-from-palette($background, card);
+    // color: theming.get-color-from-palette($foreground, text);
+  }
+
+  .mat-action-row {
+    // border-top-color: theming.get-color-from-palette($foreground, divider);
+  }
+
+  // @include expansion-mixins.private-expansion-focus {
+  //   // background: theming.get-color-from-palette($background, hover);
+  // }
+
+  // Disable the hover on touch devices since it can appear like it is stuck. We can't use
+  // `@media (hover)` above, because the desktop support browser support isn't great.
+  @media (hover: none) {
+    .mat-expansion-panel:not(.mat-expanded):not([aria-disabled='true'])
+      .mat-expansion-panel-header:hover {
+      // background: theming.get-color-from-palette($background, card);
+    }
+  }
+
+  .mat-expansion-panel-header-title {
+    // color: theming.get-color-from-palette($foreground, text);
+  }
+
+  .mat-expansion-panel-header-description,
+  .mat-expansion-indicator::after {
+    // color: theming.get-color-from-palette($foreground, secondary-text);
+  }
+
+  .mat-expansion-panel-header[aria-disabled='true'] {
+    // color: theming.get-color-from-palette($foreground, disabled-button);
+
+    .mat-expansion-panel-header-title,
+    .mat-expansion-panel-header-description {
+      color: inherit;
+    }
+  }
+
+  
+}

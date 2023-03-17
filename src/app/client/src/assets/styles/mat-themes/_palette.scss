@@ -64,3 +64,37 @@ $mat-joy: (
 // $app-primary: mat.palette($mat-joy);
 // $app-accent: mat.palette($mat-joy-accent); //, 500, A200, A100, A400
 // $app-warn: mat.palette($mat-red);
+
+
+$sb-mat-grey: (
+    50 : #e7e7e7,
+    100 : #c2c2c2,
+    200 : #999999,
+    300 : #707070,
+    400 : #525252,
+    500 : #333333,
+    600 : #2e2e2e,
+    700 : #272727,
+    800 : #202020,
+    900 : #141414,
+    A100 : #ef6e6e,
+    A200 : #ea4040,
+    A400 : #f60000,
+    A700 : #dd0000,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);

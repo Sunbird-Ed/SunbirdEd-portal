@@ -64,9 +64,10 @@
           *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType)"
           (keyup.enter)="showContentType(contentType)" appOnlineOnly
           [ngClass]="{'active': selectedContentType === contentType.contentType}"
-          class="item {{'item--' + getIcon(contentType)}}">
+          class="item {{'item--' + getIcon(contentType)}}" [color]="selectedContentType === contentType.contentType ? 'accent' : ''">
           <!-- <mat-icon>{{getIcon(contentType)}}</mat-icon> -->
-          <span [ngClass]="'sb-icon sb-icon--sm sb-icon__'+ getIcon(contentType)"></span>&nbsp;{{getTitle(contentType)}}
+          <span [ngClass]="'sb-icon sb-icon--sm sb-icon__'+ getIcon(contentType)"></span>&nbsp;
+          {{getTitle(contentType)}}
         </button>
     
         <!-- For desktop -->

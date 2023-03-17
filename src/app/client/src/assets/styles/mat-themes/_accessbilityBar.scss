@@ -1,0 +1,24 @@
+@use "~@angular/material" as mat;
+@use "sass:map";
+@use "./palette" as cmat;
+
+ // Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+  .accessibility-toolbar-theme {
+    $primary: mat.define-palette(cmat.$sb-mat-grey, 900);  //
+    $accent: mat.define-palette(cmat.$sb-mat-grey);
+    $warn: mat.define-palette(cmat.$sb-mat-grey);
+    $accessibility-toolbar-theme: mat.define-light-theme($primary, $accent, $warn);
+    // $accessibility-toolbar-theme: mat.define-dark-theme($primary, $accent, $warn);
+    // $accessibility-toolbar-theme: mat.define-dark-theme((
+    //     color: (
+    //     primary: $primary, 
+    //     accent: $accent,
+    //     warn: $warn,
+    //     ),
+    //     // typography: mat.define-typography-config(),
+    //     // density: 0,
+    //     ));
+    @include mat.toolbar-theme($accessibility-toolbar-theme);
+  }

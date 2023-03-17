@@ -6,7 +6,7 @@
     }">
 
     <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }" class="accessibility-toolbar-theme mb-8">
-      <mat-toolbar>
+      <mat-toolbar color="accent">
         <span class="example-spacer"></span>
         <span aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
           <a *ngIf="!hideHeaderNFooter" mat-button href="javascript:void(0);" title="{{

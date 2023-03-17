@@ -1,4 +1,10 @@
 @use "~@angular/material" as mat;
+@use "sass:map";
+@forward './accessbilityBar';
+@import './matCard';
+@import './matExpansionPanel';
+@import './darkBgTheme';
+
 
 
 // Define a custom mixin that takes in the current theme
@@ -24,65 +30,6 @@
   }
 }
 
-
-// dark background related
-@mixin darkbgTheme($dbgtheme) {
-    // Extract the palettes you need from the theme definition.
-    $primary: map-get($dbgtheme, primary);
-    $accent: map-get($dbgtheme, accent);
-    // $foreground: map-get($dbgtheme, foreground);
-    // $background: map-get($dbgtheme, background);
-
-    // Define any styles affected by the theme.
-    .mat-app-background,
-    .sbt-mat-background,.sbt-fluid-content-bg, .sb-section-preference,
-    .sbt-filter-bar,.new-layout-footer {
-      // Use mat-color to extract individual colors from a palette.
-      background-color: mat-color($primary, 900) !important;
-      // color: mat-color($foreground, text) !important;
-    }
-  
-    .sbt-mat-surface, .new-layout-footer .sbt-container,
-    .sbt-page-content-area {
-      background: mat-color($primary, 800) !important;
-      // color: mat-color($foreground, text) !important;
-    }
-  }
-
-
-  // accessbility bar theme (note: when we are using primary, accent color attributes)
-  .accessibility-toolbar-theme {
-    $primary: mat.define-palette(mat.$grey-palette);
-    $accent: mat.define-palette(mat.$grey-palette, 500);
-    $warn: mat.define-palette(mat.$grey-palette);
-    $accessibility-toolbar-theme: mat.define-light-theme($primary, $accent, $warn);
-    $accessibility-toolbar-theme: mat.define-dark-theme($primary, $accent, $warn);
-    @include mat.toolbar-theme($accessibility-toolbar-theme);
-  }
-
-  @mixin theme-mat-card($theme) {
-    // Parse the theme and create variables for each color in the pallete
-    $primary: map-get($theme, primary);
-    $accent: map-get($theme, accent);
-    $warn: map-get($theme, warn);
-    $background: map-get($theme, background);
-
-    $primary: mat.define-palette(mat.$cyan-palette);
-    $accent: mat.define-palette(mat.$cyan-palette, 500);
-    .cardSlick .mat-card{
-      width: 20rem;
-    }
-    .mat-card{
-      background-color: mat-color($primary, 50);
-    }
-    .mat-card .mat-chip-list-wrapper{
-      display: initial;
-      margin: 0;
-    }
-    .mat-card-header-text{
-      overflow: hidden;
-    }
-  }
 
   // .my-alternate-theme {
   //   $my-alternate-primary: mat.define-palette(mat.$red-palette);
@@ -139,3 +86,5 @@
 //   background-color: map-get($custom-colors, custom-color-a);
 //   color: map-get($custom-colors, custom-color-b);
 // }
+
+
