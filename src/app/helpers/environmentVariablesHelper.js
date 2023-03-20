@@ -167,6 +167,14 @@ let envVariables = {
   sunbird_gcloud_reports: env.cloud_storage_privatereports_bucketname || 'reports',
   sunbird_gcloud_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
 
+  // OCI - Oracle Cloud Infrastructure
+  sunbird_oci_access_key: env.cloud_private_storage_accountname || '',
+  sunbird_oci_secret_key: env.cloud_private_storage_secret || '',
+  sunbird_oci_region: env.cloud_private_storage_region || '',
+  sunbird_oci_reports: env.cloud_storage_privatereports_bucketname || 'reports',
+  sunbird_oci_labels: env.cloud_storage_resourceBundle_bucketname || 'label',
+  sunbird_oci_endpoint: env.cloud_private_storage_endpoint || '',
+
   // deprecated - Folder structure changed
   // sunbird_gcloud_bucket_name: env.sunbird_gcloud_bucket_name || 'sunbirded',
 
