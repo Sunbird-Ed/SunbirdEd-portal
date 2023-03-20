@@ -26,6 +26,7 @@ import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
 import {MatNativeDateModule} from '@angular/material/core';
 import { MaterialExampleModule } from './material.module';
+import {MatSidenavModule} from '@angular/material/sidenav';
 @NgModule({
   declarations: [
     AppComponent
@@ -36,6 +37,7 @@ import { MaterialExampleModule } from './material.module';
     CommonModule,
     MatNativeDateModule,
     MaterialExampleModule,
+    MatSidenavModule,
     HttpClientModule,
     SuiModalModule,
     SharedModule.forRoot(),

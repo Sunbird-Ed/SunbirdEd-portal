@@ -1,0 +1,22 @@
+@use "~@angular/material"as mat;
+@use 'sass:map';
+
+@mixin theme-mat-sidebar($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  // $primary: mat.define-palette(mat.$cyan-palette);
+  // $accent: mat.define-palette(mat.$cyan-palette, 500);
+
+  .mat-drawer {
+    background-color: mat-color($primary, 50);
+  }
+
+  // $drawer-background-color: theming.get-color-from-palette($background, dialog);
+  // $drawer-container-background-color:  theming.get-color-from-palette($background, background);
+  // $drawer-push-background-color: theming.get-color-from-palette($background, dialog);
+  // $drawer-side-border: solid 1px theming.get-color-from-palette($foreground, divider);
+}
