@@ -15,6 +15,9 @@ const getGeneralisedResourcesBundles = (req, res) => {
     if (envHelper.sunbird_cloud_storage_provider === 'gcloud') {
         container = envHelper.sunbird_gcloud_labels;
     }
+    if (envHelper.sunbird_cloud_storage_provider === 'oci') {
+        container = envHelper.sunbird_oci_labels;
+    }    
     StorageService.CLOUD_CLIENT.getFileAsText(container, blobName, function (error, result, response) {
         if (error && error.statusCode === 404) {
             logger.error({ msg: "Blob %s wasn't found container %s", blobName, container })
