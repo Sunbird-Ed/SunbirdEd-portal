@@ -135,6 +135,9 @@ $app-themes: (
 
     @include theme-mat-card($theme);
 
+    // $matSidebarTheme: mat-light-theme($primary, $accent, $warn);
+    @include theme-mat-sidebar($theme);
+
     // .theme-dependent-colors {
     // 	background: mat-color($primary);
     // 	color: mat-color($accent);
