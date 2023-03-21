@@ -21,8 +21,8 @@ import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
-import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
+import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v12';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
 import { ProfilePageComponent } from './profile-page.component';
@@ -69,6 +69,14 @@ describe("ProfilePageComponent", () => {
         userData$: of({ userProfile: Response.userData }) as any,
     };
     const mockConfigService: Partial<ConfigService> = {
+        constants: {
+            SIZE: {
+                MEDIUM: '4'
+            },
+            VIEW: {
+                HORIZONTAL: true
+            },
+        },
         appConfig: {
             PROFILE: {
                 defaultShowMoreLimit: 4

@@ -99,8 +99,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   showFullScreenLoader = false;
   isFullScreenView: any;
   avatarConfig = {
-    size: this.config.constants.SIZE.LARGE,
-    view: this.config.constants.VIEW.VERTICAL,
+    size: this.configService.constants.SIZE.LARGE,
+    view: this.configService.constants.VIEW.VERTICAL,
     isTitle:false
   };
 
@@ -111,7 +111,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService, private config: ConfigService,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
     @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }

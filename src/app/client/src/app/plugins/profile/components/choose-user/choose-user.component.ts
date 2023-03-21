@@ -26,7 +26,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute, public courseService: CoursesService,
-              private connectionService: ConnectionService, public layoutService: LayoutService,private navigationHelperService: NavigationHelperService) {
+              private connectionService: ConnectionService, public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -213,7 +213,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   checkFullScreenView() {
-    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+    this.navigationhelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
   }
