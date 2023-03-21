@@ -3,14 +3,14 @@
 // Checkbox
 $sb-checkbox-primary-background: var(--primary-color);
 $sb-radio-btn-primary-border: var(--primary-color);
-$sb-checkbox-border-width: calculateRem(1px);
+$sb-checkbox-border-width: 0.0625rem;
 $sb-checkbox-label-font-size: 0.8571rem;
-$sb-checkbox-border-radius: calculateRem(4px);
+$sb-checkbox-border-radius: 0.0625rem;
 $sb-checkbox-after-checked-color: var(--white);
 $sb-checkbox-before-checked-background-color: var(--white);
 
 // Radio buttons
-$sb-radio-btn-border: calculateRem(1px); //width of the border
+$sb-radio-btn-border: 0.0625rem;
 $sb-radio-btn-border-radius: 100%;
 $sb-radio-btn-disabled-opacity: 0.5;
 $sb-radio-btn-border-color: var(--primary-300);
@@ -24,21 +24,21 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
   backface-visibility: hidden;
   outline: 0;
   font-style: normal;
-  line-height: calculateRem(16px);
-  min-height: calculateRem(16px);
-  min-width: calculateRem(16px);
+  line-height: 1rem;
+  min-height: 1rem;
+  min-width: 1rem;
 
   label {
     cursor: pointer;
     position: relative;
     display: block;
-    padding-left: calculateRem(24px);
+    padding-left: 1.5rem;
     outline: 0;
     font-size: $sb-checkbox-label-font-size;
     font-weight: normal;
     margin-right: 0.5rem;
     html[dir='rtl'] & {
-      padding-right: calculateRem(24px);
+      padding-right: 1.5rem;
       padding-left: 0;
       margin-left: 0.5rem;
       margin-right: 0;
@@ -54,8 +54,8 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
       right: 0;
       left:inherit;
       }
-    width: calculateRem(16px);
-    height: calculateRem(16px);
+    width: 1rem;
+    height: 1rem;
     background: $sb-checkbox-before-checked-background-color;
     transition: border .1s ease, opacity .1s ease, transform .1s ease, box-shadow .1s ease, -webkit-transform .1s cubic-bezier(0.25, 0.1, 0.43, 0.82);
     border: $sb-checkbox-border-width solid $sb-radio-btn-border-color;
@@ -73,8 +73,8 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
     }
     opacity: 0;
     z-index: 3;
-    width: calculateRem(16px);
-    height: calculateRem(16px);
+    width: 1rem;
+    height: 1rem;
   }
 
   [disabled="disabled"]+label,
@@ -102,7 +102,7 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
         color: var(--primary-color);
       }
       label {
-        padding: 0 calculateRem(24px) 0 0;
+        padding: 0 1.5rem 0 0;
         margin-right: 0;
       }
       label:before, input:checked~label:before, input:checked~label:after {
@@ -131,8 +131,8 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
       right: 0;
       left:inherit;
       }
-    width: calculateRem(16px);
-    height: calculateRem(16px);
+    width: 1rem;
+    height: 1rem;
     text-align: center;
     opacity: 0;
     color: $sb-checkbox-after-checked-color;
@@ -162,7 +162,7 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
 
   &.sb-radio-btn-primary {
     label:before {
-      border: calculateRem(1px) solid $sb-radio-btn-primary-border;
+      border: 0.0625rem solid $sb-radio-btn-primary-border;
     }
 
     input:checked~label:after {
@@ -193,13 +193,13 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
 }
 
 .ui.checkbox {
-  font-size:calculateRem(14px);
+  font-size:0.875rem;
 }
 
 [dir="rtl"] {
   .sb-radio-btn-checkbox label {
     padding-left: 0;
-    padding-right: calculateRem(24px);
+    padding-right: 1.5rem;
 
     &::before {
       left: unset;
@@ -208,7 +208,7 @@ $sb-radio-btn-border-disabled-color: var(--gray-100);
     
     &::after {
       left: unset;
-      right: calculateRem(4px);
+      right: 0.25rem;
     }
   }
 }

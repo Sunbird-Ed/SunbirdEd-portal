@@ -1801,7 +1801,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/dhiti/observations/mlsurvey/v1/listAllEvidences': {
+    '/dhiti/observations/mlreports/v1/listAllEvidences': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },

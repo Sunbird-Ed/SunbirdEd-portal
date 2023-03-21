@@ -5,7 +5,7 @@
     <div class="sb-mat__modal" [ngClass]="{'sb-error': (name !== 'activate')}">
       <div mat-dialog-title class="mb-0">
         <div class="title" tabindex="0">{{title}}</div>
-        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn"></button>
+        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
       </div>
 
       <div class="sb-mat__modal__content">
@@ -13,17 +13,17 @@
       </div>
       <mat-dialog-actions class="sb-mat__modal__actions">
         <button *ngIf="name === 'delete'" class="sb-btn sb-btn-normal
-          sb-btn-outline-error" (click)="emitEvent(true)"
+          sb-btn-outline-error mx-8" (click)="emitEvent(true)"
           tabindex="0">{{resourceService?.frmelmnts?.btn?.delete}}</button>
 
         <button *ngIf="name === 'deActivate'" class="sb-btn sb-btn-normal
-          sb-btn-outline-error" (click)="emitEvent(true)"
+          sb-btn-outline-error mx-8" (click)="emitEvent(true)"
           tabindex="0">{{resourceService?.frmelmnts?.btn?.deactivategrp}}</button>
 
-        <button *ngIf="name === 'activate'" class="sb-btn sb-btn-normal sb-btn-primary" (click)="emitEvent(true)"
+        <button *ngIf="name === 'activate'" class="sb-btn sb-btn-normal sb-btn-primary mx-8" (click)="emitEvent(true)"
           tabindex="0">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
 
-        <button *ngIf="name === 'disableDiscussionForum'" class="sb-btn sb-btn-normal sb-btn-primary"
+        <button *ngIf="name === 'disableDiscussionForum'" class="sb-btn sb-btn-normal sb-btn-primary mx-8"
           (click)="emitEvent(true)" tabindex="0">{{resourceService?.frmelmnts?.lbl?.disableDiscussionForum}}</button>
 
         <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-error': (name !== 'activate'),
@@ -42,7 +42,7 @@
     <div class="sb-mat__modal">
       <div mat-dialog-title class="mb-0">
         <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.groupGuidelinesold}}</div>
-        <button aria-label="close dialog" mat-dialog-close class="mat-close-btn" *ngIf="type === acceptTncType.GROUP">
+        <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="type === acceptTncType.GROUP">
         </button>
       </div>
       <div class="sb-mat__modal__content o-y-visible">

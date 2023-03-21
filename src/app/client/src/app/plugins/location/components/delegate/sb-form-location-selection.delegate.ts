@@ -272,7 +272,11 @@ export class SbFormLocationSelectionDelegate {
     const stateFormControl = this.formGroup.get('children.persona.state');
     /* istanbul ignore else */
     if (stateFormControl) {
-      stateFormControl.patchValue(null);
+      stateFormControl.setValue({
+        name: '',
+        type: '',
+        code: ''
+      });
     }
   }
 
