@@ -36,11 +36,10 @@ export class UserRoleAssignComponent implements OnInit {
   showDelete = false;
   item: any;
   instance: string;
-  cardConfig = {
-    size: this.config.constants.SIZE.MEDIUM,
-    isSelectable: false,
+  avatarConfig = {
+    size: this.config.constants.SIZE.LARGE,
     view: this.config.constants.VIEW.VERTICAL,
-    isBold: true
+    isTitle:false
   };
   constructor(searchService: SearchService,
     userService: UserService,

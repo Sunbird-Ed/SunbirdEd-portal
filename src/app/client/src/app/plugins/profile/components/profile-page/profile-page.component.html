@@ -26,10 +26,10 @@
        <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" role="img" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
         matTooltip="{{resourceService.frmelmnts.lbl.stateVerified}}" [matTooltipPosition]="'right'">
 
-       <sb-member-card [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar"   [style]="avtarDesktopStyle"
-                     [config]=cardConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
+       <sb-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar"   [style]="avtarDesktopStyle"
+                     [config]=avatarConfig initialsSize="1" [initial]="userProfile?.firstName[0]"
                     [title]="userProfile?.firstName">
-                  </sb-member-card>
+                  </sb-avatar>
       </div>
     </div>
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |

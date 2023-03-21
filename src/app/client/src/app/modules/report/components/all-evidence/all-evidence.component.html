@@ -7,10 +7,11 @@
                         <div class="p-0 w-100">
                             <div class="sb-modal-content content">
                                 <div class="ui container">
+                                    <mat-icon class="goback" (click)="closeModal()">highlight_off</mat-icon>
                                     <div class="twelve wide column">
                                         <div id="report-body" class="my-16">
-                                            <mat-tab-group mat-align-tabs="center">
-                                                <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.evidences}}">
+                                            <mat-tab-group mat-align-tabs="center" #tabs mat-stretch-tabs (selectedTabChange)="tabChanged($event)">
+                                                <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.evidences}}" [ngClass]="{'active-tab': activeIndex === 0}">
                                                     <div class="report-block ui bottom attached segment p-0 b-0 no-bg">
                                                         <div *ngIf="images?.length">
                                                             <p class="item">Images</p>
@@ -45,7 +46,7 @@
                                                         </div>
                                                     </div>
                                                 </mat-tab>
-                                                <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.remarks}}">
+                                                <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.remarks}}" [ngClass]="{'active-tab': activeIndex === 1}">
                                                     <div *ngIf="remarks?.length"
                                                         class="report-block ui bottom attached segment p-0 b-0 no-bg">
                                                         <div *ngFor="let remark of remarks;let i=index">
