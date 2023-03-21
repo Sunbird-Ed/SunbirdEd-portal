@@ -35,7 +35,8 @@ import { TelemetryErrorModalComponent } from '../shared/components/telemetry-err
     TelemetryModule,
     CommonConsumptionModule,
     LocationModule,
-    NotificationModule
+    NotificationModule,
+    
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, OnlineOnlyDirective,

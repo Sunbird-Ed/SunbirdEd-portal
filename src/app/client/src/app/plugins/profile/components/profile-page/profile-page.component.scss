@@ -229,36 +229,18 @@
 
 ::ng-deep {
   .avatar-container {
-    .my-avatar .sb-members-list-item--medium .sb-member__img {
-      width: 6rem;
-      height: 6rem;
-      font-size: 4.125rem
+     .my-avatar.verified .sb-avatar-list-item .sb-avatar__img {
+      border: 1px solid  !important;
+      border-color: var(--secondary-color) !important;
     }
-
-     .my-avatar.verified .sb-members-list-item .sb-member__img {
-      border: 1px solid var(--secondary-color);
-
-    }
-
-    .my-avatar img.avatar-tickmark {
+     .avatar-tickmark {
       width: 2rem;
       height: 2rem;
       position: absolute;
       right: 0%;
       z-index: 9;
-      top: 0.5rem;
+      top: 0.2rem; 
 
-    }
-    .sb-members-list-item .sb-member .sb-member__name {
-      display: none
-    }
-
-     .my-avatar .sb-members-list-item .sb-member__img {
-      box-shadow: var(--sbt-box-shadow-6px);
-    }
-
-    .sb-members-list-item .sb-member {
-      padding: 0px
     }
 
   }

@@ -42,10 +42,7 @@
         height: calculateRem(40px) !important;
        
     }
-    .dropdown-multiselect__caret::before {
-        border-color: var(--ui-dropdown-selection-icon) transparent !important;
-        border-width: calculateRem(4px) calculateRem(5px) 0 !important;
-    }
+
     .dataTables_wrapper {
         padding-top: calculateRem(30px);
         border-top: calculateRem(1px) solid var(--gray-200);

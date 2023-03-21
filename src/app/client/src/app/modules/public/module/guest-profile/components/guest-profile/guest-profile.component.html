@@ -20,9 +20,9 @@
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
-        <sb-member-card class="my-avatar"  [config]=cardConfig initialsSize="1"
-          [initial]="guestUser?.formatedName[0]" [title]="guestUser?.formatedName">
-        </sb-member-card>
+        <sb-avatar class="my-avatar"  [config]=avatarConfig initialsSize="1"
+          [initial]="guestUser?.formatedName[0]" [indexOfMember]="2" [title]="">
+        </sb-avatar>
       </div>
     </div>
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{guestUser?.formatedName |
