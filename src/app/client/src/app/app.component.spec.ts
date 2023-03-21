@@ -1,16 +1,16 @@
-import { ChangeDetectorRef, EventEmitter, NgZone, Renderer2 } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { CacheService } from "ng2-cache-service";
-import { BehaviorSubject, Observable, of, throwError } from "rxjs";
-import { AppComponent } from "./app.component"
-import { CoursesService, DeviceRegisterService, FormService, GeneraliseLabelService, LearnerService, OrgDetailsService, PermissionService, PublicDataService, SessionExpiryInterceptor, TenantService, UserService } from "./modules/core";
-import { BrowserCacheTtlService, ConfigService, ConnectionService, IUserData, IUserProfile, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService, GenericResourceService } from "./modules/shared";
-import { TelemetryService } from "./modules/telemetry";
-import { ProfileService } from "./plugins/profile";
+import { ChangeDetectorRef, EventEmitter, NgZone, Renderer2 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CacheService } from './../app/modules/shared/services/cache-service/cache.service';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { AppComponent } from './app.component'
+import { CoursesService, DeviceRegisterService, FormService, GeneraliseLabelService, LearnerService, OrgDetailsService, PermissionService, PublicDataService, SessionExpiryInterceptor, TenantService, UserService } from './modules/core';
+import { BrowserCacheTtlService, ConfigService, ConnectionService, IUserData, IUserProfile, LayoutService, NavigationHelperService, ResourceService, ToasterService, UtilService, GenericResourceService } from './modules/shared';
+import { TelemetryService } from './modules/telemetry';
+import { ProfileService } from './plugins/profile';
 import { mockData } from './app.component.spec.data';
-import { mockRes } from "./modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data";
+import { mockRes } from './modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data';
 
-describe("App Component", () => {
+describe('App Component', () => {
   let appComponent: AppComponent;
 
   const mockCacheService: Partial<CacheService> = {
@@ -19,7 +19,7 @@ describe("App Component", () => {
   const mockBrowserCacheTtlService: Partial<BrowserCacheTtlService> = {};
   const mockUserService: Partial<UserService> = {
     loggedIn: true,
-    slug: jest.fn().mockReturnValue("tn") as any,
+    slug: jest.fn().mockReturnValue('tn') as any,
     userData$: of({userProfile: {
       userId: 'sample-uid',
       rootOrgId: 'sample-root-id',
@@ -51,7 +51,7 @@ describe("App Component", () => {
 };
   const mockConfigService: Partial<ConfigService> = {
     appConfig: {
-      layoutConfiguration: "joy",
+      layoutConfiguration: 'joy',
       TELEMETRY: {
         PID: 'sample-page-id'
       }
@@ -234,8 +234,8 @@ describe("App Component", () => {
   })
 
 
-  describe("closeConsentPopUp", () => {
-    it("should close consent popup", () => {
+  describe('closeConsentPopUp', () => {
+    it('should close consent popup', () => {
       jest.spyOn(appComponent, 'checkFrameworkSelected').mockImplementation();
       appComponent.closeConsentPopUp();
       expect(appComponent.showGlobalConsentPopUpSection).toBeFalsy();

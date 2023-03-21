@@ -1,8 +1,6 @@
 import { jest } from '@jest/globals';
-import $ from 'jquery';
 
 Object.defineProperty(window, 'CSS', { value: null });
-declare var jquery:any;
 
 Object.defineProperty(window, 'EkTelemetry', { value: {} });
 

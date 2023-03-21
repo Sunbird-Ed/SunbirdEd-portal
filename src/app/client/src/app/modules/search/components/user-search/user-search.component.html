@@ -28,13 +28,16 @@
         </div>
 
         <div>
-          <div *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="searchList">
-            <div in-view-item [id]="i" [data]="user" class="ui segment mb-20" *ngFor="let user of searchList;let i = index;">
+          <div *ngIf="!showLoader && !noResult" [throttle]="[1000]" [trigger]="searchList">
+            <div [id]="i" [data]="user" class="ui segment mb-20" *ngFor="let user of searchList;let i = index;">
               <div class="ui items">
                 <div class="item">
                   <div class="ui tiny image userSearchImage">
-                    <ngx-avatar class="my-avatar" [style]="customStyle" [size]="80" initialsSize="1" [textSizeRatio]="2" name="{{user.firstName}} ">
-                    </ngx-avatar>
+
+                    <sb-avatar class="my-avatar" [config]=avatarConfig initialsSize="1" [initial]="user?.firstName[0]"
+                      [title]="user?.firstName">
+                    </sb-avatar>
+
                   </div>
                   <div class="content userSearchContent">
                     <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 

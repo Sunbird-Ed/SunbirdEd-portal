@@ -8,10 +8,10 @@ import { UserOrgManagementComponent } from './components/user-org-management/use
 import { ManageRoutingModule } from './manage-routing.module';
 import { ManageService } from './services/manage/manage.service';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
-import { AvatarModule } from 'ngx-avatar';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+
 
 @NgModule({
   declarations: [
@@ -29,8 +29,7 @@ import { AvatarModule } from 'ngx-avatar';
     FormsModule,
     ReactiveFormsModule,
     ManageRoutingModule,
-    AvatarModule,
-    NgInviewModule
+    CommonConsumptionModule
   ],
   providers: [
     ResourceService,

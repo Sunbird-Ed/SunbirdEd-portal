@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import dayjs from 'dayjs';
 import { UserService, GeneraliseLabelService, ElectronService } from '@sunbird/core';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../../../../shared/services/cache-service/cache.service';
 import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 
 @Component({

@@ -7,22 +7,21 @@ import {
   SuiProgressModule, SuiRatingModule, SuiCollapseModule
 } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
-import { SharedModule } from '@sunbird/shared';
-import { AvatarModule } from 'ngx-avatar';
+import { SharedModule } from '../shared/shared.module';
 import {
   MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, ErrorPageComponent,
   LanguageDropdownComponent
 } from './components';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { AuthGuard } from './guard/auth-gard.service';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../modules/shared/services/cache-service/cache.service';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule } from '../telemetry/telemetry.module';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentTypeComponent } from './components/content-type/content-type.component';
 import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
-import { TelemetryErrorModalComponent } from '../shared';
+import { TelemetryErrorModalComponent } from '../shared/components/telemetry-error-modal/telemetry-error-modal.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -34,10 +33,10 @@ import { TelemetryErrorModalComponent } from '../shared';
     ReactiveFormsModule,
     WebExtensionModule,
     TelemetryModule,
-    AvatarModule,
     CommonConsumptionModule,
     LocationModule,
-    NotificationModule
+    NotificationModule,
+    
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, OnlineOnlyDirective,

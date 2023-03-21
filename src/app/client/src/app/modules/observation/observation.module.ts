@@ -7,8 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ObservationRoutingModule } from './observation-routing.module';
 import { MlGuard } from './guards';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
-import { AvatarModule } from 'ngx-avatar';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
@@ -17,7 +15,6 @@ import {
   AddEntityComponent, SubmissionsComponent, ObservationListingComponent, ObservationDetailsComponent,
   EntityListComponent, EditSubmissionComponent
 } from './components';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LocationModule } from '../../plugins/location/location.module';
 import {PlayerHelperModule} from '../player-helper';
 
@@ -45,8 +42,6 @@ import {PlayerHelperModule} from '../player-helper';
     ContentSearchModule,
     CommonConsumptionModule,
     SharedFeatureModule,
-    AvatarModule,
-    NgInviewModule,
     TelemetryModule,
     FormsModule,
     ReactiveFormsModule,
@@ -54,7 +49,6 @@ import {PlayerHelperModule} from '../player-helper';
     CoreModule,
     SharedFeatureModule,
     LocationModule,
-    InfiniteScrollModule,
     PlayerHelperModule
   ],
   providers: [MlGuard]

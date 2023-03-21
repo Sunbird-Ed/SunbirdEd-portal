@@ -8,7 +8,6 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ResourceService } from '../../../shared';
 import { fakeAsync, tick } from '@angular/core/testing';
-import * as moment from 'moment';
 
 describe('FilterComponent', () => {
   let component: FilterComponent;

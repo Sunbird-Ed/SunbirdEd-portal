@@ -20,13 +20,12 @@ import {
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
 
-declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
 
 @Component({
@@ -118,10 +117,15 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     isBold: false
   };
   cardConfig = {
-    size: this.config.constants.SIZE.SMALL,
+    size: this.config.constants.SIZE.MEDIUM,
     isSelectable: false,
     view: this.config.constants.VIEW.HORIZONTAL,
     isBold: true
+  };
+  avatarConfig = {
+    size: this.config.constants.SIZE.MEDIUM,
+    view: this.config.constants.VIEW.HORIZONTAL,
+    isTitle:false
   };
   isLanguageDropdown:boolean = true
   totalUsersCount: number;
@@ -576,13 +580,13 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       }
     };
   }
-  showSideBar() {
-    if (this.userService.loggedIn) {
-      this.toggleSideMenu(true);
-    } else {
-      jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
-    }
-  }
+  // showSideBar() {
+  //   if (this.userService.loggedIn) {
+  //     this.toggleSideMenu(true);
+  //   } else {
+  //     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+  //   }
+  // }
 
   switchUser(event) {
     let userSubscription;

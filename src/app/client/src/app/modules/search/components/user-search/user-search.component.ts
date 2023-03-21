@@ -126,6 +126,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   };
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
+  avatarConfig: { size: any;  view: any;  isTitle:boolean };
 
   /**
      * Constructor to create injected service(s) object
@@ -151,6 +152,12 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userSearchService = userSearchService;
     this.config = config;
     this.user = user;
+    this.avatarConfig = {
+      size: this.config.constants.SIZE.MEDIUM,
+      view: this.config.constants.VIEW.VERTICAL,
+      isTitle:false
+    };
+   
   }
   /**
    * This method sets the make an api call to get all search data with page No and offset
@@ -388,6 +395,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
   inview(event) {

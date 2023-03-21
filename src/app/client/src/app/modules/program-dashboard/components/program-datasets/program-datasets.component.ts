@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
 import { ReportService } from '../../../dashboard/services';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];
@@ -365,7 +365,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
           this.hideTableToCsv = (result?.tables[0]?.data != undefined) ? true : false;
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
-          this.lastUpdatedOn = moment(_.get(result, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
+          this.lastUpdatedOn = dayjs(_.get(result, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
           this.chartsReportData = JSON.parse(JSON.stringify(result));
           return result;
         }))
@@ -780,16 +780,16 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   dateChanged($event, type) {
-    if (moment($event.value).isValid()) {
+    if (dayjs($event.value).isValid()) {
       const year = new Date($event.value._d).getFullYear();
       const month = new Date($event.value._d).getMonth();
       const day = new Date($event.value._d).getDate();
       if(type === 'startDate'){
         this.minEndDate = new Date(year, month, day + 1);
-        this.reportForm.controls.startDate.setValue(moment(_.get($event, 'value._d')).format('YYYY-MM-DD'));
+        this.reportForm.controls.startDate.setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
       }else{
         this.maxStartDate = new Date(year, month, day - 1);
-        this.reportForm.controls.endDate.setValue(moment(_.get($event, 'value._d')).format('YYYY-MM-DD'));
+        this.reportForm.controls.endDate.setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
       }
     }
   }

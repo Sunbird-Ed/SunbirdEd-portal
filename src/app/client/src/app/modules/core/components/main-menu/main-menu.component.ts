@@ -4,11 +4,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { merge } from 'rxjs';
-declare var jQuery: any;
 
 /**
  * Main menu component

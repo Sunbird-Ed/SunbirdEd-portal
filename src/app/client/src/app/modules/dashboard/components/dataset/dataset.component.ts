@@ -8,7 +8,7 @@ import { Subject, of, zip, Subscription, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, distinctUntilChanged, tap, filter } from 'rxjs/operators';
 import dayjs from 'dayjs';
 import { get, chunk, map as _map, first, last, partition, forEach, flatMap } from 'lodash-es';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import 'datatables.net';
 @Component({
   selector: 'app-dataset',

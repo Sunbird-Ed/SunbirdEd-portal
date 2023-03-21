@@ -16,3 +16,4 @@ export * from './on-demand-report/on-demand-report.service';
 export * from './connection-service/connection.service';
 export * from './activity-dashboard/activity-dashboard.service';
 export * from './genericResource/genericResource.service';
+export * from './cache-service/cache.service';

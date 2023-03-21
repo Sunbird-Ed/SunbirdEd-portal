@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgInviewModule } from 'angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { PublicCourseConsumptionPageComponent,
   ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from './components';
@@ -22,7 +21,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     TelemetryModule,
     CoreModule,
     SharedModule,
-    NgInviewModule,
     CourseRoutingModule,
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,

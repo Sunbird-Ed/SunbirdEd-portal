@@ -298,6 +298,7 @@ export class UploadedComponent extends WorkSpace implements OnInit, AfterViewIni
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+      this.inview({ inview: [] });
     });
   }
 

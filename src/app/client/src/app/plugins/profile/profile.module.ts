@@ -2,7 +2,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
-import { SlickModule } from 'ngx-slick';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
@@ -14,10 +13,9 @@ import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { AvatarModule } from 'ngx-avatar';
 import { ContentSearchModule } from '@sunbird/content-search';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
-import { CertificateDirectivesModule } from 'sb-svg2pdf';
+import { CertificateDirectivesModule } from 'sb-svg2pdf-v12';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements';
@@ -51,15 +49,13 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
     ReactiveFormsModule,
     // WebExtensionModule,
     TelemetryModule,
-    SlickModule,
-    AvatarModule,
     SharedFeatureModule,
     ContentSearchModule,
     CommonConsumptionModule,
     CertificateDirectivesModule,
     CommonFormElementsModule,
     LocationModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
    AccountRecoveryInfoComponent,

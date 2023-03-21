@@ -6,10 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { programDashboardRoutingModule } from './program-dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { DatasetsComponent } from './components/program-datasets/program-datasets.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import { DashletModule } from 'sb-dashlet-v12';
 import { DashboardModule} from '../dashboard';
 import { BigDataPipe } from './pipes/bigData/big-data.pipe';
 import { ChartTypePipe } from './pipes/chartType/chart-type.pipe';
@@ -68,7 +67,6 @@ const TIME_RANGE_DATE_FORMAT = {
     MatSlideToggleModule,
     MatExpansionModule,
     MatAutocompleteModule,
-    NgInviewModule,
     DashletModule,
     DashboardModule,
     MatDatepickerModule,

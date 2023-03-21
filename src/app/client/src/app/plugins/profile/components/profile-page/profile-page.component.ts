@@ -23,9 +23,9 @@ import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
 import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CacheService} from 'ng2-cache-service';
+import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
 import {takeUntil} from 'rxjs/operators';
-import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v12';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
@@ -97,6 +97,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
+  isFullScreenView: any;
+  avatarConfig = {
+    size: this.config.constants.SIZE.LARGE,
+    view: this.config.constants.VIEW.VERTICAL,
+    isTitle:false
+  };
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -105,7 +111,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService, private config: ConfigService,
     @Inject('CS_CERTIFICATE_SERVICE') private CsCertificateService: CsCertificateService) {
     this.getNavParams();
   }
@@ -692,6 +698,12 @@ public onLocationModalClose(event) {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     }
   }, 5000);
+}
+
+checkFullScreenView() {
+  this.navigationhelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+    this.isFullScreenView = isFullScreen;
+  });
 }
 
 }

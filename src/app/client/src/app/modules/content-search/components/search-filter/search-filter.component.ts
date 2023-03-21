@@ -8,7 +8,7 @@ import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
 import { IFrameworkCategoryFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 
 @Component({
   selector: 'app-search-filter',

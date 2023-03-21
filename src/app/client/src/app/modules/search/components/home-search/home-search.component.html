@@ -33,12 +33,12 @@
     <div class="twelve wide column">
       <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
-      <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList?.length"
+      <div [appTelemetryImpression]="telemetryImpression"  *ngIf="!showLoader && contentList?.length"
         class="dynamic-section-card">
         <ng-container>
           <!-- <ng-container *ngFor="let data of contentList;let i = index;"> -->
             <div class="sb-grid mb-16">
-              <div *ngFor="let content of contentList;let i = index;" in-view-item [id]="i" [data]="content" class="sb-grid--item"
+              <div *ngFor="let content of contentList;let i = index;" [id]="i" [data]="content" class="sb-grid--item"
                 [ngClass]="{'last mb-0':last}">
                 <sb-library-card *ngIf="!isDesktopApp;else desktopCard" [indexToDisplay]="i"
                   [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"

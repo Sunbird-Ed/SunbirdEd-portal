@@ -7,7 +7,7 @@ import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { skipWhile, map, catchError, mergeMap, tap } from 'rxjs/operators';
-import { CacheService } from 'ng2-cache-service';
+import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import * as _ from 'lodash-es';
 
 /**
