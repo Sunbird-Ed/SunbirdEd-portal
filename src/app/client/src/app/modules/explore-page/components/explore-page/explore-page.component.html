@@ -117,10 +117,12 @@
 
             <div
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
-              <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
+              <!-- <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
+              </div> -->
+
+              <div class="mat-typography">
+                <h2 class="m-0">{{getBannerTitle(section?.section?.title)}}</h2>
               </div>
-
-
               <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
                 <ng-container *ngIf="displayBanner">
                   <div *ngFor="let banner of primaryBanner;" class="mr-16">

@@ -4,7 +4,11 @@
     <div class="title" role="heading" aria-level="2">
       {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
     </div>
-    <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
+    <span class="example-spacer"></span>
+    <!-- <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button> -->
+    <button mat-fab color="accent" mat-dialog-close aria-label="close dialog" *ngIf="showCloseIcon">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
   <!--/Header-->
   <!--Content-->
