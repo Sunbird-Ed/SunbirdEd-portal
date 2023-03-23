@@ -1,0 +1,46 @@
+@use "~@angular/material" as mat;
+@use 'sass:map';
+
+
+@mixin theme-mat-modal($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  .mat-dialog-title {
+    background-color: mat-color($primary, 500);
+    color: var(--white);
+    margin: 0;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+//   .mat-dialog-container .mat-select-value{
+//     color: mat-color($primary);
+//   }
+//   .mat-dialog-container .mat-form-field-label{
+//     color: mat-color($primary, 200);
+//   }
+//   .mat-dialog-container .mat-form-field-appearance-fill .mat-form-field-flex{
+//     background-color: mat-color($primary, 100);
+//   }
+  .mat-dialog-container{
+    position: relative;
+    padding: 0;
+  }
+  .mat-dialog-content{
+    padding: 0;
+  }
+  .sb-mat__modal__content{
+    padding: 1rem 1.5rem 0;
+  }
+  .mat-dialog-actions{
+    padding: 0 1.5rem 1rem;
+  }
+  .mat-dialog-actions .mat-button-base{
+    background-color: mat-color($accent);
+  }
+}
+
+
+ 

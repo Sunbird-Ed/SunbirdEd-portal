@@ -132,9 +132,10 @@ $app-themes: (
 
     $ColorGrabber: mat-light-theme($primary, $accent, $warn);
     @include theme-color-grabber($ColorGrabber);
-
-    @include theme-mat-card($theme);
-
+    $matCardTheme: mat-light-theme($primary, $accent, $warn);
+    @include theme-mat-card($matCardTheme);
+    $matModal: mat-light-theme($primary, $accent, $warn);
+    @include theme-mat-modal($matModal);
     // $matSidebarTheme: mat-light-theme($primary, $accent, $warn);
     @include theme-mat-sidebar($theme);
 
