@@ -237,18 +237,18 @@ export class ListAllReportsComponent implements OnInit {
         }, {
           title: 'Tags',
           data: 'tags',
-          
+          tabIndex:0,
           render: this.renderTags
         }, {
           title: 'Update Frequency',
           data: 'updatefrequency',
-          
+           tabIndex:0,
           render: this.renderTags
         },
         ...(this._isUserReportAdmin ? [{
           title: 'Status',
           data: 'status',
-          
+           tabIndex:0,
           render: this.renderStatus.bind(this)
         }] : [])],
         keys:{
@@ -297,12 +297,14 @@ export class ListAllReportsComponent implements OnInit {
               title: 'Serial No.',
               searchable: false,
               orderable: false,
-              data: null
+              data: null,
+               tabIndex:0
             },
             {
               title: 'Parameter',
               data: 'hashed_val',
-              className: 'text-center',
+              className: 'text-center', 
+              tabIndex:0,
               render: value => {
                 const parameters = _.split(atob(value), '__');
                 return parameters;
@@ -311,7 +313,8 @@ export class ListAllReportsComponent implements OnInit {
               title: 'Status',
               data: 'status',
               render: this.renderStatus.bind(this),
-              className: 'text-center'
+              className: 'text-center',
+               tabIndex:0
             }],
             keys:{
               tabIndex:0
