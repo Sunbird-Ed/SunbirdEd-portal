@@ -204,7 +204,7 @@ export class ListAllReportsComponent implements OnInit {
           title: '',
           orderable: false,
           data: null,
-          
+          tabIndex:0,
           render: (value, type, row) => {
             const isParameterized = _.get(row, 'isParameterized') || false;
             let count = 0;
@@ -256,7 +256,7 @@ export class ListAllReportsComponent implements OnInit {
         }
     });
 
-    this.indexColumn(masterTable)
+    this.indexColumn(masterTable);
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event.currentTarget).data();
@@ -297,13 +297,12 @@ export class ListAllReportsComponent implements OnInit {
               title: 'Serial No.',
               searchable: false,
               orderable: false,
-              data: null,
-              className:'focus'
+              data: null
             },
             {
               title: 'Parameter',
               data: 'hashed_val',
-              className: 'text-center focus',
+              className: 'text-center',
               render: value => {
                 const parameters = _.split(atob(value), '__');
                 return parameters;
@@ -312,7 +311,7 @@ export class ListAllReportsComponent implements OnInit {
               title: 'Status',
               data: 'status',
               render: this.renderStatus.bind(this),
-              className: 'text-center focus'
+              className: 'text-center'
             }],
             keys:{
               tabIndex:0
