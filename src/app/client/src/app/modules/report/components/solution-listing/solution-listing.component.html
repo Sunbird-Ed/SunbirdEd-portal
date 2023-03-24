@@ -67,12 +67,12 @@
                   </thead>
                   <tbody>
                    <tr *ngFor="let solution of solutionList;let i=index" (click)="(solution?.entities?.length >1) ? goToEntityList(solution) : goToReports(solution)">
-                         <td class="header-section">{{i+1}}</td>
-                         <td><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal iconSize" aria-label="file-icon">
+                         <td tabindex="0" class="header-section">{{i+1}}</td>
+                         <td tabindex="0" ><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal iconSize" aria-label="file-icon">
                           <i class="icon copy outline alternate large"></i></button></td>
-                         <td><div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
+                         <td tabindex="0" ><div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
                           {{solution.name}}</h6> <p class="media-description sb__ellipsis"> {{solution.programName}}</p></div></div></td>
-                          <td class="date-section">{{solution.completedDate| date: "yyyy/MM/dd"}}</td>
+                          <td tabindex="0"  class="date-section">{{solution.completedDate| date: "yyyy/MM/dd"}}</td>
                      </tr>
                   </tbody>
                  
