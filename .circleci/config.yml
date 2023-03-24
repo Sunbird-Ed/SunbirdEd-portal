@@ -16,7 +16,8 @@ jobs:
     steps:
       - checkout:
           path: ~/portal
-      - run: 
+      - run:
+          # Using NodeJS version 16
           name: Installing prerequisites
           command: |-
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6DB5542C356545CF # Adding Heroku keys, else the apt update will fail.
