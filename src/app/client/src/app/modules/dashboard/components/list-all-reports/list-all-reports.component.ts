@@ -195,8 +195,7 @@ export class ListAllReportsComponent implements OnInit {
           title: 'Serial No.',
           searchable: false,
           orderable: false,
-          data: null,
-          tabIndex:0
+          data: null
         },
         { title: 'Created On', data: 'createdon', visible: false },
         ...(this.reportService.isUserReportAdmin() ? [{
@@ -204,7 +203,6 @@ export class ListAllReportsComponent implements OnInit {
           title: '',
           orderable: false,
           data: null,
-          tabIndex:0,
           render: (value, type, row) => {
             const isParameterized = _.get(row, 'isParameterized') || false;
             let count = 0;
@@ -217,16 +215,16 @@ export class ListAllReportsComponent implements OnInit {
           },
           defaultContent: ''
         }] : []),
-        { title: 'Report Id', data: 'reportid', visible: false , tabIndex: 0,},
+        { title: 'Report Id', data: 'reportid', visible: false},
         {
-          title: 'Title', data: 'title',  tabIndex: 0, render: (value, type, row) => {
+          title: 'Title', data: 'title', render: (value, type, row) => {
             const { title, description } = row;
             return `<div class="sb-media tabindex="0"><div class="sb-media-body"><h6 class="p-0">
                   ${title}</h6> <p class="media-description sb__ellipsis"> ${description}</p></div></div>`;
           }
         },
         {
-          title: 'Last Published Date', data: 'updatedon', tabIndex: 0,
+          title: 'Last Published Date', data: 'updatedon',
           render: (value) => {
             const date = moment(value);
             if (date.isValid()) {
@@ -237,18 +235,16 @@ export class ListAllReportsComponent implements OnInit {
         }, {
           title: 'Tags',
           data: 'tags',
-          tabIndex:0,
           render: this.renderTags
         }, {
           title: 'Update Frequency',
           data: 'updatefrequency',
-           tabIndex:0,
           render: this.renderTags
         },
         ...(this._isUserReportAdmin ? [{
           title: 'Status',
           data: 'status',
-           tabIndex:0,
+       
           render: this.renderStatus.bind(this)
         }] : [])],
         keys:{
@@ -298,13 +294,11 @@ export class ListAllReportsComponent implements OnInit {
               searchable: false,
               orderable: false,
               data: null,
-               tabIndex:0
             },
             {
               title: 'Parameter',
               data: 'hashed_val',
               className: 'text-center', 
-              tabIndex:0,
               render: value => {
                 const parameters = _.split(atob(value), '__');
                 return parameters;
@@ -314,7 +308,6 @@ export class ListAllReportsComponent implements OnInit {
               data: 'status',
               render: this.renderStatus.bind(this),
               className: 'text-center',
-               tabIndex:0
             }],
             keys:{
               tabIndex:0
