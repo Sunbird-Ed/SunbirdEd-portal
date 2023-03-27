@@ -8,7 +8,7 @@ import { programDashboardRoutingModule } from './program-dashboard-routing.modul
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { DatasetsComponent } from './components/program-datasets/program-datasets.component';
-import { DashletModule } from 'sb-dashlet-v12';
+import { DashletModule } from '@project-sunbird/sb-dashlet-v14';
 import { DashboardModule} from '../dashboard';
 import { BigDataPipe } from './pipes/bigData/big-data.pipe';
 import { ChartTypePipe } from './pipes/chartType/chart-type.pipe';
