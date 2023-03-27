@@ -13,7 +13,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { ExplorePageComponent } from './components';
-import { ContentSectionModule } from 'content-section-v12';
+import { ContentSectionModule } from 'content-section-v13';
 import {ObservationModule} from '../observation/observation.module';
 
 @NgModule({

@@ -25,7 +25,7 @@ import {IImpressionEventInput, IInteractEventEdata, TelemetryService} from '@sun
 import {ActivatedRoute, Router} from '@angular/router';
 import { CacheService } from '../../../../modules/shared/services/cache-service/cache.service';
 import {takeUntil} from 'rxjs/operators';
-import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v12';
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf-v13';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { FieldConfig, FieldConfigOption } from '@project-sunbird/common-form-elements';
 import { CsCertificateService } from '@project-sunbird/client-services/services/certificate/interface';
