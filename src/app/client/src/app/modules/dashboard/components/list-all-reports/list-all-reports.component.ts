@@ -190,6 +190,9 @@ export class ListAllReportsComponent implements OnInit {
       ...this.getDefaultTableOptions(),
       order: [[1, 'desc']],
       data,
+      keys:{
+        tabIndex:0
+      },
       columns: [
         {
           title: 'Serial No.',
@@ -246,10 +249,7 @@ export class ListAllReportsComponent implements OnInit {
           data: 'status',
        
           render: this.renderStatus.bind(this)
-        }] : [])],
-        keys:{
-          tabIndex:0
-        }
+        }] : [])]
     });
 
     this.indexColumn(masterTable);
