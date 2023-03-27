@@ -258,7 +258,7 @@ export class ListAllReportsComponent implements OnInit {
       this.rowClickEventHandler(reportid, hashed_val, materialize || false);
     });
 
-    const getChildTable = (table_id) => `<table id="${table_id}" class="w-80 b-1"></table>`;
+    const getChildTable = (table_id) => `<table id="${table_id}" class="sb-table sb-table-hover sb-table-striped sb-table-sortable w-80 dataTable no-footer"></table>`;
 
     $(el).on('click', 'td.details-control', (event) => {
       const tr = $(event.currentTarget).closest('tr');
