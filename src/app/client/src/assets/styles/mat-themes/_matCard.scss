@@ -9,8 +9,9 @@
   $warn: map-get($theme, warn);
   $background: map-get($theme, background);
 
-//   $primary: mat.define-palette(mat.$cyan-palette);
-// $accent: mat.define-palette(mat.$cyan-palette, 500);
+    // for customize the theme for the component it self..
+  // $primary: mat.define-palette(mat.$cyan-palette);
+  // $accent: mat.define-palette(mat.$cyan-palette, 500);
 
   .mat-card-title{
     color: mat-color($primary);
@@ -19,7 +20,7 @@
     width: 20rem;
   }
   .mat-card{
-    background-color: var(--white);
+    background-color: mat-color($primary, 50);
   }
   .mat-card .mat-chip-list-wrapper{
     display: initial;
@@ -27,6 +28,13 @@
   }
   .mat-card-header-text{
     overflow: hidden;
+  }
+  .mat-card-header .mat-card-title {
+    font-size: 1rem;
+  }
+  .mat-card-subtitle,
+  .mat-card-content {
+    font-size: 0.875rem;
   }
 }
 

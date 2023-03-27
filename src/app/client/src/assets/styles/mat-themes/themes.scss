@@ -76,7 +76,16 @@ $app-themes: (
         $font-family: var(--font-stack-en) !important,
       ),
   ),
+  green-grey: (
+    primary-base: cmat.$sb-mat-green,
+    accent-base: cmat.$sb-mat-grey,
+    typography:
+      mat.define-typography-config(
+        $font-family: var(--font-stack-en) !important,
+      ),
+  ),
 );
+
 
 @each $css-class, $theme in $app-themes {
   $primary: if(
@@ -109,11 +118,11 @@ $app-themes: (
   );
 
     // Custom colors
-    $custom-colors: (
-      custom-color-a: mat-color($mat-green, 700),
-      custom-color-b: mat-color($mat-red, 400),
-    );
-    $theme: map-merge($theme, (custom-colors: $custom-colors));
+    // $custom-colors: (
+    //   custom-color-a: mat-color($mat-green, 700),
+    //   custom-color-b: mat-color($mat-red, 400),
+    // );
+    // $theme: map-merge($theme, (custom-colors: $custom-colors));
     
     // you only have to add additional componenets here (instead of in every theme class)
 // @mixin custom-components-theme($theme) {
@@ -121,8 +130,11 @@ $app-themes: (
 //   @include flip-toggle-button-theme($theme);
 // }
 
+
+
   .#{$css-class} {
-    @include mat.all-component-themes(mat-light-theme($primary, $accent, $warn));
+    $app-themes:mat-light-theme($primary, $accent, $warn);
+    @include mat.all-component-themes($app-themes);
     @include mat.strong-focus-indicators-theme(mat-light-theme($primary, $accent, $warn));
     @include app-root-theme(mat-light-theme($primary, $accent, $warn));
     @include no-result-component(mat-light-theme($primary, $accent, $warn));
@@ -136,10 +148,33 @@ $app-themes: (
     @include theme-mat-card($matCardTheme);
     $matModal: mat-light-theme($primary, $accent, $warn);
     @include theme-mat-modal($matModal);
-    // $matSidebarTheme: mat-light-theme($primary, $accent, $warn);
-    @include theme-mat-sidebar($theme);
+    $themematsidebar: mat-light-theme($primary, $accent, $warn);
+    @include theme-mat-sidebar($themematsidebar);
 
-    // .theme-dependent-colors {
+    $primary100: mat-color($primary, 100);
+    $primary200: mat-color($primary, 200);
+    // $accent500: mat-color($accent, 500);
+    // $warn500: mat-color($warn);
+    --sbt-body-bg: #{$primary100}; 
+    --sbt-body-bg2: #{$primary200}; 
+    --sb-profile-bg-c-4:var(--sbt-body-bg);
+    --sbt-footer-bg:var(--sbt-body-bg2);
+    --cc-grade-pill-container-bg:var(--sbt-body-bg);
+    --sb-modal-content-bg:var(--sbt-body-bg);
+    --sb-modal-actions-bg:var(--sbt-body-bg);
+    --sbt-compt-bg:var(--sbt-body-bg);
+    --cc-chapter-bg:var(--sbt-body-bg2);
+    --sbt-filter-bar-bg:var(--sbt-body-bg);
+    $primary500: mat-color($primary);
+    --sbt-header-bg:#{$primary500};
+    .mat-app-background, .new-layout-footer {
+      background: mat-color($primary, 100) !important;
+    }
+    .sb-icon {
+      background: mat-color($accent);
+    }
+
+        // .theme-dependent-colors {
     // 	background: mat-color($primary);
     // 	color: mat-color($accent);
     // }
@@ -162,28 +197,6 @@ $app-themes: (
     // --fg: #{$fg};
     // --bg: #{$bg};
         // --sbt-footer-bg: #{$primary, 100};
-
-    $primary100: mat-color($primary, 100);
-    $primary200: mat-color($primary, 200);
-    $accent1: mat-color($accent);
-    $warn1: mat-color($warn);
-    --sbt-body-bg: #{$primary100}; 
-    --sbt-body-bg2: #{$primary200}; 
-    --sb-profile-bg-c-4:var(--sbt-body-bg);
-    --sbt-footer-bg:var(--sbt-body-bg2);
-    --cc-grade-pill-container-bg:var(--sbt-body-bg);
-    --sb-modal-content-bg:var(--sbt-body-bg);
-    --sb-modal-actions-bg:var(--sbt-body-bg);
-    --sbt-compt-bg:var(--sbt-body-bg);
-    --cc-chapter-bg:var(--sbt-body-bg2);
-    --sbt-filter-bar-bg:var(--sbt-body-bg);
-    .mat-app-background, .new-layout-footer {
-      background: mat-color($primary, 100) !important;
-    }
-    .sb-icon {
-      background-color: mat-color($accent);
-    }
-
     // .mat-app-background,
     // .sbt-mat-background,
     // .sbt-filter-bar,
@@ -205,7 +218,6 @@ $app-themes: (
     
     // dark background related
     @include darkbgTheme($theme);
-    
     @include mat.toolbar-theme(mat-dark-theme($primary, $accent, $warn));
     @include no-result-component(mat-dark-theme($primary, $accent, $warn));
     
@@ -224,4 +236,28 @@ $app-themes: (
     // .theme-warn.#{$css-class} {
     //   background-color: mat-color($warn);
     // }
+
+    .green-grey {
+    //   $greengreyDarktheme: mat-dark-theme($primary, $accent, $warn);
+    //   @include mat.all-component-colors($greengreyDarktheme);
+    //   $primary100: mat-color($accent, 900);
+    // $primary200: mat-color($accent, 800);
+    // --sbt-body-bg: #{$primary100}; 
+    // --sbt-body-bg2: #{$primary200}; 
+    // --sb-profile-bg-c-4:var(--sbt-body-bg);
+    // --sbt-footer-bg:var(--sbt-body-bg2);
+    // --cc-grade-pill-container-bg:var(--sbt-body-bg);
+    // --sbt-compt-bg:var(--sbt-body-bg);
+    // --sb-modal-content-bg:var(--sbt-body-bg);
+    // --sb-modal-actions-bg:var(--sbt-body-bg);
+    // --cc-chapter-bg:var(--sbt-body-bg2);
+    // --sb-section-preference:var(--white);
+    // --sbt-footer-info-links:var(--white);
+    // --sbt-filter-bar-bg: var(--sbt-body-bg);
+    // .mat-app-background {
+    //     background-color: mat-color($primary, 900) !important; 
+    // }
+    }
 }
+
+

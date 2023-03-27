@@ -1,4 +1,4 @@
-@use "~@angular/material"as mat;
+@use "~@angular/material" as mat;
 @use 'sass:map';
 
 @mixin theme-mat-sidebar($theme) {
@@ -10,9 +10,11 @@
 
   // $primary: mat.define-palette(mat.$cyan-palette);
   // $accent: mat.define-palette(mat.$cyan-palette, 500);
-
+  
+/* inside comments outside */
   .mat-drawer {
-    background-color: mat-color($primary, 50);
+    /* inside comments */
+    background-color: mat-color($primary, 100);
   }
 
   // $drawer-background-color: theming.get-color-from-palette($background, dialog);

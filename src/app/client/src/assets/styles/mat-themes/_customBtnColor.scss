@@ -7,6 +7,6 @@
  $secondary-btn-theme: mat.define-dark-theme((
    color: (primary: $secondary-btn-primary, accent: $secondary-btn-accent),
  ));
-
+// it will fetch only color related styles different from "mat.button-theme"
  @include mat.button-color($secondary-btn-theme);
 }

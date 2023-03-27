@@ -20,5 +20,6 @@
     //     // typography: mat.define-typography-config(),
     //     // density: 0,
     //     ));
-    @include mat.toolbar-theme($accessibility-toolbar-theme);
+    // mat.toolbar-theme
+    @include mat.toolbar-color($accessibility-toolbar-theme);
   }

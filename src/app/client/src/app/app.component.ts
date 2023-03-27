@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		"pink-bluegrey",
 		"purple-green",
     "joy",
+    "green-grey",
 	];
 	
 	@HostBinding('class') activeThemeCssClass: string;
@@ -50,8 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
   
   setMatTheme(theme: string, darkness: boolean = null) {
     localStorage.setItem('selectedTheme', theme);
-    // this._document.body.classList.remove(this.activeThemeCssClass);
-    // this._document.body.classList.add(this.activeThemeCssClass);
+    console.log(theme, darkness);
 		if (darkness === null)
 			darkness = this.isThemeDark;
 		else if (this.isThemeDark === darkness) {
@@ -64,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		const cssClass = darkness === true ? theme + THEME_DARKNESS_SUFFIX : theme;
 		
 		const classList = this.overlayContainer.getContainerElement().classList;
+    console.log('theme ' + classList);
 		if (classList.contains(this.activeThemeCssClass))
 			classList.replace(this.activeThemeCssClass, cssClass);
 		else
@@ -193,12 +194,12 @@ export class AppComponent implements OnInit, OnDestroy {
     
       
       const selectedMatTheme = localStorage.getItem('selectedTheme');
-      // console.log(selectedMatTheme);
-      // if (selectedMatTheme) {
-      //   this.setMatTheme(selectedMatTheme, false); 
-      // } else {
-      //   this.setMatTheme('indigo-pink', false); // Default Theme
-      // }
+      console.log(selectedMatTheme);
+      if (selectedMatTheme) {
+        this.setMatTheme(selectedMatTheme, false); 
+      } else {
+        this.setMatTheme('pink-bluegrey', false); // Default Theme
+      }
 
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';

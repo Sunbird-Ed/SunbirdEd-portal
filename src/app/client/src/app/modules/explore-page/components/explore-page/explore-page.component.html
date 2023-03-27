@@ -58,7 +58,11 @@
             <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference mat-typography"
               tabindex="0">
               <div class="preference">
-                <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+                <!-- <div class="mat-headline">this is heading for h1</div>
+                <div class="mat-title mat-display-4">this is heading for h2</div>
+                <div class="mat-subheading-2">this is heading for h3</div>
+                <div class="mat-subheading-3">this is heading for h4</div> -->
+                <p class="mat-title">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
                   | titlecase}} {{userProfile?.lastName |
                   titlecase}}</p>
                 <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
