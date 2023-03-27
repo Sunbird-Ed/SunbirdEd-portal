@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { IDataset } from '../../interfaces';
 import { DatasetService, ReportService } from '../../services';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, of, zip, Subscription, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, distinctUntilChanged, tap, filter } from 'rxjs/operators';
 import dayjs from 'dayjs';
@@ -19,7 +19,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
 
   @Input() dataset: IDataset;
   @Input() markdownUpdated$: Subject<{ data: string, type: string }>;
-  public timeRangePicker: FormGroup;
+  public timeRangePicker: UntypedFormGroup;
   public dataDictionary: string;
   public examples: string;
   public showLoader = false;
@@ -47,7 +47,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
     this.prepareTable(element.nativeElement);
   }
 
-  constructor(private datasetService: DatasetService, private formBuilder: FormBuilder,
+  constructor(private datasetService: DatasetService, private formBuilder: UntypedFormBuilder,
     public reportService: ReportService, private activatedRoute: ActivatedRoute,
     public resourceService: ResourceService) { }
 

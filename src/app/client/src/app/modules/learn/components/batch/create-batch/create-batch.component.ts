@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
@@ -53,7 +53,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * form group for batchAddUserForm
   */
-  createBatchForm: FormGroup;
+  createBatchForm: UntypedFormGroup;
   /**
   * To navigate to other pages
   */
@@ -211,18 +211,18 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   * It helps to initialize form fields and apply field level validation
   */
   private initializeFormFields(): void {
-    this.createBatchForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      description: new FormControl(''),
-      enrollmentType: new FormControl('open', [Validators.required]),
-      startDate: new FormControl(null, [Validators.required]),
-      endDate: new FormControl(),
-      mentors: new FormControl(),
-      users: new FormControl(),
-      enrollmentEndDate: new FormControl(),
-      issueCertificate: new FormControl(null, [Validators.required]),
-      tncCheck: new FormControl(false, [Validators.requiredTrue]),
-      enableDiscussions: new FormControl('false', [Validators.required])
+    this.createBatchForm = new UntypedFormGroup({
+      name: new UntypedFormControl('', [Validators.required]),
+      description: new UntypedFormControl(''),
+      enrollmentType: new UntypedFormControl('open', [Validators.required]),
+      startDate: new UntypedFormControl(null, [Validators.required]),
+      endDate: new UntypedFormControl(),
+      mentors: new UntypedFormControl(),
+      users: new UntypedFormControl(),
+      enrollmentEndDate: new UntypedFormControl(),
+      issueCertificate: new UntypedFormControl(null, [Validators.required]),
+      tncCheck: new UntypedFormControl(false, [Validators.requiredTrue]),
+      enableDiscussions: new UntypedFormControl('false', [Validators.required])
     });
   }
   private sortUsers(res) {

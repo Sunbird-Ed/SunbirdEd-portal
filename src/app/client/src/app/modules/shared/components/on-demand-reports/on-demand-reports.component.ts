@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {ResourceService, ToasterService} from '../../services';
 import {OnDemandReportService} from '../../services/on-demand-report/on-demand-report.service';
 import * as _ from 'lodash-es';
-import {Validators, FormControl, FormGroup} from '@angular/forms';
+import {Validators, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {TelemetryService} from '@sunbird/telemetry';
 
 @Component({
@@ -28,7 +28,7 @@ export class OnDemandReportsComponent implements OnInit {
   public isDownloadReport = false;
   public fileName = '';
   public selectedReport;
-  public reportForm: FormGroup;
+  public reportForm: UntypedFormGroup;
   // public password = new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')]);
   public message = 'There is no data available';
   public isProcessed = false;
@@ -42,9 +42,9 @@ export class OnDemandReportsComponent implements OnInit {
 
   constructor(public resourceService: ResourceService, public telemetryService: TelemetryService,
     public onDemandReportService: OnDemandReportService, public toasterService: ToasterService) {
-      this.reportForm = new FormGroup({
-        reportType: new FormControl('', [Validators.required]),
-        password : new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
+      this.reportForm = new UntypedFormGroup({
+        reportType: new UntypedFormControl('', [Validators.required]),
+        password : new UntypedFormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
       });
   }
 

@@ -65,7 +65,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/assets/styles/"
+                "src/assets/styles/",
+                "./node_modules"
               ]
             },
             "scripts": [
@@ -240,7 +241,6 @@
       }
     }
   },
-  "defaultProject": "src",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

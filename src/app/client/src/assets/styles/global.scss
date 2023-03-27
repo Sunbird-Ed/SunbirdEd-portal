@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
-@use "~@project-sunbird/sb-styles/assets/varIndex"as *;
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins"as *;
+@use "@project-sunbird/sb-styles/assets/varIndex"as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
 
 @include mat.core();

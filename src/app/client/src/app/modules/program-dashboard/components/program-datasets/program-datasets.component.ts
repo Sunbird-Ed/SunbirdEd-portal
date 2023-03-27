@@ -5,7 +5,7 @@ import { Subject, Subscription, throwError ,Observable, of} from 'rxjs';
 import { KendraService, UserService, FormService } from '@sunbird/core';
 import { mergeMap, switchMap, takeUntil,map, catchError } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
 import { ReportService } from '../../../dashboard/services';
@@ -65,18 +65,18 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   isColumnsSearchable = false;
   tag: string;
 
-  reportForm = new FormGroup({
-    programName: new FormControl('', [Validators.required]),
-    solution: new FormControl('', [Validators.required]),
-    reportType: new FormControl('', [Validators.required]),
-    districtName: new FormControl(),
-    organisationName: new FormControl(),
-    startDate: new FormControl(),
-    endDate: new FormControl()
+  reportForm = new UntypedFormGroup({
+    programName: new UntypedFormControl('', [Validators.required]),
+    solution: new UntypedFormControl('', [Validators.required]),
+    reportType: new UntypedFormControl('', [Validators.required]),
+    districtName: new UntypedFormControl(),
+    organisationName: new UntypedFormControl(),
+    startDate: new UntypedFormControl(),
+    endDate: new UntypedFormControl()
   });
 
-  passwordForm = new FormGroup({
-    password: new FormControl('', [Validators.minLength(8), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
+  passwordForm = new UntypedFormGroup({
+    password: new UntypedFormControl('', [Validators.minLength(8), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
   });
   programSelected: any;
   solutionSelected: any;

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import {
   ResourceService, ConfigService, ToasterService, ServerResponse, Framework,
   ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
@@ -53,7 +53,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   /**
  * userForm name creation
  */
-  public creationForm: FormGroup;
+  public creationForm: UntypedFormGroup;
   /**
 * Contains config service reference
 */

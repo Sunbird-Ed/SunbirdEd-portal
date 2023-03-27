@@ -3,7 +3,7 @@ import { Subject, combineLatest } from 'rxjs';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
@@ -60,7 +60,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * form group for batchAddUserForm
   */
-  public batchUpdateForm: FormGroup;
+  public batchUpdateForm: UntypedFormGroup;
   /**
   * To navigate to other pages
   */
@@ -190,15 +190,15 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
     }
-    this.batchUpdateForm = new FormGroup({
-      name: new FormControl(this.batchDetails.name, [Validators.required]),
-      description: new FormControl(this.batchDetails.description),
-      enrollmentType: new FormControl(this.batchDetails.enrollmentType, [Validators.required]),
-      startDate: new FormControl(new Date(this.batchDetails.startDate), [Validators.required]),
-      endDate: new FormControl(endDate),
-      mentors: new FormControl(),
-      users: new FormControl(),
-      enrollmentEndDate: new FormControl(enrollmentEndDate)
+    this.batchUpdateForm = new UntypedFormGroup({
+      name: new UntypedFormControl(this.batchDetails.name, [Validators.required]),
+      description: new UntypedFormControl(this.batchDetails.description),
+      enrollmentType: new UntypedFormControl(this.batchDetails.enrollmentType, [Validators.required]),
+      startDate: new UntypedFormControl(new Date(this.batchDetails.startDate), [Validators.required]),
+      endDate: new UntypedFormControl(endDate),
+      mentors: new UntypedFormControl(),
+      users: new UntypedFormControl(),
+      enrollmentEndDate: new UntypedFormControl(enrollmentEndDate)
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
       if (this.batchUpdateForm.status === 'VALID') {

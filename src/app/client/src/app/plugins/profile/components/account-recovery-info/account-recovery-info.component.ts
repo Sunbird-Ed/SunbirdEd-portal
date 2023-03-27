@@ -1,6 +1,6 @@
 import { UserService, OtpService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
@@ -18,7 +18,7 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   /** to take the mode of operaion (edit or add of recovery id) from profile page */
   @Input() mode: string;
   @Input() userProfile: any;
-  accountRecoveryForm: FormGroup;
+  accountRecoveryForm: UntypedFormGroup;
   enableSubmitButton = false;
 
   /** to store the type of contact (email or phone) */
@@ -52,12 +52,12 @@ export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   /** to initialize form fields */
   initializeFormFields() {
     if (this.contactType === 'emailId') {
-      this.accountRecoveryForm = new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
+      this.accountRecoveryForm = new UntypedFormGroup({
+        email: new UntypedFormControl('', [Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
       });
     } else if (this.contactType === 'phoneNo') {
-      this.accountRecoveryForm = new FormGroup({
-        phone: new FormControl('', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
+      this.accountRecoveryForm = new UntypedFormGroup({
+        phone: new UntypedFormControl('', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
       });
     }
     this.handleSubmitButton();

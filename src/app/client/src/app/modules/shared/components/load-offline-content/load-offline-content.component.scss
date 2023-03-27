@@ -1,4 +1,4 @@
-@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .load-content-section{
     border-radius: calculateRem(24px);
     background-color: var(--sbt-filter-bar-bg);
