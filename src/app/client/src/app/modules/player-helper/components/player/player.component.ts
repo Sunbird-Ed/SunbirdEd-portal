@@ -72,6 +72,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
+
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
     this.closeContentFullScreen();
