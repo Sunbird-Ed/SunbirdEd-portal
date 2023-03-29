@@ -64,4 +64,25 @@
       margin-top: calculateRem(15px);
   }
 
+.goback{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    width: 100%;
+    margin: 0.7rem 0;
+    cursor: pointer;
+    color: var(--ck-color-button-cancel);
+}
+
+
+::ng-deep{
+  mat-ink-bar.mat-ink-bar {
+    display: none !important;
+  }
+
+  .mat-tab-label-active {
+    border-bottom: 2px solid var(--primary-color) !important;
+  }
+} 
+
   

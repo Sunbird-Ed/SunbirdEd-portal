@@ -1361,7 +1361,16 @@
     debug "^4.1.0"
     globals "^11.1.0"
 
-"@babel/types@^7.0.0", "@babel/types@^7.16.7", "@babel/types@^7.16.8", "@babel/types@^7.17.0", "@babel/types@^7.18.6", "@babel/types@^7.18.9", "@babel/types@^7.20.0", "@babel/types@^7.20.2", "@babel/types@^7.20.5", "@babel/types@^7.20.7", "@babel/types@^7.21.0", "@babel/types@^7.21.2", "@babel/types@^7.21.3", "@babel/types@^7.3.0", "@babel/types@^7.3.3", "@babel/types@^7.4.4":
+"@babel/types@^7.0.0", "@babel/types@^7.16.7", "@babel/types@^7.16.8", "@babel/types@^7.17.0", "@babel/types@^7.18.6", "@babel/types@^7.18.9", "@babel/types@^7.20.0", "@babel/types@^7.20.2", "@babel/types@^7.20.5", "@babel/types@^7.20.7", "@babel/types@^7.21.0", "@babel/types@^7.3.0", "@babel/types@^7.3.3", "@babel/types@^7.4.4":
+  version "7.21.2"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.21.2.tgz#92246f6e00f91755893c2876ad653db70c8310d1"
+  integrity sha512-3wRZSs7jiFaB8AjxiiD+VqN5DTG2iRvJGQ+qYFrs/654lg6kGTQWIOFjlBo5RaXuAZjBmP3+OQH4dmhqiiyYxw==
+  dependencies:
+    "@babel/helper-string-parser" "^7.19.4"
+    "@babel/helper-validator-identifier" "^7.19.1"
+    to-fast-properties "^2.0.0"
+
+"@babel/types@^7.21.2", "@babel/types@^7.21.3":
   version "7.21.3"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.21.3.tgz#4865a5357ce40f64e3400b0f3b737dc6d4f64d05"
   integrity sha512-sBGdETxC+/M4o/zKC0sl6sjWv62WFR/uzxrJ6uYyMLZOUlPnwzw0tKgVHOXxaAd5l2g8pEDM5RZ495GPQI77kg==
@@ -2171,10 +2180,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@project-sunbird/chatbot-client@3.0.5":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client/-/chatbot-client-3.0.5.tgz#a4fff894f1c4526a24460d4514703fd336ae2c14"
-  integrity sha512-h7V/h+2g393li02M5atqMux1ucgwLsvxLEDHyIH64BWeJg3rr1b4LmnPpbwuqPKW+zrcAAgl6G8wYys1e9ZQ5Q==
+"@project-sunbird/chatbot-client@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client/-/chatbot-client-4.0.0.tgz#13cb3afab11c595d66df9c33414375e9550f1b2e"
+  integrity sha512-1rog9xXHkQZG/SiRDR9LfcXYcAvgiw1sooa01PNuP5DpAkLyDPnfKOpHmg5ngEhXHvLBTTNBnKlaxpkFKx11gg==
   dependencies:
     tslib "^2.0.0"
 
@@ -2219,26 +2228,33 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-5.1.0.tgz#a9031629803e66e74ec3626fa7a10e3cc1c68b8d"
-  integrity sha512-sr6NvcWnlT5ppaUHO9z2GEdKm7kCLZP4GPV9nEmjH0v969gbxtkC0WfIsNgDqzDMmdBTaKXC19NBoAsYa7zmwg==
+"@project-sunbird/common-consumption@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-6.0.0.tgz#8ec0154453ebbcee68ec526683bcc4d00b9cc67e"
+  integrity sha512-qjF4VzUGi0J5jYNtKxOz9w3EmE0PcvZrgd3T5e0EBXeJQmwxGLtlVlcrmgxcsagGV/kZVSn7osdQWJlKpHxx5w==
   dependencies:
-    tslib "^2.2.0"
+    tslib "^2.3.0"
 
-"@project-sunbird/common-form-elements@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements/-/common-form-elements-5.1.2.tgz#a8cc507ea09ffbb8ad9f52b441b9cada03b1e94e"
-  integrity sha512-B/U3B4o0MhU0PPEBJtT5eAG5TjDVge973A16UjWuIL+cB8KiECSx7egQyuTZNGapEpbb+Na3DJeZ1jdBmt0/7Q==
+"@project-sunbird/common-form-elements-full@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements-full/-/common-form-elements-full-6.0.0.tgz#1126aee9a481a8e98fa97e41e3922b709d815a4d"
+  integrity sha512-83dkBR0BoTHGWIZz93VOOQg4UlCGy6O2xMQFtsomtIISe+M23nvnSRvsm7z+BGVg+HuYujn5MhZ0g9XRmJTpkg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
     tslib "^2.0.0"
 
-"@project-sunbird/sb-notification@5.0.9":
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-5.0.9.tgz#9584bfaf0161cb0a9e80f2914345ccdc4d4dcdc7"
-  integrity sha512-bDLuA2XAEjCbrP1o5LoUOjHJYX7jhT5TSK+szCek6lPazjnapeYNtMyhggp0YZ47s0g5ZEhDMKZp/PvxblMGRw==
+"@project-sunbird/sb-content-section@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-content-section/-/sb-content-section-6.0.0.tgz#1100c2b9fd2735faacb44cf6de9e1f8ce3cc4606"
+  integrity sha512-DmUhDk6wfvqyGIFF95rVcuPiTElycyUO3tqp45QPkUnVkh2HXdri77cbmt8pXXg/S9y5APZ5TR4ajwcxof67+Q==
+  dependencies:
+    tslib "^2.0.0"
+
+"@project-sunbird/sb-notification@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-6.0.0.tgz#6be4204ff190d526a6b1dad18f3293ccdf2505cd"
+  integrity sha512-uj6oNn5jXkZYp2eU4+tLR0eCHxfAhnSOnLq6uWyfaMfP/xb5Xb/8vw9XUvQuzlwc3XhCAst78Y6CN50rHv/gHg==
   dependencies:
     tslib "^2.0.0"
 
@@ -2290,20 +2306,20 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-quml-player@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-5.1.1.tgz#e6f4706e449fd9083345b6be29ae668bae67a11c"
-  integrity sha512-DVtGG0xE6GH9Gkt8WigMyZ/tUGXNS+da4m9BRikHu2oD0N/IAH3y4CRwPYYGU0AKeu9V2rjQeT+Dx9IEzsc4IA==
+"@project-sunbird/sunbird-quml-player@5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-5.3.0.tgz#c82285598511809c03c576e420cc6d2d70745dbf"
+  integrity sha512-UdkNqwRp5/Xf8b+m+dfNgtU6CafKruupbqm2GLEK+hm2P8nFEeCfuo4zrjARvjrsaZv/moifAQJYgbhpERUPRg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-resource-library@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.19.tgz#cc9b12dbbd4ab1bce7d136f29bc567d2ae6e9e2d"
-  integrity sha512-yn24LCq6PAoBrosdJFM0T+j19vopjpxKTkYUtSLZAbFhlYqeKLnZCaBNQNvnwen9A2E9i1fw5UPxfNGOAYhMcw==
+"@project-sunbird/sunbird-resource-library@5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-5.5.2.tgz#31f14e5272c827a3af68a442255b06787652328d"
+  integrity sha512-NpqN9euX1HqYTL9aUgei4IzoZBfwagYAkFilxTzbgYmvW/g1IoLD27YsS1fjRgJZoreU3ZBQQ1a+tUrajylQ3w==
   dependencies:
-    tslib "^1.10.0"
+    tslib "^2.0.0"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
@@ -2321,12 +2337,12 @@
     grunt-karma "^0.12.2"
     karma "^3.0.0"
 
-"@project-sunbird/web-extensions@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/web-extensions/-/web-extensions-0.0.2.tgz#d61cd382713ce7f6bb7cb205d65f120bf145c16a"
-  integrity sha512-XVT0gN/qFSv+mgCQQ3Db1m1IGd4ARsDvLx+63Evp/T91tYt8vMq/oBpDGH0pJkE2mpb7kLh+GDWNupmBBIxX/A==
+"@project-sunbird/web-extensions@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/web-extensions/-/web-extensions-6.0.0.tgz#717bb48fb36ad1afa14a90fca82f87e0a7aefea0"
+  integrity sha512-hT5mQLojABSPXFaafX0lKw73+6iO2p9l632UBGUgpcJvhf5GEIkATjmr5ohIIHt8hG5jUqaXIzPU+//iSwNV1w==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.0.0"
 
 "@schematics/angular@13.3.11":
   version "13.3.11"
@@ -4837,13 +4853,6 @@ content-disposition@0.5.4:
   dependencies:
     safe-buffer "5.2.1"
 
-content-section-v13@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/content-section-v13/-/content-section-v13-2.0.0.tgz#46b9ece4bc3c9e502fc04065ad45dda3b26dc80f"
-  integrity sha512-ekTI+PscOGLeoTsglHyYLSsav6YtJ4zq1hg+qysU7XKKA68EjRCzsUBCGsLat/v7Z7CMEFowCotUv1xrNNIGSw==
-  dependencies:
-    tslib "^2.0.0"
-
 content-type@~1.0.4, content-type@~1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/content-type/-/content-type-1.0.5.tgz#8b773162656d1d1086784c8f23a54ce6d73d7918"
@@ -6501,7 +6510,7 @@ figures@^3.0.0:
   dependencies:
     escape-string-regexp "^1.0.5"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -13429,9 +13438,9 @@ terser@5.14.2:
     source-map-support "~0.5.20"
 
 terser@^5.16.5:
-  version "5.16.8"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.16.8.tgz#ccde583dabe71df3f4ed02b65eb6532e0fae15d5"
-  integrity sha512-QI5g1E/ef7d+PsDifb+a6nnVgC4F22Bg6T0xrBrz6iloVB4PUkkunp6V8nzoOOZJIzjWVdAGqCdlKlhLq/TbIA==
+  version "5.16.6"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.16.6.tgz#f6c7a14a378ee0630fbe3ac8d1f41b4681109533"
+  integrity sha512-IBZ+ZQIA9sMaXmRZCUMDjNH0D5AQQfdn4WUjHL0+1lF4TP1IHRJbrhb6fNaXWikrYQTSkb7SLxkeXAiy1p7mbg==
   dependencies:
     "@jridgewell/source-map" "^0.3.2"
     acorn "^8.5.0"

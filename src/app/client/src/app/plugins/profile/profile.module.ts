@@ -18,7 +18,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
 import { CertificateDirectivesModule } from 'sb-svg2pdf-v13';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
-import { CommonFormElementsModule } from '@project-sunbird/common-form-elements';
+import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import {LocationModule} from '../location';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -55,7 +55,7 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
     CertificateDirectivesModule,
     CommonFormElementsModule,
     LocationModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
    AccountRecoveryInfoComponent,

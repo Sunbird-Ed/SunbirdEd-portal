@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
-import { IFacetFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements';
+import { IFacetFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements-full';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 
 @Component({

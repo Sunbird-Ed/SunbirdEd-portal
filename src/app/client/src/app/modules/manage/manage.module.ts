@@ -29,7 +29,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     FormsModule,
     ReactiveFormsModule,
     ManageRoutingModule,
-    CommonConsumptionModule,
+    CommonConsumptionModule
   ],
   providers: [
     ResourceService,

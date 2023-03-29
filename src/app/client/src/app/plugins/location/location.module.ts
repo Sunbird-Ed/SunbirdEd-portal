@@ -7,7 +7,7 @@ import { SharedModule } from '../../modules/shared/shared.module';
 import { TelemetryModule } from '../../modules/telemetry/telemetry.module';
 
 import { LocationSelectionComponent } from './components/location-selection/location-selection.component';
-import { CommonFormElementsModule } from '@project-sunbird/common-form-elements';
+import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 
 @NgModule({
   declarations: [
