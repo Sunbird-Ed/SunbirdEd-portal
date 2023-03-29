@@ -14,17 +14,16 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-// import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
-// import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
-// import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
-// import { QumlPlayerService } from './service/quml-player/quml-player.service';
-// import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
+import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
+import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
+import { QumlPlayerService } from './service/quml-player/quml-player.service';
+import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 
 
 
 @NgModule({
   providers: [
-    // { provide: QuestionCursor, useExisting: QumlPlayerService },
+    { provide: QuestionCursor, useExisting: QumlPlayerService },
   ],
   imports: [
     CommonModule,
@@ -34,10 +33,9 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     CoreModule,
     FormsModule,
     CommonConsumptionModule,
-    // SunbirdPdfPlayerModule,
-    // SunbirdVideoPlayerModule,
-    // SunbirdEpubPlayerModule,
-  //  QumlLibraryModule
+    SunbirdPdfPlayerModule,
+    SunbirdEpubPlayerModule,
+   QumlLibraryModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
