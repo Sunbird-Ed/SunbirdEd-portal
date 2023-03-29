@@ -67,6 +67,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   showQumlPlayer = false;
   contentId: string;
   collectionId:string;
+
   /**
  * Dom element reference of contentRatingModal
  */
@@ -255,7 +256,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
           this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
           this.showQumlPlayer = true;
-
         }, (error) => {
           this.showQumlPlayer = true;
         });
