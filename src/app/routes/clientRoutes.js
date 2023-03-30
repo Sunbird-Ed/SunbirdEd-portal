@@ -156,6 +156,10 @@ function getLocals(req) {
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
     locals.userSid = _.get(req, 'session.userSid') || locals.sessionId || null;
+  } else {
+    locals.userId = null
+    locals.sessionId = null
+    locals.userSid = null;
   }
   locals.userName = _.get(req, 'session.userName') || null;
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
@@ -253,7 +257,7 @@ const renderDefaultIndexPage = (req, res) => {
       res.locals.cdnWorking = 'no';
       console.log("---",getLocals(req))
 
-      res.render(path.join(__dirname, '../dist', 'index.ejs'),getLocals(req))
+      res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }
   }
 }
