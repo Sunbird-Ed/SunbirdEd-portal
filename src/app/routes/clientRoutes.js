@@ -190,7 +190,7 @@ function getLocals(req) {
   locals.offlineDesktopAppDownloadUrl = envHelper.SUNBIRD_PORTAL_BASE_URL
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
   locals.slugForProminentFilter = envHelper.sunbird_portal_slugForProminentFilter,
-  locals.deviceId = '';
+  locals.deviceId = '095a7a954e9d012a34a9abed63b6dc44';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   locals.slug = slug ? slug : '';
   locals.collectionEditorURL = envHelper.CONTENT_EDITORS_URL.COLLECTION_EDITOR;
@@ -205,7 +205,7 @@ function getLocals(req) {
   locals.sunbirdQuestionSetChildrenLimit = envHelper.sunbird_questionset_children_limit,
   locals.sunbirdCollectionChildrenLimit =  envHelper.sunbird_collection_children_limit,
   locals.sunbirdNavAccessibility = envHelper.sunbird_portal_nav_accessibility,
-  locals.enableSSO = envHelper.sunbird_enable_sso;
+  locals.enableSSO = envHelper.sunbird_enable_sso||'';
   locals.reportsListVersion = envHelper.reportsListVersion;
   locals.sunbirdDefaultFileSize = envHelper.SUNBIRD_DEFAULT_FILE_SIZE;
   locals.baseUrl = null;
@@ -255,6 +255,8 @@ const renderDefaultIndexPage = (req, res) => {
       }})
       }
       res.locals.cdnWorking = 'no';
+      console.log("---",getLocals(req))
+
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }
   }
