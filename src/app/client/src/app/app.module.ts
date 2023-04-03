@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
@@ -64,7 +64,8 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
         DeviceDetectorService,
         { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
         { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
-    ]
+    ],
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {
