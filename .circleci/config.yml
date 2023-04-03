@@ -13,6 +13,7 @@ jobs:
     machine:
       # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
       image: ubuntu-2004:202111-02
+      resource_class: large
     steps:
       - checkout:
           path: ~/portal
