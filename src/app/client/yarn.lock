@@ -2275,14 +2275,6 @@
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
-"@project-sunbird/sunbird-epub-player-v9@5.2.1":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-5.2.1.tgz#f15e1a705a1bfb101edaf1f4458b8e71566658c8"
-  integrity sha512-hWF04dKXIWWueFsSyUXePhIt6JHHf2aNqeWnoZ0uA9G3yJTpVqWMuFZV0sqcDx02YinE1o676ZnhToolb2FX2g==
-  dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
-    tslib "^2.0.0"
-
 "@project-sunbird/sunbird-pdf-player-v9@5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-5.1.1.tgz#baf65ffda1a2d5b48021449fddf5696ea21e3565"
