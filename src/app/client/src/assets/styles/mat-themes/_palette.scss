@@ -1,6 +1,15 @@
 @use "sass:map";
 @use "~@angular/material" as mat;
 @use './fonts' as * ;
+
+$indigo-palette: (
+  100: #e6e9fb,
+  200: #d9ddf0,
+);
+$deep-purple-palette: (
+  100: #f0e9fb,
+  200: #e3dbee,
+);
 $sb-mat-joy-accent: (
   50: #e1eaf3,
   100: #b3cae2,
@@ -33,10 +42,10 @@ $sb-mat-joy-accent: (
     A700: #ffffff,
   ),
 );
-$sb-mat-joy: (
-  50: #fffaea,
-  100: #fff4cc,
-  200: #ffecaa,
+$sb-mat-joy-primary: (
+  50: #fffaea, 
+  100: #e9e8d9, // #fff4cc,
+  200: #f3f3e5, //#ffecaa,
   300: #ffe487,
   400: #ffdf6e,
   500: #ffd954,
@@ -200,7 +209,7 @@ $app-themes: (
       ),
   ),
   joy: (
-    primary-base: $sb-mat-joy,
+    primary-base: $sb-mat-joy-primary,
     accent-base: $sb-mat-joy-accent,
     is-dark: false,
     foreground: mat.$light-theme-foreground-palette,
