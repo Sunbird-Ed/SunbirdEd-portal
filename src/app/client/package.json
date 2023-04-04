@@ -113,6 +113,7 @@
     "marked": "1.1.1",
     "md5": "2.2.1",
     "ng-recaptcha": "^9.0.0",
+    "@derekbaker/ngx-ace-editor-wrapper": "12.2.16",
     "ng2-charts": "2.4.2",
     "ng2-semantic-ui-v9": "0.0.6",
     "ngx-bootstrap": "^8.0.0",
