@@ -107,7 +107,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         switchMap(queryParams => {
           this.filterChange.emit({ status: 'FETCHING' });
           let boardName = _.get(queryParams, 'board[0]') || _.get(this.boards, '[0]');
-          boardName = boardName === 'CBSE/NCERT' ? 'CBSE' : boardName;
           return zip(this.getFramework({ boardName }), this.getAudienceTypeFormConfig())
             .pipe(map(([filters, audienceTypeFilter]: [object, object]) => ({ ...filters, audience: audienceTypeFilter })));
         })
@@ -207,7 +206,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       const selectedOption = _.find(this.boards, { name: _.get(this.queryFilters, 'board[0]') }) ||
         _.find(this.boards, { name: _.get(this.defaultFilters, 'board[0]') }) || this.boards[0];
       this.selectedBoard = { label: this.optionLabel.Board, value: 'board', selectedOption: _.get(selectedOption, 'name') };
-      this.selectedBoard.selectedOption = this.selectedBoard.selectedOption === 'CBSE' ? 'CBSE/NCERT' : this.selectedBoard.selectedOption;
       this.selectedOption = this.selectedBoard;
     }
   }
@@ -248,11 +246,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.selectedNgModels = {};
     this.allValues = {};
     _.forEach(filters, (filterValues: { name: any }[], filterKey: string) => {
-      if (filterKey === 'board') {
-        const boardName = filterValues.find((board) => board.name === 'CBSE');
-        boardName && (boardName.name = 'CBSE/NCERT');
-      }
-      const values = this.allValues[filterKey] = _.map(filterValues, 'name');
+     const values = this.allValues[filterKey] = _.map(filterValues, 'name');
       if (_.get(values, 'length')) {
         let selectedIndices;
         const filterValuesFromQueryParams = this.queryFilters[filterKey] || [];
