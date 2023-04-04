@@ -2275,6 +2275,21 @@
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
+"@project-sunbird/sunbird-collection-editor@5.4.3":
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.4.3.tgz#4ae139254611ddf8c4c195b037e03bbc2f681bb8"
+  integrity sha512-ob/hIf8QqrFIGPtCsmzE22IsR1LTUxFEaaoRM6Gr8wJgzTkgY2n9EgOHzgGTlivbbiL0dvJFih/u/I7D0mLPsg==
+  dependencies:
+    tslib "^2.0.0"
+
+"@project-sunbird/sunbird-epub-player-v9@5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-5.2.1.tgz#f15e1a705a1bfb101edaf1f4458b8e71566658c8"
+  integrity sha512-hWF04dKXIWWueFsSyUXePhIt6JHHf2aNqeWnoZ0uA9G3yJTpVqWMuFZV0sqcDx02YinE1o676ZnhToolb2FX2g==
+  dependencies:
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    tslib "^2.0.0"
+
 "@project-sunbird/sunbird-pdf-player-v9@5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-5.1.1.tgz#baf65ffda1a2d5b48021449fddf5696ea21e3565"
@@ -2313,6 +2328,14 @@
   dependencies:
     tslib "^2.0.0"
 
+"@project-sunbird/sunbird-video-player-v9@5.2.3":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.2.3.tgz#aa0cdcd5f19118464b7d0492ee763f3d3d363ee1"
+  integrity sha512-s6yaRB2Pq6g4wPPpUcnk55YYP7eyHUNEMt43TywbjOre1rZO199lg/MIBs9HW7ROnblWbp4lt3fZPtlkRBqlsw==
+  dependencies:
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    tslib "^2.0.0"
+
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
   resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
@@ -2335,6 +2358,11 @@
   integrity sha512-hT5mQLojABSPXFaafX0lKw73+6iO2p9l632UBGUgpcJvhf5GEIkATjmr5ohIIHt8hG5jUqaXIzPU+//iSwNV1w==
   dependencies:
     tslib "^2.0.0"
+
+"@scarf/scarf@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-0.1.5.tgz#fc4cc88294eca336eed9a91549180346de5e6946"
+  integrity sha512-Fx6atDc7JM1r0WkPCDhNetVZNp+DO21q/HGlomAKBG+k8vb1B8fg8Yige4oCf1P9OWTZWm5tM5i3jlXhrSbNOg==
 
 "@schematics/angular@13.3.11":
   version "13.3.11"
@@ -10253,6 +10281,14 @@ ngx-filesize@2.0.16:
   dependencies:
     filesize ">= 4.0.0"
     tslib "^2.0.0"
+
+ngx-infinite-scroll@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-8.0.2.tgz#ab527962f179b00f7b57c37cc0c8aba1bf88b131"
+  integrity sha512-+r748h8CAs0AZQXQw4eIE0bBH2xF+kBcqhJ/q3VG4f6p0qH+4XyhUlPkm3UGMke2Xe00V+RuWbolqmP7DoOGdw==
+  dependencies:
+    "@scarf/scarf" "0.1.5"
+    opencollective-postinstall "^2.0.2"
 
 nice-napi@^1.0.2:
   version "1.0.2"
