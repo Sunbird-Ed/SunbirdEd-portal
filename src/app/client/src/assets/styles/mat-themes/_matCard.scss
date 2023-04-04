@@ -253,22 +253,24 @@
 .pink-bluegrey {
   $mat-card-palette: mat.define-palette(mat.$deep-purple-palette);
   .mat-card {
-    .mat-card-header{
-      flex-direction: column;
-      align-items: center;
+    .mat-card-content{
+      padding-top: 0.5rem;
+      margin: 0;
+    }
+    .mb-32{
+      margin: 0 !important;
     }
     .mat-card-banner-img, .sb--card-svg-tail{
       display: none;
     }
     .mat-card-avatar{
-      border-radius: 50%;
+      border-radius: 0;
       overflow: hidden;
       border: 0;
       height: 4rem;
       width: 4rem;
     }
     .mat-card-header-text{
-      text-align: center;
       margin-top: 0.5rem;
     }
     .mat-card-subtitle{
@@ -287,18 +289,9 @@
       text-overflow: ellipsis;
       max-width: 7.5rem;
     }
-    .mat-chip.mat-standard-chip {
-      &:nth-child(1){
-        background: var(--cc-sbcard-data1-bg);
-        color: var(--cc-sbcard-data1-bg-active);
-      }
-      &:nth-child(2){
-        background: var(--cc-sbcard-data2-bg);
-        color: var(--cc-sbcard-data2-bg-active);
-      }
-    }
     .mat-card__type {
       right: 0;
+      bottom: 1rem;
       &::before{
         transform: rotatey(0) !important;
         content: "";
@@ -306,6 +299,8 @@
       }
     }
   }
+
+
 }
 
 .purple-green, .deeppurple-amber {
@@ -441,5 +436,58 @@
 }
 
 .green-grey {
-
+  .mat-card {
+    .mat-card-header{
+      flex-direction: column;
+      align-items: center;
+    }
+    .mat-card-banner-img, .sb--card-svg-tail{
+      display: none;
+    }
+    .mat-card-avatar{
+      border-radius: 50%;
+      overflow: hidden;
+      border: 0;
+      height: 4rem;
+      width: 4rem;
+    }
+    .mat-card-header-text{
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+    .mat-card-subtitle{
+      margin-bottom: 4px;
+    }
+    .mat-standard-chip{
+      border-radius: 0;
+      min-height: 24px;
+      padding: 5px 10px;
+    }
+    .mat-chip{
+      min-height: 1.25rem;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 7.5rem;
+    }
+    .mat-chip.mat-standard-chip {
+      &:nth-child(1){
+        background: var(--cc-sbcard-data1-bg);
+        color: var(--cc-sbcard-data1-bg-active);
+      }
+      &:nth-child(2){
+        background: var(--cc-sbcard-data2-bg);
+        color: var(--cc-sbcard-data2-bg-active);
+      }
+    }
+    .mat-card__type {
+      right: 0;
+      &::before{
+        transform: rotatey(0) !important;
+        content: "";
+        left: -10px !important;
+      }
+    }
+  }
 }
