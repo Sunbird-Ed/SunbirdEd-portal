@@ -2275,6 +2275,13 @@
   dependencies:
     "@project-sunbird/sb-styles" "0.0.14"
 
+"@project-sunbird/sunbird-collection-editor@5.4.3":
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-5.4.3.tgz#4ae139254611ddf8c4c195b037e03bbc2f681bb8"
+  integrity sha512-ob/hIf8QqrFIGPtCsmzE22IsR1LTUxFEaaoRM6Gr8wJgzTkgY2n9EgOHzgGTlivbbiL0dvJFih/u/I7D0mLPsg==
+  dependencies:
+    tslib "^2.0.0"
+
 "@project-sunbird/sunbird-epub-player-v9@5.2.1":
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-5.2.1.tgz#f15e1a705a1bfb101edaf1f4458b8e71566658c8"
@@ -10261,6 +10268,14 @@ ngx-filesize@2.0.16:
   dependencies:
     filesize ">= 4.0.0"
     tslib "^2.0.0"
+
+ngx-infinite-scroll@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-8.0.2.tgz#ab527962f179b00f7b57c37cc0c8aba1bf88b131"
+  integrity sha512-+r748h8CAs0AZQXQw4eIE0bBH2xF+kBcqhJ/q3VG4f6p0qH+4XyhUlPkm3UGMke2Xe00V+RuWbolqmP7DoOGdw==
+  dependencies:
+    "@scarf/scarf" "0.1.5"
+    opencollective-postinstall "^2.0.2"
 
 nice-napi@^1.0.2:
   version "1.0.2"
