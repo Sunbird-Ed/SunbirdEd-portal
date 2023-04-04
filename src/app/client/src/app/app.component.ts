@@ -64,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		const cssClass = darkness === true ? theme + THEME_DARKNESS_SUFFIX : theme;
 		
 		const classList = this.overlayContainer.getContainerElement().classList;
+    document.documentElement.setAttribute('class', theme);
     console.log('theme ' + classList);
 		if (classList.contains(this.activeThemeCssClass))
 			classList.replace(this.activeThemeCssClass, cssClass);

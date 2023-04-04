@@ -6,7 +6,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
   .accessibility-toolbar-theme {
-    $primary: mat.define-palette(cmat.$sb-mat-grey, 900);  //
+    $primary: mat.define-palette(cmat.$sb-mat-grey, 800);  //
     $accent: mat.define-palette(cmat.$sb-mat-grey);
     $warn: mat.define-palette(cmat.$sb-mat-grey);
     $accessibility-toolbar-theme: mat.define-light-theme($primary, $accent, $warn);

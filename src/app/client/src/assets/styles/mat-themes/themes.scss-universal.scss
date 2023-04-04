@@ -1,14 +1,14 @@
 @use "~@angular/material" as mat;
 @use "sass:map";
-// @forward './matSidebar';
-@forward './accessbilityBar';
+
+// @import './accessbilityBar';
 @import './matCard';
 @import './matSidebar';
 @import './matExpansionPanel';
 @import './darkBgTheme';
 @import './modal';
 @import './customBtnColor';
-
+@import "./fontSizeRem";
 
 // Define a custom mixin that takes in the current theme
 @mixin theme-color-grabber($theme) {

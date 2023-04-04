@@ -79,18 +79,35 @@
               <mat-icon class="auto-flip">format_color_fill</mat-icon>
             </button>
 
-            <mat-menu #themeMenu="matMenu">
-              <mat-checkbox [checked]="isThemeDark" (click)="$event.stopPropagation()" (change)="toggleDarkness()"
+            <mat-menu #themeMenu="matMenu" class="themeMenuDropdown">
+              <!-- <mat-checkbox [checked]="isThemeDark" (click)="$event.stopPropagation()" (change)="toggleDarkness()"
                 class="mat-menu-item theme-selector-is-dark" i18n="@@Dark">Dark
-              </mat-checkbox>
+              </mat-checkbox> -->
 
-              <mat-list>
-                <mat-list-item *ngFor="let theme of themes; let i = index"
-                  (click)="$event.stopPropagation(); setMatTheme(theme)">
-                  <span matListItemTitle>{{ theme }}</span>
-                  <mat-icon *ngIf="activeTheme === theme" class="center theme-check">check</mat-icon>
-                </mat-list-item>
-              </mat-list>
+              <button mat-menu-item *ngFor="let theme of themes; let i = index"
+              (click)="$event.stopPropagation(); setMatTheme(theme)" class="d-flex flex-ai-center flex-jc-space-between">
+              <div><mat-icon *ngIf="activeTheme === theme" class="center theme-check">radio_button_checked</mat-icon>
+              <mat-icon *ngIf="activeTheme != theme" class="center theme-check">radio_button_unchecked</mat-icon>
+              <span>{{ theme }}</span></div>
+              <mat-icon role="img" svgicon="theme-example"
+                    class="mat-icon {{ theme }} ml-16 mr-0"
+                    aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="theme-example"><svg
+                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%"
+                      height="100%" viewBox="0 0 80 80" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                      <defs>
+                        <path
+                          d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                          id="a"></path>
+                        <path
+                          d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                          id="b"></path>
+                        <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                      </defs>
+                      <use xlink:href="#a" fill="#fff" class="docs-theme-icon-background"></use>
+                      <use xlink:href="#b" class="docs-theme-icon-button"></use>
+                      <use xlink:href="#c" class="docs-theme-icon-toolbar"></use>
+                    </svg></mat-icon>
+            </button>
 
               <!-- <a mat-list-item href="javascript:void(0)" *ngFor="let theme of themes; let i = index"
                               (click)="$event.stopPropagation(); setMatTheme(theme)">{{ theme }}

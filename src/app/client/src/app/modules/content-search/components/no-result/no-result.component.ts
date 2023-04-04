@@ -11,7 +11,7 @@ import {ThemePalette} from '@angular/material/core';
 @Component({
   selector: 'app-no-result-found',
   templateUrl: './no-result.component.html',
-  styleUrls: ['./no-result.component.scss']
+  styleUrls: ['./no-result.component.scss','./no-result.component.scss-theme.scss']
 })
 export class NoResultComponent implements OnInit {
   @Input() title: string;
