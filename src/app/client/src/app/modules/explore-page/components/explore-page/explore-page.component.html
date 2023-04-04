@@ -58,7 +58,7 @@
                     <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
                     </span>
                     <span *ngIf="userPreference?.framework?.board?.length"
-                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
+                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board)}}</span>
                   </span>
 
                   <span class="mr-24">

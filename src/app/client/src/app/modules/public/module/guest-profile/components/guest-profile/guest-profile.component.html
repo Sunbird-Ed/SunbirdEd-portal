@@ -87,8 +87,7 @@
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center">
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.board) | interpolate: 'CBSE':
-              'CBSE/NCERT'}}</span>
+            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.board)}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center">
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
@@ -114,8 +113,7 @@
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.board) |
-          interpolate:'CBSE':'CBSE/NCERT'}}</span>
+        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.board)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
         <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>

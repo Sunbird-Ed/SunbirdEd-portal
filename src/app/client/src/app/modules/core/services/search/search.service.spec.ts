@@ -156,7 +156,7 @@ describe('SearchService', () => {
       const facets = [{ name: 'board', values: [{ name: 'cbse' }] }];
       const lbl = undefined;
       const obj = searchService.updateFacetsData(facets);
-      expect(obj).toEqual([{ name: 'board', index: '2', label: lbl, placeholder: lbl, values: [{ name: 'CBSE/NCERT' }] }]);
+      expect(obj).toEqual([{ name: 'board', index: '2', label: lbl, placeholder: lbl, values: [{ name: 'CBSE' }] }]);
     });
 
     it('should call the updateFacetsData with facets value medium', () => {
