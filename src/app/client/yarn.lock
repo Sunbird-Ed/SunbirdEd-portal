@@ -2328,6 +2328,14 @@
   dependencies:
     tslib "^2.0.0"
 
+"@project-sunbird/sunbird-video-player-v9@5.2.3":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-5.2.3.tgz#aa0cdcd5f19118464b7d0492ee763f3d3d363ee1"
+  integrity sha512-s6yaRB2Pq6g4wPPpUcnk55YYP7eyHUNEMt43TywbjOre1rZO199lg/MIBs9HW7ROnblWbp4lt3fZPtlkRBqlsw==
+  dependencies:
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    tslib "^2.0.0"
+
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
   resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
@@ -2350,6 +2358,11 @@
   integrity sha512-hT5mQLojABSPXFaafX0lKw73+6iO2p9l632UBGUgpcJvhf5GEIkATjmr5ohIIHt8hG5jUqaXIzPU+//iSwNV1w==
   dependencies:
     tslib "^2.0.0"
+
+"@scarf/scarf@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-0.1.5.tgz#fc4cc88294eca336eed9a91549180346de5e6946"
+  integrity sha512-Fx6atDc7JM1r0WkPCDhNetVZNp+DO21q/HGlomAKBG+k8vb1B8fg8Yige4oCf1P9OWTZWm5tM5i3jlXhrSbNOg==
 
 "@schematics/angular@13.3.11":
   version "13.3.11"
