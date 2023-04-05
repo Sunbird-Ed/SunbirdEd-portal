@@ -38,6 +38,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-quml-player-v9/lib/assets/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
@@ -57,8 +62,6 @@
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css",
               "src/assets/sunbird-folder/sunbird-video-player/styles.css",
               "src/assets/sunbird-folder/sunbird-epub-player/styles.css"
-
-
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -82,7 +85,6 @@
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.min.js",
               "src/assets/sunbird-folder/sunbird-video-player/video-player.js",
               "src/assets/sunbird-folder/sunbird-epub-player/epub-player.js",
-
               {
                 "inject": false,
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
