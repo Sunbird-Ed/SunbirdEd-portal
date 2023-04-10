@@ -10,9 +10,15 @@
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
 
-  // all of these variables contain many additional variables
-  svg ellipse, svg path {
+  //all of these variables contain many additional variables
+  svg.no-results-svg path {
     fill:mat-color($accent);
   }
-
+  svg.no-results-svg ellipse {
+    fill:#333;
+  }
+  svg.no-results-svg g {
+    stroke:mat-color($accent);
+  }
+ 
 }

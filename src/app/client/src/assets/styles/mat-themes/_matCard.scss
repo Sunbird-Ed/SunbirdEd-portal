@@ -60,8 +60,8 @@
   $mat-card-palette: mat.define-palette(mat.$indigo-palette);
   .mat-card{
     display: flex;
-    background: mat.get-color-from-palette($mat-card-palette, 300) !important;
-    color: mat.get-color-from-palette($mat-card-palette, 300-contrast) !important;
+    // background: mat.get-color-from-palette($mat-card-palette, 300) !important;
+    // color: mat.get-color-from-palette($mat-card-palette, 300-contrast) !important;
     border-radius: 1rem;
     height: 12rem;
     box-shadow: 0.375rem 0.375rem 0.125rem 0 var(--sbt-box-shadow-black) !important;
@@ -152,16 +152,16 @@
     z-index: 2;
     overflow: hidden;
     position: relative;
-    border-radius: 16px;
+    border-radius: 1rem;
     box-shadow: var(--sbt-box-shadow-6px) !important;
-    background: #D1C4E9 !important;
+    background: #fff !important;
     padding: 0;
     .mat-card-header {
-      border-radius: 16px 16px 0 0;
+      border-radius: 1rem 1rem 0 0;
       order: 2;
       z-index: 2;
-      padding-top: 32px;
-      background: #D1C4E9;
+      padding-top: 2rem;
+      background: #fff;
       display: block;
       margin-top: 1rem;
       .mat-card-avatar {
@@ -173,10 +173,10 @@
         overflow: hidden;
         border-radius: 50%;
         position: absolute;
-        top: 12px;
+        top: 0.75rem;
         z-index: 1;
-        left: 16px;
-        border: 3px solid var(--white);
+        left: 1rem;
+        border: 0.1875rem solid var(--white);
         img {
           max-width: 100%;
         }
@@ -184,30 +184,29 @@
       .mat-card-title {
         display: block;
         font-weight: bold;
-        font-size: 1rem;
         min-height: 2.5rem;
       }
       .mat-card-subtitle {
-        font-size: 12px;
-        margin: 4px 0;
+        font-size: 0.75rem;
+        margin: 0.25rem 0;
         display: flex;
       }
     }
     .mat-card-banner-img {
       position: absolute;
-      top: -36px;
+      top: -2.25rem;
       left: 0;
       max-width: 100%;
       z-index: 1;
-      height: 116px;
+      height: 7.25rem;
       order: 1;
       width: 100% !important;
       margin: 0;
     }
     .mat-card-content {
       display: block;
-      padding: 0 16px;
-      margin-top: 4px;
+      padding: 0 1rem;
+      margin-top: 0.25rem;
       order: 3;
       &>:first-child{
             min-height: 3.5rem;
@@ -215,12 +214,12 @@
     }
     .mat-card__type {
       position: absolute;
-      top: 16px;
-      right: 8px;
-      font-size: 10px;
+      top: 1rem;
+      right: 0.5em;
+      font-size: 0.625rem;
       background: var(--black);
       color: var(--white);
-      border-radius: 24px;
+      border-radius: 1.5rem;
       z-index: 2;
       &::before{
         content: none !important;
@@ -270,16 +269,19 @@
       height: 4rem;
       width: 4rem;
     }
+    .mat-card-content>:first-child {
+      margin: 1rem 0;
+    }
     .mat-card-header-text{
       margin-top: 0.5rem;
     }
     .mat-card-subtitle{
-      margin-bottom: 4px;
+      margin-bottom: 0.25rem;
     }
     .mat-standard-chip{
       border-radius: 0;
-      min-height: 24px;
-      padding: 5px 10px;
+      min-height: 1.5rem;
+      padding: 0.3125rem 0.625rem;
     }
     .mat-chip{
       min-height: 1.25rem;
@@ -295,7 +297,7 @@
       &::before{
         transform: rotatey(0) !important;
         content: "";
-        left: -10px !important;
+        left: -0.625rem !important;
       }
     }
   }
@@ -315,6 +317,7 @@
     width: 100%;
     background-color: white;
     display: flex;
+    height: 100%;
     flex-direction: column;
     cursor: pointer;
     position: relative;
@@ -324,27 +327,27 @@
     border-radius: 1.5rem;
     box-shadow: var(--sbt-box-shadow-6px);
     overflow: hidden;
-    padding: 16px 16px 12px 16px;
+    padding: 1rem 1rem 0.75rem 1rem;
     display: flex;
     flex-direction: column;
   
     mat-card-header {
       z-index: 2;
       order: 2;
-      margin-top: 8px;
+      margin-top: 0.5rem;
   
       div[mat-card-avatar] {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 62px;
-        height: 62px;
+        width: 3.875rem;
+        height: 3.875rem;
         border-radius: 50%;
         position: absolute;
-        top: 48px;
-        right: 24px;
+        top: 3rem;
+        right: 1.5rem;
         overflow: hidden;
-        border: 3px solid white;
+        border: 0.1875rem solid white;
         z-index: 1;
   
         img {
@@ -359,14 +362,13 @@
       flex-direction: column;
       margin: 0;
       mat-card-title {
-        font-size: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 0.5rem;
         height: 3.5rem;
         // width: 70%;
       }
       
       mat-card-subtitle {
-        font-size: 12px;
+        font-size: 0.75rem;
         margin: 0;
       }
     }
@@ -376,30 +378,30 @@
       left: 0;
       max-width: 100%;
       width: 100%;
-      border-radius: 16px;
+      border-radius: 1rem;
       margin: 0;
-      height: 72px;
+      height: 4.5rem;
       object-fit: cover;
       box-sizing: border-box;
       order: 1;
-      margin-top: -32px;
-      margin-bottom: 16px;
+      margin-top: -2rem;
+      margin-bottom: 1rem;
     }
   
     mat-card-content {
-      margin: 8px 0 0 0;
-      font-size: 12px;
+      margin: 0.5rem 0 0 0;
+      font-size: 0.75rem;
       order: 3;
   
       div.text-left {
-        margin-top: 8px;
+        margin-top: 0.5rem;
       }
     }
   
     .mat-chip {
-      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: 500;
-      padding: 2px 8px;
+      padding: 0.125rem 0.5rem;
       min-height: auto;
       height: auto;
     }
@@ -411,18 +413,18 @@
       display: flex;
       align-items: center;
       text-transform: uppercase;
-      top: 40px;
+      top: 2.5rem;
       left: 0;
       background: black;
       color: white;
       justify-content: center;
-      padding: 0 8px;
+      padding: 0 0.5rem;
       margin: 0 0 0 0rem !important;
   
       &::before {
         border-color: black black black transparent;
         position: absolute;
-        right: -8px;
+        right: -0.5rem;
         transform: rotateY(-180deg);
         content: "";
         width: 0;
@@ -441,6 +443,9 @@
       flex-direction: column;
       align-items: center;
     }
+    .mat-card-content>:first-child  {
+      margin: 1rem 0;
+    }
     .mat-card-banner-img, .sb--card-svg-tail{
       display: none;
     }
@@ -456,12 +461,12 @@
       margin-top: 0.5rem;
     }
     .mat-card-subtitle{
-      margin-bottom: 4px;
+      margin-bottom: 0.25rem;
     }
     .mat-standard-chip{
       border-radius: 0;
-      min-height: 24px;
-      padding: 5px 10px;
+      min-height: 1.5rem;
+      padding: 0.3125rem 0.625rem;
     }
     .mat-chip{
       min-height: 1.25rem;
@@ -486,7 +491,7 @@
       &::before{
         transform: rotatey(0) !important;
         content: "";
-        left: -10px !important;
+        left: -0.625rem !important;
       }
     }
   }

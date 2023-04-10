@@ -1,25 +1,44 @@
 @use "~@angular/material" as mat;
 @use "sass:map";
-@use "./palette" as cmat;
+@use "./palette" as *;
 
  // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
   .accessibility-toolbar-theme {
-    $primary: mat.define-palette(cmat.$sb-mat-grey, 800);  //
-    $accent: mat.define-palette(cmat.$sb-mat-grey);
-    $warn: mat.define-palette(cmat.$sb-mat-grey);
-    $accessibility-toolbar-theme: mat.define-light-theme($primary, $accent, $warn);
-    // $accessibility-toolbar-theme: mat.define-dark-theme($primary, $accent, $warn);
-    // $accessibility-toolbar-theme: mat.define-dark-theme((
-    //     color: (
-    //     primary: $primary, 
-    //     accent: $accent,
-    //     warn: $warn,
-    //     ),
-    //     // typography: mat.define-typography-config(),
-    //     // density: 0,
-    //     ));
-    // mat.toolbar-theme
-    @include mat.toolbar-color($accessibility-toolbar-theme);
+    $primary: mat.define-palette($sb-mat-grey);  //
+    $accent: mat.define-palette($sb-mat-grey, 900);
+    $warn: mat.define-palette($sb-mat-grey);
+    $accessibility-toolbar-theme: mat.define-light-theme((
+      color: (
+        primary: $primary,
+        accent: $accent,
+        warn: $warn,
+        ),
+        // typography: mat.define-typography-config(),
+        density:-3,
+      ));
+
+      .mat-toolbar {
+        // background: mat.get-color-from-palette($background, app-bar);
+        // color: mat.get-color-from-palette($foreground, text);
+    
+        // &.mat-primary {
+        //   @include _palette-styles($primary);
+        // }
+    
+        // &.mat-accent {
+        //   @include _palette-styles($accent);
+        // }
+    
+        // &.mat-warn {
+        //   @include _palette-styles($warn);
+        // }
+        // @include _form-field-overrides;
+      }
+
+  // mat.toolbar-color if using only color, if you are using density, typography have to use mat.toolbar-theme
+    @include mat.toolbar-theme($accessibility-toolbar-theme);
   }
+
+

@@ -7,9 +7,9 @@
           guestUser: !userService.loggedIn
         }">
 
-        <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }" class="accessibility-toolbar-theme mb-8">
+        <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }" class="accessibility-toolbar-theme mb-8 density-2">
           <mat-toolbar color="accent">
-            <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+            <button mat-raised-button (click)="drawer.toggle()" class="custom-btn-bg">Toggle drawer</button>
             <span class="example-spacer"></span>
             <span aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
               <a *ngIf="!hideHeaderNFooter" mat-button href="javascript:void(0);" title="{{
@@ -43,23 +43,17 @@
 
             <span role="navigation" aria-label="Font Size">
               <button mat-icon-button type="button" [attr.aria-pressed]="false" tabindex="0" aria-label="{{
-              resourceService?.frmelmnts?.lbl?.accessibilityfont
-            }}" class="" title="{{
-              resourceService?.frmelmnts?.lbl?.accessibilityfont
+              resourceService?.frmelmnts?.lbl?.accessibilityfont}}" class="" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont
             }}" (click)="changeFontSize('decrease')" #decreaseFontSize>
                 <mat-icon class="auto-flip">text_decrease</mat-icon>
               </button>
               <button mat-icon-button [attr.aria-pressed]="false" type="button" tabindex="0" aria-label="{{
-              resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
-            }}" class="" title="{{
-              resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
+              resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}" class="" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
             }}" (click)="changeFontSize('reset')" #resetFontSize>
                 <mat-icon class="auto-flip">text_format</mat-icon>
               </button>
               <button mat-icon-button [attr.aria-pressed]="false" type="button" tabindex="0" aria-label="{{
-              resourceService?.frmelmnts?.lbl?.accessibilitytextsize
-            }}" class="" title="{{
-              resourceService?.frmelmnts?.lbl?.accessibilitytextsize
+              resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}" class="" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize
             }}" (click)="changeFontSize('increase')" #increaseFontSize>
                 <mat-icon class="auto-flip">text_increase</mat-icon>
               </button>
@@ -74,7 +68,7 @@
             <mat-icon>dark_mode</mat-icon>
           </button> -->
 
-            <button mat-icon-button id="theme-selector" [mat-menu-trigger-for]="themeMenu" matTooltip="Select a theme!"
+            <button mat-button id="theme-selector" [mat-menu-trigger-for]="themeMenu" matTooltip="Select a theme!"
               tabindex="-1">
               <mat-icon class="auto-flip">format_color_fill</mat-icon>
             </button>

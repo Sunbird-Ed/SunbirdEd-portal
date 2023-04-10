@@ -43,9 +43,9 @@ $sb-mat-joy-accent: (
   ),
 );
 $sb-mat-joy-primary: (
-  50: #fffaea, 
-  100: #e9e8d9, // #fff4cc,
-  200: #f3f3e5, //#ffecaa,
+  50:  #e9e8d9, // #fffaea, 
+  100: #f3f3e5, // #fff4cc,
+  200: #ffecaa, 
   300: #ffe487,
   400: #ffdf6e,
   500: #ffd954,
@@ -166,7 +166,7 @@ $app-themes: (
     // background: mat.$mat-light-theme-background,
     typography:
       mat.define-typography-config(
-        $font-family: "Alegreya" !important,
+        $font-family: "Arimo" !important,
       ),
   ),
   indigo-pink: (
@@ -179,7 +179,7 @@ $app-themes: (
     // background: mat.$mat-light-theme-background,
     typography:
       mat.define-typography-config(
-        $font-family: monospace !important,
+        $font-family: "Cabin" !important,
       ),
   ),
   pink-bluegrey: (
@@ -192,7 +192,7 @@ $app-themes: (
     // background: mat.$mat-dark-theme-background,
     typography:
       mat.define-typography-config(
-        $font-family: "Jost" !important,
+        $font-family: "Josefin Slab" !important,
       ),
   ),
   purple-green: (
@@ -205,7 +205,7 @@ $app-themes: (
     // background: mat.$mat-dark-theme-background,
     typography:
       mat.define-typography-config(
-        $font-family: "Exo 2" !important,
+        $font-family: "Quicksand" !important,
       ),
   ),
   joy: (
@@ -231,7 +231,7 @@ $app-themes: (
     // background: mat.$mat-dark-theme-background,
     typography:
       mat.define-typography-config(
-        $font-family: "Oswald" !important,
+        $font-family: "Roboto Slab" !important,
       ),
   ),
 );

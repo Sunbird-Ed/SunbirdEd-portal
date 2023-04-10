@@ -1,0 +1,333 @@
+
+@use "sass:map";
+@use "~@angular/material" as mat;
+@use "./../palette" as *;
+
+@function my-mat-light-theme-foreground($color) {
+    @return (
+        base:              $color,
+        divider:           $black-12-opacity,
+        dividers:          $black-12-opacity,
+        disabled:          rgba($color, 0.38),
+        disabled-button:   rgba($color, 0.38),
+        disabled-text:     rgba($color, 0.38),
+        hint-text:         rgba($color, 0.38),
+        secondary-text:    rgba($color, 0.54),
+        icon:              rgba($color, 0.54),
+        icons:             rgba($color, 0.54),
+        text:              rgba($color, 0.87),
+        slider-min:        rgba($color, 0.87),
+        slider-off:        rgba($color, 0.26),
+        slider-off-active: rgba($color, 0.38),
+    );
+};
+
+// You can put any color here. I've chosen mat-color($my-app-primary, 700)
+$my-foreground: my-mat-light-theme-foreground(mat-color($my-app-primary, 700));
+
+
+$foreground: map-get($theme, foreground);
+
+.foreground-color {
+  color: mat-color($foreground, secondary-text);
+}
+
+
+// customer color collection 
+$custom-collection: (
+    warning :  #FFC116,
+    success :  #0a630f,
+    danger:    #c00000,
+    contrast: (
+        warning :  #000000,
+        success :  #FFFFFF,
+        danger:    #FFFFFF,
+    )
+);
+
+$my-app-custom: mat-palette($custom-collection, custom);
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn); // this row your should have already in your code where you select palettes for primary, accent and warn
+$my-app-theme: map_merge($my-app-theme, (custom: $my-app-custom));
+$custom: map-get($my-app-theme, custom);
+
+Then you can use $custom in your component like this
+
+background-color: mat-color($custom, success);
+color: mat-color($custom, success-contrast);
+But better solution is to make mat-success-class like this
+
+.mat-success {
+    background-color: mat-color($custom, success);
+    color: mat-color($custom, success-contrast);
+  }
+Then you can use color directive like this
+
+<button mat-flat-button color="success" >Success</button>
+// customer color collection 
+
+
+@mixin app-root-theme($theme) {
+    $background: mag-get($theme, background);
+
+    app-root {
+        background-color: mat-color($background, background);
+    }
+}
+@include app-root-theme();
+
+@mixin app-root-typography($config) {
+    app-root {
+        h1 {
+            font-family: mat.font-family($config);
+            font-size: mat.font-family($config, title);
+            font-weight: mat.font-family($config, title);
+            line-height: mat.font-family($config, title);
+
+            @include mat.typography-level-to-styles($config, title);
+        }
+    }
+}
+@include app-root-typography($custom-typography);
+
+
+
+.title { 
+    @include mat-typography-level-to-styles($typography-config, 'caption'); 
+}
+
+.title-with-opacity { 
+    @include mat-typography-level-to-styles($typography-config, 'caption');
+    opacity: 0.54; 
+}
+
+
+
+
+@mixin apply-all-components-density($density) {
+    @include mat.core-density($density);
+    @include mat.option-density($density);
+    @include mat.optgroup-density($density);
+    @include mat.autocomplete-density($density);
+    @include mat.badge-density($density);
+    @include mat.bottom-sheet-density($density);
+    @include mat.button-density($density);
+    @include mat.fab-density($density);
+    @include mat.icon-button-density($density);
+    @include mat.button-toggle-density($density);
+    @include mat.card-density($density);
+    @include mat.checkbox-density($density);
+    @include mat.chips-density($density);
+    @include mat.datepicker-density($density);
+    @include mat.dialog-density($density);
+    @include mat.divider-density($density);
+    @include mat.expansion-density($density);
+    @include mat.form-field-density($density);
+    @include mat.grid-list-density($density);
+    @include mat.icon-density($density);
+    @include mat.input-density($density);
+    @include mat.list-density($density);
+    @include mat.menu-density($density);
+    @include mat.paginator-density($density);
+    @include mat.progress-bar-density($density);
+    @include mat.progress-spinner-density($density);
+    @include mat.radio-density($density);
+    @include mat.select-density($density);
+    @include mat.sidenav-density($density);
+    @include mat.slide-toggle-density($density);
+    @include mat.slider-density($density);
+    @include mat.snack-bar-density($density);
+    @include mat.sort-density($density);
+    @include mat.stepper-density($density);
+    @include mat.table-density($density);
+    @include mat.tabs-density($density);
+    @include mat.toolbar-density($density);
+    @include mat.tooltip-density($density);
+    @include mat.tree-density($density);
+  }
+
+
+
+  @mixin my-component-theme($theme) {
+    $primary: map-get($theme, primary);
+    my-component{
+        background-color: mat-color($primary);
+    }
+}
+@import './path/to/my-component.theme';
+@include my-component-theme($theme);
+
+@import '../assets/style/theme.scss'; // theme defined file
+$primary: map-get($theme, primary);
+
+.nav-wrapper {
+  background-color: $primary;
+}
+
+
+@include md2-datepicker-theme($theme); in themes file
+datepicker.scss
+@import '~@angular/material/theming';
+@mixin md2-datepicker-theme($theme) {
+  // Extract whichever individual palettes you need from the theme.
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent); // Use mat-color to extract individual colors from a palette as necessary.
+  .md2-calendar-header {
+    background-color: mat-color($primary) !important;
+  }
+  .md2-calendar-body-selected {
+    background-color: mat-color($primary) !important;
+  }
+  .md2-calendar-body-today:not(.md2-calendar-body-selected) {
+    border-color: mat-color($primary) !important;
+  }
+}
+
+
+https://github.com/angular/components/issues/5152
+
+// _variables.scss
+@import '~@angular/material/theming';
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+$app-primary: mat-palette($mat-grey);
+$app-accent:  mat-palette($mat-light-blue);
+$app-warn:    mat-palette($mat-pink);
+
+// Custom Sass colors vars (will be available in all the project)
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$warn: mat-color($app-warn);
+$otherColor: #99999;
+
+// your.component.scss
+@import "~_variables.scss";
+.selected {
+  background-color: $accent;
+}
+
+------- same as above ----
+theme_variables.scss
+
+@import '~@angular/material/theming';
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+$app-primary: mat-palette($mat-blue-grey);
+$app-accent:  mat-palette($mat-grey);
+$app-warn:    mat-palette($mat-deep-orange);
+
+// Custom Sass colors vars (will be available in all the project)
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$warn: mat-color($app-warn);
+theme.scss
+
+@import '~@angular/material/theming';
+@import "~theme_variables.scss";
+
+@include mat-core();
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+@include angular-material-theme($app-theme);
+styles.scss
+
+@import "theme.scss";
+
+
+nav.component.scss
+@import "~theme_variables.scss";
+.primary {
+    color: $primary;
+}
+
+.angular-cli.json
+"styles": [
+   "styles.scss"
+]
+
+
+-------
+my solution
+just do not use pre-build theme, but we can customize one like it
+you can find all color in ~@angular/material/_theming.scss
+
+my example:
+
+src\theme_variables.scss
+
+
+@import '~@angular/material/theming';
+
+// deep-purple
+
+$app-primary: mat-palette($mat-deep-purple);
+$app-accent:  mat-palette($mat-amber, A200, A100, A400);
+$app-warn:    mat-palette($mat-red);
+
+$primary: mat-color($app-primary);
+$primary-contrast: mat-color($app-primary, default-contrast);
+$accent: mat-color($app-accent);
+$accent-contrast: mat-color($app-accent, default-contrast);
+$warn: mat-color($app-warn);
+$warn-contrast: mat-color($app-warn, default-contrast);
+
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+
+$app-text: mat-color(map-get($app-theme, foreground), text);
+src\theme.scss
+
+
+@import '~@angular/material/theming';
+@import "~theme_variables.scss";
+@include mat-core();
+@include angular-material-theme($app-theme);
+src\style.css
+it's nothing,it's empty ,don't import ~@angular/material/prebuilt-themes/deeppurple-amber.css
+
+
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+src\app\file-card\file-card.component.scss
+
+
+@import "~theme_variables.scss";
+.primary{
+    background-color: $primary;
+    color: $primary-contrast;
+}
+src\app\file-card\file-card.component.html
+<div class="primary"> some text </div>
+.angular-cli.json
+
+
+{
+  "apps": [
+    {
+      "styles": [
+        "theam.scss",
+        "styles.css"
+      ]
+    }
+]
+
+
+
+
+
+https://stackoverflow.com/questions/49642098/angular-material-global-color-variables
+// Theme configuration
+$primary: mat-palette($mat-blue, 800, 500, 900);
+$accent:  mat-palette($mat-blue, A200, A100, A400);
+$warn: mat-palette($mat-red);
+$theme: mat-light-theme($primary, $accent, $warn);
+
+// Custom colors
+$custom-colors: (
+  custom-color-a: mat-color($mat-green, 700),
+  custom-color-b: mat-color($mat-red, 400),
+);
+$theme: map-merge($theme, (custom-colors: $custom-colors));
+
+
+@import 'variables';
+
+.custom-class-a {
+  background-color: map-get($custom-colors, custom-color-a);
+  color: map-get($custom-colors, custom-color-b);
+}
