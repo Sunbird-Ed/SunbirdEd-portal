@@ -1,0 +1,31 @@
+@use "~@angular/material" as mat;
+@use 'sass:map';
+
+// mixin name will be used in main style.scss
+@mixin app-root-theme($theme) {
+  // retrieve variables from theme 
+  // (all possible variables, use only what you really need)
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, accent);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  
+  .ssb-mat-accent {
+    background-color: mat-color($primary, 100);
+  }
+
+  // mat-card.big-input {
+  //   background-color: mat-color($background, background);
+  // }
+  .big-input {
+    input {
+      // retrieve particular color from variable, rg: text, base, divider, ...
+      color: mat-color($primary, lighter-contrast);
+      background-color: mat-color($primary, 500);
+      // or use "default" subvariable by default, oh the puns :)
+      border: 1px solid mat-color($primary, 900);
+    }
+  }
+
+}

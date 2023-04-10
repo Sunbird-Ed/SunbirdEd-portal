@@ -25,7 +25,6 @@ import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
-
 type reportsListVersionType = 'v1' | 'v2';
 
 @Component({

@@ -5,6 +5,9 @@ import { UserService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile, LayoutService, UtilService, ConnectionService } from '@sunbird/shared';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
+import {FloatLabelType} from '@angular/material/form-field';
+import { FormControl } from '@angular/forms';
+
 /**
  * Main menu component
  */
@@ -36,7 +39,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   resourceService: ResourceService;
   resourceDataSubscription: Subscription;
 
-
+  floatLabelControl = new FormControl('auto' as FloatLabelType);
   /**
    * option selected on dropdown
    */
@@ -235,5 +238,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
   isLayoutAvailable() {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
+  getFloatLabelValue(): FloatLabelType {
+    return this.floatLabelControl.value || 'auto';
   }
 }

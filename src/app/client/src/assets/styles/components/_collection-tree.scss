@@ -2,7 +2,7 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "~@project-sunbird/sb-styles/assets/varSass" as *;
 // TOC or Collection Tree
-$sb-collectionTree-border-radius: ($base-block-space / 2);
+$sb-collectionTree-border-radius: 0.25rem;
 $sb-collectionTree-border: calculateRem(1px) solid var(--primary-200);
 $sb-collectionTree-padding: ($base-block-space * 2);
 $sb-collectionTree-margin: $base-block-space 0 0 0;

@@ -5,7 +5,11 @@ export class CacheService {
 
     public get(key?: string) {
         let value = localStorage.getItem(key);
-        return value ? JSON.parse(value) : null;
+        try {
+            return value ? JSON.parse(value) : null;
+        } catch (error) {
+            return value;
+        }
     }
 
     public set(key: string, value: any, options?:  any) {

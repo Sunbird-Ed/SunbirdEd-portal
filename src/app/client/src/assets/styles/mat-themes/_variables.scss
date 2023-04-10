@@ -1,0 +1,14 @@
+@use "sass:map";
+@use "~@angular/material" as mat;
+@use './palette' as *;
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+$var-primary: mat.define-palette(mat.$pink-palette);
+$var-accent:  mat.define-palette(mat.$blue-palette);
+$var-warn:    mat.define-palette(mat.$red-palette);
+
+// Custom Sass colors vars (will be available in all the project)
+$primary: mat-color($var-primary, 500);
+$accent: mat-color($var-accent, 500);
+$warn: mat-color($var-warn, 500);
+$otherColor: #999999;
