@@ -551,7 +551,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.globalDistrict = $event.value;
     this.reportForm.controls.districtName.setValue($event.value);
     this.displayFilters['District'] = [$event?.source?.triggerValue]
-    this.tag =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
+    const tagId =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
+    this.tag = tagId.length > 79 ? tagId.substring(0,79) : tagId
     this.reportForm.controls.reportType.setValue('');
     this.resetConfigFilters();
     this.loadReports();
