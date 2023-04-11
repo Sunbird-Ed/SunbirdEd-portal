@@ -40,7 +40,6 @@ export class CreateUserComponent implements OnInit {
 
   public unsubscribe = new Subject<void>();
   pageId = 'create-managed-user';
-  isFullScreenView: any;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder, public router: Router,
@@ -194,11 +193,5 @@ export class CreateUserComponent implements OnInit {
         this.enableSubmitBtn = true;
       }
     );
-  }
-  
-  checkFullScreenView() {
-    this.navigationhelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
   }
 }
