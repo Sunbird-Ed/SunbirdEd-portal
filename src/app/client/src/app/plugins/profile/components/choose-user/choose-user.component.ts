@@ -19,7 +19,6 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./choose-user.component.scss']
 })
 export class ChooseUserComponent implements OnInit, OnDestroy {
-  isFullScreenView: any;
 
   constructor(public userService: UserService, public navigationHelperService: NavigationHelperService,
               public toasterService: ToasterService, public router: Router, private utilService: UtilService,
@@ -210,11 +209,5 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.utilService.redirect('/resources');
     }, 5100);
-  }
-
-  checkFullScreenView() {
-    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
   }
 }
