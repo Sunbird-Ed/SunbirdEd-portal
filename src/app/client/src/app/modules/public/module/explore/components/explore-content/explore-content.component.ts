@@ -111,7 +111,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.router.navigate(['']);
       }
     );
-    this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+    this.searchAll = this.resourceService?.frmelmnts?.lbl?.allContent;
     this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
       this.contentDownloadStatus = contentDownloadStatus;
       this.addHoverData();
