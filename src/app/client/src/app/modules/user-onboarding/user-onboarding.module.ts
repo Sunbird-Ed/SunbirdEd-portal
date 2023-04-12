@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnboardingPopupComponent } from './components/onboarding-popup/onboarding-popup.component';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
@@ -7,7 +7,6 @@ import { SharedModule } from '@sunbird/shared';
 import {MatStepperModule} from '@angular/material/stepper';
 import {CdkStepperModule} from '@angular/cdk/stepper';
 import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
-import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
 
 
 
@@ -23,10 +22,11 @@ import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-
     MatStepperModule,
     CdkStepperModule,
     SunbirdPdfPlayerModule,
-    SunbirdVideoPlayerModule
   ],
   exports: [
     OnboardingPopupComponent
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+
 })
 export class UserOnboardingModule { }
