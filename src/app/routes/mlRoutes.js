@@ -60,7 +60,7 @@ module.exports = function (app) {
         body: fileStream
       };
       request(options, function (error, response) {
-        if (response.statusCode === 201) {
+        if (response.statusCode === 200 || response.statusCode === 201) {
           res.send({ responseCode: "OK", status: 200 })
         } else {
           res.send({ status: response.statusCode })
