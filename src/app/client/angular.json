@@ -11,7 +11,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "../dist",
+            "outputPath": "./../app_dist/dist",
+            "baseHref": "./../app_dist/dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
