@@ -94,7 +94,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.router.navigate(['']);
             }
         );
-        this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+        this.searchAll = this.resourceService?.frmelmnts?.lbl?.allContent;
     }
     initLayout() {
         this.redoLayout();
