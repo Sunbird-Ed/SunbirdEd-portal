@@ -6,9 +6,9 @@
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "declaration": true,
-    "module": "es2020",
+    "module": "commonjs",
     "outDir": "./app_dist",
-    "target": "es2020",
+    "target": "es6",
     "baseUrl": "./",
     "allowJs": true
   },
