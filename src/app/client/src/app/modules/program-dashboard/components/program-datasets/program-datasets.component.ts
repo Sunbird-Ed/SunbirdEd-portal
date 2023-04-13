@@ -3,7 +3,7 @@ import { INoResultMessage, ToasterService, IUserData, IUserProfile, LayoutServic
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, Subscription, throwError ,Observable, of, combineLatest} from 'rxjs';
 import { KendraService, UserService, FormService } from '@sunbird/core';
-import { mergeMap, switchMap, takeUntil,map, catchError } from 'rxjs/operators';
+import { mergeMap, switchMap, takeUntil,map, catchError} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
@@ -540,70 +540,44 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   loadReports() {
-    const requestWithUnhashedTag = this.onDemandReportService.getReportList(this.tag)
-    const requestWithHashedTag = this.onDemandReportService.getReportList(this.hashedTag)
-    
+    const requestWithUnhashedTag = this.onDemandReportService.getReportList(this.tag);
+    const requestWithHashedTag = this.onDemandReportService.getReportList(this.hashedTag);
+
     combineLatest([
       requestWithHashedTag.pipe(catchError(() => of(null))),
       requestWithUnhashedTag.pipe(catchError(() => of(null))),
     ])
       .pipe(
-        map(([result1, result2]: [any, any]) => {
-          if (result1 && result2) {
-            console.log("result1:", result1);
-            console.log("result2:", result2);
-            const result = _.concat(result1.result.jobs, result2.result.jobs);
-            console.log("combined", result);
-            return result;
-          } else if (result1) {
-            return result1.result.jobs;
-          } else if (result2) {
-            return result2.result.jobs;
-          }
-        }),
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe(
-        (reportData) => {
-          console.log("reportData", reportData);
-          if (reportData) {
-            this.onDemandReportData = _.map(reportData, (row) =>
-              this.dataModification(row)
-            );
+        map(([response1, response2]: [any, any]) => {
+          if (response1 && response2) {
+            return _.concat(response1.result.jobs, response2.result.jobs);
+          } else if (response1) {
+            return response1.result.jobs;
+          } else if (response2) {
+            return response2.result.jobs;
           } else {
             this.toasterService.error(
               _.get(this.resourceService, "messages.fmsg.m0004")
             );
+            return throwError("Report list APIs failed");
           }
-        },
-        (error) => {
-          console.log(
-            "Both hashed and unhashed tag APIs have been failed:",
-            error
-          );
-          this.toasterService.error(
-            _.get(this.resourceService, "messages.fmsg.m0004")
-          );
-        }
-      );
-    // this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
-    //   if (data) {
-    //     const reportData = _.get(data, 'result.jobs');
-    //     this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
-    //   }
-    // }, error => {
-    //   this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    // });
+        }),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((reportData: object[]) => {
+        console.log("reportData", reportData);
+        this.onDemandReportData = reportData.length
+          ? _.map(reportData, (row) => this.dataModification(row))
+          : [];
+      });
   }
 
   districtSelection($event) {
     this.globalDistrict = $event.value;
     this.reportForm.controls.districtName.setValue($event.value);
     this.displayFilters['District'] = [$event?.source?.triggerValue]
-    const tagId =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
-    this.tag = tagId.length > 79 ? tagId.substring(0,79) : tagId;
+    this.tag =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
     this.hashedTag = this.hashTheTag( _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ $event.value)
-    // this.hashTheTag("xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban s");
     this.reportForm.controls.reportType.setValue('');
     this.resetConfigFilters();
     this.loadReports();
@@ -851,22 +825,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   hashTheTag(key:string):string{
-    // const hash1 = Md5.hashStr(key);
-    // const hash2 = Md5.hashStr('xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban s')
-    // console.log('hash comparison',hash1 === hash2);
-    // console.log('length of hashes',hash1.length,hash2.length)
-    // const hash3 = Md5.hashStr('xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban south_block1_block2')
-    const temp = 'xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban south_block1_block2_xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban south_block1_block2_xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban south_block1_block2'
-    // const hash4 = Md5.hashStr('xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban south_block1_block2_xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban south_block1_block2_xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban south_block1_block2')
-    // console.log('hash3',hash3.length);
-    // console.log('temp',temp.length);
-    // console.log('hash4',hash4, hash4.length);
-    const lengthyStr = temp+temp+temp+temp+temp+temp
-    const lengthStr2 = temp+temp+temp+temp+temp+temp
-    console.log(lengthyStr.length,lengthStr2)
-    const hash5 = Md5.hashStr(lengthyStr)
-    const hash6 = Md5.hashStr(lengthStr2)
-    console.log("hash5",hash5,"hash6",hash6, hash5 === hash6)
     return Md5.hashStr(key);
   }
 
