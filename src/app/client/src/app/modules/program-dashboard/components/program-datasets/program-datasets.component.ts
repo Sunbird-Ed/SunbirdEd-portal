@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { INoResultMessage, ToasterService, IUserData, IUserProfile, LayoutService, ResourceService, ConfigService, OnDemandReportService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
-import { Subject, Subscription, throwError ,Observable, of, combineLatest} from 'rxjs';
+import { Subject, Subscription, throwError ,Observable, of, combineLatest, queueScheduler} from 'rxjs';
 import { KendraService, UserService, FormService } from '@sunbird/core';
 import { mergeMap, switchMap, takeUntil,map, catchError} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { Md5 } from 'ts-md5';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];
 export interface ConfigFilter{
@@ -544,28 +545,29 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     const requestWithHashedTag = this.onDemandReportService.getReportList(this.hashedTag);
 
     combineLatest([
-      requestWithHashedTag.pipe(catchError(() => of(null))),
-      requestWithUnhashedTag.pipe(catchError(() => of(null))),
+      requestWithHashedTag.pipe(catchError((err) => of(err))),
+      requestWithUnhashedTag.pipe(catchError((err) => of(err))),
     ])
       .pipe(
         map(([response1, response2]: [any, any]) => {
-          if (response1 && response2) {
-            return _.concat(response1.result.jobs, response2.result.jobs);
-          } else if (response1) {
-            return response1.result.jobs;
-          } else if (response2) {
-            return response2.result.jobs;
-          } else {
-            this.toasterService.error(
-              _.get(this.resourceService, "messages.fmsg.m0004")
-            );
-            return throwError("Report list APIs failed");
+          const jobs1 = response1 instanceof HttpErrorResponse ? null : response1?.result?.jobs || null;
+          const jobs2 = response2 instanceof HttpErrorResponse ? null : response2?.result?.jobs || null;
+
+          if (jobs1 === null && jobs2 === null) {
+            throw new Error("Both job requests failed");
           }
+          const jobs = _.compact(_.concat(jobs1, jobs2));
+          return jobs;
+        }),
+        catchError((error) => {
+          this.toasterService.error(
+            _.get(this.resourceService, "messages.fmsg.m0004")
+          );
+          return throwError("Report list APIs failed", queueScheduler);
         }),
         takeUntil(this.unsubscribe$)
       )
       .subscribe((reportData: object[]) => {
-        console.log("reportData", reportData);
         this.onDemandReportData = reportData.length
           ? _.map(reportData, (row) => this.dataModification(row))
           : [];

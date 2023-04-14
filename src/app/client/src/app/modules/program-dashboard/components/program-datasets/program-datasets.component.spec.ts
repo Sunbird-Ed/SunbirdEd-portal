@@ -132,19 +132,19 @@ describe('DatasetsComponent', () => {
     expect(component.showConfirmationModal).toEqual(false);
   });
 
-  it('should set onDemandReportData to be a defined result if both requests pass', () => {
+  it('should set onDemandReportData to be a combined result if both requests pass', () => {
     jest.spyOn(onDemandReportService,'getReportList').mockReturnValue(of(mockData.reportListResult1)).mockReturnValueOnce(of(mockData.reportListResult2))
     component.loadReports();
     expect(component.onDemandReportData).toEqual(mockData.reportListCombinedResult)
   });
 
-  it('should set onDemandReportData to be a defined result if only first request passes and second one fails', () => {
+  it('should set onDemandReportData to be the first response if only first request passes and second one fails', () => {
     jest.spyOn(onDemandReportService,'getReportList').mockReturnValue(of(mockData.reportListResult1)).mockReturnValueOnce(of(null))
     component.loadReports();
     expect(component.onDemandReportData).toEqual(mockData.reportListResult1.result.jobs)
   });
 
-  it('should set onDemandReportData to be a defined result if only second request passes and first one fails', () => {
+  it('should set onDemandReportData to be the second response if only second request passes and first one fails', () => {
     jest.spyOn(onDemandReportService,'getReportList').mockReturnValue(of(null)).mockReturnValueOnce(of(mockData.reportListResult2))
     component.loadReports();
     expect(component.onDemandReportData).toEqual(mockData.reportListResult2.result.jobs)
