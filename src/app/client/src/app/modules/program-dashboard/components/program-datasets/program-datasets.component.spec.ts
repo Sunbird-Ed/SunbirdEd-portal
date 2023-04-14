@@ -772,24 +772,6 @@ describe('DatasetsComponent', () => {
     expect(component.closeDashboard).toHaveBeenCalled();
   });
 
-  // it('should call districtSelection with tagId exceeding 79 characters', fakeAsync(() => {
-  //   const spy = jest.spyOn(component, 'districtSelection');
-  //   component.userId = "xxxx3686-0e88-4482-b86f-b34bbfb7xxxx";
-  //   component.reportForm.get('solution').setValue(["xxxx9beb823d601f0af5xxxx"]);
-  //   component.districtSelection({ value: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03", source:{triggerValue:'Bengaluru Urban South'} });
-  //   expect(spy).toHaveBeenCalled();
-  //   expect(component.tag).toBe("xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru urban s");
-  // }));
-
-  // it('should call districtSelection with tagId within 79 characters', fakeAsync(() => {
-  //   const spy = jest.spyOn(component, 'districtSelection');
-  //   component.userId = "xxxx3686-0e88-4482-b86f-b34bbfb7xxxx";
-  //   component.reportForm.get('solution').setValue(["xxxx9beb823d601f0af5xxxx"]);
-  //   component.districtSelection({ value: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03", source:{triggerValue:'Bengaluru'} });
-  //   expect(spy).toHaveBeenCalled();
-  //   expect(component.tag).toBe("xxxx9beb823d601f0af5xxxx_xxxx3686-0e88-4482-b86f-b34bbfb7xxxx_bengaluru");
-  // }));
-
   it('should call ngOnDestroy', () => {
     component.userDataSubscription = of().subscribe();
     component.ngOnDestroy();
