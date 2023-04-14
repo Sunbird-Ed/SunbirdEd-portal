@@ -456,10 +456,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
                         _.filter(Object.keys(params),filterValue => { 
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
-                                if (params[filterValue].length === 1 && params[filterValue][0] === 'CBSE/NCERT') {
-                                    params[filterValue][0] = "CBSE";
+                                let param = {};
+                                param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
+                                if (param[filterValue].length === 1 && param[filterValue][0] === 'CBSE/NCERT') {
+                                    param[filterValue][0] = "CBSE";
                                 }
-                                option.filters[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
+                                option.filters[filterValue] = (typeof (param[filterValue]) === "string") ? param[filterValue].split(',') : param[filterValue];
                             }
                         });
                     if (this.userService.loggedIn) {
