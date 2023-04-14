@@ -8,7 +8,6 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { mockData } from './program-datasets.component.spec.data';
 import { ReportService } from '../../../dashboard';
 import { Location } from '@angular/common';
-import _ from 'lodash';
 
 describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
