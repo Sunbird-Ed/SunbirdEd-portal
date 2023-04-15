@@ -1,0 +1,17 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '@angular/material'as mat;
+
+.button-rounded {
+    &.mat-button,
+    &.mat-raised-button,
+    &.mat-flat-button {
+      border-radius: 3rem;
+    }
+  }
+
+  .mat-success {
+    $success: mat.define-palette(mat.$green-palette);
+    background-color: mat.get-color-from-palette($success, 500);
+    color: mat.get-color-from-palette($success, 500-contrast);
+}

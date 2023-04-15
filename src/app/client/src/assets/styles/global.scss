@@ -4,10 +4,7 @@
 
 
 @include mat.core();
-
-$custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",
-);
-
+$custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",);
 @include mat.all-component-typographies($custom-typography);
 
 :root {
@@ -21,7 +18,7 @@ body {
 }
 
 body {
-  background: var(--sbt-body-bg) !important;
+  background: var(--sbt-body-bg);
   position: relative;
   font-family: var(--font-stack-en) !important;
   letter-spacing: calculateRem(0.2px);
@@ -932,7 +929,7 @@ app-landing-page {
   }
 
   .fontResize-container {
-    .fontResizeBtn_A- {
+    .fontResizeBtn_A_Decrease {
       font-size: 0.75rem;
     }
 
@@ -940,7 +937,7 @@ app-landing-page {
       font-size: 0.85rem;
     }
 
-    .fontResizeBtn_A+ {
+    .fontResizeBtn_A_Increase {
       font-size: 1rem;
     }
 

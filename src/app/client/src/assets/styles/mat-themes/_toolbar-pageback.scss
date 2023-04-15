@@ -1,0 +1,50 @@
+@use "@angular/material"as mat;
+@use "sass:map";
+@use "./palette"as *;
+@use './buttons';
+
+@mixin toolbar-pageback($theme) {
+
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
+
+  .mat-toolbar.toolbar-pageback {
+    // background: theming.get-color-from-palette($background, app-bar);
+    // color: theming.get-color-from-palette($foreground, text);
+    border-radius: 1.5rem 1.5rem 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 90%;
+    gap: 0.5rem;
+
+    // height: 5.5rem;
+    &.mat-accent {
+     //  $green: mat.define-palette(mat.$green-palette, 500);
+     //  background-color: mat.get-color-from-palette($green);
+      // @include _palette-styles($accent);
+    }
+
+    .thumbnail {
+      height: 3rem;
+    }
+
+    .title {
+
+    }
+
+    .mat-flat-button.mat-success,
+    .mat-raised-button.mat-success,
+    .mat-fab.mat-success,
+    .mat-mini-fab.mat-success {
+      @extend .mat-success;
+    }
+  }
+
+}

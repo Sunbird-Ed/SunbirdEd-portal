@@ -1,0 +1,357 @@
+/**
+* Created at 1397/12/14 (2019/3/5).
+* @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
+*/
+
+// @use "@angular/material" as mat;
+// @include mat-core();
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+@use "./palette" as cmat;
+@use "sass:map";
+
+/* fonts */
+@import url("https://fonts.googleapis.com/css2?family=Alegreya&family=Exo+2&family=Jost&family=Oswald&display=swap");
+
+mat.$theme-ignore-duplication-warnings: true;
+
+// Plus imports for other components in your app.
+@import "./themes.scss-universal.scss";
+@import "./../../../app/app.component.scss-theme.scss";
+// @import "./../../../app/modules/content-search/components/no-result/no-result.component.scss-theme.scss";
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+@include mat.strong-focus-indicators(
+  (
+    border-style: dotted,
+    border-width: 4px,
+    border-radius: 2px,
+  )
+);
+/* custom mixins ends here */
+/**
+* Define your custom themes in this map. 
+* The `key` of each member is the name of CSS class for that theme. 
+* To better understanding the schema of the map, see `@each` loop below and especially pay attention to 
+* `map-has-key()` functions.
+*/
+$app-themes: (
+  deeppurple-amber: (
+    primary-base: $mat-deep-purple,
+    accent-base: $mat-amber,
+    is-dark: false,
+    // foreground: $light-theme-foreground-palette,
+    // background: $light-theme-background-palette,
+    foreground: $mat-light-theme-foreground,
+    background: $mat-light-theme-background,
+    typography:
+      mat.define-typography-config(
+        $font-family: "Alegreya" !important,
+      ),
+  ),
+  indigo-pink: (
+    primary-base: $mat-indigo,
+    accent-base: $mat-pink,
+    is-dark: false,
+    // foreground: $light-theme-foreground-palette,
+    // background: $light-theme-background-palette,
+    foreground: $mat-light-theme-foreground,
+    background: $mat-light-theme-background,
+    typography:
+      mat.define-typography-config(
+        $font-family: monospace !important,
+      ),
+  ),
+  pink-bluegrey: (
+    primary-base: $mat-pink,
+    accent-base: $mat-blue-gray,
+    is-dark: true,
+    // foreground: $dark-theme-foreground-palette,
+    // background: $dark-theme-background-palette,
+    foreground: $mat-dark-theme-foreground,
+    background: $mat-dark-theme-background,
+    typography:
+      mat.define-typography-config(
+        $font-family: "Jost" !important,
+      ),
+  ),
+  purple-green: (
+    primary-base: $mat-purple,
+    accent-base: $mat-green,
+    is-dark: true,
+    // foreground: $dark-theme-foreground-palette,
+    // background: $dark-theme-background-palette,
+    foreground: $mat-dark-theme-foreground,
+    background: $mat-dark-theme-background,
+    typography:
+      mat.define-typography-config(
+        $font-family: "Exo 2" !important,
+      ),
+  ),
+  joy: (
+    primary-base: cmat.$sb-mat-joy-primary,
+    accent-base: cmat.$sb-mat-joy-accent,
+    is-dark: false,
+    // foreground: $light-theme-foreground-palette,
+    // background: $light-theme-background-palette,
+    foreground: $mat-light-theme-foreground,
+    background: $mat-light-theme-background,
+    typography:
+      mat.define-typography-config(
+        $font-family: var(--font-stack-en) !important,
+      ),
+  ),
+  green-grey: (
+    primary-base: cmat.$sb-mat-green,
+    accent-base: $mat-orange,
+    is-dark: true,
+    // foreground: $dark-theme-foreground-palette,
+    // background: $dark-theme-background-palette,
+    foreground: $mat-dark-theme-foreground,
+    background: $mat-dark-theme-background,
+    typography:
+      mat.define-typography-config(
+        $font-family: "Oswald" !important,
+      ),
+  ),
+);
+
+@each $css-class, $theme in $app-themes {
+  $primary: if(
+    map-has-key($theme, primary),
+    map-get($theme, primary),
+    mat-palette(map-get($theme, primary-base))
+  );
+  $accent: if(
+    map-has-key($theme, accent),
+    map-get($theme, accent),
+    mat-palette(map-get($theme, accent-base))
+  );
+  $warn: if(
+    map-has-key($theme, warn),
+    map-get($theme, warn),
+    mat-palette(
+      if(map-has-key($theme, warn-base), map-get($theme, warn-base), $mat-red)
+    )
+  );
+  $background: if(
+    map-has-key($theme, background),
+    map-get($theme, background),
+    mat-palette(
+      if(
+        map-has-key($theme, background),
+        map-get($theme, background),
+        $background
+      )
+    )
+  );
+  $foreground: if(
+    map-has-key($theme, foreground),
+    map-get($theme, foreground),
+    mat-palette(
+      if(
+        map-has-key($theme, foreground),
+        map-get($theme, foreground),
+        $foreground
+      )
+    )
+  );
+  $typography: if(
+    map-has-key($theme, typography),
+    map-get($theme, typography),
+    mat-config(
+      if(
+        map-has-key($config, typography),
+        map-get($config, typography),
+        typography
+      )
+    )
+  );
+
+  // Custom colors
+  // $custom-colors: (
+  //   custom-color-a: mat-color($mat-green, 700),
+  //   custom-color-b: mat-color($mat-red, 400),
+  // );
+  // $theme: map-merge($theme, (custom-colors: $custom-colors));
+
+  // you only have to add additional componenets here (instead of in every theme class)
+  // @mixin custom-components-theme($theme) {
+  //   @include big-input-theme($theme);
+  //   @include flip-toggle-button-theme($theme);
+  // }
+
+  .#{$css-class} {
+    /* different typography based on the theme -  */
+    @include mat.all-component-typographies($typography);
+    /* custom typography rem */
+    @include mat.core($custom-typography);
+
+    @if $css-class==
+      "pink-bluegrey" or
+      $css-class==
+      "purple-green" or
+      $css-class ==
+      "green-grey"
+    {
+      @include mat.all-component-colors(
+        mat-dark-theme($primary, $accent, $warn)
+      );
+
+      $primary100: map-get($background, background); // mat-color($accent, 900);
+      $primary200: #232323;
+      $accent500: mat-color($accent, 500);
+      --sbt-body-bg: #{$primary100};
+      --sbt-body-bg2: #{$primary200}; // 232323
+      --sb-profile-bg-c-4: var(--sbt-body-bg);
+      --sbt-footer-bg: var(--sbt-body-bg2);
+      --cc-grade-pill-container-bg: var(--sbt-body-bg);
+      --sbt-compt-bg: var(--sbt-body-bg);
+      --sb-modal-content-bg: var(--sbt-body-bg);
+      --sb-modal-actions-bg: var(--sbt-body-bg);
+      --cc-chapter-bg: var(--sbt-body-bg2);
+      --sb-section-preference: var(--white);
+      --sbt-footer-info-links: var(--white);
+      --sbt-filter-bar-bg: var(--sbt-body-bg);
+
+      --primary-color: #{$accent500};
+
+      // .mat-app-background {
+      //   background-color: mat-color($primary, 900) !important;
+      // }
+
+      // dark background related
+      // @include darkbgTheme($theme);
+      // @include no-result-component(mat-dark-theme($primary, $accent, $warn));
+    } @else {
+      $app-themes: mat-light-theme($primary, $accent, $warn);
+      @include mat.all-component-themes($app-themes);
+      @include mat.strong-focus-indicators-theme(
+        mat-light-theme($primary, $accent, $warn)
+      );
+      @include app-root-theme(mat-light-theme($primary, $accent, $warn));
+      // @include no-result-component(mat-light-theme($primary, $accent, $warn));
+      @include mat-expansion-panel($theme);
+
+      $ColorGrabber: mat-light-theme($primary, $accent, $warn);
+      @include theme-color-grabber($ColorGrabber);
+      $matCardTheme: mat-light-theme($primary, $accent, $warn);
+      @include theme-mat-card($matCardTheme);
+      $matModal: mat-light-theme($primary, $accent, $warn);
+      @include theme-mat-modal($matModal);
+      $themematsidebar: mat-light-theme($primary, $accent, $warn);
+      @include theme-mat-sidebar($themematsidebar);
+      $primary100: mat-color($primary, 100);
+      $primary200: mat-color($primary, 200);
+      $accent500: mat-color($accent, 500);
+
+      // $accent500: mat-color($accent, 500);
+      // $warn500: mat-color($warn);
+      --sbt-body-bg: #{$primary100};
+      --sbt-body-bg2: #{$primary200};
+      --sb-profile-bg-c-4: var(--sbt-body-bg);
+      --sbt-footer-bg: var(--sbt-body-bg2);
+      --cc-grade-pill-container-bg: var(--sbt-body-bg);
+      --sb-modal-content-bg: var(--sbt-body-bg);
+      --sb-modal-actions-bg: var(--sbt-body-bg);
+      --sbt-compt-bg: var(--sbt-body-bg);
+      --cc-chapter-bg: var(--sbt-body-bg2);
+      --sbt-filter-bar-bg: var(--sbt-body-bg);
+      --primary-color: #{$accent500};
+      $primary500: mat-color($primary);
+      --sbt-header-bg: #{$primary500};
+
+      .mat-app-background,
+      .new-layout-footer {
+        background: mat-color($primary, 100) !important;
+      }
+      .sb-icon {
+        background: mat-color($accent);
+      }
+    }
+
+    // .theme-dependent-colors {
+    // 	background: mat-color($primary);
+    // 	color: mat-color($accent);
+    // }
+
+    // .background {
+    // 	padding: 0rem;
+    //   // background-color: mat-color($background, background);
+    // 	color: mat-color($accent);
+    // }
+
+    // $fg_palette:map-get($my-theme-dark, foreground);
+    // $bg_palette:map-get($my-theme-dark, background);
+    // $fg:map-get($fg_palette, text);
+    // $bg:map-get($bg_palette, background);
+
+    // --primary: #{$primary};
+    // --accent: #{$accent};
+    // --warn: #{$warn};
+    // --fg: #{$fg};
+    // --bg: #{$bg};
+    // --sbt-footer-bg: #{$primary, 100};
+    // .mat-app-background,
+    // .sbt-mat-background,
+    // .sbt-filter-bar,
+    // footer, .sb-section-preference {
+    //   background: mat-color($primary, 100) !important;
+    //   //background: mat-color($background, background) !important;
+    // }
+
+    // .sbt-mat-surface,
+    // .sbt-page-content-area, .new-layout-footer .sbt-container {
+    //   background: mat-color($primary, 200) !important;
+    //   //background: mat-color($background, background) !important;
+    // }
+  }
+
+  // .#{$css-class}-dark {
+  //   @include mat.all-component-colors(mat-dark-theme($primary, $accent, $warn));
+  //   @include mat.all-component-typographies($typography);
+
+  //   // dark background related
+  //   @include darkbgTheme($theme);
+  //   @include mat.toolbar-theme(mat-dark-theme($primary, $accent, $warn));
+  //   @include no-result-component(mat-dark-theme($primary, $accent, $warn));
+
+  //   // @include app-root-theme(mat-dark-theme($primary, $accent, $warn));
+
+  // }
+
+  // .theme-primary.#{$css-class} {
+  //   background-color: mat-color($primary);
+  // }
+
+  // .theme-accent.#{$css-class} {
+  //   background-color: mat-color($accent);
+  // }
+
+  // .theme-warn.#{$css-class} {
+  //   background-color: mat-color($warn);
+  // }
+
+  /* theme button */
+  .themeMenuDropdown .#{$css-class} use.docs-theme-icon-background {
+    // $background:map-get($background, 'background');
+    // $background: mat.get-color-config($app-themes);
+    // fill:map-get($mat-dark-theme-background, background);
+    fill: map-get($background, background);
+  }
+  .themeMenuDropdown .#{$css-class} use.docs-theme-icon-button {
+    fill: mat-color($accent, 500);
+  }
+  .themeMenuDropdown .#{$css-class} use.docs-theme-icon-toolbar {
+    fill: mat-color($primary, 500);
+  }
+}
+
+/* accessibilty grey bar */
+@import "./accessbilityBar";

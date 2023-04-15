@@ -1,0 +1,58 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use './palette' as *;
+
+@mixin make-stylesheets($app-themes) {
+@each $css-class, $theme in $app-themes {
+    $primary: if(
+      map-has-key($theme, primary),
+      map-get($theme, primary),
+      mat.define-palette(map-get($theme, primary-base))
+    );
+    $accent: if(
+      map-has-key($theme, accent),
+      map-get($theme, accent),
+      mat.define-palette(map-get($theme, accent-base))
+    );
+    $warn: if(
+      map-has-key($theme, warn),
+      map-get($theme, warn),
+      mat.define-palette(
+        if(map-has-key($theme, warn-base), map-get($theme, warn-base), mat.$red-palette)
+      )
+    );
+    $background: if(
+      map-has-key($theme, background),
+      map-get($theme, background),
+      mat.define-palette(
+        if(
+          map-has-key($theme, background),
+          map-get($theme, background),
+          $background
+        )
+      )
+    );
+    $foreground: if(
+      map-has-key($theme, foreground),
+      map-get($theme, foreground),
+      mat.define-palette(
+        if(
+          map-has-key($theme, foreground),
+          map-get($theme, foreground),
+          $foreground
+        )
+      )
+    );
+    $typography: if(
+      map-has-key($theme, typography),
+      map-get($theme, typography),
+      mat-config(
+        if(
+          map-has-key($config, typography),
+          map-get($config, typography),
+          typography
+        )
+      )
+    );
+  }
+}

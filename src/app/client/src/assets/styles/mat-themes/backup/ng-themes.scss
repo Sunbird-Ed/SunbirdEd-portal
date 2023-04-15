@@ -1,0 +1,133 @@
+/**
+* Created at 1397/12/14 (2019/3/5).
+* @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
+*/
+
+@use "@angular/material" as mat;
+@include mat-core();
+
+@import './ng-color-palette.scss';
+@import './../../app/app.component.scss-theme.scss';
+
+@mixin define-css-classes($theme) {
+
+	@include angular-material-theme($theme);
+
+	$primary: map-get($theme, primary);
+	$accent: map-get($theme, accent);
+	$warn: map-get($theme, warn);
+
+	$background: map-get($theme, background);
+	$foreground: map-get($theme, foreground);
+
+
+	// CSS THEME-DEPENDENT-STYLES ARE HERE:
+	.theme-dependent-colors {
+		background: mat-color($primary);
+		color: mat-color($accent);
+	}
+
+	.background {
+		padding: 0rem;
+		background-color: mat-color($background, background);
+		color: mat-color($accent);
+	}
+
+	.sb-icon {
+		background-color: mat-color($accent);
+	}
+
+	.sbt-mat-background,
+	.sbt-filter-bar {
+		background: mat-color($primary, 100) !important;
+		//background: mat-color($background, background) !important;
+	}
+
+	.sbt-mat-surface,
+	.sbt-page-content-area {
+		background: mat-color($primary, 50) !important;
+		//background: mat-color($background, background) !important;
+	}
+
+}
+
+
+
+/**
+* Define your custom themes in this map. 
+* The `key` of each member is the name of CSS class for that theme. 
+* To better understanding the schema of the map, see `@each` loop below and especially pay attention to 
+* `map-has-key()` functions.
+*/
+$app-themes: (
+	deeppurple-amber: (primary-base: $mat-deep-purple, accent-base: $mat-amber),
+	indigo-pink : (primary-base: $mat-indigo, accent-base: $mat-pink),
+	pink-bluegrey : (primary-base: $mat-pink, accent-base: $mat-blue-gray),
+	purple-green : (primary-base: $mat-purple, accent-base: $mat-green),
+	joy: (primary-base: $mat-joy, accent-base: $mat-joy-accent)
+);
+
+@each $css-class,
+$theme in $app-themes {
+	$primary: if(map-has-key($theme, primary), map-get($theme, primary), mat-palette(map-get($theme, primary-base)));
+	$accent: if(map-has-key($theme, accent), map-get($theme, accent), mat-palette(map-get($theme, accent-base)));
+	$warn: if(map-has-key($theme, warn), map-get($theme, warn), mat-palette(if(map-has-key($theme, warn-base), map-get($theme, warn-base), $mat-red)));
+
+	.#{$css-class} {
+		@include define-css-classes(mat-light-theme($primary, $accent, $warn));
+		@include app-root-theme(mat-light-theme($primary, $accent, $warn));
+	}
+
+	.#{$css-class}-dark {
+		@include define-css-classes(mat-dark-theme($primary, $accent, $warn));
+		@include app-root-theme(mat-dark-theme($primary, $accent, $warn));
+	}
+
+	//   .theme-primary.#{$css-class} {
+	//     background-color: mat-color($primary);
+	//   }
+
+	//   .theme-accent.#{$css-class} {
+	//     background-color: mat-color($accent);
+	//   }
+
+	//   .theme-warn.#{$css-class} {
+	//     background-color: mat-color($warn);
+	//   }
+
+}
+
+
+
+// custom color https://stackoverflow.com/questions/49642098/angular-material-global-color-variables
+
+// @use "@angular/material" as mat;
+// // Theme configuration
+// $primary: mat-palette($mat-blue, 800, 500, 900);
+// $accent:  mat-palette($mat-blue, A200, A100, A400);
+// $warn: mat-palette($mat-red);
+
+// $theme: mat-light-theme($primary, $accent, $warn);
+
+// // Custom colors
+// $custom-colors: (
+//   custom-color-a: mat-color($mat-green, 700),
+//   custom-color-b: mat-color($mat-red, 400),
+// );
+// $theme: map-merge($theme, (custom-colors: $custom-colors));
+
+// @import 'variables';
+
+// .custom-class-a {
+//   background-color: map-get($custom-colors, custom-color-a);
+//   color: map-get($custom-colors, custom-color-b);
+// }
+
+// @mixin custom-component-theme($theme) {
+// 	$custom-colors: map-get($theme, custom-colors);
+  
+// 	.custom-class-a {
+// 	  background-color: map-get($custom-colors, custom-color-a);
+// 	  color: map-get($custom-colors, custom-color-b);
+// 	}
+//   }

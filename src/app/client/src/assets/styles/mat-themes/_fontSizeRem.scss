@@ -1,0 +1,62 @@
+
+@use "@angular/material" as mat;
+@use "sass:map";
+
+/* custom font size px to rem */
+
+$custom-typography: mat.define-typography-config(
+  $font-family: inherit,
+  $display-4: mat.define-typography-level(7rem, 7rem, 300, $letter-spacing: -0.05em),
+  $display-3: mat.define-typography-level(3.5rem, 3.5rem, 400, $letter-spacing: -0.02em),
+  $display-2: mat.define-typography-level(2.8125rem, 3rem, 400, $letter-spacing: -0.005em),
+  $display-1: mat.define-typography-level(2.125rem, 2.5rem, 400),
+  $headline: mat.define-typography-level(1.5rem, 2rem, 400),
+  $title: mat.define-typography-level(1rem, 1rem, 500),
+  $subheading-2: mat.define-typography-level(1rem, 1.75, 400),
+  $subheading-1: mat.define-typography-level(0.9375rem, 1.5rem, 400),
+  $body-2: mat.define-typography-level(0.875rem, 1.5rem, 500),
+  $body-1: mat.define-typography-level(0.875rem, 1.25rem, 400),
+  $caption: mat.define-typography-level(0.75rem, 1.25rem, 400),
+  $button: mat.define-typography-level(0.75rem, 1rem, 500),
+  $input: mat.define-typography-level(inherit, 1.125, 400),
+);
+
+// // Define  a custom typography config
+// $heading-font-family: "'Work Sans', sans-serif";
+// $typography: mat-typography-config(
+//   $display-4: mat-typography-level(112px, $font-family: $heading-font-family),
+//   $display-3: mat-typography-level(56px, $font-family: $heading-font-family),
+//   $display-2: mat-typography-level(45px, $font-family: $heading-font-family),
+//   $display-1: mat-typography-level(34px, $font-family: $heading-font-family),
+//   $headline: mat-typography-level(24px, $font-family: $heading-font-family),
+//   $title: mat-typography-level(20px, $font-family: $heading-font-family),
+// );
+
+// headline-1	One-off header, usually at the top of the page (e.g. a hero header).
+// headline-2	One-off header, usually at the top of the page (e.g. a hero header).
+// headline-3	One-off header, usually at the top of the page (e.g. a hero header).
+// headline-4	One-off header, usually at the top of the page (e.g. a hero header).
+// headline-5	Section heading corresponding to the <h1> tag.
+// headline-6	Section heading corresponding to the <h2> tag.
+// subtitle-1	Section heading corresponding to the <h3> tag.
+// subtitle-2	Section heading corresponding to the <h4> tag.
+// body-1	Base body text.
+// body-2	Secondary body text.
+// caption	Smaller body and hint text.
+// button	Buttons and anchors.
+
+// $font-family:   'Roboto, "Helvetica Neue", sans-serif',
+//   $display-4:     define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+//   $display-3:     define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+//   $display-2:     define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+//   $display-1:     define-typography-level(34px, 40px, 400),
+//   $headline:      define-typography-level(24px, 32px, 400),
+//   $title:         define-typography-level(20px, 32px, 500),
+//   $subheading-2:  define-typography-level(16px, 28px, 400),
+//   $subheading-1:  define-typography-level(15px, 24px, 400),
+//   $body-2:        define-typography-level(14px, 24px, 500),
+//   $body-1:        define-typography-level(14px, 20px, 400),
+//   $caption:       define-typography-level(12px, 20px, 400),
+//   $button:        define-typography-level(14px, 14px, 500),
+//   // Line-height must be unit-less fraction of the font-size.
+//   $input:         define-typography-level(inherit, 1.125, 400)

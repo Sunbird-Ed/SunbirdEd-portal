@@ -1,0 +1,11 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '@angular/material'as mat;
+
+$success: mat.define-palette(mat.$green-palette);
+$info: mat.define-palette(mat.$blue-palette);
+
+$variants-theme: (
+    success: $success,
+    info: $info,
+);

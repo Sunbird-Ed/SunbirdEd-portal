@@ -7,3 +7,73 @@
 .search-fill {
   fill: var(--primary-color);
 }
+
+::ng-deep {
+  .sb-mat__searchbar {
+    &.mat-form-field-appearance-fill {
+      .mat-form-field-flex {
+        background: transparent;
+        padding: 0;
+      }
+      .mat-form-field-infix {
+        padding: 0;
+        border: none;
+      }
+    }
+    &.mat-form-field-appearance-legacy {
+      .mat-form-field-infix {
+        padding: 0;
+        border-top: none;
+        width: 100%;
+      }
+      .mat-form-field-underline {
+        display: none;
+      }
+    }
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+    }
+    .mat-form-field-underline {
+      display: none;
+    }
+    .mat-form-field-wrapper {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      width: 100%;
+    }
+    .mat-input-element {
+      width: 100%;
+      font-size: var(--font-size-sm);
+      min-height: 3rem;
+      border: 0;
+      outline: 0;
+      border-radius: 1.75rem;
+      line-height: normal;
+      background: var(--sb-search-input-bg);
+      color: hsl(0, 0%, 20%);
+      color: var(--gray-800);
+      padding: 0 48px 0 36px;
+      box-sizing: border-box;
+    }
+    .sb-btn {
+      background: var(--sb-search-btn-bg);
+      border: 0;
+      min-width: auto;
+      white-space: nowrap;
+      border-radius: 1.75rem;
+      color: var(--sb-search-btn-text);
+      font-size: var(--font-size-sm);
+      margin: 0!important;
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: none!important;
+      height: 2rem;
+    }
+    
+  }
+}

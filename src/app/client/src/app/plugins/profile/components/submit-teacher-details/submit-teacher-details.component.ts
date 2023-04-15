@@ -79,7 +79,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   profileInfo: {};
   isTenantChanged = false;
   previousOrgId;
-  isFullScreenView: any;
 
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
@@ -692,11 +691,5 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-
-checkFullScreenView() {
-  this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-    this.isFullScreenView = isFullScreen;
-  });
-}
 
 }

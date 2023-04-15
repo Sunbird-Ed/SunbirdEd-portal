@@ -1,174 +1,391 @@
-<div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
-  <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
-  <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
-    <div *ngIf="!isDesktopApp"
-      class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky-topbar sb-fontresizecontainer"
-      [ngClass]="{'hide': isFullScreenView}">
-      <div class="ui container">
-        <div class="brand-header-tail">
-          <div class="dk-country-flag">
-          </div>
-          <div class="d-flex flex-ai-center head-tail-right-side">
-            <div class="dk-top-head-ul">
-              <nav title="accessibility_links" class="d-flex flex-ai-center">
-                <ul role="navigation" aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
-                  <li class="mb-0" *ngIf="!hideHeaderNFooter">
-                    <a href="javascript:void(0);" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}"
-                      tabindex="0" (click)="skipToMainContent()"
-                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a>
-                  </li>
-                  <li aria-hidden="true" *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
-                  <li class="screen-reader-link"><a href="/screenreaderaccess.html" tabindex="0"
-                      title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a>
-                  </li>
-                  <li aria-hidden="true" class="mx-4">|</li>
-                  <li class="mb-0">
-                    <ng-container *ngIf="userService.loggedIn">
-                      <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="0"
-                        href="/sitemap.html?session=true"
-                        class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
-                    </ng-container>
-                    <ng-container *ngIf="!userService.loggedIn">
-                      <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="0"
-                        href="/sitemap.html"
-                        class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
-                    </ng-container>
-                  </li>
-                  <li aria-hidden="true" class="mx-4">|</li>
-                </ul>
-                <ul>
-                  <li class="fontResize-container d-flex flex-ai-center pull-right" role="navigation"
-                    aria-label="Font Size">
-                    <button type="button" [attr.aria-pressed]="false" tabindex="0"
-                      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
-                      class="fontResizeBtn fontResizeBtn_A-"
-                      title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
-                      (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-                    <button [attr.aria-pressed]="false" type="button" tabindex="0"
-                      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
-                      class="fontResizeBtn fontResizeBtn_A"
-                      title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
-                      (click)="changeFontSize('reset');" #resetFontSize>A</button>
-                    <button [attr.aria-pressed]="false" type="button" tabindex="0"
-                      attr.aria-label="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}"
-                      class="fontResizeBtn fontResizeBtn_A+"
-                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}"
-                      (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
-                  </li>
-                  <li aria-hidden="true" class="mx-4">|</li>
-                  <li>
-                    <button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="0"
-                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="toggleLightDarkMode()"
-                      (keydown.enter)="toggleLightDarkMode();" #darkModeToggle>
-                      <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
-                        <path fill="var(--white)"
-                          d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
-                          transform="translate(-8 -8)" />
-                      </svg>
-                    </button>
-                  </li>
-                </ul>
-              </nav>
+<mat-drawer-container class="example-container" [hasBackdrop]="'true'">
+  <mat-drawer-content style="overflow: hidden;">
+    <div class="mat-app-background" [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
+      <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
+      <div [ngClass]="{
+          loggedInUser: userService.loggedIn,
+          guestUser: !userService.loggedIn
+        }">
+
+        <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }" class="accessibility-toolbar-theme mb-8 density-2">
+          <mat-toolbar color="accent">
+            <button mat-raised-button (click)="drawer.toggle()" class="custom-btn-bg">Toggle drawer</button>
+            <span class="example-spacer"></span>
+            <span aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
+              <a *ngIf="!hideHeaderNFooter" mat-button href="javascript:void(0);" title="{{
+              resourceService?.frmelmnts?.lbl?.accessibilitytskip
+            }}" tabindex="0" (click)="skipToMainContent()" class="cursor-pointer p-0">{{
+                resourceService?.frmelmnts?.lbl?.accessibilitytskip
+                }}</a>
+              <span> | </span>
+              <a mat-button href="/screenreaderaccess.html" tabindex="0" class="cursor-pointer p-0" title="{{
+              resourceService?.frmelmnts?.lbl?.accessibility
+            }}">{{ resourceService?.frmelmnts?.lbl?.accessibility }}</a>
+              <span> | </span>
+              <ng-container *ngIf="userService.loggedIn">
+                <a mat-button title="{{
+                  resourceService?.frmelmnts?.lbl?.accessibilitytext
+                }}" tabindex="0" href="/sitemap.html?session=true" class="cursor-pointer p-0">{{
+                  resourceService?.frmelmnts?.lbl?.accessibilitytext
+                  }}</a>
+              </ng-container>
+              <ng-container *ngIf="!userService.loggedIn">
+                <a mat-button title="{{
+                  resourceService?.frmelmnts?.lbl?.accessibilitytext
+                }}" tabindex="0" href="/sitemap.html" class="cursor-pointer p-0">{{
+                  resourceService?.frmelmnts?.lbl?.accessibilitytext
+                  }}</a>
+              </ng-container>
+              <span> | </span>
+            </span>
+
+
+
+            <span role="navigation" aria-label="Font Size">
+              <button mat-icon-button type="button" [attr.aria-pressed]="false" tabindex="0" aria-label="{{
+              resourceService?.frmelmnts?.lbl?.accessibilityfont}}" class="" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont
+            }}" (click)="changeFontSize('decrease')" #decreaseFontSize>
+                <mat-icon class="auto-flip">text_decrease</mat-icon>
+              </button>
+              <button mat-icon-button [attr.aria-pressed]="false" type="button" tabindex="0" aria-label="{{
+              resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}" class="" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
+            }}" (click)="changeFontSize('reset')" #resetFontSize>
+                <mat-icon class="auto-flip">text_format</mat-icon>
+              </button>
+              <button mat-icon-button [attr.aria-pressed]="false" type="button" tabindex="0" aria-label="{{
+              resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}" class="" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize
+            }}" (click)="changeFontSize('increase')" #increaseFontSize>
+                <mat-icon class="auto-flip">text_increase</mat-icon>
+              </button>
+
+            </span>
+
+            <!-- <button mat-icon-button id="dark-mode-toggle" class="dark-mode-toggle"  attr.aria-label="{{
+              resourceService?.frmelmnts?.lbl?.accessibilitytheme
+            }}" tabindex="0" title="{{
+              resourceService?.frmelmnts?.lbl?.accessibilitytheme
+            }}" (click)="toggleLightDarkMode()" (keydown.enter)="toggleLightDarkMode()" #darkModeToggle>
+            <mat-icon>dark_mode</mat-icon>
+          </button> -->
+
+            <button mat-button id="theme-selector" [mat-menu-trigger-for]="themeMenu" matTooltip="Select a theme!"
+              tabindex="-1">
+              <mat-icon class="auto-flip">format_color_fill</mat-icon>
+            </button>
+
+            <mat-menu #themeMenu="matMenu" class="themeMenuDropdown">
+              <!-- <mat-checkbox [checked]="isThemeDark" (click)="$event.stopPropagation()" (change)="toggleDarkness()"
+                class="mat-menu-item theme-selector-is-dark" i18n="@@Dark">Dark
+              </mat-checkbox> -->
+
+              <button mat-menu-item *ngFor="let theme of themes; let i = index"
+              (click)="$event.stopPropagation(); setMatTheme(theme)" class="d-flex flex-ai-center flex-jc-space-between">
+              <div><mat-icon *ngIf="activeTheme === theme" class="center theme-check">radio_button_checked</mat-icon>
+              <mat-icon *ngIf="activeTheme != theme" class="center theme-check">radio_button_unchecked</mat-icon>
+              <span>{{ theme }}</span></div>
+              <mat-icon role="img" svgicon="theme-example"
+                    class="mat-icon {{ theme }} ml-16 mr-0"
+                    aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="theme-example"><svg
+                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%"
+                      height="100%" viewBox="0 0 80 80" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                      <defs>
+                        <path
+                          d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                          id="a"></path>
+                        <path
+                          d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                          id="b"></path>
+                        <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                      </defs>
+                      <use xlink:href="#a" fill="#fff" class="docs-theme-icon-background"></use>
+                      <use xlink:href="#b" class="docs-theme-icon-button"></use>
+                      <use xlink:href="#c" class="docs-theme-icon-toolbar"></use>
+                    </svg></mat-icon>
+            </button>
+
+              <!-- <a mat-list-item href="javascript:void(0)" *ngFor="let theme of themes; let i = index"
+                              (click)="$event.stopPropagation(); setMatTheme(theme)">{{ theme }}
+                              <mat-icon *ngIf="activeTheme === theme" class="center theme-check">check</mat-icon>
+                            </a> -->
+              <!--<button mat-button *ngFor="let theme of themes; let i = index;"
+                        (click)="$event.stopPropagation(); setMatTheme(theme)"> {{ theme }}
+                       <mat-icon *ngIf="activeTheme===theme" class="center theme-check">check</mat-icon> -->
+              <!-- <div [attr.class]="theme + ' theme-primary center'">
+                      <div [attr.class]="theme + ' theme-accent'"></div>
+                      <div [attr.class]="theme + ' theme-warn'"></div>
+                      <mat-icon *ngIf="activeTheme===theme" class="center theme-check">check</mat-icon>
+                    </div>-->
+              <!-- </button>  -->
+            </mat-menu>
+          </mat-toolbar>
+        </div>
+
+
+
+        <!-- <div *ngIf="!isDesktopApp"
+          class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky-topbar sb-fontresizecontainer"
+          [ngClass]="{ hide: isFullScreenView }">
+          <div class="ui container">
+            <div class="brand-header-tail">
+              <div class="dk-country-flag"></div>
+              <div class="d-flex flex-ai-center head-tail-right-side">
+                <div class="dk-top-head-ul">
+                  <nav title="accessibility_links" class="d-flex flex-ai-center">
+                    <ul role="navigation" aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
+                      <li class="mb-0" *ngIf="!hideHeaderNFooter">
+                        <a href="javascript:void(0);" title="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilitytskip
+                          }}" tabindex="0" (click)="skipToMainContent()" class="cursor-pointer">{{
+                          resourceService?.frmelmnts?.lbl?.accessibilitytskip
+                          }}</a>
+                      </li>
+                      <li aria-hidden="true" *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">
+                        |
+                      </li>
+                      <li class="screen-reader-link">
+                        <a href="/screenreaderaccess.html" tabindex="0" title="{{
+                            resourceService?.frmelmnts?.lbl?.accessibility
+                          }}">{{ resourceService?.frmelmnts?.lbl?.accessibility }}</a>
+                      </li>
+                      <li aria-hidden="true" class="mx-4">|</li>
+                      <li class="mb-0">
+                        <ng-container *ngIf="userService.loggedIn">
+                          <a title="{{
+                              resourceService?.frmelmnts?.lbl?.accessibilitytext
+                            }}" tabindex="0" href="/sitemap.html?session=true" class="cursor-pointer">{{
+                            resourceService?.frmelmnts?.lbl?.accessibilitytext
+                            }}</a>
+                        </ng-container>
+                        <ng-container *ngIf="!userService.loggedIn">
+                          <a title="{{
+                              resourceService?.frmelmnts?.lbl?.accessibilitytext
+                            }}" tabindex="0" href="/sitemap.html" class="cursor-pointer">{{
+                            resourceService?.frmelmnts?.lbl?.accessibilitytext
+                            }}</a>
+                        </ng-container>
+                      </li>
+                      <li aria-hidden="true" class="mx-4">|</li>
+                    </ul>
+                    <ul>
+                      <li class="fontResize-container d-flex flex-ai-center pull-right" role="navigation"
+                        aria-label="Font Size">
+                        <button type="button" [attr.aria-pressed]="false" tabindex="0" attr.aria-label="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilityfont
+                          }}" class="fontResizeBtn fontResizeBtn_A_Decrease" title="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilityfont
+                          }}" (click)="changeFontSize('decrease')" #decreaseFontSize>
+                          A-
+                        </button>
+                        <button [attr.aria-pressed]="false" type="button" tabindex="0" attr.aria-label="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
+                          }}" class="fontResizeBtn fontResizeBtn_A" title="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
+                          }}" (click)="changeFontSize('reset')" #resetFontSize>
+                          A
+                        </button>
+                        <button [attr.aria-pressed]="false" type="button" tabindex="0" attr.aria-label="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilitytextsize
+                          }}" class="fontResizeBtn fontResizeBtn_A_Increase" title="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilitytextsize
+                          }}" (click)="changeFontSize('increase')" #increaseFontSize>
+                          A+
+                        </button>
+                      </li>
+                      <li aria-hidden="true" class="mx-4">|</li>
+                      <li>
+                        <button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="0" title="{{
+                            resourceService?.frmelmnts?.lbl?.accessibilitytheme
+                          }}" (click)="toggleLightDarkMode()" (keydown.enter)="toggleLightDarkMode()" #darkModeToggle>
+                          <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+                            <path fill="var(--white)"
+                              d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+                              transform="translate(-8 -8)" />
+                          </svg>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
             </div>
           </div>
+        </div> 
+      -->
+
+        <!-- <label class="theme-dependent-colors" style="font-weight: bold">Simple Html Element: Theme-Dependent Colors.</label> -->
+
+        <!-- <p class="mat-display-4 mat-primary" color="primary">mat-display-4</p>
+        <p class="mat-display-3">mat-display-3</p>
+        <p class="mat-display-2">mat-display-2</p>
+        <p class="mat-display-1">mat-display-1</p>
+        <p class="mat-h1">mat-h1</p>
+        <p class="mat-headline">mat-headline</p>
+        <p class="mat-h2">mat-h2</p>
+        <p class="mat-title">mat-title</p>
+        <p class="mat-h3">mat-h3</p>
+        <p class="mat-subheading-2">mat-subheading-2</p>
+        <p class="mat-h4">mat-h4</p>
+        <p class="mat-subheading-1">mat-subheading-1</p>
+        <p class="mat-body">mat-body</p>
+        <p class="mat-body-1">mat-body-1</p>
+        <p class="mat-body-strong">mat-body-strong</p>
+        <p class="mat-body-2">mat-body-2</p>
+        <p class="mat-small">mat-small</p>
+        <p class="mat-caption">mat-caption</p> -->
+
+        <!-- <div class="m-32">
+        <mat-card class="ssb-mat-accent big-input">
+          <h1 class="h1">bg test</h1>
+          <mat-form-field appearance="fill">
+            <mat-label>Fill form field</mat-label>
+            <input matInput placeholder="Placeholder" />
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Hint</mat-hint>
+          </mat-form-field>
+        </mat-card>
+      </div> -->
+
+        <!-- onboarding stepper -->
+        <app-onboarding-popup *ngIf="isStepperEnabled && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
+          [isGuestUser]="isGuestUser" [OnboardingFormConfig]="OnboardingFormConfig" [deviceProfile]="deviceProfile"
+          (isStepperCompleted)="isStepper($event)">
+        </app-onboarding-popup>
+
+        <!-- popup disabled  -->
+        <div *ngIf="loadPopUps && isPopupEnabled">
+          <!-- 2nd popup BMGS  -->
+          <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{
+              disableClose: true,
+              panelClass: ['overflow-visible', 'material-modal'],
+              autoFocus: false
+            }">
+            <ng-template sbModalContent let-data>
+              <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
+                [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
+            </ng-template>
+          </app-modal-wrapper>
+          <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
+            [userFeedData]="userFeed">
+          </app-validate-teacher-identifier-popup>
+          <!-- 1 & 3rd popup User Type & location -->
+          <app-user-onboarding (close)="onLocationSubmit()" *ngIf="
+              isGuestUser
+                ? showUserTypePopup
+                : showUserTypePopup || !isLocationConfirmed
+            " [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
         </div>
+        <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
+        </app-tnc-popup>
+        <div *ngIf="showGlobalConsentPopUpSection">
+          <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent"
+            (close)="closeConsentPopUp()" [consentConfig]="consentConfig"></app-global-consent-pii>
+        </div>
+        <app-modal-wrapper [config]="{
+            disableClose: true,
+            size: 'small',
+            panelClass: 'material-modal'
+          }" *ngIf="
+            isCustodianOrgUser &&
+            usersProfile &&
+            !usersProfile?.managedBy &&
+            !usersProfile?.dob &&
+            (usersProfile?.userLocations?.length > 0 || showYearOfBirthPopup)
+          ">
+          <ng-template sbModalContent let-data>
+            <app-year-of-birth [dialogProps]="data"></app-year-of-birth>
+          </ng-template>
+        </app-modal-wrapper>
+
+        <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
+          [ngClass]="{ 'header-block': isFullScreenView }"></app-header>
+        <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
+        </app-install-app>
+        <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
+
+        <main>
+          <router-outlet *ngIf="
+              isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)
+            " (activate)="onActivate($event)"></router-outlet>
+        </main>
       </div>
     </div>
-    <!-- onboarding stepper -->
-    <app-onboarding-popup *ngIf="isStepperEnabled && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
-      [isGuestUser]="isGuestUser" [OnboardingFormConfig]="OnboardingFormConfig" [deviceProfile]="deviceProfile"
-      (isStepperCompleted)="isStepper($event)">
-    </app-onboarding-popup>
+    <div *ngIf="isBotEnabled === 'true'" [ngClass]="{ hideBot: isBotdisplayforRoute(), hideBot: isFullScreenView }">
+      <lib-chat-window [inputValues]="botObject"></lib-chat-window>
+    </div>
+    <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 
-    <!-- popup disabled  -->
-    <div *ngIf="loadPopUps && isPopupEnabled">
-      <!-- 2nd popup BMGS  -->
-      <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp"
-        [config]="{disableClose: true, panelClass: ['overflow-visible', 'material-modal'], autoFocus: false}">
-        <ng-template sbModalContent let-data>
-          <app-popup [dialogProps]="data" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit"
-            [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
-        </ng-template>
-      </app-modal-wrapper>
-      <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
-        [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
-      <!-- 1 & 3rd popup User Type & location -->
-      <app-user-onboarding (close)="onLocationSubmit()"
-        *ngIf="isGuestUser ? showUserTypePopup :(showUserTypePopup || !isLocationConfirmed)"
-        [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
-    </div>
-    <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
-    </app-tnc-popup>
-    <div *ngIf="showGlobalConsentPopUpSection">
-      <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()"
-        [consentConfig]="consentConfig"></app-global-consent-pii>
-    </div>
-    <app-modal-wrapper [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
-      *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)">
+    <app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
+      [config]="{ disableClose: true, size: 'small', panelClass: 'material-modal' }">
       <ng-template sbModalContent let-data>
-        <app-year-of-birth [dialogProps]="data"></app-year-of-birth>
+        <div class="sb-mat__modal sb-mat__modal--small">
+          <div mat-dialog-title>
+            <div class="title">{{ resourceService?.frmelmnts?.lbl?.sesnexrd }}</div>
+          </div>
+          <mat-dialog-content>
+            <div class="sb-mat__modal__content d-flex flex-ai-center text-center flex-jc-center p-24">
+              <p>
+                {{
+                resourceService?.frmelmnts?.lbl?.plslgn
+                | interpolate : "{instance}" : instance
+                }}
+              </p>
+            </div>
+          </mat-dialog-content>
+          <mat-dialog-actions class="sb-mat__modal__actions">
+            <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
+              {{ resourceService?.frmelmnts?.btn?.login }}
+            </button>
+          </mat-dialog-actions>
+        </div>
       </ng-template>
     </app-modal-wrapper>
 
-    <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
-      [ngClass]="{'header-block': isFullScreenView}"></app-header>
-    <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
-    </app-install-app>
-    <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
-
-    <main>
-      <router-outlet *ngIf="isIOS || (initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp)"
-        (activate)="onActivate($event)"></router-outlet>
-    </main>
-  </div>
-</div>
-<div *ngIf="isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute(), 'hideBot': isFullScreenView}">
-  <lib-chat-window [inputValues]="botObject"></lib-chat-window>
-</div>
-<app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
-
-<app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
-  [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}">
-  <ng-template sbModalContent let-data>
-    <div class="sb-mat__modal sb-mat__modal--small">
-
-      <div mat-dialog-title>
-        <div class="title">{{resourceService?.frmelmnts?.lbl?.sesnexrd}}</div>
-      </div>
-      <mat-dialog-content>
-        <div class="sb-mat__modal__content d-flex flex-ai-center text-center flex-jc-center p-24">
-          <p>
-            {{resourceService?.frmelmnts?.lbl?.plslgn |
-            interpolate:'{instance}': instance }}
-          </p>
-        </div>
-      </mat-dialog-content>
-      <mat-dialog-actions class="sb-mat__modal__actions">
-        <button type="button" (click)="handleLogin()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
-          {{ resourceService?.frmelmnts?.btn?.login }}
-        </button>
-      </mat-dialog-actions>
-
-    </div>
-  </ng-template>
-</app-modal-wrapper>
-
-<ng-container *ngIf="layoutConfiguration">
-  <svg width="332px" height="358px" viewBox="0 0 332 358" class="sbt-theme-bg-img computer only" version="1.1"
-    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="Illustration-&amp;-colour-palette-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-      <g transform="translate(106.000000, -390.000000)" class="st0">
-        <g transform="translate(-106.000000, 390.000000)">
-          <path
-            d="M118.918045,0.564535521 C154.339379,5.57509002 108.755811,52.1143659 108.755811,52.1143659 C108.755811,52.1143659 185.339755,-2.23575328 230.549812,15.5417727 C275.757394,33.3168228 187.673287,114.572323 187.673287,114.572323 C187.673287,114.572323 287.217863,85.2828923 327.147644,127.129789 C367.077425,168.976685 101.348714,205.62258 101.348714,205.62258 C101.348714,205.62258 148.828363,288.592959 141.567958,311.1744 C141.567958,311.1744 127.106556,361.690251 56.4047156,265.925614 C56.4047156,265.925614 57.4676522,364.523693 19.8774293,357.393721 C-17.71032,350.261277 10.076548,243.873629 10.076548,243.873629 L2.56785415,83.5788451 L2.66395147,83.4746638 C5.78661141,80.0950646 84.2002875,-4.34581014 118.918045,0.564535521 Z M185.066826,37.6429976 L78.104636,142.528307 L77.8957176,143.177194 C72.4179048,160.682299 83.0348258,169.5 109.307095,169.5 C135.085318,169.5 176.196991,161.104755 232.667135,144.317206 L232.667135,144.317206 L236.143681,143.278911 L235.856319,142.321089 L234.115849,142.84208 C176.838582,159.948371 135.227065,168.5 109.307095,168.5 L109.307095,168.5 L108.533441,168.497459 C83.4175642,168.331435 73.6662583,160.0296 78.8533181,143.465566 L78.8533181,143.465566 L78.979,143.071 L185.766967,38.3570024 L185.066826,37.6429976 Z"
-            id="Combined-Shape"></path>
+    <ng-container *ngIf="layoutConfiguration">
+      <svg width="332px" height="358px" viewBox="0 0 332 358" class="sbt-theme-bg-img computer only" version="1.1"
+        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g id="Illustration-&amp;-colour-palette-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g transform="translate(106.000000, -390.000000)" class="st0">
+            <g transform="translate(-106.000000, 390.000000)">
+              <path
+                d="M118.918045,0.564535521 C154.339379,5.57509002 108.755811,52.1143659 108.755811,52.1143659 C108.755811,52.1143659 185.339755,-2.23575328 230.549812,15.5417727 C275.757394,33.3168228 187.673287,114.572323 187.673287,114.572323 C187.673287,114.572323 287.217863,85.2828923 327.147644,127.129789 C367.077425,168.976685 101.348714,205.62258 101.348714,205.62258 C101.348714,205.62258 148.828363,288.592959 141.567958,311.1744 C141.567958,311.1744 127.106556,361.690251 56.4047156,265.925614 C56.4047156,265.925614 57.4676522,364.523693 19.8774293,357.393721 C-17.71032,350.261277 10.076548,243.873629 10.076548,243.873629 L2.56785415,83.5788451 L2.66395147,83.4746638 C5.78661141,80.0950646 84.2002875,-4.34581014 118.918045,0.564535521 Z M185.066826,37.6429976 L78.104636,142.528307 L77.8957176,143.177194 C72.4179048,160.682299 83.0348258,169.5 109.307095,169.5 C135.085318,169.5 176.196991,161.104755 232.667135,144.317206 L232.667135,144.317206 L236.143681,143.278911 L235.856319,142.321089 L234.115849,142.84208 C176.838582,159.948371 135.227065,168.5 109.307095,168.5 L109.307095,168.5 L108.533441,168.497459 C83.4175642,168.331435 73.6662583,160.0296 78.8533181,143.465566 L78.8533181,143.465566 L78.979,143.071 L185.766967,38.3570024 L185.066826,37.6429976 Z"
+                id="Combined-Shape"></path>
+            </g>
+          </g>
         </g>
-      </g>
-    </g>
-  </svg>
-</ng-container>
-<ng-container *ngIf="layoutConfiguration">
-  <div class="sbt-theme-right-flower computer only"></div>
-</ng-container>
+      </svg>
+    </ng-container>
+    <ng-container *ngIf="layoutConfiguration">
+      <div class="sbt-theme-right-flower computer only"></div>
+    </ng-container>
+  </mat-drawer-content>
+
+  <mat-drawer #drawer mode="side" position="end">
+    <mat-nav-list style="min-width: 200px;">
+      <mat-list-item>
+        <mat-icon mat-list-icon>person</mat-icon>
+        <div></div>
+        <div class="sidenav-item">
+          <h5 class="lead">About</h5>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>settings</mat-icon>
+        <div></div>
+        <div class="sidenav-item">
+          <h5 class="lead">Services</h5>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>local_phone</mat-icon>
+        <div></div>
+        <div class="sidenav-item">
+          <h5 class="lead">Contact</h5>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
+</mat-drawer-container>
 
 <app-telemetry-error-modal></app-telemetry-error-modal>

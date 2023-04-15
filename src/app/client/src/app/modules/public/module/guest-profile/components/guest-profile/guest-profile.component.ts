@@ -42,7 +42,6 @@ export class GuestProfileComponent implements OnInit {
   editFrameworkInteractEData: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
-  isFullScreenView: any;
   constructor(
     public activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
@@ -162,10 +161,5 @@ export class GuestProfileComponent implements OnInit {
   goBack() {
     this.navigationHelperService.goBack();
   }
-  
-  checkFullScreenView() {
-    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
-  }
+
 }

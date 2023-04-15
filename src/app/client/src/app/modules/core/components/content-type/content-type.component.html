@@ -35,7 +35,7 @@
 </ng-container>
 
 <ng-container *ngIf="isLayoutAvailable() && !showBackButton">
-  <div class="sb-linkmenu m-0 d-flex flex-ai-center" role="navigation" aria-label="Main menu">
+  <!-- <div class="sb-linkmenu m-0 d-flex flex-ai-center" role="navigation" aria-label="Main menu">
     <ng-container *ngFor="let contentType of contentTypes">
       <a aria-current="page" [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false" *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType)" (keyup.enter)="showContentType(contentType)" appOnlineOnly
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
@@ -50,7 +50,37 @@
         {{getTitle(contentType)}}
       </a>
     </ng-container>
-  </div>
+
+  </div> -->
+
+
+    <mat-toolbar color="primary" class="toolbar-menu">
+      <ng-container *ngFor="let contentType of contentTypes">
+        <button mat-raised-button class="example-icon mr-8"
+          aria-current="page" [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
+          *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType)"
+          (keyup.enter)="showContentType(contentType)" appOnlineOnly
+          [ngClass]="{'active': selectedContentType === contentType.contentType}"
+          class="item {{'item--' + getIcon(contentType)}}" [color]="selectedContentType === contentType.contentType ? 'accent' : ''">
+          <!-- <mat-icon>{{getIcon(contentType)}}</mat-icon> -->
+          <span [ngClass]="'sb-icon sb-icon--sm sb-icon__'+ getIcon(contentType)"></span>&nbsp;
+          {{getTitle(contentType)}}
+        </button>
+    
+        <!-- For desktop -->
+        <button mat-raised-button class="example-icon mr-8"
+          aria-current="page" [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
+          *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" tabindex="0"
+          (keyup.enter)="showContentType(contentType)" (click)="showContentType(contentType)"
+          [ngClass]="{'active': selectedContentType === contentType.contentType}"
+          class="item {{'item--' + getIcon(contentType)}}">
+          <!-- <mat-icon>{{getIcon(contentType)}}</mat-icon> -->
+          <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>&nbsp;
+          {{getTitle(contentType)}}
+        </button>
+      </ng-container>
+    
+    </mat-toolbar>
 
 </ng-container>
 

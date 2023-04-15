@@ -97,7 +97,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   subPersona: string[];
   isConnected = true;
   showFullScreenLoader = false;
-  isFullScreenView: any;
   avatarConfig = {
     size: this.configService.constants.SIZE.LARGE,
     view: this.configService.constants.VIEW.VERTICAL,
@@ -700,10 +699,5 @@ public onLocationModalClose(event) {
   }, 5000);
 }
 
-checkFullScreenView() {
-  this.navigationhelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
-    this.isFullScreenView = isFullScreen;
-  });
-}
 
 }

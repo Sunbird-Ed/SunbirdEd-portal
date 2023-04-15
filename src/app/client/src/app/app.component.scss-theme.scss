@@ -1,0 +1,36 @@
+@use "@angular/material" as mat;
+@use 'sass:map';
+
+// mixin name will be used in main style.scss
+@mixin app-root-theme($theme) {
+
+// Get the color config from the theme.
+$color-config: mat.get-color-config($theme);
+// Get the primary color palette from the color-config.
+$primary: map.get($color-config, 'primary');
+  
+  .ssb-mat-accent {
+    // Read the 500 hue from the primary color palette.
+    background-color: mat.get-color-from-palette($primary, 100);
+  }
+
+  .big-input {
+    input {
+      color: mat.get-color-from-palette($primary, lighter-contrast);
+      background-color: mat.get-color-from-palette($primary, 500);
+      border: 1px solid mat.get-color-from-palette($primary, 900);
+    }
+  }
+
+}
+
+
+
+// @mixin typography($theme) {
+//   // Get the typography config from the theme.
+//   $typography-config: mat.get-typography-config($theme);
+
+//   .my-carousel {
+//     font-family: mat.font-family($typography-config);
+//   }
+// }

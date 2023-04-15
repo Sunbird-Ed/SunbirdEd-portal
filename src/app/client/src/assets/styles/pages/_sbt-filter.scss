@@ -242,6 +242,7 @@
 
   &-bar {
     background: var(--sbt-filter-bar-bg);
+    // background: mat-color($primary, 50);
     box-shadow: var(--sbt-box-shadow-6px);
     min-width: calculateRem(232px);
     padding: calculateRem(32px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
