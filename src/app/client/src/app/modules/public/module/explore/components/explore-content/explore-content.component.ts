@@ -111,7 +111,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.router.navigate(['']);
       }
     );
-    this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+    this.searchAll = this.resourceService?.frmelmnts?.lbl?.allContent;
     this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
       this.contentDownloadStatus = contentDownloadStatus;
       this.addHoverData();
@@ -211,13 +211,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         filters[key] = el;
       }
     });
-
-    // Replacing cbse/ncert value with cbse
-    const cbseNcertExists = [_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
-    if (cbseNcertExists) {
-      filters.se_boards = ['cbse'];
-    }
-
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
       if (pageTitle && pageType && (pageTitle === pageType)) {
