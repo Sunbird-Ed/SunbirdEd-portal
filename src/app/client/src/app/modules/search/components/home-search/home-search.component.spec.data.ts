@@ -293,7 +293,7 @@ export const Response = {
         'course'
       ],
       'se_boards': [
-        'CBSE/NCERT'
+        'CBSE'
       ],
       'se_mediums': [
         'english'
