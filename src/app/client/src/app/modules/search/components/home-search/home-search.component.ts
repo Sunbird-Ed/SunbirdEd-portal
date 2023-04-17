@@ -176,13 +176,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         filters[key] = el;
       }
     });
-
-    // Replacing cbse/ncert value with cbse
-    const cbseNcertExists = [_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
-    if (cbseNcertExists) {
-      filters.se_boards = ['cbse'];
-    }
-
+    
     const option = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),
