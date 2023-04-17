@@ -1,0 +1,16 @@
+## This section has mandatory variables
+## You must provide a value for these
+## If you don't provide a value for these variables, the chart installation will not proceed
+
+## The domain name or Public IP address
+## The domain name should start with http or https
+## For example https://example.com
+domain: "https://abc.com"
+
+## This section has optional variables
+## It is strongly recommended to provide a value for these
+## If you don't provide a value for these variables, they will default to empty values
+## If these variables are empty, some features on the application might not work as expected 
+
+
+

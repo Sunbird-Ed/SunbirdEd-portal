@@ -1,0 +1,130 @@
+## This section has mandatory variables
+## You must provide a value for these
+## If you don't provide a value for these variables, the chart installation will not proceed
+
+## The domain name or Public IP address
+## The domain name should start with http or https
+## For example https://example.com
+domain: "httpsL//example.com"
+
+
+
+
+## This section has optional variables
+## If you provide a value to the variable, then that will have the highest precedence
+## If you don't provide a value, then it's auto generated
+
+
+## This section has optional variables
+## If you provide a value to the variable, then that will have the highest precedence
+## If you don't provide a value, then it's fetched from another object
+sunbird_keycloak_user_federation_provider_id: ""
+sunbird_sso_publickey: ""
+sunbird_sso_client_secret: ""
+
+## This section has variables with default values
+## These are standard defaults that work well
+## You can override these if you have a use case for it
+CONTENT_SERVICE_PORT: http://search-service:9000
+ENV_NAME: dev
+SUNBIRD_KAFKA_URL: http://kafka.lern.svc.cluster.local:9092
+accesstoken:
+  publickey:
+    basepath: /keys/
+LEARNER_SERVICE_PORT: 9000
+enable_tenant_config: "*"
+enable_userid_redis_cache: true
+groups_redis_ttl: 86400
+isMultiDCEnabled: false
+max_activity_limit: 100
+max_group_limit: 50
+max_group_members_limit: 150
+notification_service_api_url: /v2/notification/send 
+notification_service_base_url: http://notification-service.lern.svc.cluster.local:9000
+sunbird_cassandra_consistency_level: local_quorum
+sunbird_cassandra_host: http://cassandra.lern.svc.cluster.local
+sunbird_cassandra_password: password
+sunbird_cassandra_port: 9042
+sunbird_cassandra_username: admin
+sunbird_cs_search_url: /v3/search
+sunbird_keycloak_required_action_link_expiration_seconds: 2592000
+sunbird_redis_host: redis.lern.svc.cluster.local
+sunbird_redis_port: 6379
+sunbird_sso_client_id: lms
+sunbird_sso_realm: sunbird 
+sunbird_user_service_search_url: /private/user/v1/search
+user_redis_ttl: 3600
+
+### Review the variables with Lern team 
+sunbird_sso_username:
+sunbird_sso_password: 
+
+## Helper variables which are used to construct other variables
+keycloak_auth_endpoint: "/auth/"
+external_secrets:
+  keycloak_federation:
+    name: keycloak-federation
+    key: cassandra-storage-provider
+  keycloak_client_secret:
+    name: keycloak-clients
+    key: lms
+  keycloak_realm_public_key:
+    name: keycloak-realms
+    key: sunbird
+
+external_configmaps:
+  access_public_keys:
+    name: user-access-public-keys
+
+## Set this value to true when developing the chart
+local_chart_development: true
+
+
+## This section has other kubernetes variables
+## These are standard defaults that work well
+## You can override these if you have a use case for it
+image:
+  registry: docker.io
+  repository: santhoshgandham/
+  tag: release-5.0.0
+
+replicaCount: 1
+
+strategy:
+  maxSurge: 25%
+  maxUnavailable: 25%
+
+imagePullSecrets: ""
+
+javaOptions: -Xmx500m
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100M
+  limits:
+    cpu: 1
+    memory: 1G
+
+port: 9000
+
+targetPort: 9000
+
+livenessProbe:
+  failureThreshold: 2
+  httpGet:
+      path: /service/health
+      port: 9000
+  initialDelaySeconds: 15
+  periodSeconds: 15
+  timeoutSeconds: 5
+
+readinessProbe:
+  failureThreshold: 2
+  httpGet:
+      path: /service/health
+      port: 9000
+  initialDelaySeconds: 15
+  periodSeconds: 15
+  timeoutSeconds: 5
+
