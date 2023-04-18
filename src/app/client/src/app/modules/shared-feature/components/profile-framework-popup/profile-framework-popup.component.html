@@ -60,7 +60,7 @@
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field  color="accent" *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <mat-form-field color="accent" *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: (field?.translation || field?.label) : resourceService?.selectedLang}}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
