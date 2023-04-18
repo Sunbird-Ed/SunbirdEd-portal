@@ -1,0 +1,199 @@
+/**
+* Created at 1397/12/14 (2019/3/5).
+* @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
+*/
+
+// @use "@angular/material" as mat;
+// @include mat-core();
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "sass:map";
+@use '@angular/material'as mat;
+@use "./palette"as *;
+
+mat.$theme-ignore-duplication-warnings: true;
+// Plus imports for other components in your app.
+@use "./themes.scss-universal.scss" as *;
+// @import "./../../../app/app.component.scss-theme.scss";
+// @import "./../../../app/modules/content-search/components/no-result/no-result.component.scss-theme.scss";
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+
+@include mat.strong-focus-indicators((border-style: dotted,
+    border-width: 4px,
+    border-radius: 2px,
+  ));
+/* custom mixins ends here */
+
+@each $css-class,
+$theme in $app-themes {
+  $primary: if(map-has-key($theme, primary),
+      map-get($theme, primary),
+      mat.define-palette(map-get($theme, primary-base)));
+  $accent: if(map-has-key($theme, accent),
+      map-get($theme, accent),
+      mat.define-palette(map-get($theme, accent-base)));
+  $warn: if(map-has-key($theme, warn),
+      map-get($theme, warn),
+      mat.define-palette(if(map-has-key($theme, warn-base),
+          map-get($theme, warn-base),
+          mat.$red-palette)));
+  $background: if(map-has-key($theme, background),
+      map-get($theme, background),
+      mat.define-palette(if(map-has-key($theme, background),
+          map-get($theme, background),
+          $background)));
+  $foreground: if(map-has-key($theme, foreground),
+      map-get($theme, foreground),
+      mat.define-palette(if(map-has-key($theme, foreground),
+          map-get($theme, foreground),
+          $foreground)));
+  $typography: if(map-has-key($theme, typography),
+      map-get($theme, typography),
+      mat-config(if(map-has-key($config, typography),
+          map-get($config, typography),
+          typography)));
+
+  /* #{$css-class} starts here */
+  .#{$css-class} {
+    // dark theme
+    @if $css-class=="pink-bluegrey"or $css-class=="purple-green"or $css-class=="green-grey"
+
+      {
+      @include mat.all-component-colors(mat.define-dark-theme($primary, $accent, $warn));
+      @include mat.strong-focus-indicators-theme(mat.define-dark-theme($primary, $accent, $warn));
+      $primary100: map-get($background, background); // mat.get-color-from-palette($accent, 900);
+      $primary200: #232323;
+      $accent500: mat.get-color-from-palette($accent, 500);
+      --sbt-body-bg: #{$primary100};
+      --sbt-body-bg2: #{$primary200}; // 232323
+      --sb-profile-bg-c-4: var(--sbt-body-bg);
+      --sbt-footer-bg: var(--sbt-body-bg2);
+      --cc-grade-pill-container-bg: var(--sbt-body-bg);
+      --sbt-compt-bg: var(--sbt-body-bg);
+      --sb-modal-content-bg: var(--sbt-body-bg);
+      --sb-modal-actions-bg: var(--sbt-body-bg);
+      --cc-chapter-bg: var(--sbt-body-bg2);
+      --sb-section-preference: var(--white);
+      --sbt-footer-info-links: var(--white);
+      --sbt-filter-bar-bg: var(--sbt-body-bg);
+      --primary-color: #{$accent500};
+    }
+
+    // individual theme changes
+    // @if $css-class=="joy" {
+    //   @include mat.all-component-colors(mat.define-light-theme($primary, $accent, $warn));
+    //   --sbt-body-bg: #e9e8d9;
+    //   --sbt-body-bg2: #f3f3e5;
+    //   .mat-app-background {
+    //     background: var(--sbt-body-bg);
+    //   }
+    // }
+    // light theme
+    @else {
+      $app-themes: mat.define-light-theme($primary, $accent, $warn);
+      // .custom-btn-bg {
+      //   background: mat.get-color-from-palette(mag_get($app-themes, primary, darker));
+      // }
+      @include mat.all-component-themes($app-themes);
+      @include mat.strong-focus-indicators-theme(mat.define-light-theme($primary, $accent, $warn));
+      // @include app-root-theme(mat.define-light-theme($primary, $accent, $warn));
+      // @include no-result-component(mat.define-light-theme($primary, $accent, $warn));
+      @include mat-expansion-panel($theme);
+
+      $ColorGrabber: mat.define-light-theme($primary, $accent, $warn);
+      @include theme-color-grabber($ColorGrabber);
+      $matCardTheme: mat.define-light-theme($primary, $accent, $warn);
+      @include theme-mat-card($matCardTheme);
+      $matModal: mat.define-light-theme($primary, $accent, $warn);
+      @include theme-mat-modal($matModal);
+      $themematsidebar: mat.define-light-theme($primary, $accent, $warn);
+      @include theme-mat-sidebar($themematsidebar);
+      $primary50: mat.get-color-from-palette($primary, 50);
+      $primary100: mat.get-color-from-palette($primary, 100);
+      $primary200: mat.get-color-from-palette($primary, 200);
+      $accent500: mat.get-color-from-palette($accent, 500);
+
+      // $accent500: mat.get-color-from-palette($accent, 500);
+      // $warn500: mat.get-color-from-palette($warn);
+      --sbt-body-bg: #{$primary50};
+      --sbt-body-bg2: #{$primary100};
+      --sb-profile-bg-c-4: var(--sbt-body-bg);
+      --sbt-footer-bg: var(--sbt-body-bg2);
+      --cc-grade-pill-container-bg: var(--sbt-body-bg);
+      --sb-modal-content-bg: var(--sbt-body-bg);
+      --sb-modal-actions-bg: var(--sbt-body-bg);
+      --sbt-compt-bg: var(--sbt-body-bg);
+      --cc-chapter-bg: var(--sbt-body-bg2);
+      --sbt-filter-bar-bg: var(--sbt-body-bg);
+      --primary-color: #{$accent500};
+      $primary500: mat.get-color-from-palette($primary);
+      --sbt-header-bg: #{$primary500};
+
+      .mat-app-background,
+      .new-layout-footer {
+        background: mat.get-color-from-palette($primary, 50) !important;
+      }
+    }
+
+    // common styles for all themes
+    
+    $toolbar-menu: mat.define-light-theme($primary, $accent, $warn);
+    @include toolbar-menu($toolbar-menu);
+    $pageback-toolbar: mat.define-light-theme($primary, $accent, $warn);
+    @include pageback-toolbar($pageback-toolbar);
+    /* different typography based on the theme -  */
+    @include mat.all-component-typographies($typography);
+    /* custom typography rem */
+    @include mat.core($custom-typography);
+
+    // $variant-themes:mat.define-light-theme($success,$info);
+    // @include button-variants.color($variant-themes, $variants-theme);
+
+    .density-0 {
+      //  @include mat.toolbar-theme-density(0)
+      // @include mat.form-field-density(0);
+      //  @include mat._density(0);
+    }
+
+    //  .density-1 {
+    //   // @include mat.toolbar-theme-density(-1);
+    //    @include mat.form-field-density(-1);
+    //    @include mat.button-density(-1);
+    //  }
+    //  .density-2 {
+    //   // @include mat.toolbar-theme.density(-2);
+    //    @include mat.form-field-density(-2);
+    //    @include mat.button-density(-2);
+    //  }
+    //  .density-3 {
+    //   // @include mat.toolbar-theme-density(-3);
+    //   @include mat.form-field-density(-3);
+    //   @include mat.button-density(-3);
+    //  }
+
+    // common styles
+    .item.active .sb-icon {
+      background: #fff !important;
+    }
+  }
+
+  /* theme button */
+  .themeMenuDropdown .#{$css-class} use.docs-theme-icon-background {
+    fill: map-get($background, background);
+  }
+
+  .themeMenuDropdown .#{$css-class} use.docs-theme-icon-button {
+    fill: mat.get-color-from-palette($accent, 500);
+  }
+
+  .themeMenuDropdown .#{$css-class} use.docs-theme-icon-toolbar {
+    fill: mat.get-color-from-palette($primary, 500);
+  }
+}
+
+/* accessibilty grey bar */
+@import "./accessbilityBar";

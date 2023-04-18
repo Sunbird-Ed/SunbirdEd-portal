@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@use "./palette" as *;
+
+.sb-secondary-btn {
+ $secondary-btn-primary: mat.define-palette(mat.$green-palette);
+ $secondary-btn-accent: mat.define-palette(mat.$green-palette);
+ $secondary-btn-theme: mat.define-light-theme((
+   color: (primary: $secondary-btn-primary, accent: $secondary-btn-accent),
+ ));
+// it will fetch only color related styles different from "mat.button-theme"
+ @include mat.button-color($secondary-btn-theme);
+//  @include mat.button-density(-);
+}
+
+
+// .density-3 {
+//   $primary: mat.define-palette($sb-mat-grey);
+//   $accent: mat.define-palette($sb-mat-grey, 900);
+//   $warn: mat.define-palette($sb-mat-grey);
+//   $density-3: mat.define-light-theme((
+//     color: (
+//       primary: $primary,
+//       accent: $accent,
+//       warn: $warn,
+//       ),
+//       // typography: mat.define-typography-config(),
+//       density:-2,
+//     ));
+
+//     &.mat-primary .mat-button-focus-overlay, &.mat-raised-button {
+//       background-color: mat.get-color-from-palette($primary);
+//     }
+    
+//     &.mat-accent .mat-button-focus-overlay {
+//       background-color: mat.get-color-from-palette($accent);
+//     }
+    
+//     &.mat-warn .mat-button-focus-overlay {
+//       background-color: mat.get-color-from-palette($warn);
+//     }
+    
+//     &.mat-button-disabled .mat-button-focus-overlay {
+//       background-color: transparent;
+//     }
+
+//     @include mat.button-theme($density-3);
+// }
+

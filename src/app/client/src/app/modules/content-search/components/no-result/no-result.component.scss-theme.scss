@@ -1,0 +1,24 @@
+@use "@angular/material" as mat;
+
+// mixin name will be used in main style.scss
+@mixin no-result-component($theme) {
+  // retrieve variables from theme 
+  // (all possible variables, use only what you really need)
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, accent);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+
+  //all of these variables contain many additional variables
+  svg.no-results-svg path {
+    fill:mat-color($accent);
+  }
+  svg.no-results-svg ellipse {
+    fill:#333;
+  }
+  svg.no-results-svg g {
+    stroke:mat-color($accent);
+  }
+ 
+}

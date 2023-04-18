@@ -4,11 +4,15 @@
     <div class="title" role="heading" aria-level="2">
       {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
     </div>
-    <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button>
+    <span class="example-spacer"></span>
+    <!-- <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button> -->
+    <button mat-fab color="accent" mat-dialog-close aria-label="close dialog" *ngIf="showCloseIcon">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
   <!--/Header-->
   <!--Content-->
-  <mat-dialog-content>
+  <mat-dialog-content class="m-0">
     <div class="sb-mat__modal__content">
       <div *ngIf="isPreference">
         <div class="d-flex">
@@ -24,13 +28,13 @@
           <div class="required sb-field-form-group"
             *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
             <div class="sb-field">
-                <mat-form-field id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <mat-form-field color="accent" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
                   <mat-select name={{field.code}} role="listbox" aria-label="field?.label"
                   class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
-                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
+                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name | interpolate: 'CBSE': 'CBSE/NCERT'"
                     attr.aria-label="{{option?.name | interpolate: 'CBSE': 'CBSE/NCERT'}}">{{option?.name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -39,7 +43,7 @@
           <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
             [ngClass]="field.code === 'subject' ? '' : 'required'">
             <div class="sb-field">
-                <mat-form-field *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <mat-form-field color="accent" *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
@@ -56,7 +60,7 @@
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
+                <mat-form-field  color="accent" *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
                   <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: (field?.translation || field?.label) : resourceService?.selectedLang}}
                     <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
                   </mat-label>
@@ -82,8 +86,8 @@
   <!--/Content-->
   <!--Actions-->
   <mat-dialog-actions align="end" class="mb-0 sb-mat__modal__actions">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary"
+    <button mat-raised-button color="accent" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata" class=""
       [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
       {{buttonLabel}}
     </button>

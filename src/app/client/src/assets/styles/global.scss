@@ -1,14 +1,11 @@
-@use '@angular/material' as mat;
+// @use '@angular/material' as mat;
 @use "@project-sunbird/sb-styles/assets/varIndex"as *;
 @use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
 
-@include mat.core();
-
-$custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",
-);
-
-@include mat.all-component-typographies($custom-typography);
+// @include mat.core();
+// $custom-typography: mat.define-typography-config($font-family: "var(--font-stack-en) !important",);
+// @include mat.all-component-typographies($custom-typography);
 
 :root {
   font-size: 16px;
@@ -17,11 +14,11 @@ $custom-typography: mat.define-typography-config($font-family: "var(--font-stack
 html,
 body {
   height: 100%;
-  font-size: mat.font-size($custom-typography, body-1);
+  // font-size: mat.font-size($custom-typography, body-1);
 }
 
 body {
-  background: var(--sbt-body-bg) !important;
+  background: var(--sbt-body-bg);
   position: relative;
   font-family: var(--font-stack-en) !important;
   letter-spacing: calculateRem(0.2px);
@@ -932,7 +929,7 @@ app-landing-page {
   }
 
   .fontResize-container {
-    .fontResizeBtn_A- {
+    .fontResizeBtn_A_Decrease {
       font-size: 0.75rem;
     }
 
@@ -940,7 +937,7 @@ app-landing-page {
       font-size: 0.85rem;
     }
 
-    .fontResizeBtn_A+ {
+    .fontResizeBtn_A_Increase {
       font-size: 1rem;
     }
 

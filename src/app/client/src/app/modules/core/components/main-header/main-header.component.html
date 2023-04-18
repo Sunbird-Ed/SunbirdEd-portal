@@ -212,12 +212,11 @@
                 <!--/Avtar Dropdown-->
               </div>
             </div>
-
           </div>
           <div
             class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-5 sb-g-col-xxxl-8 sbt-header-tool-bar flex-jc-center relative">
-            <div class="sbt-search-bar-panel">
-              <app-search [layoutConfiguration]="layoutConfiguration" class="sbt-search-box large">
+            <div class="w-100">
+              <app-search [layoutConfiguration]="layoutConfiguration" class="">
               </app-search>
             </div>
             <div class="search-box-dropdown-list">
@@ -298,9 +297,10 @@
           </div>
         </div>
       </header>
+
       <nav title="menu-bar">
-        <div class="sbt-header-menu-bar" *ngIf="showMainMenuBar">
-          <!--  sb-g <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>
+        <div  *ngIf="showMainMenuBar">
+          <!-- class="sbt-header-menu-bar" sb-g <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>
           <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9  sb-g-col-xxxl-12 sbt-header-menu-extension"></div> -->
           <div class="sbt-header-menu">
             <app-main-menu [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton">

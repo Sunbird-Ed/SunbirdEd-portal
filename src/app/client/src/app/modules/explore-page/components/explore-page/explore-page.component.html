@@ -1,5 +1,5 @@
 <div
-  [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
+  [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg sbt-mat-surface':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
@@ -44,10 +44,25 @@
 
           <!-- Template for displaying sections based on form configuration -->
           <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
-            <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference"
+
+            <!-- <mat-card class="my-16">
+              <h1>h1 tag</h1>
+              <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+                | titlecase}} {{userProfile?.lastName |
+                titlecase}}</p>
+              <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
+                <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
+              </p>
+            </mat-card> -->
+
+            <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference mat-typography"
               tabindex="0">
               <div class="preference">
-                <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+                <!-- <div class="mat-headline">this is heading for h1</div>
+                <div class="mat-title mat-display-4">this is heading for h2</div>
+                <div class="mat-subheading-2">this is heading for h3</div>
+                <div class="mat-subheading-3">this is heading for h4</div> -->
+                <p class="mat-title">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
                   | titlecase}} {{userProfile?.lastName |
                   titlecase}}</p>
                 <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
@@ -58,7 +73,7 @@
                     <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
                     </span>
                     <span *ngIf="userPreference?.framework?.board?.length"
-                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board)}}</span>
+                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
                   </span>
 
                   <span class="mr-24">
@@ -81,8 +96,11 @@
                   </span>
                 </p>
               </div>
-              <button
-                class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
+              <!-- <button 
+                class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button> -->
+             
+                <button mat-raised-button class="my-custom-style density-3">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
+            
             </div>
           </div>
           <div *ngFor="let section of facetSections">
@@ -95,15 +113,20 @@
                   [layoutConfiguration]="layoutConfiguration">
                 </app-page-section>
               </div>
-              <hr class="section-hr my-32" />
+
+              <!-- <hr class="section-hr my-32" /> -->
+              <mat-divider></mat-divider>
+
             </div>
 
             <div
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
-              <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
+              <!-- <div class="mt-16 font-weight-bold flarge pl-16 text-left">{{getBannerTitle(section?.section?.title)}}
+              </div> -->
+
+              <div class="mat-typography">
+                <h2 class="m-0">{{getBannerTitle(section?.section?.title)}}</h2>
               </div>
-
-
               <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
                 <ng-container *ngIf="displayBanner">
                   <div *ngFor="let banner of primaryBanner;" class="mr-16">
@@ -124,8 +147,11 @@
                 </ng-container>
               </app-slick>
 
-              <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
-                class="section-hr my-32" />
+              <!-- <hr *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"
+                class="section-hr my-32" /> -->
+
+                <mat-divider *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"></mat-divider>
+
               </div>
               <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
@@ -137,7 +163,10 @@
                   [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
                   [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
               </sb-pills-grid>
-              <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
+
+              <!-- <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" /> -->
+
+              <mat-divider *ngIf="section?.section?.isEnabled && section?.data?.length"></mat-divider>
             
           </div>
           <div *ngIf="showTargetedCategory && targetedCategory.length">
@@ -148,7 +177,11 @@
               <sb-pill-item *ngFor="let pillData of targetedCategory" [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase"
               [icon]="pillData?.icon?.web" [value]="(pillData?.icon?.web ? pillData : '')" [theme]="(pillData?.icon?.web ? targetedCategorytheme : Categorytheme)"></sb-pill-item>
             </sb-pills-grid>
-            <hr class="section-hr my-32" />
+
+            <!-- <hr class="section-hr my-32" /> -->
+
+            <mat-divider></mat-divider>
+
           </div>
           <div *ngIf="getSelectedTab() === 'home'">
             <div *ngFor="let section of contentSections" class="pl-16">
