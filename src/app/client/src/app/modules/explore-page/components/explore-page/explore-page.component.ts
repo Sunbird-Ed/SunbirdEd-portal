@@ -203,9 +203,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.isUserLoggedIn()) {
                     this.prepareVisits([]);
                 }
-                if (_.get(params, 'board') && params.board[0] === 'CBSE') {
-                    params.board[0] = 'CBSE/NCERT';
-                }
                 this.queryParams = { ...params, ...queryParams };
             }));
     }
@@ -379,9 +376,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         //this.cacheService.set('searchFilters', filters, { expires: Date.now() + _cacheTimeout });
         this.showLoader = true;
         this.selectedFilters = pick(filters, _.get(currentPageData, 'metaData.filters'));
-        if (this.selectedFilters && this.selectedFilters['board'] && this.selectedFilters['board'][0] === 'CBSE/NCERT') {
-            this.selectedFilters['board'][0] = 'CBSE';
-        }
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
             const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
@@ -459,10 +453,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
                         _.filter(Object.keys(params),filterValue => { 
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
-                                if (params[filterValue].length === 1 && params[filterValue][0] === 'CBSE/NCERT') {
-                                    params[filterValue][0] = "CBSE";
+                                let param = {};
+                                param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
+                                if (param[filterValue].length === 1 && param[filterValue][0] === 'CBSE/NCERT') {
+                                    param[filterValue][0] = "CBSE";
                                 }
-                                option.filters[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
+                                option.filters[filterValue] = (typeof (param[filterValue]) === "string") ? param[filterValue].split(',') : param[filterValue];
                             }
                         });
                         if (this.userService.loggedIn) {
@@ -1115,7 +1111,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
-            if (_.toLower(value) === 'cbse') { return 'CBSE/NCERT'; }
             return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
         });
 

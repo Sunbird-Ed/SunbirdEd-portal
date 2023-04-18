@@ -24,6 +24,10 @@
     .listallreports-section {
       .dataTables_wrapper .dataTables_filter input {
         outline: 0;
+        background-color: var(--white) !important;
+      }
+      .sb-table .sb-table-striped tbody tr:nth-child(2n) {
+        background-color: var(--primary-0);
       }
     }
   }
