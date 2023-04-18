@@ -5,7 +5,7 @@
 ## The domain name or Public IP address
 ## The domain name should start with http or https
 ## For example https://example.com
-domain: "https://abc.com"
+
 
 ## This section has optional variables
 ## It is strongly recommended to provide a value for these
