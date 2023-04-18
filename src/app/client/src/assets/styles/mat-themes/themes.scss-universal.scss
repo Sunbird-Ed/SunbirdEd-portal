@@ -1,0 +1,103 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+
+// @import './accessbilityBar';
+// @use "./button-variants" as button-variants;
+
+@use './template_bg' as *;
+@import "./toolbar-menu";
+@import "./toolbar-pageback";
+
+@import './matCard';
+@import './matSidebar';
+@import './matExpansionPanel';
+@import './darkBgTheme';
+@import './modal';
+@import './customBtnColor';
+@import "./fontSizeRem";
+@import "./buttons";
+
+// Define a custom mixin that takes in the current theme
+@mixin theme-color-grabber($theme) {
+
+  // Get the color config from the theme.
+$color-config: mat.get-color-config($theme);
+// Get the primary color palette from the color-config.
+$primary: map.get($color-config, 'primary');
+$accent: map.get($color-config, 'accent');
+$warn: map.get($color-config, 'warn');
+$background: map.get($color-config, 'background');
+
+  // Create theme specfic styles
+  .sb-mat-primary {
+    background-color: mat.get-color-from-palette($primary);
+  }
+  .sb-mat-accent {
+    background-color: mat.get-color-from-palette($accent);
+  }
+  .sb-mat-warn {
+    background-color: mat.get-color-from-palette($warn);
+  }
+  .sb-mat-background {
+    background-color: mat.get-color-from-palette($background, background);
+  }
+}
+
+
+  // .my-alternate-theme {
+  //   $my-alternate-primary: mat.define-palette(mat.$red-palette);
+  //   $my-alternate-accent: mat.define-palette(mat.$green-palette, 400);
+  //   $my-alternate-warn: mat.define-palette(mat.$grey-palette);
+  //   $my-alternate-theme: mat.define-light-theme($my-alternate-primary, $my-alternate-accent, $my-alternate-warn);
+    
+  //   @include mat.all-component-themes($my-alternate-theme);
+
+  // }
+
+
+  // @mixin panel-theme($theme) {
+  //   $primary: map-get($theme, primary);
+  //   $accent: map-get($theme, accent);
+  //   $warn: map-get($theme, warn);
+  //   $background: map-get($theme, background);
+  //   $foreground: map-get($theme, foreground);
+  //   .panel {
+  //       border: none;
+  //       &-heading {
+  //           background: mat-color($mat-grey, 0) !important;
+  //           h4 span {
+  //               color: mat-color($mat-grey, 700);
+  //               border-bottom: 1px solid mat-color($primary, 500);
+  //           }
+  //       }
+  //       &-body {
+  //           background: mat-color($mat-grey, 0);
+  //       }
+  //       &-footer {
+  //           background: mat-color($mat-grey, 100) !important;
+  //       }
+  //   }
+
+
+
+
+//   // Theme configuration merge
+// $primary: mat-palette($mat-blue, 800, 500, 900);
+// $accent:  mat-palette($mat-blue, A200, A100, A400);
+// $warn: mat-palette($mat-red);
+
+// $theme: mat-light-theme($primary, $accent, $warn);
+
+// // Custom colors
+// $custom-colors: (
+//   custom-color-a: mat-color($mat-green, 700),
+//   custom-color-b: mat-color($mat-red, 400),
+// );
+// $theme: map-merge($theme, (custom-colors: $custom-colors));
+
+// .custom-class-a {
+//   background-color: map-get($custom-colors, custom-color-a);
+//   color: map-get($custom-colors, custom-color-b);
+// }
+
+

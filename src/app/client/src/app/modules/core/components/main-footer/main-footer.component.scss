@@ -3,7 +3,8 @@
 
 :host ::ng-deep{
   .new-layout-footer{
-    margin-top:calculateRem(24px);
+    background: var(--sbt-body-bg);
+    padding-top:calculateRem(24px);
     &.player-fullscreen-footer{
       display: none;
     }

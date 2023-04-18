@@ -44,11 +44,12 @@
     }
 }
 .sbt-header-menu-bar {
-  height: 5.5rem;
+  height: 5rem;
       background: none;
       padding: 0px;
       display: flex;
-      background: var(--sbt-header-bg) !important;
+       // For now commenting bg for testing of material theme
+      // background: var(--sbt-header-bg) !important;
       border-radius: calculateRem(24px) calculateRem(24px) 0 0;
       padding: 1rem 1rem 1rem 1rem;
       overflow: hidden;
@@ -67,6 +68,7 @@
 .sbt-header-menu {
   position: relative;
   margin:0 auto;
+  width: 100%;
   @include respond-above(sm) {
   }
 }

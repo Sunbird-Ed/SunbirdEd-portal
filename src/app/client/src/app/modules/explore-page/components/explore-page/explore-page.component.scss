@@ -1,4 +1,14 @@
-@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use '@angular/material' as mat;
+
+$my-palette: mat.define-palette(mat.$cyan-palette);
+
+.my-custom-style {
+ background: mat.get-color-from-palette($my-palette, 500);
+ color: mat.get-color-from-palette($my-palette, '500-contrast');
+//  @include mat.button-density(-3);
+}
+
 .course-card-width {
   width: calculateRem(280px) !important;
 }

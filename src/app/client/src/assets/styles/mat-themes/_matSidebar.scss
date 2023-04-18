@@ -1,0 +1,28 @@
+@use "@angular/material" as mat;
+@use 'sass:map';
+
+@mixin theme-mat-sidebar($theme) {
+
+      // Get the color config from the theme.
+      $color-config: mat.get-color-config($theme);
+      // Get the primary color palette from the color-config.
+      $primary: map.get($color-config, 'primary');
+      $accent: map.get($color-config, 'accent');
+      $warn: map.get($color-config, 'warn');
+      $background: map.get($color-config, 'background');
+
+
+  // $primary: mat.define-palette(mat.$cyan-palette);
+  // $accent: mat.define-palette(mat.$cyan-palette, 500);
+  
+/* inside comments outside */
+  .mat-drawer {
+    /* inside comments */
+    background-color: mat.get-color-from-palette($primary, 100);
+  }
+
+  // $drawer-background-color: theming.get-color-from-palette($background, dialog);
+  // $drawer-container-background-color:  theming.get-color-from-palette($background, background);
+  // $drawer-push-background-color: theming.get-color-from-palette($background, dialog);
+  // $drawer-side-border: solid 1px theming.get-color-from-palette($foreground, divider);
+}

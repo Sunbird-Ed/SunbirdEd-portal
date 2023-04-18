@@ -24,7 +24,9 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full
 import { UserOnboardingModule} from '../app/modules/user-onboarding';
 import { MatStepperModule} from '@angular/material/stepper';
 import { CdkStepperModule} from '@angular/cdk/stepper';
-
+import { MatNativeDateModule } from "@angular/material/core";
+import { MaterialExampleModule } from "./material.module";
+import { MatSidenavModule } from "@angular/material/sidenav";
 @NgModule({
     declarations: [
         AppComponent
@@ -33,6 +35,9 @@ import { CdkStepperModule} from '@angular/cdk/stepper';
         BrowserAnimationsModule,
         CoreModule,
         CommonModule,
+        MatNativeDateModule,
+        MaterialExampleModule,
+        MatSidenavModule,
         HttpClientModule,
         SuiModalModule,
         SharedModule.forRoot(),

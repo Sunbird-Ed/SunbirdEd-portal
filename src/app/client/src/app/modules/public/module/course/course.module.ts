@@ -14,13 +14,14 @@ import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   imports: [
     CommonModule,
     TelemetryModule,
     CoreModule,
     SharedModule,
+    MatToolbarModule,
     CourseRoutingModule,
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,

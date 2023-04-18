@@ -1,0 +1,35 @@
+
+@use "@angular/material" as mat;
+@use 'sass:map';
+
+// dark background related
+@mixin darkbgTheme($theme) {
+    // Extract the palettes you need from the theme definition.
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    // $foreground: map-get($theme, foreground);
+    // $background: map-get($theme, background);
+
+    $primary: mat-palette(mat.$grey-palette, 500, 800, 900);
+    $accent: mat-palette(mat.$grey-palette, 700);
+
+    $primary100: mat-color($primary, 900);
+    $primary200: mat-color($primary, 800);
+    --sbt-body-bg: #{$primary100}; 
+    --sbt-body-bg2: #{$primary200}; 
+    --sb-profile-bg-c-4:var(--sbt-body-bg);
+    --sbt-footer-bg:var(--sbt-body-bg2);
+    --cc-grade-pill-container-bg:var(--sbt-body-bg);
+    --sbt-compt-bg:var(--sbt-body-bg);
+    --sb-modal-content-bg:var(--sbt-body-bg);
+    --sb-modal-actions-bg:var(--sbt-body-bg);
+    --cc-chapter-bg:var(--sbt-body-bg2);
+    --sb-section-preference:var(--white);
+    --sbt-footer-info-links:var(--white);
+    --sbt-filter-bar-bg: var(--sbt-body-bg);
+    .mat-app-background {
+        background-color: mat-color($primary, 900) !important; 
+    }
+  }
+
+  

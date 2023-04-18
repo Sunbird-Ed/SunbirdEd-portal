@@ -1,0 +1,93 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+@forward "./palette";
+@forward './fontSizeRem';
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
+@mixin pageback-toolbar($theme) {
+
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
+
+  .mat-toolbar {
+    &.toolbar-pageback {
+      // background: theming.get-color-from-palette($background, app-bar);
+      // color: theming.get-color-from-palette($foreground, text);
+      border-radius: 1.5rem 1.5rem 0 0;
+      display: flex;
+      align-items: center;
+      margin: 0 auto;
+      width: 90%;
+      gap: 0.5rem;
+      // height: 5.5rem;
+      @include respond-below(sm) {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 1rem;
+      }
+      &.mat-accent {
+        //  $green: mat.define-palette(mat.$green-palette, 500);
+        //  background-color: mat.get-color-from-palette($green);
+        // @include _palette-styles($accent);
+      }
+
+      .thumbnail {
+        height: 3rem;
+        width: 3rem;
+      }
+
+      .MetaInfo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .MetaImgColumn {}
+
+      .MetaColumn {
+        display: flex;
+        flex-direction: column;
+
+        .title {
+          $title-typography: mat.define-typography-config(
+            $subheading-2: mat.define-typography-level(
+              $font-size: 1rem,
+              $font-family: inherit,
+              $font-weight: 700
+            )
+          );
+          @include mat.typography-level($title-typography, 'subheading-2');
+          // font-size: mat.font-size($pagebackTitle, $title);
+          // font-size: mat.font-size($title-typography, $subheading-2);
+          margin: 0;
+          // color: mat.get-color-from-palette($primary, 500-contrast);
+          color: mat.get-color-from-palette($accent);
+        }
+        span {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .Actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-left: auto;
+        .sb-label-status-error {
+          color:mat.get-color-from-palette($warn);
+          font-size: 0.75rem;
+        }
+        // @include respond-below(sm) {
+        //   flex-direction: column;
+        // }
+      }
+      
+    }
+  }
+}
