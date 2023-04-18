@@ -210,6 +210,7 @@ function getLocals(req) {
   locals.baseUrl = null;
   locals.blobUrl = envHelper.sunbird_portal_cdn_blob_url;
   locals.uciBotPhoneNumber = envHelper.sunbird_portal_uci_bot_phone_number;
+  locals.cloudStorageProvider = envHelper.sunbird_cloud_storage_provider;
   return locals
 }
 

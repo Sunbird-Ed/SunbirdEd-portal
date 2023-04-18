@@ -170,6 +170,9 @@
   <% if (uciBotPhoneNumber) { %>
   <input type="hidden" id="uciBotPhoneNumber" value="<%=uciBotPhoneNumber%>" />
   <% } %>
+  <% if (cloudStorageProvider) { %>
+    <input type="hidden" id="cloudStorageProvider" value="<%=cloudStorageProvider%>" />
+    <% } %>
   <app-root></app-root>
 </body>
 

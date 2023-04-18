@@ -34,6 +34,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   public defaultContentFileSize: any;
   public isLargeFileUpload = false;
+  public cloudStorageProvider: any;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
 
@@ -53,6 +54,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
       this.defaultContentFileSize = (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')) ?
       (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')).value : 150;
+      this.cloudStorageProvider = (<HTMLInputElement>document.getElementById('cloudStorageProvider')) ?
+      (<HTMLInputElement>document.getElementById('cloudStorageProvider')).value : 'oci';
   }
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
@@ -225,6 +228,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     window.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     window.config.videoMaxSize = this.videoMaxSize;
     window.config.defaultContentFileSize = this.defaultContentFileSize; // making configurable upload limit in workspace for content upload
+    window.config.cloudStorage = {
+      provider : this.cloudStorageProvider
+    }; 
   }
   /**
   * Re directed to the workspace on close of modal
