@@ -211,6 +211,8 @@ function getLocals(req) {
   locals.blobUrl = envHelper.sunbird_portal_cdn_blob_url;
   locals.uciBotPhoneNumber = envHelper.sunbird_portal_uci_bot_phone_number;
   locals.cloudStorageProvider = envHelper.sunbird_cloud_storage_provider;
+  locals.cloudStorageKey = envHelper.sunbird_oci_access_key;
+  locals.cloudStorageSecret = envHelper.sunbird_oci_secret_key;
   return locals
 }
 
