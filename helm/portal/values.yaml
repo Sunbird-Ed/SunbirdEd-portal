@@ -1,0 +1,218 @@
+## This section has mandatory variables
+## You must provide a value for these
+## If you don't provide a value for these variables, the chart installation will not proceed
+
+## The domain name or Public IP address
+## The domain name should start with http or https
+## For example https://example.com
+
+
+cloud_service_provider: ""
+cloud_public_storage_accountname: ""
+cloud_public_storage_secret: ""
+cloud_private_storage_accountname: ""
+cloud_private_storage_project: ""
+cloud_private_storage_region: ""
+cloud_private_storage_secret: ""
+cloud_storage_desktopCrash_bucketname: ""
+cloud_storage_privatereports_bucketname: ""
+cloud_storage_resourceBundle_bucketname: ""
+config_refresh_interval: ""
+config_service_enabled: ""
+crypto_encryption_key: ""
+crypto_encryption_key_external: ""
+desktop_app_storage_url: ""
+discussions_middleware: ""
+ekstep_env: ""
+google_captcha_private_key: ""
+ml_survey_url: ""
+portal_redirect_error_callback_domain: ""
+portal_redis_connection_string: ""
+reportsListVersion: ""
+sunbird_android_app_url: ""
+sunbird_android_keycloak_client_id: ""
+sunbird_anonymous_default_token: ""
+sunbird_anonymous_device_register_api: ""
+sunbird_anonymous_register_token: ""
+sunbird_anonymous_session_ttl: ""
+sunbird_api_auth_token: ""
+sunbird_api_request_timeout: ""
+sunbird_autocreate_trampoline_user: ""
+sunbird_aws_access_key: ""
+sunbird_aws_bucket_name: ""
+sunbird_aws_labels: ""
+sunbird_aws_region: ""
+sunbird_aws_reports: ""
+sunbird_aws_secret_key: ""
+sunbird_azure_account_key: ""
+sunbird_azure_account_name: ""
+sunbird_azure_report_container_name: ""
+sunbird_azure_storage_account_name: ""
+sunbird_base_proto: ""
+sunbird_bot_configured: ""
+sunbird_bot_service_URL: ""
+sunbird_build_number: ""
+sunbird_cassandra_consistency_level: ""
+sunbird_cassandra_replication_strategy: ""
+sunbird_cassandra_urls: ""
+sunbird_cloud_storage_provider: ""
+sunbird_cloud_storage_urls: ""
+sunbird_collection_children_limit: ""
+sunbird_collectionEditorURL: ""
+sunbird_config_service_url: ""
+sunbird_content_player_url: ""
+sunbird_content_proxy_url: ""
+sunbird_contentEditorURL: ""
+sunbird_data_product_service: ""
+sunbird_dataservice_url: ""
+sunbird_default_channel: ""
+sunbird_default_device_token: ""
+sunbird_default_file_size: ""
+sunbird_desktop_keycloak_client_id: ""
+sunbird_device_api: ""
+sunbird_device_register_api: ""
+sunbird_echo_api_url: ""
+sunbird_enable_api_whitelist: ""
+sunbird_enable_permission_check: ""
+sunbird_enable_signup: ""
+sunbird_enable_sso: ""
+sunbird_environment: ""
+sunbird_ext_plugin_url: ""
+sunbird_external_content_whitelisted_domains: ""
+sunbird_gcloud_bucket_name: ""
+sunbird_gcloud_client_email: ""
+sunbird_gcloud_labels: ""
+sunbird_gcloud_private_key: ""
+sunbird_gcloud_projectId: ""
+sunbird_gcloud_reports: ""
+sunbird_genericEditorURL: ""
+sunbird_google_android_keycloak_client_id: ""
+sunbird_google_android_keycloak_secret: ""
+sunbird_google_captcha_site_key: ""
+sunbird_google_desktop_keycloak_client_id: ""
+sunbird_google_desktop_keycloak_secret: ""
+sunbird_google_keycloak_client_id: ""
+sunbird_google_keycloak_secret: ""
+sunbird_google_oauth_clientId: ""
+sunbird_google_oauth_clientSecret: ""
+sunbird_google_oauth_ios_clientId: ""
+sunbird_google_oauth_ios_clientSecret: ""
+sunbird_health_check_enable: ""
+sunbird_help_link_visibility: ""
+sunbird_instance: ""
+sunbird_keycloak_public_key: ""
+sunbird_kong_device_register: ""
+sunbird_kong_device_register_anonymous: ""
+sunbird_kong_refresh_token_api: ""
+sunbird_learner_player_url: ""
+sunbird_logged_default_token: ""
+sunbird_loggedin_device_register_api: ""
+sunbird_loggedin_register_token: ""
+sunbird_p1_reCaptcha_enabled: ""
+sunbird_p2_reCaptcha_enabled: ""
+sunbird_p3_reCaptcha_enabled: ""
+sunbird_phraseApp_token: ""
+sunbird_port: ""
+sunbird_portal_auth_server_client: ""
+sunbird_portal_auth_server_url: ""
+sunbird_portal_base_url: ""
+sunbird_portal_cdn_blob_url: ""
+sunbird_portal_cdn_url: ""
+sunbird_portal_log_level: ""
+sunbird_portal_merge_auth_server_url: ""
+sunbird_portal_offline_app_download_url: ""
+sunbird_portal_offline_app_release_date: ""
+sunbird_portal_offline_app_version: ""
+sunbird_portal_offline_supported_languages: ""
+Hindi,Kannada,Malayalam,Marathi,Oriya,Punjabi,Tamil,Telugu,Urdu: ""
+sunbird_portal_offline_tenant: ""
+sunbird_portal_player_cdn_enabled: ""
+sunbird_portal_preview_cdn_url: ""
+sunbird_portal_realm: ""
+sunbird_portal_session_secret: ""
+sunbird_portal_slugForProminentFilter: ""
+sunbird_portal_title_name: ""
+sunbird_portal_uci_blob_url: ""
+sunbird_portal_uci_bot_phone_number: ""
+sunbird_portal_updateLoginTimeEnabled: ""
+sunbird_portal_user_upload_ref_link: ""
+sunbird_portal_video_max_size: ""
+sunbird_processing_kafka_host: ""
+sunbird_questionset_children_limit: ""
+sunbird_redis_password: ""
+sunbird_redis_port: ""
+sunbird_redis_type: ""
+sunbird_redis_urls: ""
+sunbird_report_service_url: ""
+sunbird_response_cache_ttl: ""
+sunbird_session_store_type: ""
+sunbird_session_ttl: ""
+sunbird_sso_kafka_topic: ""
+sunbird_super_admin_slug: ""
+sunbird_telemetry_packet_size: ""
+sunbird_telemetry_service_local_url: ""
+sunbird_tenant_cdn_url: ""
+sunbird_trampoline_android_keycloak_client_id: ""
+sunbird_trampoline_android_keycloak_secret: ""
+sunbird_trampoline_client_id: ""
+sunbird_trampoline_desktop_keycloak_client_id: ""
+sunbird_trampoline_desktop_keycloak_secret: ""
+sunbird_trampoline_secret: ""
+vdnURL: ""
+
+## This section has variables with default values
+## These are standard defaults that work well
+## You can override these if you have a use case for it
+
+## Helper variables which are used to construct other variables
+
+## Set this value to true when developing the chart
+local_chart_development: true
+
+
+## This section has other kubernetes variables
+## These are standard defaults that work well
+## You can override these if you have a use case for it
+image:
+  registry: docker.io
+  repository: santhoshgandham/player
+  tag: release-5.0.0
+
+replicaCount: 1
+
+strategy:
+  maxSurge: 25%
+  maxUnavailable: 25%
+
+imagePullSecrets: ""
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 1
+    memory: 1G
+
+port: 3000
+
+targetPort: 3000
+
+livenessProbe:
+  failureThreshold: 2
+  httpGet:
+      path: /service/health
+      port: 3000
+  initialDelaySeconds: 15
+  periodSeconds: 15
+  timeoutSeconds: 5
+
+readinessProbe:
+  failureThreshold: 2
+  httpGet:
+      path: /service/health
+      port: 3000
+  initialDelaySeconds: 15
+  periodSeconds: 15
+  timeoutSeconds: 5
+
