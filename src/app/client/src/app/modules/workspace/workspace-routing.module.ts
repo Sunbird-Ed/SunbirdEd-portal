@@ -126,7 +126,7 @@ const routes: Routes = [
       },
       {
         path: 'edit/editorforlargecontent', component: GenericEditorComponent,
-        canActivate: [AuthGuard], data: { roles: 'workspace' , isLargeFileUpload: true }
+        canActivate: [AuthGuard], data: { roles: 'workspace' , isLargeFileUpload: false }
       },
       {
         path: 'edit/collection/:contentId/:type/:state/:framework',
