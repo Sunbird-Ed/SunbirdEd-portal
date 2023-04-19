@@ -97,7 +97,8 @@ cd app_dist
 #         you can build it with jenkins or manually
 #    2. put the build artifact, i.e. bundle.js somehere in your jenkins server
 #    3. update the cp line below and copy the custom bundle.js to the player BEFORE docker build, e.g.
-cp /var/lib/jenkins/jobs/Build/jobs/build-local/jobs/NodeJS-Client-Cloud-Service/builds/3/archive/dist/bundle.js   node_modules/client-cloud-services/dist/
+# 20230419 - fix key file problem, change to build 4
+cp /var/lib/jenkins/jobs/Build/jobs/build-local/jobs/NodeJS-Client-Cloud-Service/builds/4/archive/dist/bundle.js   node_modules/client-cloud-services/dist/
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
