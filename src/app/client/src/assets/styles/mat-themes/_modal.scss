@@ -19,13 +19,22 @@
 //   @include mat.typography-level($xxxxxx, 'body-1');
 // }
 
+  .mat-dialog-container{
+    position: relative;
+    padding: 0;
+    background-color: var(--sbt-body-bg);
+    border-radius: 1.5rem;
+  }
     .mat-dialog-title {
-      background-color: mat.get-color-from-palette($primary, 500);
-      color: mat.get-color-from-palette($primary, 500-contrast);
+      // background-color: mat.get-color-from-palette($primary, 500);
+      // color: mat.get-color-from-palette($accent);
       margin: 0;
-      padding: 1rem 1.5rem;
+      padding: 1rem 1rem;
       display: flex;
       align-items: center;
+      h2 {
+        margin-bottom: 0 !important;
+      }
     }
   //   .mat-dialog-container .mat-select-value{
   //     color: mat-color($primary);
@@ -36,21 +45,17 @@
   //   .mat-dialog-container .mat-form-field-appearance-fill .mat-form-field-flex{
   //     background-color: mat-color($primary, 100);
   //   }
-    .mat-dialog-container{
-      position: relative;
-      padding: 0;
-    }
+   
     .mat-dialog-content{
-      padding: 0;
-    }
-    .sb-mat__modal__content{
-      padding: 1rem 1.5rem 0;
+      padding: 1rem;
+      margin:0;
     }
     .mat-dialog-actions{
-      padding: 0 1.5rem 1rem;
+      padding: 0.5rem 1rem;
+      margin: 0;
     }
     .mat-dialog-actions .mat-button-base{
-      background-color: mat.get-color-from-palette($accent);
+      // background-color: mat.get-color-from-palette($accent);
     }
 
 }

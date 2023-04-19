@@ -197,9 +197,9 @@ export class AppComponent implements OnInit, OnDestroy {
       const selectedMatTheme = localStorage.getItem('selectedTheme');
       console.log(selectedMatTheme);
       if (selectedMatTheme) {
-        this.setMatTheme(selectedMatTheme, false); 
+        this.setMatTheme(selectedMatTheme, false);
       } else {
-        this.setMatTheme('pink-bluegrey', false); // Default Theme
+        this.setMatTheme('joy', false); // Default Theme pink-bluegrey
       }
 
       this.instance = (<HTMLInputElement>document.getElementById('instance'))

@@ -24,3 +24,33 @@
 .mat-mini-fab.mat-success {
   @extend %mat-success;
 }
+
+/* density styles */
+// .density-0 {
+//   @include mat.button-density(-0);
+// }
+// .density-1 {
+//   @include mat.button-density(-1);
+// }
+// .density-2 {
+//   @include mat.button-density(-2);
+// }
+// .density-3 {
+//   @include mat.button-density(-3);
+// }
+
+//  .density-1 {
+//   // @include mat.toolbar-theme-density(-1);
+//    @include mat.form-field-density(-1);
+//    @include mat.button-density(-1);
+//  }
+//  .density-2 {
+//   // @include mat.toolbar-theme.density(-2);
+//    @include mat.form-field-density(-2);
+//    @include mat.button-density(-2);
+//  }
+//  .density-3 {
+//   // @include mat.toolbar-theme-density(-3);
+//   @include mat.form-field-density(-3);
+//   @include mat.button-density(-3);
+//  }

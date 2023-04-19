@@ -1,26 +1,23 @@
-<app-modal-wrapper *ngIf="showLoginModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}" (dismiss)="closeLoginModal()"
+<app-modal-wrapper *ngIf="showLoginModal" [config]="{disableClose: true, size: 'normal', panelClass: 'material-modal'}" (dismiss)="closeLoginModal()"
   #modal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal sb-mat__modal--small">
-
-      <div mat-dialog-title class="mb-0 px-16">
-        <div class="title">{{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}</div>
-        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
+      <div mat-dialog-title>
+        <h2>{{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}</h2>
+          <span class="example-spacer"></span>
+    <button mat-mini-fab color="warn" mat-dialog-close aria-label="close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
       </div>
-      <div class="sb-mat__modal__content sb-join-modal-content">
-        <div class="fsmall px-0 py-8">
-          {{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}
-        </div>
+      <div mat-dialog-content>
+        <p class="mat-caption">{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
       </div>
-      <div class="sb-mat__modal__actions">
-        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-          [telemetryInteractEdata]="signInInteractEdata" tabindex="0"
-          (click)="setTelemetryData(); setUrlToCourse();" class="sb-btn sb-btn-normal sb-btn-primary">
-          {{resourceService.frmelmnts?.btn?.login}}
-        </a>
+      <div mat-dialog-actions align="end">
+        <button mat-raised-button color="accent" class="button-rounded" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="signInInteractEdata" tabindex="0"
+        (click)="setTelemetryData(); setUrlToCourse();">
+        {{resourceService.frmelmnts?.btn?.login}}
+        </button>
       </div>
-
-    </div>
   </ng-template>
 </app-modal-wrapper>
 
