@@ -114,9 +114,7 @@
       <!-- join course, start learning, continue learning, view dashboard buttons -->
       <div *ngIf="!showAddGroup && isTrackable">
         <div class="certified-course__btn py-8" *ngIf="!enrolledCourse && !viewDashboard">
-          <button [disabled]="!(courseConsumptionService.enableCourseEntrollment | async) || isEnrollmentAllowed(enrollmentEndDate)"
-            [ngClass]="{'sb-btn-disabled': (!(courseConsumptionService.enableCourseEntrollment | async) || isEnrollmentAllowed(enrollmentEndDate))}"
-            class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" tabindex="0"
+          <button mat-raised-button [color]="isEnrollmentAllowed(enrollmentEndDate) ? '' : 'success'" [disabled]="!(courseConsumptionService.enableCourseEntrollment | async) || isEnrollmentAllowed(enrollmentEndDate)" class="button-rounded" tabindex="0"
             (click)="showJoinModal(true); this.logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy)">{{resourceService?.frmelmnts?.btn?.enroll}}</button>
         </div>
 

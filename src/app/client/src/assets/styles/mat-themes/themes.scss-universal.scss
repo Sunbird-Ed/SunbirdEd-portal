@@ -16,6 +16,7 @@
 @import './customBtnColor';
 @import "./fontSizeRem";
 @import "./buttons";
+@import "./colors";
 
 // Define a custom mixin that takes in the current theme
 @mixin theme-color-grabber($theme) {

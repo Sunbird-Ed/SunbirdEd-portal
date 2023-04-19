@@ -2,23 +2,27 @@
   [ngClass]="layoutConfiguration ? 'pageback-actionbar' : 'sb-bg-color-white back-btn-container cc-player__btn-back relative9'"
   class="relative position mt-0"> -->
 
-  <mat-toolbar color="primary" class="toolbar-pageback">
-    <button mat-mini-fab color="accent" [ngClass]="layoutConfiguration ? '' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" (click)="redirectToExplore()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}" tabindex="0">
-      <mat-icon>arrow_back</mat-icon>
-      <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.btn?.back}}</span>
-    </button>
-    <div *ngIf="!showLoader && !showError" class="MetaInfo">
-      <div class="MetaImgColumn">
-      <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}" class="thumbnail">
+<mat-toolbar color="primary" class="toolbar-pageback">
+  <button mat-mini-fab color="accent"
+    [ngClass]="layoutConfiguration ? '' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'"
+    (click)="redirectToExplore()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}" tabindex="0">
+    <mat-icon>arrow_back</mat-icon>
+    <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.btn?.back}}</span>
+  </button>
+  <div *ngIf="!showLoader && !showError" class="MetaInfo">
+    <div class="MetaImgColumn">
+      <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}"
+        class="thumbnail">
     </div>
-      <div class="MetaColumn">
+    <div class="MetaColumn">
       <h3 class="title">{{courseHierarchy?.name}}</h3>
       <span>
-    <sui-rating class="ui star rating" [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0"
-                    [maximum]="5"></sui-rating>
-                    <button mat-button tabindex="0" (click)="onShareLink()" class="ml-8"><mat-icon class="mr-8">share</mat-icon> {{resourceService?.frmelmnts?.lbl?.share}}</button>
-                  </span>
-           </div>
+        <sui-rating class="ui star rating" [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0"
+          [maximum]="5"></sui-rating>
+        <button mat-button tabindex="0" (click)="onShareLink()" class="ml-8"><mat-icon class="mr-8">share</mat-icon>
+          {{resourceService?.frmelmnts?.lbl?.share}}</button>
+      </span>
+    </div>
   </div>
   <!-- <span class="example-spacer"></span> -->
   <div *ngIf="!showLoader && !showError" class="Actions">
@@ -27,109 +31,46 @@
         *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
         {{enrollmentEndDate | dateFormat}}</span>
       <span class="sb-label-status-error"
-        *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':enrollmentEndDate}}</span>
-    </div> 
-    <div [ngClass]="{'d-flex': isDesktopApp}">
-        <button *ngIf="!enrolledCourse && !courseMentor" mat-raised-button tabindex="0" class="button-rounded" color="success" [disabled]="isEnrollmentAllowed(enrollmentEndDate)" 
-          (click)="showJoinModal(true); logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
-      <span *ngIf="isDesktopApp && !enrolledCourse && !courseMentor" class="d-flex">
-        <button mat-button type="button" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0" (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
-        <button mat-button type="button" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-        <button mat-button type="button" *ngIf="checkStatus('DOWNLOADED')" tabindex="0" (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-        <button mat-button type="button" *ngIf="checkStatus('DOWNLOAD')" appOnlineOnly tabindex="0"
+        *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 |
+        interpolate:'{endDate}':enrollmentEndDate}}</span>
+    </div>
+    <div class="d-flex" [ngClass]="{'d-flex': isDesktopApp}">
+      <button *ngIf="!enrolledCourse && !courseMentor" mat-raised-button tabindex="0" class="button-rounded"
+        [color]="isEnrollmentAllowed(enrollmentEndDate) ? '' : 'success'"
+        [disabled]="isEnrollmentAllowed(enrollmentEndDate)"
+        (click)="showJoinModal(true); logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+      <span *ngIf="isDesktopApp && !enrolledCourse && !courseMentor">
+        <button mat-button type="button" class="ml-8 button-rounded"
+          *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
+          (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
+        <button mat-button type="button" class="ml-8 button-rounded" *ngIf="checkStatus('DOWNLOADED')"
+          [disabled]="disableDelete" tabindex="0"
+          (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+        <button mat-button type="button" class="ml-8 button-rounded" *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
+          (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+        <button mat-button type="button" class="ml-8 button-rounded" *ngIf="checkStatus('DOWNLOAD')" appOnlineOnly
+          tabindex="0"
           (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.download}}</button>
-        <button mat-button type="button" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-        <button mat-button type="button" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
+        <button mat-button type="button" class="ml-8 button-rounded"
+          *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+        <button mat-button type="button" class="ml-8 button-rounded"
+          *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
       </span>
     </div>
   </div>
 
-  </mat-toolbar>
+</mat-toolbar>
 
-  <div class="ui container py-0 px-0 d-flex flex-ai-center hide hidden">
-    <div class="py-0 d-flex flex-ai-center w-100">
-      <!-- /* Back button */ -->
-      <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="redirectToExplore()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i>
-        <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
-      </button>
-      <!-- Textbook details with continue playing and join course button -->
-      <div class="textbook d-flex flex-ai-center w-100 ml-16" *ngIf="!showLoader && !showError">
-        <!-- Textbook details -->
-        <div class="textbook__details d-flex flex-ai-center">
-          <!-- Textbook image -->
-          <div class="textbook__bookimg">
-            <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
-          </div>
-          <div class="ml-8 textbook__heading">
-            <!-- Textbook title -->
-            <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name}}
-            </h5>
-            <!-- Textbook Rating with share icon -->
-            <div class="textbook__rating d-flex flex-ai-center">
-              <sui-rating class="ui star rating" [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0"
-                [maximum]="5"></sui-rating>
-
-              <button tabindex="0" (click)="onShareLink()"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
-                <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
-                    <use xlink:href="assets/images/sprite.svg#share"></use>
-                  </svg></i>
-                {{resourceService?.frmelmnts?.lbl?.share}}
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="batch-details__created mt-8 fsmall mx-8" *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)">
-          <span class="sb-label-12size"
-            *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
-            {{enrollmentEndDate | dateFormat}}</span>
-          <span class="sb-label-status-error"
-            *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':enrollmentEndDate}}</span>
-        </div>
-        <div class="certified-course mx-8" [ngClass]="{'d-flex': isDesktopApp}">
-          <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
-            <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" tabindex="0"
-            [disabled]="isEnrollmentAllowed(enrollmentEndDate)"
-            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(enrollmentEndDate)}"
-              (click)="showJoinModal(true); logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
-          </div>
-          <div *ngIf="isDesktopApp && !enrolledCourse && !courseMentor" class="d-flex">
-            <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-              *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
-              (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
-            <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-              *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
-              (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-            <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-              *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
-              (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-            <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-              *ngIf="checkStatus('DOWNLOAD')" appOnlineOnly tabindex="0"
-              (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.download}}</button>
-            <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-              *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-            <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8"
-              *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
 <!-- </div> -->
 
 <div [ngClass]="layoutConfiguration ? 'mat-inside-page-container' : 'pt-16'">
-
   <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
   <div *ngIf="showLoader" class="ui container">
     <app-loader></app-loader>
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
+<app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, size: 'normal', panelClass: 'material-modal'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
@@ -137,63 +78,45 @@
   </ng-template>
 </app-modal-wrapper>
 
-<div *ngIf="isDesktopApp">
-  
-    <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'normal'}" (dismiss)="showModal = !showModal;"
-      #modal>
-      <ng-template sbModalContent>
-        <div class="sb-modal">
-          <div class="transition ui dimmer page modals active visible">
-            <div class="ui modal transition active visible normal">
-              <div class="sb-modal-header">
-                {{resourceService.frmelmnts?.btn?.download}}
-              </div>
-              <div class="sb-modal-content">
-                <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
-              </div>
-              <div class="sb-modal-actions">
-                <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-                  (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
-                  {{resourceService.frmelmnts?.btn?.download}}
-                </button>
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-                  (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
-                  {{resourceService.frmelmnts?.btn?.cancel}}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </app-modal-wrapper>
-    
-    
-    <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true, size: 'normal'}"
-      (dismiss)="showDeleteModal = !showDeleteModal;" #modal>
-      <ng-template sbModalContent>
-        <div class="sb-modal">
-          <div class="transition ui dimmer page modals active visible">
-            <div class="ui modal transition active visible normal">
-              <div class="sb-modal-header">
-                {{resourceService?.frmelmnts?.lbl?.delete}}
-              </div>
-              <div class="sb-modal-content">
-                <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCourse | interpolate:'{name}': courseHierarchy?.name}}
-                </p>
-              </div>
-              <div class="sb-modal-actions">
-                <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-                  (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
-                  {{resourceService?.frmelmnts?.lbl?.delete}}
-                </button>
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-                  (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
-                  {{resourceService.frmelmnts?.btn?.cancel}}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </app-modal-wrapper>
+<div>
+
+  <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'normal'}"
+    (dismiss)="showModal = !showModal;" #modal>
+    <ng-template sbModalContent>
+      <h2 mat-dialog-title>{{resourceService.frmelmnts?.btn?.download}}</h2>
+      <mat-dialog-content>
+        <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button class="button-rounded" tabindex="0"
+          (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
+          {{resourceService.frmelmnts?.btn?.download}}
+        </button>
+        <button mat-button class="button-rounded" tabindex="0"
+          (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
+          {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+      </mat-dialog-actions>
+    </ng-template>
+  </app-modal-wrapper>
+
+  <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true, size: 'normal'}"
+    (dismiss)="showDeleteModal = !showDeleteModal;" #modal>
+    <ng-template sbModalContent>
+      <h2 mat-dialog-title>{{resourceService?.frmelmnts?.lbl?.delete}}</h2>
+      <mat-dialog-content>
+        <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCourse | interpolate:'{name}': courseHierarchy?.name}}</p>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button class="button-rounded" tabindex="0"
+          (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
+          {{resourceService?.frmelmnts?.lbl?.delete}}
+        </button>
+        <button mat-button class="button-rounded" tabindex="0"
+          (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
+          {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+      </mat-dialog-actions>
+    </ng-template>
+  </app-modal-wrapper>
 </div>
