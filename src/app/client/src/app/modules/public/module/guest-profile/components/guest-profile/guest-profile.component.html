@@ -1,141 +1,125 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
 <!--profile Content Header -->
-  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" >
-    <div class="ui container py-0 px-0 d-flex flex-ai-center">
-      <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-      <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-        </svg></i>
-     <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
-    </button>
-      <div class="content-header__content w-100 ml-16">
-        <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-          <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">{{resourceService.frmelmnts?.lnk?.profile}}</div>
-        </div>
-      </div>
-    </div>
+<mat-toolbar color="primary" class="toolbar-pageback">
+  <button mat-mini-fab color="accent" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}" tabindex="0">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <div class="MetaColumn">
+    <h3 class="title" tabindex="0" role="heading" aria-level="2">{{resourceService.frmelmnts?.lnk?.profile}}</h3>
   </div>
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
-<div [ngClass]="layoutConfiguration ? 'relative9' : ''" [appTelemetryImpression]="telemetryImpression">
-  <section class="py-24 d-flex flex-ai-center flex-dc">
-    <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
-        <sb-avatar class="my-avatar"  [config]=avatarConfig initialsSize="1"
-          [initial]="guestUser?.formatedName[0]" [indexOfMember]="2" [title]="">
-        </sb-avatar>
-      </div>
-    </div>
-    <div class="profile-user-label font-w-bold d-flex text-center relative position">{{guestUser?.formatedName |
-      titlecase}}
-    </div>
+</mat-toolbar>
 
+<div class="mat-inside-page-container" [appTelemetryImpression]="telemetryImpression">
+  <section class="d-flex flex-ai-center flex-dc">
+    <div class="mb-8 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
+      <sb-avatar class="my-avatar"  [config]=avatarConfig initialsSize="1"
+        [initial]="guestUser?.formatedName[0]" [indexOfMember]="2" [title]="">
+      </sb-avatar>
+    </div>
+    <div class="mat-display-1 font-weight-bold m-0">{{guestUser?.formatedName | titlecase}} </div>
   </section>
-  <section class="d-flex flex-ai-center flex-dc pb-24 content-preference">
-    <h3 class="content-header-info font-weight-bold mb-16 d-flex flex-jc-center">
+  <section class="d-flex flex-ai-center flex-dc my-24 content-preference">
+    <h3 class="mat-h1 font-weight-bold">
       {{resourceService?.frmelemnts?.lbl?.profiledetails}}</h3>
-    <div class="ui container content-preference__info pt-16">
-      <div *ngIf="userRole" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.role}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
+    <div class="mat-app-background w-100 br-32 py-24 text-center">
+      <div *ngIf="userRole" class="mb-8 content-preference__details">
+        <div class="mat-subheading-1 m-0 text-center">{{resourceService?.frmelmnts?.lbl?.role}} :</div>
+        <div class="mat-subheading-1 m-0 ml-5 font-weight-bold text-center">
           {{userRole | titlecase}}</div>
       </div>
-      <div *ngIf="guestUser?.subrole" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.subRole}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
+      <div *ngIf="guestUser?.subrole" class="mb-8 content-preference__details">
+        <div class="mat-subheading-1 m-0 text-center">{{resourceService?.frmelmnts?.lbl?.subRole}} :</div>
+        <div class="mat-subheading-1 m-0 ml-5 font-weight-bold text-center">
           {{guestUser?.subrole}}</div>
       </div>
 
-      <div *ngIf="guestUser?.school" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.school}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
+      <div *ngIf="guestUser?.school" class="mb-8 content-preference__details">
+        <div class="mat-subheading-1 m-0 text-center">{{resourceService?.frmelmnts?.lbl?.school}} :</div>
+        <div class="mat-subheading-1 m-0 ml-5 font-weight-bold text-center">
           {{guestUser?.school}} </div>
       </div>
-      <div *ngIf="guestUser?.cluster" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.cluster}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
+      <div *ngIf="guestUser?.cluster" class="mb-8 content-preference__details">
+        <div class="mat-subheading-1 m-0 text-center">{{resourceService?.frmelmnts?.lbl?.cluster}} :</div>
+        <div class="mat-subheading-1 m-0 ml-5 font-weight-bold text-center">
           {{guestUser?.cluster}} </div>
       </div>
-      <div *ngIf="guestUser?.block" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.block}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
+      <div *ngIf="guestUser?.block" class="mb-8 content-preference__details">
+        <div class="mat-subheading-1 m-0 text-center">{{resourceService?.frmelmnts?.lbl?.block}} :</div>
+        <div class="mat-subheading-1 m-0 ml-5 font-weight-bold text-center">
           {{guestUser?.block}}</div>
       </div>
       <div *ngIf="deviceProfile?.userDeclaredLocation?.district"
-        class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.district}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
+        class="mb-8 content-preference__details">
+        <div class="mat-subheading-1 m-0 text-center">{{resourceService?.frmelmnts?.lbl?.district}} :</div>
+        <div class="mat-subheading-1 m-0 ml-5 font-weight-bold text-center">
           {{deviceProfile?.userDeclaredLocation?.district}} </div>
       </div>
       <div *ngIf="deviceProfile?.userDeclaredLocation?.state"
-        class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.state}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
+        class="mb-8 content-preference__details">
+        <div class="mat-subheading-1 m-0 text-center">{{resourceService?.frmelmnts?.lbl?.state}} :</div>
+        <div class="mat-subheading-1 m-0 ml-5 font-weight-bold text-center">
           {{deviceProfile?.userDeclaredLocation?.state}}</div>
       </div>
-      <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
-        <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
-          class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16" aria-label="" tabindex="0"
-          (click)="showEditUserDetailsPopup=true">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
-      </div>
+      <button mat-raised-button color="accent" class="button-rounded mt-8" appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
+      aria-label="" tabindex="0"
+      (click)="showEditUserDetailsPopup=true">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
     </div>
   </section>
 
-  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4 content-preference">
+  <section class="mat-app-background w-100 br-32 py-24 text-center">
     <!-- User info computer view starts-->
-    <div class="ui container">
-      <div class="d-flex flex-jc-center flex-ai-center flex-dc">
-        <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-jc-center">
-            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.board)}}</span>
-          </div>
-          <div class="mb-15 d-flex flex-jc-center">
-            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.medium)}}</span>
-          </div>
-          <div class="mb-15 d-flex flex-jc-center">
-            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.gradeLevel)}}</span>
-          </div>
-          <div class="d-flex flex-jc-center" *ngIf="guestUser?.framework?.subject?.length">
-            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects | transposeTerms: 'frmelmnts.lbl.subjects': resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.subject)}}</span>
-          </div>
+    <div class="d-flex flex-jc-center flex-ai-center flex-dc">
+      <div class="max-w-400 computer only">
+        <div class="mb-8 d-flex flex-jc-center">
+          <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
+          <span class="mat-subheading-1 m-0 font-weight-bold pl-4">{{convertToString(guestUser?.framework?.board)}}</span>
         </div>
-        <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only" appTelemetryInteract
-          appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
-          tabindex="0" (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+        <div class="mb-8 d-flex flex-jc-center">
+          <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
+          <span class="mat-subheading-1 m-0 font-weight-bold pl-4">{{convertToString(guestUser?.framework?.medium)}}</span>
+        </div>
+        <div class="mb-8 d-flex flex-jc-center">
+          <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}} :</span>
+          <span class="mat-subheading-1 m-0 font-weight-bold pl-4">{{convertToString(guestUser?.framework?.gradeLevel)}}</span>
+        </div>
+        <div class="d-flex flex-jc-center" *ngIf="guestUser?.framework?.subject?.length">
+          <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects | transposeTerms: 'frmelmnts.lbl.subjects': resourceService?.selectedLang}} :</span>
+          <span class="mat-subheading-1 m-0 font-weight-bold pl-4">{{convertToString(guestUser?.framework?.subject)}}</span>
+        </div>
+        <button mat-raised-button color="accent" class="button-rounded mt-8" appTelemetryInteract
+        appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
+        tabindex="0" (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>
     </div>
     <!-- User info computer view ends-->
 
     <!-- User info mobile view starts-->
-    <div class="max-w-300 mobile only">
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.board)}}</span>
+    <div class="max-w-300 mobile only m-auto">
+      <div class="mb-8 d-flex flex-ai-center flex-dc">
+        <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}}:</span>
+        <span class="mat-subheading-1 m-0 font-weight-bold text-center">{{convertToString(guestUser?.framework?.board)}}</span>
       </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.medium)}}</span>
+      <div class="mb-8 d-flex flex-ai-center flex-dc">
+        <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
+        <span class="mat-subheading-1 m-0 font-weight-bold text-center">{{convertToString(guestUser?.framework?.medium)}}</span>
       </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.gradeLevel)}}</span>
+      <div class="mb-8 d-flex flex-ai-center flex-dc">
+        <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes | transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}} :</span>
+        <span class="mat-subheading-1 m-0 font-weight-bold text-center">{{convertToString(guestUser?.framework?.gradeLevel)}}</span>
       </div>
-      <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects | transposeTerms: 'frmelmnts.lbl.subjects': resourceService?.selectedLang}} :</span>
-        <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.subject)}}</span>
+      <div class="mb-8 d-flex flex-ai-center flex-dc">
+        <span class="mat-subheading-1 m-0 white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects | transposeTerms: 'frmelmnts.lbl.subjects': resourceService?.selectedLang}} :</span>
+        <span class="mat-subheading-1 m-0 font-weight-bold text-center">{{convertToString(guestUser?.framework?.subject)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="editFrameworkInteractEData" tabindex="0" (click)="showEdit = !showEdit">
-        <button appOnlineOnly attr.aria-label="{{resourceService?.frmelmnts?.lbl?.edit}} {{resourceService?.frmelmnts?.lbl?.boards}},{{resourceService?.frmelmnts?.lbl?.medium}},{{resourceService?.frmelmnts?.lbl?.classes}},{{resourceService?.frmelmnts?.lbl?.subjects}}"
-          class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+        <button mat-raised-button color="accent" class="button-rounded mt-8" appOnlineOnly 
+        attr.aria-label="{{resourceService?.frmelmnts?.lbl?.edit}} {{resourceService?.frmelmnts?.lbl?.boards}},{{resourceService?.frmelmnts?.lbl?.medium}},{{resourceService?.frmelmnts?.lbl?.classes}},{{resourceService?.frmelmnts?.lbl?.subjects}}">
+        {{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>
     </div>
     <!-- User info mobile view ends-->
   </section>
-</div>
 </div>
 
 <app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">

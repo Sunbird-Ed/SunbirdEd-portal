@@ -7,6 +7,7 @@ import { GuestProfileRoutingModule } from './guest-profile-routing.module';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { LocationModule } from '../../../../plugins/location/location.module';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   declarations: [GuestProfileComponent],
   imports: [
@@ -17,6 +18,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
     SharedFeatureModule,
     LocationModule,
     GuestProfileRoutingModule,
+    MatToolbarModule
   ]
 })
 export class GuestProfileModule { }

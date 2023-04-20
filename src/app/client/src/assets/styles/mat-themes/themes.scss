@@ -17,7 +17,7 @@ mat.$theme-ignore-duplication-warnings: true;
 @use "./themes.scss-universal.scss" as *;
 // @import "./../../../app/app.component.scss-theme.scss";
 // @import "./../../../app/modules/content-search/components/no-result/no-result.component.scss-theme.scss";
-
+@import './../../../app/plugins/profile/components/profile-page/profile-page.component.scss-theme.scss';
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
@@ -72,6 +72,8 @@ $theme in $app-themes {
     @include theme-mat-modal($matModal);
     $theme-var-colors: mat.define-light-theme($primary, $accent, $warn);
     @include theme-var-colors($theme-var-colors);
+    $profilePageTheme: mat.define-light-theme($primary, $accent, $warn);
+    @include profile-page-theme($profilePageTheme);
 
     @include mat-expansion-panel(mat.define-light-theme($primary, $accent, $warn));
     
@@ -79,6 +81,8 @@ $theme in $app-themes {
     @if $css-class=="pink-bluegrey" or $css-class=="purple-green" or $css-class=="green-grey"
 
       {
+        $profilePageTheme: mat.define-dark-theme($primary, $accent, $warn);
+        @include profile-page-theme($profilePageTheme);
       @include mat.all-component-colors(mat.define-dark-theme($primary, $accent, $warn));
       @include mat.strong-focus-indicators-theme(mat.define-dark-theme($primary, $accent, $warn));
       $primary100: map-get($background, background); // mat.get-color-from-palette($accent, 900);
