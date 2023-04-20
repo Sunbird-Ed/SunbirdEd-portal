@@ -32,7 +32,7 @@ import { CsCertificateService } from '@project-sunbird/client-services/services/
 
 @Component({
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.scss'],
+  styleUrls: ['./profile-page.component.scss','./profile-page.component.scss-theme.scss'],
   providers: [CertificateDownloadAsPdfService]
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {

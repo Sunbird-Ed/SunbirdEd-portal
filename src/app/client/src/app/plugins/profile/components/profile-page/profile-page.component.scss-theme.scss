@@ -1,0 +1,52 @@
+@use "@angular/material" as mat;
+@use 'sass:map';
+@use './../../../../../assets/styles/mat-themes/palette'as *;
+@use "./../../../../../assets/styles/mat-themes/colors";
+// mixin name will be used in main style.scss
+@mixin profile-page-theme($theme) {
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
+  .profile-bg-c-3 {
+    background: mat.get-color-from-palette($primary,500);
+  } 
+  .profile-bg-c-4 {
+    background: var(--sb-profile-bg-c-4);
+  }
+  .mat-profile-page-container{
+    .mat-chip.mat-standard-chip{
+      background-color: mat.get-color-from-palette($background, background);
+    }
+    .mat-chip.mat-standard-chip{
+      font-weight: 700;
+      border-radius: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      &::after{
+        background: none;
+      }
+    }
+    .mat-chip-list-wrapper{
+      justify-content: center;
+    }
+    .profile-page-view-more, .list-items__item a{
+      color: mat.get-color-from-palette($accent);
+    }
+    .list-items__item{
+      color: inherit
+    }
+    .list-items__item.status-progress{
+      @include colors.color-info;
+    }
+    .list-items__item.status-completed {
+      @include colors.color-success;
+    }
+    .sb-certificate-trained{
+      background-color: mat.get-color-from-palette($background, background);
+    }
+  }
+}
+
