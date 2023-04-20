@@ -51,9 +51,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.extContWhitelistedDomains = (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')) ?
       (<HTMLInputElement>document.getElementById('extContWhitelistedDomains')).value : 'youtube.com,youtu.be';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
-      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '20000'; // The maximum object size allowed by PutObject is 50 GiB in OCI
+      (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
       this.defaultContentFileSize = (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')) ?
-      (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')).value : 20000;
+      (<HTMLInputElement>document.getElementById('sunbirdDefaultFileSize')).value : 150;
       this.cloudStorageProvider = (<HTMLInputElement>document.getElementById('cloudStorageProvider')) ?
       (<HTMLInputElement>document.getElementById('cloudStorageProvider')).value : 'oci';
   }
