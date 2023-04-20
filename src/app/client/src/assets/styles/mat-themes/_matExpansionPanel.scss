@@ -1,61 +1,53 @@
 
 @use "@angular/material" as mat;
 @use "sass:map";
+@use './palette'as *;
 
 @mixin mat-expansion-panel($theme) {
+    // Get the color config from the theme.
+    $color-config: mat.get-color-config($theme);
+    // Get the primary color palette from the color-config.
+    $primary: map.get($color-config, 'primary');
+    $accent: map.get($color-config, 'accent');
+    $warn: map.get($color-config, 'warn');
+    $background: map.get($color-config, 'background');
+  $foreground: map.get($color-config, 'foreground');
 
-  // Get the color config from the theme.
-// $color-config: mat.get-color-config($theme);
-// // Get the primary color palette from the color-config.
-// $primary: map.get($color-config, 'primary');
-// $accent: map.get($color-config, 'accent');
-// $foreground: map.get($color-config, 'foreground');
-// $background: map.get($color-config, 'background');
-
-  $primary: mat.define-palette(mat.$cyan-palette);
-  $accent: mat.define-palette(mat.$cyan-palette, 500);
-  
-  .mat-expansion-panel {
-    background-color: mat.get-color-from-palette($primary, 100);
-    // @include private.private-theme-overridable-elevation(2, $config);
-    // background: theming.get-color-from-palette($background, card);
-    // color: theming.get-color-from-palette($foreground, text);
+  .mat-accordion .mat-expansion-panel {
+    background: var(--sbt-body-bg);
+    margin-bottom: 1rem;
+    box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
   }
 
-  .mat-action-row {
-    // border-top-color: theming.get-color-from-palette($foreground, divider);
+  .mat-expansion-panel-header {
+    font-size: 1rem;
   }
 
-  // @include expansion-mixins.private-expansion-focus {
-  //   // background: theming.get-color-from-palette($background, hover);
-  // }
+  .mat-accordion .mat-expansion-panel:first-of-type {
+    border-top-right-radius: 1.5rem;
+    border-top-left-radius: 1.5rem;
+  }
 
-  // Disable the hover on touch devices since it can appear like it is stuck. We can't use
-  // `@media (hover)` above, because the desktop support browser support isn't great.
-  @media (hover: none) {
-    .mat-expansion-panel:not(.mat-expanded):not([aria-disabled='true'])
-      .mat-expansion-panel-header:hover {
-      // background: theming.get-color-from-palette($background, card);
+  .mat-accordion .mat-expansion-panel:last-of-type {
+    border-bottom-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+  }
+
+  /* For now overidding mb-0 to mb-16 for batch details */
+  .mat-accordion>.mat-expansion-panel-spacing:last-child {
+    margin-bottom: 1rem;
+  }
+
+  .batch-details .content-metadeta__text {
+    &.error-msg {
+      color: mat.get-color-from-palette($warn, 500);
     }
   }
 
-  .mat-expansion-panel-header-title {
-    // color: theming.get-color-from-palette($foreground, text);
+  .content-metadata-item .content-metadeta__text .credits {
+    color: mat.get-color-from-palette($accent, 500);
   }
-
-  .mat-expansion-panel-header-description,
-  .mat-expansion-indicator::after {
-    // color: theming.get-color-from-palette($foreground, secondary-text);
-  }
-
-  .mat-expansion-panel-header[aria-disabled='true'] {
-    // color: theming.get-color-from-palette($foreground, disabled-button);
-
-    .mat-expansion-panel-header-title,
-    .mat-expansion-panel-header-description {
-      color: inherit;
-    }
-  }
-
   
 }
+
+// Expansion panel theme
