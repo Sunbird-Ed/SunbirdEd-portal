@@ -60,7 +60,7 @@
             </div>
             <div *ngFor="let batch of batchList">
 
-              <div class=""><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="calendar_month"></mat-icon>
+              <div class=""><mat-icon aria-hidden="false" aria-label="Calender" fontIcon="calendar_month"></mat-icon>
                 {{batch.startDate | dateFormat}}
                 <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span>
               </div>
