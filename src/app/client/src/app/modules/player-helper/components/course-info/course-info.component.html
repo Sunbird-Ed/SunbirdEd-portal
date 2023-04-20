@@ -1,7 +1,7 @@
 <mat-accordion class="">
   <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header>
-      <mat-panel-title tabindex="0" title class="mat-subheading-1" [attr.aria-expanded]="isOpen"
+      <mat-panel-title tabindex="0" title class="mat-subheading-1 mb-0" [attr.aria-expanded]="isOpen"
         attr.aria-label="{{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}} accordion"
         aria-controls="creditsLicenceInfo">
         <span>{{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}}</span>
@@ -9,17 +9,17 @@
     </mat-expansion-panel-header>
     <div content role="region" id="creditsLicenceInfo" aria-labelledby="creditsLicenceInfo">
       <div class="content-metadata-item" *ngIf="courseHierarchy?.author">
-        <div class="content-metadeta__title mat-button">
+        <div class="content-metadeta__title mat-caption">
           {{resourceService?.frmelmnts?.lbl?.author}}</div>
         <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.author}}</div>
       </div>
       <div class="content-metadata-item" *ngIf="courseHierarchy?.creator">
-        <div class="content-metadeta__title mat-button">
+        <div class="content-metadeta__title mat-caption">
           {{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
         <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.creator}}</div>
       </div>
       <div class="content-metadata-item">
-        <div class="content-metadeta__title mat-button">
+        <div class="content-metadeta__title mat-caption">
           {{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
         <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.organisation?.join(', ')}}
         </div>
@@ -30,13 +30,13 @@
       </div>
 
       <div class="content-metadata-item" *ngIf="courseHierarchy?.createdOn">
-        <div class="content-metadeta__title mat-button">
+        <div class="content-metadeta__title mat-caption">
           {{resourceService?.frmelmnts?.lbl?.coursecreatedon}}</div>
         <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.createdOn | dateFormat}}</div>
       </div>
 
       <div class="content-metadata-item" *ngIf="courseHierarchy?.lastUpdatedOn">
-        <div class="content-metadeta__title mat-button">
+        <div class="content-metadeta__title mat-caption">
           {{resourceService?.frmelmnts?.lbl?.updatedon}}</div>
         <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.lastUpdatedOn | dateFormat}}
         </div>
@@ -45,18 +45,18 @@
       <div class="content-metadata-item" *ngIf="showCredits">
         <div class="content-metadeta__text mat-body-1">
           <a (click)="showContentCreditsModal = true" title="{{resourceService?.frmelmnts?.lbl?.courseCredits}}"
-            class="cursor-pointer credits color_primary">
+            class="cursor-pointer credits color_accent">
             {{resourceService?.frmelmnts?.lbl?.courseCredits}}
           </a>
         </div>
       </div>
 
       <div class="content-metadata-item">
-        <div class="content-metadeta__title mat-button">
+        <div class="content-metadeta__title mat-caption">
           {{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
         <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.license}}</div>
         <span class="license content-metadata__text mat-body-1">
-          {{resourceService?.frmelmnts?.lbl?.forDetails}} - <a class="credits color_primary"
+          {{resourceService?.frmelmnts?.lbl?.forDetails}} - <a class="credits color_info"
             [href]="courseHierarchy?.licenseDetails?.url" target="_blank">{{courseHierarchy?.licenseDetails?.url}}</a>
         </span>
       </div>

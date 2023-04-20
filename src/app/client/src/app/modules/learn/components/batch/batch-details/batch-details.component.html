@@ -40,7 +40,7 @@
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion"
       aria-controls="batches">
-      <mat-panel-title class="mat-subheading-1">
+      <mat-panel-title class="mat-subheading-1 mb-0">
         {{resourceService?.frmelmnts?.lbl?.batches}}
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -49,7 +49,7 @@
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
             <div>
-              <mat-form-field appearance="fill" class="w-100 mb-16">
+              <mat-form-field appearance="fill" class="w-100">
                 <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
                 <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage" class="selection"
                   [(ngModel)]="batchStatus" (selectionChange)="getSelectedBatches()">
@@ -120,7 +120,7 @@
 <mat-accordion class="" *ngIf="showBatchDetailsBeforeJoin">
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header>
-      <mat-panel-title class="mat-subheading-1">
+      <mat-panel-title class="mat-subheading-1 mb-0">
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -128,20 +128,20 @@
       <div class="batch-details">
         <div class="mb-16">
           <div *ngIf="batchDetails?.startDate">
-            <div class="content-metadeta__title mat-button mb-8">
+            <div class="content-metadeta__title mat-caption mb-8">
               {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
             <div class="content-metadeta__text mat-body-1">{{batchDetails?.startDate | dateFormat}}
             </div>
           </div>
           <hr class="section-hr" *ngIf="batchDetails?.endDate" />
           <div *ngIf="batchDetails?.endDate">
-            <div class="content-metadeta__title mat-button mb-8">
+            <div class="content-metadeta__title mat-caption mb-8">
               {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
             <div class="content-metadeta__text mat-body-1">{{batchDetails?.endDate | dateFormat}}</div>
           </div>
           <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
           <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-            <div class="content-metadeta__title mat-button mb-8">
+            <div class="content-metadeta__title mat-caption mb-8">
               {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
             <div class="content-metadeta__text mat-body-1"> {{batchDetails?.enrollmentEndDate |
               dateFormat}}</div>
@@ -156,7 +156,7 @@
 <mat-accordion *ngIf="showCertificateDetails" class="">
   <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header title class="">
-      <mat-panel-title class="mat-subheading-1">
+      <mat-panel-title class="mat-subheading-1 mb-0">
         <span>{{resourceService?.frmelemnts?.scttl?.certques}}</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
@@ -180,7 +180,7 @@
 <mat-accordion class="" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header>
-      <mat-panel-title class="mat-subheading-1">
+      <mat-panel-title class="mat-subheading-1 mb-0">
         {{resourceService.frmelmnts.lbl.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
