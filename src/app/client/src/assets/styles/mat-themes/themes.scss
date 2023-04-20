@@ -74,6 +74,9 @@ $theme in $app-themes {
     @include theme-var-colors($theme-var-colors);
     $profilePageTheme: mat.define-light-theme($primary, $accent, $warn);
     @include profile-page-theme($profilePageTheme);
+
+    @include mat-expansion-panel(mat.define-light-theme($primary, $accent, $warn));
+    
     // dark theme
     @if $css-class=="pink-bluegrey" or $css-class=="purple-green" or $css-class=="green-grey"
 
@@ -119,7 +122,6 @@ $theme in $app-themes {
       @include mat.strong-focus-indicators-theme(mat.define-light-theme($primary, $accent, $warn));
       // @include app-root-theme(mat.define-light-theme($primary, $accent, $warn));
       // @include no-result-component(mat.define-light-theme($primary, $accent, $warn));
-      @include mat-expansion-panel($theme);
 
       $ColorGrabber: mat.define-light-theme($primary, $accent, $warn);
       @include theme-color-grabber($ColorGrabber);

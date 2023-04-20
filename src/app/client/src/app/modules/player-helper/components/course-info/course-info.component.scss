@@ -1,10 +1,23 @@
-@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
 ::ng-deep {
-    .ui.accordion .active.title .chevron.down.icon {
-        margin-top:calculateRem(6px);
-    }
-    .ui.accordion .title .chevron.down.icon {
-      margin-top:calculateRem(-6px);
-    }
+  .ui.accordion .active.title .chevron.down.icon {
+    margin-top: calculateRem(6px);
   }
+
+  .ui.accordion .title .chevron.down.icon {
+    margin-top: calculateRem(-6px);
+  }
+}
+
+.content-metadata-item {
+  margin-bottom: 1.5rem;
+
+  .content-metadeta__title {
+    margin-bottom: .5rem;
+    font-weight: bold;
+  }
+  .license a {
+    word-break: break-all;
+  }
+}

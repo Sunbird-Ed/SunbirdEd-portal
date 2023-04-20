@@ -53,7 +53,8 @@ li {
 }
 li::before {
   content: ">";
-  font-size: calculateRem(12px);
-  color: var(--gray-200);
   font-weight:bold;
+}
+.batch-details .content-metadeta__title {
+  font-weight: bold;
 }
