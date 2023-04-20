@@ -38,20 +38,20 @@
 <!-- create batch -->
 <mat-accordion class="" *ngIf="isTrackable && viewBatch">
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
-    <mat-expansion-panel-header tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion" aria-controls="batches">
-      <mat-panel-title>
+    <mat-expansion-panel-header tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.batches}} accordion"
+      aria-controls="batches">
+      <mat-panel-title class="mat-subheading-1">
         {{resourceService?.frmelmnts?.lbl?.batches}}
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div role="region" id="batches" aria-labelledby="batches">
       <div class="batch-details">
-        <div class="" *ngIf="showBatchList">
+        <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
             <div>
-              <mat-form-field appearance="fill" class="">
+              <mat-form-field appearance="fill" class="w-100 mb-16">
                 <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
-                <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage"
-                  class="selection"
+                <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage" class="selection"
                   [(ngModel)]="batchStatus" (selectionChange)="getSelectedBatches()">
                   <mat-option role="option" *ngFor="let option of statusOptions" [value]="option.value"
                     attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
@@ -60,17 +60,18 @@
             </div>
             <div *ngFor="let batch of batchList">
 
-              <div class=""><mat-icon aria-hidden="false" aria-label="Calender" fontIcon="calendar_month"></mat-icon>
+              <div class="mat-subheading-2"><mat-icon aria-hidden="false" aria-label="Calender"
+                  fontIcon="calendar_month"></mat-icon>
                 {{batch.startDate | dateFormat}}
                 <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span>
               </div>
-              <div class="batch-details__edit">
+              <div class="batch-details__edit py-8">
                 <div *ngIf="allowBatchCreation && allowCertCreation">
-                  <div *ngIf="!isCertAdded(batch)" class="">
+                  <div *ngIf="!isCertAdded(batch)" class="mat-body-1 color_primary">
                     <a href="javascript:void(0)" tabindex="0"
                       (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
                   </div>
-                  <div *ngIf="isCertAdded(batch)" class="">
+                  <div *ngIf="isCertAdded(batch)" class="mat-body-1 color_primary">
                     <a href="javascript:void(0)" tabindex="0"
                       (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
                   </div>
@@ -84,20 +85,21 @@
               </div>
 
 
-              <div class="batch-details__created" *ngIf="userNames[batch.createdBy]">
+              <div class="batch-details__created mat-caption mt-8" *ngIf="userNames[batch.createdBy]">
                 {{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}
                 {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}
               </div>
-              <div class="batch-details__created" *ngIf="isValidEnrollmentEndDate(batch.enrollmentEndDate)">
-                <span class=""
+              <div class="batch-details__created mt-8 mat-caption"
+                *ngIf="isValidEnrollmentEndDate(batch.enrollmentEndDate)">
+                <span class="mat-caption"
                   *ngIf="!isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0136}}
                   {{batch.enrollmentEndDate | dateFormat}}</span>
-                <span class=""
+                <span class="color_warn"
                   *ngIf="isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0134}}</span>
               </div>
             </div>
           </div>
-          <div class="content " *ngIf="batchList.length <= 0">
+          <div class="content mt-16" *ngIf="batchList.length <= 0">
             <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
           </div>
         </div>
@@ -118,30 +120,30 @@
 <mat-accordion class="" *ngIf="showBatchDetailsBeforeJoin">
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header>
-      <mat-panel-title class="">
+      <mat-panel-title class="mat-subheading-1">
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div class="">
       <div class="batch-details">
-        <div class="">
+        <div class="mb-16">
           <div *ngIf="batchDetails?.startDate">
-            <div class="content-metadeta__title">
+            <div class="content-metadeta__title mat-button mb-8">
               {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
-            <div class="content-metadeta__text">{{batchDetails?.startDate | dateFormat}}
+            <div class="content-metadeta__text mat-body-1">{{batchDetails?.startDate | dateFormat}}
             </div>
           </div>
           <hr class="section-hr" *ngIf="batchDetails?.endDate" />
           <div *ngIf="batchDetails?.endDate">
-            <div class="content-metadeta__title">
+            <div class="content-metadeta__title mat-button mb-8">
               {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
-            <div class="content-metadeta__text">{{batchDetails?.endDate | dateFormat}}</div>
+            <div class="content-metadeta__text mat-body-1">{{batchDetails?.endDate | dateFormat}}</div>
           </div>
           <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
           <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-            <div class="content-metadeta__title">
+            <div class="content-metadeta__title mat-button mb-8">
               {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
-            <div class="content-metadeta__text"> {{batchDetails?.enrollmentEndDate |
+            <div class="content-metadeta__text mat-body-1"> {{batchDetails?.enrollmentEndDate |
               dateFormat}}</div>
             <div class="sb-label-status-error" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
               {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
@@ -154,17 +156,17 @@
 <mat-accordion *ngIf="showCertificateDetails" class="">
   <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header title class="">
-      <mat-panel-title>
+      <mat-panel-title class="mat-subheading-1">
         <span>{{resourceService?.frmelemnts?.scttl?.certques}}</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div class="">
       <div class="batch-details">
-        <div class="">
+        <div class="mb-16">
           <ul>
-            <li *ngIf="showCompletionCertificate" class="">
+            <li class="mat-caption" *ngIf="showCompletionCertificate">
               {{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
-            <li *ngIf="showMeritCertificate" class="">
+            <li class="mat-caption" *ngIf="showMeritCertificate">
               {{resourceService?.frmelemnts?.bltpt?.earnmcert |
               interpolate:'{percent}': meritCertPercent}}</li>
           </ul>
@@ -175,20 +177,19 @@
 </mat-accordion>
 
 <!-- Leave batch card -->
-<mat-accordion class=""
-  *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
+<mat-accordion class="" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header>
-      <mat-panel-title class="">
+      <mat-panel-title class="mat-subheading-1">
         {{resourceService.frmelmnts.lbl.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-mat-accordion__content">
+    <div class="">
       <div class="batch-details">
-        <div class="">
-          <div class="batch-details__name">
+        <div class="mb-16">
+          <div class="batch-details__name mat-subheading-2">
             {{enrolledBatchInfo?.name}}</div>
-          <div class="batch-details__created">
+          <div class="batch-details__created mt-8 mat-caption">
             <span class="date">{{enrolledBatchInfo.startDate | dateFormat}} </span>
             <span *ngIf="enrolledBatchInfo.endDate" class="date"> -
               {{enrolledBatchInfo?.endDate | dateFormat}}</span>
@@ -201,7 +202,7 @@
             (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
             [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll}}</button>
         </div>
-        <div class="batch-details__created">
+        <div class="batch-details__created mt-8 mat-caption">
           <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
             {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
           </span>

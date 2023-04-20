@@ -1,26 +1,21 @@
-
-@use "@angular/material" as mat;
+@use "@angular/material"as mat;
 @use "sass:map";
 @use './palette'as *;
 
 @mixin mat-expansion-panel($theme) {
-    // Get the color config from the theme.
-    $color-config: mat.get-color-config($theme);
-    // Get the primary color palette from the color-config.
-    $primary: map.get($color-config, 'primary');
-    $accent: map.get($color-config, 'accent');
-    $warn: map.get($color-config, 'warn');
-    $background: map.get($color-config, 'background');
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
   $foreground: map.get($color-config, 'foreground');
 
   .mat-accordion .mat-expansion-panel {
     background: var(--sbt-body-bg);
     margin-bottom: 1rem;
     box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
-  }
-
-  .mat-expansion-panel-header {
-    font-size: 1rem;
   }
 
   .mat-accordion .mat-expansion-panel:first-of-type {
@@ -38,16 +33,6 @@
     margin-bottom: 1rem;
   }
 
-  .batch-details .content-metadeta__text {
-    &.error-msg {
-      color: mat.get-color-from-palette($warn, 500);
-    }
-  }
-
-  .content-metadata-item .content-metadeta__text .credits {
-    color: mat.get-color-from-palette($accent, 500);
-  }
-  
 }
 
 // Expansion panel theme
