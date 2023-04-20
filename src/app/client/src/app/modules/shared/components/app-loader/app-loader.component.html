@@ -1,23 +1,12 @@
-<ng-container *ngIf="!layoutConfiguration">
-  <div class="ui icon message mt-30">
-    <i class="notched circle loading icon"></i>
-    <div class="content">
-      <div class="header">
-        {{headerMessage}}
-      </div>
-      <p>{{loaderMessage}}</p>
-    </div>
-  </div>
-</ng-container>
 <ng-container *ngIf="layoutConfiguration">
   <!--New Layout-->
-  <div class="ui icon message mt-30 sbt-app-loader-container">
-    <i class="notched circle loading icon"></i>
-    <div class="content text-left">
-      <div class="header">
-        {{headerMessage}}
-      </div>
-      <p>{{loaderMessage}}</p>
+  <mat-card class="mat-spinner-card">
+    <mat-spinner diameter="60" color="accent"></mat-spinner>
+    <div class="content">
+      <mat-card-title class="color_accent">{{headerMessage}}</mat-card-title>
+    <mat-card-subtitle>{{loaderMessage}}</mat-card-subtitle>
     </div>
-  </div>
+  </mat-card>
 </ng-container>
+
+

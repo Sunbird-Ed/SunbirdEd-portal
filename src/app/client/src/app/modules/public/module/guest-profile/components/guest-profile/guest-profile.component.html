@@ -9,7 +9,7 @@
   </div>
 </mat-toolbar>
 
-<div class="mat-inside-page-container" [appTelemetryImpression]="telemetryImpression">
+<div class="mat-inside-page-container mat-app-background2" [appTelemetryImpression]="telemetryImpression">
   <section class="d-flex flex-ai-center flex-dc">
     <div class="mb-8 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
       <sb-avatar class="my-avatar"  [config]=avatarConfig initialsSize="1"
@@ -132,6 +132,6 @@
 
 <app-location-selection (close)="closeEditDetailsPopup()" *ngIf="showEditUserDetailsPopup">
   <div slot="popup-sub-header">
-    <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
+    <p class="mat-subheading-2 mb-0 font-w-bold">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
   </div>
 </app-location-selection>

@@ -1,7 +1,7 @@
 
   <!--Header-->
-  <div mat-dialog-title class="mb-0">
-    <h2 class="title" role="heading" aria-level="2" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
+  <div mat-dialog-title class="d-flex flex-ai-center">
+    <h2 class="mb-0" role="heading" aria-level="2" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
       {{resourceService?.frmelmnts?.lbl?.share}}
     </h2>
     <span class="example-spacer"></span>
@@ -16,6 +16,7 @@
       <p class="mb-8" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.arialabelShare}}">
         {{resourceService?.frmelmnts?.lbl?.sharelink}}
       </p>
+      <!-- matTooltip="{{resourceService?.frmelmnts?.lbl?.linkCopied}}" -->
       <div class="" id="buttonPopUp" suiPopup [popupPlacement]="position" popupTrigger="manual"
         popupText="{{resourceService?.frmelmnts?.lbl?.linkCopied}}" #popup="suiPopup">
         <input type="text" id="copyLinkData" name="title" readonly [(ngModel)]="shareLink" aria-label="copy link data"

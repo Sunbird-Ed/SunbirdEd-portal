@@ -7,7 +7,8 @@
           guestUser: !userService.loggedIn
         }">
 
-        <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }" class="accessibility-toolbar-theme mb-8 density-2">
+        <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }"
+          class="accessibility-toolbar-theme mb-8 density-2">
           <mat-toolbar color="accent">
             <button mat-raised-button (click)="drawer.toggle()" class="custom-btn-bg">Toggle drawer</button>
             <span class="example-spacer"></span>
@@ -60,190 +61,41 @@
 
             </span>
 
-            <!-- <button mat-icon-button id="dark-mode-toggle" class="dark-mode-toggle"  attr.aria-label="{{
-              resourceService?.frmelmnts?.lbl?.accessibilitytheme
-            }}" tabindex="0" title="{{
-              resourceService?.frmelmnts?.lbl?.accessibilitytheme
-            }}" (click)="toggleLightDarkMode()" (keydown.enter)="toggleLightDarkMode()" #darkModeToggle>
-            <mat-icon>dark_mode</mat-icon>
-          </button> -->
-
             <button mat-button id="theme-selector" [mat-menu-trigger-for]="themeMenu" matTooltip="Select a theme!"
               tabindex="-1">
               <mat-icon class="auto-flip">format_color_fill</mat-icon>
             </button>
 
             <mat-menu #themeMenu="matMenu" class="themeMenuDropdown">
-              <!-- <mat-checkbox [checked]="isThemeDark" (click)="$event.stopPropagation()" (change)="toggleDarkness()"
-                class="mat-menu-item theme-selector-is-dark" i18n="@@Dark">Dark
-              </mat-checkbox> -->
 
               <button mat-menu-item *ngFor="let theme of themes; let i = index"
-              (click)="$event.stopPropagation(); setMatTheme(theme)" class="d-flex flex-ai-center flex-jc-space-between">
-              <div><mat-icon *ngIf="activeTheme === theme" class="center theme-check">radio_button_checked</mat-icon>
-              <mat-icon *ngIf="activeTheme != theme" class="center theme-check">radio_button_unchecked</mat-icon>
-              <span>{{ theme }}</span></div>
-              <mat-icon role="img" svgicon="theme-example"
-                    class="mat-icon {{ theme }} ml-16 mr-0"
-                    aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="theme-example"><svg
-                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%"
-                      height="100%" viewBox="0 0 80 80" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-                      <defs>
-                        <path
-                          d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
-                          id="a"></path>
-                        <path
-                          d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
-                          id="b"></path>
-                        <path d="M0 0h80v17.24H0V0z" id="c"></path>
-                      </defs>
-                      <use xlink:href="#a" fill="#fff" class="docs-theme-icon-background"></use>
-                      <use xlink:href="#b" class="docs-theme-icon-button"></use>
-                      <use xlink:href="#c" class="docs-theme-icon-toolbar"></use>
-                    </svg></mat-icon>
-            </button>
-
-              <!-- <a mat-list-item href="javascript:void(0)" *ngFor="let theme of themes; let i = index"
-                              (click)="$event.stopPropagation(); setMatTheme(theme)">{{ theme }}
-                              <mat-icon *ngIf="activeTheme === theme" class="center theme-check">check</mat-icon>
-                            </a> -->
-              <!--<button mat-button *ngFor="let theme of themes; let i = index;"
-                        (click)="$event.stopPropagation(); setMatTheme(theme)"> {{ theme }}
-                       <mat-icon *ngIf="activeTheme===theme" class="center theme-check">check</mat-icon> -->
-              <!-- <div [attr.class]="theme + ' theme-primary center'">
-                      <div [attr.class]="theme + ' theme-accent'"></div>
-                      <div [attr.class]="theme + ' theme-warn'"></div>
-                      <mat-icon *ngIf="activeTheme===theme" class="center theme-check">check</mat-icon>
-                    </div>-->
-              <!-- </button>  -->
+                (click)="$event.stopPropagation(); setMatTheme(theme)"
+                class="d-flex flex-ai-center flex-jc-space-between">
+                <div><mat-icon *ngIf="activeTheme === theme" class="center theme-check">radio_button_checked</mat-icon>
+                  <mat-icon *ngIf="activeTheme != theme" class="center theme-check">radio_button_unchecked</mat-icon>
+                  <span>{{ theme }}</span>
+                </div>
+                <mat-icon role="img" svgicon="theme-example" class="mat-icon {{ theme }} ml-16 mr-0" aria-hidden="true"
+                  data-mat-icon-type="svg" data-mat-icon-name="theme-example"><svg xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 80 80" fit=""
+                    preserveAspectRatio="xMidYMid meet" focusable="false">
+                    <defs>
+                      <path
+                        d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                        id="a"></path>
+                      <path
+                        d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                        id="b"></path>
+                      <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                    </defs>
+                    <use xlink:href="#a" fill="#fff" class="docs-theme-icon-background"></use>
+                    <use xlink:href="#b" class="docs-theme-icon-button"></use>
+                    <use xlink:href="#c" class="docs-theme-icon-toolbar"></use>
+                  </svg></mat-icon>
+              </button>
             </mat-menu>
           </mat-toolbar>
         </div>
-
-
-
-        <!-- <div *ngIf="!isDesktopApp"
-          class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky-topbar sb-fontresizecontainer"
-          [ngClass]="{ hide: isFullScreenView }">
-          <div class="ui container">
-            <div class="brand-header-tail">
-              <div class="dk-country-flag"></div>
-              <div class="d-flex flex-ai-center head-tail-right-side">
-                <div class="dk-top-head-ul">
-                  <nav title="accessibility_links" class="d-flex flex-ai-center">
-                    <ul role="navigation" aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
-                      <li class="mb-0" *ngIf="!hideHeaderNFooter">
-                        <a href="javascript:void(0);" title="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilitytskip
-                          }}" tabindex="0" (click)="skipToMainContent()" class="cursor-pointer">{{
-                          resourceService?.frmelmnts?.lbl?.accessibilitytskip
-                          }}</a>
-                      </li>
-                      <li aria-hidden="true" *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">
-                        |
-                      </li>
-                      <li class="screen-reader-link">
-                        <a href="/screenreaderaccess.html" tabindex="0" title="{{
-                            resourceService?.frmelmnts?.lbl?.accessibility
-                          }}">{{ resourceService?.frmelmnts?.lbl?.accessibility }}</a>
-                      </li>
-                      <li aria-hidden="true" class="mx-4">|</li>
-                      <li class="mb-0">
-                        <ng-container *ngIf="userService.loggedIn">
-                          <a title="{{
-                              resourceService?.frmelmnts?.lbl?.accessibilitytext
-                            }}" tabindex="0" href="/sitemap.html?session=true" class="cursor-pointer">{{
-                            resourceService?.frmelmnts?.lbl?.accessibilitytext
-                            }}</a>
-                        </ng-container>
-                        <ng-container *ngIf="!userService.loggedIn">
-                          <a title="{{
-                              resourceService?.frmelmnts?.lbl?.accessibilitytext
-                            }}" tabindex="0" href="/sitemap.html" class="cursor-pointer">{{
-                            resourceService?.frmelmnts?.lbl?.accessibilitytext
-                            }}</a>
-                        </ng-container>
-                      </li>
-                      <li aria-hidden="true" class="mx-4">|</li>
-                    </ul>
-                    <ul>
-                      <li class="fontResize-container d-flex flex-ai-center pull-right" role="navigation"
-                        aria-label="Font Size">
-                        <button type="button" [attr.aria-pressed]="false" tabindex="0" attr.aria-label="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilityfont
-                          }}" class="fontResizeBtn fontResizeBtn_A_Decrease" title="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilityfont
-                          }}" (click)="changeFontSize('decrease')" #decreaseFontSize>
-                          A-
-                        </button>
-                        <button [attr.aria-pressed]="false" type="button" tabindex="0" attr.aria-label="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
-                          }}" class="fontResizeBtn fontResizeBtn_A" title="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilityfntdflt
-                          }}" (click)="changeFontSize('reset')" #resetFontSize>
-                          A
-                        </button>
-                        <button [attr.aria-pressed]="false" type="button" tabindex="0" attr.aria-label="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilitytextsize
-                          }}" class="fontResizeBtn fontResizeBtn_A_Increase" title="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilitytextsize
-                          }}" (click)="changeFontSize('increase')" #increaseFontSize>
-                          A+
-                        </button>
-                      </li>
-                      <li aria-hidden="true" class="mx-4">|</li>
-                      <li>
-                        <button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="0" title="{{
-                            resourceService?.frmelmnts?.lbl?.accessibilitytheme
-                          }}" (click)="toggleLightDarkMode()" (keydown.enter)="toggleLightDarkMode()" #darkModeToggle>
-                          <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
-                            <path fill="var(--white)"
-                              d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
-                              transform="translate(-8 -8)" />
-                          </svg>
-                        </button>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> 
-      -->
-
-        <!-- <label class="theme-dependent-colors" style="font-weight: bold">Simple Html Element: Theme-Dependent Colors.</label> -->
-
-        <!-- <p class="mat-display-4 mat-primary" color="primary">mat-display-4</p>
-        <p class="mat-display-3">mat-display-3</p>
-        <p class="mat-display-2">mat-display-2</p>
-        <p class="mat-display-1">mat-display-1</p>
-        <p class="mat-h1">mat-h1</p>
-        <p class="mat-headline">mat-headline</p>
-        <p class="mat-h2">mat-h2</p>
-        <p class="mat-title">mat-title</p>
-        <p class="mat-h3">mat-h3</p>
-        <p class="mat-subheading-2">mat-subheading-2</p>
-        <p class="mat-h4">mat-h4</p>
-        <p class="mat-subheading-1">mat-subheading-1</p>
-        <p class="mat-body">mat-body</p>
-        <p class="mat-body-1">mat-body-1</p>
-        <p class="mat-body-strong">mat-body-strong</p>
-        <p class="mat-body-2">mat-body-2</p>
-        <p class="mat-small">mat-small</p>
-        <p class="mat-caption">mat-caption</p> -->
-
-        <!-- <div class="m-32">
-        <mat-card class="ssb-mat-accent big-input">
-          <h1 class="h1">bg test</h1>
-          <mat-form-field appearance="fill">
-            <mat-label>Fill form field</mat-label>
-            <input matInput placeholder="Placeholder" />
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-            <mat-hint>Hint</mat-hint>
-          </mat-form-field>
-        </mat-card>
-      </div> -->
 
         <!-- onboarding stepper -->
         <app-onboarding-popup *ngIf="isStepperEnabled && !isStepperCompleted" [guestUserDetails]="guestUserDetails"
@@ -317,22 +169,23 @@
     <app-modal-wrapper *ngIf="sessionExpiryInterceptor.sessionExpired"
       [config]="{ disableClose: true, size: 'normal', panelClass: 'material-modal' }">
       <ng-template sbModalContent let-data>
-          <div mat-dialog-title>
-            <h2>{{ resourceService?.frmelmnts?.lbl?.sesnexrd }}</h2>
-          </div>
-          <mat-dialog-content>
-            <p>
-              {{
-              resourceService?.frmelmnts?.lbl?.plslgn
-              | interpolate : "{instance}" : instance
-              }}
-            </p>
-          </mat-dialog-content>
-          <mat-dialog-actions align="end">
-            <button mat-raised-button color="accent" class="button-rounded" type="button" (click)="handleLogin()" tabindex="0">
-              {{ resourceService?.frmelmnts?.btn?.login }}
-            </button>
-          </mat-dialog-actions>
+        <div mat-dialog-title>
+          <h2>{{ resourceService?.frmelmnts?.lbl?.sesnexrd }}</h2>
+        </div>
+        <mat-dialog-content>
+          <p>
+            {{
+            resourceService?.frmelmnts?.lbl?.plslgn
+            | interpolate : "{instance}" : instance
+            }}
+          </p>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-raised-button color="accent" class="button-rounded" type="button" (click)="handleLogin()"
+            tabindex="0">
+            {{ resourceService?.frmelmnts?.btn?.login }}
+          </button>
+        </mat-dialog-actions>
       </ng-template>
     </app-modal-wrapper>
 

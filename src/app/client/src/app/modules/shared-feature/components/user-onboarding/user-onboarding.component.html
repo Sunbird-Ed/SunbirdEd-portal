@@ -1,4 +1,4 @@
-<app-modal-wrapper *ngIf="stage === Stage.USER_SELECTION" [config]="{disableClose: true, panelClass: 'material-modal'}" #modal>
+<app-modal-wrapper *ngIf="stage === Stage.USER_SELECTION" [config]="{disableClose: false, width: '45rem', panelClass: 'material-modal'}" #modal>
   <ng-template sbModalContent>
     <app-onboarding-user-selection [tenantInfo]="tenantInfo" (userSelect)="userTypeSubmit()">
     </app-onboarding-user-selection>
@@ -9,12 +9,12 @@
   (close)="locationSubmit()">
   <div slot="popup-header" class="w-100 text-center">
     <img [src]="tenantInfo?.logo" class="brand-logo" height="40" alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
-    <h1 class="mb-0 header-text">{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+    <h1 class="my-8 mat-headline color_accent">{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
   </div>
   <div slot="popup-sub-header">
-    <p class="subtitle" role="heading" aria-level="1">{{resourceService?.messages?.imsg?.m0075}}</p>
+    <p class="mat-subheading-2 mb-0" role="heading" aria-level="1">{{resourceService?.messages?.imsg?.m0075}}</p>
   </div>
   <div slot="popup-footer">
-    <p>{{resourceService?.messages?.imsg?.m0074}}</p>
+    <p class="text-left mb-0">{{resourceService?.messages?.imsg?.m0074}}</p>
   </div>
 </app-location-selection>
