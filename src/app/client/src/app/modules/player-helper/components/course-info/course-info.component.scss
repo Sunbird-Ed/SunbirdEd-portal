@@ -15,8 +15,9 @@
 
   .content-metadeta__title {
     margin-bottom: .5rem;
-    &.license {
-      word-break: break-all;
-    }
+    font-weight: bold;
+  }
+  .license a {
+    word-break: break-all;
   }
 }
