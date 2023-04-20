@@ -300,8 +300,6 @@
 
       <nav title="menu-bar">
         <div  *ngIf="showMainMenuBar">
-          <!-- class="sbt-header-menu-bar" sb-g <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>
-          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9  sb-g-col-xxxl-12 sbt-header-menu-extension"></div> -->
           <div class="sbt-header-menu">
             <app-main-menu [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton">
             </app-main-menu>
@@ -471,7 +469,7 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-          <li  *ngIf="showSwitchTheme" class="list-item" role="link" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
+          <li  *ngIf="showSwitchTheme" class="list-item hide" role="link" tabindex="0" (click)="toggleSideMenu(false);switchLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
@@ -537,7 +535,7 @@
                 </svg></i>
               {{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
             </li>
-            <li  *ngIf="showSwitchTheme" class="list-item" tabindex="0" role="link" (click)="toggleSideMenu(false);switchLayout()">
+            <li  *ngIf="showSwitchTheme" class="list-item hide" tabindex="0" role="link" (click)="toggleSideMenu(false);switchLayout()">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
                 </svg></i>

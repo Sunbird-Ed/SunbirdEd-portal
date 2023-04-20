@@ -1,0 +1,24 @@
+@use "@angular/material" as mat;
+@use 'sass:map';
+@use './../../../../../assets/styles/mat-themes/import-component-theme-config' as ictc;
+
+@mixin mat-spinner-card($theme) {
+
+  @include ictc.import-component-theme-config($theme);
+
+  .mat-card.mat-spinner-card {
+    // background-color: mat.get-color-from-palette($background, background);
+    background: transparent;
+  }
+  .mat-card-title {
+    // color: mat.get-color-from-palette($accent);
+  }
+
+  .mat-card-subtitle {
+    margin-bottom: 0;
+  }
+  // .mat-card-content {
+  //   font-size: 0.875rem;
+  // }
+  
+}

@@ -7,10 +7,11 @@ import { Overlay } from '@angular/cdk/overlay';
 const modalSizeToMinWidthMapping = {
   small: '30rem',
   normal: '45rem',
-  large: '56.5rem'
+  large: '56.25rem',
+  fullscreen: '100vw'
 };
 
-type ModalSize = keyof typeof modalSizeToMinWidthMapping;
+type modalSize = keyof typeof modalSizeToMinWidthMapping;
 interface AdditionalConfig {
   size: string;
 }
@@ -41,13 +42,13 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
   public modal: MatDialogRef<unknown>;
 
   private getDefaultConfig(): MatDialogConfig {
-    return { disableClose: true };
+    return { disableClose: true, width: this.config.width != undefined ? this.config.width : modalSizeToMinWidthMapping.normal };
   }
 
   constructor(private matDialog: MatDialog, private overlay: Overlay) { }
 
   private getDialogConfig(): MatDialogConfig {
-    const { size: modalSize = 'normal', id = UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
+    const { width: modalSize = 'normal', id = UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
     return {
       id,
       ...this.getDefaultConfig(),

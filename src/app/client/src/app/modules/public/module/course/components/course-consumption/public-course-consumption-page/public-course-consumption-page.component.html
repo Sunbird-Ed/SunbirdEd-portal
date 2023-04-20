@@ -1,7 +1,3 @@
-<!-- <div
-  [ngClass]="layoutConfiguration ? 'pageback-actionbar' : 'sb-bg-color-white back-btn-container cc-player__btn-back relative9'"
-  class="relative position mt-0"> -->
-
 <mat-toolbar color="primary" class="toolbar-pageback">
   <button mat-mini-fab color="accent"
     [ngClass]="layoutConfiguration ? '' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'"
@@ -24,7 +20,6 @@
       </span>
     </div>
   </div>
-  <!-- <span class="example-spacer"></span> -->
   <div *ngIf="!showLoader && !showError" class="Actions">
     <div *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)">
       <span class="sb-label-12size"
@@ -58,16 +53,13 @@
       </span>
     </div>
   </div>
-
 </mat-toolbar>
 
-<!-- </div> -->
-
-<div [ngClass]="layoutConfiguration ? 'mat-inside-page-container' : 'pt-16'">
+<div [ngClass]="layoutConfiguration ? 'mat-inside-page-container mat-app-background2' : 'pt-16'">
   <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
-  <div *ngIf="showLoader" class="ui container">
+  <span *ngIf="showLoader">
     <app-loader></app-loader>
-  </div>
+  </span>
 </div>
 
 <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, size: 'normal', panelClass: 'material-modal'}"

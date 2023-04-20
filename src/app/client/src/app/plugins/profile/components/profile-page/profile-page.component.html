@@ -10,7 +10,7 @@
     </div>
   </mat-toolbar>
   
-<div class="mat-inside-page-container mat-profile-page-container">
+<div class="mat-inside-page-container mat-app-background2 mat-profile-page-container">
   <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
     <section class="text-center pb-24">
       <div class="mb-16 d-flex flex-jc-center relative avatar-container" aria-label="Profile">
@@ -364,9 +364,8 @@
   <app-location-selection
     (close)="onLocationModalClose($event)"
     *ngIf="showEditUserDetailsPopup">
-
     <div slot="popup-sub-header">
-      <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
+      <p class="mat-subheading-2 mb-0">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm; sdfsadfd</p>
     </div>
   </app-location-selection>
   <app-full-page-loader *ngIf="showFullScreenLoader"></app-full-page-loader>

@@ -1,1 +1,59 @@
-@use './../user-onboarding/user-onboarding.component.scss' as *;
+@use "@angular/material" as mat;
+@use 'sass:map';
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
+
+.guest-item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 12.5rem));
+    grid-auto-rows: 1fr;
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    .check-icon {
+        position: absolute;
+        top: calculateRem(8px);
+        right: calculateRem(8px);
+        display: none;
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+mat-card.mat-card {
+    &.guest-item-grid__item {
+        text-align: center;
+        position: relative;
+        height: 100%;
+        border: calculateRem(2px) solid transparent;
+        mat-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            padding: 0;
+            .matCardImage {
+                width: 8rem;
+                height: 8rem;
+                margin: 0;
+            }
+            mat-card-title {
+                font-size: 1rem;
+            }
+        }
+
+        &:hover,
+        &.active {
+            border: calculateRem(2px) solid var(--primary-color);
+            border-radius: calculateRem(4px);
+            cursor: pointer;
+
+            .check-icon {
+                display: block;
+            }
+        }
+    }
+
+}
