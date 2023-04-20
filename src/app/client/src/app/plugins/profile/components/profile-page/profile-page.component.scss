@@ -4,14 +4,10 @@
 
 /* profile page color palate */
 
-.profile-bg-c-4 {
-  @include respond-below(md) {
-    margin: 0 2% calculateRem(24px) 2%;
-    border-radius: calculateRem(24px);
-  }
-}
-
 /* width */
+.list-items__item, .list-items .list-date{
+  color: inherit;
+}
 .max-w-300 {
   max-width: calculateRem(300px) !important;
 }
@@ -85,15 +81,6 @@
     text-align: center;
     display: flex;
     justify-content: center;
-  }
-  @include respond-below(md) {
-    padding: 0 2%;
-    &__info {
-      background: var(--sb-profile-bg-c-4);
-      padding: calculateRem(16px) 0;
-      border-radius: calculateRem(24px);
-      width: 100%;
-    }
   }
   @include respond-below(sm) {
     &__details {
