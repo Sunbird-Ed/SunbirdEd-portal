@@ -23,7 +23,7 @@ import {LocationModule} from '../location';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatToolbarModule} from '@angular/material/toolbar';
-
+import {MatDialogModule} from '@angular/material/dialog';
 export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
     csLibInitializerService.initializeCs();
@@ -58,7 +58,8 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
     LocationModule,
     MatTooltipModule,
     MatChipsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatDialogModule
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
    AccountRecoveryInfoComponent,
