@@ -64,11 +64,12 @@
           // font-size: mat.font-size($pagebackTitle, $title);
           // font-size: mat.font-size($title-typography, $subheading-2);
           margin: 0;
-          // color: mat.get-color-from-palette($primary, 500-contrast);
-          color: mat.get-color-from-palette($accent);
+          color: mat.get-color-from-palette($primary, 500-contrast);
+          // color: mat.get-color-from-palette($accent);
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          width: 60%;
         }
 
         span {

@@ -2,13 +2,22 @@
 @use "@angular/material" as mat;
 @use './palette'as *;
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-$var-success: mat.define-palette(mat.$green-palette);
-$var-info: mat.define-palette(mat.$blue-palette);
-$var-error: mat.define-palette(mat.$red-palette);
+// :root {
+//   --color-primary: #{mat-color($app-primary)};
+//   --color-accent: #{mat-color($app-accent)};
+//   --color-warn: #{mat-color($app-warn)};
+//   --color-success: #{mat-color($app-success)};
+//   --color-info: #{mat-color($app-info)};
+//   --color-error: #{mat-color($app-error)};
+// }
 
-// Custom Sass colors vars (will be available in all the project)
-$primary: mat-color($var-primary, 500);
-$accent: mat-color($var-accent, 500);
-$warn: mat-color($var-warn, 500);
-$otherColor: #999999;
+// // Define the palettes for your theme using the Material Design palettes available in palette.scss
+// $var-success: mat.define-palette(mat.$green-palette);
+// $var-info: mat.define-palette(mat.$blue-palette);
+// $var-error: mat.define-palette(mat.$red-palette);
+
+// // Custom Sass colors vars (will be available in all the project)
+// $primary: mat-color($var-primary, 500);
+// $accent: mat-color($var-accent, 500);
+// $warn: mat-color($var-warn, 500);
+// $otherColor: #999999;
