@@ -1,99 +1,89 @@
-<div class="sb-mat__modal" *ngIf="formFieldOptions.length">
+<span *ngIf="formFieldOptions.length">
   <!--Header-->
-  <div mat-dialog-title>
-    <div class="title" role="heading" aria-level="2">
-      {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
-    </div>
-    <span class="example-spacer"></span>
-    <!-- <button aria-label="close dialog" mat-dialog-close class="close-btn" *ngIf="showCloseIcon"></button> -->
-    <button mat-fab color="accent" mat-dialog-close aria-label="close dialog" *ngIf="showCloseIcon">
+  <div mat-dialog-title class="d-flex flex-ai-center">
+  <h1 class="mat-subheading-2 mb-0" role="heading" aria-level="2">
+    {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;</h1>
+    <span class="example-spacer" *ngIf="showCloseIcon"></span>
+    <button mat-mini-fab color="warn" mat-dialog-close aria-label="close dialog" *ngIf="showCloseIcon">
       <mat-icon>close</mat-icon>
     </button>
   </div>
   <!--/Header-->
   <!--Content-->
   <mat-dialog-content class="m-0">
-    <div class="sb-mat__modal__content">
-      <div *ngIf="isPreference">
+      <span *ngIf="isPreference">
         <div class="d-flex">
-          <label class="fs-1 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
+          <label class="mat-subheading-2 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
           <div class="hr-preference-line ml-24"></div>
         </div>
-        <p class="fsmall font-weight-normal mt-8 mb-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader | transposeTerms: 'frmelmnts.lbl.preferencesheader' : resourceService?.selectedLang
+        <p class="mat-body-2 my-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader | transposeTerms: 'frmelmnts.lbl.preferencesheader' : resourceService?.selectedLang
           | interpolate:'{instance}': instance}}</p>
         <div class="hr-border py-8"></div>
-      </div>
-      <form class="ui form">
-        <div *ngFor="let field of formFieldOptions">
-          <div class="required sb-field-form-group"
+      </span>
+      <form>
+        <span *ngFor="let field of formFieldOptions">
+          <span
             *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
-            <div class="sb-field">
-                <mat-form-field color="accent" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
-                  <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
-                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-                  </mat-label>
-                  <mat-select name={{field.code}} role="listbox" aria-label="field?.label"
-                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
-                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
-                    attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-            </div>
-          </div>
-          <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
+            <mat-form-field color="accent" id={{field.code}} appearance="fill" class="w-100">
+              <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
+                <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+              </mat-label>
+              <mat-select name={{field.code}} role="listbox" aria-label="field?.label"
+              class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
+                attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </span>
+          <span *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
             [ngClass]="field.code === 'subject' ? '' : 'required'">
-            <div class="sb-field">
-                <mat-form-field color="accent" *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
-                  <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
-                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-                  </mat-label>
-                  <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
-                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
-                  <!-- <mat-select-trigger>
-                    {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
-                    <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
-                      (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
-                    </span>
-                  </mat-select-trigger> -->
-                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range" [value]="option?.name"
-                    attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <mat-form-field color="accent" *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="sb-mat__dropdown w-100 mb-8">
-                  <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: (field?.translation || field?.label) : resourceService?.selectedLang}}
-                    <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
-                  </mat-label>
-                  <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
-                  class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
-                  <!-- <mat-select-trigger>
-                    {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
-                    <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
-                      (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
-                    </span>
-                  </mat-select-trigger> -->
-                    <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
-                    attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-            </div>
-          </div>
-        </div>
+            <mat-form-field color="accent" *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="w-100">
+              <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
+                <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+              </mat-label>
+              <mat-select  multiple name={{field.code}} role="listbox" aria-label="field?.label"
+              class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+              <!-- <mat-select-trigger>
+                {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
+                <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
+                  (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
+                </span>
+              </mat-select-trigger> -->
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range" [value]="option?.name"
+                attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field color="accent" *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="w-100">
+              <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: (field?.translation || field?.label) : resourceService?.selectedLang}}
+                <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+              </mat-label>
+              <mat-select multiple name={{field.code}} role="listbox" aria-label="field?.label"
+              class="selection" [(ngModel)]="selectedOption[field.code]" (selectionChange)="handleFieldChange($event, field)">
+              <!-- <mat-select-trigger>
+                {{selectedOption[field.code] ? selectedOption[field.code][0] : ''}}
+                <span *ngIf="selectedOption[field.code]?.length > 1" class="example-additional-selection">
+                  (+{{selectedOption[field.code].length - 1}} {{selectedOption[field.code]?.length === 2 ? 'other' : 'others'}})
+                </span>
+              </mat-select-trigger> -->
+                <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option?.name"
+                attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </span>
+        </span>
       </form>
-    </div>
   </mat-dialog-content>
   <!--/Content-->
   <!--Actions-->
-  <mat-dialog-actions align="end" class="mb-0 sb-mat__modal__actions">
+  <mat-dialog-actions align="end">
     <button mat-raised-button color="accent" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="submitInteractEdata" class=""
+      [telemetryInteractEdata]="submitInteractEdata" class="button-rounded"
       [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
       {{buttonLabel}}
     </button>
   </mat-dialog-actions>
   <!--/Actions-->
-</div>
-<div *ngIf="!formFieldOptions || !formFieldOptions.length" class="sb-mat__modal">
+</span>
+<div *ngIf="!formFieldOptions || !formFieldOptions.length">
   <app-loader></app-loader>
 </div>

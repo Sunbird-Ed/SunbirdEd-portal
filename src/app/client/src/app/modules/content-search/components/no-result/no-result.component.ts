@@ -6,8 +6,6 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import {FormControl} from '@angular/forms';
-import {ThemePalette} from '@angular/material/core';
 @Component({
   selector: 'app-no-result-found',
   templateUrl: './no-result.component.html',

@@ -81,7 +81,7 @@
 
 ::ng-deep {
   p.subtitle {
-    color: var(--gray-800);
+    // color: var(--gray-800);
     font-size: calculateRem(18px);
     font-weight: bold;
     letter-spacing: 0;
@@ -143,53 +143,6 @@
 
         span {
           color: var(--white);
-        }
-      }
-    }
-  }
-
-  &__guest {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 12.5rem));
-    grid-auto-rows: minmax(auto, auto);
-    grid-column-gap: 1rem;
-    grid-row-gap: 1rem;
-    align-items: center;
-    justify-content: center;
-
-    .check-icon {
-      position: absolute;
-      top: calculateRem(8px);
-      right: calculateRem(8px);
-      display: none;
-    }
-
-    &__item {
-      border-radius: calculateRem(4px);
-      background-color: var(--white);
-      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d0d0d0);
-      text-align: center;
-      position: relative;
-      border: calculateRem(2px) solid var(--white);
-      height: 100%;
-
-      .title {
-        color: var(--gray-800);
-        font-size: calculateRem(16px);
-        font-weight: bold;
-        line-height: normal;
-      }
-
-      &:hover,
-      &.active {
-        border: calculateRem(2px) solid var(--primary-color);
-        border-radius: calculateRem(4px);
-        background-color: var(--white);
-        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-primary), 0.3);
-        cursor: pointer;
-
-        .check-icon {
-          display: block;
         }
       }
     }

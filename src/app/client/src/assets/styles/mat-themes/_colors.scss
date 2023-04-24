@@ -3,6 +3,14 @@
 @use '@angular/material' as mat;
 @use "./palette" as *;
 
+@mixin color-success {
+  $success: mat.define-palette(mat.$green-palette);
+  color: mat.get-color-from-palette($success, 500) !important;
+}
+@mixin color-info {
+  $info: mat.define-palette(mat.$blue-palette);
+  color: mat.get-color-from-palette($info, 900) !important;
+}
 @mixin theme-var-colors($theme) {
   // Get the color config from the theme.
   $color-config: mat.get-color-config($theme);
@@ -12,17 +20,34 @@
   $warn: map.get($color-config, 'warn');
   $background: map.get($color-config, 'background');
 
-  .color_primary {
+  .color-primary {
     color: mat.get-color-from-palette($primary, 500);
   }
 
-  .color_accent {
+  .color-accent {
     color: mat.get-color-from-palette($accent, 500);
   }
 
   .color_warn {
     color: mat.get-color-from-palette($warn, 500);
   }
-
-
+  .color-success {
+    @include color-success;
+  }
+  .color-info {
+    @include color-info;
+  }
+  .bg-primary-100{
+    background-color: mat.get-color-from-palette($primary, 100);
+  }
+  .bg-primary-200{
+    background-color: mat.get-color-from-palette($primary, 200);
+  }
+  .bg-primary-500{
+    background-color: mat.get-color-from-palette($primary, 500);
+  }
+  //border radius
+  .br-32{
+    border-radius: 2rem;
+  }
 }

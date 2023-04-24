@@ -12,13 +12,10 @@
     $warn: map.get($color-config, 'warn');
     $background: map.get($color-config, 'background');
 
-
 //   $xxxxxx: mat.define-typography-config();
-
 // .some-class-name {
 //   @include mat.typography-level($xxxxxx, 'body-1');
 // }
-
   .mat-dialog-container{
     position: relative;
     padding: 0;
@@ -27,7 +24,7 @@
   }
     .mat-dialog-title {
       // background-color: mat.get-color-from-palette($primary, 500);
-      // color: mat.get-color-from-palette($accent);
+      color: mat.get-color-from-palette($accent);
       margin: 0;
       padding: 1rem 1rem;
       display: flex;

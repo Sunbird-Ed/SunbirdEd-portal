@@ -9,21 +9,21 @@
     </button>
       </div>
       <div mat-dialog-content>
-        <p class="mat-caption">{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
+        <p class="mat-body-2">{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
       </div>
-      <div mat-dialog-actions align="end">
+      <mat-dialog-actions align="end">
         <button mat-raised-button color="accent" class="button-rounded" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="signInInteractEdata" tabindex="0"
         (click)="setTelemetryData(); setUrlToCourse();">
         {{resourceService.frmelmnts?.btn?.login}}
         </button>
-      </div>
+      </mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 
 <!-- batch details -->
 <mat-accordion class="sb-mat-accordion mb-16">
-  <mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
@@ -60,7 +60,7 @@
 </mat-accordion>
 
 <mat-accordion *ngIf="showCertificateDetails" class="sb-mat-accordion mb-16">
-  <mat-expansion-panel>
+  <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header>
       <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
         {{resourceService?.frmelemnts?.scttl?.certques}}

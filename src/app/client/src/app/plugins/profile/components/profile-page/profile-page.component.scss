@@ -1,33 +1,13 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'pages/content-header' as *;
 /* fonts */
-.font-w-bold {
-  font-weight: bold !important;
-}
-
-/* colors */
-.color-2 {
-  color: var(--rc-007AFF) !important;
-}
 
 /* profile page color palate */
-.profile-bg-c-3 {
-  background: var(--sbt-page-header-bg) !important;
-}
-
-.profile-bg-c-4 {
-  background: var(--sb-profile-bg-c-4) !important;
-  color:var(--black);
-}
-
-.profile-bg-c-4 {
-  @include respond-below(md) {
-    margin: 0 2% calculateRem(24px) 2%;
-    border-radius: calculateRem(24px);
-  }
-}
 
 /* width */
+.list-items__item, .list-items .list-date{
+  color: inherit;
+}
 .max-w-300 {
   max-width: calculateRem(300px) !important;
 }
@@ -36,93 +16,12 @@
   max-width: calculateRem(400px) !important;
 }
 
-.profile-label-container {
-  max-width: calculateRem(600px) !important;
-
-  .ui.basic.label:hover {
-    border: calculateRem(1px) solid var(--rc-f9f9f9) !important;
-  }
-}
-
-@media only screen and (max-width: 767px) {
-  .profile-label-container {
-    max-width: calculateRem(200px) !important;
-  }
-
-  .m-responsive-flex-dc {
-    flex-direction: column;
-  }
-
-  .m-responsive-mt-15 {
-    margin-top: calculateRem(15px);
-  }
-}
-
-.text-warm-grey {
-  color: var(--gray-300);
-}
-
-.name-info {
-  background-color: var(--gray-400);
-  -webkit-mask-image: url(../../../../../assets/images/info-icon.svg);
-  mask-image: url(../../../../../assets/images/info-icon.svg);
-  -webkit-mask-size: contain;
-  -webkit-mask-position: 50% 50%;
-  -webkit-mask-repeat: no-repeat;
-  mask-size: contain;
-  mask-position: 50% 50%;
-  mask-repeat: no-repeat;
-  width: calculateRem(20px);
-  height: calculateRem(20px);
-  margin-top: calculateRem(3px);
-  margin-left: calculateRem(5px);
-  display: inline-block;
-}
-
 ::ng-deep {
   .ui.popup {
     .arrow {
       display: none;
     }
   }
-}
-
-// TODO::need to move this to styles component(right now this is done to avoid shadow DOM)
-
-.ui.semi-circular.dodger-blue.basic.label {
-  border-radius: calculateRem(18.5px);
-  font-size: 1.16rem;
-  padding: calculateRem(8px) calculateRem(16px);
-  color: var(--primary-color);
-
-  &:hover {
-    border: 0;
-  }
-
-  .icon {
-    margin: 0;
-  }
-}
-
-.ui.semi-circular.update.basic.label,
-.ui.semi-circular.basic.label {
-  border: calculateRem(1px) solid var(--primary-color);
-  border-radius: calculateRem(18.5px);
-  font-size: 1.16rem;
-  padding: calculateRem(8px) calculateRem(16px);
-  color: var(--gray-300);
-  background: var(--sb-profile-page-basic-label-bg);
-}
-
-.ui.label>.recovery-img {
-  background-color: var(--gray-300);
-  -webkit-mask-image: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
-  -webkit-mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
-  mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
-  -webkit-mask-size: cover;
-  mask-size: cover;
-  height: calculateRem(16px);
-  width: calculateRem(16px);
 }
 
 .avatar-container {
@@ -148,44 +47,9 @@
   }
 }
 
-.ui.label.dodger-blue>.recovery-img {
-  background-color: var(--primary-color);
-}
-
-.school-id-section {
-  color: var(--white);
-}
-
-.sb-btn-border {
-  border-radius: calculateRem(40px);
-  text-transform: none;
-}
-
-.profile-user-label {
-  font-size: calculateRem(32px);
-}
-
-.status-progress {
-  color: var(--primary-color);
-}
-
-.status-completed {
-  color: var(--secondary-color);
-}
-
-.no-text-transform {
-  text-transform: unset;
-}
-
-.self-declared-title{
-  font-size: calculateRem(12px);
-  font-weight: bold;
-}
-
 .sb-certificate-trained {
   border: calculateRem(0.5px) solid var(--gray-100);
   border-radius: calculateRem(4px);
-  background-color: var(--sb-profile-certificate-bg);
   margin: 0 auto;
 
   .sb-ct-list {
@@ -208,21 +72,20 @@
   display: flex;
   padding: calculateRem(8px) calculateRem(16px);
 }
-.sb-profile-page-container{
-  .ui.segment{
-    background: var(--sb-profile-page-container);
-  }
-}
 
 .content-preference {
-  @include respond-below(md) {
-    padding: 0 2%;
-    &__info {
-      background: var(--sb-profile-bg-c-4);
-      padding: calculateRem(16px) 0;
-      border-radius: calculateRem(24px);
-      width: 100%;
-      color: var(--black);
+  &__details {
+    &:first-child{
+      margin-top: 0;
+    }
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  @include respond-below(sm) {
+    &__details {
+      flex-direction: column;
+      margin-top: 1rem;
     }
   }
 }
@@ -240,9 +103,6 @@
       right: 0%;
       z-index: 9;
       top: 0.2rem; 
-
     }
-
   }
-
 }

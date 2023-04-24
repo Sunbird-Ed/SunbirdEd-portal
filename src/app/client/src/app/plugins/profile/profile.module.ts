@@ -21,7 +21,8 @@ import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-i
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import {LocationModule} from '../location';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import {MatChipsModule} from '@angular/material/chips';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -56,6 +57,8 @@ export const csCertificateServiceFactory = (csLibInitializerService: CsLibInitia
     CommonFormElementsModule,
     LocationModule,
     MatTooltipModule,
+    MatChipsModule,
+    MatToolbarModule
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent,
    AccountRecoveryInfoComponent,
