@@ -23,6 +23,7 @@ import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashletModule } from  '@project-sunbird/sb-dashlet-v14';
 import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
@@ -51,6 +52,8 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     PlayerHelperModule,
     CommonConsumptionModule,
     CommonFormElementsModule,
+    LocationModule,
+    MatToolbarModule,
     LocationModule,MatCardModule,
     DashletModule.forRoot()
   ],

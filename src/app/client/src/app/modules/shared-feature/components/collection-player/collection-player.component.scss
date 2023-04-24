@@ -1,5 +1,4 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-@use 'pages/content-header' as *;
 
 
 :host {
@@ -46,3 +45,66 @@
     }
   }
 }
+
+.toolbar-backbtn {
+  @include respond-below(sm) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .course-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  
+    &__info {
+      display: flex;
+      align-items: center;
+    }
+    &__content {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+
+      @include respond-below(sm) {
+        flex-direction: column;
+      }
+    }
+    &__metadata {
+      flex: 1;
+      min-width: 0;
+
+      @include respond-below(sm) {
+        width: 70%;
+        text-align: left;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        margin-right: auto;
+      }
+    }
+    &__title, &__sub-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &__actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-left: auto;
+      white-space: nowrap;
+
+      @include respond-below(sm) {
+        margin: 0;
+        width: 100%;
+      }
+    }
+  
+  }
+}
+
+
+
