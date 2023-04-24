@@ -1,11 +1,11 @@
-<mat-accordion class="sb-mat-accordion mb-16" *ngIf="showSettingsPage">
+<mat-accordion class="" *ngIf="showSettingsPage">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-mat-accordion__title">
+      <mat-panel-title class="">
         {{resourceService?.frmelmnts?.lbl?.dataSetting}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-mat-accordion__content" role="region" id="dataSetting"
+    <div class="" role="region" id="dataSetting"
       aria-labelledby="dataSetting">
       <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
         <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
@@ -26,6 +26,13 @@
 
       <div *ngIf="editSetting" class="sb-update-data-settings">
         <hr>
+        <!-- Material Radio button -->
+        <!-- <label
+          class="fsmall mb-0 font-weight-bold data-labels">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
+        <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.updateSetting}}">
+          <mat-radio-button [value]="'Yes'" [(ngModel)]="consentPii" style="width: 100%;">{{resourceService?.frmelmnts?.lbl?.shareProfileDetails}}</mat-radio-button>
+          <mat-radio-button [value]="'No'" [(ngModel)]="consentPii" style="width: 100%;">{{resourceService?.frmelmnts?.lbl?.notShareProfileDetails}}</mat-radio-button>
+        </mat-radio-group> -->
         <label
           class="fsmall mb-0 font-weight-bold data-labels">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
         <div class="d-flex py-8 flex-w-wrap">
