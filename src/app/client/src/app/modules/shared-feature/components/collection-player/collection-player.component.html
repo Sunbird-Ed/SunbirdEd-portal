@@ -5,24 +5,19 @@
 
   <!--CC-Player Back button -->
   <mat-toolbar color="primary" class="toolbar-pageback">
-    <div [ngClass]="layoutConfiguration ? '' : 'sb-bg-white cc-player__btn-back'" class="toolbar-backbtn w-100">
+    <div class="toolbar-backbtn w-100">
       <div class="course-header">
         <div class="course-header__info">
           <button type="button" mat-mini-fab color="accent"
-            [ngClass]="layoutConfiguration ? '' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'"
             class="button-rounded" tabindex="0" (click)="closeCollectionPlayer()"
             attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-            <!-- <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-                    <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-                  </svg></i>
-                <span>{{resourceService?.frmelmnts?.btn?.back}}</span> -->
             <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
           </button>
         </div>
   
         <!--CC-Player Content Header -->
   
-        <div class="course-header__content ml-16" *ngIf="collectionData">
+        <div class="course-header__content" *ngIf="collectionData">
           <div class="course-header__metadata">
             <div class="course-header__title mat-subheading-2 font-weight-bold mb-0" role="heading" aria-level="2">
               {{collectionData.name}}</div>
@@ -122,14 +117,13 @@
   </mat-toolbar>
 
 
-  <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" [appTelemetryStart]="telemetryCourseStart"
+  <div class="mat-inside-page-container mat-app-background2" [appTelemetryStart]="telemetryCourseStart"
     [appTelemetryEnd]="telemetryCourseEndEvent">
 
     <!-- CC-Player Video -->
     <div class="ui container relative9">
       <div class="cc-player sb-g">
-        <section [ngClass]="layoutConfiguration ? '' : 'pt-16'"
-          class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
+        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
           [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [collectionData]="collectionData" [isContentPresent]="isContentPresent"
@@ -139,8 +133,8 @@
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9"
           *ngIf="collectionData">
           <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
-            <div [ngClass]="layoutConfiguration ? '' : 'sb-bg-color-white'" class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center p-16">
-              <h6 class="sb-color-primary font-weight-normal">
+            <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center p-16">
+              <h6 class="color_accent mat-body-1 mb-0 font-weight-normal">
                 {{generaliseLabelService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
               <div class="sb-checkbox sb-checkbox-rightaligned sb-checkbox-primary ml-auto m-0">
                 <input tabindex="0" (click)="selectAllItem()" type="checkbox" id="checkbox" name="example">
@@ -178,12 +172,12 @@
       </div>
     </div>
 
-    <div class="ui container py-16" *ngIf="showLoader">
+    <div class="py-16" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
 
   </div>
-  <div class="ui container py-16" *ngIf="showLoader">
+  <div class="py-16" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
   </div>
   <app-modal-wrapper *ngIf="sharelinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="sharelinkModal = false">
