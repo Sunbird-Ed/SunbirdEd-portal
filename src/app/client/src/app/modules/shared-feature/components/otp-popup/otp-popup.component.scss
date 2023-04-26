@@ -4,9 +4,6 @@
 .orange-border {
     border-color: var(--accessibility-red) !important;
 }
-.blue.text {
-    color: var(--primary-color);
-}
 
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
@@ -16,4 +13,9 @@ input[type=number]::-webkit-inner-spin-button {
 .cursor-pointerText {
     cursor: text;
     pointer-events: none !important;
+}
+.otp-page-form-field{
+    width: 100%;
+    max-width: 17.5rem;
+    margin: auto;
 }
