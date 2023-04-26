@@ -13,15 +13,15 @@
           </div>
           <!--/Header-->
           <form [formGroup]="contactTypeForm" [ngSwitch]="contactType">
-            <mat-form-field class="w-100" *ngSwitchCase="'email'">
+            <mat-form-field class="w-100 px-48" *ngSwitchCase="'email'" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.prmpt?.enteremailID}}</mat-label>
               <input type="email" formControlName="email" matInput placeholder="{{resourceService?.frmelmnts?.lbl?.enterEmail}}">
               <mat-error *ngIf="contactTypeForm.controls.email.dirty && contactTypeForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</mat-error>
               <mat-error *ngIf="showUniqueError && !(contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors)">{{showUniqueError}}</mat-error>
             </mat-form-field>
-            <mat-form-field class="w-100" *ngSwitchCase="'phone'">
+            <mat-form-field class="w-100 px-48" *ngSwitchCase="'phone'" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</mat-label>
-              <span matPrefix>91 &nbsp;</span>
+              <span matPrefix>+91 &nbsp;</span>
               <input type="tel" formControlName="phone" matInput placeholder="{{resourceService?.frmelmnts?.lbl?.enterPhoneNumber}}">
               <mat-error *ngIf="contactTypeForm.controls.phone.dirty && contactTypeForm.controls['phone'].errors">{{resourceService?.frmelmnts?.lbl?.validPhone}}</mat-error>
               <mat-error *ngIf="showUniqueError && !(contactTypeForm.controls['phone'].errors)">{{showUniqueError}}</mat-error>
@@ -60,7 +60,7 @@
     <!--Actions-->
     <mat-dialog-actions align="end">
       <button mat-raised-button color="accent" class="button-rounded" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="submitInteractEdata" [ngClass]="{'sb-btn-disabled':!enableSubmitBtn}" (click)="onSubmitForm()"
+        [telemetryInteractEdata]="submitInteractEdata" [ngClass]="{'disabled':!enableSubmitBtn}" (click)="onSubmitForm()"
         tabindex="0">
         {{resourceService?.frmelmnts?.btn?.submit}}
       </button>

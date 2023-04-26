@@ -18,12 +18,12 @@
         </mat-radio-group>
       </div>
       <form [formGroup]="accountRecoveryForm">
-        <mat-form-field class="w-100" *ngIf="contactType === 'emailId'">
+        <mat-form-field class="w-100" *ngIf="contactType === 'emailId'" appearance="fill">
           <input type="email" formControlName="email" matInput>
           <mat-error *ngIf="accountRecoveryForm.controls.email.dirty && accountRecoveryForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</mat-error>
           <mat-error *ngIf="duplicateRecoveryId">{{resourceService?.frmelmnts?.lbl?.duplicateEmailAddress}}</mat-error>
         </mat-form-field>
-        <mat-form-field class="w-100" *ngIf="contactType === 'phoneNo'">
+        <mat-form-field class="w-100" *ngIf="contactType === 'phoneNo'" appearance="fill">
           <span matPrefix>91 &nbsp;</span>
           <input type="tel" maxlength="10" formControlName="phone" matInput>
           <mat-error *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</mat-error>
@@ -35,11 +35,11 @@
   <!--/Content-->
    <!--Actions-->
    <mat-dialog-actions align="end">
-    <button mat-raised-button color="accent" class="button-rounded" appTelemetryInteract
+    <button mat-raised-button class="button-rounded" appTelemetryInteract
     [telemetryInteractObject]="telemetryInteractObject" [disabled]="!enableSubmitButton"
     [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
     [attr.disabled]="!enableSubmitButton ? 'disabled' : null"
-    [ngClass]="{'sb-btn-disabled': !enableSubmitButton, 'sb-btn-primary': enableSubmitButton}" (click)="updateRecoveryId()"
+    [ngClass]="{'disabled': !enableSubmitButton, 'color-accent': enableSubmitButton}" (click)="updateRecoveryId()"
       tabindex="0">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
