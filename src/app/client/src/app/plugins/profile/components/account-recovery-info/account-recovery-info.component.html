@@ -1,23 +1,74 @@
-<div class="sb-mat__modal">
 
+<div mat-dialog-title class="flex-jc-center flex-dc mb-0">
+  <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close><mat-icon>close</mat-icon></button>
+</div>
+<div *ngIf="!showOTPForm">
+  <!--Content-->
+  <mat-dialog-content>
+    <!--Header-->
+    <p class="mat-subheading-2 mb-0" *ngIf="mode === 'edit'">{{resourceService?.frmelmnts?.lbl?.updateRecoveryId}}</p>
+    <p class="mat-subheading-2 mb-0" *ngIf="mode === 'add'">{{resourceService?.frmelmnts?.lbl?.addRecoveryId}}</p>
+    <!--/Header-->
+    <div class="mt-16">
+      <p class="mat-subheading-2 mb-0">{{resourceService?.frmelmnts?.lbl?.accountRecoveryDescription}}</p>
+      <div class="d-flex flex-w-wrap">
+        <mat-radio-group [(ngModel)]="contactType">
+          <mat-radio-button value="emailId" id="email" tabindex="0" (change)="onItemChange()" checked>{{resourceService?.frmelmnts?.lbl?.emailAddress}}</mat-radio-button>
+          <mat-radio-button value="phoneNo" tabindex="0" id="phone" (change)="onItemChange()">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <form [formGroup]="accountRecoveryForm">
+        <mat-form-field class="w-100" *ngIf="contactType === 'emailId'" appearance="fill">
+          <input type="email" formControlName="email" matInput>
+          <mat-error *ngIf="accountRecoveryForm.controls.email.dirty && accountRecoveryForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</mat-error>
+          <mat-error *ngIf="duplicateRecoveryId">{{resourceService?.frmelmnts?.lbl?.duplicateEmailAddress}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" *ngIf="contactType === 'phoneNo'" appearance="fill">
+          <span matPrefix>91 &nbsp;</span>
+          <input type="tel" maxlength="10" formControlName="phone" matInput>
+          <mat-error *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</mat-error>
+          <mat-error *ngIf="duplicateRecoveryId">{{resourceService?.frmelmnts?.lbl?.duplicatePhoneNumber}}</mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+  </mat-dialog-content>
+  <!--/Content-->
+   <!--Actions-->
+   <mat-dialog-actions align="end">
+    <button mat-raised-button class="button-rounded" appTelemetryInteract
+    [telemetryInteractObject]="telemetryInteractObject" [disabled]="!enableSubmitButton"
+    [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+    [attr.disabled]="!enableSubmitButton ? 'disabled' : null"
+    [ngClass]="{'disabled': !enableSubmitButton, 'color-accent': enableSubmitButton}" (click)="updateRecoveryId()"
+      tabindex="0">
+      {{resourceService?.frmelmnts?.btn?.submit}}
+    </button>
+  </mat-dialog-actions>
+  <!--/Actions-->
+</div>
+
+
+<app-otp-popup *ngIf="showOTPForm" [otpData]="otpData" [redirectToLogin]="false"
+  (verificationSuccess)="userVerificationSuccess($event)" (closeContactForm)="closeModal()">
+</app-otp-popup>
+
+<!-- <div class="sb-mat__modal">
   <div mat-dialog-title class="mb-0">
     <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
   </div>
 
   <div *ngIf="!showOTPForm">
 
-    <!--Content-->
-
     <mat-dialog-content>
 
       <div class="sb-mat__modal__content">
 
-        <!--Header-->
+       
         <div class="sb-modal-header font-weight-bold fmedium">
           <span *ngIf="mode === 'edit'">{{resourceService?.frmelmnts?.lbl?.updateRecoveryId}}</span>
           <span *ngIf="mode === 'add'">{{resourceService?.frmelmnts?.lbl?.addRecoveryId}}</span>
         </div>
-        <!--/Header-->
+      
 
         <p>{{resourceService?.frmelmnts?.lbl?.accountRecoveryDescription}}</p>
         <div class="d-flex flex-w-wrap">
@@ -57,9 +108,6 @@
         </form>
       </div>
     </mat-dialog-content>
-    <!--/Content-->
-
-    <!--Actions-->
     <div class="sb-mat__modal__actions">
       <button [ngClass]="{'sb-btn-disabled': !enableSubmitButton, 'sb-btn-primary': enableSubmitButton}"
         class="sb-btn sb-btn-normal" tabindex="0" (click)="updateRecoveryId()" appTelemetryInteract
@@ -69,7 +117,6 @@
         {{resourceService?.frmelmnts?.btn?.submit}}
       </button>
     </div>
-    <!--/Actions-->
   </div>
 
 
@@ -77,4 +124,4 @@
     (verificationSuccess)="userVerificationSuccess($event)" (closeContactForm)="closeModal()">
   </app-otp-popup>
 
-</div>
+</div> -->
