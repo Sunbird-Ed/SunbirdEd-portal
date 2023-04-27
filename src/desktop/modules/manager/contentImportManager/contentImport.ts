@@ -341,7 +341,7 @@ export class ImportContent implements ITaskExecuter {
   }
 
   private async handleKillSignal() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.workerProcessRef.on("message", async (data) => {
         if (data.message === "DATA_SYNC_KILL") {
           this.workerProcessRef.kill();
