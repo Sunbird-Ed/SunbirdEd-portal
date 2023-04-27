@@ -1,63 +1,62 @@
-<mat-accordion class="sb-mat-accordion mb-16">
+<mat-accordion>
   <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-mat-accordion__title">
+      <mat-panel-title tabindex="0" title class="mat-subheading-1 mb-0">
         {{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-mat-accordion__content credits-section" role="region" id="creditsAndLicenceInfo" aria-labelledby="creditsAndLicenceInfo">
+    <div role="region" id="creditsAndLicenceInfo" aria-labelledby="creditsAndLicenceInfo">
+      <h4 *ngIf="content?.author" class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
+      <p class="mat-body-1">{{content?.author}}</p>
 
-      <h4 *ngIf="content?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
-      <p class="description">{{content?.author}}</p>
+      <h4 *ngIf="content?.createdOn" class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.createdon}}</h4>
+      <p class="mat-body-1">{{content?.createdOn | dateFormat}}</p>
 
-      <h4 *ngIf="content?.createdOn" class="title">{{resourceService?.frmelmnts?.lbl?.createdon}}</h4>
-      <p class="description">{{content?.createdOn | dateFormat}}</p>
+      <h4 *ngIf="content?.lastUpdatedOn" class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.updatedon}}</h4>
+      <p class="mat-body-1">{{content?.lastUpdatedOn | dateFormat}}</p>
 
-      <h4 *ngIf="content?.lastUpdatedOn" class="title">{{resourceService?.frmelmnts?.lbl?.updatedon}}</h4>
-      <p class="description">{{content?.lastUpdatedOn | dateFormat}}</p>
-
-      <h4 *ngIf="attributions" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}
+      <h4 *ngIf="attributions" class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.attributions}}
       </h4>
-      <p class="description">{{attributions}}</p>
+      <p class="mat-body-1">{{attributions}}</p>
 
-      <h4 *ngIf="content?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
-      <p class="description">{{content.license}}</p>
+      <h4 *ngIf="content?.license" class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
+      <p class="mat-body-1">{{content.license}}</p>
 
-      <p *ngIf="content?.licenseDetails?.name" class="description__url">
+      <p *ngIf="content?.licenseDetails?.name" class="mat-body-1">
         {{content.licenseDetails['name']}} {{content.licenseDetails['description']}}&#x200E; <br />
         <span *ngIf="content.licenseDetails['url']">
-          <a class="url" href="{{content.licenseDetails['url']}}" target="_blank">{{content.licenseDetails['url']}}</a>
+          <a class="color-accent license" href="{{content.licenseDetails['url']}}" target="_blank">{{content.licenseDetails['url']}}</a>
         </span>
       </p>
 
-      <h4 *ngIf="content?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
-      <p class="description">{{content?.copyright}}<span
+      <h4 *ngIf="content?.copyright" class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
+      <p class="mat-body-1">{{content?.copyright}}<span
           *ngIf="content?.copyrightYear">,&nbsp;{{content?.copyrightYear}}</span></p>
 
       <div *ngIf="content.originData">
-        <p class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}} </p>
+        <p class="mat-body-1 color-accent">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}} </p>
 
-        <div class="sb-meta-data mb-16 " *ngIf="content.originData.name">
-          <h4 class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</h4>
-          <p class="description">{{content?.originData?.name}}</p>
+        <div *ngIf="content.originData.name">
+          <h4 class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</h4>
+          <p class="mat-body-1">{{content?.originData?.name}}</p>
         </div>
 
-        <div class="sb-meta-data mb-16" *ngIf="content.originData.author">
-          <h4 class="title">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
-          <p class="description">{{content.originData.author}}</p>
+        <div *ngIf="content.originData.author">
+          <h4 class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
+          <p class="mat-body-1">{{content.originData.author}}</p>
         </div>
 
-        <div class="sb-meta-data mb-16" *ngIf="content.originData.license">
-          <h4 class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
-          <p class="description">{{content.originData.license}}</p>
+        <div *ngIf="content.originData.license">
+          <h4 class="mat-small color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
+          <p class="mat-body-1">{{content.originData.license}}</p>
         </div>
 
-        <div class="sb-meta-data mb-16" *ngIf="content.originData.organisation">
-          <h4 class="title"
+        <div *ngIf="content.originData.organisation">
+          <h4 class="mat-small color-accent font-weight-bold mb-0"
             [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
           </h4>
-          <p class="description">{{content.originData.organisation.join(', ')}}</p>
-          <a *ngIf="content.orgDetails?.email"
+          <p class="mat-body-1">{{content.originData.organisation.join(', ')}}</p>
+          <a class="color-accent" *ngIf="content.orgDetails?.email"
             href="mailto:{{content.orgDetails?.email}}?subject={{content.name}}">{{content.orgDetails?.email}}</a>
         </div>
       </div>
