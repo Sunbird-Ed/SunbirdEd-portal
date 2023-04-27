@@ -25,36 +25,11 @@
     }
   }
 }
-
-.contentdata-description {
-  border-bottom: calculateRem(0.5px) solid var(--gray-200);
+.license{
+  word-break: break-all;
+}
+.mat-small, .mat-body-1{
+  word-wrap: break-word; 
 }
 
-.credits-section {
-  .title {
-    color: var(--gray-200);
-    font-size: calculateRem(10px);
-    font-weight: bold;
-    word-wrap: break-word; 
-  }
-  .description {
-    color: var(--gray-800);
-    font-size: calculateRem(14px);
-    word-wrap: break-word; 
-  }
-  .description__url {
-    a.url {
-      word-break: break-all;
-    }
-  }
-  .sub-section {
-    color: var(--primary-color);
-    font-size: calculateRem(14px);
-    word-wrap: break-word;
-  }
-
-  .title, .description, .sub-section {
-    line-height: inherit;
-  }
-}
 
