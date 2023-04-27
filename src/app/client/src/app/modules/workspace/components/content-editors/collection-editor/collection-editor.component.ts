@@ -80,7 +80,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         this.resource_framework = data.resource_framework['defaultFramework'].code;
         this.ownershipType = data.ownershipType;
         this.showLoader = false;
-        this.initEditor();
+        setTimeout(() => {
+          this.initEditor();
+        }, 5000);
         this.setWindowContext();
         this.setWindowConfig();
       }),
