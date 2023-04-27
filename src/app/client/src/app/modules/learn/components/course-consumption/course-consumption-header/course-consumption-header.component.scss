@@ -98,6 +98,10 @@
     align-items: center;
     flex-wrap: wrap;
     margin-left: auto;
+    white-space: nowrap;
+    @include respond-below(sm) {
+      width: 100%;
+    }
   }
   &__msg {
     font-size: .75rem;
@@ -123,7 +127,8 @@
   }
   &__img {
     width: 3rem;
-    height: 3rem; 
+    height: 3rem;
+    margin-left: .5rem;
     img {
       width: 3rem;
       height: 3rem;
@@ -132,6 +137,12 @@
   &__heading {
     margin-left: .5rem;
     min-width: 0;
+    flex: 1;
+    .title {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
   }
   &__rating {
     display: flex;
