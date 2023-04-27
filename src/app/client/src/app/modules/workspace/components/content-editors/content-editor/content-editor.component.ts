@@ -66,7 +66,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         }
         this.ownershipType = data.ownershipType;
         this.showLoader = false;
-        this.initEditor();
+        setTimeout(() => {
+          this.initEditor();
+        }, 5000);
         this.setWindowContext();
         this.setWindowConfig();
       }),
