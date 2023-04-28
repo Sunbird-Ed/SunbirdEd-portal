@@ -1,0 +1,79 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+@forward "./palette";
+@forward './buttons';
+@forward './fontSizeRem';
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
+@mixin global-search($theme) {
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
+  $foreground: map.get($color-config, 'foreground');
+
+  .sb-mat-form-search,
+  .sb-mat-form-field-custom {
+    .mat-form-field-wrapper {
+      .mat-form-field-flex {
+        box-shadow: var(--sbt-box-shadow-6px);
+      }
+      padding-bottom: 0px;
+
+      .mat-form-field-underline {
+        bottom: 0;
+        width: calc(100% - 2rem);
+        left: 1rem;
+        display: none;
+      }
+    }
+
+    &.border-radius {
+      .mat-form-field-flex {
+        border-radius: 2rem;
+      }
+    }
+
+    &.mat-form-field.mat-focused .mat-form-field-label {
+      color: var(--color-accent);
+    }
+  }
+
+  .sb-mat-form-search {
+    @include respond-below(md) {
+      width: 95%;
+    }
+    @include respond-below(sm) {
+      width: 100%;
+    }
+    .mat-form-field-wrapper {
+      .mat-form-field-flex {
+        &:hover {
+          border: 0.0625rem solid var(--color-accent);
+        }
+
+        .mat-input-element {
+          // width: calc(100% - 5rem);
+        }
+      }
+    }
+
+    &__button {
+      $btn-primary: mat.define-palette(mat.$gray-palette);
+      background-color: mat.get-color-from-palette($btn-primary, 900);
+      color: mat.get-color-from-palette($btn-primary, 900-contrast);
+      // position: absolute !important;
+      // right: 0rem;
+      // top: -0.875rem;
+      // z-index: 1;
+      position: relative;
+      top: -0.5rem;
+    }
+
+    .mat-form-field-label-wrapper {}
+  }
+
+}

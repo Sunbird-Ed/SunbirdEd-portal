@@ -4,20 +4,21 @@
 @use "./palette" as *;
 // @use './import-component-theme-config';
 
-// @mixin color-success {
-//   $success: mat.define-palette(mat.$green-palette);
-//   color: mat.get-color-from-palette($success, 500) !important;
-// }
 
-// @mixin color-info {
-//   $info: mat.define-palette(mat.$blue-palette);
-//   color: mat.get-color-from-palette($info, 900) !important;
-// }
+@mixin color-success {
+  $success: mat.define-palette(mat.$green-palette);
+  color: mat.get-color-from-palette($success, 500) !important;
+}
 
-// @mixin color-error {
-//   $error: mat.define-palette(mat.$orange-palette);
-//   color: mat.get-color-from-palette($error, 900) !important;
-// }
+@mixin color-info {
+  $info: mat.define-palette(mat.$blue-palette);
+  color: mat.get-color-from-palette($info, 900) !important;
+}
+
+@mixin color-error {
+  $error: mat.define-palette(mat.$orange-palette);
+  color: mat.get-color-from-palette($error, 900) !important;
+}
 
 @mixin theme-var-colors($theme) {
 
@@ -47,6 +48,7 @@
   --color-info: #{$color-info};
   --color-error: #{$color-error};
 
+    /* color starts */
   .color-primary {
     color: var(--color-primary);
   }
@@ -55,8 +57,8 @@
     color: var(--color-accent);
   }
 
-  .color-accent {
-    color: var(--color-accent);
+  .color-warn {
+    color: var(--color-warn);
   }
 
   .color-success {
@@ -70,16 +72,43 @@
   .color-error {
     color: var(--color-error);
   }
+  /* color ends */
 
-  .bg-primary-100 {
+  /* bg color starts */
+  .bgcolor-primary {
+    background-color: var(--color-primary);
+  }
+
+  .bgcolor-accent {
+    background-color: var(--color-accent);
+  }
+
+  .bgcolor-warn {
+    background-color: var(--color-warn);
+  }
+
+  .bgcolor-success {
+    background-color: var(--color-success);
+  }
+
+  .bgcolor-info {
+    background-color: var(--color-info);
+  }
+
+  .bgcolor-error {
+    background-color: var(--color-error);
+  }
+  /* bg color ends */
+
+  .bgcolor-primary100 {
     background-color: mat.get-color-from-palette($primary, 100);
   }
 
-  .bg-primary-200 {
+  .bgcolor-primary200 {
     background-color: mat.get-color-from-palette($primary, 200);
   }
 
-  .bg-primary-500 {
+  .bgcolor-primary500 {
     background-color: mat.get-color-from-palette($primary, 500);
   }
 
@@ -94,11 +123,88 @@
   }
   //border radius ends 
 
-
-
-
-
-
-
 }
 /* color mixin ends here */
+
+
+/* buttons custom color info, error, success */
+$_ripple-opacity: 0.1;
+
+// Applies a focus style to an mat-button element for each of the supported palettes.
+@mixin _focus-overlay-color($config-or-theme, $variants) {
+  $config: mat.get-color-config($config-or-theme);
+  @each $variant, $variant-palette in $variants {
+    &.mat-#{$variant} .mat-button-focus-overlay {
+      background-color: mat.get-color-from-palette($variant-palette);
+    }
+  }
+}
+
+@mixin _ripple-background($palette, $hue, $opacity) {
+  $background-color: mat.get-color-from-palette($palette, $hue, $opacity);
+  background-color: $background-color;
+  @if (meta.type-of($background-color) != color) {
+    opacity: $opacity;
+  }
+}
+
+@mixin _ripple-color($theme, $hue, $opacity, $variants) {
+  @each $variant, $variant-palette in $variants {
+    &.mat-#{$variant} .mat-ripple-element {
+      @include _ripple-background($variant-palette, $hue, $opacity);
+    }
+  }
+}
+
+// Applies a property to an mat-button element for each of the supported palettes.
+@mixin _theme-property($theme, $property, $hue, $variants) {
+  $background: map.get($theme, background);
+  $foreground: map.get($theme, foreground);
+
+  @each $variant, $variant-palette in $variants {
+    &.mat-#{$variant} {
+      #{$property}: mat.get-color-from-palette($variant-palette, $hue);
+    }
+
+    &.mat-#{$variant} {
+      &.mat-button-disabled {
+        $palette: if($property == 'color', $foreground, $background);
+        #{$property}: mat.get-color-from-palette($palette, disabled-button);
+      }
+    }
+  }
+}
+
+@mixin color($config-or-theme, $variants) {
+  $config: mat.get-color-config($config-or-theme);
+  $foreground: map.get($config, foreground);
+  $background: map.get($config, background);
+
+  .button:not(:disabled),
+  .mat-icon-button:not(:disabled),
+  .mat-stroked-button:not(:disabled) {
+    @include _theme-property($config, 'color', text, $variants);
+    @include _focus-overlay-color($config, $variants);
+  }
+
+  .mat-flat-button:not(:disabled),
+  .mat-raised-button:not(:disabled),
+  .mat-unelevated-button:not(:disabled),
+  .mat-fab:not(:disabled),
+  .mat-mini-fab:not(:disabled) {
+    @include _theme-property($config, 'color', default-contrast, $variants);
+    @include _theme-property($config, 'background-color', default, $variants);
+    @include _ripple-color($config, default-contrast, $_ripple-opacity, $variants);
+  }
+}
+
+$theme-success: mat.define-palette(mat.$green-palette);
+$theme-info: mat.define-palette(mat.$blue-palette);
+$theme-error: mat.define-palette(mat.$orange-palette);
+$theme-black: mat.define-palette(mat.$grey-palette);
+$variants-theme: (
+  success: $theme-success,
+  info: $theme-info,
+  error: $theme-error,
+);
+// and include mixin above

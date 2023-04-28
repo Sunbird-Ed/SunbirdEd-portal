@@ -1,9 +1,8 @@
 @use "@angular/material" as mat;
 @use 'sass:map';
-@use './palette'as *;
+@use './palette' as *;
 
 @mixin mat-form-field($theme) {
-
   // Get the color config from the theme.
   $color-config: mat.get-color-config($theme);
   // Get the primary color palette from the color-config.
@@ -17,10 +16,36 @@
     background-color: mat.get-color-from-palette($background, card);
     // border-radius: 1.5rem;
   }
+
   .mat-form-field-appearance-fill .mat-form-field-underline::before {
     background-color: transparent;
   }
+
   .mat-form-field-ripple {
     background-color: mat.get-color-from-palette($accent);
+  }
+
+  .mat-select-value-text, .mat-form-field-empty.mat-form-field-label, .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    line-height: normal;
+  }
+
+  .mat-success {
+    $primary: mat.define-palette(mat.$green-palette);
+    .mat-select-value, .mat-select-arrow, .material-icons, .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+      color: mat.get-color-from-palette($primary, 500);
+    }
+    .mat-option.mat-selected:not(.mat-option-disabled).mat-dropdown__options span:before {
+      content: "";
+      display: inline-block;
+      top: 50%;
+      transform: rotate(45deg) translateY(-50%);
+      height: 0.75rem;
+      width: 0.375rem;
+      position: absolute;
+      right: 1rem;
+      border-bottom: 0.125rem solid mat.get-color-from-palette($primary, 500);;
+      border-right: 0.125rem solid mat.get-color-from-palette($primary, 500);;
+  }
+
   }
 }

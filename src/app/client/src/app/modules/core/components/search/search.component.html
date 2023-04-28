@@ -1,35 +1,15 @@
-<ng-container *ngIf="!isLayoutAvailable()">
-    <div class="input-div relative" id="search-input-container">
-        <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon">
-        <!-- Updated input tag -->
-        <input type="text" id="keyword" name="filter_search" tabindex="0" class="sb-search-input"
-            title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}"
-            placeholder="{{!searchPlaceHolderValue ? resourceService.frmelmnts?.lbl?.searchOrQr : resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}"
-            [(ngModel)]="key" (keyup.enter)="onEnter(key)" [disabled]="!showInput"
-            [ngClass]="{'disabled': !showInput }" />
-    </div>
-    <button class="sb-btn sb-btn-normal" tabindex="0" appTelemetryInteract
-        [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)"
-        title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>
-</ng-container>
-<ng-container *ngIf="isLayoutAvailable()">
-
-
-    <mat-form-field class="w-100" id="search-input-container" [floatLabel]="getFloatLabelValue()">
+ <mat-form-field class="w-100 sb-mat-form-search sb-mat-form-field-custom border-radius" id="search-input-container" appearance="fill" [floatLabel]="getFloatLabelValue()">
         <mat-label>Search or enter QR code</mat-label>
-
         <mat-icon matPrefix>search</mat-icon>
-        <div class="d-flex">
-            <input matInput type="text" id="keyword" tabindex="0" name="filter_search" class=""
-                title="{{resourceService.frmelmnts?.lbl?.searchOrQr}}"
-                placeholder="{{resourceService.frmelmnts?.lbl?.searchOrQr}}" [(ngModel)]="key"
-                (keyup.enter)="onEnter(key)" [disabled]="!showInput" [ngClass]="{'disabled': !showInput }">
-
-            <button mat-raised-button color="accent" tabindex="0" appTelemetryInteract
-                [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }"
-                (click)="onEnter(key)"
-                title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>
-        </div>
-
+        <input matInput type="text" id="keyword" name="filter_search" class=""
+            title="{{resourceService.frmelmnts?.lbl?.searchOrQr}}"
+            placeholder="{{resourceService.frmelmnts?.lbl?.searchOrQr}}" [(ngModel)]="key" (keyup.enter)="onEnter(key)"
+            [disabled]="!showInput" [ngClass]="{'disabled': !showInput }">
+            <button *ngIf="key" matSuffix mat-icon-button color="warn" aria-label="Clear" (click)="key=''">
+                <mat-icon>close</mat-icon>
+              </button>
+        <button mat-raised-button matSuffix class="ml-8 sb-mat-form-search__button button-rounded" appTelemetryInteract
+            [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }"
+            (click)="onEnter(key)"
+            title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>
     </mat-form-field>
-</ng-container>

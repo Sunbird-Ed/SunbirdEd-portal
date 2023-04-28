@@ -29,17 +29,7 @@
     }
   }
 
-  ::ng-deep {
-  .ui.accordion .active.title .chevron.down.icon {
-      margin-top:calculateRem(6px);
-  }
-  .ui.accordion .title .chevron.down.icon {
-    margin-top:calculateRem(-6px);
-  }
-  .mat-expansion-panel {
-    overflow: inherit;
-	}
-}
+
 ul {
   list-style-type: none;
   padding:0px;margin:0px;

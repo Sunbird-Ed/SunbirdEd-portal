@@ -1,5 +1,6 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
+
 .mat-inside-page-container {
     padding: 2rem 5% 2rem 3%;
     margin: 0 0 0 2%;
@@ -13,6 +14,8 @@
 .mat-app-background2 {
     background: var(--sbt-body-bg2);
 }
+
+
 .example-spacer{
     flex: 1 1 auto;
 }

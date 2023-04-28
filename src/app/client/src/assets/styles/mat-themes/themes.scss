@@ -31,6 +31,9 @@ $theme in $app-themes {
   $accent: if(map-has-key($theme, accent),
     map-get($theme, accent),
     mat.define-palette(map-get($theme, accent-base)));
+    $success: if(map-has-key($theme, success),
+      map-get($theme, success),
+      mat.define-palette(map-get($theme, success-base)));
   $warn: if(map-has-key($theme, warn),
     map-get($theme, warn),
     mat.define-palette(if(map-has-key($theme, warn-base),
@@ -62,7 +65,6 @@ $theme in $app-themes {
     // @include app-root-theme(mat.define-light-theme($primary, $accent, $warn));
     // @include no-result-component(mat.define-light-theme($primary, $accent, $warn));
     //@include mat-expansion-panel(mat.define-light-theme($primary, $accent, $warn));
-    // @include theme-color-grabber($app-themes);
     // @include theme-mat-card($app-themes);
     @include theme-mat-sidebar($app-themes);
 
@@ -75,7 +77,9 @@ $theme in $app-themes {
     @include mat-spinner-card($app-themes);
     @include mat-expansion-panel($app-themes);
     @include profile-page-theme($app-themes);
-
+    @include global-search($app-themes);
+    @include color($app-themes, $variants-theme);
+    
     /* different typography based on the theme -  */
     @include mat.all-component-typographies($typography);
     /* custom typography rem */
@@ -108,8 +112,7 @@ $theme in $app-themes {
     $primary500: mat.get-color-from-palette($primary);
     --sbt-header-bg: #{$primary500};
 
-    .mat-app-background,
-    .new-layout-footer {
+    .mat-app-background{
       background: mat.get-color-from-palette($primary, 50);
     }
 
