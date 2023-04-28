@@ -1,0 +1,210 @@
+$breakpoints: (
+  xs: 576px,
+  sm: 768px,
+  md: 992px,
+  lg: 1280px,
+  xl: 1440px,
+  xxl: 1600px,
+  xxxl: 1920px
+);
+
+$spaces: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 52, 56, 60, 64, 68, 72, 76, 80,
+  84, 88, 96;
+
+@each $space in $spaces {
+  $basePvalue: 0.0625 * $space +rem;
+// margins
+  .m-#{$space} {
+    margin: #{$basePvalue};
+  }
+
+  .mt-#{$space} {
+    margin-top: #{$basePvalue};
+  }
+
+  .mr-#{$space} {
+    margin-right: #{$basePvalue};
+  }
+
+  .mb-#{$space} {
+    margin-bottom: #{$basePvalue};
+  }
+
+  .ml-#{$space} {
+    margin-left: #{$basePvalue};
+  }
+
+  .my-#{$space} {
+    margin-top: #{$basePvalue};
+    margin-bottom: #{$basePvalue};
+  }
+
+  .mx-#{$space} {
+    margin-left: #{$basePvalue};
+    margin-right: #{$basePvalue};
+  }
+
+  // paddings 
+  .p-#{$space} {
+    padding: #{$basePvalue};
+  }
+
+  .pt-#{$space} {
+    padding-top: #{$basePvalue};
+  }
+
+  .pr-#{$space} {
+    padding-right: #{$basePvalue};
+  }
+
+  .pb-#{$space} {
+    padding-bottom: #{$basePvalue};
+  }
+
+  .pl-#{$space} {
+    padding-left: #{$basePvalue};
+  }
+
+  .py-#{$space} {
+    padding-top: #{$basePvalue};
+    padding-bottom: #{$basePvalue};
+  }
+
+  .px-#{$space} {
+    padding-left: #{$basePvalue};
+    padding-right: #{$basePvalue};
+  }
+
+  @each $name,
+  $breakpoint in $breakpoints {
+    @media(min-width: $breakpoint) {
+      // margins
+      .m-#{$space}-min-#{$name} {
+        margin: #{$basePvalue};
+      }
+
+      .mt-#{$space}-min-#{$name} {
+        margin-top: #{$basePvalue};
+      }
+
+      .mr-#{$space}-min-#{$name} {
+        margin-right: #{$basePvalue};
+      }
+
+      .mb-#{$space}-min-#{$name} {
+        margin-bottom: #{$basePvalue};
+      }
+
+      .ml-#{$space}-min-#{$name} {
+        margin-left: #{$basePvalue};
+      }
+
+      .my-#{$space}-min-#{$name} {
+        margin-top: #{$basePvalue};
+        margin-bottom: #{$basePvalue};
+      }
+
+      .mx-#{$space}-min-#{$name} {
+        margin-left: #{$basePvalue};
+        margin-right: #{$basePvalue};
+      }
+
+      // paddings
+      .p-#{$space}-min-#{$name} {
+        padding: #{$basePvalue};
+      }
+
+      .pt-#{$space}-min-#{$name} {
+        padding-top: #{$basePvalue};
+      }
+
+      .pr-#{$space}-min-#{$name} {
+        padding-right: #{$basePvalue};
+      }
+
+      .pb-#{$space}-min-#{$name} {
+        padding-bottom: #{$basePvalue};
+      }
+
+      .pl-#{$space}-min-#{$name} {
+        padding-left: #{$basePvalue};
+      }
+
+      .py-#{$space}-min-#{$name} {
+        padding-top: #{$basePvalue};
+        padding-bottom: #{$basePvalue};
+      }
+
+      .px-#{$space}-min-#{$name} {
+        padding-left: #{$basePvalue};
+        padding-right: #{$basePvalue};
+      }
+
+    }
+
+    @media(max-width: $breakpoint) {
+      // margins
+      .m-#{$space}-max-#{$name} {
+        margin: #{$basePvalue};
+      }
+
+      .mt-#{$space}-max-#{$name} {
+        margin-top: #{$basePvalue};
+      }
+
+      .mr-#{$space}-max-#{$name} {
+        margin-right: #{$basePvalue};
+      }
+
+      .mb-#{$space}-max-#{$name} {
+        margin-bottom: #{$basePvalue};
+      }
+
+      .ml-#{$space}-max-#{$name} {
+        margin-left: #{$basePvalue};
+      }
+
+      .my-#{$space}-max-#{$name} {
+        margin-top: #{$basePvalue};
+        margin-bottom: #{$basePvalue};
+      }
+
+      .mx-#{$space}-max-#{$name} {
+        margin-left: #{$basePvalue};
+        margin-right: #{$basePvalue};
+      }
+
+      // paddings
+      .p-#{$space}-max-#{$name} {
+        padding: #{$basePvalue};
+      }
+
+      .pt-#{$space}-max-#{$name} {
+        padding-top: #{$basePvalue};
+      }
+
+      .pr-#{$space}-max-#{$name} {
+        padding-right: #{$basePvalue};
+      }
+
+      .pb-#{$space}-max-#{$name} {
+        padding-bottom: #{$basePvalue};
+      }
+
+      .pl-#{$space}-max-#{$name} {
+        padding-left: #{$basePvalue};
+      }
+
+      .py-#{$space}-max-#{$name} {
+        padding-top: #{$basePvalue};
+        padding-bottom: #{$basePvalue};
+      }
+
+      .px-#{$space}-max-#{$name} {
+        padding-left: #{$basePvalue};
+        padding-right: #{$basePvalue};
+      }
+
+    }
+  }
+}

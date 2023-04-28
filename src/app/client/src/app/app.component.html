@@ -8,9 +8,11 @@
         }">
 
         <div *ngIf="!isDesktopApp" [ngClass]="{ hide: isFullScreenView }"
-          class="accessibility-toolbar-theme mb-8 density-2">
+          class="accessibility-toolbar-theme mb-8">
           <mat-toolbar color="accent">
-            <button mat-raised-button (click)="drawer.toggle()" class="custom-btn-bg">Toggle drawer</button>
+            <!-- <div class="sb-secondary-btn"> -->
+            <button mat-raised-button color="info" class="" (click)="drawer.toggle()">Toggle drawer</button>
+          <!-- </div> -->
             <span class="example-spacer"></span>
             <span aria-label="accessibility links" *ngIf="showNavAccessibility === 'true'">
               <a *ngIf="!hideHeaderNFooter" mat-button href="javascript:void(0);" title="{{

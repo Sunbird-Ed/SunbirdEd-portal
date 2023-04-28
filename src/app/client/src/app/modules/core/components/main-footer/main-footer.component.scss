@@ -3,7 +3,6 @@
 
 :host ::ng-deep{
   .new-layout-footer{
-    background: var(--sbt-body-bg);
     padding-top:calculateRem(24px);
     &.player-fullscreen-footer{
       display: none;
@@ -13,10 +12,12 @@
       width: 100%;
       padding: 0% 2%;
       background: none;
-      margin-top:calculateRem(8px);
-    }
-    .sbt-page-content-area {
-      border-radius: 0rem 0 0 0;
+      @include respond-below(sm) {
+        padding-top: calculateRem(300px);
+      }
+      @include respond-below(xs) {
+        padding-top: calculateRem(340px);
+      }
     }
     .sbt-container{
       width:calc(100% - 4%);
@@ -24,7 +25,6 @@
       margin: 0 auto;
       padding-top: calculateRem(60px);
       border-radius: calculateRem(40px) calculateRem(40px) 0 0;
-      background-color: var(--sbt-footer-bg);
       box-shadow: var(--sbt-box-shadow-6px);
       left:0;
       position:absolute;
@@ -34,6 +34,7 @@
       z-index:8;
       @include respond-below(sm){
         bottom: auto;
+        padding-top: calculateRem(24px);
       }
       .sbt-skyline-path{
         position: absolute;
@@ -62,37 +63,7 @@
           display: none;
         }
       }
-      .footerMenu {
-        .help-center{
-          margin-bottom: calculateRem(24px);
-          @include respond-below(sm) {
-            margin-bottom: calculateRem(16px);
-          }
-          a{
-            color: var(--primary-color);
-            font-size: calculateRem(14px);
-            font-weight: bold;
-          }
-        }
-        .contact-info{
-          @include respond-below(sm) {
-            margin-bottom: calculateRem(16px);
-          }
-          a{
-            color: var(--primary-color);
-            font-size: calculateRem(14px);
-          }
-          .contact-info-title{
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: calculateRem(14px);
-            margin-bottom: calculateRem(8px);
-            @include respond-below(sm){
-              margin-bottom: calculateRem(4px);
-            }
-          }
-        }
-      }
+    
       .footer-terms-info{
         a{
           color: var(--sbt-footer-info-links);
@@ -148,16 +119,6 @@
               bottom: calculateRem(20px);
             }
           }
-        }
-      }
-      .ui.grid.stackable{
-        @include respond-below(md){
-          padding: 0 calculateRem(32px) !important;
-        }
-      }
-      .ui.stackable.grid>.wide.column{
-        @include respond-below(md){
-          padding: 0 !important;
         }
       }
     }   

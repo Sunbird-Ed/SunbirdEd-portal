@@ -2,16 +2,6 @@
 @use 'sass:meta';
 @use '@angular/material' as mat;
 
-.button-rounded {
-
-  &.mat-button,
-  &.mat-raised-button,
-  &.mat-flat-button {
-    border-radius: 2rem;
-    // box-shadow: var(--sbt-box-shadow-6px);
-  }
-}
-
 %mat-success {
   $success: mat.define-palette(mat.$green-palette);
   background-color: mat.get-color-from-palette($success, 500);
@@ -23,6 +13,25 @@
 .mat-fab.mat-success,
 .mat-mini-fab.mat-success {
   @extend %mat-success;
+}
+
+.sb-secondary-btn {
+  $secondary-btn-primary: mat.define-palette(mat.$green-palette);
+  $secondary-btn-accent: mat.define-palette(mat.$green-palette);
+  $secondary-btn-theme: mat.define-light-theme((color: (primary: $secondary-btn-primary, accent: $secondary-btn-accent),
+    ));
+  // it will fetch only color related styles different from "mat.button-theme"
+  @include mat.button-color($secondary-btn-theme);
+  //  @include mat.button-density(-);
+}
+
+.button-rounded {
+  &.mat-button,
+  &.mat-raised-button,
+  &.mat-flat-button {
+    border-radius: 2rem;
+    // box-shadow: var(--sbt-box-shadow-6px);
+  }
 }
 
 /* density styles */
@@ -54,3 +63,37 @@
 //   @include mat.form-field-density(-3);
 //   @include mat.button-density(-3);
 //  }
+
+
+// .density-3 {
+//   $primary: mat.define-palette($sb-mat-grey);
+//   $accent: mat.define-palette($sb-mat-grey, 900);
+//   $warn: mat.define-palette($sb-mat-grey);
+//   $density-3: mat.define-light-theme((
+//     color: (
+//       primary: $primary,
+//       accent: $accent,
+//       warn: $warn,
+//       ),
+//       // typography: mat.define-typography-config(),
+//       density:-2,
+//     ));
+
+//     &.mat-primary .mat-button-focus-overlay, &.mat-raised-button {
+//       background-color: mat.get-color-from-palette($primary);
+//     }
+
+//     &.mat-accent .mat-button-focus-overlay {
+//       background-color: mat.get-color-from-palette($accent);
+//     }
+
+//     &.mat-warn .mat-button-focus-overlay {
+//       background-color: mat.get-color-from-palette($warn);
+//     }
+
+//     &.mat-button-disabled .mat-button-focus-overlay {
+//       background-color: transparent;
+//     }
+
+//     @include mat.button-theme($density-3);
+// }
