@@ -128,20 +128,20 @@
       <div class="batch-details">
         <div class="mb-16">
           <div *ngIf="batchDetails?.startDate">
-            <div class="content-metadeta__title mat-caption mb-8">
+            <div class="content-metadeta__title mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
             <div class="content-metadeta__text mat-body-1">{{batchDetails?.startDate | dateFormat}}
             </div>
           </div>
           <hr class="section-hr" *ngIf="batchDetails?.endDate" />
           <div *ngIf="batchDetails?.endDate">
-            <div class="content-metadeta__title mat-caption mb-8">
+            <div class="content-metadeta__title mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
             <div class="content-metadeta__text mat-body-1">{{batchDetails?.endDate | dateFormat}}</div>
           </div>
           <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
           <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-            <div class="content-metadeta__title mat-caption mb-8">
+            <div class="content-metadeta__title mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
             <div class="content-metadeta__text mat-body-1"> {{batchDetails?.enrollmentEndDate |
               dateFormat}}</div>

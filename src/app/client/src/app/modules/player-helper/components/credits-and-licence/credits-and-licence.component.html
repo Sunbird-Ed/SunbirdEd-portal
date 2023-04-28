@@ -25,19 +25,19 @@
         </a>
       </div>
       <div class="pb-8" *ngIf="contentData?.author">
-        <div class="mat-small">{{resourceService?.frmelmnts?.lbl?.author}}</div>
+        <div class="mat-small color-accent">{{resourceService?.frmelmnts?.lbl?.author}}</div>
         <div class="mat-body-1">{{contentData?.author}}</div>
       </div>
       <div class="pb-8" *ngIf="contentData?.attributions">
-        <div class="mat-small">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
+        <div class="mat-small color-accent">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
         <div class="mat-body-1">{{contentData?.attributions}}</div>
       </div>
       <div class="pb-8" *ngIf="contentData?.license">
-        <div class="mat-small">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+        <div class="mat-small color-accent">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
         <div class="mat-body-1">{{contentData.license}}</div>
       </div>
       <div class="pb-8" *ngIf="contentData?.licenseDetails?.name">
-        <div class="mat-small"></div>
+        <div class="mat-small color-accent"></div>
         <div class="mat-body-1" *ngIf="contentData?.licenseDetails?.name">
           {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
           <span *ngIf="contentData.licenseDetails['url']">
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="pb-8" *ngIf="contentData?.copyright">
-        <div class="mat-small">{{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
+        <div class="mat-small color-accent">{{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
         <div class="mat-body-1">{{contentData?.copyright}}<span
             *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></div>
       </div>
@@ -59,16 +59,16 @@
           <div class="mat-body-1">{{contentData?.originData?.name}}</div>
         </div>
         <div class="pb-8" *ngIf="contentData?.originData?.author">
-          <div class="mat-small">
+          <div class="mat-small color-accent">
             {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</div>
           <div class="mat-body-1">{{contentData?.originData?.author}}</div>
         </div>
         <div class="pb-8" *ngIf="contentData?.originData?.license">
-          <div class="mat-small">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+          <div class="mat-small color-accent">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
           <div class="mat-body-1">{{contentData?.originData?.license}}</div>
         </div>
         <div class="pb-8" *ngIf="contentData?.originData?.organisation">
-          <div class="mat-small"
+          <div class="mat-small color-accent"
             [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
           </div>
           <div class="mat-body-1" *ngIf="contentData?.originData?.organisation">
