@@ -1,126 +1,123 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-@use "layout/footer" as *;
 
-:host ::ng-deep{
-  .new-layout-footer{
-    padding-top:calculateRem(24px);
-    &.player-fullscreen-footer{
-      display: none;
+.new-layout-footer{
+  padding-top:calculateRem(24px);
+  &.player-fullscreen-footer{
+    display: none;
+  }
+  .sbt-footer-container {
+    height: calculateRem(272px); //296px
+    width: 100%;
+    padding: 0% 2%;
+    background: none;
+    @include respond-below(sm) {
+      padding-top: calculateRem(300px);
     }
-    .sbt-footer-container {
-      height: calculateRem(272px); //296px
-      width: 100%;
-      padding: 0% 2%;
-      background: none;
-      @include respond-below(sm) {
-        padding-top: calculateRem(300px);
-      }
-      @include respond-below(xs) {
-        padding-top: calculateRem(340px);
-      }
+    @include respond-below(xs) {
+      padding-top: calculateRem(340px);
     }
-    .sbt-container{
-      width:calc(100% - 4%);
-      padding: 0;
-      margin: 0 auto;
-      padding-top: calculateRem(60px);
-      border-radius: calculateRem(40px) calculateRem(40px) 0 0;
-      box-shadow: var(--sbt-box-shadow-6px);
-      left:0;
-      position:absolute;
-      top:calculateRem(0px); //24px
-      bottom: 0;
-      right:0;
-      z-index:8;
+  }
+  .sbt-container{
+    width:calc(100% - 4%);
+    padding: 0;
+    margin: 0 auto;
+    padding-top: calculateRem(60px);
+    border-radius: calculateRem(40px) calculateRem(40px) 0 0;
+    box-shadow: var(--sbt-box-shadow-6px);
+    left:0;
+    position:absolute;
+    top:calculateRem(0px); //24px
+    bottom: 0;
+    right:0;
+    z-index:8;
+    @include respond-below(sm){
+      bottom: auto;
+      padding-top: calculateRem(24px);
+    }
+    .sbt-skyline-path{
+      position: absolute;
+      bottom: 0%;
+      overflow: hidden;
+      width: 88%;
+      html[dir="rtl"] & {
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+      }
       @include respond-below(sm){
-        bottom: auto;
-        padding-top: calculateRem(24px);
+        display: none;
       }
-      .sbt-skyline-path{
-        position: absolute;
-        bottom: 0%;
-        overflow: hidden;
-        width: 88%;
-        html[dir="rtl"] & {
-          -webkit-transform: scaleX(-1);
-          transform: scaleX(-1);
-        }
-        @include respond-below(sm){
-          display: none;
-        }
+    }
+    .sbt-footer-shade{
+      position: absolute;
+      bottom: 0;
+      left: calculateRem(40px);
+      html[dir="rtl"] & {
+        left: auto;
+        right: calculateRem(40px);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
       }
-      .sbt-footer-shade{
-        position: absolute;
-        bottom: 0;
-        left: calculateRem(40px);
-        html[dir="rtl"] & {
-          left: auto;
-          right: calculateRem(40px);
-          -webkit-transform: scaleX(-1);
-          transform: scaleX(-1);
-        }
-        @include respond-below(sm){
-          display: none;
-        }
+      @include respond-below(sm){
+        display: none;
       }
-    
-      .footer-terms-info{
-        a{
-          color: var(--sbt-footer-info-links);
-          font-size: calculateRem(14px);
-          font-weight: bold;
-          &:hover{
-            color: var(--sbt-footer-info-links-hover);
-          }
-        }
+    }
+  
+    .footer-terms-info{
+      a{
         color: var(--sbt-footer-info-links);
         font-size: calculateRem(14px);
-        font-weight: bold
-      }
-      .sbt-footer-download-app{
-        justify-content: flex-end;
-        @include respond-below(sm){
-          justify-content: center;
-        }
-        .sbt-footer-bg{
-          padding-top: calculateRem(30px);
-          .sbt-footer-bg-img{
-            height: calculateRem(200px);
-            width: calculateRem(380px);
-            @include respond-below (sm){
-              height: calculateRem(180px);
-              width: calculateRem(320px);
-            }
-          }
-          .sbt-footer-title{
-            font-size: calculateRem(16px) !important;
-            color: var(--gray-800);
-            padding: 0 calculateRem(24px);
-            position: absolute;
-            width: calculateRem(130px);
-            bottom: calculateRem(95px);
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            @include respond-below (sm){
-              bottom: calculateRem(80px);
-            }
-          }
-          .playStore-img{
-            width: calculateRem(164px);
-            position: absolute;
-            bottom: calculateRem(30px);
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            @include respond-below(sm){
-              width: calculateRem(144px);
-              position: absolute;
-              bottom: calculateRem(20px);
-            }
-          }
+        font-weight: bold;
+        &:hover{
+          color: var(--sbt-footer-info-links-hover);
         }
       }
-    }   
-  }
+      color: var(--sbt-footer-info-links);
+      font-size: calculateRem(14px);
+      font-weight: bold
+    }
+    .sbt-footer-download-app{
+      justify-content: flex-end;
+      @include respond-below(sm){
+        justify-content: center;
+      }
+      .sbt-footer-bg{
+        padding-top: calculateRem(30px);
+        .sbt-footer-bg-img{
+          height: calculateRem(200px);
+          width: calculateRem(380px);
+          @include respond-below (sm){
+            height: calculateRem(180px);
+            width: calculateRem(320px);
+          }
+        }
+        .sbt-footer-title{
+          font-size: calculateRem(16px) !important;
+          color: var(--gray-800);
+          padding: 0 calculateRem(24px);
+          position: absolute;
+          width: calculateRem(130px);
+          bottom: calculateRem(95px);
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          @include respond-below (sm){
+            bottom: calculateRem(80px);
+          }
+        }
+        .playStore-img{
+          width: calculateRem(164px);
+          position: absolute;
+          bottom: calculateRem(30px);
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          @include respond-below(sm){
+            width: calculateRem(144px);
+            position: absolute;
+            bottom: calculateRem(20px);
+          }
+        }
+      }
+    }
+  }   
 }

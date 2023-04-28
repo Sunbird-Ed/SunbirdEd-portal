@@ -112,8 +112,7 @@ $theme in $app-themes {
     $primary500: mat.get-color-from-palette($primary);
     --sbt-header-bg: #{$primary500};
 
-    .mat-app-background,
-    .new-layout-footer {
+    .mat-app-background{
       background: mat.get-color-from-palette($primary, 50);
     }
 
