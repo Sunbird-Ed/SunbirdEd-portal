@@ -79,8 +79,12 @@ export class ShareLinkComponent implements OnInit {
   * {object}  copyLinkData -element ref
   * {object}  popup -element ref
   */
-  public copyLink(popup: IPopup) {
-    popup.open();
+  // public copyLink(popup: IPopup) {
+  //   popup.open();
+  //   $('#copyLinkData').select();
+  //   document.execCommand('copy');
+  // }
+  public copyLink() {
     $('#copyLinkData').select();
     document.execCommand('copy');
   }

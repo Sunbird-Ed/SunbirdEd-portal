@@ -1,63 +1,51 @@
-<app-modal-wrapper *ngIf="showContentRatingModal" [config]="{disableClose: false, size: 'normal'}"
-  (dismiss)="dismissModal()" #modal>
+<app-modal-wrapper *ngIf="showContentRatingModal" [config]="{disableClose: true, width: '30rem', panelClass: 'material-modal'}" (dismiss)="dismissModal()">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <!--Header-->
-          <i class="close icon" role="img" aria-label="close" tabindex="0" (click)="modal.deny()"></i>
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.lbl?.enjoyedContent}}
-          </div>
-          <!--/Header-->
-
-          <!--Content-->
-          <div class="sb-modal-content p-0">
-            <div class="field px-16 py-24">
-              <sui-rating (valueChange)="ratingChange($event)" tabindex="0" [maximum]="5"
-                class="sb-rating ui huge star rating"></sui-rating>
-              <div class="fs-0-92 mt-8"> {{startext}}</div>
-            </div>
-            <div class="sb-content-rating-container px-16 py-24" *ngIf="enableSubmitBtn">
-              <div class="sb-content-rating">
-
-                <div class="rating-header pb-24 fs-0-92">
-                  {{feedbackObj[contentRating]['question']}}
-                </div>
-                <div class="rating-checkbox">
-                  <!-- <div class="sb-checkbox sb-checkbox-primary"  *ngFor="let feedback of feedbackObj[contentRating]['options']">
-            <input type="checkbox" role="checkbox" [(ngModel)]="feedback.checked" (click)="changeOptions(feedback)">
-            <label [class.options-content-checked]="feedback.checked">{{feedback['value']}}</label>
-          </div> -->
-                  <div class="sb-checkbox sb-checkbox-primary sb-checkbox-rightaligned"
-                    *ngFor="let feedback of feedbackObj[contentRating]['options']">
-                    <input type="checkbox" id="{{feedback['value']}}" [(ngModel)]="feedback.checked" tabindex="0"
-                      (click)="changeOptions(feedback)">
-                    <label for="{{feedback['value']}}" class="fsmall mb-16" role="img"
-                      title="{{feedback['value']}}">{{feedback['value']}}</label>
-                  </div>
-                  <div *ngIf="showTextarea">
-                    <textarea rows="5" maxlength="1000" class="sb-form-control" [(ngModel)]="feedbackText"></textarea>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <!--/Content-->
-
-          <!--Actions-->
-          <div class="sb-modal-actions">
-            <button (click)="submit()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary"
-              [disabled]="!enableSubmitBtn" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
-              {{resourceService?.frmelmnts.btn.submit}}
-            </button>
-          </div>
-          <!--/Actions-->
-
+  <!--Header-->
+   <div mat-dialog-title class="d-flex flex-ai-center">
+    <h2 class="mb-0" role="heading" aria-level="2" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
+      {{resourceService?.frmelmnts?.lbl?.enjoyedContent}}
+    </h2>
+    <span class="example-spacer"></span>
+    <button mat-mini-fab color="warn" mat-dialog-close aria-label="close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <!--/Header-->
+     <!--Content-->
+    <mat-dialog-content>
+      <div class="field mb-16">
+        <sui-rating (valueChange)="ratingChange($event)" tabindex="0" [maximum]="5"
+          class="sb-rating ui huge star rating"></sui-rating>
+        <div class="mat-body-1 mt-8"> {{startext}}</div>
+      </div>
+      <div class="sb-content-rating-container pt-16" *ngIf="enableSubmitBtn">
+        <div class="pb-16 mat-body-1">
+          {{feedbackObj[contentRating]['question']}}
+        </div>
+        <div class="rating-checkbox d-flex flex-dc">
+          <mat-checkbox *ngFor="let feedback of feedbackObj[contentRating]['options']" 
+              id="{{feedback['value']}}" [(ngModel)]="feedback.checked" tabindex="0"
+              (click)="changeOptions(feedback)" >
+              <span class="mat-small m-0" role="img" title="{{feedback['value']}}">
+                {{feedback['value']}}
+              </span>
+          </mat-checkbox>
+          <form *ngIf="showTextarea">
+            <mat-form-field appearance="fill" class="w-100">
+              <textarea matInput rows="5" maxlength="1000" [(ngModel)]="feedbackText"></textarea>
+            </mat-form-field>
+          </form>
         </div>
       </div>
-    </div>
+    </mat-dialog-content>
+    <!--/Content-->
+    <!--Actions-->
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="accent" class="button-rounded" type="button" 
+       (click)="submit()" tabindex="0" [disabled]="!enableSubmitBtn" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
+       {{resourceService?.frmelmnts.btn.submit}}
+      </button>
+    </mat-dialog-actions>
+    <!--/Actions-->
   </ng-template>
 </app-modal-wrapper>

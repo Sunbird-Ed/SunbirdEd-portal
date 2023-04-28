@@ -8,7 +8,7 @@
             (click)="redirectToParentComponent()" class="color-accent font-weight-bold" role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.clickHere}}</span>
           {{resourceService?.frmelmnts?.lbl?.toTryAgain}}</div>
         <form [formGroup]="otpForm" class="d-flex flex-dc">
-          <label *ngIf="errorMessage" class="color-error mat-body-2 font-weight-bold">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
+          <label *ngIf="errorMessage" color="warn" class="mat-body-2 font-weight-bold">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
           <label *ngIf="infoMessage" class="mat-body-2 font-weight-bold">{{infoMessage}}</label>
           <mat-form-field class="otp-page-form-field" appearance="fill">
             <mat-label>{{resourceService?.frmelmnts?.lbl?.enterOTP}}</mat-label>

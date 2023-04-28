@@ -120,6 +120,18 @@
     .br-#{$value} {
       border-radius: $baseMvalue;
     }
+    .br-top-left-#{$value} {
+      border-top-left-radius: $baseMvalue;
+    }
+    .br-top-right-#{$value} {
+      border-top-right-radius: $baseMvalue;
+    }
+    .br-bottom-left-#{$value} {
+      border-bottom-left-radius: $baseMvalue;
+    }
+    .br-bottom-right-#{$value} {
+      border-bottom-right-radius: $baseMvalue;
+    }
   }
   //border radius ends 
 
