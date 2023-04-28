@@ -5,23 +5,17 @@
 
   <!--CC-Player Back button -->
   <mat-toolbar color="primary" class="toolbar-pageback">
-    <div class="toolbar-backbtn w-100">
-      <div class="course-header">
-        <div class="course-header__info">
-          <button type="button" mat-mini-fab color="accent"
-            class="button-rounded" tabindex="0" (click)="closeCollectionPlayer()"
-            attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-            <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
-          </button>
-        </div>
-  
-        <!--CC-Player Content Header -->
-  
-        <div class="course-header__content" *ngIf="collectionData">
-          <div class="course-header__metadata">
-            <div class="course-header__title mat-subheading-2 font-weight-bold mb-0" role="heading" aria-level="2">
-              {{collectionData.name}}</div>
-            <div class="course-header__sub-title mat-body-1 mt-4" *ngIf="collectionTreeNodes">
+    <div class="d-flex flex-ai-center w-50">
+      <button type="button" mat-mini-fab color="accent"
+        class="button-rounded" tabindex="0" (click)="closeCollectionPlayer()"
+        attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+        <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
+      </button>
+      <div class="textbook__heading" *ngIf="collectionData">
+          <h5 class="title mat-subheading-2 mb-0" tabindex="0" role="heading" aria-level="2">{{collectionData.name}}
+          </h5>
+          <div class="textbook__metadata">
+            <div class="sub-title mat-body-1 mt-4" *ngIf="collectionTreeNodes">
               <span *ngIf="collectionTreeNodes?.data?.board">{{collectionTreeNodes?.data?.board}}</span>
               <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.medium"></span>
               <span *ngIf="collectionTreeNodes?.data?.medium">{{collectionTreeNodes?.data?.medium}}</span>
@@ -29,89 +23,87 @@
               <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
             </div>
           </div>
-          <div class="course-header__actions">
-            <div *ngIf="isDesktopApp">
-              <button type="button" mat-raised-button class="button-rounded mr-8"
-                *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
-                (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
-              <button type="button" mat-raised-button class="button-rounded mr-8"
-                *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
-                (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
-              <button type="button" mat-raised-button class="button-rounded mr-8"
-                *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
-                (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-              <button type="button" mat-raised-button class="button-rounded mr-8"
-                *ngIf="checkStatus('DOWNLOAD')" tabindex="0"
-                (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
-              <button type="button" mat-raised-button class="button-rounded mr-8"
-                *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-              <button type="button" mat-raised-button class="button-rounded mr-8"
-                *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
-            </div>
-  
-            <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0" (click)="onShareLink();sharelinkModal=true;"
-            mat-raised-button class="button-rounded mr-8">
-            <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="share"></mat-icon> {{resourceService?.frmelmnts?.lbl?.share}}
-            </button>
-  
-            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-              [telemetryInteractEdata]="copyContentInteractEdata"
-              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0"
-              (click)="copyContent(collectionTreeNodes.data)" mat-raised-button class="button-rounded mr-8">
-              <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="content_copy"></mat-icon>{{resourceService?.frmelmnts?.lbl?.copy}}
-            </button>
-  
-            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-              [telemetryInteractEdata]="copyContentInteractEdata"
-              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
-              appPermission [permission]="['BOOK_CREATOR']" tabindex="0" (click)="copyContent(collectionTreeNodes.data)"
-              mat-raised-button class="button-rounded mr-8">
-              <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="content_copy"></mat-icon> {{resourceService?.frmelmnts?.lbl?.copy}}
-            </button>
-  
-            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-              [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
-              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="copyAsCourse()"
-              mat-raised-button class="button-rounded mr-8">
-              <img src="assets/images/copy-clone.svg" alt="copy-clone" class="mr-4 pt-2">
-              {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
-            </button>
-  
-            <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
-              [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
-              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="clearSelection()"
-              mat-raised-button class="button-rounded mr-8">
-              {{resourceService?.frmelmnts?.btn?.cancel}}
-            </button>
-  
-            <button [ngClass]="{ 'sb-btn-disabled': !(selectedItems.length > 0) }"
-              [disabled]="!(selectedItems.length > 0)" type="button" appTelemetryInteract
-              [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
-              href="javascript:void(0)"
-              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
-              appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="createCourse()"
-              mat-raised-button class="button-rounded mr-8">
-              {{generaliseLabelService?.frmelmnts?.btn?.create}}
-            </button>
-  
-            <div class="certified-course__btn" *ngIf="isGroupAdmin">
-              <button mat-raised-button class="button-rounded ml-auto" appAddToGroup
-                [identifier]="collectionData?.identifier"
-                [pageId]="collectionData?.primaryCategory?.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
-              </button>
-            </div>
-  
-            <div class="ui active inverted dimmer" *ngIf="!isDesktopApp && showCopyLoader">
-              <div class="ui text centered inline loader mt-40">
-                {{resourceService.frmelmnts.lbl.copycontent}}
-              </div>
-            </div>
-          </div>
+      </div>
+    </div>
+    <div class="toolbar-pageback__actions" *ngIf="collectionData">
+      <div *ngIf="isDesktopApp">
+        <button type="button" mat-raised-button class="button-rounded mr-8"
+          *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
+          (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
+        <button type="button" mat-raised-button class="button-rounded mr-8"
+          *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
+          (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
+        <button type="button" mat-raised-button class="button-rounded mr-8"
+          *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
+          (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+        <button type="button" mat-raised-button class="button-rounded mr-8"
+          *ngIf="checkStatus('DOWNLOAD')" tabindex="0"
+          (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
+        <button type="button" mat-raised-button class="button-rounded mr-8"
+          *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+        <button type="button" mat-raised-button class="button-rounded mr-8"
+          *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
+      </div>
+
+      <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0" (click)="onShareLink();sharelinkModal=true;"
+      mat-raised-button class="button-rounded mr-8">
+      <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="share"></mat-icon> {{resourceService?.frmelmnts?.lbl?.share}}
+      </button>
+
+      <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+        [telemetryInteractEdata]="copyContentInteractEdata"
+        *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
+        appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0"
+        (click)="copyContent(collectionTreeNodes.data)" mat-raised-button class="button-rounded mr-8">
+        <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="content_copy"></mat-icon>{{resourceService?.frmelmnts?.lbl?.copy}}
+      </button>
+
+      <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+        [telemetryInteractEdata]="copyContentInteractEdata"
+        *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
+        appPermission [permission]="['BOOK_CREATOR']" tabindex="0" (click)="copyContent(collectionTreeNodes.data)"
+        mat-raised-button class="button-rounded mr-8">
+        <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="content_copy"></mat-icon> {{resourceService?.frmelmnts?.lbl?.copy}}
+      </button>
+
+      <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+        [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
+        *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
+        appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="copyAsCourse()"
+        mat-raised-button class="button-rounded mr-8">
+        <img src="assets/images/copy-clone.svg" alt="copy-clone" class="mr-4 pt-2">
+        {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
+      </button>
+
+      <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
+        [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
+        *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+        appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="clearSelection()"
+        mat-raised-button class="button-rounded mr-8">
+        {{resourceService?.frmelmnts?.btn?.cancel}}
+      </button>
+
+      <button
+        [disabled]="!(selectedItems.length > 0)" type="button" appTelemetryInteract
+        [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
+        href="javascript:void(0)"
+        *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+        appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="createCourse()"
+        mat-raised-button class="button-rounded mr-8">
+        {{generaliseLabelService?.frmelmnts?.btn?.create}}
+      </button>
+
+      <span *ngIf="isGroupAdmin">
+        <button mat-raised-button class="button-rounded ml-auto" appAddToGroup
+          [identifier]="collectionData?.identifier"
+          [pageId]="collectionData?.primaryCategory?.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+        </button>
+      </span>
+
+      <div class="" *ngIf="!isDesktopApp && showCopyLoader">
+        <div class="mt-40">
+          {{resourceService.frmelmnts.lbl.copycontent}}
         </div>
-  
       </div>
     </div>
   </mat-toolbar>
