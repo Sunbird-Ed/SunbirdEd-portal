@@ -28,7 +28,13 @@
   .mat-select-value-text, .mat-form-field-empty.mat-form-field-label, .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
     line-height: normal;
   }
-
+  //rating modal checkbox style
+  .rating-checkbox .mat-checkbox-checked{
+    span{
+      color: mat.get-color-from-palette($accent);
+    }
+  }
+  //select box green color
   .mat-success {
     $primary: mat.define-palette(mat.$green-palette);
     .mat-select-value, .mat-select-arrow, .material-icons, .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
