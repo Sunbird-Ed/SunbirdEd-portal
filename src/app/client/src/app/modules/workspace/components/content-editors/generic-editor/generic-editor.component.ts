@@ -69,11 +69,11 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         this.showLoader = false;
         setTimeout(() => {
           this.initEditor();
-        }, 5000);
+        }, parseInt(localStorage.getItem('setTimeoutTimeinms')));
         this.setWindowContext();
         this.setWindowConfig();
       }),
-      delay(10)) // wait for iziModal lo load
+      delay(parseInt(localStorage.getItem('delayTime')))) // wait for iziModal lo load
       .subscribe((data) => {
         jQuery('#genericEditor').iziModal('open');
       },
