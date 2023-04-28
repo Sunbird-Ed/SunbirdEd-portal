@@ -19,6 +19,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
 import { ActivityDashboardDirective } from './directive/activity-dashboard/activity-dashbord.directive';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { ActivityDashboardDirective } from './directive/activity-dashboard/activ
     SuiRatingModule,
     RecaptchaModule,
     DiscussionModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    MatToolbarModule
   ],
   declarations: [ MyGroupsComponent, AddMemberComponent,
     GroupHeaderComponent, NoGroupResultComponent,

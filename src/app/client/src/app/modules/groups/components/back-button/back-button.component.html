@@ -1,6 +1,6 @@
-<button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}"><i
-    class="icon-svg icon-svg--xxs icon-back"><svg class="icon icon-svg--primary">
-      <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-    </svg></i>
-    <span class="mx-8">{{resourceService?.frmelmnts?.btn?.back}}</span> 
-  </button>
+<button type="button" (click)="goBack()"
+  mat-mini-fab color="accent"
+  class="button-rounded" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}"><mat-icon
+    aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
+  <!-- <span class="mx-8">{{resourceService?.frmelmnts?.btn?.back}}</span> -->
+</button>

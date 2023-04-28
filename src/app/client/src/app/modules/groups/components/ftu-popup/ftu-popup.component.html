@@ -1,29 +1,27 @@
-<app-modal-wrapper [config]="{disableClose: true}" *ngIf="showWelcomePopup">
+<app-modal-wrapper [config]="{disableClose: true, width: '30rem', panelClass: 'material-modal'}"
+  *ngIf="showWelcomePopup">
   <ng-template sbModalContent>
-    <div class="sb-group-page-container">
-      <div class="sb-group-container sb-group-container--sm sb-bg-color-white">
-        <a class="close" tabindex="0" (click)="closeModal();addTelemetry('ftu-close')" role="button"
-          aria-label="Close Welcome dialog"><i class="icon-svg icon-svg--xs icon-close"><svg
-              class="icon icon-svg--primary">
-              <use xlink:href="./assets/images/sprite.svg#close"></use>
-            </svg></i></a>
-        <!-- below content comes from CC -->
-        <h4 class="sb-group-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
-        <img src="./assets/images/groups.png" class="sb-group-container__img" role="presentation" alt="" />
-        <p class="sb-group-container__description">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
-      </div>
+
+    <div mat-dialog-title class="flex-jc-center mb-0">
+      <h4 class="color-accent font-weight-bold mb-0">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close
+        (click)="closeModal();addTelemetry('ftu-close')"><mat-icon>close</mat-icon>
+      </button>
+      <!-- below content comes from CC -->
     </div>
+    <mat-dialog-content class="d-flex flex-dc flex-ai-center text-center">
+      <img src="./assets/images/groups.png" class="sb-group-container__img" role="presentation" alt="" />
+      <p class="mt-24">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
+    </mat-dialog-content>
+
   </ng-template>
 </app-modal-wrapper>
 <div class="sb-group-page-container" *ngIf="showMemberPopup">
-  <div class="sb-group-container sb-group-container--md sb-bg-color-white">
-    <a class="close" role="button" tabindex="0" aria-label="Close Member dialog"
-      (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><i
-        class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
-          <use xlink:href="./assets/images/sprite.svg#close"></use>
-        </svg></i></a>
+  <div class="sb-group-container sb-group-container--md">
+    <a mat-mini-fab color="warn" class="close" role="button" tabindex="0" aria-label="Close Member dialog"
+      (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><mat-icon>close</mat-icon></a>
     <!-- below content comes from CC -->
-    <div class="sb-bg-color-white sb-modal-content w-100 text-left pb-16">
+    <div class="w-100 text-left pb-16">
       <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup | interpolate:'{instance}': instance
         }}</h4>
       <p class="mb-16">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': instance }}
@@ -35,19 +33,19 @@
             <div class="sb-g">
               <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
                 <h6>{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
-                <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
+                <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
                 <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
               </div>
               <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 column-2">
                 <h6>{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
-                <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
+                <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
                 <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
               </div>
             </div>
           </div>
           <div class="item-help">
             <h6>{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
-            <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere |
+            <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere |
               interpolate:'{instance}': instance }}</p>
             <img src="./assets/images/step_3.png" alt="">
           </div>
