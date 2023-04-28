@@ -321,7 +321,7 @@
         <div class="ui segment">
           <div class="regular slider pt-10">
             <app-page-section [section]="{ contents: contributions}" (visits)="prepareVisits($event)"
-              (playEvent)="openContent($event)"></app-page-section>
+              (playEvent)="openContent($event)" [layoutConfiguration]="layoutConfiguration"></app-page-section>
           </div>
         </div>
       </div>
