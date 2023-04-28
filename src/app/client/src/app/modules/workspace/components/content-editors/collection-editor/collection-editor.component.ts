@@ -84,7 +84,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         this.setWindowContext();
         this.setWindowConfig();
       }),
-      delay(parseInt(localStorage.getItem('delayTime')))) // wait for iziModal lo load
+      delay(10)) // wait for iziModal lo load
     .subscribe((data) => {
       jQuery('#collectionEditor').iziModal('open'); // open iframe
     },
