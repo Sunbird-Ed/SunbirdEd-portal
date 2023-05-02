@@ -2,45 +2,39 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sb-back-actionbar mt-0' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
-  <div class="ui container d-flex flex-ai-center py-8">
-    <app-back-button></app-back-button>
-    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap ml-16 w-100">
-      <div class="d-flex flex-dc">
-        <h4 class="mb-4 font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">{{resourceService?.frmelmnts?.tab?.mygroups}}</h4>
-        <div class="fsmall"></div>
-      </div>
-      <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-        <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mr-8" 
-              type="button"
-              tabindex="0" (click)="showCreateFormModal();addTelemetryWithData('header-create-group-btn', { type: SELECT_CREATE_GROUP })">
-            <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
-              <use xlink:href="./assets/images/sprite.svg#groups"></use>
-            </svg></i>
-            {{ resourceService?.frmelmnts?.lbl?.createGroup }}
-          </button>
-        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" aria-label="showFtuPopup" type="button" tabindex="0" (click)="showFtuPopup();addTelemetry('ftu-info')">
-          <i class="icon-svg icon-svg--sm icon-info"><svg class="icon icon-svg--primary">
-            <use xlink:href="./assets/images/sprite.svg#info"></use>
-          </svg></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<mat-toolbar color="primary" class="toolbar-pageback">
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups relative9' : 'sb-mygroups'">
+  <div class="d-flex flex-ai-center w-50">
+
+    <app-back-button></app-back-button>
+    <div class="textbook__heading">
+      <h4 class="font-weight-bold">
+        {{resourceService?.frmelmnts?.tab?.mygroups}}</h4>
+    </div>
+
+  </div>
+  <div class="toolbar-pageback__actions">
+    <button mat-raised-button color="accent" class="button-rounded mr-8" type="button" tabindex="0" (click)="showCreateFormModal();addTelemetryWithData('header-create-group-btn', { type: SELECT_CREATE_GROUP })">
+      <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="group_add"></mat-icon>
+      {{ resourceService?.frmelmnts?.lbl?.createGroup }}
+    </button>
+    <button mat-button color="accent" class="button-rounded" aria-label="showFtuPopup" type="button"
+      tabindex="0" (click)="showFtuPopup();addTelemetry('ftu-info')">
+      <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="info_outline"></mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<div class="mat-inside-page-container mat-app-background2">
 <div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img alt="{{resourceService?.frmelmnts?.lbl?.createGroupDes}}" src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
       {{resourceService?.frmelmnts?.lbl?.createGroupDes}}
      </div>
-    <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
+    <button mat-raised-button color="accent" class="button-rounded mb-8" type="button"
       tabindex="0" (click)="showCreateFormModal();addTelemetry('create-group-btn')">
-      <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
-        <use xlink:href="./assets/images/sprite.svg#groups"></use>
-      </svg></i>
+      <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="group_add"></mat-icon>
       {{ resourceService?.frmelmnts?.lbl?.createGroup }}
     </button>
   </div>
@@ -48,7 +42,7 @@
 
 <div *ngIf="groupsList.length&& !isLoader" [appTelemetryImpression]="telemetryImpression">
 
-  <div class="ui container mt-24">
+  <div class="mt-24">
     <div class="sb-card-grid">
       <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupsList">
         <sb-group-card [isSuspended]="group?.status === 'suspended'" [suspendBadgeText]="resourceService?.frmelmnts?.lbl?.deactivategrp" [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
@@ -57,7 +51,7 @@
   </div>
 </div>
 
-<div class="ui container mt-24" *ngIf="isLoader">
+<div class="mt-24" *ngIf="isLoader">
   <div class="sb-card-grid">
     <div class="sbcard sbcard--resource sbcard--course" role="link"  tabindex="0"  *ngFor="let group of [1,2,3,4,5,6,7,8]">
       <sb-group-card [isLoading]="true"></sb-group-card>

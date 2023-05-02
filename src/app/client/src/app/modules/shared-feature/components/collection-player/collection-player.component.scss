@@ -1,51 +1,5 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-
-:host {
-
-  @include respond-below(sm) {
-    .ui.container.sb-toc-view-container {
-      margin-left: 0px !important;
-      margin-right: 0px !important;
-    }
-  }
-
-  .main-side-toc-content {
-    overflow-y: auto;
-    @include respond-below(sm) {
-      height: auto;
-      max-height: 100%;
-    }
-  }
-}
-
-
-@media screen and (min-width: 240px) and (max-width: 767px) {
-  .toggleInMobile {
-    display: none;
-  }
-}
-
-::ng-deep {
-  .sb-toc-items {
-    sb-accordion {
-      .sbaccordion__panel-content {
-        overflow: inherit;
-        max-height: 100%;
-        border-top: 0px;
-        background-color: var(--white);
-      }
-    }
-  }
-  .main-side-toc-content{
-    sb-toc-item{
-      .sb-card-swap{
-        flex-direction: unset;
-      }
-    }
-  }
-}
-
 .toolbar-pageback{
   @include respond-below(sm) {
     .w-50{
@@ -54,6 +8,3 @@
     }
   }
 }
-
-
-

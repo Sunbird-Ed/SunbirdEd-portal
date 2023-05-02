@@ -113,17 +113,18 @@
     [appTelemetryEnd]="telemetryCourseEndEvent">
 
     <!-- CC-Player Video -->
-    <div class="ui container relative9">
+    <div>
       <div class="cc-player sb-g">
-        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
+        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12"
           [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [collectionData]="collectionData" [isContentPresent]="isContentPresent"
             [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
         </section>
-        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9"
+        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16"
           *ngIf="collectionData">
+          <!-- This checkbox needs to be converted to Angular material -->
           <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
             <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center p-16">
               <h6 class="color_accent mat-body-1 mb-0 font-weight-normal">
@@ -135,13 +136,13 @@
               </div>
             </div>
           </div>
-          <div class="toc-box-shadow mb-2">
+          <div>
             <sb-library-filters [hidden]="isSelectChapter" [tocList]="mimeTypeFilters" [layout]="'round-with-icon'"
               (selectedMimeType)="selectedFilter($event)">
             </sb-library-filters>
           </div>
 
-          <div [hidden]="isSelectChapter" class="main-side-toc-content">
+          <div [hidden]="isSelectChapter" class="mt-16">
             <sb-toc-item [selectAll]="selectAll" [selectMode]="isCopyAsCourseClicked"
               [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               [noContentMessage]="noContentMessage" (tocCardClick)="tocCardClickHandler($event)"
