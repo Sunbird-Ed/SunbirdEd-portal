@@ -2,83 +2,81 @@
   (dismiss)="closeModal({modalId: ''});addTelemetry('close-group-form', '', { type: SELECT_CLOSE, subtype: CLOSE_ICON })">
   <ng-template sbModalContent let-data>
     <!-- add create group form -->
-    <div>
-
-      <div mat-dialog-title class="flex-jc-center mb-0">
-        <div class="color-accent font-weight-bold mb-0" *ngIf="groupId">{{resourceService?.frmelmnts?.lbl?.editGroup}}
-        </div>
-        <h3 class="color-accent font-weight-bold mb-0" *ngIf="!groupId">{{ resourceService?.frmelmnts?.lbl?.createGroup
-          }}</h3>
-        <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
-          mat-dialog-close><mat-icon>close</mat-icon></button>
+    
+    <div mat-dialog-title class="flex-jc-center mb-0">
+      <div class="color-accent font-weight-bold mb-0" *ngIf="groupId">{{resourceService?.frmelmnts?.lbl?.editGroup}}
       </div>
-
-      <mat-dialog-content>
-        <div>
-          <form class="" [formGroup]="groupForm">
-            <div class="d-flex flex-dc">
-              <label for="group-name-input">{{ resourceService?.frmelmnts?.lbl?.groupName }}<span
-                  class="color-warn">*</span>
-              </label>
-              <label for="group-name-input" class="hide">{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}</label>
-
-              <mat-form-field appearance="fill">
-                <input matInput type="text" id="group-name-input" autofocus
-                  placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="name"
-                  [ngClass]="{'is-invalid' : isFieldValid('name')}" maxlength="50">
-              </mat-form-field>
-
-              <small class="text-right"> {{50 - groupForm?.value?.name?.length}}
-                {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
-              <small class="color-warn font-weight-bold" *ngIf="isFieldValid('name')">{{
-                resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
-            </div>
-            <div class="d-flex flex-dc">
-              <label for="group-description-input">{{resourceService?.frmelmnts?.lbl?.description}}</label>
-              <label for="group-description-input"
-                class="hide">{{resourceService?.frmelmnts?.lbl?.groupDescription}}</label>
-              <mat-form-field appearance="fill">
-                <textarea matInput id="group-description-input" rows="5" type="text" placeholder="Description"
-                  formControlName="description" [ngClass]="{'is-invalid' : isFieldValid('description')}" maxlength="150"
-                  placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription}}"></textarea>
-              </mat-form-field>
-              <small class="text-right">{{150 - groupForm?.value?.description?.length}}
-                {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
-            </div>
-            <div *ngIf="!groupId">
-              <label class="d-flex flex-ai-center">
-                <mat-checkbox class="mr-8 cursor-pointer" formControlName="groupToc" [ngClass]="{'is-invalid' : isFieldValid('groupToc')}"></mat-checkbox>
-                <span class="mat-body-1 mb-8">{{resourceService?.frmelmnts?.lbl?.agreeGroupToc |
-                  interpolate:'{instance}': instance }} <a href="{{url}}/term-of-use.html#groupGuidelines"
-                    target="_blank" class="color-accent">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a></span>
-              </label>
-              <small class="color-warn font-weight-bold mt-8 pl-24"
-                *ngIf="isFieldValid('groupToc')">{{resourceService?.frmelmnts?.lbl?.groupToc |
-                interpolate:'{instance}':
-                instance}}</small>
-            </div>
-          </form>
-        </div>
-      </mat-dialog-content>
-
-      <mat-dialog-actions align="end">
-        <button mat-raised-button color="accent" *ngIf="!groupId" class="button-rounded" type="button"
-          [disabled]="!groupForm.valid || disableBtn"
-          (click)="onSubmitForm({modalId: data?.id});" tabindex="0">
-          <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="group_add"></mat-icon>
-          {{ resourceService?.frmelmnts?.lbl?.createGroup }}
-        </button>
-        <button mat-raised-button color="accent" *ngIf="groupId" class="button-rounded" type="button"
-          [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
-          (click)="updateGroup({modalId: data?.id});addTelemetry('update-group-form')" tabindex="0">
-          {{resourceService?.frmelmnts?.btn?.updateGroup}}
-        </button>
-        <!-- <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
-      (click)="reset();addTelemetry('reset-group-form', '', {type: SELECT_RESET})">
-        {{resourceService?.frmelmnts?.btn?.reset}}
-      </button> -->
-      </mat-dialog-actions>
-
+      <h3 class="color-accent font-weight-bold mb-0" *ngIf="!groupId">{{ resourceService?.frmelmnts?.lbl?.createGroup
+        }}</h3>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+
+    <mat-dialog-content>
+      
+      <form class="" [formGroup]="groupForm">
+        <div class="d-flex flex-dc">
+          <label for="group-name-input">{{ resourceService?.frmelmnts?.lbl?.groupName }}<span
+              class="color-warn">*</span>
+          </label>
+          <label for="group-name-input" class="hide">{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}</label>
+
+          <mat-form-field appearance="fill">
+            <input matInput type="text" id="group-name-input" autofocus
+              placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="name"
+              [ngClass]="{'is-invalid' : isFieldValid('name')}" maxlength="50">
+          </mat-form-field>
+
+          <small class="text-right"> {{50 - groupForm?.value?.name?.length}}
+            {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+          <small class="color-warn font-weight-bold" *ngIf="isFieldValid('name')">{{
+            resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
+        </div>
+        <div class="d-flex flex-dc">
+          <label for="group-description-input">{{resourceService?.frmelmnts?.lbl?.description}}</label>
+          <label for="group-description-input"
+            class="hide">{{resourceService?.frmelmnts?.lbl?.groupDescription}}</label>
+          <mat-form-field appearance="fill">
+            <textarea matInput id="group-description-input" rows="5" type="text" placeholder="Description"
+              formControlName="description" [ngClass]="{'is-invalid' : isFieldValid('description')}" maxlength="150"
+              placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription}}"></textarea>
+          </mat-form-field>
+          <small class="text-right">{{150 - groupForm?.value?.description?.length}}
+            {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+        </div>
+        <div *ngIf="!groupId">
+          <label class="d-flex flex-ai-center">
+            <mat-checkbox class="mr-8 cursor-pointer" formControlName="groupToc" [ngClass]="{'is-invalid' : isFieldValid('groupToc')}"></mat-checkbox>
+            <span class="mat-body-1 mb-8">{{resourceService?.frmelmnts?.lbl?.agreeGroupToc |
+              interpolate:'{instance}': instance }} <a href="{{url}}/term-of-use.html#groupGuidelines"
+                target="_blank" class="color-accent">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a></span>
+          </label>
+          <small class="color-warn font-weight-bold mt-8 pl-24"
+            *ngIf="isFieldValid('groupToc')">{{resourceService?.frmelmnts?.lbl?.groupToc |
+            interpolate:'{instance}':
+            instance}}</small>
+        </div>
+      </form>
+      
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="accent" *ngIf="!groupId" class="button-rounded" type="button"
+        [disabled]="!groupForm.valid || disableBtn"
+        (click)="onSubmitForm({modalId: data?.id});" tabindex="0">
+        <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="group_add"></mat-icon>
+        {{ resourceService?.frmelmnts?.lbl?.createGroup }}
+      </button>
+      <button mat-raised-button color="accent" *ngIf="groupId" class="button-rounded" type="button"
+        [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
+        (click)="updateGroup({modalId: data?.id});addTelemetry('update-group-form')" tabindex="0">
+        {{resourceService?.frmelmnts?.btn?.updateGroup}}
+      </button>
+      <!-- <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
+    (click)="reset();addTelemetry('reset-group-form', '', {type: SELECT_RESET})">
+      {{resourceService?.frmelmnts?.btn?.reset}}
+    </button> -->
+    </mat-dialog-actions>
+
   </ng-template>
 </app-modal-wrapper>
