@@ -10,7 +10,10 @@
 const { defaults } = require('jest-config');
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { paths } = require('./tsconfig.json').compilerOptions;
-
+globalThis.ngJest = {
+  skipNgcc: false,
+  tsconfig: 'tsconfig.spec.json',
+};
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   

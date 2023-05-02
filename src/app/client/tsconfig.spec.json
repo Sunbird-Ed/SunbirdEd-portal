@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./src",
+    "module": "CommonJS",
     "paths": {
       "@sunbird/core": [
         "app/modules/core"
@@ -94,6 +95,9 @@
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts",
-    "src/polyfills.ts", "src/test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"
+    "src/polyfills.ts",
+    "src/test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
   ]
 }
