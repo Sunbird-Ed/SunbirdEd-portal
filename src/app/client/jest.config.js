@@ -13,6 +13,7 @@ const { paths } = require('./tsconfig.json').compilerOptions;
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
+  
   preset: 'ts-jest',
   verbose: true,
   testEnvironment: 'jsdom',
@@ -55,7 +56,7 @@ module.exports = {
   ],
   // transform: {
   //   'lodash-es': '<rootDir>/node_modules/lodash-es'
-  // }
+  
 };
 
 /**
@@ -68,5 +69,9 @@ function setModuleNameMapper() {
   let _moduleMaps = pathsToModuleNameMapper(paths, { prefix: '<rootDir>/src' });
   console.log(_moduleMaps); // TODO: log!
   console.log('_______________MODULE_MAPPER________________')
+}
+// }
+{
+  forceExit: true
 }
 // setModuleNameMapper()
