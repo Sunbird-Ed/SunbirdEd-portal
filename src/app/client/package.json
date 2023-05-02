@@ -75,6 +75,7 @@
     "@project-sunbird/sunbird-video-player-v9": "5.2.3",
     "@project-sunbird/telemetry-sdk": "0.0.29",
     "@project-sunbird/web-extensions": "6.0.0",
+    "@project-sunbird/discussions-ui": " 5.3.0-beta.1",
     "@shikshalokam/sl-questionnaire": "^4.2.2",
     "@shikshalokam/sl-reports-library": "3.0.0",
     "@swimlane/ngx-datatable": "20.1.0",

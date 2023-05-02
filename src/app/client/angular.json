@@ -48,6 +48,11 @@
                 "glob": "**/*",
                 "input": "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/discussions-ui/assets",
+                "output": "./assets/discussion-ui"
               }
             ],
             "styles": [
