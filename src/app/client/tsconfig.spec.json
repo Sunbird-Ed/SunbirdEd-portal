@@ -93,6 +93,7 @@
   ],
   "include": [
     "**/*.spec.ts",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "src/polyfills.ts", "src/test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"
   ]
 }
