@@ -31,7 +31,7 @@ module.exports = {
   globalSetup: 'jest-preset-angular/global-setup',
 
   transform: { '^.+.(ts|mjs|js|html)$': 'jest-preset-angular' },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@project-sunbird)'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@project-sunbird|@angular)'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
