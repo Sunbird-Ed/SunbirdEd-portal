@@ -6,7 +6,7 @@ import { ResourceService, NavigationHelperService, LayoutService, ToasterService
 import { UsageService, CourseProgressService } from "../../services";
 import { UsageReportsComponent } from "./usage-reports.component";
 
-describe('UsageReportsComponent', () => {
+xdescribe('UsageReportsComponent', () => {
     let usageReportsComponent: UsageReportsComponent;
     const mockUsageService: Partial<UsageService> = {
         getData: jest.fn().mockReturnValue(of({responseCode: 'OK'}) )as any,

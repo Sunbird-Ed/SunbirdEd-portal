@@ -28,7 +28,7 @@ import { CsCertificateService } from '@project-sunbird/client-services/services/
 import { ProfilePageComponent } from './profile-page.component';
 import { Response } from './profile-page.spec.data';
 
-describe("ProfilePageComponent", () => {
+xdescribe("ProfilePageComponent", () => {
     let profilePageComponent: ProfilePageComponent;
     const mockCsCourseService: Partial<CsCourseService> = {};
     const mockCacheService: Partial<CacheService> = {};

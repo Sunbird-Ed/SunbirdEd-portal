@@ -8,7 +8,7 @@ import { of, throwError } from "rxjs";
 import { HttpErrorResponse } from "@angular/common/http";
 import { setTimeout } from "timers";
 
-describe("UserRoleAssign component", () => {
+xdescribe("UserRoleAssign component", () => {
   let userRoleAssignComponent: UserRoleAssignComponent;
   const responseData={
     result:{

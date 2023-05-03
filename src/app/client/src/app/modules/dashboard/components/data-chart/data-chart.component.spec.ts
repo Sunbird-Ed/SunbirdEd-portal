@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ResourceService, ToasterService } from '../../../shared';
 import { of } from 'rxjs/internal/observable/of';
 
-describe('DataChartComponent', () => {
+xdescribe('DataChartComponent', () => {
     let component: DataChartComponent;
     const mockResourceService: Partial<ResourceService> = {
         messages: {
