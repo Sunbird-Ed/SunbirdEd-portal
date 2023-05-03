@@ -47,6 +47,3 @@ module.exports = {
       '**/?(*.)(spec).ts'
     ],
 };
-{
-  forceExit: true
-}

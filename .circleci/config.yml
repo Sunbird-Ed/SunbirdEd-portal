@@ -3,7 +3,7 @@ jobs:
   jobs:
   build:
     docker:
-      - image: cimg/node:16.2.0
+      - image: cimg/node:14.20.1
     steps:
       - checkout
       - run: node --version
@@ -14,7 +14,7 @@ jobs:
     working_directory: ~/portal/src/app/client
     docker:
       # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
-      - image: cimg/node:16.2.0
+      - image: cimg/node:14.20.1
     resource_class: large
     steps:
       - checkout:
@@ -39,7 +39,7 @@ jobs:
       #     command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases using JEST
-          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
+          command: 'npm run test | tee /tmp/logs/test_cases.log'
       - run:
           name: Install Sonar Scanner
           command: |
