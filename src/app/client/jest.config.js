@@ -19,9 +19,21 @@ globalThis.ngJest = {
 
 /** @type {import('ts-jest/dist/types').JestConfigWithTsJest} */
 module.exports = {
-  preset: 'jest-preset-angular',
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-  globalSetup: 'jest-preset-angular/global-setup',
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.spec.json',
+      stringifyContentPathRegex: '\\.(html|svg)$',
+    },
+  },
+  snapshotSerializers: [
+    'jest-preset-angular/build/serializers/no-ng-attributes',
+    'jest-preset-angular/build/serializers/ng-snapshot',
+    'jest-preset-angular/build/serializers/html-comment',
+  ],
+  // globalSetup: 'jest-preset-angular/global-setup',
   moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: '<rootDir>/src' }),
   transform: { '^.+.(ts|mjs|js|html)$': 'jest-preset-angular' },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@project-sunbird)'],
