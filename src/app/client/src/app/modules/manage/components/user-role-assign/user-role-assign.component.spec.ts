@@ -206,14 +206,14 @@ xdescribe("UserRoleAssign component", () => {
     expect(userRoleAssignComponent.redirect).toBeCalled();
   });
 
-  it('should redirect', (done)=> {
-    jest.spyOn(userRoleAssignComponent,'onEnter');
-    userRoleAssignComponent.redirect();
-    setTimeout(()=>{
-      expect(userRoleAssignComponent.onEnter).toBeCalled();
-      done();
-    },2000)
-  });
+  // it('should redirect', (done)=> {
+  //   jest.spyOn(userRoleAssignComponent,'onEnter');
+  //   userRoleAssignComponent.redirect();
+  //   setTimeout(()=>{
+  //     expect(userRoleAssignComponent.onEnter).toBeCalled();
+  //     done();
+  //   },2000)
+  // });
 
   describe('onEnter', ()=> {
     it('should set showingResults true  and set userObj after Observable firing', ()=> {

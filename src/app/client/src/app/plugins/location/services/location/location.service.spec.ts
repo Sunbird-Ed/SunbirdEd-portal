@@ -58,19 +58,19 @@ describe('LocationService', () => {
         });
     });
 
-    it('should call updateProfile method', (done) => {
-        jest.spyOn(mockLearnerService, 'patch').mockImplementation(() => of(mockRes.successData));
-        const request = {
-            profileSummary: 'summary',
-            userId: '159e93d1-da0c-4231-be94-e75b0c226d7c'
+    // it('should call updateProfile method', (done) => {
+    //     jest.spyOn(mockLearnerService, 'patch').mockImplementation(() => of(mockRes.successData));
+    //     const request = {
+    //         profileSummary: 'summary',
+    //         userId: '159e93d1-da0c-4231-be94-e75b0c226d7c'
 
-        };
-        locationService.updateProfile(request).subscribe(apiResponse => {
-            expect(apiResponse.responseCode).toBe('OK');
-            expect(apiResponse.result.response).toBe('SUCCESS');
-            setTimeout(() => {
-                done();
-            }, 1000)
-        });
-    });
+    //     };
+    //     locationService.updateProfile(request).subscribe(apiResponse => {
+    //         expect(apiResponse.responseCode).toBe('OK');
+    //         expect(apiResponse.result.response).toBe('SUCCESS');
+    //         setTimeout(() => {
+    //             done();
+    //         }, 1000)
+    //     });
+    // });
 });

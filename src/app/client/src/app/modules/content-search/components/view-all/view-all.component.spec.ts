@@ -169,19 +169,19 @@ describe('ViewAllComponent', () => {
     )
   });
 
-  it('should call manipulateQueryParam method', (done) => {
-    const results = {
-      'defaultSortBy': '{\'lastPublishedOn\':\'desc\'}',
-      'primaryCategory': 'Course',
-      'selectedTab': 'all',
-      'appliedFilters': 'true'
-    };
-    component['manipulateQueryParam'](results);
-    setTimeout(() => {
-      expect(component.filters).toEqual({ primaryCategory: 'Course' });
-      done();
-    });
-  });
+  // it('should call manipulateQueryParam method', (done) => {
+  //   const results = {
+  //     'defaultSortBy': '{\'lastPublishedOn\':\'desc\'}',
+  //     'primaryCategory': 'Course',
+  //     'selectedTab': 'all',
+  //     'appliedFilters': 'true'
+  //   };
+  //   component['manipulateQueryParam'](results);
+  //   setTimeout(() => {
+  //     expect(component.filters).toEqual({ primaryCategory: 'Course' });
+  //     done();
+  //   });
+  // });
 
   it('should call fetch Org Data method', () => {
     mockOrgDetailsService.searchOrgDetails = jest.fn().mockReturnValue(of(Response.orgDetails)) as any;

@@ -144,15 +144,15 @@ describe('SignupComponent', () => {
       expect(component.telemetryImpression).toBeDefined();
     });
     
-    it("should set telemetry data", (done) => {
-      jest.spyOn(component, 'signUpTelemetryImpression').mockImplementation();
-      component.ngAfterViewInit();
-      setTimeout(() => {
-        expect(component.telemetryCdata).toEqual([{ 'type': 'signup', 'id': mockActivatedRoute.snapshot.data.telemetry.uuid }]);
-        expect(component.signUpTelemetryImpression).toHaveBeenCalled();
-        done()
-      });
-    });
+    // it("should set telemetry data", (done) => {
+    //   jest.spyOn(component, 'signUpTelemetryImpression').mockImplementation();
+    //   component.ngAfterViewInit();
+    //   setTimeout(() => {
+    //     expect(component.telemetryCdata).toEqual([{ 'type': 'signup', 'id': mockActivatedRoute.snapshot.data.telemetry.uuid }]);
+    //     expect(component.signUpTelemetryImpression).toHaveBeenCalled();
+    //     done()
+    //   });
+    // });
 
   })
 

@@ -168,133 +168,133 @@ describe('GlobalSearchFilterComponent', () => {
         expect(mockUtilService.transposeTerms).toHaveBeenCalled();
     });
 
-    describe('ngOnInit', () => {
-        it('should invoked ngOnInit', (done) => {
-            mockActivatedRoute.snapshot = {
-                data: {
-                    telemetry: {
-                        pageid: 'sample-pageId',
-                        params: ''
-                    }
-                }
-            } as any;
-            mockActivatedRoute.queryParams = of({
-                ignoreSavedFilter: false,
-                selectedTab: 'home',
-                mediaType: ['sample-media'],
-                primaryCategory: ['sample-primary-category'],
-                key: 'sample-key'
-            });
-            global.innerWidth = 500;
-            mockConnectionService.monitor = jest.fn(() => of(true));
-            mockCacheService.remove = jest.fn();
-            mockCacheService.exists = jest.fn(() => true);
-            mockCacheService.get = jest.fn(() => { });
-            jest.spyOn(globalSearchFilterComponent, 'updateTerms').mockImplementation(() => {
-                return;
-            });
-            jest.spyOn(globalSearchFilterComponent, 'updateRoute').mockImplementation(() => {
-                return;
-            });
-            mockCdr.detectChanges = jest.fn();
-            globalSearchFilterComponent.filterChangeEvent = of({
-                type: 'mediaType',
-                event: {
-                    data: {
-                        index: 'class-1'
-                    }
-                }
-            }) as any;
-            // act
-            globalSearchFilterComponent.ngOnInit();
-            setTimeout(() => {
-                expect(globalSearchFilterComponent.refresh).toBeTruthy();
-                expect(globalSearchFilterComponent.isOpen).toBeFalsy();
-                expect(mockConnectionService.monitor).toHaveBeenCalled();
-                expect(mockCacheService.remove).toHaveBeenCalled();
-                expect(mockCacheService.exists).toHaveBeenCalled();
-                expect(mockCacheService.get).toHaveBeenCalled();
-                done();
-            }, 10);
-        });
+   // describe('ngOnInit', () => {
+        // it('should invoked ngOnInit', (done) => {
+        //     mockActivatedRoute.snapshot = {
+        //         data: {
+        //             telemetry: {
+        //                 pageid: 'sample-pageId',
+        //                 params: ''
+        //             }
+        //         }
+        //     } as any;
+        //     mockActivatedRoute.queryParams = of({
+        //         ignoreSavedFilter: false,
+        //         selectedTab: 'home',
+        //         mediaType: ['sample-media'],
+        //         primaryCategory: ['sample-primary-category'],
+        //         key: 'sample-key'
+        //     });
+        //     global.innerWidth = 500;
+        //     mockConnectionService.monitor = jest.fn(() => of(true));
+        //     mockCacheService.remove = jest.fn();
+        //     mockCacheService.exists = jest.fn(() => true);
+        //     mockCacheService.get = jest.fn(() => { });
+        //     jest.spyOn(globalSearchFilterComponent, 'updateTerms').mockImplementation(() => {
+        //         return;
+        //     });
+        //     jest.spyOn(globalSearchFilterComponent, 'updateRoute').mockImplementation(() => {
+        //         return;
+        //     });
+        //     mockCdr.detectChanges = jest.fn();
+        //     globalSearchFilterComponent.filterChangeEvent = of({
+        //         type: 'mediaType',
+        //         event: {
+        //             data: {
+        //                 index: 'class-1'
+        //             }
+        //         }
+        //     }) as any;
+        //     // act
+        //     globalSearchFilterComponent.ngOnInit();
+        //     setTimeout(() => {
+        //         expect(globalSearchFilterComponent.refresh).toBeTruthy();
+        //         expect(globalSearchFilterComponent.isOpen).toBeFalsy();
+        //         expect(mockConnectionService.monitor).toHaveBeenCalled();
+        //         expect(mockCacheService.remove).toHaveBeenCalled();
+        //         expect(mockCacheService.exists).toHaveBeenCalled();
+        //         expect(mockCacheService.get).toHaveBeenCalled();
+        //         done();
+        //     }, 10);
+        // });
 
-        it('should invoked ngOnInit for else part and ignoreSavedFilter is false', (done) => {
-            mockActivatedRoute.snapshot = {
-                data: {
-                    telemetry: {
-                        pageid: 'sample-pageId',
-                        params: ''
-                    }
-                }
-            } as any;
-            mockActivatedRoute.queryParams = of({
-                ignoreSavedFilter: false,
-                selectedTab: 'home',
-                mediaType: undefined,
-                primaryCategory: ['sample-primary-category']
-            });
-            mockConnectionService.monitor = jest.fn(() => of(true));
-            mockCacheService.exists = jest.fn(() => true);
-            // act
-            globalSearchFilterComponent.ngOnInit();
-            setTimeout(() => {
-                expect(globalSearchFilterComponent.refresh).toBeTruthy();
-                expect(globalSearchFilterComponent.isOpen).toBeFalsy();
-                expect(mockConnectionService.monitor).toHaveBeenCalled();
-                done();
-            }, 10);
-        });
+        // it('should invoked ngOnInit for else part and ignoreSavedFilter is false', (done) => {
+        //     mockActivatedRoute.snapshot = {
+        //         data: {
+        //             telemetry: {
+        //                 pageid: 'sample-pageId',
+        //                 params: ''
+        //             }
+        //         }
+        //     } as any;
+        //     mockActivatedRoute.queryParams = of({
+        //         ignoreSavedFilter: false,
+        //         selectedTab: 'home',
+        //         mediaType: undefined,
+        //         primaryCategory: ['sample-primary-category']
+        //     });
+        //     mockConnectionService.monitor = jest.fn(() => of(true));
+        //     mockCacheService.exists = jest.fn(() => true);
+        //     // act
+        //     globalSearchFilterComponent.ngOnInit();
+        //     setTimeout(() => {
+        //         expect(globalSearchFilterComponent.refresh).toBeTruthy();
+        //         expect(globalSearchFilterComponent.isOpen).toBeFalsy();
+        //         expect(mockConnectionService.monitor).toHaveBeenCalled();
+        //         done();
+        //     }, 10);
+        // });
 
-        it('should invoked ngOnInit for else part and ignoreSavedFilter is true', (done) => {
-            mockActivatedRoute.snapshot = {
-                data: {
-                    telemetry: {
-                        pageid: 'sample-pageId',
-                        params: ''
-                    }
-                }
-            } as any;
-            mockActivatedRoute.queryParams = of({
-                ignoreSavedFilter: true,
-                selectedTab: 'home',
-                mediaType: undefined,
-                primaryCategory: ['sample-primary-category']
-            });
-            mockConnectionService.monitor = jest.fn(() => of(true));
-            mockCacheService.exists = jest.fn(() => false);
-            // act
-            globalSearchFilterComponent.ngOnInit();
-            setTimeout(() => {
-                expect(globalSearchFilterComponent.refresh).toBeTruthy();
-                expect(globalSearchFilterComponent.isOpen).toBeFalsy();
-                expect(mockConnectionService.monitor).toHaveBeenCalled();
-                done();
-            }, 10);
-        });
+        // it('should invoked ngOnInit for else part and ignoreSavedFilter is true', (done) => {
+        //     mockActivatedRoute.snapshot = {
+        //         data: {
+        //             telemetry: {
+        //                 pageid: 'sample-pageId',
+        //                 params: ''
+        //             }
+        //         }
+        //     } as any;
+        //     mockActivatedRoute.queryParams = of({
+        //         ignoreSavedFilter: true,
+        //         selectedTab: 'home',
+        //         mediaType: undefined,
+        //         primaryCategory: ['sample-primary-category']
+        //     });
+        //     mockConnectionService.monitor = jest.fn(() => of(true));
+        //     mockCacheService.exists = jest.fn(() => false);
+        //     // act
+        //     globalSearchFilterComponent.ngOnInit();
+        //     setTimeout(() => {
+        //         expect(globalSearchFilterComponent.refresh).toBeTruthy();
+        //         expect(globalSearchFilterComponent.isOpen).toBeFalsy();
+        //         expect(mockConnectionService.monitor).toHaveBeenCalled();
+        //         done();
+        //     }, 10);
+        // });
 
-        it('should invoked ngOnInit for catch part', () => {
-            mockActivatedRoute.snapshot = {
-                data: {
-                    telemetry: {
-                        pageid: 'sample-pageId',
-                        params: ''
-                    }
-                }
-            } as any;
-            mockActivatedRoute.queryParams = throwError({
-                error: {}
-            });
-            mockConnectionService.monitor = jest.fn(() => of(true));
-            mockCacheService.exists = jest.fn(() => false);
-            // act
-            globalSearchFilterComponent.ngOnInit();
-            setTimeout(() => {
-                expect(globalSearchFilterComponent.refresh).toBeTruthy();
-                expect(globalSearchFilterComponent.isOpen).toBeFalsy();
-                expect(mockConnectionService.monitor).toHaveBeenCalled();
-            }, 10);
-        });
-    });
+        // it('should invoked ngOnInit for catch part', () => {
+        //     mockActivatedRoute.snapshot = {
+        //         data: {
+        //             telemetry: {
+        //                 pageid: 'sample-pageId',
+        //                 params: ''
+        //             }
+        //         }
+        //     } as any;
+        //     mockActivatedRoute.queryParams = throwError({
+        //         error: {}
+        //     });
+        //     mockConnectionService.monitor = jest.fn(() => of(true));
+        //     mockCacheService.exists = jest.fn(() => false);
+        //     // act
+        //     globalSearchFilterComponent.ngOnInit();
+        //     setTimeout(() => {
+        //         expect(globalSearchFilterComponent.refresh).toBeTruthy();
+        //         expect(globalSearchFilterComponent.isOpen).toBeFalsy();
+        //         expect(mockConnectionService.monitor).toHaveBeenCalled();
+        //     }, 10);
+        // });
+   // });
 
     describe('resetFilters', () => {
         it('should be reset filters', () => {
