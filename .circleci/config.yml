@@ -3,7 +3,7 @@ jobs:
   jobs:
   build:
     docker:
-      - image: cimg/node:16.20.0
+      - image: cimg/node:16.2.0
     steps:
       - checkout
       - run: node --version
@@ -14,13 +14,14 @@ jobs:
     working_directory: ~/portal/src/app/client
     docker:
       # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
-      - image: cimg/node:16.20.0
+      - image: cimg/node:16.2.0
+      - resource_class: large
     steps:
       - checkout:
           path: ~/portal
       - run:
           # Using NodeJS version 16
-          name: Installing prerequisites-updated
+          name: Installing prerequisites
           command: |-
             node --version
       - run:
