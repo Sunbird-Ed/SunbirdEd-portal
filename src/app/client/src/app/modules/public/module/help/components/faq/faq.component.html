@@ -100,10 +100,7 @@
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
     <mat-dialog-content class="pt-0">
-      <div class="sb-modal-content height-auto">
-        <sunbird-video-player [playerConfig]="playerConfig" #videoPlayer>
-        </sunbird-video-player>
-      </div>
+      <sunbird-video-player [playerConfig]="playerConfig" #videoPlayer></sunbird-video-player>
     </mat-dialog-content>
   </ng-template>
 </app-modal-wrapper>
