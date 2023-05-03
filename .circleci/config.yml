@@ -1,33 +1,27 @@
 version: 2.1
 jobs:
+  jobs:
   build:
-    machine:
-      image: circleci/classic:latest
+    docker:
+      - image: cimg/node:16.20.0
     steps:
       - checkout
+      - run: node --version
       - run:
           name: run build file
           command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
   test-cases:
     working_directory: ~/portal/src/app/client
-    machine:
+    docker:
       # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
-      image: ubuntu-2004:202111-02
-      resource_class: large
+      - image: cimg/node:16.20.0
     steps:
       - checkout:
           path: ~/portal
       - run:
           # Using NodeJS version 16
-          name: Installing prerequisites
+          name: Installing prerequisites-updated
           command: |-
-            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6DB5542C356545CF # Adding Heroku keys, else the apt update will fail.
-            sudo apt-get update && sudo apt install -y ca-certificates libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 \
-                  xvfb gtk2-engines-pixbuf \
-                  xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt install nodejs -y
-            sudo npm install -g yarn
             node --version
       - run:
           name: ignore-engines
