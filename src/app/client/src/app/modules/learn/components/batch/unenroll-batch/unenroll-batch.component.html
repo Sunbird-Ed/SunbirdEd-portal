@@ -1,36 +1,30 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="redirect()">
+<app-modal-wrapper [config]="{disableClose: true, width: '30rem', size: 'small'}" (dismiss)="redirect()">
     <ng-template sbModalContent>
-        <div class="sb-modal sb-error">
-            <div class="transition ui dimmer page modals active visible">
-                <div class="ui modal transition active visible small">
-                    <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-                        <span>&times;</span>
-                    </button>
-                    <!--Header-->
-                    <div class="sb-modal-header">
-                        {{resourceService.frmelmnts.lbl.unenrollTitle}}
-                    </div>
-                    <!--/Header-->
-                    <!--Content-->
-                    <div class="sb-modal-content">
-                        {{resourceService.frmelmnts.lbl.unenrollMsg}}
-                    </div>
-                    <!--/Content-->
-                    <!--Actions-->
-                    <div class="sb-modal-actions">
-                        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                            [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-                            class="sb-btn sb-btn-normal sb-btn-error" [disabled]="disableSubmitBtn"
-                            id="unenrollFromCourse" tabindex="0" (click)="unenrollFromCourse()">
-                            {{generaliseLabelService?.frmelmnts?.btn?.unenroll}}
-                        </button>
-                        <button class="sb-btn sb-btn-normal sb-btn-outline-error" tabindex="0" mat-dialog-close>
-                            {{resourceService?.frmelmnts?.btn?.cancel}}
-                        </button>
-                    </div>
-                    <!--/Actions-->
-                </div>
-            </div>
+        <!--Header-->
+        <div mat-dialog-title class="mb-0">
+            <h4 class="color-accent font-weight-bold mb-0">{{resourceService.frmelmnts.lbl.unenrollTitle}}</h4>
+            <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+                mat-dialog-close><mat-icon>close</mat-icon></button>
         </div>
+        <!--/Header-->
+        <!--Content-->
+        <mat-dialog-content>
+            {{resourceService.frmelmnts.lbl.unenrollMsg}}
+        </mat-dialog-content>
+        <!--/Content-->
+        <!--Actions-->
+        <mat-dialog-actions align="end">
+            <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+                mat-raised-button color="warn" class="button-rounded mr-8" [disabled]="disableSubmitBtn"
+                id="unenrollFromCourse" tabindex="0" (click)="unenrollFromCourse()">
+                {{generaliseLabelService?.frmelmnts?.btn?.unenroll}}
+            </button>
+            <button mat-raised-button class="button-rounded" tabindex="0" mat-dialog-close>
+                {{resourceService?.frmelmnts?.btn?.cancel}}
+            </button>
+        </mat-dialog-actions>
+        <!--/Actions-->
+
     </ng-template>
 </app-modal-wrapper>
