@@ -7,13 +7,12 @@
  * - https://jestjs.io/docs/configuration
  */
 
-const { defaults } = require('jest-config');
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { paths } = require('./tsconfig.json').compilerOptions;
 
 // eslint-disable-next-line no-undef
 globalThis.ngJest = {
-  skipNgcc: true,
+  skipNgcc: false,
   tsconfig: 'tsconfig.spec.json',
 };
 
@@ -58,4 +57,7 @@ module.exports = {
   testMatch: [
       '**/?(*.)(spec).ts'
     ],
+    moduleDirectories: [
+      "node_modules"
+    ]
 };
