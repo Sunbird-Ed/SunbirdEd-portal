@@ -86,12 +86,12 @@ xdescribe('ObservationUtilService', () => {
     //     });
     // });
 
-    describe('getProfileDataList', () => {
-        beforeEach(() => {
-            window.sessionStorage.clear();
-            jest.clearAllMocks();
-            jest.resetAllMocks();
-        });
+    // describe('getProfileDataList', () => {
+    //     beforeEach(() => {
+    //         window.sessionStorage.clear();
+    //         jest.clearAllMocks();
+    //         jest.resetAllMocks();
+    //     });
 
     //     it('should return profile data for type', (done) => {
     //         const res = {
@@ -315,9 +315,9 @@ xdescribe('ObservationUtilService', () => {
     //     });
     // });
 
-    it('should return AlertMetaData', () => {
-        observationUtilService.getAlertMetaData();
-    });
+    // it('should return AlertMetaData', () => {
+    //     observationUtilService.getAlertMetaData();
+    // });
 
     // describe('browseByCategoryForm', () => {
     //     it('should return browseByCategoryForm', (done) => {
@@ -344,4 +344,4 @@ xdescribe('ObservationUtilService', () => {
     //         });
     //     });
     // });
-});
+//});
