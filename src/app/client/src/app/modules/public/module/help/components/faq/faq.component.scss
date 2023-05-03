@@ -1,12 +1,7 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-:root {
-    --visit-helpcenter-bg:var(--white);
-}
 
 :host::ng-deep {
-​
     .help-page {
-​
         &__content {
             margin-top: calculateRem(24px);
             .panel {
@@ -23,16 +18,13 @@
                 list-style: initial;
             }
         }
-​
         &__visit-helpcenter {
-            background-color: var(--visit-helpcenter-bg);
             .visit-helpcenter__text {
                 @include respond-below(sm) {
                     flex-basis: 50%;
                 }
             }
         }
-
         code {
             background-color: var(--gray-0);
             border-radius: calculateRem(3px);
@@ -40,19 +32,14 @@
             padding: 0 calculateRem(3px);
         }
     }
-​
     .extraTemplate {
         @include respond-below(sm) {
             flex-wrap: wrap;
-            .visit-helpcenter__text, .visit-helpcenter__btn {
+            .visit-helpcenter__text {
                 flex-basis: 100%;
-            }
-            .visit-helpcenter__btn {
-                margin-top: calculateRem(16px);
             }
         }
     }
-
     sb-list {
         .listView-compt{
             section.mt-24{
@@ -66,7 +53,6 @@
             }
         }
     }
-
     sb-faq {
         .panel {
             ul {
@@ -86,29 +72,7 @@
         }
     }
 }
-.faq_title {
-    color: var(--carousel-title);
-    font-size: 1rem;
-    font-weight: bold;
-    letter-spacing: 0;
-    line-height: 1.5rem;
-  }
-.debug-btn {
-    text-transform: uppercase;
-    font-weight: bold;
-}
 .sbhelp_container {
-    .category-list-mobile{
-        width:100%; 
-        display: block;
-    }
-    .faq-section-mobile{
-        width:100%; 
-        float:none;
-    }
-    .category-list-web{
-        display: inline-block;
-    }
     display: flex;
     align-items: flex-start;
     &__left {
@@ -116,7 +80,6 @@
         flex:1;
         padding:1.5rem;
         min-height: 8rem;
-        background: var(--sbfaq-compt-bg);
         transition: all ease-in-out .3s;
     }
     &__right {
@@ -127,105 +90,8 @@
             padding-left: 0rem;
         }
     }
-    &__faq {
-        background: var(--sbfaq-compt-bg);
-        padding: 1.5rem;
-        border-radius: 1.5rem;
-    }
 }
-.sbhelp_container__debug{
-    min-height: auto;
-    padding:1rem 1.5rem;
-}
-.sb-developer-option-panel-heading{
-    display: flex;
-    justify-content: space-between;
-    &__title{
-        color: var(--cc-listView-compt-title);
-        font-size: 1rem;
-        font-weight: 700;
-        letter-spacing: 0;
-        line-height: 1.25rem;
-    }
-    .sb-developer-option-panel-icon{
-        cursor: pointer;
-    }
-}
-.sb-developer-option-panel-body{
-    &__title{
-        color: var(--cc-listView-compt-itemText);
-        font-size: .875rem;
-        letter-spacing: 0;
-        line-height: normal;
-        padding-top: .5rem;
-        display: flex;
-        justify-content: space-between;
-        .enable-checkbox{
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: calculateRem(40px);
-                height: calculateRem(20px);
-              }
-              
-              .switch input { 
-                opacity: 0;
-                width: 0;
-                height: 0;
-              }
-              
-              .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: var(--gray-100);
-                -webkit-transition: .4s;
-                transition: .4s;
-              }
-              
-              .slider:before {
-                position: absolute;
-                content: "";
-                height: calculateRem(18px);
-                width: calculateRem(18px);
-                bottom: calculateRem(2px);
-                background-color: var(--white);
-                -webkit-transition: .4s;
-                transition: .4s;
-              }
-              
-              input:checked + .slider {
-                background-color: var(--primary-color);
-              }
-              
-              input:focus + .slider {
-                box-shadow: 0 0 calculateRem(1px) var(--primary-color);
-              }
-              
-              input:checked + .slider:before {
-                -webkit-transform: translateX(21px);
-                -ms-transform: translateX(21px);
-                transform: translateX(21px);
-              }
-              input:disabled + .slider {
-                cursor: default;
-              }
-              .slider.round {
-                border-radius: calculateRem(34px);
-              }
-              
-              .slider.round:before {
-                border-radius: 50%;
-              }
-        }
-    }
-    &__info{
-        color: var(--cc-listView-compt-itemText);
-        font-size: calculateRem(12px);
-        opacity: 0.5;
-        max-width: calculateRem(200px);
-    }
+.sb-developer-option__info{
+    opacity: 0.5;
+    max-width: calculateRem(200px);
 }

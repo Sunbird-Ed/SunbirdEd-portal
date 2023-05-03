@@ -10,6 +10,7 @@ import { FaqReportComponent } from './components/faq-report/faq-report.component
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-
     CommonConsumptionModule,
     CommonFormElementsModule,
     SuiModalModule,
-    SunbirdVideoPlayerModule
+    SunbirdVideoPlayerModule,
+    MatToolbarModule
   ],
   declarations: [FaqComponent, OfflineHelpVideosComponent, FaqReportComponent],
   exports: [FaqComponent, OfflineHelpVideosComponent, FaqReportComponent],

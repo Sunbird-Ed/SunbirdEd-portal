@@ -32,7 +32,15 @@
   .mat-accordion>.mat-expansion-panel-spacing:last-child {
     margin-bottom: 1rem;
   }
-
+  .mat-help-page{
+    .mat-slide-toggle{
+      width: 100%;
+      .mat-slide-toggle-label{
+        flex-direction: row-reverse;
+        justify-content: space-between;
+      }
+    }
+  }
 }
 
 // Expansion panel theme
