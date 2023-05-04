@@ -1,46 +1,4 @@
-<ng-container *ngIf="!isLayoutAvailable()">
-  <div class="item py-8 pr-8 computer only">
-    <ng-container *ngFor="let contentType of contentTypes">
-      <a aria-current="page" [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
-        *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType)"
-        appOnlineOnly [ngClass]="{'active': selectedContentType === contentType.contentType}"
-        class="item {{'item--' + getIcon(contentType)}}">
-        {{getTitle(contentType)}}
-      </a>
-      <a aria-current="page" [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
-        *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" tabindex="0"
-        (click)="showContentType(contentType)" [ngClass]="{'active': selectedContentType === contentType.contentType}"
-        class="item {{'item--' + getIcon(contentType)}}">
-        {{getTitle(contentType)}}
-      </a>
-    </ng-container>
-  </div>
-  <div class="item mobile only">
-    <ng-container *ngFor="let contentType of contentTypes">
-      <div class="profile__actions">
-        <ul class="profile__actions__list pl-0">
-          <li aria-current="page" [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
-            *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0"
-            (click)="showContentType(contentType);closeSideMenu.emit()" appOnlineOnly
-            [ngClass]="{'active': selectedContentType === contentType.contentType}"
-            class="list-item {{'item--' + getIcon(contentType)}}">
-            {{getTitle(contentType)}}
-          </li>
-          <li aria-current="page" [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"
-            *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" tabindex="0"
-            (click)="showContentType(contentType);closeSideMenu.emit()"
-            [ngClass]="{'active': selectedContentType === contentType.contentType}"
-            class="list-item {{'item--' + getIcon(contentType)}}">
-            {{getTitle(contentType)}}
-          </li>
-        </ul>
-      </div>
-    </ng-container>
-  </div>
-
-</ng-container>
-
-<ng-container *ngIf="isLayoutAvailable() && !showBackButton">
+<ng-container *ngIf="!showBackButton">
   <mat-toolbar color="primary" class="toolbar-menu">
     <ng-container *ngFor="let contentType of contentTypes">
       <button mat-raised-button class="mr-8" aria-current="page"

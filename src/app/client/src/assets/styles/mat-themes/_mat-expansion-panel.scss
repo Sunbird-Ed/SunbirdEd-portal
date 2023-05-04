@@ -16,6 +16,9 @@
     // background: var(--sbt-body-bg);
     margin-bottom: 1rem;
     box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
+    .mat-expansion-panel-header-title {
+      font-weight: bold;
+    }
   }
 
   .mat-accordion .mat-expansion-panel:first-of-type {

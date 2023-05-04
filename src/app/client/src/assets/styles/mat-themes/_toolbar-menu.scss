@@ -25,10 +25,12 @@
           align-items: center;
           justify-content: center;
           margin: 0 auto;
+          width: 90%;
           @include respond-below(sm) {
                display: list-item;
                padding-top: 0.75rem;
                overflow-x: auto;
+               width: 100%;
           }
           @include respond-below(xs) {
                padding-top: 0.5rem;

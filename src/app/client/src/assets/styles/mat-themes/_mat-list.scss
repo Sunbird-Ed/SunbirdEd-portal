@@ -1,0 +1,50 @@
+@use "@angular/material" as mat;
+@use 'sass:map';
+@use './palette' as *;
+
+@mixin mat-list($theme) {
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
+  $foreground: map.get($color-config, 'foreground');
+
+
+  .mat-list-base {
+    .mat-list-item {
+      color: mat.get-color-from-palette($accent, 500);
+    }
+
+    .mat-list-option {
+      color: mat.get-color-from-palette($foreground, text);
+    }
+
+    .mat-subheader {
+      color: mat.get-color-from-palette($foreground, secondary-text);
+    }
+
+    .mat-list-item-disabled {
+      background-color: mat.get-color-from-palette($background, disabled-list-option);
+      color: mat.get-color-from-palette($foreground, disabled-text);
+    }
+  }
+
+  .mat-list-option,
+  .mat-nav-list .mat-list-item,
+  .mat-action-list .mat-list-item {
+    &:hover, &:focus {
+      background: mat.get-color-from-palette($background, 'hover');
+    }
+  }
+
+  .mat-list-single-selected-option {
+    &, &:hover, &:focus {
+      background: mat.get-color-from-palette($background, hover, 0.12);
+    }
+  }
+
+
+}

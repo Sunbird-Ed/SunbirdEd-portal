@@ -1,13 +1,8 @@
-<div class="ui two column centered grid mt-10">
-  <div class="column">
-    <div class="ui huge negative message">
-      <div class="header">
-        <span>
-          <i class="fa fa-chain-broken fa-lg" aria-hidden="true"></i>
-          Oops! Page not found!
-        </span>
-      </div>
-      <p>The page you are trying to access is invalid. Please navigate to
-          <a [routerLink]="['/home']">Home page</a></p>
-    </div>
-  </div>
+<div class="p-64">
+  <p class="mat-body-2 mb-24">
+    <mat-icon matPrefix aria-hidden="true">link_off</mat-icon>
+    Oops! Page not found!
+  </p>
+  <p class="mat-body-2">The page you are trying to access is invalid. Please navigate to <br>
+    <a mat-button [routerLink]="['/home']" class="mt-8">Home page</a></p>
+</div>
