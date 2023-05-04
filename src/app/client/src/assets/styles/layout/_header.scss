@@ -1,4 +1,21 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
+.sbt-header-logo {
+  position: relative;
+  display: flex;    
+  align-items: center;
+  padding:0px 0px;
+  @include respond-above(sm) {
+    min-height: calculateRem(80px);
+    align-items: center;
+    }
+    .profile-avtar {
+      @include respond-above(sm) {
+        display: none !important;
+      }
+    }
+}
+
 .sbt-header {
   .sbt-container {
     padding: 0 5%;
@@ -28,21 +45,7 @@
         }
     }
 }
-.sbt-header-logo {
-  position: relative;
-  display: flex;    
-  align-items: flex-start;
-  padding:0px 0px;
-  @include respond-above(sm) {
-    min-height: calculateRem(80px);
-    align-items: center;
-    }
-    .profile-avtar {
-      @include respond-above(sm) {
-        display: none;
-      }
-    }
-}
+
 .sbt-header-menu-bar {
   height: 5rem;
       background: none;

@@ -73,6 +73,7 @@ $theme in $app-themes {
     @include toolbar-menu($app-themes);
     @include pageback-toolbar($app-themes);
     @include mat-form-field($app-themes);
+    @include mat-list($app-themes);
     @include theme-var-colors($app-themes);
     @include mat-spinner-card($app-themes);
     @include mat-expansion-panel($app-themes);

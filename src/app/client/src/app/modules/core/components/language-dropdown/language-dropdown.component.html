@@ -1,5 +1,5 @@
 
-  <mat-form-field color="success" appearance="fill" class="w-100 sb-mat-form-field-custom border-radius my-16-max-sm ml-16-min-sm">
+  <mat-form-field color="success" appearance="fill" class="w-100 sb-mat-form-field-custom border-radius my-16-max-sm">
     <mat-icon class="mr-8" matPrefix>language</mat-icon>
     <mat-label>{{resourceService.frmelmnts?.btn?.selectLanguage}}</mat-label>
     <mat-select role="listbox" aria-label="Select Language" [(value)]="selectedLanguage" class="selection" [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event?.value)">

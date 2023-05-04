@@ -11,7 +11,7 @@
         class="thumbnail">
     </div>
     <div class="MetaColumn">
-      <h3 class="title">{{courseHierarchy?.name}}</h3>
+      <h3 class="title ellipsis">{{courseHierarchy?.name}}</h3>
       <span>
         <sui-rating class="ui star rating" [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0"
           [maximum]="5"></sui-rating>
