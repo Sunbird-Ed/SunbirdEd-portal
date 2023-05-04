@@ -183,66 +183,60 @@
 
 <div *ngIf="isDesktopApp">
 
-  <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, panelClass: 'material-modal'}" (dismiss)="showModal = !showModal;">
+  <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, width: '30rem', panelClass: 'material-modal'}"
+    (dismiss)="showModal = !showModal;">
     <ng-template sbModalContent>
-      <div class="sb-modal">
-        <div class="transition ui dimmer page modals active visible">
-          <div class="ui modal transition active visible normal">
-            <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-              <span>&times;</span>
-            </button>
-            <div class="sb-modal-header">
-              {{resourceService.frmelmnts?.btn?.download}}
-            </div>
-            <div class="sb-modal-content">
-              <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
-            </div>
-            <div class="sb-modal-actions">
-              <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-                (click)="downloadCollection(collectionData); showModal = !showModal;">
-                {{resourceService.frmelmnts?.btn?.download}}
-              </button>
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-                (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
-                {{resourceService.frmelmnts?.btn?.cancel}}
-              </button>
-            </div>
-          </div>
-        </div>
+
+      <div mat-dialog-title class="mb-0">
+        <h4 class="color-accent font-weight-bold mb-0">{{resourceService.frmelmnts?.btn?.download}}
+        </h4>
+        <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+          mat-dialog-close><mat-icon>close</mat-icon></button>
       </div>
+
+      <mat-dialog-content>
+        <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
+      </mat-dialog-content>
+  
+      <mat-dialog-actions align="end">
+        <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
+          (click)="downloadCollection(collectionData); showModal = !showModal;">
+          {{resourceService.frmelmnts?.btn?.download}}
+        </button>
+        <button mat-raised-button class="button-rounded" tabindex="0"
+          (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
+          {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+      </mat-dialog-actions>
+  
     </ng-template>
   </app-modal-wrapper>
 
-  <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true, panelClass: 'material-modal'}"
+  <app-modal-wrapper *ngIf="showDeleteModal" [config]="{disableClose: true, width: '30rem', panelClass: 'material-modal'}"
     (dismiss)="showDeleteModal = !showDeleteModal;">
     <ng-template sbModalContent>
-      <div class="sb-modal">
-        <div class="transition ui dimmer page modals active visible">
-          <div class="ui modal transition active visible normal">
-            <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-              <span>&times;</span>
-            </button>
-            <div class="sb-modal-header">
-              {{resourceService?.frmelmnts?.lbl?.delete}}
-            </div>
-            <div class="sb-modal-content">
-              <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}':
-                collectionData?.name}}
-              </p>
-            </div>
-            <div class="sb-modal-actions">
-              <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-                (click)="deleteCollection(collectionData); showDeleteModal = !showDeleteModal;">
-                {{resourceService?.frmelmnts?.lbl?.delete}}
-              </button>
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-                (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
-                {{resourceService.frmelmnts?.btn?.cancel}}
-              </button>
-            </div>
-          </div>
-        </div>
+      <div mat-dialog-title class="mb-0">
+        <h4 class="color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.delete}}</h4>
+        <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+          mat-dialog-close><mat-icon>close</mat-icon></button>
       </div>
+      <mat-dialog-content>
+        <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}':
+          collectionData?.name}}
+        </p>
+      </mat-dialog-content>
+  
+      <mat-dialog-actions align="end">
+        <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
+          (click)="deleteCollection(collectionData); showDeleteModal = !showDeleteModal;">
+          {{resourceService?.frmelmnts?.lbl?.delete}}
+        </button>
+        <button mat-raised-button class="button-rounded" tabindex="0"
+          (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
+          {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+      </mat-dialog-actions>
+  
     </ng-template>
   </app-modal-wrapper>
 
