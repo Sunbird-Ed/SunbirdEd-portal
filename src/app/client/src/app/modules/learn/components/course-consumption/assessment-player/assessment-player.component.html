@@ -168,57 +168,48 @@
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
 
 <!-- Start - Modal for Assessment attempts -->
-<app-modal-wrapper *ngIf="showMaxAttemptsModal" [config]="{disableClose: true, size: 'normal'}"
+<app-modal-wrapper *ngIf="showMaxAttemptsModal" [config]="{disableClose: true, width: '30rem', size: 'normal'}"
   (dismiss)="closeLoginModal()" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-content sb-join-modal-content">
-            <div class="sb-h4 px-0 py-20">
-              {{resourceService?.frmelmnts?.lbl?.selfAssessMaxAttempt}}
-            </div>
-          </div>
-          <div class="sb-modal-actions">
-            <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
-              [telemetryInteractEdata]="signInInteractEdata"
-              (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
-              class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
-              {{resourceService?.frmelmnts?.btn?.close}}
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+
+    <mat-dialog-content>
+      <h4 class="font-weight-bold mb-0 py-16">
+        {{resourceService?.frmelmnts?.lbl?.selfAssessMaxAttempt}}
+      </h4>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
+        [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
+        mat-raised-button color="warn" class="button-rounded">
+        {{resourceService?.frmelmnts?.btn?.close}}
+      </a>
+    </mat-dialog-actions>
+
   </ng-template>
 </app-modal-wrapper>
 <!-- End - Modal for Assessment attempts -->
 
 <!-- Start - Modal for Assessment attempts -->
-<app-modal-wrapper *ngIf="showLastAttemptsModal" [config]="{disableClose: true, size: 'small'}" #modal>
+<app-modal-wrapper *ngIf="showLastAttemptsModal" [config]="{disableClose: true, width: '30rem', size: 'small'}" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
 
-          <div class="sb-modal-content sb-join-modal-content">
-            <div class="sb-h4 px-0 py-20">
-              {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
-            </div>
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-              (click)="showLastAttemptsModal = false; onTocCardClick();">
-              {{resourceService.frmelmnts?.btn?.ok}}
-            </button>
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-              (click)="showLastAttemptsModal = false;">
-              {{resourceService.frmelmnts?.btn?.cancel}}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <mat-dialog-content>
+      <h4 class="font-weight-bold mb-0 py-16">
+        {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
+      </h4>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
+        (click)="showLastAttemptsModal = false; onTocCardClick();">
+        {{resourceService.frmelmnts?.btn?.ok}}
+      </button>
+      <button mat-raised-button class="button-rounded" tabindex="0" (click)="showLastAttemptsModal = false;">
+        {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
+    </mat-dialog-actions>
+
   </ng-template>
 </app-modal-wrapper>
 <!-- End - Modal for Assessment attempts -->
