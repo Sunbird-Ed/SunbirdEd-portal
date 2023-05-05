@@ -18,12 +18,6 @@ module.exports = {
   testEnvironment: 'jsdom',
   moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: '<rootDir>/src' }),
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-  // globals: {
-  //   'ts-jest': {
-  //     tsconfig: '<rootDir>/tsconfig.spec.json',
-  //     stringifyContentPathRegex: '\\.(html|svg)$',
-  //   },
-  // },
   globalSetup: 'jest-preset-angular/global-setup',
   transform: { '^.+.(ts|mjs|js|html)$': 'jest-preset-angular' },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@project-sunbird)'],
