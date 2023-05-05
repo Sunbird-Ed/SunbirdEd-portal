@@ -11,6 +11,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -22,7 +23,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule
+    CommonConsumptionModule, ContentSearchModule,MatBadgeModule
   ],
   declarations: [ ExploreContentComponent, ExploreCurriculumCoursesComponent]
 })

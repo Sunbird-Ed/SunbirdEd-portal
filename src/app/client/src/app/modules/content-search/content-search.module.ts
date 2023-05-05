@@ -16,6 +16,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
 import { SbSearchFilterModule } from '@project-sunbird/common-form-elements-full';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatChipsModule} from '@angular/material/chips';
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent,
     TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent],
@@ -30,7 +31,7 @@ import {MatBadgeModule} from '@angular/material/badge';
         SharedModule,
         TranslateModule,
         SuiModalModule, SuiProgressModule, SuiAccordionModule,
-        SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule, SbSearchFilterModule,MatBadgeModule
+        SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule, SbSearchFilterModule,MatBadgeModule,MatChipsModule
     ],
   exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent,
     TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent]
