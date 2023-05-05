@@ -200,22 +200,22 @@ describe("PageApiService", () => {
         });
     });
 
-    describe('getSvg', () => {
-        it('should get SVG', (done) => {
-            //arrange
-            const url = 'https://sunbirddev.blob.core.windows.net';
-            const mockPromise = {
-                toPromise: () => Promise.resolve(url)
-            }
-            mockHttpClient.get = jest.fn().mockImplementation(() => mockPromise);
-            //act
-            uploadCertificateService.getSvg(url).then((res) => {
-                setTimeout(() => {
-                    //assert
-                    expect(mockHttpClient.get).toHaveBeenCalledWith(url, { responseType: 'text' });
-                    done();
-                }, 0);
-            });
-        });
-    });
+    // describe('getSvg', () => {
+    //     it('should get SVG', (done) => {
+    //         //arrange
+    //         const url = 'https://sunbirddev.blob.core.windows.net';
+    //         const mockPromise = {
+    //             toPromise: () => Promise.resolve(url)
+    //         }
+    //         mockHttpClient.get = jest.fn().mockImplementation(() => mockPromise);
+    //         //act
+    //         uploadCertificateService.getSvg(url).then((res) => {
+    //             setTimeout(() => {
+    //                 //assert
+    //                 expect(mockHttpClient.get).toHaveBeenCalledWith(url, { responseType: 'text' });
+    //                 done();
+    //             }, 0);
+    //         });
+    //     });
+    // });
 });

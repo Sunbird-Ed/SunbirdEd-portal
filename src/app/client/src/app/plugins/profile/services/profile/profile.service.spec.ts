@@ -65,19 +65,19 @@ xdescribe('ProfileService', () => {
         });
     });
 
-    it('should call updateProfile method', (done) => {
-        mockLearnerService.patch = jest.fn(() => of(mockRes.successData) as any);
-        const request = {
-            profileSummary: 'summary'
-        };
-        profileService.updateProfile(request).subscribe(apiResponse => {
-            expect(apiResponse.responseCode).toBe('OK');
-            expect(apiResponse.result.response).toBe('SUCCESS');
-        });
-        setTimeout(() => {
-            done();
-        }, 2000);
-    });
+    // it('should call updateProfile method', (done) => {
+    //     mockLearnerService.patch = jest.fn(() => of(mockRes.successData) as any);
+    //     const request = {
+    //         profileSummary: 'summary'
+    //     };
+    //     profileService.updateProfile(request).subscribe(apiResponse => {
+    //         expect(apiResponse.responseCode).toBe('OK');
+    //         expect(apiResponse.result.response).toBe('SUCCESS');
+    //     });
+    //     setTimeout(() => {
+    //         done();
+    //     }, 2000);
+    // });
 
     it('should call updatePrivateProfile method', () => {
         jest.spyOn(mockLearnerService, 'patch').mockReturnValue(of(mockRes.successData));
@@ -123,21 +123,21 @@ xdescribe('ProfileService', () => {
             expect(apiResponse.result.response).toBe('SUCCESS');
         });
     });
-    it('should call declarations method', (done) => {
-        mockLearnerService.patch = jest.fn(() => of(mockRes.successData) as any);
-        jest.spyOn(mockUserService, 'getUserProfile');
-        const request = {
-            profileSummary: 'summary'
-        };
-        profileService.declarations(request).subscribe(apiResponse => {
-            mockUserService.getUserProfile();
-            expect(apiResponse.responseCode).toBe('OK');
-            expect(apiResponse.result.response).toBe('SUCCESS');
-        });
-        setTimeout(() => {
-            done();
-        }, 1000)
-    });
+    // it('should call declarations method', (done) => {
+    //     mockLearnerService.patch = jest.fn(() => of(mockRes.successData) as any);
+    //     jest.spyOn(mockUserService, 'getUserProfile');
+    //     const request = {
+    //         profileSummary: 'summary'
+    //     };
+    //     profileService.declarations(request).subscribe(apiResponse => {
+    //         mockUserService.getUserProfile();
+    //         expect(apiResponse.responseCode).toBe('OK');
+    //         expect(apiResponse.result.response).toBe('SUCCESS');
+    //     });
+    //     setTimeout(() => {
+    //         done();
+    //     }, 1000)
+    // });
 
     it('should call getPersonas method', () => {
         jest.spyOn(mockFormService, 'getFormConfig').mockReturnValue(of(mockRes.successData));

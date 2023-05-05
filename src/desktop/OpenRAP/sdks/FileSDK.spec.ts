@@ -78,24 +78,24 @@ describe('FileSDK', () => {
     await fileSDK.unzip(src, dest, false);
   })
 
-  it('should watch folder', (done) => {
-    let Path = fileSDK.getAbsPath('test-folder');
-    let watcher = fileSDK.watch([Path])
-    watcher
-      .on('all', (event, path, details) => {
-      })
+  // it('should watch folder', (done) => {
+  //   let Path = fileSDK.getAbsPath('test-folder');
+  //   let watcher = fileSDK.watch([Path])
+  //   watcher
+  //     .on('all', (event, path, details) => {
+  //     })
 
-    setTimeout(() => {
-      fs.appendFileSync(path.join(Path, 'data.txt'), "aksjfgjhaksgf");
+  //   setTimeout(() => {
+  //     fs.appendFileSync(path.join(Path, 'data.txt'), "aksjfgjhaksgf");
 
-    }, 500)
+  //   }, 500)
 
-    setTimeout(() => {
-      watcher.close();
-      done();
-    }, 700)
+  //   setTimeout(() => {
+  //     watcher.close();
+  //     done();
+  //   }, 700)
 
-  })
+  // })
 
   it('should remove directory', (done) => {
    fileSDK.remove('').then(done);

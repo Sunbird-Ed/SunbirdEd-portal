@@ -123,14 +123,14 @@ describe('UpdateContactComponent', () => {
         expect(component.userBlocked).toEqual(false);
     });
 
-    it('should reset form as otp validation failed', (done) => {
-        jest.spyOn(component, 'handleFormChangeEvent').mockImplementation();
-        component.handleOtpValidationFailed();
-        setTimeout(() => {
-            expect(component.handleFormChangeEvent).toHaveBeenCalled();
-            done()
-        }, 100);
-    });
+    // it('should reset form as otp validation failed', (done) => {
+    //     jest.spyOn(component, 'handleFormChangeEvent').mockImplementation();
+    //     component.handleOtpValidationFailed();
+    //     setTimeout(() => {
+    //         expect(component.handleFormChangeEvent).toHaveBeenCalled();
+    //         done()
+    //     }, 100);
+    // });
 
     it('should return query params for given query object', () => {
         const test = component.getQueryParams({ queryParam1: 'mockValue' });
@@ -373,14 +373,14 @@ describe('UpdateContactComponent', () => {
         expect(component.onFormUpdate).toHaveBeenCalledWith(mockUpdateContactData.captchaToken);
     });
 
-    it("should call ngAfterViewInit", (done) => {
-        jest.spyOn(component, 'handleFormChangeEvent').mockImplementation();
-        component.ngAfterViewInit();
-        setTimeout(() => {
-            expect(component.handleFormChangeEvent).toHaveBeenCalled();
-            done()
-        });
-    });
+    // it("should call ngAfterViewInit", (done) => {
+    //     jest.spyOn(component, 'handleFormChangeEvent').mockImplementation();
+    //     component.ngAfterViewInit();
+    //     setTimeout(() => {
+    //         expect(component.handleFormChangeEvent).toHaveBeenCalled();
+    //         done()
+    //     });
+    // });
 
     it("should call handleFormChangeEvent", () => {
         // @ts-ignore

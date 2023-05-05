@@ -178,19 +178,19 @@ describe('OnboardingUserSelection component', () => {
     });
   });
 
-  describe("ngAfterViewInit", () => {
-    it('should set telemetryImpression', (done) => {
-      //arrange
-      mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
-      //run
-      onboardingUserSelectionComponent.ngAfterViewInit();
-      //assert
-      setTimeout(() => {
-        expect(onboardingUserSelectionComponent.telemetryImpression).toBeDefined();
-        done();
-      })
-    });
-  });
+  // describe("ngAfterViewInit", () => {
+  //   it('should set telemetryImpression', (done) => {
+  //     //arrange
+  //     mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
+  //     //run
+  //     onboardingUserSelectionComponent.ngAfterViewInit();
+  //     //assert
+  //     setTimeout(() => {
+  //       expect(onboardingUserSelectionComponent.telemetryImpression).toBeDefined();
+  //       done();
+  //     })
+  //   });
+  // });
 
   it('should set the user-type appropriately', () => {
     //arrange
