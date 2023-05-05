@@ -1,4 +1,4 @@
-<div *ngIf="facets && layoutConfiguration">
+<div class="sbt-filter" *ngIf="facets && layoutConfiguration">
   <button mat-mini-fab color="primary" extended class="mobile only" (click)="isOpen = !isOpen">
     <mat-icon>tune</mat-icon> {{resourceService.frmelmnts?.lbl?.filters | translate}}
   </button>
