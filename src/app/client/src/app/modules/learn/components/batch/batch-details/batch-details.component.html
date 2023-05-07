@@ -1,37 +1,32 @@
 <!-- Join Course Table -->
-<app-modal-wrapper [config]="{disableClose: true}" (dismiss)="showJoinModal = !showJoinModal;" *ngIf="showJoinModal">
+<app-modal-wrapper [config]="{disableClose: true, width: '45rem', panelClass: 'material-modal'}" (dismiss)="showJoinModal = !showJoinModal;" *ngIf="showJoinModal">
   <ng-template sbModalContent let-data>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-            <span>&times;</span>
-          </button>
-          <div class="sb-modal-header font-weight-normal">
-            {{resourceService?.frmelmnts?.lbl?.selectBatch}}
+    <div mat-dialog-title class="mb-0">
+      <h4 class="color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.selectBatch}}</h4>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
+    </div>
+    <mat-dialog-content>
+      <div class="sb-modal-content" *ngIf="showAllBatchList">
+        <div class="join-batch">
+          <div class="join-batch__heading">
+            <div>{{resourceService?.frmelmnts?.lbl?.availableBatches}}</div>
+            <div>{{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
           </div>
-          <div class="sb-modal-content" *ngIf="showAllBatchList">
-            <div class="join-batch">
-              <div class="join-batch__heading">
-                <div>{{resourceService?.frmelmnts?.lbl?.availableBatches}}</div>
-                <div>{{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
-              </div>
-              <div class="join-batch__body" *ngFor="let batch of allBatchList">
-                <div>{{batch.startDate | dateFormat}}<span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}}
-                  </span></div>
-                <div *ngIf="userNames[batch.createdBy]">{{userNames[batch.createdBy].firstName}}
-                  {{userNames[batch.createdBy].lastName}}</div>
-                <button class="sb-btn sb-btn-outline-secondary sb-btn-normal" tabindex="0"
-                  (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)">{{resourceService?.frmelmnts?.lbl?.join}}</button>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="showAllBatchError">
-            <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+          <div class="join-batch__body" *ngFor="let batch of allBatchList">
+            <div>{{batch.startDate | dateFormat}}<span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}}
+              </span></div>
+            <div *ngIf="userNames[batch.createdBy]">{{userNames[batch.createdBy].firstName}}
+              {{userNames[batch.createdBy].lastName}}</div>
+            <button class="sb-btn sb-btn-outline-secondary sb-btn-normal" tabindex="0"
+              (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)">{{resourceService?.frmelmnts?.lbl?.join}}</button>
           </div>
         </div>
       </div>
-    </div>
+      <div *ngIf="showAllBatchError">
+        <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+      </div>
+    </mat-dialog-content>
   </ng-template>
 </app-modal-wrapper>
 
@@ -215,27 +210,21 @@
   </mat-expansion-panel>
 </mat-accordion>
 
-<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="showMessageModal = false;"
-  *ngIf="showMessageModal">
+<app-modal-wrapper [config]="{disableClose: true, width: '30rem', panelClass: 'material-modal', size: 'small'}"
+  (dismiss)="showMessageModal = false;" *ngIf="showMessageModal">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-            <span>&times;</span>
-          </button>
-          <div class="sb-modal-header">
-            {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
-          </div>
-          <!--/Header-->
-          <!--Content-->
-          <div class="sb-modal-content">
-            <div class="ui center aligned segment">
-              <p>{{batchMessage}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <!--/Header-->
+    <div mat-dialog-title class="mb-0">
+      <h4 class="color-accent font-weight-bold mb-0">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</h4>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+
+    <!--Content-->
+    <mat-dialog-content class="d-flex flex-ai-center flex-jc-center">
+      <p>{{batchMessage}}</p>
+    </mat-dialog-content>
+
   </ng-template>
 </app-modal-wrapper>
