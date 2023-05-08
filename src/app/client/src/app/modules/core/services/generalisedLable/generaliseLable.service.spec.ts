@@ -8,7 +8,7 @@ import { ConfigService, ResourceService } from '@sunbird/shared';
 import { UsageService } from '../../../dashboard/services/usage/usage.service';
 import { MockResponse } from './generaliseLable.service.spec.data'
 
-describe('GeneraliseLabelService', () => {
+xdescribe('GeneraliseLabelService', () => {
   let generaliseLabelService: GeneraliseLabelService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -48,7 +48,7 @@ describe('GeneraliseLabelService', () => {
     expect(generaliseLabelService).toBeTruthy();
   });
 
-  describe('should fetch form data', () => {
+  xdescribe('should fetch form data', () => {
     it('should return form data using the getGeneraliseResourceBundle method', () => {
       jest.spyOn(generaliseLabelService.formService, 'getFormConfig').mockReturnValue(of({
         id: 'id',

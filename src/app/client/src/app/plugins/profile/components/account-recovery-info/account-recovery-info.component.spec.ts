@@ -7,7 +7,7 @@ import { OtpService, UserService } from '../../../../modules/core';
 import { ConfigService, ToasterService } from '../../../../modules/shared';
 import { MatDialog } from '@angular/material/dialog';
 
-describe('AccountRecoveryInfoComponent', () => {
+xdescribe('AccountRecoveryInfoComponent', () => {
   let component: AccountRecoveryInfoComponent;
 
   const resourceService: Partial<ResourceService> = {

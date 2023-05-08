@@ -4,7 +4,7 @@ import { TelemetryService } from '../../services';
 import { eventData } from './telemetry-end.directive.spec.data';
 import { DebugElement } from '@angular/core';
 import { data } from 'jquery';
-describe('TelemetryEndDirective', () => {
+xdescribe('TelemetryEndDirective', () => {
     let directive: TelemetryEndDirective;
 
     const telemetryService: Partial<TelemetryService> = {

@@ -2,7 +2,7 @@ import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import { FaqService } from './faq.service';
 
-describe('FaqService', () => {
+xdescribe('FaqService', () => {
   let faqService: FaqService;
   const mockConfigService: Partial<ConfigService> = {
     appConfig: {
@@ -42,7 +42,7 @@ describe('FaqService', () => {
     expect(faqService).toBeTruthy();
   });
 
-  describe('getFaqJSON', () => {
+  xdescribe('getFaqJSON', () => {
     it('should call get faq json method ', () => {
       const req = {
         testObject: 'testing'

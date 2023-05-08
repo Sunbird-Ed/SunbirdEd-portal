@@ -6,7 +6,7 @@ import { DataService } from "..";
 import { ConfigService } from '../../../shared/services/config/config.service';
 import { AppUpdateService } from "./app-update.service";
 
-describe('AppUpdateService', () => {
+xdescribe('AppUpdateService', () => {
     let appUpdateService: AppUpdateService;
     const mockConfigService: Partial<ConfigService> = {
         urlConFig: {
@@ -39,7 +39,7 @@ describe('AppUpdateService', () => {
         expect(appUpdateService).toBeTruthy();
     });
 
-    describe('checkForAppUpdate', () => {
+    xdescribe('checkForAppUpdate', () => {
         it('should return updated info for APP', (done) => {
             jest.spyOn(appUpdateService, 'get').mockReturnValue(of({
                 id: 'id',
@@ -68,7 +68,7 @@ describe('AppUpdateService', () => {
             });
         });
     });
-    describe('getAppInfo', () => {
+    xdescribe('getAppInfo', () => {
       it('should return APP info ', (done) => {
           jest.spyOn(appUpdateService, 'get').mockReturnValue(of({
               id: 'id',

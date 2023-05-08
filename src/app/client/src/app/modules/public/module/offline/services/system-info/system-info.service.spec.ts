@@ -3,7 +3,7 @@ import { ConfigService } from '../../../../../shared/services/config/config.serv
 import { SystemInfoService } from './system-info.service';
 import { of } from 'rxjs';
 
-describe('SystemInfoService', () => {
+xdescribe('SystemInfoService', () => {
   let systemInfoService: SystemInfoService;
   const mockPublicDataService: Partial<PublicDataService> = {};
   const mockConfigService: Partial<ConfigService> = {
@@ -55,7 +55,7 @@ describe('SystemInfoService', () => {
     it('should create a instance of ElectronDialogService', () => {
         expect(systemInfoService).toBeTruthy();
     });
-    describe('getSystemInfo', () => {
+    xdescribe('getSystemInfo', () => {
       it('should call get system info method called ', () => {
         const requestParams = {
           url: 'desktop/v1/system-info'

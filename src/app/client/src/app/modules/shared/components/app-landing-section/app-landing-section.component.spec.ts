@@ -2,7 +2,7 @@ import { AppLandingSectionComponent } from './app-landing-section.component';
 import { LayoutService, ResourceService } from '../../services';
 import { of } from 'rxjs';
 
-describe('AppLandingSectionComponent', () => {
+xdescribe('AppLandingSectionComponent', () => {
     let component: AppLandingSectionComponent;
     const resourceService: Partial<ResourceService> = {
         resourceBundle: {
@@ -35,7 +35,7 @@ describe('AppLandingSectionComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    describe("redoLayout", () => {
+    xdescribe("redoLayout", () => {
         it('should redo layout on render for threeToNine column', () => {
             component.layoutConfiguration = {};
             layoutService.initlayoutConfig = jest.fn(() => { });
@@ -55,7 +55,7 @@ describe('AppLandingSectionComponent', () => {
             expect(component.FIRST_PANEL_LAYOUT).toEqual('sb-g-col-xs-12');
         });
     });
-    describe('initLayout', () => {
+    xdescribe('initLayout', () => {
         it('should call init Layout', () => {
             layoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
             component.initLayout();

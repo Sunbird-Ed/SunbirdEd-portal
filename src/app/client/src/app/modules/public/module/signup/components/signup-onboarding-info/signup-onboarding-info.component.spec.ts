@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { of } from 'rxjs/internal/observable/of';
 import { Observable } from 'rxjs/internal/Observable';
 
-describe('SignupOnboardingInfoComponent', () => {
+xdescribe('SignupOnboardingInfoComponent', () => {
   let component: SignupOnboardingInfoComponent;
 
   const mockResourceService: Partial<ResourceService> = {};

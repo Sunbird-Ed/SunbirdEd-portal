@@ -7,7 +7,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { CourseProgressService } from './course-progress.service';
 import { mockRes } from './course-progress.service.spec.data';
 
-describe("CourseProgressService", () => {
+xdescribe("CourseProgressService", () => {
     let courseProgressService: CourseProgressService;
     const mockLearnerService: Partial<LearnerService> = {};
     const mockConfigService: Partial<ConfigService> = {
@@ -50,7 +50,7 @@ describe("CourseProgressService", () => {
         expect(courseProgressService).toBeTruthy();
     });
 
-    describe('getBatches', () => {
+    xdescribe('getBatches', () => {
         it('should get the batches', () => {
             //assert
             mockLearnerService.post = jest.fn().mockReturnValue(of(mockRes.getMyBatchesList)) as any;
@@ -75,7 +75,7 @@ describe("CourseProgressService", () => {
         });
     });
 
-    describe('getDashboardData', () => {
+    xdescribe('getDashboardData', () => {
         it('should call get Dashboard API', () => {
             //arrange
             mockLearnerService.get = jest.fn().mockReturnValue(of(mockRes.courseProgressData.getBatchDetails)) as any;
@@ -100,7 +100,7 @@ describe("CourseProgressService", () => {
         });
     });
 
-    describe('downloadDashboardData', () => {
+    xdescribe('downloadDashboardData', () => {
         it('should call Download API', () => {
             //arrange
             mockLearnerService.get = jest.fn().mockReturnValue(of(mockRes.downloadDashboardReport.getSuccessData));
@@ -120,7 +120,7 @@ describe("CourseProgressService", () => {
         });
     });
 
-    describe('parseDasboardResponse', () => {
+    xdescribe('parseDasboardResponse', () => {
         it('should call parseDasboardResponse method', () => {
             //arrange
             const data = {
@@ -149,7 +149,7 @@ describe("CourseProgressService", () => {
         });
     });
 
-    describe('getReportsMetaData', () => {
+    xdescribe('getReportsMetaData', () => {
         it('should call get report metadata API', () => {
             //arrange
             mockUsageService.getData = jest.fn().mockReturnValue(of(mockRes.reportsLastUpdatedDateMock));

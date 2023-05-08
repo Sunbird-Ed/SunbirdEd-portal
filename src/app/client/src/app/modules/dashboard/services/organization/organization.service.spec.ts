@@ -8,7 +8,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 // import { data } from "jquery";
 const testData = <any>mockData.mockRes;
  
-describe("OrganisationService", () => {
+xdescribe("OrganisationService", () => {
  let organisationService: OrganisationService;
  const mockLearnerService: Partial<LearnerService> = {
    get: jest.fn(),

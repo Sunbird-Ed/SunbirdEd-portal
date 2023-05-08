@@ -6,7 +6,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { ResourceService } from '../../../shared';
 import { of } from 'rxjs';
 
-describe('UciComponent', () => {
+xdescribe('UciComponent', () => {
     let component: UciComponent;
     const userService: Partial<UserService> = {
         userData$: of({

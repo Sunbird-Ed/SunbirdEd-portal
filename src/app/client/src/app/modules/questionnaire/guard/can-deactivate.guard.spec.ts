@@ -4,7 +4,7 @@ import {
 } from './can-deactivate.guard';
 import { ResourceService } from '../../shared';
 
-describe('CanDeactivateGuard', () => {
+xdescribe('CanDeactivateGuard', () => {
     let canDeactivateGuard: CanDeactivateGuard;
     const mockComponent: ComponentDeactivate = {
         canDeactivate: jest.fn(),

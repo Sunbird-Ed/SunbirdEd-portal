@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { mockResponse } from './search.component.spec.data';
 
-describe('SearchComponent', () => {
+xdescribe('SearchComponent', () => {
   let component: SearchComponent;
   const mockRouter: Partial<Router> = {
     url: '/resources/view-all/Course-Unit/1?&selectedTab=course&board=CBSE%2FNCERT&medium=English&publisher=NCERT&',

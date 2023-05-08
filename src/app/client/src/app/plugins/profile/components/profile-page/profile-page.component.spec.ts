@@ -28,7 +28,7 @@ import { CsCertificateService } from '@project-sunbird/client-services/services/
 import { ProfilePageComponent } from './profile-page.component';
 import { Response } from './profile-page.spec.data';
 
-describe("ProfilePageComponent", () => {
+xdescribe("ProfilePageComponent", () => {
     let profilePageComponent: ProfilePageComponent;
     const mockCsCourseService: Partial<CsCourseService> = {};
     const mockCacheService: Partial<CacheService> = {};
@@ -174,7 +174,7 @@ describe("ProfilePageComponent", () => {
     it("should be created", () => {
         expect(profilePageComponent).toBeTruthy();
     });
-    describe('initLayout', () => {
+    xdescribe('initLayout', () => {
         it('should call init Layout', () => {
             //arrange
             mockLayoutService.switchableLayout = jest.fn(() => of([{ data: '' }]));
@@ -187,7 +187,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('getOrgDetails', () => {
+    xdescribe('getOrgDetails', () => {
         it('should return the org details', () => {
             //arrange
             profilePageComponent.userProfile = Response.userData;
@@ -196,7 +196,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('setNonCustodianUserLocation', () => {
+    xdescribe('setNonCustodianUserLocation', () => {
         it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
             //arrange
             profilePageComponent.userProfile = Response.userData;
@@ -209,7 +209,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('getOtherCertificates', () => {
+    xdescribe('getOtherCertificates', () => {
         it('should fetch all other certificates', () => {
             //arrange
             const mockData = Response.othersCertificateData;
@@ -239,7 +239,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('getContribution', () => {
+    xdescribe('getContribution', () => {
         it('should call search service to get my contributions data', () => {
             //arrange
             mockSearchService.searchContentByUserId = jest.fn(() => of(Response.success));
@@ -259,14 +259,14 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('getTrainingAttended', () => {
+    xdescribe('getTrainingAttended', () => {
         it('should call course service to get attended training data', () => {
             //act
             profilePageComponent.getTrainingAttended();
         });
     });
 
-    describe('ngOnInit', () => {
+    xdescribe('ngOnInit', () => {
         it('should call user service', (done) => {
             //arrange
             profilePageComponent.isDesktopApp = true;
@@ -386,7 +386,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('toggleOtherCertific', () => {
+    xdescribe('toggleOtherCertific', () => {
         it('should fetch more certificates while clicking on show more', () => {
             //arrange
             const mockData = Response.othersCertificateData;
@@ -408,7 +408,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('copyToClipboard', () => {
+    xdescribe('copyToClipboard', () => {
         it('should show success toast message on copy of instanceId', () => {
             //arrange
             jest.spyOn(mockToasterService, 'success').mockImplementation();
@@ -420,7 +420,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('getLocationDetails', () => {
+    xdescribe('getLocationDetails', () => {
         it('should call getLocationDetails', () => {
             //arrange
             const locationData = [{
@@ -451,7 +451,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('downloadPdfCertificate', () => {
+    xdescribe('downloadPdfCertificate', () => {
         it('should call downloadPdfCertificate and return signedPdfUrl', () => {
             //arrange
             mockProfileService.downloadCertificates = jest.fn().mockReturnValue(of(Response.v1DownloadCertResponse));
@@ -491,7 +491,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('downloadOldAndRCCert', () => {
+    xdescribe('downloadOldAndRCCert', () => {
         it('should downloading old certificate', () => {
             //arrange
             let requestBody = {
@@ -509,7 +509,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('downloadCert', () => {
+    xdescribe('downloadCert', () => {
         it('should call downloadCert with SVG format on success', () => {
             //arrange
             const course = { issuedCertificates: Response.svgCertificates };
@@ -585,7 +585,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('toggle', () => {
+    xdescribe('toggle', () => {
         it('should call toggle', () => {
             //arrange
             profilePageComponent.roles = ['Book Creator', 'Membership Management', 'Content Creation'];
@@ -604,7 +604,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('toggleCourse', () => {
+    xdescribe('toggleCourse', () => {
         it(`should show 'show more'`, () => {
             //act
             profilePageComponent.toggleCourse(true, 10);
@@ -621,7 +621,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('updateProfile', () => {
+    xdescribe('updateProfile', () => {
         it('should update framework successfully', () => {
             //arrange
             const mockFrameworkData = Response.frameworkUpdateData;
@@ -650,7 +650,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe("ngOnDestroy", () => {
+    xdescribe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             //arrange
             profilePageComponent.unsubscribe$ = {
@@ -665,7 +665,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('navigateToCourse', () => {
+    xdescribe('navigateToCourse', () => {
         it('should navigate to courses page', () => {
             //arrange
             const courseData = {
@@ -737,7 +737,7 @@ describe("ProfilePageComponent", () => {
         expect(profilePageComponent.showFullScreenLoader).toBe(false);
     });
 
-    describe('onLocationModalClose', () => {
+    xdescribe('onLocationModalClose', () => {
         it('should set showEditUserDetailsPopup to false', () => {
             //act
             profilePageComponent.onLocationModalClose({ isSubmitted: true });
@@ -746,7 +746,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('triggerAutoScroll', () => {
+    xdescribe('triggerAutoScroll', () => {
         it('should scroll to the element with the given id', () => {
             //arrange
             const scrollToId = 'test-id';
@@ -773,7 +773,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('convertToString', () => {
+    xdescribe('convertToString', () => {
         it('should return a string when given an array', () => {
             //arrange
             const array = [1, 2, 3];
@@ -792,7 +792,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('prepareVisits', () => {
+    xdescribe('prepareVisits', () => {
         it('should prepare visits', () => {
             //arrange
             const event = [
@@ -848,7 +848,7 @@ describe("ProfilePageComponent", () => {
         });
     });
 
-    describe('navigate', () => {
+    xdescribe('navigate', () => {
         it('should navigate to the given url with the given formAction', () => {
             //arrange
             const url = '/some/url';

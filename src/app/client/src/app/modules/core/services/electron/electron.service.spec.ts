@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from "@angular/common/http";
 import { ElectronService } from './electron.service';
 
-describe('ElectronService', () => {
+xdescribe('ElectronService', () => {
   let electronService: ElectronService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

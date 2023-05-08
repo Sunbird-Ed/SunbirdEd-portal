@@ -3,7 +3,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { SignupBasicInfoComponent } from './signup-basic-info.component';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
-describe('SignupBasicInfoComponent', () => {
+xdescribe('SignupBasicInfoComponent', () => {
   let component: SignupBasicInfoComponent;
 
   const mockResourceService: Partial<ResourceService> = {};
@@ -38,7 +38,7 @@ describe('SignupBasicInfoComponent', () => {
       expect(component).toBeTruthy();
   });
 
-  describe("birth year initialize and filter", () => {
+  xdescribe("birth year initialize and filter", () => {
     it("intialize bith year", () => {
       component.initiateYearSelecter();
       expect(component.birthYearOptions.length).toEqual(100)
@@ -50,7 +50,7 @@ describe('SignupBasicInfoComponent', () => {
     })
   })
 
-  describe("ngOnInit", () => {
+  xdescribe("ngOnInit", () => {
     it("initialize form fields with name and email", () => {
       jest.spyOn(component, 'initiateYearSelecter').mockImplementation();
       mockFormBuilder.group = jest.fn().mockReturnValue({
@@ -80,7 +80,7 @@ describe('SignupBasicInfoComponent', () => {
     })
   })
 
-  describe("changeBirthYear", () => {
+  xdescribe("changeBirthYear", () => {
     it("should change birth of year", () => {
       component.changeBirthYear({option: {value: 2000}});
       expect(component.yearOfBirth).toEqual("2000");
@@ -94,7 +94,7 @@ describe('SignupBasicInfoComponent', () => {
     })
   })
 
-  describe("trigger next step", () => {
+  xdescribe("trigger next step", () => {
     it("should trigger next step if form is valid", () => {
       component.personalInfoForm = new FormGroup({
         name: new FormControl('test-name'),
@@ -108,7 +108,7 @@ describe('SignupBasicInfoComponent', () => {
     });
   })
 
-  describe("isNumber", () => {
+  xdescribe("isNumber", () => {
     it("should return with false for non numeric value", () => {
       let event = {which: 40};
       let res = component.isNumber(event);

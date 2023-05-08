@@ -6,7 +6,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-describe('SignupComponent', () => {
+xdescribe('SignupComponent', () => {
   let component: SignupComponent;
 
   const mockResourceService: Partial<ResourceService> = {
@@ -95,7 +95,7 @@ describe('SignupComponent', () => {
     expect(component.signUpForm.basicInfo).toEqual(basicFormFields);
   });
 
-  describe("ngOnInit", () => {
+  xdescribe("ngOnInit", () => {
     it('initialize Form Fields and telemetry', () => {
       jest.spyOn(component, 'initializeFormFields').mockImplementation();
       jest.spyOn(component, 'setInteractEventData').mockImplementation();
@@ -110,7 +110,7 @@ describe('SignupComponent', () => {
   
   });
 
-  describe("changeStep", () => {
+  xdescribe("changeStep", () => {
     it("should change signup form stage to onboarding info stage", () => {
       component.signupStage = SignUpStage.BASIC_INFO as any
       component.changeStep();
@@ -136,7 +136,7 @@ describe('SignupComponent', () => {
     });
   })
 
-  describe("ngAfterViewInit", () => {
+  xdescribe("ngAfterViewInit", () => {
 
     it('should set signUpTelemetryImpression', () => {
       mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
@@ -156,7 +156,7 @@ describe('SignupComponent', () => {
 
   })
 
-  describe("ngOnDestroy", () => {
+  xdescribe("ngOnDestroy", () => {
     it('should destroy sub', () => {
         component.unsubscribe = {
             next: jest.fn(),

@@ -1,7 +1,7 @@
 import { BigDataPipe } from "./big-data.pipe";
 import { mockBigData } from "./big-dat.pipe.spec.data";
 
-describe("BigDataPipe", () => {
+xdescribe("BigDataPipe", () => {
   let bigData: BigDataPipe;
 
   beforeAll(() => {

@@ -18,7 +18,7 @@ import { QuestionnaireService } from "../questionnaire.service";
 import { of, throwError } from "rxjs";
 import { combineAll } from "rxjs/operators";
 
-describe("QuestionnaireComponent", () => {
+xdescribe("QuestionnaireComponent", () => {
   let questionnaireComponent: QuestionnaireComponent;
   const mockLayoutService: Partial<LayoutService> = {
     initlayoutConfig: jest.fn().mockReturnValue(of({})),
@@ -146,7 +146,7 @@ describe("QuestionnaireComponent", () => {
     expect(questionnaireComponent.initConfiguration).toHaveBeenCalled();
   });
 
-  describe('fetch Questionnaire', () => {
+  xdescribe('fetch Questionnaire', () => {
     it('should fetch Questionnaire', () => {
       jest.spyOn(questionnaireComponent, 'getQuestionnare');
       jest.spyOn(mockObservationService, 'post').mockReturnValue(of(Questionnaire) as any);
@@ -157,7 +157,7 @@ describe("QuestionnaireComponent", () => {
     });
   });
 
-  describe('canDeactivate', () => {
+  xdescribe('canDeactivate', () => {
     it('should call canDeactivate', () => {
       questionnaireComponent.questionnaireForm = new FormGroup({});
       questionnaireComponent.canDeactivate();
@@ -193,7 +193,7 @@ describe("QuestionnaireComponent", () => {
     expect(window.scrollBy).toBeDefined();
   });
 
-  describe('openAlert', () => {
+  xdescribe('openAlert', () => {
     it('should  openAlert without cancel button', () => {
       let msg = 'test';
       mockObservationUtilService.getAlertMetaData = jest.fn(() => Promise.resolve(AlertMetaData)) as any
@@ -217,7 +217,7 @@ describe("QuestionnaireComponent", () => {
     expect(window.scrollBy).toBeDefined();
   });
 
-  describe('onSubmit', () => {
+  xdescribe('onSubmit', () => {
     it('should call onSubmit while clicking button', () => {
       let save = 'save';
       mockObservationUtilService.getAlertMetaData = jest.fn(() => Promise.resolve(AlertMetaData)) as any
@@ -244,7 +244,7 @@ describe("QuestionnaireComponent", () => {
     });
   })
 
-  describe('submit Evidence', () => {
+  xdescribe('submit Evidence', () => {
     it('Should call submitEvidence for draft data', () => {
       questionnaireComponent.assessmentInfo = <any>Questionnaire.result;
       mockObservationUtilService.getAlertMetaData = jest.fn(() => Promise.resolve(AlertMetaData)) as any

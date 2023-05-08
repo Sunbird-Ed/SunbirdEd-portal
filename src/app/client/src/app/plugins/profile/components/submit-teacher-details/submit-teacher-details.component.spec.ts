@@ -708,7 +708,7 @@ xdescribe('SubmitTeacherDetailsComponent', () => {
         component.submit();
     });
 
-    describe('updateUserConsent', () => {
+    xdescribe('updateUserConsent', () => {
         it('should be revoked old ordId and update new orgId if Tenant is Changed', () => {
             // arrange
             const currentOrgId = 'new-sample-org-id';

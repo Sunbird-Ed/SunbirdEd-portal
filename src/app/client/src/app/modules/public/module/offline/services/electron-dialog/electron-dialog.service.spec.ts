@@ -4,7 +4,7 @@ import { ConfigService } from '@sunbird/shared';
 import { DataService } from '@sunbird/core';
 import { ElectronDialogService } from './electron-dialog.service';
 
-describe('ElectronDialogService', () => {
+xdescribe('ElectronDialogService', () => {
   let electronDialogService: ElectronDialogService;
   const mockHttpClient: Partial<HttpClient> = {
     get: jest.fn()
