@@ -8,12 +8,17 @@ $displays: none, block, inline, inline-block, flex, inline-flex;
 
     @each $name,
     $breakpoint in $breakpoints {
+        //.d-above-xs-block
         @media(min-width: $breakpoint) {
-
-            .d-#{$name}-#{$display} {
+            .d-above-#{$name}-#{$display} {
                 display: #{$display} !important;
             }
-
+        }
+        //.d-below-xs-none
+        @media(max-width: $breakpoint) {
+            .d-below-#{$name}-#{$display} {
+                display: #{$display} !important;
+            }
         }
     }
 }

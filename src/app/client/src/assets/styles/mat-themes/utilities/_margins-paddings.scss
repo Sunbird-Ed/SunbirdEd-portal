@@ -5,9 +5,8 @@ $spaces: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 52, 56, 60, 6
 $minmaxs: min, max;
 
 @each $space in $spaces {
-    @each $minmax in $minmaxs {
   $basePvalue: 0.0625 * $space +rem;
-// margins
+  // margins
   .m-#{$space} {
     margin: #{$basePvalue} !important;
   }
@@ -18,6 +17,7 @@ $minmaxs: min, max;
 
   .mr-#{$space} {
     margin-right: #{$basePvalue} !important;
+
     html[dir="rtl"] & {
       margin-left:#{$basePvalue} !important;
       margin-right: 0 !important;
@@ -30,6 +30,7 @@ $minmaxs: min, max;
 
   .ml-#{$space} {
     margin-left: #{$basePvalue} !important;
+
     html[dir="rtl"] & {
       margin-right:#{$basePvalue} !important;
       margin-left: 0 !important;
@@ -57,6 +58,7 @@ $minmaxs: min, max;
 
   .pr-#{$space} {
     padding-right: #{$basePvalue} !important;
+
     html[dir="rtl"] & {
       padding-left: #{$basePvalue} !important;
       padding-right: 0 !important;
@@ -69,6 +71,7 @@ $minmaxs: min, max;
 
   .pl-#{$space} {
     padding-left: #{$basePvalue} !important;
+
     html[dir="rtl"] & {
       padding-right: #{$basePvalue} !important;
       padding-left: 0 !important;
@@ -87,118 +90,131 @@ $minmaxs: min, max;
 
   @each $name,
   $breakpoint in $breakpoints {
-    @media(#{$minmax}-width: $breakpoint) {
-      // margins
-      .m-#{$space}-#{$minmax}-#{$name} {
-        margin: #{$basePvalue} !important;
-      }
-
-      .mt-#{$space}-#{$minmax}-#{$name} {
-        margin-top: #{$basePvalue} !important;
-      }
-
-      .mr-#{$space}-#{$minmax}-#{$name} {
-        margin-right: #{$basePvalue} !important;
-        html[dir="rtl"] & {
-          margin-left: #{$basePvalue} !important;
-          margin-right: 0 !important;
+    @each $minmax in $minmaxs {
+      @media(#{$minmax}-width: $breakpoint) {
+        // margins
+        .m-#{$space}-#{$minmax}-#{$name} {
+          margin: #{$basePvalue} !important;
         }
-      }
 
-      .mb-#{$space}-#{$minmax}-#{$name} {
-        margin-bottom: #{$basePvalue} !important;
-      }
+        .mt-#{$space}-#{$minmax}-#{$name} {
+          margin-top: #{$basePvalue} !important;
+        }
 
-      .ml-#{$space}-#{$minmax}-#{$name} {
-        margin-left: #{$basePvalue} !important;
-        html[dir="rtl"] & {
+        .mr-#{$space}-#{$minmax}-#{$name} {
           margin-right: #{$basePvalue} !important;
-          margin-left: 0 !important;
+
+          html[dir="rtl"] & {
+            margin-left: #{$basePvalue} !important;
+            margin-right: 0 !important;
+          }
         }
-      }
 
-      .my-#{$space}-#{$minmax}-#{$name} {
-        margin-top: #{$basePvalue} !important;
-        margin-bottom: #{$basePvalue} !important;
-      }
-
-      .mx-#{$space}-#{$minmax}-#{$name} {
-        margin-left: #{$basePvalue} !important;
-        margin-right: #{$basePvalue} !important;
-      }
-
-      // paddings
-      .p-#{$space}-#{$minmax}-#{$name} {
-        padding: #{$basePvalue} !important;
-      }
-
-      .pt-#{$space}-#{$minmax}-#{$name} {
-        padding-top: #{$basePvalue} !important;
-      }
-
-      .pr-#{$space}-#{$minmax}-#{$name} {
-        padding-right: #{$basePvalue} !important;
-        html[dir="rtl"] & {
-          padding-left: #{$basePvalue} !important;
-          padding-right: 0 !important;
+        .mb-#{$space}-#{$minmax}-#{$name} {
+          margin-bottom: #{$basePvalue} !important;
         }
-      }
 
-      .pb-#{$space}-#{$minmax}-#{$name} {
-        padding-bottom: #{$basePvalue} !important;
-      }
+        .ml-#{$space}-#{$minmax}-#{$name} {
+          margin-left: #{$basePvalue} !important;
 
-      .pl-#{$space}-#{$minmax}-#{$name} {
-        padding-left: #{$basePvalue} !important;
-        html[dir="rtl"] & {
+          html[dir="rtl"] & {
+            margin-right: #{$basePvalue} !important;
+            margin-left: 0 !important;
+          }
+        }
+
+        .my-#{$space}-#{$minmax}-#{$name} {
+          margin-top: #{$basePvalue} !important;
+          margin-bottom: #{$basePvalue} !important;
+        }
+
+        .mx-#{$space}-#{$minmax}-#{$name} {
+          margin-left: #{$basePvalue} !important;
+          margin-right: #{$basePvalue} !important;
+        }
+
+        // paddings
+        .p-#{$space}-#{$minmax}-#{$name} {
+          padding: #{$basePvalue} !important;
+        }
+
+        .pt-#{$space}-#{$minmax}-#{$name} {
+          padding-top: #{$basePvalue} !important;
+        }
+
+        .pr-#{$space}-#{$minmax}-#{$name} {
           padding-right: #{$basePvalue} !important;
-          padding-left: 0 !important !important;
+
+          html[dir="rtl"] & {
+            padding-left: #{$basePvalue} !important;
+            padding-right: 0 !important;
+          }
         }
-      }
 
-      .py-#{$space}-#{$minmax}-#{$name} {
-        padding-top: #{$basePvalue} !important;
-        padding-bottom: #{$basePvalue} !important;
-      }
+        .pb-#{$space}-#{$minmax}-#{$name} {
+          padding-bottom: #{$basePvalue} !important;
+        }
 
-      .px-#{$space}-#{$minmax}-#{$name} {
-        padding-left: #{$basePvalue} !important;
-        padding-right: #{$basePvalue} !important;
+        .pl-#{$space}-#{$minmax}-#{$name} {
+          padding-left: #{$basePvalue} !important;
+
+          html[dir="rtl"] & {
+            padding-right: #{$basePvalue} !important;
+            padding-left: 0 !important !important;
+          }
+        }
+
+        .py-#{$space}-#{$minmax}-#{$name} {
+          padding-top: #{$basePvalue} !important;
+          padding-bottom: #{$basePvalue} !important;
+        }
+
+        .px-#{$space}-#{$minmax}-#{$name} {
+          padding-left: #{$basePvalue} !important;
+          padding-right: #{$basePvalue} !important;
+        }
       }
     }
   }
-}
 }
 
 
 .m-auto {
   margin: 0 auto 0 auto !important;
 }
+
 .mt-auto {
-  margin-top:auto !important;
+  margin-top: auto !important;
 }
+
 .mb-auto {
- margin-bottom:auto !important;
+  margin-bottom: auto !important;
 }
+
 .mx-auto {
- margin-left:auto !important;
- margin-right:auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
+
 .my-auto {
- margin-top:auto !important;
- margin-bottom:auto !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
 }
+
 .ml-auto {
- margin-left:auto !important;
- html[dir="rtl"] & {
-   margin-right:auto !important;
-   margin-left: 0 !important;
- }
+  margin-left: auto !important;
+
+  html[dir="rtl"] & {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+  }
 }
+
 .mr-auto {
- margin-right:auto !important;
- html[dir="rtl"] & {
-   margin-left:auto !important;
-   margin-right: 0 !important;
- }
+  margin-right: auto !important;
+
+  html[dir="rtl"] & {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
 }
