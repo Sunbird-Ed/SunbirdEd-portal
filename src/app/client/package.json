@@ -163,13 +163,7 @@
     "verbose": true,
     "testEnvironment": "jsdom",
     "openHandlesTimeout": 0,
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "<rootDir>/tsconfig.spec.json",
-        "stringifyContentPathRegex": "\\.(html|svg)$"
-      }
-    },
-    
+    "globalSetup": "jest-preset-angular/global-setup",
     "setupFilesAfterEnv": [
       "./setup-jest.ts"
     ],
