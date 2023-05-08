@@ -1,35 +1,32 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="redirect()" #modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'small', width: '30rem', panelClass: 'material-modal'}" (dismiss)="redirect()" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <!--Header-->
-          <div class="sb-modal-header">
-            {{resourceService.frmelmnts?.scttl?.blkuser | translate}}
-          </div>
-          <!--/Header-->
 
-          <!--Content-->
-          <div class="sb-modal-content">
-            <p>{{resourceService.frmelmnts?.lbl?.confirmblock | translate}} {{userDetails.firstName}}
-              {{userDetails.lastName}}</p>
-          </div>
-          <!--/Content-->
-
-          <!--Actions-->
-          <div class="sb-modal-actions">
-            <button tabindex="0" class="sb-btn sb-btn-normal sb-btn-error"
-              (click)="modal.approve('done'); deleteUser()">
-              {{resourceService.frmelmnts?.btn?.yes | translate}}
-            </button>
-            <button tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="modal.deny(); redirect();">
-              {{resourceService.frmelmnts?.btn?.no | translate}}
-            </button>
-
-          </div>
-          <!--/Actions-->
-        </div>
-      </div>
+    <!--Header-->
+    <div mat-dialog-title class="mb-0">
+      <h4 class="color-accent font-weight-bold mb-0">{{resourceService.frmelmnts?.scttl?.blkuser | translate}}</h4>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <mat-dialog-content>
+      <p>{{resourceService.frmelmnts?.lbl?.confirmblock | translate}} {{userDetails.firstName}}
+        {{userDetails.lastName}}</p>
+    </mat-dialog-content>
+    <!--/Content-->
+
+    <!--Actions-->
+    <mat-dialog-actions align="end">
+      <button tabindex="0" mat-raised-button class="button-rounded" (click)="modal.deny(); redirect();">
+        {{resourceService.frmelmnts?.btn?.no | translate}}
+      </button>
+      <button tabindex="0" mat-raised-button color="accent" class="button-rounded mr-8" (click)="modal.approve('done'); deleteUser()">
+        {{resourceService.frmelmnts?.btn?.yes | translate}}
+      </button>
+
+    </mat-dialog-actions>
+    <!--/Actions-->
+
   </ng-template>
 </app-modal-wrapper>
