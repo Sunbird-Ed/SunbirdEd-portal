@@ -35,6 +35,15 @@
           @include respond-below(xs) {
                padding-top: 0.5rem;
           }
+          @include respond-between(sm,md) {
+               overflow-x: auto;
+               justify-content: flex-start;
+          }
+          .mat-raised-button {
+               @include respond-between(sm,md) {
+               min-width: auto;
+               }
+          }
      }
 
 }

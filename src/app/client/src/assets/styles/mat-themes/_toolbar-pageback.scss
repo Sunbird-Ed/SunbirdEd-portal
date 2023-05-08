@@ -69,10 +69,7 @@
           margin: 0;
           color: mat.get-color-from-palette($primary, 500-contrast);
           // color: mat.get-color-from-palette($accent);
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          width: 90%;
+          width: 95%;
         }
 
         span {

@@ -24,7 +24,7 @@
         <span *ngFor="let field of formFieldOptions">
           <span
             *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
-            <mat-form-field color="accent" id={{field.code}} appearance="fill" class="w-100">
+            <mat-form-field color="accent" id={{field.code}} appearance="fill" class="w-100 sb-mat-form-field-custom border-radius mb-16">
               <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
                 <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
               </mat-label>
@@ -37,7 +37,7 @@
           </span>
           <span *ngIf="field.code !== 'board' && allowedFields.includes(field.code)"
             [ngClass]="field.code === 'subject' ? '' : 'required'">
-            <mat-form-field color="accent" *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="w-100">
+            <mat-form-field color="accent" *ngIf="field.code === 'gradeLevel'" id={{field.code}} appearance="fill" class="w-100 sb-mat-form-field-custom border-radius mb-16">
               <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: ( field?.translation || field?.label) : resourceService?.selectedLang}}
                 <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
               </mat-label>
@@ -53,7 +53,7 @@
                 attr.aria-label="{{option?.name}}">{{option?.name}}</mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field color="accent" *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="w-100">
+            <mat-form-field color="accent" *ngIf="field.code !== 'gradeLevel'" id={{field.code}} appearance="fill" class="w-100 sb-mat-form-field-custom border-radius mb-16">
               <mat-label>{{( field?.translation || field?.label) | frameworkCatLabelTranslate | transposeTerms: (field?.translation || field?.label) : resourceService?.selectedLang}}
                 <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
               </mat-label>
