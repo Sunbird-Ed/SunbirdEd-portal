@@ -91,17 +91,6 @@ export class ObservationDetailsComponent implements OnInit {
     this.getProfileData();
     this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.programConsent') };
   }
-
-  postAPI(params) {
-    return this.observationService.post(params).pipe(
-      catchError((error) => {
-        console.log('Error', error);
-        this.joinProgramLoader = false;
-        this.toasterService.error(this.resourceService.frmelmnts?.lbl?.joinProgramError);
-        return throwError(error);
-      })
-    );
-  }
   
   getAPIParams(url, payload) {
     const { school, ...payloadToSend } = payload;
@@ -137,7 +126,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.toasterService.success(this.resourceService.frmelmnts?.lbl?.joinedProgramSuccessfully)
     });
   }
-  
+
   getProfileData() {
     this.observationUtilService.getProfileDataList().then(data => {
       this.payload = data;
@@ -474,6 +463,16 @@ export class ObservationDetailsComponent implements OnInit {
     );
 
   }
-
+  
+  postAPI(params) {
+    return this.observationService.post(params).pipe(
+      catchError((error) => {
+        console.log('Error', error);
+        this.joinProgramLoader = false;
+        this.toasterService.error(this.resourceService.frmelmnts?.lbl?.joinProgramError);
+        return throwError(error);
+      })
+    );
+  }
 
 }
