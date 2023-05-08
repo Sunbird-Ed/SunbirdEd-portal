@@ -56,6 +56,10 @@ describe("Observation Details", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+  
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
   it("should return the correct params using getAPIParams method", () => {
     const url = "http://example.com";
