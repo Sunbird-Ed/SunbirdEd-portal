@@ -57,6 +57,7 @@ export class ObservationDetailsComponent implements OnInit {
   consentConfig:ConsentConfiguration;
   requestForPIIConsent:boolean;
   rootOrganisations: any;
+  joinProgramLoader: boolean;
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
@@ -90,6 +91,53 @@ export class ObservationDetailsComponent implements OnInit {
     this.getProfileData();
     this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.programConsent') };
   }
+
+  postAPI(params) {
+    return this.observationService.post(params).pipe(
+      catchError((error) => {
+        console.log('Error', error);
+        this.joinProgramLoader = false;
+        this.toasterService.error(this.resourceService.frmelmnts?.lbl?.joinProgramError);
+        return throwError(error);
+      })
+    );
+  }
+  
+  getAPIParams(url, payload) {
+    const { school, ...payloadToSend } = payload;
+    const params = {
+      url,
+      data: payloadToSend
+    };
+    return params;
+  }
+  
+  readProgram() {
+    const url = `${this.config.urlConFig.URLS.OBSERVATION.READ_PROGRAM}/${this.programId}`;
+    const params = this.getAPIParams(url, this.payload);
+    
+    this.postAPI(params).subscribe(data => {
+      this.requestForPIIConsent = data.result.requestForPIIConsent;
+      this.programJoined = data.result.programJoined;
+      this.rootOrganisations = data.result.rootOrganisations
+
+      if(this.programJoined) this.openConsentPopUp = true;
+    });
+  }
+  
+  joinProgram() {
+    this.joinProgramLoader = true;
+    const url = `${this.config.urlConFig.URLS.OBSERVATION.JOIN_PROGRAM}/${this.programId}`;
+    const params = this.getAPIParams(url, { userRoleInformation: this.payload });
+    
+    this.postAPI(params).subscribe(_data => {
+      this.joinProgramLoader = false;
+      this.programJoined = true;
+      this.openConsentPopUp = this.requestForPIIConsent;
+      this.toasterService.success(this.resourceService.frmelmnts?.lbl?.joinedProgramSuccessfully)
+    });
+  }
+  
   getProfileData() {
     this.observationUtilService.getProfileDataList().then(data => {
       this.payload = data;
@@ -427,46 +475,5 @@ export class ObservationDetailsComponent implements OnInit {
 
   }
 
-  postAPI(params) {
-    return this.observationService.post(params).pipe(
-      catchError((error) => {
-        console.log('Error', error);
-        this.toasterService.error(this.resourceService.frmelmnts?.lbl?.joinProgramError);
-        return throwError(error);
-      })
-    );
-  }
-  
-  getAPIParams(url, payload) {
-    const { school, ...payloadToSend } = payload;
-    const params = {
-      url,
-      data: payloadToSend
-    };
-    return params;
-  }
-  
-  readProgram() {
-    const url = `${this.config.urlConFig.URLS.OBSERVATION.READ_PROGRAM}/${this.programId}`;
-    const params = this.getAPIParams(url, this.payload);
-    
-    this.postAPI(params).subscribe(data => {
-      this.requestForPIIConsent = data.result.requestForPIIConsent;
-      this.programJoined = data.result.programJoined;
-      this.rootOrganisations = data.result.rootOrganisations
 
-      if(this.programJoined) this.openConsentPopUp = true;
-    });
-  }
-  
-  joinProgram() {
-    const url = `${this.config.urlConFig.URLS.OBSERVATION.JOIN_PROGRAM}/${this.programId}`;
-    const params = this.getAPIParams(url, { userRoleInformation: this.payload });
-    
-    this.postAPI(params).subscribe(_data => {
-      this.programJoined = true;
-      this.openConsentPopUp = this.requestForPIIConsent;
-      this.toasterService.success(this.resourceService.frmelmnts?.lbl?.joinedProgramSuccessfully)
-    });
-  }
 }
