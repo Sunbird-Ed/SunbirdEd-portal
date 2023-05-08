@@ -18,11 +18,11 @@
 
     <!--Actions-->
     <mat-dialog-actions align="end">
-      <button tabindex="0" mat-raised-button color="accent" class="button-rounded mr-8" (click)="modal.approve('done'); deleteUser()">
-        {{resourceService.frmelmnts?.btn?.yes | translate}}
-      </button>
       <button tabindex="0" mat-raised-button class="button-rounded" (click)="modal.deny(); redirect();">
         {{resourceService.frmelmnts?.btn?.no | translate}}
+      </button>
+      <button tabindex="0" mat-raised-button color="accent" class="button-rounded mr-8" (click)="modal.approve('done'); deleteUser()">
+        {{resourceService.frmelmnts?.btn?.yes | translate}}
       </button>
 
     </mat-dialog-actions>
