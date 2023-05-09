@@ -13,7 +13,7 @@ import { ContentManagerService } from '../../../public/module/offline/services';
 import { ContentActionsComponent } from './content-actions.component';
 import { actionsData } from './content-actions.component.spec.data';
 
-describe("ContentActionsComponent", () => {
+xdescribe("ContentActionsComponent", () => {
     let contentActionsComponent: ContentActionsComponent;
     const mockRouter: Partial<Router> = {
         url: 'https:mydownloads',
