@@ -1,7 +1,6 @@
 <div
-  [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg sbt-mat-surface':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
-  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
-    [appTelemetryImpression]="telemetryImpression">
+  [ngClass]="[layoutConfiguration ? 'mat-inside-page-container mat-app-background2':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
+  <div class="sb-g sbt-page-content" [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
     <div *ngIf="!isDesktopApp && isFilterEnabled && refreshFilter " [ngClass]="FIRST_PANEL_LAYOUT">
@@ -31,7 +30,7 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="[layoutConfiguration ? 'sbt-page-content-area relative9' : 'ui container mt-24', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
+        [ngClass]="[layoutConfiguration ? 'relative9' : '', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
         <div class="sb-library-cards relative9">
           <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
