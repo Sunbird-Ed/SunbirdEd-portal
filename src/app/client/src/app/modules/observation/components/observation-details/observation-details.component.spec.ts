@@ -19,7 +19,9 @@ describe("Observation Details", () => {
       },
     },
   };
-  const observationService: Partial<ObservationService> = {};
+  const observationService: Partial<ObservationService> = {
+    post: jest.fn() as any
+  };
   let observationUtilService: Partial<ObservationUtilService>;
   const router: Partial<Router> = {};
   const activatedRoute: Partial<ActivatedRoute> = {
@@ -54,6 +56,7 @@ describe("Observation Details", () => {
   });
 
   beforeEach(() => {
+    component.programJoined = false;
     jest.clearAllMocks();
   });
   
@@ -107,4 +110,35 @@ describe("Observation Details", () => {
     expect(component.programJoined).toBe(true);
     expect(component.openConsentPopUp).toBe(true);
   });
+
+  it("should call postAPI method", () => {
+    jest.spyOn(observationService,'post').mockReturnValue(of(readSolutionResult));
+    jest.spyOn(component,'postAPI');
+    const url = "users/mlcore/v1/solutions/abcd1234";
+    const data =  {
+      school: "school",
+      district : "2f76dcf5-e43b-xxxx-xxxx-cxxxxe1fce03",
+      block : "8df55ad6-7b21-xxxx-a93a-xxxx45d34857",
+      state : "bc75cc99-9205-xxxx-a722-53xxxx7838f8",
+      role: "DEO"
+    };
+    component.postAPI({url,data:data});
+    expect(component.postAPI).toHaveBeenCalled();    
+  });
+
+  it("should call postAPI method with catchError", () => {
+    jest.spyOn(observationService,'post').mockReturnValue(of(null));
+    jest.spyOn(component,'postAPI');
+    const url = "users/mlcore/v1/solutions/abcd1234";
+    const data =  {
+      school: "school",
+      district : "2f76dcf5-e43b-xxxx-xxxx-cxxxxe1fce03",
+      block : "8df55ad6-7b21-xxxx-a93a-xxxx45d34857",
+      state : "bc75cc99-9205-xxxx-a722-53xxxx7838f8",
+      role: "DEO"
+    };
+    component.postAPI({url,data:data});
+    expect(component.postAPI).toHaveBeenCalled();    
+    expect(component.programJoined).toBe(false);
+  })
 });
