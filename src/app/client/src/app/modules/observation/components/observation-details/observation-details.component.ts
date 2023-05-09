@@ -51,7 +51,7 @@ export class ObservationDetailsComponent implements OnInit {
     'messageText': 'frmelmnts.msg.noEntityFound'
   };
   courseHierarchy: any = {};
-  programJoined:boolean = false;
+  programJoined:boolean = true;
   joinProgramPopUp:boolean = false;
   openConsentPopUp:boolean;
   consentConfig:ConsentConfiguration;
@@ -106,10 +106,9 @@ export class ObservationDetailsComponent implements OnInit {
     const params = this.getAPIParams(url, this.payload);
     
     this.postAPI(params).subscribe(data => {
-      this.requestForPIIConsent = data.result.requestForPIIConsent;
-      this.programJoined = data.result.programJoined;
-      this.rootOrganisations = data.result.rootOrganisations
-
+      this.programJoined = _.has(data.result,'requestForPIIConsent') ? data.result.programJoined : true;
+      this.requestForPIIConsent = data.result.requestForPIIConsent || false;
+      this.rootOrganisations = data.result.rootOrganisations || '';
       if(this.programJoined) this.openConsentPopUp = true;
     });
   }
