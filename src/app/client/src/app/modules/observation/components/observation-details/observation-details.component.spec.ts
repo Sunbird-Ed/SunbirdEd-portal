@@ -109,6 +109,8 @@ describe("Observation Details", () => {
     expect(component.joinProgram).toHaveBeenCalled();
     expect(component.programJoined).toBe(true);
     expect(component.openConsentPopUp).toBe(true);
+    expect(component.joinProgramLoader).toBe(false);
+    expect(component.joinProgramPopUp).toBe(false);
   });
 
   it("should call postAPI method", () => {

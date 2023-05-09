@@ -127,11 +127,11 @@
 <div *ngIf="openEditModal?.show">
   <app-edit-submission [editData]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
 </div>
-
 <app-global-consent-pii *ngIf="openConsentPopUp" [type]="'program-consent'" [isglobalConsent]="false" [consentConfig]="consentConfig" [collection]="{'programId':programId,'rootOrganisations':rootOrganisations}"></app-global-consent-pii>
 <app-modal-wrapper *ngIf="joinProgramPopUp" #modal [config]="{disableClose: true, size: 'large'}" (dismiss)="modal.deny()">
-  <ng-template sbModalContent>
-    <div class="sb-modal">
+  <ng-template  sbModalContent>
+    <app-loader *ngIf="joinProgramLoader" [data]="{loaderMessage:'We are trying to add you to this program'}"></app-loader>
+    <div *ngIf="!joinProgramLoader" class="sb-modal">
       <div class="transition ui dimmer page modals active visible">
         <div class="ui modal transition active visible normal">
               <div class="container-wrapper">

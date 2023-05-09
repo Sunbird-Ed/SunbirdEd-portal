@@ -115,12 +115,12 @@ export class ObservationDetailsComponent implements OnInit {
   }
   
   joinProgram() {
-    this.joinProgramLoader = true;
+    this.joinProgramPopUp = this.joinProgramLoader = true;
     const url = `${this.config.urlConFig.URLS.OBSERVATION.JOIN_PROGRAM}/${this.programId}`;
     const params = this.getAPIParams(url, { userRoleInformation: this.payload });
     
     this.postAPI(params).subscribe(_data => {
-      this.joinProgramLoader = false;
+      this.joinProgramPopUp = this.joinProgramLoader = false;
       this.programJoined = true;
       this.openConsentPopUp = this.requestForPIIConsent;
       this.toasterService.success(this.resourceService.frmelmnts?.lbl?.joinedProgramSuccessfully)
@@ -468,7 +468,7 @@ export class ObservationDetailsComponent implements OnInit {
     return this.observationService.post(params).pipe(
       catchError((error) => {
         console.log('Error', error);
-        this.joinProgramLoader = false;
+        this.joinProgramPopUp = this.joinProgramLoader = false;
         this.toasterService.error(this.resourceService.frmelmnts?.lbl?.joinProgramError);
         return throwError(error);
       })
