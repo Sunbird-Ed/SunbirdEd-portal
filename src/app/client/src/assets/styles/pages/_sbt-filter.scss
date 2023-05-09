@@ -92,8 +92,8 @@
 
   .sbt-reset-bar {
     position: absolute;
-    top: calculateRem(8px);
-    right: calculateRem(8px);
+    top: calculateRem(16px);
+    right: calculateRem(16px);
 
     html[dir="rtl"] & {
       left: calculateRem(16px);
