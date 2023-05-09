@@ -12,7 +12,6 @@ jobs:
     working_directory: ~/portal/src/app/client
     macos:
       xcode: 14.2.0 
-    resource_class: large
     steps:
       - checkout:
           path: ~/portal
