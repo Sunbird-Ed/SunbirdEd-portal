@@ -1,6 +1,6 @@
 <app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all" [layoutConfiguration]="layoutConfiguration" [svgToDisplay]="allTabData?.theme?.imageName"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component':''">
-  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
+<div class="mat-inside-page-container mat-app-background2">
+  <div class="sb-g sbt-page-content">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <div *ngIf="layoutConfiguration">
         <ng-container *ngIf="isDesktopApp">
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-      <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">
+      <div>
   <div class="content-grid relative9" >
     <div class="sb-pageSection" *ngIf="!showLoader && contentList?.length && !showBackButton">
         <div  class="sb-pageSection-header mb-10">
