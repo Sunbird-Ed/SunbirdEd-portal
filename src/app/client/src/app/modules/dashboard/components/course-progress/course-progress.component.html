@@ -1,24 +1,21 @@
-<app-modal-wrapper *ngIf="showDownloadModal" [config]="{disableClose: true, size: 'large', panelClass: 'material-modal'}"
+<app-modal-wrapper *ngIf="showDownloadModal"
+  [config]="{disableClose: true, size: 'small', width: '30rem', panelClass: 'material-modal'}"
   (dismiss)="modal.deny(); showDownloadModal = false;" #modal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal">
 
-      <!-- Download report popup-->
-      <div mat-dialog-title class="mb-0">
-        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.instn?.t0060}}</div>
-        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-      </div>
-
-      <!--/Header-->
-      <!--Content-->
-      <div class="sb-mat__modal__content">
-        <p class="meta">{{resourceService?.messages?.stmsg?.m0132}}</p>
-      </div>
-      <!--/Content-->
-
-      <mat-dialog-actions class="sb-mat__modal__actions"></mat-dialog-actions>
-
+    <!-- Download report popup-->
+    <div mat-dialog-title class="mb-0">
+      <h2 class="mb-0" tabindex="0">{{resourceService?.frmelmnts?.instn?.t0060}}</h2>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+    <!--/Header-->
+    <!--Content-->
+    <mat-dialog-content>
+      <p class="meta">{{resourceService?.messages?.stmsg?.m0132}}</p>
+    </mat-dialog-content>
+    <!--/Content-->
+
   </ng-template>
 </app-modal-wrapper>
 <!-- Updated code as per new design for semantic datatable-->

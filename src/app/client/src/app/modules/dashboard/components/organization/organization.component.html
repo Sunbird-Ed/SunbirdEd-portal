@@ -150,20 +150,18 @@
           [config]="{disableClose: false, size: 'small', panelClass: 'material-modal'}"
           (dismiss)="showDownloadSuccessModal = false">
           <ng-template sbModalContent>
-            <div class="sb-mat__modal sb-success">
-              <!--Header-->
-              <div mat-dialog-title class="mb-0">
-                <div class="title" tabindex="0">{{resourceService?.frmelmnts?.instn?.t0060}}</div>
-                <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-              </div>
-              <!--/Header-->
-              <!--Content-->
-              <div class="sb-mat__modal__content">
-                <p>{{resourceService?.messages?.stmsg?.m0095}}</p>
-              </div>
-              <!--/Content-->
-              <mat-dialog-actions class="sb-mat__modal__actions"></mat-dialog-actions>
+            <!--Header-->
+            <div mat-dialog-title class="mb-0">
+              <h2 class="mb-0" tabindex="0">{{resourceService?.frmelmnts?.instn?.t0060}}</h2>
+              <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+                mat-dialog-close><mat-icon>close</mat-icon></button>
             </div>
+            <!--/Header-->
+            <!--Content-->
+            <mat-dialog-content>
+              <p>{{resourceService?.messages?.stmsg?.m0095}}</p>
+            </mat-dialog-content>
+            <!--/Content-->
           </ng-template>
         </app-modal-wrapper>
       </div>
