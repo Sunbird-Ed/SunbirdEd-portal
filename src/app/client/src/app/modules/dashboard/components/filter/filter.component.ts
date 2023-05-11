@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject, AfterViewInit} from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
@@ -15,7 +15,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FilterComponent implements OnInit, OnDestroy {
 
   @Input() hideElements = false;
   @Input() chartData: any;
@@ -101,7 +101,7 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
     private fb: UntypedFormBuilder,
     public activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public selectedDialogData: any
   ) {
 
   }
@@ -120,18 +120,10 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.filters) {
       this.buildFiltersForm();
     }
-    console.log('opend dialog ', this.data)
   }
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
-  }
-  ngAfterViewInit()
-  {
-    if(this.data)
-    {
-
-    }
   }
   formUpdate(chartData) {
     const filterKeys = Object.keys(this.selectedFilters);
@@ -226,6 +218,7 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   resetFilter() {
     if (this.filtersFormGroup) {
       this.filtersFormGroup.reset();
+      this.selectedDialogData = {};
     }
     if (this.datepicker) {
       this.datepicker.nativeElement.value = '';
@@ -336,10 +329,8 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
     this.filtersFormGroup.controls[reference].setValue(data);
   }
   getSelectedData(reference) {
-    console.log('data ', this.data)
-    console.log('selectedfilters', this.selectedFilters)
-    if (this.data) {
-      return this.data[reference];
+    if (Object.keys(this.selectedDialogData).length && this.selectedDialogData[reference]) {
+      return this.selectedDialogData[reference];
     } else if (this.selectedFilters && this.selectedFilters[reference]) {
       return this.selectedFilters[reference];
     } else {
