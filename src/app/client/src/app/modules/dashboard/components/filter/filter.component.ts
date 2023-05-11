@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject, AfterViewInit} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
@@ -8,13 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit, OnDestroy {
+export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() hideElements = false;
   @Input() chartData: any;
@@ -45,15 +46,18 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   @Input()
   set selectedFilter(val: any) {
+    console.log('before-seelc')
     if (val) {
       this.selectedFilters = {};
       if (val.filters) {
         this.filters = val.filters;
+        console.log('this.filters', this.filters);
       }
       this.formGeneration(val.data);
       if (val.selectedFilters) {
         this.selectedFilters = val.selectedFilters;
-        this.filtersFormGroup.patchValue(val.selectedFilters);
+        this.filtersFormGroup.setValue(val.selectedFilters);
+        console.log('patch1',val.selectedFilters )
       }
     }
   }
@@ -69,10 +73,12 @@ export class FilterComponent implements OnInit, OnDestroy {
         if (val.reset && val.reset == true) {
           this.selectedFilters = {};
         } else if (val.filters) {
-          this.filtersFormGroup.patchValue(val.filters);
+          this.filtersFormGroup.setValue(val.filters);
+          console.log('patch2', val.filters)
           this.selectedFilters = val.filters;
         } else if (currentFilterValue) {
-          this.filtersFormGroup.patchValue(currentFilterValue);
+          this.filtersFormGroup.setValue(currentFilterValue);
+          console.log('patch3', currentFilterValue)
           this.selectedFilters = currentFilterValue;
         }
     }
@@ -94,7 +100,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     private fb: UntypedFormBuilder,
     public activatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
   }
@@ -102,6 +109,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const charts = [];
+    console.log('chart')
     if (this.chartData && this.chartData.length > 0) {
       this.chartData.map(function(data) {
         charts.push(...data.data);
@@ -112,12 +120,19 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (this.filters) {
       this.buildFiltersForm();
     }
+    console.log('opend dialog ', this.data)
   }
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
+  ngAfterViewInit()
+  {
+    if(this.data)
+    {
 
+    }
+  }
   formUpdate(chartData) {
     const filterKeys = Object.keys(this.selectedFilters);
     let previousKeys = [];
@@ -184,8 +199,19 @@ export class FilterComponent implements OnInit, OnDestroy {
       }, (err) => {
       });
       if (this.chartData.selectedFilters) {
-          this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
+          this.filtersFormGroup.setValue(this.chartData.selectedFilters);
+          console.log('patch4',this.chartData.selectedFilters )
       }
+    // const selectedFilters = this.chartData.selectedFilters;
+
+    // Assuming the form controls in filtersFormGroup have the same names as the properties in selectedFilters object
+
+    // Option 1: Loop through the form controls
+    // Object.keys(selectedFilters).forEach(filterName => {
+    //   if (this.filtersFormGroup.controls[filterName]) {
+    //     this.filtersFormGroup.controls[filterName].setValue(selectedFilters[filterName]);
+    //   }
+    // });
 
   }
 
@@ -310,8 +336,11 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.filtersFormGroup.controls[reference].setValue(data);
   }
   getSelectedData(reference) {
-
-    if (this.selectedFilters && this.selectedFilters[reference]) {
+    console.log('data ', this.data)
+    console.log('selectedfilters', this.selectedFilters)
+    if (this.data) {
+      return this.data[reference];
+    } else if (this.selectedFilters && this.selectedFilters[reference]) {
       return this.selectedFilters[reference];
     } else {
       return [];
