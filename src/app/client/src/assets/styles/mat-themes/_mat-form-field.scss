@@ -12,6 +12,33 @@
   $background: map.get($color-config, 'background');
   $foreground: map.get($color-config, 'foreground');
 
+  .sb-mat-form-field-custom {
+    .mat-form-field-wrapper {
+      .mat-form-field-flex {
+        box-shadow: var(--sbt-box-shadow-6px);
+        padding-left: 1.5em;
+      }
+      padding-bottom: 0px;
+
+      .mat-form-field-underline {
+        bottom: 0;
+        width: calc(100% - 2rem);
+        left: 1rem;
+        display: none;
+      }
+    }
+
+    &.border-radius {
+      .mat-form-field-flex {
+        border-radius: 2rem;
+      }
+    }
+
+    &.mat-form-field.mat-focused .mat-form-field-label {
+      color: var(--color-accent);
+    }
+  }
+
   .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: mat.get-color-from-palette($background, card);
     // border-radius: 1.5rem;

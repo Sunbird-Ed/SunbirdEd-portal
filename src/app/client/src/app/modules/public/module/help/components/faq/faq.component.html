@@ -78,7 +78,7 @@
       *ngIf="faqData && !showLoader">
       <div class="mat-body-1 mr-auto visit-helpcenter__text">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
         <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
-        <button mat-stroked-button color="accent" class="button-rounded" role="button" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
+        <button mat-raised-button class="button-rounded color-accent" role="button" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
         href="{{defaultFooterConfig?.helpCenterLink}}" [target]="isDesktopApp ? '_blank' : '_self'">{{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}</button>
     </div>
 </div>
@@ -86,7 +86,7 @@
 <ng-template #extraTemplate>
   <div class="mat-body-1 visit-helpcenter__text mr-16">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
     <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
-  <button mat-stroked-button color="accent" class="button-rounded" role="button" appTelemetryInteract
+  <button mat-raised-button class="button-rounded color-accent" role="button" appTelemetryInteract
     [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')" href="{{defaultFooterConfig?.helpCenterLink}}"
     [target]="isDesktopApp ? '_blank' : '_self'">
     {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}

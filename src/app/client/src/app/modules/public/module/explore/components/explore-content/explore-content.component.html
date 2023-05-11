@@ -18,7 +18,7 @@
         </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100 relative9">
-      <div class="d-flex flex-ai-center mb-16" *ngIf="!showLoader && totalCount > 0 && !showBackButton">
+      <div class="d-flex flex-ai-center my-16" *ngIf="!showLoader && totalCount > 0 && !showBackButton">
         <div matBadge="{{totalCount}}" matBadgeOverlap="false" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
         interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "></div>
         <button mat-raised-button color="warn" class="button-rounded ml-auto" [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" type="button" tabindex="0" (click)= "goback()">

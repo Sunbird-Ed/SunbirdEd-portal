@@ -8,7 +8,7 @@
   <!--Header section-->
   <header class="mat-page-container">
     <div class="sb-g flex-ai-center">
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 sbt-header-logo">
+      <div class="sb-g-col-sm-12 sb-g-col-md-12 sb-g-col-lg-3 sb-g-col-xxxl-4 sbt-header-logo">
         <a class="logo sbt-logo" tabindex="0" title="{{tenantInfo.titleName}}" role="link"
           aria-label="Navigate to Homepage">
           <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}} src="{{tenantInfo.logo}}">
@@ -33,28 +33,28 @@
           <!--/Avtar Dropdown-->
         </div>
       </div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-5 sb-g-col-xxxl-8 flex-jc-center relative">
-        <app-search class="w-100"></app-search>
+      <div class="sb-g-col-sm-12 sb-g-col-md-6 sb-g-col-lg-5 sb-g-col-xxxl-8 flex-jc-center relative mb-8-max-md">
+        <app-search></app-search>
       </div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-4 sb-g-col-xxxl-4">
+      <div class="sb-g-col-sm-12 sb-g-col-md-6 sb-g-col-lg-4 sb-g-col-xxxl-4 mt-8-max-sm mb-16-max-sm mb-8-max-md">
         <div class="d-flex flex-ai-center flex-jc-flex-end">
           <!-- language dropdown -->
           <app-language-dropdown [languageRange]='languages'
             *ngIf=" isLanguageDropdown && languages && showLanguageDropdown()"></app-language-dropdown>
           <!-- Notification dropdown  -->
           <app-in-app-notification tabindex="0" *ngIf="userService?.loggedIn"
-            class="ml-16 d-none d-sm-block"></app-in-app-notification>
+            class="ml-16 d-none d-above-sm-block"></app-in-app-notification>
           <!--Avtar Dropdown-->
-          <div class="cursor-pointer ml-8 d-none d-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
+          <div class="cursor-pointer ml-8 d-none d-above-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
             aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
-            (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User"></div>
-          <sb-avatar class="cursor-pointer ml-8 d-none d-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
+            (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" width="56" alt="Guest User"></div>
+          <sb-avatar class="cursor-pointer ml-8 d-none d-above-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
             *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)" [config]=avatarConfig
             initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
             [attr.aria-label]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'"
             [attr.title]="'Welcome ' + (guestUser?.formatedName || 'Guest') + ', ' + 'Click here to continue to your profile'">
           </sb-avatar>
-          <sb-avatar class="cursor-pointer ml-8 d-none d-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
+          <sb-avatar class="cursor-pointer ml-8 d-none d-above-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
             *ngIf='userProfile' tabindex="0" (click)="toggleSideMenu(true)" [config]=avatarConfig initialsSize="2"
             [initial]="userProfile?.firstName[0]"
             title="'Welcome ' + userProfile?.firstName + ', ' + 'Click here to continue to your profile'"

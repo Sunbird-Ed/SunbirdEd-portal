@@ -1,0 +1,32 @@
+@use "@angular/material" as mat;
+@use 'sass:map';
+@use './palette' as *;
+
+@mixin mat-badge($theme) {
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
+  $foreground: map.get($color-config, 'foreground');
+
+
+  $font-size: 0.75rem;
+  $default-size: 1.375rem !default;
+
+  .mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
+    right: 0px;
+    html[dir='rtl'] & {
+      left: 0px;
+      right: inherit;
+    }
+  }
+  .mat-badge-medium.mat-badge-above .mat-badge-content {
+    top: -0.25rem;
+  }
+  .mat-badge-medium .mat-badge-content {
+    font-size: 1rem;
+  }
+}
