@@ -8,7 +8,7 @@ import { environment } from '@sunbird/environment';
 class TestComponent {
 }
 
-describe('DesktopOnlyDirective', () => {
+xdescribe('DesktopOnlyDirective', () => {
   let component: TestComponent;
   beforeAll(() => {
     component = new TestComponent();

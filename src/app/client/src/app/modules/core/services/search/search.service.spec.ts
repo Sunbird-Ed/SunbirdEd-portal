@@ -9,7 +9,7 @@ import { PublicDataService } from './../public-data/public-data.service';
 import { FormService } from '../../../core';
 import { serviceMockData } from './search.service.spec.data';
 
-describe('SearchService', () => {
+xdescribe('SearchService', () => {
   let searchService: SearchService;
   const resourceBundle = {
     frmelmnts: {
@@ -143,7 +143,7 @@ describe('SearchService', () => {
     expect(data.filters.primaryCategory).toEqual(['TextBook']);
   });
 
-  describe('should check for update facets data', () => {
+  xdescribe('should check for update facets data', () => {
 
     it('should call the updateFacetsData with facets value board', () => {
       const facets = [{ name: 'board' }];

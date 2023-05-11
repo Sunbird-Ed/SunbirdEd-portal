@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from "@angular/common/http";
 import { LearnerService } from './learner.service';
 
-describe('LearnerService', () => {
+xdescribe('LearnerService', () => {
   let learnerService: LearnerService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

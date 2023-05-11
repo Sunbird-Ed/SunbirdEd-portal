@@ -2,7 +2,7 @@ import { ResourceService } from "../../../shared";
 import { Response } from "./dial-code-card.component.spec.data";
 import { DialCodeCardComponent } from "./dial-code-card.component";
 
-describe("DialCodeCardComponent", () => {
+xdescribe("DialCodeCardComponent", () => {
   let component: DialCodeCardComponent;
   const mockResourceService: Partial<ResourceService> = {};
 

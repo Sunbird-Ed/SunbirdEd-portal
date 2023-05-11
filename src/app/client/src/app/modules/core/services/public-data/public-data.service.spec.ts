@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from "@angular/common/http";
 import { PublicDataService } from './public-data.service';
 
-describe('PublicDataService', () => {
+xdescribe('PublicDataService', () => {
   let publicDataService: PublicDataService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

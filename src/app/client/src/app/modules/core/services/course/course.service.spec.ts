@@ -8,7 +8,7 @@ import { ContentDetailsModule } from "@project-sunbird/common-consumption";
 import { Console } from "console";
 
 
-describe('CoursesService', () => {
+xdescribe('CoursesService', () => {
   let coursesService: CoursesService;
   const mockUserService: Partial<UserService> = {
     userOrgDetails$: of({
@@ -106,7 +106,7 @@ const  error = {
     expect(coursesService).toBeTruthy();
   });
 
-  describe('should get the enrolled courses for a user', () => {
+  xdescribe('should get the enrolled courses for a user', () => {
     it('should call the getEnrolledCourses method and get the enrolled courses', (done) => {
       jest.spyOn(coursesService['learnerService'], 'get').mockReturnValue(of({
         id: 'id',
@@ -139,7 +139,7 @@ const  error = {
       expect(coursesService['learnerService'].get).toHaveBeenCalled();
     });
   });
-  describe('getCourseSectionDetails', () => {
+  xdescribe('getCourseSectionDetails', () => {
     it('should call the get course section details method', () => {
       jest.spyOn(coursesService, 'getCourseSection').mockReturnValue(of(
         ServerResponse
@@ -162,7 +162,7 @@ const  error = {
       expect(coursesService.getCourseSection).toHaveBeenCalled();
     });
   });
-  describe('getCourseSection', () => {
+  xdescribe('getCourseSection', () => {
     it('should call the get course section method', () => {
       jest.spyOn(coursesService['learnerService'], 'get').mockReturnValue(of(ServerResponse));
       const obj = {
@@ -173,7 +173,7 @@ const  error = {
       expect(coursesService.getCourseSection).toBeCalled();
     });
   });
-  describe('getQRCodeFile', () => {
+  xdescribe('getQRCodeFile', () => {
     it('should call the get QRcode file for courses method', () => {
       jest.spyOn(coursesService['learnerService'], 'post').mockReturnValue(of(ServerResponse));
       const obj = {

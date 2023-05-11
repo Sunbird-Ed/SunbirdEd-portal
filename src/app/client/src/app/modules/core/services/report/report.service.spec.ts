@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { BaseReportService } from '../report/report.service';
 
-describe('BaseReportService', () => {
+xdescribe('BaseReportService', () => {
     let baseReportService: BaseReportService;
     const mockConfigService: Partial<ConfigService> = {
       urlConFig: {

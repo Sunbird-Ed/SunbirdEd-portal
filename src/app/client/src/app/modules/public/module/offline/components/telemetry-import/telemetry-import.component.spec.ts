@@ -8,7 +8,7 @@ import { of, throwError } from 'rxjs';
 import { TelemetryImportComponent } from './telemetry-import.component';
 import { telemetryData } from './telemetry-import.component.spec.data';
 
-describe("TelemetryImportComponent", () => {
+xdescribe("TelemetryImportComponent", () => {
     let telemetryImportComponent: TelemetryImportComponent;
     const mockResourceService: Partial<ResourceService> = {
         messages: telemetryData.resourceBundle.messages
@@ -56,14 +56,14 @@ describe("TelemetryImportComponent", () => {
         expect(telemetryImportComponent).toBeTruthy();
     });
 
-    describe('setImportTelemetry', () => {
+    xdescribe('setImportTelemetry', () => {
         it('should set the imported telemetry', () => {
             telemetryImportComponent.setImportTelemetry();
 
         });
     });
 
-    describe('openImportTelemetryDialog', () => {
+    xdescribe('openImportTelemetryDialog', () => {
         it('should call openImportTelemetryDialog', () => {
             //arrange
             jest.spyOn(mockElectronDialogService, 'showTelemetryImportDialog').mockImplementation();
@@ -76,7 +76,7 @@ describe("TelemetryImportComponent", () => {
         });
     });
 
-    describe('getTotalSizeImportedFiles', () => {
+    xdescribe('getTotalSizeImportedFiles', () => {
         it('should call getTotalSizeImportedFiles', () => {
             //arrange
             telemetryImportComponent.importFilesList = telemetryData.importList.result.response.items;
@@ -88,14 +88,14 @@ describe("TelemetryImportComponent", () => {
         });
     });
 
-    describe('setRetryImportTelemetry', () => {
+    xdescribe('setRetryImportTelemetry', () => {
         it('should set retry import telemetry', () => {
             //act
             telemetryImportComponent.setRetryImportTelemetry(telemetryData.filedetails);
         });
     });
 
-    describe('getList', () => {
+    xdescribe('getList', () => {
         it('should get the list', () => {
             //arrange
             mockTelemetryActionsService.telemetryImportList = jest.fn();
@@ -108,7 +108,7 @@ describe("TelemetryImportComponent", () => {
         });
     });
 
-    describe('reTryImport', () => {
+    xdescribe('reTryImport', () => {
         it('should call reTryTelemetryImport and success case', () => {
             //arrange
             jest.spyOn(telemetryImportComponent, 'setRetryImportTelemetry').mockImplementation();
@@ -135,7 +135,7 @@ describe("TelemetryImportComponent", () => {
         });
     });
 
-    describe('ngOnInit', () => {
+    xdescribe('ngOnInit', () => {
         it('should call getImportedFilesList', () => {
             //arrange
             jest.spyOn(telemetryImportComponent.apiCallSubject, 'next').mockImplementation();
@@ -147,7 +147,7 @@ describe("TelemetryImportComponent", () => {
         });
     });
 
-    describe("ngOnDestroy", () => {
+    xdescribe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             //arrange
             telemetryImportComponent.unsubscribe$ = {

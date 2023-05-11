@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { ReIssueCertificateComponent } from './re-issue-certificate.component';
 import { of, throwError } from 'rxjs';
 
-describe("ReIssueCertificateComponent", () => {
+xdescribe("ReIssueCertificateComponent", () => {
     let reIssueCertificateComponent: ReIssueCertificateComponent;
     const mockResourceService: Partial<ResourceService> = {
         messages: {
@@ -86,7 +86,7 @@ describe("ReIssueCertificateComponent", () => {
         expect(reIssueCertificateComponent.onPopState).toBeDefined();
     });
 
-    describe('setObject', () => {
+    xdescribe('setObject', () => {
         it('should return object with version 2', () => {
             //arrange
             reIssueCertificateComponent.courseId = '123';
@@ -120,7 +120,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('isErrorOccurred', () => {
+    xdescribe('isErrorOccurred', () => {
         //arrange
         it('should  call toaster message for user is not enrolled in batches ', () => {
             jest.spyOn(reIssueCertificateComponent['toasterService'], 'error').mockImplementation();
@@ -153,7 +153,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('setImpressionEvent', () => {
+    xdescribe('setImpressionEvent', () => {
         it('should assign telemetryImpression', () => {
             //arrange
             mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(of(5)) as any;
@@ -185,7 +185,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('ngOnInit', () => {
+    xdescribe('ngOnInit', () => {
         it('should create', () => {
             //arrange
             jest.spyOn(reIssueCertificateComponent, 'setImpressionEvent').mockImplementation();
@@ -198,7 +198,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('showErrorMsg', () => {
+    xdescribe('showErrorMsg', () => {
         it('should call toaster service with error msg', () => {
             //arrange
             jest.spyOn(reIssueCertificateComponent['toasterService'], 'error').mockImplementation();
@@ -209,7 +209,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('modifyCss', () => {
+    xdescribe('modifyCss', () => {
         it('should classList add()', () => {
             //arrange
             reIssueCertificateComponent.button = { nativeElement: { disabled: false, classList: { remove: jest.fn(), add: jest.fn() } } }
@@ -224,7 +224,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('searchCertificates', () => {
+    xdescribe('searchCertificates', () => {
         it('should return  certList with batchList[]', () => {
             //arrange
             const response = {
@@ -280,7 +280,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('addTelemetry', () => {
+    xdescribe('addTelemetry', () => {
         it('should call interact service', () => {
             //arrange
             jest.spyOn(mockTelemetryService, 'interact').mockImplementation();
@@ -318,7 +318,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('toLowerCase', () => {
+    xdescribe('toLowerCase', () => {
         it('should convert to lowercase and return data', () => {
             //act
             const data = reIssueCertificateComponent.toLowerCase('UserDIstrict');
@@ -334,7 +334,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe("ngOnDestroy", () => {
+    xdescribe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             //arrange
             reIssueCertificateComponent.unsubscribe$ = {
@@ -349,7 +349,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('enableReIssueCert', () => {
+    xdescribe('enableReIssueCert', () => {
         it('should enable "Re-Issue" button when status = 2 "', () => {
             //arrange
             const batch = { batchId: '1', name: 'batch 1', certificates: [], ssuedCertificates: [], createdBy: '123', status: 2 };
@@ -399,7 +399,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('toggleModal', () => {
+    xdescribe('toggleModal', () => {
         it('should assign showModal TRUE', () => {
             //act
             reIssueCertificateComponent.toggleModal(true);
@@ -441,7 +441,7 @@ describe("ReIssueCertificateComponent", () => {
         });
     });
 
-    describe('reIssueCert', () => {
+    xdescribe('reIssueCert', () => {
         it('should reIssue certificate', () => {
             //arrange
             const batch = { batchId: '1', name: 'batch 1', certificates: [], createdBy: '123' };

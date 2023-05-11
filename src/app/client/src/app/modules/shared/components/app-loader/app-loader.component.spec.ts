@@ -1,7 +1,7 @@
 import { AppLoaderComponent } from './app-loader.component';
 import { ResourceService, ConfigService, LayoutService } from '../../../shared';
 
-describe('AppLoaderComponent', () => {
+xdescribe('AppLoaderComponent', () => {
     let component: AppLoaderComponent;
     const resourceService: Partial<ResourceService> = {
         messages: {

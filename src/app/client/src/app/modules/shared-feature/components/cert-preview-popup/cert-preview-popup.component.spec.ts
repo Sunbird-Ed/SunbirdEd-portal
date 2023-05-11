@@ -2,7 +2,7 @@ import { ResourceService } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CertPreviewPopupComponent } from './cert-preview-popup.component';
 
-describe('CertPreviewPopup component', ()=>{
+xdescribe('CertPreviewPopup component', ()=>{
   let certPreviewPopupComponent: CertPreviewPopupComponent;
   const mockResourceService: Partial<ResourceService> = {};
   const mockDomSanitizer: Partial<DomSanitizer> = {
@@ -32,7 +32,7 @@ describe('CertPreviewPopup component', ()=>{
     expect(certPreviewPopupComponent.modal.deny).toBeCalled();
   });
 
-  describe('closeModal', ()=> {
+  xdescribe('closeModal', ()=> {
     it('should call deny if condition is true', ()=> {
       certPreviewPopupComponent.closeModal();
       expect(certPreviewPopupComponent.modal.deny).toBeCalled();

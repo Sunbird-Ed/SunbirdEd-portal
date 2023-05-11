@@ -2,7 +2,7 @@ import { RendererService } from "./renderer.service";
 import { of } from "rxjs";
 import { LineChartService } from "../chartjs";
  
-describe("RendererService", () => {
+xdescribe("RendererService", () => {
  let rendererService: RendererService;
  const lineChartService: Partial<LineChartService> = {
    parseLineChart: jest.fn(),

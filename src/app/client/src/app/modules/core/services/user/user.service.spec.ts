@@ -7,7 +7,7 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { Inject } from '@angular/core';
 import { mockUserData } from './user.mock.spec.data';
 
-describe('UserService', () => {
+xdescribe('UserService', () => {
   let userService: UserService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

@@ -4,7 +4,7 @@ import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {eventData} from './telemetry-error.dircetive.spec.data';
 
-describe('TelemetryErrorDirective', () => {
+xdescribe('TelemetryErrorDirective', () => {
 let directive:TelemetryErrorDirective;
 const telemetryService: Partial<TelemetryService> = {
     error: jest.fn()

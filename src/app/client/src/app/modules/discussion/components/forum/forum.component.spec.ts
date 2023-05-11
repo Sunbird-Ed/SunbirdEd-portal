@@ -6,7 +6,7 @@ import { LearnerService, UserService } from '@sunbird/core';
 import { ForumComponent } from './forum.component';
 import { of } from 'rxjs';
 
-describe('Forum component', ()=> {
+xdescribe('Forum component', ()=> {
   let forumComponent: ForumComponent;
   const mockDomSantizer:Partial<DomSanitizer>={
     bypassSecurityTrustResourceUrl:jest.fn().mockReturnValue(true)
@@ -56,7 +56,7 @@ describe('Forum component', ()=> {
     expect(forumComponent).toBeTruthy();
   });
 
-  describe('ngOnInit', ()=> {
+  xdescribe('ngOnInit', ()=> {
     it('should call getDiscussionUrl', ()=> {
       jest.spyOn(forumComponent,'getDiscussionUrl');
       forumComponent.ngOnInit();

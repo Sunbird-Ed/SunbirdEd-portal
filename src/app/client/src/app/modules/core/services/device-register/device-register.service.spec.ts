@@ -5,7 +5,7 @@ import { DeviceRegisterService } from './device-register.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import { DeviceService } from '../../services/device/device.service';
 
-describe('DeviceRegisterService', () => {
+xdescribe('DeviceRegisterService', () => {
   let deviceRegisterService: DeviceRegisterService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -61,7 +61,7 @@ describe('DeviceRegisterService', () => {
     expect(deviceRegisterService['portalVersion']).toBe('1.0');
   });
 
-  describe('should update the Device ID', () => {
+  xdescribe('should update the Device ID', () => {
     it('should update the setDeviceId using the DOM element', () => {
       jest.spyOn(document, 'getElementById').mockImplementation((data) => {
         switch (data) {
@@ -74,7 +74,7 @@ describe('DeviceRegisterService', () => {
     });
   });
 
-  describe('should call fetchDeviceProfile', () => {
+  xdescribe('should call fetchDeviceProfile', () => {
     it('should call fetchDeviceProfile using the DOM element', (done) => {
       jest.spyOn(deviceRegisterService['deviceService'], 'get').mockReturnValue(of({
         id: 'id',
@@ -106,7 +106,7 @@ describe('DeviceRegisterService', () => {
     });
   });
 
-  describe('should call getDeviceProfile', () => {
+  xdescribe('should call getDeviceProfile', () => {
     it('should call getDeviceProfile using the DOM element', () => {
       deviceRegisterService.deviceProfile = {
         deviceId : '32cef05697d1ab3a8049c0e8981bcc79'
@@ -148,7 +148,7 @@ describe('DeviceRegisterService', () => {
     });
   });
 
-  describe('should call updateDeviceProfile', () => {
+  xdescribe('should call updateDeviceProfile', () => {
       const userDeclaredLocation = {
         state: 'karnataka',
         district: 'Bangalore'

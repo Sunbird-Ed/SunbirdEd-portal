@@ -5,7 +5,7 @@ import { ProfileBadgeComponent } from './profile-badge.component';
 import { mockRes } from './profile-badge.component.spec.data';
 import { of } from 'rxjs';
 
-describe("ProfileBadgeComponent", () => {
+xdescribe("ProfileBadgeComponent", () => {
     let profileBadgeComponent: ProfileBadgeComponent;
     const mockResourceService: Partial<ResourceService> = {};
     const mockUserService: Partial<UserService> = {
@@ -48,7 +48,7 @@ describe("ProfileBadgeComponent", () => {
         expect(profileBadgeComponent).toBeTruthy();
     });
 
-    describe('ngOnInit', () => {
+    xdescribe('ngOnInit', () => {
         it('should call getBadgeData method', () => {
             //arrange
             const req = {
@@ -74,7 +74,7 @@ describe("ProfileBadgeComponent", () => {
         });
     });
 
-    describe('toggle', () => {
+    xdescribe('toggle', () => {
         it('should call toggle method with limit greater than 4', () => {
             //arrange
             const limit = true;

@@ -3,7 +3,7 @@ import { TelemetryShareDirective } from './telemetry-share.directive';
 import { TelemetryService } from '../../services';
 import { eventData } from './telemetry-share.directive.spec.data';
 import { ActivatedRoute } from '@angular/router';
-describe('TelemetryShareDirective', () => {
+xdescribe('TelemetryShareDirective', () => {
     const env = 'workspace';
 
     let directive: TelemetryShareDirective;

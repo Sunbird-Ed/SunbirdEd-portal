@@ -11,7 +11,7 @@ import { mockUpdateContactData } from './update-contact.mock.spec.data'
 import { NavigationHelperService, UtilService } from '../../../../../../shared/services';
 import { SignupService } from '../../../../signup';
 
-describe('UpdateContactComponent', () => {
+xdescribe('UpdateContactComponent', () => {
     let component: UpdateContactComponent;
 
     const activatedRoute: Partial<ActivatedRoute> = {

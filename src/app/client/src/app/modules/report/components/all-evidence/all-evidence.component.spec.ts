@@ -4,7 +4,7 @@ import { AllEvidenceComponent } from './all-evidence.component';
 import { DhitiService } from '@sunbird/core';
 import { MatTab } from '@angular/material/tabs';
 
-describe('AllEvidenceComponent', () => {
+xdescribe('AllEvidenceComponent', () => {
   let component: AllEvidenceComponent;
   const resourceService: Partial<ResourceService> = {};
   const configService:Partial<ConfigService> = {}

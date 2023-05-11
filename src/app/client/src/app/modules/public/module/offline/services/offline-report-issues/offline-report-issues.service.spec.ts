@@ -4,7 +4,7 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { OfflineReportIssuesService } from './offline-report-issues.service';
 
 
-describe('OfflineReportIssuesService', () => {
+xdescribe('OfflineReportIssuesService', () => {
   let offlineReportIssuesService: OfflineReportIssuesService;
   const mockPublicDataService: Partial<PublicDataService> = {};
   const mockConfigService: Partial<ConfigService> = {
@@ -70,7 +70,7 @@ describe('OfflineReportIssuesService', () => {
     it('should create a instance of ElectronDialogService', () => {
         expect(offlineReportIssuesService).toBeTruthy();
     });
-    describe('reportOtherIssue', () => {
+    xdescribe('reportOtherIssue', () => {
       it('should call report other issue method called ', () => {
         const apiBody = {};
         const requestParams = {

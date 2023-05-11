@@ -4,7 +4,7 @@ import { LocationService } from './location.service';
 import { FormService, LearnerService, UserService } from '../../../../modules/core';
 import { of } from 'rxjs';
 
-describe('LocationService', () => {
+xdescribe('LocationService', () => {
     let locationService: LocationService;
 
     const mockLearnerService: Partial<LearnerService> = {

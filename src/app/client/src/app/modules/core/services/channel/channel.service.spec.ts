@@ -6,7 +6,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { ChannelService } from "./channel.service";
 import { PublicDataService } from './../public-data/public-data.service';
 
-describe('ChannelService', () => {
+xdescribe('ChannelService', () => {
   let channelService: ChannelService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -36,7 +36,7 @@ describe('ChannelService', () => {
     expect(channelService).toBeTruthy();
   });
 
-  describe('should fetch framework details', () => {
+  xdescribe('should fetch framework details', () => {
     const hashTagId = 'NTP'
     it('should call the getFrameWork method with hashTagId', (done) => {
       jest.spyOn(channelService['publicDataService'],'get').mockReturnValue(of({

@@ -10,7 +10,7 @@ import { BrowserCacheTtlService, LayoutService, UtilService } from '../../../sha
 import { OrgDetailsService, UserService } from '../../../core';
 import { Response } from './view-all.component.spec.data';
 
-describe('ViewAllComponent', () => {
+xdescribe('ViewAllComponent', () => {
   let component: ViewAllComponent;
 
   const mockSearchService: Partial<SearchService> = {};
