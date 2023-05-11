@@ -94,23 +94,24 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
+<app-modal-wrapper *ngIf="showModal"
+  [config]="{disableClose: true, size: 'small', width: '30rem', panelClass: 'material-modal'}"
   (dismiss)="toggleModal(false);addTelemetry('close-re-issue-popup', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })"
   #modal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal">
-      <div mat-dialog-title class="mb-0">
-        <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.cert}} ?</div>
-      </div>
-      <div class="sb-mat__modal__content">
-        <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}}</p>
-      </div>
-      <mat-dialog-actions class="sb-mat__modal__actions">
-        <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-          (click)="reIssueCert(userBatch);addTelemetry('re-issue-cert-confirm', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.yes}}</button>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-          (click)="toggleModal(false);addTelemetry('re-issue-cert-cancel', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.no}}</button>
-      </mat-dialog-actions>
+
+    <div mat-dialog-title class="mb-0">
+      <h2 class="color-accent font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.cert}} ?</h2>
     </div>
+    <mat-dialog-content>
+      <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button class="button-rounded mr-8" tabindex="0"
+        (click)="toggleModal(false);addTelemetry('re-issue-cert-cancel', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.no}}</button>
+      <button mat-raised-button color="accent" class="button-rounded" tabindex="0"
+        (click)="reIssueCert(userBatch);addTelemetry('re-issue-cert-confirm', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+    </mat-dialog-actions>
+
   </ng-template>
 </app-modal-wrapper>

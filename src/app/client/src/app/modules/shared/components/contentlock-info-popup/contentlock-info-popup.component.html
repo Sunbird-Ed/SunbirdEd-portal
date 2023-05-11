@@ -1,34 +1,20 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'small'}" (dismiss)="closeModal()" #modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'small', width: '30rem'}" (dismiss)="closeModal()" #modal>
     <ng-template sbModalContent>
-        <div class="sb-modal">
-            <div class="transition ui dimmer page modals active visible">
-                <div class="ui modal transition active visible small">
-                    <!--Header-->
-                    <div class="sb-modal-header">
-                        &nbsp;
-                    </div>
-                    <!--/Header-->
-                    <!--Content-->
-                    <div class="sb-modal-content">
-                        <div class="ui center aligned segment">
-                            <div class="header cardsHeading">
-                                {{resourceService?.frmelmnts?.lbl?.lockPopupTitle |
-                                interpolate:'{collaborator}':content.lockInfo.creatorInfo.name |
-                                interpolate:'{contentName}':content?.name}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--/Content-->
-                    <!--Actions-->
-                    <div class="sb-modal-actions">
-                        <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()" tabindex="0">
-                            {{resourceService.frmelmnts?.btn?.ok}}
-                        </button>
-                    </div>
-                    <!--/Actions-->
+        <!--Content-->
+        <mat-dialog-content class="d-flex flex-ai-center flex-jc-center flex-w-wrap">
+            <h4 class="py-16 font-weight-bold"> {{resourceService?.frmelmnts?.lbl?.lockPopupTitle |
+                interpolate:'{collaborator}':content.lockInfo.creatorInfo.name |
+                interpolate:'{contentName}':content?.name}}
+            </h4>
+        </mat-dialog-content>
+        <!--/Content-->
+        <!--Actions-->
+        <mat-dialog-actions align="end">
+            <button mat-raised-button color="accent" class="button-rounded mr-8" (click)="closeModal()" tabindex="0">
+                {{resourceService.frmelmnts?.btn?.ok}}
+            </button>
+        </mat-dialog-actions>
 
-                </div>
-            </div>
-        </div>
+        <!--/Actions-->
     </ng-template>
 </app-modal-wrapper>
