@@ -46,18 +46,15 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   @Input()
   set selectedFilter(val: any) {
-    console.log('before-seelc')
     if (val) {
       this.selectedFilters = {};
       if (val.filters) {
         this.filters = val.filters;
-        console.log('this.filters', this.filters);
       }
       this.formGeneration(val.data);
       if (val.selectedFilters) {
         this.selectedFilters = val.selectedFilters;
         this.filtersFormGroup.setValue(val.selectedFilters);
-        console.log('patch1',val.selectedFilters )
       }
     }
   }
@@ -74,11 +71,9 @@ export class FilterComponent implements OnInit, OnDestroy {
           this.selectedFilters = {};
         } else if (val.filters) {
           this.filtersFormGroup.setValue(val.filters);
-          console.log('patch2', val.filters)
           this.selectedFilters = val.filters;
         } else if (currentFilterValue) {
           this.filtersFormGroup.setValue(currentFilterValue);
-          console.log('patch3', currentFilterValue)
           this.selectedFilters = currentFilterValue;
         }
     }
@@ -109,7 +104,6 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const charts = [];
-    console.log('chart')
     if (this.chartData && this.chartData.length > 0) {
       this.chartData.map(function(data) {
         charts.push(...data.data);
@@ -192,18 +186,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       });
       if (this.chartData.selectedFilters) {
           this.filtersFormGroup.setValue(this.chartData.selectedFilters);
-          console.log('patch4',this.chartData.selectedFilters )
       }
-    // const selectedFilters = this.chartData.selectedFilters;
-
-    // Assuming the form controls in filtersFormGroup have the same names as the properties in selectedFilters object
-
-    // Option 1: Loop through the form controls
-    // Object.keys(selectedFilters).forEach(filterName => {
-    //   if (this.filtersFormGroup.controls[filterName]) {
-    //     this.filtersFormGroup.controls[filterName].setValue(selectedFilters[filterName]);
-    //   }
-    // });
 
   }
 
@@ -325,6 +308,11 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (data && data.length > 0) {
       object[reference] = data;
       this.currentReference = reference;
+    }
+    for (const key in this.selectedDialogData) {
+      if (key != reference) {
+        this.filtersFormGroup.controls[key].setValue(this.selectedDialogData[key]);
+      }
     }
     this.filtersFormGroup.controls[reference].setValue(data);
   }
