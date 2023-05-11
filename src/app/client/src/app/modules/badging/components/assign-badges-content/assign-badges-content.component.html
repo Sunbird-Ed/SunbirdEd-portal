@@ -27,12 +27,12 @@
     <!--Actions-->
     <mat-dialog-actions align="end">
       <button tabindex="0" appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
-        [telemetryInteractEdata]="cancelBadgeInteractEdata" mat-raised-button class="button-rounded"
+        [telemetryInteractEdata]="cancelBadgeInteractEdata" mat-raised-button class="button-rounded mr-8"
         (click)="showBadgeAssingModel=false;">
         {{resourceService?.frmelmnts?.btn?.cancel}}
       </button>
       <button appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
-        [telemetryInteractEdata]="assignBadgeInteractEdata" mat-raised-button color="accent" class="button-rounded mr-8"
+        [telemetryInteractEdata]="assignBadgeInteractEdata" mat-raised-button color="accent" class="button-rounded"
         (click)="assignBadge(badge)" tabindex="0">
         {{resourceService?.frmelmnts?.btn?.yesiamsure}}
       </button>

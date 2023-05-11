@@ -107,9 +107,9 @@
       <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}}</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-raised-button class="button-rounded" tabindex="0"
+      <button mat-raised-button class="button-rounded mr-8" tabindex="0"
         (click)="toggleModal(false);addTelemetry('re-issue-cert-cancel', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.no}}</button>
-      <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
+      <button mat-raised-button color="accent" class="button-rounded" tabindex="0"
         (click)="reIssueCert(userBatch);addTelemetry('re-issue-cert-confirm', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.yes}}</button>
     </mat-dialog-actions>
 
