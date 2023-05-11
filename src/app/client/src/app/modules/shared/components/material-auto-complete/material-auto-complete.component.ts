@@ -12,11 +12,8 @@ export class MaterialAutoCompleteComponent implements OnChanges {
     return this._selectedFilters;
   }
   set selectedFilters(val) {
-    console.log('mat-selected', val);
     this._selectedFilters = val;
-    console.log('pre push ', this.selected)
-    this.selected.push(...val);
-    console.log('POST push ', this.selected)
+    this.selected = val;
     this.dropDownSelectedShow();
 
   }
