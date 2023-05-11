@@ -461,7 +461,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     } else {
       if (this.currentFilters) {
         this.chartData['selectedFilters'] = this.currentFilters;
-        this.resetFilters = { data: this.chartData, reset: true };
+        this.resetFilters = { data: this.chartData, reset:  Object.keys(this.chartData).length > 0 ? false: true };
       } else {
         this.chartData['selectedFilters'] = {};
       }
@@ -473,7 +473,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.chartData['selectedFilters'] = {};
-    this.resetFilters = { data: this.chartData, reset: true };
+    this.resetFilters = { data: this.chartData, reset:  Object.keys(this.chartData).length > 0 ? false: true };
     this.currentFilters = [];
   }
   checkFilterReferance(element) {
@@ -487,8 +487,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
     return [{ id: this.chartConfig.id , data: this.chartData , selectedFilters: this.currentFilters }];
   }
   openDialog() {
+    console.log('called open dialog ', this.chartData['selectedFilters'])
     if (this.filterPopUpMat) {
-      this.dialogRef = this.dialog.open(this.filterPopUpMat);
+      this.dialogRef = this.dialog.open(this.filterPopUpMat, {
+        data: this.chartData['selectedFilters'],
+      });
     }
   }
   closeDialog() {
