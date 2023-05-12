@@ -1,71 +1,17 @@
 // component css goes here
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-@use 'components/metadata' as *;
+// @use 'components/metadata' as *;
 
-.sb-manage-section{
-    .sb-manage-section-title {
-        font-size: calculateRem(16.002px);
-        line-height: normal;
-        font-weight: 600;
-    }
-
-    .sb-multi-rows:nth-child(odd){
-        background: var(--white);
-        border-top: calculateRem(1px) solid var(--rc-dddddd);
-        border-bottom: calculateRem(1px) solid var(--rc-dddddd);
-    }
-
-    .no-data-label{
-     margin-top: calculateRem(6px);
-    }
-
-    .sb-pageSection-content{
-        a{
-            color: var(--primary-color);
-        }
-    }
-
-    .sb-meta-data-container.sb-meta-data-column .sb-meta-data dt{
-        color: var(--primary-color);
-        font-size: calculateRem(16px);
-    }
-
-    .sb-user-list{
-        margin-bottom: calculateRem(4px) !important;
-    }
-    
-    .sb-manage-table-section{
-        border-top: calculateRem(1px) solid var(--rc-dddddd);
-    }
+.upload-btn{
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  margin: 0;
+  height: 100%;
+  cursor: pointer;
 }
-
-@media screen and (max-width: 1279px) and (min-width: 992px){
-    .sb-manage-section {
-        .sb-meta-data-container.sb-meta-data-column .sb-meta-data {
-            flex-basis: 20%;
-        }
-    }
-}
-
-.sb-modal {
-    .sb-modal-content{
-      .self-users-list{
-        line-height: normal;
-        font-size: calculateRem(14px);
-      }
-      .upload-btn{
-        position: absolute;
-        opacity: 0;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0;
-        height: 100%;
-        cursor: pointer;
-      }
-    }
-  }
-
 
   .sbt-user-management {
     .sb-multi-rows {
@@ -87,3 +33,26 @@
       }
     }
   
+    .mat-meta-data {
+      flex-direction: column;
+      margin: 0.5rem 0;
+      flex-basis: 20%;
+      padding-right: 1rem;
+      display: flex;
+      flex-flow: row wrap;
+  }
+  @media screen and (max-width: 1279px) and (min-width: 992px){
+      .mat-meta-data {
+        flex-basis: 20%;
+      }
+    }
+    @media (min-width: 992px) and (max-width: 1279px){
+      .mat-meta-data {
+        flex-basis: 25%;
+      }
+    }
+    @media (max-width: 767px){
+      .mat-meta-data[_ngcontent-wuh-c51] dt[_ngcontent-wuh-c51] {
+        flex-basis: 100%;
+    }
+    }

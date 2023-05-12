@@ -11,7 +11,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     FormsModule,
     ReactiveFormsModule,
     ManageRoutingModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    MatToolbarModule
   ],
   providers: [
     ResourceService,

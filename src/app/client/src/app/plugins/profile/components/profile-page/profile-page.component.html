@@ -242,7 +242,7 @@
       <!--contributions view ends-->
 
       <!-- tarainings attended computer view strats-->
-      <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
+      <div class="container my-16 sb-certificate-trained mat-bg-white" *ngIf="attendedTraining && attendedTraining.length">
           <div class="list-heading">
             <label class="mat-h2 m-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.myLearning}}({{attendedTraining.length}})&#x200E;</label>
             <span class="mat-small mt-4 font-weight-bold">&nbsp;({{resourceService?.frmelmnts?.lbl?.refreshedDaily}})</span>
@@ -298,7 +298,7 @@
          <!-- trainings attended computer view ends-->
 
         <!-- RC Certificates -->
-        <div class="container my-16 sb-certificate-trained" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
+        <div class="container my-16 sb-certificate-trained mat-bg-white" id="learner-passbook" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
             <label class="mat-h2 m-0 font-weight-bold">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
