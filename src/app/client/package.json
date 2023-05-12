@@ -18,6 +18,7 @@
     "post-build": "gulp post:build",
     "build-dev": "ng build --configuration production --build-optimizer=false --deploy-url dist/",
     "test": "jest",
+    "test:ci": "jest --ci --collectCoverage=true --coverageReporters=lcov --forceExit --detectOpenHandles --maxWorkers=2",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
