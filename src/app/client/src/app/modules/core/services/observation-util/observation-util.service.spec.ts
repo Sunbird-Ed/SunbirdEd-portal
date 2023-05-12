@@ -95,7 +95,6 @@ describe('ObservationUtilService', () => {
 
         it('should return profile data for type', (done) => {
             const res = {
-                value: {
                     userLocations: [{ type: 'sample-state', id: 'sample-id' }],
                     organisations: [{
                         isSchool: true,
@@ -104,7 +103,6 @@ describe('ObservationUtilService', () => {
                     profileUserTypes: [{
                         type: 'sample-Type'
                     }]
-                }
             };
             jest.spyOn(Storage.prototype, 'getItem');
             Storage.prototype.getItem = jest.fn(() => JSON.stringify(res));
@@ -122,7 +120,6 @@ describe('ObservationUtilService', () => {
 
         it('should return profile data for subType', (done) => {
             const res = {
-                value: {
                     userLocations: [{ type: 'sample-state', id: 'sample-id' }],
                     organisations: [{
                         isSchool: true,
@@ -131,7 +128,6 @@ describe('ObservationUtilService', () => {
                     profileUserTypes: [{
                         subType: 'sample-subType'
                     }]
-                }
             };
             jest.spyOn(Storage.prototype, 'getItem');
             Storage.prototype.getItem = jest.fn(() => JSON.stringify(res));
