@@ -1,143 +1,137 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9 sbt-inside-page-container':''">
-
-  <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
-    <div class="sb-multi-rows py-16">
-      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap ui container">
+<div class="mat-inside-page-container mat-app-background2">
+  <div [appTelemetryImpression]="telemetryImpression">
+    <div class="mat-app-background p-16 mt-16 br-24">
+      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <div class="d-flex flex-dc mr-auto">
-        <h4 class="sb-manage-section-title m-0 font-weight-normal">Add new user roles</h4>
-        <p class="fsmall">Search and add more user roles</p>
+        <h4 class="mat-body-1 m-0">Add new user roles</h4>
+        <p class="mat-small m-0">Search and add more user roles</p>
         </div>
-        <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" type="button" (click)="assignUserRole()">Add User Role</button>
+        <button mat-raised-button class="button-rounded" color="accent" tabindex="0" type="button" (click)="assignUserRole()">Add User Role</button>
       </div>   
     </div>
-    <div class="sb-multi-rows py-16">
-      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap ui container">
-        <h4 class="sb-manage-section-title m-0 font-weight-normal mr-auto">
+    <div class="mat-app-background p-16 mt-16 br-24">
+      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+        <h4 class="mat-body-1 m-0 mr-auto">
           {{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
-        <button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract
+        <button mat-raised-button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract
           [telemetryInteractEdata]="userDeclaredDetailsEdata"
-          [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}" type="button"
-          class="sb-btn sb-btn-secondary sb-btn-normal" (click)="downloadFile(userDeclaredDetailsUrl)">
+          [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'bgcolor-success':userDeclaredDetailsUrl}" type="button"
+          class="button-rounded" (click)="downloadFile(userDeclaredDetailsUrl)">
           {{resourceService.frmelmnts?.btn?.download}}
         </button>
-        <!-- <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span> -->
-        <!-- <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract 
-      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="openUploadModalInteractEdata">{{resourceService.frmelmnts?.lbl?.uploadValidationStatus}}</button> -->
       </div>
-      <div class="d-flex flex-ai-center ui container" *ngIf="!userDeclaredDetailsUrl">
-        <img src="./assets/images/icon-info.svg" height="16px">
-        <label class="no-data-label font-weight-normal ml-4">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
+      <div class="d-flex flex-ai-center" *ngIf="!userDeclaredDetailsUrl">
+        <mat-icon color="accent">info</mat-icon>
+        <label class="mat-body-1 ml-4 my-4">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
       </div>
-      <p class="font-weight-normal fsmall ui container">
-        {{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} <a
-          class="sb-color-primary cursor-pointer" appTelemetryInteract
+      <p class="mat-small m-0">
+        {{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} 
+        <button mat-button role="button" color="accent" appTelemetryInteract
           [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="adminPolicyDetailsInteractEdata"
-          (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lnk?.adminPolicy}}</a></p>
+          (click)=openAdminPolicyPopup() tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lnk?.adminPolicy}}”>
+          {{resourceService?.frmelmnts?.lnk?.adminPolicy}}
+        </button>
+        </p>
     </div>
 
-    <div class="sb-pageSection sb-multi-rows py-16">
-      <div class="ui container">
-       <h4 class="sb-manage-section-title m-0 pb-16">User & Org Management</h4>
-        <div class="sb-pageSection-content">
+    <div class="mat-app-background p-16 mt-16 br-24">
+      <div class="">
+       <h4 class="mat-body-1 font-weight-bold">User & Org Management</h4>
+        <div class="">
           <div class="d-flex">
-            <div class="sb-label-name">Geo Data:</div>
+            <div class="mat-body-1">Geo Data:</div>
             <div class="ml-auto" *ngIf="geoSummary && geoSummary.length">
-              <button class="sb-btn sb-btn-normal"
-                [ngClass]="(geoButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'"
+              <button mat-raised-button color="accent" class="button-rounded"
+                [ngClass]="(geoButtonText == 'View Less') ? 'color-accent' : ''"
                 (click)="geoTableView()" appTelemetryInteract
                 [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
-              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16"
+              <button mat-raised-button type="button" class="bgcolor-success button-rounded ml-16"
                 (click)="downloadCSVFile(geoCSV, '', slug + '.csv')" appTelemetryInteract
                 [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}}
               </button>
             </div>
           </div>
-          <div class="sb-meta-data-container pt-16 sb-meta-data-column d-flex flex-w-wrap">
-            <dl class="sb-meta-data">
-              <dt>{{ geoData['districts'] }}</dt>
-              <dd>Districts</dd>
+          <div class="pt-16 d-flex flex-w-wrap">
+            <dl class="mat-meta-data">
+              <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['districts'] }}</dt>
+              <dd class="mat-body-1 w-100 text-left m-0">Districts</dd>
             </dl>
-            <dl class="sb-meta-data">
-              <dt>{{ geoData['blocks'] }}</dt>
-              <dd>Blocks</dd>
+            <dl class="mat-meta-data">
+              <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['blocks'] }}</dt>
+              <dd class="mat-body-1 w-100 text-left m-0">Blocks</dd>
             </dl>
-            <dl class="sb-meta-data">
-              <dt>{{ geoData['schools'] }}</dt>
-              <dd>Schools</dd>
+            <dl class="mat-meta-data">
+              <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['schools'] }}</dt>
+              <dd class="mat-body-1 w-100 text-left m-0">Schools</dd>
             </dl>
           </div>
         </div>
       </div>
       <div class="sb-manage-table-section" *ngIf="geoButtonText === resourceService.frmelmnts.btn.viewless">
-        <div class="ui container">
-          <div class="sb-table-responsive">
-            <div class="sb-table-container">
-              <table [attr.id]="GeoTableId"
-                class="sb-table sb-table-hover sb-table-striped sb-table-sortable br-0 width-100">
-                <thead>
-                  <tr>
-                    <th *ngFor="let header of geoTableHeader">{{header}}</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
+        <div class="sb-table-responsive">
+          <div class="my-16">
+            <table [attr.id]="GeoTableId"
+              class="sb-table sb-table-hover sb-table-striped sb-table-sortable br-0 width-100">
+              <thead>
+                <tr>
+                  <th *ngFor="let header of geoTableHeader">{{header}}</th>
+                </tr>
+              </thead>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- Upload validation status modal -->
-<app-modal-wrapper *ngIf="showUploadUserModal" [config]="{disableClose: false, size: 'normal'}"
+<!-- Upload validation status modal-->
+<app-modal-wrapper  *ngIf="showUploadUserModal" [config]="{disableClose: false, width: '45rem', panelClass: 'material-modal'}"
   (dismiss)="closeUserValidationModal()" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-header">
-            {{resourceService?.frmelmnts?.lbl?.uploadingValidationStatusHeader}}
-          </div>
-          <div class="sb-modal-content">
-            <div class="m-0">
-              <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}</span>
-            </div>
-            <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
-              {{uploadButton}}
-              <input type="file" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                [telemetryInteractEdata]="selectUserValidationFileInteractEdata" class="sb-btn-upload upload-btn"
-                (change)="fileChanged($event)" />
-            </div>
-            <div *ngIf="fileUpload">
-              <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
-              <label>{{fileUpload.name}}</label>
-            </div>
-            <div class="ui info message">
-              <div class="header">
-                {{resourceService?.frmelmnts?.scttl?.instructions}}
-              </div>
-              <ol class="ui list">
-                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0107}} </li>
-                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0108}} </li>
-                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0109}} </li>
-                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0110}} </li>
-                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0111}} </li>
-                <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0112}} </li>
-              </ol>
-            </div>
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract
-              [telemetryInteractObject]="telemetryInteractObject"
-              [telemetryInteractEdata]="userValidationUploadInteractEdata" [ngClass]="{'sb-btn-disabled': !fileUpload}"
-              [disabled]="disableBtn">
-              {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
-            </button>
-          </div>
-        </div>
-      </div>
+    <div mat-dialog-title>
+      <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.uploadingValidationStatusHeader}}</div>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+    <mat-dialog-content>
+      <div class="mat-body-1 m-0">
+        {{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}
+      </div>
+      <button type="button" mat-raised-button color="accent" class="button-rounded my-8">
+        {{uploadButton}}
+        <input type="file" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractEdata]="selectUserValidationFileInteractEdata" class="upload-btn"
+          (change)="fileChanged($event)" />
+      </button>
+      <div *ngIf="fileUpload">
+        <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
+        <label>{{fileUpload.name}}</label>
+      </div>
+      <div class="mat-bg-white p-16">
+        <div class="color-accent mat-body-1 mb-8 font-weight-bold">
+          {{resourceService?.frmelmnts?.scttl?.instructions}}
+        </div>
+        <ol>
+          <li class="mat-body-1">{{resourceService?.frmelmnts?.instn?.t0107}} </li>
+          <li class="mat-body-1">{{resourceService?.frmelmnts?.instn?.t0108}} </li>
+          <li class="mat-body-1">{{resourceService?.frmelmnts?.instn?.t0109}} </li>
+          <li class="mat-body-1">{{resourceService?.frmelmnts?.instn?.t0110}} </li>
+          <li class="mat-body-1">{{resourceService?.frmelmnts?.instn?.t0111}} </li>
+          <li class="mat-body-1">{{resourceService?.frmelmnts?.instn?.t0112}} </li>
+        </ol>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button type="button" mat-raised-button color="accent" class="button-rounded" appTelemetryInteract
+        [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="userValidationUploadInteractEdata" [ngClass]="{'disabled': !fileUpload}"
+        [disabled]="disableBtn">
+        {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
+      </button>
+    </mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 

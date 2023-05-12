@@ -1,11 +1,9 @@
 @use './breakpoints' as *;
-
 $displays: none, block, inline, inline-block, flex, inline-flex;
 @each $display in $displays {
     .d-#{$display} {
         display: $display !important;
     }
-
     @each $name,
     $breakpoint in $breakpoints {
         //.d-above-xs-block
@@ -15,18 +13,16 @@ $displays: none, block, inline, inline-block, flex, inline-flex;
             }
         }
         //.d-below-xs-none
-        @media(max-width: $breakpoint) {
+        @media(max-width:$breakpoint - 0.1) {
             .d-below-#{$name}-#{$display} {
                 display: #{$display} !important;
             }
         }
     }
 }
-
 .show {
     @extend .d-block;
   }
-  
   .hide {
     @extend .d-none;
   }

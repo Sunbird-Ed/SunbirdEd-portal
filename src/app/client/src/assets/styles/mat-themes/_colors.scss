@@ -48,7 +48,7 @@
   --color-info: #{$color-info};
   --color-error: #{$color-error};
 
-    /* color starts */
+  /* color starts */
   .color-primary {
     color: var(--color-primary);
   }
@@ -111,7 +111,9 @@
   .bgcolor-primary500 {
     background-color: mat.get-color-from-palette($primary, 500);
   }
-
+  .mat-bg-white{
+    background-color: mat.get-color-from-palette($background, background);
+  }
 
   //border radius
   $brValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 50, 52, 56, 60, 64;

@@ -123,6 +123,7 @@ $theme in $app-themes {
       @include mat.all-component-colors($app-themes);
       @include mat.strong-focus-indicators-theme($app-themes);
       @include theme-mat-chips($app-themes);
+      @include theme-var-colors($app-themes);
       $primary100: map-get($background, background); // mat.get-color-from-palette($accent, 900);
       $primary200: #232323;
       $accent500: mat.get-color-from-palette($accent, 500);
