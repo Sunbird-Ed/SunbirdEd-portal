@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from "@angular/common/http";
 import { ExtPluginService } from './ext-plugin.service';
 
-xdescribe('ExtPluginService', () => {
+describe('ExtPluginService', () => {
   let extPluginService: ExtPluginService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

@@ -74,7 +74,7 @@ xdescribe('AccountMergeModal component', ()=> {
     expect(accountMergeModalComponent.modal.deny).toBeCalled();
   });
 
-  xdescribe('initiateMerge', ()=> {
+  describe('initiateMerge', ()=> {
     it('should call http get function with appropriate url', ()=> {
       const responseUrl = '/user/session/save?redirectUri=user/test'
       jest.spyOn(accountMergeModalComponent.http,'get');

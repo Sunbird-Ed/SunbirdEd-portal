@@ -5,7 +5,7 @@ import { ElectronDialogService } from '../electron-dialog/electron-dialog.servic
 import { TelemetryActionsService } from './telemetry-actions.service';
 import { telemetry } from './telemetry-actions.service.spec.data';
 
-xdescribe("TelemetryActionsService", () => {
+describe("TelemetryActionsService", () => {
     let telemetryActionsService: TelemetryActionsService;
     const mockConfigService: Partial<ConfigService> = {
         urlConFig: {
@@ -47,7 +47,7 @@ xdescribe("TelemetryActionsService", () => {
         expect(telemetryActionsService).toBeTruthy();
     });
 
-    xdescribe('getTelemetryInfo', () => {
+    describe('getTelemetryInfo', () => {
         it('should get telemetry Info', () => {
             //arrange
             jest.spyOn(telemetryActionsService['publicDataService'], 'get').mockReturnValue(of(telemetry.info));
@@ -63,7 +63,7 @@ xdescribe("TelemetryActionsService", () => {
         });
     });
 
-    xdescribe('getSyncTelemetryStatus', () => {
+    describe('getSyncTelemetryStatus', () => {
         it('should call getSyncTelemetryStatus', () => {
             //arrange
             jest.spyOn(telemetryActionsService['publicDataService'], 'get').mockReturnValue(of(telemetry.syncStatusInfo));
@@ -79,7 +79,7 @@ xdescribe("TelemetryActionsService", () => {
         });
     });
 
-    xdescribe('exportTelemetry', () => {
+    describe('exportTelemetry', () => {
         it('should be call exportTelemetry', (done) => {
             //arrange
             mockElectronDialogService.showTelemetryExportDialog = jest.fn(() => of({ destFolder: '/file_to_export/' })) as any;
@@ -93,7 +93,7 @@ xdescribe("TelemetryActionsService", () => {
         });
     });
 
-    xdescribe('reTryTelemetryImport', () => {
+    describe('reTryTelemetryImport', () => {
         it('should be call reTryTelemetryImport and success', (done) => {
             //arrange
             mockPublicDataService.post = jest.fn(() => of(telemetry.retrySuccess)) as any;
@@ -109,7 +109,7 @@ xdescribe("TelemetryActionsService", () => {
         });
     });
 
-    xdescribe('syncTelemtry', () => {
+    describe('syncTelemtry', () => {
         it('should be call syncTelemtry and success', (done) => {
             //arrange
             mockPublicDataService.post = jest.fn(() => of(telemetry.syncTelemetry.success)) as any;
@@ -131,7 +131,7 @@ xdescribe("TelemetryActionsService", () => {
         });
     });
 
-    xdescribe('updateSyncStatus', () => {
+    describe('updateSyncStatus', () => {
         it('should be call updateSyncStatus', (done) => {
             //arrange
             mockPublicDataService.post = jest.fn(() => of(telemetry.updateSyncStatus)) as any;
@@ -152,7 +152,7 @@ xdescribe("TelemetryActionsService", () => {
         });
     });
 
-    xdescribe('telemetryImportList', () => {
+    describe('telemetryImportList', () => {
         it('should be call telemetryImportList', (done) => {
             //arrange
             mockPublicDataService.post = jest.fn(() => of(telemetry.importList)) as any;

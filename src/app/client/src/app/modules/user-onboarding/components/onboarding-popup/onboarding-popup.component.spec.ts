@@ -6,7 +6,7 @@ import { mockData } from './onboarding-popup.component.spec.data'
 import { MatStepper } from '@angular/material/stepper';
 import { ResourceService } from '@sunbird/shared'
 
-xdescribe("Onboarding Component", () => {
+describe("Onboarding Component", () => {
   let onboardingPopupComponent: OnboardingPopupComponent;
   const mockResourceService: Partial<ResourceService> = {}
   const mockDomSanitizer: Partial<DomSanitizer> = {
@@ -37,7 +37,7 @@ xdescribe("Onboarding Component", () => {
     expect(onboardingPopupComponent).toBeTruthy();
   });
 
-  xdescribe('ngOnDestroy', () => {
+  describe('ngOnDestroy', () => {
     it('should destroy subscription', () => {
       //arrange
       onboardingPopupComponent.unsubscribe$ = {
@@ -52,7 +52,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('isAllScreenDisabled', () => {
+  describe('isAllScreenDisabled', () => {
     it('popup will be hide if allScreen are disabled', () => {
       //arrange
       onboardingPopupComponent.OnboardingFormConfig = [{}];
@@ -83,7 +83,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('updateFrameWork', () => {
+  describe('updateFrameWork', () => {
     it('should moved to the next step when BMGS submit event call ', () => {
       // arrange
       Storage.prototype.getItem = jest.fn(() => JSON.stringify('guestUserDetails'))
@@ -123,7 +123,7 @@ xdescribe("Onboarding Component", () => {
       expect(onboardingPopupComponent.onboardingFilterData).toHaveLength(1);
     });
   });
-  xdescribe('updateGuestUser', () => {
+  describe('updateGuestUser', () => {
     // arrange
     it('should update the guestUser Service with default value', () => {
       let event = {
@@ -142,7 +142,7 @@ xdescribe("Onboarding Component", () => {
       expect(Storage.prototype.getItem).toBeCalled();
     })
   });
-  xdescribe('getOnboardingFormConfig', () => {
+  describe('getOnboardingFormConfig', () => {
     it('should check if BMGS is disabled and having default data in form config', () => {
       //arrange
       onboardingPopupComponent.OnboardingFormConfig = mockData.onboardingDisabled as any;
@@ -228,7 +228,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('ngOnInit', () => {
+  describe('ngOnInit', () => {
     it('should call when guestUser dont have data', () => {
       // arrange
       onboardingPopupComponent.isGuestUser = true;
@@ -248,7 +248,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('onProcessComplete', () => {
+  describe('onProcessComplete', () => {
     it('should call when userType is null', () => {
       //arrange
       jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { return null });
@@ -285,7 +285,7 @@ xdescribe("Onboarding Component", () => {
 
   });
 
-  xdescribe('userTypeSubmit', () => {
+  describe('userTypeSubmit', () => {
     it('should call when user type submit event call', () => {
       // arrange
       let stepper = {
@@ -321,7 +321,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('getLocation', () => {
+  describe('getLocation', () => {
     it('should return the location data', () => {
       // arrange
       const result = { ipLocation: { state: "Karnataka", district: "Bangalore" } };
@@ -335,7 +335,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('locationSubmit', () => {
+  describe('locationSubmit', () => {
     it('should call when location submit event call', () => {
       // arrange
       let stepper = {
@@ -375,7 +375,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('getSanitizedURL', () => {
+  describe('getSanitizedURL', () => {
     it('should sanitized the url for iframe', () => {
       // arrange
       const url = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf#page=3'
@@ -387,7 +387,7 @@ xdescribe("Onboarding Component", () => {
     });
   });
 
-  xdescribe('onClickNext', () => {
+  describe('onClickNext', () => {
     it('should complete the process when next event called for single screen', () => {
       //arrange
       onboardingPopupComponent.onboardingFilterData = mockData.enbledDForOneScreen as any;

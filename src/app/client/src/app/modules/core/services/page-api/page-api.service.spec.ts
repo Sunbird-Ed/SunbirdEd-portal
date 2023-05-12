@@ -6,7 +6,7 @@ import { PublicDataService } from './../public-data/public-data.service';
 import { of } from "rxjs";
 import { testData } from './page-api.service.spec.data';
 
-xdescribe("PageApiService", () => {
+describe("PageApiService", () => {
     let pageApiService: PageApiService;
     const mockConfigService: Partial<ConfigService> = {
         urlConFig: {
@@ -46,7 +46,7 @@ xdescribe("PageApiService", () => {
         expect(pageApiService).toBeTruthy();
     });
 
-    xdescribe('setData', () => {
+    describe('setData', () => {
         it('should set the data', () => {
             //arrange
             const param = { source: 'web', name: 'Resource', filters: {}, sort_by: {} };
@@ -60,7 +60,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('getPageSectionData', () => {
+    describe('getPageSectionData', () => {
         it('should return the page section data', (done) => {
             //arrange
             const param = { source: 'web', name: 'Resource', sections: testData.successData.result.response.section, filters: {}, url: 'test', sort_by: { 'lastUpdatedOn': 'desc' }, exists: ['demo'] };
@@ -79,7 +79,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('getPageData', () => {
+    describe('getPageData', () => {
         it('should return the page data', (done) => {
             //arrange
             const param = { source: 'web', name: 'Resource', filters: undefined, sort_by: {} };
@@ -113,7 +113,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('getBatchPageData', () => {
+    describe('getBatchPageData', () => {
         it('should return the batch page data', (done) => {
             //arrange
             const param = { source: 'web', name: 'Resource', filters: {}, sort_by: { 'lastUpdatedOn': 'desc' } };

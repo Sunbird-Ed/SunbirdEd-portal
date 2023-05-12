@@ -6,7 +6,7 @@ import { ContentBadgeService } from "../../services";
 import { AssignBadgesContentComponent } from "./assign-badges-content.component";
 import { mockResponse } from "./assign-badges-content.component.spec.data"
 
-xdescribe("App Component", () => {
+describe("App Component", () => {
     let component: AssignBadgesContentComponent;
 
     const mockResourceService: Partial<ResourceService> = {
@@ -51,7 +51,7 @@ xdescribe("App Component", () => {
         expect(component).toBeTruthy();
     });
 
-    xdescribe('getBadgeDetails', () => {
+    describe('getBadgeDetails', () => {
 
         it('should get all badge list with success response', () => {
             // arrange
@@ -84,7 +84,7 @@ xdescribe("App Component", () => {
         });
     });
 
-    xdescribe('assignBadge', () => {
+    describe('assignBadge', () => {
 
         it('should assign badge successfully and show success message', () => {
             // arrange

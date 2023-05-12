@@ -1,6 +1,6 @@
 import { ErrorPageComponent } from './error-page.component';
 
-xdescribe('ErrorPageComponent', () => {
+describe('ErrorPageComponent', () => {
   let component: ErrorPageComponent;
 
   beforeAll(() => {

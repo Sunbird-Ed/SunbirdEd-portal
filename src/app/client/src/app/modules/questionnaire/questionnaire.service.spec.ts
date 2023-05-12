@@ -4,7 +4,7 @@ import { CloudService, KendraService } from "../core";
 import { SlUtilsService } from "@shikshalokam/sl-questionnaire";
 import { PayloadData } from './questionnaire.service.mock';
 
-xdescribe("QuestionnaireService", () => {
+describe("QuestionnaireService", () => {
   let questionnaireService: QuestionnaireService;
 
   const mockConfigService: Partial<ConfigService> = {

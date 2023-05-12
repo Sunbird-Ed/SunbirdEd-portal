@@ -41,7 +41,7 @@ xdescribe('MergeAccountStatus component', ()=> {
     expect(mergeAccountStatusComponent).toBeTruthy();
   });
 
-  xdescribe('ngOnInit', ()=> {
+  describe('ngOnInit', ()=> {
     it('should set isMergeSuccess,mergeType,redirectUri and error_type properties', ()=> {
       mergeAccountStatusComponent.ngOnInit();
       expect(mergeAccountStatusComponent.isMergeSuccess).toBeDefined();

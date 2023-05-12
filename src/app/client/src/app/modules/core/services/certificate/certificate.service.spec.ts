@@ -7,7 +7,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { CertificateService } from "./certificate.service";
 import { LearnerService } from './../learner/learner.service';
 
-xdescribe('CertificateService', () => {
+describe('CertificateService', () => {
   let certificateService: CertificateService;
   const mockConfigService: Partial<ConfigService> = {
       urlConFig: {
@@ -44,7 +44,7 @@ xdescribe('CertificateService', () => {
       expect(certificateService).toBeTruthy();
   });
 
-  xdescribe('should validate certificate', () => {
+  describe('should validate certificate', () => {
     const data = {
       certificateId: '123QWE'
     }
@@ -88,7 +88,7 @@ xdescribe('CertificateService', () => {
     });
   });
 
-  xdescribe('should fetch certificate preferences', () => {
+  describe('should fetch certificate preferences', () => {
     const data = {
       certificateId: '123QWE'
     }
@@ -132,7 +132,7 @@ xdescribe('CertificateService', () => {
     });
   });
 
-  xdescribe('should fetch batch details', () => {
+  describe('should fetch batch details', () => {
     const batchId = '123456789'
     it('should call the getBatchDetails method with batchId', (done) => {
       jest.spyOn(certificateService.learnerService, 'get').mockReturnValue(of({

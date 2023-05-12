@@ -5,7 +5,7 @@ import { ISummaryObject } from '../../interfaces';
 import { AddSummaryModalComponent } from './add-summary-modal.component'
 type ClassicEditor = typeof ClassicEditor
 
-xdescribe("AddSummaryModalComponent", () => {
+describe("AddSummaryModalComponent", () => {
   let component: AddSummaryModalComponent;
   const mockSummaryFormGroup:  Partial<FormGroup> = {
     reset: jest.fn()

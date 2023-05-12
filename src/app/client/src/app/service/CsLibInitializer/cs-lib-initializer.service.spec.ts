@@ -3,7 +3,7 @@ import { UserService } from '@sunbird/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { of } from 'rxjs';
 
-xdescribe('CsLibInitializerService', () => {
+describe('CsLibInitializerService', () => {
     let csLibInitializerService: CsLibInitializerService;
     const mockUserService: Partial<UserService> = {
         userData$: of({

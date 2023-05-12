@@ -37,7 +37,7 @@ jobs:
       #     command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases using JEST
-          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
+          command: 'npm run test:ci'
       - run:
           name: Install Sonar Scanner
           command: |

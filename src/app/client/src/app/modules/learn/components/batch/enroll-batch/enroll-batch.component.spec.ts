@@ -7,7 +7,7 @@ import { CourseBatchService } from "../../../services";
 import { EnrollBatchComponent } from "./enroll-batch.component"
 import { of, throwError } from "rxjs";
 
-xdescribe('EnrollBatchComponent', () => {
+describe('EnrollBatchComponent', () => {
     let enrollBatchComponent: EnrollBatchComponent;
     const mockRouter: Partial<Router> = {
         navigate: jest.fn(),
@@ -86,7 +86,7 @@ xdescribe('EnrollBatchComponent', () => {
         expect(enrollBatchComponent).toBeTruthy();
     });
 
-    xdescribe('ngOnInit', () => {
+    describe('ngOnInit', () => {
         // arrange
         it('should be return enroll batch details for web and Ios', () => {
             mockCourseBatchService.getEnrollToBatchDetails = jest.fn().mockReturnValue(of(true)) as any;
@@ -160,7 +160,7 @@ xdescribe('EnrollBatchComponent', () => {
         expect(mockTelemetryService.log).toHaveBeenCalled();
     });
 
-    xdescribe('enrollToCourse', () => {
+    describe('enrollToCourse', () => {
         it('should enrolled the course', () => {
             //arrange
             jest.spyOn(enrollBatchComponent, 'setTelemetryData').mockImplementation();

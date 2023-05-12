@@ -2,7 +2,7 @@ import { LandingpageGuard } from './landingpage.guard';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { environment } from '@sunbird/environment';
 
-xdescribe('LandingpageGuard', () => {
+describe('LandingpageGuard', () => {
     let landingpageGuard: LandingpageGuard;
 
     const mockRouter: Partial<Router> = {

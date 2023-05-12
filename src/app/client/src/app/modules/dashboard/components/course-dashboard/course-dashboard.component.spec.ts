@@ -7,7 +7,7 @@ import { NavigationHelperService, ResourceService, ToasterService } from '@sunbi
 import { mockUserData } from './../course-progress/course-progress.component.spec.data';
 import * as _ from 'lodash-es';
 
-xdescribe('CourseDashboardComponent', () => {
+describe('CourseDashboardComponent', () => {
   let courseDashboardComponent: CourseDashboardComponent;
 
   const mockUserService: Partial<UserService> = {

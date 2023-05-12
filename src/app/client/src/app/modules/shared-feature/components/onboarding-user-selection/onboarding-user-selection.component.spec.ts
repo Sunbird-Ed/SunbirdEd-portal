@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { OnboardingUserSelectionComponent } from "./onboarding-user-selection.component";
 import { HttpErrorResponse } from "@angular/common/http";
 
-xdescribe('OnboardingUserSelection component', () => {
+describe('OnboardingUserSelection component', () => {
   let onboardingUserSelectionComponent: OnboardingUserSelectionComponent;
   const mockResourceService: Partial<ResourceService> = {};
   const mockTenantService: Partial<TenantService> = {};
@@ -62,7 +62,7 @@ xdescribe('OnboardingUserSelection component', () => {
     expect(onboardingUserSelectionComponent).toBeTruthy();
   });
 
-  xdescribe('ngOnInit function', () => {
+  describe('ngOnInit function', () => {
     it('should call setPopupInteractEdata method and initialize method', () => {
       //arrange
       //@ts-ignore
@@ -78,7 +78,7 @@ xdescribe('OnboardingUserSelection component', () => {
   });
 
 
-  xdescribe('setPopupInteractEdata method', () => {
+  describe('setPopupInteractEdata method', () => {
     it('should set userSelectionInteractEdata property to the first responseData', () => {
       //arrange
       let responseData = {
@@ -109,7 +109,7 @@ xdescribe('OnboardingUserSelection component', () => {
     });
   });
 
-  xdescribe('initialize method', () => {
+  describe('initialize method', () => {
     it('should call getFormConfig method of the onboard user selection component', () => {
       //arrange
       //@ts-ignore
@@ -141,7 +141,7 @@ xdescribe('OnboardingUserSelection component', () => {
     });
   });
 
-  xdescribe('getFormConfig method', () => {
+  describe('getFormConfig method', () => {
     it('should return an Observable', () => {
       //arrange
       let returnedObservable = undefined;
@@ -163,7 +163,7 @@ xdescribe('OnboardingUserSelection component', () => {
     });
   });
 
-  xdescribe('ngOnDestroy', () => {
+  describe('ngOnDestroy', () => {
     it('should destroy subscription', () => {
       //arrange
       onboardingUserSelectionComponent.unsubscribe$ = {
@@ -178,7 +178,7 @@ xdescribe('OnboardingUserSelection component', () => {
     });
   });
 
-  xdescribe("ngAfterViewInit", () => {
+  describe("ngAfterViewInit", () => {
     it('should set telemetryImpression', (done) => {
       //arrange
       mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
@@ -204,7 +204,7 @@ xdescribe('OnboardingUserSelection component', () => {
     expect(onboardingUserSelectionComponent.selectedUserType).toEqual(selectedGuest);
   })
 
-  xdescribe('submit', () => {
+  describe('submit', () => {
     const selectedGuest={
       code:'123',
       name: 'test'

@@ -2,7 +2,7 @@ import { UsageService } from "./usage.service";
 import { of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 
-xdescribe("UsageService", () => {
+describe("UsageService", () => {
   let usageService: UsageService;
   const httpClient: Partial<HttpClient> = {
     get: jest.fn(),
@@ -21,7 +21,7 @@ xdescribe("UsageService", () => {
     expect(usageService).toBeTruthy();
   });
 
-  xdescribe("getData method ", () => {
+  describe("getData method ", () => {
     it("should call the api without paramaters", () => {
       jest.spyOn(httpClient, "get").mockReturnValue(of({ test: "ok" }));
       usageService.getData("https://dev.sunbirded.org/explore");

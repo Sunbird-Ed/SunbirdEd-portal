@@ -4,7 +4,7 @@ import { ConfigService, ResourceService } from '@sunbird/shared';
 import { Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 
-xdescribe('YearOfBirthComponent', () => {
+describe('YearOfBirthComponent', () => {
   let component: YearOfBirthComponent;
   const mockConfigService: Partial<ConfigService> = {
     constants: {

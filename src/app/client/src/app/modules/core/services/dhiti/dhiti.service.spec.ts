@@ -3,7 +3,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { HttpClient } from "@angular/common/http";
 import { DhitiService } from './dhiti.service';
 
-xdescribe('DhitiService', () => {
+describe('DhitiService', () => {
   let dhitiService: DhitiService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

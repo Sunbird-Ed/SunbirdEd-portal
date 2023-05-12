@@ -6,7 +6,7 @@ import { of } from "rxjs";
 import * as mockData from "./download.service.spec.data";
 const testData = <any>mockData.mockRes;
  
-xdescribe("DownloadService", () => {
+describe("DownloadService", () => {
  let downloadService: DownloadService;
  const mockLearnerService: Partial<LearnerService> = {
    get: jest.fn(),

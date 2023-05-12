@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { response as CertMockResponse } from './certificate-configuration.component.spec.data';
 import { FormControl, FormGroup } from "@angular/forms";
 
-xdescribe("CertificateConfigurationComponent", () => {
+describe("CertificateConfigurationComponent", () => {
     let component: CertificateConfigurationComponent;
 
     const mockCertificateService: Partial<CertificateService> = {
@@ -134,7 +134,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         expect(component.selectedTemplate).toEqual(null);
     })
 
-    xdescribe("telemetry event", () => {
+    describe("telemetry event", () => {
         it('should send telemetry impression event', () => {
             mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
             component.setTelemetryImpressionData();
@@ -183,14 +183,14 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     })
 
-    xdescribe("initializeLabels", () => {
+    describe("initializeLabels", () => {
         it('should initializeLabels', () => {
             component.initializeLabels();
             expect(component.config.select.label).toEqual(mockResourceService.frmelmnts.lbl.Select)
         })
     });
 
-    xdescribe("redoLayout", () => {
+    describe("redoLayout", () => {
         it('should redo layout on render for threeToNine column', () => {
             component.layoutConfiguration = {};
             mockLayoutService.initlayoutConfig = jest.fn(() => { });
@@ -211,7 +211,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     });
 
-    xdescribe("checkMultipleAssessment", () => {
+    describe("checkMultipleAssessment", () => {
         it("should set isSingleAssessment=True if SelfAssess count is 1", () => {
             component.courseDetails = { contentTypesCount: JSON.stringify({ SelfAssess: 1 }) };
             component.checkMultipleAssessment();
@@ -238,7 +238,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     });
 
-    xdescribe("getTemplateList", () => {
+    describe("getTemplateList", () => {
         it("should fetch certificate list successfully", () => {
             component.templateIdentifier = "do_1131446242806251521827";
             mockUploadCertificateService.getCertificates = jest.fn().mockImplementation(() => of(CertMockResponse.certTemplateListData));
@@ -272,7 +272,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     });
 
-    xdescribe("setCertEditable", () => {
+    describe("setCertEditable", () => {
         it("should set cert editable true if preview url is available", () => {
             component.previewUrl = "dummy-url";
             component.setCertEditable();
@@ -286,7 +286,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     })
 
-    xdescribe("processCriteria", () => {
+    describe("processCriteria", () => {
         it('should process on form field', () => {
             component.userPreference = new FormGroup({
                 scoreRange: new FormControl('1'),
@@ -299,7 +299,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     })
 
-    xdescribe("processCertificateDetails", () => {
+    describe("processCertificateDetails", () => {
         it("should processCertificateDetails", () => {
             jest.spyOn(component, 'setCertEditable').mockImplementation();
             jest.spyOn(component, 'processCriteria').mockImplementation();
@@ -320,7 +320,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     })
 
-    xdescribe("getBatchDetails", () => {
+    describe("getBatchDetails", () => {
         it("should fetch the batch details without certificates", () => {
             jest.spyOn(component, 'getCertConfigFields')
             mockCertificateService.getBatchDetails = jest.fn().mockImplementation(() => of(CertMockResponse.batchData))
@@ -350,7 +350,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     });
 
-    xdescribe("Initialize form fields and validate form", () => {
+    describe("Initialize form fields and validate form", () => {
         it("Should enable add certificate if form is valid", () => {
             component.selectedTemplate = "tpl";
             component.userPreference = new FormGroup({
@@ -390,7 +390,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     });
 
-    xdescribe("getCourseDetails", () => {
+    describe("getCourseDetails", () => {
         it("should get Course Details", () => {
             mockPlayerService.getCollectionHierarchy = jest.fn().mockImplementation(() => of(CertMockResponse.courseData));
             component.getCourseDetails("batch-id").subscribe(data => {
@@ -405,7 +405,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     })
 
-    xdescribe("getCertificateFormData", () => {
+    describe("getCertificateFormData", () => {
         it('should get Certificate FormData', () => {
             mockFormService.getFormConfig = jest.fn().mockImplementation(() => of(CertMockResponse.certificateFormData))
             component.getCertificateFormData().subscribe(data => {
@@ -421,7 +421,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     })
 
-    xdescribe("ngOnInit", () => {
+    describe("ngOnInit", () => {
         it('should fetch all required data for certificate', () => {
             jest.spyOn(component, 'initializeLabels');
             jest.spyOn(component, 'redoLayout');
@@ -450,7 +450,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     });
 
-    xdescribe("getCertConfigFields", () => {
+    describe("getCertConfigFields", () => {
         it("should fetch certificate preferences successfully", () => {
             mockCertificateService.fetchCertificatePreferences = jest.fn().mockImplementation(() => of(CertMockResponse.certRulesData))
             component.getCertConfigFields();
@@ -463,7 +463,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     });
 
-    xdescribe("attachCertificateToBatch", () => {
+    describe("attachCertificateToBatch", () => {
         it("should attach certificate to batch for update mode", () => {
             jest.spyOn(component, 'sendInteractData').mockImplementation();
             component.selectedTemplate = CertMockResponse.certTemplateListData.result.content[0];
@@ -522,7 +522,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     })
 
-    xdescribe("updateCertificate", () => {
+    describe("updateCertificate", () => {
         it("should not update certificate if selected template are same", () => {
             component.templateIdentifier = "124";
             component.selectedTemplate = { name: "11234" };
@@ -539,7 +539,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         })
     });
 
-    xdescribe("handleCertificateEvent", () => {
+    describe("handleCertificateEvent", () => {
         it('should handle "select" click on hover certificate templates', () => {
             /** Arrange */
             const mockEvent = { name: 'select' };
@@ -596,7 +596,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     })
 
-    xdescribe("getConfig", () => {
+    describe("getConfig", () => {
         it('should fetch the configs for "select" hover button', () => {
             /** Arrange */
             const mockTemplate = { name: 'SOME_MOCK_TEMPLATE' };
@@ -632,7 +632,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     })
 
-    xdescribe("closeModal", () => {
+    describe("closeModal", () => {
         it('should close preview modal if user clicks "Select template" from preview popup', () => {
             /** Arrange */
             const mockEvent = {
@@ -673,7 +673,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     })
 
-    xdescribe("cancelSelection", () => {
+    describe("cancelSelection", () => {
         it('should reset the selected form fields and template for "add certificate" scenario', () => {
             /** Arrange */
             component.userPreference = new FormGroup({
@@ -718,7 +718,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     });
 
-    xdescribe("navigateToCreateTemplate", () => {
+    describe("navigateToCreateTemplate", () => {
         it('should navigate to create-template page', () => {
             component.navigateToCreateTemplate();
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/certs/configure/create-template'], {queryParams: { type: 'edit', courseId: 'do_456789', batchId: '124631256' }});
@@ -730,7 +730,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         }); 
     })
 
-    xdescribe("handleParameterChange", () => {
+    describe("handleParameterChange", () => {
         it('should call handleParameterChange method with event as All', () => {
             const eventAll = 'All';
             component.handleParameterChange(eventAll);
@@ -743,7 +743,7 @@ xdescribe("CertificateConfigurationComponent", () => {
           });
     })
 
-    xdescribe("Add and Remove Rule", () => {
+    describe("Add and Remove Rule", () => {
         it('should add rule', () => {
             component.addRule();
             expect(component.addScoreRule).toBeTruthy();
@@ -754,7 +754,7 @@ xdescribe("CertificateConfigurationComponent", () => {
         });
     })
 
-    xdescribe("ngOnDestroy", () => {
+    describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             component.unsubscribe$ = {
                 next: jest.fn(),

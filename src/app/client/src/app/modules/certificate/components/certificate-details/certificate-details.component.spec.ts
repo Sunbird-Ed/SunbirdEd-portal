@@ -7,7 +7,7 @@ import { CertificateDetailsComponent } from './certificate-details.component';
 import { validateCertMockResponse } from './certificate-details.component.spec.data'
 import { of, throwError } from 'rxjs';
   
-xdescribe("CertificateDetailsComponent", () => {
+describe("CertificateDetailsComponent", () => {
     let component: CertificateDetailsComponent;
 
     const mockCertificateService: Partial<CertificateService> = {};
@@ -78,7 +78,7 @@ xdescribe("CertificateDetailsComponent", () => {
     })
 
 
-    xdescribe('validateCertificate', () => { 
+    describe('validateCertificate', () => { 
         it('should validate certificate if URL has `data` params and verified', (done) => {
             mockActivatedRoute.snapshot.queryParams = { data: "https://sunbirddev.blob.core.windows.net/do_112831862871203840114/small.mp4"};
             mockCsCertificateService.getEncodedData = jest.fn().mockImplementation(() => Promise.resolve({}));
@@ -150,7 +150,7 @@ xdescribe("CertificateDetailsComponent", () => {
         });
     })
 
-    xdescribe('validateTCertificate', () => { 
+    describe('validateTCertificate', () => { 
         it('should validate certificate if URL has `t` params and verified', () => {
             mockActivatedRoute.snapshot.queryParams = { uuid: "xyzxyz"};
             const certMockData = {
@@ -199,7 +199,7 @@ xdescribe("CertificateDetailsComponent", () => {
     })
 
 
-    xdescribe("ngOnInit", () => {
+    describe("ngOnInit", () => {
         it("should validate certificate for data queryparams", () => {
             mockActivatedRoute.snapshot.queryParams = { data: {}};
             jest.spyOn(component, 'validateCertificate').mockImplementation();
@@ -222,7 +222,7 @@ xdescribe("CertificateDetailsComponent", () => {
     })
 
 
-    xdescribe('getCourseVideoUrl', () => { 
+    describe('getCourseVideoUrl', () => { 
         it('should get content id', () => {
             mockPublicPlayerService.getCollectionHierarchy = jest.fn().mockImplementation(() => of(validateCertMockResponse.getCourseIdResponse));
             jest.spyOn(component, 'processVideoUrl').mockImplementation();
@@ -233,7 +233,7 @@ xdescribe("CertificateDetailsComponent", () => {
     })
 
 
-    xdescribe('certificateVerify', () => { 
+    describe('certificateVerify', () => { 
         it('should verify the certificate', () => {
             component.loader = true;
             mockCertificateService.validateCertificate = jest.fn(() => of(validateCertMockResponse.successResponse));
@@ -275,7 +275,7 @@ xdescribe("CertificateDetailsComponent", () => {
         });
     });
 
-    xdescribe('getCodeLength', () => { 
+    describe('getCodeLength', () => { 
         it('should enable verification button if key up', () => {
             const event = {target: {value: 'key-up'}};
             component.getCodeLength(event);
@@ -288,7 +288,7 @@ xdescribe("CertificateDetailsComponent", () => {
         });  
     })
 
-    xdescribe('navigateToCoursesPage', () => { 
+    describe('navigateToCoursesPage', () => { 
         it('should back to course page', () => {
             component.navigateToCoursesPage();
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/explore-course']);
@@ -306,7 +306,7 @@ xdescribe("CertificateDetailsComponent", () => {
         });
     })
 
-    xdescribe('playContent', () => { 
+    describe('playContent', () => { 
         it('should play the content', () => {
             mockPublicPlayerService.getContent = jest.fn().mockImplementation(() => of(validateCertMockResponse.getContentResponse));
             component.playContent('do_112831862871203840114');
@@ -314,7 +314,7 @@ xdescribe("CertificateDetailsComponent", () => {
         });
     })
 
-    xdescribe('ngOnDestroy', () => { 
+    describe('ngOnDestroy', () => { 
         it('should unsubscribe tenantDataSubscription', () => {
             component.tenantDataSubscription = {
               unsubscribe: jest.fn()

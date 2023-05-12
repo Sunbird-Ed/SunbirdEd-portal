@@ -10,7 +10,7 @@ import { CreateUserComponent } from './create-user.component';
 import { of, throwError } from 'rxjs';
 import {mockRes} from './create-user.component.spec.data'
 
-xdescribe('CreateUserComponent', ()=> {
+describe('CreateUserComponent', ()=> {
     let createUserComponent : CreateUserComponent;
     const mockResourceService: Partial<ResourceService> = {
         messages: {
@@ -92,7 +92,7 @@ xdescribe('CreateUserComponent', ()=> {
         expect(createUserComponent).toBeTruthy();
     });
 
-    xdescribe('ngOnInit', () => {
+    describe('ngOnInit', () => {
 
         it('should be return create user details for web and Ios', ()=> {
             // arrange
@@ -107,7 +107,7 @@ xdescribe('CreateUserComponent', ()=> {
 
         });
     });
-    xdescribe('setTelemetryData', () => {
+    describe('setTelemetryData', () => {
         it('should set telemetry data', () => {
             // arrange
             createUserComponent.telemetryImpression = {
@@ -155,7 +155,7 @@ xdescribe('CreateUserComponent', ()=> {
         });
 
     });
-    xdescribe('getFormDetails', ()=> {
+    describe('getFormDetails', ()=> {
 
         it('should call getFormDetails', () => {
             // arrange
@@ -192,7 +192,7 @@ xdescribe('CreateUserComponent', ()=> {
             expect(createUserComponent.showLoader).toBeFalsy();
         });
     });
-    xdescribe('goBack', ()=> {
+    describe('goBack', ()=> {
         it('return back to the navigation helper page',()=> {
             // arrange
             mockNavigationHelperService.goBack = jest.fn();
@@ -204,7 +204,7 @@ xdescribe('CreateUserComponent', ()=> {
         });
 
     });
-    xdescribe('onCancel', ()=> {
+    describe('onCancel', ()=> {
         it('return back to the last navigation  page',()=> {
             // arrange
             mockNavigationHelperService.navigateToLastUrl = jest.fn();
@@ -216,7 +216,7 @@ xdescribe('CreateUserComponent', ()=> {
         });
     });
 
-    xdescribe('onSubmitForm', ()=> {
+    describe('onSubmitForm', ()=> {
         it('should submit the form data', ()=> {
             // arrange  
             createUserComponent.userDetailsForm = new FormGroup({
@@ -244,7 +244,7 @@ xdescribe('CreateUserComponent', ()=> {
             expect(createUserComponent.userDetailsForm.value.name).toBeDefined();
         });
     });
-    xdescribe('registerUser', ()=> {
+    describe('registerUser', ()=> {
 
         it('return the registered  user', ()=> {
             //arrange

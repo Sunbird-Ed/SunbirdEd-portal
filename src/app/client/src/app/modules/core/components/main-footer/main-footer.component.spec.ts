@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { TenantService } from '../../services';
 import { ChangeDetectorRef, Renderer2 } from '@angular/core';
 
-xdescribe('MainFooterComponent', () => {
+describe('MainFooterComponent', () => {
     let component: MainFooterComponent;
     const mockResourceService: Partial<ResourceService> = {};
     const mockRouter: Partial<Router> = {

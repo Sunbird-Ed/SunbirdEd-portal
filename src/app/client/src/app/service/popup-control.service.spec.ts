@@ -1,5 +1,5 @@
 import { PopupControlService } from './popup-control.service';
-xdescribe('PopupControlService', () => {
+describe('PopupControlService', () => {
     let popupControlService: PopupControlService;
     beforeEach(() => popupControlService = new PopupControlService());
 

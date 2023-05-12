@@ -6,7 +6,7 @@ import { UserService, KendraService, FormService } from '..';
 import { ObservationUtilService } from './observation-util.service';
 import { of, throwError } from 'rxjs';
 
-xdescribe('ObservationUtilService', () => {
+describe('ObservationUtilService', () => {
     let observationUtilService: ObservationUtilService;
     const mockConfig: Partial<ConfigService> = {};
     const mockFormService: Partial<FormService> = {};
@@ -51,7 +51,7 @@ xdescribe('ObservationUtilService', () => {
         expect(observationUtilService).toBeTruthy();
     });
 
-    xdescribe('getProfileData', () => {
+    describe('getProfileData', () => {
         it('should return true if subtype is not null', (done) => {
             observationUtilService.getProfileData().then((res) => {
                 setTimeout(() => {
@@ -86,7 +86,7 @@ xdescribe('ObservationUtilService', () => {
         });
     });
 
-    xdescribe('getProfileDataList', () => {
+    describe('getProfileDataList', () => {
         beforeEach(() => {
             window.sessionStorage.clear();
             jest.clearAllMocks();
@@ -144,7 +144,7 @@ xdescribe('ObservationUtilService', () => {
         });
     });
 
-    xdescribe('getMandatoryEntities', () => {
+    describe('getMandatoryEntities', () => {
         it('should be return entries', (done) => {
             jest.spyOn(observationUtilService, 'getProfileDataList').mockImplementation(() => {
                 return Promise.resolve({});
@@ -252,7 +252,7 @@ xdescribe('ObservationUtilService', () => {
         });
     });
 
-    xdescribe('getProfileInfo', () => {
+    describe('getProfileInfo', () => {
         it('should return false for empty profile', (done) => {
             jest.spyOn(observationUtilService, 'getProfileData').mockImplementation(() => {
                 return Promise.resolve(false);
@@ -299,7 +299,7 @@ xdescribe('ObservationUtilService', () => {
         });
     });
 
-    xdescribe('showPopupAlert', () => {
+    describe('showPopupAlert', () => {
         it('should show a popup', (done) => {
             mockModalService.open = jest.fn(() => ({
                 onApprove: jest.fn((a) => a({id: 'id'})),
@@ -319,7 +319,7 @@ xdescribe('ObservationUtilService', () => {
         observationUtilService.getAlertMetaData();
     });
 
-    xdescribe('browseByCategoryForm', () => {
+    describe('browseByCategoryForm', () => {
         it('should return browseByCategoryForm', (done) => {
             mockFormService.getFormConfig = jest.fn(() => of({
                 id: 'sample-id'

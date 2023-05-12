@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { TenantService } from '@sunbird/core';
 import { AuthFailedComponent } from './auth-failed.component';
 
-xdescribe('AuthFailedComponent', () => {
+describe('AuthFailedComponent', () => {
   let authFailedComponent: AuthFailedComponent;
   const mockActivatedRoute: Partial<ActivatedRoute> = {
     queryParams: of({tncVersion: '4', userId: '1234', identifierType: 'test', identifierValue: '111', tncAccepted: true}),

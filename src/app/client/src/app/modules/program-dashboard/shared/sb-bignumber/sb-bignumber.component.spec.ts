@@ -1,7 +1,7 @@
 import { ViewContainerRef } from "@angular/core";
 import { SbBignumberComponent } from "./sb-bignumber.component";
 import { mockBigChart } from "./sb-bignumber.component.spec.data";
-xdescribe("SbBignumberComponent", () => {
+describe("SbBignumberComponent", () => {
   let component: SbBignumberComponent;
   let resourceService;
   let dialog;

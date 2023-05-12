@@ -3,7 +3,7 @@ import { ProfileService } from '@sunbird/profile';
 import { LearnerService, UserService, FormService } from '@sunbird/core';
 import { mockRes } from './profile.service.spec.data';
 import { ConfigService } from '../../../../modules/shared';
-xdescribe('ProfileService', () => {
+describe('ProfileService', () => {
     let profileService: ProfileService;
 
     const mockLearnerService: Partial<LearnerService> = {

@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { SchemaService } from './schema.service';
 import { response} from './schema.service.spec.data';
 
-xdescribe('SchemaService', () => {
+describe('SchemaService', () => {
   let schemaService: SchemaService;
   const mockFormService: Partial<FormService> = {
     getFormConfig: jest.fn().mockImplementation(() => of({
@@ -24,7 +24,7 @@ xdescribe('SchemaService', () => {
   it('should create a instance of schemaService', () => {
     expect(schemaService).toBeTruthy();
   });
-  xdescribe('fetchSchemas', () => {
+  describe('fetchSchemas', () => {
     it('should call fetch Schemas method with the config and respond with the result ', () => {
       const config = { formType: 'schemas', formAction: 'get', contentType: 'search' };
       const hashTagId = '*';
@@ -41,7 +41,7 @@ xdescribe('SchemaService', () => {
     });
   });
 
-  xdescribe('schemaValidator', () => {
+  describe('schemaValidator', () => {
     it('should call the schema Validator method with some data ', () => {
       const obj = {
         inputObj: response?.result?.form?.data?.fields[0]?.schema,
@@ -62,7 +62,7 @@ xdescribe('SchemaService', () => {
     });
   });
 
-  xdescribe('getSchema', () => {
+  describe('getSchema', () => {
     it('should call the get schema method ', () => {
       const type = 'properties';
       schemaService['_schemas'] = response?.result?.form?.data?.fields[0]?.schema;

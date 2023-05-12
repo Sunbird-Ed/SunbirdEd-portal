@@ -1,7 +1,7 @@
 import { ChartTypePipe } from "./chart-type.pipe";
 import { mockChart } from "./chart-type.pipe.spec.data";
 
-xdescribe("ChartTypePipe", () => {
+describe("ChartTypePipe", () => {
   let chartPipe: ChartTypePipe;
 
   beforeAll(() => {

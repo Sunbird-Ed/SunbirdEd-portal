@@ -1,7 +1,7 @@
 import { FilterChartPipe } from './filter-chart.pipe';
 import { mockFilterData } from './filter-chart.pipe.spec.data'
 
-xdescribe('FilterChartPipe', () => {
+describe('FilterChartPipe', () => {
   let filterPipe:FilterChartPipe;
 
   beforeAll(() => {

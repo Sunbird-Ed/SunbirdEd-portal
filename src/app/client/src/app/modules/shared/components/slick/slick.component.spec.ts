@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SlickComponent } from './slick.component';
 
-xdescribe('SlickComponent', () => {
+describe('SlickComponent', () => {
   let slickComponent: SlickComponent;
 
   beforeAll(() => {

@@ -8,7 +8,7 @@ import { TelemetryService } from "../../../telemetry";
 import { of, throwError } from "rxjs";
 import { identifyAcountMockResponse } from "./identify-account.component.spec.data";
 
-xdescribe("Identify Account Component ", () => {
+describe("Identify Account Component ", () => {
     let identifyAccountComponent: IdentifyAccountComponent;
 
     const activatedRoute: Partial<ActivatedRoute> = {

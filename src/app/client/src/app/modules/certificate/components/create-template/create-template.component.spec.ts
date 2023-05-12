@@ -32,7 +32,7 @@ export class FileReaderMock {
     readAsText = jest.fn();
     removeEventListener = jest.fn();
   }
-xdescribe("CreateTemplateComponent", () => {
+describe("CreateTemplateComponent", () => {
     let component: CreateTemplateComponent;
 
     const mockUploadCertificateService: Partial<UploadCertificateService> = {
@@ -126,7 +126,7 @@ xdescribe("CreateTemplateComponent", () => {
         // expect(wrapper.firstChild).toEqual(wrapper2.firstChild);
     });
 
-    xdescribe('certificateCreation', () => { 
+    describe('certificateCreation', () => { 
 
         it("should get base64 data", () => {
             let newDiv = document.createElement("div");
@@ -160,7 +160,7 @@ xdescribe("CreateTemplateComponent", () => {
         })
     })
 
-    xdescribe('update signs and state logos', () => { 
+    describe('update signs and state logos', () => { 
         it('should call updateStateLogos', () => {
             component.svgData = new DOMParser().parseFromString(MockData.svgData.data, 'text/html');
             component.images = MockData.imagesArray;
@@ -183,7 +183,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     })
 
-    xdescribe('previewCertificate', () => { 
+    describe('previewCertificate', () => { 
         it('should call  previewCertificate', () => {
             jest.spyOn(component, 'updateTitles').mockImplementation();
             jest.spyOn(component, 'updateStateLogos').mockImplementation();
@@ -197,7 +197,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     })
 
-    xdescribe('getSVGTemplate', () => { 
+    describe('getSVGTemplate', () => { 
         it('should get SVG Template ', (done) => {
             mockUploadCertificateService.getSvg = jest.fn(() => Promise.resolve(MockData.svgData));
             jest.spyOn(component, 'sanitizeHTML').mockReturnValue(MockData.svgData.data);
@@ -211,7 +211,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     })
 
-    xdescribe('getDefaultTemplates', () => { 
+    describe('getDefaultTemplates', () => { 
         it('should get default templates ', () => {
             mockUploadCertificateService.getCertificates = jest.fn(() => of(MockData.defaultCerts));
             jest.spyOn(component, 'getSVGTemplate').mockImplementation();
@@ -221,7 +221,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     })
 
-    xdescribe('validateForm', () => { 
+    describe('validateForm', () => { 
         it('should disable create template if form is not valid ', () => {
             component.createTemplateForm = new FormGroup({
                 certificateTitle: new FormControl('title'),
@@ -248,7 +248,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     })
 
-    xdescribe('initializeFormFields', () => { 
+    describe('initializeFormFields', () => { 
         it('should get default templates ', () => {
             component.initializeFormFields();
             expect(component.createTemplateForm).toBeDefined();
@@ -261,7 +261,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     })
 
-    xdescribe("redoLayout", () => {
+    describe("redoLayout", () => {
         it('should redo layout on render for threeToNine column', () => {
             component.layoutConfiguration = {};
             mockLayoutService.initlayoutConfig = jest.fn(() => { });
@@ -282,7 +282,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     });
 
-    xdescribe('ngOnInit', () => { 
+    describe('ngOnInit', () => { 
         it('should initialize form fields and get default templates', () => {
             jest.spyOn(component, 'initializeFormFields').mockImplementation();
             jest.spyOn(component, 'getDefaultTemplates').mockImplementation();
@@ -296,7 +296,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     })
 
-    xdescribe("ngOnDestroy", () => {
+    describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             component.unsubscribe$ = {
                 next: jest.fn(),
@@ -308,7 +308,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     });
 
-    xdescribe('uploadTemplate', () => { 
+    describe('uploadTemplate', () => { 
         it('should not upload the final certificate svg image', () => {
             mockUploadCertificateService.storeAsset = jest.fn(() => throwError({}))
             component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
@@ -323,7 +323,7 @@ xdescribe("CreateTemplateComponent", () => {
         
     })
 
-    xdescribe("createCertTemplate", () => {
+    describe("createCertTemplate", () => {
         it('should create the certificate template with all the form values', () => {
             jest.useFakeTimers();
             jest.spyOn(global, 'setTimeout');
@@ -365,7 +365,7 @@ xdescribe("CreateTemplateComponent", () => {
         });
     });
 
-    xdescribe('assetData', () => { 
+    describe('assetData', () => { 
         it('should call assetData', () => {
             component.optionSing = 'LOGO1';
             const data = {

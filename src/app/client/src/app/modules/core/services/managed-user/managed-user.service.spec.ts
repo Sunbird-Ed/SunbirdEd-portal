@@ -6,7 +6,7 @@ import { LearnerService, UserService } from '../../../core';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { TelemetryService } from '../../../telemetry/services';
 
-xdescribe('ManagedUserService', () => {
+describe('ManagedUserService', () => {
   let managedUserService: ManagedUserService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -59,7 +59,7 @@ xdescribe('ManagedUserService', () => {
     expect(managedUserService).toBeTruthy();
     expect(managedUserService.instance).toBe('SUNBIRD');
   });
-  xdescribe('setSwitchUserData', () => {
+  describe('setSwitchUserData', () => {
     it('should set switch user data', () => {
       const userid = 'sample-user-id';
       const usersid = 'sample-switch-userid';
@@ -81,7 +81,7 @@ xdescribe('ManagedUserService', () => {
     });
   });
 
-  xdescribe('getUserId', () => {
+  describe('getUserId', () => {
     it('should return managedby userId', () => {
       managedUserService.userService = {
         userProfile: {
@@ -105,7 +105,7 @@ xdescribe('ManagedUserService', () => {
     });
   });
 
-  xdescribe('getParentProfile', () => {
+  describe('getParentProfile', () => {
     it('should return userData if profile is not available in cache', () => {
       mockCacheService.get = jest.fn(() => ({userProfile: {}}));
       mockUserService.getUserData = jest.fn(() => of([{ uid: 'sample-id' }])) as any;
@@ -131,7 +131,7 @@ xdescribe('ManagedUserService', () => {
     });
   });
 
-  xdescribe('fetchManagedUserList', () => {
+  describe('fetchManagedUserList', () => {
     it('should return managed user list', () => {
       jest.spyOn(managedUserService, 'getUserId').mockImplementation(() => {
         return 'sample-user-id';
@@ -210,7 +210,7 @@ xdescribe('ManagedUserService', () => {
     expect(errormessage).toBe(message);
   });
 
-  xdescribe('processUserList', () => {
+  describe('processUserList', () => {
     it('should return proccess list', () => {
       const userList = [{
         firstName: ['sample-first-name', 's-f-name'],

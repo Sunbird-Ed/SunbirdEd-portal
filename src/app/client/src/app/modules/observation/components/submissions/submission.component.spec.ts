@@ -1,7 +1,7 @@
 import { ResourceService } from '@sunbird/shared';
 import { SubmissionsComponent } from './submission.component';
 
-xdescribe('Submission component', ()=>{
+describe('Submission component', ()=>{
   let submissionComponent:SubmissionsComponent;
   const mockResourceService:Partial<ResourceService>={
     frmelmnts:{

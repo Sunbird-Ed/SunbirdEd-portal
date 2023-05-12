@@ -18,7 +18,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
 
-xdescribe('SignupEmailPasswordComponent', () => {
+describe('SignupEmailPasswordComponent', () => {
   let component: SignupEmailPasswordComponent;
   const mockFormBuilder: Partial<FormBuilder> = {};
   const mockResourceService: Partial<ResourceService> = {
@@ -194,7 +194,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
     component.resetGoogleCaptcha()
   });
 
-  xdescribe("getReCaptchaToken", () => {
+  describe("getReCaptchaToken", () => {
     it('it should call getReCaptchaToken for phone', () => {
       component.startingForm = {
         basicInfo: {
@@ -293,7 +293,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
       expect(component.vaidateUserContact).toHaveBeenCalled();
     });
   })
-  xdescribe("validateUserContact", () => {
+  describe("validateUserContact", () => {
     it('it should call validateUserContact for email verification', () => {
       component.signUpForm = {
         get: jest.fn(() => (
@@ -503,7 +503,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
     expect(mockTelemetryService.interact).toHaveBeenCalled();
   });
 
-  xdescribe("ngAfterViewInit", () => {
+  describe("ngAfterViewInit", () => {
     it('should set signUpTelemetryImpression', () => {
       mockNavigationHelperService.getPageLoadTime = jest.fn().mockReturnValue(10);
       component.signUpTelemetryImpression();
@@ -553,7 +553,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
     expect(component.showSignUpForm).toBe(true);
   });
 
-  xdescribe("displayPassword", () => {
+  describe("displayPassword", () => {
     it('should call displayPassword', () => {
       component.showPassword = true
       component.displayPassword();
@@ -582,7 +582,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
     expect(component.disableSubmitBtn).toBe(true);
   });
 
-  xdescribe("resolved", () => {
+  describe("resolved", () => {
     it('it should call resolved', () => {
       component.startingForm = {
         basicInfo: {
@@ -652,7 +652,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
     });
   })
 
-  xdescribe("generateOTP", () => {
+  describe("generateOTP", () => {
     it('it should not generate otp for already used phone', () => {
       jest.spyOn(mockSignupService, 'generateOTPforAnonymousUser').mockImplementation(() => throwError({
         error: { params: { status: 'PHONE_ALREADY_IN_USE', errmsg: 'PHONE_ALREADY_IN_USE' } }
@@ -753,7 +753,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
     });
   })
 
-  xdescribe("submitSignupForm for captcha enabled", () => {
+  describe("submitSignupForm for captcha enabled", () => {
     it('should submitSignupForm', () => {
       component.isP1CaptchaEnabled = 'true'
       component.captchaRef = {
@@ -772,7 +772,7 @@ xdescribe('SignupEmailPasswordComponent', () => {
     })
   })
 
-  xdescribe("ngOnDestroy", () => {
+  describe("ngOnDestroy", () => {
     it('should destroy sub', () => {
       component.unsubscribe = {
         next: jest.fn(),

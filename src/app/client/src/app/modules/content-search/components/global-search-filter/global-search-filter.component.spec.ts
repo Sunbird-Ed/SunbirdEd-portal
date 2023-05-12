@@ -8,7 +8,7 @@ import { ResourceService, UtilService, ConnectionService } from '../../../shared
 import { GlobalSearchFilterComponent } from './global-search-filter.component';
 import { MockData } from './global-search-filter.component.spec.data';
 
-xdescribe('GlobalSearchFilterComponent', () => {
+describe('GlobalSearchFilterComponent', () => {
     let globalSearchFilterComponent: GlobalSearchFilterComponent;
     const mockActivatedRoute: Partial<ActivatedRoute> = {};
     const mockCacheService: Partial<CacheService> = {};
@@ -45,7 +45,7 @@ xdescribe('GlobalSearchFilterComponent', () => {
         expect(globalSearchFilterComponent).toBeTruthy();
     });
 
-    xdescribe('onChange', () => {
+    describe('onChange', () => {
         it('should update channelId', () => {
             const facet = {
                 name: 'sample-facet',
@@ -65,7 +65,7 @@ xdescribe('GlobalSearchFilterComponent', () => {
         });
     });
 
-    xdescribe('ngOnChanges', () => {
+    describe('ngOnChanges', () => {
         it('should return previous and current value', () => {
             // arrange
             const changes = {
@@ -101,7 +101,7 @@ xdescribe('GlobalSearchFilterComponent', () => {
         });
     });
 
-    xdescribe('updateRoute', () => {
+    describe('updateRoute', () => {
         it('should be update route', () => {
             mockActivatedRoute.snapshot = {
                 queryParams: {
@@ -168,7 +168,7 @@ xdescribe('GlobalSearchFilterComponent', () => {
         expect(mockUtilService.transposeTerms).toHaveBeenCalled();
     });
 
-    xdescribe('ngOnInit', () => {
+    describe('ngOnInit', () => {
         it('should invoked ngOnInit', (done) => {
             mockActivatedRoute.snapshot = {
                 data: {
@@ -296,7 +296,7 @@ xdescribe('GlobalSearchFilterComponent', () => {
         });
     });
 
-    xdescribe('resetFilters', () => {
+    describe('resetFilters', () => {
         it('should be reset filters', () => {
             globalSearchFilterComponent.selectedFilters = {
                 channel: ['Chhattisgarh'],
@@ -386,7 +386,7 @@ xdescribe('GlobalSearchFilterComponent', () => {
         });
     });
 
-    xdescribe('removeFilterSelection', () => {
+    describe('removeFilterSelection', () => {
         it('should remove selected filters', () => {
             const data = {
                 value: { id: 'id' },

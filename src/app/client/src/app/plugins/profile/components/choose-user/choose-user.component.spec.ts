@@ -12,7 +12,7 @@ import { of, Subscription } from 'rxjs';
 import { ChooseUserComponent } from './choose-user.component';
 import { mockData } from './choose-user.component.spec.data';
 
-xdescribe("ChooseUserComponent", () => {
+describe("ChooseUserComponent", () => {
     let chooseUserComponent: ChooseUserComponent;
     const mockUserService: Partial<UserService> = {
         userData$: of({ userProfile: mockData.userProfile }) as any,
@@ -133,7 +133,7 @@ xdescribe("ChooseUserComponent", () => {
         expect(chooseUserComponent).toBeTruthy();
     });
 
-    xdescribe('getManagedUserList', () => {
+    describe('getManagedUserList', () => {
         it('should call managedUserList$ and getParentProfile when userProfile.managedBy is true', () => {
             //arrange
             mockUserService._userData$ = jest.fn(() => of(mockData.userReadApiResponse)) as any;
@@ -151,7 +151,7 @@ xdescribe("ChooseUserComponent", () => {
         });
     });
 
-    xdescribe('initializeManagedUser', () => {
+    describe('initializeManagedUser', () => {
         it('should call syncEvents, setInitialization, initialize, and custom', () => {
             //arrange
             chooseUserComponent.selectedUser = {
@@ -168,7 +168,7 @@ xdescribe("ChooseUserComponent", () => {
         });
     });
 
-    xdescribe('ngOnInit', () => {
+    describe('ngOnInit', () => {
         it('should fetch managed user list on init', () => {
             //arrange
             jest.spyOn(mockNavigationHelperService, 'setNavigationUrl').mockImplementation();
@@ -190,7 +190,7 @@ xdescribe("ChooseUserComponent", () => {
         });
     });
 
-    xdescribe('switchUser', () => {
+    describe('switchUser', () => {
         it('should switch selected user', () => {
             //arrange
             chooseUserComponent.selectedUser = mockData.selectedUser;
@@ -262,7 +262,7 @@ xdescribe("ChooseUserComponent", () => {
         });
     });
 
-    xdescribe('selectUser', () => {
+    describe('selectUser', () => {
         it('should select user', () => {
             //arrange
             chooseUserComponent.userList = [mockData.selectUserData.data.data];
@@ -286,7 +286,7 @@ xdescribe("ChooseUserComponent", () => {
         });
     });
 
-    xdescribe('ngOnDestroy', () => {
+    describe('ngOnDestroy', () => {
         it('should unsubscribe from subscription', () => {
             //arrange
             let subscription: Subscription;
