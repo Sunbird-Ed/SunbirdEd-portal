@@ -119,7 +119,7 @@
                 <div class="font-weight-normal">{{userInformation.emailId || '-'}}</div>
               </div>
             </div>
-            <div class="mb-16 fnormal font-weight-normal" *ngIf="type === 'course-consent'">
+            <div class="mb-16 fnormal font-weight-normal" *ngIf="type === 'course-consent' || type === 'program-consent'">
               <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8"
                 alt="info">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}
             </div>
@@ -137,13 +137,13 @@
           <div class="sb-mat__modal__actions">
             <button class="sb-btn  sb-btn-normal sb-btn-outline-primary text-uppercase" tabindex="0"
               (click)="updateUserConsent(false)"
-              *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
+              *ngIf="type === 'course-consent' || type === 'program-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
             <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
               class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
               *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
             <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
             class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
-            *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
+            *ngIf="type === 'course-consent' || type === 'program-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
           </div>
           <!--/Actions-->
 
