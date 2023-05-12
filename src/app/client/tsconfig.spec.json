@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./src",
+    "module": "CommonJs",
     "paths": {
       "@sunbird/core": [
         "app/modules/core"
@@ -87,10 +88,7 @@
     ],
     "resolveJsonModule": true
   },
-  "files": [
-    "setup-jest.ts",
-    "polyfills.ts"
-  ],
+ 
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"
