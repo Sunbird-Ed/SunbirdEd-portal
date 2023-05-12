@@ -36,62 +36,30 @@
         padding-bottom: 2.5rem;
       }
 
-      &.mat-accent {
-        //  $green: mat.define-palette(mat.$green-palette, 500);
-        //  background-color: mat.get-color-from-palette($green);
-        // @include _palette-styles($accent);
-      }
-
       .thumbnail {
         height: 3rem;
         width: 3rem;
       }
 
-      .MetaInfo {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+      .mat-title {
+        $title-typography: mat.define-typography-config($subheading-2: mat.define-typography-level($font-size: 1rem,
+            $font-family: inherit,
+            $font-weight: 700));
+        @include mat.typography-level($title-typography, 'subheading-2');
+        // font-size: mat.font-size($pagebackTitle, $title);
+        // font-size: mat.font-size($title-typography, $subheading-2);
+        margin: 0;
+        color: mat.get-color-from-palette($primary, 500-contrast);
+        // color: mat.get-color-from-palette($accent);
+        width: 95%;
+        line-height: normal;
       }
 
-      .MetaImgColumn {}
-
-      .MetaColumn {
-        display: flex;
-        flex-direction: column;
-
-        .title {
-          $title-typography: mat.define-typography-config($subheading-2: mat.define-typography-level($font-size: 1rem,
-              $font-family: inherit,
-              $font-weight: 700));
-          @include mat.typography-level($title-typography, 'subheading-2');
-          // font-size: mat.font-size($pagebackTitle, $title);
-          // font-size: mat.font-size($title-typography, $subheading-2);
-          margin: 0;
-          color: mat.get-color-from-palette($primary, 500-contrast);
-          // color: mat.get-color-from-palette($accent);
-          width: 95%;
-        }
-
-        span {
-          display: flex;
-          align-items: center;
-        }
-      }
-
-      .Actions {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        margin-left: auto;
-
+      &__actions {
         .sb-label-status-error {
           color: mat.get-color-from-palette($warn);
           font-size: 0.75rem;
         }
-
-        // @include respond-below(sm) {
-        //   flex-direction: column;
-        // }
       }
 
       .mat-flat-button.mat-success,

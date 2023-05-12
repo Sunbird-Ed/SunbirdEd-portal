@@ -17,7 +17,7 @@ import {
 } from './components';
 import { LocationModule } from '../../plugins/location/location.module';
 import {PlayerHelperModule} from '../player-helper';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent, SubmissionsComponent,
     EntityListComponent, EditSubmissionComponent],
@@ -49,7 +49,8 @@ import {PlayerHelperModule} from '../player-helper';
     CoreModule,
     SharedFeatureModule,
     LocationModule,
-    PlayerHelperModule
+    PlayerHelperModule,
+    MatToolbarModule
   ],
   providers: [MlGuard]
 

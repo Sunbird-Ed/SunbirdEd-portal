@@ -1,36 +1,23 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-</app-landing-section>
-
-<div
-  [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-color-white back-btn-container cc-player__btn-back relative12'"
-  class="relative position mt-0">
-    <div class="py-0 d-flex flex-ai-center w-100">
-      <!-- /* Back button */ -->
-       <div class="mr-12">
-        <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="closeDashboard()" id="goBack" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-      <em class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-        </svg></em>
-      <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+<mat-toolbar color="primary" class="toolbar-pageback">
+  <div class="d-flex flex-ai-center">
+     <button type="button" mat-mini-fab color="accent"
+     class="button-rounded" tabindex="0" (click)="closeDashboard()" id="goBack"
+     attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+     <mat-icon aria-hidden="false" fontIcon="arrow_back"></mat-icon>
+   </button>
+   <div class="toolbar-pageback__heading">
+    <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lnk?.programDashboard}}</h3>
+   </div>
+  </div>
+  <div class="toolbar-pageback__actions">
+    <button mat-raised-button color="accent" class="button-rounded" (click)="closeDashboard()">
+      {{resourceService?.frmelmnts?.btn?.closedb}}
     </button>
-       </div>
-     <div class="textbook d-flex flex-jc-space-between w-100">
-       
-        <!-- title -->
-        <h4 class="textbook__title sb-color-primary font-weight-bold mt-8 ml-24" >{{resourceService?.frmelmnts?.lnk?.programDashboard}}</h4>
-        <div>
-          <button class="sb-btn sb-btn-primary sb-btn-normal px-24" (click)="closeDashboard()">
-            {{resourceService?.frmelmnts?.btn?.closedb}}
-          </button>
-        </div>           
-        
-    </div>
-  
-    </div>
-  
-</div>
-<div class="sbt-inside-page-container" #reportSection>
-  <mat-tab-group class="sb-mat__tab sb-mat__tab--tabinacc" (selectedTabChange)="selectedTabChange($event)">
+  </div>
+ </mat-toolbar>
+
+<div class="mat-inside-page-container mat-app-background2" #reportSection>
+  <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
     <mat-tab appTelemetryInteract>
          <ng-template mat-tab-label>
             <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.programDatasets}}</span>
@@ -152,8 +139,7 @@
 </ng-template>
 <ng-template #programDataset>
   <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
-  <div class="sbt-inside-page-container relative position mt-32">
-    <div>
+  <div class="mat-inside-page-container mat-app-background2">
       <div>
         <label>{{resourceService?.frmelmnts?.lbl?.detailsReports}}</label>
         <hr>
@@ -189,7 +175,6 @@
 
       <sb-datatable [message]="message" [data]="onDemandReportData" [columns]="columns"
         [downloadCSV]="false"  (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
-    </div>
   </div>
   
  
@@ -215,11 +200,7 @@
   </div>
   <ng-template #loading>
     <ng-container *ngIf="!noResult">
-      <div class="ui container">
-        <div class="nine wide column workspacesegment">
-          <app-loader></app-loader>
-        </div>
-      </div>
+      <app-loader></app-loader>
     </ng-container>
   </ng-template>
 </ng-template>
@@ -245,168 +226,119 @@
   </div>
   <ng-template #loading>
     <ng-container *ngIf="!noResult">
-      <div class="ui container">
-        <div class="nine wide column workspacesegment">
-          <app-loader></app-loader>
-        </div>
-      </div>
+      <app-loader></app-loader>
     </ng-container>
   </ng-template>
 </ng-template>
+
 <app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeModal()" #modal *ngIf="popup">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-header">
-
-            {{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}
-          </div>
-          <div class="sb-modal-content o-x-hide" [formGroup]="passwordForm">
-            <div class="sb-field-group">
-              <div class="sb-field relative">
-                <div class="sb-field filterTable mx-16 mb-0">
-                  <input class="sb-form-control" formControlName="password" type="text"
-                    placeholder="Enter a password to request Report" aria-label="enter password">
-                </div>
-              </div>
-              <p class="fsmall note-text my-8 administrator-text">
-                {{resourceService?.frmelmnts?.lbl?.pswdRule}}
-              </p>
-            </div>
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="(!reportForm.valid || !passwordForm.valid)"
-              [ngClass]="{'sb-btn-disabled': (!reportForm.valid || !passwordForm.valid)}" (click)="csvRequest()">
-              {{resourceService?.frmelmnts?.btn?.yes}}
-            </button>
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
-              {{resourceService?.frmelmnts?.btn?.no}}
-            </button>
-          </div>
-        </div>
-      </div>
+    <div mat-dialog-title>
+      <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}</div>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+    <mat-dialog-content>
+      <span [formGroup]="passwordForm">
+        <mat-form-field appearance="fill" formControlName="password" type="text" aria-label="enter password">
+          <mat-label>Enter a password to request Report</mat-label>
+          <input matInput placeholder="Enter a password to request Report" value="">
+        </mat-form-field>
+        <p class="mat-caption">
+          {{resourceService?.frmelmnts?.lbl?.pswdRule}}
+        </p>
+
+        <!-- <input class="sb-form-control" formControlName="password" type="text"
+        placeholder="Enter a password to request Report" aria-label="enter password"> -->
+      
+      </span>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button type="button" mat-raised-button class="button-rounded"  (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.no}}</button>
+      <button type="button" mat-raised-button color="accent" class="button-rounded" [disabled]="(!reportForm.valid || !passwordForm.valid)"
+      (click)="csvRequest()">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+    </mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 
 <app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeConfirmModal()" #modal
   *ngIf="awaitPopUp">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-content mt-16">
-
-            {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeConfirmModal()">
-              {{resourceService?.frmelmnts?.btn?.ok}}
-            </button>
-          </div>
-        </div>
-      </div>
+    <div mat-dialog-title>
+      <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}</div>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+    <mat-dialog-content></mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button type="button" mat-raised-button color="accent" class="button-rounded" type="submit" (click)="closeConfirmModal()">{{resourceService?.frmelmnts?.btn?.ok}}</button>
+    </mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 
 <app-modal-wrapper [config]="{disableClose: false, size: 'small'}" (dismiss)="closeConfirmationModal()" #modal
   *ngIf="showConfirmationModal">
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-content o-x-hide">
-            <div class="my-8">
-              {{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}
-            </div>
-          </div>
-          <div class="sb-modal-actions">
-            <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleConfirmationEvent(true)">
-              {{resourceService?.frmelmnts?.btn?.yes}}
-            </button>
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="handleConfirmationEvent(false)">
-              {{resourceService?.frmelmnts?.btn?.no}}
-            </button>
-          </div>
-        </div>
-      </div>
+    <div mat-dialog-title>
+      <div class="title" tabindex="0">{{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}</div>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+    <mat-dialog-content></mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button type="button" mat-raised-button class="button-rounded" type="submit" (click)="handleConfirmationEvent(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
+      <button type="button" mat-raised-button color="accent" class="button-rounded" type="submit" (click)="handleConfirmationEvent(true)">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+    </mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showPopUpModal" [config]="{disableClose: false, size: 'small'}" (dismiss)="closePopupModal()" #modal>
+<app-modal-wrapper *ngIf="showPopUpModal" [config]="{disableClose: false, width: '35rem'}" (dismiss)="closePopupModal()" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible small">
-          <div class="sb-modal-content o-x-hide">
-            <div class="d-flex flex-dir-row my-8">
-             <div>
-              <mat-icon class="info">info</mat-icon> 
-             </div>
-             <div class="font-weight-bold sb-color-primary modalNote"> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
-             <div>
-              <mat-icon class="goback" (click)="goBack()">highlight_off</mat-icon>
-             </div>
-            </div>
-            
-            
-            <div class="mt-48 flex-dc" [formGroup]="reportForm">
-              <label  class="d-flex flex-jc-center sb-color-primary">{{resourceService?.frmelmnts?.lbl?.programLbl }}</label>
-               <div class="d-flex flex-jc-center mt-24">
-                <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
-                  <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
-                  [(ngModel)]="programSelected"
-                  [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
-                    <mat-option *ngFor="let program of programs" class="mat-dropdown__options" role="option" [value]="program._id">
-                      {{program.name}}
-                    </mat-option>
-                  </mat-select>
-                  </mat-form-field>
-               </div>
-              
-            </div>
-            <div class="mt-48 flex-dc" [formGroup]="reportForm">
-              <label  class="d-flex flex-jc-center sb-color-primary">{{ resourceService?.frmelmnts?.lbl?.solutionLbl }}</label>
-              <div class="d-flex flex-jc-center mt-24">
-                <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd w-80">
-                  <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
-                  [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
-                    <mat-option *ngFor="let solution of solutions" class="mat-dropdown__options" role="option" [value]="solution._id">
-                      {{solution.name}} 
-                    </mat-option>
-                  </mat-select>
-                  </mat-form-field>
-              </div>  
-              
-            </div>
-            <div class="mt-32 sb-modal-actions">
-              <button [disabled]="reportForm.controls.solution.value == undefined" [ngClass]="{'sb-btn-disabled': (reportForm.controls.solution.value == undefined)}" type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div mat-dialog-title>
+      <div class="title d-flex flex-ai-center" tabindex="0"><mat-icon class="info">info</mat-icon> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close (click)="goBack()"><mat-icon>close</mat-icon></button>
     </div>
+    <mat-dialog-content>
+      <span [formGroup]="reportForm">
+          <mat-form-field appearance="fill" color="accent" class="w-100 sb-mat-form-field-custom border-radius mb-24">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.programLbl }}</mat-label>
+            <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
+            [(ngModel)]="programSelected"
+            [placeholder]="resourceService?.frmelmnts?.lbl?.program"  (selectionChange)="programSelection($event)">
+              <mat-option *ngFor="let program of programs" role="option" [value]="program._id">
+                {{program.name}}
+              </mat-option>
+            </mat-select>
+            </mat-form-field>
+              <mat-form-field appearance="fill" color="accent" class="w-100 sb-mat-form-field-custom border-radius">
+                <mat-label>{{ resourceService?.frmelmnts?.lbl?.solutionLbl }}</mat-label>
+                <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id" formControlName="solution"
+                [placeholder]="resourceService?.frmelmnts?.lbl?.solution"  (selectionChange)="selectSolution($event)">
+                  <mat-option *ngFor="let solution of solutions" role="option" [value]="solution._id">
+                    {{solution.name}} 
+                  </mat-option>
+                </mat-select>
+                </mat-form-field>
+      </span>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button type="button" mat-raised-button color="accent" class="button-rounded" type="submit" [disabled]="reportForm.controls.solution.value == undefined" (click)="confirm()">{{resourceService?.frmelmnts?.btn?.confirmBtn}}</button>
+    </mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 
 <app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true}" (dismiss)="close.emit()">
   <ng-template sbModalContent>
-    <div class="sb-modal sb-hawkeye-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-content o-y-visible">
-            <div class="ui">
-              <div class="twelve wide column px-0 mb-30">
-                <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div mat-dialog-title></div>
+    <mat-dialog-content>
+      <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end"></mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 

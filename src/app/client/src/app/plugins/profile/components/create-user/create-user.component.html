@@ -1,25 +1,22 @@
 <div [appTelemetryImpression]="telemetryImpression">
-    <!--profile Content Header -->
-    <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0">
-      <div class="ui container py-0 px-0 d-flex flex-ai-center">
-        <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i>
-       <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
-      </button>
-        <div class="content-header__content w-100 ml-16">
-          <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-            <div class="content-header__title font-weight-bold ellipsis text-left"  tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
-  <div class="ui container py-16" *ngIf="showLoader">
-    <app-loader></app-loader>
-  </div>
+  <mat-toolbar color="primary" class="toolbar-pageback">
+    <!-- /* Back button */ -->
+   <div class="d-flex flex-ai-center">
+      <button type="button" mat-mini-fab color="accent"
+      class="button-rounded" tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+      <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
+    </button>
+    <div class="toolbar-pageback__heading">
+      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.createUser}}</h3>
+    </div>
+   </div>
+    <div class="toolbar-pageback__actions">
+    </div>
+  </mat-toolbar>
+
+  <div class="mat-inside-page-container mat-app-background2">
+    <app-loader *ngIf="showLoader"></app-loader>
   <div class="user-profile-box p-0" *ngIf="!showLoader">
     <div class="d-flex flex-jc-space-between py-16 px-16">
       <div role="heading" aria-level="1" class="user-profile-box__title">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>
@@ -42,20 +39,17 @@
                 class="font-weight-normal orange text">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
             </div>
           </div>
-          <p class="fsmall my-8 text-left line-height-normal">
+          <p class="mat-body-1">
             {{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
         </div>
       </div>
     </form>
     <div class="user-profile-box__actions pb-16 px-16">
-      <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
-        (click)="onSubmitForm()" tabindex="0" type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
-        class="sb-btn sb-btn-normal sb-btn-primary">
-        {{resourceService?.frmelmnts?.lbl?.addUser}}
-      </button>
-      <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" appTelemetryInteract
-        type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" tabindex="0" (click)="onCancel()">
-        {{resourceService?.frmelmnts.btn.cancel}}</button>
+      <button mat-raised-button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" 
+      type="button" class="button-rounded" tabindex="0" (click)="onCancel()">
+      {{resourceService?.frmelmnts.btn.cancel}}</button>
+      <button mat-raised-button color="accent" appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
+        (click)="onSubmitForm()" tabindex="0" type="submit" class="button-rounded">{{resourceService?.frmelmnts?.lbl?.addUser}}</button>
     </div>
   </div>
 </div>

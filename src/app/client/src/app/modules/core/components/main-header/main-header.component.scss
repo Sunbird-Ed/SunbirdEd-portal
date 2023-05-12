@@ -15,7 +15,6 @@
   overflow: hidden;
   display: block;
   z-index: 99999;
-  background: rgba(var(--sbt-sidemenu-overlay-bg), 0.4); //--rc-rgba-black
 
   &__menu {
     width: calculateRem(400px);

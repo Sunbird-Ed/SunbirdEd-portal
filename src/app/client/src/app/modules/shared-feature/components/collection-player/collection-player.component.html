@@ -1,5 +1,3 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
-</app-landing-section>
 <div *ngIf="collectionData" [style.display]="!showLoader ? 'block' : 'none'"
   [appTelemetryImpression]="telemetryContentImpression">
 
@@ -11,10 +9,9 @@
         attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
       </button>
-      <div class="textbook__heading" *ngIf="collectionData">
-          <h5 class="title mat-subheading-2 mb-0" tabindex="0" role="heading" aria-level="2">{{collectionData.name}}
-          </h5>
-          <div class="textbook__metadata">
+      <div class="toolbar-pageback__heading" *ngIf="collectionData">
+        <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{collectionData.name}}</h3>
+          <div class="toolbar-pageback__metadata">
             <div class="sub-title mat-body-1 mt-4" *ngIf="collectionTreeNodes">
               <span *ngIf="collectionTreeNodes?.data?.board">{{collectionTreeNodes?.data?.board}}</span>
               <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.medium"></span>
