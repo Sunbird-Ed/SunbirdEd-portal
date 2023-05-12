@@ -8,7 +8,7 @@ import { of, throwError } from 'rxjs';
 import { ContentSearchService } from './../../services';
 import * as _ from 'lodash-es';
 
-xdescribe('SearchFilterComponent', () => {
+describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
     const mockContentSearchService: Partial<ContentSearchService> = {
         getCategoriesMapping: {
@@ -159,7 +159,7 @@ xdescribe('SearchFilterComponent', () => {
     });
     
 
-    xdescribe('ngOnInit', () => {
+    describe('ngOnInit', () => {
         it('should invoked ngOnInit for reset filters', () => {
             component.selectedFilters = {
                 board: ['sample-board'],

@@ -6,7 +6,7 @@ import { LearnerService, UserService } from '../../../core';
 import { CacheService } from '../../../shared/services/cache-service/cache.service';
 import { response } from './tenant.service.spec.data';
 
-xdescribe('TenantService', () => {
+describe('TenantService', () => {
   let tenantService: TenantService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

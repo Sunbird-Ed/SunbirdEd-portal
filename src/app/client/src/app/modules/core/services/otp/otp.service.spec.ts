@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { OtpService } from './otp.service';
 import { LearnerService } from '../../../core';
 
-xdescribe('OtpService', () => {
+describe('OtpService', () => {
   let otpService: OtpService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -35,7 +35,7 @@ xdescribe('OtpService', () => {
     expect(otpService).toBeTruthy();
   });
 
-  xdescribe('should call the generate otp method with data object', () => {
+  describe('should call the generate otp method with data object', () => {
     const data = {
       userId: '874ed8a5-782e-4f6c-8f36-e0288455901e'
     }
@@ -70,7 +70,7 @@ xdescribe('OtpService', () => {
     });
   });
 
-  xdescribe('should call the verify otp method with data object', () => {
+  describe('should call the verify otp method with data object', () => {
     const data = {
       userId: '874ed8a5-782e-4f6c-8f36-e0288455901e'
     }

@@ -5,7 +5,7 @@ import { PlayerService } from './player.service';
 import { of } from 'rxjs';
 import { MockResponse } from './player.service.spec.data';
 
-xdescribe('PlayerService', () => {
+describe('PlayerService', () => {
     let playerService: PlayerService;
 
     const mockActivatedRoute: Partial<ActivatedRoute> = {};
@@ -51,7 +51,7 @@ xdescribe('PlayerService', () => {
         expect(playerService).toBeTruthy();
     });
 
-    xdescribe('getConfigByContent', () => {
+    describe('getConfigByContent', () => {
         it('should return content details', (done) => {
             // arrange
             const id = 'content-id';
@@ -191,7 +191,7 @@ xdescribe('PlayerService', () => {
         });
     });
 
-    xdescribe('getCollectionHierarchy', () => {
+    describe('getCollectionHierarchy', () => {
         it('should return collection Hierarchy', (done) => {
             const identifier = 'content-id';
             const option = {
@@ -235,7 +235,7 @@ xdescribe('PlayerService', () => {
         });
     });
 
-    xdescribe('updateContentBodyForReviewer', () => {
+    describe('updateContentBodyForReviewer', () => {
         it('should update content body for reviewer', () => {
             const data = {
                 theme: {
@@ -276,7 +276,7 @@ xdescribe('PlayerService', () => {
         });
     });
 
-    xdescribe('playContent', () => {
+    describe('playContent', () => {
         it('should be navigate to collection page', (done) => {
             // arrange
             mockNavigationHelperService.storeResourceCloseUrl = jest.fn(() => { });

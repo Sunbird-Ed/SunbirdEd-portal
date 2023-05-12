@@ -18,7 +18,7 @@ import { SubmitTeacherDetailsComponent } from './submit-teacher-details.componen
 import { mockRes } from './submit-teacher-details.component.spec.data';
 import * as _ from "lodash-es";
 
-xdescribe('SubmitTeacherDetailsComponent', () => {
+describe('SubmitTeacherDetailsComponent', () => {
     let component: SubmitTeacherDetailsComponent;
 
     const csUserService: Partial<CsUserService> = {
@@ -708,7 +708,7 @@ xdescribe('SubmitTeacherDetailsComponent', () => {
         component.submit();
     });
 
-    xdescribe('updateUserConsent', () => {
+    describe('updateUserConsent', () => {
         it('should be revoked old ordId and update new orgId if Tenant is Changed', () => {
             // arrange
             const currentOrgId = 'new-sample-org-id';

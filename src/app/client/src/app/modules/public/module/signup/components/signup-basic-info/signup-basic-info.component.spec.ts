@@ -3,7 +3,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { SignupBasicInfoComponent } from './signup-basic-info.component';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
-xdescribe('SignupBasicInfoComponent', () => {
+describe('SignupBasicInfoComponent', () => {
   let component: SignupBasicInfoComponent;
 
   const mockResourceService: Partial<ResourceService> = {};
@@ -38,7 +38,7 @@ xdescribe('SignupBasicInfoComponent', () => {
       expect(component).toBeTruthy();
   });
 
-  xdescribe("birth year initialize and filter", () => {
+  describe("birth year initialize and filter", () => {
     it("intialize bith year", () => {
       component.initiateYearSelecter();
       expect(component.birthYearOptions.length).toEqual(100)
@@ -50,7 +50,7 @@ xdescribe('SignupBasicInfoComponent', () => {
     })
   })
 
-  xdescribe("ngOnInit", () => {
+  describe("ngOnInit", () => {
     it("initialize form fields with name and email", () => {
       jest.spyOn(component, 'initiateYearSelecter').mockImplementation();
       mockFormBuilder.group = jest.fn().mockReturnValue({
@@ -80,7 +80,7 @@ xdescribe('SignupBasicInfoComponent', () => {
     })
   })
 
-  xdescribe("changeBirthYear", () => {
+  describe("changeBirthYear", () => {
     it("should change birth of year", () => {
       component.changeBirthYear({option: {value: 2000}});
       expect(component.yearOfBirth).toEqual("2000");
@@ -94,7 +94,7 @@ xdescribe('SignupBasicInfoComponent', () => {
     })
   })
 
-  xdescribe("trigger next step", () => {
+  describe("trigger next step", () => {
     it("should trigger next step if form is valid", () => {
       component.personalInfoForm = new FormGroup({
         name: new FormControl('test-name'),
@@ -108,7 +108,7 @@ xdescribe('SignupBasicInfoComponent', () => {
     });
   })
 
-  xdescribe("isNumber", () => {
+  describe("isNumber", () => {
     it("should return with false for non numeric value", () => {
       let event = {which: 40};
       let res = component.isNumber(event);

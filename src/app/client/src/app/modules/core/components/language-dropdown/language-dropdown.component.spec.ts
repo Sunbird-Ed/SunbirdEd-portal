@@ -6,7 +6,7 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import * as _ from 'lodash-es';
 import { LanguageDropdownComponent } from './language-dropdown.component';
 
-xdescribe('LanguageDropdownComponent', () => {
+describe('LanguageDropdownComponent', () => {
     let component: LanguageDropdownComponent;
     const mockCacheService: Partial<CacheService> = {
         set: jest.fn(),

@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { LearnerService } from '../../../core';
 import { ConfigService } from '../../../shared';
 
-xdescribe('RecoverAccountService', () => {
+describe('RecoverAccountService', () => {
   let component: RecoverAccountService;
 
   const mockLearnerService: Partial<LearnerService> = {

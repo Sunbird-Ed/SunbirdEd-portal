@@ -10,7 +10,7 @@ import { ProfileService } from './plugins/profile';
 import { mockData } from './app.component.spec.data';
 import { mockRes } from './modules/workspace/components/upforreview-contentplayer/upforreview-content.component.spce.data';
 
-xdescribe('App Component', () => {
+describe('App Component', () => {
   let appComponent: AppComponent;
 
   const mockCacheService: Partial<CacheService> = {
@@ -145,7 +145,7 @@ xdescribe('App Component', () => {
     expect(mockCacheService.removeAll).toHaveBeenCalled();
   });
 
-  xdescribe('getOrgDetails', () => {
+  describe('getOrgDetails', () => {
     it('should get ord details and set in cache', () => {
       mockOrgDetailsService.getOrgDetails = jest.fn().mockReturnValue(of({})) as any;
       appComponent.getOrgDetails(true).subscribe((data) => {
@@ -154,7 +154,7 @@ xdescribe('App Component', () => {
     })
   })
 
-  xdescribe('checkForCustodianUser', () => {
+  describe('checkForCustodianUser', () => {
     it('should set user as custodian if it is', (done) => {
       const custodianOrg = {
         result: {response: {value: 'ROOT_ORG'}}
@@ -186,7 +186,7 @@ xdescribe('App Component', () => {
     });
   })
 
-  xdescribe('onAcceptTnc', () => {
+  describe('onAcceptTnc', () => {
     it('should show framework selection popup for non logged in user', () => {
       Object.defineProperty(mockUserService, 'loggedIn', {
         get: jest.fn(() => false)
@@ -234,7 +234,7 @@ xdescribe('App Component', () => {
   })
 
 
-  xdescribe('closeConsentPopUp', () => {
+  describe('closeConsentPopUp', () => {
     it('should close consent popup', () => {
       jest.spyOn(appComponent, 'checkFrameworkSelected').mockImplementation();
       appComponent.closeConsentPopUp();
@@ -264,7 +264,7 @@ xdescribe('App Component', () => {
     expect(appComponent.router.events).toBeTruthy();
   });
 
-  xdescribe('setTagManager', () => {
+  describe('setTagManager', () => {
     it('should set tag manager for loggedIn user', () => {
       // arrange
       Storage.prototype.getItem = jest.fn(() => '');
@@ -300,7 +300,7 @@ xdescribe('App Component', () => {
     expect(mockLayoutService.setLayoutConfig).toHaveBeenCalled();
   });
 
-  xdescribe('ngAfterViewInit', () => {
+  describe('ngAfterViewInit', () => {
     it('should checked after child component initialized', () => {
       // arrange
       const mHeaderPos = { height: 50, checked: true };
@@ -329,7 +329,7 @@ xdescribe('App Component', () => {
     expect(appComponent.isFullScreenView).toStrictEqual({fullScreen: true});
   });
 
-  xdescribe('checkTncAndFrameWorkSelected', () => {
+  describe('checkTncAndFrameWorkSelected', () => {
     it('should show TermsAndCondPopUp', () => {
       const mockUserProfile = {
         promptTnC: true,
@@ -360,7 +360,7 @@ xdescribe('App Component', () => {
     appComponent.joyThemePopup();
   });
 
-  xdescribe('ngOnInit', () => {
+  describe('ngOnInit', () => {
     it('should be return user details for web and Ios', () => {
       // arrange
       jest.spyOn(appComponent, 'notifyNetworkChange').mockImplementation();

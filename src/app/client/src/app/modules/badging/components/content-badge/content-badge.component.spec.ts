@@ -2,7 +2,7 @@ import { of } from "rxjs";
 import { ContentBadgeService } from "../../services";
 import { ContentBadgeComponent } from "./content-badge.component";
 
-xdescribe("ContentBadgeComponent", () => {
+describe("ContentBadgeComponent", () => {
     let component: ContentBadgeComponent;
     let mockBadgeData: [
         {
@@ -33,7 +33,7 @@ xdescribe("ContentBadgeComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    xdescribe("ngOnInit", () => {
+    describe("ngOnInit", () => {
         it('should get badge', () => {
             mockContentBadgeService.badges = of(mockBadgeData) as any;
             component.ngOnInit();
@@ -41,7 +41,7 @@ xdescribe("ContentBadgeComponent", () => {
         });
     });
 
-    xdescribe("ngOnDestroy", () => {
+    describe("ngOnDestroy", () => {
         it('should destroy sub', () => {
             component.unsubscribe = {
                 next: jest.fn(),

@@ -6,7 +6,7 @@ import { ContentTypeComponent } from './content-type.component';
 import { mockData } from './content-type.component.spec.data';
 import { TelemetryService } from '../../../telemetry/services';
 
-xdescribe('ContentTypeComponent', () => {
+describe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
 
   const mockFormService: Partial<FormService> = {
@@ -122,7 +122,7 @@ xdescribe('ContentTypeComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
   });
 
-  xdescribe('should set selected content types', () => {
+  describe('should set selected content types', () => {
     it('should set selected content type for profile page', () => {
       component.setSelectedContentType('/profile', {}, {});
       expect(component.selectedContentType).toBe(null);

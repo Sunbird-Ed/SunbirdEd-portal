@@ -2,7 +2,7 @@ import { of as observableOf } from 'rxjs';
 import { TelemetryImpressionDirective } from './telemetry-impression.directive';
 import { TelemetryService } from '../../services';
 import { eventData } from './telemetry-impression.directive.spec.data';
-xdescribe('TelemetryImpressionDirective', () => {
+describe('TelemetryImpressionDirective', () => {
     let directive: TelemetryImpressionDirective;
     const telemetryService: Partial<TelemetryService> = {
         impression: jest.fn()

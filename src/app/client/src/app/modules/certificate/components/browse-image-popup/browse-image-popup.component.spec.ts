@@ -30,7 +30,7 @@ export class FileReaderMock {
     removeEventListener = jest.fn();
   }
   
-xdescribe("BrowseImagePopupComponent", () => {
+describe("BrowseImagePopupComponent", () => {
     let component: BrowseImagePopupComponent;
 
     const mockUploadCertificateService: Partial<UploadCertificateService> = {};
@@ -74,7 +74,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    xdescribe("getAssetList", () => {
+    describe("getAssetList", () => {
         it('should get Asset List', () => {
             // arrange
             mockUploadCertificateService.getAssetData = jest.fn(() => of({result:{content:{}}})) as any;
@@ -94,7 +94,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         });
     });
 
-    xdescribe("searchImage", () => {
+    describe("searchImage", () => {
         it('should search images by passing image name', () => {
             // arrange
             component.imageName = "apgov-compress";
@@ -125,7 +125,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         });
     });
     
-    xdescribe("diementionCheck", () => {
+    describe("diementionCheck", () => {
         it ('should return "flag=true" for dimentionCheck', () => {
             // arrange
             component.logoType =  {type: 'LOGO'};
@@ -148,7 +148,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         });
     })
 
-    xdescribe("getImageProperties", () => {
+    describe("getImageProperties", () => {
         it("should get image properties", () => {
             global.URL.createObjectURL = jest.fn(() => 'details');
             let onloadRef: Function | undefined;
@@ -170,7 +170,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         })
     })
 
-    xdescribe("fileChange", () => {
+    describe("fileChange", () => {
         it('should change file', ((done) => {
             // arrange
             const imagedata = {
@@ -212,7 +212,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         }));
     });
     
-    xdescribe("getAllImages", () => {
+    describe("getAllImages", () => {
         it('should get All Images', () => {
             // arrange
             mockUploadCertificateService.getAssetData = jest.fn(() => of(MockData.imageSearchResult)) as any;
@@ -232,7 +232,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         });
     });
     
-    xdescribe("selectLogo", () => {
+    describe("selectLogo", () => {
         it('should select the logo', ((done) => {
             jest.spyOn(component, 'dimentionCheck').mockReturnValue(true);
             const logo = {
@@ -278,7 +278,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         }));
     }) 
 
-    xdescribe("GoBack and close modal", () => {
+    describe("GoBack and close modal", () => {
         it('should go back', () => {
             component.uploadForm.reset = jest.fn();
             component.logoType  = {
@@ -310,7 +310,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         });
     })
 
-    xdescribe("uploadBlob", () => {
+    describe("uploadBlob", () => {
         it('should upload to blob', () => {
             component.logoType = {
               type: 'logo',
@@ -352,7 +352,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         });
     })
 
-    xdescribe("getImageURLs", () => {
+    describe("getImageURLs", () => {
         it("should convert images files as data URLs", (() => {
             component.logoType = {
                 type: 'logo',
@@ -393,7 +393,7 @@ xdescribe("BrowseImagePopupComponent", () => {
         }))
     })
     
-    xdescribe("upload asset", () => {
+    describe("upload asset", () => {
         it('should upload the asset for logos', () => {
             component.logoType = { type: 'LOGO' };
             mockUploadCertificateService.createAsset = jest.fn(() => of(MockData.create))

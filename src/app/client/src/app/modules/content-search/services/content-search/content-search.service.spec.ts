@@ -3,7 +3,7 @@ import { ContentSearchService } from './content-search.service';
 import { of } from "rxjs";
 
 
-xdescribe('ContentSearchService', () => {
+describe('ContentSearchService', () => {
 
   let contentSearchService: ContentSearchService;
 

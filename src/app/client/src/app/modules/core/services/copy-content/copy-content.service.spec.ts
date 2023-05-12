@@ -7,7 +7,7 @@ import { FrameworkService } from './../framework/framework.service';
 import { ContentService } from './../content/content.service';
 import { mockRes } from './copy-content.service.spec.data';
 ​
-xdescribe('CopyContentService', () => {
+describe('CopyContentService', () => {
     let copyContentService: CopyContentService;
     const mockConfigService: Partial<ConfigService> = {
         urlConFig: {
@@ -65,7 +65,7 @@ xdescribe('CopyContentService', () => {
         expect(copyContentService).toBeTruthy();
     });
 ​
-    xdescribe('formatData', () => {
+    describe('formatData', () => {
         it('should return content if contentType is course', (done) => {
             // arrange
             const contentData = {
@@ -104,7 +104,7 @@ xdescribe('CopyContentService', () => {
         });
     });
 ​
-    xdescribe('redirectToEditor', () => {
+    describe('redirectToEditor', () => {
         it('should navigate to Draft if mimetype is collection', () => {
             // arrange
             const contentData = {
@@ -160,7 +160,7 @@ xdescribe('CopyContentService', () => {
         });
     });
 ​
-    xdescribe('should call the copyContent', () => {
+    describe('should call the copyContent', () => {
         it('should call the copyContent method to copy the content with content data', (done) => {
             // arrange
             const contentData = { identifier: 'sample-id' } as any;

@@ -12,7 +12,7 @@ import { TncService } from '../../../../../core';
 import { ToasterService } from '../../../../../shared';
 import { ProfileService } from '../../../../../../plugins/profile';
 
-xdescribe('OtpComponent', () => {
+describe('OtpComponent', () => {
   let component: OtpComponent;
   const resourceService: Partial<ResourceService> = {
     imsg: {

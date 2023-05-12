@@ -7,7 +7,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { BadgesService } from "./badges.service";
 import { LearnerService } from './../learner/learner.service';
 
-xdescribe('BadgesService', () => {
+describe('BadgesService', () => {
   let badgesService: BadgesService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -49,7 +49,7 @@ xdescribe('BadgesService', () => {
     expect(badgesService).toBeTruthy();
   });
 
-  xdescribe('getAllBadgeList', () => {
+  describe('getAllBadgeList', () => {
     it('should return all badge list', (done) => {
       jest.spyOn(badgesService.learner, 'post').mockReturnValue(of({
         id: 'id',
@@ -78,7 +78,7 @@ xdescribe('BadgesService', () => {
       });
     });
   });
-  xdescribe('getDetailedBadgeAssertions', () => {
+  describe('getDetailedBadgeAssertions', () => {
     it('should not return detailed badge Assertions', () => {
       // arrange
       jest.spyOn(badgesService.learner, 'post').mockImplementation(() => {

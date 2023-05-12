@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import * as mockData from './reports.service.spec.data';
 import { ConfigService } from '../../../shared';
 
-xdescribe('ReportService', () => {
+describe('ReportService', () => {
   let reportService: ReportService;
   const mockDomSanitizer: Partial<DomSanitizer> = {};
   const mockUsageService: Partial<UsageService> = {
@@ -186,7 +186,7 @@ xdescribe('ReportService', () => {
     });
   });
 
-  xdescribe('isUserReportAdmin function', () => {
+  describe('isUserReportAdmin function', () => {
 
     it('should return false if user is not REPORT_ADMIN', () => {
       const result = reportService.isUserReportAdmin();
@@ -216,7 +216,7 @@ xdescribe('ReportService', () => {
   });
 
 
-  xdescribe('isAuthenticated function', () => {
+  describe('isAuthenticated function', () => {
 
     it('return true if authenticated ', () => {
       mockPermissionService.permissionAvailable$ = new BehaviorSubject('success');
@@ -497,7 +497,7 @@ xdescribe('ReportService', () => {
     });
   });
 
-  xdescribe('getParameterValues method', () => {
+  describe('getParameterValues method', () => {
 
 
     it('check for slug parameter', done => {

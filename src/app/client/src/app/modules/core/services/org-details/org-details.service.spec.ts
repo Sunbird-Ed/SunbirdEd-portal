@@ -7,7 +7,7 @@ import { LearnerService } from '../learner/learner.service';
 import { OrgDetailsService } from './org-details.service';
 import { of, throwError } from 'rxjs';
 
-xdescribe('OrgDetailsService', () => {
+describe('OrgDetailsService', () => {
   let orgDetailsService: OrgDetailsService;
   const mockConfig: Partial<ConfigService> = {
     appConfig: {
@@ -93,7 +93,7 @@ xdescribe('OrgDetailsService', () => {
     expect(orgDetailsService).toBeTruthy();
   });
 
-  xdescribe('searchOrg', () => {
+  describe('searchOrg', () => {
     it('should call the search org method', () => {
       mockPublicDataService.post = jest.fn(() => of(obj.ServerResponse)) as any;
       orgDetailsService.searchOrg().subscribe((data) => {
@@ -114,7 +114,7 @@ xdescribe('OrgDetailsService', () => {
     });
   });
 
-  xdescribe('setOrgDetailsToRequestHeaders', () => {
+  describe('setOrgDetailsToRequestHeaders', () => {
     it('should call set org details to request headers method ', () => {
       const obj = {
         id: '123456789',

@@ -5,7 +5,7 @@ import { ContentService } from './../../../../modules/core/services/content/cont
 import { UserService } from '@sunbird/core';
 import { UploadCertificateService } from './upload-certificate.service';
 
-xdescribe("PageApiService", () => {
+describe("PageApiService", () => {
     let uploadCertificateService: UploadCertificateService;
     const mockPublicDataService: Partial<PublicDataService> = {};
     const mockHttpClient: Partial<HttpClient> = {
@@ -51,7 +51,7 @@ xdescribe("PageApiService", () => {
         expect(uploadCertificateService).toBeTruthy();
     });
 
-    xdescribe('createAsset', () => {
+    describe('createAsset', () => {
         it('should get the asset data', () => {
             //arrange
             const body = {
@@ -83,7 +83,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('getCertificates', () => {
+    describe('getCertificates', () => {
         it('should create asset', () => {
             //arrange
             const body = {
@@ -112,7 +112,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('createAsset', () => {
+    describe('createAsset', () => {
         it('should create asset', () => {
             //arrange
             const body = {
@@ -150,7 +150,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('storeAsset', () => {
+    describe('storeAsset', () => {
         it('should store the asset', () => {
             //arrange
             const formData = new FormData();
@@ -167,7 +167,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('createCertTemplate', () => {
+    describe('createCertTemplate', () => {
         it('should create the certificate template', () => {
             //arrange
             const data = {};
@@ -183,7 +183,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('uploadTemplate', () => {
+    describe('uploadTemplate', () => {
         it('should upload the certificate template', () => {
             //arrange
             const formData = new FormData();
@@ -200,7 +200,7 @@ xdescribe("PageApiService", () => {
         });
     });
 
-    xdescribe('getSvg', () => {
+    describe('getSvg', () => {
         it('should get SVG', (done) => {
             //arrange
             const url = 'https://sunbirddev.blob.core.windows.net';

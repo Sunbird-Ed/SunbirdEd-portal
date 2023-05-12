@@ -2,7 +2,7 @@ import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 import { ContentBadgeService } from './content-badge.service';
 
-xdescribe('ContentBadgeService', () => {
+describe('ContentBadgeService', () => {
   let contentBadgeService: ContentBadgeService;
   const mockConfigService: Partial<ConfigService> = {
     appConfig: {
@@ -42,7 +42,7 @@ xdescribe('ContentBadgeService', () => {
     expect(contentBadgeService).toBeTruthy();
   });
 
-  xdescribe('addBadge', () => {
+  describe('addBadge', () => {
     it('should call add badge method with the badge create ', () => {
       const req = {
         testObject: 'testing'
@@ -52,7 +52,7 @@ xdescribe('ContentBadgeService', () => {
     });
   });
 
-  xdescribe('setAssignBadge', () => {
+  describe('setAssignBadge', () => {
     it('should call set assign badge method ', () => {
       const badges = {
         obj: 'testing'

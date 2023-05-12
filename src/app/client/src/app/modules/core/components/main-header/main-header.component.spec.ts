@@ -16,7 +16,7 @@ const mockUserRoles = {
   userRoles: ['PUBLIC']
 };
 
-xdescribe('MainHeaderComponent', () => {
+describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
 
   const mockconfig: Partial<ConfigService> = {

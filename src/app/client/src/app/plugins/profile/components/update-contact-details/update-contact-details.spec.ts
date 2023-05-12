@@ -8,7 +8,7 @@ import { ConfigService } from '../../../../modules/shared';
 import { UserService } from '../../../../modules/core';
 import { UpdateContactDetailsComponent } from './update-contact-details.component';
 
-xdescribe('UpdateContactDetailsComponent', () => {
+describe('UpdateContactDetailsComponent', () => {
     let component: UpdateContactDetailsComponent;
     const resourceService: Partial<ResourceService> = {
 

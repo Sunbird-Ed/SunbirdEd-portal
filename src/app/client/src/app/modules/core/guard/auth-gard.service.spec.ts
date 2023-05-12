@@ -5,7 +5,7 @@ import { UserService, PermissionService } from '../../core';
 import { of } from 'rxjs/internal/observable/of';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
-xdescribe('AuthGardService', () => {
+describe('AuthGardService', () => {
     let authGuard: AuthGuard;
     const mockResourceService: Partial<ResourceService> = {
         messages: {

@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { ResourceService } from '../../../shared';
 import { fakeAsync, tick } from '@angular/core/testing';
 
-xdescribe('FilterComponent', () => {
+describe('FilterComponent', () => {
   let component: FilterComponent;
 
   const mockResourceService: Partial<ResourceService> = {

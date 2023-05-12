@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ResourceService, ToasterService } from '../../../shared';
 import { of } from 'rxjs/internal/observable/of';
 
-xdescribe('DataChartComponent', () => {
+describe('DataChartComponent', () => {
     let component: DataChartComponent;
     const mockResourceService: Partial<ResourceService> = {
         messages: {
@@ -87,7 +87,7 @@ xdescribe('DataChartComponent', () => {
         expect(component.chartLabels).toEqual([]);
     });
 
-    xdescribe('checkForStacking function', () => {
+    describe('checkForStacking function', () => {
         let mockchartOptions;
         beforeEach(() => {
             mockchartOptions = {

@@ -1,7 +1,7 @@
 import { ResourceService } from '@sunbird/shared';
 import { FrameworkCatLabelTranslatePipe } from './framework-label-translate.pipe';
 
-xdescribe('FrameworkCatLabelTranslatePipe', () => {
+describe('FrameworkCatLabelTranslatePipe', () => {
   let pipe: FrameworkCatLabelTranslatePipe;
 
   const mockResourceService: Partial<ResourceService> = {
@@ -29,7 +29,7 @@ xdescribe('FrameworkCatLabelTranslatePipe', () => {
   });
 
 
-  xdescribe('#transform', () => {
+  describe('#transform', () => {
     it('Should tranform category label', () => {
         const transformedResult = pipe.transform('board');
         expect(transformedResult).toBeDefined();

@@ -9,7 +9,7 @@ import { mockData } from './program-datasets.component.spec.data';
 import { ReportService } from '../../../dashboard';
 import { Location } from '@angular/common';
 
-xdescribe('DatasetsComponent', () => {
+describe('DatasetsComponent', () => {
   let component: DatasetsComponent;
   const activatedRoute: Partial<ActivatedRoute> = {
     queryParams: of({})

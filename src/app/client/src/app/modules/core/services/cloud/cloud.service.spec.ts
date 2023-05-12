@@ -6,7 +6,7 @@ import { ConfigService } from '../../../shared/services/config/config.service';
 import { CloudService } from "./cloud.service";
 
 
-xdescribe('CloudService', () => {
+describe('CloudService', () => {
   let cloudService: CloudService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {

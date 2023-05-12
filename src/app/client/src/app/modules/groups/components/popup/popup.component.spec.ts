@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopupComponent } from './popup.component';
 import { DELETE_POPUP, POP_DEACTIVATE } from '../../interfaces/telemetryConstants';
 
-xdescribe('Popup component', ()=>{
+describe('Popup component', ()=>{
   let popupComponent: PopupComponent;
   const mockResourceService: Partial<ResourceService> = {
     instance:'sunbird'
@@ -126,7 +126,7 @@ xdescribe('Popup component', ()=>{
     expect(dialogRefData.close).toBeCalled();
   });
 
-  xdescribe('ngAfterViewInit', ()=>{
+  describe('ngAfterViewInit', ()=>{
     it('should call setTelemetryImpression with object containing DELETE_POPUP', ()=> {
       const argData = {type:DELETE_POPUP};
       jest.spyOn(popupComponent,'setTelemetryImpression');
@@ -143,7 +143,7 @@ xdescribe('Popup component', ()=>{
     });
   });
 
-  xdescribe('setTelemetryImpression', ()=> {
+  describe('setTelemetryImpression', ()=> {
     const argData = {
         type: DELETE_POPUP
     };

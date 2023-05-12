@@ -4,7 +4,7 @@ import {TenantService} from '@sunbird/core';
 import { MergeAccountStatusComponent } from './merge-account-status.component';
 import { of } from 'rxjs';
 
-xdescribe('MergeAccountStatus component', ()=> {
+describe('MergeAccountStatus component', ()=> {
   let mergeAccountStatusComponent: MergeAccountStatusComponent;
   const mockActivatedRoute:Partial<ActivatedRoute>={
     queryParams: of({
@@ -41,7 +41,7 @@ xdescribe('MergeAccountStatus component', ()=> {
     expect(mergeAccountStatusComponent).toBeTruthy();
   });
 
-  xdescribe('ngOnInit', ()=> {
+  describe('ngOnInit', ()=> {
     it('should set isMergeSuccess,mergeType,redirectUri and error_type properties', ()=> {
       mergeAccountStatusComponent.ngOnInit();
       expect(mergeAccountStatusComponent.isMergeSuccess).toBeDefined();

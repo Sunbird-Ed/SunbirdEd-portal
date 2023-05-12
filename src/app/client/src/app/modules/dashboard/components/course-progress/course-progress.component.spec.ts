@@ -8,7 +8,7 @@ import * as testData from './course-progress.component.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 
-xdescribe('CourseProgressComponent', () => {
+describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   const resourceBundle = {
     'messages': {

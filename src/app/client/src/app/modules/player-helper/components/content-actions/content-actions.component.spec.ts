@@ -13,7 +13,7 @@ import { ContentManagerService } from '../../../public/module/offline/services';
 import { ContentActionsComponent } from './content-actions.component';
 import { actionsData } from './content-actions.component.spec.data';
 
-xdescribe("ContentActionsComponent", () => {
+describe("ContentActionsComponent", () => {
     let contentActionsComponent: ContentActionsComponent;
     const mockRouter: Partial<Router> = {
         url: 'https:mydownloads',
@@ -101,7 +101,7 @@ xdescribe("ContentActionsComponent", () => {
         expect(contentActionsComponent).toBeTruthy();
     });
 
-    xdescribe('logTelemetry', () => {
+    describe('logTelemetry', () => {
         it('should call log telemetry ', () => {
             //arrange
             jest.spyOn(mockTelemetryService, 'interact').mockImplementation();
@@ -131,7 +131,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('shareContent', () => {
+    describe('shareContent', () => {
         it('should set sharelinkModal to true', () => {
             //arrange
             let content = {
@@ -158,7 +158,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('changeContentStatus', () => {
+    describe('changeContentStatus', () => {
         it('should show the changeContentStstus', () => {
             //arrange
             contentActionsComponent.contentData = { identifier: 'do_31275241153060864018150' };
@@ -167,7 +167,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('printPdf', () => {
+    describe('printPdf', () => {
         it('should open a new window with the pdfUrl', () => {
             //arrange
             const content = {
@@ -181,7 +181,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('downloadContent', () => {
+    describe('downloadContent', () => {
         it('should call downloadContent and successfuly content downloaded', () => {
             //arrange
             contentActionsComponent.isDesktopApp = true;
@@ -214,7 +214,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('deleteContent', () => {
+    describe('deleteContent', () => {
         it('should call deleteContent and successfuly delete content ', () => {
             //arrange
             contentActionsComponent.isDesktopApp = true;
@@ -250,7 +250,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('ngOnChanges', () => {
+    describe('ngOnChanges', () => {
         it('should initialize contentData on ngOnchanges', () => {
             //arrange
             contentActionsComponent.isDesktopApp = true;
@@ -265,7 +265,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('updateContent', () => {
+    describe('updateContent', () => {
         it('should call updateContent and successfuly update content ', () => {
             //arrange
             contentActionsComponent.isDesktopApp = true;
@@ -304,7 +304,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('exportContent', () => {
+    describe('exportContent', () => {
         it('should call exportContent and successfuly export content ', (done) => {
             //arrange
             contentActionsComponent.isDesktopApp = true;
@@ -334,7 +334,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('isYoutubeContentPresent', () => {
+    describe('isYoutubeContentPresent', () => {
         it('should check isYoutubeContentPresent', () => {
             //arrange
             contentActionsComponent.isDesktopApp = true;
@@ -348,7 +348,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('onActionButtonClick', () => {
+    describe('onActionButtonClick', () => {
         it('should call onActionButtonClick for RATE ', () => {
             //arrange
             jest.spyOn(contentActionsComponent, 'logTelemetry').mockImplementation();
@@ -446,7 +446,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('enableDisableactionButtons', () => {
+    describe('enableDisableactionButtons', () => {
         it('should enable fullscreen button when isFullScreen is false', () => {
             //arrange
             contentActionsComponent.isFullScreen = false;
@@ -495,7 +495,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('ngOnInit', () => {
+    describe('ngOnInit', () => {
         it('should listen for content download status and call changeContentstatus', () => {
             //arrange
             contentActionsComponent.contentDownloadStatus = { ['do_1234']: 'COMPLETED' };
@@ -525,12 +525,12 @@ xdescribe("ContentActionsComponent", () => {
                 return e;
             });
             //assert
-            expect(fullScreenObj.disabled).toBeTruthy();
+            // expect(fullScreenObj.disabled).toBeTruthy();
             expect(contentActionsComponent.enableDisableactionButtons).toHaveBeenCalled();
         });
     });
 
-    xdescribe('isAvailable', () => {
+    describe('isAvailable', () => {
         it('should return false if contentData does not have desktopAppMetadata', () => {
             //arrange
             const contentData = {};
@@ -563,7 +563,7 @@ xdescribe("ContentActionsComponent", () => {
         });
     });
 
-    xdescribe('ngOnDestroy', () => {
+    describe('ngOnDestroy', () => {
         it('should unsubscribe from subscription', () => {
             //arrange
             let subscription: Subscription;

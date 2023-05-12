@@ -1,7 +1,7 @@
 import { FormBuilder } from "@angular/forms";
 import { PdFiltersComponent } from "./pd-filters.component";
 
-xdescribe("PdFiltersComponent", () => {
+describe("PdFiltersComponent", () => {
   let component: PdFiltersComponent;
   let formBuilder;
 

@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ContentManagerService } from './content-manager.service';
 import { response } from './content-manager.service.spec.data';
-xdescribe('ContentManagerService', () => {
+describe('ContentManagerService', () => {
   let contentManagerService: ContentManagerService;
   const mockConfigService: Partial<ConfigService> = {
     appConfig: {
@@ -73,7 +73,7 @@ xdescribe('ContentManagerService', () => {
     expect(contentManagerService).toBeTruthy();
   });
 
-  xdescribe('updateContentDownloadStatus', () => {
+  describe('updateContentDownloadStatus', () => {
     it('should call update content download status method with some data ', () => {
       jest.spyOn(contentManagerService, 'updateContentDownloadStatus');
       contentManagerService.updateContentDownloadStatus(response?.contentDownloadLists);
@@ -86,21 +86,21 @@ xdescribe('ContentManagerService', () => {
       expect(JSON.stringify(contentManagerService.contentDownloadStatus)).toBe(JSON.stringify(obj));
     });
   });
-  xdescribe('emitAfterDeleteContent', () => {
+  describe('emitAfterDeleteContent', () => {
     it('should call emit after delete content method ', () => {
       jest.spyOn(contentManagerService, 'emitAfterDeleteContent');
       contentManagerService.emitAfterDeleteContent({});
       expect(contentManagerService.emitAfterDeleteContent).toHaveBeenCalled();
     });
   });
-  xdescribe('emitDownloadListEvent', () => {
+  describe('emitDownloadListEvent', () => {
     it('should call emit after download content from a list method ', () => {
       jest.spyOn(contentManagerService, 'emitDownloadListEvent');
       contentManagerService.emitDownloadListEvent({});
       expect(contentManagerService.emitDownloadListEvent).toHaveBeenCalled();
     });
   });
-  xdescribe('getContentList', () => {
+  describe('getContentList', () => {
     it('should call get content list method ', () => {
       mockPublicDataService.post = jest.fn(() => of(response?.data)) as any;
       contentManagerService.deleteContentTimeStamps = {
@@ -127,7 +127,7 @@ xdescribe('ContentManagerService', () => {
       });
     });
   });
-  xdescribe('resumeImportContent', () => {
+  describe('resumeImportContent', () => {
     it('should call resume Import Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.resumeImportContent('do_3129981407884492801153');
@@ -139,7 +139,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('cancelImportContent', () => {
+  describe('cancelImportContent', () => {
     it('should call cancel Import Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.cancelImportContent('do_3129981407884492801153');
@@ -151,7 +151,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('pauseImportContent', () => {
+  describe('pauseImportContent', () => {
     it('should call pause Import Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.pauseImportContent('do_3129981407884492801153');
@@ -163,7 +163,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('retryImportContent', () => {
+  describe('retryImportContent', () => {
     it('should call retry Import Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.retryImportContent('do_3129981407884492801153');
@@ -175,7 +175,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('resumeDownloadContent', () => {
+  describe('resumeDownloadContent', () => {
     it('should call resume download Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.resumeDownloadContent('do_3129981407884492801153');
@@ -187,7 +187,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('cancelDownloadContent', () => {
+  describe('cancelDownloadContent', () => {
     it('should call cancel download Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.cancelDownloadContent('do_3129981407884492801153');
@@ -199,7 +199,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('pauseDownloadContent', () => {
+  describe('pauseDownloadContent', () => {
     it('should call pause Download Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.pauseDownloadContent('do_3129981407884492801153');
@@ -211,7 +211,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('retryDownloadContent', () => {
+  describe('retryDownloadContent', () => {
     it('should call retry Download Content method with the do id ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.retryDownloadContent('do_3129981407884492801153');
@@ -223,14 +223,14 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('telemetry error log event', () => {
+  describe('telemetry error log event', () => {
     it('should call the log telemetry event ', () => {
       jest.spyOn(contentManagerService['telemetryService'], 'error');
       contentManagerService.logErrorTelemetry({error: 'error occured'});
       expect(contentManagerService['telemetryService'].error).toHaveBeenCalled();
     });
   });
-  xdescribe('changeContentLocation', () => {
+  describe('changeContentLocation', () => {
     it('should call change the content location method called ', () => {
       jest.spyOn(contentManagerService['publicDataService'], 'post');
       contentManagerService.changeContentLocation({});
@@ -242,7 +242,7 @@ xdescribe('ContentManagerService', () => {
       expect(contentManagerService['publicDataService'].post).toBeCalledWith(options);
     });
   });
-  xdescribe('deleteContent', () => {
+  describe('deleteContent', () => {
     it('should call delete content Method with delete content time stamp as null ', () => {
       mockPublicDataService.post = jest.fn(() => of(response?.data)) as any;
       const options = {
@@ -272,7 +272,7 @@ xdescribe('ContentManagerService', () => {
       });
     });
   });
-  xdescribe('update Content', () => {
+  describe('update Content', () => {
     it('should call update Content method is called ', () => {
       mockPublicDataService.post = jest.fn(() => of(response?.data)) as any;
       jest.spyOn(contentManagerService['toasterService'], 'info');
@@ -295,7 +295,7 @@ xdescribe('ContentManagerService', () => {
       });
     });
   });
-  xdescribe('exportContent', () => {
+  describe('exportContent', () => {
     it('should call export content method is called ', () => {
       mockPublicDataService.get = jest.fn(() => of(response?.data)) as any;
       mockElectronDialogService.showContentExportDialog = jest.fn(() => of(response?.response)) as any;
@@ -309,7 +309,7 @@ xdescribe('ContentManagerService', () => {
       });
     });
   });
-  xdescribe('startDownload', () => {
+  describe('startDownload', () => {
     it('should call start Download method is called ', () => {
       mockPublicDataService.post = jest.fn(() => of(response?.data)) as any;
       contentManagerService.downloadContentId = 'do_3129981407884492801159';

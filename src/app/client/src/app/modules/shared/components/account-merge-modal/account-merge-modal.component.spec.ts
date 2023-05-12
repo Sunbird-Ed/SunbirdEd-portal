@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { AccountMergeModalComponent } from './account-merge-modal.component';
 import { of, throwError } from 'rxjs';
 
-xdescribe('AccountMergeModal component', ()=> {
+describe('AccountMergeModal component', ()=> {
   let accountMergeModalComponent: AccountMergeModalComponent;
   const mockResourceService: Partial<ResourceService> = {};
   const mockRouter: Partial<Router> = {
@@ -74,7 +74,7 @@ xdescribe('AccountMergeModal component', ()=> {
     expect(accountMergeModalComponent.modal.deny).toBeCalled();
   });
 
-  xdescribe('initiateMerge', ()=> {
+  describe('initiateMerge', ()=> {
     it('should call http get function with appropriate url', ()=> {
       const responseUrl = '/user/session/save?redirectUri=user/test'
       jest.spyOn(accountMergeModalComponent.http,'get');

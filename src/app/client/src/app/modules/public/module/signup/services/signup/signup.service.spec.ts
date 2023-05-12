@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { of } from "rxjs";
 import { ConfigService } from "../../../../../../modules/shared";
 import * as mock from "./signup.service.spec.data";
-xdescribe("SignupService", () => {
+describe("SignupService", () => {
     let component: SignupService;
 
     const mockLearnerService: Partial<LearnerService> = {

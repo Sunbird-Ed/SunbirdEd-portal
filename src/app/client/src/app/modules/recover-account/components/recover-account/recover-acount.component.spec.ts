@@ -2,7 +2,7 @@ import { ResourceService } from "../../../shared";
 import { RecoverAccountService } from "../../services";
 import { RecoverAccountComponent } from "./recover-account.component";
 
-xdescribe("RecoverAccountComponent", () => {
+describe("RecoverAccountComponent", () => {
     let recoverAccountComponent: RecoverAccountComponent;
 
     const mockRecoverAccountService: Partial<RecoverAccountService> = {};

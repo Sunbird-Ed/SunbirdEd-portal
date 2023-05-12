@@ -8,7 +8,7 @@ import { of, throwError } from "rxjs";
 import { HttpErrorResponse } from "@angular/common/http";
 import { setTimeout } from "timers";
 
-xdescribe("UserRoleAssign component", () => {
+describe("UserRoleAssign component", () => {
   let userRoleAssignComponent: UserRoleAssignComponent;
   const responseData={
     result:{
@@ -95,7 +95,7 @@ xdescribe("UserRoleAssign component", () => {
     expect(userRoleAssignComponent.userDetailsForm).toBeDefined();
   });
 
-  xdescribe("ngOnInit", () => {
+  describe("ngOnInit", () => {
     it("should set instance and removeRoles properties", () => {
       userRoleAssignComponent.ngOnInit();
       expect(userRoleAssignComponent.instance).toBeDefined();
@@ -215,7 +215,7 @@ xdescribe("UserRoleAssign component", () => {
     },2000)
   });
 
-  xdescribe('onEnter', ()=> {
+  describe('onEnter', ()=> {
     it('should set showingResults true  and set userObj after Observable firing', ()=> {
       const data={roles:'test'};
       jest.spyOn(userRoleAssignComponent,'manipulateUserObject');
@@ -241,7 +241,7 @@ xdescribe("UserRoleAssign component", () => {
     });
   });
 
-  xdescribe('manipulateUserObject', ()=> {
+  describe('manipulateUserObject', ()=> {
     const data={
       roles:[{
         role:'admin',
@@ -294,7 +294,7 @@ xdescribe("UserRoleAssign component", () => {
     });
   })
 
-  xdescribe('updateProfile', ()=> {
+  describe('updateProfile', ()=> {
     it('should call updateRoleForUser with appropriate data', ()=>{
       userRoleAssignComponent.userObj={userId:'test'};
       const argumentData={

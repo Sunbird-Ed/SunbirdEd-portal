@@ -8,7 +8,7 @@ import { CacheService } from '../../../shared/services/cache-service/cache.servi
 import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-ttl/browser-cache-ttl.service'
 import { mockFormData } from './form.mock.spec.data';
 import { OrgDetailsService } from '../org-details/org-details.service';
-xdescribe('FormService', () => {
+describe('FormService', () => {
   let formService: FormService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -82,7 +82,7 @@ xdescribe('FormService', () => {
     expect(formService).toBeTruthy();
   });
 
-  xdescribe('should fetch formDetails details', () => {
+  describe('should fetch formDetails details', () => {
     const hashTagId = 'NTP';
     const formInputParams = {
       formType: 'user',

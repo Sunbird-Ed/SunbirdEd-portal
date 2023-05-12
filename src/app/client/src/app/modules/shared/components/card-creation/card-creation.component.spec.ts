@@ -1,7 +1,7 @@
 import { CardCreationComponent } from '..';
 import { ResourceService } from '../../services/index';
 
-xdescribe('CardCreationComponent', ()=> {
+describe('CardCreationComponent', ()=> {
   let cardCreationComponent:CardCreationComponent;
   const mockResourceService:Partial<ResourceService>={};
 
@@ -19,7 +19,7 @@ xdescribe('CardCreationComponent', ()=> {
     expect(cardCreationComponent).toBeTruthy();
   });
 
-  xdescribe('ngOnInit', ()=>{
+  describe('ngOnInit', ()=>{
     it('should set telemetryInteractObject and telemetryInteractEdata', ()=>{
       cardCreationComponent.data={
         metaData:{

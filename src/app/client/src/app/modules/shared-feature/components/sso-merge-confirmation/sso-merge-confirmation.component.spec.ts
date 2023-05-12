@@ -3,7 +3,7 @@ import {TenantService} from '@sunbird/core';
 import { SsoMergeConfirmationComponent } from '..';
 import { of } from 'rxjs';
 
-xdescribe('SsoMergeConfirmation component', ()=> {
+describe('SsoMergeConfirmation component', ()=> {
   let ssoMergeConfirmationComponent: SsoMergeConfirmationComponent;
   const mockResourceService: Partial<ResourceService> = {};
   const ObservableData = {

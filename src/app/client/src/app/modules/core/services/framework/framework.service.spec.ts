@@ -10,7 +10,7 @@ import {
   BrowserCacheTtlService
 } from '@sunbird/shared';
 
-xdescribe('FrameworkService', () => {
+describe('FrameworkService', () => {
   let frameworkService: FrameworkService;
   const mockConfigService: Partial<ConfigService> = {
     urlConFig: {
@@ -61,7 +61,7 @@ xdescribe('FrameworkService', () => {
     expect(frameworkService).toBeTruthy();
   });
 
-  xdescribe('should fetch channel data using the getChannel method', () => {
+  describe('should fetch channel data using the getChannel method', () => {
     const hashTagId = 'NTP'
     it('should return channel data using the getChannel method', (done) => {
       jest.spyOn(frameworkService['publicDataService'], 'get').mockReturnValue(of({
@@ -94,7 +94,7 @@ xdescribe('FrameworkService', () => {
     });
   });
 
-  xdescribe('should fetch framework data using the getFrameworkCategories method', () => {
+  describe('should fetch framework data using the getFrameworkCategories method', () => {
     const frameworkId = 'NTP'
     it('should return framework data using the getFrameworkCategories method', (done) => {
       jest.spyOn(frameworkService['publicDataService'], 'get').mockReturnValue(of({
@@ -127,7 +127,7 @@ xdescribe('FrameworkService', () => {
     });
   });
 
-  xdescribe('should fetch selected framework category data using the getSelectedFrameworkCategories method', () => {
+  describe('should fetch selected framework category data using the getSelectedFrameworkCategories method', () => {
     const frameworkId = 'NTP'
     const queryParams = {}
     it('should return selected framework category using getSelectedFrameworkCategories method', (done) => {
@@ -161,7 +161,7 @@ xdescribe('FrameworkService', () => {
     });
   });
 
-  xdescribe('should fetch course framework using getCourseFramework method', () => {
+  describe('should fetch course framework using getCourseFramework method', () => {
     it('should return course framework using getCourseFramework method', (done) => {
       jest.spyOn(frameworkService.learnerService, 'get').mockReturnValue(of({
         id: 'id',
@@ -195,13 +195,13 @@ xdescribe('FrameworkService', () => {
     });
   });
 
-  xdescribe('should fetch defaultLicense from getDefaultLicense', () => {
+  describe('should fetch defaultLicense from getDefaultLicense', () => {
     it('should return defaultLicense from the method getDefaultLicense', () => {
       let defaultLicense = frameworkService.getDefaultLicense();
       expect(defaultLicense).toBe('ABCD');
     });
   });
-  xdescribe('should call the framework initialize', () => {
+  describe('should call the framework initialize', () => {
     it('should call the initialize method', () => {
       const res = {
         id: 'id',

@@ -1,7 +1,7 @@
 import { ResourceService } from '@sunbird/shared';
 import { ConfirmationPopupComponent } from './confirmation-popup.component';
 
-xdescribe('ConfirmationPopup component', ()=> {
+describe('ConfirmationPopup component', ()=> {
   let confirmationPopupComponent: ConfirmationPopupComponent
   const mockResourceService: Partial<ResourceService> = {};
 

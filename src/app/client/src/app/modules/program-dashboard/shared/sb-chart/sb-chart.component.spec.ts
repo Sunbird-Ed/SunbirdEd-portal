@@ -3,7 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { SbChartComponent } from "./sb-chart.component";
 import { mockChart } from "./sb-chart.component.spec.data";
 
-xdescribe("SbChartComponent", () => {
+describe("SbChartComponent", () => {
   let component: SbChartComponent;
   let resourceService;
   let dialog;

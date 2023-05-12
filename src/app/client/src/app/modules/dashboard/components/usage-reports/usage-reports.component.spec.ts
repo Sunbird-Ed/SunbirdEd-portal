@@ -6,7 +6,7 @@ import { ResourceService, NavigationHelperService, LayoutService, ToasterService
 import { UsageService, CourseProgressService } from "../../services";
 import { UsageReportsComponent } from "./usage-reports.component";
 
-xdescribe('UsageReportsComponent', () => {
+describe('UsageReportsComponent', () => {
     let usageReportsComponent: UsageReportsComponent;
     const mockUsageService: Partial<UsageService> = {
         getData: jest.fn().mockReturnValue(of({responseCode: 'OK'}) )as any,
@@ -61,7 +61,7 @@ xdescribe('UsageReportsComponent', () => {
         expect(usageReportsComponent).toBeTruthy();
     });
 
-    xdescribe('ngOnInit', ()=> {
+    describe('ngOnInit', ()=> {
         it('should be return usage reports for web and Ios', ()=> {
             // arrange
             jest.spyOn(document, 'getElementById').mockImplementation(() => {
@@ -140,7 +140,7 @@ xdescribe('UsageReportsComponent', () => {
         expect(res).toBeDefined();
     });
 
-    xdescribe('downloadCSV', () => {
+    describe('downloadCSV', () => {
         it('should download the csv file', ()=> {
             // arrange
             let filePath = '';
@@ -197,7 +197,7 @@ xdescribe('UsageReportsComponent', () => {
         expect(usageReportsComponent.initLayout).toBeCalled();
     });
 
-    xdescribe('goBack', ()=> {
+    describe('goBack', ()=> {
         it('return back to the navigation helper page',()=> {
             // arrange
             mockNavigationHelperService.goBack = jest.fn();
