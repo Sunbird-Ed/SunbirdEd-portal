@@ -4,12 +4,12 @@ import { mockChartData } from './filter.component.spec.data';
 import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { ResourceService } from '../../../shared';
 import { fakeAsync, tick } from '@angular/core/testing';
 
-xdescribe('FilterComponent', () => {
+describe('FilterComponent', () => {
   let component: FilterComponent;
 
   const mockResourceService: Partial<ResourceService> = {
@@ -49,12 +49,14 @@ xdescribe('FilterComponent', () => {
   };
   const mockChangeDetectionRef: Partial<ChangeDetectorRef> = {
   };
+  const selectedDialogData:Partial<typeof MAT_DIALOG_DATA>={}
   beforeAll(() => {
     component = new FilterComponent(
       mockResourceService as ResourceService,
       mockFormBuilder as FormBuilder,
       mockActivatedRoute as ActivatedRoute,
-      mockChangeDetectionRef as ChangeDetectorRef
+      mockChangeDetectionRef as ChangeDetectorRef,
+      selectedDialogData as typeof MAT_DIALOG_DATA
     );
   });
 
