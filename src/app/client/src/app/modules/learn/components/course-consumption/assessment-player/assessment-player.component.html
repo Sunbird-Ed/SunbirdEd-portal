@@ -1,103 +1,90 @@
-
-<app-landing-section [textToDisplay]="" 
-[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
-<!-- Header: Back Button Previous Module & Next Module button -->
-  <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-color-white back-btn-container cc-player__btn-back relative9'" class="relative position mt-0">
-    <div class="ui container py-0 px-0 d-flex flex-ai-center">
-    <div class="p-0 d-flex flex-ai-center w-100">
-   <!-- Back button -->
-   <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="goBack(); logTelemetry('back-track', courseHierarchy)" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-   <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-       <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-     </svg></i>
-   <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
- </button>
- <div class="w-100 relative9 m-0 p-0 ml-16" [ngClass]="{'header-block': isFullScreenView}">
-  <div class="textbook p-0">
-    <!-- Textbook details -->
-    <div class="textbook__details d-flex flex-ai-center">
-      <!-- Textbook image -->
-      <div class="textbook__heading">
-        <!-- Textbook title -->
-        <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseHierarchy?.name | titlecase}}
-        </h5>
-        <!-- Textbook Rating with share icon -->
-        <div class="textbook__rating mt-4">
-          <button tabindex="0" (click)="onShareLink();shareLinkModal=true;"
-            class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
-            <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#share"></use>
-            </svg></i>
-            {{resourceService?.frmelmnts?.lbl?.share}}
-          </button>
-        </div>
-      </div>
+<mat-toolbar color="primary" class="toolbar-pageback">
+  <div class="d-flex flex-ai-center">
+    <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0"
+      (click)="goBack(); logTelemetry('back-track', courseHierarchy)"
+      attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+      <mat-icon aria-hidden="false" fontIcon="arrow_back"></mat-icon>
+    </button>
+    <div class="toolbar-pageback__heading">
+      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name |
+        titlecase}}</h3>
     </div>
   </div>
-</div>
-      </div>
-      </div>
-      </div>
+  <div class="toolbar-pageback__actions">
+    <button tabindex="0" mat-raised-button color="accent" (click)="onShareLink();shareLinkModal=true;"
+      class="button-rounded"><mat-icon>share</mat-icon>
+      {{resourceService?.frmelmnts?.lbl?.share}}
+    </button>
+  </div>
+</mat-toolbar>
 
-
-<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" class="text-left relative9">
-  <!-- CC-Player Video -->
-  <div class="ui container">
-    <div class="cc-player sb-g">
-      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
-     
-        <div class="toc-content text-left">
-          <div class="content-video">
-            <section class="content-video__player" id="player-area-height">
-              <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
-                <app-player *ngIf="showPlayer" class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
-                  [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
-                  (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
-                  (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
-                  (ratingPopupClose)="onRatingPopupClose()" (selfAssessLastAttempt)="onSelfAssessLastAttempt($event)"></app-player>
-              </div>
-              <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
-              </app-content-actions>
-              <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
-              </app-content-actions>
-            </section>
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression"
+  class="mat-inside-page-container mat-app-background2">
+  <div class="sb-g">
+    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
+      <div class="toc-content text-left">
+        <div class="content-video">
+          <section class="content-video__player" id="player-area-height">
+            <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+              <app-player *ngIf="showPlayer" class="content-player" [playerOption]="playerOption"
+                [playerConfig]="playerConfig" [contentProgressEvents$]="contentProgressEvents$"
+                (assessmentEvents)="onAssessmentEvents($event)"
+                (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
+                (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
+                (ratingPopupClose)="onRatingPopupClose()"
+                (selfAssessLastAttempt)="onSelfAssessLastAttempt($event)"></app-player>
+            </div>
+            <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="isFullScreenView"
+              class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent"
+              [objectRollUp]="objectRollUp">
+            </app-content-actions>
+            <app-content-actions [assessmentEvents]="assessmentEvents" *ngIf="activeContent"
+              [contentData]="activeContent" [objectRollUp]="objectRollUp">
+            </app-content-actions>
+          </section>
+        </div>
+        <div class="mt-8">
+          <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
+        </div>
+      </div>
+    </section>
+    <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+      <div class="cc-player__list px-0">
+        <!-- Module Progress bar -->
+        <div class="certified-course__progress" *ngIf="totalContents > 0">
+          <!-- Previous / next module buttons -->
+          <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
+            <!-- Previous module button -->
+            <button mat-button color="primary" class="button-rounded" aria-label="previous-module" *ngIf="prevModule"
+              tabindex="0"
+              (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
+              <mat-icon>chevron_left</mat-icon> {{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
+            </button>
+            <!-- Previous Module button -->
+            <!-- Next Module button -->
+            <button mat-button color="primary" class="button-rounded" aria-label="next-module" *ngIf="nextModule"
+              tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
+              {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+            <!-- Next Module button -->
           </div>
-          <div class="mt-8">
-            <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
+          <div *ngIf="!isUnitCompleted">
+            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
+            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}}
+              {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+            <mat-progress-bar mode="determinate" [value]="consumedContents"
+              class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
+          </div>
+
+          <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
+            <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg"
+                alt="complete-content-image"></div>
+            <label
+              class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
           </div>
         </div>
-      </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
-        <div class="cc-player__list px-0">
- <!-- Module Progress bar -->
- <div class="certified-course__progress" *ngIf="totalContents > 0">
-     <!-- Previous / next module buttons -->
-     <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
-      <!-- Previous module button -->
-      <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
-        tabindex="0" (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
-      </button>
-      <!-- Previous Module button -->
-      <!-- Next Module button -->
-      <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn ml-auto" aria-label="next-module" *ngIf="nextModule"
-        tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
-        {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
-      </button>
-      <!-- Next Module button -->
-    </div>
-    <div *ngIf="!isUnitCompleted"> 
-      <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
-      <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-      <mat-progress-bar mode="determinate" [value]="consumedContents" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
-    </div>
-  
-  <div class="module-complete-content d-flex flex-ai-center py-8 px-16 mb-8" *ngIf="isUnitCompleted">
-    <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt="complete-content-image"></div>
-    <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
-  </div>
-</div>
-       
+
 
         <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
         <div class="side-toc-content chapter-box">
@@ -108,32 +95,36 @@
                 <ng-container *ngIf="item?.contentType">
                   <div class="child-content-padding">
                     <!-- toc card for Non Self Assess content -->
-                
+
                     <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
+                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                      [contentStatus]="contentStatus">
                     </sb-toc-card>
                     <!-- toc card for Self Assess content with Label for Best Score -->
                     <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item"
-                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus"
-                      [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                      (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                      [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'"
+                      [disabled]="'disabled-toc-card'">
                     </sb-toc-card>
                   </div>
                 </ng-container>
-                </div>
+              </div>
 
               <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
                 <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
-                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')"
+                    [type]="cardType" [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts"
+                    [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                   </sb-toc-card>
                 </div>
               </div>
 
               <div *ngIf="item?.children?.length">
-                <div *ngFor="let child of item?.children" >
+                <div *ngFor="let child of item?.children">
                   <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
-                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
-                      [contentStatus]="contentStatus" [type]="cardType">
+                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child"
+                      (tocCardClick)="navigateToInitPlayer($event, 'child-item')" [contentStatus]="contentStatus"
+                      [type]="cardType">
                     </sb-toc-child-item>
                   </div>
                 </div>
@@ -149,35 +140,34 @@
           </sb-toc-card>
         </div>
       </div>
-      </section>
-    </div>
+    </section>
   </div>
 
-  <div class="ui container py-16" *ngIf="showLoader">
+  <div class="py-16" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}" (dismiss)="shareLinkModal = false">
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
+  (dismiss)="shareLinkModal = false">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
     </app-share-link>
   </ng-template>
 </app-modal-wrapper>
 
-<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
+<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription"
+  (close)="onCourseCompleteClose()"></app-course-completion>
 
 <!-- Start - Modal for Assessment attempts -->
 <app-modal-wrapper *ngIf="showMaxAttemptsModal" [config]="{disableClose: true, width: '30rem', size: 'normal'}"
   (dismiss)="closeLoginModal()" #modal>
   <ng-template sbModalContent>
-
     <mat-dialog-content>
       <h4 class="font-weight-bold mb-0 py-16">
         {{resourceService?.frmelmnts?.lbl?.selfAssessMaxAttempt}}
       </h4>
     </mat-dialog-content>
-
     <mat-dialog-actions align="end">
       <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
         [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
@@ -214,6 +204,6 @@
 </app-modal-wrapper>
 <!-- End - Modal for Assessment attempts -->
 
-    <!--Rating popup -->
-    <app-content-rating *ngIf="contentRatingModal && playerConfig" [contentData]="playerConfig.metadata"
-      (closeModal)="onRatingPopupClose()"></app-content-rating>
+<!--Rating popup -->
+<app-content-rating *ngIf="contentRatingModal && playerConfig" [contentData]="playerConfig.metadata"
+  (closeModal)="onRatingPopupClose()"></app-content-rating>

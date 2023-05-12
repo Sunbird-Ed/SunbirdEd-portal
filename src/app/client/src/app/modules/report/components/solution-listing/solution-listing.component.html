@@ -1,119 +1,93 @@
 <app-landing-section
   [noTitle]="true"
-  [layoutConfiguration]="layoutConfiguration"
->
+  [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
-<div
-  [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-color-white back-btn-container cc-player__btn-back relative9'"
-  class="relative position mt-0">
-  <div class="ui container py-0 px-0 d-flex flex-ai-center">
-    <div class="py-0 d-flex flex-ai-center w-100">
-      <!-- /* Back button */ -->
-      <button type="button" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-        <em class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></em>
-        <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
-      </button>
-     <div class="textbook d-flex flex-ai-center flex-jc-space-between w-100 ml-16">
-        <!-- title -->
-        <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0"></h5>
-    </div>
-    </div>
-  </div>
-</div>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : 'pt-16'">
-  <div class="sb-pageSection my-24 ui container listallreports-section">
-    <ng-container>
-      <div class="sb-pageSection-content">
+<mat-toolbar color="primary" class="toolbar-pageback">
+  <div class="d-flex flex-ai-center">
+     <button type="button" mat-mini-fab color="accent"
+     class="button-rounded" tabindex="0" (click)="goBack()"
+     attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+     <mat-icon aria-hidden="false" fontIcon="arrow_back"></mat-icon>
+   </button>
+   <div class="toolbar-pageback__heading">
+    <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2"></h3>
+   </div>
+  </div>
+ </mat-toolbar>
+
+<div class="mat-inside-page-container mat-app-background2">
+
         <ng-container *ngIf="solutionList.length">
-          <div>
-            <sui-tabset>
-              <div class="ui top attached tabular menu report-menu">
-                <a class="item" suiTabHeader="1"
-                  ><i class="icon chart line alternate"></i> {{resourceService.frmelmnts?.lnk?.report}}</a
-                >
-              </div>
-              <div class="ui bottom attached segment" suiTabContent="1">
-                <div class="ui bottom attached small p-0 b-0 no-bg py-24">
-                  <div class="pull-left">
-                    show <select [(ngModel)]="pageSize" class="dataTables_filter search-entries" (change)="changeLimit($event)">
-                      <option value="10" selected>10</option>
-                      <option value="20">20</option>
-                      <option value="25">25</option>
-                    </select> entries
-                  </div>
-                  <div class="pull-right">
-                    <select [(ngModel)]="selectedEntity" class="dataTables_filter search-entity" (change)="getDataByEntity($event)">
-                      <option value="selected" selected disabled hidden>Entity Filter</option>
-                      <option value="{{entity}}" *ngFor="let entity of filters">{{entity}}</option>
-                    </select>
-                  </div>
-                    
-                  <table datatable [dtOptions]="dtOptions"
-                    class="
-                      sb-table sb-table-hover sb-table-striped sb-table-sortable
-                      width-100 table-bottom 
-                    "
-                  >
-                  <thead >
-                    <tr>
-                      <th class="header-section">{{resourceService?.frmelmnts?.lbl?.serialno}}</th>
-                      <th class="header-section"></th>
-                      <th>{{resourceService?.frmelmnts?.lbl?.title}}</th>
-                      <th  class="date-section">{{resourceService?.frmelmnts?.lbl?.latestSubmission}}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                   <tr *ngFor="let solution of solutionList;let i=index" (click)="(solution?.entities?.length >1) ? goToEntityList(solution) : goToReports(solution)">
-                         <td tabindex="0" class="header-section">{{i+1}}</td>
-                         <td tabindex="0"><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal iconSize" aria-label="file-icon">
-                          <i class="icon copy outline alternate large"></i></button></td>
-                         <td tabindex="0"><div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
-                          {{solution.name}}</h6> <p class="media-description sb__ellipsis"> {{solution.programName}}</p></div></div></td>
-                          <td tabindex="0" class="date-section">{{solution.completedDate| date: "yyyy/MM/dd"}}</td>
-                     </tr>
-                  </tbody>
-                 
-                </table>
-                <div class="content-grid relative9">
-                <div class="twelve wide column right aligned"
-                    *ngIf="paginationDetails.totalItems > 5">
-                    <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
-                      <div class="sb-pagination my-0">
-                        <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
-                          (click)="navigateToPage(1) ">&laquo;</a>
-                        <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
-                          (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
-                        <a role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}"
-                          (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
-                        <a title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" role="button" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
-                          (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
-                        <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
-                          (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
-                      </div>
-                    </div>
-                  </div>
+          <mat-tab-group mat-align-tabs="center">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">monitoring</mat-icon>
+                {{resourceService.frmelmnts?.lnk?.report}}
+              </ng-template>
+              <div class="sb-g">
+                <div class="sb-g-col-sm-12 sb-g-col-md-6">
+                  show <select [(ngModel)]="pageSize" class="dataTables_filter search-entries" (change)="changeLimit($event)">
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                  </select> entries
                 </div>
+                <div class="sb-g-col-sm-12 sb-g-col-md-6">
+                  <select [(ngModel)]="selectedEntity" class="dataTables_filter search-entity" (change)="getDataByEntity($event)">
+                    <option value="selected" selected disabled hidden>Entity Filter</option>
+                    <option value="{{entity}}" *ngFor="let entity of filters">{{entity}}</option>
+                  </select>
                 </div>
               </div>
-            </sui-tabset>
-          </div>
+              <table datatable [dtOptions]="dtOptions"
+                class="sb-table sb-table-hover sb-table-striped sb-table-sortable w-100 table-bottom">
+              <thead >
+                <tr>
+                  <th class="header-section">{{resourceService?.frmelmnts?.lbl?.serialno}}</th>
+                  <th class="header-section"></th>
+                  <th>{{resourceService?.frmelmnts?.lbl?.title}}</th>
+                  <th  class="date-section">{{resourceService?.frmelmnts?.lbl?.latestSubmission}}</th>
+                </tr>
+              </thead>
+              <tbody>
+               <tr *ngFor="let solution of solutionList;let i=index" (click)="(solution?.entities?.length >1) ? goToEntityList(solution) : goToReports(solution)">
+                     <td tabindex="0" class="header-section">{{i+1}}</td>
+                     <td tabindex="0"><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal iconSize" aria-label="file-icon">
+                      <i class="icon copy outline alternate large"></i></button></td>
+                     <td tabindex="0"><div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
+                      {{solution.name}}</h6> <p class="media-description sb__ellipsis"> {{solution.programName}}</p></div></div></td>
+                      <td tabindex="0" class="date-section">{{solution.completedDate| date: "yyyy/MM/dd"}}</td>
+                 </tr>
+              </tbody>
+            </table>
+            <div class="content-grid relative9">
+            <div class="twelve wide column right aligned"
+                *ngIf="paginationDetails.totalItems > 5">
+                <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
+                  <div class="sb-pagination my-0">
+                    <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                      (click)="navigateToPage(1) ">&laquo;</a>
+                    <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}" [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                      (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+                    <a role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}" *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}"
+                      (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+                    <a title="{{resourceService?.frmelmnts?.lbl?.next}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}" role="button" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                      (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+                    <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}" [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                      (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </mat-tab>
+          </mat-tab-group>
         </ng-container>
-      </div>
-    </ng-container>
 
-    
-    <div class="twelve wide column" *ngIf="noResult">
-      <app-no-result [data]="noResultMessage"></app-no-result>
-    </div>
-    <div class="twelve wide column" *ngIf="showLoader">
-      <app-loader [data]='loaderMessage'></app-loader>
-    </div>
-  </div>
+    <app-no-result *ngIf="noResult" [data]="noResultMessage"></app-no-result>
+
+    <app-loader *ngIf="showLoader" [data]='loaderMessage'></app-loader>
 </div>
 
-<div *ngIf="showModal">
-  <app-entity-list (closeEvent)="modalClose($event)"  [solution]="solution"> </app-entity-list>
-</div>
+
+  <app-entity-list *ngIf="showModal" (closeEvent)="modalClose($event)"  [solution]="solution"></app-entity-list>

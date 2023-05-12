@@ -16,6 +16,7 @@
   .mat-card.mat-spinner-card {
     // background-color: mat.get-color-from-palette($background, background);
     background: transparent;
+    box-shadow: none;
   }
   .mat-card-title {
     // color: mat.get-color-from-palette($accent);

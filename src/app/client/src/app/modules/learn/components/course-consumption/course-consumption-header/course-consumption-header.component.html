@@ -13,15 +13,13 @@
       <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
     </button>
     <!-- Textbook image -->
-    <div class="textbook__img">
+    <div class="toolbar-pageback__img">
       <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
     </div>
-    <div class="textbook__heading">
-      <!-- Textbook title -->
-      <h5 class="title mat-subheading-2 mb-0" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}
-      </h5>
+    <div class="toolbar-pageback__heading">
+      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
       <!-- Textbook Rating with share icon -->
-      <div class="textbook__metadata">
+      <div class="toolbar-pageback__metadata">
         <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
           [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 

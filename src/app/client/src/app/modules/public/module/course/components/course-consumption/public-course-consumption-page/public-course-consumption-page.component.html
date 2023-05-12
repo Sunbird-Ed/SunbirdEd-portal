@@ -1,26 +1,22 @@
 <mat-toolbar color="primary" class="toolbar-pageback">
-  <button mat-mini-fab color="accent"
-    [ngClass]="layoutConfiguration ? '' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'"
-    (click)="redirectToExplore()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}" tabindex="0">
+  <button mat-mini-fab color="accent" (click)="redirectToExplore()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}" tabindex="0">
     <mat-icon>arrow_back</mat-icon>
-    <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.btn?.back}}</span>
   </button>
-  <div *ngIf="!showLoader && !showError" class="MetaInfo">
-    <div class="MetaImgColumn">
+    <div class="toolbar-pageback__img" *ngIf="!showLoader && !showError">
       <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}"
         class="thumbnail">
     </div>
-    <div class="MetaColumn">
-      <h3 class="title ellipsis">{{courseHierarchy?.name}}</h3>
-      <span>
+    <div class="toolbar-pageback__heading" *ngIf="!showLoader && !showError">
+      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
+      <div class="toolbar-pageback__metadata">
         <sui-rating class="ui star rating" [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0"
-          [maximum]="5"></sui-rating>
-        <button mat-button tabindex="0" (click)="onShareLink()" class="ml-8"><mat-icon class="mr-8">share</mat-icon>
-          {{resourceService?.frmelmnts?.lbl?.share}}</button>
-      </span>
+        [maximum]="5"></sui-rating>
+      <button mat-button tabindex="0" (click)="onShareLink()" class="ml-8"><mat-icon class="mr-8">share</mat-icon>
+        {{resourceService?.frmelmnts?.lbl?.share}}</button>
+      </div>
     </div>
-  </div>
-  <div *ngIf="!showLoader && !showError" class="Actions">
+
+  <div *ngIf="!showLoader && !showError" class="toolbar-pageback__action ml-auto">
     <div *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)">
       <span class="sb-label-12size"
         *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}

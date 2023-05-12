@@ -27,6 +27,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { PdFiltersComponent } from './shared/pd-filters/pd-filters.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 const TIME_RANGE_DATE_FORMAT = {
   parse: {
@@ -70,7 +71,8 @@ const TIME_RANGE_DATE_FORMAT = {
     DashletModule,
     DashboardModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatToolbarModule
   ],
   providers: [
     ResourceService,

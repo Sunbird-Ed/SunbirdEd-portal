@@ -13,7 +13,8 @@ import { DataTablesModule } from 'angular-datatables';
 import { DashletModule } from '@project-sunbird/sb-dashlet-v14';
 import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [SolutionListingComponent, EntityListComponent, ReportViewComponent, AllEvidenceComponent],
@@ -36,7 +37,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     DataTablesModule,
     DashletModule.forRoot(),
     SlReportsLibraryModule,
-    MatTabsModule
+    MatTabsModule,
+    MatToolbarModule,
+    MatGridListModule
   ],
   providers: []
 

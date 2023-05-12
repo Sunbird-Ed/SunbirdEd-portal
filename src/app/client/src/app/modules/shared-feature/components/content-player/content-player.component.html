@@ -8,10 +8,9 @@
       attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
       <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
     </button>
-    <div class="textbook__heading">
-      <h5 class="title mat-subheading-2 mb-0" tabindex="0" role="heading" aria-level="2">
-        {{contentData.name}}</h5>
-      <div class="textbook__metadata">
+    <div class="toolbar-pageback__heading">
+      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{contentData.name}}</h3>
+      <div class="toolbar-pageback__metadata">
         <div class="sub-title mat-body-1 mt-4">
           <span class="mat-body-1" *ngIf="contentData?.subject">{{contentData?.subject}}</span>
           <span class="dot-divider" *ngIf="contentData.gradeLevel"></span>
