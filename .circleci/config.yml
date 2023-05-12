@@ -1,8 +1,8 @@
 version: 2.1
 jobs:
   build:
-    macos:
-      xcode: 14.2.0
+    docker:
+      - image: cimg/node:18.16.0
     steps:
       - checkout
       - run:
@@ -10,8 +10,10 @@ jobs:
           command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
   test-cases:
     working_directory: ~/portal/src/app/client
-    macos:
-      xcode: 14.2.0
+    docker:
+      # Ref: https://circleci.com/docs/2.0/configuration-reference/#available-machine-images
+      - image: cimg/node:18.16.0
+    resource_class: large
     steps:
       - checkout:
           path: ~/portal
@@ -36,26 +38,19 @@ jobs:
       - run:
           name: Executing test cases using JEST
           command: 'npm run test:ci'
-  sonar-check:
-    working_directory: ~/portal/src/app/client
-    docker: 
-      - image: cimg/node:18.16.0 
-    resource_class: large    
-    steps:
       - run:
-        name: Install Sonar Scanner
-        command: |
+          name: Install Sonar Scanner
+          command: |
             cd /tmp
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
             unzip || sudo apt install unzip -y
             unzip sonar-scanner-cli-4.6.2.2472-linux.zip
             cd -
       - run:
-        name: run sonar scanner
-        command: 'cd ~/portal && /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner'
+         name: run sonar scanner
+         command: 'cd ~/portal && /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner'
 workflows:
   version: 2
   build_and_test:
     jobs:
       - test-cases
-      - sonar-check
