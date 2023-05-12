@@ -36,7 +36,13 @@ jobs:
       - run:
           name: Executing test cases using JEST
           command: 'npm run test:ci'
-      - run:
+    sonar-check:
+     working_directory: ~/portal/src/app/client
+      docker: 
+        - image: cimg/node:18.16.0 
+      resource_class: large    
+      steps:
+        - run:
           name: Install Sonar Scanner
           command: |
             cd /tmp
@@ -44,9 +50,9 @@ jobs:
             unzip || sudo apt install unzip -y
             unzip sonar-scanner-cli-4.6.2.2472-linux.zip
             cd -
-      - run:
-         name: run sonar scanner
-         command: 'cd ~/portal && /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner'
+        - run:
+          name: run sonar scanner
+          command: 'cd ~/portal && /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner'
 workflows:
   version: 2
   build_and_test:
