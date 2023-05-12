@@ -37,7 +37,7 @@ jobs:
           name: Executing test cases using JEST
           command: 'npm run test:ci'
     sonar-check:
-     working_directory: ~/portal/src/app/client
+      working_directory: ~/portal/src/app/client
       docker: 
         - image: cimg/node:18.16.0 
       resource_class: large    
