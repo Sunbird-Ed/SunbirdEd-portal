@@ -1,5 +1,4 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-</app-landing-section>
+
 <div class="mat-inside-page-container mat-app-background2">
   <div [appTelemetryImpression]="telemetryImpression">
     <div class="mat-app-background p-16 mt-16 br-24">
@@ -15,9 +14,8 @@
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <h4 class="mat-body-1 m-0 mr-auto">
           {{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
-        <button mat-raised-button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract
-          [telemetryInteractEdata]="userDeclaredDetailsEdata"
-          [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'bgcolor-success':userDeclaredDetailsUrl}" type="button"
+        <button mat-raised-button color="success" appTelemetryInteract
+          [telemetryInteractEdata]="userDeclaredDetailsEdata" type="button"
           class="button-rounded" (click)="downloadFile(userDeclaredDetailsUrl)">
           {{resourceService.frmelmnts?.btn?.download}}
         </button>
@@ -37,37 +35,35 @@
     </div>
 
     <div class="mat-app-background p-16 mt-16 br-24">
-      <div class="">
+      <div>
        <h4 class="mat-body-1 font-weight-bold">User & Org Management</h4>
-        <div class="">
-          <div class="d-flex">
-            <div class="mat-body-1">Geo Data:</div>
-            <div class="ml-auto" *ngIf="geoSummary && geoSummary.length">
-              <button mat-raised-button color="accent" class="button-rounded"
-                [ngClass]="(geoButtonText == 'View Less') ? 'color-accent' : ''"
-                (click)="geoTableView()" appTelemetryInteract
-                [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
-              <button mat-raised-button type="button" class="bgcolor-success button-rounded ml-16"
-                (click)="downloadCSVFile(geoCSV, '', slug + '.csv')" appTelemetryInteract
-                [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}}
-              </button>
-            </div>
-          </div>
-          <div class="pt-16 d-flex flex-w-wrap">
-            <dl class="mat-meta-data">
-              <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['districts'] }}</dt>
-              <dd class="mat-body-1 w-100 text-left m-0">Districts</dd>
-            </dl>
-            <dl class="mat-meta-data">
-              <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['blocks'] }}</dt>
-              <dd class="mat-body-1 w-100 text-left m-0">Blocks</dd>
-            </dl>
-            <dl class="mat-meta-data">
-              <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['schools'] }}</dt>
-              <dd class="mat-body-1 w-100 text-left m-0">Schools</dd>
-            </dl>
-          </div>
+       <div class="d-flex">
+        <div class="mat-body-1">Geo Data:</div>
+        <div class="ml-auto" *ngIf="geoSummary && geoSummary.length">
+          <button mat-raised-button color="accent" class="button-rounded"
+            [ngClass]="(geoButtonText == 'View Less') ? 'color-accent' : ''"
+            (click)="geoTableView()" appTelemetryInteract
+            [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
+          <button mat-raised-button type="button" color="success" class="button-rounded ml-16"
+            (click)="downloadCSVFile(geoCSV, '', slug + '.csv')" appTelemetryInteract
+            [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}}
+          </button>
         </div>
+      </div>
+      <div class="pt-16 d-flex flex-w-wrap">
+        <dl class="mat-meta-data">
+          <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['districts'] }}</dt>
+          <dd class="mat-body-1 w-100 text-left m-0">Districts</dd>
+        </dl>
+        <dl class="mat-meta-data">
+          <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['blocks'] }}</dt>
+          <dd class="mat-body-1 w-100 text-left m-0">Blocks</dd>
+        </dl>
+        <dl class="mat-meta-data">
+          <dt class="color-accent mat-body-1 text-left w-100 font-weight-bold">{{ geoData['schools'] }}</dt>
+          <dd class="mat-body-1 w-100 text-left m-0">Schools</dd>
+        </dl>
+      </div>
       </div>
       <div class="sb-manage-table-section" *ngIf="geoButtonText === resourceService.frmelmnts.btn.viewless">
         <div class="sb-table-responsive">
