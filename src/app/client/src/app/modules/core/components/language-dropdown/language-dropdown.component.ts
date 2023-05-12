@@ -29,7 +29,7 @@ export class LanguageDropdownComponent implements OnInit {
   ngOnInit() {
     // check if website select the language else get the cache service lang
     let tenantPageLang = localStorage.getItem('portalLanguage') || this._cacheService.get('portalLanguage');
-    // if (tenantPageLang) {tenantPageLang=tenantPageLang.replaceAll("\"","")};
+    if (tenantPageLang) {tenantPageLang=tenantPageLang.replaceAll("\"","")};
     if (tenantPageLang == null) {
       tenantPageLang = 'en';
     }
