@@ -17,11 +17,12 @@
     "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --progress=false --output-path=./../app_dist/dist --deploy-url dist/",
     "post-build": "gulp post:build",
     "build-dev": "ng build --configuration production --build-optimizer=false --deploy-url dist/",
-    "test": "jest --clearCache && jest --collectCoverage=true --coverageReporters=lcov",
+    "test": "jest",
+    "test:ci": "jest --ci --collectCoverage=true --coverageReporters=lcov --forceExit --detectOpenHandles --maxWorkers=2",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
-    "test-coverage": "./node_modules/jest/bin/jest.js --clearCache && node --max_old_space_size=8096 ./node_modules/jest/bin/jest.js --silent --ci --w 2 --collectCoverage=true --coverageReporters=lcov --detectOpenHandles --forceExit",
+    "test-coverage": "./node_modules/jest/bin/jest.js --clearCache && node --max_old_space_size=1024 ./node_modules/jest/bin/jest.js --silent --ci --collectCoverage=true --coverageReporters=lcov --detectOpenHandles --forceExit=true",
     "build-cdn": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --configuration production --progress=false --outputPath=./../dist-cdn",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
     "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --configuration production --stats-json",
@@ -142,14 +143,14 @@
   },
   "devDependencies": {
     "@angular/language-service": "^14.3.0",
-    "@types/jest": "^28.0.3",
+    "@types/jest": "^29.5.0",
     "@types/jquery": "^3.3.38",
     "@types/jquery.fancytree": "2.7.34",
     "@types/node": "^12.20.15",
     "codelyzer": "^6.0.0",
     "husky": "^4.2.5",
-    "jest": "^28.0.3 ",
-    "jest-preset-angular": "12.2.6",
+    "jest": "29.5.0 ",
+    "jest-preset-angular": "13.1.0",
     "md5": "2.2.1",
     "minimist": "^1.2.5",
     "protractor": "~7.0.0",
@@ -158,5 +159,86 @@
     "typescript": "~4.6.4",
     "webpack-bundle-analyzer": "^4.7.0"
   },
-  "resolutions": {}
+  "resolutions": {},
+  "jest": {
+    "preset": "ts-jest",
+    "verbose": true,
+    "testEnvironment": "jsdom",
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "<rootDir>/tsconfig.spec.json",
+        "stringifyContentPathRegex": "\\.(html|svg)$"
+      }
+    },
+    
+    "setupFilesAfterEnv": [
+      "./setup-jest.ts"
+    ],
+    "rootDir": "./",
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".data.spec.ts",
+      ".spec.data.ts"
+    ],
+    "testMatch": [
+      "**/?(*.)(spec).ts"
+    ],
+    "collectCoverage": true,
+    "coverageDirectory": "<rootDir>/coverage/",
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "ts",
+      "tsx",
+      "html",
+      "mjs",
+      "d.ts"
+    ],
+    "transform": {
+      "^.+.(ts|mjs|js|html)$": "jest-preset-angular"
+    },
+    "coverageReporters": [
+      "text"
+    ],
+    "moduleNameMapper": {
+      "^@sunbird/core": "<rootDir>/src/app/modules/core",
+      "^@sunbird/shared": "<rootDir>/src/app/modules/shared",
+      "^@sunbird/home": "<rootDir>/src/app/modules/home",
+      "^@sunbird/dashboard": "<rootDir>/src/app/modules/dashboard",
+      "^@sunbird/admin": "<rootDir>/src/app/modules/admin",
+      "^@sunbird/resource": "<rootDir>/src/app/modules/resource",
+      "^@sunbird/learn": "<rootDir>/src/app/modules/learn",
+      "^@sunbird/workspace": "<rootDir>/src/app/modules/workspace",
+      "^@sunbird/org-management": "<rootDir>/src/app/modules/org-management",
+      "^@sunbird/public": "<rootDir>/src/app/modules/public",
+      "^@sunbird/profile": "<rootDir>/src/app/plugins/profile",
+      "^@sunbird/search": "<rootDir>/src/app/modules/search",
+      "^@sunbird/telemetry": "<rootDir>/src/app/modules/telemetry",
+      "^@sunbird/badge": "<rootDir>/src/app/modules/badging",
+      "^@sunbird/shared-feature": "<rootDir>/src/app/modules/shared-feature",
+      "^@sunbird/environment": "<rootDir>/src/environments/environment",
+      "^@sunbird/course-batch": "<rootDir>/src/app/modules/course-batch",
+      "^@sunbird/player-helper": "<rootDir>/src/app/modules/player-helper",
+      "^@sunbird/content-search": "<rootDir>/src/app/modules/content-search",
+      "CsLibInitializer": "<rootDir>/src/app/service/CsLibInitializer/cs-lib-initializer.service.ts",
+      "LazzyLoadScriptService": "<rootDir>/src/app/service/LazzyLoadScript/lazzy-load-script.service.ts",
+      "^@sunbird/test-util": "<rootDir>/src/app/testUtil/",
+      "^@sunbird/groups": "<rootDir>/src/app/modules/groups",
+      "^@project-sunbird/client-services/services/group/interface": "<rootDir>/node_modules/@project-sunbird/client-services/services/group/interface",
+      "^@project-sunbird/client-services/(.*)$": "<rootDir>/node_modules/@project-sunbird/client-services/$1",
+      "lodash-es": "<rootDir>/node_modules/lodash/"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!.*\\.mjs$|@project-sunbird)"
+    ],
+    "snapshotSerializers": [
+      "jest-preset-angular/build/serializers/no-ng-attributes",
+      "jest-preset-angular/build/serializers/ng-snapshot",
+      "jest-preset-angular/build/serializers/html-comment"
+    ]
+  }
 }
