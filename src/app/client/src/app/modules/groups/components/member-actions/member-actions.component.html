@@ -1,21 +1,21 @@
-<app-modal-wrapper  [config]="{disableClose: true, size: 'small',panelClass: 'material-modal'}" (dismiss)="closeModal()" #modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'small', width: '30rem', panelClass: 'material-modal'}" (dismiss)="closeModal()"
+  #modal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal">
-      <div mat-dialog-title class="px-16">
-        <div class="title" tabindex="0">{{memberActionData?.title}}</div>
-        <button type="button" aria-label="close dialog" class="close-btn" 
-        (dismiss)="closeModel()" mat-dialog-close tabindex="0"></button>
-      </div>
-      <mat-dialog-content>
-        <div class="sb-mat__modal__content">
-          <p tabindex="0">{{memberActionData?.description}}</p>
-        </div>
-      </mat-dialog-content>
-      <mat-dialog-actions class="sb-mat__modal__actions">
-        <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+    <div mat-dialog-title class="mb-0">
+      <h4 class="color-accent font-weight-bold mb-0">{{memberActionData?.title}}</h4>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close
+        (dismiss)="closeModel()"><mat-icon>close</mat-icon></button>
+    </div>
+    <mat-dialog-content>
+
+      <p tabindex="0">{{memberActionData?.description}}</p>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="accent" class="button-rounded mr-8"  tabindex="0"
         [ngClass]="{'sb-btn-error': memberActionData?.theme === 'error'}"
         (click)="performAction()">{{memberActionData?.buttonText}}</button>
-      </mat-dialog-actions>
-    </div>
+    </mat-dialog-actions>
+
   </ng-template>
 </app-modal-wrapper>

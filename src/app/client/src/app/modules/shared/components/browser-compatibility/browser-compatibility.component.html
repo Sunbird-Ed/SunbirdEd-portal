@@ -1,50 +1,37 @@
-<app-modal-wrapper *ngIf="browserCompatible" [config]="{disableClose: true, size: 'normal'}" (dismiss)="alert($event)"
+<app-modal-wrapper *ngIf="browserCompatible" [config]="{disableClose: true, size: 'normal', width: '45rem'}" (dismiss)="alert($event)"
     #modal>
     <ng-template sbModalContent>
-        <div class="sb-modal">
-            <div class="transition ui dimmer page modals active visible">
-                <div class="ui modal transition active visible normal">
-                    <!--Header-->
-                    <div class="sb-modal-header">
-                        {{resourceService.frmelmnts.lbl.improveYourExperience}}
-                    </div>
-                    <!--/Header-->
-
-                    <!--Content-->
-                    <div class="sb-modal-content">
-                        <div class="ui center aligned">
-                            <div class="ui grid">
-                                <div class="twelve wide center aligned column">
-                                    <div class="content">
-                                        <div class="secondary-text-color-sunbird mb-10">
-                                            {{resourceService.frmelmnts.lbl.incompatibleBrowser}}</div>
-                                        <div class="secondary-text-color-sunbird mb-30">
-                                            {{resourceService.frmelmnts.lbl.browserSuggestions}}</div>
-                                        <div class="ui tiny image">
-                                            <img src="{{'assets/images/chrome.png' | cdnprefixurl}}">
-                                        </div>
-                                        <div class="ui header mb-0 mt-10">Chrome</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Content-->
-                    <!--Actions-->
-                    <div class="sb-modal-actions">
-                        <a class="sb-btn sb-btn-normal sb-btn-primary" target="_blank"
-                            href="https://www.google.com/chrome/">
-                            {{resourceService.frmelmnts.btn.download}}
-                        </a>
-                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-                            (click)="hideCompatibilityModel()">
-                            {{resourceService.frmelmnts.btn.ok}}
-                        </button>
-                    </div>
-                    <!--/Actions-->
-                </div>
-            </div>
+        <!--Header-->
+        <div mat-dialog-title class="mb-0">
+            <h2 class="mb-0">{{resourceService.frmelmnts.lbl.improveYourExperience}}</h2>
+            <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+                mat-dialog-close><mat-icon>close</mat-icon></button>
         </div>
+        <!--/Header-->
+        <!--Content-->
+        <mat-dialog-content>
+            <div class="d-flex flex-dc flex-ai-center flex-jc-center">
+                <p>{{resourceService.frmelmnts.lbl.incompatibleBrowser}}</p>
+                <p>{{resourceService.frmelmnts.lbl.browserSuggestions}}</p>
+                <div class="image mb-16">
+                    <img src="{{'assets/images/chrome.png' | cdnprefixurl}}">
+                </div>
+                <h2 class="mb-0">Chrome</h2>
+            </div>
+        </mat-dialog-content>
+        <!--Content-->
+        <!--Actions-->
+        <mat-dialog-actions align="end">
+            <button mat-raised-button class="button-rounded" tabindex="0" (click)="hideCompatibilityModel()">
+                {{resourceService.frmelmnts.btn.ok}}
+            </button>
+            <a mat-raised-button color="accent" class="button-rounded mr-8" target="_blank"
+                href="https://www.google.com/chrome/">
+                {{resourceService.frmelmnts.btn.download}}
+            </a>
+        </mat-dialog-actions>
+        <!--/Actions-->
+
     </ng-template>
 </app-modal-wrapper>
 
