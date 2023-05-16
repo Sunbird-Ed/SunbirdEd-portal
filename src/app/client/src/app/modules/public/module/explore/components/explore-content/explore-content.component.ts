@@ -214,6 +214,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
 
     
 
+  
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
       if (pageTitle && pageType && (pageTitle === pageType)) {
