@@ -601,7 +601,7 @@ const API_LIST = {
       checksNeeded: [],
       description: 'RC API to validate scanned certificate'
     },
-    
+
     //Admin related APIs
     '/learner/data/v1/upload/status': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1250,7 +1250,9 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.BOOK_REVIEWER,
+        ROLE.CONTENT_REVIEWER
       ]
     },
     '/action/content/v1/collaborator/update/:do_id': {
@@ -1801,6 +1803,14 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    "/assessment/programs/mlcore/v1/join/:id":{
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    "/assessment/users/mlcore/v1/solutions/:id":{
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
     '/dhiti/observations/mlreports/v1/listAllEvidences': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
@@ -2034,7 +2044,9 @@ const API_LIST = {
     '/uci/admin/v1/conversationLogic/update/:id',
     '/uci/admin/v1/conversationLogic/delete/:id',
     '/uci/admin/v1/forms/upload',
-    '/kendra/user-extension/mlcore/v1/solutions/:id'
+    '/kendra/user-extension/mlcore/v1/solutions/:id',
+    '/assessment/programs/mlcore/v1/join/:id',
+    '/assessment/users/mlcore/v1/solutions/:id'
   ]
 };
 module.exports = API_LIST;

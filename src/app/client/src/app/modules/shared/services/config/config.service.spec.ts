@@ -1,6 +1,6 @@
 import { ConfigService } from './config.service';
 
-xdescribe('ConfigService', () => {
+describe('ConfigService', () => {
     let configService: ConfigService;
 
     beforeEach(() => {
