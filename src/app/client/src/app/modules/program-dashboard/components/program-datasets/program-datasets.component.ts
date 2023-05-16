@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { INoResultMessage, ToasterService, IUserData, IUserProfile, LayoutService, ResourceService, ConfigService, OnDemandReportService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
-import { Subject, Subscription, throwError ,Observable, of} from 'rxjs';
+import { Subject, Subscription, throwError ,Observable, of, combineLatest, queueScheduler} from 'rxjs';
 import { KendraService, UserService, FormService } from '@sunbird/core';
-import { mergeMap, switchMap, takeUntil,map, catchError } from 'rxjs/operators';
+import { mergeMap, switchMap, takeUntil,map, catchError} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
@@ -12,6 +12,9 @@ import { ReportService } from '../../../dashboard/services';
 import * as moment from 'moment';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import { Md5 } from 'ts-md5';
+import { HttpErrorResponse } from '@angular/common/http';
+
 const PRE_DEFINED_PARAMETERS = ['$slug', 'hawk-eye'];
 export interface ConfigFilter{
     label: string,
@@ -135,7 +138,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   public userId: string;
   public selectedReport;
   public selectedSolution: string;
-
+  hashedTag;
   getProgramsList() {
     const paramOptions = {
       url:
@@ -284,6 +287,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         }
       });
       this.tag = solution[0]._id + '_' + this.userId;
+      this.hashedTag = this.hashTheTag(this.tag)
       this.loadReports();
 
       const program = this.programSelected;
@@ -537,14 +541,37 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   loadReports() {
-    this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
-      if (data) {
-        const reportData = _.get(data, 'result.jobs');
-        this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
+    const requestWithUnhashedTag = this.onDemandReportService.getReportList(this.tag);
+    const requestWithHashedTag = this.onDemandReportService.getReportList(this.hashedTag);
+
+    combineLatest([
+      requestWithHashedTag.pipe(catchError((err) => of(err))),
+      requestWithUnhashedTag.pipe(catchError((err) => of(err))),
+    ])
+      .pipe(
+        map(([response1, response2]: [any, any]) => {
+          const jobs1 = response1 instanceof HttpErrorResponse ? null : response1?.result?.jobs || null;
+          const jobs2 = response2 instanceof HttpErrorResponse ? null : response2?.result?.jobs || null;
+
+          if (jobs1 === null && jobs2 === null) {
+            throw new Error("Both job requests failed");
+          }
+          const jobs = _.compact(_.concat(jobs1, jobs2));
+          return jobs;
+        }),
+        catchError((error) => {
+          this.toasterService.error(
+            _.get(this.resourceService, "messages.fmsg.m0004")
+          );
+          return throwError("Report list APIs failed", queueScheduler);
+        }),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((reportData: object[]) => {
+        this.onDemandReportData = reportData.length
+          ? _.map(reportData, (row) => this.dataModification(row))
+          : [];
+      });
   }
 
   districtSelection($event) {
@@ -552,6 +579,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.reportForm.controls.districtName.setValue($event.value);
     this.displayFilters['District'] = [$event?.source?.triggerValue]
     this.tag =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
+    this.hashedTag = this.hashTheTag( _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ $event.value)
     this.reportForm.controls.reportType.setValue('');
     this.resetConfigFilters();
     this.loadReports();
@@ -647,7 +675,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       const request = {
         request: {
           dataset: 'druid-dataset',
-          tag: this.tag,
+          tag: this.hashedTag,
           requestedBy: this.userId,
           datasetConfig: config,
           output_format: 'csv'
@@ -796,6 +824,10 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   closeDashboard(){
     this.location.back()
+  }
+
+  hashTheTag(key:string):string{
+    return Md5.hashStr(key);
   }
 
   ngOnDestroy() {
