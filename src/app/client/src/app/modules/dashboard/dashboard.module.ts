@@ -34,6 +34,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -68,6 +70,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService, CourseProgressService, UsageService, ReportService]
+    OrganisationService, DownloadService, CourseProgressService, UsageService, ReportService,
+    { provide: MAT_DIALOG_DATA, useValue: {}}
+  ]
 })
 export class DashboardModule { }
