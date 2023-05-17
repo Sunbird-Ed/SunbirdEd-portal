@@ -1,9 +1,9 @@
-<app-modal-wrapper *ngIf="!showSelectImageModal" [config]="{disableClose: true, size: 'large', width: '45rem'}"
+<app-modal-wrapper *ngIf="showSelectImageModal" [config]="{disableClose: true, size: 'large', width: '45rem'}"
   (dismiss)="closeModel()" #modal>
   <ng-template sbModalContent>
 
     <div mat-dialog-title class="d-flex flex-ai-center mb-0">
-      <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
+      <img src="assets/images/image.svg" width="24px" height="20px" class="bgcolor-accent p-4 mr-8">
       <h2 class="mb-0">{{resourceService.frmelmnts?.lbl?.selectImage}}</h2>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
         mat-dialog-close><mat-icon>close</mat-icon></button>
@@ -18,12 +18,14 @@
         <label (click)="getAllImages()" tabindex="0" for="tab2"
           class="image-label">{{resourceService.frmelmnts?.lbl?.allImages}}</label> -->
 
-      <mat-radio-group aria-label="{{resourceService.frmelmnts?.lbl?.allImages}}" class="w-100">
-        <mat-radio-button (click)="getAssetList()" type="radio" id="tab1"
-          [value]="'tab1'">{{resourceService.frmelmnts?.lbl?.myImages}}</mat-radio-button>
-        <mat-radio-button (click)="getAllImages()" type="radio" id="tab2"
-          [value]="'tab2'">{{resourceService.frmelmnts?.lbl?.allImages}}</mat-radio-button>
-      </mat-radio-group>
+      <div class="mb-16">
+        <mat-radio-group aria-label="{{resourceService.frmelmnts?.lbl?.allImages}}" class="w-100">
+          <mat-radio-button (click)="getAssetList()" type="radio" id="tab1"
+            [value]="'tab1'">{{resourceService.frmelmnts?.lbl?.myImages}}</mat-radio-button>
+          <mat-radio-button (click)="getAllImages()" type="radio" id="tab2" [value]="'tab2'"
+            class="ml-24">{{resourceService.frmelmnts?.lbl?.allImages}}</mat-radio-button>
+        </mat-radio-group>
+      </div>
 
       <section id="content1">
         <div class="mb-16">
@@ -34,19 +36,20 @@
               <i (click)="getAssetList()" tabindex="0" class="close icon"></i>
               <i class="search icon"></i>
             </div> -->
-          <mat-form-field class="w-100 sb-mat-form-search sb-mat-form-field-custom border-radius" appearance="fill">
+          <mat-form-field class="w-100 sb-mat-form-field-custom border-radius" appearance="fill">
             <mat-label>{{resourceService?.frmelmnts?.cert?.prmpt?.searchImage}}</mat-label>
             <mat-icon matPrefix>search</mat-icon>
-            <input matInput type="text" [(ngModel)]="imageName" (keyup.enter)="searchImage()" [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.searchImage">
+            <input matInput type="text" [(ngModel)]="imageName" (keyup.enter)="searchImage()"
+              [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.searchImage">
             <button matSuffix mat-icon-button color="warn" aria-label="Clear" (click)="getAssetList()">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
         </div>
-        <div class="d-flex flex-ai-center flex-w-wrap">
+        <div class="d-flex flex-ai-center flex-w-wrap mb-16">
           <div class="common-contribution-card-container p-8" *ngFor="let image of imagesList">
             <div class="common-contribution-card mat-bg-white">
-              <div class="content">
+              <div class="content d-flex flex-ai-center flex-jc-center p-16">
                 <img [src]="image?.artifactUrl" tabindex="0" (click)="selectLogo(image)" rel="placeholder">
               </div>
               <div *ngIf="image?.versionKey === selectedLogo?.versionKey" class="selected-mark"><img
@@ -57,34 +60,32 @@
       </section>
 
       <section id="content2">
-        <div class="twelve wide column">
-          <div class="mb-16">
-            <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
-            <!-- <div class="input-div relative">
+        <div class="mb-16">
+          <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
+          <!-- <div class="input-div relative">
               <input class="sb-search-input" [(ngModel)]="imageName" (keyup.enter)="searchImage('all')" type="text"
                 [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.searchImage" />
               <i (click)="getAllImages()" tabindex="0" class="close icon"></i>
               <i class="search icon"></i>
             </div> -->
-            <mat-form-field class="w-100 sb-mat-form-search sb-mat-form-field-custom border-radius" appearance="fill">
-              <mat-label>{{resourceService?.frmelmnts?.cert?.prmpt?.searchImage}}</mat-label>
-              <mat-icon matPrefix>search</mat-icon>
-              <input matInput [(ngModel)]="imageName" (keyup.enter)="searchImage('all')" type="text"
-                [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.searchImage">
-              <button matSuffix mat-icon-button color="warn" aria-label="Clear" (click)="getAllImages()">
-                <mat-icon>close</mat-icon>
-              </button>
-            </mat-form-field>
-          </div>
-          <div class="d-flex flex-ai-center flex-w-wrap">
-            <div class="common-contribution-card-container p-8" *ngFor="let image of allImagesList">
-              <div class="common-contribution-card mat-bg-white">
-                <div class="content">
-                  <img [src]="image?.artifactUrl" tabindex="0" (click)="selectLogo(image)" rel="placeholder">
-                </div>
-                <div *ngIf="image?.versionKey === selectedLogo?.versionKey" class="selected-mark"><img
-                    src="assets/images/checkbox-icon.svg" width="24px" height="24px"></div>
+          <mat-form-field class="w-100 sb-mat-form-field-custom border-radius" appearance="fill">
+            <mat-label>{{resourceService?.frmelmnts?.cert?.prmpt?.searchImage}}</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput [(ngModel)]="imageName" (keyup.enter)="searchImage('all')" type="text"
+              [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.searchImage">
+            <button matSuffix mat-icon-button color="warn" aria-label="Clear" (click)="getAllImages()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="d-flex flex-ai-center flex-w-wrap">
+          <div class="common-contribution-card-container p-8" *ngFor="let image of allImagesList">
+            <div class="common-contribution-card mat-bg-white">
+              <div class="content d-flex flex-ai-center flex-jc-center p-16">
+                <img [src]="image?.artifactUrl" tabindex="0" (click)="selectLogo(image)" rel="placeholder">
               </div>
+              <div *ngIf="image?.versionKey === selectedLogo?.versionKey" class="selected-mark"><img
+                  src="assets/images/checkbox-icon.svg" width="24px" height="24px"></div>
             </div>
           </div>
         </div>
@@ -105,7 +106,7 @@
       <div class="or-toggle">
         <span>{{resourceService.frmelmnts?.lbl?.or}}</span>
       </div>
-      <button mat-raised-button color="accent" class="button-rounded" [disabled]="!selectedLogo" tabindex="0"
+      <button mat-raised-button color="accent" class="button-rounded ml-8" [disabled]="!selectedLogo" tabindex="0"
         (click)="selectAndUseLogo()">
         {{resourceService?.frmelmnts?.lbl?.Select}}
       </button>
@@ -119,7 +120,7 @@
   <ng-template sbModalContent>
 
     <div mat-dialog-title class="d-flex flex-ai-center mb-0">
-      <img src="assets/images/upload.svg" width="24px" height="20px" class="mr-8">
+      <img src="assets/images/upload.svg" width="24px" height="20px" class="bgcolor-accent p-4 mr-8">
       <h2 class="mb-0">{{resourceService.frmelmnts?.lbl?.uploadAndUse}}</h2>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
         mat-dialog-close><mat-icon>close</mat-icon></button>
@@ -131,8 +132,8 @@
           <label>{{resourceService?.frmelmnts?.lbl?.chooseImageNote}}</label>
           <div class="choose-img-box"><input (change)="fileChange($event)" class="mat-body-1" name="file" type="file">
           </div>
-          <div class="bgcolor-primary100 p-16">
-            <ol class="mat-caption">
+          <div class="bgcolor-primary100 p-16 mt-16">
+            <ol class="mat-caption pl-16">
               <li>{{resourceService?.frmelmnts?.lbl?.chooseImageType}}
                 {{imageDimensions[logoType.type]?.type}}</li>
               <li>{{resourceService?.frmelmnts?.lbl?.chooseImageSize}}</li>
@@ -140,7 +141,7 @@
                 {{imageDimensions[logoType.type]?.dimensions}}</li>
             </ol>
           </div>
-          <div>
+          <div class="mt-16">
             <label>{{resourceService?.frmelmnts?.lbl?.copyrights}}<span class="asterik color-warn">*</span></label>
             <p class="mat-caption">{{resourceService?.frmelmnts?.lbl?.uploadlicense}}</p>
           </div>
@@ -148,21 +149,20 @@
         <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-6">
           <div [formGroup]="uploadForm">
 
-            <div class="d-flex flex-ai-center bgcolor-primary100 p-16">
+            <div class="d-flex flex-ai-center bgcolor-primary100 p-16 mb-16">
               <img src="assets/images/information-icon.svg" width="24px" height="22px" class="mr-8">
               <p class="mat-caption mb-0">
                 {{resourceService?.frmelmnts?.lbl?.imageDrapAndDrop}}
               </p>
             </div>
 
-            <mat-form-field class="w-100 sb-mat-form-search sb-mat-form-field-custom border-radius mb-16"
-              appearance="fill">
+            <mat-form-field class="w-100 sb-mat-form-field-custom border-radius mb-16" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.assetCaption}} <span
                   class="asterik color-warn">*</span></mat-label>
               <input matInput type="text" formControlName="assetCaption">
             </mat-form-field>
 
-            <mat-form-field class="w-100 sb-mat-form-search sb-mat-form-field-custom border-radius" appearance="fill">
+            <mat-form-field class="w-100 sb-mat-form-field-custom border-radius" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.creator}}</mat-label>
               <input matInput type="text" formControlName="creator">
             </mat-form-field>
@@ -182,7 +182,7 @@
       <div class="or-toggle">
         <span>{{resourceService.frmelmnts?.lbl?.or}}</span>
       </div>
-      <button mat-raised-button color="accent" class="button-rounded" [disabled]="(!uploadForm.valid || !fileObj)"
+      <button mat-raised-button color="accent" class="button-rounded ml-8" [disabled]="(!uploadForm.valid || !fileObj)"
         (click)="upload()">
         {{resourceService.frmelmnts?.lbl?.uploadAndUse}}
       </button>
