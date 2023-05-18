@@ -502,35 +502,38 @@ li.subStr::after {
   position: relative !important;
   background-color: transparent !important;
   box-shadow: none;
+  .image {
+    .header {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(var(--rc-rgba-black), 0.2);
+      color: var(--white);
+      width: 100%;
+      margin: 0;
+      max-height: calculateRem(70px);
+      padding-top: calculateRem(10px);
+      padding-bottom: calculateRem(10px);
+      text-align: center;
+    }
+    img {
+      padding: 0 !important;
+      height: calculateRem(150px);
+    }
+  }
+  .content {
+    background-color: transparent !important;
+  }
+  .extra {
+    border-top: transparent !important;
+    .card-rating .active {
+      color: var(--primary-color) !important;
+      text-shadow: none !important;
+      padding-top: 0 !important;
+    }
+  }
 }
-.dynamic-section-card .slider .card .image img {
-  padding: 0 !important;
-  height: calculateRem(150px);
-}
-.dynamic-section-card .slider .card .image .header {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(var(--rc-rgba-black), 0.2);
-  color: var(--white);
-  width: 100%;
-  margin: 0;
-  max-height: calculateRem(70px);
-  padding-top: calculateRem(10px);
-  padding-bottom: calculateRem(10px);
-  text-align: center;
-}
-.dynamic-section-card .slider .card .content {
-  background-color: transparent !important;
-}
-.dynamic-section-card .slider .card .extra {
-  border-top: transparent !important;
-}
-.dynamic-section-card .slider .card .extra .card-rating .active {
-  color: var(--primary-color) !important;
-  text-shadow: none !important;
-  padding-top: 0 !important;
-}
+
 .profilesettings {
   text-align: right;
 }

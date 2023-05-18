@@ -1,23 +1,25 @@
-<div class="sb-pageSection" *ngIf="section && section.contents && section.contents.length">
+<div class="page-section-component" *ngIf="section && section.contents && section.contents.length">
     <!--Header-->
-    <div *ngIf="section.name" class="sb-pageSection-header my-16">
+    <div *ngIf="section.name" class="d-flex flex-ai-center my-16">
         <!--Section Title-->
-        <div matBadge="{{section.count}}" matBadgeOverlap="false" class="mat-typography"><h2 class="mb-0">{{sectionName}}</h2></div>
+        <h4 class="mat-title m-0 mr-5"><span class="mr-8">{{sectionName}}</span>
+            <!--Count-->
+            <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error">{{section.count}}</span>
+            <!--/Count-->
+        </h4>
         <!--/Section Title-->
         <!--View all button-->
-        <span class="sb-secondary-btn ml-auto">
-        <button mat-raised-button type="button" color="accent" *ngIf="section?.contents?.length >= 10"
+        <button mat-raised-button type="button" color="success" class="ml-auto button-rounded" *ngIf="section?.contents?.length >= 10"
             (click)="navigateToViewAll(section)" tabindex="0" appTelemetryInteract
             [telemetryInteractEdata]="{id:'viewall-button' , type:'click' ,pageid:pageid , extra : {section: section.name}}">
             {{ resourceService?.frmelmnts?.lnk?.viewall}}
         </button>
-    </span>
         <!--/View all button-->
     </div>
     <!--/Header-->
 
     <!--Content-->
-    <div *ngIf="refresh" class="sb-pageSection-content pt-8">
+    <div *ngIf="refresh" class="pt-8">
         <app-slick *ngIf="contentList?.length > 0" [loadStatus]="'done'">
             <ng-container>
                 <div *ngFor="let content of contentList; let i=index" class="mr-16 cardSlick">
@@ -30,14 +32,14 @@
                     <!--/Batch Card-->
                     <!--Course & Resourse Card-->
                     <ng-template #contentcard>
-                        <ng-container *ngIf="!layoutConfiguration">
+                        <!-- <ng-container *ngIf="!layoutConfiguration">
                             <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
                                 [telemetryInteractCdata]="telemetryInteractCdata"
                                 [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
                                 (clickEvent)="playContent($event)" [hideProgress]="hideProgress" [data]="content"
                                 class="d-block" [class.last-card]="mr-0">
                             </app-card>
-                        </ng-container>
+                        </ng-container> -->
                         <ng-container *ngIf="layoutConfiguration">
                             <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                                 [telemetryInteractEdata]="cardInteractEdata"
@@ -53,7 +55,4 @@
         </app-slick>
     </div>
     <!--/Content-->
-    <!--Page Section Divider-->
-    <!--<hr class="sb-pageSection-footer" *ngIf="cardType !== 'batch'" />-->
-    <!--/Page Section Divider-->
 </div>

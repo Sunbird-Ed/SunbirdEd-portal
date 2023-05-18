@@ -1,13 +1,4 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-@use '@angular/material' as mat;
-
-$my-palette: mat.define-palette(mat.$cyan-palette);
-
-.my-custom-style {
- background: mat.get-color-from-palette($my-palette, 500);
- color: mat.get-color-from-palette($my-palette, '500-contrast');
-//  @include mat.button-density(-3);
-}
 
 .course-card-width {
   width: calculateRem(280px) !important;
@@ -17,13 +8,12 @@ $my-palette: mat.define-palette(mat.$cyan-palette);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color:var(--sb-profile-bg-c-4);
-  color: var(--sb-section-preference);
+  // background-color:var(--sb-profile-bg-c-4);
+  // color: var(--sb-section-preference);
   padding: calculateRem(32px);
   border-radius: calculateRem(24px);
   position: relative;
   overflow: hidden;
-  margin-top:calculateRem(32px);
   @include respond-below(sm) {
     flex-wrap: wrap;
   }
@@ -124,5 +114,25 @@ $my-palette: mat.define-palette(mat.$cyan-palette);
   .web-item {
     width:16rem !important;
     box-shadow: var(--sbt-box-shadow-6px);
+  }
+}
+
+/* desktop */
+::ng-deep {
+  .sb-desktop-filter-section {
+    .sbt-filter {
+      @include respond-above(md) {
+        margin-top: 0 !important;
+      }
+    }
+  }
+  //desktop
+  .sb-desktop-filter-section .status-container__title {
+    max-width: 100% !important;
+  }
+  .sb-desktop-library-card .sb--card .card-hover {
+    top: initial;
+    height: 5rem;
+    opacity: 1;
   }
 }
