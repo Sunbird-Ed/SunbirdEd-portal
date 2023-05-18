@@ -1,25 +1,31 @@
-<div class="sb-mat__modal sb-modal-addsummary">
-  <div mat-dialog-title class="mb-0">
-    <div class="title" tabindex="0">{{input?.title}}</div>
-    <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-  </div>
-
-  <div class="sb-mat__modal__content o-x-hide">
-    <div class="sb-field-group" [formGroup]="summaryFormGroup">
-      <div class="sb-field relative" #editor>
-        <textarea #editor required name="moretext" class="sb-form-control" [placeholder]="input?.title" rows="5"
-          style="resize: none;"></textarea>
-      </div>
-    </div>
-  </div>
-
-  <mat-dialog-actions class="sb-mat__modal__actions">
-    <button (click)="handleSubmitButton()" tabindex="0" [disabled]="!summaryFormGroup.valid"
-      class="sb-btn sb-btn-normal sb-btn-primary" #submitButton>
-      Submit
-    </button>
-    <button (click)="resetForm()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Reset
-    </button>
-  </mat-dialog-actions>
+<div mat-dialog-title class="mb-0">
+  <h2 class="mb-0">{{input?.title}}</h2>
+  <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+    mat-dialog-close><mat-icon>close</mat-icon></button>
 </div>
+
+<mat-dialog-content>
+  <div [formGroup]="summaryFormGroup">
+    <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
+    <!-- <div class="sb-field relative" #editor>
+      <textarea #editor required name="moretext" class="sb-form-control" [placeholder]="input?.title" rows="5"
+        style="resize: none;"></textarea>
+    </div> -->
+
+    <mat-form-field color="accent" appearance="fill" class="w-100 border-radius sb-mat-form-field-custom" #editor>
+      <mat-label>{{input?.title}}</mat-label>
+      <textarea matInput required name="moretext" rows="5" style="resize: none;" #editor></textarea>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button (click)="resetForm()" tabindex="0" mat-raised-button class="button-rounded mr-8">
+    Reset
+  </button>
+  <button (click)="handleSubmitButton()" tabindex="0" [disabled]="!summaryFormGroup.valid" mat-raised-button
+    color="accent" class="button-rounded" #submitButton>
+    Submit
+  </button>
+</mat-dialog-actions>

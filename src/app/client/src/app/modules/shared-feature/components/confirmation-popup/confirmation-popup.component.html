@@ -1,42 +1,39 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'normal', panelClass: 'material-modal'}" (dismiss)="closeModal()" #confirmationModal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'normal', width: '45rem', panelClass: 'material-modal'}"
+  (dismiss)="closeModal()" #confirmationModal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal sb-batch-update-modal">
 
-      <!-- Header-->
-      <div mat-dialog-title class="mb-0">
-        <div class="title"></div>
-        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-      </div>
+    <!-- Header-->
+    <div mat-dialog-title class="mb-0 d-flex flex-ai-center flex-jc-flex-end">
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
+    </div>
 
-      <!-- Content-->
-      <div class="sb-mat__modal__content">
-        <div class="ui stackable grid my-8">
-          <div class="one wide column">
-            <div class="checkbox-img"></div>
-          </div>
-          <div class="eleven wide column">
-            <div *ngIf="popupMode === 'create'" class="pb-16 font-weight-bold">
-              {{resourceService?.frmelmnts?.cert?.lbl?.batchCreateSuccess}}</div>
-            <div *ngIf="popupMode === 'edit'" class="pb-16 font-weight-bold">
-              {{resourceService?.frmelmnts?.cert?.lbl?.batchUpdateSuccess}}</div>
-            <div class="">{{resourceService?.frmelmnts?.cert?.lbl?.addCertToBatch}}</div>
-          </div>
+    <!-- Content-->
+    <mat-dialog-content>
+      <div class="sb-g">
+        <div class="sb-g-col-xs-2 sb-g-col-md-2 sb-g-col-lg-2 sb-g-col-xxxl-2">
+          <div class="checkbox-img"></div>
+        </div>
+        <div class="sb-g-col-xs-10 sb-g-col-md-10 sb-g-col-lg-10 sb-g-col-xxxl-10">
+          <p *ngIf="popupMode === 'create'" class="mb-16 font-weight-bold">
+            {{resourceService?.frmelmnts?.cert?.lbl?.batchCreateSuccess}}</p>
+          <p *ngIf="popupMode === 'edit'" class="mb-16 font-weight-bold">
+            {{resourceService?.frmelmnts?.cert?.lbl?.batchUpdateSuccess}}</p>
+          <p>{{resourceService?.frmelmnts?.cert?.lbl?.addCertToBatch}}</p>
         </div>
       </div>
+    </mat-dialog-content>
 
-      <!-- Action-->
-      <div class="sb-mat__modal__actions">
-        <button id="close-modal-btn" class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
-          (click)="closeModal()">
-          {{resourceService?.frmelmnts.btn.close}}
-        </button>
-        <button id="add-certificate" class="sb-btn sb-btn-normal sb-btn-outline-primary ml-8" tabindex="0"
-          (click)="navigateToAddCertificate()">
-          {{resourceService?.frmelmnts.cert.lbl.addCert}}
-        </button>
-      </div>
+    <!-- Action-->
+    <mat-dialog-actions align="end">
+      <button id="close-modal-btn" mat-raised-button class="button-rounded mr-8" tabindex="0" (click)="closeModal()">
+        {{resourceService?.frmelmnts.btn.close}}
+      </button>
+      <button id="add-certificate" mat-raised-button color="accent" class="button-rounded" tabindex="0"
+        (click)="navigateToAddCertificate()">
+        {{resourceService?.frmelmnts.cert.lbl.addCert}}
+      </button>
+    </mat-dialog-actions>
 
-
-    </div>
   </ng-template>
 </app-modal-wrapper>
