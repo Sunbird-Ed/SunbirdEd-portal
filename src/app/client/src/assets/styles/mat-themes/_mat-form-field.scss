@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 @use 'sass:map';
 @use './palette' as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 @mixin mat-form-field($theme) {
   // Get the color config from the theme.
@@ -46,6 +47,12 @@
 
   .mat-form-field-appearance-fill .mat-form-field-underline::before {
     background-color: transparent;
+  }
+
+  app-language-dropdown .sb-mat-form-field-custom .mat-form-field-infix {
+    @include respond-above(md){
+    width: 7.5rem;
+  }
   }
 
   .mat-form-field-ripple {

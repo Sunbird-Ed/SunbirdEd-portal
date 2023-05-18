@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-filter',
@@ -53,7 +54,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.formGeneration(val.data);
       if (val.selectedFilters) {
         this.selectedFilters = val.selectedFilters;
-        this.filtersFormGroup.patchValue(val.selectedFilters);
+        this.filtersFormGroup.setValue(val.selectedFilters);
       }
     }
   }
@@ -69,10 +70,10 @@ export class FilterComponent implements OnInit, OnDestroy {
         if (val.reset && val.reset == true) {
           this.selectedFilters = {};
         } else if (val.filters) {
-          this.filtersFormGroup.patchValue(val.filters);
+          this.filtersFormGroup.setValue(val.filters);
           this.selectedFilters = val.filters;
         } else if (currentFilterValue) {
-          this.filtersFormGroup.patchValue(currentFilterValue);
+          this.filtersFormGroup.setValue(currentFilterValue);
           this.selectedFilters = currentFilterValue;
         }
     }
@@ -94,7 +95,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     private fb: UntypedFormBuilder,
     public activatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Inject(MAT_DIALOG_DATA) public selectedDialogData: any
   ) {
 
   }
@@ -117,7 +119,6 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
   formUpdate(chartData) {
     const filterKeys = Object.keys(this.selectedFilters);
     let previousKeys = [];
@@ -184,7 +185,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       }, (err) => {
       });
       if (this.chartData.selectedFilters) {
-          this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
+          this.filtersFormGroup.setValue(this.chartData.selectedFilters);
       }
 
   }
@@ -200,6 +201,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   resetFilter() {
     if (this.filtersFormGroup) {
       this.filtersFormGroup.reset();
+      this.selectedDialogData = {};
     }
     if (this.datepicker) {
       this.datepicker.nativeElement.value = '';
@@ -307,11 +309,19 @@ export class FilterComponent implements OnInit, OnDestroy {
       object[reference] = data;
       this.currentReference = reference;
     }
+    if (this.selectedDialogData) {
+      for (const key in this.selectedDialogData) {
+        if (key != reference) {
+          this.filtersFormGroup.controls[key].setValue(this.selectedDialogData[key]);
+        }
+      }
+    }
     this.filtersFormGroup.controls[reference].setValue(data);
   }
   getSelectedData(reference) {
-
-    if (this.selectedFilters && this.selectedFilters[reference]) {
+    if (Object.keys(this.selectedDialogData).length && this.selectedDialogData[reference]) {
+      return this.selectedDialogData[reference];
+    } else if (this.selectedFilters && this.selectedFilters[reference]) {
       return this.selectedFilters[reference];
     } else {
       return [];

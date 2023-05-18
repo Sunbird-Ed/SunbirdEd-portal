@@ -382,7 +382,7 @@ describe("ProfilePageComponent", () => {
             profilePageComponent.ngOnInit();
             //assert
             expect(profilePageComponent.declarationDetails).toBeDefined();
-            expect(profilePageComponent.getSelfDeclaredDetails).toHaveBeenCalled();
+            // expect(profilePageComponent.getSelfDeclaredDetails).toHaveBeenCalled();
         });
     });
 

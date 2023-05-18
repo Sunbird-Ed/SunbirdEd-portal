@@ -360,7 +360,9 @@
       "MANDATORY_ENTITY_TYPES_FOR_ROLES":"entities/mlcore/v1/entityTypesByLocationAndRole/",
       "OBSERVATION_SUBMISSION_UPDATE":"observationSubmissions/mlsurvey/v1/update/",
       "GET_ASSESSMENT": "observations/mlsurvey/v1/assessment/",
-      "OBSERVATION_REPORT_SOLUTION_LIST": "observationSubmissions/mlsurvey/v1/solutionList?"
+      "OBSERVATION_REPORT_SOLUTION_LIST": "observationSubmissions/mlsurvey/v1/solutionList?",
+      "JOIN_PROGRAM":"programs/mlcore/v1/join",
+      "READ_PROGRAM":"users/mlcore/v1/solutions"
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "users/mlcore/v1/targetedEntity/",

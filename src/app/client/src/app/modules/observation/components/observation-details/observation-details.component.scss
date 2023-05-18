@@ -1,4 +1,4 @@
-@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .observation-detail-box{
     display: inline-flex;
@@ -49,8 +49,13 @@
 .white-space-wrap {
   text-overflow: ellipsis;
 }
-
+.close-btn{
+  cursor: pointer;
+}
 ::ng-deep{
+  .profile-field-label{
+    width: 10rem !important;
+  }
   .sb-mat-accordion__title span{
     line-break: anywhere;
   }

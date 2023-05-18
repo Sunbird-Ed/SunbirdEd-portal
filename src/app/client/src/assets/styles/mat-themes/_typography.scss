@@ -3,9 +3,8 @@
 @use "sass:map";
 
 /* custom font size px to rem */
-
+// $font-family: inherit,
 $custom-typography: mat.define-typography-config(
-  $font-family: inherit,
   $display-4: mat.define-typography-level(7rem, 7rem, 300, $letter-spacing: -0.05em),
   $display-3: mat.define-typography-level(3.5rem, 3.5rem, 400, $letter-spacing: -0.02em),
   $display-2: mat.define-typography-level(2.8125rem, 3rem, 400, $letter-spacing: -0.005em),

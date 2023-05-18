@@ -3,26 +3,33 @@
 .mat-page-container {
     margin: 0 auto;
     width: 90%;
+
     @include respond-below(sm) {
         width: 95%;
     }
 }
+
 .mat-inside-page-container {
     padding: 2rem 5% 2rem 3%;
     margin: 0 0 0 2%;
     border-radius: 2rem 0 0 2rem;
+
     @include respond-below(sm) {
-       // margin-top: -1.5rem;
+        margin-top: -1.5rem;
         width: 100%;
         margin-left: 0;
     }
 }
+
 .mat-app-background2 {
     background: var(--sbt-body-bg2);
 }
 
+.box-shadow-6px {
+    box-shadow: var(--sbt-box-shadow-6px);
+}
 
-.example-spacer{
+.example-spacer {
     flex: 1 1 auto;
 }
 

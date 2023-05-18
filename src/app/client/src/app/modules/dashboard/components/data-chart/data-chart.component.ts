@@ -488,7 +488,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
   openDialog() {
     if (this.filterPopUpMat) {
-      this.dialogRef = this.dialog.open(this.filterPopUpMat);
+      this.dialogRef = this.dialog.open(this.filterPopUpMat, {
+        data: this.chartData['selectedFilters'],
+      });
     }
   }
   closeDialog() {

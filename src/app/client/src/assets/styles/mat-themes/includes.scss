@@ -7,13 +7,13 @@
 @use './template_bg' as *;
 @import "./toolbar-menu";
 @import "./toolbar-pageback";
-// @import './matCard';
-@import './matSidebar';
+// @import './mat-card';
+@import './mat-sidebar';
 @import './mat-expansion-panel';
 // @import './darkBgTheme';
-@import './modal';
+@import './mat-modal';
 // @import './customBtnColor';
-@import "./fontSizeRem";
+@import "./typography";
 @import "./buttons";
 @import "./colors";
 @import './mat-form-field';
@@ -21,7 +21,8 @@
 @import './mat-badge';
 @import './search';
 @import './utilities/utilities';
-@import './matChips';
+@import './mat-chips';
+@import './mat-tab-group';
 
 // from component styles
 @import './../../../app/modules/shared/components/app-loader/app-loader.component.scss.theme';

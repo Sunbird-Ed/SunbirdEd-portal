@@ -1,0 +1,100 @@
+@use './breakpoints' as *;
+
+$declarations: center,
+    flex-start,
+    flex-end;
+
+$jc-properties: space-between,
+    space-around,
+    space-evenly;
+
+$direction: "r" row,
+    "c" column, "rr" row-reverse, "cr" column-reverse;
+
+@each $value in $declarations {
+    .flex-ai-#{$value} {
+        align-items: $value !important;
+    }
+
+    .flex-as-#{$value} {
+        align-self: $value !important;
+    }
+
+    .flex-jc-#{$value} {
+        justify-content: $value !important;
+    }
+}
+
+@each $value in $jc-properties {
+    .flex-jc-#{$value} {
+        justify-content: $value !important;
+    }
+}
+
+@each $dtype,
+$value in $direction {
+    .flex-d#{$dtype} {
+        flex-direction: $value !important;
+    }
+}
+
+@each $name,
+$breakpoint in $breakpoints {
+    @each $value in $declarations {
+
+        //.d-above-xs-block
+        @media(min-width: $breakpoint) {
+            .flex-ai-#{$value}-above-#{$name} {
+                align-items: $value !important;
+            }
+
+            .flex-as-#{$value}-above-#{$name} {
+                align-self: $value !important;
+            }
+
+            .flex-jc-#{$value}-above-#{$name} {
+                justify-content: $value !important;
+            }
+
+            @each $value in $jc-properties {
+                .flex-jc-#{$value}-above-#{$name} {
+                    justify-content: $value !important;
+                }
+            }
+
+            @each $dtype,
+            $value in $direction {
+                .flex-d#{$dtype}-above-#{$name} {
+                    flex-direction: $value !important;
+                }
+            }
+        }
+
+        @media(max-width:$breakpoint - 0.1) {
+            .flex-ai-#{$value}-below-#{$name} {
+                align-items: $value !important;
+            }
+
+            .flex-as-#{$value}-below-#{$name} {
+                align-self: $value !important;
+            }
+
+            .flex-jc-#{$value}-below-#{$name} {
+                justify-content: $value !important;
+            }
+
+            @each $value in $jc-properties {
+                .flex-jc-#{$value}-below-#{$name} {
+                    justify-content: $value !important;
+                }
+            }
+
+            @each $dtype,
+            $value in $direction {
+                .flex-d#{$dtype}-below-#{$name} {
+                    flex-direction: $value !important;
+                }
+            }
+        }
+    }
+}

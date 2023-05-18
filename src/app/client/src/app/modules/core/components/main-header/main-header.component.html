@@ -158,8 +158,8 @@
 
         <mat-list-item role="navigation" tabindex="0" *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission
           [permission]='programDashboardRole' (click)="toggleSideMenu(false)" routerLink="program">
-          <mat-icon mat-list-icon>dashboard</mat-icon>
-          <div mat-line>{{resourceService.frmelmnts?.lnk?.dashboard}}</div>
+          <mat-icon mat-list-icon>stacked_bar_chart</mat-icon>
+          <div mat-line>{{resourceService.frmelmnts?.lnk?.programDashboard}}</div>
           <!-- <div mat-line>subline</div> -->
         </mat-list-item>
 
