@@ -113,6 +113,15 @@ $theme in $app-themes {
     $primary500: mat.get-color-from-palette($primary);
     --sbt-header-bg: #{$primary500};
 
+    --sbt-box-shadow-black: rgba(var(--rc-rgba-black), 0.2);
+    --sbt-box-shadow-6px: 0.375rem 0.375rem 0.125rem 0 var(--sbt-box-shadow-black);
+    --sbt-box-shadow-3px: 0.1875rem 0.1875rem 0.125rem 0 var(--sbt-box-shadow-black);
+    --sbt-bradius: 0.125rem;
+    --sbt-bradius-8: calc(var(--sbt-bradius) * 4);
+    --sbt-bradius-16: calc(var(--sbt-bradius) * 8);
+    --sbt-bradius-24: calc(var(--sbt-bradius) * 12);
+    --sbt-bradius-32: calc(var(--sbt-bradius) * 16);
+
     .mat-app-background{
       background: mat.get-color-from-palette($primary, 50);
     }

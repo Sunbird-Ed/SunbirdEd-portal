@@ -81,4 +81,10 @@
   }
 
   }
+
+  .batchAddUserForm {
+    .mat-datepicker .mat-form-field-infix {
+      width: auto;
+    }
+  }
 }
