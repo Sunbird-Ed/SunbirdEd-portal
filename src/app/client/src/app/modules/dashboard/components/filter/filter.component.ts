@@ -309,9 +309,11 @@ export class FilterComponent implements OnInit, OnDestroy {
       object[reference] = data;
       this.currentReference = reference;
     }
-    for (const key in this.selectedDialogData) {
-      if (key != reference) {
-        this.filtersFormGroup.controls[key].setValue(this.selectedDialogData[key]);
+    if (this.selectedDialogData) {
+      for (const key in this.selectedDialogData) {
+        if (key != reference) {
+          this.filtersFormGroup.controls[key].setValue(this.selectedDialogData[key]);
+        }
       }
     }
     this.filtersFormGroup.controls[reference].setValue(data);

@@ -1,0 +1,17 @@
+@use './breakpoints' as *;
+
+@each $name,
+$breakpoint in $breakpoints {
+
+@media(min-width: $breakpoint) {
+    .h-auto-above-#{$name} {
+        height: auto !important;
+    }
+}
+
+@media(max-width:$breakpoint - 0.1) {
+    .h-auto-below-#{$name} {
+        height: auto !important;
+    }
+}
+}
