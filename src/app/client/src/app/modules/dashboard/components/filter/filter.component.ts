@@ -43,6 +43,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   formChartData: any = [];
   currentReference: any;
   firstFilter: any;
+  errorMessage: any;
 
   @Input()
   set selectedFilter(val: any) {
@@ -342,6 +343,10 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   getFiltersValues(filter) {
    return Array.isArray(filter) ? filter : [filter];
+  }
+
+  showErrorMessage(event){
+    this.errorMessage = event?.displayName ? `Please select a ${event.displayName} first from the ${event.displayName} filter` : undefined;
   }
 
 }
