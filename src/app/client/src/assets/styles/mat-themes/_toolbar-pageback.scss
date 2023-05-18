@@ -2,7 +2,6 @@
 @use "sass:map";
 @forward "./palette";
 @forward './buttons';
-@forward './fontSizeRem';
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 @mixin pageback-toolbar($theme) {

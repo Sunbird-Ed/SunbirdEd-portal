@@ -28,9 +28,10 @@
 .button-rounded {
   &.mat-button,
   &.mat-raised-button,
-  &.mat-flat-button {
+  &.mat-flat-button,
+  &.mat-stroked-button {
     border-radius: 2rem;
-    // box-shadow: var(--sbt-box-shadow-6px);
+    box-shadow: var(--sbt-box-shadow-6px);
   }
 }
 

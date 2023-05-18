@@ -6,7 +6,7 @@
     <mat-icon>tune</mat-icon>
   </button>
   <ng-container *ngIf="isOpen">
-    <div class="sbt-filter-bar mat-app-background mr-16 pl-24">
+    <div class="sbt-filter-bar mat-app-background mr-16 pl-24 pt-64-max-sm">
       <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center" tabindex="0">
         <button mat-button color="accent" (click)="onSearchFacetFilterReset()" tabindex="0" appTelemetryInteract
           [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset | translate}}

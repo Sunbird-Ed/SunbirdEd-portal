@@ -2,7 +2,6 @@
 @use "sass:map";
 @forward "./palette";
 @forward './buttons';
-@forward './fontSizeRem';
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 @mixin global-search($theme) {
@@ -17,9 +16,9 @@
 
   .sb-mat-form-search {
     .mat-form-field-flex {
-    @include respond-between(md,lg) {
-      width: auto;
-    }
+    // @include respond-between(md,lg) {
+    //   width: auto;
+    // }
     @include respond-below(md) {
       width: 100%;
     }

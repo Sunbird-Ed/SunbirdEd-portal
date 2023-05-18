@@ -23,7 +23,7 @@
             <mat-label> {{resourceService?.frmelmnts?.lbl?.sharelink}}</mat-label>
             <input id="copyLinkData" matInput readonly [(ngModel)]="shareLink" aria-label="copy link data">
           </mat-form-field>
-          <button mat-stroked-button color="accent" tabindex="0" class="mb-20" appTelemetryInteract
+          <button mat-raised-button color="accent" tabindex="0" class="ml-8 mb-20" appTelemetryInteract
             [telemetryInteractEdata]="telemetryInteractEdata" [telemetryInteractObject]="telemetryShareData[0]" #copyLinkButton
             (click)="copyLink()">
             {{resourceService?.frmelmnts?.btn?.copyLink}}

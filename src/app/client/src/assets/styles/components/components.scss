@@ -2,7 +2,7 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @forward "./modal";
 @forward "./accordion";
-@forward "./banner";
+// @forward "./banner"; remove.. updated in the component
 @forward "./card";
 @forward "./certificate";
 @forward "./checkbox";

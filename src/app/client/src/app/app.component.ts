@@ -1035,25 +1035,25 @@ export class AppComponent implements OnInit, OnDestroy {
     this.fontSize = parseInt(currentFontSize);
 
     if (value === 'increase') {
-      this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'true');
-      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
-      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
+      // this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'aria-pressed', 'true');
+      // this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
+      // this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
       this.fontSize = this.fontSize + 2;
       if (this.fontSize <= 20) {
         this.setLocalFontSize(this.fontSize);
       }
     } else if (value === 'decrease') {
-      this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'true');
-      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
-      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
+      // this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed', 'true');
+      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
+      // this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'aria-pressed');
       this.fontSize = this.fontSize - 2;
       if (this.fontSize >= 12) {
         this.setLocalFontSize(this.fontSize);
       }
     } else {
-      this.renderer.setAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'true');
-      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
-      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
+      // this.renderer.setAttribute(this.resetFontSize.nativeElement, 'aria-pressed', 'true');
+      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'aria-pressed');
+      // this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'aria-pressed');
       this.setLocalFontSize(this.defaultFontSize);
     }
 
@@ -1068,27 +1068,28 @@ export class AppComponent implements OnInit, OnDestroy {
   isDisableFontSize(value: any) {
     value = parseInt(value);
     if (value === 20) {
-      this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'true');
-      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
-      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+      // this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'disabled');
+      // this.decreaseFontSize.nativeElement.setAttribute('disabled');
+      // this.resetFontSize.nativeElement.setAttribute('disabled');
     } else if (value === 12) {
-      this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
-      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
-      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+      // this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
+      // this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
+      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      // this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     } else if (value === 16) {
-      this.renderer.setAttribute(this.resetFontSize.nativeElement, 'disabled', 'true');
-      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
-      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      //this.renderer.setAttribute(this.resetFontSize.nativeElement, 'disabled', 'true');
+      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      // this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
     } else {
-      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
-      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
-      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      // this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      // this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     }
   }
   skipToMainContent() {
     const getTheme = document.documentElement.attributes['layout'].value;
     if (getTheme == 'joy') {
-      const headerElement = document.getElementsByClassName('sbt-fluid-header-bg');
+      const headerElement = document.getElementsByClassName('mat-page-container');
       if (headerElement.length > 0) {
         const headerHeight = headerElement[headerElement.length - 1].clientHeight;
         if (typeof window.orientation !== 'undefined') {

@@ -1,5 +1,7 @@
 
-  //border radius
+  
+  @use './breakpoints' as *;
+  
   $brValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 50, 52, 56, 60, 64;
   @each $value in $brValues {
     $baseMvalue: 0.0625 * $value +rem;
@@ -18,4 +20,47 @@
     .br-bottom-right-#{$value} {
       border-bottom-right-radius: $baseMvalue;
     }
+
+    @each $name,
+    $breakpoint in $breakpoints {
+        //.d-above-xs-block
+        @media(min-width: $breakpoint) {
+          // br-0-above-xs
+            .br-#{$value}-above-#{$name} {
+              border-radius: $baseMvalue;
+            }
+            .br-top-left-#{$value}-above-#{$name} {
+              border-top-left-radius: $baseMvalue;
+            }
+            .br-top-right-#{$value}-above-#{$name} {
+              border-top-right-radius: $baseMvalue;
+            }
+            .br-bottom-left-#{$value}-above-#{$name} {
+              border-bottom-left-radius: $baseMvalue;
+            }
+            .br-bottom-right-#{$value}-above-#{$name} {
+              border-bottom-right-radius: $baseMvalue;
+            }
+        }
+        //.d-below-xs-none
+        @media(max-width:$breakpoint - 0.1) {
+            // br-0-below-xs
+            .br-#{$value}-below-#{$name} {
+              border-radius: $baseMvalue;
+            }
+            .br-top-left-#{$value}-below-#{$name} {
+              border-top-left-radius: $baseMvalue;
+            }
+            .br-top-right-#{$value}-below-#{$name} {
+              border-top-right-radius: $baseMvalue;
+            }
+            .br-bottom-left-#{$value}-below-#{$name} {
+              border-bottom-left-radius: $baseMvalue;
+            }
+            .br-bottom-right-#{$value}-below-#{$name} {
+              border-bottom-right-radius: $baseMvalue;
+            }
+        }
+    }
+
   }

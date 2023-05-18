@@ -49,70 +49,74 @@
   --color-error: #{$color-error};
 
   /* color starts */
-  .color-primary {
+  .color-primary, .hover-color-primary:hover {
     color: var(--color-primary);
   }
-
-  .color-accent {
+  .color-accent, .hover-color-accent:hover {
     color: var(--color-accent);
   }
 
-  .color-warn {
+  .color-warn, .hover-color-warn:hover {
     color: var(--color-warn);
   }
 
-  .color-success {
+  .color-success, .hover-color-success:hover {
     color: var(--color-success);
   }
 
-  .color-info {
+  .color-info, .hover-color-info:hover {
     color: var(--color-info);
   }
 
-  .color-error {
+  .color-error, .hover-color-error:hover {
     color: var(--color-error);
   }
   /* color ends */
 
   /* bg color starts */
-  .bgcolor-primary {
+  .bgcolor-primary, .hover-bgcolor-primary:hover {
     background-color: var(--color-primary);
+    color: mat.get-color-from-palette($primary, 500-contrast);
   }
 
-  .bgcolor-accent {
+  .bgcolor-accent, .hover-bgcolor-accent:hover {
     background-color: var(--color-accent);
+    color: mat.get-color-from-palette($accent, 500-contrast);
   }
 
-  .bgcolor-warn {
+  .bgcolor-warn, .hover-bgcolor-warn:hover {
     background-color: var(--color-warn);
+    color: mat.get-color-from-palette($warn, 500-contrast);
   }
 
-  .bgcolor-success {
+  .bgcolor-success, .hover-bgcolor-success:hover {
     background-color: var(--color-success);
+    color: mat.get-color-from-palette($success, 500-contrast);
   }
 
-  .bgcolor-info {
+  .bgcolor-info, .hover-bgcolor-info:hover {
     background-color: var(--color-info);
+    color: mat.get-color-from-palette($info, 500-contrast);
   }
 
-  .bgcolor-error {
+  .bgcolor-error, .hover-bgcolor-error:hover {
     background-color: var(--color-error);
+    color: mat.get-color-from-palette($error, 500-contrast);
   }
  
-  .bgcolor-primary100 {
+  .bgcolor-primary100, .hover-bgcolor-primary100:hover {
     background-color: mat.get-color-from-palette($primary, 100);
+    color: mat.get-color-from-palette($primary, 100-contrast);
   }
 
-  .bgcolor-primary200 {
+  .bgcolor-primary200, .hover-bgcolor-primary200:hover {
     background-color: mat.get-color-from-palette($primary, 200);
+    color: mat.get-color-from-palette($primary, 200-contrast);
   }
 
-  .bgcolor-primary500 {
-    background-color: mat.get-color-from-palette($primary, 500);
-  }
-
-  .mat-bg-white{
+  .mat-bg-white, .hover-bgcolor-white:hover{
     background-color: mat.get-color-from-palette($background, background);
+    // color: mat.get-color-from-palette($accent, 500-contrast);
   }
   
    /* bg color ends */
