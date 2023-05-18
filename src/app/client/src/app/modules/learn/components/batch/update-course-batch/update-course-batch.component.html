@@ -1,69 +1,90 @@
 <app-modal-wrapper *ngIf="showUpdateModal"
-  [config]="{disableClose: false, size: 'normal', panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="redirect()"
-  #updateBatchModal>
+  [config]="{disableClose: false, size: 'normal', width: '45rem', panelClass: ['overflow-visible', 'material-modal']}"
+  (dismiss)="redirect()" #updateBatchModal>
   <ng-template sbModalContent>
-    <div class="sb-mat__modal">
 
-      <!--Header-->
-      <div mat-dialog-title class="mb-0">
-        <div class="title">
-          <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
-          <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
-        </div>
-        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-      </div>
+    <!--Header-->
+    <div mat-dialog-title class="mb-0">
+      <h2 class="mb-0" tabindex="0" *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</h2>
+      <h2 class="mb-0" tabindex="0" *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</h2>
+      <button class="ml-auto" mat-mini-fab color="warn" mat-dialog-close aria-label="close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
 
-      <!--Content-->
-      <div class="sb-mat__modal__content" [appTelemetryImpression]="telemetryImpression">
-        <form [formGroup]="batchUpdateForm" class="sb-form batchUpdateForm pt-8 px-8">
-          <div class="sb-color-primary font-weight-bold pb-24">Batch Details</div>
-          <div class="ui stackable grid">
-            <div class="eight wide column">
-              <div class="sb-field-group"
-                [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
-                <label class="required">{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
+    <!--Content-->
+    <div mat-dialog-content [appTelemetryImpression]="telemetryImpression">
+      <form [formGroup]="batchUpdateForm" class="batchUpdateForm">
+        <h4 class="color-accent font-weight-bold">Batch Details</h4>
+        <div class="sb-g mb-16">
+          <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-8">
+            <div
+              [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
+              <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
+              <!-- <label class="required">{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
                 <div class="sb-field">
                   <input class="sb-form-control" type="text" name="name" formControlName="name"
                     aria-label="name of batch">
                 </div>
-                <div class="mt-0 mb-8 ui pointing red basic label below"
+                <p class="color-warn"
                   *ngIf="batchUpdateForm.controls.name.invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine">
-                  {{resourceService?.messages?.stmsg?.m0114}}
-                </div>
-              </div>
-            </div>
-            <div class="four wide column">
-              <div>
-                <label>{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
-                <div class="d-flex py-8 flex-w-wrap">
-                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-                    <input (change)="handleInputChange('issue-certificate-yes')" formControlName="issueCertificate"
-                      type="radio" id="yes" value="yes">
-                    <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
-                  </div>
-                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-                    <input (change)="handleInputChange('issue-certificate-no')" formControlName="issueCertificate"
-                      type="radio" id="no" value="no">
-                    <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
-                  </div>
-                </div>
-              </div>
+                  {{resourceService?.messages?.stmsg?.m0114}}</p> -->
+              <mat-form-field color="accent" class="w-100 border-radius sb-mat-form-field-custom" appearance="fill">
+                <mat-label>{{resourceService?.frmelmnts?.lbl?.batchname}}</mat-label>
+                <input type="text" name="name" formControlName="name" aria-label="name of batch" matInput>
+                <mat-error
+                  *ngIf="batchUpdateForm.controls.name.invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine">{{resourceService?.messages?.stmsg?.m0114}}</mat-error>
+              </mat-form-field>
             </div>
           </div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+            <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
+            <!-- <label>{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
+              <div class="d-flex py-8 flex-w-wrap">
+                <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                  <input (change)="handleInputChange('issue-certificate-yes')" formControlName="issueCertificate"
+                    type="radio" id="yes" value="yes">
+                  <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
+                </div>
+                <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                  <input (change)="handleInputChange('issue-certificate-no')" formControlName="issueCertificate"
+                    type="radio" id="no" value="no">
+                  <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
+                </div>
+              </div> -->
+            <label class="w-100">{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
+            <mat-radio-group aria-label="{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}">
+              <mat-radio-button class="mr-16" (change)="handleInputChange('issue-certificate-yes')"
+                formControlName="issueCertificate" type="radio" id="yes"
+                [value]="'yes'">{{resourceService?.frmelmnts?.btn?.yes}}</mat-radio-button>
+              <mat-radio-button (change)="handleInputChange('issue-certificate-no')"
+                formControlName="issueCertificate" type="radio" id="no"
+                [value]="'no'">{{resourceService?.frmelmnts?.btn?.no}}</mat-radio-button>
+            </mat-radio-group>
 
-          <div class="ui stackable grid">
-            <div class="eight wide column">
-              <div class="sb-field-group">
+          </div>
+        </div>
+
+        <div class="sb-g">
+          <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-8">
+            <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
+            <!-- <div class="sb-field-group">
                 <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
                 <div class="sb-field">
                   <textarea class="sb-form-control" rows="4" name="description" formControlName="description"
                     aria-label="batch description"></textarea>
                 </div>
-              </div>
-            </div>
-            <div class="four wide column">
-              <div *ngIf="showDiscussionForum === 'Yes'">
-                <label>{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</label>
+              </div> -->
+            <mat-form-field color="accent" appearance="fill" class="w-100 border-radius sb-mat-form-field-custom">
+              <mat-label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</mat-label>
+              <textarea matInput rows="4" name="description" formControlName="description"
+                aria-label="batch description" type="text"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+            <div class="mb-8" *ngIf="showDiscussionForum === 'Yes'">
+              <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
+              <!-- <label>{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</label>
                 <div class="d-flex py-8 flex-w-wrap">
                   <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                     <input formControlName="enableDiscussions" type="radio" id="true" value="true">
@@ -73,149 +94,168 @@
                     <input formControlName="enableDiscussions" type="radio" id="false" value="false">
                     <label for="false">{{resourceService?.frmelmnts?.btn?.no}}</label>
                   </div>
-                </div>
-              </div>
-              <div class="d-flex flex-dc flex-w-wrap" *ngIf="courseCreator">
-                <div class="mr-8">
+                </div> -->
+              <label class="w-100">{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</label>
+              <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}">
+                <mat-radio-button class="mr-16" formControlName="enableDiscussions" type="radio" id="true"
+                  [value]="true">{{resourceService?.frmelmnts?.btn?.yes}}</mat-radio-button>
+                <mat-radio-button formControlName="enableDiscussions" type="radio" id="false"
+                  [value]="false">{{resourceService?.frmelmnts?.btn?.no}}</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div *ngIf="courseCreator">
+              <!-- This form field converted to angular material form field for now keeping the previous code if any error happens we can modify/revert it -->
+              <!-- <div class="mr-8">
                   <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
                 </div>
                 <div class="sb-radio-btn-checkbox sb-radio-btn-primary py-8" *ngIf="courseCreator">
                   <input id="update-course-open" [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio"
                     value='open' name="enrollmentType" formControlName="enrollmentType">
                   <label for="update-course-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
-                </div>
-              </div>
+                </div> -->
+              <label class="w-100">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
+              <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}"
+                *ngIf="courseCreator">
+                <mat-radio-button id="update-course-open"
+                  [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio" [value]="'open'"
+                  name="enrollmentType"
+                  formControlName="enrollmentType">{{resourceService?.frmelmnts?.lbl?.open}}</mat-radio-button>
+              </mat-radio-group>
             </div>
           </div>
+        </div>
 
-          <div class="d-flex flex-w-wrap my-16">
-            <div class="sb-field-group pr-8"
-              [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
-              <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
-              <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
-                <mat-form-field appearance="fill" class="sb-mat__datepicker sb-mat__datepicker--nolabel">
-                  <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label> -->
-                  <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" matInput
-                    [matDatepicker]="startDatePicker" formControlName="startDate"
-                    [min]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate' (dateChange)="onStartDateChange($event)">
-                  <mat-datepicker-toggle matSuffix [for]="startDatePicker"
-                    [disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #startDatePicker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="mt-0 mb-8 ui pointing red basic label below"
-                *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
-                {{resourceService?.messages?.stmsg?.m0113}}
-              </div>
+        <div class="d-flex flex-w-wrap my-16">
+          <div class="mr-16"
+            [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
+            <!-- <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label> -->
+            <div id="rangestartAdd">
+              <mat-form-field appearance="fill" class="mat-datepicker border-radius sb-mat-form-field-custom">
+                <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
+                <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" matInput
+                  [matDatepicker]="startDatePicker" formControlName="startDate"
+                  [min]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
+                  (dateChange)="onStartDateChange($event)">
+                <mat-datepicker-toggle matSuffix [for]="startDatePicker"
+                  [disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null">
+                </mat-datepicker-toggle>
+                <mat-datepicker #startDatePicker></mat-datepicker>
+              </mat-form-field>
             </div>
-            <div class="sb-field-group">
-              <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
-              <div class="ui calendar rangeendAdd" id="rangeendAdd">
-                <mat-form-field appearance="fill" class="sb-mat__datepicker sb-mat__datepicker--nolabel">
-                  <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label> -->
-                  <input [attr.disabled]="(showFormInViewMode) ? true : null" matInput [matDatepicker]="endDatePicker"
-                    formControlName="endDate" [min]='pickerMinDateForEndDate'>
-                  <mat-datepicker-toggle matSuffix [for]="endDatePicker"
-                    [disabled]="(showFormInViewMode) ? true : null"></mat-datepicker-toggle>
-                  <mat-datepicker #endDatePicker></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="sb-field-group pl-8" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
-              [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
-              <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
-              <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
-                <mat-form-field appearance="fill" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}"
-                  class="sb-mat__datepicker sb-mat__datepicker--nolabel">
-                  <!-- <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label> -->
-                  <input (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
-                    matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
-                    [min]='pickerMinDateForEnrollmentEndDate' [max]="batchUpdateForm.value.endDate"
-                    aria-label="enrollment End Date">
-                  <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="mt-0 mb-8 ui pointing red basic label below"
-                *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">
-                {{resourceService?.messages?.stmsg?.m0135}}
-              </div>
+            <p class="color-warn"
+              *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
+              {{resourceService?.messages?.stmsg?.m0113}}
+            </p>
+          </div>
+          <div class="mr-16">
+            <!-- <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label> -->
+            <div id="rangeendAdd">
+              <mat-form-field appearance="fill" class="mat-datepicker border-radius sb-mat-form-field-custom">
+                <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
+                <input [attr.disabled]="(showFormInViewMode) ? true : null" matInput [matDatepicker]="endDatePicker"
+                  formControlName="endDate" [min]='pickerMinDateForEndDate'>
+                <mat-datepicker-toggle matSuffix [for]="endDatePicker"
+                  [disabled]="(showFormInViewMode) ? true : null"></mat-datepicker-toggle>
+                <mat-datepicker #endDatePicker></mat-datepicker>
+              </mat-form-field>
             </div>
           </div>
+          <div class="mr-16" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
+            [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
+            <!-- <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label> -->
+            <div id="rangeenrollMentEnd">
+              <mat-form-field appearance="fill" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
+                <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</mat-label>
+                <input
+                  (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
+                  matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
+                  [min]='pickerMinDateForEnrollmentEndDate' [max]="batchUpdateForm.value.endDate"
+                  aria-label="enrollment End Date">
+                <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker">
+                </mat-datepicker-toggle>
+                <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <p class="color-warn"
+              *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">
+              {{resourceService?.messages?.stmsg?.m0135}}
+            </p>
+          </div>
+        </div>
 
-          <div class="ui tweleve wide column mb-20" *ngIf="showLoader">
-            <app-loader></app-loader>
-          </div>
-          <div class="sb-field-group mb-8">
-            <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-              <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list"
-                class="selection" [disabled]="showFormInViewMode" (selectionChange)="selectedMultiValues($event, 'mentors')">
-                <mat-select-trigger>
-                  <span>{{selectedMentors ? selectedMentors[0] : ''}} </span>
-                  <span *ngIf="selectedMentors?.length >= 2" class="example-additional-selection">
-                    (+{{selectedMentors.length - 1}} {{selectedMentors?.length === 2 ? 'other' : 'others'}})
-                  </span>
-                </mat-select-trigger>
-                <mat-option [disabled]="batchDetails.status === 0" class="mat-dropdown__options" role="option" *ngFor="let mentor of mentorList" [value]="mentor.id"
-                attr.aria-label="{{mentor.name}}">
-                  <img class="ui mini avatar image"
-                      src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
-                  {{mentor.name}}{{mentor.otherDetail}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          
-          <div class="sb-field-group mb-8" *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
-            <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-              <mat-select formControlName="users" role="listbox" multiple aria-label="participant list"
-                class="selection" [disabled]="showFormInViewMode || (batchDetails.participants && batchDetails.participants.length >= 100)" (selectionChange)="selectedMultiValues($event, 'participant')">
-                <mat-select-trigger>
-                  <span>{{selectedParticipants ? selectedParticipants[0] : ''}} </span>
-                  <span *ngIf="selectedMentorList?.length >= 2" class="example-additional-selection">
-                    (+{{selectedParticipants.length - 1}} {{selectedParticipants?.length === 2 ? 'other' : 'others'}})
-                  </span>
-                </mat-select-trigger>
-                <mat-option [disabled]="batchDetails.status === 0" class="mat-dropdown__options" role="option" *ngFor="let participant of participantList" [value]="participant.id"
+        <div class="w-100 mb-24" *ngIf="showLoader">
+          <app-loader></app-loader>
+        </div>
+        <div>
+          <!-- <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label> -->
+          <mat-form-field appearance="fill" class="sb-mat-form-field-custom border-radius w-100 mb-16">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</mat-label>
+            <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list" class="selection"
+              [disabled]="showFormInViewMode" (selectionChange)="selectedMultiValues($event, 'mentors')">
+              <mat-select-trigger>
+                <span>{{selectedMentors ? selectedMentors[0] : ''}} </span>
+                <span *ngIf="selectedMentors?.length >= 2" class="example-additional-selection">
+                  (+{{selectedMentors.length - 1}} {{selectedMentors?.length === 2 ? 'other' : 'others'}})
+                </span>
+              </mat-select-trigger>
+              <mat-option [disabled]="batchDetails.status === 0" role="option" *ngFor="let mentor of mentorList"
+                [value]="mentor.id" attr.aria-label="{{mentor.name}}">
+                <img width="32" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"
+                  alt="avatar image">
+                {{mentor.name}}{{mentor.otherDetail}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="mt-16" *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
+          <!-- <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label> -->
+          <mat-form-field appearance="fill" class="sb-mat-form-field-custom border-radius w-100">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</mat-label>
+            <mat-select formControlName="users" role="listbox" multiple aria-label="participant list" class="selection"
+              [disabled]="showFormInViewMode || (batchDetails.participants && batchDetails.participants.length >= 100)"
+              (selectionChange)="selectedMultiValues($event, 'participant')">
+              <mat-select-trigger>
+                <span>{{selectedParticipants ? selectedParticipants[0] : ''}} </span>
+                <span *ngIf="selectedMentorList?.length >= 2" class="example-additional-selection">
+                  (+{{selectedParticipants.length - 1}} {{selectedParticipants?.length === 2 ? 'other' : 'others'}})
+                </span>
+              </mat-select-trigger>
+              <mat-option [disabled]="batchDetails.status === 0" role="option"
+                *ngFor="let participant of participantList" [value]="participant.id"
                 attr.aria-label="{{participant.name}}">
-                  <img class="ui mini avatar image"
-                      src="{{participant.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
-                  {{participant.name}}{{participant.otherDetail}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <small *ngIf="batchDetails.participants && batchDetails.participants.length > 100"
-              class="sb-color-primary d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}</small>
-          </div>
-        </form>
-      </div>
-      <!--/Content-->
-
-      <!--Actions-->
-      <div class="sb-mat__modal__actions">
-
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="resetForm()"
-          [ngClass]="{'sb-btn-disabled': showFormInViewMode}" tabindex="0" appTelemetryInteract
-          [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="clearButtonInteractEdata"
-          [telemetryInteractCdata]="telemetryCdata">
-          {{resourceService?.frmelmnts?.btn?.clear}}
-        </button>
-
-        <button class="sb-btn sb-btn-normal sb-btn-primary ml-8"
-          [ngClass]="{'sb-btn-disabled': disableSubmitBtn || showFormInViewMode}" appTelemetryInteract
-          [disabled]="disableSubmitBtn || showFormInViewMode" [telemetryInteractObject]="telemetryInteractObject"
-          [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata" tabindex="0"
-          tabindex="0" (click)="updateBatch()">
-          {{resourceService?.frmelmnts?.btn?.update}}
-        </button>
-
-      </div>
-      <!--/Actions-->
-
+                <img width="32" src="{{participant.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"
+                  alt="avatar image">
+                {{participant.name}}{{participant.otherDetail}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <small *ngIf="batchDetails.participants && batchDetails.participants.length > 100"
+            class="color-accent d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}</small>
+        </div>
+      </form>
     </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <mat-dialog-actions align="end">
+
+      <button mat-raised-button class="button-rounded mr-8" tabindex="0" (click)="resetForm()"
+        [ngClass]="{'disabled': showFormInViewMode}" tabindex="0" appTelemetryInteract
+        [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="clearButtonInteractEdata"
+        [telemetryInteractCdata]="telemetryCdata">
+        {{resourceService?.frmelmnts?.btn?.clear}}
+      </button>
+
+      <button mat-raised-button color="accent" class="button-rounded" appTelemetryInteract
+        [disabled]="disableSubmitBtn || showFormInViewMode" [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata" tabindex="0"
+        tabindex="0" (click)="updateBatch()">
+        {{resourceService?.frmelmnts?.btn?.update}}
+      </button>
+
+    </mat-dialog-actions>
+    <!--/Actions-->
+
   </ng-template>
 </app-modal-wrapper>

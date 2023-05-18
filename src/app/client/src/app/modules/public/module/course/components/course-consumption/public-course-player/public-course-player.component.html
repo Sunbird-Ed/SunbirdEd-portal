@@ -121,25 +121,23 @@
   <app-loader [data]="loaderMessage"></app-loader>
 </div>
 
-  <app-modal-wrapper *ngIf="showJoinTrainingModal" [config]="{disableClose: true, size: 'small', panelClass: 'material-modal'}"
-    (dismiss)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" #joinTrainingModal>
-    <ng-template sbModalContent>
-      <div class="sb-mat__modal sb-mat__modal--small">
-        <div mat-dialog-title class="mb-0">
-          <div class="title">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</div>
-          <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-        </div>
+<app-modal-wrapper *ngIf="showJoinTrainingModal"
+  [config]="{disableClose: true, size: 'small', width: '30rem', panelClass: 'material-modal'}"
+  (dismiss)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" #joinTrainingModal>
+  <ng-template sbModalContent>
 
-        <div class="sb-mat__modal__content d-flex flex-ai-center flex-jc-center">
-          <div>
-            <p>{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
-          </div>
-        </div>
+    <div mat-dialog-title class="mb-0">
+      <h2 class="mb-0" tabindex="0">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</h2>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
+    </div>
 
-        <div class="sb-mat__modal__actions"></div>
-      </div>
-    </ng-template>
-  </app-modal-wrapper>
+    <mat-dialog-content class="d-flex flex-ai-center flex-jc-center">
+      <p>{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
+    </mat-dialog-content>
+
+  </ng-template>
+</app-modal-wrapper>
 
 <app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
