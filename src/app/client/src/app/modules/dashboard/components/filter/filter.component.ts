@@ -9,7 +9,7 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { InterpolatePipe } from 'src/app/modules/shared';
+import { InterpolatePipe } from '@sunbird/shared';
 
 @Component({
   selector: 'app-filter',
