@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, InterpolatePipe } from '@sunbird/shared';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
@@ -9,8 +9,6 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { InterpolatePipe } from '@sunbird/shared';
-
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
