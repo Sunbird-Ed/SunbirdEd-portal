@@ -8,19 +8,18 @@
   <div class="notification-count" *ngIf="notificationCount">{{notificationCount}}</div>
 </div>
 
-<app-modal-wrapper *ngIf="showNotificationModel" [config]="{disableClose: false, size: 'small', panelClass: 'material-modal'}"
+<app-modal-wrapper *ngIf="!showNotificationModel"
+  [config]="{disableClose: false, size: 'small', width: '30rem', panelClass: 'material-modal'}"
   (dismiss)="showNotificationModel=false">
   <ng-template sbModalContent let-data>
-    <div class="sb-mat__modal sb-notification-modal">
-      <div mat-dialog-title class="mb-0">
-        <button aria-label="close dialog" mat-dialog-close class="close-btn"></button>
-      </div>
-      <div class="sb-mat__modal__content" tabindex="0">
-        <sb-notification tabindex="0" [notificationList]="notificationList"
-          [inAppNotificationConfig]="inAppNotificationConfig" (showMore)="handleShowMore($event)"
-          (showLess)="handleShowLess($event)"></sb-notification>
-      </div>
-      <div class="sb-mat__modal__actions"></div>
+    <div mat-dialog-title class="mb-0">
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+    <mat-dialog-content>
+      <sb-notification tabindex="0" [notificationList]="notificationList"
+        [inAppNotificationConfig]="inAppNotificationConfig" (showMore)="handleShowMore($event)"
+        (showLess)="handleShowLess($event)" class="relative position"></sb-notification>
+    </mat-dialog-content>
   </ng-template>
 </app-modal-wrapper>
