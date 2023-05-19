@@ -293,21 +293,15 @@
   <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
   </app-tnc-popup>
 </div>
-<app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true}" (dismiss)="close.emit()">
+<app-modal-wrapper *ngIf="reportExportInProgress" [config]="{disableClose: true, size: 'normal', width: '45rem'}" (dismiss)="close.emit()">
   <ng-template sbModalContent>
-    <div class="sb-modal sb-hawkeye-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible normal">
-          <div class="sb-modal-content o-y-visible">
-            <div class="ui">
-              <div class="twelve wide column px-0 mb-30">
-                <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
-              </div>
-            </div>
-          </div>
-        </div>
+
+    <mat-dialog-content>
+      <div class="w-100 p-16">
+        <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
       </div>
-    </div>
+    </mat-dialog-content>
+
   </ng-template>
 </app-modal-wrapper>
 
