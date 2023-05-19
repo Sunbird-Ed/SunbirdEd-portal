@@ -338,7 +338,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.resetConfigFilters();
     delete this.displayFilters['District'];
     delete this.displayFilters['Organisation'];
-    // this.globalDistrict = this.globalOrg = undefined;
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
     this.appliedFilters = {}
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
@@ -601,7 +600,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.onDemandReportData = [];
     this.goToPrevLocation = false;
     this.showPopUpModal = true;
-    // this.globalDistrict = this.globalOrg = undefined;
     this.appliedFilters = {}
     this.displayFilters = {};
     this.timeRangeInit();
@@ -643,7 +641,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   districtSelection($event) {
-    // this.globalDistrict = $event.value;
     this.newData = false;
     this.appliedFilters = {...this.appliedFilters, district_externalId: $event.value}
     this.reportForm.controls.districtName.setValue($event.value);
@@ -663,7 +660,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   organisationSelection($event) {
-    // this.globalOrg = $event.value;
     this.appliedFilters= {...this.appliedFilters, organisation_id:$event.value}
     this.reportForm.controls.organisationName.setValue($event.value);
     this.displayFilters['Organisation'] = [$event?.source?.triggerValue]
@@ -862,9 +858,9 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     _.forEach(this.onDemandReportData, (value) => {
       if (value.datasetConfig.type === this.selectedReport.datasetId){
         _.forEach(value.datasetConfig.params.filters, (filter) => {
-          if(['solutionId','solution_id'].includes(filter['dimension']) && filter.value  === this.selectedSolution){
-            selectedReportList.push(value);
-          }else if(['object_id'].includes(filter?.table_filters?.[0]['name']) && filter?.table_filters?.[0].value === this.reportForm.controls.programName.value){
+          const conditionForSolutionBasedReports = ['solutionId','solution_id'].includes(filter['dimension']) && filter.value  === this.selectedSolution
+          const conditionForProgramBasedReports = ['object_id'].includes(filter?.table_filters?.[0]['name']) && filter?.table_filters?.[0].value === this.reportForm.controls.programName.value
+          if(conditionForSolutionBasedReports || conditionForProgramBasedReports){
             selectedReportList.push(value);
           }
         });

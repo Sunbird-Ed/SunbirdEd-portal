@@ -7,7 +7,7 @@ import { ResourceService } from '@sunbird/shared';
   styleUrls: ['./sb-table.component.scss']
 })
 export class SbTableComponent implements AfterViewInit  {
-  @Input() rowsData: Array<Object>;
+  @Input() rowsData: any;
   data = {};
   @Input() config;
   currentFilters: Array<{}>;

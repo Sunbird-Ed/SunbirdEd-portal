@@ -5,12 +5,14 @@ import * as _ from "lodash-es";
   providedIn: "root",
 })
 export class PdServiceService {
-  constructor() {}
+  constructor() {
+    // This is intentional
+  }
 
   getFilteredData(data, selectedFilters) {
     return _.filter(data, (dataItem) => {
       return _.every(selectedFilters, (value, key) => {
-        if (dataItem && dataItem[key]) {
+        if (dataItem?.[key]) {
           if (_.isArray(value)) {
             return _.some(value, (val) => val === dataItem[key]);
           }
