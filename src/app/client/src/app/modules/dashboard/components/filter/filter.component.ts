@@ -9,6 +9,7 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { InterpolatePipe } from 'src/app/modules/shared';
 
 @Component({
   selector: 'app-filter',
@@ -346,7 +347,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   showErrorMessage(event){
-    this.errorMessage = event?.displayName ? `Please select a ${event.displayName} first from the ${event.displayName} filter` : undefined;
+    const interpolate = new InterpolatePipe()
+    this.errorMessage = event?.displayName ? interpolate.transform(this.resourceService?.frmelmnts?.lbl?.selectDependentFilter,'{displayName}',event.displayName) : undefined;
   }
 
 }
