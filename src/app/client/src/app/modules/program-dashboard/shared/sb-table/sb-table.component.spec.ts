@@ -1,24 +1,27 @@
 import { SimpleChange, TemplateRef} from "@angular/core";
+import { PdServiceService } from "../services/pd-service/pd-service.service";
 import { SbTableComponent } from "./sb-table.component";
 import { mockTable } from "./sb-table.component.spec.data";
 
 describe("SbTableComponent", () => {
   let component: SbTableComponent;
+  let filterService:PdServiceService = {
+    getFilteredData:jest.fn().mockReturnValue([mockTable.table.data[0]]) as any
+  }
+
   beforeAll(() => {
-    component = new SbTableComponent();
+    component = new SbTableComponent(filterService);
     component.table = mockTable.table;
     component.hideElements = false;
     component.tableData = mockTable.table.data;
   });
 
   beforeEach(() => {
-    component.globalOrg = undefined;
-    component.globalDistrict = undefined;
     component.tableData = mockTable.table.data;
     jest.clearAllMocks();
   });
 
-  it("should create bignumber component", () => {
+  it("should create table component", () => {
     expect(component).toBeTruthy();
   });
 
@@ -30,7 +33,10 @@ describe("SbTableComponent", () => {
   });
 
   it("should call ngOnChanges", () => {
-    component.globalDistrict = "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03";
+    component.appliedFilters =  {
+      district_externalId:'b617e607-0a5b-45a0-9894-7a325ffa45c7',
+      organisation_id:'0126796199493140480'
+    }   
     jest.spyOn(component, "ngOnChanges");
     jest.spyOn(component, "exportToCsv");
     jest.spyOn(component, "checkForGlobalChanges");
@@ -51,7 +57,6 @@ describe("SbTableComponent", () => {
   });
 
   it("should call checkForGlobalChanges with only globalDistrict", () => {
-    component.globalDistrict = "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03";
     component.lib = {
       instance: {
         update(): void {},
@@ -60,13 +65,10 @@ describe("SbTableComponent", () => {
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
-    expect(component.globalData).toBeDefined();
-    expect(component.globalOrg).toBeUndefined();
     expect(component.globalChange).toBeTruthy();
   });
 
   it("should call checkForGlobalChanges with only globalOrg", () => {
-    component.globalOrg = "0126796199493140480";
     component.lib = {
       instance: {
         update(): void {},
@@ -75,14 +77,10 @@ describe("SbTableComponent", () => {
     jest.spyOn(component, "checkForGlobalChanges");
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
-    expect(component.globalData).toBeDefined();
-    expect(component.globalDistrict).toBeUndefined();
     expect(component.globalChange).toBeTruthy();
   });
 
   it("should call checkForGlobalChanges with globalDistrict and globalOrg", () => {
-    component.globalOrg = "0126796199493140480";
-    component.globalDistrict = "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03";
     component.lib = {
       instance: {
         update(): void {},
@@ -93,11 +91,10 @@ describe("SbTableComponent", () => {
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
     expect(component.globalChange).toBeTruthy();
-    expect(component.globalDistrict).toBeDefined();
-    expect(component.globalOrg).toBeDefined();
   });
 
   it("should call checkForGlobalChanges without globalDistrict and globalOrg", () => {
+    component.appliedFilters = {}   
     component.lib = {
       instance: {
         update(): void {},
@@ -107,8 +104,6 @@ describe("SbTableComponent", () => {
     component.checkForGlobalChanges();
     expect(component.checkForGlobalChanges).toHaveBeenCalled();
     expect(component.globalData).toBeDefined();
-    expect(component.globalDistrict).toBeUndefined();
-    expect(component.globalOrg).toBeUndefined();
     expect(component.globalChange).toBeFalsy();
   });
 
