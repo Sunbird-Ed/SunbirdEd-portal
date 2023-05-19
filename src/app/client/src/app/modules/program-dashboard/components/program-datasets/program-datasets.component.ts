@@ -22,6 +22,13 @@ export interface ConfigFilter{
     reference: string,
     defaultValue: number
 }
+export interface ResourceAPIRequestBody{
+  type:string,
+  id:string,
+  projection:string,
+  solutionType?:string,
+  districtLocationId?:string
+}
 @Component({
   selector: 'app-datasets',
   templateUrl: './program-datasets.component.html',
@@ -33,7 +40,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   public dashboardReport$;
   public noResultMessage: INoResultMessage;
   public noResult: boolean;
-  showPopUpModal: boolean;
+  showPopUpModal: boolean = true;
   config;
   reportTypes = [];
   programs = [];
@@ -75,7 +82,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     districtName: new UntypedFormControl(),
     organisationName: new UntypedFormControl(),
     startDate: new UntypedFormControl(),
-    endDate: new UntypedFormControl()
+    endDate: new UntypedFormControl(),
+    blockName:new UntypedFormControl()
   });
 
   passwordForm = new UntypedFormGroup({
@@ -104,7 +112,31 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   displayFilters:any = {};
   loadash = _;
   pdFilters:ConfigFilter[] = [];
-  configuredFilters:any = {}
+  configuredFilters:any = {};
+  appliedFilters:object = {};
+  blocks:object[] = [
+    {
+        "name": "ANANTAPUR",
+        "id": "d2f2f4db-246b-44e1-b877-05449ca16aec",
+    },
+    {
+        "name": "AGALI",
+        "id": "966c3be4-c125-467d-aaff-1eb1cd525923",
+    },
+    {
+        "name": "AMADAGUR",
+        "id": "8df55ad6-7b21-41d0-a93a-efda45d34857",
+    },
+    {
+        "name": "BOMMANAHAL",
+        "id": "317d7fe1-6285-4c1d-8cdd-225153bde70c",
+    },
+    {
+        "name": "B.KOTHAKOTA",
+        "id": "57e3db3c-e61f-4e6d-b416-6213ca92048e"
+    }
+  ];
+  errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -138,7 +170,9 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   public userId: string;
   public selectedReport;
   public selectedSolution: string;
+  public userAccess:boolean;
   hashedTag;
+
   getProgramsList() {
     const paramOptions = {
       url:
@@ -170,15 +204,23 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   }
 
-  getDistritAndOrganisationList() {
+  getDistritAndOrganisationList(requestBody:ResourceAPIRequestBody) {
 
     const paramOptions = {
       url:
-        this.config.urlConFig.URLS.KENDRA.DISTRICTS_AND_ORGANISATIONS + '/' + this.reportForm.controls.solution.value
+        this.config.urlConFig.URLS.KENDRA.DISTRICTS_AND_ORGANISATIONS+`?resourceType=${requestBody.type}&resourceId=${requestBody.id}`,
+      data: {
+        projection: requestBody.projection,
+        ...(requestBody.solutionType) && {solutionType:requestBody.solutionType},
+        ...(requestBody.districtLocationId) && {query : {districtLocationId:requestBody.districtLocationId}},
+        programId:  _.get(this.reportForm, 'controls.programName.value')
+      }
     };
-    this.kendraService.get(paramOptions).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+
+    this.kendraService.post(paramOptions).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       if (data && Object.keys(data.result).length) {
-        this.districts = data.result.districts;
+        data.result.districts && (this.districts = data.result.districts)
+        data.result.blocks && (this.blocks = data.result.blocks)
         if (data.result.organisations) {
           data.result.organisations.map(org => {
             if (org?.orgName !== null) {
@@ -239,7 +281,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   public getUpdatedParameterizedPath(dataSources) {
-    const explicitValue = _.get(this.reportForm, 'controls.solution.value')
+    const explicitValue = this.userAccess ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value')
     return _.map(dataSources, (dataSource) => ({
       id: dataSource.id,
       path: this.resolveParameterizedPath(dataSource.path, explicitValue)
@@ -260,6 +302,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         return data;
       }
     });
+    console.log('program',program)
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
@@ -267,19 +310,37 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.getSolutionList(program[0]);
     this.displayFilters['Program'] = [program[0].name]
     this.reportForm.controls.programName.setValue($event.value);
-    this.newData = true;
-    this.globalDistrict = this.globalOrg = undefined;
+    this.appliedFilters = {};
+    this.districts = this.organisations = [];
+    this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
+    this.getReportTypes($event.value,'user_detail_report');
+    this.userAccess = this.reportTypes.length > 0 && _.has(program[0],'requestForPIIConsent');
+    console.log('report type',this.reportTypes)
+    console.log('user access',this.userAccess)
+    if(this.userAccess){
+      this.tag = program[0]._id + '_' + this.userId;
+      this.hashedTag = this.hashTheTag(this.tag)
+      this.loadReports();
+    }
+    this.newData = !this.userAccess;
+    const requestBody:ResourceAPIRequestBody= {
+      type:'program',
+      id:$event.value,
+      projection:'district'
+    }
+    this.getDistritAndOrganisationList(requestBody);
   }
 
   public selectSolution($event) {
     this.newData = false;
     this.noResult = false;
-    this.districts = []
-    this.organisations = [];
+    this.districts = this.organisations = []
     this.resetConfigFilters();
     delete this.displayFilters['District'];
     delete this.displayFilters['Organisation'];
-    this.globalDistrict = this.globalOrg = undefined;
+    // this.globalDistrict = this.globalOrg = undefined;
+    this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
+    this.appliedFilters = {}
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
       const solution = this.solutions.filter(data => {
         if (data._id == $event.value) {
@@ -301,7 +362,13 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       } else {
         this.getReportTypes(this.programSelected, solution[0].type);
       }
-      this.getDistritAndOrganisationList();
+      const requestBody:ResourceAPIRequestBody = {
+        type:'solution',
+        id:$event.value,
+        projection:'district',
+        solutionType:solution[0].type
+      }
+      this.getDistritAndOrganisationList(requestBody);
 
 
     }
@@ -534,7 +601,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.onDemandReportData = [];
     this.goToPrevLocation = false;
     this.showPopUpModal = true;
-    this.globalDistrict = this.globalOrg = undefined;
+    // this.globalDistrict = this.globalOrg = undefined;
+    this.appliedFilters = {}
     this.displayFilters = {};
     this.timeRangeInit();
     this.resetConfigFilters();
@@ -575,20 +643,53 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   districtSelection($event) {
-    this.globalDistrict = $event.value;
+    // this.globalDistrict = $event.value;
+    this.newData = false;
+    this.appliedFilters = {...this.appliedFilters, district_externalId: $event.value}
     this.reportForm.controls.districtName.setValue($event.value);
-    this.displayFilters['District'] = [$event?.source?.triggerValue]
-    this.tag =  _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
-    this.hashedTag = this.hashTheTag( _.get(this.reportForm, 'controls.solution.value')+ '_' + this.userId+'_'+ $event.value)
-    this.reportForm.controls.reportType.setValue('');
-    this.resetConfigFilters();
+    this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
+    this.displayFilters['District'] = [$event?.source?.triggerValue];
+    const requestBody:ResourceAPIRequestBody = {
+      type:_.get(this.reportForm, 'controls.solution.value') ? 'solution' : 'program',
+      id:$event.value,
+      projection:'block',
+      districtLocationId:$event.value
+    }
+    this.getDistritAndOrganisationList(requestBody);
+    const tagBasedOnUserAccess = (this.userAccess ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value'))
+    this.tag = tagBasedOnUserAccess + '_' + this.userId+'_'+ _.toLower(_.trim([$event?.source?.triggerValue]," "));
+    this.hashedTag = this.hashTheTag( tagBasedOnUserAccess + '_' + this.userId+'_'+ $event.value);
     this.loadReports();
   }
 
   organisationSelection($event) {
-    this.globalOrg = $event.value
+    // this.globalOrg = $event.value;
+    this.appliedFilters= {...this.appliedFilters, organisation_id:$event.value}
     this.reportForm.controls.organisationName.setValue($event.value);
     this.displayFilters['Organisation'] = [$event?.source?.triggerValue]
+    this.newData = false;
+    this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
+  }
+
+  blockChanged($event){
+    this.reportForm.controls.blockName.setValue($event.value)
+    if($event.value.length){
+      this.appliedFilters = {...this.appliedFilters, block_externalId:$event.value};
+      this.displayFilters['Block'] = [$event?.source?.triggerValue];
+      const tagBasedOnUserAccess = (this.userAccess ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value'))
+      this.tag = tagBasedOnUserAccess + '_' + this.userId+'_'+ _.get(this.reportForm, 'controls.districtName.value') + ($event.value).sort();
+      this.hashedTag = this.hashTheTag(this.tag);
+      this.loadReports();
+    }else{
+      delete this.appliedFilters['block_externalId']
+      this.appliedFilters = { ...this.appliedFilters }
+    }
+  }
+  dependentFilterMsg(){
+    if(!this.reportForm.controls.districtName.value){
+      this.newData = true;
+      this.errorMessage = this.resourceService?.frmelmnts?.lbl?.blockWithoutDistrict
+    }
   }
 
   reportChanged(selectedReportData) {
@@ -615,7 +716,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     if($event.data){
       const [reference, value]= [Object.keys($event.data),Object.values($event.data)] ;
       if($event.controlType === 'number'){
-        if([0,null].includes(value[0] as number) || value[0] < 0){
+        if([0,null].includes(value[0] as number) || value[0] as number < 0){
           this.configuredFilters[reference[0]] = undefined;
         }else{
           this.configuredFilters[reference[0]] = value[0] as number -1;
@@ -636,26 +737,22 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       this.configuredFilters[filter['reference']] = filter['options']
       }
     })
-    let filterKeysObj = {
-      program_id: _.get(this.reportForm, 'controls.programName.value'),
-      solution_id: _.get(this.reportForm, 'controls.solution.value'),
-      programId: _.get(this.reportForm, 'controls.programName.value'),
-      solutionId: _.get(this.reportForm, 'controls.solution.value'),
-      district_externalId: _.get(this.reportForm, 'controls.districtName.value') || undefined,
-      organisation_id: _.get(this.reportForm, 'controls.organisationName.value') || undefined,
+    const filterKeysObj = {
+      "program_id": _.get(this.reportForm, 'controls.programName.value') || undefined,
+      "solution_id": _.get(this.reportForm, 'controls.solution.value') || undefined,
+      "programId": _.get(this.reportForm, 'controls.programName.value') || undefined,
+      "solutionId": _.get(this.reportForm, 'controls.solution.value') || undefined,
+      "district_externalId": _.get(this.reportForm, 'controls.districtName.value') || undefined,
+      "district_id":_.get(this.reportForm, 'controls.districtName.value') || undefined,
+      "organisation_id": _.get(this.reportForm, 'controls.organisationName.value') || undefined,
+      "object_id":_.get(this.reportForm, 'controls.programName.value') || undefined,
+      "user_locations['district_id']":_.get(this.reportForm, 'controls.districtName.value') || undefined,
+      '>=':_.get(this.reportForm,'controls.startDate.value') || undefined,
+      '<=':_.get(this.reportForm,'controls.endDate.value') || undefined,
       ...this.configuredFilters
     }
-
-    let keys = Object.keys(filterKeysObj);
-
-    this.selectedReport['filters'].map(data => {
-      keys.filter(key => {
-        return data.dimension === key && (_.has(data,'value') ? data.value = filterKeysObj[key] : data.values = filterKeysObj[key]);
-      })
-      if (data.value !== undefined || data.values !== undefined) {
-        this.filter.push(data);
-      }
-    });
+    const keys = Object.keys(filterKeysObj);
+    this.dataFilterQuery(filterKeysObj,keys);
   }
   submitRequest() {
     this.addFilters();
@@ -734,7 +831,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       this.filter = [];
       setTimeout(() => {
         this.isProcessed = false;
-      }, 5000);
+      }, 10000);
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.reportRequestFailed'));
       this.passwordForm.reset();
     }
@@ -763,9 +860,11 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     let requestStatus = true;
     const selectedReportList = [];
     _.forEach(this.onDemandReportData, (value) => {
-      if (value.datasetConfig.type == this.selectedReport.datasetId){
+      if (value.datasetConfig.type === this.selectedReport.datasetId){
         _.forEach(value.datasetConfig.params.filters, (filter) => {
           if(['solutionId','solution_id'].includes(filter['dimension']) && filter.value  === this.selectedSolution){
+            selectedReportList.push(value);
+          }else if(['object_id'].includes(filter?.table_filters?.[0]['name']) && filter?.table_filters?.[0].value === this.reportForm.controls.programName.value){
             selectedReportList.push(value);
           }
         });
@@ -814,16 +913,41 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       const day = new Date($event.value._d).getDate();
       if(type === 'startDate'){
         this.minEndDate = new Date(year, month, day + 1);
-        this.reportForm.controls.startDate.setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
       }else{
         this.maxStartDate = new Date(year, month, day - 1);
-        this.reportForm.controls.endDate.setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
       }
+      this.reportForm.controls[type].setValue(dayjs(_.get($event, 'value._d')).format('YYYY-MM-DD'));
     }
   }
 
   closeDashboard(){
     this.location.back()
+  }
+
+  dataFilterQuery(filterKeysObj,keys){
+    if(this.selectedReport['queryType'] === "cassandra"){
+      console.log('start date', _.get(this.reportForm, 'controls.startDate.value'))
+      this.filter = _.cloneDeep(this.selectedReport['filters'])
+      console.log('selected filters',this.selectedReport['filters'])
+      _.map(this.filter, filterObj => {
+         _.remove(filterObj['table_filters'], filterItem => {
+             _.map(keys,key => {
+            (filterItem.name === key || filterItem.operator === key) && (filterItem.value = filterKeysObj[key])
+          })
+          return filterItem.value === undefined
+        })
+      })
+    }else{
+        this.selectedReport['filters'].map(data => {
+        keys.filter(key => {
+          return data.dimension === key && (_.has(data,'value') ? data.value = filterKeysObj[key] : data.values = filterKeysObj[key]);
+        })
+        if (data.value !== undefined || data.values !== undefined) {
+          this.filter.push(data);
+        }
+      });
+    }
+    console.log('filter to be sent',this.filter)
   }
 
   hashTheTag(key:string):string{
