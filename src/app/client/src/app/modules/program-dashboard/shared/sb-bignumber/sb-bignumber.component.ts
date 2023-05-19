@@ -37,10 +37,7 @@ export class SbBignumberComponent implements OnInit, OnChanges {
 
   checkForChanges(){
     if(Object.keys(this.appliedFilters).length){
-      console.log('Applied filters', this.appliedFilters)
-      console.log('Chart Data',this.chartData);
       this.globalData = this.filterService.getFilteredData(this.chartData,this.appliedFilters)
-      console.log('filtered big number data',this.globalData)
       this.globalChange = true;
       this.updatedData = this.globalData;
       this.outletRef.clear();
