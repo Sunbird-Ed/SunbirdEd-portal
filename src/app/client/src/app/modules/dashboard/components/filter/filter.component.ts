@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, InterpolatePipe } from '@sunbird/shared';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
@@ -9,7 +9,6 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -43,6 +42,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   formChartData: any = [];
   currentReference: any;
   firstFilter: any;
+  errorMessage: any;
 
   @Input()
   set selectedFilter(val: any) {
@@ -344,6 +344,11 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   getFiltersValues(filter) {
    return Array.isArray(filter) ? filter : [filter];
+  }
+
+  showErrorMessage(event){
+    const interpolate = new InterpolatePipe()
+    this.errorMessage = event?.displayName ? interpolate.transform(this.resourceService?.frmelmnts?.lbl?.selectDependentFilter,'{displayName}',event.displayName) : undefined;
   }
 
 }
