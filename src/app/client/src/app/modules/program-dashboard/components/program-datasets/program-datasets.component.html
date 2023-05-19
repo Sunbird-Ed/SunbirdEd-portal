@@ -16,8 +16,8 @@
   </div>
  </mat-toolbar>
 
-<div class="mat-inside-page-container mat-app-background2" #reportSection>
-  <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
+<div class="mat-inside-page-container mat-app-background2 program-dataset-component" #reportSection>
+  <mat-tab-group color="accent" (selectedTabChange)="selectedTabChange($event)">
     <mat-tab appTelemetryInteract>
          <ng-template mat-tab-label>
             <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.programDatasets}}</span>
@@ -295,7 +295,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="showPopUpModal" [config]="{disableClose: false, width: '35rem'}" (dismiss)="closePopupModal()" #modal>
+<app-modal-wrapper *ngIf="showPopUpModal" [config]="{disableClose: false, width: '40rem'}" (dismiss)="closePopupModal()" #modal>
   <ng-template sbModalContent>
     <div mat-dialog-title>
       <div class="title d-flex flex-ai-center" tabindex="0"><mat-icon class="info">info</mat-icon> {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>

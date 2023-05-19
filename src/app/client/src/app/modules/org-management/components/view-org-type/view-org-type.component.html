@@ -1,28 +1,18 @@
-<div class="ui grid" [appTelemetryImpression]="telemetryImpression">
-    <div class="one wide column"></div>
-    <div class="ten wide column mt-10">
-        <div class="ui raised segment" *ngIf="showLoader">
-            <app-loader></app-loader>
+<div [appTelemetryImpression]="telemetryImpression">
+    <app-loader *ngIf="showLoader"></app-loader>
+    <div *ngIf="!showLoader" class="d-flex flex-dc">
+        <div>
+            <span class="mat-body-2">{{resourceService?.frmelmnts?.lbl?.orgtypes}}</span>
+            <a mat-button id="addOrgType" [routerLink]="['create']" appTelemetryInteract [telemetryInteractEdata]="addOrganizationType">
+                <mat-icon>add</mat-icon>
+            </a>
         </div>
-        <div class="ui raised segment" *ngIf="!showLoader">
-            <div class="header announcementCard-header">
-                <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.orgtypes}}</span>
-                <a class="addeditprofile cursor-pointer" id="addOrgType" [routerLink]="['create']" appTelemetryInteract [telemetryInteractEdata]="addOrganizationType">
-                    <i class="big plus icon"></i>
-                </a>
-            </div>
-            <div class="mt-10 ">
-                <span class="padded chip mt-5">
-                    <a class="ui label mt-5" *ngFor="let orgnisation of orgTypes;" appTelemetryInteract
-                        [telemetryInteractObject]="{id:orgnisation.id,type:'Organization',ver:'1.0'}" [telemetryInteractEdata]="updateOrganizationType">
-                        {{orgnisation.name}}
-                        <i class="large write icon m-0 pl-10" [routerLink]="['update/' + orgnisation.id]"></i>
-                    </a>
-                </span>
-            </div>
-        </div>
+        <a mat-button class="mt-5" *ngFor="let orgnisation of orgTypes;" appTelemetryInteract
+                [telemetryInteractObject]="{id:orgnisation.id,type:'Organization',ver:'1.0'}"
+                [telemetryInteractEdata]="updateOrganizationType">
+                {{orgnisation.name}} <mat-icon [routerLink]="['update/' + orgnisation.id]">edit</mat-icon>
+            </a>
     </div>
-    <div class="one wide column"></div>
 </div>
 
 <router-outlet></router-outlet>

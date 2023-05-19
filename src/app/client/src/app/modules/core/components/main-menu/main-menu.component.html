@@ -1,189 +1,210 @@
-<ng-container *ngIf="!isLayoutAvailable()">
-<!--Computer-->
-<div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
-
-  <ng-container>
-    <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
-  </ng-container>
-
-  <!--Logged in user-->
-	<ng-container *ngIf="userService.loggedIn">
-
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/workspace',false)" appTelemetryInteract
-			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='!isDesktopApp && permissionService?.permissionAvailable'
-			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
-			{{resourceService?.frmelmnts?.tab?.workspace}}
-		</a>
-		<a class="item py-8 pl-0 pr-24" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
-			*ngIf='!isDesktopApp && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
-			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
-			{{resourceService?.frmelmnts?.tab?.help}}
-		</a>
-	</ng-container>
-	<!--/Logged in user-->
-
-	<!--Not Logged in user-->
-	<ng-container *ngIf="!userService.loggedIn">
-		<button class="ui blue button" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"
-			tabindex="0" [routerLink]="'/explore'">
-			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
-		</button>
-	</ng-container>
-	<!--/Not Logged in user-->
-
-</div>
-<!--Computer-->
-
-<!--Mobile-->
-<div class="mobile only">
-	<div class="ui sidebar right vertical menu">
-
-    <div class="mobile only">
-      <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
-    </div>
-
-    <!--Logged in user-->
-		<ng-container *ngIf="userService.loggedIn">
-			<div class="item font-weight-bold" *ngIf='userProfile'>
-				<i class="close link icon" (click)="showSideBar()" tabindex="0"
-					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
-				<div class="ellipsis">
-					{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
-				</div>
-			</div>
-			<div class="ui divider mt-0"></div>
-			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups, false)" 
-			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
-
-			<a class="item" [class.active]="router.isActive('/search/profile',false) || router.isActive('/profile', false)"
-				(click)="showSideBar()" tabindex="0" routerLink="/profile">
-				{{resourceService.frmelmnts?.lnk?.profile}}
-			</a>
-			<a class="item logout-btn" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
-				(click)="logout()" tabindex="0">
-				{{resourceService.frmelmnts?.lnk?.logout}}
-			</a>
-		</ng-container>
-		<!--/Logged in user-->
-
-		<!--Not Logged in user-->
-		<ng-container *ngIf="!userService.loggedIn">
-			<div class="item active">
-				<i class="close link icon" (click)="showSideBar()" tabindex="0"
-					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
-				<a href="/resources">
-					{{resourceService.frmelmnts?.btn?.signin}}
-				</a>
-			</div>
-			<div class="ui divider mt-0"></div>
-			<a class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)" routerLink="/explore" tabindex="0">
-				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
-			</a>
-			<a class="item"
-				[class.active]="router.isActive('/search/explore',false) || router.isActive('explore',false)"				
-				[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
-				*ngIf="!router.isActive('', true)">
-				{{resourceService?.frmelmnts?.tab?.resources}}
-			</a>
-			<a class="item"
-				[class.active]="router.isActive('/search/explore-course',false) || router.isActive('/explore-course',false)"
-				[routerLink]="['/explore-course']" (click)="showSideBar()" tabindex="0"
-				*ngIf="!router.isActive('', true)">
-				{{resourceService?.frmelmnts?.tab?.courses}}
-			</a>
-			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore,false)" 
-			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
-
-      <a class="item" (click)="showSideBar(false);switchLayout()" tabindex="0">
-        <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
-        <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
-      </a>
-    </ng-container>
-		<!--/Not Logged in user-->
-	</div>
-</div>
-<!--/Mobile-->
+<ng-container>
+	<app-content-type [showBackButton]="showBackButton"></app-content-type>
 </ng-container>
 
-
-<ng-container *ngIf="isLayoutAvailable()">
-
-  <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
-
-  <!--Mobile-->
-<div class="mobile only">
-	<div class="ui sidebar right vertical menu">
-		<!--Logged in user-->
-		<ng-container *ngIf="userService.loggedIn">
-      <div class="item font-weight-bold" *ngIf='userProfile'>
-				<i class="close link icon" (click)="showSideBar()" tabindex="0"
-					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
-				<div class="ellipsis">
-					{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
-				</div>
-			</div>
-			<div class="ui divider mt-0"></div>
-			<a class="item" [class.active]="router.isActive('/search/Library',false) || router.isActive('/resources',false)"
-				(click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
-				routerLink="/resources">
-				{{resourceService?.frmelmnts?.tab?.resources}}
-			</a>
-			<a class="item" [class.active]="router.isActive('/search/Courses',false) || router.isActive('/learn',false)"
-				(click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
-				routerLink="/learn">
-				{{resourceService?.frmelmnts?.tab?.courses}}
-			</a>
-			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups,false)" appTelemetryInteract
-		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]" *ngIf="!isDesktopApp">
-		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
-			</a>
-			<a class="item" [class.active]="router.isActive('/search/profile',false) || router.isActive('/profile',false)"
-				(click)="showSideBar()" tabindex="0" routerLink="/profile">
-				{{resourceService.frmelmnts?.lnk?.profile}}
-			</a>
-			<a class="item logout-btn" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
-				(click)="logout()" tabindex="0">
-				{{resourceService.frmelmnts?.lnk?.logout}}
-			</a>
-		</ng-container>
-		<!--/Logged in user-->
-		<!--Not Logged in user-->
-		<ng-container *ngIf="!userService.loggedIn">
-
-      <div class="item active">
-				<i class="close link icon" (click)="showSideBar()" tabindex="0"
-					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
-				<a href="/resources">
-					{{resourceService.frmelmnts?.btn?.signin}}
-				</a>
-			</div>
-			<div class="ui divider mt-0"></div>
-			<a class="item" (click)="showSideBar()" tabindex="0" *ngIf="router.isActive('', true)" routerLink="/explore">
-				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
-			</a>
-			<a class="item"
-				[class.active]="router.isActive('/search/explore',false) || router.isActive('explore',false)"				
-				[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
-				*ngIf="!router.isActive('', true)">
-				{{resourceService?.frmelmnts?.tab?.resources}}
-			</a>
-			<a class="item"
-				[class.active]="router.isActive('/search/explore-course',false) || router.isActive('/explore-course',false)"
-				[routerLink]="['/explore-course']" (click)="showSideBar()" tabindex="0"
-				*ngIf="!router.isActive('', true)">
-				{{resourceService?.frmelmnts?.tab?.courses}}
-			</a>
-			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore,false)" 
-			*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
-			
+<div class="hide">
+	<ng-container *ngIf="!isLayoutAvailable()">
+		<!--Computer-->
+		<div class="computer only">
+			<ng-container>
+				<app-content-type [showBackButton]="showBackButton"></app-content-type>
 			</ng-container>
-		<!--/Not Logged in user-->
-	</div>
-</div>
-<!--/Mobile-->
 
-	
-</ng-container>
+			<!--Logged in user-->
+			<ng-container *ngIf="userService.loggedIn">
+
+				<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/workspace',false)"
+					appTelemetryInteract [telemetryInteractEdata]="workspaceMenuIntractEdata"
+					*ngIf='!isDesktopApp && permissionService?.permissionAvailable' appPermission
+					[permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
+					{{resourceService?.frmelmnts?.tab?.workspace}}
+				</a>
+				<a class="item py-8 pl-0 pr-24" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+					*ngIf='!isDesktopApp && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"'
+					appPermission [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html"
+					target="_blank">
+					{{resourceService?.frmelmnts?.tab?.help}}
+				</a>
+			</ng-container>
+			<!--/Logged in user-->
+
+			<!--Not Logged in user-->
+			<ng-container *ngIf="!userService.loggedIn">
+				<button class="ui blue button" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"
+					tabindex="0" [routerLink]="'/explore'">
+					{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
+				</button>
+			</ng-container>
+			<!--/Not Logged in user-->
+
+		</div>
+		<!--Computer-->
+
+		<!--Mobile-->
+		<div class="mobile only">
+			<div class="ui sidebar right vertical menu">
+
+				<div class="mobile only">
+					<app-content-type [layoutConfiguration]="layoutConfiguration"
+						[showBackButton]="showBackButton"></app-content-type>
+				</div>
+
+				<!--Logged in user-->
+				<ng-container *ngIf="userService.loggedIn">
+					<div class="item font-weight-bold" *ngIf='userProfile'>
+						<i class="close link icon" (click)="showSideBar()" tabindex="0"
+							title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
+						<div class="ellipsis">
+							{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
+						</div>
+					</div>
+					<div class="ui divider mt-0"></div>
+					<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups, false)"
+						*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0"
+						appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+						[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}} <span
+							class="group__type mx-8">New</span> </a>
+
+					<a class="item"
+						[class.active]="router.isActive('/search/profile',false) || router.isActive('/profile', false)"
+						(click)="showSideBar()" tabindex="0" routerLink="/profile">
+						{{resourceService.frmelmnts?.lnk?.profile}}
+					</a>
+					<a class="item logout-btn" appOnlineOnly appTelemetryInteract
+						[telemetryInteractEdata]="getLogoutInteractEdata()" (click)="logout()" tabindex="0">
+						{{resourceService.frmelmnts?.lnk?.logout}}
+					</a>
+				</ng-container>
+				<!--/Logged in user-->
+
+				<!--Not Logged in user-->
+				<ng-container *ngIf="!userService.loggedIn">
+					<div class="item active">
+						<i class="close link icon" (click)="showSideBar()" tabindex="0"
+							title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
+						<a href="/resources">
+							{{resourceService.frmelmnts?.btn?.signin}}
+						</a>
+					</div>
+					<div class="ui divider mt-0"></div>
+					<a class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)" routerLink="/explore"
+						tabindex="0">
+						{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
+					</a>
+					<a class="item"
+						[class.active]="router.isActive('/search/explore',false) || router.isActive('explore',false)"
+						[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
+						*ngIf="!router.isActive('', true)">
+						{{resourceService?.frmelmnts?.tab?.resources}}
+					</a>
+					<a class="item"
+						[class.active]="router.isActive('/search/explore-course',false) || router.isActive('/explore-course',false)"
+						[routerLink]="['/explore-course']" (click)="showSideBar()" tabindex="0"
+						*ngIf="!router.isActive('', true)">
+						{{resourceService?.frmelmnts?.tab?.courses}}
+					</a>
+					<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore,false)"
+						*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0"
+						appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+						[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}} <span
+							class="group__type mx-8">New</span> </a>
+
+					<a class="item" (click)="showSideBar(false);switchLayout()" tabindex="0">
+						<span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
+						<span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
+					</a>
+				</ng-container>
+				<!--/Not Logged in user-->
+			</div>
+		</div>
+		<!--/Mobile-->
+	</ng-container>
+
+
+	<ng-container *ngIf="isLayoutAvailable()">
+
+		<app-content-type [showBackButton]="showBackButton"></app-content-type>
+
+		<!--Mobile-->
+		<div class="mobile only">
+			<div class="ui sidebar right vertical menu">
+				<!--Logged in user-->
+				<ng-container *ngIf="userService.loggedIn">
+					<div class="item font-weight-bold" *ngIf='userProfile'>
+						<i class="close link icon" (click)="showSideBar()" tabindex="0"
+							title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
+						<div class="ellipsis">
+							{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
+						</div>
+					</div>
+					<div class="ui divider mt-0"></div>
+					<a class="item"
+						[class.active]="router.isActive('/search/Library',false) || router.isActive('/resources',false)"
+						(click)="showSideBar()" tabindex="0" appTelemetryInteract
+						[telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
+						{{resourceService?.frmelmnts?.tab?.resources}}
+					</a>
+					<a class="item"
+						[class.active]="router.isActive('/search/Courses',false) || router.isActive('/learn',false)"
+						(click)="showSideBar()" tabindex="0" appTelemetryInteract
+						[telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
+						{{resourceService?.frmelmnts?.tab?.courses}}
+					</a>
+					<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups,false)"
+						appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+						[routerLink]="[navigateToGroups()]" *ngIf="!isDesktopApp">
+						{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
+					</a>
+					<a class="item"
+						[class.active]="router.isActive('/search/profile',false) || router.isActive('/profile',false)"
+						(click)="showSideBar()" tabindex="0" routerLink="/profile">
+						{{resourceService.frmelmnts?.lnk?.profile}}
+					</a>
+					<a class="item logout-btn" appOnlineOnly appTelemetryInteract
+						[telemetryInteractEdata]="getLogoutInteractEdata()" (click)="logout()" tabindex="0">
+						{{resourceService.frmelmnts?.lnk?.logout}}
+					</a>
+				</ng-container>
+				<!--/Logged in user-->
+				<!--Not Logged in user-->
+				<ng-container *ngIf="!userService.loggedIn">
+
+					<div class="item active">
+						<i class="close link icon" (click)="showSideBar()" tabindex="0"
+							title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
+						<a href="/resources">
+							{{resourceService.frmelmnts?.btn?.signin}}
+						</a>
+					</div>
+					<div class="ui divider mt-0"></div>
+					<a class="item" (click)="showSideBar()" tabindex="0" *ngIf="router.isActive('', true)"
+						routerLink="/explore">
+						{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
+					</a>
+					<a class="item"
+						[class.active]="router.isActive('/search/explore',false) || router.isActive('explore',false)"
+						[routerLink]="['/explore']" (click)="showSideBar()" tabindex="0"
+						*ngIf="!router.isActive('', true)">
+						{{resourceService?.frmelmnts?.tab?.resources}}
+					</a>
+					<a class="item"
+						[class.active]="router.isActive('/search/explore-course',false) || router.isActive('/explore-course',false)"
+						[routerLink]="['/explore-course']" (click)="showSideBar()" tabindex="0"
+						*ngIf="!router.isActive('', true)">
+						{{resourceService?.frmelmnts?.tab?.courses}}
+					</a>
+					<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore,false)"
+						*ngIf="!router.isActive('', true) && !isDesktopApp" (click)="showSideBar()" tabindex="0"
+						appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+						[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}} <span
+							class="group__type mx-8">New</span> </a>
+
+				</ng-container>
+				<!--/Not Logged in user-->
+			</div>
+		</div>
+		<!--/Mobile-->
+
+
+	</ng-container>
+</div>

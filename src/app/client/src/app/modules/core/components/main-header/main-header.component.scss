@@ -19,7 +19,7 @@
   &__menu {
     width: calculateRem(400px);
     right: 0;
-    background: var(--sbt-sidemenu-bg);
+    // background: var(--sbt-sidemenu-bg);
     z-index: 100000;
     overflow-y: auto;
     overflow-x: hidden;

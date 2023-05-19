@@ -1,6 +1,6 @@
-<div
-  [ngClass]="[layoutConfiguration ? 'mat-inside-page-container mat-app-background2':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
-  <div class="sb-g sbt-page-content" [appTelemetryImpression]="telemetryImpression">
+<div class="mat-inside-page-container mat-app-background2 mt-0 br-top-left-0-below-xs explore-page-component"
+  [ngClass]="[layoutConfiguration ? '':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
+  <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
     <div *ngIf="!isDesktopApp && isFilterEnabled && refreshFilter " [ngClass]="FIRST_PANEL_LAYOUT">
@@ -13,13 +13,9 @@
     </div>
     <!-- Filter for desktop version -->
     <div *ngIf="isDesktopApp" [ngClass]="FIRST_PANEL_LAYOUT">
-      <div *ngIf="layoutConfiguration">
-        <div>
-          <app-network-status></app-network-status>
-          <app-load-offline-content></app-load-offline-content>
-          <app-system-warning></app-system-warning>
-        </div>
-      </div>
+      <app-network-status></app-network-status>
+      <app-load-offline-content></app-load-offline-content>
+      <app-system-warning></app-system-warning>
       <div class="sb-desktop-filter-section" *ngIf="isFilterEnabled">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
           *ngIf="initFilter" (filterChange)="getFilters($event)" [pageData]="getCurrentPageData()"
@@ -28,164 +24,138 @@
         </app-search-filter>
       </div>
     </div>
+
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="[layoutConfiguration ? 'relative9' : '', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
-        <div class="sb-library-cards relative9">
-          <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
+        [ngClass]="[layoutConfiguration ? '' : '', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
+
+        <!-- <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
               {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+          </div> -->
+
+        <div *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
+          <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
+            (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
+            [layoutConfiguration]="layoutConfiguration"></app-page-section>
+        </div>
+        <!-- Template for displaying sections based on form configuration -->
+        <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
+          <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit"
+            class="sb-section-preference mat-typography mat-app-background" tabindex="0">
+            <div class="preference">
+              <h4 class="mat-subheading-1 mb-4">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
+                | titlecase}} {{userProfile?.lastName |
+                titlecase}}</h4>
+              <p class="mat-body-2 d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.yourPreferences}} <mat-icon
+                  class="ml-4">info</mat-icon></p>
+              <p class="mat-body-2"><span class="mr-24">
+                  <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards |
+                    transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
+                  </span>
+                  <span *ngIf="userPreference?.framework?.board?.length"
+                    class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate:
+                    'CBSE': 'CBSE/NCERT'}}</span>
+                </span>
+                <span class="mr-24">
+                  <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium |
+                    transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
+                  </span>
+                  <span *ngIf="userPreference?.framework?.medium?.length"
+                    class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
+                  <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
+                    ... + {{userPreference?.framework?.medium?.length-1}}
+                  </span>
+                </span>
+                <span class="mr-24">
+                  <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes
+                    |
+                    transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}}:
+                  </span>
+                  <span *ngIf="userPreference?.framework?.gradeLevel?.length"
+                    class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
+                  <span class="font-weight-bold" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
+                    ... + {{userPreference?.framework?.gradeLevel?.length-1}}
+                  </span>
+                </span>
+              </p>
+            </div>
+            <button mat-raised-button color="accent"
+              class="button-rounded">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
           </div>
-          <div class="twelve wide column relative9"
-            *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
+        </div>
+        <div *ngFor="let section of facetSections">
+          <div *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && enrolledSection?.contents?.length && isUserLoggedIn()">
             <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
-              (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
-              [layoutConfiguration]="layoutConfiguration"></app-page-section>
-          </div>
-
-          <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
-            <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit"
-              class="sb-section-preference mat-typography" tabindex="0">
-              <div class="preference">
-                <p class="mat-title">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
-                  | titlecase}} {{userProfile?.lastName |
-                  titlecase}}</p>
-                <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
-                  <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
-                </p>
-                <p>
-                  <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards |
-                      transposeTerms: 'frmelmnts.lbl.boards': resourceService?.selectedLang}}:
-                    </span>
-                    <span *ngIf="userPreference?.framework?.board?.length"
-                      class="font-weight-bold">{{convertToString(userPreference?.framework?.board) | interpolate:
-                      'CBSE': 'CBSE/NCERT'}}</span>
-                  </span>
-
-                  <span class="mr-24">
-                    <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium |
-                      transposeTerms: 'frmelmnts.lbl.medium': resourceService?.selectedLang}}:
-                    </span>
-                    <span *ngIf="userPreference?.framework?.medium?.length"
-                      class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
-                    <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
-                      ... + {{userPreference?.framework?.medium?.length-1}}
-                    </span>
-                  </span>
-
-                  <span class="mr-24">
-                    <span
-                      *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes |
-                      transposeTerms: 'frmelmnts.lbl.classes': resourceService?.selectedLang}}:
-                    </span>
-                    <span *ngIf="userPreference?.framework?.gradeLevel?.length"
-                      class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
-                    <span class="font-weight-bold" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
-                      ... + {{userPreference?.framework?.gradeLevel?.length-1}}
-                    </span>
-                  </span>
-                </p>
-              </div>
-              <!-- <button 
-                class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button> -->
-
-              <button mat-raised-button
-                class="my-custom-style density-3">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
-
-            </div>
-          </div>
-          <div *ngFor="let section of facetSections">
-            <div
-              *ngIf="getSelectedTab() === 'home' && section?.section?.facetKey === 'ContinueLearning' && enrolledSection?.contents?.length && isUserLoggedIn()"
-              class="sb-library-cards relative9">
-              <div class="twelve wide column relative9">
-                <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
-                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
-                  [layoutConfiguration]="layoutConfiguration">
-                </app-page-section>
-              </div>
-            
-              <mat-divider></mat-divider>
-
-            </div>
-
-            <div
-              *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
-
-              <div class="mat-typography">
-                <h2 class="m-0">{{getBannerTitle(section?.section?.title)}}</h2>
-              </div>
-              <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
-                <ng-container *ngIf="displayBanner">
-                  <div *ngFor="let banner of primaryBanner;" class="mr-16">
-                    <img [src]="banner?.ui?.background" class="w-100 banner-image" alt="{{banner?.ui?.text}}"
-                      title="{{banner?.ui?.text}}" role="link" tabindex="0"
-                      (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
-                  </div>
-                </ng-container>
-              </app-slick>
-
-
-              <app-slick [viewType]="'dots'" [loadStatus]="'done'">
-                <ng-container *ngIf="displayBanner && secondaryBanner.length>0">
-                  <div *ngFor="let banner of secondaryBanner" class="banner-image mr-16">
-                    <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'"
-                      (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
-                  </div>
-                </ng-container>
-              </app-slick>
-
-              <mat-divider
-                *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"></mat-divider>
-
-            </div>
-            <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
-              [minDisplayCount]="section?.section?.theme?.limit || 4"
-              [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
-              [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
-              [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
-              (select)="handlePillSelect($event, section.name)">
-              <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
-                [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
-                [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
-            </sb-pills-grid>
-
-            <mat-divider *ngIf="section?.section?.isEnabled && section?.data?.length"></mat-divider>
-
-          </div>
-          <div *ngIf="showTargetedCategory && targetedCategory.length">
-            <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
-              [pillSize]="'medium'" [platform]="'portal'" [pillBorder]="'semi_round'"
-              [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
-              (select)="handleTargetedpillSelected($event)">
-              <sb-pill-item *ngFor="let pillData of targetedCategory"
-                [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase" [icon]="pillData?.icon?.web"
-                [value]="(pillData?.icon?.web ? pillData : '')"
-                [theme]="(pillData?.icon?.web ? targetedCategorytheme : Categorytheme)"></sb-pill-item>
-            </sb-pills-grid>
-
+                (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
+                [layoutConfiguration]="layoutConfiguration">
+              </app-page-section>
             <mat-divider></mat-divider>
-
-          </div>
-          <div *ngIf="getSelectedTab() === 'home'">
-            <div *ngFor="let section of contentSections" class="pl-16">
-              <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
-                [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="section?.title"
-                [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
-              </sb-content-section>
-            </div>
-          </div>
-          <div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
-            <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
-              [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
-              [buttonText]="noResultMessage?.buttonText"
-              [showExploreContentButton]="noResultMessage?.showExploreContentButton"
-              [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
           </div>
 
+          <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
+          <h3 class="m-0">{{getBannerTitle(section?.section?.title)}}</h3>
+            <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
+              <ng-container *ngIf="displayBanner">
+                <div *ngFor="let banner of primaryBanner;" class="mr-16">
+                  <img [src]="banner?.ui?.background" class="w-100 banner-image" alt="{{banner?.ui?.text}}"
+                    title="{{banner?.ui?.text}}" role="link" tabindex="0"
+                    (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
+                </div>
+              </ng-container>
+            </app-slick>
+            <app-slick [viewType]="'dots'" [loadStatus]="'done'">
+              <ng-container *ngIf="displayBanner && secondaryBanner.length>0">
+                <div *ngFor="let banner of secondaryBanner" class="banner-image mr-16">
+                  <sb-banner-card-hlist [bannerList]="banner" [secondaryBanner]="true" [platform]="'portal'"
+                    (cardClick)="navigateToSpecificLocation(banner); handleBannerClick(banner)"></sb-banner-card-hlist>
+                </div>
+              </ng-container>
+            </app-slick>
+
+            <mat-divider
+              *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"></mat-divider>
+
+          </div>
+          <sb-pills-grid *ngIf="section?.section?.isEnabled" [title]="getSectionTitle(section?.section?.title)"
+            [minDisplayCount]="section?.section?.theme?.limit || 4"
+            [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
+            [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
+            [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'"
+            (select)="handlePillSelect($event, section.name)">
+            <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
+              [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
+              [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
+          </sb-pills-grid>
+          <mat-divider *ngIf="section?.section?.isEnabled && section?.data?.length"></mat-divider>
+        </div>
+        <div *ngIf="showTargetedCategory && targetedCategory.length">
+          <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
+            [pillSize]="'medium'" [platform]="'portal'" [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'"
+            [pillTextElipsis]="'two_line'" (select)="handleTargetedpillSelected($event)">
+            <sb-pill-item *ngFor="let pillData of targetedCategory"
+              [name]="(pillData?.icon?.web ? pillData?.name : '') | titlecase" [icon]="pillData?.icon?.web"
+              [value]="(pillData?.icon?.web ? pillData : '')"
+              [theme]="(pillData?.icon?.web ? targetedCategorytheme : Categorytheme)"></sb-pill-item>
+          </sb-pills-grid>
+          <mat-divider></mat-divider>
+
+        </div>
+        <div *ngIf="getSelectedTab() === 'home'">
+          <div *ngFor="let section of contentSections">
+            <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event, section?.title)"
+              [sortBy]="section?.apiConfig?.sortBy" [searchRequest]="section?.searchRequest" [title]="section?.title"
+              [layoutConfig]="layoutConfiguration" (viewMoreClick)="viewAll($event, section)"
+              [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
+            </sb-content-section>
+          </div>
+        </div>
+        <div *ngIf="facetSections.length === 0 && !showLoader && getSelectedTab() === 'home'">
+          <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
+            [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
+            [buttonText]="noResultMessage?.buttonText"
+            [showExploreContentButton]="noResultMessage?.showExploreContentButton"
+            [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
         </div>
         <!-- Template for displaying page sections -->
 
@@ -197,7 +167,7 @@
               (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)"
               (enterKey)="playContent($event, section.name)">
             </sb-library-cards-grid>
-            <div class="sb-desktop-library-card relative9">
+            <div class="sb-desktop-library-card">
               <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration"
                 [type]="'infinite_card_grid_with_hover'" [title]="section?.name"
                 [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
@@ -229,7 +199,7 @@
 <app-modal-wrapper *ngIf="showModal" [config]="{disableClose: false}" (dismiss)="showModal = !showModal">
   <ng-template sbModalContent let-data>
     <div mat-dialog-title class="mb-0">
-      <h4 class="color-accent font-weight-bold mb-0">{{resourceService.frmelmnts?.btn?.download}}</h4>
+      <h3 class="color-accent font-weight-bold mb-0">{{resourceService.frmelmnts?.btn?.download}}</h3>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
         mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
@@ -255,7 +225,6 @@
 <app-batch-info *ngIf="showBatchInfo && isUserLoggedIn()" [enrolledBatchInfo]="selectedCourseBatches"
   (modelClose)="showBatchInfo = false">
 </app-batch-info>
-
 
 <app-modal-wrapper *ngIf="showEdit"
   [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
