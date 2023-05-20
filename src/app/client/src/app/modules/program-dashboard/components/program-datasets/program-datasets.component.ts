@@ -40,7 +40,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   public dashboardReport$;
   public noResultMessage: INoResultMessage;
   public noResult: boolean;
-  showPopUpModal: boolean = true;
+  showPopUpModal: boolean;
   config;
   reportTypes = [];
   programs = [];
