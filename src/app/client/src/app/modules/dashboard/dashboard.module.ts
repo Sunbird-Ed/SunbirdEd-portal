@@ -27,13 +27,15 @@ import { SharedModule } from '@sunbird/shared';
 import { AceEditorModule } from '@derekbaker/ngx-ace-editor-wrapper';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet-v14';
+import { DashletModule } from 'sb-dashlet-v12';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -68,6 +70,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService, CourseProgressService, UsageService, ReportService]
+    OrganisationService, DownloadService, CourseProgressService, UsageService, ReportService,
+    { provide: MAT_DIALOG_DATA, useValue: {}}
+  ]
 })
 export class DashboardModule { }
