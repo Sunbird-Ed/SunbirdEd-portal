@@ -239,7 +239,7 @@ export let mockData = {
           }
         ]
     }
-    ]
+    ],
   },
   userProfile: {
     userId: "b2cb1e94-1a35-48d3-96dc-b7dfde252aa2",
@@ -3130,7 +3130,7 @@ export let mockData = {
       ]
   }
   ],
-  OnDemandReportForSolutionTest:[
+  onDemandReportForSolutionTest:[
     {
         "requestId": "43AAC9A63194A5385555053E08CD9E87",
         "tag": "607d3410e9cce45e22ce90c1_4c4e7a7a-d44e-45cc-9319-d22d84f749bd:01269934121990553633",
@@ -3260,7 +3260,152 @@ export let mockData = {
         "statusMessage": "No data present",
         "title": "Filtered task detail report"
     }
-],
+  ],
+  onDemandReportForProgramTest:[{
+    "requestId": "D6A2781F934CBC9FFC84B7B5145BDB92",
+    "tag": "607d320de9cce45e22ce90c0_4c4e7a7a-d44e-45cc-9319-d22d84f749bd:01269934121990553633",
+    "dataset": "druid-dataset",
+    "requestedBy": "4c4e7a7a-d44e-45cc-9319-d22d84f749bd",
+    "requestedChannel": "01269934121990553633",
+    "status": "SUBMITTED",
+    "lastUpdated": 1675336792963,
+    "datasetConfig": {
+        "type": "ml-program-user-exhaust",
+        "params": {
+            "filters": [
+                {
+                    "table_name": "program_enrollment",
+                    "table_filters": [
+                        {
+                            "name": "program_id",
+                            "operator": "==",
+                            "value": "607d320de9cce45e22ce90c0"
+                        },
+                        {
+                            "name": "state_id",
+                            "operator": "==",
+                            "value": "6d884bb0-307f-4f83-abfe-fc21bbd36abb"
+                        }
+                    ]
+                },
+                {
+                    "table_name": "user_consent",
+                    "table_filters": [
+                        {
+                            "name": "object_id",
+                            "operator": "==",
+                            "value": "607d320de9cce45e22ce90c0"
+                        }
+                    ]
+                }
+            ]
+        },
+        "title": "User Detail Report"
+    },
+    "attempts": 0,
+    "jobStats": {
+        "dtJobSubmitted": 1675336792963,
+        "dtJobCompleted": null,
+        "executionTime": null
+    },
+    "downloadUrls": [],
+    "expiresAt": 1675664901267,
+    "statusMessage": null,
+    "title": "User Detail Report"
+  }],
+  selectedReportForProgramTest:{
+    "name": "User Detail Report",
+    "encrypt": true,
+    "datasetId": "ml-program-user-exhaust",
+    "roles": [
+        "PROGRAM_MANAGER"
+    ],
+    "queryType": "cassandra",
+    "filters": [
+        {
+            "table_name": "program_enrollment",
+            "table_filters": [
+                {
+                    "name": "program_id",
+                    "operator": "=",
+                    "value": "602512d8e6aefa27d9629bc3"
+                },
+                {
+                    "name": "state_id",
+                    "operator": "=",
+                    "value": "6d884bb0-307f-4f83-abfe-fc21bbd36abb"
+                },
+                {
+                    "name": "district_id",
+                    "operator": "=",
+                    "value": "ed9e0963-0707-443a-99c4-5994fcac7a5f"
+                },
+                {
+                    "name": "organisation_id",
+                    "operator": "=",
+                    "value": "0126796199493140480"
+                },
+                {
+                    "name": "updated_at",
+                    "operator": ">=",
+                    "value": "startDate"
+                },
+                {
+                    "name": "updated_at",
+                    "operator": "<=",
+                    "value": "endDate"
+                }
+            ]
+        },
+        {
+            "table_name": "user_consent",
+            "table_filters": [
+                {
+                    "name": "object_id",
+                    "operator": "=",
+                    "value": "602512d8e6aefa27d9629bc3"
+                }
+            ]
+        }
+    ]
+  },
+  filterForUserDeatilReport:[
+    {
+      "table_name": "program_enrollment",
+      "table_filters": [
+        {
+          "name": "program_id",
+          "operator": "==",
+          "value": "5f34ec17585244939f89f90c"
+        },
+        {
+          "name": "district_id",
+          "operator": "==",
+          "value": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03"
+        },
+        {
+          "name": "organisation_id",
+          "operator": "==",
+          "value": "01269878797503692810"
+        },
+        {
+          "name": "updated_at",
+          "operator": ">=",
+          "value": "10/10/2022"
+        }
+      ]
+    },
+    {
+      "table_name": "user_consent",
+      "table_filters": [
+        {
+          "name": "object_id",
+          "operator": "==",
+          "value": "5f34ec17585244939f89f90c"
+        }
+      ]
+    }
+  ],
   selectedReportForSolutionTest:{
     "name": "Status Report",
     "encrypt": false,

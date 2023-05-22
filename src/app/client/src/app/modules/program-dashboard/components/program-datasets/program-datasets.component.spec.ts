@@ -561,43 +561,7 @@ describe('DatasetsComponent', () => {
     component.addFilters();
     tick(1000);
     expect(spy).toHaveBeenCalled();
-    expect(component.filter).toEqual([
-      {
-        "table_name": "program_enrollment",
-        "table_filters": [
-          {
-            "name": "program_id",
-            "operator": "==",
-            "value": "5f34ec17585244939f89f90c"
-          },
-          {
-            "name": "district_id",
-            "operator": "==",
-            "value": "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03"
-          },
-          {
-            "name": "organisation_id",
-            "operator": "==",
-            "value": "01269878797503692810"
-          },
-          {
-            "name": "updated_at",
-            "operator": ">=",
-            "value": "10/10/2022"
-          }
-        ]
-      },
-      {
-        "table_name": "user_consent",
-        "table_filters": [
-          {
-            "name": "object_id",
-            "operator": "==",
-            "value": "5f34ec17585244939f89f90c"
-          }
-        ]
-      }
-    ])
+    expect(component.filter).toEqual(mockData.filterForUserDeatilReport)
   }));
 
   it('should call goBack', () => {
@@ -850,7 +814,7 @@ describe('DatasetsComponent', () => {
   it('should call checkStatus', () => {
     component.selectedSolution = "607d3410e9cce45e22ce90c1"
     jest.spyOn(onDemandReportService,'isInProgress').mockReturnValue(true)
-    component.onDemandReportData = mockData.OnDemandReportForSolutionTest
+    component.onDemandReportData = mockData.onDemandReportForSolutionTest
     component.selectedReport = mockData.selectedReportForSolutionTest
     jest.spyOn(component,'checkStatus');
     component.checkStatus();
@@ -860,7 +824,7 @@ describe('DatasetsComponent', () => {
   it('should call checkStatus with completed request', () => {
     component.selectedSolution = "607d3410e9cce45e22ce90c1"
     jest.spyOn(onDemandReportService,'isInProgress').mockReturnValue(false)
-    component.onDemandReportData = mockData.OnDemandReportForSolutionTest
+    component.onDemandReportData = mockData.onDemandReportForSolutionTest
     component.selectedReport = mockData.selectedReportForSolutionTest
     jest.spyOn(component,'checkStatus');
     component.checkStatus();
@@ -870,114 +834,8 @@ describe('DatasetsComponent', () => {
   it('should call checkStatus with program', () => {
     component.selectedSolution = undefined;
     jest.spyOn(onDemandReportService,'isInProgress').mockReturnValue(true)
-    component.onDemandReportData = [{
-      "requestId": "D6A2781F934CBC9FFC84B7B5145BDB92",
-      "tag": "607d320de9cce45e22ce90c0_4c4e7a7a-d44e-45cc-9319-d22d84f749bd:01269934121990553633",
-      "dataset": "druid-dataset",
-      "requestedBy": "4c4e7a7a-d44e-45cc-9319-d22d84f749bd",
-      "requestedChannel": "01269934121990553633",
-      "status": "SUBMITTED",
-      "lastUpdated": 1675336792963,
-      "datasetConfig": {
-          "type": "ml-program-user-exhaust",
-          "params": {
-              "filters": [
-                  {
-                      "table_name": "program_enrollment",
-                      "table_filters": [
-                          {
-                              "name": "program_id",
-                              "operator": "==",
-                              "value": "607d320de9cce45e22ce90c0"
-                          },
-                          {
-                              "name": "state_id",
-                              "operator": "==",
-                              "value": "6d884bb0-307f-4f83-abfe-fc21bbd36abb"
-                          }
-                      ]
-                  },
-                  {
-                      "table_name": "user_consent",
-                      "table_filters": [
-                          {
-                              "name": "object_id",
-                              "operator": "==",
-                              "value": "607d320de9cce45e22ce90c0"
-                          }
-                      ]
-                  }
-              ]
-          },
-          "title": "User Detail Report"
-      },
-      "attempts": 0,
-      "jobStats": {
-          "dtJobSubmitted": 1675336792963,
-          "dtJobCompleted": null,
-          "executionTime": null
-      },
-      "downloadUrls": [],
-      "expiresAt": 1675664901267,
-      "statusMessage": null,
-      "title": "User Detail Report"
-  }]
-    component.selectedReport = {
-      "name": "User Detail Report",
-      "encrypt": true,
-      "datasetId": "ml-program-user-exhaust",
-      "roles": [
-          "PROGRAM_MANAGER"
-      ],
-      "queryType": "cassandra",
-      "filters": [
-          {
-              "table_name": "program_enrollment",
-              "table_filters": [
-                  {
-                      "name": "program_id",
-                      "operator": "=",
-                      "value": "602512d8e6aefa27d9629bc3"
-                  },
-                  {
-                      "name": "state_id",
-                      "operator": "=",
-                      "value": "6d884bb0-307f-4f83-abfe-fc21bbd36abb"
-                  },
-                  {
-                      "name": "district_id",
-                      "operator": "=",
-                      "value": "ed9e0963-0707-443a-99c4-5994fcac7a5f"
-                  },
-                  {
-                      "name": "organisation_id",
-                      "operator": "=",
-                      "value": "0126796199493140480"
-                  },
-                  {
-                      "name": "updated_at",
-                      "operator": ">=",
-                      "value": "startDate"
-                  },
-                  {
-                      "name": "updated_at",
-                      "operator": "<=",
-                      "value": "endDate"
-                  }
-              ]
-          },
-          {
-              "table_name": "user_consent",
-              "table_filters": [
-                  {
-                      "name": "object_id",
-                      "operator": "=",
-                      "value": "602512d8e6aefa27d9629bc3"
-                  }
-              ]
-          }
-      ]
-  }
+    component.onDemandReportData = mockData.onDemandReportForProgramTest
+    component.selectedReport = mockData.selectedReportForProgramTest;
     jest.spyOn(component,'checkStatus');
     component.checkStatus();
     expect(component.checkStatus).toHaveBeenCalled();
