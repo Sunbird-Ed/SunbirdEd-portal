@@ -114,28 +114,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   pdFilters:ConfigFilter[] = [];
   configuredFilters:any = {};
   appliedFilters:object = {};
-  blocks:object[] = [
-    {
-        "name": "ANANTAPUR",
-        "id": "d2f2f4db-246b-44e1-b877-05449ca16aec",
-    },
-    {
-        "name": "AGALI",
-        "id": "966c3be4-c125-467d-aaff-1eb1cd525923",
-    },
-    {
-        "name": "AMADAGUR",
-        "id": "8df55ad6-7b21-41d0-a93a-efda45d34857",
-    },
-    {
-        "name": "BOMMANAHAL",
-        "id": "317d7fe1-6285-4c1d-8cdd-225153bde70c",
-    },
-    {
-        "name": "B.KOTHAKOTA",
-        "id": "57e3db3c-e61f-4e6d-b416-6213ca92048e"
-    }
-  ];
+  blocks:object[] = [];
   errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
   constructor(
     activatedRoute: ActivatedRoute,
@@ -302,7 +281,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         return data;
       }
     });
-    console.log('program',program)
     this.solutions = [];
     this.reportTypes = [];
     this.onDemandReportData = [];
@@ -315,8 +293,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
     this.getReportTypes($event.value,'user_detail_report');
     this.userAccess = this.reportTypes.length > 0 && _.has(program[0],'requestForPIIConsent');
-    console.log('report type',this.reportTypes)
-    console.log('user access',this.userAccess)
     if(this.userAccess){
       this.tag = program[0]._id + '_' + this.userId;
       this.hashedTag = this.hashTheTag(this.tag)
@@ -922,9 +898,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   dataFilterQuery(filterKeysObj,keys){
     if(this.selectedReport['queryType'] === "cassandra"){
-      console.log('start date', _.get(this.reportForm, 'controls.startDate.value'))
       this.filter = _.cloneDeep(this.selectedReport['filters'])
-      console.log('selected filters',this.selectedReport['filters'])
       _.map(this.filter, filterObj => {
          _.remove(filterObj['table_filters'], filterItem => {
              _.map(keys,key => {
@@ -943,7 +917,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         }
       });
     }
-    console.log('filter to be sent',this.filter)
   }
 
   hashTheTag(key:string):string{

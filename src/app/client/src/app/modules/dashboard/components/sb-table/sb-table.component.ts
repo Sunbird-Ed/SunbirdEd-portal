@@ -33,13 +33,13 @@ export class SbTableComponent implements AfterViewInit  {
   }
 
   getTableData() {
-    return [{ id: this.config.id , data: this.rowsData , selectedFilters: this.currentFilters }];
+    return [{ id: this.config?.id , data: this.rowsData , selectedFilters: this.currentFilters }];
   }
 
   filterChanged(data: any): void {
-    this.currentFilters = data.filters;
-    this.rowsData['selectedFilters'] = data.filters ? data.filters : {}
-    delete data.chartData[0].data['selectedFilters']
-    this.lib.instance.update({data:data.chartData[0].data})
+    this.currentFilters = data?.filters;
+    this.rowsData['selectedFilters'] = data?.filters ? data?.filters : {}
+    delete data?.chartData[0]?.data['selectedFilters']
+    this.lib.instance.update({data:data?.chartData[0]?.data})
   }
 }
