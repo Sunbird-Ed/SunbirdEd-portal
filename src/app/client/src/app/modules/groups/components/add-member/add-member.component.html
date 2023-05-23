@@ -14,18 +14,19 @@
     <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
       <div class="mat-app-background br-24 p-16 d-flex flex-ai-center flex-dc">
         <h3 class="mat-body-2 w-100 mb-0 d-flex flex-ai-center"><span class="hide">{{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}</span> <button class="ml-auto" mat-icon-button color="accent" (click)="toggleModal(true);setInteractData('member-ftu-popup')"><mat-icon>info</mat-icon></button></h3>
-        <mat-form-field class="w-100" color="accent" appearance="fill">
+        <mat-form-field class="w-100 sb-mat-form-search sb-mat-form-field-custom border-radius mb-12" color="accent" appearance="fill">
           <mat-label>{{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}</mat-label>
           <input matInput type="id" autofocus name="id" aria-label="search user id" [ngClass]="{'is-invalid': isInvalidUser}"  placeholder="{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}" [(ngModel)]="memberId" (ngModelChange)="reset()">
           <button matSuffix mat-icon-button aria-label="Clear" (click)="resetValue(memberId);">
             <mat-icon>close</mat-icon>
           </button>
+          <button mat-raised-button matSuffix type="button" color="accent" class="button-rounded ml-8 sb-mat-form-search__button" tabindex="0" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId}, '', {type: VERIFY_USER})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           <mat-error *ngIf="isInvalidUser">
             {{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}
           </mat-error>
         </mat-form-field>
         <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-        <button mat-raised-button type="button" color="accent" class="button-rounded ml-auto ml-8" tabindex="0" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId}, '', {type: VERIFY_USER})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+      
 
         <!-- Add to group button content -->
         <div class="text-left mat-body-2 mt-16 mb-8" *ngIf="isVerifiedUser">{{resourceService?.frmelmnts?.lbl?.memberVerificationMsg  | interpolate:'{instance}': instance}}</div>
