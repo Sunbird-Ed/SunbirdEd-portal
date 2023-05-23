@@ -109,8 +109,8 @@
               <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd">
               <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
               [placeholder]="resourceService?.frmelmnts?.lbl?.dashboardOrg"  (selectionChange)="organisationSelection($event)">
-                <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.organisationId">
-                  {{organisation.orgName}}
+                <mat-option *ngFor="let organisation of organisations" class="mat-dropdown__options" role="option" [value]="organisation.id">
+                  {{organisation.name}}
                 </mat-option>
               </mat-select>
               </mat-form-field>
@@ -218,7 +218,7 @@
       <app-sb-chart [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
     </ng-container>
       </div>
-      <div class="ui warning message mt-16" *ngIf="!currentReport.charts.length">
+      <div class="ui warning message mt-16" *ngIf="!currentReport.charts.length || !userAccess">
         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
       </div>
   <div *ngIf="noResult">
