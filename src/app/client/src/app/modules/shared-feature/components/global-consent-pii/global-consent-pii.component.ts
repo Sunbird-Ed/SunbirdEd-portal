@@ -254,7 +254,7 @@ export class GlobalConsentPiiComponent implements OnInit {
         if(this.type === 'program-consent'){
           this.consentStatus.emit({consent:true})
         }
-        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+        this.type !== 'program-consent' && this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
         this.close.emit();
         this.popupControlService.changePopupStatus(true);
