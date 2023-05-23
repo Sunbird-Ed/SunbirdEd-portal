@@ -1,7 +1,6 @@
 <app-modal-wrapper [config]="{disableClose: true, width: '30rem', panelClass: 'material-modal'}"
   *ngIf="showWelcomePopup">
   <ng-template sbModalContent>
-
     <div mat-dialog-title class="flex-jc-center mb-0">
       <h4 class="color-accent font-weight-bold mb-0">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close
@@ -11,46 +10,42 @@
     </div>
     <mat-dialog-content class="d-flex flex-dc flex-ai-center text-center">
       <img src="./assets/images/groups.png" class="sb-group-container__img" role="presentation" alt="" />
-      <p class="mt-24">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
+      <p class="mt-24 mat-body-2">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
     </mat-dialog-content>
-
   </ng-template>
 </app-modal-wrapper>
 <div class="sb-group-page-container" *ngIf="showMemberPopup">
-  <div class="sb-group-container sb-group-container--md">
-    <a mat-mini-fab color="warn" class="close" role="button" tabindex="0" aria-label="Close Member dialog"
-      (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><mat-icon>close</mat-icon></a>
-    <!-- below content comes from CC -->
-    <div class="w-100 text-left pb-16">
-      <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup | interpolate:'{instance}': instance
-        }}</h4>
-      <p class="mb-16">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': instance }}
-      </p>
-
-      <app-slick [loadStatus]="'done'">
-        <ng-container>
-          <div class="item-help">
-            <div class="sb-g">
-              <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
-                <h6>{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
-                <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
-                <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
-              </div>
-              <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 column-2">
-                <h6>{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
-                <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
-                <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
-              </div>
+  <div class="w-50 p-16 mat-app-background br-24 mat-app-background">
+   <div class="d-flex flex-ai-center flex-jc-space-between w-100 mb-16">
+  <!-- below content comes from CC -->
+  <div class="w-100 pb-16 text-left">
+    <h4 class="mb-0 mat-title">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup | interpolate:'{instance}': instance
+      }}</h4>
+    <p class="mb-0 mat-body-2">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': instance }}
+    </p>
+  </div>
+  <button mat-mini-fab color="warn" role="button" class="ml-auto" tabindex="0" aria-label="Close Member dialog"
+  (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><mat-icon>close</mat-icon></button>
+   </div>
+    <app-slick [viewType]="'dots'" [loadStatus]="'done'">
+      <ng-container>
+            <div class="item-help">
+              <h6 class="mat-body-1 mb-0">{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
+              <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
+              <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
             </div>
-          </div>
-          <div class="item-help">
-            <h6>{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
-            <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere |
-              interpolate:'{instance}': instance }}</p>
-            <img src="./assets/images/step_3.png" alt="">
-          </div>
-        </ng-container>
-      </app-slick>
-    </div>
+            <div class="item-help">
+              <h6 class="mat-body-1 mb-0">{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
+              <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
+              <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
+            </div>
+            <div class="item-help">
+              <h6 class="mat-body-1 mb-0">{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
+              <p class="mat-body-1 mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere |
+                interpolate:'{instance}': instance }}</p>
+              <img src="./assets/images/step_3.png" alt="">
+            </div>
+      </ng-container>
+    </app-slick>
   </div>
 </div>

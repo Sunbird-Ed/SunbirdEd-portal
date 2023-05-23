@@ -1,65 +1,60 @@
-
-<app-landing-section [textToDisplay]="" 
-[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration"
+  [noTitle]="true"></app-landing-section>
 
 <mat-toolbar color="primary" class="toolbar-pageback">
 
   <div class="d-flex flex-ai-center w-50">
     <app-back-button></app-back-button>
     <div class="toolbar-pageback__heading">
-      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.tab?.mygroups}}</h3>
+      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">
+        {{resourceService?.frmelmnts?.tab?.mygroups}}</h3>
     </div>
-
   </div>
   <div class="toolbar-pageback__actions">
-    <button mat-raised-button color="accent" class="button-rounded mr-8" type="button" tabindex="0" (click)="showCreateFormModal();addTelemetryWithData('header-create-group-btn', { type: SELECT_CREATE_GROUP })">
+    <button mat-raised-button color="accent" class="button-rounded mr-8" type="button" tabindex="0"
+      (click)="showCreateFormModal();addTelemetryWithData('header-create-group-btn', { type: SELECT_CREATE_GROUP })">
       <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="group_add"></mat-icon>
       {{ resourceService?.frmelmnts?.lbl?.createGroup }}
     </button>
-    <button mat-button color="accent" class="button-rounded" aria-label="showFtuPopup" type="button"
-      tabindex="0" (click)="showFtuPopup();addTelemetry('ftu-info')">
+    <button mat-icon-button aria-label="showFtuPopup" type="button" tabindex="0"
+      (click)="showFtuPopup();addTelemetry('ftu-info')">
       <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="info_outline"></mat-icon>
     </button>
   </div>
 </mat-toolbar>
 
-<div class="mat-inside-page-container mat-app-background2">
-<div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
-  <div class="d-flex flex-dc flex-ai-center flex-jc-center">
-    <img alt="{{resourceService?.frmelmnts?.lbl?.createGroupDes}}" src="./assets/images/mygroups.svg" width="220">
-    <div class="my-24 fs-1 text-center">
-      {{resourceService?.frmelmnts?.lbl?.createGroupDes}}
-     </div>
-    <button mat-raised-button color="accent" class="button-rounded mb-8" type="button"
-      tabindex="0" (click)="showCreateFormModal();addTelemetry('create-group-btn')">
-      <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="group_add"></mat-icon>
-      {{ resourceService?.frmelmnts?.lbl?.createGroup }}
-    </button>
-  </div>
-</div>
-
-<div *ngIf="groupsList.length&& !isLoader" [appTelemetryImpression]="telemetryImpression">
-
-  <div class="mt-24">
-    <div class="sb-card-grid">
-      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupsList">
-        <sb-group-card [isSuspended]="group?.status === 'suspended'" [suspendBadgeText]="resourceService?.frmelmnts?.lbl?.deactivategrp" [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
+<div class="mat-inside-page-container mat-app-background2 my-groups-component">
+  <div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
+    <div class="d-flex flex-dc flex-ai-center flex-jc-center">
+      <img alt="{{resourceService?.frmelmnts?.lbl?.createGroupDes}}" src="./assets/images/mygroups.svg" width="220">
+      <div class="my-24 text-center mat-body-2">
+        {{resourceService?.frmelmnts?.lbl?.createGroupDes}}
       </div>
+      <button mat-raised-button color="accent" class="button-rounded mb-8" type="button" tabindex="0"
+        (click)="showCreateFormModal();addTelemetry('create-group-btn')">
+        <mat-icon aria-hidden="false" aria-label="Groups" fontIcon="group_add"></mat-icon>
+        {{ resourceService?.frmelmnts?.lbl?.createGroup }}
+      </button>
     </div>
   </div>
-</div>
 
-<div class="mt-24" *ngIf="isLoader">
-  <div class="sb-card-grid">
-    <div class="sbcard sbcard--resource sbcard--course" role="link"  tabindex="0"  *ngFor="let group of [1,2,3,4,5,6,7,8]">
-      <sb-group-card [isLoading]="true"></sb-group-card>
+  <div *ngIf="groupsList.length&& !isLoader" [appTelemetryImpression]="telemetryImpression">
+      <div class="sb-card-grid">
+          <sb-group-card *ngFor="let group of groupsList" [isSuspended]="group?.status === 'suspended'"
+            [suspendBadgeText]="resourceService?.frmelmnts?.lbl?.deactivategrp" [group]="group"
+            [isAdmin]="group?.isAdmin" [initial]="group?.initial"
+            (cardClick)="navigateToDetailPage($event)"></sb-group-card>
     </div>
   </div>
-</div>
-<router-outlet></router-outlet>
+
+    <div class="sb-card-grid" *ngIf="isLoader">
+        <sb-group-card [isLoading]="true" role="link" tabindex="0"
+        *ngFor="let group of [1,2,3,4,5,6,7,8]"></sb-group-card>
+      </div>
+  <router-outlet></router-outlet>
 
 </div>
 
 <app-ftu-popup *ngIf="showModal" [showWelcomePopup]="showModal" (close)="closeModal()"></app-ftu-popup>
 
-<app-modal *ngIf="showTncModal" [type]="selectedType"  (handleGroupTnc)="handleGroupTnc($event)"></app-modal>
+<app-modal *ngIf="showTncModal" [type]="selectedType" (handleGroupTnc)="handleGroupTnc($event)"></app-modal>

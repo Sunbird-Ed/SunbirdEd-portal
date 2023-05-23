@@ -2,16 +2,13 @@
 @use 'pages/page-center-view' as *;
 @use 'pages/custom-carousel.scss' as *;
 
-::ng-deep {
-  .modal-custom-carousel.slick-slider {
-    .slick-list {
-      height: inherit !important;
-    }
-  } 
-}
-
-.item-help .column-2 {
-  @include respond-below(sm) {
-    margin-top:calculateRem(24px);
+.item-help {
+  float: left;
+  height: 100%;
+  min-height: 0.0625rem;
+  text-align: left;
+  h6 {
+  }
+  p {
   }
 }

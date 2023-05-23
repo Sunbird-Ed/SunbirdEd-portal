@@ -73,9 +73,9 @@
           <!-- File details -->
 
           <!-- Progress bar -->
-          <mat-progress-bar *ngIf="data.status === 'inProgress' && data.addedUsing === 'download'" mode="determinate" [value]="getContentPercentage(data.downloadedSize, data.totalSize)" class="my-0 mr-0"></mat-progress-bar>
+          <mat-progress-bar color="accent" *ngIf="data.status === 'inProgress' && data.addedUsing === 'download'" mode="determinate" [value]="getContentPercentage(data.downloadedSize, data.totalSize)" class="my-0 mr-0"></mat-progress-bar>
           
-          <mat-progress-bar *ngIf="data.status === 'inProgress' && data.addedUsing === 'import'" mode="determinate" [value]="data.downloadedSize" class="my-0 mr-0"></mat-progress-bar>
+          <mat-progress-bar color="accent" *ngIf="data.status === 'inProgress' && data.addedUsing === 'import'" mode="determinate" [value]="data.downloadedSize" class="my-0 mr-0"></mat-progress-bar>
 
           <!-- Progress bar -->
 
