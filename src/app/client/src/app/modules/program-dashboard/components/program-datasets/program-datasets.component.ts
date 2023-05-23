@@ -276,8 +276,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   public programSelection($event) {
     this.reportForm.reset();
     this.displayFilters = {};
-    this.districts = []
-    this.organisations = [];
     const program = this.programs.filter(data => {
       if (data._id == $event.value) {
         return data;
@@ -291,7 +289,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.displayFilters['Program'] = [program[0].name]
     this.reportForm.controls.programName.setValue($event.value);
     this.appliedFilters = {};
-    this.districts = this.organisations = [];
+    this.districts = this.organisations = this.blocks = [];
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
     this.getReportTypes($event.value,'user_detail_report');
     this.userAccess = this.reportTypes.length > 0 && _.has(program[0],'requestForPIIConsent');
@@ -882,6 +880,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   dateChanged($event, type) {
     if (dayjs($event.value).isValid()) {
+      this.newData = false;
+      this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
       const year = new Date($event.value._d).getFullYear();
       const month = new Date($event.value._d).getMonth();
       const day = new Date($event.value._d).getDate();
