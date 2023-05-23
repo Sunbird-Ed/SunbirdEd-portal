@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { event } from 'jquery';
 
 @Component({
   selector: 'app-global-consent-pii',

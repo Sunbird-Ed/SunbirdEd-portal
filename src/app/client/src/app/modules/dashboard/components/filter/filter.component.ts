@@ -347,7 +347,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   showErrorMessage(event){
-    const regex = new RegExp('{displayName}', 'g');
+    const regex = /{displayName}/g
     this.errorMessage = event?.displayName ? this.resourceService?.frmelmnts?.lbl?.selectDependentFilter.replace(regex, event.displayName): undefined;
   }
 
