@@ -211,10 +211,10 @@
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
     <div class="sb-graph-section p-24 my-24"
         *ngFor="let chart of currentReport.charts;">
-        <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
+        <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number' && userAccess">
           <app-sb-bignumber [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-bignumber>
         </ng-container>
-        <ng-container *ngIf="chart?.chartConfig?.id !== 'Big_Number' && chart?.chartData && chart?.chartConfig">
+        <ng-container *ngIf="chart?.chartConfig?.id !== 'Big_Number' && chart?.chartData && chart?.chartConfig" && userAccess>
       <app-sb-chart [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
     </ng-container>
       </div>
@@ -237,15 +237,13 @@
 
   <ng-template #tables let-table>
     <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
-      <div class="sb-graph-section p-24 my-24">
-          <ng-container *ngIf="table?.data">
+      <div *ngIf="table?.data && userAccess" class="sb-graph-section p-24 my-24">
             <div class="customTable">
               <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-table>
             </div>
-          </ng-container>
-      </div>
-      <div class="ui warning message mt-16" *ngIf="!table?.data || !userAccess">
-        {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
+          <div class="ui warning message mt-16" *ngIf="!table?.data || !userAccess">
+            {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
+          </div>
       </div>
   <div *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>
