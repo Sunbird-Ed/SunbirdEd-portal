@@ -7,6 +7,7 @@ import { UserService } from '../../services/user/user.service';
 import { ContentService } from './../content/content.service';
 import { FrameworkService } from './../framework/framework.service';
 import { of } from 'rxjs';
+import { PublicDataService } from './../public-data/public-data.service';
 
 /**
  * Service to copy content
@@ -46,36 +47,60 @@ export class CopyContentService {
    * @param {ContentService} contentService ContentService reference
    */
   constructor(config: ConfigService, router: Router, userService: UserService, contentService: ContentService,
-    frameworkService: FrameworkService) {
+    frameworkService: FrameworkService, public publicDataService: PublicDataService) {
     this.config = config;
     this.router = router;
     this.userService = userService;
     this.contentService = contentService;
     this.frameworkService = frameworkService;
   }
-
+ //question set draft
   /**
    * This method calls the copy API and call the redirecttoeditor method after success
    * @param {contentData} ContentData Content data which will be copied
    */
   copyContent(contentData: ContentData) {
-    return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
-      this.frameworkService.initialize();
-      return this.formatData(contentData).pipe(
-        switchMap((param: any) => {
-          const option = {
-            url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
-            data: param
-          };
-          return this.contentService.post(option).pipe(map((response: ServerResponse) => {
-            _.forEach(response.result.node_id, (value) => {
-              this.redirectToEditor(param.request.content, value);
-            });
-            return response;
-          }));
-        })
-      );
-    }));
+    if (contentData?.mimeType === 'application/vnd.sunbird.questionset') {
+      // this.copyQuestionSet(contentData); 
+      return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying question set
+        this.frameworkService.initialize();
+        return this.formatData(contentData).pipe(
+          switchMap((param: any) => {
+            const option = {
+              url: this.config.urlConFig.URLS.QUESTIONSET.COPY + '/' + contentData.identifier,
+              data: param
+            };
+            console.log('option', option)
+            return this.publicDataService.post(option).pipe(map((response: ServerResponse) => {
+              _.forEach(response.result.node_id, (value) => {
+                console.log('value', value)
+                this.openQuestionSetEditor(param.request.content, value);
+              });
+              return response;
+            }));
+          })
+        );
+      }));
+    }
+    else {
+      return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
+        this.frameworkService.initialize();
+        return this.formatData(contentData).pipe(
+          switchMap((param: any) => {
+            const option = {
+              url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
+              data: param
+            };
+            return this.contentService.post(option).pipe(map((response: ServerResponse) => {
+              _.forEach(response.result.node_id, (value) => {
+                this.redirectToEditor(param.request.content, value);
+              });
+              return response;
+            }));
+          })
+        );
+      }));
+    }
   }
   /**
    * @since - 1.#SH-66 || 2.#SH-362
@@ -115,13 +140,15 @@ export class CopyContentService {
       return response;
     }));
   }
-
+//question set draft
   /**
    * This method prepares the request body for the copy API
    * @param {contentData} ContentData Content data which will be copied
+   * @description  request will be formed based on the mimetype
    */
   formatData(contentData: ContentData) {
     const userData = this.userService.userProfile;
+    let req;
     if (contentData.description === undefined) {
       contentData.description = '';
     }
@@ -129,22 +156,37 @@ export class CopyContentService {
     if (!_.isEmpty(userData.lastName)) {
       creator = userData.firstName + ' ' + userData.lastName;
     }
-    const req = {
-      request: {
-        content: {
-          name: 'Copy of ' + contentData.name,
-          description: contentData.description,
-          code: contentData.code + '.copy',
-          creator: creator,
-          createdFor: userData.organisationIds,
-          createdBy: userData.userId,
-          organisation: _.uniq(this.userService.orgNames),
-          framework: '',
-          mimeType: contentData.mimeType,
-          contentType: contentData.contentType
+    if (contentData?.mimeType === 'application/vnd.sunbird.questionset') {
+      req = {
+        request: {
+          questionset: {
+            name: 'Copy of ' + contentData.name,
+            createdFor: userData.organisationIds,
+            createdBy: userData.userId,
+            
+          }
         }
-      }
-    };
+      };
+      return of(req);
+     }
+    else {
+      req = {
+        request: {
+          content: {
+            name: 'Copy of ' + contentData.name,
+            description: contentData.description,
+            code: contentData.code + '.copy',
+            creator: creator,
+            createdFor: userData.organisationIds,
+            createdBy: userData.userId,
+            organisation: _.uniq(this.userService.orgNames),
+            framework: '',
+            mimeType: contentData.mimeType,
+            contentType: contentData.contentType
+          }
+        }
+      };
+    console.log('request body', req);
     if (_.lowerCase(contentData.contentType) === 'course') {
       req.request.content.framework = contentData.framework;
       return of(req);
@@ -159,7 +201,7 @@ export class CopyContentService {
       );
     }
   }
-
+  }
   /**
    * This method redirect to the editor page depending on mimetype
    * @param {contentData} ContentData Content data which will be copied
@@ -189,5 +231,43 @@ export class CopyContentService {
   openCollectionEditor(framework: string, copiedIdentifier: string) {
     const url = `/workspace/content/edit/collection/${copiedIdentifier}/Course/draft/${framework}/Draft`;
     this.router.navigate([url]);
+  }
+  //question set draft
+
+  /**
+   * @since - #SH-66
+   * @param  {contentData} questionData question data which will be copied
+   * @param  {string} copiedIdentifier New identifier of the copy question set
+   * @description - It will launch the question set editor
+   */
+  openQuestionSetEditor(questionData, copiedIdentifier: string) {
+    const url = `workspace/edit/QuestionSet/${copiedIdentifier}/allcontent/Draft`;
+    this.router.navigate([url]);
+  }
+    /**
+   * @since - 1.#SH-66 || 2.#SH-362
+   * @param  {ContentData} contentData
+   * @description - API to copy question set.
+   */
+  copyQuestionSet(contentData: ContentData) {
+    return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying question set
+      this.frameworkService.initialize();
+      return this.formatData(contentData).pipe(
+        switchMap((param: any) => {
+          const option = {
+            url: this.config.urlConFig.URLS.QUESTIONSET.COPY + '/' + contentData.identifier,
+            data: param
+          };
+          console.log('option',option)
+          return this.publicDataService.post(option).pipe(map((response: ServerResponse) => {
+            _.forEach(response.result.node_id, (value) => {
+              console.log('value',value)
+              this.openQuestionSetEditor(param.request.content, value);
+            });
+            return response;
+          }));
+        })
+      );
+    }));
   }
 }

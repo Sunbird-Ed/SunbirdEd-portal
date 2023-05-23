@@ -1694,6 +1694,13 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR
       ]
     },
+    '/questionset/v1/copy/:do_id': {
+      description: 'QuestionSet Copy',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
     '/action/object/category/definition/v1/read': {
       description: 'Object category read',
       checksNeeded: ['ROLE_CHECK'],
@@ -2046,7 +2053,8 @@ const API_LIST = {
     '/uci/admin/v1/forms/upload',
     '/kendra/user-extension/mlcore/v1/solutions/:id',
     '/assessment/programs/mlcore/v1/join/:id',
-    '/assessment/users/mlcore/v1/solutions/:id'
+    '/assessment/users/mlcore/v1/solutions/:id',
+    '/questionset/v1/copy/:do_id'
   ]
 };
 module.exports = API_LIST;

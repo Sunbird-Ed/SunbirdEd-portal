@@ -345,7 +345,8 @@
     "QUESTIONSET": {
       "CREATE": "questionset/v1/create",
       "READ": "questionset/v1/read",
-      "HIERARCHY_READ": "questionset/v1/hierarchy"
+      "HIERARCHY_READ": "questionset/v1/hierarchy",
+      "COPY": "questionset/v1/copy"
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"
