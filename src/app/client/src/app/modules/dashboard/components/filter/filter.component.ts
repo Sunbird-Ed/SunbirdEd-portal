@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { ResourceService, InterpolatePipe } from '@sunbird/shared';
+import { ResourceService} from '@sunbird/shared';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
@@ -347,8 +347,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   showErrorMessage(event){
-    const interpolate = new InterpolatePipe()
-    this.errorMessage = event?.displayName ? interpolate.transform(this.resourceService?.frmelmnts?.lbl?.selectDependentFilter,'{displayName}',event.displayName) : undefined;
+    const regex = new RegExp('{displayName}', 'g');
+    this.errorMessage = event?.displayName ? this.resourceService?.frmelmnts?.lbl?.selectDependentFilter.replace(regex, event.displayName): undefined;
   }
 
 }

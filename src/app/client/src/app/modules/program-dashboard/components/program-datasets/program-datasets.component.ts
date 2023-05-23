@@ -198,15 +198,17 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
     this.kendraService.post(paramOptions).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       if (data && Object.keys(data.result).length) {
-        data.result.districts && (this.districts = data.result.districts)
-        data.result.blocks && (this.blocks = data.result.blocks)
-        if (data.result.organisations) {
-          data.result.organisations.map(org => {
-            if (org?.orgName !== null) {
-              this.organisations.push(org)
-            }
-          });
-        }
+        this.districts = this.organisations = this.blocks = []
+        const processData = (result) => {
+          if (result) {
+            return result.filter(data => data?.name !== null);
+          }
+          return [];
+        };
+        
+        this.organisations = processData(data.result.organisations);
+        this.districts = processData(data.result.districts);
+        this.blocks = processData(data.result.blocks);     
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -260,7 +262,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   public getUpdatedParameterizedPath(dataSources) {
-    const explicitValue = this.userAccess ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value')
+    const explicitValue = this.userAccess && !this.reportForm.controls.solution.value ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value')
     return _.map(dataSources, (dataSource) => ({
       id: dataSource.id,
       path: this.resolveParameterizedPath(dataSource.path, explicitValue)
@@ -443,7 +445,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         paging: true,
         searchable: true
       }
-      tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl, _.get(this.reportForm, 'controls.solution.value'));
+      tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl, (this.userAccess && !this.reportForm.controls.solution.value ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value')));
       return tableData;
 
     });

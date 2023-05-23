@@ -469,21 +469,21 @@ export let mockData = {
       districts: [
         {
           name: "ANANTAPUR",
-          locationId: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+          id: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
         },
         {
           name: "EAST GODAVARI",
-          locationId: "aecac7ab-15e4-45c9-ac7b-d716444cd652",
+          id: "aecac7ab-15e4-45c9-ac7b-d716444cd652",
         },
       ],
       organisations: [
         {
-          orgName: "TAMILNADU",
-          organisationId: "01269878797503692810",
+          name: "TAMILNADU",
+          id: "01269878797503692810",
         },
         {
-          orgName: "JHS NARHARPUR",
-          organisationId: "0869878797503692810",
+          name: "JHS NARHARPUR",
+          id: "0869878797503692810",
         },
       ],
     },

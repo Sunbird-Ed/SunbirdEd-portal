@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { event } from 'jquery';
 
 @Component({
   selector: 'app-global-consent-pii',
@@ -24,6 +25,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
+  @Output() consentStatus = new EventEmitter<any>();
   isOpen = false;
   instance: string;
   consentPii = 'Yes';
@@ -250,6 +252,9 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
+        if(this.type === 'program-consent'){
+          this.consentStatus.emit({consent:true})
+        }
         this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
         this.close.emit();
