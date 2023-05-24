@@ -7,7 +7,6 @@ import { UserService } from '../../services/user/user.service';
 import { ContentService } from './../content/content.service';
 import { FrameworkService } from './../framework/framework.service';
 import { of } from 'rxjs';
-import { PublicDataService } from './../public-data/public-data.service';
 
 /**
  * Service to copy content
@@ -47,7 +46,7 @@ export class CopyContentService {
    * @param {ContentService} contentService ContentService reference
    */
   constructor(config: ConfigService, router: Router, userService: UserService, contentService: ContentService,
-    frameworkService: FrameworkService, public publicDataService: PublicDataService) {
+    frameworkService: FrameworkService) {
     this.config = config;
     this.router = router;
     this.userService = userService;
