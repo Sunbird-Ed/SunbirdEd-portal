@@ -209,6 +209,7 @@
 </ng-template>
 <ng-template #graphs let-currentReport>
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
+  <ng-container *ngIf="currentReport.charts.length && userAccess">
     <div class="sb-graph-section p-24 my-24"
         *ngFor="let chart of currentReport.charts;">
         <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number' && userAccess">
@@ -216,8 +217,9 @@
         </ng-container>
         <ng-container *ngIf="chart?.chartConfig?.id !== 'Big_Number' && chart?.chartData && chart?.chartConfig" && userAccess>
       <app-sb-chart [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
-    </ng-container>
+      </ng-container>
       </div>
+    </ng-container>
       <div class="ui warning message mt-16" *ngIf="!currentReport.charts.length || !userAccess">
         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
       </div>
@@ -241,9 +243,9 @@
             <div class="customTable">
               <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-table>
             </div>
-          <div class="ui warning message mt-16" *ngIf="!table?.data || !userAccess">
-            {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
-          </div>
+      </div>
+      <div class="ui warning message mt-16" *ngIf="!table?.data || !userAccess">
+        {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
       </div>
   <div *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>

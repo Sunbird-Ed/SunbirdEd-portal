@@ -77,7 +77,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   reportForm = new UntypedFormGroup({
     programName: new UntypedFormControl('', [Validators.required]),
-    solution: new UntypedFormControl('', [Validators.required]),
+    solution: new UntypedFormControl(),
     reportType: new UntypedFormControl('', [Validators.required]),
     districtName: new UntypedFormControl(),
     organisationName: new UntypedFormControl(),
@@ -116,6 +116,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   appliedFilters:object = {};
   blocks:object[] = [];
   errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
+  solutionType: any;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -337,11 +338,12 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       } else {
         this.getReportTypes(this.programSelected, solution[0].type);
       }
+      this.solutionType = solution[0].type
       const requestBody:ResourceAPIRequestBody = {
         type:'solution',
         id:$event.value,
         projection:'district',
-        solutionType:solution[0].type
+        solutionType:this.solutionType
       }
       this.getDistritAndOrganisationList(requestBody);
 
@@ -626,7 +628,9 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       type:_.get(this.reportForm, 'controls.solution.value') ? 'solution' : 'program',
       id:$event.value,
       projection:'block',
-      districtLocationId:$event.value
+      districtLocationId:$event.value,
+      ...(_.get(this.reportForm, 'controls.solution.value')) && {solutionType : this.solutionType}
+
     }
     this.getDistritAndOrganisationList(requestBody);
     const tagBasedOnUserAccess = (this.userAccess ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value'))
