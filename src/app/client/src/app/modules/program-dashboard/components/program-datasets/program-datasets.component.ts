@@ -199,16 +199,17 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
     this.kendraService.post(paramOptions).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       if (data && Object.keys(data.result).length) {
-        this.districts = this.organisations = this.blocks = []
         const processData = (result) => {
           if (result) {
             return result.filter(data => data?.name !== null);
           }
-          return [];
+          return []
         };
         
+       if(requestBody.projection !== 'block'){
         this.organisations = processData(data.result.organisations);
         this.districts = processData(data.result.districts);
+       }
         this.blocks = processData(data.result.blocks);     
       }
     }, error => {
