@@ -78,95 +78,89 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'text'" [config]="{disableClose: true, size: 'small'}" (dismiss)="closeSVGInputModal()">
+<app-modal-wrapper *ngIf="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'text'"
+  [config]="{disableClose: true, size: 'small', width: '30rem'}" (dismiss)="closeSVGInputModal()">
   <ng-template sbModalContent>
-      <div class="sb-modal sb-error">
-          <div class="transition ui dimmer page modals active visible">
-              <div class="ui modal transition active visible small">
-                  <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-                      <span>&times;</span>
-                  </button>
-                  <!--Header-->
-                  <div class="sb-modal-header">
-                      {{resourceService?.frmelmnts?.lbl?.updateDetails}}
-                  </div>
-                  <!--/Header-->
-                  <!--Content-->
-                  <div class="sb-modal-content">
-                    <div class="image-tabs px-8">
-                
-                      <!-- Text update -->
-                      <section *ngIf="selectedSVGObject?.type === 'text'" id="content1">
-                        <div class="twelve wide column">
-                          <div class="sb-search-box m-0">
-                            <div class="input-div relative">
-                              <input autofocus class="sb-search-input" [(ngModel)]="selectedSVGObject.value" type="text" maxlength="80" />
-                            </div>
-                          </div>
-                          <small _ngcontent-nit-c26="" class="pl-4 fsmall">
-                            {{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}
-                          </small>
-                        </div>
-                      </section>
-                    </div>
-                  </div>
-                  <!--/Content-->
-                  <!--Actions-->
-                  <div class="sb-modal-actions">
-                    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="updateSVGInputTag()">{{resourceService?.frmelmnts?.btn?.update}}</button>
-                    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeSVGInputModal()">
-                      {{resourceService.frmelmnts?.btn?.cancel}}
-                    </button>
-                  </div>
-                  <!--/Actions-->
+    <div mat-dialog-title class="mb-0">
+      <h2 class="mb-0">{{resourceService?.frmelmnts?.lbl?.updateDetails}}</h2>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
+    </div>
+
+    <!--Content-->
+    <mat-dialog-content>
+      <div class="image-tabs px-8">
+
+        <!-- Text update -->
+        <section *ngIf="selectedSVGObject?.type === 'text'" id="content1">
+          <div class="twelve wide column">
+            <div class="sb-search-box m-0">
+              <div class="input-div relative">
+                <input autofocus class="sb-search-input" [(ngModel)]="selectedSVGObject.value" type="text"
+                  maxlength="80" />
               </div>
+            </div>
+            <small _ngcontent-nit-c26="" class="pl-4 fsmall">
+              {{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}
+            </small>
           </div>
+        </section>
       </div>
+    </mat-dialog-content>
+    <!--/Content-->
+    <!--Actions-->
+    <mat-dialog-actions align="end">
+      <button mat-raised-button class="button-rounded mr-8" tabindex="0" (click)="closeSVGInputModal()">
+        {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
+      <button mat-raised-button color="accent" class="button-rounded" tabindex="0"
+        (click)="updateSVGInputTag()">{{resourceService?.frmelmnts?.btn?.update}}</button>
+    </mat-dialog-actions>
+    <!--/Actions-->
+
   </ng-template>
 </app-modal-wrapper>
  <browse-image-popup [enableUploadSignature]="true" (assetData)="svgAssetData($event)" (close)="closeSVGInputModal()" [showUploadUserModal]="disableSVGImageModal" [showSelectImageModal]="showSVGInputModal && showPreviewButton && selectedSVGObject?.type === 'image'" [logoType]="logoType" ></browse-image-popup>
  
 
- <app-modal-wrapper [config]="{disableClose: true, size: 'large'}" (dismiss)="closeSaveAndPreview()" *ngIf="saveAndPreview">
+<app-modal-wrapper [config]="{disableClose: true, size: 'large', width: '45rem'}" (dismiss)="closeSaveAndPreview()"
+  *ngIf="saveAndPreview">
   <ng-template sbModalContent>
-    <div class="sb-modal sb-error">
-        <div class="transition ui dimmer page modals active visible">
-            <div class="ui modal sb-bg-color-white  transition active visible large">
-                <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-                    <span>&times;</span>
-                </button>
-                <!--Header-->
-                <div class="sb-modal-header sb-bg-color-white ">
-                    {{resourceService?.frmelmnts?.lbl?.certPreview}}
-                </div>
-                <!--/Header-->
-                <!--Content-->
-                <div class="sb-modal-content sb-bg-color-white ">
-                  <div class="image-tabs px-8">
-                    <div [innerHTML]="previewSvgData"></div>
-                  </div>
-                </div>
-                <!--/Content-->
-                <!--Actions-->
-                <div class="sb-modal-actions sb-bg-color-white ">
-                  <div class='ui stackable d-flex flex-jc-space-between mt-0'>
-                    <!-- <div class="twelve wide column"> -->
-                      <div class="">
-                        <div class="sb-checkbox sb-checkbox-secondary pt-24">
-                          <input [checked]="userConsent" (change)="userConsent = !userConsent" value="true" type="checkbox" id="check2" name="selected">
-                          <label for="check2" class="text-left fsmall">{{resourceService?.frmelmnts?.cert?.intxt?.confrmtion}}</label>
-                        </div>
-                      </div>
-                      <div class="">
-                        <button [disabled]="!userConsent" [ngClass]="{'sb-btn-disabled': !userConsent }" class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="saveUpdatedCertificate()">{{resourceService?.frmelmnts?.cert?.btn?.saveAsTemplate}}</button>
-                      </div>
-                    <!-- </div> -->
-                  </div>
-                 
-                </div>
-                <!--/Actions-->
-            </div>
-        </div>
+
+    <div mat-dialog-title class="mb-0">
+      <h2 class="mb-0">{{resourceService?.frmelmnts?.lbl?.certPreview}}</h2>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
-</ng-template>
- </app-modal-wrapper>
+
+    <!--Content-->
+    <mat-dialog-content class="mat-bg-white">
+      <div class="image-tabs px-8">
+        <div [innerHTML]="previewSvgData"></div>
+      </div>
+    </mat-dialog-content>
+    <!--/Content-->
+    <!--Actions-->
+    <mat-dialog-actions align="end">
+      <div class='ui stackable d-flex flex-jc-space-between mt-0'>
+        <!-- <div class="twelve wide column"> -->
+        <div class="">
+          <div class="sb-checkbox sb-checkbox-secondary pt-24">
+            <input [checked]="userConsent" (change)="userConsent = !userConsent" value="true" type="checkbox"
+              id="check2" name="selected">
+            <label for="check2" class="text-left fsmall">{{resourceService?.frmelmnts?.cert?.intxt?.confrmtion}}</label>
+          </div>
+        </div>
+        <div class="">
+          <button [disabled]="!userConsent" [ngClass]="{'sb-btn-disabled': !userConsent }"
+            class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
+            (click)="saveUpdatedCertificate()">{{resourceService?.frmelmnts?.cert?.btn?.saveAsTemplate}}</button>
+        </div>
+        <!-- </div> -->
+      </div>
+
+    </mat-dialog-actions>
+    <!--/Actions-->
+
+  </ng-template>
+</app-modal-wrapper>

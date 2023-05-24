@@ -11,27 +11,19 @@
   </div>
 </div>
 
-<app-modal-wrapper *ngIf="showTelemetryEventsModal" [config]="{disableClose: true, size: 'large'}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showTelemetryEventsModal" [config]="{disableClose: true, size: 'large', width: '45rem'}" (dismiss)="closeModal()">
   <ng-template sbModalContent>
-    <div class="sb-modal sb-modal-addsummary">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible large">
-          <div mat-dialog-title class="mb-0">
-            <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
-              <span>&times;</span>
-            </button>
-          </div>
-          <mat-dialog-content class="mat-dialog-content">
-            <div class="sb-modal-header">
-              {{input?.title}}
-            </div>
-            <div class="sb-modal-content o-x-hide">
-              <sb-datatable [name]="'Telemetry events'" [message]="" [data]="telemetryEventsArr" [columns]="columns"
-                [downloadCSV]="true" (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
-            </div>
-          </mat-dialog-content>
-        </div>
-      </div>
+
+    <div mat-dialog-title class="mb-0">
+      <h2 class="mb-0">{{input?.title}}</h2>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
+
+    <mat-dialog-content>
+      <sb-datatable [name]="'Telemetry events'" [message]="" [data]="telemetryEventsArr" [columns]="columns"
+        [downloadCSV]="true" (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
+    </mat-dialog-content>
+
   </ng-template>
 </app-modal-wrapper>
