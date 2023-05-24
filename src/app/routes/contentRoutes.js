@@ -82,4 +82,30 @@ module.exports = (app) => {
                 }
             })
         )
+        app.all('/content/questionset/v1/copy/:id',
+        proxyUtils.verifyToken(),
+        isAPIWhitelisted.isAllowed(),
+        proxy(contentURL, {
+            limit: reqDataLimitOfContentUpload,
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
+            proxyReqPathResolver: (req) => {
+                console.log('I am here and trying to fix this issue')
+                console.log(
+                    '/content/questionset/v1/copy/:id called'
+                );
+                return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
+            },
+            userResDecorator: (proxyRes, proxyResData, req, res) => {
+                try {
+                    logger.info({ msg: '/content/questionset/v1/copy/:id called - ' + req.method + ' - ' + req.url });
+                    const data = JSON.parse(proxyResData.toString('utf8'));
+                    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                    else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
+                } catch (err) {
+                    logger.error({ msg: 'content api user res decorator json parse error', proxyResData });
+                    return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
+                }
+            }
+        })
+    )
 }

@@ -61,26 +61,7 @@ export class CopyContentService {
    */
   copyContent(contentData: ContentData) {
     if (contentData?.mimeType === 'application/vnd.sunbird.questionset') {
-      // this.copyQuestionSet(contentData); 
-      return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying question set
-        this.frameworkService.initialize();
-        return this.formatData(contentData).pipe(
-          switchMap((param: any) => {
-            const option = {
-              url: this.config.urlConFig.URLS.QUESTIONSET.COPY + '/' + contentData.identifier,
-              data: param
-            };
-            console.log('option', option)
-            return this.publicDataService.post(option).pipe(map((response: ServerResponse) => {
-              _.forEach(response.result.node_id, (value) => {
-                console.log('value', value)
-                this.openQuestionSetEditor(param.request.content, value);
-              });
-              return response;
-            }));
-          })
-        );
-      }));
+    return this.copyQuestionSet(contentData); 
     }
     else {
       return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
@@ -259,7 +240,7 @@ export class CopyContentService {
             data: param
           };
           console.log('option',option)
-          return this.publicDataService.post(option).pipe(map((response: ServerResponse) => {
+          return this.contentService.post(option).pipe(map((response: ServerResponse) => {
             _.forEach(response.result.node_id, (value) => {
               console.log('value',value)
               this.openQuestionSetEditor(param.request.content, value);
