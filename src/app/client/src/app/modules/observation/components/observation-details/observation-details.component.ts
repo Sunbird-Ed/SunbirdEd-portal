@@ -107,7 +107,7 @@ export class ObservationDetailsComponent implements OnInit {
     const params = this.getAPIParams(url, this.payload);
     
     this.postAPI(params).subscribe(data => {
-      this.consentApplies = _.has(data.result,'requestForPIIConsent');
+      this.consentApplies = data?.result?.requestForPIIConsent
       this.programJoined = this.consentApplies ? data.result.programJoined : true;
       this.requestForPIIConsent = data.result.requestForPIIConsent || false;
       this.rootOrganisations = data.result.rootOrganisations || '';
@@ -124,7 +124,9 @@ export class ObservationDetailsComponent implements OnInit {
       this.joinProgramPopUp = this.joinProgramLoader = false;
       this.programJoined = true;
       this.openConsentPopUp = this.requestForPIIConsent;
-      (!this.requestForPIIConsent || this.requestForPIIConsent && consentShared) && this.toasterService.success(_.get(this.resourceService,'messages.smsg.joinedProgramSuccessfully'))
+      if(!this.requestForPIIConsent || this.requestForPIIConsent && consentShared){
+        this.toasterService.success(_.get(this.resourceService,'messages.smsg.joinedProgramSuccessfully'))
+      } 
     });
   }
 
