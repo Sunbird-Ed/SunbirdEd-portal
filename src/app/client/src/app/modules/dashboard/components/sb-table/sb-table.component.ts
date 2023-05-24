@@ -11,6 +11,7 @@ export class SbTableComponent implements AfterViewInit  {
   data = {};
   @Input() config;
   currentFilters: Array<{}>;
+  resetFilters:any;
   constructor(private cdRef: ChangeDetectorRef, private resourceService: ResourceService) { }
   @ViewChild('lib', { static: false }) lib: any;
 
@@ -28,6 +29,9 @@ export class SbTableComponent implements AfterViewInit  {
     this.lib.instance.exportAs('csv');
   }
   reset() {
+    this.rowsData['selectedFilters'] = {};
+    this.resetFilters = { data: this.rowsData, reset: true };
+    this.currentFilters = [];
     this.lib.instance.reset();
     this.loadTable();
   }
