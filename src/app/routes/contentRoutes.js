@@ -89,9 +89,7 @@ module.exports = (app) => {
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {
-                logger.info({
-                    msg: '/content/questionset/v1/copy/:id called'
-                });
+                logger.info({ msg: '/content/questionset/v1/copy/:id called - ' + req.method + ' - ' + req.url });
                 return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
