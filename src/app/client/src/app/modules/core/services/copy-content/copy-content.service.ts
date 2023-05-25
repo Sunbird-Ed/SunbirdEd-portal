@@ -55,15 +55,17 @@ export class CopyContentService {
   }
   /**
    * This method calls the copy API and call the redirecttoeditor method after success
-   * @param {contentData} ContentData Content data which will be copied
+   * @param {contentData} ContentData Content data which will be copied & question set.
    */
   copyContent(contentData: ContentData) {
+    let urlPath = _.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset' ? this.config.urlConFig.URLS.QUESTIONSET.COPY : this.config.urlConFig.URLS.CONTENT.COPY;
+    console.log('urlpath', urlPath);
       return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
         this.frameworkService.initialize();
         return this.formatData(contentData).pipe(
           switchMap((param: any) => {
             const option = {
-              url: contentData?.mimeType === 'application/vnd.sunbird.questionset' ? this.config.urlConFig.URLS.QUESTIONSET.COPY + '/' + contentData.identifier : this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
+              url: urlPath + '/' + contentData.identifier,
               data: param
             };
             return this.contentService.post(option).pipe(map((response: ServerResponse) => {
@@ -79,7 +81,7 @@ export class CopyContentService {
   /**
    * @since - 1.#SH-66 || 2.#SH-362
    * @param  {ContentData} contentData
-   * @description - API to copy a textbook as a course & question set.
+   * @description - API to copy a textbook as a course.
    */
   copyAsCourse(collectionData: ContentData) {
     const userData = this.userService.userProfile;
@@ -129,7 +131,7 @@ export class CopyContentService {
     if (!_.isEmpty(userData.lastName)) {
       creator = userData.firstName + ' ' + userData.lastName;
     }
-    if (contentData?.mimeType === 'application/vnd.sunbird.questionset') {
+    if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
       req = {
         request: {
           questionset: {
