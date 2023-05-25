@@ -67,9 +67,10 @@ export class CopyContentService {
               url: urlPath + '/' + contentData.identifier,
               data: param
             };
+            let reqParms =  _.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset' ? param.request.questionset : param.request.content;
             return this.contentService.post(option).pipe(map((response: ServerResponse) => {
               _.forEach(response.result.node_id, (value) => {
-                this.redirectToEditor(param.request.content, value);
+                this.redirectToEditor(reqParms, value);
               });
               return response;
             }));
@@ -137,6 +138,7 @@ export class CopyContentService {
             name: 'Copy of ' + contentData.name,
             createdFor: userData.organisationIds,
             createdBy: userData.userId,
+            mimeType: contentData.mimeType,
             
           }
         }
