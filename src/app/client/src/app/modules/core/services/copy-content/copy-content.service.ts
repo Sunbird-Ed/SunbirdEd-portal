@@ -59,7 +59,6 @@ export class CopyContentService {
    */
   copyContent(contentData: ContentData) {
     let urlPath = _.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset' ? this.config.urlConFig.URLS.QUESTIONSET.COPY : this.config.urlConFig.URLS.CONTENT.COPY;
-    console.log('urlpath', urlPath);
       return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
         this.frameworkService.initialize();
         return this.formatData(contentData).pipe(
