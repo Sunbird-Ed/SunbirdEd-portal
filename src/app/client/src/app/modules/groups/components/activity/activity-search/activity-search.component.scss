@@ -1,23 +1,17 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "components/tabs" as *;
 
-
-.sb-pageSection-activity-title {
-  color: var(--primary-400);
+.font-size-inherit {
+  font-size: inherit !important;
 }
 
 @include respond-below(sm) {
-  .sb-filter-btn{
-    margin-top: calculateRem(16px);
-  }
   .activity-search{
     margin: 0 !important;
-  }
-}
-::ng-deep {
-  @include respond-below(sm){
-    html[dir='rtl'] .activity-search {
-      margin-left: 0 !important;
+    @include respond-below(sm){
+      html[dir='rtl'] .activity-search {
+        margin-left: 0 !important;
+      }
     }
   }
 }

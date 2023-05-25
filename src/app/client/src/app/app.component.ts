@@ -1068,22 +1068,22 @@ export class AppComponent implements OnInit, OnDestroy {
   isDisableFontSize(value: any) {
     value = parseInt(value);
     if (value === 20) {
-      // this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'disabled');
-      // this.decreaseFontSize.nativeElement.setAttribute('disabled');
-      // this.resetFontSize.nativeElement.setAttribute('disabled');
+      this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'disabled');
+      this.decreaseFontSize.nativeElement.setAttribute('disabled');
+      this.resetFontSize.nativeElement.setAttribute('disabled');
     } else if (value === 12) {
-      // this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
-      // this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
-      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
-      // this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+      this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     } else if (value === 16) {
-      //this.renderer.setAttribute(this.resetFontSize.nativeElement, 'disabled', 'true');
-      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
-      // this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.setAttribute(this.resetFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
     } else {
-      // this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
-      // this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
-      // this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     }
   }
   skipToMainContent() {

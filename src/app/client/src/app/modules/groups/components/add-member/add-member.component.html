@@ -2,52 +2,42 @@
   <div class="d-flex flex-ai-center">
     <app-back-button></app-back-button>
     <div class="toolbar-pageback__heading">
-      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.addNewMember}}</h3>
+      <h3 class="mat-title mb-0" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.addNewMember}}</h3>
       <div class="toolbar-pageback__metadata mat-caption"></div>
     </div>
   </div>
   <div class="toolbar-pageback__actions"></div>
 </mat-toolbar>
 
-<div class="mat-inside-page-container mat-app-background2">
-  <div class="sb-g mt-24" [appTelemetryImpression]="telemetryImpression">
+<div class="mat-inside-page-container mat-app-background2 add-member-component">
+  <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
     <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
-      <div class="sb-bg-color-white p-24">
-        <div class="sb-field instance-id-verify">
-          <div class="d-flex flex-jc-space-between flex-ai-center">
-            <div class="w-100">
-              <div class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
-                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" tabindex="0" (click)="toggleModal(true);setInteractData('member-ftu-popup')"><svg class="icon icon-svg--primary">
-                    <use xlink:href="./assets/images/sprite.svg#info"></use>
-                  </svg></i></span>
-                </div>
-              <div class="d-flex flex-jc-space-between flex-dc">
-                <div class="w-100 relative">
-                  <input type="id" name="id" aria-label="search user id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}" [(ngModel)]="memberId" (ngModelChange)="reset()">
-                  <i class="icon close icon-input-close" tabindex="0" (click)="resetValue(memberId);"></i>
-                </div>
-                <small class="message sb-color-error font-weight-bold mt-8" *ngIf="isInvalidUser">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>
-              </div>
-            </div>
-            <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" tabindex="0" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId}, '', {type: VERIFY_USER})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
-          </div>
-        </div>
+      <div class="mat-app-background br-24 p-16 d-flex flex-ai-center flex-dc">
+        <h3 class="mat-body-2 w-100 mb-0 d-flex flex-ai-center"><span class="hide">{{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}</span> <button class="ml-auto" mat-icon-button color="accent" (click)="toggleModal(true);setInteractData('member-ftu-popup')"><mat-icon>info</mat-icon></button></h3>
+        <mat-form-field class="w-100 sb-mat-form-search sb-mat-form-field-custom border-radius mb-12" color="accent" appearance="fill">
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}</mat-label>
+          <input matInput type="id" autofocus name="id" aria-label="search user id" [ngClass]="{'is-invalid': isInvalidUser}"  placeholder="{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}" [(ngModel)]="memberId" (ngModelChange)="reset()">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="resetValue(memberId);">
+            <mat-icon>close</mat-icon>
+          </button>
+          <button mat-raised-button matSuffix type="button" color="accent" class="button-rounded ml-8 sb-mat-form-search__button" tabindex="0" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId}, '', {type: VERIFY_USER})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+          <mat-error *ngIf="isInvalidUser">
+            {{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}
+          </mat-error>
+        </mat-form-field>
+        <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+      
 
         <!-- Add to group button content -->
-        <div class="text-left fnormal mt-16 mb-8" *ngIf="isVerifiedUser">{{resourceService?.frmelmnts?.lbl?.memberVerificationMsg  | interpolate:'{instance}': instance}}</div>
-        <div class="flex-ai-jc-center add-member-content p-24" *ngIf="showLoader">
-          <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>{{resourceService?.frmelmnts?.lbl?.verifying}}</span></div>
-        </div>
-        <div class="d-flex flex-ai-center flex-jc-space-between add-member-content p-16" *ngIf="isVerifiedUser">
-          <div class="add-member-text flex-basis-1">
-              <sb-member-card [title]="verifiedMember?.title" [identifier]="verifiedMember?.identifier" [config]="config"
+        <div class="text-left mat-body-2 mt-16 mb-8" *ngIf="isVerifiedUser">{{resourceService?.frmelmnts?.lbl?.memberVerificationMsg  | interpolate:'{instance}': instance}}</div>
+        <div class="flex-ai-jc-center mat-body-2 p-24" *ngIf="showLoader"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>{{resourceService?.frmelmnts?.lbl?.verifying}}</span></div>
+        <div class="d-flex flex-ai-center flex-jc-space-between w-100 mat-bg-white p-8" *ngIf="isVerifiedUser">
+          <sb-member-card [title]="verifiedMember?.title" [identifier]="verifiedMember?.identifier" [config]="config"
                 [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
               </sb-member-card>
-          </div>
-          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-nolayer" tabindex="0" [disabled]= "disableBtn" tabindex="0" (click)="addMemberToGroup();"
+          <button type="button" mat-raised-button color="accent" tabindex="0" [disabled]= "disableBtn" tabindex="0" (click)="addMemberToGroup();"
           [ngClass]="{'sb-btn-disabled': disableBtn}">
-            <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+            <mat-icon>person_add</mat-icon> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
           </button>
         </div>
       </div>

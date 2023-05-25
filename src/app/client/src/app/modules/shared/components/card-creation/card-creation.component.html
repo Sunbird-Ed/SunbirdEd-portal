@@ -2,7 +2,7 @@
  appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata" >
   <div class="ui fluid card mt-10" [ngClass]="customClass">
     <div class="top attached indicating active" *ngIf="data.progress > 0">
-      <mat-progress-bar mode="determinate" [value]="data.progress" class="top attached active orange ui progress"></mat-progress-bar>
+      <mat-progress-bar color="accent" mode="determinate" [value]="data.progress" class="top attached active orange ui progress"></mat-progress-bar>
     </div>
     <div class="ui image" >
       <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.name">{{data.ribbon.left.name}}</a>

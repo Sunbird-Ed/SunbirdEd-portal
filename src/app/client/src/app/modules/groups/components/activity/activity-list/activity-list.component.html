@@ -1,36 +1,43 @@
 <div *ngFor="let list of groupData?.activitiesGrouped">
-  <div class="header" *ngIf="activityList[list?.title]?.length && isSelectedType(list?.title)">
-      <div class="title">
-        {{getTitle(list?.title)}}
-      </div>
-  <button *ngIf="activityList[list?.title]?.length > 3 && disableViewAllMode && isSelectedType(list?.title)" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" tabindex="0" (click)="toggleViewAll(false); addTelemetry('close-view-all', [], {type: list?.title})">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
-  <button *ngIf="activityList[list?.title]?.length > 3 && !disableViewAllMode && isSelectedType(list?.title)" class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" tabindex="0" (click)="toggleViewAll(true, list?.title);addTelemetry('open-view-all', [], {type: list?.title})">{{resourceService?.frmelmnts?.lnk?.viewall}}</button>
+  <div class="d-flex flex-ai-center flex-wrap my-16" *ngIf="activityList[list?.title]?.length && isSelectedType(list?.title)">
+    <h3 class="mb-0 mat-title">{{getTitle(list?.title)}}</h3>
+    <button *ngIf="activityList[list?.title]?.length > 3 && disableViewAllMode && isSelectedType(list?.title)"
+      mat-raised-button color="warn" class="button-rounded ml-auto" tabindex="0"
+      (click)="toggleViewAll(false); addTelemetry('close-view-all', [], {type: list?.title})">{{resourceService?.frmelmnts?.btn?.close}}
+      <mat-icon>close</mat-icon></button>
+    <button mat-raised-button color="success" class="button-rounded ml-auto"
+      *ngIf="activityList[list?.title]?.length > 3 && !disableViewAllMode && isSelectedType(list?.title)" tabindex="0"
+      (click)="toggleViewAll(true, list?.title);addTelemetry('open-view-all', [], {type: list?.title})">{{resourceService?.frmelmnts?.lnk?.viewall}}</button>
   </div>
-
   <!--Show loader-->
   <div class="sb-card-grid" *ngIf="showLoader && activityList[list?.title]?.length">
-      <div class="sb-grid--item" *ngFor="let i of (activityList[list?.title] || numberOfSections)">
-          <sb-course-card [isLoading]="true"></sb-course-card>
-      </div>
+    <sb-course-card [isLoading]="true"
+      *ngFor="let i of (activityList[list?.title] || numberOfSections)"></sb-course-card>
   </div>
 
   <!--Show Activity List-->
-  <div  *ngIf="activityList[list?.title]?.length && !showLoader" class="sb-card-grid" [ngClass]="{'hideActivityType': !isSelectedType(list?.title)}"> 
-       <div class="sb-card-grid--item relative" *ngFor="let activity of activityList[list?.title]; let i=index;">
-          <sb-course-card *ngIf="isCourse(activity?.type) && viewSelectedTypeContents(list?.title, activityList[list?.title], i)"(cardClick)="openActivity($event, list?.title)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+  <div *ngIf="activityList[list?.title]?.length && !showLoader" class="sb-card-grid"
+    [ngClass]="{'hideActivityType': !isSelectedType(list?.title)}">
+    <div *ngFor="let activity of activityList[list?.title]; let i=index;">
+      <sb-course-card
+        *ngIf="isCourse(activity?.type) && viewSelectedTypeContents(list?.title, activityList[list?.title], i)"
+        (cardClick)="openActivity($event, list?.title)" [course]="activity" [section]="null"
+        [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
       || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
-          </sb-course-card>
-
-          <sb-library-card *ngIf="!isCourse(activity?.type) && viewSelectedTypeContents(list?.title, activityList[list?.title], i)"(cardClick)="openActivity($event, list?.title)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+      </sb-course-card>
+      <sb-library-card
+        *ngIf="!isCourse(activity?.type) && viewSelectedTypeContents(list?.title, activityList[list?.title], i)"
+        (cardClick)="openActivity($event, list?.title)" [content]="activity" [section]="null"
+        [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
           || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
-          </sb-library-card>
-          <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&
+      </sb-library-card>
+      <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&
       selectedActivity?.identifier === activity?.identifier">
-              <div class="list sb-color-error" tabindex="0" (click)="toggleModal(true)">
-                  <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
-              </div>
-          </div>
-      </div> 
+        <div class="mat-caption color-error" tabindex="0" (click)="toggleModal(true)">
+          <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

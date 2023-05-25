@@ -1,99 +1,93 @@
-<mat-toolbar color="primary" class="toolbar-pageback" [appTelemetryImpression]="telemetryImpression">
-  <div class="d-flex flex-ai-center">
+<mat-toolbar color="primary" class="toolbar-pageback font-size-inherit sb-mat-form-field-custom border-radius pb-12" [appTelemetryImpression]="telemetryImpression">
+  <div class="d-flex flex-ai-center w-60">
     <app-back-button></app-back-button>
-    <div class="toolbar-pageback__heading">
+    <div class="toolbar-pageback__heading pt-8">
       <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" tabindex="0" aria-level="2">
         {{resourceService?.frmelmnts?.lbl?.addContentType | interpolate:'{contentType}':
         groupAddableBlocData?.params?.contentType}}</h3>
       <div class="toolbar-pageback__metadata">
-        <div class="sb-search-box large">
-          <div class="input-div relative">
-            <i aria-hidden="true" class="search icon"></i>
-            <label for="search-for-content-group"
-              class="hide">{{resourceService?.frmelmnts?.lbl?.TypeToSearchForContent}}</label>
-            <input class="sb-search-input" id="search-for-content-group" type="text" [(ngModel)]="searchQuery"
-              [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
-          </div>
-          <button class="sb-btn sb-btn-normal" tabindex="0"
-            (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
-        </div>
+        <mat-form-field class="w-60 sb-mat-form-search sb-mat-form-field-custom border-radius" appearance="fill">
+          <mat-label for="search-for-content-group">{{resourceService?.frmelmnts?.lbl?.TypeToSearchForContent}}</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput id="search-for-content-group" type="text" [(ngModel)]="searchQuery"
+          [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent">
+              <button *ngIf="searchQuery" matSuffix mat-icon-button color="warn" aria-label="Clear" (click)="searchQuery=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+          <button mat-raised-button matSuffix class="ml-8 sb-mat-form-search__button button-rounded" (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+      </mat-form-field>
       </div>
     </div>
   </div>
   <div class="toolbar-pageback__actions">
-    <button mat-button class="button-rounded" tabindex="0" (click)="toggleFilter()">
+    <button mat-raised-button class="button-rounded hover-bgcolor-accent" tabindex="0" (click)="toggleFilter()">
       <mat-icon>tune</mat-icon>{{resourceService?.frmelmnts?.lbl?.filterby}}</button>
   </div>
 </mat-toolbar>
-
-<div class="mat-inside-page-container mat-app-background2">
-  <div *ngIf="showFilters" class="flex-b">
+<div class="mat-inside-page-container mat-app-background2 activity-search-component">
+  <div *ngIf="showFilters" class="d-flex">
     <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration"
       [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
     </app-global-search-filter>
-  </div>
-  <div class="flex-basis-1">
-    <div class="sb-pageSection">
-      <div class="sb-pageSection-header">
-        <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title">
-          <span *ngIf="!queryParams?.key?.length">{{resourceService?.frmelmnts?.lbl?.activityRecommendation}}</span>
-          <span *ngIf="queryParams?.key?.length && contentList?.length">
-            {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' :
-            contentList?.length}}&nbsp;
-            "{{queryParams?.key}}"</span>
-        </h4>
+    <div class="flex-basis-1">
+      <h4 class="mat-body-1 w-100 color-accent">
+        <span *ngIf="!queryParams?.key?.length">{{resourceService?.frmelmnts?.lbl?.activityRecommendation}}</span>
+        <span *ngIf="queryParams?.key?.length && contentList?.length">
+          {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' :
+          contentList?.length}}&nbsp;
+          "{{queryParams?.key}}"</span>
+      </h4>
+      <div class="sb-card-grid my-24" *ngIf="showLoader">
+        <div class="sb-grid--item" *ngFor="let i of numberOfSections">
+          <sb-course-card [isLoading]="true"></sb-course-card>
+        </div>
       </div>
-    </div>
 
-    <div class="sb-card-grid my-24" *ngIf="showLoader">
-      <div class="sb-grid--item" *ngFor="let i of numberOfSections">
-        <sb-course-card [isLoading]="true"></sb-course-card>
+      <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid my-24">
+        <div class="sb-card-grid--item" *ngFor="let content of contentList;">
+          <sb-library-card [content]="content" [layoutConfig]="layoutConfiguration"
+            [cardImg]="content?.image || 'assets/images/add-icon.svg'" [hover-template]="hoverTemplate"
+            [type]="'recently_viewed'">
+            <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+              <sb-card-hover class="card-hover activity-card-hover" [hoverData]="hoverData" [content]="content"
+                (hoverActionClick)="hoverActionClicked($event, appAddToGroupElement)">
+              </sb-card-hover>
+            </ng-template>
+            <div appAddToGroup #appAddToGroupElement [identifier]="content?.identifier"
+              [pageId]="ADD_ACTIVITY_TO_GROUP">
+            </div>
+          </sb-library-card>
+        </div>
       </div>
-    </div>
 
-    <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid my-24">
-      <div class="sb-card-grid--item" *ngFor="let content of contentList;">
-        <sb-library-card [content]="content" [layoutConfig]="layoutConfiguration"
-          [cardImg]="content?.image || 'assets/images/add-icon.svg'" [hover-template]="hoverTemplate"
-          [type]="'recently_viewed'">
-          <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
-            <sb-card-hover class="card-hover activity-card-hover" [hoverData]="hoverData" [content]="content"
-              (hoverActionClick)="hoverActionClicked($event, appAddToGroupElement)">
-            </sb-card-hover>
-          </ng-template>
-          <div appAddToGroup #appAddToGroupElement [identifier]="content?.identifier" [pageId]="ADD_ACTIVITY_TO_GROUP">
+      <div *ngIf="contentList?.length === 0 && !showLoader">
+        <app-no-result [data]="noResultMessage"></app-no-result>
+      </div>
+
+      <div class="ml-auto mt-24"
+        *ngIf="paginationDetails?.totalItems > configService?.appConfig?.SEARCH.PAGE_LIMIT && !showLoader">
+        <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails?.pages?.length">
+          <div class="sb-pagination my-0">
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}"
+              attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}"
+              [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item " tabindex="0"
+              (click)="navigateToPage(1)">&laquo;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}"
+              attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}"
+              [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item " tabindex="0"
+              (click)="navigateToPage(paginationDetails?.currentPage - 1)">&lt;</a>
+            <a href=“javascript:void(0);” role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}"
+              *ngFor="let page of paginationDetails?.pages" [ngClass]="{active:paginationDetails?.currentPage===page}"
+              tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}"
+              attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}"
+              [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}" tabindex="0"
+              (click)="navigateToPage(paginationDetails?.currentPage + 1)" class="sb-item">&gt;</a>
+            <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}"
+              attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}"
+              [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}" tabindex="0"
+              (click)="navigateToPage(paginationDetails?.totalPages)" class="sb-item ">&raquo;</a>
           </div>
-        </sb-library-card>
-      </div>
-    </div>
-
-    <div class="twelve wide column" *ngIf="contentList?.length === 0 && !showLoader">
-      <app-no-result [data]="noResultMessage"></app-no-result>
-    </div>
-
-    <div class="twelve wide column right aligned"
-      *ngIf="paginationDetails?.totalItems > configService?.appConfig?.SEARCH.PAGE_LIMIT && !showLoader">
-      <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails?.pages?.length">
-        <div class="sb-pagination my-0">
-          <a role="button" title="{{resourceService?.frmelmnts?.lbl?.first}}"
-            attr.aria-label="{{resourceService?.frmelmnts?.lbl?.first}}"
-            [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item " tabindex="0"
-            (click)="navigateToPage(1)">&laquo;</a>
-          <a role="button" title="{{resourceService?.frmelmnts?.lbl?.previous}}"
-            attr.aria-label="{{resourceService?.frmelmnts?.lbl?.previous}}"
-            [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item " tabindex="0"
-            (click)="navigateToPage(paginationDetails?.currentPage - 1)">&lt;</a>
-          <a href=“javascript:void(0);” role=“button” aria-current=“page” title="{{page}}" attr.aria-label="{{page}}"
-            *ngFor="let page of paginationDetails?.pages" [ngClass]="{active:paginationDetails?.currentPage===page}"
-            tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
-          <a role="button" title="{{resourceService?.frmelmnts?.lbl?.next}}"
-            attr.aria-label="{{resourceService?.frmelmnts?.lbl?.next}}"
-            [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}" tabindex="0"
-            (click)="navigateToPage(paginationDetails?.currentPage + 1)" class="sb-item">&gt;</a>
-          <a role="button" title="{{resourceService?.frmelmnts?.lbl?.last}}"
-            attr.aria-label="{{resourceService?.frmelmnts?.lbl?.last}}"
-            [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}" tabindex="0"
-            (click)="navigateToPage(paginationDetails?.totalPages)" class="sb-item ">&raquo;</a>
         </div>
       </div>
     </div>

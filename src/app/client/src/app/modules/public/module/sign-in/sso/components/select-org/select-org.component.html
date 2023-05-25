@@ -17,7 +17,7 @@
                 <div *ngIf="enableSSO.toLowerCase() === 'true'">
                   <div class="width-300 mx-auto mt-60">
                     <div *ngIf="!isIOSDevice" class="w-100 mb-16">
-                      <mat-form-field appearance="fill" class="sb-mat__dropdown mb-16 w-100">
+                      <mat-form-field appearance="fill" class="mb-16 w-100">
                         <mat-label>{{resourceService.frmelmnts?.lbl?.Select}}</mat-label>
                         <mat-select role="listbox" aria-label="Select State" class="selection"
                           [(ngModel)]="selectedOrg" (selectionChange)="handleOrgChange($event.value)">

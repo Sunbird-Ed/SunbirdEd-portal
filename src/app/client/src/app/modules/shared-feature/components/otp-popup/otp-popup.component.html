@@ -10,7 +10,7 @@
         <form [formGroup]="otpForm" class="d-flex flex-dc">
           <label *ngIf="errorMessage" color="warn" class="mat-body-2 font-weight-bold">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
           <label *ngIf="infoMessage" class="mat-body-2 font-weight-bold">{{infoMessage}}</label>
-          <mat-form-field class="otp-page-form-field" appearance="fill">
+          <mat-form-field class="otp-page-form-field" color="accent" appearance="fill">
             <mat-label>{{resourceService?.frmelmnts?.lbl?.enterOTP}}</mat-label>
             <input matInput [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp" tabindex="0">
           </mat-form-field>

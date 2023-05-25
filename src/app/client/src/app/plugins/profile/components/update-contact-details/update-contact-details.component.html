@@ -13,13 +13,13 @@
           </div>
           <!--/Header-->
           <form [formGroup]="contactTypeForm" [ngSwitch]="contactType">
-            <mat-form-field class="w-100 px-48" *ngSwitchCase="'email'" appearance="fill">
+            <mat-form-field class="w-100" color="accent" *ngSwitchCase="'email'" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.prmpt?.enteremailID}}</mat-label>
               <input type="email" formControlName="email" matInput placeholder="{{resourceService?.frmelmnts?.lbl?.enterEmail}}">
               <mat-error *ngIf="contactTypeForm.controls.email.dirty && contactTypeForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</mat-error>
               <mat-error *ngIf="showUniqueError && !(contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors)">{{showUniqueError}}</mat-error>
             </mat-form-field>
-            <mat-form-field class="w-100 px-48" *ngSwitchCase="'phone'" appearance="fill">
+            <mat-form-field class="w-100"  color="accent" *ngSwitchCase="'phone'" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</mat-label>
               <span matPrefix>+91 &nbsp;</span>
               <input type="tel" formControlName="phone" matInput placeholder="{{resourceService?.frmelmnts?.lbl?.enterPhoneNumber}}">

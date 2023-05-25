@@ -3,30 +3,26 @@
 
 <app-group-header *ngIf="groupData && !isLoader" class="w-100" [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup"></app-group-header>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details' : 'sb-back-header'">
+<div class="mat-inside-page-container mat-app-background2 group-details-component">
 <app-loader *ngIf="isLoader"></app-loader>
 <div *ngIf="groupData && !isLoader" [appTelemetryImpression]="telemetryImpression">
-  <div class="sb-g mt-24 sbt-sb-g">
-    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 ">
-      <div class="sb-pageSection sb-bg-color-white p-8">
-        <div class="sb-pageSection-header m-0">
-          <h4 class="sb-pageSection-title my-0 mx-8 sb-pagesection-activity mat-display-1 color-accent">
-            {{resourceService?.frmelmnts?.lbl?.activities}}</h4>
-            <button type="button" mat-raised-button color="accent" class="button-rounded ml-auto" *ngIf="isAdmin && groupData?.active"
-            tabindex="0" (click)="navigateToAddActivity(); addTelemetry('add-activity', '', {type: ADD_ACTIVTY})"><mat-icon>add</mat-icon> {{resourceService?.frmelmnts?.btn?.addActivity}}</button>
-        </div>
+  <div class="sb-g">
+    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+      <div class="d-flex flex-ai-center mat-app-background br-16 p-8">
+        <h4 class="mat-title color-accent mb-0">{{resourceService?.frmelmnts?.lbl?.activities}}</h4>
+          <button type="button" mat-raised-button color="accent" class="button-rounded ml-auto" *ngIf="isAdmin && groupData?.active"
+          tabindex="0" (click)="navigateToAddActivity(); addTelemetry('add-activity', '', {type: ADD_ACTIVTY})"><mat-icon>add</mat-icon>{{resourceService?.frmelmnts?.btn?.addActivity}}</button>
       </div>
-      <div class="my-16 p-8 group-status" *ngIf="!groupData?.active">
-        <div class="fnormal group-status__label">
-        <img class="mr-8" src="assets/images/exclamation.svg" width="18px">
-         {{resourceService?.messages?.imsg?.m001}}
-        </div>
-       <button *ngIf="groupData?.isAdmin" mat-raised-button color="accent" class="button-rounded" type="button" tabindex="0" (click)="handleEvent()">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
+      <div class="my-16 p-8 mat-bg-white d-flex flex-ai-center flex-wrap br-16 mat-app-background" *ngIf="!groupData?.active">
+        <p class="d-flex flex-ai-center mb-0 flex-basis-1">
+          <button mat-icon-button disabled class="color-warn"><mat-icon>warning</mat-icon></button>
+          <span class="mat-caption">{{resourceService?.messages?.imsg?.m001}}</span></p>
+       <button *ngIf="groupData?.isAdmin" mat-raised-button color="accent" class="button-rounded ml-auto" type="button" tabindex="0" (click)="handleEvent()">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
       </div>
       <app-add-activity *ngIf="!showActivityList"></app-add-activity>
       <app-activity-list *ngIf="showActivityList" [groupData]="groupData" [activityList]="activityList"></app-activity-list>
     </div>
-    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 ">
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
       <app-group-members [config]="config" [members]="members" [groupData]="groupData"></app-group-members>
     </div>
   </div>
