@@ -1,6 +1,6 @@
 <!-- Accordion and batch card section start -->
 <div *ngIf="!loader" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="ui container relative9" [appTelemetryImpression]="telemetryCourseImpression">
+  <div [appTelemetryImpression]="telemetryCourseImpression">
     <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left cc-player">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
         {{ generaliseLabelService?.frmelmnts?.lbl?.LastUpdatedOn }}
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 mobile only sbt-certified-course"
+        <div class="mat-bg-white p-8 mb-16 mobile only sbt-certified-course"
           *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
@@ -46,21 +46,20 @@
 
         <div class="training-modules my-16">
           <div class="training-modules__title d-flex flex-ai-center mb-16">
-            <h4 class="sb-pageSection-title sb-pageSection-title-light">
-              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
-            <button *ngIf="!isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
+            <h3 class="mb-0">
+              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h3>
+            <button *ngIf="!isExpandedAll" mat-raised-button
+              class="button-rounded ml-auto d-flex flex-ai-center color-accent" tabindex="0"
               (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
                 src="assets/images/plus.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
-            <button *ngIf="isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
+            <button *ngIf="isExpandedAll" mat-raised-button class="button-rounded ml-auto d-flex flex-ai-center color-accent" tabindex="0"
               (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
                 src="assets/images/collapse.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
 
-          <div *ngFor="let item of courseHierarchy?.children; let index = index">
+          <!-- <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)" (collapsedChange)="collapsedChange($event, index)"
                 [collapsed]="item?.collapsed">
@@ -94,17 +93,15 @@
                       </div>
                       <div *ngIf="item?.children?.length">
                         <div *ngFor="let child of item?.children">
-                          <!-- toc card for Non Self Assess content -->
                           <sb-toc-child-item
                             *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
-                            [childData]="child" class="sb-toc-child-item"
+                            [childData]="child" class="sb-toc-child-item mat-app-background2"
                             (tocCardClick)="navigateToContent($event, item, 'child-item')"
                             [contentStatus]="contentStatus" [type]="cardType">
                           </sb-toc-child-item>
-                          <!-- toc card for Self Assess content with Label for Best Score -->
                           <sb-toc-child-item
                             *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'"
-                            [childData]="child" class="sb-toc-child-item"
+                            [childData]="child" class="sb-toc-child-item mat-app-background2"
                             (tocCardClick)="navigateToContent($event, item, 'child-item')"
                             [contentStatus]="contentStatus" [type]="cardType" [maxAttempts]="child?.maxAttempts"
                             [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
@@ -120,7 +117,66 @@
                 </sb-accordion-body>
               </sb-accordion-item>
             </sb-accordion>
-          </div>
+          </div> -->
+
+          <mat-accordion *ngFor="let item of courseHierarchy?.children; let index = index" [multi]="false">
+            <mat-expansion-panel class="mat-app-background" [expanded]="isExpanded(index)"
+              (collapsedChange)="collapsedChange($event, index)" [collapsed]="item?.collapsed">
+              <mat-expansion-panel-header (click)="isModuleExpanded = true;" tabindex="0">
+                <mat-panel-title tabindex="0" title class="mat-caption-1 mb-0 color-accent">
+                  <i class="icon-svg icon-svg--sm icon-tick mr-8" role="img" aria-label="tick-icon"
+                    *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
+                    <svg class="icon">
+                      <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
+                    </svg>
+                  </i>
+                  <div class="progress-circle progress-circle--sm mr-8" [attr.data-percentage]="item?.progress"
+                    *ngIf="enrolledCourse && item?.consumedContent > 0 && item?.consumedContent !== item?.contentCount">
+                    <svg class="progress-circle__svg" viewport="0 0 2000 2000">
+                      <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
+                      <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
+                    </svg>
+                  </div>
+                  {{item?.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="chapter-box">
+                <div *ngIf="item;else noContent">
+                  <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                    <div class="child-content-padding mat-app-background2">
+                      <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')" [type]="cardType"
+                        [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'"
+                        [disabled]="'disabled-toc-card'">
+                      </sb-toc-card>
+                    </div>
+                  </div>
+                  <div *ngIf="item?.children?.length">
+                    <div *ngFor="let child of item?.children">
+                      <!-- toc card for Non Self Assess content -->
+                      <sb-toc-child-item
+                        *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
+                        [childData]="child" class="sb-toc-child-item mat-app-background2"
+                        (tocCardClick)="navigateToContent($event, item, 'child-item')" [contentStatus]="contentStatus"
+                        [type]="cardType">
+                      </sb-toc-child-item>
+                      <!-- toc card for Self Assess content with Label for Best Score -->
+                      <sb-toc-child-item
+                        *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'"
+                        [childData]="child" class="sb-toc-child-item mat-app-background2"
+                        (tocCardClick)="navigateToContent($event, item, 'child-item')" [contentStatus]="contentStatus"
+                        [type]="cardType" [maxAttempts]="child?.maxAttempts" [scoreLabel]="'Best Score'"
+                        [disabled]="'disabled-toc-card'">
+                      </sb-toc-child-item>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noContent>
+                  <div class="heading">{{noContentMessage}}</div>
+                </ng-template>
+          
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
 
         <!-- Course details displayed on bottom when course is enrolled -->
@@ -188,7 +244,7 @@
           <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progressToDisplay}}%
             <span>{{resourceService?.frmelmnts?.lbl?.completed}}</span></div>
-          <mat-progress-bar mode="determinate" color="accent" [value]="progressToDisplay" class="mb-0 mr-0 mt-8"></mat-progress-bar>
+          <mat-progress-bar mode="determinate" [value]="progressToDisplay" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
         </div>
 
         <!-- 3. Join batch, leave batch and show batch popup-->
