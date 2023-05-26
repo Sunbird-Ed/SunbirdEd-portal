@@ -627,7 +627,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.displayFilters['District'] = [$event?.source?.triggerValue];
     const requestBody:ResourceAPIRequestBody = {
       type:_.get(this.reportForm, 'controls.solution.value') ? 'solution' : 'program',
-      id:$event.value,
+      id:_.get(this.reportForm, 'controls.solution.value') || _.get(this.reportForm, 'controls.programName.value'),
       projection:'block',
       districtLocationId:$event.value,
       ...(_.get(this.reportForm, 'controls.solution.value')) && {solutionType : this.solutionType}
