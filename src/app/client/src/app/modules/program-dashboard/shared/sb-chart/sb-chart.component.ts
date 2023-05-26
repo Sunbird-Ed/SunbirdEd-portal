@@ -36,7 +36,7 @@ export class SbChartComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
-    this.chartConfig = this.chart.chartConfig;
+    this.chartConfig = _.cloneDeep(this.chart.chartConfig);
     this.type = this.chartConfig.chartType;
   }
 
