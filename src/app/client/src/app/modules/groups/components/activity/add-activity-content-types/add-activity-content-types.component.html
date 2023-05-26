@@ -12,9 +12,10 @@
 
 <div class="mat-inside-page-container mat-app-background2">
   <app-loader *ngIf="showLoader"></app-loader>
-  <div *ngIf="!showLoader" class="sb-grid">
-  <div class="sb-add-activity-content-cards" role="link" *ngFor="let activity of supportedActivityList; let i = index;">
+  <div class="sb-add-activity-content-cards my-24"  role="link" *ngIf="!showLoader">
+  <div *ngFor="let activity of supportedActivityList; let i = index;">
     <sb-course-curiculum-card [title]="activity?.title" (click)="onCardClick(activity)" [isActivityTypeCard]="true"
       [cardData]="activity" [index]="i"></sb-course-curiculum-card>
-  </div></div>
+  </div>
+  </div>
 </div>
