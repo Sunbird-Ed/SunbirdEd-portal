@@ -82,6 +82,17 @@ module.exports = (app) => {
                 }
             })
         )
+    /**
+    * function indicating that it handles HTTP POST requests. 
+    * @description The route path is /content/questionset/v1/copy/:id, where :id is a route parameter that can be accessed within the route handler.
+    * @function proxyUtils.verifyToken(),isAPIWhitelisted.isAllowed() : it is used to handle the authentication and authorization.
+    * @function proxy() : it is used as the route handler. It acts as a reverse proxy, forwarding the request to another URL specified by contentURl.
+    * @field reqDataLimitOfContentUpload - it will sets a limit on the request body size for content uploading.
+    * @function proxyReqOptDecorator - it decorates the request headers before they are sent to the target URL specified by contentURL.
+    * @function proxyReqPathResolver - it resolves the proxy request path. It modifies the original URL path by removing the /content/ segment and appends it to contentURL. 
+    * @function userResDecorator - it decorates the response from the target URL before it is sent back to the client. It performs additional processing on the response data. 
+    * @function proxyUtils.handleSessionExpiry() -  it is called to handle session expiry. 
+    */
     app.post('/content/questionset/v1/copy/:id',
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
