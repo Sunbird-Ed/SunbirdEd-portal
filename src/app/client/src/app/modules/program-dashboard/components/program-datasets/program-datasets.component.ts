@@ -210,7 +210,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
         this.organisations = processData(data.result.organisations);
         this.districts = processData(data.result.districts);
        }
-        this.blocks = processData(data.result.blocks);     
+        this.blocks = processData(data.result.block);     
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
