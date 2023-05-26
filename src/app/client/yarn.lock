@@ -2508,10 +2508,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@shikshalokam/sl-questionnaire@^4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-4.2.2.tgz#777979100d26cf8f98d06bdca94712e3b2e74bfd"
-  integrity sha512-t/PPUlDw4hhyiOVMvXOKC5OG3TVO571Nt5ERn3VmoKGCErWqdP/oYTpUNBI7aI95c6f6Qw66YjVBbZstJuRKnA==
+"@shikshalokam/sl-questionnaire@2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-2.3.0.tgz#e4115787c6d13e9c35083b9b059caccc88230c4a"
+  integrity sha512-3B7esfrTpHsYAomsicpEsCTVo2/rBwNStJ8H/rH0OR2DFUMJInq97SAB6pSFrZamVVIAI4QBE3gtx0eFchVhYg==
   dependencies:
     "@angular-slider/ngx-slider" "^2.0.3"
     tslib "^2.0.0"
