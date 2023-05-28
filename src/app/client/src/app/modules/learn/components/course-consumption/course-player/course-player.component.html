@@ -25,27 +25,27 @@
         </ng-template> -->
 
         <div *ngIf="isEnrolledCourseUpdated" class="mobile only">
-          <div class="sb-no-course-found my-16 d-flex flex-ai-center">
+          <div class="bgcolor-warn p-16 my-16 d-flex flex-ai-center">
             <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
             <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
               courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}</div>
           </div>
         </div>
 
-        <div class="mat-bg-white p-8 mb-16 mobile only sbt-certified-course"
+        <div class="mat-bg-white p-8 mb-16 mobile only"
           *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
-          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+          <div class="d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+              class="mat-body-1 color-accent ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
           </div>
         </div>
 
         <!-- Course details displayed on top when course is not enrolled -->
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
 
-        <div class="training-modules my-16">
-          <div class="training-modules__title d-flex flex-ai-center mb-16">
+        <div class="my-16">
+          <div class="d-flex flex-ai-center mb-16">
             <h3 class="mb-0">
               {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h3>
             <button *ngIf="!isExpandedAll" mat-raised-button
@@ -140,10 +140,10 @@
                   {{item?.name}}
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <div class="chapter-box">
+              <div>
                 <div *ngIf="item;else noContent">
                   <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
-                    <div class="child-content-padding mat-app-background2">
+                    <div class="course-player-list mat-bg-white">
                       <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')" [type]="cardType"
                         [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'"
                         [disabled]="'disabled-toc-card'">
@@ -151,18 +151,18 @@
                     </div>
                   </div>
                   <div *ngIf="item?.children?.length">
-                    <div *ngFor="let child of item?.children">
+                    <div *ngFor="let child of item?.children" class="course-player-list mat-bg-white">
                       <!-- toc card for Non Self Assess content -->
                       <sb-toc-child-item
                         *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
-                        [childData]="child" class="sb-toc-child-item mat-app-background2"
+                        [childData]="child" class=""
                         (tocCardClick)="navigateToContent($event, item, 'child-item')" [contentStatus]="contentStatus"
                         [type]="cardType">
                       </sb-toc-child-item>
                       <!-- toc card for Self Assess content with Label for Best Score -->
                       <sb-toc-child-item
                         *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'"
-                        [childData]="child" class="sb-toc-child-item mat-app-background2"
+                        [childData]="child" class=""
                         (tocCardClick)="navigateToContent($event, item, 'child-item')" [contentStatus]="contentStatus"
                         [type]="cardType" [maxAttempts]="child?.maxAttempts" [scoreLabel]="'Best Score'"
                         [disabled]="'disabled-toc-card'">
@@ -204,36 +204,36 @@
         </ng-template> -->
 
         <div *ngIf="isEnrolledCourseUpdated" class="computer only">
-          <div class="sb-no-course-found my-16 d-flex flex-ai-center">
+          <div class="bgcolor-warn my-16 d-flex flex-ai-center">
             <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
             <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
               courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}</div>
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only  sbt-certified-course"
+        <div class="mat-bg-white p-8 mb-16 computer only"
           *ngIf="enrolledCourse && certificateDescription && !certificateDescription?.isCertificate">
-          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+          <div class="d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+              class="mat-body-1 color-accent ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only"
+        <div class="mat-bg-white p-8 mb-16 computer only"
           *ngIf="enrolledCourse && certificateDescription && certificateDescription?.description">
-          <div class="certified-course__certificate d-inline-flex flex-ai-center p-8 width-100">
+          <div class="d-inline-flex flex-ai-center p-8 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+              class="mat-body-1 color-accent ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
-          <p class="fsmall px-4 pt-8"> {{certificateDescription?.description}} </p>
+          <p class="mat-caption px-4 pt-8"> {{certificateDescription?.description}} </p>
         </div>
 
         <!-- 2. Course Progress bar -->
-        <div class="sb-bg-color-white certified-course__progress p-16 mb-16"
+        <div class="mat-bg-white certified-course__progress p-16 mb-16"
           *ngIf="enrolledCourse && !addToGroup && !courseMentor">
-          <div class="fsmall relative9 relative">
+          <div class="mat-caption relative9 relative">
             <div class="kabab-menu pull-right" *ngIf="progressToDisplay === 100 && showForceSync && isConnected"
               (click)="dropdownMenu();"></div>
             <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
@@ -241,8 +241,8 @@
                 {{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
             </div>
           </div>
-          <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
-          <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progressToDisplay}}%
+          <div class="mat-caption">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
+          <div class="mat-body-1 color-accent font-weight-bold mt-8">{{progressToDisplay}}%
             <span>{{resourceService?.frmelmnts?.lbl?.completed}}</span></div>
           <mat-progress-bar mode="determinate" [value]="progressToDisplay" class="mb-0 mr-0 mt-8 tiny"></mat-progress-bar>
         </div>
@@ -275,7 +275,7 @@
   <ng-template sbModalContent let-data>
     <!--Header-->
     <div mat-dialog-title class="mb-0">
-      <h4 class="color-accent font-weight-bold mb-0">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</h4>
+      <h2 class="mb-0">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</h2>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
         mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
@@ -321,7 +321,7 @@
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription"
   (close)="onCourseCompleteClose()"></app-course-completion>
 <!-- Start - Modal for Assessment attempts -->
-  <app-modal-wrapper *ngIf="showLastAttemptsModal" [config]="{disableClose: false, size: 'small'}" #modal>
+  <app-modal-wrapper *ngIf="showLastAttemptsModal" [config]="{disableClose: false, size: 'small', width: '30rem'}" #modal>
     <ng-template sbModalContent>
       <div mat-dialog-title class="mb-0">
         <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
@@ -333,13 +333,13 @@
         </h4>
       </mat-dialog-content>
       <mat-dialog-actions align="end">
-        <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
-          (click)="showLastAttemptsModal = false; _navigateToContent();">
-          {{resourceService.frmelmnts?.btn?.ok}}
-        </button>
-        <button mat-raised-button class="button-rounded" tabindex="0" (click)="showLastAttemptsModal = false;">
+        <button mat-raised-button class="button-rounded mr-8" tabindex="0" (click)="showLastAttemptsModal = false;">
           {{resourceService.frmelmnts?.btn?.cancel}}
         </button>
+        <button mat-raised-button color="accent" class="button-rounded" tabindex="0"
+        (click)="showLastAttemptsModal = false; _navigateToContent();">
+        {{resourceService.frmelmnts?.btn?.ok}}
+      </button>
       </mat-dialog-actions>
   
     </ng-template>

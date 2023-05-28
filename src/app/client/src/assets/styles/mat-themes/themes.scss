@@ -150,6 +150,8 @@ $theme in $app-themes {
       --sb-section-preference: var(--white);
       --sbt-footer-info-links: var(--white);
       --sbt-filter-bar-bg: var(--sbt-body-bg);
+      --list-container-bg: var(--sbt-body-bg2);
+      --mat-list-bg-active: var(--secondary-color);
     }
 
     // $variant-themes:mat.define-light-theme($success,$info);
