@@ -20,7 +20,8 @@ module.exports = (app) => {
     app.all('/content/course/v1/search', proxyManagedUserRequest('/content/course/v1/search'));
     app.all('/content/asset/v1/upload/:id',
         proxyUtils.verifyToken(),
-        isAPIWhitelisted.isAllowed(), proxyManagedUserRequest('/content/asset/v1/upload/:id'))
+        isAPIWhitelisted.isAllowed(), proxyManagedUserRequest('/content/asset/v1/upload/:id')
+    );
 
     app.all('/content/*',
         // Generate telemetry for content service
@@ -33,7 +34,9 @@ module.exports = (app) => {
         orgAdminHelper.orgAdminAsCollaborator,
         healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
         proxyUtils.verifyToken(),
-        isAPIWhitelisted.isAllowed(), proxyManagedUserRequest('/content/*'))
+        isAPIWhitelisted.isAllowed(), proxyManagedUserRequest('/content/*')
+    );
+
     /**
     * function indicating that it handles HTTP POST requests. 
     * @description The route path is /content/questionset/v1/copy/:id, where :id is a route parameter that can be accessed within the route handler.
@@ -43,7 +46,7 @@ module.exports = (app) => {
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
         proxyManagedUserRequest('/content/questionset/v1/copy/:id')
-    )
+    );
 }
 
 
@@ -87,5 +90,5 @@ function proxyManagedUserRequest(apiRoutePath) {
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
             }
         }
-    })
+    });
 }
