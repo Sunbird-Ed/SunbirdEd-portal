@@ -31,10 +31,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="twelve wide column" *ngIf="showLoaderBox">
+                <div class="w-100" *ngIf="showLoaderBox">
                     <app-loader [data]='loaderMessage'></app-loader>
                 </div>
-                <div class="twelve wide column" *ngIf="!showLoaderBox && entities?.length === 0">
+                <div class="w-100" *ngIf="!showLoaderBox && entities?.length === 0">
                     <app-no-result [data]="noResultMessage"></app-no-result>
                 </div>
             </div>

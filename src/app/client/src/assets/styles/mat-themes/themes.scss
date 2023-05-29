@@ -123,6 +123,7 @@ $theme in $app-themes {
     --sbt-bradius-16: calc(var(--sbt-bradius) * 8);
     --sbt-bradius-24: calc(var(--sbt-bradius) * 12);
     --sbt-bradius-32: calc(var(--sbt-bradius) * 16);
+    --list-container-bg: #fff;
 
     .mat-app-background{
       background: mat.get-color-from-palette($primary, 50);
