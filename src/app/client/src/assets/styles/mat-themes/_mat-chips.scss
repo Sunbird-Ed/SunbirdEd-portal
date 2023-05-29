@@ -11,6 +11,9 @@
   $warn: map.get($color-config, 'warn');
   $background: map.get($color-config, 'background');
 
+  .mat-card .mat-chip.mat-standard-chip{
+    background-color: mat.get-color-from-palette($background, status-bar);
+  }
   .mat-chip.mat-standard-chip{
     background-color: mat.get-color-from-palette($background, background);
   }
