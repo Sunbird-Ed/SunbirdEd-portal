@@ -42,7 +42,7 @@ module.exports = (app) => {
     app.post('/content/questionset/v1/copy/:id',
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
-        proxyObj('/content/questionset/v1/copy/:id')
+        proxyManagedUserRequest('/content/questionset/v1/copy/:id')
     )
 }
 
