@@ -22,10 +22,7 @@ module.exports = (app) => {
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {
-                logger.info({
-                    msg: '/content/course/v1/search called'
-                });
-                return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
+                proxyObj('/content/course/v1/search',contentURL,req);
             }
         })
     )
@@ -37,10 +34,7 @@ module.exports = (app) => {
         limit: reqDataLimitOfContentUpload,
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
         proxyReqPathResolver: (req) => {
-            logger.info({
-                msg: '/content/asset/v1/upload/:id called'
-            });
-            return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
+            proxyObj('/content/asset/v1/upload/:id',contentURL,req);
         }
     })
 )
@@ -70,16 +64,62 @@ module.exports = (app) => {
                     }
                 },
                 userResDecorator: (proxyRes, proxyResData, req, res) => {
-                    try {
-                        logger.info({ msg: '/content/* called - ' + req.method + ' - ' + req.url });
-                        const data = JSON.parse(proxyResData.toString('utf8'));
-                        if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                        else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
-                    } catch (err) {
-                        logger.error({ msg: 'content api user res decorator json parse error', proxyResData });
-                        return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
-                    }
+                    toHandleProxy('/content/*',proxyRes, proxyResData, req, res);
                 }
             })
         )
+    /**
+    * function indicating that it handles HTTP POST requests. 
+    * @description The route path is /content/questionset/v1/copy/:id, where :id is a route parameter that can be accessed within the route handler.
+    * @function proxyUtils.verifyToken(),isAPIWhitelisted.isAllowed() : it is used to handle the authentication and authorization.
+    * @function proxy() : it is used as the route handler. It acts as a reverse proxy, forwarding the request to another URL specified by contentURl.
+    * @field reqDataLimitOfContentUpload - it will sets a limit on the request body size for content uploading.
+    * @function proxyReqOptDecorator - it decorates the request headers before they are sent to the target URL specified by contentURL.
+    * @function proxyReqPathResolver - it resolves the proxy request path. It modifies the original URL path by removing the /content/ segment and appends it to contentURL. 
+    * @function userResDecorator - it decorates the response from the target URL before it is sent back to the client. It performs additional processing on the response data. 
+    */
+    app.post('/content/questionset/v1/copy/:id',
+        proxyUtils.verifyToken(),
+        isAPIWhitelisted.isAllowed(),
+        proxy(contentURL, {
+            limit: reqDataLimitOfContentUpload,
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
+            proxyReqPathResolver: (req) => {
+                proxyObj('/content/questionset/v1/copy/:id',contentURL,req);
+            },
+            userResDecorator: (proxyRes, proxyResData, req, res) => {
+                toHandleProxy('/content/questionset/v1/copy/:id', proxyRes, proxyResData, req, res)
+            }
+        })
+    )
+} 
+/**
+* @description function will return the original URl based on api route path 
+* @param {apiRoutePath} string api route url
+* @param {contentURL} any content url
+* @param {req} any content request
+*/
+function proxyObj(apiRoutePath, contentURL, req) {
+    logger.info({ msg: apiRoutePath + 'called - ' + req.method + ' - ' + req.url });
+    return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
+}
+
+/**
+* @description function will handle session based on status & msg
+* @function proxyUtils.handleSessionExpiry() -  it is called to handle session expiry. 
+* @param {apiRoutePath} string api route url
+* @param {proxyRes} any proxy request 
+* @param {req} any content request
+* @param {res} any content response
+  */
+function toHandleProxy(apiRoutePath, proxyRes, proxyResData, req, res) {
+    try {
+        logger.info({ msg: apiRoutePath + 'called - ' + req.method + ' - ' + req.url });
+        const data = JSON.parse(proxyResData.toString('utf8'));
+        if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+        else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
+    } catch (err) {
+        logger.error({ msg: 'content api user res decorator json parse error', proxyResData });
+        return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
+    }
 }

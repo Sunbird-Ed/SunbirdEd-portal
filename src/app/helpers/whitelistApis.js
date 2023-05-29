@@ -1661,6 +1661,13 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/action/questionset/v1/copy/:do_id': {
+      description: 'QuestionSet Copy',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
     '/action/question/v1/read/:do_id': {
       description: 'Question read',
       checksNeeded: ['ROLE_CHECK'],
@@ -2009,6 +2016,7 @@ const API_LIST = {
     '/action/questionset/v1/reject/:do_id',
     '/action/questionset/v1/read/:do_id',
     '/action/questionset/v1/hierarchy/:do_id',
+    'action/questionset/v1/copy/:do_id',
     '/action/question/v1/read/:do_id',
     '/action/question/v1/review/:do_id',
     '/action/question/v1/publish/:do_id',
@@ -2046,7 +2054,7 @@ const API_LIST = {
     '/uci/admin/v1/forms/upload',
     '/kendra/resource/mlreports/v1/filtervalues',
     '/assessment/programs/mlcore/v1/join/:id',
-    '/assessment/users/mlcore/v1/solutions/:id'
+    '/assessment/users/mlcore/v1/solutions/:id',
   ]
 };
 module.exports = API_LIST;
