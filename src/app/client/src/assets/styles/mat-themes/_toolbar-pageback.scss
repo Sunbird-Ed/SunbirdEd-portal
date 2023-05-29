@@ -22,6 +22,7 @@
       display: flex;
       align-items: center;
       margin: 0 auto;
+      padding:0.5rem;
       width: 90%;
       gap: 0.5rem;
       min-height: 4rem;
@@ -41,7 +42,7 @@
       }
 
       .mat-title {
-        $title-typography: mat.define-typography-config($subheading-2: mat.define-typography-level($font-size: 1rem,
+        $title-typography: mat.define-typography-config($subheading-2: mat.define-typography-level($font-size: 1rem !important,
             $font-family: inherit,
             $font-weight: 700));
         @include mat.typography-level($title-typography, 'subheading-2');

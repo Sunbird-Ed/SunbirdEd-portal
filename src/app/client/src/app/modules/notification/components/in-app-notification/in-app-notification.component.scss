@@ -1,30 +1,27 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.notification-bell{
-  box-shadow: var(--sbt-box-shadow-6px);
-  border-radius: 50%;
-  background-color: var(--sb-notification-bg);
-  width: calculateRem(40px);
-  height: calculateRem(40px);
-  .icon-svg{
-    width: 1.5rem;
+::ng-deep {
+  .notification-panel {
+      position: fixed !important;
+      right: 7rem;
+      top: 8.5rem;
+      @include respond-below(md){
+        top: 13.5rem;
+      }
+      @include respond-below(sm){
+        right: 5rem;
+        top: 8.5rem;
+      }
+      @include respond-below(xs){
+        right: inherit;
+        top: inherit;
+        position: static !important;
+      }
+      .close-notifications {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        z-index: 99;
+      }
   }
-  .bell-icon{
-    fill: var(--bell-icon);
-  }
-}
-.notification-count{
-  font-size: calculateRem(11px);
-  color: var(--white);
-  position: absolute;
-  width: calculateRem(18px);
-  height: calculateRem(18px);
-  border-radius: 50%;
-  background: var(--orange);
-  top: calculateRem(5px);
-  left: calculateRem(2px);
-  text-align: center;
-}
-.notification-disable{
-  opacity: 0.5;
 }
