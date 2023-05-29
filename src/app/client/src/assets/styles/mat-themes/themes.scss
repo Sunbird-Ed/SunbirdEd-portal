@@ -65,7 +65,7 @@ $theme in $app-themes {
     // @include app-root-theme(mat.define-light-theme($primary, $accent, $warn));
     // @include no-result-component(mat.define-light-theme($primary, $accent, $warn));
     //@include mat-expansion-panel(mat.define-light-theme($primary, $accent, $warn));
-    // @include theme-mat-card($app-themes);
+    @include theme-mat-card($app-themes);
     @include theme-mat-sidebar($app-themes);
 
     // common styles for all themes
@@ -150,6 +150,8 @@ $theme in $app-themes {
       --sb-section-preference: var(--white);
       --sbt-footer-info-links: var(--white);
       --sbt-filter-bar-bg: var(--sbt-body-bg);
+      --list-container-bg: var(--sbt-body-bg2);
+      --mat-list-bg-active: var(--secondary-color);
     }
 
     // $variant-themes:mat.define-light-theme($success,$info);
