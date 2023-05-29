@@ -17,10 +17,14 @@ const bodyParser = require('body-parser')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = (app) => {
-    app.all('/content/course/v1/search', proxyManagedUserRequest('/content/course/v1/search'));
+    app.all('/content/course/v1/search',
+        proxyManagedUserRequest('/content/course/v1/search')
+    );
+
     app.all('/content/asset/v1/upload/:id',
         proxyUtils.verifyToken(),
-        isAPIWhitelisted.isAllowed(), proxyManagedUserRequest('/content/asset/v1/upload/:id')
+        isAPIWhitelisted.isAllowed(),
+        proxyManagedUserRequest('/content/asset/v1/upload/:id')
     );
 
     app.all('/content/*',
@@ -34,7 +38,8 @@ module.exports = (app) => {
         orgAdminHelper.orgAdminAsCollaborator,
         healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
         proxyUtils.verifyToken(),
-        isAPIWhitelisted.isAllowed(), proxyManagedUserRequest('/content/*')
+        isAPIWhitelisted.isAllowed(),
+        proxyManagedUserRequest('/content/*')
     );
 
     /**
@@ -48,7 +53,6 @@ module.exports = (app) => {
         proxyManagedUserRequest('/content/questionset/v1/copy/:id')
     );
 }
-
 
 /**
 * @description function will return the original URl based on api route path 
