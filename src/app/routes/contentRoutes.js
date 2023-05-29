@@ -110,7 +110,7 @@ function proxyObj(apiRoutePath, contentURL, req) {
 * @param {apiRoutePath} string api route url
 * @param {proxyRes} any proxy request 
 * @param {req} any content request
-* @param {req} any content response
+* @param {res} any content response
   */
 function toHandleProxy(apiRoutePath, proxyRes, proxyResData, req, res) {
     try {
