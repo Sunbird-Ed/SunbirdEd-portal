@@ -93,7 +93,7 @@
             <div *ngIf="item;else noContent">
               <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                 <ng-container *ngIf="item?.contentType">
-                  <div class="child-content-padding">
+                  <div class="child-content-padding mat-app-background2">
                     <!-- toc card for Non Self Assess content -->
 
                     <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
@@ -111,7 +111,7 @@
               </div>
 
               <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
-                <div class="child-content-padding">
+                <div class="child-content-padding mat-app-background2">
                   <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')"
                     [type]="cardType" [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts"
                     [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
