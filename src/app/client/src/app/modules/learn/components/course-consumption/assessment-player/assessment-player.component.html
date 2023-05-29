@@ -21,10 +21,10 @@
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression"
   class="mat-inside-page-container mat-app-background2">
   <div class="sb-g">
-    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
-      <div class="toc-content text-left">
-        <div class="content-video">
-          <section class="content-video__player" id="player-area-height">
+    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
+      <div>
+        <div>
+          <section id="player-area-height">
             <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
               <app-player *ngIf="showPlayer" class="content-player" [playerOption]="playerOption"
                 [playerConfig]="playerConfig" [contentProgressEvents$]="contentProgressEvents$"
@@ -49,7 +49,7 @@
       </div>
     </section>
     <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
-      <div class="cc-player__list px-0">
+      <div class="px-0">
         <!-- Module Progress bar -->
         <div class="certified-course__progress" *ngIf="totalContents > 0">
           <!-- Previous / next module buttons -->
@@ -70,8 +70,8 @@
             <!-- Next Module button -->
           </div>
           <div *ngIf="!isUnitCompleted">
-            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
-            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}}
+            <div class="mat-caption">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
+            <div class="color-accent mat-body-1 font-weight-bold mt-4">{{consumedContents}}/{{totalContents}}
               {{resourceService?.frmelmnts?.lbl?.completed}}</div>
             <mat-progress-bar color="accent" mode="determinate" [value]="consumedContents"
               class="mb-0 mr-0 mt-8"></mat-progress-bar>
@@ -81,19 +81,19 @@
             <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg"
                 alt="complete-content-image"></div>
             <label
-              class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+              class="font-weight-bold mb-0 mat-body-1 color-success">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
           </div>
         </div>
 
 
         <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
-        <div class="side-toc-content chapter-box">
-          <div *ngFor="let item of courseHierarchy?.children; let index = index;">
+        <div class="player-item-list">
+          <div *ngFor="let item of courseHierarchy?.children; let index = index;" class="list-container">
             <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
             <div *ngIf="item;else noContent">
               <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                 <ng-container *ngIf="item?.contentType">
-                  <div class="child-content-padding mat-app-background2">
+                  <div>
                     <!-- toc card for Non Self Assess content -->
 
                     <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
@@ -111,7 +111,7 @@
               </div>
 
               <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
-                <div class="child-content-padding mat-app-background2">
+                <div>
                   <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')"
                     [type]="cardType" [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts"
                     [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
@@ -121,7 +121,7 @@
 
               <div *ngIf="item?.children?.length">
                 <div *ngFor="let child of item?.children">
-                  <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
+                  <div *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
                     <sb-toc-child-item [activeContent]="activeContent" [childData]="child"
                       (tocCardClick)="navigateToInitPlayer($event, 'child-item')" [contentStatus]="contentStatus"
                       [type]="cardType">
