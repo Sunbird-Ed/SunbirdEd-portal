@@ -11,31 +11,27 @@
   </div>
 </div>
 
-<div class="content-header header-shadow" [ngStyle]="{'background': selectedCourse?.theme}">
-  <div class="ui container py-16">
-    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-      <div class="content-header__img mr-8" *ngIf="selectedCourse?.cardImg">
-        <img [src]="selectedCourse?.cardImg">
-      </div>
 
-      <div class="flex-basis-1 mr-32 text-left">
-        <h5 class="content-header__title mt-4 ellipsis" [ngStyle]="!defaultBg  && {'color': selectedCourse?.titleColor}">{{title}}</h5>
-        <div class="content-header__info">
-          <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
-        </div>
-        
+<div class="content-header header-shadow explore-curriculum-course-compnent" [ngStyle]="{'background': selectedCourse?.theme}">
+  <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+    <div class="content-header__img mr-8" *ngIf="selectedCourse?.cardImg">
+      <img [src]="selectedCourse?.cardImg">
+    </div>
+    <div class="flex-basis-1 mr-32 text-left">
+      <h5 class="content-header__title mt-4 ellipsis" [ngStyle]="!defaultBg  && {'color': selectedCourse?.titleColor}">{{title}}</h5>
+      <div class="content-header__info">
+        <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
       </div>
+      
     </div>
   </div>
 </div>
 
-<div class="ui container mt-24 sb-library-cards right-flower-position-adjust-container">
   <div class="sbgrid">
     <div *ngFor="let course of mergedCourseList">
       <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course" [cardImg]="course?.courseLogoUrl || course?.appIcon || fallbackImg" [hideProgress]="true" [section]="null" (cardClick)="navigateToCourseDetails(course)"></sb-my-course-card>
       <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course?.appIcon" [section]="null" (cardClick)="navigateToCourseDetails(course)" ></sb-course-card>
     </div>
   </div>
-</div>
 
 </div>

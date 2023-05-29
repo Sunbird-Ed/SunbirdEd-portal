@@ -6,13 +6,15 @@ import { InAppNotificationComponent } from './components/in-app-notification/in-
 import { SbNotificationModule } from '@project-sunbird/sb-notification';
 import { NotificationServiceImpl } from './services/notification/notification-service-impl';
 import { SharedModule } from '../../modules/shared/shared.module';
+import { MatBadgeModule } from '@angular/material/badge';
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     CommonConsumptionModule,
     SbNotificationModule,
-    SharedModule
+    SharedModule,
+    MatBadgeModule
   ],
   declarations: [InAppNotificationComponent],
   exports: [InAppNotificationComponent],

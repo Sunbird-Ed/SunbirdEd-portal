@@ -90,11 +90,11 @@
                 (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
                 [layoutConfiguration]="layoutConfiguration">
               </app-page-section>
-            <mat-divider></mat-divider>
+            <mat-divider class="my-32"></mat-divider>
           </div>
 
           <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
-          <h3 class="m-0">{{getBannerTitle(section?.section?.title)}}</h3>
+          <h3 class="mat-title font-weight-bold my-24">{{getBannerTitle(section?.section?.title)}}</h3>
             <app-slick [viewType]="'dots'" [loadStatus]="'done'" class="mb-32 d-block">
               <ng-container *ngIf="displayBanner">
                 <div *ngFor="let banner of primaryBanner;" class="mr-16">
@@ -113,7 +113,7 @@
               </ng-container>
             </app-slick>
 
-            <mat-divider
+            <mat-divider class="my-32"
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"></mat-divider>
 
           </div>
@@ -127,7 +127,7 @@
               [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
               [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
           </sb-pills-grid>
-          <mat-divider *ngIf="section?.section?.isEnabled && section?.data?.length"></mat-divider>
+          <mat-divider class="my-32" *ngIf="section?.section?.isEnabled && section?.data?.length"></mat-divider>
         </div>
         <div *ngIf="showTargetedCategory && targetedCategory.length">
           <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
@@ -138,7 +138,7 @@
               [value]="(pillData?.icon?.web ? pillData : '')"
               [theme]="(pillData?.icon?.web ? targetedCategorytheme : Categorytheme)"></sb-pill-item>
           </sb-pills-grid>
-          <mat-divider></mat-divider>
+          <mat-divider class="my-32"></mat-divider>
 
         </div>
         <div *ngIf="getSelectedTab() === 'home'">
