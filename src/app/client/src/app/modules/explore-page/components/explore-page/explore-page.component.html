@@ -90,7 +90,7 @@
                 (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"
                 [layoutConfiguration]="layoutConfiguration">
               </app-page-section>
-            <mat-divider></mat-divider>
+            <mat-divider class="my-32"></mat-divider>
           </div>
 
           <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0">
@@ -113,7 +113,7 @@
               </ng-container>
             </app-slick>
 
-            <mat-divider
+            <mat-divider class="my-32"
               *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner' && bannerList && bannerList.length > 0"></mat-divider>
 
           </div>
@@ -127,7 +127,7 @@
               [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)"
               [value]="pillData" [theme]="pillData?.theme"></sb-pill-item>
           </sb-pills-grid>
-          <mat-divider *ngIf="section?.section?.isEnabled && section?.data?.length"></mat-divider>
+          <mat-divider class="my-32" *ngIf="section?.section?.isEnabled && section?.data?.length"></mat-divider>
         </div>
         <div *ngIf="showTargetedCategory && targetedCategory.length">
           <sb-pills-grid [title]="getSectionCategoryTitle('frmelmnts.lbl.targetCategory')" [minDisplayCount]="4"
@@ -138,7 +138,7 @@
               [value]="(pillData?.icon?.web ? pillData : '')"
               [theme]="(pillData?.icon?.web ? targetedCategorytheme : Categorytheme)"></sb-pill-item>
           </sb-pills-grid>
-          <mat-divider></mat-divider>
+          <mat-divider class="my-32"></mat-divider>
 
         </div>
         <div *ngIf="getSelectedTab() === 'home'">
