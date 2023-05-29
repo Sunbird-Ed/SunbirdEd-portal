@@ -126,10 +126,11 @@ export class FilterComponent implements OnInit, OnDestroy {
       previousKeys = Object.keys(this.previousFilters);
     }
     _.forEach(this.filters, filter => {
-      const { reference } = filter;
+      const { reference, dependency } = filter;
       const options = (_.sortBy(_.uniq(
         _.map(chartData, (data) => (data && data[reference]) ? data[reference].toLowerCase() : ''
         )))).filter(Boolean);
+        (dependency &&  !_.has(this.selectedFilters, `${dependency.reference}`)) && (filter.options = options)
         if(this.firstFilter && this.firstFilter[0] !== reference){
           if (this.selectedFilters[reference] && this.selectedFilters[reference].length > 0) {
             this.selectedFilters[reference] = options;
