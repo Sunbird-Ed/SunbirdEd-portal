@@ -9,7 +9,7 @@
     </div>
   </div>
 </mat-toolbar>
-<div class="mat-inside-page-container mat-app-background2">
+<div class="mat-inside-page-container mat-app-background2 list-all-reports-component">
   <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
     <ng-container *ngIf="reportsList.count > 0 else noResult">
       <div

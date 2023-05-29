@@ -51,7 +51,7 @@
   </div>
 </mat-toolbar>
 
-<div [ngClass]="layoutConfiguration ? 'mat-inside-page-container mat-app-background2' : 'pt-16'">
+<div [ngClass]="layoutConfiguration ? 'mat-inside-page-container mat-app-background2 public-course-consumption-page' : 'pt-16'">
   <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
   <span *ngIf="showLoader">
     <app-loader></app-loader>

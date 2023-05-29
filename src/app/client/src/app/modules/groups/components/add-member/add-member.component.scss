@@ -1,78 +1,8 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.title {
-	color: var(--gray-800);
-}
-
-.icon-input-close {
-	position: absolute;
-	top: calculateRem(4px);
-	right: calculateRem(4px);
-	cursor: pointer;
-	width: calculateRem(24px);
-	height: calculateRem(24px);
-
-	html[dir="rtl"] & {
-		left: calculateRem(8px);
-		right: inherit;
-	}
-}
-
-.add-member-content {
-	width: 100%;
-	background: var(--rc-E0F1FD);
-	flex-direction: row;
-	@include respond-below(sm) {
-		flex-direction: column;
-		button {
-			margin-top: calculateRem(16px);
-		}
-	}
-
-	.add-member-text {
-		margin: calculateRem(8px) calculateRem(8px) calculateRem(8px) 0px;
-		html[dir="rtl"] & {
-			margin: calculateRem(8px) 0px calculateRem(8px) calculateRem(8px);
-		}
-		@include respond-below(sm) {
-			align-self: self-start;
-			margin: 0px;
-			width: 100%;
-		}
-	}
-}
-.sb-field {
-	.message {
-		font-size: calculateRem(10px);
-		display: flex;
-
-		@include respond-below(sm) {
-			margin: 0.5rem 0;
-		}
-	}
-}
-
-.instance-id-verify {
-	button {
-		margin-top: calculateRem(24px);
-		margin-left: calculateRem(8px);
-		align-self: normal;
-		@include respond-below(sm) {
-			margin-top: calculateRem(8px);
-			margin-left: 0px;
-		}
-	}
-
-	& > div {
-      @include respond-below(sm) {
-			flex-direction: column;
-			margin-bottom: calculateRem(24px);
-		}
-	}
-}
-
 .recaptcha {
-	z-index: 1;
+	z-index: 99;
+    position: fixed;
 }
 
 .sb-members-column {
