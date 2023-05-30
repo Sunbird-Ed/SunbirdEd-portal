@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewCh
 import { MatDialog } from '@angular/material/dialog';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from "lodash-es";
+import { PdServiceService } from '../services/pd-service/pd-service.service';
 @Component({
   selector: 'app-sb-chart',
   templateUrl: './sb-chart.component.html',
@@ -11,8 +12,7 @@ export class SbChartComponent implements OnInit, OnChanges {
   @Input() chart;
   @Input() lastUpdatedOn;
   @Input() hideElements = false;
-  @Input() globalDistrict;
-  @Input() globalOrg;
+  @Input() appliedFilters;
   chartData;
   chartConfig;
   currentFilters: Array<{}>;
@@ -30,12 +30,13 @@ export class SbChartComponent implements OnInit, OnChanges {
   dialogRef: any;
   constructor(
     public resourceService: ResourceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public filterService:PdServiceService
   ) { }
 
   ngOnInit() {
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
-    this.chartConfig = this.chart.chartConfig;
+    this.chartConfig = _.cloneDeep(this.chart.chartConfig);
     this.type = this.chartConfig.chartType;
   }
 
@@ -44,19 +45,8 @@ export class SbChartComponent implements OnInit, OnChanges {
   }
 
   checkForGlobalChanges() {
-    if (this.globalDistrict !== undefined || this.globalOrg !== undefined) {
-      this.globalData = _.filter(this.chartData, (chart) => {
-        if (this.globalDistrict && this.globalOrg) {
-          return chart?.district_externalId == this.globalDistrict && chart?.organisation_id == this.globalOrg;
-        }
-        if (this.globalDistrict) {
-          return chart?.district_externalId == this.globalDistrict;
-        }
-        if (this.globalOrg) {
-          return chart?.organisation_id == this.globalOrg
-        }
-        return chart;
-      });
+    if (Object.keys(this.appliedFilters).length) {
+      this.globalData = this.filterService.getFilteredData(this.chartData,this.appliedFilters)
       this.currentFilters = [];
       this.globalChange = true;
       this.updatedData = this.globalData;
