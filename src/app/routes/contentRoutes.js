@@ -15,19 +15,21 @@ const _ = require('lodash')
 const { logger } = require('@project-sunbird/logger');
 const bodyParser = require('body-parser')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
+const courseSearchURI = '/content/course/v1/search';
+const assetUploadURI = '/content/asset/v1/upload/:id';
+const contentAllURI = '/content/*';
+const copyQuestionSetURI = '/content/questionset/v1/copy/:id';
 
 module.exports = (app) => {
-    app.all('/content/course/v1/search',
-        proxyManagedUserRequest('/content/course/v1/search')
+    app.all(courseSearchURI,
+        proxyManagedUserRequest(courseSearchURI)
     );
-
-    app.all('/content/asset/v1/upload/:id',
+    app.all(assetUploadURI,
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
-        proxyManagedUserRequest('/content/asset/v1/upload/:id')
+        proxyManagedUserRequest(assetUploadURI)
     );
-
-    app.all('/content/*',
+    app.all(contentAllURI,
         // Generate telemetry for content service
         telemetryHelper.generateTelemetryForContentService,
         // Generate telemetry for proxy service
@@ -39,21 +41,19 @@ module.exports = (app) => {
         healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
-        proxyManagedUserRequest('/content/*')
+        proxyManagedUserRequest(contentAllURI)
     );
-
     /**
     * function indicating that it handles HTTP POST requests. 
     * @description The route path is /content/questionset/v1/copy/:id, where :id is a route parameter that can be accessed within the route handler.
     * @function proxyUtils.verifyToken(),isAPIWhitelisted.isAllowed() : it is used to handle the authentication and authorization.
     */
-    app.post('/content/questionset/v1/copy/:id',
+    app.post(copyQuestionSetURI,
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
-        proxyManagedUserRequest('/content/questionset/v1/copy/:id')
+        proxyManagedUserRequest(copyQuestionSetURI)
     );
 }
-
 /**
 * @description function will return the original URl based on api route path 
 * @param {apiRoutePath} string api route url
@@ -69,7 +69,7 @@ function proxyManagedUserRequest(apiRoutePath) {
         limit: reqDataLimitOfContentUpload,
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
         proxyReqPathResolver: (req) => {
-            if (apiRoutePath === '/content/*') {
+            if (apiRoutePath === contentAllURI) {
                 let urlParam = req.params['0']
                 let query = require('url').parse(req.url).query
                 if (query) {
