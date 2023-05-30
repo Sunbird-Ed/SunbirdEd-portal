@@ -152,6 +152,9 @@ $theme in $app-themes {
       --sbt-footer-info-links: var(--white);
       --sbt-filter-bar-bg: var(--sbt-body-bg);
       --list-container-bg: var(--sbt-body-bg2);
+      --mat-list-bg: var(--sbt-body-bg);
+      --mat-list-border: var(--sbt-body-bg);
+      --mat-list-border-active: var(--secondary-color);
       --mat-list-bg-active: var(--secondary-color);
     }
 
