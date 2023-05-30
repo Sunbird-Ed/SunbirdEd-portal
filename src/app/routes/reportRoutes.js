@@ -6,6 +6,8 @@ const {REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL,CONTENT_
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
 const {getUserDetailsV2} = require('../helpers/userHelper');
+const envHelper = require('../helpers/environmentVariablesHelper');
+const StorageService = require('../helpers/cloudStorage/index');
 
 module.exports = function (app) {
     app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/publish/:reportId/:hash`, `${BASE_REPORT_URL}/retire/:reportId`, `${BASE_REPORT_URL}/retire/:reportId/:hash`],
@@ -132,30 +134,31 @@ module.exports = function (app) {
     app.get('/courseReports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
-        reportHelper.azureBlobStream());
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
 
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
-        reportHelper.getLastModifiedDate);
+        StorageService.CLOUD_CLIENT.getFileProperties(envHelper.sunbird_aws_reports)
+        );
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
-        reportHelper.azureBlobStream());
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
 
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
         reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN','PROGRAM_DESIGNER','PROGRAM_MANAGER']),
-        reportHelper.azureBlobStream());
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
 
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
             'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
-        reportHelper.azureBlobStream());
+        StorageService.CLOUD_CLIENT.fileReadStream(envHelper.sunbird_aws_reports));
 
     app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
         proxyUtils.verifyToken(),

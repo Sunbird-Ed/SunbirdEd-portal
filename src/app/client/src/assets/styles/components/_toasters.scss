@@ -1,10 +1,10 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .sb-toaster {
   width: 100%;
   max-width: calculateRem(448px);
-  // min-height: calculateRem(48px);
   padding: calculateRem(24px) calculateRem(24px) calculateRem(24px) calculateRem(16px);
   border-radius: calculateRem(8px);
-  border: 1px solid var(--primary-300);
+  border: calculateRem(1px) solid var(--primary-300);
   border-left-width: calculateRem(8px);
   color: var(--gray);
   background: var(--white);
@@ -219,7 +219,10 @@
   }
 
   &.sb-toast-normal,
-  &.sb-toast-success {
+  &.sb-toast-info,
+  &.sb-toast-success,
+  &.sb-toast-warning,
+  &.sb-toast-error {
 
     .iziToast-icon,
     .sb-toast-icon {

@@ -1,6 +1,6 @@
-@import "./container";
-@import "./grid";
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@forward "./container";
+@forward "./grid";
 
 .ui.grid>.column:not(.row) {
     padding-top: calculateRem(12px);

@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 .telemetry-cont {
     display: block;
     position: fixed;
@@ -7,18 +9,18 @@
 }
 
 .telemetry-float-icon {
-    background: #cce4ff;
-    letter-spacing: 3px;
-    padding: 4px;
-    width: 200px;
+    background: var(--primary-100);
+    letter-spacing: calculateRem(3px);
+    padding: calculateRem(4px);
+    width: calculateRem(200px);
     position: fixed;
-    right: -128px;
+    right: calculateRem(-128px);
     z-index: 1000;
     transition: all 0.25s ease;
-    border-radius: 24px 0px 0px 24px;
+    border-radius: calculateRem(24px) 0px 0px calculateRem(24px);
     box-shadow: var(--sbt-box-shadow-6px);
     cursor: pointer;
-    border: #034f9d solid 4px;
+    border: var(--primary-color) solid calculateRem(4px);
     border-right-width: 0px;
     cursor:pointer;
   }
@@ -38,7 +40,7 @@
   }
   
   .telemetry-float-icon a {
-       color: #fff !important;
+       color: var(--white) !important;
       text-decoration: none;
       text-align: center;
   }
@@ -48,10 +50,10 @@
   }
   
   .chat-icon {
-      font-size: 20px;
-      color: #fff;
-      padding: 10px 0;
-      width: 40px;
-      margin: 0 8px;
+      font-size: calculateRem(20px);
+      color: var(--white);
+      padding: calculateRem(10px) 0;
+      width: calculateRem(40px);
+      margin: 0 calculateRem(8px);
   }
   

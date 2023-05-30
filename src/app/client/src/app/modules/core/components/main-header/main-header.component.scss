@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import "layout/header";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "layout/header" as *;
 
 .sb-header-bg{
   background: var(--sb-header-bg) !important;
@@ -78,7 +77,7 @@
 
         &:hover,
         &.active {
-          background-color: var(--sidebar-li-hover-bg);
+          background-color: var(--sidebar-profil-header-bg);
         }
       }
     }
@@ -339,11 +338,10 @@ __textbooks {
 }
 
 .explore-description-info{
-  color: #333333;
-    font-family: "Noto Sans";
-    font-size: 14px;
+  color: var(--gray-800);
+    font-size: calculateRem(14px);
     letter-spacing: 0;
-    line-height: 19px;
+    line-height: calculateRem(19px);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

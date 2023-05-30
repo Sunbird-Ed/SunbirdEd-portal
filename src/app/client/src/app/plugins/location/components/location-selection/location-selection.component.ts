@@ -28,6 +28,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
   isSubmitted = false;
   public locationSelectionModalId = 'location-selection';
+  @Input() isStepper = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -55,7 +56,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
-    this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal)
+    this.sbFormLocationSelectionDelegate.init(this.deviceProfile, this.showModal, this.isStepper )
       .catch(() => {
         this.closeModal();
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);

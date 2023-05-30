@@ -1,16 +1,8 @@
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 
 .back-btn-container {
   z-index: 1;
-
-  .modulebtn-divider {
-    width: calculateRem(1px);
-    height: calculateRem(24px);
-    background: var(--gray-200);
-    display: inline-block;
-    margin: 0 calculateRem(8px);
-  }
 }
 
 .certified-course {
@@ -24,7 +16,7 @@
     z-index: 2;
     box-shadow: 0 0.125rem 0.4375rem 0 rgba(0, 0, 0, .16);
     position: relative;
-    background-color: var(--rc-FAFAFA);
+    background-color: var(--gray-0);
   }
 
   &__details {
@@ -85,9 +77,8 @@
 }
 
 .sb-activity-dashboard-btn {
-  // background: transparent;
   box-shadow: none;
-  color: #FFF !important;
-  font-size: 12px;
+  color: var(--white) !important;
+  font-size: calculateRem(12px);
   padding-bottom: calculateRem(28px);
 }

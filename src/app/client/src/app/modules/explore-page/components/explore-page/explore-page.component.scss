@@ -1,6 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
-
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 .course-card-width {
   width: calculateRem(280px) !important;
 }
@@ -10,13 +8,12 @@
   align-items: center;
   justify-content: space-between;
   background-color:var(--sb-profile-bg-c-4);
-  color: var(--black);
+  color: var(--sb-section-preference);
   padding: calculateRem(32px);
   border-radius: calculateRem(24px);
   position: relative;
   overflow: hidden;
   margin-top:calculateRem(32px);
-
   @include respond-below(sm) {
     flex-wrap: wrap;
   }
@@ -43,18 +40,11 @@
         font-weight: bold;
         margin-right: calculateRem(32px);
         html[dir="rtl"] & {
-          margin-left: calculateRem(32px); 
+          margin-left: calculateRem(32px);
         }
         @include respond-below(sm){
          margin-right:0px;
         }
-      }
-    }
-    .change-preference {
-      position: relative;
-      z-index: 1;
-      @include respond-below(sm) {
-        padding-top: calculateRem(8px);
       }
     }
     svg {
@@ -71,18 +61,9 @@
       display: block !important;
     }
 }
-.section-hr {
-  border: calculateRem(0.5px) solid var(--rc-dad9cb);
-}
-.no-background {
-  background: none;
-}
-
 .home-container {
   padding:0;
-  // border-radius:2.5rem;
 }
-
 :host {
   .banner-image {
     overflow: hidden;
@@ -103,7 +84,7 @@
     }
     .slick-dots li button:before {
       opacity: 1;
-      background: var(--gray-200);
+      background: var(--slick-dots-color);
       content: "";
       border-radius: 50%;
       width: calculateRem(12px);
@@ -113,28 +94,17 @@
       transform: translate(-50%, -50%);
     }
     .slick-dots li.slick-active button:before {
-      background: var(--gray-800);
+      background: var(--slick-dots-active-color);
     }
     .slick-track {
       margin: auto;
     }
   }
-  /*.banner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(233deg, rgba(0,0,0,0) 0%, #191919 100%);
-  }*/
   .explore-text {
     color: var(--primary-color);
     font-size: calculateRem(20px);
     font-weight: bold;
     padding: calculateRem(24px) calculateRem(32px);
     z-index: 1;
-  }
-  .section-hr {
-    border: calculateRem(0.5px) solid var(--rc-dad9cb);
   }
 }

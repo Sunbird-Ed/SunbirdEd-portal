@@ -1,9 +1,7 @@
-@import "../variables";
-@import "../mixins/mixins";
-
+@use "~@project-sunbird/sb-styles/assets/varSass" as *;
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 // mcq preview layout styles
-
 .sb-question-dsp-container {
   .sb-editor-image {
     height: calculateRem(392px);
@@ -20,34 +18,34 @@
       margin: auto;
       left: 0px;
       background: var(--black);
-      padding: ($base-block-space + 2) ($base-block-space - 3) ($base-block-space + 2) 0;
-      border-top-right-radius: ($base-block-space * 3) + 1;
-      border-bottom-right-radius: ($base-block-space * 3) + 1;
+      padding: 0.625rem 0.313rem 0.625rem 0;
+      border-top-right-radius: 1.563rem;
+      border-bottom-right-radius: 1.563rem;
 
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: var(--rc-252525);
+        background: var(--black);
         border-radius: 50%;
       }
       .speaker {
-        width: ($base-block-space - 3);
+        width: 0.313rem;
         height: calculateRem(74px);
-        background: var(--rc-252525);
+        background: var(--black);
         border-radius: ($base-block-space + 2);
-        margin: ($base-block-space + 2) 0 ($base-block-space + 2) 1px;
+        margin: ($base-block-space + 2) 0 ($base-block-space + 2) calculateRem(1px);
       }
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: var(--rc-252525);
+        background: var(--black);
         border-radius: 50%;
       }
     }
   }
 
   .sb-question-dsp-body {
-    border-radius: ($base-block-space - 4);
+    border-radius: 0.25rem;
     height: 100vh;
 
     .question-bg {
@@ -60,15 +58,15 @@
 
     .question-menu {
       .hambergur-menu-container {
-        max-width: ($base-block-space * 3);
+        max-width: 1.5rem;
         display: inline-block;
         cursor: pointer;
       }
 
       .hambergur-menu {
-        width: ($base-block-space * 3);
-        height: ($base-block-space - 5);
-        margin: ($base-block-space - 4) 0;
+        width: 1.5rem;
+        height: 0.188rem;
+        margin: 0.25rem 0;
         background-color: var(--gray);
       }
       .sb-btn-arrows {
@@ -82,12 +80,12 @@
 
   .sb-question-header {
     display: block;
-    padding: ($base-block-space) ($base-block-space * 2);
+    padding: 0.5rem 1rem;
     text-align: right;
 
     .sb-mark {
       font-size: $font-size-sm;
-      padding-right: $base-block-space;
+      padding-right: 0.5rem;
       color: var(--primary-400);
     }
     &.sb-learning-outcome-header {
@@ -100,7 +98,7 @@
 
     .page-section {
       height: 100%;
-      padding: ($base-block-space * 3);
+      padding: 1.5rem;
 
       &:first-child {
         padding-top: 0;
@@ -109,13 +107,13 @@
 
     .sb-question-content-card {
       background: var(--white);
-      border-radius: $base-block-space;
+      border-radius: 0.5rem;
       min-height: calculateRem(72px);
       font-weight: inherit;
       line-height: normal;
       box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
       border: calculateRem(0.5px) solid var(--gray-0);
-      padding: ($base-block-space * 2);
+      padding: 1rem;
     }
 
     .sb-question-content-card p svg {
@@ -127,15 +125,15 @@
       margin-right: auto;
       font-size: $font-size-sm;
       color: var(--primary-400);
-      margin-bottom: ($base-block-space * 2);
+      margin-bottom: 1rem;
     }
 
     .sb-star-icon {
       background: var(--orange);
-      width: ($base-block-space * 2);
-      height: ($base-block-space * 2);
+      width: 1rem;
+      height: 1rem;
       border-radius: 50%;
-      margin-left: $base-block-space;
+      margin-left: 0.5rem;
       text-align: center;
       display: inline-block;
 
@@ -153,7 +151,7 @@
 
     // learning out come styles
     &.sb-learning-outcome {
-      height: calc(100% - 44px);
+      height: calc(100% - 2.75rem);
 
       .question-bg {
         background-image: linear-gradient(-90deg, var(--secondary-100), var(--secondary-0));
@@ -164,7 +162,7 @@
 
         .page-section-title {
           margin: 0;
-          padding: ($base-block-space * 2) ($base-block-space * 3);
+          padding: 1rem 1.5rem;
         }
 
         .sb-question-content-learning {
@@ -173,8 +171,8 @@
 
           .sb-question-content-card {
             min-height: calculateRem(60px);
-            line-height: ($base-block-space * 3) - 3;
-            margin: ($base-block-space * 2) ($base-block-space * 3);
+            line-height: 1.313rem;
+            margin: 1rem 1.5rem;
 
             &:first-child {
               margin-top: 0;
@@ -182,7 +180,7 @@
             .sb-learning-outcome-label {
               width: 100%;
               span.sb-status-label {
-                padding: ($base-block-space - 4);
+                padding: 0.25rem;
               }
               label {
                 margin-bottom: 0px;
@@ -200,18 +198,18 @@
           height: 100%;
           overflow-y: auto;
           .sb-question-content-focus-spot-label {
-            padding: ($base-block-space * 2) ($base-block-space * 3);
+            padding: 1rem 1.5rem;
 
             .sb-label {
-              padding: $base-block-space;
+              padding: 0.5rem;
             }
           }
           .sb-question-content-card {
             min-height: calculateRem(60px);
-            margin: ($base-block-space * 2) ($base-block-space * 3);
+            margin: 1rem 1.5rem;
             margin-top: 0;
             .sb-question-content-focus-spot-group {
-              padding-bottom: ($base-block-space * 2);
+              padding-bottom: 1rem;
 
               .sb-question-content-focus-spot-extra {
                 font-size: $font-size-sm;
@@ -220,7 +218,7 @@
               .sb-focus-spot-label {
                 width: 100%;
                 span.sb-status-label {
-                  padding: ($base-block-space - 4);
+                  padding: 0.25rem;
                 }
                 label {
                   margin-bottom: 0px;
@@ -252,7 +250,7 @@
         z-index: 1;
         width: 100%;
         flex-basis: 100%;
-        padding: ($base-block-space) ($base-block-space * 3);
+        padding: 0.5rem 1.5rem;
         background: var(--white);
         font-weight: 700;
         height: calculateRem(76px);
@@ -272,20 +270,20 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        padding: ($base-block-space * 3);
+        padding: 1.5rem;
         padding-top: 100px;
         height: 100vh;
         overflow-y: auto;
         background-image: linear-gradient(-90deg, var(--rc-add8e6), var(--rc-afd9e7));
 
         .mcq-option {
-          margin-bottom: ($base-block-space * 2);
+          margin-bottom: 1rem;
           height: auto;
           box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
           background: var(--white);
-          border-radius: $base-block-space;
+          border-radius: 0.5rem;
           line-height: calculateRem(20px);
-          padding: $base-block-space;
+          padding: 0.5rem;
 
           p {
             font-size: $font-size-sm;
@@ -295,14 +293,14 @@
 
       i.chevron {
         position: absolute;
-        bottom: $base-block-space;
-        right: ($base-block-space - 4);
+        bottom: 0.5rem;
+        right: 0.25rem;
         z-index: 999;
         cursor: pointer;
         background: var(--primary-color);
         color: var(--white);
-        width: ($base-block-space * 4);
-        height: ($base-block-space * 4);
+        width: 2rem;
+        height: 2rem;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -320,7 +318,7 @@
         position: initial;
         max-height: 100vh;
         overflow-y: auto;
-        padding: ($base-block-space * 2) 8px ($base-block-space * 2) 24px;
+        padding: ($base-block-space * 2) calculateRem(8px) ($base-block-space * 2) calculateRem(24px);
         height: 100%;
       }
 
@@ -330,7 +328,7 @@
 
       .mcq-options {
         flex-basis: 70%;
-        padding-top: ($base-block-space * 2);
+        padding-top: 1rem;
 
         p svg {
           display: inline-block;
@@ -385,21 +383,21 @@
 
     .mcq-submit-btn {
       margin-left: auto;
-      padding-right: ($base-block-space * 2);
-      margin-bottom: ($base-block-space * 2);
+      padding-right: 1rem;
+      margin-bottom: 1rem;
     }
   }
 
   .mcq-checkbox-answer {
     background: var(--gray-0);
-    padding: ($base-block-space * 2);
+    padding: 1rem;
     display: flex;
     border: calculateRem(1px) solid var(--rc-c4c4c4);
     border-top: none;
 
     label {
       font-weight: 700;
-      padding-right: $base-block-space;
+      padding-right: 0.5rem;
       font-size: $font-size-base;
     }
   }
@@ -416,7 +414,7 @@
       .sb-circular-list-item {
         list-style-type: decimal;
         font-size: 0.9286rem;
-        margin-bottom: ($base-block-space * 2);
+        margin-bottom: 1rem;
       }
     }
   }
@@ -424,21 +422,21 @@
 
 // Progress bar for modal
 .uploading-files {
-  margin: ($base-block-space * 3) auto;
+  margin: 1.5rem auto;
 
   .process-icon {
-    width: ($base-block-space * 7);
-    height: ($base-block-space * 6);
+    width: 3.5rem;
+    height: 3rem;
   }
 
   .ui.progress {
-    margin: ($base-block-space + 4) ($base-block-space * 3) ($base-block-space * 3 + 4) ($base-block-space * 3) !important;
+    margin: 0.75rem 1.5rem 1.75rem 1.5rem !important;
     width: 60%;
   }
 
   .ui.progress .bar {
-    background: $tertiary-100;
-    height: ($base-block-space) !important;
+    background: var(--tertiary-100);
+    height: 0.5rem !important;
   }
 
 }
@@ -448,7 +446,7 @@
   &.ui.styled.accordion {	
     background: inherit;	
     .active.title {	
-      border: calculateRem(1px) solid $primary-200; 
+      border: calculateRem(1px) solid var(--primary-200); 
       border-bottom: none;	
       background-color: var(--rc-F3F8FF);	
       font-weight: $font-weight-bold;	
@@ -456,22 +454,22 @@
       border-bottom-right-radius: 0;	
       font-size: $font-size-sm;	
       .chevron-icon {	
-        background: var(--rc-D9E4F2);	
+        background: var( --rc-E0F1FD);	
         border-left: none;	
       }	
       .chapter-status {	
-        background: $primary-color;	
+        background: var(--primary-color);
       }	
     }	
     .title {	
-      margin-top: $base-block-space;	
-      background: $gray-0;	
-      border: calculateRem(1px) solid $gray-100;	
+      margin-top: 0.5rem;	
+      background: var(--gray-0);
+      border: calculateRem(1px) solid var(--gray-100);	
       border-radius: calculateRem(4px);	
       font-size: $font-size-sm;	
       .chevron-icon {	
-        background: $gray-0;	
-        border-left: calculateRem(1px) solid $gray-100;	
+        background: var(--gray-0);
+        border-left: calculateRem(1px) solid var(--gray-100);	
       } 
       .chapter-status {	
         height: calculateRem(8px);	
@@ -482,7 +480,7 @@
     }	
     .sb-chapterlist-child {	
       .active.title {	
-        border-top: calculateRem(1px) solid $primary-200;	
+        border-top: calculateRem(1px) solid var(--primary-200);	
         border-radius: 0;	
         .chapter-status {	
           background: var(--rc-88B7E6);	
@@ -492,7 +490,7 @@
         margin-top: 0;	
         border-radius: 0px 0px calculateRem(4px) calculateRem(4px);	
         border: none;	
-        border-top: calculateRem(1px) solid $gray-100;  
+        border-top: calculateRem(1px) solid var(--gray-100);  
       }	
       .content {	
         border: none;	
@@ -502,11 +500,11 @@
       }	
     }	
     .content {	
-      border: calculateRem(1px) solid $primary-200; 
+      border: calculateRem(1px) solid var(--primary-200);
       border-top: none;	
       border-bottom-left-radius: calculateRem(4px);	
       border-bottom-right-radius: calculateRem(4px);	
-      background: $white-color;	
+      background: var(--white);	
     }	
     .chevron-icon {	
       height: calculateRem(56px);	
@@ -523,13 +521,13 @@
     }	
     .accordion {	
       .active.title {	
-        border: calculateRem(1px) solid $primary-200;	
+        border: calculateRem(1px) solid var(--primary-200);	
         border-bottom: none;	
         background-color: var( --rc-F3F8FF);	
         font-weight: $font-weight-bold;	
       }	
       .content {	
-        border: calculateRem(1px) solid $primary-200; 
+        border: calculateRem(1px) solid var(--primary-200); 
         border-top: none;	
       }	
     }	

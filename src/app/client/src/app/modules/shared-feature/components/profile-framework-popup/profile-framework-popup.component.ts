@@ -9,6 +9,7 @@ import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ProfileService } from '@sunbird/profile';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html',
@@ -24,6 +25,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   @Input() dialogProps;
+  @Input() isStepper: boolean = false;
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
   private _formFieldProperties: any;
   public formFieldOptions = [];
@@ -45,7 +47,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
-    public popupControlService: PopupControlService, private matDialog: MatDialog) {
+    public popupControlService: PopupControlService, private matDialog: MatDialog, public profileService: ProfileService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -54,9 +56,15 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.dialogRef = this.dialogProps && this.dialogProps.id && this.matDialog.getDialogById(this.dialogProps.id);
     this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
-    if (this.isGuestUser) {
+    if (this.isGuestUser && !this.isStepper) {
       this.orgDetailsService.getOrgDetails(this.userService.slug).subscribe((data: any) => {
         this.guestUserHashTagId = data.hashTagId;
+      });
+      this.allowedFields = ['board', 'medium', 'gradeLevel'];
+    }
+    if (this.isGuestUser && this.isStepper) {
+      this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+        this.guestUserHashTagId = custodianOrg.result.response.value;
       });
       this.allowedFields = ['board', 'medium', 'gradeLevel'];
     }
@@ -291,19 +299,41 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     return this.formService.getFormConfig(formServiceInputParams, hashTagId);
   }
   onSubmitForm() {
-    const selectedOption = _.cloneDeep(this.selectedOption);
-    selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : [];
-    selectedOption.id = this.frameWorkId;
-    if (selectedOption.board) {
-      _.forEach(selectedOption.board, (data, index) => {
-        if (data === 'CBSE/NCERT') {
-          selectedOption.board[index] = 'CBSE';
+      const selectedOption = _.cloneDeep(this.selectedOption);
+      selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : [];
+      selectedOption.id = this.frameWorkId;
+      if (selectedOption.board) {
+        _.forEach(selectedOption.board, (data, index) => {
+          if (data === 'CBSE/NCERT') {
+            selectedOption.board[index] = 'CBSE';
+          }
+        });
+      }
+      if (this.dialogRef && this.dialogRef.close) {
+        this.dialogRef.close();
+      }
+      // Process to handle in case of component rendered in stepper dialog
+      // API to be called for updation
+
+      if(this.isStepper && this.isGuestUser) {
+        const user: any = { name: 'guest', formatedName: 'Guest', framework: selectedOption };
+        const userType = localStorage.getItem('userType');
+        if (userType) {
+          user.role = userType;
         }
-      });
-    }
-    if (this.dialogRef && this.dialogRef.close) {
-      this.dialogRef.close();
-    }
+        this.userService.createGuestUser(user).subscribe(data => {
+          this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+        }, error => {
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005')); 
+        });
+      } else {
+        const req = {
+          framework: selectedOption
+        };
+        this.profileService.updateProfile(req).subscribe(res => {
+          this.userService.setUserFramework(selectedOption);
+        });
+      }
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {

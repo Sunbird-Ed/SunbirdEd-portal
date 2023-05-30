@@ -240,6 +240,8 @@ require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
 require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
 
+require('./routes/keycloakSignInRoutes.js')(app, keycloak) // native keyclaok sign in routes
+
 require('./routes/ios.js')(app, keycloak) // apple sign in routes
 
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
@@ -346,6 +348,11 @@ async function runApp() {
       logger.info({ msg: `✅ Portal global Session storage is set to                  - ${envHelper.PORTAL_SESSION_STORE_TYPE}` })
       logger.info({ msg: `✅ Portal global Kong anonymous device register is set to   - ${envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN}` })
       logger.info({ msg: `✅ Portal global Kong admin util is set to                  - ${envHelper.KONG_DEVICE_REGISTER_TOKEN}` })
+      logger.info({ msg: `✅ Portal Cloud Storage Provider is set to                  - ${envHelper.sunbird_cloud_storage_provider}` })
+      if (envHelper.sunbird_cloud_storage_provider === 'aws') {
+        process.env.AWS_ACCESS_KEY_ID = envHelper.sunbird_aws_access_key;
+        process.env.AWS_SECRET_ACCESS_KEY = envHelper.sunbird_aws_secret_key;
+      }
     })
     handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;

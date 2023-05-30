@@ -23,12 +23,14 @@ export class WindowScrollService {
 
   public elmYPosition(eID) {
     const elm: any = document.getElementById(eID);
-    let y = elm.offsetTop;
-    let node = elm;
-    while (node.offsetParent && node.offsetParent !== document.body) {
-      node = node.offsetParent;
-      y += node.offsetTop;
-    } return y;
+    if (elm) {
+      let y = elm.offsetTop;
+      let node = elm;
+      while (node.offsetParent && node.offsetParent !== document.body) {
+        node = node.offsetParent;
+        y += node.offsetTop;
+      } return y;
+    }
   }
 
   public smoothScroll(eID, timeOut = 0) {

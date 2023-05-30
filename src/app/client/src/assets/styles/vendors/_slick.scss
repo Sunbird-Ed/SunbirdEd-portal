@@ -1,3 +1,5 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
 /***********************************************
    Hacks -
 
@@ -18,13 +20,13 @@
 $slick-font-path: "../../../node_modules/slick-carousel/slick/fonts/" !default;
 $slick-font-family: normal normal normal 14px/1 FontAwesome !default;
 $slick-loader-path: "../../../node_modules/slick-carousel/slick/" !default;
-$slick-arrow-color: $danger-color !default;
-$slick-dot-color: black !default;
+$slick-arrow-color: var(--danger-color) !default;
+$slick-dot-color: var(--black) !default;
 $slick-dot-color-active: $slick-dot-color !default;
 $slick-prev-character: "\f104" !default;
 $slick-next-character: "\f105" !default;
 $slick-dot-character: "\2022" !default;
-$slick-dot-size: 6px !default;
+$slick-dot-size: calculateRem(6px) !default;
 $slick-opacity-default: 1 !default;
 $slick-opacity-on-hover: 1 !default;
 $slick-opacity-not-active: 0 !default;
@@ -78,12 +80,6 @@ $slick-opacity-not-active: 0 !default;
 }
 
 .slick-list {
-  .slick-loading & {
-    // background: var(--white) slick-image-url("ajax-loader.gif") center center no-repeat;
-  }
-}
-
-.slick-list {
   position: relative;
   overflow: hidden;
   display: block;
@@ -114,7 +110,7 @@ $slick-opacity-not-active: 0 !default;
   left: 0;
   top: 0;
   display: block;
-  padding-top: 3px;
+  padding-top: calculateRem(3px);
 
   &:before,
   &:after {
@@ -201,7 +197,7 @@ $slick-opacity-not-active: 0 !default;
     opacity: $slick-opacity-on-hover;
 
     &:before {
-      box-shadow: 0 calculateRem(4px) calculateRem(9px) 0 rgba(0, 0, 0, 0.29);
+      box-shadow: 0 calculateRem(4px) calculateRem(9px) 0 rgba(var(--rc-rgba-black), 0.29);
     }
   }
 
@@ -223,7 +219,7 @@ $slick-opacity-not-active: 0 !default;
     color: $slick-arrow-color;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    box-shadow: 0 calculateRem(5px) calculateRem(6px) 0 rgba(0, 0, 0, 0.29);
+    box-shadow: 0 calculateRem(5px) calculateRem(6px) 0 rgba(var(--rc-rgba-black), 0.29);
   }
 }
 

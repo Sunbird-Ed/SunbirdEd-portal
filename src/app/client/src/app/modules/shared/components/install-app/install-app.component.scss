@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .appPopup-header {
   font-weight: 500 !important;
@@ -42,7 +41,7 @@
 }
 
 .text-lightGray {
-  color: var(--rc-979797) !important;
+  color: var(--gray-200) !important;
 }
 
 .ui.basic.button,
@@ -72,9 +71,9 @@
 }
 
 .img-cover {
-  border: calculateRem(1px) solid var(--rc-bbbbbb);
+  border: calculateRem(1px) solid var(--gray-200);
   border-radius: calculateRem(2px);
-  background-color: var(--rc-FAFAFA);
+  background-color: var(--gray-0);
   display: inline-flex;
   align-items: center;
   justify-content: center;

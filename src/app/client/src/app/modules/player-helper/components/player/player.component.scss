@@ -1,6 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
-@import 'components/video';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'components/video' as *;
 
 .player-thumbnail {
   width: 100%;
@@ -93,7 +92,7 @@
   transition: all ease .3s;
   iframe {
     height: calc(100vh - 4rem) !important;
-  border:10px solid rebeccapurple;
+    border:calculateRem(10px) solid var(--primary-400);
   }
 } 
 
@@ -111,9 +110,7 @@
     height: 100% !important;
   }
   .video-js{height:100% !important;}
-  // html[layout='joy'] .content-video__player__details {
-  //   border-radius: 0px !important;
-  // }
+
   .video-js {
     padding-top:inherit !important;
   }

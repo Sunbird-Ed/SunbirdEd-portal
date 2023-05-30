@@ -17,7 +17,6 @@ mochawesome-report
 /src/app/coverage
 .idea
 /src/app/helpers/devConfig.js
-/.vscode/launch.json
 logs
 keys
 #DESKTOP APP
@@ -46,7 +45,10 @@ src/desktop/openrap-sunbirded-plugin/data
 src/desktop/telemetry_archived
 src/desktop/node_modules
 src/desktop/chromedriverlog.txt
+/src/desktop/devConfig.js
 
 .prettierignore
 
 **/.DS_Store
+
+.vscode/*

@@ -16,8 +16,8 @@
  }
  .sb-loader:after {
   content: '';
-  width: $base-block-space * 4;
-  height: $base-block-space * 4;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   border: 2px solid;
   border-color: $teal $teal transparent;

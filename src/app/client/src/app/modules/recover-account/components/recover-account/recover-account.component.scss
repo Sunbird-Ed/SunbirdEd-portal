@@ -1,4 +1,3 @@
-@import "variables";
-@import "mixins/mixins";
-@import '../../../../../assets/styles/components/recover-account';
-@import '../../../../../assets/styles/pages/sign_in_up';
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use 'components/recover-account' as *;
+@use 'pages/sign_in_up' as *;

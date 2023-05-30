@@ -1,6 +1,6 @@
 .ui.grid > .column:not(.row) {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 button,
@@ -82,12 +82,3 @@ input[type=number]::-webkit-outer-spin-button {
 .ui.dimmer:not(.inverted)::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 1);
 }
-
-
-// @include respond-below(sm) {
-//   .ui.container {
-//     margin: 0 0px !important;
-//     padding-left: 16px !important;
-//     padding-right: 16px !important;
-//   }
-// }

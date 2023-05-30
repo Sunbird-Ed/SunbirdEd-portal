@@ -1,4 +1,4 @@
-@import "./mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 ::ng-deep {
     .ui.tiny.progress .bar {
@@ -28,7 +28,7 @@
     &-container {
         box-shadow: 0 0 calculateRem(10px) 0 rgba(0, 0, 0, 0.25);
         position: relative;
-        background-color: var(--rc-FAFAFA);
+        background-color: var(--gray-0);
     }
 
     &__details {

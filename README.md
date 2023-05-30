@@ -79,6 +79,7 @@ Installing Sunbird requires two primary software components:
 - [Running Application](#running-application)
 - [Project Structure](#project-structure)
 - [Testing](#testing)
+- [Dependencies List](#dependencies-list)
 ---
 
 ### Prerequisites
@@ -144,8 +145,23 @@ Installing Sunbird requires two primary software components:
           |  sunbird_default_tenant   | sunbird |   string  |
 
     > The initialization of these environmental variables can take place in a common place like in your **.bashrc** or **.bash_profile**
+    
 
 4. Edit the Application Configuration
+
+    > These are the mandatory keys required to run the application in Local environment. Please update them with appropriatte values in `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js`
+
+        |           Environment Variable        |  Data Type |             Description                |
+        | :-------------------------------------| ---------- | -------------------------------------  |
+        |        sunbird_azure_account_name     |   string   |          Azure account Name            |
+        |        sunbird_azure_account_key      |   string   |          Azure Account Key             |
+        |          sunbird_aws_region           |   string   |        Region for AWS account          |
+        |  KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN |   boolean  |   Flag value to allow anonymous user   |
+        |  sunbird_anonymous_device_register_api|   string   |The API for registering anonymous device|
+        |  sunbird_anonymous_register_token     |   string   |    Token to register anonymous device  |
+        |               SB_DOMAIN               |   string   |    The host for Sunbird Environment    |
+        |         PORTAL_API_AUTH_TOKEN         |   string   |     User generated API auth token      |
+
 
     > Open `<PROJECT-FOLDER>/src/app/helpers/environmentVariablesHelper.js` in any available text editor and update the contents of the file so that it contains exactly the following values
 
@@ -167,11 +183,7 @@ Installing Sunbird requires two primary software components:
               ...
               PORTAL_PORT: env.sunbird_port || 3000,
                 
-              // 5. PORTAL_API_AUTH_TOKEN
-              PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token || User generated API auth token
-              ...
-              
-              // 6. PORTAL_ECHO_API_URL
+              // 5. PORTAL_ECHO_API_URL
               PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || '',
               ...
           }
@@ -232,3 +244,19 @@ Installing Sunbird requires two primary software components:
         2. $ npm run backend-test
         3. With Coverage $ npm run backend-test-with-coverage
 
+
+### Dependencies list
+
+<details>
+  <summary>Portal - Frontend</summary>
+</details>
+
+| Plugin Name                                                                                                  	| Plugin Repository                                                	| npm version 	| NG Version 	|
+|--------------------------------------------------------------------------------------------------------------	|------------------------------------------------------------------	|-------------	|------------	|
+| [@project-sunbird/chatbot-client](https://www.npmjs.com/package/@project-sunbird/chatbot-client)             	| https://github.com/project-sunbird/sunbird-bot-client            	| 3.0.3       	| NG 11      	|
+| [@project-sunbird/common-consumption](https://www.npmjs.com/package/@project-sunbird/common-consumption)     	| https://github.com/Sunbird-Ed/SunbirdEd-consumption-ngcomponents 	| 4.12.0      	| NG 11      	|
+| [@project-sunbird/common-form-elements](https://www.npmjs.com/package/@project-sunbird/common-form-elements) 	| https://github.com/Sunbird-Ed/SunbirdEd-forms                    	| 5.1.1       	| NG 11      	|
+| [@project-sunbird/sb-content-section](https://www.npmjs.com/package/@project-sunbird/sb-content-section)     	| https://github.com/Sunbird-Ed/sb-content-module                  	| 5.1.0       	| NG 11      	|
+| [@project-sunbird/sb-notification](https://www.npmjs.com/package/@project-sunbird/sb-notification)           	| https://github.com/Sunbird-Ed/sb-notification                    	| 5.0.7       	| NG 11      	|
+| [@shikshalokam/sl-questionnaire](https://www.npmjs.com/package/@shikshalokam/sl-questionnaire)           	    | https://github.com/shikshalokam/sl-questionnaire-components       | 2.1.0       	| NG 11      	|
+| [@shikshalokam/sl-reports-library](https://www.npmjs.com/package/@shikshalokam/sl-reports-library)           	| https://github.com/shikshalokam/sl-reports-library                | 2.0.0       	| NG 11      	|

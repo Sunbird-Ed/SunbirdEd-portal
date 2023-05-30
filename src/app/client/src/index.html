@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-theme="Default" accessable-theme="accessible" data-mode="" layout="old" >
+<html lang="en" dir="ltr" data-theme="default" data-mode="light" layout="base" accessible-theme="accessible">
 
 <head>
   <meta charset="utf-8">
@@ -27,8 +27,8 @@
   <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
   <% } %>
   <% if (publicStorageAccount) { %>
-    <input type="hidden" id="publicStorageAccount" value="<%=publicStorageAccount%>" />
-    <% } %>
+  <input type="hidden" id="publicStorageAccount" value="<%=publicStorageAccount%>" />
+  <% } %>
   <% if (defaultTenant) { %>
   <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
   <% } %>
@@ -74,7 +74,7 @@
   <% if (deviceId) { %>
   <input type="hidden" id="deviceId" value="<%=deviceId%>" />
   <%} else { %>
-  <input type="hidden" id="deviceId"/>
+  <input type="hidden" id="deviceId" />
   <% } %>
   <% if (googleCaptchaSiteKey) { %>
   <input type="hidden" id="googleCaptchaSiteKey" value="<%=googleCaptchaSiteKey%>" />
@@ -83,16 +83,16 @@
   <input type="hidden" id="videoMaxSize" value="<%=videoMaxSize%>" />
   <% } %>
   <% if (sunbirdDefaultFileSize) { %>
-    <input type="hidden" id="sunbirdDefaultFileSize" value="<%=sunbirdDefaultFileSize%>" />
+  <input type="hidden" id="sunbirdDefaultFileSize" value="<%=sunbirdDefaultFileSize%>" />
   <% } %>
   <% if (reportsLocation) { %>
   <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
   <% } %>
   <% if (previewCdnUrl) { %>
-    <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
+  <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
   <% } %>
   <% if (cdnWorking) { %>
-    <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
+  <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
   <% } %>
   <% if (offlineDesktopAppTenant) { %>
   <input type="hidden" id="offlineDesktopAppTenant" value="<%=offlineDesktopAppTenant%>" />
@@ -107,69 +107,73 @@
   <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
   <% } %>
   <% if (offlineDesktopAppDownloadUrl) { %>
-    <input type="hidden" id="offlineDesktopAppDownloadUrl" value="<%=offlineDesktopAppDownloadUrl%>" />
+  <input type="hidden" id="offlineDesktopAppDownloadUrl" value="<%=offlineDesktopAppDownloadUrl%>" />
   <% } %>
   <% if (logFingerprintDetails) { %>
-    <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
+  <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
   <% } %>
   <% if (deviceApi) { %>
-    <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
+  <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
   <% } %>
   <% if (slugForProminentFilter) { %>
-    <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
+  <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
   <% } %>
   <% if (collectionEditorURL) { %>
-    <input type="hidden" id="collectionEditorURL" value="<%=collectionEditorURL%>" />
+  <input type="hidden" id="collectionEditorURL" value="<%=collectionEditorURL%>" />
   <% } %>
   <% if (contentEditorURL) { %>
-    <input type="hidden" id="contentEditorURL" value="<%=contentEditorURL%>" />
+  <input type="hidden" id="contentEditorURL" value="<%=contentEditorURL%>" />
   <% } %>
   <% if (genericEditorURL) { %>
-    <input type="hidden" id="genericEditorURL" value="<%=genericEditorURL%>" />
+  <input type="hidden" id="genericEditorURL" value="<%=genericEditorURL%>" />
   <% } %>
   <% if (botConfigured) { %>
-    <input type="hidden" id="isBotConfigured" value="<%=botConfigured%>" />
+  <input type="hidden" id="isBotConfigured" value="<%=botConfigured%>" />
   <% } %>
   <% if (botServiceURL) { %>
-    <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
+  <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
   <% } %>
   <% if (superAdminSlug) { %>
-    <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
+  <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
   <% } %>
   <% if (p1reCaptchaEnabled == "true" || p1reCaptchaEnabled == true) { %>
-    <input type="hidden" id="p1reCaptchaEnabled" value="true" />
+  <input type="hidden" id="p1reCaptchaEnabled" value="true" />
   <% } else { %>
-      <input type="hidden" id="p1reCaptchaEnabled" value="false" />
+  <input type="hidden" id="p1reCaptchaEnabled" value="false" />
   <% } %>
   <% if (p2reCaptchaEnabled == "true" || p2reCaptchaEnabled == true) { %>
-    <input type="hidden" id="p2reCaptchaEnabled" value="true" />
+  <input type="hidden" id="p2reCaptchaEnabled" value="true" />
   <% } else { %>
-    <input type="hidden" id="p2reCaptchaEnabled" value="false" />
+  <input type="hidden" id="p2reCaptchaEnabled" value="false" />
   <% } %>
   <% if (p3reCaptchaEnabled == "true" || p3reCaptchaEnabled == true) { %>
-    <input type="hidden" id="p3reCaptchaEnabled" value="true>" />
+  <input type="hidden" id="p3reCaptchaEnabled" value="true>" />
   <% } else { %>
-    <input type="hidden" id="p3reCaptchaEnabled" value="false" />
+  <input type="hidden" id="p3reCaptchaEnabled" value="false" />
   <% } %>
-    <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
+  <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
   <% if (reportsListVersion) { %>
   <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
   <% } %>
   <% if (baseUrl) { %>
-    <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
+  <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
   <% } %>
   <% if (blobUrl) { %>
-    <input type="hidden" id="blobUrl" value="<%=blobUrl%>" />
+  <input type="hidden" id="blobUrl" value="<%=blobUrl%>" />
   <% } %>
   <% if (sunbirdQuestionSetChildrenLimit) { %>
-    <input type="hidden" id="sunbirdQuestionSetChildrenLimit" value="<%=sunbirdQuestionSetChildrenLimit%>" />
+  <input type="hidden" id="sunbirdQuestionSetChildrenLimit" value="<%=sunbirdQuestionSetChildrenLimit%>" />
   <% } %>
+  <% if (sunbirdNavAccessibility) { %>
+    <input type="hidden" id="sunbirdNavAccessibility" value="<%=sunbirdNavAccessibility%>" />
+    <% } %>
   <% if (sunbirdCollectionChildrenLimit) { %>
-    <input type="hidden" id="sunbirdCollectionChildrenLimit" value="<%=sunbirdCollectionChildrenLimit%>" />
+  <input type="hidden" id="sunbirdCollectionChildrenLimit" value="<%=sunbirdCollectionChildrenLimit%>" />
   <% } %>
   <% if (uciBotPhoneNumber) { %>
-    <input type="hidden" id="uciBotPhoneNumber" value="<%=uciBotPhoneNumber%>" />
+  <input type="hidden" id="uciBotPhoneNumber" value="<%=uciBotPhoneNumber%>" />
   <% } %>
   <app-root></app-root>
 </body>
+
 </html>

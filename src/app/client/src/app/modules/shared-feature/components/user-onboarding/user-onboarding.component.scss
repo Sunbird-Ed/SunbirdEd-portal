@@ -1,5 +1,4 @@
-@import "variables";
-@import "mixins/mixins";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-onboard {
 
@@ -125,7 +124,7 @@
     &__item {
       border-radius: calculateRem(4px);
       background-color: var(--white);
-      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d8d8d8);
+      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d0d0d0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -168,7 +167,7 @@
     &__item {
       border-radius: calculateRem(4px);
       background-color: var(--white);
-      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d8d8d8);
+      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d0d0d0);
       text-align: center;
       position: relative;
       border: calculateRem(2px) solid var(--white);
@@ -206,11 +205,11 @@
   }
 
   .sb-field .ui.selection.active.dropdown {
-    border-color: var(--rc-96C8DA);
+    border-color: var(--rc-add8e6);
   }
 
   .sb-field .ui.selection.active.dropdown .text {
-    color: var(--rc-0076FE) !important;
+    color: var(--rc-007AFF) !important;
   }
 
   .sb-field {
@@ -233,7 +232,7 @@
   }
 
   .textColorChange {
-    color: var(--rc-0076FE);
+    color: var(--rc-007AFF);
   }
 }
 
@@ -247,14 +246,14 @@
   height: 2rem !important;
 
   &:focus {
-    border: calculateRem(1px) solid var(--rc-0076FE);
-    color: var(--rc-0076FE) !important;
+    border: calculateRem(1px) solid var(--rc-007AFF);
+    color: var(--rc-007AFF) !important;
   }
 }
 
 .ui.selection.dropdown.fields-dropdown:focus~label {
   border: 0px;
-  color: var(--rc-0076FE);
+  color: var(--rc-007AFF);
   font-weight: normal;
 }
 

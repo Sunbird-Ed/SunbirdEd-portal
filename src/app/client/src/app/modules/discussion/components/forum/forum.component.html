@@ -1,15 +1,12 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'large'}" (dismiss)="navigateToPreviousPage()" #modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'large', panelClass: 'material-modal'}"
+  (dismiss)="navigateToPreviousPage()" #modal>
   <ng-template sbModalContent>
-    <div class="sb-modal">
-      <div class="transition ui dimmer page modals active visible">
-        <div class="ui modal transition active visible large">
-
-          <div class="sb-modal-content">
-            <iframe scrolling="no" [src]="discussionUrl"></iframe>
-          </div>
-
-        </div>
+    <div class="sb-mat__modal">
+      <div mat-dialog-title class="mb-0"></div>
+      <div class="sb-mat__modal__content">
+        <iframe scrolling="no" [src]="discussionUrl"></iframe>
       </div>
+      <mat-dialog-actions class="sb-mat__modal__actions"></mat-dialog-actions>
     </div>
   </ng-template>
 </app-modal-wrapper>

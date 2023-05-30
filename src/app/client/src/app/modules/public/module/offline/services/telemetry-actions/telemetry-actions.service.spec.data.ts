@@ -75,7 +75,7 @@ export const telemetry = {
                         'addedUsing': 'telemetry_import',
                         'totalSize': 8260,
                         'createdOn': 1582868060761,
-                        'status': 'inQueue'
+                        'status': 'completed'
                     }
                 ]
             }

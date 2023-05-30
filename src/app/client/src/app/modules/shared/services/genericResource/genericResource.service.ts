@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '@sunbird/core';
+import { FormService } from '../../../core/services/form/form.service';
 
 /**
  * Service to fetch resource bundle

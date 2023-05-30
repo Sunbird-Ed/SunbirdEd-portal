@@ -1,6 +1,5 @@
-@import "variables";
-@import "./mixins/mixins";
-@import "layout/footer";
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+@use "layout/footer" as *;
 
 :host ::ng-deep{
   .new-layout-footer{
@@ -69,7 +68,7 @@
             margin-bottom: calculateRem(16px);
           }
           a{
-            color: #0531FF;
+            color: var(--primary-color);
             font-size: calculateRem(14px);
             font-weight: bold;
           }
@@ -79,11 +78,11 @@
             margin-bottom: calculateRem(16px);
           }
           a{
-            color: #6236FF;
+            color: var(--primary-color);
             font-size: calculateRem(14px);
           }
           .contact-info-title{
-            color: #6236FF;
+            color: var(--primary-color);
             font-weight: bold;
             font-size: calculateRem(14px);
             margin-bottom: calculateRem(8px);

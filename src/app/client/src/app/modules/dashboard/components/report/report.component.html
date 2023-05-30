@@ -315,7 +315,7 @@
   [input]="confirmationPopupInput">
 </app-confirm-popup>
 
-<app-modal-wrapper [config]="{disableClose: true, size: 'large'}" *ngIf="showSummaryModal">
+<app-modal-wrapper [config]="{disableClose: true, size: 'large', panelClass: 'material-modal'}" *ngIf="showSummaryModal">
   <ng-template sbModalContent let-data>
     <app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
       (submitButtonEvent)="onAddSummary($event)">

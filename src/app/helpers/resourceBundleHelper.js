@@ -1,14 +1,21 @@
-const envHelper = require('./../helpers/environmentVariablesHelper.js')
-var azure = require('azure-storage')
-const dateFormat = require('dateformat')
-const uuidv1 = require('uuid/v1')
-const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
-const { logger } = require('@project-sunbird/logger');
+const envHelper         = require('./../helpers/environmentVariablesHelper.js');
+const dateFormat        = require('dateformat');
+const uuidv1            = require('uuid/v1');
+const { logger }        = require('@project-sunbird/logger');
+const StorageService    = require('../helpers/cloudStorage/index');
 
 const getGeneralisedResourcesBundles = (req, res) => {
-    const container = envHelper.sunbird_azure_resourceBundle_container_name;
-    const blobName = req.params.fileName;
-    blobService.getBlobToText(container, blobName, function (error, result, response) {
+    let container, blobName = req.params.fileName;
+    if (envHelper.sunbird_cloud_storage_provider === 'azure') {
+        container = envHelper.sunbird_azure_resourceBundle_container_name;
+    }
+    if (envHelper.sunbird_cloud_storage_provider === 'aws') {
+        container = envHelper.sunbird_aws_labels;
+    }
+    if (envHelper.sunbird_cloud_storage_provider === 'gcloud') {
+        container = envHelper.sunbird_gcloud_labels;
+    }
+    StorageService.CLOUD_CLIENT.getFileAsText(container, blobName, function (error, result, response) {
         if (error && error.statusCode === 404) {
             logger.error({ msg: "Blob %s wasn't found container %s", blobName, container })
             const response = {

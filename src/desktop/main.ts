@@ -21,9 +21,26 @@ const initializeEnv = () => {
     rootOrgId = "ROOT_ORG_ID";
     hashTagId = "HASH_TAG_ID";
   } else {
-    envs = JSON.parse(
-      fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
-    );
+    // Path to dev config file
+    const devConfig = __dirname + '/devConfig.js';
+    try {
+      // If environment is `local`; use custom config
+      // Else default config will be used
+      if (process.env.NODE_ENV === 'development' && fs.existsSync(devConfig)) {
+        console.log('✅ Loading configuration from dev config');
+        envs = require('./devConfig');
+      } else {
+        console.log('✅ Loading configuration from default config');
+        envs = JSON.parse(
+          fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
+        );
+      }
+    } catch (error) {
+      envs = JSON.parse(
+        fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
+      );
+    }
+
     let rootOrgObj = JSON.parse(
       fs.readFileSync(
         path.join(
