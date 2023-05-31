@@ -15,37 +15,23 @@
   // $primary: mat.define-palette(mat.$cyan-palette);
   // $accent: mat.define-palette(mat.$cyan-palette, 500);
 
-  .mat-card-title {
-    // color: mat-color($accent);
-    line-height: normal;
-  }
+  $color-accent: mat.get-color-from-palette($accent);
+  $color-accent-100: mat.get-color-from-palette($accent, 100);
+  --cc-mat-card-title:#{$color-accent};
+  --cc-mat-card-svg-flower:#{$color-accent};
+  --cc-mat-card-selected-border:#{$color-accent};
+  --cc-mat-card-selected-bg:#{$color-accent-100};
 
+  .mat-card .mat-chip-list-wrapper {
+    justify-content: flex-start;
+    margin: 0;
+  }
   .cardSlick .mat-card {
     width: 20rem;
   }
-
-  // .mat-card {
-  //   background-color: mat.get-color-from-palette($primary, 500);
-  // }
-
-  .mat-card .mat-chip-list-wrapper {
-    display: initial;
-    margin: 0;
-  }
-
   .mat-card-header-text {
     overflow: hidden;
   }
-
-  // .mat-card-header .mat-card-title {
-  //   font-size: 1rem;
-  // }
-  // .mat-card-subtitle,
-  // .mat-card-content {
-  //   font-size: 0.875rem;
-  // }
-
-
   .sb__ellipsis {
     -webkit-box-orient: vertical;
     display: -webkit-box !important;
@@ -54,56 +40,106 @@
     text-overflow: ellipsis;
     word-break: break-word !important;
   }
-
   .sb__ellipsis--two {
     -webkit-line-clamp: 2 !important;
   }
 
+  //themes 
+  .deeppurple-amber .mat-card.mat-card-v2.selected .mat-card-header{
+    background-color: var(--cc-mat-card-selected-bg);
+  }
+  .deeppurple-amber .mat-card.mat-card-v2 .mat-card-header{
+    background-color: mat.get-color-from-palette($background, background);
+  }
+  .pink-bluegrey .mat-card-header .mat-card-title{
+    color: mat.get-color-from-palette($background, background) !important;
+  }
 }
 
-// $mat-card-palette: mat.define-palette($sb-mat-joy-primary);
-// background: mat.get-color-from-palette($mat-card-palette, 300) !important;
-//   color: mat.get-color-from-palette($mat-card-palette, 300-contrast) !important;
+//themes styles
+.deeppurple-amber {
+  $mat-card-palette: mat.define-palette(mat.$deep-purple-palette);
+  .mat-card.mat-card-v2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    overflow: hidden;
+    position: relative;
+    border-radius: 1rem;
+    box-shadow: var(--sbt-box-shadow-6px) !important;
+    padding: 0;
+    .mat-card-header {
+      border-radius: 1rem 1rem 0 0;
+      order: 2;
+      z-index: 2;
+      padding-top: 2rem;
+      display: block;
+      margin-top: 3rem;
+      .mat-card-avatar {
+        height: 4rem;
+        width: 4rem;
+        justify-content: center;
+        border-radius: 50%;
+        position: absolute;
+        top: 0.75rem;
+        z-index: 1;
+        left: 1rem;
+        border: 0.1875rem solid var(--white);
+      }
+    }
+    .mat-card-banner img {
+      position: absolute;
+      top: -2.25rem;
+      left: 0;
+      max-width: 100%;
+      z-index: 1;
+      order: 1;
+      width: 100% !important;
+      margin: 0;
+    }
+    .mat-card-content {
+      padding: 0 1rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.5rem !important;
+      order: 3;
+      &>:first-child {
+        min-height: 3.5rem;
+      }
+    }
+    .mat-card__type {
+      top: 1rem;
+      right: 0.5em;
+      border-radius: 1.5rem;
+      z-index: 2;
+      bottom: unset !important;
+      &::before {
+        content: none !important;
+      }
+    }
+    .mat-card-svg-tail {
+      display: none;
+    }
+  }
+}
+
 .indigo-pink {
   $mat-card-palette: mat.define-palette(mat.$indigo-palette);
-  --cc-mat-card-selected-border:#024f9d;
-  --cc-mat-card-data2-bg: #E5EDF5;
-  --cc-mat-card-data2-bg-active: #0076FE;
-  --cc-mat-card-data1-bg: #F0E5F5;
-  --cc-mat-card-data1-bg-active:#6236FF;
-  --cc-mat-card-data0-bg: #E0F5EA;
-  --cc-mat-card-data0-bg-active:#008840;
-  .mat-card {
+  .mat-card.mat-card-v2 {
     display: flex;
-    // background: mat.get-color-from-palette($mat-card-palette, 300) !important;
-    // color: mat.get-color-from-palette($mat-card-palette, 300-contrast) !important;
     border-radius: 1rem;
     box-shadow: 0.375rem 0.375rem 0.125rem 0 var(--sbt-box-shadow-black) !important;
     padding: 0rem;
     height: 100%;
-    min-height: 15rem;
+    min-height: 12rem;
     .mat-card-header {
       width: 40%;
       margin-bottom: 0 !important;
-      .mat-card-title {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: initial;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        color: var(--primary-color);
-        font-weight: bold !important;
-        line-height: normal;
-      }
-
       .mat-card-avatar {
         height: 100%;
         width: 100%;
         border-radius: 1rem 0 0 1rem;
       }
-
       .mat-card-header-text {
         position: absolute;
         left: 40%;
@@ -113,63 +149,33 @@
         top: 0;
       }
     }
-
     .mat-card-content {
       width: 60%;
       padding: 3.75rem 1rem 1rem 1rem;
       margin: 0;
-
       .text-left {
         position: absolute;
         bottom: 0.5rem;
-        font-size: 0.75rem;
-        margin-right: 1rem;
       }
     }
-
     .mat-card__type {
-      //  background-color: mat.get-color-from-palette($mat-card-palette, '300') !important;
       margin: 0 !important;
       border-radius: 0 0.5rem 0.5rem 0;
-      position: absolute;
       top: 1rem;
       left: 0;
       text-align: center;
-      font-size: 0.6875rem;
-      max-width: 7.5rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       bottom: unset !important;
       &::before {
         content: none !important;
       }
     }
-
-    .mat-chip.mat-standard-chip {
-      min-height: 1.25rem;
-      font-size: 0.75rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 7.5rem;
-      font-weight: normal;
-      &:nth-child(1) {
-        background: var(--cc-mat-card-data1-bg);
-        color: var(--cc-mat-card-data1-bg-active);
-      }
-
-      &:nth-child(2) {
-        background: var(--cc-mat-card-data2-bg);
-        color: var(--cc-mat-card-data2-bg-active);
-      }
-    }
-
     .mat-card-banner img,
     .mat-card-svg-tail {
       display: none;
     }
   }
+
+  //banner card
   .mat-card.mat-banner-card{
     min-height: auto;
     .mat-card-content{
@@ -179,132 +185,13 @@
   }
 }
 
-.deeppurple-amber {
-  $mat-card-palette: mat.define-palette(mat.$deep-purple-palette);
-
-  .mat-card {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-    overflow: hidden;
-    position: relative;
-    border-radius: 1rem;
-    box-shadow: var(--sbt-box-shadow-6px) !important;
-    background: #fff !important;
-    padding: 0;
-
-    .mat-card-header {
-      border-radius: 1rem 1rem 0 0;
-      order: 2;
-      z-index: 2;
-      padding-top: 2rem;
-      background: #fff;
-      display: block;
-      margin-top: 3rem;
-
-      .mat-card-avatar {
-        display: flex;
-        align-items: center;
-        height: 4rem;
-        width: 4rem;
-        justify-content: center;
-        overflow: hidden;
-        border-radius: 50%;
-        position: absolute;
-        top: 0.75rem;
-        z-index: 1;
-        left: 1rem;
-        border: 0.1875rem solid var(--white);
-
-        img {
-          max-width: 100%;
-        }
-      }
-
-      .mat-card-title {
-        display: block;
-      }
-
-      .mat-card-subtitle {
-        font-size: 0.75rem;
-        margin: 0.25rem 0;
-        display: flex;
-      }
-    }
-
-    .mat-card-banner img {
-      position: absolute;
-      top: -2.25rem;
-      left: 0;
-      max-width: 100%;
-      z-index: 1;
-      height: 7.25rem;
-      order: 1;
-      width: 100% !important;
-      margin: 0;
-    }
-
-    .mat-card-content {
-      display: block;
-      padding: 0 1rem;
-      margin-top: 0.25rem;
-      margin-bottom: 0.5rem !important;
-      order: 3;
-      &>:first-child {
-        min-height: 3.5rem;
-      }
-    }
-
-    .mat-card__type {
-      position: absolute;
-      top: 1rem;
-      right: 0.5em;
-      font-size: 0.625rem;
-      background: var(--black);
-      color: var(--white);
-      border-radius: 1.5rem;
-      z-index: 2;
-      bottom: unset !important;
-      &::before {
-        content: none !important;
-      }
-    }
-
-    .mat-chip.mat-standard-chip {
-      min-height: 1.25rem;
-      font-size: 0.75rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 7.5rem;
-      font-weight: normal;
-    }
-
-    .mat-card-svg-tail {
-      display: none;
-    }
-  }
-}
-
 .pink-bluegrey {
   $mat-card-palette: mat.define-palette(mat.$deep-purple-palette);
-
-  .mat-card {
-    .mat-card-content {
-      padding-top: 0.5rem;
-      margin: 0;
-    }
-
-    .mb-32 {
-      margin: 0 !important;
-    }
-
+  .mat-card.mat-card-v2 {
     .mat-card-banner img,
     .mat-card-svg-tail {
       display: none;
     }
-
     .mat-card-avatar {
       border-radius: 0;
       overflow: hidden;
@@ -312,34 +199,9 @@
       height: 4rem;
       width: 4rem;
     }
-
-    .mat-card-content>:first-child {
-      margin: 1rem 0;
-    }
-
     .mat-card-header-text {
       margin-top: 0.5rem;
     }
-
-    .mat-card-subtitle {
-      margin-bottom: 0.25rem;
-    }
-
-    .mat-standard-chip {
-      border-radius: 0;
-      min-height: 1.5rem;
-      padding: 0.3125rem 0.625rem;
-    }
-
-    .mat-chip {
-      min-height: 1.25rem;
-      font-size: 0.75rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 7.5rem;
-    }
-
     .mat-card__type {
       right: 0;
       bottom: 1rem;
@@ -356,7 +218,6 @@
       margin: 0;
     }
   }
-
 }
 
 .purple-green,
@@ -365,259 +226,117 @@
 }
 
 .joy {
-  --cc-mat-card-bg: #fff;
-  --cc-mat-card-avatar-border:#fff;
-  --cc-mat-card-title:#024f9d;
-  --cc-mat-card-type-bg:#000;
-  --cc-mat-card-type:#fff;
-  --cc-mat-card-selected-bg: rgba(2, 79, 157, 0.2);
-  --cc-mat-card-selected-border:#024f9d;
-  --cc-mat-card-data2-bg: #E5EDF5;
-  --cc-mat-card-data2-bg-active: #0076FE;
-  --cc-mat-card-data1-bg: #F0E5F5;
-  --cc-mat-card-data1-bg-active:#6236FF;
-  --cc-mat-card-data0-bg: #E0F5EA;
-  --cc-mat-card-data0-bg-active:#008840;
-  --cc-mat-card-menu:#999;
-  --cc-mat-card-menu-hover:#f2f2f2;
-  --cc-mat-card-img-container-bg:#ccc;
-  --cc-mat-label-badge-br: var(--secondary-color);
-  --cc-mat-label-badge-text: var(--secondary-color);
-  
- $mat-card-palette: mat.define-palette($sb-mat-joy-primary);
+  $mat-card-palette: mat.define-palette($sb-mat-joy-primary);
 
- .mat-card{
-  cursor: pointer;
-  position: relative;
-  border-radius: 1.5rem;
-  box-shadow: var(--sbt-box-shadow-6px) !important;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 0;
-  flex-direction: column;
-  .mat-card-header {
-    z-index: 2;
-    order: 2;
+ .mat-card.mat-card-v2{
+    cursor: pointer;
+    position: relative;
+    border-radius: 1.5rem;
+    box-shadow: var(--sbt-box-shadow-6px) !important;
+    overflow: hidden;
     width: 100%;
-    justify-content: space-between;
-    padding: 0 1rem;
-    .mat-card-avatar {
-      width: 4.5rem;
-      height: 4.5rem;
-      border-radius: 50%;
-      position: absolute;
-      top: 3rem;
-      right: 2rem;
-      overflow: hidden;
-      border: 0.1875rem solid var(--cc-mat-card-avatar-border);
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      background-color: var(--cc-mat-card-img-container-bg);
-      img {
-        min-height: 100%;
-        width: auto;
-        max-width: 100%;
-        height: auto;
+    height: 100%;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    .mat-card-header {
+      display: block;
+      z-index: 2;
+      order: 2;
+      width: 100%;
+      justify-content: space-between;
+      padding: 0 1rem;
+      margin-bottom: 0 !important;
+      .mat-card-avatar {
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%,-50%);
-        overflow: hidden;
-        -o-object-fit: cover;
-        object-fit: cover;
+        top: 3rem;
+        right: 2rem;
+        border: 0.1875rem solid var(--cc-mat-card-avatar-border);
+        z-index: 1;
+        img {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%,-50%);
+        }
+        html[dir='rtl'] & {
+          right: auto;
+          left: 2rem;
+        }
       }
-      html[dir='rtl'] & {
-        right: auto;
-        left: 2rem;
-      }
-    }
-    .mat-card-header-text{
-      margin: 0;
-      width: 100%;
-    }
-    .mat-card-title{
-      width: 70%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: initial;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      font-size: 0.875rem;
-      color: var(--cc-mat-card-title);
-      font-weight: bold;
-      line-height: normal;
-    }
-  }
-  .mat-card-banner{
-    height: 4.5rem;
-    border-radius: 1rem;
-    overflow: hidden;
-    margin: 1rem;
-    img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      margin: 0;
-    }
-  }
-  .mat-card-content {
-    order: 3;
-    margin: 0 !important;
-  }
-  .mat-card-info{
-    padding: 0 1rem 1rem;
-  }
-  .mat-card-chips-list{
-    height: 3.5rem;
-    overflow: hidden;
-    flex-direction: row;
-    align-items: center;
-    padding: 0 1rem;
-    .mat-chip-list{
-      .mat-chip-list-wrapper{
+      .mat-card-header-text{
         margin: 0;
-        .mat-chip {
-          font-size: 0.75rem;
-          font-weight: 500;
-          padding: 0.125rem 0.5rem;
-          min-height: auto;
-          height: auto;
-          margin: 0 0.5rem 0.5rem 0;
-          &.data_0{
-            background: var(--cc-mat-card-data0-bg);
-            color: var(--cc-mat-card-data0-bg-active);
-          }
-          &.data_1{
-            background: var(--cc-mat-card-data1-bg);
-            color: var(--cc-mat-card-data1-bg-active);
-          }
-          &.data_2{
-            background: var(--cc-mat-card-data2-bg);
-            color: var(--cc-mat-card-data2-bg-active);
-          }
+        width: 100%;
+      }
+      .mat-card-title{
+        width: 70%;
+      }
+    }
+    .mat-card-banner{
+      height: 4.5rem;
+      border-radius: 1rem;
+      overflow: hidden;
+      margin: 1rem;
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        margin: 0;
+      }
+    }
+    .mat-card-content {
+      order: 3;
+      margin: 0 !important;
+    }
+    .mat-card-info{
+      padding: 0 1rem 1rem;
+    }
+    .mat-card-chips-list{
+      padding: 0 1rem;
+    }
+    .mat-card__type {
+      top: 2.625rem;
+      left: 0;
+      margin: 0 !important;
+      html[dir='rtl'] & {
+        right: 0;
+        left: auto;
+      }
+      &::before {
+        left: auto !important;
+        html[dir='rtl'] & {
+          left: -0.5rem !important;
+          transform: rotatex(180deg);
+          right: auto;
         }
       }
     }
-  }
-  .mat-card__type {
-    position: absolute;
-    height: 1.25rem;
-    font-size: .6875rem;
-    text-transform: uppercase;
-    top: 2.625rem;
-    left: 0;
-    background: var(--cc-mat-card-type-bg);
-    color: var(--cc-mat-card-type);
-    margin: 0 !important;
-    html[dir='rtl'] & {
-      right: 0;
-      left: auto;
+    &.selected{
+      border-radius: 1.5rem;
     }
-    &::before {
-      border-color: var(--cc-mat-card-type-bg) var(--cc-mat-card-type-bg) var(--cc-mat-card-type-bg) transparent;
-      position: absolute;
-      right: -0.5rem;
-      transform: rotateY(-180deg);
-      content: "";
-      width: 0;
-      height: 0;
-      border-width: 0.625rem 0.3125rem;
-      border-style: solid;
-      left: auto !important;
-      html[dir='rtl'] & {
-        left: -0.5rem !important;
-        transform: rotatex(180deg);
-        right: auto;
+    &.recently-viewed{
+      .mat-card-header .mat-card-avatar{
+        height: 5.5rem;
+        width: 5.5rem;
+        right: 2.5rem;
       }
     }
   }
-  .mat-card-svg-tail{
-    position: absolute;
-    bottom: 0;
-    right: 1rem;
-    .svg-tail__rc{
-      fill: transparent;
-      stroke: var(--primary-color);
-    }
-    html[dir='rtl'] & {
-      right: auto;
-      left: 1rem;
-    }
-  }
-  &.selected{
-    border: 0.063rem solid var(--cc-mat-card-selected-border);
-    border-radius: 1.5rem;
-    background-color: var(--cc-mat-card-selected-bg);
-  }
-  &.recently-viewed{
-    .mat-card-header .mat-card-avatar{
-      height: 5.5rem;
-      width: 5.5rem;
-      right: 2.5rem;
-    }
-  }
-  &.offline{
-    opacity: 0.5;
-    cursor:initial
-  }
-  a.menu {
-    &::after {
-      content: '\2807';
-      font-size: calculateRem(24px);
-      color: var(--cc-mat-card-menu);
-      text-align: center;
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      border-radius: 50%;
-      padding-left: calculateRem(6px);
-      cursor: pointer;
-      width: calculateRem(32px);
-      height: calculateRem(32px);
-    }
-  
-    &:hover {
-      text-decoration: none;
-  
-      &::after {
-        background: var(--cc-mat-card-menu-hover);
-      }
-    }
-  }
-  .mat-card__badge{
-    img{
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-  }
-  .button-label {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    z-index: 9;
-  }
-}
 }
 
 .green-grey {
-  .mat-card {
+  .mat-card.mat-card-v2 {
     .mat-card-header {
       flex-direction: column;
       align-items: center;
     }
-
-    .mat-card-content>:first-child {
-      margin: 1rem 0;
-    }
-
     .mat-card-banner img,
     .mat-card-svg-tail {
       display: none;
     }
-
     .mat-card-avatar {
       border-radius: 50%;
       overflow: hidden;
@@ -625,31 +344,10 @@
       height: 4rem;
       width: 4rem;
     }
-
     .mat-card-header-text {
       text-align: center;
       margin-top: 0.5rem;
     }
-
-    .mat-card-subtitle {
-      margin-bottom: 0.25rem;
-    }
-
-    .mat-standard-chip {
-      border-radius: 0;
-      min-height: 1.5rem;
-      padding: 0.3125rem 0.625rem;
-    }
-
-    .mat-chip {
-      min-height: 1.25rem;
-      font-size: 0.75rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 7.5rem;
-    }
-
     .mat-card__type {
       right: 0;
 

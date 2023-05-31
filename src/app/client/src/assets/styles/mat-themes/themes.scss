@@ -152,6 +152,11 @@ $theme in $app-themes {
       --sbt-filter-bar-bg: var(--sbt-body-bg);
       --list-container-bg: var(--sbt-body-bg2);
       --mat-list-bg-active: var(--secondary-color);
+      //lazy loading styles
+      --cc-mat-card-animation-bg: #333;
+      --cc-mat-card-loading-bg:#666;
+      --cc-mat-card-loading-highlight1:#555;
+      --cc-mat-card-loading-highlight2: #777;
     }
 
     // $variant-themes:mat.define-light-theme($success,$info);
