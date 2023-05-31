@@ -1,63 +1,104 @@
 <div *ngIf="!loader">
-  <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
-    <div class="sb-course-details sb-g sb-g--gap24 text-left course-consumption-container">
-      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+  <div [appTelemetryImpression]="telemetryCourseImpression">
+    <div class="sb-g sb-g--gap24 text-left">
+      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
         <!-- Course details -->
-        <div class="training-info" *ngIf="courseHierarchy">
-          <h4 class="font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDetails}}</h4>
-          <div class="training-relevant mb-16">
-            <h6 class="mt-0 mb-8 fsmall training-relevant__heading">
-              {{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
-              <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_boards">
-                <span>{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_boards?.join(', ')}}</span>
-              </div>
-              <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_mediums">
-                <span>{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_mediums?.join(', ')}}</span>
-              </div>
-              <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_gradeLevels">
-                <span>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_gradeLevels?.join(', ')}}</span>
-              </div>
-              <!-- <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_subjects">
+        <div *ngIf="courseHierarchy">
+          <h3 class="font-weight-bold mat-title">{{generaliseLabelService?.frmelmnts?.lbl?.courseDetails}}</h3>
+          <div class="mat-app-background p-16 pb-cp-header">
+            <h4 class="mt-0 mb-8">
+              {{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h4>
+            <p class="mb-4 mat-body-1" *ngIf="courseHierarchy?.se_boards">
+              <span>{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' :
+                resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_boards?.join(', ')}}</span>
+            </p>
+            <p class="mb-4 mat-body-1" *ngIf="courseHierarchy?.se_mediums">
+              <span>{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' :
+                resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_mediums?.join(', ')}}</span>
+            </p>
+            <p class="mat-body-1 mb-4" *ngIf="courseHierarchy?.se_gradeLevels">
+              <span>{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' :
+                resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_gradeLevels?.join(',
+                ')}}</span>
+            </p>
+            <!-- <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.se_subjects">
                 <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.se_subjects?.join(', ')}}</span>
               </div> -->
-              <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.audience">
-                <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ courseHierarchy?.audience?.join(', ')}}</span>
-              </div>
+            <p class="mb-4 mat-body-1" *ngIf="courseHierarchy?.audience">
+              <span>{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{
+                courseHierarchy?.audience?.join(', ')}}</span>
+            </p>
             <div *ngIf="courseHierarchy?.description">
-              <label class="fsmall mt-16 mb-8">{{resourceService?.frmelmnts?.lbl?.description}}</label>
-              <p *ngIf="!readMore" class="traning-relevant__description sb-color-gray-400 fnormal">
+              <h4 class="my-8">{{resourceService?.frmelmnts?.lbl?.description}}</h4>
+              <p *ngIf="!readMore" class="mat-body-1 mb-0">
                 {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
-                <span class="ui cardsKnowMore mouse-pointer"
-                  *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
+                <span class="mouse-pointer" *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
                   tabindex="0" (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
               </p>
-              <p *ngIf="readMore" class="traning-relevant__description sb-color-gray-400">
+              <p *ngIf="readMore" class="mat-body-1 mb-0">
                 {{ courseHierarchy?.description}}&nbsp;
-                <span class="ui cardsKnowMore mouse-pointer"
-                  tabindex="0" (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
+                <span class="mouse-pointer" tabindex="0"
+                  (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
               </p>
             </div>
           </div>
         </div>
 
         <div class="training-modules my-16">
-          <div class="training-modules__title d-flex flex-ai-center mb-16">
-            <h4 class="sb-pageSection-title sb-pageSection-title-light">
-              {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h4>
-            <button *ngIf="!isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
+          <div class="d-flex flex-ai-center mb-16">
+            <h3 class="mb-0 mr-auto mat-title">
+              {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h3>
+            <button *ngIf="!isExpandedAll" mat-raised-button class="button-rounded color-accent" tabindex="0"
               tabindex="0" (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
                 src="assets/images/plus.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
-            <button *ngIf="isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
+            <button *ngIf="isExpandedAll" mat-raised-button class="button-rounded color-accent" tabindex="0"
               tabindex="0" (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
                 src="assets/images/collapse.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
 
-          <div class="course-consumption-modules-container" *ngFor="let item of courseHierarchy?.children; let index = index">
-            <sb-accordion [multi]="false">
+          <mat-accordion *ngFor="let item of courseHierarchy?.children; let index = index" [multi]="false">
+            <mat-expansion-panel class="mat-app-background" [expanded]="isExpanded(index)">
+              <mat-expansion-panel-header (click)="isModuleExpanded = true;" tabindex="0">
+                <mat-panel-title tabindex="0" title class="mat-caption-1 mb-0 color-accent">
+                  <i class="icon-svg icon-svg--sm icon-tick mr-8"
+                    *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
+                    <svg class="icon">
+                      <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
+                    </svg>
+                  </i>
+                  {{item?.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div>
+          
+                <div *ngIf="item;else noContent">
+                  <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                    <div class="course-player-list">
+                      <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, 'toc-card')" [type]="cardType">
+                      </sb-toc-card>
+                    </div>
+                  </div>
+                  <div *ngIf="item?.children?.length">
+                    <div *ngFor="let child of item?.children" class="course-player-list">
+          
+                      <sb-toc-child-item [childData]="child" (tocCardClick)="navigateToContent($event, 'child-item')"
+                        [type]="cardType">
+                      </sb-toc-child-item>
+          
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noContent>
+                  <div class="heading">{{noContentMessage}}</div>
+                </ng-template>
+          
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+          <!-- <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)">
                 <sb-accordion-header class="sb-bg-color-gray-0">
                   <i class="icon-svg icon-svg--sm icon-tick mr-8"
@@ -84,7 +125,8 @@
                           <div *ngFor="let child of item?.children">
                             <div>
                               <sb-toc-child-item [childData]="child"
-                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType" class="sb-toc-child-item">
+                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType"
+                                class="sb-toc-child-item">
                               </sb-toc-child-item>
                             </div>
                           </div>
@@ -97,8 +139,8 @@
                   </div>
                 </sb-accordion-body>
               </sb-accordion-item>
-            </sb-accordion>
-          </div>
+            </sb-accordion> -->
+
         </div>
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
