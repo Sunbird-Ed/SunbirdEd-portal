@@ -9,41 +9,41 @@
     </mat-expansion-panel-header>
     <div content role="region" id="creditsLicenceInfo" aria-labelledby="creditsLicenceInfo">
       <div class="content-metadata-item" *ngIf="courseHierarchy?.author">
-        <div class="content-metadeta__title mat-caption color-accent">
+        <div class="title mat-caption color-accent">
           {{resourceService?.frmelmnts?.lbl?.author}}</div>
-        <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.author}}</div>
+        <div class="text mat-body-1">{{courseHierarchy?.author}}</div>
       </div>
       <div class="content-metadata-item" *ngIf="courseHierarchy?.creator">
-        <div class="content-metadeta__title mat-caption color-accent">
+        <div class="title mat-caption color-accent">
           {{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
-        <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.creator}}</div>
+        <div class="text mat-body-1">{{courseHierarchy?.creator}}</div>
       </div>
       <div class="content-metadata-item">
-        <div class="content-metadeta__title mat-caption color-accent">
+        <div class="title mat-caption color-accent">
           {{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
-        <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.organisation?.join(', ')}}
+        <div class="text mat-body-1">{{courseHierarchy?.organisation?.join(', ')}}
         </div>
-        <div *ngIf="courseHierarchy?.orgDetails?.email" class="content-metadeta__text mat-body-1"><a
+        <div *ngIf="courseHierarchy?.orgDetails?.email" class="text mat-body-1"><a
             href="mailto:{{courseHierarchy?.orgDetails?.email}}?subject={{courseHierarchy?.name}}">
             {{courseHierarchy?.orgDetails?.email}}
           </a></div>
       </div>
 
       <div class="content-metadata-item" *ngIf="courseHierarchy?.createdOn">
-        <div class="content-metadeta__title mat-caption color-accent">
+        <div class="title mat-caption color-accent">
           {{resourceService?.frmelmnts?.lbl?.coursecreatedon}}</div>
-        <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.createdOn | dateFormat}}</div>
+        <div class="text mat-body-1">{{courseHierarchy?.createdOn | dateFormat}}</div>
       </div>
 
       <div class="content-metadata-item" *ngIf="courseHierarchy?.lastUpdatedOn">
-        <div class="content-metadeta__title mat-caption color-accent">
+        <div class="title mat-caption color-accent">
           {{resourceService?.frmelmnts?.lbl?.updatedon}}</div>
-        <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.lastUpdatedOn | dateFormat}}
+        <div class="text mat-body-1">{{courseHierarchy?.lastUpdatedOn | dateFormat}}
         </div>
       </div>
 
       <div class="content-metadata-item" *ngIf="showCredits">
-        <div class="content-metadeta__text mat-body-1">
+        <div class="text mat-body-1">
           <a (click)="showContentCreditsModal = true" title="{{resourceService?.frmelmnts?.lbl?.courseCredits}}"
             class="cursor-pointer credits color_accent">
             {{resourceService?.frmelmnts?.lbl?.courseCredits}}
@@ -52,9 +52,9 @@
       </div>
 
       <div class="content-metadata-item">
-        <div class="content-metadeta__title mat-caption color-accent">
+        <div class="title mat-caption color-accent">
           {{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
-        <div class="content-metadeta__text mat-body-1">{{courseHierarchy?.license}}</div>
+        <div class="text mat-body-1">{{courseHierarchy?.license}}</div>
         <span class="license content-metadata__text mat-body-1">
           {{resourceService?.frmelmnts?.lbl?.forDetails}} - <a class="credits color_info"
             [href]="courseHierarchy?.licenseDetails?.url" target="_blank">{{courseHierarchy?.licenseDetails?.url}}</a>

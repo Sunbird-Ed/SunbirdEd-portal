@@ -24,7 +24,7 @@
         </div>
       </div>
       <div *ngIf="showAllBatchError">
-        <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+        <div class="bgcolor-error px-16 py-8">{{resourceService.messages.stmsg.m0081}}</div>
       </div>
     </mat-dialog-content>
   </ng-template>
@@ -42,36 +42,36 @@
     <div role="region" id="batches" aria-labelledby="batches">
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
-          <div class="batch-details__dropdown">
-            <div>
-              <mat-form-field appearance="fill" class="w-100">
-                <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
-                <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage" class="selection"
-                  [(ngModel)]="batchStatus" (selectionChange)="getSelectedBatches()">
-                  <mat-option role="option" *ngFor="let option of statusOptions" [value]="option.value"
-                    attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div *ngFor="let batch of batchList">
+          <div class="batch-details__dropdown mb-16">
+            
+            <mat-form-field appearance="fill" class="w-100 sb-mat-form-field-custom border-radius" color="accent">
+              <mat-label>{{resourceService.frmelmnts?.lbl?.batchStatus}}</mat-label>
+              <mat-select role="listbox" aria-label="Select Status" [(value)]="selectedLanguage" class="selection"
+                [(ngModel)]="batchStatus" (selectionChange)="getSelectedBatches()">
+                <mat-option role="option" *ngFor="let option of statusOptions" [value]="option.value"
+                  attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <div *ngFor="let batch of batchList" class="mt-16">
 
-              <div class="mat-subheading-2"><mat-icon aria-hidden="false" aria-label="Calender"
+              <p class="mat-body-1 color-accent mb-8 d-flex flex-w-wrap flex-ai-center flex-w-wrap"><mat-icon aria-hidden="false" aria-label="Calender"
                   fontIcon="calendar_month"></mat-icon>
                 {{batch.startDate | dateFormat}}
                 <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span>
-              </div>
-              <div class="batch-details__edit py-8">
+              </p>
+              <div class="batch-details__edit d-flex flex-ai-center">
                 <div *ngIf="allowBatchCreation && allowCertCreation">
-                  <div *ngIf="!isCertAdded(batch)" class="mat-body-1 color_primary">
+                  <div *ngIf="!isCertAdded(batch)" class="mat-body-1 color-accent">
                     <a href="javascript:void(0)" tabindex="0"
                       (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
                   </div>
-                  <div *ngIf="isCertAdded(batch)" class="mat-body-1 color_primary">
+                  <div *ngIf="isCertAdded(batch)" class="mat-body-1 color-accent">
                     <a href="javascript:void(0)" tabindex="0"
                       (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
                   </div>
                 </div>
-                <button mat-stroked-button color="primary" class="ml-auto" tabindex="0"
+                <button mat-raised-button class="ml-auto color-accent button-rounded" tabindex="0"
                   (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);"
                   [ngClass]="{'sb-btn-disabled': (!isExpiredBatchEditable && batch.status === 2)}"
                   [disabled]="(!isExpiredBatchEditable && batch.status === 2)">
@@ -80,26 +80,26 @@
               </div>
 
 
-              <div class="batch-details__created mat-caption mt-8" *ngIf="userNames[batch.createdBy]">
+              <p class="mat-caption mt-8" *ngIf="userNames[batch.createdBy]">
                 {{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}
                 {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}
-              </div>
-              <div class="batch-details__created mt-8 mat-caption"
+              </p>
+              <div class="mt-8 mat-caption"
                 *ngIf="isValidEnrollmentEndDate(batch.enrollmentEndDate)">
                 <span class="mat-caption"
                   *ngIf="!isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0136}}
                   {{batch.enrollmentEndDate | dateFormat}}</span>
-                <span class="color_warn"
+                <span class="color-warn"
                   *ngIf="isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0134}}</span>
               </div>
             </div>
           </div>
           <div class="content mt-16" *ngIf="batchList.length <= 0">
-            <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+            <div class="bgcolor-error px-16 py-8">{{resourceService.messages.stmsg.m0081}}</div>
           </div>
         </div>
         <div *ngIf="showError">
-          <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+          <div class="bgcolor-error px-16 py-8">{{resourceService.messages.stmsg.m0081}}</div>
         </div>
         <div class="batch-deatils__button text-right" *ngIf="isTrackable && showCreateBatchBtn">
           <button mat-raised-button color="accent" class="width-100 button-rounded" tabindex="0"
@@ -123,24 +123,24 @@
       <div class="batch-details">
         <div class="mb-16">
           <div *ngIf="batchDetails?.startDate">
-            <div class="content-metadeta__title mat-caption color-accent">
+            <div class="mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
-            <div class="content-metadeta__text mat-body-1">{{batchDetails?.startDate | dateFormat}}
+            <div class="mat-body-1">{{batchDetails?.startDate | dateFormat}}
             </div>
           </div>
           <hr class="section-hr" *ngIf="batchDetails?.endDate" />
           <div *ngIf="batchDetails?.endDate">
-            <div class="content-metadeta__title mat-caption color-accent">
+            <div class="mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
-            <div class="content-metadeta__text mat-body-1">{{batchDetails?.endDate | dateFormat}}</div>
+            <div class="mat-body-1">{{batchDetails?.endDate | dateFormat}}</div>
           </div>
           <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
           <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-            <div class="content-metadeta__title mat-caption color-accent">
+            <div class="mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
-            <div class="content-metadeta__text mat-body-1"> {{batchDetails?.enrollmentEndDate |
+            <div class="mat-body-1"> {{batchDetails?.enrollmentEndDate |
               dateFormat}}</div>
-            <div class="sb-label-status-error" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
+            <div class="color-warn" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
               {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
           </div>
         </div>
