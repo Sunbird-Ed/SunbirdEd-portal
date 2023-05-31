@@ -2,6 +2,16 @@
 @use "pages/course-player" as *;
 @use 'pages/content-header' as *;
 
+.pb-cp-header {
+  border-radius: 1.5rem;
+}
+.course-player-list {
+  padding: calculateRem(16px);
+  margin-bottom: calculateRem(16px);
+  border-radius: calculateRem(24px);
+  box-shadow: 0.1875rem 0.1875rem 0.125rem 0 rgba(0,0,0,.2);
+  background-color: var(--list-container-bg);
+}
 .course-list_title {
   color: var(--gray-800);
   font-size: calculateRem(14px);
