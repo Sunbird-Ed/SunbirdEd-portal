@@ -176,14 +176,14 @@
         <div class="d-flex flex-w-wrap flex-dr">
           <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd d-flex flex-ai-center w-auto" >
           <mat-select role="listbox" formControlName="reportType" class="selection"
-          [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport" [disabled]="!userAccess">
+          [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport" [disabled]="!userAccess || !reportForm.controls.solution.value">
             <mat-option role="option" *ngFor="let report of reportTypes" class="custom_mat_dd mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
               {{report?.name}}
             </mat-option>
           </mat-select>
           </mat-form-field>
-          <button [disabled]="(!reportForm.valid && !userAccess)" 
-                  [ngClass]="{'sb-btn-disabled': (!reportForm.valid && !userAccess )}"
+          <button [disabled]="(!reportForm.valid && (!userAccess || !reportForm.controls.solution.value))" 
+                  [ngClass]="{'sb-btn-disabled': (!reportForm.valid && (!userAccess || !reportForm.controls.solution.value))}"
                   type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary ml-12" (click)="requestDataset()">
                     {{resourceService?.frmelmnts?.btn?.requestReport}}
                   </button>
