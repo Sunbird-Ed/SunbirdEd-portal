@@ -50,13 +50,9 @@
               {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h3>
             <button *ngIf="!isExpandedAll" mat-raised-button
               class="button-rounded ml-auto d-flex flex-ai-center color-accent" tabindex="0"
-              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
-                src="assets/images/plus.png" class="mr-8" alt=""
-                width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
+              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><mat-icon>add</mat-icon>{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
             <button *ngIf="isExpandedAll" mat-raised-button class="button-rounded ml-auto d-flex flex-ai-center color-accent" tabindex="0"
-              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
-                src="assets/images/collapse.png" class="mr-8" alt=""
-                width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
+              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><mat-icon>remove</mat-icon>{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
 
           <!-- <div *ngFor="let item of courseHierarchy?.children; let index = index">
