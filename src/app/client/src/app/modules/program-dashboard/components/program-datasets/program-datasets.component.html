@@ -182,8 +182,8 @@
             </mat-option>
           </mat-select>
           </mat-form-field>
-          <button [disabled]="(!reportForm.valid && (!userAccess || !reportForm.controls.solution.value))" 
-                  [ngClass]="{'sb-btn-disabled': (!reportForm.valid && (!userAccess || !reportForm.controls.solution.value))}"
+          <button [disabled]="(!reportForm.valid)" 
+                  [ngClass]="{'sb-btn-disabled': (!reportForm.valid)}"
                   type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary ml-12" (click)="requestDataset()">
                     {{resourceService?.frmelmnts?.btn?.requestReport}}
                   </button>
