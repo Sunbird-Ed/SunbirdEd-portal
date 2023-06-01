@@ -26,6 +26,7 @@ export class SbTableComponent implements AfterViewInit  {
   }
 
   exportToCsv() {
+    console.log('exportToCsv');
     this.lib.instance.exportAs('csv');
   }
   reset() {
