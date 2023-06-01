@@ -43,7 +43,7 @@
 
       .mat-title {
         $title-typography: mat.define-typography-config($subheading-2: mat.define-typography-level($font-size: 1rem !important,
-            $font-family: inherit,
+            $font-family: inherit, $line-height: normal,
             $font-weight: 700));
         @include mat.typography-level($title-typography, 'subheading-2');
         // font-size: mat.font-size($pagebackTitle, $title);
@@ -52,13 +52,14 @@
         color: mat.get-color-from-palette($primary, 500-contrast);
         // color: mat.get-color-from-palette($accent);
         width: 95%;
-        line-height: normal;
+        white-space: initial;
       }
 
       &__actions {
         .sb-label-status-error {
           color: mat.get-color-from-palette($warn);
           font-size: 0.75rem;
+          background-color:  mat.get-color-from-palette($warn, 100);
         }
       }
 

@@ -1,17 +1,45 @@
 @use './breakpoints' as *;
 
-@each $name,
-$breakpoint in $breakpoints {
+/* width responsive */
+$width: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100;
 
-@media(min-width: $breakpoint) {
-    .h-auto-above-#{$name} {
-        height: auto !important;
+@each $var in $width {
+    .w-#{$var} {
+        width: #{$var}+'%';
+        max-width: #{$var}+'%';
     }
-}
 
-@media(max-width:$breakpoint - 0.1) {
-    .h-auto-below-#{$name} {
-        height: auto !important;
+    @each $name,
+    $breakpoint in $breakpoints {
+
+
+        @media(min-width: $breakpoint) {
+
+            //.w-above-xs-5
+            .w-above-#{$name}-#{$var} {
+                width: #{$var}+'%';
+                max-width: #{$var}+'%';
+            }
+
+            //.h-auto-above-xs
+            .h-auto-above-#{$name} {
+                height: auto !important;
+            }
+        }
+
+
+        @media(max-width: $breakpoint - 0.1) {
+
+            //.w-below-xs-5
+            .w-below-#{$name}-#{$var} {
+                width: #{$var}+'%';
+                max-width: #{$var}+'%';
+            }
+
+            //.h-auto-below-xs
+            .h-auto-below-#{$name} {
+                height: auto !important;
+            }
+        }
     }
-}
 }

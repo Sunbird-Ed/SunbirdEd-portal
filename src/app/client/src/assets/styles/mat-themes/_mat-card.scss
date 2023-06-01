@@ -32,17 +32,17 @@
   .mat-card-header-text {
     overflow: hidden;
   }
-  .sb__ellipsis {
-    -webkit-box-orient: vertical;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 1;
-    overflow: hidden !important;
-    text-overflow: ellipsis;
-    word-break: break-word !important;
-  }
-  .sb__ellipsis--two {
-    -webkit-line-clamp: 2 !important;
-  }
+  // .sb__ellipsis {
+  //   -webkit-box-orient: vertical;
+  //   display: -webkit-box !important;
+  //   -webkit-line-clamp: 1;
+  //   overflow: hidden !important;
+  //   text-overflow: ellipsis;
+  //   word-break: break-word !important;
+  // }
+  // .sb__ellipsis--two {
+  //   -webkit-line-clamp: 2 !important;
+  // }
 
   //themes 
   .deeppurple-amber .mat-card.mat-card-v2.selected .mat-card-header{
