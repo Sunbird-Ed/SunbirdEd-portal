@@ -176,7 +176,7 @@
         <div class="d-flex flex-w-wrap flex-dr">
           <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd d-flex flex-ai-center w-auto" >
           <mat-select role="listbox" formControlName="reportType" class="selection"
-          [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport" [disabled]="!userAccess || !reportForm.controls.solution.value">
+          [placeholder]="resourceService?.frmelmnts?.lbl?.selectReport" [disabled]="!userAccess">
             <mat-option role="option" *ngFor="let report of reportTypes" class="custom_mat_dd mat-dropdown__options" [value]="report?.name" (click)="reportChanged(report)">
               {{report?.name}}
             </mat-option>
