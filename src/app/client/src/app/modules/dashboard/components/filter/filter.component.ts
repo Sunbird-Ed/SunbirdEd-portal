@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, Inject} from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService} from '@sunbird/shared';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
@@ -9,7 +9,6 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -43,6 +42,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   formChartData: any = [];
   currentReference: any;
   firstFilter: any;
+  errorMessage: any;
 
   @Input()
   set selectedFilter(val: any) {
@@ -126,7 +126,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       previousKeys = Object.keys(this.previousFilters);
     }
     _.forEach(this.filters, filter => {
-      const { reference } = filter;
+      const { reference, dependency } = filter;
       const options = (_.sortBy(_.uniq(
         _.map(chartData, (data) => (data && data[reference]) ? data[reference].toLowerCase() : ''
         )))).filter(Boolean);
@@ -344,6 +344,11 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   getFiltersValues(filter) {
    return Array.isArray(filter) ? filter : [filter];
+  }
+
+  showErrorMessage(event){
+    const regex = /{displayName}/g
+    this.errorMessage = event?.displayName ? this.resourceService?.frmelmnts?.lbl?.selectDependentFilter.replace(regex, event.displayName): undefined;
   }
 
 }
