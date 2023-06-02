@@ -130,7 +130,7 @@
     "ngx-infinite-scroll": "^8.0.2",
     "rxjs": "^6.5.5",
     "sass": "^1.56.1",
-    "sb-dashlet-v14": "1.0.1",
+    "sb-dashlet-v14": "1.0.2",
     "sb-svg2pdf-v13": "1.0.0",
     "sb-tag-manager": "^3.9.15",
     "tree-model": "^1.0.7",
