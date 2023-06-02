@@ -14,7 +14,10 @@ import {OverlayContainer} from "@angular/cdk/overlay";
 describe('App Component', () => {
   let appComponent: AppComponent;
   const mockOverlayContainer: Partial<OverlayContainer> = {
-    getContainerElement:jest.fn().mockReturnValue('cdk-overlay-container purple-green') as any
+    getContainerElement:jest.fn(()=>({
+      classList:'cdk-overlay-container purple-green'
+    })
+    ) as any
   };
   const mockCacheService: Partial<CacheService> = {
     set: jest.fn()

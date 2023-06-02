@@ -18,12 +18,12 @@ import { CacheService } from '../app/modules/shared/services/cache-service/cache
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 import { SBTagModule } from 'sb-tag-manager';
-import {OverlayContainer} from "@angular/cdk/overlay";
+import { OverlayContainer } from "@angular/cdk/overlay";
 
- /* angular material theme  */
+/* angular material theme  */
 const THEME_DARKNESS_SUFFIX = `-dark`;
- /* angular material theme  */
- 
+/* angular material theme  */
+
 /**
  * main app component
  */
@@ -35,49 +35,47 @@ const THEME_DARKNESS_SUFFIX = `-dark`;
 
 export class AppComponent implements OnInit, OnDestroy {
 
-   /* angular material theme  */
+  /* angular material theme  */
   themes: string[] = [
-		"deeppurple-amber",
-		"indigo-pink",
-		"pink-bluegrey",
-		"purple-green",
+    "deeppurple-amber",
+    "indigo-pink",
+    "pink-bluegrey",
+    "purple-green",
     "joy",
     "green-grey",
-	];
-	
-	@HostBinding('class') activeThemeCssClass: string;
-	isThemeDark = false;
-	activeTheme: string;
-  
+  ];
+
+  @HostBinding('class') activeThemeCssClass: string;
+  isThemeDark = false;
+  activeTheme: string;
+
   setMatTheme(theme: string, darkness: boolean = null) {
     localStorage.setItem('selectedTheme', theme);
     console.log(theme, darkness);
-		if (darkness === null)
-			darkness = this.isThemeDark;
-		else if (this.isThemeDark === darkness) {
-			if (this.activeTheme === theme) return;
-		} else
-			this.isThemeDark = darkness;
-		
-		this.activeTheme = theme;
-		
-		const cssClass = darkness === true ? theme + THEME_DARKNESS_SUFFIX : theme;
-		
-		const classList = this.overlayContainer.getContainerElement().classList;
-    document.documentElement.setAttribute('class', theme);
-    console.log('theme ' + classList);
-		if (classList.contains(this.activeThemeCssClass))
-			classList.replace(this.activeThemeCssClass, cssClass);
-		else
-			classList.add(cssClass);
-		
-		this.activeThemeCssClass = cssClass;
-	}
+    if (darkness === null)
+      darkness = this.isThemeDark;
+    else if (this.isThemeDark === darkness) {
+      if (this.activeTheme === theme) return;
+    } else
+      this.isThemeDark = darkness;
 
-/* material dark themes */
-	toggleDarkness() {
-		this.setMatTheme(this.activeTheme, !this.isThemeDark);
-	}
+    this.activeTheme = theme;
+    const cssClass = darkness === true ? theme + THEME_DARKNESS_SUFFIX : theme;
+    const classList = this.overlayContainer.getContainerElement().classList;
+    document.documentElement.setAttribute('class', theme);
+     if (this.activeThemeCssClass) {
+      if (classList.contains(this.activeThemeCssClass))
+        classList.replace(this.activeThemeCssClass, cssClass);
+      else
+        classList.add(cssClass);
+     }
+      this.activeThemeCssClass = cssClass;
+  }
+
+  /* material dark themes */
+  toggleDarkness() {
+    this.setMatTheme(this.activeTheme, !this.isThemeDark);
+  }
 
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
@@ -181,7 +179,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('resetFontSize') resetFontSize: ElementRef;
   @ViewChild('darkModeToggle') darkModeToggle: ElementRef;
 
-  constructor(private overlayContainer: OverlayContainer,private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+  constructor(private overlayContainer: OverlayContainer, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
@@ -192,17 +190,17 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
     private connectionService: ConnectionService, public genericResourceService: GenericResourceService) {
-    
-      
-      const selectedMatTheme = localStorage.getItem('selectedTheme');
-      console.log(selectedMatTheme);
-      if (selectedMatTheme) {
-        this.setMatTheme(selectedMatTheme, false);
-      } else {
-        this.setMatTheme('joy', false); // Default Theme pink-bluegrey
-      }
 
-      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+
+    const selectedMatTheme = localStorage.getItem('selectedTheme');
+    console.log(selectedMatTheme);
+    if (selectedMatTheme) {
+      this.setMatTheme(selectedMatTheme, false);
+    } else {
+      this.setMatTheme('joy', false); // Default Theme pink-bluegrey
+    }
+
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || 'base';
     if (layoutType === 'base' || layoutType === 'joy') {
@@ -212,7 +210,7 @@ export class AppComponent implements OnInit, OnDestroy {
       document.documentElement.setAttribute('layout', 'base');
     }
   }
-  
+
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 
@@ -1171,7 +1169,7 @@ export interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
+  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
 ];
