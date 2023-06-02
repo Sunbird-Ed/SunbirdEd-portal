@@ -8436,11 +8436,6 @@ jsonc-parser@3.1.0:
   resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.1.0.tgz#73b8f0e5c940b83d03476bc2e51a20ef0932615d"
   integrity sha512-DRf0QjnNeCUds3xTjKlQQ3DpJD51GvDjJfnxUVWg6PZTo2otSm+slzNAxU/35hF8/oJIKoG9slq30JYOsF2azg==
 
-jsonexport@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/jsonexport/-/jsonexport-3.2.0.tgz#e5b4905ea1f6c8f8e0f62e4ceb26e4a31f1c93a8"
-  integrity sha512-GbO9ugb0YTZatPd/hqCGR0FSwbr82H6OzG04yzdrG7XOe4QZ0jhQ+kOsB29zqkzoYJLmLxbbrFiuwbQu891XnQ==
-
 jsonfile@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
@@ -11606,10 +11601,10 @@ saxes@^6.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-sb-dashlet-v14@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/sb-dashlet-v14/-/sb-dashlet-v14-1.0.2.tgz#97ea85514b5c6033a26b96010baf91af45086b1f"
-  integrity sha512-Cy+1aK4y/rSWZHV4WQ0AjNN1z60HQ3u3HYRRxtipwlauQyHM2OIaVlZ9uaSe+XrY1JkcXQOLYFYtLFLOI225FQ==
+sb-dashlet-v14@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/sb-dashlet-v14/-/sb-dashlet-v14-1.0.3.tgz#7a0061856eda67e23562548d6bba2a9265ceb60c"
+  integrity sha512-udfaA3f0pZ4+YxdqaEuCMnED4paz5RNvjl4EhVsgsGiUW768e5+lvM0+xqd4CVZATjYiayq7sHIyoBH2q9PuRg==
   dependencies:
     "@types/datatables.net" "1.10.19"
     angular-datatables "14.0.2"
@@ -11619,7 +11614,6 @@ sb-dashlet-v14@1.0.2:
     datatables.net-dt "1.10.20"
     joi "17.4.0"
     jquery "3.4.1"
-    jsonexport "3.2.0"
     lodash-es "4.17.21"
     ng-multiselect-dropdown "0.3.4"
     ng2-charts "2.4.2"
