@@ -6,6 +6,7 @@ import { SharedModule } from '@sunbird/shared';
 import { ExploreGroupComponent, ExploreFtuPopupComponent } from './components';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { GroupRoutingModule } from './group-routing.module';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { GroupRoutingModule } from './group-routing.module';
     CoreModule,
     SharedModule,
     GroupRoutingModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    MatToolbarModule
   ],
   declarations: [ ExploreGroupComponent, ExploreFtuPopupComponent ],
   exports: []

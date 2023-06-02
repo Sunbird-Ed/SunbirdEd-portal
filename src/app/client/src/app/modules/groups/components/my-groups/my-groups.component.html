@@ -1,9 +1,9 @@
 <mat-toolbar color="primary" class="toolbar-pageback">
 
-  <div class="d-flex flex-ai-center w-50">
+  <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
     <app-back-button></app-back-button>
     <div class="toolbar-pageback__heading">
-      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">
+      <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">
         {{resourceService?.frmelmnts?.tab?.mygroups}}</h3>
     </div>
   </div>
@@ -36,18 +36,16 @@
   </div>
 
   <div *ngIf="groupsList.length&& !isLoader" [appTelemetryImpression]="telemetryImpression">
-      <div class="sb-card-grid">
-          <sb-group-card *ngFor="let group of groupsList" [isSuspended]="group?.status === 'suspended'"
-            [suspendBadgeText]="resourceService?.frmelmnts?.lbl?.deactivategrp" [group]="group"
-            [isAdmin]="group?.isAdmin" [initial]="group?.initial"
-            (cardClick)="navigateToDetailPage($event)"></sb-group-card>
+    <div class="sb-card-grid">
+      <sb-group-card *ngFor="let group of groupsList" [isSuspended]="group?.status === 'suspended'"
+        [suspendBadgeText]="resourceService?.frmelmnts?.lbl?.deactivategrp" [group]="group" [isAdmin]="group?.isAdmin"
+        [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
     </div>
   </div>
 
-    <div class="sb-card-grid" *ngIf="isLoader">
-        <sb-group-card [isLoading]="true" role="link" tabindex="0"
-        *ngFor="let group of [1,2,3,4,5,6,7,8]"></sb-group-card>
-      </div>
+  <div class="sb-card-grid" *ngIf="isLoader">
+    <sb-group-card [isLoading]="true" role="link" tabindex="0" *ngFor="let group of [1,2,3,4,5,6,7,8]"></sb-group-card>
+  </div>
   <router-outlet></router-outlet>
 
 </div>

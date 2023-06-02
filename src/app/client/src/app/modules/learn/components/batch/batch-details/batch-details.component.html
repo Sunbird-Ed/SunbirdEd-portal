@@ -24,7 +24,7 @@
         </div>
       </div>
       <div *ngIf="showAllBatchError">
-        <div class="bgcolor-error px-16 py-8">{{resourceService.messages.stmsg.m0081}}</div>
+        <div class="bgcolor-error px-16 py-8 mat-body-2">{{resourceService.messages.stmsg.m0081}}</div>
       </div>
     </mat-dialog-content>
   </ng-template>
@@ -95,11 +95,11 @@
             </div>
           </div>
           <div class="content mt-16" *ngIf="batchList.length <= 0">
-            <div class="bgcolor-error px-16 py-8">{{resourceService.messages.stmsg.m0081}}</div>
+            <div class="bgcolor-error px-16 py-8 mat-body-2">{{resourceService.messages.stmsg.m0081}}</div>
           </div>
         </div>
         <div *ngIf="showError">
-          <div class="bgcolor-error px-16 py-8">{{resourceService.messages.stmsg.m0081}}</div>
+          <div class="bgcolor-error px-16 py-8 mat-body-2">{{resourceService.messages.stmsg.m0081}}</div>
         </div>
         <div class="batch-deatils__button text-right" *ngIf="isTrackable && showCreateBatchBtn">
           <button mat-raised-button color="accent" class="width-100 button-rounded" tabindex="0"

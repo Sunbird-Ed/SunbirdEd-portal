@@ -1,7 +1,5 @@
 <!-- Loader -->
-<div class="two wide column" *ngIf="showLoader">
-  <app-loader></app-loader>
-</div>
+  <app-loader *ngIf="showLoader"></app-loader>
 <!-- /Loader-->
 <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 

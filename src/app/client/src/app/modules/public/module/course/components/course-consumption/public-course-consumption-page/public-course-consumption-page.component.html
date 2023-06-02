@@ -7,7 +7,7 @@
         class="thumbnail">
     </div>
     <div class="toolbar-pageback__heading" *ngIf="!showLoader && !showError">
-      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
+      <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
       <div class="toolbar-pageback__metadata">
         <sui-rating class="ui star rating" [isReadonly]="true" [ngModel]="courseHierarchy.me_averageRating || 0"
         [maximum]="5"></sui-rating>
@@ -18,7 +18,7 @@
 
   <div *ngIf="!showLoader && !showError" class="toolbar-pageback__action ml-auto">
     <div *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)">
-      <span class="sb-label-12size"
+      <span class="mat-caption"
         *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
         {{enrollmentEndDate | dateFormat}}</span>
       <span class="sb-label-status-error"

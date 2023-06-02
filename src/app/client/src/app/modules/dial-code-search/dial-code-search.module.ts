@@ -11,6 +11,7 @@ import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './compon
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     FormsModule,
     PlayerHelperModule,
     SharedFeatureModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    MatToolbarModule
   ],
   declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent]
 })

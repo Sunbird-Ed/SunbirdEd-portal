@@ -1,12 +1,10 @@
 <!-- Loader -->
-<span *ngIf="showLoader">
-  <app-loader></app-loader>
-</span>
+<app-loader *ngIf="showLoader"></app-loader>
 <!-- /Loader-->
 <!-- Back Button -->
 <mat-toolbar color="primary" class="toolbar-pageback">
     <!-- /* Back button */ -->
-   <div class="d-flex flex-ai-center">
+   <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
       <button type="button" mat-mini-fab color="accent"
       class="button-rounded" tabindex="0" (click)="goBack()"
       attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
@@ -17,18 +15,18 @@
       <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
     </div>
     <div class="toolbar-pageback__heading">
-      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
+      <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
       <!-- Textbook Rating with share icon -->
       <div class="toolbar-pageback__metadata">
         <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
           [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
-        <button mat-button color="accent" tabindex="0" (click)="onShareLink();sharelinkModal=true;">
+        <button mat-button tabindex="0" (click)="onShareLink();sharelinkModal=true;">
           <mat-icon aria-hidden="false" attr.aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="share"></mat-icon>
           {{resourceService?.frmelmnts?.lbl?.share}}
         </button>
 
-        <button mat-button color="accent" class="ml-8"
+        <button mat-button class="ml-8"
           *ngIf="!isDesktopApp && permissionService?.permissionAvailable && courseStatus !== 'Unlisted'"
           appPermission appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
           [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
@@ -116,7 +114,7 @@
              {{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
           </div>
 
-          <div class="ml-auto text-right py-8"
+          <div class="ml-auto text-right"
             *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
             <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
               [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}" mat-raised-button color="success"
@@ -125,7 +123,7 @@
             </button>
           </div>
 
-          <div class="ml-auto text-right py-8"
+          <div class="ml-auto text-right"
             *ngIf="!isDesktopApp && permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
             appPermission [permission]="dashboardPermission">
             <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
