@@ -1,55 +1,34 @@
-<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
-  [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
-  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
-    [appTelemetryImpression]="telemetryImpression">
+<div class="mat-inside-page-container mat-app-background2 library-component">
+  <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <div class="sb-desktop-filter-section">
-        <div *ngIf="layoutConfiguration">
-          <div *ngIf="isDesktopApp">
-            <app-network-status></app-network-status>
-            <app-load-offline-content></app-load-offline-content>
-            <app-system-warning></app-system-warning>
-          </div>
+        <div *ngIf="isDesktopApp">
+          <app-network-status></app-network-status>
+          <app-load-offline-content></app-load-offline-content>
+          <app-system-warning></app-system-warning>
         </div>
         <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
           *ngIf="initFilters" (filterChange)="getFilters($event)">
         </app-global-search-filter>
       </div>
     </div>
-    <div [ngClass]="SECOND_PANEL_LAYOUT">
-      <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-        <div>
-          <div class="ui container relative9">
-            <div class="ui stackable grid m-0">
-              <div class="twele wide column p-0">
-                <div *ngIf="showLoader">
-                  <app-loader [data]='loaderMessage'></app-loader>
-                </div>
-                <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
-                  *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)">
-                </app-global-search-selected-filter>
-                <section *ngFor="let section of pageSections; let index=index;">
-                  <div class="sb-desktop-library-card relative9">
-                    <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"
-                      [type]="'infinite_card_grid_with_hover'" [title]="section?.name" [contentList]="section?.contents"
-                      [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)">
-                    </sb-library-cards-grid>
-                  </div>
-                </section>
-                <div class="twelve wide column" *ngIf="!pageSections?.length">
-                    <app-no-result-found [title]="resourceService?.messages?.stmsg?.m0030"></app-no-result-found>
-                </div>
-
-                <div *ngIf="showSectionLoader">
-                  <app-loader [data]='loaderMessage'></app-loader>
-                </div>
-              </div>
-            </div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT" [appTelemetryImpression]="telemetryImpression">
+        <app-loader *ngIf="showLoader" [data]='loaderMessage'></app-loader>
+        <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+          *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)">
+        </app-global-search-selected-filter>
+        <section *ngFor="let section of pageSections; let index=index;">
+          <div class="sb-desktop-library-card" class="mb-24">
+            <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"
+              [type]="'infinite_card_grid_with_hover'" [title]="section?.name" [contentList]="section?.contents"
+              [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)">
+            </sb-library-cards-grid>
           </div>
-        </div>
-      </div>
+        </section>
+        <app-no-result-found *ngIf="!pageSections?.length"
+          [title]="resourceService?.messages?.stmsg?.m0030"></app-no-result-found>
+
+        <app-loader *ngIf="showSectionLoader" [data]='loaderMessage'></app-loader>
     </div>
   </div>
 </div>
@@ -57,8 +36,9 @@
 <app-load-content *ngIf="showLoadContentModal" (close)="showLoadContentModal = false"></app-load-content>
 
 <!-- Show Modal if content has any YouTube data-->
-<app-modal-wrapper *ngIf="showModal" [config]="{disableClose: true, width: '30rem', size: 'normal', panelClass: 'material-modal'}" (dismiss)="showModal = !showModal;"
-  #modal>
+<app-modal-wrapper *ngIf="showModal"
+  [config]="{disableClose: true, width: '30rem', size: 'normal', panelClass: 'material-modal'}"
+  (dismiss)="showModal = !showModal;" #modal>
   <ng-template sbModalContent>
     <div mat-dialog-title class="mb-0">
       <h4 class="color-accent font-weight-bold mb-0">{{resourceService.frmelmnts?.btn?.download}}</h4>
@@ -72,9 +52,9 @@
 
     <mat-dialog-actions align="end">
       <button mat-raised-button class="button-rounded" tabindex="0"
-      (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
-      {{resourceService.frmelmnts?.btn?.cancel}}
-    </button>
+        (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+        {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
       <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
         (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
         {{resourceService.frmelmnts?.btn?.yes}}
@@ -84,5 +64,9 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-loader *ngIf="showExportLoader" [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}"> </app-loader>
-<app-loader *ngIf="showDownloadLoader" [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}"> </app-loader>
+<app-loader *ngIf="showExportLoader"
+  [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}">
+</app-loader>
+<app-loader *ngIf="showDownloadLoader"
+  [data]="{loaderMessage: resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}">
+</app-loader>

@@ -2,18 +2,18 @@
   <app-explore-ftu-popup *ngIf="showWelcomePopup" (close)="showFtuPopup(false)"></app-explore-ftu-popup>
 
   <mat-toolbar color="primary" class="toolbar-pageback" [appTelemetryImpression]="telemetryImpression">
-    <div class="d-flex flex-ai-center">
+    <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
        <button type="button" mat-mini-fab color="accent"
        class="button-rounded" tabindex="0" (click)="goBack()"
        attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
        <mat-icon aria-hidden="false" fontIcon="arrow_back"></mat-icon>
      </button>
      <div class="toolbar-pageback__heading">
-      <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.tab?.mygroups}}</h3>
+      <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.tab?.mygroups}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa explicabo ex doloribus voluptatibus id laudantium nisi libero expedita possimus quia? Maiores corrupti doloremque quod non soluta dolore iste ipsum accusantium?</h3>
      </div>
     </div>
     <div class="toolbar-pageback__actions">
-      <button mat-raised-button color="accent" class="button-rounded" aria-label="showFtuPopup" type="button" tabindex="0" (click)="showFtuPopup(true);addTelemetry('group-info')"><mat-icon>info</mat-icon>
+      <button mat-icon-button color="accent" class="button-rounded" aria-label="showFtuPopup" type="button" tabindex="0" (click)="showFtuPopup(true);addTelemetry('group-info')"><mat-icon>info</mat-icon>
       </button>
     </div>
    </mat-toolbar>
@@ -23,7 +23,7 @@
 <div class="d-flex flex-dc flex-ai-jc-center mt-48">
    <!-- content comes from CC -->
    <img alt="{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}" src="./assets/images/mygroups.svg" width="220">
-  <div class="mt-8 fs-1 mb-40">{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}</div>
+  <div class="mt-8 mat-body-2 mb-24">{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}</div>
   <button mat-raised-button color="accent" class="button-roounded" type="button"  tabindex="0" (click)="redirectTologin();addTelemetry('group-login')">{{ resourceService?.frmelmnts?.btn?.login }}</button>
    <!-- content comes from CC -->
 </div>

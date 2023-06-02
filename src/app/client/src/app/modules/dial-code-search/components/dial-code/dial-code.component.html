@@ -1,60 +1,35 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-</app-landing-section>
-
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9 sbt-dial-code sbt-inside-page-container':''" >
-<!-- Back button -->
-<div class="sb-bg-color-white sb-back-btn-panel">
-  <div class="ui container py-8">
-    <button type="button" appTelemetryInteract [telemetryInteractEdata]="backInteractEdata"
-      [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-link
-      sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()" tabindex="0">
-      <i class="icon-svg icon-svg--xxs icon-back mr-4" aria-hidden="true">
-        <svg class="icon icon-svg--primary">
-          <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
-        </svg>
-      </i> {{resourceService?.frmelmnts?.btn?.back}}
-    </button>
+<mat-toolbar color="primary" class="toolbar-pageback">
+  <button mat-mini-fab color="accent" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}" tabindex="0">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <div class="toolbar-pageback__heading">
+    <h3 class="mat-title mb-0" tabindex="0" role="heading" aria-level="2"></h3>
   </div>
-</div>
+</mat-toolbar>
 
 <!-- Main container -->
-<div class="ui container py-24" [appTelemetryImpression]="telemetryImpression">
+<div class="mat-inside-page-container mat-app-background2 dial-code-component" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-grid" *ngIf="showLoader">
     <div [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
       <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [isLoading]="true"></sb-library-card>
     </div>
   </div>
-  <div class="dial-code-section-result">
-    <div class="sb-pageSection" *ngIf="!showLoader && searchResults.length > 0">
-      <div class="section-header">
-        <p>
-          {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' : searchResults.length}}&nbsp;"<strong>{{dialCode}}</strong>"
-        </p>
-      </div>
-    </div>
-    <div *ngIf="showSelectChapter && !showLoader && searchResults?.length > 0" class="my-24">
-      <button appTelemetryInteract [telemetryInteractEdata]="selectChapterInteractEdata"
-        [telemetryInteractCdata]="selectChapterTelemetryCdata" tabindex="0" (click)="redirectToDetailsPage(dialContentId)"
-        class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn"
-        type="button">{{resourceService.frmelmnts?.lbl?.selectChapter}}
-        <i class="icon chevron circle right" aria-hidden="true"></i></button>
-      <span class="ml-8 fmedium">{{resourceService.frmelmnts?.lbl?.fromTheTextBook}}&nbsp;
-        <strong>"{{chapterName}}"</strong>
-      </span>
-    </div>
+  <div *ngIf="!showLoader && searchResults.length > 0">
+    <p class="mat-body-2">{{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' : searchResults.length}}&nbsp;"<strong>{{dialCode}}</strong>"</p>
   </div>
-
+  <div *ngIf="showSelectChapter && !showLoader && searchResults?.length > 0" class="my-24">
+    <button mat-raised-button color="accent" appTelemetryInteract [telemetryInteractEdata]="selectChapterInteractEdata"
+      [telemetryInteractCdata]="selectChapterTelemetryCdata" tabindex="0" (click)="redirectToDetailsPage(dialContentId)"
+      class="button-rounded" type="button">{{resourceService.frmelmnts?.lbl?.selectChapter}} <mat-icon>chevron_right</mat-icon></button>
+    <span class="ml-8 mat-body-2">{{resourceService.frmelmnts?.lbl?.fromTheTextBook}}&nbsp;
+      <strong>"{{chapterName}}"</strong>
+    </span>
+  </div>
   <!-- START - CCD for DIAL Code search result(s) For Textbooks -->
   <div [appTelemetryImpression]="dialResultImpression">
-      <div>
       <div *ngIf="!showLoader && textbookList?.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
-        [trigger]="textbookList" class="twelve wide column mb-16">
-        <div class="header" *ngIf="!isTextbookDetailsPage">
-          <div class="title">
-            {{resourceService?.frmelmnts?.lbl?.textbooks}}
-            <span class="badge">{{textbookList?.length}}</span>
-          </div>
-        </div>
+        [trigger]="textbookList" class="mb-16">
+        <h3 class="mat-title" *ngIf="!isTextbookDetailsPage">{{resourceService?.frmelmnts?.lbl?.textbooks}} <span class="badge">{{textbookList?.length}}</span></h3>
         <div class="sb-grid mt-16">
           <div [id]="i" [data]="content" class="sb-grid--item grey-background"
             *ngFor="let content of textbookList;let i = index;">
@@ -84,20 +59,14 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
   <!-- END - CCD for DIAL Code search result(s) -->
 
   <div [appTelemetryImpression]="dialResultImpression">
-      <div class="content-grid">
       <div *ngIf="!showLoader && courseList?.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
-        [trigger]="courseList" class="twelve wide column">
-        <div class="header" *ngIf="!isTextbookDetailsPage">
-          <div class="title">
-            {{resourceService?.frmelmnts?.tab?.courses}}
-            <span class="badge">{{courseList?.length}}</span>
-          </div>
-        </div>
+        [trigger]="courseList">
+        <h3 class="mat-title" *ngIf="!isTextbookDetailsPage">{{resourceService?.frmelmnts?.tab?.courses}}
+          <span class="badge">{{courseList?.length}}</span></h3>
         <div class="sb-card-grid mt-16">
           <div [id]="i" [data]="content" *ngFor="let content of courseList;let i = index;">
             <sb-course-card appContentDirection [data]="content" class="sb-card-grid__item" [course]="content"
@@ -109,14 +78,11 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="sb-placeholder">
-      <div *ngIf="!showLoader && !searchResults.length">
-        <app-comming-soon></app-comming-soon>
-      </div>
+
+    <app-comming-soon *ngIf="!showLoader && !searchResults.length"></app-comming-soon>
     </div>
   </div>
-</div>
+
 
 <div class="mobile-popup-dimmer" *ngIf="showMobilePopup" tabindex="0" (click)="closeMobileAppPopup()"
   [ngClass]="{'bottom-0': showMobilePopup}">
@@ -145,6 +111,6 @@
     </div>
   </div>
 </div>
-</div>
+
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false">
 </app-batch-info>

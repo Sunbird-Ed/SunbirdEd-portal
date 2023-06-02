@@ -1,4 +1,4 @@
-<div class="relative9" *ngIf="facets && layoutConfiguration">
+<div *ngIf="facets && layoutConfiguration" class="global-search-filter-component">
   <button mat-raised-button color="primary" class="button-rounded mobile only" extended (click)="isOpen = !isOpen">
     <mat-icon>tune</mat-icon> {{resourceService.frmelmnts?.lbl?.filters | translate}}
   </button>

@@ -160,7 +160,7 @@
         <!-- Template for displaying page sections -->
 
         <div *ngIf="!_currentPageData?.sections">
-          <div *ngFor="let section of pageSections; let last = last" [ngClass]="{'last mb-0':last}">
+          <div *ngFor="let section of pageSections; let last = last" class="mb-24" [ngClass]="{'last mb-0':last}">
             <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration"
               [type]="'infinite_card_grid'" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
@@ -176,7 +176,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showLoader && getSelectedTab() !== 'explore'">
+        <div *ngIf="showLoader && getSelectedTab() !== 'explore'" class="mb-24">
           <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
             [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3">
           </sb-library-cards-grid>

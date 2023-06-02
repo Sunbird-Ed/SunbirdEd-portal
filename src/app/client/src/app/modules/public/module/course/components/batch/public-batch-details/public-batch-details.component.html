@@ -22,62 +22,52 @@
 </app-modal-wrapper>
 
 <!-- batch details -->
-<mat-accordion class="sb-mat-accordion mb-16">
+<mat-accordion class="mb-16">
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-mat-accordion__content">
-      <div class="batch-details">
-        <div class="mb-16">
-          <div *ngIf="batchDetails?.startDate">
-            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-              {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
-            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.startDate | dateFormat}}
-            </div>
-          </div>
-          <hr class="section-hr" *ngIf="batchDetails?.endDate" />
-          <div *ngIf="batchDetails?.endDate">
-            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-              {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
-            <div class="content-metadeta__text  fnormal sb-color-gray-400">{{batchDetails?.endDate | dateFormat}}</div>
-          </div>
-          <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
-          <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-            <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">
-              {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
-            <div class="content-metadeta__text  fnormal sb-color-gray-400"> {{batchDetails?.enrollmentEndDate |
-              dateFormat}}</div>
-            <div class="sb-label-status-error fsmall" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
-              {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
-          </div>
+      <div *ngIf="batchDetails?.startDate">
+        <div class="font-weight-bold mb-8 mat-body-2 color-accent">
+          {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
+        <div class="mat-body-2">{{batchDetails?.startDate | dateFormat}}
         </div>
       </div>
-    </div>
+      <hr class="section-hr" *ngIf="batchDetails?.endDate" />
+      <div *ngIf="batchDetails?.endDate">
+        <div class="font-weight-bold mb-8 mat-body-2 color-accent">
+          {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
+        <div class="mat-body-2">{{batchDetails?.endDate | dateFormat}}</div>
+      </div>
+      <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
+      <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
+        <div class="font-weight-bold mb-8 mat-body-2 color-accent">
+          {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
+        <div class="mat-body-2"> {{batchDetails?.enrollmentEndDate |
+          dateFormat}}</div>
+        <div class="sb-label-status-error mat-caption" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
+          {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
+      </div>
   </mat-expansion-panel>
 </mat-accordion>
 
-<mat-accordion *ngIf="showCertificateDetails" class="sb-mat-accordion mb-16">
+<mat-accordion *ngIf="showCertificateDetails" class="mb-16">
   <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-mat-accordion__title d-flex flex-ai-center flex-jc-space-between">
+      <mat-panel-title>
         {{resourceService?.frmelemnts?.scttl?.certques}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-mat-accordion__content">
-      <div class="batch-details">
-        <div class="mb-16">
+    <div class="sb-mat-accordion__content mb-16">
           <ul>
-            <li *ngIf="showCompletionCertificate" class="fsmall mb-8 sb-color-gray-800">
+            <li *ngIf="showCompletionCertificate" class="mat-body-2 mb-8">
               {{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
-            <li *ngIf="showMeritCertificate" class="fsmall mb-8 sb-color-gray-800">
+            <li *ngIf="showMeritCertificate" class="mat-body-2 mb-8">
               {{resourceService?.frmelemnts?.bltpt?.earnmcert |
               interpolate:'{percent}': meritCertPercent}}</li>
           </ul>
-        </div>
-      </div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
