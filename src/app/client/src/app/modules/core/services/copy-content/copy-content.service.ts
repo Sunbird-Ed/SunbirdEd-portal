@@ -53,29 +53,30 @@ export class CopyContentService {
     this.contentService = contentService;
     this.frameworkService = frameworkService;
   }
-
   /**
    * This method calls the copy API and call the redirecttoeditor method after success
-   * @param {contentData} ContentData Content data which will be copied
+   * @param {contentData} ContentData Content data which will be copied & question set.
    */
   copyContent(contentData: ContentData) {
-    return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
-      this.frameworkService.initialize();
-      return this.formatData(contentData).pipe(
-        switchMap((param: any) => {
-          const option = {
-            url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
-            data: param
-          };
-          return this.contentService.post(option).pipe(map((response: ServerResponse) => {
-            _.forEach(response.result.node_id, (value) => {
-              this.redirectToEditor(param.request.content, value);
-            });
-            return response;
-          }));
-        })
-      );
-    }));
+    let urlPath = _.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset' ? this.config.urlConFig.URLS.QUESTIONSET.COPY : this.config.urlConFig.URLS.CONTENT.COPY;
+      return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
+        this.frameworkService.initialize();
+        return this.formatData(contentData).pipe(
+          switchMap((param: any) => {
+            const option = {
+              url: urlPath + '/' + contentData.identifier,
+              data: param
+            };
+            let reqParms =  _.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset' ? param.request.questionset : param.request.content;
+            return this.contentService.post(option).pipe(map((response: ServerResponse) => {
+              _.forEach(response.result.node_id, (value) => {
+                this.redirectToEditor(reqParms, value);
+              });
+              return response;
+            }));
+          })
+        );
+      }));
   }
   /**
    * @since - 1.#SH-66 || 2.#SH-362
@@ -115,13 +116,14 @@ export class CopyContentService {
       return response;
     }));
   }
-
   /**
    * This method prepares the request body for the copy API
    * @param {contentData} ContentData Content data which will be copied
+   * @description  request will be formed based on the mimetype
    */
   formatData(contentData: ContentData) {
     const userData = this.userService.userProfile;
+    let req;
     if (contentData.description === undefined) {
       contentData.description = '';
     }
@@ -129,22 +131,37 @@ export class CopyContentService {
     if (!_.isEmpty(userData.lastName)) {
       creator = userData.firstName + ' ' + userData.lastName;
     }
-    const req = {
-      request: {
-        content: {
-          name: 'Copy of ' + contentData.name,
-          description: contentData.description,
-          code: contentData.code + '.copy',
-          creator: creator,
-          createdFor: userData.organisationIds,
-          createdBy: userData.userId,
-          organisation: _.uniq(this.userService.orgNames),
-          framework: '',
-          mimeType: contentData.mimeType,
-          contentType: contentData.contentType
+    if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
+      req = {
+        request: {
+          questionset: {
+            name: 'Copy of ' + contentData.name,
+            createdFor: userData.organisationIds,
+            createdBy: userData.userId,
+            mimeType: contentData.mimeType,
+            
+          }
         }
-      }
-    };
+      };
+      return of(req);
+     }
+    else {
+      req = {
+        request: {
+          content: {
+            name: 'Copy of ' + contentData.name,
+            description: contentData.description,
+            code: contentData.code + '.copy',
+            creator: creator,
+            createdFor: userData.organisationIds,
+            createdBy: userData.userId,
+            organisation: _.uniq(this.userService.orgNames),
+            framework: '',
+            mimeType: contentData.mimeType,
+            contentType: contentData.contentType
+          }
+        }
+      };
     if (_.lowerCase(contentData.contentType) === 'course') {
       req.request.content.framework = contentData.framework;
       return of(req);
@@ -159,7 +176,7 @@ export class CopyContentService {
       );
     }
   }
-
+  }
   /**
    * This method redirect to the editor page depending on mimetype
    * @param {contentData} ContentData Content data which will be copied
@@ -174,7 +191,10 @@ export class CopyContentService {
       }
     } else if (contentData.mimeType === 'application/vnd.ekstep.ecml-archive') {
       url = `/workspace/content/edit/content/${copiedIdentifier}/draft/${contentData.framework}/Draft`;
-    } else {
+    } else if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
+      url = `/workspace/edit/QuestionSet/${copiedIdentifier}/allcontent/Draft`;
+    }
+    else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
     this.router.navigate([url]);
