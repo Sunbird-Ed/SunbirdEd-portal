@@ -58,6 +58,7 @@ export class ObservationDetailsComponent implements OnInit {
   requestForPIIConsent:boolean;
   rootOrganisations: any;
   joinProgramLoader: boolean;
+  consentApplies: any;
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
@@ -106,24 +107,32 @@ export class ObservationDetailsComponent implements OnInit {
     const params = this.getAPIParams(url, this.payload);
     
     this.postAPI(params).subscribe(data => {
-      this.programJoined = _.has(data.result,'requestForPIIConsent') ? data.result.programJoined : true;
+      this.consentApplies = data?.result?.requestForPIIConsent
+      this.programJoined = this.consentApplies ? data.result.programJoined : true;
       this.requestForPIIConsent = data.result.requestForPIIConsent || false;
       this.rootOrganisations = data.result.rootOrganisations || '';
-      if(this.programJoined) this.openConsentPopUp = true;
+      if(this.programJoined && this.consentApplies) this.openConsentPopUp = true;
     });
   }
   
-  joinProgram() {
+  joinProgram(consentShared = false) {
     this.joinProgramPopUp = this.joinProgramLoader = true;
     const url = `${this.config.urlConFig.URLS.OBSERVATION.JOIN_PROGRAM}/${this.programId}`;
-    const params = this.getAPIParams(url, { userRoleInformation: this.payload });
+    const params = this.getAPIParams(url, { userRoleInformation: this.payload, consentShared:consentShared });
     
     this.postAPI(params).subscribe(_data => {
       this.joinProgramPopUp = this.joinProgramLoader = false;
       this.programJoined = true;
       this.openConsentPopUp = this.requestForPIIConsent;
-      this.toasterService.success(this.resourceService.frmelmnts?.lbl?.joinedProgramSuccessfully)
+      if(!this.requestForPIIConsent || this.requestForPIIConsent && consentShared){
+        this.toasterService.success(_.get(this.resourceService,'messages.smsg.joinedProgramSuccessfully'))
+      } 
     });
+  }
+
+  checkConsent($event){
+    this.joinProgram($event?.consent);
+
   }
 
   getProfileData() {

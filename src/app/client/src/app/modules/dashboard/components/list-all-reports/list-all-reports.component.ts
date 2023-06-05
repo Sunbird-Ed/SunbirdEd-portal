@@ -251,9 +251,11 @@ export class ListAllReportsComponent implements OnInit {
     this.indexColumn(masterTable);
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
-      const rowData = masterTable && masterTable.row(event.currentTarget).data();
-      if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
-      const { reportid, hashed_val, materialize } = rowData;
+      const rowData = masterTable && masterTable.row(event?.currentTarget).data();
+      if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData?.children?.length > 0) { return false; }
+      const reportid = _.get(rowData,'reportid') || '';
+      const hashed_val = _.get(rowData,'hashed_val') || '';
+      const materialize = _.get(rowData,'materialize') || false;
       this.logTelemetry({ type: 'select-report', id: `${reportid}` });
       this.rowClickEventHandler(reportid, hashed_val, materialize || false);
     });
