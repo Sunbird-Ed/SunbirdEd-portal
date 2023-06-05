@@ -1,4 +1,5 @@
 import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ToasterService } from '../../services/toaster/toaster.service';
 
 @Component({
   selector: 'app-material-auto-complete',
@@ -7,6 +8,8 @@ import { Component, Input, HostListener, ElementRef, Output, EventEmitter, OnCha
 })
 export class MaterialAutoCompleteComponent implements OnChanges {
   @Input() dynamicplaceholder:string;
+  @Input() dependency;
+  @Input() checkFilters;
   @Input()
   get selectedFilters() {
     return this._selectedFilters;
@@ -29,7 +32,7 @@ export class MaterialAutoCompleteComponent implements OnChanges {
     this.dropDownSelectedShow();
   }
 
-  constructor(private _elementRef: ElementRef<HTMLElement>, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private _elementRef: ElementRef<HTMLElement>, private changeDetectorRef: ChangeDetectorRef, public toasterService: ToasterService) {}
   get selectedDpdwnInput() {
     return this._selectedDpdwnInput;
   }
@@ -47,6 +50,8 @@ export class MaterialAutoCompleteComponent implements OnChanges {
   @ViewChild('autocompleteInput') searchField: ElementRef;
 
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output() errorOutput: EventEmitter<any> = new EventEmitter<any>();
 
   displayDropdown = false;
   private _placeholder: string;
@@ -96,15 +101,20 @@ export class MaterialAutoCompleteComponent implements OnChanges {
     }
 
   }
-
+  
   DisplayDropdown() {
-    this.displayDropdown = true;
-    this.changeDetectorRef.detectChanges();
-    setTimeout(() => {
-        this.searchField.nativeElement.focus();
-    }, 100);
-
+    if(!this.dependency || (this.dependency && this.checkFilters && this.checkFilters[this.dependency.reference])){
+      this.displayDropdown = true;
+      this.changeDetectorRef.detectChanges();
+      setTimeout(() => {
+          this.searchField.nativeElement.focus();
+      }, 100);
+      this.errorOutput.emit(null)
+    }else{
+      this.errorOutput.emit({displayName: this.dependency.displayName})   
+    }
   }
+ 
   isChecked(item) {
 
     if (this.selected.includes(item)) {
@@ -117,6 +127,5 @@ export class MaterialAutoCompleteComponent implements OnChanges {
   writeValue(value?: any) {
     this.selectedDpdwnInput = value;
   }
-
 
 }

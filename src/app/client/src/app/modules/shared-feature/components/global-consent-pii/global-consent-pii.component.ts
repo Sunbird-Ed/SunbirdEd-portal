@@ -24,6 +24,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
+  @Output() consentShare = new EventEmitter<any>();
   isOpen = false;
   instance: string;
   consentPii = 'Yes';
@@ -250,7 +251,10 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
-        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+        if(this.type === 'program-consent'){
+          this.consentShare.emit({consent:true})
+        }
+        this.type !== 'program-consent' && this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
         this.close.emit();
         this.popupControlService.changePopupStatus(true);
