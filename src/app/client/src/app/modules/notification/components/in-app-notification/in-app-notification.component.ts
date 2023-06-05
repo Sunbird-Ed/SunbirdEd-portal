@@ -57,16 +57,236 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   }
 
   async fetchNotificationList() {
+    const mockNotifcation = [
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      },
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      },
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      },
+
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      },
+
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      },
+
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      },
+
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      },
+
+      {
+        "expireOn": null,
+        "updatedBy": null,
+        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "action": {
+          "template": {
+            "ver": "4.3.0",
+            "data": "{\"title\": \"TncontentCreator has left the july30_grroup01Reddy group\"}",
+            "type": "JSON"
+          },
+          "createdBy": { "name": "TncontentCreator", "id": "fca2925f-1eee-4654-9177-fece3fd6afc9", "type": "user" },
+          "additionalInfo": {
+            "group": { "name": "july30_grroup01Reddy", "id": "76602248-a299-4ca2-9afd-2e68d127c978" }
+          },
+          "category": "group",
+          "type": "member-exit"
+        },
+        "id": "b77e1041-f9b5-4ef2-a7e8-7ba7fdb3b8fd",
+        "updatedOn": null,
+        "category": "group",
+        "priority": 1,
+        "userId": "fca2925f-1eee-4654-9177-fece3fd6afc9",
+        "createdOn": 1683526690439,
+        "version": null,
+        "status": "unread"
+      }
+    ];
+    this.notificationCount = 0;
+        this.notificationList = mockNotifcation;
+        this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
+        this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${_.get(this.resourceService, 'frmelmnts.lbl.newNotification')}`;
+
     this.notificationService.showNotificationModel$.subscribe(data => {
       this.showNotificationModel = data;
     });
-    this.notificationService.notificationList$
-      .subscribe(notificationListData => {
-        this.notificationCount = 0;
-        this.notificationList = notificationListData;
-        this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
-        this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${_.get(this.resourceService, 'frmelmnts.lbl.newNotification')}`;
-      });
+    // this.notificationService.notificationList$
+    //   .subscribe(notificationListData => {
+    //     this.notificationCount = 0;
+    //     this.notificationList = notificationListData;
+    //     this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
+    //     this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${_.get(this.resourceService, 'frmelmnts.lbl.newNotification')}`;
+    //   });
   }
 
   toggleInAppNotifications() {

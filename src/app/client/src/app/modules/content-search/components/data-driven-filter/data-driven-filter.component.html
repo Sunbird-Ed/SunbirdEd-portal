@@ -1,86 +1,4 @@
-<ng-container *ngIf="!layoutConfiguration">
-  <div class="sb-prominent-filter pb-8 px-16" *ngIf="showFilters">
-    <div class="ui container">
-      <!--Selected Filters list-->
-      <div class="mb-16" *ngIf="filtersDetails && formInputData && showSearchedParam">
-        <ng-container *ngFor="let field of filtersDetails">
-          <div class="d-inline-block" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
-            <label>{{field.label}} :&nbsp;</label>
-
-            <ng-container *ngFor="let item of formInputData[field.code]">
-              <a class="ui label mt-8 mr-8" *ngIf='!item?.name && field.code !== "channel"'>
-                {{item}}
-                <i class="delete icon" (click)="removeFilterSelection(field.code,item)" tabindex="0"></i>
-              </a>
-              <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code !== "channel"'>
-                {{item.name}}
-                <i class="delete icon" (click)="removeFilterSelection(field.code,item)" tabindex="0"></i>
-              </a>
-            </ng-container>
-
-            <ng-container *ngFor="let item of channelInputLabel">
-              <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code === "channel"'>
-                {{item.name}}
-                <i class="delete icon" (click)="removeFilterSelection(field.code,item.identifier)" tabindex="0"></i>
-              </a>
-            </ng-container>
-
-          </div>
-        </ng-container>
-      </div>
-      <!--/Selected Filters list-->
-      <!--Filters-->
-      <div class="sb-prominent-filter-container" *ngIf="refresh && filtersDetails">
-
-        <div class="sb-prominent-filter-field" *ngFor="let field of filtersDetails">
-          <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
-            <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
-              defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-              class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options"
-              [hasLabels]="false" #multiSelect *ngIf="field.code !== 'gradeLevel'">
-              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">
-              </sui-select-option>
-            </sui-multi-select>
-            <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
-              defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-              class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options"
-              [hasLabels]="false" #multiSelect *ngIf="field.code === 'gradeLevel'">
-              <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
-            </sui-multi-select>
-          </div>
-          <div *ngIf="field.code === 'channel'">
-            <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
-              name={{field.code}} defaultSelectionText={{field.name}}
-              zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="ui selection dropdown multiple"
-              [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name"
-              valueField="identifier" #multiSelect>
-              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">
-              </sui-select-option>
-            </sui-multi-select>
-          </div>
-          <div *ngIf="field.code==='topic'">
-            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field"
-              (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
-          </div>
-        </div>
-
-        <div class="sb-prominent-filter-field">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()" tabindex="0"
-            appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata">
-            {{resourceService.frmelmnts?.btn?.reset}}
-          </button>
-          <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()" tabindex="0"
-            appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata">
-            {{resourceService.frmelmnts?.btn?.apply}}
-          </button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="layoutConfiguration">
+<ng-container>
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
     <div class="sbt-filter-switcher-container cursor-pointer mobile only" appTelemetryInteract
@@ -115,24 +33,13 @@
             <div class="mb-16" *ngIf="filtersDetails && formInputData && showSearchedParam">
               <ng-container *ngFor="let field of filtersDetails">
                 <div class="d-inline-block" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
-                  <label>{{field.label}} :&nbsp;</label>
-
+                  <label class="mat-body-2">{{field.label}} :&nbsp;</label>
                   <ng-container *ngFor="let item of formInputData[field.code]">
-                    <a class="ui label mt-8 mr-8" *ngIf='!item?.name && field.code !== "channel"'>
-                      {{item}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
-                    </a>
-                    <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code !== "channel"'>
-                      {{item.name}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
-                    </a>
+                    <a mat-button class="mr-8"  *ngIf='!item?.name && field.code !== "channel"'>{{item}} <mat-icon (click)="removeFilterSelection(field.code,item)">delete</mat-icon></a>
+                    <a mat-button *ngIf='item?.name && field.code !== "channel"'>{{item.name}}  <mat-icon (click)="removeFilterSelection(field.code,item)">delete</mat-icon></a>
                   </ng-container>
-
                   <ng-container *ngFor="let item of channelInputLabel">
-                    <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code === "channel"'>
-                      {{item.name}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item.identifier)"></i>
-                    </a>
+                    <a mat-button *ngIf='item?.name && field.code === "channel"'>{{item.name}}  <mat-icon (click)="removeFilterSelection(field.code,item.identifier)">delete</mat-icon></a>
                   </ng-container>
 
                 </div>
@@ -183,7 +90,7 @@
                         [telemetryInteractEdata]="resetFilterInteractEdata">
                         {{resourceService.frmelmnts?.btn?.reset}}
                       </button> -->
-                <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()" appTelemetryInteract
+                <button mat-raised-button color="accent" class="button-rounded" (click)="applyFilters()" appTelemetryInteract
                   [telemetryInteractEdata]="applyFilterInteractEdata">
                   {{resourceService.frmelmnts?.btn?.apply}}
                 </button>

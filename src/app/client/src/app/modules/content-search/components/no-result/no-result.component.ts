@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-no-result-found',
   templateUrl: './no-result.component.html',
-  styleUrls: ['./no-result.component.scss','./no-result.component.scss-theme.scss']
+  styleUrls: ['./no-result.component.scss']
 })
 export class NoResultComponent implements OnInit {
   @Input() title: string;

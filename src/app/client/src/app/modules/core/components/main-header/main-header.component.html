@@ -19,9 +19,8 @@
             [layoutConfiguration]="layoutConfiguration">
           </app-in-app-notification>
           <!--Avtar Dropdown-->
-          <div class="cursor-pointer ml-8" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
-            (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" alt="Guest User" width="48">
-          </div>
+          <button *ngIf='!userProfile && !guestUser'
+          (click)="toggleSideMenu(true)" mat-fab aria-label="Guest" color="white" class="ml-16 mat-icon-guest-profile box-shadow-6px">1 <mat-icon class="color-accent">account_circle</mat-icon></button>
           <sb-avatar tabindex="0" class="cursor-pointer ml-8" *ngIf='!userProfile && guestUser'
             (click)="toggleSideMenu(true)" class="avtarDesktopStyle" [config]=avatarConfig initialsSize="2"
             [initial]="guestUser?.formatedName[0] || 'G'" [title]="guestUser?.formatedName || 'Guest'">
@@ -45,9 +44,9 @@
           <app-in-app-notification tabindex="0" *ngIf="userService?.loggedIn"
             class="ml-16 d-none d-above-sm-block"></app-in-app-notification>
           <!--Avtar Dropdown-->
-          <div class="cursor-pointer ml-8 d-none d-above-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
-            aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
-            (click)="toggleSideMenu(true)"><img src="./assets/images/profile-icon.svg" width="56" alt="Guest User"></div>
+          <button aria-haspopup="true" aria-controls="overlaySidebarID"
+          aria-label="Guest User" tabindex="0" name="Guest" *ngIf='!userProfile && !guestUser'
+          (click)="toggleSideMenu(true)" mat-fab color="white" class="ml-16 d-none d-above-sm-block d-above-sm-flex mat-icon-guest-profile box-shadow-6px"><mat-icon class="color-accent">account_circle</mat-icon></button>
           <sb-avatar class="cursor-pointer ml-8 d-none d-above-sm-block" aria-haspopup="true" aria-controls="overlaySidebarID"
             *ngIf='!userProfile && guestUser' tabindex="0" (click)="toggleSideMenu(true)" [config]=avatarConfig
             initialsSize="2" [initial]="guestUser?.formatedName[0] || 'G'"
@@ -85,7 +84,7 @@
     aria-modal="true" aria-label="open sidebar navigation">
     <div class="profile__info">
 
-      <button class="sidebar_close" mat-mini-fab color="warn" mat-dialog-close (click)="toggleSideMenu(false)"
+      <button class="sidebar_close zindex-99" mat-mini-fab color="warn" mat-dialog-close (click)="toggleSideMenu(false)"
         aria-label="Close sidebar navigation" title="Close sidebar">
         <mat-icon>close</mat-icon>
       </button>

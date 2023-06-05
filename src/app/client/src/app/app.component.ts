@@ -21,7 +21,7 @@ import { SBTagModule } from 'sb-tag-manager';
 import { OverlayContainer } from "@angular/cdk/overlay";
 
 /* angular material theme  */
-const THEME_DARKNESS_SUFFIX = `-dark`;
+// const THEME_DARKNESS_SUFFIX = `-dark`;
 /* angular material theme  */
 
 /**
@@ -46,36 +46,43 @@ export class AppComponent implements OnInit, OnDestroy {
   ];
 
   @HostBinding('class') activeThemeCssClass: string;
-  isThemeDark = false;
+  // isThemeDark = false;
   activeTheme: string;
 
-  setMatTheme(theme: string, darkness: boolean = null) {
+  //setMatTheme(theme: string, darkness: boolean = null) {
+  setMatTheme(theme: string) {
     localStorage.setItem('selectedTheme', theme);
-    console.log(theme, darkness);
-    if (darkness === null)
-      darkness = this.isThemeDark;
-    else if (this.isThemeDark === darkness) {
-      if (this.activeTheme === theme) return;
-    } else
-      this.isThemeDark = darkness;
+    // console.log(theme, darkness);
+    // if (darkness === null)
+    // 	darkness = this.isThemeDark;
+    // else if (this.isThemeDark === darkness) {
+    // 	if (this.activeTheme === theme) return;
+    // } else
+    // 	this.isThemeDark = darkness;
 
     this.activeTheme = theme;
-    const cssClass = darkness === true ? theme + THEME_DARKNESS_SUFFIX : theme;
+
+    //const cssClass = darkness === true ? theme + THEME_DARKNESS_SUFFIX : theme;
+    const cssClass = theme;
+
     const classList = this.overlayContainer.getContainerElement().classList;
-    document.documentElement.setAttribute('class', theme);
-     if (this.activeThemeCssClass) {
+    //document.documentElement.setAttribute('class', theme);
+    this.renderer.setAttribute(this._document.documentElement, 'class', theme);
+    console.log('theme ' + classList);
+    console.log(this.activeThemeCssClass);
+    if (this.activeThemeCssClass) {
       if (classList.contains(this.activeThemeCssClass))
         classList.replace(this.activeThemeCssClass, cssClass);
       else
         classList.add(cssClass);
-     }
-      this.activeThemeCssClass = cssClass;
+    }
+    this.activeThemeCssClass = cssClass;
   }
 
   /* material dark themes */
-  toggleDarkness() {
-    this.setMatTheme(this.activeTheme, !this.isThemeDark);
-  }
+  // toggleDarkness() {
+  // 	this.setMatTheme(this.activeTheme, !this.isThemeDark);
+  // }
 
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
@@ -193,11 +200,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
     const selectedMatTheme = localStorage.getItem('selectedTheme');
-    console.log(selectedMatTheme);
+    console.log('applied theme name is ' + selectedMatTheme);
     if (selectedMatTheme) {
-      this.setMatTheme(selectedMatTheme, false);
+      //this.setMatTheme(selectedMatTheme, false);
+      this.setMatTheme(selectedMatTheme);
     } else {
-      this.setMatTheme('joy', false); // Default Theme pink-bluegrey
+      //this.setMatTheme('joy', false)
+      this.setMatTheme('joy'); // Default Theme pink-bluegrey
     }
 
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
@@ -205,9 +214,11 @@ export class AppComponent implements OnInit, OnDestroy {
     const layoutType = localStorage.getItem('layoutType') || 'base';
     if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
-      document.documentElement.setAttribute('layout', 'joy');
+      this.renderer.setAttribute(this._document.documentElement, 'layout', 'joy');
+      //document.documentElement.setAttribute('layout', 'joy');
     } else {
-      document.documentElement.setAttribute('layout', 'base');
+      this.renderer.setAttribute(this._document.documentElement, 'layout', 'base');
+      //document.documentElement.setAttribute('layout', 'base');
     }
   }
 
@@ -265,11 +276,12 @@ export class AppComponent implements OnInit, OnDestroy {
       selector[i].addEventListener('change', function () {
         if (this.checked) {
           trans();
-          document.documentElement.setAttribute('data-theme', this.value);
+          this.renderer.setAttribute(this._document.documentElement, 'data-theme', this.value);
+          //document.documentElement.setAttribute('data-theme', this.value);
         }
       });
     }
-    this.setTheme();
+    // this.setTheme();
     // themeing code
     this.getLocalFontSize();
     // dark theme
@@ -306,15 +318,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  setTheme() {
-    const themeColour = localStorage.getItem('layoutColour') || 'default';
-    if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
-      this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
-    }
-    this.setSelectedThemeColour(themeColour);
-    document.documentElement.setAttribute('data-theme', themeColour);
-    this.layoutService.setLayoutConfig(this.layoutConfiguration);
-  }
+  // setTheme() {
+  //   const themeColour = localStorage.getItem('layoutColour') || 'default';
+  //   if (this.darkModeToggle && this.darkModeToggle.nativeElement) {
+  //     this.renderer.setAttribute(this.darkModeToggle.nativeElement, 'aria-label', `Selected theme ${themeColour}`);
+  //   }
+  //   this.setSelectedThemeColour(themeColour);
+  //   document.documentElement.setAttribute('data-theme', themeColour);
+  //   this.layoutService.setLayoutConfig(this.layoutConfiguration);
+  // }
   checkToShowPopups() {
     const formReadInputParams = {
       formType: 'user',
@@ -1136,7 +1148,8 @@ export class AppComponent implements OnInit, OnDestroy {
     localStorage.setItem('data-mode', this.dataThemeAttribute);
   }
   setLocalTheme(value: string) {
-    document.documentElement.setAttribute('data-mode', value);
+    this.renderer.setAttribute(this._document.documentElement, 'data-theme', value);
+    //document.documentElement.setAttribute('data-mode', value);
   }
   notifyNetworkChange() {
     this.connectionService.monitor().pipe(debounceTime(5000)).subscribe((status: boolean) => {
