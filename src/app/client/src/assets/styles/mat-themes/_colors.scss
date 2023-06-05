@@ -80,7 +80,7 @@
   }
 
   .bgcolor-accent, .hover-bgcolor-accent:hover {
-    background-color: var(--color-accent);
+    background-color: var(--color-accent) !important;
     color: mat.get-color-from-palette($accent, 500-contrast);
   }
 

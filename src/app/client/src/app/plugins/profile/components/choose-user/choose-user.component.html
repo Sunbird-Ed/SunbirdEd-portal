@@ -2,48 +2,46 @@
 
 <mat-toolbar color="primary" class="toolbar-pageback">
   <!-- /* Back button */ -->
- <div class="d-flex flex-ai-center">
-    <button type="button" mat-mini-fab color="accent"
-    class="button-rounded" tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-    <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
-  </button>
-  <div class="toolbar-pageback__heading">
-    <h3 class="mat-title mb-0" tabindex="0" role="heading" aria-level="2">{{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}</h3>
+  <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
+    <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0" (click)="goBack()"
+      attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+      <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
+    </button>
+    <div class="toolbar-pageback__heading">
+      <h3 class="mat-title mb-0" tabindex="0" role="heading" aria-level="2">
+        {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}</h3>
+    </div>
   </div>
- </div>
   <div class="toolbar-pageback__actions">
   </div>
 </mat-toolbar>
 
 <div class="mat-inside-page-container mat-app-background2 choose-user-component">
-<div class="user-profile-box my-32 p-0">
-  <div class="d-flex flex-jc-space-between px-16 pt-16">
-    <div class="user-profile-box__title">
-      {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
+  <div class="user-profile-box my-32 p-0">
+    <div class="d-flex flex-jc-space-between px-16 pt-16">
+      <div class="user-profile-box__title color-accent">
+        {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
+      </div>
+    </div>
+    <div class="px-16 mt-16">
+      <button (click)="navigateToCreateUser()" type="submit" appOnlineOnly tabindex="0"
+        class="button-rounded w-100 color-success" mat-raised-button>
+        <mat-icon>add</mat-icon> {{resourceService.frmelmnts?.lbl?.addUser}}
+      </button>
+    </div>
+    <div class="px-16 my-16 member-list-container">
+      <sb-member-list [layoutConfig]=memberCardConfig [memberList]="userList" [isMenu]="false"
+        (cardClick)="selectUser($event)">
+      </sb-member-list>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="p-16 d-flex flex-ai-center flex-jc-flex-end">
+      <button type="submit" (click)="closeSwitchUser()" tabindex="0"
+        class="button-rounded color-accent mr-8" mat-raised-button>{{resourceService.frmelmnts?.btn?.cancel}}</button>
+      <button type="submit" [disabled]="!selectedUser" class="button-rounded" mat-raised-button color="accent" (click)="switchUser()" tabindex="0" [disabled]="!selectedUser"
+        appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata">
+        {{resourceService.frmelmnts?.lbl?.switchUser}}
+      </button>
     </div>
   </div>
-  <div class="px-16">
-    <button (click)="navigateToCreateUser()" type="submit" appOnlineOnly tabindex="0"
-            class="sb-btn sb-btn-sm sb-btn-outline-secondary sb-left-icon-btn w-100 mt-16 mb-24">
-      <i class="chevron plus icon"></i> {{resourceService.frmelmnts?.lbl?.addUser}}
-    </button>
-  </div>
-  <div class="px-16 mb-16 member-list-container">
-    <sb-member-list [layoutConfig]=memberCardConfig
-                    [memberList]="userList"
-                    [isMenu]="false"
-                    (cardClick)="selectUser($event)">
-    </sb-member-list>
-  </div>
-  <div class="user-profile-box__actions pb-16 px-16">
-    <button type="submit" class="sb-btn sb-btn-normal" (click)="switchUser()" tabindex="0"
-            [disabled]="!selectedUser" appOnlineOnly
-            appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
-            [ngClass]="{'sb-btn-disabled': !selectedUser, 'sb-btn-primary': selectedUser}">
-      {{resourceService.frmelmnts?.lbl?.switchUser}}
-    </button>
-    <button type="submit" (click)="closeSwitchUser()" tabindex="0"
-            class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">{{resourceService.frmelmnts?.btn?.cancel}}</button>
-  </div>
-</div>
 </div>

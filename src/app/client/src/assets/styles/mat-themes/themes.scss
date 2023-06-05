@@ -124,6 +124,7 @@ $theme in $app-themes {
     --sbt-bradius-24: calc(var(--sbt-bradius) * 12);
     --sbt-bradius-32: calc(var(--sbt-bradius) * 16);
     --list-container-bg: #fff;
+    --user-profile-box: #fff;
     --dot-divider: #333;
     .mat-app-background{
       background: mat.get-color-from-palette($primary, 50);
@@ -153,6 +154,7 @@ $theme in $app-themes {
       --sbt-footer-info-links: var(--white);
       --sbt-filter-bar-bg: var(--sbt-body-bg);
       --list-container-bg: var(--sbt-body-bg2);
+      --user-profile-box: var(--sbt-body-bg);
       --mat-list-bg: var(--sbt-body-bg);
       --mat-list-border: var(--sbt-body-bg);
       --mat-list-border-active: var(--secondary-color);
