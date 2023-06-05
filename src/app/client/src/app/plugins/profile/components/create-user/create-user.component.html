@@ -2,55 +2,64 @@
 
   <mat-toolbar color="primary" class="toolbar-pageback">
     <!-- /* Back button */ -->
-   <div class="d-flex flex-ai-center">
-      <button type="button" mat-mini-fab color="accent"
-      class="button-rounded" tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-      <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
-    </button>
-    <div class="toolbar-pageback__heading">
-      <h3 class="mat-title mb-0" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.lbl?.createUser}}</h3>
+    <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
+      <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0" (click)="goBack()"
+        attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+        <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
+      </button>
+      <div class="toolbar-pageback__heading">
+        <h3 class="mat-title mb-0" tabindex="0" role="heading" aria-level="2">
+          {{resourceService?.frmelmnts?.lbl?.createUser}}</h3>
+      </div>
     </div>
-   </div>
     <div class="toolbar-pageback__actions">
     </div>
   </mat-toolbar>
 
   <div class="mat-inside-page-container mat-app-background2 create-user-component">
     <app-loader *ngIf="showLoader"></app-loader>
-  <div class="user-profile-box p-0" *ngIf="!showLoader">
-    <div class="d-flex flex-jc-space-between py-16 px-16">
-      <div role="heading" aria-level="1" class="user-profile-box__title">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>
-    </div>
-    <div class="twelve wide column p-0 mx-16 mb-8 text-center"><img src="../../assets/images/profile-icon.svg" alt="profile-icon"
-        width="88px"></div>
-    <form class="sb-form mb-16 px-16" [formGroup]="userDetailsForm">
-      <div class="ui stackable grid m-0" *ngFor="let field of formData">
-        <div class="twelve wide column p-0" *ngIf="field.inputType==='input' && field.visible===true">
-          <div class="d-flex fields-selection p-0">
-            <div class="sb-field field-focus mb-8 w-100">
+    <div class="user-profile-box p-0 mat-bg-white" *ngIf="!showLoader">
+      <div class="d-flex flex-jc-space-between p-16">
+        <div role="heading" aria-level="1" class="user-profile-box__title color-accent">
+          {{resourceService?.frmelmnts?.lbl?.createUser}}</div>
+      </div>
+      <div class="d-flex flex-ai-center flex-jc-center w-100 mb-8">
+        <img src="../../assets/images/profile-icon.svg" alt="profile-icon" width="88px">
+      </div>
+      <form [formGroup]="userDetailsForm" class="p-16">
+        <div *ngFor="let field of formData">
+          <div *ngIf="field.inputType==='input' && field.visible===true">
+            <div class="d-flex">
+
+              <!-- <label
+              *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
+              class="font-weight-normal">{{field.name}}<span class="sb-color-warning">*</span></label>
               <input
                 [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
                 class="sb-form-control" formControlName="{{field.code}}" aria-label="Enter Name" type="text" name="{{field.code}}"
-                placeholder="{{field.description}}">
-              <label
-                *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
-                class="font-weight-normal">{{field.name}}<span class="sb-color-warning">*</span></label>
-              <label *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors"
-                class="font-weight-normal orange text">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
+                placeholder="{{field.description}}"> -->
+              <mat-form-field class="w-100 border-radius" appearance="fill" color="accent">
+                <mat-label>{{field.name}}</mat-label>
+                <input matInput formControlName="{{field.code}}" aria-label="Enter Name" type="text"
+                  name="{{field.code}}" placeholder="{{field.description}}">
+              </mat-form-field>
             </div>
+            <p *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors"
+                class="mat-caption color-warn">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</p>
+            <p class="mat-body-1">
+              {{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
           </div>
-          <p class="mat-body-1">
-            {{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
         </div>
+      </form>
+      <mat-divider></mat-divider>
+      <div class="p-16 d-flex flex-ai-center flex-jc-flex-end">
+        <button mat-raised-button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata"
+          type="button" class="button-rounded mr-8" tabindex="0" (click)="onCancel()">
+          {{resourceService?.frmelmnts.btn.cancel}}</button>
+        <button mat-raised-button color="accent" appTelemetryInteract appOnlineOnly
+          [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn" (click)="onSubmitForm()"
+          tabindex="0" type="submit" class="button-rounded">{{resourceService?.frmelmnts?.lbl?.addUser}}</button>
       </div>
-    </form>
-    <div class="user-profile-box__actions pb-16 px-16">
-      <button mat-raised-button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" 
-      type="button" class="button-rounded" tabindex="0" (click)="onCancel()">
-      {{resourceService?.frmelmnts.btn.cancel}}</button>
-      <button mat-raised-button color="accent" appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
-        (click)="onSubmitForm()" tabindex="0" type="submit" class="button-rounded">{{resourceService?.frmelmnts?.lbl?.addUser}}</button>
     </div>
   </div>
-</div>
 </div>
