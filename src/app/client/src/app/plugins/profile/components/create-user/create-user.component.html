@@ -2,7 +2,7 @@
 
   <mat-toolbar color="primary" class="toolbar-pageback">
     <!-- /* Back button */ -->
-    <div class="d-flex flex-ai-center">
+    <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
       <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0" (click)="goBack()"
         attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
@@ -51,8 +51,8 @@
           </div>
         </div>
       </form>
-      <hr>
-      <div class="pt-8 pb-16 px-16 d-flex flex-ai-center flex-jc-flex-end">
+      <mat-divider></mat-divider>
+      <div class="p-16 d-flex flex-ai-center flex-jc-flex-end">
         <button mat-raised-button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata"
           type="button" class="button-rounded mr-8" tabindex="0" (click)="onCancel()">
           {{resourceService?.frmelmnts.btn.cancel}}</button>

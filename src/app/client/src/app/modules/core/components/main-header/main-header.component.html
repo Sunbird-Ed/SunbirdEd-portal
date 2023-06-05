@@ -112,7 +112,7 @@
           <sb-member-list tabindex="0" [layoutConfig]=memberCardConfig [memberList]="userListToShow" [isMenu]="false"
             (cardClick)="switchUser($event)">
           </sb-member-list>
-          <div class="more-user ml-16" *ngIf="totalUsersCount >2" role="button" tabindex="0"
+          <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2" role="button" tabindex="0"
             attr.aria-label="More Users" (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
             <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
             <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}
@@ -123,7 +123,11 @@
       </div>
     </div>
     <div *ngIf="userService?.loggedIn">
-      <div appOnlineOnly class="add-user add-user--horizontal" tabindex="0" aria-label="Add User" role="button"
+      <button mat-raised-button type="button" color="accent" class="w-100 text-left" tabindex="0" appOnlineOnly aria-label="Add User"
+        role="button" *ngIf="totalUsersCount >=1" (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
+        <mat-icon class="mr-8">add</mat-icon>{{resourceService.frmelmnts?.lbl?.addAnotherUser}}
+      </button>
+      <!-- <div appOnlineOnly class="add-user add-user--horizontal" tabindex="0" aria-label="Add User" role="button"
         *ngIf="totalUsersCount >=1" (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
         <div class="add-user__icon">
           <img src="assets/images/user-circle.svg" alt="Add user">
@@ -131,7 +135,7 @@
         <div class="add-user__label fnormal sb-color-secondary">
           {{resourceService.frmelmnts?.lbl?.addAnotherUser}}
         </div>
-      </div>
+      </div> -->
       <mat-nav-list class="pt-0">
         <!-- <div mat-subheader>Profile</div> -->
         <mat-divider></mat-divider>

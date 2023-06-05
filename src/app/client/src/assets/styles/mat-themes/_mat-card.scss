@@ -54,6 +54,10 @@
   .pink-bluegrey .mat-card-header .mat-card-title{
     color: mat.get-color-from-palette($background, background) !important;
   }
+  .mat-card.member-card:hover {
+    background-color: mat.get-color-from-palette($accent, 500) !important;
+    color: mat.get-color-from-palette($accent, 500-contrast);
+  }
 }
 
 //themes styles

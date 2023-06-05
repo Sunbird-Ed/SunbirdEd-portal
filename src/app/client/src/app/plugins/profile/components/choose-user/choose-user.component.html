@@ -2,7 +2,7 @@
 
 <mat-toolbar color="primary" class="toolbar-pageback">
   <!-- /* Back button */ -->
-  <div class="d-flex flex-ai-center">
+  <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
     <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0" (click)="goBack()"
       attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
       <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
@@ -34,8 +34,8 @@
         (cardClick)="selectUser($event)">
       </sb-member-list>
     </div>
-    <hr>
-    <div class="pt-8 pb-16 px-16 d-flex flex-ai-center flex-jc-flex-end">
+    <mat-divider></mat-divider>
+    <div class="p-16 d-flex flex-ai-center flex-jc-flex-end">
       <button type="submit" (click)="closeSwitchUser()" tabindex="0"
         class="button-rounded color-accent mr-8" mat-raised-button>{{resourceService.frmelmnts?.btn?.cancel}}</button>
       <button type="submit" [disabled]="!selectedUser" class="button-rounded" mat-raised-button color="accent" (click)="switchUser()" tabindex="0" [disabled]="!selectedUser"
