@@ -313,6 +313,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.newData = false;
     this.noResult = false;
     this.districts = this.organisations = []
+    this.userAccess = true;
     this.resetConfigFilters();
     delete this.displayFilters['District'];
     delete this.displayFilters['Organisation'];
