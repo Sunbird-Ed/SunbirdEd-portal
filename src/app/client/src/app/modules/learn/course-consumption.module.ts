@@ -28,6 +28,7 @@ import { DiscussionModule } from '../discussion/discussion.module';
 import { PendingchangesGuard } from '@sunbird/public';
 import { GroupsModule } from '../groups';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -64,7 +65,8 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     NotificationModule,
     DiscussionModule,
     GroupsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatMenuModule
   ],
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },

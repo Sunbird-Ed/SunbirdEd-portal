@@ -20,7 +20,7 @@ import { DiscussionModule } from '../discussion/discussion.module';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
 import { ActivityDashboardDirective } from './directive/activity-dashboard/activity-dashbord.directive';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   imports: [
     CommonModule,
@@ -39,7 +39,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     RecaptchaModule,
     DiscussionModule,
     SharedFeatureModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatMenuModule
   ],
   declarations: [ MyGroupsComponent, AddMemberComponent,
     GroupHeaderComponent, NoGroupResultComponent,

@@ -229,13 +229,13 @@
         <!-- 2. Course Progress bar -->
         <div class="mat-bg-white certified-course__progress p-16 mb-16"
           *ngIf="enrolledCourse && !addToGroup && !courseMentor">
-          <div class="mat-caption relative9 relative">
-            <div class="kabab-menu pull-right" *ngIf="progressToDisplay === 100 && showForceSync && isConnected"
-              (click)="dropdownMenu();"></div>
-            <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
-              <div class="d-flex flex-ai-center list p-8 w-100" (click)="forceSync()">
-                {{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
-            </div>
+          <div class="mat-caption relative9">
+            <button mat-icon-button [matMenuTriggerFor]="beforeMenu" class="pull-right" tabindex="0" (click)="dropdownMenu();">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #beforeMenu="matMenu" xPosition="before">
+              <button mat-menu-item (click)="forceSync()" tabindex="0">{{resourceService?.frmelmnts?.lbl?.forceSync}}</button>
+            </mat-menu>
           </div>
           <div class="mat-caption">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="mat-body-1 color-accent font-weight-bold mt-8">{{progressToDisplay}}%
