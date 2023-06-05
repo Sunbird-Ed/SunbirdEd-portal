@@ -59,54 +59,6 @@
   }
 }
 
-// state dropdown css
-.ui.selection.dropdown .menu>.item {
-  font-size: calculateRem(12px);
-  padding: 1em 1em !important;
-}
-
-.ui.selection.dropdown.state-medium {
-  color: var(--primary-400);
-  display: flex;
-  align-items: center;
-  border: none;
-  background: none;
-  min-width: calculateRem(100px);
-  margin: 0;
-
-  .medium-selection {
-    min-width: calculateRem(120px);
-  }
-
-  &:hover {
-    background: var(--rc-E0F1FD);
-  }
-}
-.state-selection__section
- .item:hover, .state-selection__section .item.active {
-  background-color: var(--primary-100);
-  width: 100% !important;
-  padding-right: calculateRem(24px);
-}
-.state-selection__section .item {
-  padding: 0.25rem 0.5rem;
-  display: block;
-  cursor: pointer;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ui.selection.dropdown .menu {
-  max-height: 20em;
-}
-
-.ui.default.dropdown:not(.button)>.text,
-.ui.dropdown:not(.button)>.default.text {
-  color: var(--red-400);
-}
-
-
 
 :host ::ng-deep .dropdown:not(.button)>.default.text {
   color: var(--primary-400) !important;

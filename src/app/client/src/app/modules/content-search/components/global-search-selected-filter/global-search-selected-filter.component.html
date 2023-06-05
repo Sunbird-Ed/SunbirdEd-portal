@@ -1,7 +1,7 @@
 <div class="mat-body-1 font-weight-bold" *ngIf="showLabel()">
   {{resourceService?.frmelmnts?.lbl?.appliedFilters}}
 </div>
-<div *ngIf="showLabel()" class="d-flex flex-ai-center mb-24 flex-w-wrap">
+<div *ngIf="showLabel()" class="d-flex flex-ai-center mb-24 flex-w-wrap global-search-selected-filter">
   <ng-container *ngFor="let facet of facets | sortBy:'index':'asc'">
     <div class="d-flex flex-ai-center pr-8 mt-8" *ngIf="selectedFilters[facet.name] && selectedFilters[facet.name].length > 0">
       <label class="m-0">{{facet.label}} :&nbsp;</label>

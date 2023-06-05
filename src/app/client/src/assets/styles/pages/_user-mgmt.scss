@@ -6,24 +6,16 @@
   margin: calculateRem(32px) auto;
   max-width: calculateRem(480px);
   width: calc(100% - 2rem);
-  background: var(--white);
   border-radius: calculateRem(8px);
+  background-color: var(--user-profile-box);
 
   &__title {
     font-weight: bold;
-    color: var(--primary-color);
     font-size: calculateRem(16px);
   }
 
   &__actions {
     border-top: calculateRem(1px) solid var(--rc-dddddd);
-    padding: calculateRem(16px) 0px 0px 0px;
-    display: flex;
-    flex-direction: row-reverse;
-  }
-
-  .ui.stackable.grid>.wide.column {
-    padding: 0rem !important;
   }
 
   .field-focus {

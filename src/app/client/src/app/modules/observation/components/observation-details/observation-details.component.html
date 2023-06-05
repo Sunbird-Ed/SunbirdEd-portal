@@ -1,13 +1,13 @@
 
 <mat-toolbar color="primary" class="toolbar-pageback">
-  <div class="d-flex flex-ai-center">
+  <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
      <button type="button" mat-mini-fab color="accent"
      class="button-rounded" tabindex="0" (click)="goBack()"
      attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
      <mat-icon aria-hidden="false" fontIcon="arrow_back"></mat-icon>
    </button>
    <div class="toolbar-pageback__heading">
-    <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{solution}}</h3>
+    <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{solution}}</h3>
      <div class="toolbar-pageback__metadata">
       {{programName}} 
      </div>
@@ -20,8 +20,8 @@
  </mat-toolbar>
 
  <div class="mat-inside-page-container mat-app-background2 observation-details-component">
-  <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
-    <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+  <div class="sb-g sb-g--gap24">
+    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
       <div class="training-info">
         <h4 class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.observationDetails}} </h4>
         <div class="training-relevant my-16 content-header__content">

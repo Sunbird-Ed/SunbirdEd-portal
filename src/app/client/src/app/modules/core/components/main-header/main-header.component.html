@@ -112,7 +112,7 @@
           <sb-member-list tabindex="0" [layoutConfig]=memberCardConfig [memberList]="userListToShow" [isMenu]="false"
             (cardClick)="switchUser($event)">
           </sb-member-list>
-          <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2" role="button" tabindex="0"
+          <div class="more-user ml-16" *ngIf="totalUsersCount >2" role="button" tabindex="0"
             attr.aria-label="More Users" (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
             <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
             <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}

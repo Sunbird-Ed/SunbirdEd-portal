@@ -3,21 +3,21 @@
 
   <!--CC-Player Back button -->
   <mat-toolbar color="primary" class="toolbar-pageback">
-    <div class="d-flex flex-ai-center w-50">
+    <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
       <button type="button" mat-mini-fab color="accent"
         class="button-rounded" tabindex="0" (click)="closeCollectionPlayer()"
         attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
         <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
       </button>
       <div class="toolbar-pageback__heading" *ngIf="collectionData">
-        <h3 class="mat-title mb-0 ellipsis" tabindex="0" role="heading" aria-level="2">{{collectionData.name}}</h3>
+        <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{collectionData.name}}</h3>
           <div class="toolbar-pageback__metadata">
-            <div class="sub-title mat-body-1 mt-4" *ngIf="collectionTreeNodes">
+            <div class="sub-title mat-body-1 mt-4 d-flex flex-ai-center" *ngIf="collectionTreeNodes">
               <span *ngIf="collectionTreeNodes?.data?.board">{{collectionTreeNodes?.data?.board}}</span>
               <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.medium"></span>
               <span *ngIf="collectionTreeNodes?.data?.medium">{{collectionTreeNodes?.data?.medium}}</span>
               <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
-              <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
+              <span class="sb__ellipsis whitespace-initial" *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
             </div>
           </div>
       </div>
@@ -67,8 +67,7 @@
         [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
         *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
         appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="copyAsCourse()"
-        mat-raised-button class="button-rounded mr-8">
-        <img src="assets/images/copy-clone.svg" alt="copy-clone" class="mr-4 pt-2">
+        mat-raised-button class="button-rounded mr-8"><mat-icon>file_copy</mat-icon>
         {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
       </button>
 

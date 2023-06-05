@@ -23,7 +23,7 @@
       </div>
 
       <div *ngFor="let section of pageSections;let last = last"
-        [ngClass]="{'last mb-0':last, 'relative9': !isUserLoggedIn()}">
+        [ngClass]="{'last mb-0':last, 'relative9': !isUserLoggedIn()}" class="mt-24">
         <app-page-section *ngIf="isPageAssemble" (visits)="prepareVisits($event)"
           [layoutConfiguration]="layoutConfiguration" (playEvent)="playContent($event)" [section]="section"
           (viewAll)="viewAll($event)"></app-page-section>
@@ -31,7 +31,7 @@
           [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [type]="'infinite_card_grid'"
           (cardClick)="playContent($event)" (enterKey)="playContent($event)">
         </sb-library-cards-grid>
-        <div class="sb-desktop-library-card relative9">
+        <div class="sb-desktop-library-card" class="mt-24">
           <sb-library-cards-grid *ngIf="!isPageAssemble && isDesktopApp" [layoutConfig]="layoutConfiguration"
             [type]="'infinite_card_grid_with_hover'" [title]="section?.name"
             [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"

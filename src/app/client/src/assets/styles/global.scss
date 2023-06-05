@@ -100,17 +100,6 @@ body {
   }
 }
 
-.description.annannouncement-description {
-  .sb-label-status-error {
-    color: var(--tertiary-color);
-    font-size: calculateRem(11px);
-  }
-
-  .sb-label-12size {
-    font-size: calculateRem(11px);
-  }
-}
-
 // don't delete this
 .iziModal-isAttached {
   body {
@@ -1339,7 +1328,7 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   width: 0.25rem;
   height: 0.25rem;
   border-radius: 100%;
-  background-color: var(--gray-800);
+  background-color: var(--dot-divider);
   display: inline-block;
   margin: 0px 0.5rem;
 }

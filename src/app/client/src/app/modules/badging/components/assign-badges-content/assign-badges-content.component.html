@@ -1,12 +1,9 @@
-<div class="ui grid stackable">
-  <div class="twelve wide column mt-0 pt-0" *ngIf="allBadgeList && allBadgeList.length > 0">
-    <span>{{resourceService?.frmelmnts?.lbl?.markas}}:</span>
-    <button appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
-      [telemetryInteractEdata]="badgeInteractEdata" tabindex="0"
-      class="ui small basic primary compact button ml-10 mt-10" *ngFor="let badge of allBadgeList"
+<div *ngIf="allBadgeList && allBadgeList.length > 0">
+    <span class="mat-body-2">{{resourceService?.frmelmnts?.lbl?.markas}}:</span>
+    <button mat-raised-button color="accent" class="button-rounded ml-8 mt-8" appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}"
+      [telemetryInteractEdata]="badgeInteractEdata" tabindex="0" *ngFor="let badge of allBadgeList"
       (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
   </div>
-</div>
 <app-modal-wrapper *ngIf="showBadgeAssingModel"
   [config]="{disableClose: true, size: 'small', width: '30rem', panelClass: 'material-modal'}" (dismiss)="showBadgeAssingModel=false"
   #modal>

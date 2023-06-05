@@ -169,7 +169,7 @@ $app-themes: (
     background: mat.$light-theme-background-palette,
     typography:
       mat.define-typography-config(
-        $font-family: "Arimo" !important,
+        $font-family: "Arimo",
       ),
   ),
   indigo-pink: (
@@ -181,7 +181,7 @@ $app-themes: (
     background: mat.$light-theme-background-palette,
     typography:
       mat.define-typography-config(
-        $font-family: "Cabin" !important,
+        $font-family: "Cabin",
       ),
   ),
   pink-bluegrey: (
@@ -193,7 +193,7 @@ $app-themes: (
     background: mat.$dark-theme-background-palette,
     typography:
       mat.define-typography-config(
-        $font-family: "Josefin Slab" !important,
+        $font-family: "Josefin Slab",
       ),
   ),
   purple-green: (
@@ -205,7 +205,7 @@ $app-themes: (
     background: mat.$dark-theme-background-palette,
     typography:
       mat.define-typography-config(
-        $font-family: "Quicksand" !important,
+        $font-family: "Quicksand",
       ),
   ),
   joy: (
@@ -217,7 +217,7 @@ $app-themes: (
     background: mat.$light-theme-background-palette,
     typography:
       mat.define-typography-config(
-        $font-family: var(--font-stack-en) !important,
+        $font-family: var(--font-stack-en),
       ),
   ),
   green-grey: (
@@ -229,7 +229,7 @@ $app-themes: (
     background: mat.$dark-theme-background-palette,
     typography:
       mat.define-typography-config(
-        $font-family: "Roboto Slab" !important,
+        $font-family: "Roboto Slab",
       ),
   ),
 );
