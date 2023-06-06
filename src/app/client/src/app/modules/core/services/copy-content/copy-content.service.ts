@@ -122,8 +122,8 @@ export class CopyContentService {
    * @description  request will be formed based on the mimetype
    */
   formatData(contentData: ContentData) {
+    const defaultReqKey = "content";
     const userData = this.userService.userProfile;
-    let req;
     if (contentData.description === undefined) {
       contentData.description = '';
     }
@@ -131,51 +131,62 @@ export class CopyContentService {
     if (!_.isEmpty(userData.lastName)) {
       creator = userData.firstName + ' ' + userData.lastName;
     }
-    if (_.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset') {
-      req = {
-        request: {
-          questionset: {
-            name: 'Copy of ' + contentData.name,
-            createdFor: userData.organisationIds,
-            createdBy: userData.userId,
-            mimeType: contentData.mimeType,
-            
-          }
+    let commonReq = {
+      request: {
+        content: {
+          name: 'Copy of ' + contentData.name,
+          createdFor: userData.organisationIds,
+          createdBy: userData.userId,
+          mimeType: contentData.mimeType,
         }
-      };
-      return of(req);
-     }
+      }
+    }
+    if (_.get(contentData, 'mimeType') === 'application/vnd.sunbird.questionset') {
+      return this.dynamicReqKeyHandler(commonReq, defaultReqKey, 'questionset');
+    }
     else {
-      req = {
-        request: {
-          content: {
-            name: 'Copy of ' + contentData.name,
-            description: contentData.description,
-            code: contentData.code + '.copy',
-            creator: creator,
-            createdFor: userData.organisationIds,
-            createdBy: userData.userId,
-            organisation: _.uniq(this.userService.orgNames),
-            framework: '',
-            mimeType: contentData.mimeType,
-            contentType: contentData.contentType
-          }
-        }
-      };
-    if (_.lowerCase(contentData.contentType) === 'course') {
-      req.request.content.framework = contentData.framework;
-      return of(req);
-    } else {
-      return this.frameworkService.frameworkData$.pipe(
-        switchMap((frameworkData: any) => {
-          if (!frameworkData.err) {
-            req.request.content.framework = _.get(frameworkData, 'frameworkdata.defaultFramework.code');
-          }
-          return of(req);
-        })
-      );
+      let reqContentData = {
+        description: contentData.description,
+        code: contentData.code + '.copy',
+        creator: creator,
+        organisation: _.uniq(this.userService.orgNames),
+        framework: '',
+        contentType: contentData.contentType
+      }
+      let mergedContentReq = Object.assign({},commonReq);
+      mergedContentReq.request.content = {...commonReq.request.content, ...reqContentData};
+      console.log(mergedContentReq)
+      if (_.lowerCase(contentData.contentType) === 'course') {
+         //@ts-ignore
+        mergedContentReq.request.content.framework = contentData.framework;
+        return of(mergedContentReq);
+      } else {
+        return this.frameworkService.frameworkData$.pipe(
+          switchMap((frameworkData: any) => {
+            if (!frameworkData.err) {
+              //@ts-ignore
+              mergedContentReq.request.content.framework = _.get(frameworkData, 'frameworkdata.defaultFramework.code');
+            }
+            return of(mergedContentReq);
+          })
+        );
+      }
     }
   }
+  /**
+  * This method will construct and return the request body based on user define key ex: questionset,content etc
+  * @param {reqParms} ContentData request data 
+  * @param {oldkey} string default key ex: content
+  * @param {newkey} string new key to change the request metadata key
+  */
+  dynamicReqKeyHandler(reqParms, oldKey, newKey) {
+    Object.defineProperty(
+      reqParms.request,
+      newKey,
+      Object.getOwnPropertyDescriptor(reqParms.request, oldKey)
+    );
+    delete reqParms.request[oldKey];
+    return of(reqParms)
   }
   /**
    * This method redirect to the editor page depending on mimetype
