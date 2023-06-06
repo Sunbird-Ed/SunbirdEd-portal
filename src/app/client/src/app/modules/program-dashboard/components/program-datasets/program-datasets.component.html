@@ -94,7 +94,7 @@
               </mat-form-field>
           </div>
           <div *ngIf="tabIndex !== 2" class="d-flex flex-dc">
-            <label>{{ resourceService?.frmelmnts?.lbl?.blockLabel }}</label>
+            <label>{{ resourceService?.frmelmnts?.lbl?.block }}</label>
               <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd" >
               <mat-select role="radio" class="selection"  valueField="locationId" multiple formControlName="blockName"
               [placeholder]="resourceService?.frmelmnts?.lbl?.blockLabel"  (selectionChange)="blockChanged($event)" (click)="dependentFilterMsg()" [disabled]="!reportForm.controls.districtName.value">
@@ -116,7 +116,7 @@
               </mat-form-field>
           </div>
 
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
               <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy" [max]="maxStartDate" (dateInput)="dateChanged($event,'startDate')" (dateChange)="dateChanged($event,'startDate')" formControlName="startDate" [matDatepicker]="picker">
@@ -124,7 +124,7 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>            
           </div>
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2  && tabIndex !== 3" class="d-flex flex-dc customDate">
             <label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown custom_mat_dd sb-color-primary">
               <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy" [min]="minEndDate" [max]="maxEndDate"  (dateInput)="dateChanged($event,'endDate')" (dateChange)="dateChanged($event,'endDate')" formControlName="endDate" [matDatepicker]="picker">
