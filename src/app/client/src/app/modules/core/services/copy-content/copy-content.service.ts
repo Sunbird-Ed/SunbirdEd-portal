@@ -155,7 +155,6 @@ export class CopyContentService {
       }
       let mergedContentReq = Object.assign({},commonReq);
       mergedContentReq.request.content = {...commonReq.request.content, ...reqContentData};
-      console.log(mergedContentReq)
       if (_.lowerCase(contentData.contentType) === 'course') {
          //@ts-ignore
         mergedContentReq.request.content.framework = contentData.framework;

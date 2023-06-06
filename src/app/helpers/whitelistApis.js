@@ -1661,7 +1661,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/action/questionset/v1/copy/:do_id': {
+    '/content/questionset/v1/copy/:do_id': {
       description: 'QuestionSet Copy',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -2016,7 +2016,7 @@ const API_LIST = {
     '/action/questionset/v1/reject/:do_id',
     '/action/questionset/v1/read/:do_id',
     '/action/questionset/v1/hierarchy/:do_id',
-    'action/questionset/v1/copy/:do_id',
+    '/content/questionset/v1/copy/:do_id',
     '/action/question/v1/read/:do_id',
     '/action/question/v1/review/:do_id',
     '/action/question/v1/publish/:do_id',
