@@ -145,23 +145,29 @@ export class CopyContentService {
       return this.dynamicReqKeyHandler(commonReq, defaultReqKey, 'questionset');
     }
     else {
-      let req: any = { ...commonReq,};
-      req.request.content.description = contentData.description;
-      req.request.content.code = contentData.code + '.copy';
-      req.request.content.creator = creator;
-      req.request.content.organisation = _.uniq(this.userService.orgNames);
-      req.request.content.framework = '';
-      req.request.content.contentType = contentData.contentType;
+      let reqContentData = {
+        description: contentData.description,
+        code: contentData.code + '.copy',
+        creator: creator,
+        organisation: _.uniq(this.userService.orgNames),
+        framework: '',
+        contentType: contentData.contentType
+      }
+      let mergedContentReq = Object.assign({},commonReq);
+      mergedContentReq.request.content = {...commonReq.request.content, ...reqContentData};
+      console.log(mergedContentReq)
       if (_.lowerCase(contentData.contentType) === 'course') {
-        req.request.content.framework = contentData.framework;
-        return of(req);
+         //@ts-ignore
+        mergedContentReq.request.content.framework = contentData.framework;
+        return of(mergedContentReq);
       } else {
         return this.frameworkService.frameworkData$.pipe(
           switchMap((frameworkData: any) => {
             if (!frameworkData.err) {
-              req.request.content.framework = _.get(frameworkData, 'frameworkdata.defaultFramework.code');
+              //@ts-ignore
+              mergedContentReq.request.content.framework = _.get(frameworkData, 'frameworkdata.defaultFramework.code');
             }
-            return of(req);
+            return of(mergedContentReq);
           })
         );
       }
