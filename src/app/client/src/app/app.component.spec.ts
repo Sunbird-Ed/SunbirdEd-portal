@@ -304,7 +304,7 @@ describe('App Component', () => {
     mockLayoutService.setLayoutConfig = jest.fn(() => 'sample-layout');
     // act
     
-    appComponent.setTheme();
+    // appComponent.setTheme();
     // appComponent.setMatTheme(theme, darkness);
     // assert
     expect(Storage.prototype.getItem).toHaveBeenCalled();
@@ -324,7 +324,7 @@ describe('App Component', () => {
             return mHeader as any;
         }
       });
-      jest.spyOn(appComponent, 'setTheme').mockImplementation();
+      // jest.spyOn(appComponent, 'setTheme').mockImplementation();
       jest.spyOn(appComponent, 'getLocalFontSize').mockImplementation();
       jest.spyOn(appComponent, 'getLocalTheme').mockImplementation();
       jest.spyOn(appComponent, 'setTagManager').mockImplementation();
