@@ -1,99 +1,19 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.sb-modal-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sb-modal .ui.modal {
-  margin-top: 15% !important;
+.datasets-container {
+  border-radius: 1.5rem;
 }
 
 .ngx-datatable.fixed-header .datatable-header {
   padding: 0.625rem;
 }
 
-.sidebar-block {
-  min-height: 25rem;
-}
-
 .ngx-datatable.datatable-header {
   background: var(--mat-accordion-tab-body-active-bg) !important;
 }
 
-
-.custom_mat_dd .mat-select-arrow-wrapper {
-  vertical-align: bottom !important;
-}
-
-.reset-filter{
-  color: var(--primary);
-  background-color: var(--brand-header-tail-text);
-  width: fit-content;
-}
-
-.newData{
-  color:var(--ck-color-base-error);
-  margin-left: 1.875rem;
-  margin-top: 0.625rem;
-}
-
-.info{
-  justify-self: flex-start;
-  margin-right: 0.625rem;
-  cursor: pointer;
-  color: var(--primary) !important;
-}
-.goback{
-  justify-self: flex-end;
-  cursor: pointer;
-  color: var(--ck-color-button-cancel);
-}
-
-.ppFilter{
-  margin-top: 1.25rem;
-}
-
 .col-gap{
-  gap:1.875rem;
-}
-
-.modalNote{
-  line-height: initial;
-}
-
-.infoIcon{
-  width: 1.125rem;
-}
-.sb-graph-section{
-
-  box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
-  background: var(--sb-graph-section-bg);
-  border: 0.0625rem solid var(--rc-dddddd);
-
-}
-
-.sb-last-update-status {
-  font-size: calculateRem(12px);
-  font-weight: bold;
-}
-
-.sb-label-name {
-  font-size: 1rem;
-}
-
-.sb-label-value {
-  border-radius: calculateRem(24px);
-  padding: calculateRem(7px);
-  padding-right: calculateRem(9px);
-  padding-left: calculateRem(9px);
-  background-color: var(---rc-e9e8d9) !important;
-  box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(3px) 0 var(--gray-100) !important;
-  color: var(--gray-800);
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-
+  gap: .5rem 1.5rem;
 }
 
 ::ng-deep {
@@ -128,58 +48,5 @@
       border-radius: 1.5rem !important;
     }
   }
-  
-  .customDate{
-    .mat-form-field-infix{
-      width: 8.75rem !important;
-    }
-  }
-  .chart-title {
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem !important;
-    padding-top: 0.5rem;
-  }
 
-  
-  .custom_mat_dd{
-    
-    .mat-form-field-flex{
-      display: flex;
-      align-items: center !important;
-      box-sizing: border-box;
-      width: 100%;
-      
-      input::placeholder{
-        color: rgba(0,0,0,.42) !important;
-        font-weight: bold !important;
-      }
-    }
-
-    .mat-select-arrow-wrapper {
-      vertical-align: unset !important;
-    }
-
-  }
-  .mat-select-panel .mat-option {
-    white-space: normal !important;
-    display: inline-table !important;
-    width: 100% !important;
-    line-height: 1.5em !important;
-    padding: 0.625rem 1.5em;
-  }
-  .mat-option-text{
-    display: flex !important;
-  }
-
-  .mat-dropdown__options span {
-    position: unset !important;
-  }
-  .mat-dropdown__options span:before {
-    display: flex !important;
-    align-self: flex-end !important;
-  }
-  .custom_mat_multi.mat-option{
-    display: flex !important;
-  }
 }

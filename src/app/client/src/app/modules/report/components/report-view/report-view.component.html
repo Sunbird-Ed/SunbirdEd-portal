@@ -1,4 +1,4 @@
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : 'pt-16'">
+<div>
   <div *ngIf="this.data">
     <div class="ui report-main-block">
       <div class="twelve wide column px-0">
@@ -227,7 +227,7 @@
       </div>
     </div>
   </div>
-  <div class="twelve wide column" *ngIf="noResult">
+  <div *ngIf="noResult">
     <mat-toolbar color="primary" class="toolbar-pageback">
       <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
          <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0" (click)="gotoSolutionListPage()"
@@ -241,9 +241,11 @@
       <div class="toolbar-pageback__actions"></div>
      </mat-toolbar>
 
-    <app-no-result [data]="noResultMessage"></app-no-result>
+     <div class="mat-inside-page container">
+       <app-no-result [data]="noResultMessage"></app-no-result>
+     </div>
   </div>
-  <div class="twelve wide column" *ngIf="showLoader">
+  <div class="w-100" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
   </div>
 </div>
