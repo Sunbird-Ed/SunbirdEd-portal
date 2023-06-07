@@ -130,8 +130,14 @@ export class FilterComponent implements OnInit, OnDestroy {
       const options = (_.sortBy(_.uniq(
         _.map(chartData, (data) => (data && data[reference]) ? data[reference].toLowerCase() : ''
         )))).filter(Boolean);
+
         if(dependency &&  !_.has(this.selectedFilters, `${dependency.reference}`) && _.has(this.selectedFilters, `${reference}`)){
-          this.selectedFilters[reference] = options
+          // this.selectedFilters[reference] = options
+          console.group();
+          console.log('filter',filter)
+          console.log('options',options)
+          console.log('selected filters',this.selectedFilters);
+          console.groupEnd()
         }
         if(this.firstFilter && this.firstFilter[0] !== reference){
           if (this.selectedFilters[reference] && this.selectedFilters[reference].length > 0) {
