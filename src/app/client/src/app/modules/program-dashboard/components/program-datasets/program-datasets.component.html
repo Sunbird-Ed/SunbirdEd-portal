@@ -209,7 +209,7 @@
 </ng-template>
 <ng-template #graphs let-currentReport>
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
-  <ng-container *ngIf="currentReport.charts.length">
+  <ng-container *ngIf="currentReport.charts.length && userAccess">
     <div class="sb-graph-section p-24 my-24"
         *ngFor="let chart of currentReport.charts;">
         <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
