@@ -1,8 +1,8 @@
 <form class="d-flex flex-dr" [formGroup]="pdFiltersFormGroup">
     <div class="d-flex flex-dc">
       <ng-container *ngIf="pdFilter.controlType === 'number'">
-        <mat-label>{{ pdFilter.label }}</mat-label>
-        <mat-form-field appearance="fill" class="sb-mat-form-field-custom border-radius">
+        <mat-form-field appearance="fill">
+          <mat-label>{{ pdFilter.label }}</mat-label>
           <input
             matInput
             type="number"
@@ -21,4 +21,5 @@
         </mat-form-field>
       </ng-container>
     </div>
+
 </form>
