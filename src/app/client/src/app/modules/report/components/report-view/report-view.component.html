@@ -1,26 +1,23 @@
 <div class="report-view-component">
   <div *ngIf="this.data">
-    <div class="ui report-main-block">
-      <div class="twelve wide column px-0">
-        <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
+    <div class="report-main-block">
+      <div class="">
+        <div class="m-0 sb-mid-container-min-height dashboard-body-scroll">
 
           <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
             <div id="report-header" class="report__header">
-              <div class="cc-player__content-header relative9 reports-content-header">
-                <div class="ui container py-16">
-                  <div class="content-header__content p-10">
-                    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-                      <div class="content-header__title font-weight-bold text-left">
+              <div class="reports-content-header">
+                <div class="py-16">
+                  <div class="p-10">
+                    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+                      <div class="font-weight-bold text-left">
                         <div class="d-flex">
                           <div class="d-flex flex-dc flex-basis-4">
-                            <span class="relative position relative9 reports-back-btn my-0 pl-0 pr-10">
-                              <span class="ui py-8 px-0">
-                                <button type="button"
-                                  class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5"
-                                  aria-label="back-button" (click)="gotoSolutionListPage()">
-                                  <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-                                      <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-                                    </svg></i>
+                            <span class="relative position reports-back-btn my-0 pl-0 pr-8">
+                              <span class="py-8 px-0">
+                                <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0"
+                                  (click)="gotoSolutionListPage()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+                                  <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
                                 </button>
                               </span>
                             </span>
@@ -29,7 +26,7 @@
                             <div class="report-title"> {{ data?.solutionName | titlecase }}
                             </div>
                             <div *ngIf="data">
-                              <span class="ml-auto sb-last-update-status fnormal sb-color-gray-400 px-10 last-update">
+                              <span class="ml-auto sb-last-update-status mat-body-1 px-8 last-update">
                                 <span>{{resourceService?.frmelmnts?.lbl?.lastSubmittedOn}}&nbsp;: </span> &nbsp;
                                 {{data.completedDate| date: "yyyy/MM/dd"}}
                               </span>
@@ -42,11 +39,11 @@
                     <div *ngFor="let filter of filters">
                       <div *ngIf="filter.filter.type == 'dropdown'" class="d-flex">
                         <div class="sb-field filter-drop mb-0 mr-8">
-                          <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                          <mat-form-field appearance="fill" color="accent">
                             <mat-label>Select Submission</mat-label>
                             <mat-select role="listbox" aria-label="Select Submission" class="selection"
                               (selectionChange)="handleParameterChange($event)">
-                              <mat-option class="mat-dropdown__options" role="option"
+                              <mat-option role="option"
                                 *ngFor="let option of filter.filter.data" [value]="option"
                                 attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
                             </mat-select>
@@ -55,11 +52,11 @@
                       </div>
                     </div>
                     <div class="dropdown">
-                      <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn " *ngIf="!segmentfilter">
+                      <button color="accent" class="button-rounded mr-8" mat-raised-button *ngIf="!segmentfilter">
                         {{this.resourceService?.frmelmnts.btn.exportAs}}
                       </button>
                       <div class="dropdown-content">
-                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn" (click)="download()">
+                        <button color="accent" class="button-rounded mr-8" mat-raised-button (click)="download()">
                           Pdf
                         </button>
                       </div>
@@ -69,23 +66,23 @@
                 </div>
               </div>
             </div>
-            <div class="ui container" *ngIf="data">
-              <div class="twelve wide column">
+            <div *ngIf="data">
+              <div>
                 <div id="report-body" class="my-16">
                   <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
                     <mat-tab *ngFor="let tab of tabs; let i = index" [label]="{'tabHeader': tab?.header}">
                       <ng-template mat-tab-label>
                         <span>{{tab.header | translate}}</span>
                       </ng-template>
-                      <div class="ui bottom p-0 b-0 no-bg graph-section" *ngIf="segmentfilter">
+                      <div class="p-16 no-bg graph-section" *ngIf="segmentfilter">
                         <div class="double-btn">
                           <div class="column-btn">
                             <div class="dropdown">
-                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn">
+                              <button color="accent" class="button-rounded mr-8" mat-raised-button>
                                 {{this.resourceService?.frmelmnts.btn.exportAs}}
                               </button>
                               <div class="dropdown-content">
-                                <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
+                                <button class="button-rounded mr-8 color-accent" mat-raised-button
                                   (click)="download()">
                                   Pdf
                                 </button>
@@ -94,7 +91,7 @@
                           </div>
                           <div class="column-btn">
                             <div *ngFor="let filter of filters">
-                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn "
+                              <button color="accent" class="button-rounded mr-8" mat-raised-button
                                 *ngIf="filter.filter.type=='modal'"
                                 (click)="filterModalPopup(filter.filter.data, filter.filter.keyToSend)">
                                 {{ resourceService?.frmelmnts?.lbl?.filters }}
@@ -104,7 +101,7 @@
                         </div>
 
                       </div>
-                      <div class="ui bottom p-0 b-0 no-bg my-24 graph-section">
+                      <div class="p-0 b-0 no-bg my-24 graph-section">
                         <div *ngFor="let section of reportSections">
                           <div [ngClass]="{'sb-graph-section p-24 my-24' : section.criteriaName}">
                             <strong *ngIf="section?.criteriaName">{{ section.criteriaName }}</strong>
