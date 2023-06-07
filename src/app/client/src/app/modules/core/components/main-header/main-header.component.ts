@@ -544,7 +544,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     window.location.replace('/logoff');
-   // this.cacheService.removeAll();
+    this.cacheService.remove('orgHashTagId');
+    this.cacheService.remove('userProfile');
   }
   setWindowConfig() {
     if (window.innerWidth <= 1023 && window.innerWidth > 548) {
