@@ -137,6 +137,8 @@ export class FilterComponent implements OnInit, OnDestroy {
           console.log('filter',filter)
           console.log('options',options)
           console.log('selected filters',this.selectedFilters);
+          console.log('previous filters',this.previousFilters);
+          console.log('current ref',this.currentReference)
           console.groupEnd()
         }
         if(this.firstFilter && this.firstFilter[0] !== reference){
