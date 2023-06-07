@@ -232,9 +232,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   copyContent(contentData: ContentData) {
-    this.isTypeCopyQuestionset = _.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset';
-    const successMsg = this.isTypeCopyQuestionset ? this.resourceService.messages.smsg.m0067 :this.resourceService.messages.smsg.m0042;
-    const errorMsg = this.isTypeCopyQuestionset ? this.resourceService.messages.emsg.m0067 :this.resourceService.messages.emsg.m0008;
+    let successMsg = '';
+    let errorMsg = '';
+    this.isTypeCopyQuestionset = _.get(contentData, 'mimeType') === 'application/vnd.sunbird.questionset';
+    this.isTypeCopyQuestionset ? (successMsg = this.resourceService.messages.smsg.m0067, errorMsg = this.resourceService.messages.emsg.m0067) : (successMsg = this.resourceService.messages.smsg.m0042, errorMsg = this.resourceService.messages.emsg.m0008);
     this.copyContentService.copyContent(contentData).subscribe(
       (response) => {
         this.toasterService.success(successMsg);
