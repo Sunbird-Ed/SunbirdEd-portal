@@ -47,13 +47,14 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   groupId: string;
   isQuestionSet = false;
   isDesktopApp = false;
+  isTypeCopyQuestionset:boolean = false;
 
   @HostListener('window:beforeunload')
     canDeactivate() {
       // returning true will navigate without confirmation
       // returning false will show a confirm dialog before navigating away
       const deviceType = this.telemetryService.getDeviceType();
-      return deviceType === 'Desktop' && this.isQuestionSet ? false : true;
+      return deviceType === 'Desktop' && this.isQuestionSet && !this.isTypeCopyQuestionset ? false : true;
     }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
@@ -231,9 +232,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   copyContent(contentData: ContentData) {
-    const isTypeQuestionset = _.get(contentData,'mimeType') === 'application/vnd.sunbird.questionset';
-    const successMsg = isTypeQuestionset ? this.resourceService.messages.smsg.m0067 :this.resourceService.messages.smsg.m0042;
-    const errorMsg = isTypeQuestionset ? this.resourceService.messages.emsg.m0067 :this.resourceService.messages.emsg.m0008;
+    let successMsg = '';
+    let errorMsg = '';
+    this.isTypeCopyQuestionset = _.get(contentData, 'mimeType') === 'application/vnd.sunbird.questionset';
+    this.isTypeCopyQuestionset ? (successMsg = this.resourceService.messages.smsg.m0067, errorMsg = this.resourceService.messages.emsg.m0067) : (successMsg = this.resourceService.messages.smsg.m0042, errorMsg = this.resourceService.messages.emsg.m0008);
     this.copyContentService.copyContent(contentData).subscribe(
       (response) => {
         this.toasterService.success(successMsg);
