@@ -132,7 +132,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         )))).filter(Boolean);
 
         if(dependency &&  !_.has(this.selectedFilters, `${dependency.reference}`) && _.has(this.selectedFilters, `${reference}`)){
-          // this.selectedFilters[reference] = options
+          this.selectedFilters[reference] = []
           console.group();
           console.log('filter',filter)
           console.log('options',options)
