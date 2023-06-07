@@ -61,19 +61,13 @@
         display: none;
       }
     }
-  
     .footer-terms-info{
       a{
-        color: var(--sbt-footer-info-links);
-        font-size: calculateRem(14px);
-        font-weight: bold;
+        color: initial;
         &:hover{
-          color: var(--sbt-footer-info-links-hover);
+          color: initial;
         }
       }
-      color: var(--sbt-footer-info-links);
-      font-size: calculateRem(14px);
-      font-weight: bold
     }
     .sbt-footer-download-app{
       justify-content: flex-end;
@@ -81,7 +75,6 @@
         justify-content: center;
       }
       .sbt-footer-bg{
-        padding-top: calculateRem(30px);
         .sbt-footer-bg-img{
           height: calculateRem(200px);
           width: calculateRem(380px);
@@ -91,9 +84,6 @@
           }
         }
         .sbt-footer-title{
-          font-size: calculateRem(16px) !important;
-          color: var(--gray-800);
-          padding: 0 calculateRem(24px);
           position: absolute;
           width: calculateRem(130px);
           bottom: calculateRem(95px);
