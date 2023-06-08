@@ -4,7 +4,7 @@
 <div *ngIf="showAccountMergemodal">
   <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
 </div>
-<div [ngClass]="{'player-fullscreen-header': isFullScreenView}">
+<div [ngClass]="{'player-fullscreen-header': isFullScreenView}" class="main-header-component">
   <!--Header section-->
   <header class="mat-page-container">
     <div class="sb-g flex-ai-center">
@@ -80,7 +80,7 @@
   </nav>
 </div>
 
-<div class="overlay-sidebar" *ngIf="showSideMenu">
+<div class="overlay-sidebar main-header-component" *ngIf="showSideMenu">
   <div class="overlay-sidebar__menu mat-app-background" tabindex="0" role="dialog" id="overlaySidebarID" aria-labelledby="dialog1_label"
     aria-modal="true" aria-label="open sidebar navigation">
     <div class="profile__info">
@@ -203,7 +203,7 @@
           *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
           [telemetryInteractEdata]="myGroupIntractEData">
           <mat-icon mat-list-icon>group_add</mat-icon>
-          <div mat-line>{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span></div>
+          <div mat-line>{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8 bgcolor-warn">New</span></div>
           <!-- <div mat-line>subline</div> -->
         </mat-list-item>
 
@@ -283,7 +283,7 @@
             *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
             [telemetryInteractEdata]="myGroupIntractEData">
             <mat-icon mat-list-icon>group_add</mat-icon>
-            <div mat-line>{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span></div>
+            <div mat-line>{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8 bgcolor-warn">New</span></div>
             <!-- <div mat-line>subline</div> -->
           </mat-list-item>
 

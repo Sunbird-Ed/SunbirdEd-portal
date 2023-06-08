@@ -1,5 +1,5 @@
 <ng-container *ngIf="!showBackButton">
-  <mat-toolbar color="primary" class="toolbar-menu">
+  <mat-toolbar color="primary" class="toolbar-menu content-type-component">
     <ng-container *ngFor="let contentType of contentTypes">
       <button mat-raised-button class="mr-8" aria-current="page"
         [attr.aria-selected]="selectedContentType === contentType.contentType ? true : false"

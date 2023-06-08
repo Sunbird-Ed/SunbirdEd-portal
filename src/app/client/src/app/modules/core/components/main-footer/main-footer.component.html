@@ -1,22 +1,21 @@
-<span *ngIf="showFooter">
+<span *ngIf="showFooter" class="main-footer-component">
   <footer class="new-layout-footer mat-app-background" #footerFix [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
     <div class="sbt-footer-container relative">
-      <!-- <div [ngClass]="FIRST_PANEL_LAYOUT"></div>
-      <div [ngClass]="SECOND_PANEL_LAYOUT"></div> -->
       <div class="sbt-container mat-app-background2">
         <img src="/assets/images/footer-line.svg" class="sbt-skyline-path" alt="line path">
         <div class="sbt-footer-shade">
           <img src="/assets/images/footer-flower.svg" alt="flower image shade is showing on footer">
         </div>
-
         <div class="sb-g px-72-min-sm px-32-max-sm">
           <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-6">
-              <label class="d-flex footer-terms-info text-left font-weight-normal flex-w-wrap mat-body-2">
-                <ul class="d-flex flex-ai-center  mb-0 mobile only pl-0">
-                  <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer mat-body-2">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-                  <li class="mb-0" tabindex="0"><a href="/sitemap.html" class="cursor-pointer mat-body-2">Sitemap</a></li><li class="mx-4 mb-0">|</li>
+              <label class="d-flex footer-terms-info flex-w-wrap mat-body-2">
+               <span class="d-above-md-none d-below-md-block">
+                <ul class="d-flex flex-ai-center mb-0 pl-0">
+                  <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer mat-body-2 font-weight-bold">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
+                  <li class="mb-0" tabindex="0"><a href="/sitemap.html" class="cursor-pointer mat-body-2 font-weight-bold">Sitemap</a></li><li class="mx-4 mb-0">|</li>
                 </ul>
-                <a *ngIf="!isDesktopApp" [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerTnC" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" class="mat-body-2"
+               </span>
+                <a *ngIf="!isDesktopApp" [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerTnC" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" class="mat-body-2 font-weight-bold"
                   href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
                 <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                   href="{{appBaseUrl}}/term-of-use.html" target="_blank" class="mat-body-2">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
@@ -27,9 +26,9 @@
               </label>
           </div>
           <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-6 d-flex sbt-footer-download-app">
-            <div class="sbt-footer-bg relative">
+            <div class="sbt-footer-bg relative pt-32">
               <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
-              <label class="d-block text-center font-weight-bold sbt-footer-title mat-body-2">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
+              <label class="text-center font-weight-bold sbt-footer-title mat-subheading-2 px-24">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">
