@@ -90,10 +90,10 @@
         <mat-icon>close</mat-icon>
       </button>
 
-      <div *ngIf="userService.loggedIn">
-        <sb-member-card [config]=cardConfig [initial]="userProfile?.firstName[0]" tabindex="0"
-          [title]="userProfile?.firstName" [isMenu]="false">
-        </sb-member-card>
+      <div *ngIf="userService.loggedIn" class="mt-8">
+          <sb-member-card [config]=cardConfig [initial]="userProfile?.firstName[0]" tabindex="0"
+            [title]="userProfile?.firstName" [isMenu]="false">
+          </sb-member-card>
         <div class="my-12 mat-caption">
           {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
         </div>
@@ -263,10 +263,12 @@
       </mat-nav-list>
     </div>
     <ng-container>
-      <div *ngIf="!userService.loggedIn">
-        <sb-member-card [config]=cardConfig tabindex="0" [initial]="guestUser?.formatedName[0] || 'G'"
-          [title]="guestUser?.formatedName || 'Guest'">
-        </sb-member-card>
+      <div *ngIf="!userService.loggedIn" class="mt-8">
+        <div class="p-8">
+          <sb-member-card [config]=cardConfig tabindex="0" [initial]="guestUser?.formatedName[0] || 'G'"
+            [title]="guestUser?.formatedName || 'Guest'">
+          </sb-member-card>
+        </div>
         <mat-nav-list class="pt-0">
           <!-- <div mat-subheader>Profile</div> -->
           <mat-divider></mat-divider>
