@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from "lodash-es";
 import { PdServiceService } from '../services/pd-service/pd-service.service';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-sb-bignumber',
   templateUrl: './sb-bignumber.component.html',
@@ -29,6 +30,9 @@ export class SbBignumberComponent implements OnInit, OnChanges {
   ngOnInit(){
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
     this.chartConfig = this.chart.chartConfig;
+    if(this.lastUpdatedOn){
+      dayjs(this.lastUpdatedOn).format('DD-MMMM-YYYY');
+    }
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
