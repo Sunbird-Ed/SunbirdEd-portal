@@ -27,7 +27,6 @@
   &__menu {
     width: calculateRem(400px);
     right: 0;
-    // background: var(--sbt-sidemenu-bg);
     z-index: 100000;
     overflow-y: auto;
     overflow-x: hidden;
@@ -45,28 +44,6 @@
   &__info {
     padding: calculateRem(48px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
     position: relative;
-
-    .icon-close {
-      position: absolute;
-      top: calculateRem(16px);
-      left: calculateRem(16px);
-      cursor: pointer;
-
-      @include respond-below(sm) {
-        right: calculateRem(16px);
-        left: unset;
-        z-index: 9999;
-      }
-    }
-
-    &__desc {
-      padding: 0 0.5rem;
-
-      @include respond-below(sm) {
-        margin-bottom: calculateRem(8px) !important;
-      }
-    }
-
     @include respond-below(sm) {
       .user {
         flex-wrap: wrap;
@@ -135,100 +112,12 @@
 
   &__label {
     font-size: var(--font-size-base);
-    ;
     margin-top: calculateRem(8px);
   }
 }
 
 .my-avatar ::ng-deep .avatar-content {
   background-color: var(--red) !important;
-}
-
-//sb member card styles from CC 
-.sb-member {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  // Size variations
-  &--small {
-    .sb-member__img {
-      width: calculateRem(32px);
-      height: calculateRem(32px);
-      font-size: calculateRem(20px);
-    }
-
-    .sb-member__name {
-      font-size: calculateRem(14px);
-    }
-  }
-
-  &--medium {
-    .sb-member__img {
-      width: calculateRem(48px);
-      height: calculateRem(48px);
-      font-size: calculateRem(34px);
-    }
-
-    .sb-member__name {
-      font-size: calculateRem(16px);
-    }
-  }
-
-  &--large {
-    .sb-member__img {
-      width: calculateRem(64px);
-      height: calculateRem(64px);
-      font-size: calculateRem(38px);
-    }
-
-    .sb-member__name {
-      font-size: calculateRem(18px);
-    }
-  }
-
-  // font weight bold and normal
-  &--font-bold {
-    .sb-member__name {
-      font-weight: bold;
-    }
-  }
-
-  // View variations
-  &--horizontal {
-    flex-direction: row;
-
-    .sb-member__name {
-      margin: 0 0 0 calculateRem(8px);
-    }
-  }
-
-  &--vertical {
-    flex-direction: column;
-
-    .sb-member__name {
-      margin: calculateRem(8px) 0 0 0;
-      text-align: center;
-    }
-  }
-
-  // avatar first letter
-  &__img {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: var(--white);
-    box-shadow: 0 0 calculateRem(6px) 0 rgba(var(--rc-rgba-black), 0.1);
-    font-weight: bold;
-  }
-
-  // avatar name
-  &__name {
-    font-weight: normal;
-    cursor: pointer;
-  }
-
 }
 
 .sbt-logo {
@@ -245,11 +134,9 @@
 
 .group__type {
   margin-left: 1.5rem;
-  background: var(--red-100);
   position: relative;
   height: 1.25rem;
   padding: 0 .25rem 0 0.5rem;
-  color: var(--white);
   margin-right: -.5rem;
   font-size: .6875rem;
   display: inline-flex;
@@ -266,7 +153,7 @@
     height: 0;
     border-width: .625rem .3125rem;
     border-style: solid;
-    border-color: var(--red-100) transparent var(--red-100) var(--red-100);
+    border-color: var(--red) transparent var(--red) var(--red);
     position: absolute;
     right: -.625rem;
 

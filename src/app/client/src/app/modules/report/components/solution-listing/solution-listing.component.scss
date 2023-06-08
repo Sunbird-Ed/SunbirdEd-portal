@@ -1,29 +1,5 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.main-container {
-  padding:0 1%;
-}
-
-.sbgrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
-  grid-gap: 1rem;
-}
-
-@media screen and (max-width: 1024px) {
-  .sb__DesktopOnly {
-    display: none;
-  }
-}
-
-:host {
-  .ui.tabular.menu.report-menu .item {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-  }
-}
-
 :host::ng-deep {
   .listallreports-section {
     .dataTables_wrapper .dataTables_filter input {
@@ -35,18 +11,6 @@
 
 .table-bottom {
   border: 0.0625rem solid var(--gray-100);
-}
-
-.pull-right {
-  float: right !important;
-  width: calculateRem(120px);
-}
-
-.pull-left {
-  float:left;
-  font-size: 0.8125rem;
-  font-weight: bold;
-  margin-top:calculateRem(7px);
 }
 
 select.search-entity {
@@ -61,13 +25,6 @@ select.search-entity {
   text-transform: capitalize;
 }
 
-select .select-entries{
-  border: calculateRem(1px) solid var(--gray-200);
-  border-radius: calculateRem(3px);
-  background-color: transparent;
-  padding: calculateRem(4px);
-  font-size: 0.8125rem;
-}
 
 .header-section {
   width: calculateRem(70px);
