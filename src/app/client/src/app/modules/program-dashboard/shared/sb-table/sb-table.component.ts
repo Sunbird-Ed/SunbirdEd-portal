@@ -1,13 +1,13 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges,ViewChild} from '@angular/core';
 import * as _ from "lodash-es";
 import { PdServiceService } from '../services/pd-service/pd-service.service';
+import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-sb-table',
   templateUrl: './sb-table.component.html',
   styleUrls: ['./sb-table.component.scss']
 })
 export class SbTableComponent implements OnInit, OnChanges {
-  @Input() tableToCsv;
   @Input() table;
   @Input() hideElements = false;
   tableData;
@@ -20,7 +20,8 @@ export class SbTableComponent implements OnInit, OnChanges {
   keys = ['district_externalId', 'organisation_id', 'program_id', 'solution_id', 'programId', 'solutionId','block_externalId']
   @ViewChild('lib', { static: false }) lib: any;
   constructor(
-    public filterService:PdServiceService
+    public filterService:PdServiceService,
+    private resourceService: ResourceService
   ) {
       // This is intentional
    }
@@ -31,10 +32,6 @@ export class SbTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.tableData = this.table?.data;
-
-    if (changes['tableToCsv'] && !changes['tableToCsv'].isFirstChange()) {
-      this.exportToCsv();
-    }
     this.checkForGlobalChanges();
   }
 
