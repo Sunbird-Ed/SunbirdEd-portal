@@ -98,7 +98,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   goToPrevLocation: boolean = true;
   reportConfig: any;
   chartsReportData: any;
-  lastUpdatedOn: any;
   exportOptions = ['Pdf', 'Img'];
   hideElements: boolean = false;
   globalDistrict: any;
@@ -415,7 +414,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
           this.hideTableToCsv = (result?.tables[0]?.data != undefined) ? true : false;
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
-          this.lastUpdatedOn = dayjs(_.get(result, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
           this.chartsReportData = JSON.parse(JSON.stringify(result));
           return result;
         }))

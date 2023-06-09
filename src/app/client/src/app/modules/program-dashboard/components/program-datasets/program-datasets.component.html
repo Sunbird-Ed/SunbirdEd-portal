@@ -211,10 +211,10 @@
     <div class="sb-graph-section p-24 my-24"
         *ngFor="let chart of currentReport.charts;">
         <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
-          <app-sb-bignumber [chart]="chart" [lastUpdatedOn]="chart?.chartConfig?.lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-bignumber>
+          <app-sb-bignumber [chart]="chart" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-bignumber>
         </ng-container>
         <ng-container *ngIf="chart?.chartConfig?.id !== 'Big_Number' && chart?.chartData && chart?.chartConfig">
-      <app-sb-chart [chart]="chart" [lastUpdatedOn]="chart?.chartConfig?.lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
+      <app-sb-chart [chart]="chart" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
       </ng-container>
       </div>
     </ng-container>
