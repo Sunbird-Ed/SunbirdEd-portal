@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from "lodash-es";
 import { PdServiceService } from '../services/pd-service/pd-service.service';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-sb-chart',
   templateUrl: './sb-chart.component.html',
@@ -38,6 +39,9 @@ export class SbChartComponent implements OnInit, OnChanges {
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
     this.chartConfig = _.cloneDeep(this.chart.chartConfig);
     this.type = this.chartConfig.chartType;
+    if(this.lastUpdatedOn){
+      dayjs(this.lastUpdatedOn).format('DD-MMMM-YYYY');
+    }
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
