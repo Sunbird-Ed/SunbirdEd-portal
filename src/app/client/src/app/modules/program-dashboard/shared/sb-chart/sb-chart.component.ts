@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 })
 export class SbChartComponent implements OnInit, OnChanges {
   @Input() chart;
-  @Input() lastUpdatedOn;
+  lastUpdatedOn;
   @Input() hideElements = false;
   @Input() appliedFilters;
   chartData;
@@ -29,6 +29,7 @@ export class SbChartComponent implements OnInit, OnChanges {
   @ViewChild('filterPopUpMat') filterPopUpMat: TemplateRef<any>;
   filterType = 'chart-filter';
   dialogRef: any;
+  showLastUpdatedOn: boolean = false;
   constructor(
     public resourceService: ResourceService,
     public dialog: MatDialog,
@@ -39,8 +40,11 @@ export class SbChartComponent implements OnInit, OnChanges {
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
     this.chartConfig = _.cloneDeep(this.chart.chartConfig);
     this.type = this.chartConfig.chartType;
-    if(this.lastUpdatedOn){
-      dayjs(this.lastUpdatedOn).format('DD-MMMM-YYYY');
+    if(_.get(this.chartConfig,'lastUpdatedOn')){
+      this.lastUpdatedOn = dayjs(this.chartConfig.lastUpdatedOn).format('DD-MMMM-YYYY');
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') || this.lastUpdatedOn) {
+        this.showLastUpdatedOn = true;
+      }
     }
   }
 
