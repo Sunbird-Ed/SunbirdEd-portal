@@ -415,6 +415,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
           this.chartsReportData = JSON.parse(JSON.stringify(result));
+          console.log('data',data);
+          console.log('result',result);
           return result;
         }))
       })

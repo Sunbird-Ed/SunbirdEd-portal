@@ -179,9 +179,10 @@ export class ReportComponent implements OnInit {
                 result['reportSummary'] = reportSummary;
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
-
+                console.log('data',data)
                 this.chartsReportData = JSON.parse(JSON.stringify(result));
                 this.reportData = JSON.parse(JSON.stringify(result));
+                console.log('result',result)
                 return result;
               })
             );
