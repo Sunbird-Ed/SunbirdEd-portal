@@ -31,8 +31,10 @@ export class SbBignumberComponent implements OnInit, OnChanges {
   ngOnInit(){
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
     this.chartConfig = this.chart.chartConfig;
+    console.log('chart config',this.chartConfig)
     if(_.get(this.chartConfig,'lastUpdatedOn')){
       this.lastUpdatedOn = dayjs(this.chartConfig.lastUpdatedOn).format('DD-MMMM-YYYY');
+      console.log('last updated on',this.lastUpdatedOn)
       if (_.get(this.chartConfig, 'options.showLastUpdatedOn') || this.lastUpdatedOn) {
         this.showLastUpdatedOn = true;
       }
