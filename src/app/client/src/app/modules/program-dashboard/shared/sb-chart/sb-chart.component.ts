@@ -40,8 +40,8 @@ export class SbChartComponent implements OnInit, OnChanges {
     this.updatedData = this.chartData = _.compact(this.chart.chartData);
     this.chartConfig = _.cloneDeep(this.chart.chartConfig);
     this.type = this.chartConfig.chartType;
-    if(_.get(this.chartConfig,'lastUpdatedOn')){
-      this.lastUpdatedOn = dayjs(this.chartConfig.lastUpdatedOn).format('DD-MMMM-YYYY');
+    if(_.get(this.chart,'lastUpdatedOn')){
+      this.lastUpdatedOn = dayjs(this.chart.lastUpdatedOn).format('DD-MMMM-YYYY');
       if (_.get(this.chartConfig, 'options.showLastUpdatedOn') || this.lastUpdatedOn) {
         this.showLastUpdatedOn = true;
       }
