@@ -36,6 +36,12 @@
                   </li>
                   <li aria-hidden="true" class="mx-4">|</li>
                 </ul>
+                <ul role="navigation" aria-label="accessibility link for Login" *ngIf="showNavAccessibility === 'false' && !userService?.loggedIn">
+                  <li class="mb-0" *ngIf="!userService?.loggedIn">
+                    <a title="{{ resourceService?.frmelmnts?.lbl?.login }}" tabindex="0" href="{{ hrefPath }}" class="cursor-pointer">{{ resourceService.frmelmnts?.btn?.login }}</a>
+                  </li>
+                  <li aria-hidden="true" class="mx-4 mb-0">|</li>
+                </ul>
                 <ul>
                   <li class="fontResize-container d-flex flex-ai-center pull-right" role="navigation"
                     aria-label="Font Size">
