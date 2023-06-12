@@ -10,9 +10,11 @@ import { AccessDiscussionComponent } from './components/access-discussion/access
 import { NavigationEnd, Router } from '@angular/router';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
-  imports: [CommonModule, SuiModalModule, DiscussionUiModule, SharedModule.forRoot()],
+  imports: [CommonModule, SuiModalModule, DiscussionUiModule,MatButtonModule,MatIconModule, SharedModule.forRoot()],
   exports: [DiscussionUiModule, AccessDiscussionComponent],
   declarations: [ForumComponent, AccessDiscussionComponent],
   providers: [DiscussionService],

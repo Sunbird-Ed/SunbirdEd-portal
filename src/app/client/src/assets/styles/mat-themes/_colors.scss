@@ -49,78 +49,97 @@
   --color-error: #{$color-error};
 
   /* color starts */
-  .color-primary, .hover-color-primary:hover {
+  .color-primary,
+  .hover-color-primary:hover {
     color: var(--color-primary);
   }
-  .color-accent, .hover-color-accent:hover {
+
+  .color-accent,
+  .hover-color-accent:hover {
     color: var(--color-accent);
   }
 
-  .color-warn, .hover-color-warn:hover {
+  .color-warn,
+  .hover-color-warn:hover {
     color: var(--color-warn);
   }
 
-  .color-success, .hover-color-success:hover {
+  .color-success,
+  .hover-color-success:hover {
     color: var(--color-success);
   }
 
-  .color-info, .hover-color-info:hover {
+  .color-info,
+  .hover-color-info:hover {
     color: var(--color-info);
   }
 
-  .color-error, .hover-color-error:hover {
+  .color-error,
+  .hover-color-error:hover {
     color: var(--color-error);
   }
+
   /* color ends */
 
   /* bg color starts */
-  .bgcolor-primary, .hover-bgcolor-primary:hover {
+  .bgcolor-primary,
+  .hover-bgcolor-primary:hover {
     background-color: var(--color-primary);
     color: mat.get-color-from-palette($primary, 500-contrast);
   }
 
-  .bgcolor-accent, .hover-bgcolor-accent:hover {
+  .bgcolor-accent,
+  .hover-bgcolor-accent:hover {
     background-color: var(--color-accent) !important;
     color: mat.get-color-from-palette($accent, 500-contrast);
   }
 
-  .bgcolor-warn, .hover-bgcolor-warn:hover {
+  .bgcolor-warn,
+  .hover-bgcolor-warn:hover {
     background-color: var(--color-warn);
     color: mat.get-color-from-palette($warn, 500-contrast);
   }
 
-  .bgcolor-success, .hover-bgcolor-success:hover {
+  .bgcolor-success,
+  .hover-bgcolor-success:hover {
     background-color: var(--color-success);
     color: mat.get-color-from-palette($success, 500-contrast);
   }
 
-  .bgcolor-info, .hover-bgcolor-info:hover {
+  .bgcolor-info,
+  .hover-bgcolor-info:hover {
     background-color: var(--color-info);
     color: mat.get-color-from-palette($info, 500-contrast);
   }
 
-  .bgcolor-error, .hover-bgcolor-error:hover {
+  .bgcolor-error,
+  .hover-bgcolor-error:hover {
     background-color: var(--color-error);
     color: mat.get-color-from-palette($error, 500-contrast);
   }
- 
-  .bgcolor-primary100, .hover-bgcolor-primary100:hover {
+
+  .bgcolor-primary100,
+  .hover-bgcolor-primary100:hover {
     background-color: mat.get-color-from-palette($primary, 100);
     color: mat.get-color-from-palette($primary, 100-contrast);
   }
 
-  .bgcolor-primary200, .hover-bgcolor-primary200:hover {
+  .bgcolor-primary200,
+  .hover-bgcolor-primary200:hover {
     background-color: mat.get-color-from-palette($primary, 200);
     color: mat.get-color-from-palette($primary, 200-contrast);
   }
 
-  .mat-bg-white, .hover-bgcolor-white:hover{
+  .mat-bg-white,
+  .hover-bgcolor-white:hover {
     background-color: mat.get-color-from-palette($background, background);
     // color: mat.get-color-from-palette($accent, 500-contrast);
   }
 
-   /* bg color ends */
+  /* bg color ends */
+
 }
+
 /* color mixin ends here */
 
 
@@ -130,7 +149,9 @@ $_ripple-opacity: 0.1;
 // Applies a focus style to an mat-button element for each of the supported palettes.
 @mixin _focus-overlay-color($config-or-theme, $variants) {
   $config: mat.get-color-config($config-or-theme);
-  @each $variant, $variant-palette in $variants {
+
+  @each $variant,
+  $variant-palette in $variants {
     &.mat-#{$variant} .mat-button-focus-overlay {
       background-color: mat.get-color-from-palette($variant-palette);
     }
@@ -140,13 +161,16 @@ $_ripple-opacity: 0.1;
 @mixin _ripple-background($palette, $hue, $opacity) {
   $background-color: mat.get-color-from-palette($palette, $hue, $opacity);
   background-color: $background-color;
-  @if (meta.type-of($background-color) != color) {
+
+  @if (meta.type-of($background-color) !=color) {
     opacity: $opacity;
   }
 }
 
 @mixin _ripple-color($theme, $hue, $opacity, $variants) {
-  @each $variant, $variant-palette in $variants {
+
+  @each $variant,
+  $variant-palette in $variants {
     &.mat-#{$variant} .mat-ripple-element {
       @include _ripple-background($variant-palette, $hue, $opacity);
     }
@@ -158,14 +182,15 @@ $_ripple-opacity: 0.1;
   $background: map.get($theme, background);
   $foreground: map.get($theme, foreground);
 
-  @each $variant, $variant-palette in $variants {
+  @each $variant,
+  $variant-palette in $variants {
     &.mat-#{$variant} {
       #{$property}: mat.get-color-from-palette($variant-palette, $hue);
     }
 
     &.mat-#{$variant} {
       &.mat-button-disabled {
-        $palette: if($property == 'color', $foreground, $background);
+        $palette: if($property =='color', $foreground, $background);
         #{$property}: mat.get-color-from-palette($palette, disabled-button);
       }
     }
@@ -205,3 +230,31 @@ $variants-theme: (
   error: $theme-error,
 );
 // and include mixin above
+
+
+
+/* css variables */
+// border theme classes starts
+.border-primary, .border-primary:hover {
+  border-color: var(--color-primary) !important;
+}
+
+.border-accent, .border-accent:hover {
+  border-color: var(--color-accent) !important;
+}
+
+.border-warn, .border-warn:hover {
+  border-color: var(--color-warn) !important;
+}
+
+.border-success, .border-success:hover {
+  border-color: var(--color-success) !important;
+}
+
+.border-info, .border-info:hover {
+  border-color: var(--color-info) !important;
+}
+
+.border-error, .border-error:hover {
+  border-color: var(--color-error) !important;
+}

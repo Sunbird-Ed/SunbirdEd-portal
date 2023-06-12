@@ -65,7 +65,7 @@
   <div [appTelemetryImpression]="dialResultImpression">
       <div *ngIf="!showLoader && courseList?.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
         [trigger]="courseList">
-        <h3 class="mat-title" *ngIf="!isTextbookDetailsPage">{{resourceService?.frmelmnts?.tab?.courses}}
+        <h3 class="mat-title mb-0" *ngIf="!isTextbookDetailsPage">{{resourceService?.frmelmnts?.tab?.courses}}
           <span class="badge">{{courseList?.length}}</span></h3>
         <div class="sb-card-grid mt-16">
           <div [id]="i" [data]="content" *ngFor="let content of courseList;let i = index;">

@@ -77,12 +77,7 @@ body {
 }
 
 [dir="rtl"] {
-  .sb-explore-qr-container {
-    .dial-section-column {
-      border-right: 0px solid rgba(var(--rc-rgba-gray), 0.1) !important;
-      border-left: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.1);
-    }
-  }
+
 
   @include respond-above(sm) {
     .download-mobile-app .download-mobile-app-logo {
@@ -91,14 +86,7 @@ body {
   }
 }
 
-[dir="ltr"] {
-  .sb-explore-qr-container {
-    .dial-section-column {
-      border-left: 0px solid rgba(var(--rc-rgba-gray), 0.1);
-      border-right: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.1);
-    }
-  }
-}
+
 
 // don't delete this
 .iziModal-isAttached {
