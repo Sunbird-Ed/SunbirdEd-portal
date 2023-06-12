@@ -1,16 +1,1 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-.status-container{
-    border-radius: calculateRem(24px);
-    background-color: var(--sbt-filter-bar-bg);
-    position: relative;
-    z-index: 9;
-}
-.load-content-section{
-    border-radius: calculateRem(24px);
-    background-color: var(--sbt-filter-bar-bg);
-    position: relative;
-    z-index: 9;
-    .load-content-title{
-      font-size: calculateRem(14px);
-    }
-}

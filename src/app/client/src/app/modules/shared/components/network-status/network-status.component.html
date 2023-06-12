@@ -1,23 +1,6 @@
 <!--Online/Offline-->
-<div>
-  <div class="status-container p-8 mr-16 my-16" *ngIf="isConnected">
-    <div class="d-flex flex-ai-center flex-jc-center">
-      <div class="status-container__icon mr-8">
-        <img height="37px" src="assets/images/Online.svg" width="24px">
-      </div>
-      <div class="fnormal status-container__title">{{resourceService?.messages?.stmsg?.desktop?.onlineStatus}}
-      </div>
-    </div>
-  </div>
-
-  <div class="status-container p-8 mr-16 my-16" *ngIf="!isConnected">
-    <div class="d-flex flex-ai-center flex-jc-center">
-      <div class="status-container__icon mr-8">
-        <img height="37px" src="assets/images/Offline.svg" width="24px">
-      </div>
-      <div class="fnormal status-container__title">{{resourceService?.frmelmnts?.lbl?.offline}}</div>
-    </div>
-  </div>
+<div class="mat-app-background br-24 p-8 mr-16 my-16">
+    <div *ngIf="isConnected" class="d-flex flex-ai-center flex-jc-center mat-body-2"><mat-icon class="mr-8 color-success">wifi</mat-icon> {{resourceService?.messages?.stmsg?.desktop?.onlineStatus}}</div>
+    <div *ngIf="!isConnected" class="d-flex flex-ai-center flex-jc-center mat-body-2"><mat-icon class="mr-8 color-warn">wifi_off</mat-icon> {{resourceService?.frmelmnts?.lbl?.offline}}</div>
 </div>
-
 <!--/Online/Offline-->

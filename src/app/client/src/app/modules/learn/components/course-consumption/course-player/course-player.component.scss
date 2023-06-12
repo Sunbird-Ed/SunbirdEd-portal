@@ -7,7 +7,10 @@
   margin-bottom: calculateRem(16px);
   border-radius: calculateRem(24px);
   box-shadow: 0.1875rem 0.1875rem 0.125rem 0 rgba(0,0,0,.2);
-  background-color: var(--list-container-bg);
+  background-color: var(--list-container-bg);  
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 // .course-list_title {

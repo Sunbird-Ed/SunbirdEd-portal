@@ -1,8 +1,1 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
-.system-warning-section {
-  border-radius: calculateRem(24px);
-  background-color: var(--white);
-  position: relative;
-  z-index: 9;
-}

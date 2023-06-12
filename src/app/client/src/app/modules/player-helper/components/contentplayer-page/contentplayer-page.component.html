@@ -10,7 +10,7 @@
     <div class="mt-16">
         <app-credits-and-licence *ngIf="contentDetails" [contentData]="contentDetails"></app-credits-and-licence>
         <mat-accordion *ngIf="collectionData">
-            <mat-expansion-panel class="mat-app-background">
+            <mat-expansion-panel class="mat-app-background mt-16">
                 <mat-expansion-panel-header>
                     <mat-panel-title tabindex="0" title class="mat-subheading-1 mb-0">
                         {{resourceService?.frmelmnts?.lbl?.collectionRelevantFor}}

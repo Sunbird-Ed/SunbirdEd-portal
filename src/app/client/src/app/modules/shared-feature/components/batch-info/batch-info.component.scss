@@ -2,27 +2,4 @@
 
 .batch-row {
   max-height: calculateRem(200px);
-
-  .batch-name {
-    color: var(--gray-400);
-  }
-  .batch-date{
-      span {
-          font-size: var(--h5-font-size);
-      }
-  }
-
 }
-
-.ui {
-  &.divider {
-    margin-left: calculateRem(-16px);
-    margin-right: calculateRem(-16px);
-  }
-}
-
-.h4-title {
-  color: var(--primary-color);
-}
-
-

@@ -1,5 +1,5 @@
 <div class="mat-inside-page-container mat-app-background2 mt-0 br-top-left-0-below-xs explore-page-component"
-  [ngClass]="[layoutConfiguration ? '':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
+  [ngClass]="[(getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
   <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data -->
@@ -27,7 +27,7 @@
 
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="[layoutConfiguration ? '' : '', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
+        [ngClass]="[(getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
 
         <!-- <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
