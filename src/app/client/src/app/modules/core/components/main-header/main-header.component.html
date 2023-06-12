@@ -20,7 +20,7 @@
           </app-in-app-notification>
           <!--Avtar Dropdown-->
           <button *ngIf='!userProfile && !guestUser'
-          (click)="toggleSideMenu(true)" mat-fab aria-label="Guest" color="white" class="ml-16 mat-icon-guest-profile box-shadow-6px"><mat-icon class="color-accent">account_circle</mat-icon></button>
+          (click)="toggleSideMenu(true)" mat-fab aria-label="Guest" color="white" class="ml-8 mat-icon-guest-profile box-shadow-6px"><mat-icon class="color-accent">account_circle</mat-icon></button>
           <sb-avatar tabindex="0" class="cursor-pointer ml-8" *ngIf='!userProfile && guestUser'
             (click)="toggleSideMenu(true)" class="avtarDesktopStyle" [config]=avatarConfig initialsSize="2"
             [initial]="guestUser?.formatedName[0] || 'G'" [title]="guestUser?.formatedName || 'Guest'">

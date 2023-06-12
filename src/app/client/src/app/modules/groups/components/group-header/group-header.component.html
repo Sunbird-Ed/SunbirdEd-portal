@@ -10,7 +10,6 @@
      <!--Forum Icon-->
      <app-access-discussion [forumIds]="forumIds" [fetchForumIdReq]="fetchForumIdReq"
      (routerData)="assignForumData($event)"> </app-access-discussion>
-    
    <div class="d-flex flex-ai-center flex-w-wrap content-header__buttons">
     <button mat-icon-button [matMenuTriggerFor]="menu" id="group-actions" tabindex="0" (click)="addTelemetry('kebab-menu')">
       <mat-icon>more_vert</mat-icon>
@@ -39,6 +38,7 @@
         <button mat-menu-item class="color-warn" (click)="toggleModal(true, 'delete');" tabindex="0">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}</button>
       </div>
     </mat-menu>
+   </div>
    </div>
 </mat-toolbar>
 
