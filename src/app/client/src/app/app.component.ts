@@ -66,10 +66,10 @@ export class AppComponent implements OnInit, OnDestroy {
     const cssClass = theme;
 
     const classList = this.overlayContainer.getContainerElement().classList;
-    //document.documentElement.setAttribute('class', theme);
-    this.renderer.setAttribute(this._document.documentElement, 'class', theme);
-    console.log('theme ' + classList);
-    console.log(this.activeThemeCssClass);
+    document.documentElement.setAttribute('class', theme);
+    //this.renderer.setAttribute(this._document.documentElement, 'class', theme);
+    // console.log('theme ' + classList);
+    // console.log(this.activeThemeCssClass);
     if (this.activeThemeCssClass) {
       if (classList.contains(this.activeThemeCssClass))
         classList.replace(this.activeThemeCssClass, cssClass);
