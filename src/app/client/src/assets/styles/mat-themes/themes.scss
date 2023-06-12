@@ -63,7 +63,6 @@ $theme in $app-themes {
     @include mat.all-component-themes($app-themes);
     @include mat.strong-focus-indicators-theme($app-themes);
     // @include app-root-theme(mat.define-light-theme($primary, $accent, $warn));
-    // @include no-result-component(mat.define-light-theme($primary, $accent, $warn));
     //@include mat-expansion-panel(mat.define-light-theme($primary, $accent, $warn));
     @include theme-mat-card($app-themes);
     @include theme-mat-sidebar($app-themes);

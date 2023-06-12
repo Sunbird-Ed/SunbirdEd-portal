@@ -4,11 +4,6 @@
   width: calculateRem(300px);
 }
 
-.download-file-container {
-  background-color: var(--gray-100);
-  height: calculateRem(48px);
-}
-
 a {
   &.download-file {
     text-decoration: underline;
@@ -22,9 +17,6 @@ a {
   width: 100%;
 }
 
-.course-completed:last-child {
-  flex: unset;
-}
 
 .download-report.sb-btn.sb-btn-link:disabled {
   background-color: transparent;
@@ -72,9 +64,7 @@ a {
 } 
 
 .progress-content {
-  // margin-top: calculateRem(36px);
-
-  background-color: var(--state-medium-container-bg);
+  background-color: var(--sbt-body-bg2);
 
   .sb-course-progress-status .sb-course-progress-status-label {
     background: var(--sbt-body-bg);

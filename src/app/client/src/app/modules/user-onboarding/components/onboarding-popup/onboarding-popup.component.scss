@@ -2,13 +2,13 @@
 @use "components/video" as *;
 
 ::ng-deep .mat-step-header .mat-step-icon-selected {
-    border-color: #024f9d;
-    background-color: #024f9d;
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
 }
 
 ::ng-deep .mat-step-header .mat-step-icon {
-    border-color: #024f9d;
-    background-color: #024f9d;
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
 }
 
 button {

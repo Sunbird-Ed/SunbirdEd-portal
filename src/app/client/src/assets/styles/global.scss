@@ -927,24 +927,6 @@ a.ui.labels .label:hover {
   background-color: var(--ui-seleted-label-bg-hover);
 }
 
-.sb-header-filter-bar {
-  .state-medium-container {
-    background: var(--state-medium-container-bg) !important;
-  }
-
-  .sb-class-bar {
-    background: var(--sb-class-bar-bg) !important;
-  }
-
-  .sb-global-filter-section {
-    background: var(--state-medium-container-bg) !important;
-  }
-}
-
-.sb-slider-pills-container .sb-medium-pills-container {
-  background: var(--state-medium-container-bg) !important;
-}
-
 .ui.selection.visible.dropdown>.text:not(.default) {
   color: var(--sb-dropdown-menu-text);
 }
@@ -1023,11 +1005,6 @@ a.ui.labels .label:hover {
   }
 }
 
-.sb-slider-pills-container .sb-grade-pills-container .pill:hover {
-  background: var(--gray-100) !important;
-  color: var(--black) !important;
-}
-
 .logo.sbt-logo,
 .five.wide.column .d-flex.logo,
 .five.wide.column .logo.flex-ai-jc-center,
@@ -1038,24 +1015,10 @@ a.ui.labels .label:hover {
   padding: 0.5rem;
 }
 
-.sb-slider-pills-container .sb-grade-pills-container .pill.active:hover {
-  background-color: var(--cc-grade-pill-bg-hover) !important;
-  color: var(--cc-grade-pill-text-hover) !important;
-}
-
-.sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active:hover {
-  background-color: var(--cc-grade-pill-bg-hover) !important;
-  color: var(--cc-grade-pill-text-hover) !important;
-  box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.19) !important;
-}
-
 //moved from themes
 .data-labels {
   color: var(--gray-400);
 
-  .sbt-class-bar .sb-slider-pills-container .sb-pills-container {
-    padding: 0 0 0 0 !important;
-  }
 }
 
 // theme custom changes

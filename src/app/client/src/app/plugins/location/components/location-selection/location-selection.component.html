@@ -1,86 +1,69 @@
 <!-- New Pop up -->
-<app-modal-wrapper *ngIf="showModal && !isStepper" [config]="{disableClose: true, width: '45rem', id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()">
+<app-modal-wrapper *ngIf="showModal && !isStepper"
+  [config]="{disableClose: true, width: '45rem', id: locationSelectionModalId, panelClass: ['overflow-visible', 'material-modal']}"
+  (dismiss)="closeModal()">
   <ng-template sbModalContent let-data>
 
     <div mat-dialog-title class="flex-jc-center flex-dc mb-0">
       <ng-content select="[slot=popup-header]"></ng-content>
-      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close *ngIf="isClosable"><mat-icon>close</mat-icon></button>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close
+        *ngIf="isClosable"><mat-icon>close</mat-icon></button>
       <p class="mat-subheading-2 mb-0"><ng-content select="[slot=popup-sub-header]" class="mt-8"></ng-content></p>
     </div>
 
     <mat-dialog-content>
       <div class="w-100" [appTelemetryImpression]="telemetryImpression">
         <sb-form
-        *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
-        [config]="sbFormLocationSelectionDelegate.locationFormConfig"
-        (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
-        (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
-        (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event)">
-      </sb-form>
+          *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
+          [config]="sbFormLocationSelectionDelegate.locationFormConfig"
+          (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
+          (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
+          (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event)">
+        </sb-form>
       </div>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <ng-content select="[slot=popup-footer]" class="text-left"></ng-content>
+      <ng-content select="[slot=popup-footer]" class="text-left mb-8"></ng-content>
       <button mat-raised-button type="button" class="button-rounded text-uppercase" type="button"
-      [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
-      [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
-      tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
-    </button>
-    <button mat-raised-button color="accent" type="button" class="button-rounded text-uppercase ml-8" type="submit"
-    [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
-    [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
-    (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
-    <mat-icon>arrow_right_alt</mat-icon>
-  </button>
+        [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+        [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
+        tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
+      </button>
+      <button mat-raised-button color="accent" type="button" class="button-rounded text-uppercase ml-8" type="submit"
+        [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+        [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+        (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
+        <mat-icon>arrow_right_alt</mat-icon>
+      </button>
     </mat-dialog-actions>
 
   </ng-template>
 </app-modal-wrapper>
 
-<div *ngIf="!showModal || isStepper" class="sb-mat__modal sb-onboard">
+<div *ngIf="!showModal || isStepper">
 
-  <mat-dialog-content>
-    <div class="sb-mat__modal__content">
-      <div>
-        <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
-          <div class="w-100">
-            <sb-form
-              *ngIf="sbFormLocationSelectionDelegate && sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
-              [config]="sbFormLocationSelectionDelegate?.locationFormConfig"
-              (initialize)="sbFormLocationSelectionDelegate?.onFormInitialize($event)"
-              (valueChanges)="sbFormLocationSelectionDelegate?.onFormValueChange($event); onSbFormValueChange($event);"
-              (dataLoadStatus)="sbFormLocationSelectionDelegate?.onDataLoadStatusChange($event, showModal,isStepper)">
-            </sb-form>
-          </div>
-        </div>
-      </div>
-    </div>
+  <mat-dialog-content [appTelemetryImpression]="telemetryImpression">
+    <sb-form
+      *ngIf="sbFormLocationSelectionDelegate && sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
+      [config]="sbFormLocationSelectionDelegate?.locationFormConfig"
+      (initialize)="sbFormLocationSelectionDelegate?.onFormInitialize($event)"
+      (valueChanges)="sbFormLocationSelectionDelegate?.onFormValueChange($event); onSbFormValueChange($event);"
+      (dataLoadStatus)="sbFormLocationSelectionDelegate?.onDataLoadStatusChange($event, showModal,isStepper)">
+    </sb-form>
   </mat-dialog-content>
-
-  <mat-dialog-actions class="mb-0 sb-mat__modal__actions flex-jc-center d-block">
-    <div class="sb-onboard__footer mt-0">
-      <ng-content select="[slot=popup-footer]"></ng-content>
-    </div>
-    <div class="sb-onboard__footer d-flex">
-      <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
-        [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
-        [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
-        tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
-      </button>
-      <div class="w-10"></div>
-      <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
-        [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
-        [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
-        (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
-        <span class='arrow-icon'>
-          <em class="icon-svg icon-svg--xxs icon-back">
-            <svg class="icon icon-svg--white">
-              <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
-            </svg>
-          </em>
-        </span>
-      </button>
-    </div>
+  <mat-dialog-actions align="end" class="d-flex flex-ai-center flex-jc-center">
+    <ng-content select="[slot=popup-footer]" class="text-left mb-8"></ng-content>
+      <button mat-raised-button class="button-rounded text-uppercase" type="button"
+      [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+      [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading" (click)="clearUserLocationSelections()"
+      tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
+    </button>
+    <button type="submit" mat-raised-button color="accent" class="button-rounded text-uppercase"
+      [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+      [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+      (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}} <mat-icon>arrow_right_alt</mat-icon>
+    </button>
   </mat-dialog-actions>
+
 </div>
