@@ -214,11 +214,11 @@ export class AppComponent implements OnInit, OnDestroy {
     const layoutType = localStorage.getItem('layoutType') || 'base';
     if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
-      this.renderer.setAttribute(this._document.documentElement, 'layout', 'joy');
-      //document.documentElement.setAttribute('layout', 'joy');
+      //this.renderer.setAttribute(this._document.documentElement, 'layout', 'joy');
+      document.documentElement.setAttribute('layout', 'joy');
     } else {
-      this.renderer.setAttribute(this._document.documentElement, 'layout', 'base');
-      //document.documentElement.setAttribute('layout', 'base');
+      //this.renderer.setAttribute(this._document.documentElement, 'layout', 'base');
+      document.documentElement.setAttribute('layout', 'base');
     }
   }
 
@@ -276,8 +276,8 @@ export class AppComponent implements OnInit, OnDestroy {
       selector[i].addEventListener('change', function () {
         if (this.checked) {
           trans();
-          this.renderer.setAttribute(this._document.documentElement, 'data-theme', this.value);
-          //document.documentElement.setAttribute('data-theme', this.value);
+          //this.renderer.setAttribute(this._document.documentElement, 'data-theme', this.value);
+          document.documentElement.setAttribute('data-theme', this.value);
         }
       });
     }
@@ -1148,8 +1148,8 @@ export class AppComponent implements OnInit, OnDestroy {
     localStorage.setItem('data-mode', this.dataThemeAttribute);
   }
   setLocalTheme(value: string) {
-    this.renderer.setAttribute(this._document.documentElement, 'data-theme', value);
-    //document.documentElement.setAttribute('data-mode', value);
+    //this.renderer.setAttribute(this._document.documentElement, 'data-theme', value);
+    document.documentElement.setAttribute('data-mode', value);
   }
   notifyNetworkChange() {
     this.connectionService.monitor().pipe(debounceTime(5000)).subscribe((status: boolean) => {
