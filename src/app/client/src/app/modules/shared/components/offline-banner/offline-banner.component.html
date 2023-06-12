@@ -2,7 +2,7 @@
   <div class="sb-banner mt-24">
     <div class="sb-banner-content">
       <div class="sb-banner-content-right">
-        <div class="sb-banner-heading mat-title">
+        <div class="sb-banner-heading mat-title color-accent mb-0">
           {{resourceService?.frmelmnts?.lbl?.downloadAppLite | interpolate:'{instance}': instance}}
         </div>
         <dl class="mt-8 mb-0">
@@ -12,7 +12,7 @@
           </div>
         </dl>
       </div>
-      <div class="sb-banner-content-left">
+      <div class="sb-banner-content-left ml-auto">
         <button mat-raised-button class="button-rounded" appTelemetryInteract [telemetryInteractEdata]="{id:'offlineApp-button' , type:'click' , pageid:pageId }" tabindex="0" (click)="navigateToDownloadApkPage()">{{resourceService?.frmelmnts?.btn?.downloadDesktopApp}}&#x200E;</button>
       </div>
     </div>

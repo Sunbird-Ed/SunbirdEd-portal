@@ -1,21 +1,8 @@
-<div class="system-warning-section mr-16 p-24 mb-24" *ngIf="showMinimumRAMWarning || showCpuLoadWarning ">
-  <div class="sb-bg-color-white my-16"
-    *ngIf="showMinimumRAMWarning">
-    <div class="d-flex">
-      <div>
-        <img src="assets/images/alert.svg" width="22px" height="22px" alt="Low Memory">
-      </div>
-      <div class="fs-0-785 ml-16 text-left">{{resourceService?.frmelmnts?.lbl?.desktop?.lowMemory}}</div>
-    </div>
-  </div>
+<div class="mat-bg-white br-24 mr-16 p-24 mb-24" *ngIf="showMinimumRAMWarning || showCpuLoadWarning ">
 
-  <div class="sb-bg-color-white my-16"
-    *ngIf="showCpuLoadWarning">
-    <div class="d-flex">
-      <div>
-        <img src="assets/images/alert.svg" width="22px" height="22px" alt="Cpu load warning">
-      </div>
-      <div class="fs-0-785 ml-16 text-left">{{resourceService?.frmelmnts?.lbl?.maxCpuLoadWaring}}</div>
-    </div>
-  </div>
+  <div class="mat-body-2 text-left d-flex flex-ai-center" *ngIf="showMinimumRAMWarning" aria-label="low memory">
+    <mat-icon color="warn" class="mr-8">warning</mat-icon> {{resourceService?.frmelmnts?.lbl?.desktop?.lowMemory}}</div>
+  <div class="mat-body-2 text-left d-flex flex-ai-center" *ngIf="showCpuLoadWarning" aria-label="Cpu load warning">
+    <mat-icon color="warn" class="mr-8">warning</mat-icon> {{resourceService?.frmelmnts?.lbl?.maxCpuLoadWaring}}</div>
+
 </div>
