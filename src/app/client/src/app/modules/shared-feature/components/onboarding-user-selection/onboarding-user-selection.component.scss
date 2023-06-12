@@ -46,7 +46,7 @@ mat-card.mat-card {
 
         &:hover,
         &.active {
-            border: calculateRem(2px) solid var(--primary-color);
+            border: calculateRem(2px) solid var(--color-accent);
             border-radius: calculateRem(4px);
             cursor: pointer;
 
