@@ -1,19 +1,30 @@
-<div>
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.selectActivity}}
-  </div>
-
-  <div class="sb-modal-content">
-    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16" *ngFor="let item of activityTypes">
-      <input type="radio" [id]="item?.title" name="group-activity" [value]="item" [(ngModel)]="selectedActivity"
-        [attr.disabled]="!item?.isEnabled ? 'disabled' : null">
-      <label for="item?.title">{{item?.title}}</label> 
-  </div>
+<div mat-dialog-title class="flex-jc-center flex-dc mb-0">
+  <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close><mat-icon>close</mat-icon></button>
 </div>
+<!--Content-->
+<mat-dialog-content>
+  <!--Header-->
+  <p class="mat-subheading-2 mb-0">{{resourceService?.frmelmnts?.lbl?.selectActivity}}</p>
+ <!--/Header-->
+ <!-- <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16" *ngFor="let item of activityTypes">
+  <input type="radio" [id]="item?.title" name="group-activity" [value]="item" [(ngModel)]="selectedActivity"
+    [attr.disabled]="!item?.isEnabled ? 'disabled' : null">
+  <label for="item?.title">{{item?.title}}</label> 
+</div> -->
+<mat-checkbox *ngFor="let item of activityTypes" id="item?.title" name="group-activity" [value]="item" [(ngModel)]="selectedActivity" tabindex="0"
+  [attr.disabled]="!item?.isEnabled ? 'disabled' : null">
+  <span class="mat-small m-0" role="img" title="item?.title">
+    item?.title
+  </span>
+</mat-checkbox>
+</mat-dialog-content>
+<!--/Content-->
 
-<div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary" type="submit" tabindex="0" (click)="next()">
+<!--Actions-->
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" class="button-rounded" (click)="next()" tabindex="0">
     {{resourceService?.frmelmnts?.lbl?.next}}
   </button>
-</div>
-</div>
+</mat-dialog-actions>
+<!--/Actions-->
+
