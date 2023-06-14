@@ -1,16 +1,13 @@
-<div class="sbt-back-header sbt-inside-page-container sb-dashlet-table">
-  <div class="content-header sb-bg-color-white">
-    <div class="d-flex ui container py-8">
-      <app-back-button></app-back-button>
-      <div class="d-flex flex-ai-center flex-jc-space-between w-100 flex-w-wrap">
-        <div class="d-flex flex-basis-1 mr-32 min-w-0 content-header__content__title">
-          <div class="content-header__title font-weight-bold ellipsis text-left px-16">{{ hierarchyData.name }}</div>
-        </div>
-      </div>
+<mat-toolbar color="primary" class="toolbar-pageback">
+  <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
+    <app-back-button></app-back-button>
+    <div class="toolbar-pageback__heading">
+      <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{ hierarchyData.name }}</h3>
     </div>
   </div>
-
-  <div class="ui container sb-dashlet-table" *ngIf="dashletData">
+</mat-toolbar>
+<div class="mat-inside-page-container mat-app-background2 activity-dashboard.component">
+  <div class="sb-dashlet-table" *ngIf="dashletData">
     <app-dashboard [dashletData]="dashletData" [fileName]="hierarchyData.name" (downloadCsv)="addTelemetry()"
       [lastUpdatedOn]="memberListUpdatedOn"></app-dashboard>
   </div>

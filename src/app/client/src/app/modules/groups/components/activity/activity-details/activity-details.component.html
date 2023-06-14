@@ -1,18 +1,19 @@
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : ''">
+<div class="sbt-center-container sbt-back-header sbt-mygroups-details relative9">
   <app-back-button></app-back-button>
-  <div class="ui container py-16" *ngIf="showLoader">
+  <div class="py-16" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
   </div>
   <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryImpression">
-    <div class="content-header">
-      <div class="ui container py-16">
+    <div class="content-header activity-details.component">
+      <div class="py-16">
         <div class="content-header__content">
           <div class="d-flex flex-basis-1 mr-32 min-w-0 content-header__content__title">
             <div class="content-header__img mr-8">
               <img [src]="activity?.appIcon || './assets/images/book.png'" alt="" />
             </div>
             <div class="d-flex flex-dc">
-              <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2">{{activity?.name}}</div>
+              <div class="content-header__title font-weight-bold ellipsis text-left" role="heading" aria-level="2">
+                {{activity?.name}}</div>
               <div class="d-flex flex-ai-center content-header__info mt-4">
                 <span>{{activity?.subject?.join(', ')}}</span>
                 <span class="dot-divider" *ngIf="activity?.subject?.length"></span>
@@ -22,16 +23,22 @@
           </div>
           <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
             <!--Activity Dashboard-->
-            <button tabindex="0" (click)="navigateToActivityDashboard()"
+            <!-- <button tabindex="0" (click)="navigateToActivityDashboard()"
               [disabled]="!isContentTrackable(activity, activity?.contentType)"
               [ngClass]="{'dt-disabled-btn': !isContentTrackable(activity, activity?.contentType)}"
               class="sb-btn sb-btn-normal sb-btn-link  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-link-primary sb-activity-dashboard-btn"
               title="Activity Dashboard">
               <img src="assets/images/Activity_icon.svg" width="20px" class="mr-8" alt="Activity Dashboard">
               Activity Dashboard
-            </button>
+            </button> -->
+            <button mat-raised-button class="button-rounded color-accent ml-8" type="button" 
+              (click)="navigateToActivityDashboard()" tabindex="0" [ngClass]="{'disabled': !isContentTrackable(activity, activity?.contentType)}">
+              <mat-icon class="mr-8">bar_chart</mat-icon>
+              {{resourceService?.frmelmnts.btn.submit}}
+              </button>
             <div class="hide">
-              <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8"></button>
+              {{ resourceService?.frmelmnts?.lbl?.search }}
+              <button mat-raised-button class="button-rounded color-accent" role="button"></button>
               <div class="kabab-menu"></div>
             </div>
           </div>
@@ -39,7 +46,7 @@
       </div>
     </div>
 
-    <div class="ui container mt-24">
+    <div class="mt-24">
       <div class="sb-g mt-24 sbt-sb-g">
         <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-5 sb-g-col-xxxl-4">
           <div class="nested-group-container flex-dc d-flex">
@@ -50,8 +57,7 @@
                   <div class="fsmall">{{selectedCourse?.name}}</div>
                   <div class="ml-8" [ngClass]="{'open': dropdownContent}">
                     <!-- <img src="assets/images/arrow-dropdown.svg"> -->
-                    <button type="button"
-                      class="sb-btn sb-btn-normal sb-btn-outline-primary br-24 btn-border">{{resourceService?.frmelmnts?.lbl?.change}}</button>
+                    <button mat-raised-button class="button-rounded color-accent" role="button">{{resourceService?.frmelmnts?.lbl?.change}}</button>
                   </div>
                 </div>
               </div>
@@ -78,8 +84,8 @@
                   <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"
                     [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" aria-label="search box" />
                 </div>
-                <button class="sb-btn sb-btn-normal"
-                  type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
+                {{resourceService?.frmelmnts?.lbl?.change}}
+                <button mat-button class="button-rounded color-accent" role="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
               </div>
             </div>
             <div class="d-flex flex-ai-center px-16 py-8 flex-jc-space-between"
@@ -119,3 +125,5 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
