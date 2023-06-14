@@ -43,7 +43,9 @@
     position: relative;
 
     .selected-mark {
-      display: none;
+      position: absolute;
+      top: calculateRem(4px);
+      right: calculateRem(4px);
     }
 
     img {
