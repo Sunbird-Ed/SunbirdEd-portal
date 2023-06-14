@@ -1,127 +1,81 @@
-<!-- Loader -->
-  <app-loader *ngIf="showLoader"></app-loader>
-<!-- /Loader-->
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
-
+<div class="mat-inside-page-container mat-app-background2">
+  <!-- Loader -->
+  <div class="w-100" *ngIf="showLoader">
+    <app-loader></app-loader>
+  </div>
+  <!-- /Loader-->
   <div *ngIf="!showLoader">
+
     <!-- Header -->
-    <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
-      <div class="ui container">
-        <div class="py-8 d-flex flex-ai-center">
-          <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
-            type="button" tabindex="0" (click)="goBack()">
-            <i class="icon-svg icon-svg--xxs icon-back mr-4">
-              <svg class="icon icon-svg--primary">
-                <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-              </svg></i>
-            {{resourceService?.frmelmnts?.btn?.back}}
-          </button>
-          <div class="d-flex flex-ai-center">
-            <!---->
-            <!---->
-            <!---->
-          </div>
-        </div>
+    <div class="d-flex flex-ai-center header br-24 p-16">
+      <button id="goBack" mat-mini-fab color="accent" class="button-rounded mr-8" type="button" tabindex="0"
+        (click)="goBack()">
+        <mat-icon fontIcon="arrow_back"></mat-icon>
+        <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
+      </button>
+      <!-- Textbook image -->
+      <div class="bookimg">
+        <img src="{{courseDetails?.appIcon}}" alt="textbook">
       </div>
-    </div>
-    <div class="textbook-container cc-player__content-header relative9">
-      <div class="ui container">
-        <div class="textbook py-16 sb-g cc-player">
-          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
-            <!-- Textbook details -->
-            <div class="textbook__details d-flex flex-ai-center">
-              <!-- Textbook image -->
-              <div class="textbook__bookimg">
-                <img src="{{courseDetails?.appIcon}}" alt="textbook">
-              </div>
-              <div class="ml-8 textbook__heading">
-                <!-- Textbook title -->
-                <div class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">{{courseDetails?.name}}
-                </div>
-                <div class="fs-1 pt-8">{{courseDetails?.contentType}}</div>
-              </div>
-            </div>
-          </div>
-          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
-            <div class="ml-auto text-right mt-8">
-              <!-- <button class="sb-btn sb-btn-primary sb-btn-normal px-24">
-            Save Configuration
-          </button> -->
-            </div>
-          </div>
-        </div>
+      <div class="ml-8 heading">
+        <!-- Textbook title -->
+        <h4 class="color-accent font-weight-bold mb-0 mat-title" tabindex="0">{{courseDetails?.name}}
+        </h4>
+        <p class="mat-body-1 pt-8 mb-0">{{courseDetails?.contentType}}</p>
       </div>
     </div>
     <!-- / Header-->
 
     <!-- first screen -->
-    <div class="certificate-container py-16 cc-player__content-header relative9"
-      *ngIf="currentState === screenStates.default">
-      <div class="ui container">
-        <div class="ui stackable grid m-0">
-          <div class="four wide column">
-            <div class="certificate-sidebar p-24 certificate-bg">
-              <div class="select-template-container d-flex flex-dc mb-16">
-                <div class="certificates-label pb-24 font-weight-bold text-left">
-                  {{resourceService?.frmelmnts?.cert?.lbl?.configure}}</div>
-                <div class="certificate-scrollbar">
-                  <div class="certificate-sbcard mb-16 py-16">
-                    <div class="d-flex flex-ai-center flex-jc-space-between">
-                      <div class="certificate-card-title sb__ellipsis sb__ellipsis--three px-16">{{courseDetails?.name}}
-                      </div>
-                      <div class="d-flex flex-ai-center">
-                        <div class="certificate-card-img px-16">
-                          <img src="assets/images/certificate-icon.png" width="25px" height="20px"
-                            alt="certificate-icon" />
-                        </div>
-                        <div class="border-right"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <div class="sb-g mt-24" *ngIf="currentState === screenStates.default">
+      <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+        <div class="certificate-sidebar p-24 header br-24">
+          <h2 class="mat-title pb-24 font-weight-bold text-left">
+            {{resourceService?.frmelmnts?.cert?.lbl?.configure}}</h2>
+
+          <div class="d-flex flex-ai-center flex-jc-space-between cert-sidebar-menu p-16 mb-16 mat-bg-white">
+            <h6 class="mat-caption sb__ellipsis sb__ellipsis--three mb-0">{{courseDetails?.name}}
+            </h6>
+            <div class="d-flex flex-ai-center">
+              <div class="certificate-card-img px-16">
+                <img src="assets/images/certificate-icon.png" width="25px" height="20px" alt="certificate-icon" />
               </div>
+              <div class="border-right"></div>
             </div>
           </div>
-          <div class="eight wide column">
-            <div *ngIf="!selectedTemplate" class="select-template-content p-24">
-              <div class="d-flex flex-dc flex-ai-center text-center mt-32">
-                <div><img src="../../assets/images/addcertificate.png" alt="add certificate "></div>
-                <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
-                  <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
-                  {{ resourceService?.frmelmnts?.cert?.lbl?.button}}
-                </p>
-                <button type="button" id="addNewCert" tabindex="0" (click)="certificateCreation()"
-                  class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
-                  {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
-                  <img src="assets/images/plus-icon.svg" alt=" Add certificate " width="8px"
-                    class="ml-4 plus-icon"></button>
+        </div>
+      </div>
+
+      <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-8">
+        <div *ngIf="!selectedTemplate" class="p-24">
+          <div class="d-flex flex-dc flex-ai-center text-center mt-32">
+            <div><img src="../../assets/images/addcertificate.png" alt="add certificate "></div>
+            <p class="no-template-text pt-16 pb-24 px-40 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
+              <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
+              {{ resourceService?.frmelmnts?.cert?.lbl?.button}}
+            </p>
+            <button type="button" id="addNewCert" tabindex="0" (click)="certificateCreation()"
+              class="button-rounded color-accent" mat-raised-button>
+              {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="selectedTemplate" class="edit-certificate p-24 mat-bg-white">
+          <h2 class="mat-tile font-weight-bold text-left">
+            {{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</h2>
+          <div class="edit-certificate-img">
+            <div class="certificate-frame">
+              <div *ngIf="certEditable"><img class="img" src="{{previewUrl}}" alt="certificate edit"></div>
+              <div *ngIf="!certEditable"
+                class="d-flex flex-jc-center flex-dc p-24 mat-body-1 text-center color-warn w-100">
+                <h3>{{resourceService?.frmelmnts?.cert?.lbl?.noEditAction}}</h3>
               </div>
             </div>
-            <div *ngIf="selectedTemplate" class="certificate-edit-content p-24">
-              <div class="content">
-                <div class="fnormal pb-24 font-weight-bold text-left">
-                  {{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</div>
-                <div class="certificate-edit-area">
-                  <div class="certificate-edit-sbcard">
-                    <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
-                      <div class="certificate-frame">
-                        <div *ngIf="certEditable"><img src="{{previewUrl}}" alt="certificate edit"></div>
-                        <div *ngIf="!certEditable"
-                          class="d-flex flex-jc-center flex-dc p-24 fnormal text-center sb-color-error w-100 no-cert">
-                          <h3>{{resourceService?.frmelmnts?.cert?.lbl?.noEditAction}}</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
-                      <div class="d-flex flex-ai-center ml-auto d-flex">
-                        <button type="button" [ngClass]="{'sb-btn-disabled': !certEditable }" [disabled]="!certEditable"
-                          (click)="editCertificate()" tabindex="0"
-                          class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="d-flex flex-ai-center mt-16">
+              <button type="button" [disabled]="!certEditable" (click)="editCertificate()" tabindex="0"
+                class="button-rounded ml-auto" color="accent"
+                mat-raised-button>{{resourceService?.frmelmnts?.lbl?.edit}}</button>
             </div>
           </div>
         </div>
@@ -129,164 +83,129 @@
     </div>
 
     <!-- second screen -->
-    <div class="certificate-container py-16 cc-player__content-header relative9"
-      *ngIf="currentState === screenStates.certRules">
-      <div class="ui container">
-        <div class="sb-g">
-          <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 certificate-bg">
-            <div class="certificate-content-area p-24">
-              <form [formGroup]="userPreference">
-                <div class='ui stackable grid mt-0'>
-                  <div class="five wide column pt-0">
-                    <div *ngIf="configurationMode === 'add'" class="pb-24 font-weight-bold certificates-label">
-                      {{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</div>
-                    <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">
-                      {{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</div>
-                  </div>
-                </div>
+    <div class="py-16" *ngIf="currentState === screenStates.certRules">
 
-                <div class='ui stackable grid mt-0'>
-                  <div class="seven wide column">
-                    <div class="pt-8 pb-16 font-weight-bold fnormal text-left">
-                      {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
-                    <div class="d-flex flex-dc w-50">
-                        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-                          <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
-                          <mat-select formControlName="issueTo" role="listbox" aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo"
-                            class="selection" [disabled]="configurationMode === 'edit'" (selectionChange)="handleParameterChange($event)">
-                            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of issueTo" [value]="option.name"
-                            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <label class="fnormal font-weight-normal text-left"
-                      *ngIf="isStateCertificate">{{resourceService?.frmelmnts?.intxt?.ssousers |
-                      interpolate:'{instance}': instance}}</label>
-                  </div>
-                </div>
+      <div class="sb-g">
+        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 mat-app-background br-24">
+          <div class="w-100 p-24">
+            <form [formGroup]="userPreference">
 
-                <hr class="mt-16 mb-24">
+              <h2 *ngIf="configurationMode === 'add'" class="font-weight-bold mb-24">
+                {{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</h2>
+              <h2 *ngIf="configurationMode === 'edit'" class="font-weight-bold mb-24">
+                {{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</h2>
 
-                <div class="ui stackable grid mt-0">
-                  <div class="twelve wide column pt-0">
-                    <div class="d-flex rules-configuration px-16">
-                      <label
-                        class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificateprogressrule}}</label>
-                      <div class="mx-24 progress-separator"></div>
-                      <div class="py-16 d-flex flex-wrap rules-form-content">
-                        <div class="mr-16 sb-field-group">
-                          <div class="sb-field">
-                            <input class="sb-form-control fnormal font-weight-bold" type="text" placeholder="100%"
-                              value="100%" readonly=true>
-                          </div>
-                          <p class="font-weight-normal fsmall mb-0 completion-text">
-                            <span class="asterik">*</span>
-                            {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <div>
+                <h3 class="font-weight-bold">
+                  {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</h3>
+                <div class="d-flex flex-dc w-50">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
+                    <mat-select formControlName="issueTo" role="listbox"
+                      aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo" class="selection"
+                      [disabled]="configurationMode === 'edit'" (selectionChange)="handleParameterChange($event)">
+                      <mat-option role="option" *ngFor="let option of issueTo" [value]="option.name"
+                        attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
+                <label class="font-weight-normal text-left"
+                  *ngIf="!isStateCertificate">{{resourceService?.frmelmnts?.intxt?.ssousers |
+                  interpolate:'{instance}': instance}}</label>
+              </div>
 
-                <div class="progess-add-content" *ngIf="isSingleAssessment">
-                  <div class="left-border"></div>
-                  <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold"
-                    *ngIf="addScoreRule">And</button>
-                  <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule"
-                    tabindex="0" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
-                  <div class="left-border" *ngIf="addScoreRule"></div>
-                </div>
+              <mat-divider class="mb-24"></mat-divider>
 
-                <div class="ui stackable grid mt-0" *ngIf="addScoreRule && isSingleAssessment">
-                  <div class="twelve wide column pt-0">
-                    <div class="d-flex rules-configuration px-16">
-                      <label
-                        class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
-                      <div class="mx-24 progress-separator"></div>
-                      <div class="py-16 d-flex flex-dc rules-form-content my-16">
-                        <div class="ui stackable grid mt-0 sb-field-group">
-                          <div class="five wide column sb-field mb-0">
-                            <input class="sb-form-control fnormal font-weight-bold" type="text"
-                              placeholder="Best attempt score"
-                              value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
-                          </div>
-                          <div class="three wide fnormal column mt-5">
-                            {{resourceService?.frmelmnts?.lbl?.addCertificategreaterThan}}</div>
-                          <div class="four wide column sb-field mb-0">
-                            <sui-select class="selection form-control" [placeholder]="'Select'"
-                              formControlName="scoreRange" [options]="scoreRange" #selectScoreRange>
-                              <sui-select-option *ngFor="let option of arrayValue['range']" [value]="option + '%'">
-                              </sui-select-option>
-                            </sui-select>
-                          </div>
-                          <p class="font-weight-normal fsmall mb-0 completion-text">
-                            <span class="asterik">*</span>
-                            {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
-                          </p>
-                        </div>
-                      </div>
-                      <div class="close-score" tabindex="0" (click)="removeRule()"><img src="assets/images/close.svg">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='ui stackable grid mt-0'>
-                  <div class="twelve wide column">
-                    <div class="sb-checkbox sb-checkbox-secondary pt-24">
-                      <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
-                      <label for="check2" class="text-left">{{resourceService?.frmelmnts?.cert?.lbl?.verified}}</label>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div *ngIf="selectedTemplate">
-              <div class="certificate-edit-area">
-                <div class="certificate-edit-sbcard">
-                  <div class="d-flex flex-dc p-16 certificate-edit-sbcard-content">
-                    <div class="certificate-frame">
-                      <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}"
-                          alt="certificate edit"></div>
-                    </div>
-                    <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
-                      <div class="d-flex flex-ai-center ml-auto d-flex">
-                        <button type="button" (click)="removeSelectedCertificate()" tabindex="0"
-                          class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.btn?.remove}}</button>
-                      </div>
-                    </div>
-                  </div>
+              <div class="d-flex mat-bg-white px-16 flex-ai-center br-24">
+                <label
+                  class="mat-body-1 font-weight-normal mb-0">{{resourceService?.frmelmnts?.lbl?.addCertificateprogressrule}}</label>
+                <div class="mx-16"><mat-divider class="vertical-divider" [vertical]="true"></mat-divider></div>
+                <div class="py-16 d-flex flex-dc flex-wrap">
+                  <mat-form-field>
+                    <input matInput type="text" placeholder="" value="100%" readonly=true color="accent">
+                  </mat-form-field>
+                  <p class="font-weight-normal mat-caption mb-0">
+                    <span class="color-warn">*</span>
+                    {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-          <!-- Side panel of cert-templates -->
-          <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
-            <div class="select-template-content sb-bg-color-white p-24 certificate-bg">
-              <div class="select-template-container mb-16">
-                <div class="d-flex flex-ai-center text-left flex-jc-space-between">
-                  <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
-                  <button
-                    class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold"
-                    type="button" (click)="navigateToCreateTemplate()" tabindex="0">
-                    <i
-                      class="plus alternate outline icon"></i>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button>
-                </div>
-                <div class="d-flex flex-ai-center text-left flex-jc-space-between">
-                  <label class="font-weight-normal fsmall">{{resourceService?.frmelmnts?.cert?.lbl?.certNote}}</label>
-                  <button (click)="refreshData()" class="sb-btn sb-btn-normal sb-btn-outline-primary my-16"
-                    tabindex="0">
-                    {{resourceService?.frmelmnts?.cert?.btn?.refresh}}
-                  </button>
-                </div>
-                <div *ngIf="certTemplateList" class="certificate-scrollbar">
-                  <div *ngFor="let template of certTemplateList">
-                    <sb-certificate-actions [preview]="config?.preview"
-                      [isSelectedTemplate]="selectedTemplate?.identifier === template?.identifier && !showPreviewModal"
-                      [template]="template?.artifactUrl" (buttonClick)="handleCertificateEvent($event, template)">
-                    </sb-certificate-actions>
+
+
+              <div class="progess-add-content" *ngIf="isSingleAssessment">
+                <div class="left-border"></div>
+                <button type="button" mat-raised-button class="button-rounded color-warn font-weight-bold"
+                  *ngIf="addScoreRule">AND</button>
+                <button type="button" mat-mini-fab class="color-accent" *ngIf="!addScoreRule" tabindex="0"
+                  (click)="addRule()"><mat-icon>add</mat-icon></button>
+                <div class="left-border" *ngIf="addScoreRule"></div>
+              </div>
+
+              <div class="d-flex mat-bg-white px-16 br-24 flex-ai-center add-score"
+                *ngIf="addScoreRule && isSingleAssessment">
+                <label
+                  class="font-weight-normal mb-0 mat-body-1">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
+                <div class="mx-16"><mat-divider class="vertical-divider" [vertical]="true"></mat-divider></div>
+                <div class="d-flex flex-dc w-100">
+                  <div class="d-flex flex-ai-center flex-jc-space-around">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Best attempt score"
+                        value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
+                    </mat-form-field>
+                    <div class="w-15">{{resourceService?.frmelmnts?.lbl?.addCertificategreaterThan}}</div>
+                    <sui-select class="selection form-control" [placeholder]="'Select'" formControlName="scoreRange"
+                      [options]="scoreRange" #selectScoreRange>
+                      <sui-select-option *ngFor="let option of arrayValue['range']" [value]="option + '%'">
+                      </sui-select-option>
+                    </sui-select>
                   </div>
+                  <p class="font-weight-normal mat-caption mb-0 completion-text">
+                    <span class="color-warn">*</span>
+                    {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
+                  </p>
+                </div>
+                <button type="button" mat-mini-fab color="warn" class="close-score" tabindex="0"
+                  (click)="removeRule()"><mat-icon>close</mat-icon></button>
+              </div>
+
+              <div class="mt-24 w-100">
+                <mat-checkbox class="mr-8 cursor-pointer" formControlName="allowPermission" value="true" type="checkbox"
+                  id="check2" name="selected">{{resourceService?.frmelmnts?.cert?.lbl?.verified}}</mat-checkbox>
+              </div>
+            </form>
+          </div>
+
+          <div class="d-flex flex-dc p-16" *ngIf="selectedTemplate">
+            <img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}" alt="certificate edit">
+            <button type="button" (click)="removeSelectedCertificate()" tabindex="0" mat-raised-button color="accent"
+              class="button-rounded ml-auto mt-16">{{resourceService?.frmelmnts?.btn?.remove}}</button>
+          </div>
+
+        </div>
+        <!-- Side panel of cert-templates -->
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+          <div class="select-template-content mat-app-background p-24 br-24">
+            <div class="select-template-container mb-16">
+              <div class="d-flex flex-ai-center text-left flex-jc-space-between">
+                <label
+                  class="mat-title font-weight-bold mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
+                <button mat-raised-button class="button-rounded color-accent" type="button"
+                  (click)="navigateToCreateTemplate()" tabindex="0">
+                  <mat-icon>add</mat-icon>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button>
+              </div>
+              <div class="d-flex flex-ai-center text-left flex-jc-space-between my-16">
+                <label
+                  class="font-weight-normal mat-body-1 font-weight-bold mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.certNote}}</label>
+                <button (click)="refreshData()" mat-raised-button class="button-rounded color-accent" tabindex="0">
+                  {{resourceService?.frmelmnts?.cert?.btn?.refresh}}
+                </button>
+              </div>
+              <div *ngIf="certTemplateList" class="certificate-scrollbar">
+                <div *ngFor="let template of certTemplateList">
+                  <sb-certificate-actions [preview]="config?.preview"
+                    [isSelectedTemplate]="selectedTemplate?.identifier === template?.identifier && !showPreviewModal"
+                    [template]="template?.artifactUrl" (buttonClick)="handleCertificateEvent($event, template)">
+                  </sb-certificate-actions>
                 </div>
               </div>
             </div>
@@ -294,23 +213,18 @@
         </div>
       </div>
 
-      <div *ngIf="currentState === screenStates.certRules">
-        <div class="ui stackable grid m-0">
-          <div class="twelve wide column px-0">
-            <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
-                (click)="cancelSelection()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
-              <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'"
-                [disabled]="disableAddCertificate" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
-                (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
-              <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }"
-                *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate"
-                class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" tabindex="0"
-                (click)="updateCertificate()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
-            </div>
-          </div>
-        </div>
+      <div class="d-flex flex-ai-center flex-jc-flex-end mat-bg-white p-24 mt-24 br-24"
+        *ngIf="currentState === screenStates.certRules">
+        <button mat-raised-button class="button-rounded mr-8 color-accent" tabindex="0"
+          (click)="cancelSelection()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
+        <button *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" tabindex="0" mat-raised-button
+          color="accent" class="button-rounded ml-8 px-24"
+          (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
+        <button id="update-certificate" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate"
+          mat-raised-button color="accent" class="button-rounded ml-8 px-24" tabindex="0"
+          (click)="updateCertificate()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
       </div>
+
     </div>
 
   </div>
