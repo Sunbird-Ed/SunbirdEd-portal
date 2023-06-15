@@ -14,7 +14,8 @@ import * as _ from 'lodash-es';
  */
 @Component({
   selector: 'app-organization',
-  templateUrl: './organization-upload.component.html'
+  templateUrl: './organization-upload.component.html',
+  styleUrls: ['./organization-upload.component.scss']
 })
 export class OrganizationUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;

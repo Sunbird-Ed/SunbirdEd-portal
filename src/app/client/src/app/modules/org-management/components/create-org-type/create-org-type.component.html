@@ -1,4 +1,4 @@
-<app-modal-wrapper [config]="{disableClose: false, size: 'normal', width: '45rem'}" (dismiss)="redirect()" #modal
+<app-modal-wrapper [config]="{disableClose: true, size: 'normal', width: '45rem', panelClass: 'material-modal'}" (dismiss)="redirect()" #modal
     [appTelemetryImpression]="telemetryImpression">
     <ng-template sbModalContent>
         <!--Header-->
@@ -10,12 +10,14 @@
 
         <!--Content-->
         <mat-dialog-content>
-            <div class="ui fluid icon input">
-                <input *ngIf="createForm" class="form-control" [formControl]="orgName" type="text"
-                    placeholder="{{resourceService?.frmelmnts?.lbl?.addorgtype}}">
-                <input *ngIf="!createForm" class="form-control" [formControl]="orgName" type="text"
-                    placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}">
-            </div>
+            <mat-form-field appearance="fill" class="w-100" *ngIf="createForm">
+                <mat-label>{{resourceService?.frmelmnts?.lbl?.addorgtype}}</mat-label>
+                <input matInput placeholder="{{resourceService?.frmelmnts?.lbl?.addorgtype}}" [formControl]="orgName">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100" *ngIf="!createForm">
+                <mat-label>{{resourceService?.frmelmnts?.lbl?.updateorgtype}}</mat-label>
+                <input matInput placeholder="{{resourceService?.frmelmnts?.lbl?.updateorgtype}}" [formControl]="orgName">
+            </mat-form-field>
         </mat-dialog-content>
         <!--/Content-->
 
