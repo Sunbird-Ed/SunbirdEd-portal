@@ -1,0 +1,11 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+.mat-info-message{
+    position: relative;
+    min-height: 1em;
+    margin: 1em 0;
+    padding: 1em 1.5em;
+    line-height: 1.4285em;
+    transition: opacity .1s ease,color .1s ease,background .1s ease,box-shadow .1s ease;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 0 1px rgba(34,36,38,.22) inset, 0 0 0 0 transparent;
+}

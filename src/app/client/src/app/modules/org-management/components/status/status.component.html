@@ -1,4 +1,4 @@
-<app-modal-wrapper [config]="{disableClose: false, size: 'large', width: '45rem'}" (dismiss)="redirect();modal.deny()"
+<app-modal-wrapper [config]="{disableClose: true, size: 'normal', width: '45rem', panelClass: 'material-modal'}" (dismiss)="redirect();modal.deny()"
   #modal>
   <ng-template sbModalContent>
 
@@ -13,23 +13,15 @@
       <div *ngIf="showLoader">
         <app-loader></app-loader>
       </div>
-      <form *ngIf="!isProcessCompleted && !showLoader" class="ui form" id="statusForm" [formGroup]="statusForm">
+      <form *ngIf="!isProcessCompleted && !showLoader" id="statusForm" [formGroup]="statusForm">
         <h4>{{resourceService?.frmelmnts?.instn?.t0011}}</h4>
-        <div class="ui grid">
-          <div class="six wide column">
-            <div class="field">
-              <label>{{resourceService?.frmelmnts?.lbl?.processid}}</label>
-              <input type="text" formControlName="processId" placeholder="Process ID" autofocus>
-            </div>
-          </div>
-          <div class="three wide column">
-          </div>
-        </div>
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>{{resourceService?.frmelmnts?.lbl?.processid}}</mat-label>
+          <input matInput formControlName="processId" placeholder="Process ID" autofocus>
+        </mat-form-field>
       </form>
       <div *ngIf="isProcessCompleted">
-        <div class="ui label">
-          <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
-        </div>
+        <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
         <div *ngFor="let status of [statusResponse.successResult, statusResponse.failureResult]">
           <div class="mt-40 overflowContentHorizontal" *ngIf="getStatusResult(status).length">
             <h5 *ngIf="status === statusResponse.successResult">{{resourceService?.frmelmnts?.lbl?.successres}}

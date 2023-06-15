@@ -1,6 +1,2 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "pages/sign_in_up" as *;
-
-.sb-merged-account-body-para.sb-color-success{
-    color:var(--success-color);
-}

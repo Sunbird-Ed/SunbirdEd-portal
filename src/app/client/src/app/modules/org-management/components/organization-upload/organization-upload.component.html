@@ -1,4 +1,4 @@
-<app-modal-wrapper [config]="{disableClose: false, size: 'large', width: '45rem'}" (dismiss)="redirect();modal.deny();"
+<app-modal-wrapper [config]="{disableClose: true, size: 'normal', width: '45rem', panelClass: 'material-modal'}" (dismiss)="redirect();modal.deny();"
   #modal>
   <ng-template sbModalContent>
     <!--Header-->
@@ -13,17 +13,17 @@
         <app-loader></app-loader>
       </div>
       <h5 *ngIf="fileName">
-        <i class="file outline icon"></i>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
+        <mat-icon>description</mat-icon>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
       </h5>
       <div *ngIf="processId">
         <p class="py-0">{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</p>
         <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
       </div>
-      <div *ngIf="!processId && !showLoader" class="ui info message">
-        <div class="header">
+      <div *ngIf="!processId && !showLoader" class="mat-info-message mat-bg-white">
+        <div class="mat-body-1 color-accent font-weight-bold">
           {{resourceService?.frmelmnts?.scttl?.instructions}}
         </div>
-        <ol class="ui list">
+        <ol class="mt-4">
           <li *ngFor="let instn of orgUploadInstructions">{{instn?.instructions}}
             <ol *ngIf="instn.subinstructions">
               <li *ngFor="let subinstn of instn.subinstructions">{{subinstn?.instructions}}</li>
