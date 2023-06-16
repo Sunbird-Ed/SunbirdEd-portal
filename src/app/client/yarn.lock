@@ -11620,6 +11620,25 @@ saxes@^6.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
+sb-dashlet-v14@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/sb-dashlet-v14/-/sb-dashlet-v14-1.0.4.tgz#66271e561df9d844970714bcd70998a184108f79"
+  integrity sha512-XPKc/6bcBw0B+e6WYoeT3zidzh8xoTuKYWM2/mJMv0NsFYJhFOB1VpEI8AtCVC3JT/85SuiATU3B/98Vd0GLGA==
+  dependencies:
+    "@types/datatables.net" "1.10.19"
+    angular-datatables "14.0.2"
+    chart.js "2.9.4"
+    chartjs-plugin-annotation "^0.5.7"
+    datatables.net "1.10.20"
+    datatables.net-dt "1.10.20"
+    joi "17.4.0"
+    jquery "3.4.1"
+    lodash-es "4.17.21"
+    ng-multiselect-dropdown "0.3.4"
+    ng2-charts "2.4.2"
+    ngx-daterangepicker-material "6.0.4"
+    tslib "^2.0.0"
+
 sb-svg2pdf-v13@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/sb-svg2pdf-v13/-/sb-svg2pdf-v13-1.0.0.tgz#ca1f0bd6b699753eaa7ac203125947996d05a54c"
