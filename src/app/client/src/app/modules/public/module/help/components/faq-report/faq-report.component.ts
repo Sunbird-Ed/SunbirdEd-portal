@@ -69,7 +69,7 @@ export class FaqReportComponent implements OnInit {
     const params = [];
     for (const [key, value] of Object.entries(this.formValues)) {
       if (key === 'children') {
-        for (const [childKey, childValue] of this.formValues[key]) {
+        for (const [childKey, childValue] of Object.entries(this.formValues[key])) {
           params.push({[childKey]: childValue});
         }
       } else {
