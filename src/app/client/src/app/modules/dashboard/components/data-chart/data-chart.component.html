@@ -2,15 +2,15 @@
 
   <div class="d-flex pb-10">
     <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
-      <label class="pad5 col-6 chart-title"> {{ this.chartOptions?.title?.text }} </label>
-      <div class="sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
+      <label class="mat-body-1 font-weight-bold"> {{ this.chartOptions?.title?.text }} </label>
+      <p class="mat-caption font-weight-bold mb-0" *ngIf="showLastUpdatedOn && lastUpdatedOn">
         <span>{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
-      </div>
+      </p>
     </div>
-    <div class="d-flex flex-w-wrap selection-block">
+    <div class="d-flex flex-w-wrap flex-ai-flex-start">
 
 
-      <div class="d-flex flex-w-wrap reset-filter-section">
+      <div class="d-flex flex-w-wrap reset-filter-section mt-16 mr-8">
         <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
           <mat-slide-toggle (change)="graphStatsChange($event.checked)" appTelemetryInteract
             [telemetryInteractObject]="telemetryInteractObject"
@@ -27,18 +27,16 @@
           [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
           class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
           {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button> -->
-        <label>
-          <mat-form-field appearance="fill" class="sb-mat__dropdown">
+          <mat-form-field appearance="fill" color="accent">
             <mat-label>Select ChartType</mat-label>
             <mat-select role="listbox" aria-label="Select ChartType" [(value)]="selectedLanguage" class="selection"
               (selectionChange)="changeChartType($event)">
-              <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of availableChartTypeOptions"
+              <mat-option role="option" *ngFor="let option of availableChartTypeOptions"
                 [value]="option" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                 [telemetryInteractEdata]="setTelemetryInteractEdata('chart-type-filter')"
                 [telemetryInteractCdata]="telemetryCdata" attr.aria-label="{{option}}">{{option}}</mat-option>
             </mat-select>
           </mat-form-field>
-        </label>
       </div>
 
       <button *ngIf="isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}" appTelemetryInteract
@@ -46,30 +44,30 @@
         [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
         [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
         (click)="addChartSummary()" type="button" tabindex="0"
-        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"><i class="add icon"></i>
+        mat-raised-button class="button-rounded color-accent mr-8 mt-8"><mat-icon>add</mat-icon>
         {{ chartSummarylabel }}
       </button>
 
 
 
-      <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn" (click)="filterModalPopup(true)" tabindex="0"
+      <button mat-raised-button color="accent" class="button-rounded mt-8" (click)="filterModalPopup(true)" tabindex="0"
         *ngIf="filters?.length > 0" [ngClass]="{'hide': hideElements}">
         {{ resourceService?.frmelmnts?.lbl?.filters }}
       </button>
     </div>
   </div>
 
-  <div class="sb-filter-label pt-16 pb-8" *ngIf="currentFilters">
+  <div class="pt-16 pb-8" *ngIf="currentFilters">
     <div *ngFor="let key of loadash.keys(currentFilters)" class="d-inline-flex flex-w-wrap pr-10">
 
       <span *ngIf="checkFilterReferance(key)">
-        <span class="sb-label-name mb-4">{{key}}:</span>
-        <span class="date-range-label" *ngIf="currentFilters[key]?.length>0">
+        <span class="mb-4">{{key}}:</span>
+        <span class="px-8 pt-8 br-24 mat-app-background2" *ngIf="currentFilters[key]?.length>0">
           {{currentFilters[key][0]}} - {{currentFilters[key][currentFilters[key].length-1]}}
         </span>
       </span>
       <span *ngIf="!checkFilterReferance(key)">
-        <span class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
+        <span class="mb-4">{{key}}:</span><span class="sb-label-value"
           *ngFor="let val of currentFilters[key]">{{val}}
           <!-- <i class="close icon mr-0 pl-4"></i> -->
         </span>
@@ -80,7 +78,7 @@
 
   <div *ngIf="showStats">
     <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
-      {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
+      {{stat}} <div class="px-8 pt-8 mr-4 br-24"
         *ngFor="let op of loadash.keys(resultStatistics[stat])"> {{op}} : {{resultStatistics[stat][op]}}
       </div>
     </div>
@@ -88,11 +86,12 @@
 
   <div class="dashboard-graph-statistics py-24" *ngIf="bigNumberCharts.length">
     <div class="graph-stat-block" *ngFor="let bigNumberChart of bigNumberCharts">
-      <div class="graph-stat-label">{{bigNumberChart?.header}}</div>
-      <div class="graph-stat-value">{{bigNumberChart?.data}} </div>
-      <div class="graph-stat-info"> {{bigNumberChart?.footer}} </div>
+      <p class="mat-title mb-8">{{bigNumberChart?.header}}</p>
+      <p class="mat-display-1 font-weight-bold mb-8">{{bigNumberChart?.data}} </p>
+      <p class="mat-title"> {{bigNumberChart?.footer}} </p>
     </div>
   </div>
+  <mat-divider class="my-16"></mat-divider>
   <ng-container *ngIf="showChart && !iframeDetails">
     <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions"
       [chartType]="chartType" [legend]="legend" [colors]="chartColors"></canvas>
@@ -116,16 +115,11 @@
   <!--/Header-->
   <!--content-->
   <mat-dialog-content align="left">
-    <div class="sb-filter mb-10px">
-      <div class="sb-filter__container">
-        <div class="sb-filter__content">
-          <app-filter [filterType]="filterType" [resetFilters]="resetFilters" [hideElements]="hideElements"
-            [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)"
-            [chartData]="getChartData()" [telemetryInteractObject]="telemetryInteractObject">
-          </app-filter>
-        </div>
-      </div>
-    </div>
+    <app-filter [filterType]="filterType" [resetFilters]="resetFilters" [hideElements]="hideElements"
+      [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)"
+      [chartData]="getChartData()" [telemetryInteractObject]="telemetryInteractObject">
+    </app-filter>
+
   </mat-dialog-content>
   <!--/content-->
 
