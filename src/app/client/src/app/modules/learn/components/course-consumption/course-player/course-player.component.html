@@ -116,7 +116,7 @@
           </div> -->
 
           <mat-accordion *ngFor="let item of courseHierarchy?.children; let index = index" [multi]="false">
-            <mat-expansion-panel class="mat-app-background" [expanded]="isExpanded(index)"
+            <mat-expansion-panel class="mat-app-background mb-16" [expanded]="isExpanded(index)"
               (collapsedChange)="collapsedChange($event, index)" [collapsed]="item?.collapsed">
               <mat-expansion-panel-header (click)="isModuleExpanded = true;" tabindex="0">
                 <mat-panel-title tabindex="0" title class="mat-caption-1 mb-0 color-accent">
@@ -255,7 +255,7 @@
         </div>
 
         <!-- Credits & License information -->
-        <div class="course-player--metadata text-left">
+        <div class="course-player--metadata text-left mt-16">
           <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
         </div>
 

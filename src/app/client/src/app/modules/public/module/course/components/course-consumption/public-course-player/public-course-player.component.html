@@ -55,7 +55,7 @@
           </div>
 
           <mat-accordion *ngFor="let item of courseHierarchy?.children; let index = index" [multi]="false">
-            <mat-expansion-panel class="mat-app-background" [expanded]="isExpanded(index)">
+            <mat-expansion-panel class="mat-app-background mb-16" [expanded]="isExpanded(index)">
               <mat-expansion-panel-header (click)="isModuleExpanded = true;" tabindex="0">
                 <mat-panel-title tabindex="0" title class="mat-caption-1 mb-0 color-accent">
                   <i class="icon-svg icon-svg--sm icon-tick mr-8"

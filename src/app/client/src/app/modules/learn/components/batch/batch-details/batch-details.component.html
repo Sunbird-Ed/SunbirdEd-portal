@@ -128,13 +128,13 @@
             <div class="mat-body-1">{{batchDetails?.startDate | dateFormat}}
             </div>
           </div>
-          <hr class="section-hr" *ngIf="batchDetails?.endDate" />
+          <mat-divider class="my-16" *ngIf="batchDetails?.endDate"></mat-divider>
           <div *ngIf="batchDetails?.endDate">
             <div class="mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
             <div class="mat-body-1">{{batchDetails?.endDate | dateFormat}}</div>
           </div>
-          <hr class="section-hr" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)" />
+          <mat-divider class="my-16" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"></mat-divider>
           <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
             <div class="mat-caption color-accent">
               {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
