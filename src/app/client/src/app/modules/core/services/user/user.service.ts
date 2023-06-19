@@ -37,6 +37,9 @@ export class UserService {
 
   timeDiff: any;
 
+  //default Board for the instance 
+  defaultBoard:any;
+
   /**
    * Contains root org id
    */
@@ -140,6 +143,7 @@ export class UserService {
     }
     try {
       this._appId = document.getElementById('appId')?(<HTMLInputElement>document.getElementById('appId')).value: undefined;
+      this.defaultBoard = (<HTMLInputElement>document.getElementById('defaultBoard')).value;
       this._cloudStorageUrls = document.getElementById('cloudStorageUrls')?(<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(','):[];
     } catch (error) {
     }
@@ -547,6 +551,7 @@ export class UserService {
     } else {
       userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board', 'id'])) || {};
     }
-    return { board: ['CBSE'], ...userFramework };
+  
+    return { board: this.defaultBoard, ...userFramework };
   }
 }

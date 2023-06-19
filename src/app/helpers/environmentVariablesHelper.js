@@ -10,6 +10,7 @@ let envVariables = {
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
+  DEFAULT_BOARD:env.sunbird_default_board || 'Sunbird', 
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
   PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '')
   ? env.sunbird_portal_session_secret.split(',') : 'sunbird,ed48b0ce-5a92-11ed-9b6a-0242ac120002'.split(','),
