@@ -1,173 +1,175 @@
 <mat-toolbar color="primary" class="toolbar-pageback">
-  <div class="d-flex flex-ai-center">
-     <button type="button" mat-mini-fab color="accent"
-     class="button-rounded" tabindex="0" (click)="goBack()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-     <mat-icon aria-hidden="false" fontIcon="arrow_back"></mat-icon>
-   </button>
-   <div class="toolbar-pageback__heading">
-    <h3 class="mat-title mb-4" tabindex="0" role="heading" aria-level="2">{{resourceService.frmelmnts?.lnk?.dashboard}}</h3>
-   </div>
+  <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
+    <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0" (click)="goBack()"
+      attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+      <mat-icon aria-hidden="false" fontIcon="arrow_back"></mat-icon>
+    </button>
+    <div class="toolbar-pageback__heading">
+      <h3 class="mat-title mb-4" tabindex="0" role="heading" aria-level="2">
+        {{resourceService.frmelmnts?.lnk?.dashboard}}</h3>
+    </div>
   </div>
   <div class="toolbar-pageback__actions"></div>
- </mat-toolbar>
+</mat-toolbar>
 
-<div class="mat-inside-page-container mat-app-background2 usage-reports-components" [appTelemetryImpression]="telemetryImpression">
-      <span *ngIf="!noResult">
-        <div class="two wide column sb-sidebar-menu p-0">
-          <h5 class="p-16">{{resourceService.frmelmnts?.lnk?.dashboard}}</h5>
-          <ul class="m-0">
-            <li appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(report.id)"
-              [telemetryInteractEdata]="setTelemetryInteractEdata('report-view')" *ngFor="let report of reportMetaData"
-              (click)="renderReport(report)" tabindex="0" class="item m-0"
-              [ngClass]="{'active': currentReport.id === report.id}">
-              {{report.label || report.title}}</li>
-          </ul>
-        </div>
-        <div class="ten wide column sb-sideview-tab-container pl-40 pt-72 pb-48" *ngIf="currentReport">
-          <h3 class="mb-16">
-            {{currentReport?.title || currentReport?.label}}
-          </h3>
-          <p *ngIf="currentReport?.description" [innerHTML]="transformHTML(currentReport.description)"></p>
-          <ng-container *ngIf="!showLoader">
-            <mat-tab-group (selectedTabChange)="selectedTabChange($event)" class="mat-tab__usage-report">
-              <mat-tab appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-                [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')"
-                [label]="{'type': 'chart', 'downloadURL': currentReport.downloadUrl}">
-                <div class="p-0 b-0 no-bg py-24">
-                  <ng-template mat-tab-label>
-                    <span>{{resourceService?.frmelmnts?.lbl?.graphs}}</span>
-                  </ng-template>
-                  <ng-container *ngTemplateOutlet="commonReportActions">
-                  </ng-container>
-                  <div class="sb-graph-section p-24 my-24"
-                    *ngFor="let chart of chartData; let i = index; let l = last;">
-                    <app-data-chart [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-                      [chartInfo]="chart"></app-data-chart>
-                    <!-- <hr *ngIf="!l" /> -->
-                  </div>
-                  <div class="ui warning message" *ngIf="!chartData.length">
-                    {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
-                  </div>
-                </div>
-              </mat-tab>
-              <ng-container *ngFor="let table of tables">
-                <mat-tab [label]="{'type': 'table', 'downloadURL': table?.downloadUrl}">
-                  <ng-template mat-tab-label>
-                    <span>{{table?.name}}</span>
-                  </ng-template>
-                  <ng-template matTabContent>
-                    <div class="p-0 b-0 no-bg py-24">
-                      <ng-container *ngTemplateOutlet="commonReportActions">
-                      </ng-container>
-                      <div class="p-0 b-0 no-bg py-24">
-                        <div *ngIf="table.data">
-                          <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
-                          </app-data-table>
-                        </div>
-                        <div class="ui warning message" *ngIf="!table.data">
-                          {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
-                </mat-tab>
+<div class="mat-inside-page-container mat-app-background2 usage-reports-components"
+  [appTelemetryImpression]="telemetryImpression">
+  <div *ngIf="!noResult" class="sb-g us-report-grid">
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-6">
+      <h2 class="p-16">{{resourceService.frmelmnts?.lnk?.dashboard}}</h2>
+      <ul class="m-0">
+        <li appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(report.id)"
+          [telemetryInteractEdata]="setTelemetryInteractEdata('report-view')" *ngFor="let report of reportMetaData"
+          (click)="renderReport(report)" tabindex="0" class="item m-0"
+          [ngClass]="{'active': currentReport.id === report.id}">
+          {{report.label || report.title}}</li>
+      </ul>
+    </div>
+    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-10 mat-app-background p-16" *ngIf="currentReport">
+      <h2 class="mb-16">
+        {{currentReport?.title || currentReport?.label}}
+      </h2>
+      <p *ngIf="currentReport?.description" [innerHTML]="transformHTML(currentReport.description)"></p>
+      <ng-container *ngIf="!showLoader">
+        <mat-tab-group (selectedTabChange)="selectedTabChange($event)" color="accent">
+          <mat-tab appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+            [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')"
+            [label]="{'type': 'chart', 'downloadURL': currentReport.downloadUrl}">
+            <div class="py-24 d-flex flex-dc">
+              <ng-template mat-tab-label>
+                <h3 class="font-weight-bold mb-0">{{resourceService?.frmelmnts?.lbl?.graphs}}</h3>
+              </ng-template>
+              <ng-container *ngTemplateOutlet="commonReportActions">
               </ng-container>
-              <mat-tab label="{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}" *ngIf="isFileDataLoaded">
-                <div class="p-0 b-0 no-bg py-24">
+              <div class="mat-app-background2 p-24 my-24 data-chart-container mx-8" *ngFor="let chart of chartData; let i = index; let l = last;">
+                <app-data-chart [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                  [chartInfo]="chart"></app-data-chart>
+                <!-- <hr *ngIf="!l" /> -->
+              </div>
+              <div class="p-16 bgcolor-warn" *ngIf="!chartData.length">
+                {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
+              </div>
+            </div>
+          </mat-tab>
+          <ng-container *ngFor="let table of tables">
+            <mat-tab [label]="{'type': 'table', 'downloadURL': table?.downloadUrl}">
+              <ng-template mat-tab-label>
+                <h3 class="font-weight-bold mb-0">{{table?.name}}</h3>
+              </ng-template>
+              <ng-template matTabContent>
+                <div class=" py-24">
                   <ng-container *ngTemplateOutlet="commonReportActions">
                   </ng-container>
-                  <div class="sb-graph-section p-24 my-24">
-                    <table *ngIf="isFileDataLoaded" id="downloadTable"
-                      class="sb-table sb-table-striped sb-table-sortable sb-table-fixed sb-table-course-dashboard"
-                      cellspacing="0">
-                      <thead>
-                        <tr>
-                          <th>
-                            <div class="cursor-pointer">
-                              {{resourceService?.frmelmnts?.lbl?.dashboard?.fileName}}
-                            </div>
-                          </th>
-                          <th>
-                            <div class="cursor-pointer">
-                              {{resourceService?.frmelmnts?.lbl?.dashboard?.description}}
-                            </div>
-                          </th>
-                          <th>
-                            <div class="cursor-pointer">
-                              {{resourceService?.frmelmnts?.lbl?.dashboard?.fileSize}}
-                            </div>
-                          </th>
-                          <th>
-                            <div class="cursor-pointer">
-                              {{resourceService?.frmelmnts?.lbl?.createdon}}
-                            </div>
-                          </th>
-                          <th class="table-headerDashboard">
-                            <div class="cursor-pointer">
-                              {{resourceService?.frmelmnts?.lbl?.dashboard?.action}}
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody class="sb-table-body">
-                        <tr *ngFor="let file of files; let i = index; let l = last;">
-                          <td *ngIf="file.name">
-                            {{file.name}}
-                          </td>
-                          <td *ngIf="!file.name">
-                            --
-                          </td>
-                          <td *ngIf="file.desc">
-                            {{file.desc}}
-                          </td>
-                          <td *ngIf="!file.desc">
-                            --
-                          </td>
-                          <td *ngIf="file.size">
-                            {{file.size}}
-                          </td>
-                          <td *ngIf="!file.size">
-                            --
-                          </td>
-                          <td *ngIf="file.createdOn">
-                            {{file.createdOn}}
-                          </td>
-                          <td *ngIf="!file.createdOn">
-                            --
-                          </td>
-                          <td>
-                            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto mr-8"
-                              appTelemetryInteract
-                              [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-                              [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
-                              (click)="downloadCSV(file.downloadUrl)" tabindex="0"><i class="icon"></i>
-                              {{resourceService?.frmelmnts?.lbl?.dashboard?.downloadfile}}</button>
-                          </td>
-                      </tbody>
-                    </table>
-                    <div class="ui warning message" *ngIf="!files.length">
-                      File Not Available
+                  <div class="py-24">
+                    <div *ngIf="table.data">
+                      <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
+                      </app-data-table>
+                    </div>
+                    <div class="ui warning message" *ngIf="!table.data">
+                      {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
                     </div>
                   </div>
                 </div>
-              </mat-tab>
-            </mat-tab-group>
+              </ng-template>
+            </mat-tab>
           </ng-container>
-          <div class="nine wide column workspacesegment" *ngIf="showLoader">
-            <app-loader></app-loader>
-          </div>
-        </div>
-      </span>
-        <app-no-result *ngIf="noResult" [data]="noResultMessage"></app-no-result>
-        <span *ngIf="!noResult">
-        <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion" [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
-        </app-tnc-popup>
-      </span>
+          <mat-tab label="{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}" *ngIf="isFileDataLoaded">
+            <div class="py-24">
+              <ng-container *ngTemplateOutlet="commonReportActions">
+              </ng-container>
+              <div class="data-chart-container p-24 my-24 mx-8">
+                <table *ngIf="isFileDataLoaded" id="downloadTable"
+                  class="sb-table sb-table-striped sb-table-sortable sb-table-fixed sb-table-course-dashboard"
+                  cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>
+                        <div class="cursor-pointer">
+                          {{resourceService?.frmelmnts?.lbl?.dashboard?.fileName}}
+                        </div>
+                      </th>
+                      <th>
+                        <div class="cursor-pointer">
+                          {{resourceService?.frmelmnts?.lbl?.dashboard?.description}}
+                        </div>
+                      </th>
+                      <th>
+                        <div class="cursor-pointer">
+                          {{resourceService?.frmelmnts?.lbl?.dashboard?.fileSize}}
+                        </div>
+                      </th>
+                      <th>
+                        <div class="cursor-pointer">
+                          {{resourceService?.frmelmnts?.lbl?.createdon}}
+                        </div>
+                      </th>
+                      <th class="table-headerDashboard">
+                        <div class="cursor-pointer">
+                          {{resourceService?.frmelmnts?.lbl?.dashboard?.action}}
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="sb-table-body">
+                    <tr *ngFor="let file of files; let i = index; let l = last;">
+                      <td *ngIf="file.name">
+                        {{file.name}}
+                      </td>
+                      <td *ngIf="!file.name">
+                        --
+                      </td>
+                      <td *ngIf="file.desc">
+                        {{file.desc}}
+                      </td>
+                      <td *ngIf="!file.desc">
+                        --
+                      </td>
+                      <td *ngIf="file.size">
+                        {{file.size}}
+                      </td>
+                      <td *ngIf="!file.size">
+                        --
+                      </td>
+                      <td *ngIf="file.createdOn">
+                        {{file.createdOn}}
+                      </td>
+                      <td *ngIf="!file.createdOn">
+                        --
+                      </td>
+                      <td>
+                        <button type="button" mat-raised-button color="accent" class="button-rounded ml-auto mr-8"
+                          appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                          [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
+                          (click)="downloadCSV(file.downloadUrl)" tabindex="0"><i class="icon"></i>
+                          {{resourceService?.frmelmnts?.lbl?.dashboard?.downloadfile}}</button>
+                      </td>
+                  </tbody>
+                </table>
+                <div class="p-16 bgcolor-warn" *ngIf="!files.length">
+                  File Not Available
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </ng-container>
+      <div class="w-100 workspacesegment" *ngIf="showLoader">
+        <app-loader></app-loader>
+      </div>
+    </div>
+  </div>
+  <app-no-result *ngIf="noResult" [data]="noResultMessage"></app-no-result>
+  <div *ngIf="!noResult">
+    <app-tnc-popup [showAcceptTnc]="showTncPopup" [reportViewerTncVersion]="reportViewerTncVersion"
+      [tncUrl]="reportViewerTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+    </app-tnc-popup>
+  </div>
 </div>
 
 <ng-template #commonReportActions>
   <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-        [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
-        *ngIf="!isFileDataLoaded && currentReport?.downloadUrl" mat-raised-button color="accent" class="button-rounded" (click)="downloadCSV()" tabindex="0">
-        <mat-icon>download</mat-icon> {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
+    [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
+    *ngIf="!isFileDataLoaded && currentReport?.downloadUrl" mat-raised-button color="accent" class="button-rounded ml-auto"
+    (click)="downloadCSV()" tabindex="0">
+    <mat-icon>download</mat-icon> {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
 </ng-template>

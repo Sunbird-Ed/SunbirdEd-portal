@@ -11,7 +11,6 @@
 }
 
 .dashboard-graph-statistics {
-  border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: calculateRem(24px);
@@ -20,223 +19,18 @@
     flex: 1;
     border-right: calculateRem(1px) solid var(--gray-100) !important;
 
-    .graph-stat-label {
-      font-size: calculateRem(18px);
-    }
-
-    .graph-stat-value {
-      font-weight: bold;
-      font-size: calculateRem(40px);
-    }
-
-    .graph-stat-info {
-      color: var(--gray-200);
-      font-size: calculateRem(18px);
-    }
-
     &:nth-child(3n + 3) {
       border-right: 0px solid var(--gray-100) !important;
     }
   }
 }
 
+.br-24 {
+  border-radius: 1.5rem;
+}
+
 .dashboard-iframe {
   width: 100%;
   height: calculateRem(700px);
 }
-
-
-@include respond-below(md) {
-  .dashboard-graph-statistics {
-    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
-
-    .graph-stat-block {
-      .graph-stat-label {
-        font-size: calculateRem(14px);
-      }
-
-      .graph-stat-value {
-        font-size: calculateRem(28px);
-      }
-
-      .graph-stat-info {
-        font-size: calculateRem(14px);
-      }
-    }
-  }
-}
-
-.pad5 {
-  padding-top: calculateRem(5px);
-  padding-bottom: calculateRem(5px);
-}
-
-.filter-btn {
-  min-width: calculateRem(96px);
-}
-
-.sb-btn-normal {
-  min-width: calculateRem(96px) !important;
-  font-weight: 500 !important;
-  font-size: calculateRem(15px) !important;
-  padding-left: calculateRem(18px) !important;
-  padding-right: calculateRem(18px) !important;
-
-}
-
-.sb-label-value {
-  border-radius: calculateRem(24px);
-  padding: calculateRem(7px);
-  padding-right: calculateRem(9px);
-  padding-left: calculateRem(9px);
-  background-color: var(--rc-e9e8d9) !important;
-  box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(3px) 0 var(--gray-100) !important;
-  color: var(--gray-800);
-  margin-bottom: 0.25rem;
-  margin-right: 0.25rem;
-
-}
-
-.chart-title {
-  font-size: calculateRem(16px);
-  font-weight: 500;
-  margin-bottom: 0px !important;
-  padding-top: calculateRem(5px);
-}
-
-.sb-label-name {
-  font-size: calculateRem(16px);
-}
-
-::ng-deep {
-  
-  .sb-hawkeye-modal.sb-modal {
-    .ui.modal {
-      margin: 0 auto 0 !important;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-}
-
-.selection-block {
-  margin-bottom: calculateRem(8px);
-}
-
-.filter-select-title {
-  font-size: calculateRem(20px);
-  font-weight: 600;
-}
-
-
-.sb-label-primary-100 {
-  padding: calculateRem(7px) !important;
-  padding-left: calculateRem(9px) !important;
-  padding-right: calculateRem(9px) !important;
-  color: var(--gray-800) !important;
-  border-radius: calculateRem(24px);
-}
-
-.date-range-label {
-  padding: calculateRem(7px) !important;
-  padding-left: calculateRem(9px) !important;
-  padding-right: calculateRem(9px) !important;
-  color: var(--gray-800) !important;
-  border-radius: calculateRem(24px);
-  background-color: var(---rc-e9e8d9) !important;
-}
-
-
-.sb-filter {
-  &__container {
-    width: 100%;
-    height: 100vh;
-    min-height: calculateRem(400px);
-    background-color: var(--sbt-body-bg) !important;
-    padding: calculateRem(24px);
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    overflow-y: auto;
-
-    @include respond-above(sm) {
-      border-radius: calculateRem(8px);
-      max-width: calculateRem(1008px);
-      // min-height: calculateRem(610px);
-      height: auto;
-    }
-  }
-
-  &__header {
-    width: 100%;
-    text-align: center;
-    max-width: calculateRem(328px);
-
-
-  }
-
-  &__content {
-    width: calculateRem(648px);
-    max-width: 100%;
-    margin-bottom: auto;
-  }
-
-  &__footer {
-    margin-top: calculateRem(16px);
-    width: 100%;
-    text-align: center;
-
-    @include respond-above(sm) {
-      max-width: 80%;
-    }
-  }
-}
-
-::ng-deep {
-  .sb-filter-modal {
-    @include respond-below(sm) {
-      .ui.modal {
-        width: 95%;
-        margin: 0 0 0 0;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-      }
-
-      .ui.modal.scroll {
-        position: fixed !important;
-        margin-top: o !important;
-        margin-bottom: 0px !important;
-        top: 0;
-        width: 100%;
-        left: 0px;
-        right: 0px;
-        margin: 0 !important;
-      }
-    }
-  }
-}
-
-.sb-filter__content {
-  ::ng-deep {
-    .sb-prominent-filter-field {
-      width: 48%;
-      margin-bottom: calculateRem(10px);
-    }
-
-  }
-}
-
-::ng-deep {
-  .mat-dialog-container {
-      background-color: var(---rc-e9e8d9) !important;
-      border-radius: calculateRem(24px);
-  }
-}
-
 

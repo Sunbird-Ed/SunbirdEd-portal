@@ -23,9 +23,11 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-raised-button class="button-rounded mr-8 color-accent" tabindex="0"
-        (click)="removeActivity()">{{resourceService.frmelmnts?.btn?.cancel}}</button>
+      (click)="closeModal()">{{resourceService.frmelmnts?.btn?.cancel}}</button>
       <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
-        (click)="removeActivity()">{{resourceService.frmelmnts?.btn?.merge}}</button>
+      appTelemetryInteract [telemetryInteractEdata]="mergeIntractEdata"
+      [telemetryInteractCdata]="telemetryCdata" tabindex="0"
+      (click)="initiateMerge()">{{resourceService.frmelmnts?.btn?.merge}}</button>
     </mat-dialog-actions>
       <!--/Actions-->
   </ng-template>
