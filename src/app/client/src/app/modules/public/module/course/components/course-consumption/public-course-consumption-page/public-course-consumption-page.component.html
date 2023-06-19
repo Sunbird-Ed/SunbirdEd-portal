@@ -16,8 +16,8 @@
       </div>
     </div>
 
-  <div *ngIf="!showLoader && !showError" class="toolbar-pageback__action ml-auto">
-    <div *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)">
+  <div *ngIf="!showLoader && !showError" class="toolbar-pageback__action ml-auto d-flex">
+    <div *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)" class="mr-8">
       <span class="mat-caption"
         *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
         {{enrollmentEndDate | dateFormat}}</span>

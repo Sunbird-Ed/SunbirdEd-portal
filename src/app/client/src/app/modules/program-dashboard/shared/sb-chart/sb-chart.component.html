@@ -1,5 +1,5 @@
   <div class="d-flex flex-dr">
-    <label class="pad5 col-6 chart-title">
+    <label class="chart-title mat-title mb-0">
       {{ chart?.chartConfig?.options?.title?.text }}
     </label>
     <div class="ml-auto flex-as-flex-end" *ngIf="
@@ -7,7 +7,7 @@
         chart?.chartConfig?.chartType === 'line'
       " [ngClass]="{ hide: hideElements }">
       <label class="mr-16">
-        <mat-form-field appearance="fill" class="sb-mat__dropdown">
+        <mat-form-field appearance="fill">
           <mat-label>Select ChartType</mat-label>
           <mat-select role="radio" aria-label="Select Chart type" class="selection"
             (selectionChange)="changeChartType($event)">
@@ -16,19 +16,19 @@
           </mat-select>
         </mat-form-field>
       </label>
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="filterModalPopup(true)"
+      <button color="accent" mat-raised-button class="button-rounded" (click)="filterModalPopup(true)"
         [ngClass]="{ hide: hideElements }">
         {{ resourceService?.frmelmnts?.lbl?.filters }}
       </button>
     </div>
   </div>
-  <div *ngIf="lastUpdatedOn !== 'Invalid date'" class="sb-last-update-status mb-8">
+  <div *ngIf="lastUpdatedOn !== 'Invalid date'" class="mb-8 mat-body-2">
     <span>{{ resourceService?.frmelmnts?.lbl?.lastUpdatedOn }}&nbsp;: </span>
     &nbsp; {{ lastUpdatedOn }}
   </div>
   <div [ngSwitch]="type" class="mt-16">
     <div class="sb-filter-label pt-16 pb-8" *ngIf="currentFilters">
-      <div *ngFor="let key of loadash.keys(currentFilters)" class="d-inline-flex flex-w-wrap pr-10">
+      <div *ngFor="let key of loadash.keys(currentFilters)" class="d-inline-flex flex-w-wrap pr-10 mat-body-2">
           <span class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
             *ngFor="let val of currentFilters[key]">{{val}}
           </span>
@@ -61,37 +61,27 @@
     <ng-template #chartFilter>
       <!--Header-->
       <div mat-dialog-title class="mb-0">
-        <h2 class="mb-0">{{ resourceService?.frmelmnts?.lbl?.selectFilters }}</h2>
+        <h2 class="mb-0 mat-subheading-1">{{ resourceService?.frmelmnts?.lbl?.selectFilters }}</h2>
         <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
           mat-dialog-close (click)="closeDialog()"><mat-icon>close</mat-icon></button>
       </div>
       <!--/Header-->
       <!--content-->
       <mat-dialog-content align="left">
-        <div class="sb-filter mb-10px">
-          <div class="sb-filter__container">
-            <div class="sb-filter__content">
-              <div class="sb-filter__content">
-                <app-filter [filterType]="filterType" selectedFilters="selectedFilters" [resetFilters]="resetFilters"
+        <app-filter [filterType]="filterType" selectedFilters="selectedFilters" [resetFilters]="resetFilters"
                   [hideElements]="hideElements" [filters]="chart.chartConfig.filters"
                   (filterChanged)="filterChanged($event)" [chartData]="
                               chartConfig.id | filterChart: (globalChange ? globalData:chartData):currentFilters
                             ">
                 </app-filter>
-              </div>
-            </div>
-          </div>
-        </div>
       </mat-dialog-content>
       <!--/content-->
       <!--Actions-->
       <mat-dialog-actions align="center" class="mb-0">
-        <div class="sb-modal-actions p-0">
-          <button (click)="resetForm()" mat-raised-button color="accent" class="button-rounded" tabindex="0">
-            {{ resourceService?.frmelmnts?.btn?.reset }}
-            {{ resourceService?.frmelmnts?.lbl?.filters }}
-          </button>
-        </div>
+        <button (click)="resetForm()" mat-raised-button color="accent" class="button-rounded" tabindex="0">
+          {{ resourceService?.frmelmnts?.btn?.reset }}
+          {{ resourceService?.frmelmnts?.lbl?.filters }}
+        </button>
       </mat-dialog-actions>
       <!--/Actions-->
     

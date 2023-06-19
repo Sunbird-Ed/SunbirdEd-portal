@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="toolbar-pageback__actions">
-    <button mat-raised-button color="accent" class="button-rounded" (click)="closeDashboard()">
+    <button mat-raised-button color="warn" class="button-rounded" (click)="closeDashboard()">
       {{resourceService?.frmelmnts?.btn?.closedb}}
     </button>
   </div>
@@ -20,20 +20,20 @@
   <mat-tab-group color="accent" (selectedTabChange)="selectedTabChange($event)">
     <mat-tab appTelemetryInteract>
       <ng-template mat-tab-label>
-        <h3 class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.programDatasets}}</h3>
+        <h3 class="mat-body-2 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.programDatasets}}</h3>
       </ng-template>
       <ng-container *ngTemplateOutlet="programDataset"></ng-container>
     </mat-tab>
-    <ng-container *ngIf="!noResult && (dashboardReport$ | async) as currentReport">
+    <ng-container *ngIf="noResult && (dashboardReport$ | async) as currentReport">
       <mat-tab appTelemetryInteract>
         <ng-template mat-tab-label>
-          <h3 class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.graphs}}</h3>
+          <h3 class="mat-body-2 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.graphs}}</h3>
         </ng-template>
         <ng-container *ngTemplateOutlet="graphs;context:{$implicit:currentReport}"></ng-container>
       </mat-tab>
       <mat-tab *ngFor="let table of currentReport?.tables;">
         <ng-template mat-tab-label>
-          <h3 class="font-weight-bold">{{table.name}}</h3>
+          <h3 class="mat-body-2 mb-0 font-weight-bold">{{table.name}}</h3>
         </ng-template>
         <ng-container *ngTemplateOutlet="tables;context:{$implicit:table}"></ng-container>
       </mat-tab>
@@ -46,7 +46,7 @@
     <div class="p-16">
       <form [formGroup]="reportForm">
         <div class="d-flex flex-ai-center pb-8">
-          <button type="button" mat-raised-button class="button-rounded color-accent ml-auto"
+          <button type="button" mat-raised-button class="button-rounded ml-auto"
             (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
           <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="ml-16">
             <mat-select role="radio" class="selection" placeholder="Export as"
@@ -56,12 +56,12 @@
             </mat-select>
           </mat-form-field>
           <button *ngIf="!noResult && hideTableToCsv && (tabIndex == 2 || tabIndex == 3)" type="button"
-            mat-raised-button class="button-rounded color-accent ml-16"
+            mat-raised-button  color="accent" class="button-rounded ml-16"
             (click)="tableToCsv = !tableToCsv"><i
               class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>
         </div>
-        <div class="d-flex flex-w-wrap flex-ai-center col-gap">
-          <div class="d-flex flex-dc">
+        <div class="program-dataset-form-fields">
+          <div class="item">
             <mat-form-field appearance="fill" color="accent">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.programLbl }}</mat-label>
               <mat-select role="radio" class="selection" valueField="_id" formControlName="programName"
@@ -73,7 +73,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="d-flex flex-dc">
+          <div class="item">
             <mat-form-field appearance="fill" color="accent">
               <mat-label>{{ resourceService?.frmelmnts?.lbl?.solutionLbl }}</mat-label>
               <mat-select role="radio" class="selection" [(ngModel)]="solutionSelected" valueField="_id"
@@ -85,7 +85,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="d-flex flex-dc">
+          <div class="item">
             <mat-form-field appearance="fill" color="accent">
               <mat-label>{{ resourceService?.frmelmnts?.lbl?.dashboarddistrictLbl }}</mat-label>
               <mat-select role="radio" class="selection" valueField="locationId" formControlName="districtName"
@@ -97,7 +97,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div *ngIf="tabIndex !== 2" class="d-flex flex-dc">
+          <div *ngIf="tabIndex !== 2"  class="item">
             <mat-form-field appearance="fill" color="accent">
               <mat-label>{{ resourceService?.frmelmnts?.lbl?.blockLabel }}</mat-label>
               <mat-select role="radio" class="selection" valueField="locationId" multiple formControlName="blockName"
@@ -110,7 +110,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="d-flex flex-dc">
+          <div  class="item">
             <mat-form-field appearance="fill" color="accent">
               <mat-label>{{ resourceService?.frmelmnts?.lbl?.dashboardOrgLbl }}</mat-label>
               <mat-select role="radio" class="selection" valueField="organisationId" formControlName="organisationName"
@@ -123,7 +123,7 @@
             </mat-form-field>
           </div>
 
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="customDate item">
             <mat-form-field appearance="fill" color="accent">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate | titlecase }}</mat-label>
               <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy"
@@ -133,7 +133,7 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </div>
-          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="d-flex flex-dc customDate">
+          <div *ngIf="tabIndex !== 1 && tabIndex !== 2" class="customDate item">
             <mat-form-field appearance="fill" color="accent">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate | titlecase }}</mat-label>
               <input matInput [readonly]="!reportForm.controls.solution.value" placeholder="dd/mm/yyyy"
@@ -151,7 +151,7 @@
 
         </div>
       </form>
-      <p *ngIf="newData" class="color-warn mat-caption mt-16">*{{errorMessage}}</p>
+      <p *ngIf="newData" class="color-warn mat-caption">*{{errorMessage}}</p>
     </div>
   </ng-container>
   <div class="pt-16 pb-8" *ngIf="hideElements">
@@ -164,7 +164,7 @@
 <ng-template #programDataset>
   <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
   <div class="datasets-container mat-app-background2 p-16 m-16">
-    <h4 class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.detailsReports}}</h4>
+    <h4 class="mat-subheading-2 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.detailsReports}}</h4>
     <mat-divider></mat-divider>
 
     <div [formGroup]="reportForm" class="mt-24">
@@ -180,15 +180,13 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button [disabled]="(!reportForm.valid && (!userAccess || !reportForm.controls.solution.value))" mat-raised-button class="button-rounded color-accent ml-16" type="button" (click)="requestDataset()">
+        <button [disabled]="(!reportForm.valid && (!userAccess || !reportForm.controls.solution.value))" mat-raised-button color="accent" class="button-rounded ml-16" type="button" (click)="requestDataset()">
           {{resourceService?.frmelmnts?.btn?.requestReport}}
         </button>
       </div>
     </div>
     <div *ngIf="isProcessed" class="d-flex flex-ai-baseline mt-16">
-      <div class="information-icon">
-        <img src="assets/images/error-icon.svg" class="infoIcon" width="18">
-      </div>
+      <div class="information-icon"><mat-icon>info</mat-icon></div>
       <p class="mat-caption note-text my-8 ml-12 color-warn">
         {{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
     </div>
@@ -196,7 +194,6 @@
       {{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</p>
     <p class="mat-caption mt-8 mb-16">{{resourceService?.frmelmnts?.lbl?.repgenProgramAdminNote |
       interpolate:'{instance}': instance }}</p>
-
     <sb-datatable [message]="message" [data]="onDemandReportData" [columns]="columns" [downloadCSV]="false"
       (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
   </div>
@@ -255,7 +252,6 @@
   <ng-template sbModalContent>
     <div mat-dialog-title>
       <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.confirmReportRequest}}</div>
-      <span class="example-spacer"></span>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
         mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
@@ -288,8 +284,7 @@
   *ngIf="awaitPopUp">
   <ng-template sbModalContent>
     <div mat-dialog-title>
-      <div class="title" tabindex="0">{{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}</div>
-      <span class="example-spacer"></span>
+      <div class="mat-title mb-0" tabindex="0">{{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}</div>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
         mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
@@ -305,8 +300,7 @@
   *ngIf="showConfirmationModal">
   <ng-template sbModalContent>
     <div mat-dialog-title>
-      <div class="title" tabindex="0">{{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}</div>
-      <span class="example-spacer"></span>
+      <div class="mat-title mb-0" tabindex="0">{{ resourceService?.frmelmnts?.lbl?.confirmReportRequest }}</div>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
         mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
@@ -324,7 +318,7 @@
   (dismiss)="closePopupModal()" #modal>
   <ng-template sbModalContent>
     <div mat-dialog-title>
-      <div class="title d-flex flex-ai-center" tabindex="0"><mat-icon class="info">info</mat-icon>
+      <div class="mat-title mb-0 d-flex flex-ai-center" tabindex="0"><mat-icon class="info">info</mat-icon>
         {{resourceService?.frmelmnts?.lbl?.modalNote}}</div>
       <span class="example-spacer"></span>
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog" mat-dialog-close
