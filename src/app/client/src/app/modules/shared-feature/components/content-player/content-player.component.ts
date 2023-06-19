@@ -71,7 +71,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   ngOnInit() {
-    console.log('test');
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
     this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();
