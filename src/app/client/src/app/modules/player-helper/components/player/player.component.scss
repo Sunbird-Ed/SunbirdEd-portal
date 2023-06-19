@@ -70,8 +70,6 @@
     padding:0; 
     overflow:hidden; 
     z-index:9999;
-    // height: calc(100% - 4rem) !important;
-    background:var(--white);
     top: 0;
     left: 0;
     bottom: 0;
@@ -95,14 +93,6 @@
     border:calculateRem(10px) solid var(--primary-400);
   }
 } 
-
-.close-button {
-  position: absolute;
-  z-index: 100;
-  right: calculateRem(8px);
-  top: calculateRem(8px);
-  cursor: pointer;
-}
 
 ::ng-deep{
   iframe {

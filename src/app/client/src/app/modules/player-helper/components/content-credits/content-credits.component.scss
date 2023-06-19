@@ -1,9 +1,5 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.ui.popup::after {
-   background-color: var(--rc-007AFF) !important;
-   background:var(--rc-007AFF) !important
-}
 .gray-shade {
    margin: calculateRem(10px) calculateRem(-16px) 0px calculateRem(-16px);
    background: var(--gray-0);

@@ -1,4 +1,4 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'small', width: '30rem'}" (dismiss)="closeModal(contentCreditsModal)"
+<app-modal-wrapper [config]="{disableClose: true, width: '30rem', panelClass: 'material-modal'}" (dismiss)="closeModal(contentCreditsModal)"
   #contentCreditsModal>
   <ng-template sbModalContent>
     <!--Header-->
@@ -12,47 +12,39 @@
 
     <!--Content-->
     <mat-dialog-content>
-      <div class="ui list">
-        <div class="item mt-10" *ngIf="contentData.copyright">
-          <div class="header text-gray">{{resourceService.frmelmnts.lbl.copyRight | uppercase}}</div>
-          <div class="mt-5">{{contentData.copyright}}
-            <span *ngIf="contentData.copyrightYear">,&nbsp;{{contentData.copyrightYear}}</span>
-          </div>
+      <div class="mt-10" *ngIf="contentData.copyright">
+        <div class="title mat-caption color-accent">{{resourceService.frmelmnts.lbl.copyRight | uppercase}}</div>
+        <div class="mt-5">{{contentData.copyright}}
+          <span *ngIf="contentData.copyrightYear">,&nbsp;{{contentData.copyrightYear}}</span>
         </div>
-        <div class="item mt-10" *ngIf="contentCreditsData.attributions">
-          <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.attributions | uppercase}}</div>
-          <div class="mt-5">{{contentCreditsData.attributions}}</div>
+      </div>
+      <div class="mt-10" *ngIf="contentCreditsData.attributions">
+        <div class="title mat-caption color-accent">{{resourceService?.frmelmnts?.lbl?.attributions | uppercase}}</div>
+        <div class="mt-5">{{contentCreditsData.attributions}}</div>
+      </div>
+      <div *ngIf="contentData && contentData.originData && (contentData['contentType'] === 'Course')">
+        <div class="gray-shade mt-10">
+          {{resourceService.frmelmnts.lbl?.contentcopiedtitle}}
         </div>
-        <div class="item" *ngIf="contentData && contentData.originData && (contentData['contentType'] === 'Course')">
-          <div class="gray-shade mt-10">
-            {{resourceService.frmelmnts.lbl?.contentcopiedtitle}}
-          </div>
-          <div class="item mt-10">
-            <div class="header text-gray">{{resourceService.frmelmnts.lbl?.contenttype | uppercase}}</div>
-            <div class="mt-5">{{contentData.originData.name}}</div>
-          </div>
-          <div class="item mt-10" *ngIf="contentData?.originData?.author">
-            <div class="header text-gray">{{resourceService.frmelmnts.lbl?.authorofsourcecontent | uppercase}}
-            </div>
-            <div class="mt-5">{{contentData.originData.author}}</div>
-          </div>
-          <div class="item mt-10">
-            <div class="header text-gray">{{resourceService.frmelmnts.lbl?.licenseTerms | uppercase}}</div>
-            <div class="mt-5">{{contentData.originData.license}}</div>
-          </div>
-          <div class="item mt-10">
-            <div class="header text-gray">
-              {{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance |
-              uppercase}}</div>
-            <div class="mt-5">{{contentData.originData.organisation[0]}}</div>
-          </div>
+        <div class="mt-10">
+          <div class="title mat-caption color-accent">{{resourceService.frmelmnts.lbl?.contenttype | uppercase}}</div>
+          <div class="mt-5">{{contentData.originData.name}}</div>
         </div>
-        <!-- Reverted -->
-        <!-- If content credits / originData  unavailable -->
-        <!-- <div class="item mt-10" *ngIf="contentData && !contentData.originData && !contentData.copyright && !contentCreditsData.attributions">
-        <div class="mt-5">{{resourceService?.frmelmnts?.lbl?.noCreditsAvailable}}</div>
-      </div> -->
-        <!-- If content credits / originData  unavailable -->
+        <div class="mt-10" *ngIf="contentData?.originData?.author">
+          <div class="title mat-caption color-accent">{{resourceService.frmelmnts.lbl?.authorofsourcecontent | uppercase}}
+          </div>
+          <div class="mt-5">{{contentData.originData.author}}</div>
+        </div>
+        <div class="mt-10">
+          <div class="title mat-caption color-accent">{{resourceService.frmelmnts.lbl?.licenseTerms | uppercase}}</div>
+          <div class="mt-5">{{contentData.originData.license}}</div>
+        </div>
+        <div class="mt-10">
+          <div class="title mat-caption color-accent">
+            {{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance |
+            uppercase}}</div>
+          <div class="mt-5">{{contentData.originData.organisation[0]}}</div>
+        </div>
       </div>
     </mat-dialog-content>
     <!--/Content-->

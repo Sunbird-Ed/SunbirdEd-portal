@@ -3,7 +3,7 @@
     <div class="color-accent font-weight-bold mat-subheading-1 mb-0 mr-auto sb__ellipsis sb__ellipsis--one">
       {{contentData?.name}}
     </div>
-    <div class="content-video__player__subtitle mat-small mt-4">
+    <div class="mat-small mt-4">
       <span class="mr-8 mat-body-2" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
       <span class="dot-divider" *ngIf="contentData?.me_averageRating"></span>
       <span class="mr-8 mat-body-2" *ngIf="contentData?.me_averageRating">{{contentData?.me_averageRating || '0'}}</span>
@@ -13,11 +13,11 @@
     </div>
   </div>
 
-  <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="isFullScreen">
+  <div class="d-flex flex-w-wrap" *ngIf="isFullScreen">
     <sb-player-actions [actionButtons]="fullScreenActionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
     </sb-player-actions>
   </div>
-  <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="!isFullScreen">
+  <div class="d-flex flex-w-wrap" *ngIf="!isFullScreen">
     <sb-player-actions [actionButtons]="actionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
     </sb-player-actions>
   </div>

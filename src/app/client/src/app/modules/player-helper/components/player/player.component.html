@@ -2,10 +2,11 @@
 <div *ngIf="isMobileOrTab && !showNewPlayer" >
     <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
     [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" tabindex="0" (click)="enablePlayer(false)">
-    <img class="play-icon" src="assets/images/play_circle.svg">
+    <div class="play-icon">
+      <mat-icon>play_circle</mat-icon> 
+    </div>
   </div>
   <div id="playerFullscreen" *ngIf="!showPlayIcon" > 
-    <!-- <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt=""> -->
     <iframe #contentIframe id="contentPlayer" title="Content Player" aria-label="Content Player" class="contentViewerIframeShadow" name="contentPlayer"></iframe>
   </div>
 </div>
@@ -36,17 +37,18 @@
   <div>
     <img src="assets/images/shape.svg" width="90px" height="70px">
   </div>
-  <div class="fnormal">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div>
+  <div class="mat-body-1">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div>
 </div>
 
 <div *ngIf="isMobileOrTab && showNewPlayer" class="w-100 h-100">
   <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
   [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" tabindex="0" (click)="enablePlayer(false)">
-  <img class="play-icon" src="assets/images/play_circle.svg">
+  <div class="play-icon">
+    <mat-icon>play_circle</mat-icon> 
+  </div>
 </div>
 
-<div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
-  <!-- <img *ngIf="playerType !== 'quml-player'" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt=""> -->
+<div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen mat-bg-white" [ngStyle]="{'display': mobileViewDisplay}"> 
   <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
 
