@@ -24,7 +24,7 @@
       </ng-template>
       <ng-container *ngTemplateOutlet="programDataset"></ng-container>
     </mat-tab>
-    <ng-container *ngIf="noResult && (dashboardReport$ | async) as currentReport">
+    <ng-container *ngIf="!noResult && (dashboardReport$ | async) as currentReport">
       <mat-tab appTelemetryInteract>
         <ng-template mat-tab-label>
           <h3 class="mat-body-2 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.graphs}}</h3>
