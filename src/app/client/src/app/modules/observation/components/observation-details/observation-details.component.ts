@@ -59,6 +59,7 @@ export class ObservationDetailsComponent implements OnInit {
   rootOrganisations: any;
   joinProgramLoader: boolean;
   consentApplies: any;
+  consentUpdated: boolean;
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
@@ -107,7 +108,8 @@ export class ObservationDetailsComponent implements OnInit {
     const params = this.getAPIParams(url, this.payload);
     
     this.postAPI(params).subscribe(data => {
-      this.consentApplies = data?.result?.requestForPIIConsent
+      this.consentApplies = data?.result?.requestForPIIConsent;
+      this.consentUpdated = data?.result?.consentShared;
       this.programJoined = this.consentApplies ? data.result.programJoined : true;
       this.requestForPIIConsent = data.result.requestForPIIConsent || false;
       this.rootOrganisations = data.result.rootOrganisations || '';
@@ -131,8 +133,8 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
   checkConsent($event){
+    this.consentUpdated = $event?.consent
     this.joinProgram($event?.consent);
-
   }
 
   getProfileData() {
