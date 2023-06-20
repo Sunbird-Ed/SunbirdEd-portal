@@ -3,7 +3,6 @@
 .datasets-container {
   border-radius: 1.5rem;
 }
-
 .ngx-datatable.fixed-header .datatable-header {
   padding: 0.625rem;
 }
@@ -12,41 +11,46 @@
   background: var(--mat-accordion-tab-body-active-bg) !important;
 }
 
-.col-gap{
-  gap: .5rem 1.5rem;
-}
-
 ::ng-deep {
-  
-  .cdk-overlay-container{
+  .cdk-overlay-container {
     z-index: 9 !important;
   }
 
-  .customTable{
-    sb-dashlets-filters{
+  .customTable {
+    sb-dashlets-filters {
       display: none !important;
     }
 
-    .dataTables_length{
+    .dataTables_length {
       display: flex !important;
       width: 100% !important;
       justify-content: flex-end !important;
     }
-    .chart-title{
+    .chart-title {
       font-weight: 700;
     }
-    table{
+    table {
       width: 100% !important;
     }
   }
-  .customGraph{
-    .sb-filter-g__item{
+  .customGraph {
+    .sb-filter-g__item {
       border-radius: 1.5rem !important;
     }
 
-    .multiselect-dropdown .dropdown-btn{
+    .multiselect-dropdown .dropdown-btn {
       border-radius: 1.5rem !important;
     }
   }
+}
 
+.program-dataset-form-fields {
+  display: grid;
+  grid-column-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+  div.item {
+    .mat-form-field {
+      width: 100%;
+    }
+  }
 }

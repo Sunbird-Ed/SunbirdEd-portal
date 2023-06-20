@@ -35,19 +35,19 @@
         <div class="mat-body-2">{{batchDetails?.startDate | dateFormat}}
         </div>
       </div>
-      <mat-divider class="my-16" *ngIf="batchDetails?.endDate"></mat-divider>
+      <mat-divider class="my-8" *ngIf="batchDetails?.endDate"></mat-divider>
       <div *ngIf="batchDetails?.endDate">
         <div class="font-weight-bold mb-8 mat-body-2 color-accent">
           {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
         <div class="mat-body-2">{{batchDetails?.endDate | dateFormat}}</div>
       </div>
-      <mat-divider class="my-16" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"></mat-divider>
+      <mat-divider class="my-8" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"></mat-divider>
       <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
         <div class="font-weight-bold mb-8 mat-body-2 color-accent">
           {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
         <div class="mat-body-2"> {{batchDetails?.enrollmentEndDate |
           dateFormat}}</div>
-        <div class="sb-label-status-error mat-caption" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
+        <div class="color-warn mat-caption" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
           {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
       </div>
   </mat-expansion-panel>
