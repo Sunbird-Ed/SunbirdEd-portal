@@ -27,7 +27,7 @@ import { SharedModule } from '@sunbird/shared';
 import { AceEditorModule } from '@derekbaker/ngx-ace-editor-wrapper';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { SbTableComponent } from './components/sb-table/sb-table.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet';
+import { DashletModule } from 'sb-dashlet-v14';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';

@@ -2342,25 +2342,6 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/sb-dashlet@6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet/-/sb-dashlet-6.0.4.tgz#69ebe6bdd77922c9a31e0fecc47273d1381a66fc"
-  integrity sha512-WOO4Mklate97vVaz3RO3NbRZlLCALEvsbDUCDQFCNMPgCshHSJyzwi+SvmYZrfrJSpme5ilLlGkgOnM2STW28w==
-  dependencies:
-    "@types/datatables.net" "1.10.19"
-    angular-datatables "14.0.2"
-    chart.js "2.9.4"
-    chartjs-plugin-annotation "^0.5.7"
-    datatables.net "1.10.20"
-    datatables.net-dt "1.10.20"
-    joi "17.4.0"
-    jquery "3.4.1"
-    lodash-es "4.17.21"
-    ng-multiselect-dropdown "0.3.4"
-    ng2-charts "2.4.2"
-    ngx-daterangepicker-material "6.0.4"
-    tslib "^2.0.0"
-
 "@project-sunbird/sb-notification@6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-notification/-/sb-notification-6.0.0.tgz#6be4204ff190d526a6b1dad18f3293ccdf2505cd"
