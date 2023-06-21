@@ -135,7 +135,9 @@ export class SbChartComponent implements OnInit, OnChanges {
 
   openDialog() {
     if (this.filterPopUpMat) {
-      this.dialogRef = this.dialog.open(this.filterPopUpMat);
+      this.dialogRef = this.dialog.open(this.filterPopUpMat, {
+        data: this.chartData['selectedFilters']
+      });
     }
   }
 
