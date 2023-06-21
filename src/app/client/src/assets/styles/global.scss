@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
-@use "@project-sunbird/sb-styles/assets/varIndex"as *;
-@use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
+@use "@project-sunbird/sb-styles/assets/varIndex" as *;
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 
 @include mat.core();
@@ -591,7 +591,7 @@ html[dir="rtl"] {
 
 .infoControl {
   padding: calculateRem(6px) calculateRem(8px);
-  background:var(--white);
+  background: var(--white);
   box-shadow: 0 0 calculateRem(15px) rgba(var(--rc-rgba-black), 0.2);
   border-radius: calculateRem(5px);
 }
@@ -1310,6 +1310,9 @@ input[type="checkbox"]:focus-visible {
   height: calc(100% - 7rem);
 }
 
+epub-viewer {
+  overflow-y: scroll !important
+}
 .contentViewerIframeShadow.player-fullscreen.content-full-video quml-main-player .main-container {
   height: calc(100vh - 4rem);
 }
@@ -1384,13 +1387,17 @@ sb-pills-grid {
 
 //epup player splash
 sunbird-epub-player .sunbird-epub-container {
-  div:first-child {
-    height: inherit;
+  height: 100% !important;
 
-    sb-player-start-page {
-      .sb-player-splash-container {
-        height: 100% !important;
-      }
+  &>div:first-child {
+    height: 100% !important;
+  }
+
+  sb-player-start-page {
+    height: 100% !important;
+
+    .sb-player-splash-container {
+      height: 100% !important;
     }
   }
 
