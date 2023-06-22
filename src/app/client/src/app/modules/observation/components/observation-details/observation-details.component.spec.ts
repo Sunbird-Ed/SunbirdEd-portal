@@ -142,5 +142,39 @@ describe("Observation Details", () => {
     component.postAPI({url,data:data});
     expect(component.postAPI).toHaveBeenCalled();    
     expect(component.programJoined).toBe(false);
+  });
+
+  it("should call checkConsent method when consent is given",()=> {
+    jest.spyOn(component,'checkConsent');
+    component.checkConsent({consent:true});
+    expect(component.consentUpdated).toBe(true);
+    expect(component.openConsentPopUp).toBe(true);
+    expect(component.checkConsent).toHaveBeenCalled();
+  });
+
+  it("should call checkConsent method when consent is not given",()=> {
+    jest.spyOn(component,'checkConsent');
+    component.checkConsent({consent:false});
+    expect(component.consentUpdated).toBe(false);
+    expect(component.openConsentPopUp).toBe(false);
+    expect(component.checkConsent).toHaveBeenCalled();
+  });
+
+  it("should call isConsentUpdated method", () => {
+    jest.spyOn(component,'isConsentUpdated');
+    component.consentUpdated = true;
+    component.requestForPIIConsent = true;
+    component.isConsentUpdated();
+    expect(component.isConsentUpdated).toHaveBeenCalled();
+    expect(component.isConsentUpdated).toReturnWith(true);
+  });
+
+  it("should call isConsentUpdated method when consent is not shared", () => {
+    jest.spyOn(component,'isConsentUpdated');
+    component.consentUpdated = false;
+    component.requestForPIIConsent = true;
+    component.isConsentUpdated();
+    expect(component.isConsentUpdated).toHaveBeenCalled();
+    expect(component.isConsentUpdated).toReturnWith(false);
   })
 });
