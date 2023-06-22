@@ -176,5 +176,26 @@ describe("Observation Details", () => {
     component.isConsentUpdated();
     expect(component.isConsentUpdated).toHaveBeenCalled();
     expect(component.isConsentUpdated).toReturnWith(false);
-  })
+  });
+
+  it("should call addEntity", () => {
+    jest.spyOn(component,'addEntity');
+    jest.spyOn(component,'isConsentUpdated').mockReturnValue(false);
+    component.addEntity();
+    expect(component.addEntity).toHaveBeenCalled();
+  });
+
+  it("should call redirectToQuestions", () => {
+    jest.spyOn(component,'redirectToQuestions');
+    jest.spyOn(component,'isConsentUpdated').mockReturnValue(false);
+    component.redirectToQuestions(true);
+    expect(component.redirectToQuestions).toHaveBeenCalled();
+  });
+
+  it("should call observeAgainConfirm", () => {
+    jest.spyOn(component,'observeAgainConfirm');
+    jest.spyOn(component,'isConsentUpdated').mockReturnValue(false);
+    component.observeAgainConfirm();
+    expect(component.observeAgainConfirm).toHaveBeenCalled();
+  });
 });
