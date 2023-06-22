@@ -31,7 +31,7 @@
               </div>
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" [disabled]="disableAddEntity" [ngClass]="{'sb-btn-disabled': disableAddEntity}" (click)="!programJoined ? joinProgramPopUp = true ? (requestForPIIConsent && !consentUpdated) : openConsentPopUp = true : addEntity()">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" [disabled]="disableAddEntity" [ngClass]="{'sb-btn-disabled': disableAddEntity}" (click)="!programJoined ? joinProgramPopUp = true :  addEntity()">
                 {{resourceService.frmelmnts?.btn?.add}} {{entityType|titlecase}}
               </button>
             </div>
@@ -51,7 +51,7 @@
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons"
               *ngIf="entities?.allowMultipleAssessemts">
-              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="!programJoined ? joinProgramPopUp = true ? (requestForPIIConsent && !consentUpdated) : openConsentPopUp = true :observeAgainConfirm()">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" tabindex="0" (click)="!programJoined ? joinProgramPopUp = true :observeAgainConfirm()">
                 {{resourceService.frmelmnts?.btn?.observeAgain}}
               </button>
             </div>
@@ -65,7 +65,7 @@
               <!-- Observation With Rubric -->
               <submission [submission]="submission" [allowMultipleAssessemts]="entities?.allowMultipleAssessemts"
                 *ngIf="(submission?.evidencesStatus?.length > 1  || (submission.criteriaLevelReport && submission.isRubricDriven));else rubricCard"
-                (selectedSubmission)="programJoined ? joinProgramPopUp = true ? (requestForPIIConsent && !consentUpdated) : openConsentPopUp = true :redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
+                (selectedSubmission)="!programJoined ? joinProgramPopUp = true :redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
               </submission>
               <!-- Observation Without Rubric -->
               <ng-template #rubricCard>

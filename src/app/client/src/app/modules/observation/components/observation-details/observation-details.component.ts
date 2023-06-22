@@ -134,7 +134,8 @@ export class ObservationDetailsComponent implements OnInit {
 
   checkConsent($event){
     this.consentUpdated = $event?.consent
-    this.joinProgram($event?.consent);
+    this.openConsentPopUp = false;
+    if($event?.consent) this.joinProgram($event?.consent)
   }
 
   getProfileData() {
@@ -209,9 +210,19 @@ export class ObservationDetailsComponent implements OnInit {
       this.changeEntity(event.data);
     }
   }
-
+  isConsentUpdated(){
+    if(this.requestForPIIConsent && !this.consentUpdated){
+      this.openConsentPopUp = true;
+      return false;
+    }
+    return true;
+  }
   addEntity() {
-      this.showDownloadModal = true;
+    if(!this.isConsentUpdated()){
+      return;
+    }
+
+    this.showDownloadModal = true;
   }
   changeEntity(event) {
     this.selectedEntity = event;
@@ -226,6 +237,10 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
   async observeAgainConfirm() {
+    if(!this.isConsentUpdated()){
+      return;
+    }
+
     const metaData = await this.observationUtilService.getAlertMetaData();
     metaData.content.body.data = this.resourceService.frmelmnts.lbl.createObserveAgain;
     metaData.content.body.type = 'text';
@@ -261,6 +276,10 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
   redirectToQuestions(evidence) {
+    if(!this.isConsentUpdated()){
+      return;
+    }
+    
     this.router.navigate([`/questionnaire`], {
       queryParams: {
         observationId: this.observationId,
