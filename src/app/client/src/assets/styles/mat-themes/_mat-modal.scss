@@ -1,38 +1,47 @@
-@use "@angular/material" as mat;
+@use "@angular/material"as mat;
 @use 'sass:map';
 
 
 @mixin theme-mat-modal($theme) {
 
-    // Get the color config from the theme.
-    $color-config: mat.get-color-config($theme);
-    // Get the primary color palette from the color-config.
-    $primary: map.get($color-config, 'primary');
-    $accent: map.get($color-config, 'accent');
-    $warn: map.get($color-config, 'warn');
-    $background: map.get($color-config, 'background');
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($theme);
+  // Get the primary color palette from the color-config.
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+  $warn: map.get($color-config, 'warn');
+  $background: map.get($color-config, 'background');
 
-//   $xxxxxx: mat.define-typography-config();
-// .some-class-name {
-//   @include mat.typography-level($xxxxxx, 'body-1');
-// }
-  .mat-dialog-container{
+  //   $xxxxxx: mat.define-typography-config();
+  // .some-class-name {
+  //   @include mat.typography-level($xxxxxx, 'body-1');
+  // }
+
+  .cdk-overlay-pane.fullscreen-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .mat-dialog-container {
     position: relative;
     padding: 0;
     background-color: var(--sbt-body-bg);
     border-radius: 1.5rem;
   }
-    .mat-dialog-title {
-      // background-color: mat.get-color-from-palette($primary, 500);
-      color: mat.get-color-from-palette($accent);
-      margin: 0;
-      padding: 1rem 1rem;
-      display: flex;
-      align-items: center;
-      h2 {
-        margin-bottom: 0 !important;
-      }
+
+  .mat-dialog-title {
+    // background-color: mat.get-color-from-palette($primary, 500);
+    color: mat.get-color-from-palette($accent);
+    margin: 0;
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+
+    h2 {
+      margin-bottom: 0 !important;
     }
+  }
+
   //   .mat-dialog-container .mat-select-value{
   //     color: mat-color($primary);
   //   }
@@ -42,17 +51,19 @@
   //   .mat-dialog-container .mat-form-field-appearance-fill .mat-form-field-flex{
   //     background-color: mat-color($primary, 100);
   //   }
-   
-    .mat-dialog-content{
-      padding: 1rem;
-      margin:0;
-    }
-    .mat-dialog-actions{
-      padding: 1rem 1rem;
-      margin: 0;
-    }
-    .mat-dialog-actions .mat-button-base{
-      // background-color: mat.get-color-from-palette($accent);
-    }
+
+  .mat-dialog-content {
+    padding: 1rem;
+    margin: 0;
+  }
+
+  .mat-dialog-actions {
+    padding: 1rem 1rem;
+    margin: 0;
+  }
+
+  .mat-dialog-actions .mat-button-base {
+    // background-color: mat.get-color-from-palette($accent);
+  }
 
 }

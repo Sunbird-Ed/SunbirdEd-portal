@@ -21,23 +21,30 @@
 
   <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-xl-3 content-video__content" [style.height.px]="videoContainerHeight">
     <!-- card component -->
-    <div *ngFor="let video of slideData" class="sbcard sbcard--recently-viewed mb-8"
+    <!-- <div *ngFor="let video of slideData" class="sbcard sbcard--recently-viewed mb-8"
       [ngClass]="{active:activeVideoObject.id === video.id }" tabindex="0" (click)="changeVideoAttributes(video)"
       appTelemetryInteract [telemetryInteractEdata]="setInteractData(video)">
       <div class="sbcard__main-area">
-        <!-- card img -->
         <div class="sbcard__img">
           <div class="img-container">
-            <!-- <img src="./assets/images/book.png" alt=""> -->
             <img class="thumbnail" src="{{video.thumbnail}}" alt="">
           </div>
         </div>
-        <!-- card mobile view details -->
         <div class="sbcard__info text-left">
           <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two" title="{{ video.name }}">{{ video.name }}&lrm;</h4>
           <div class="d-block sb-color-primary fs-0-785">{{resourceService?.frmelmnts?.lbl?.playVideo}}</div>
         </div>
       </div>
-    </div>
+    </div> -->
+  
+    <!-- This needs to be tested in the desktop application -->
+    <mat-card role="link" tabindex="0" class="mat-card-v2 mb-8" *ngFor="let video of slideData" [ngClass]="{active:activeVideoObject.id === video.id }" tabindex="0" (click)="changeVideoAttributes(video)"
+    appTelemetryInteract [telemetryInteractEdata]="setInteractData(video)">
+      <mat-card-header>
+        <div mat-card-avatar> <img class="thumbnail" src="{{video.thumbnail}}" alt=""> </div>
+        <mat-card-title class="mat-body-1 sb__ellipsis sb__ellipsis--two" title="{{ video.name }}">{{ video.name }}&lrm;</mat-card-title>
+        <mat-card-subtitle class="color-accent">{{resourceService?.frmelmnts?.lbl?.playVideo}}</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
   </div>
 </div>
