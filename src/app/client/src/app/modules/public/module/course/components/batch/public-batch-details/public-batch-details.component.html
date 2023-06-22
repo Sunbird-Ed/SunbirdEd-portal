@@ -1,23 +1,23 @@
-<app-modal-wrapper *ngIf="showLoginModal" [config]="{disableClose: true, size: 'normal', panelClass: 'material-modal'}" (dismiss)="closeLoginModal()"
-  #modal>
+<app-modal-wrapper *ngIf="showLoginModal"
+  [config]="{disableClose: true, size: 'normal', width: '45rem', panelClass: 'material-modal'}"
+  (dismiss)="closeLoginModal()" #modal>
   <ng-template sbModalContent>
-      <div mat-dialog-title>
-        <h2>{{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}</h2>
-          <span class="example-spacer"></span>
-    <button mat-mini-fab color="warn" mat-dialog-close aria-label="close dialog">
-      <mat-icon>close</mat-icon>
-    </button>
-      </div>
-      <div mat-dialog-content>
-        <p class="mat-body-2">{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
-      </div>
-      <mat-dialog-actions align="end">
-        <button mat-raised-button color="accent" class="button-rounded" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="signInInteractEdata" tabindex="0"
+    <div mat-dialog-title>
+      <h2>{{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}</h2>
+      <button class="ml-auto" mat-mini-fab color="warn" mat-dialog-close aria-label="close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+      <p class="mat-body-2">{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
+    </div>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="accent" class="button-rounded" appTelemetryInteract
+        [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signInInteractEdata" tabindex="0"
         (click)="setTelemetryData(); setUrlToCourse();">
         {{resourceService.frmelmnts?.btn?.login}}
-        </button>
-      </mat-dialog-actions>
+      </button>
+    </mat-dialog-actions>
   </ng-template>
 </app-modal-wrapper>
 
@@ -29,27 +29,27 @@
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-      <div *ngIf="batchDetails?.startDate">
-        <div class="font-weight-bold mb-8 mat-body-2 color-accent">
-          {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
-        <div class="mat-body-2">{{batchDetails?.startDate | dateFormat}}
-        </div>
+    <div *ngIf="batchDetails?.startDate">
+      <div class="font-weight-bold mb-8 mat-body-2 color-accent">
+        {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
+      <div class="mat-body-2">{{batchDetails?.startDate | dateFormat}}
       </div>
-      <mat-divider class="my-8" *ngIf="batchDetails?.endDate"></mat-divider>
-      <div *ngIf="batchDetails?.endDate">
-        <div class="font-weight-bold mb-8 mat-body-2 color-accent">
-          {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
-        <div class="mat-body-2">{{batchDetails?.endDate | dateFormat}}</div>
-      </div>
-      <mat-divider class="my-8" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"></mat-divider>
-      <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
-        <div class="font-weight-bold mb-8 mat-body-2 color-accent">
-          {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
-        <div class="mat-body-2"> {{batchDetails?.enrollmentEndDate |
-          dateFormat}}</div>
-        <div class="color-warn mat-caption" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
-          {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
-      </div>
+    </div>
+    <mat-divider class="my-8" *ngIf="batchDetails?.endDate"></mat-divider>
+    <div *ngIf="batchDetails?.endDate">
+      <div class="font-weight-bold mb-8 mat-body-2 color-accent">
+        {{resourceService?.frmelmnts?.lbl?.coursebatchenddate}}</div>
+      <div class="mat-body-2">{{batchDetails?.endDate | dateFormat}}</div>
+    </div>
+    <mat-divider class="my-8" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)"></mat-divider>
+    <div *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
+      <div class="font-weight-bold mb-8 mat-body-2 color-accent">
+        {{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</div>
+      <div class="mat-body-2"> {{batchDetails?.enrollmentEndDate |
+        dateFormat}}</div>
+      <div class="color-warn mat-caption" *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">
+        {{resourceService?.messages?.emsg?.m008 | interpolate:'{endDate}':batchDetails?.enrollmentEndDate}}</div>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
 
@@ -60,14 +60,14 @@
         {{resourceService?.frmelemnts?.scttl?.certques}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="sb-mat-accordion__content mb-16">
-          <ul>
-            <li *ngIf="showCompletionCertificate" class="mat-body-2 mb-8">
-              {{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
-            <li *ngIf="showMeritCertificate" class="mat-body-2 mb-8">
-              {{resourceService?.frmelemnts?.bltpt?.earnmcert |
-              interpolate:'{percent}': meritCertPercent}}</li>
-          </ul>
+    <div class="mb-16">
+      <ul>
+        <li *ngIf="showCompletionCertificate" class="mat-body-2 mb-8">
+          {{resourceService?.frmelmnts?.bltpt?.earnyourcert}}</li>
+        <li *ngIf="showMeritCertificate" class="mat-body-2 mb-8">
+          {{resourceService?.frmelemnts?.bltpt?.earnmcert |
+          interpolate:'{percent}': meritCertPercent}}</li>
+      </ul>
     </div>
   </mat-expansion-panel>
 </mat-accordion>

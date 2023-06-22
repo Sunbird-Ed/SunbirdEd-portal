@@ -1,6 +1,3 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "pages/sign_in_up" as *;
 
-.failed-message{
-    color: var(--tertiary-400);
-}

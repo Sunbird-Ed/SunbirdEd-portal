@@ -177,7 +177,7 @@
   </ng-template>
 </app-modal-wrapper>
 
-<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
+<app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal', width: '45rem'}"
   (dismiss)="closeSharePopup('close-share-link-popup')">
   <ng-template sbModalContent>
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData">
