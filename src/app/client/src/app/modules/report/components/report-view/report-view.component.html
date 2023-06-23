@@ -1,222 +1,211 @@
 <div class="report-view-component">
   <div *ngIf="this.data">
     <div class="report-main-block">
-      <div class="">
-        <div class="m-0 sb-mid-container-min-height dashboard-body-scroll">
-
-          <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
-            <div id="report-header" class="report__header">
-              <div class="cc-player__content-header reports-content-header">
-                <div class="py-16">
-                  <div class="content-header__content p-10">
-                    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
-                      <div class="content-header__title font-weight-bold text-left">
-                        <div class="d-flex">
-                          <div class="d-flex flex-dc flex-basis-4">
-                            <span class="relative position reports-back-btn my-0 pl-0 pr-8">
-                              <span class="py-8 px-0">
-                                <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0"
-                                  (click)="gotoSolutionListPage()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-                                  <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
-                                </button>
-                              </span>
-                            </span>
-                          </div>
-                          <div *ngIf="data">
-                            <div class="report-title"> {{ data?.solutionName | titlecase }}
-                            </div>
-                            <div *ngIf="data">
-                              <span class="ml-auto sb-last-update-status mat-body-1 px-8 last-update">
-                                <span>{{resourceService?.frmelmnts?.lbl?.lastSubmittedOn}}&nbsp;: </span> &nbsp;
-                                {{data.completedDate| date: "yyyy/MM/dd"}}
-                              </span>
-                            </div>
-                          </div>
-                          <!-- <sl-report-header [title]="data.solutionName" [lastdate]="todayDate"></sl-report-header> -->
+      <div class="m-0 sb-mid-container-min-height dashboard-body-scroll">
+        <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
+          <div id="report-header" class="report__header">
+            <div class="cc-player__content-header reports-content-header py-16 mat-app-background">
+              <div class="content-header__content p-10">
+                <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
+                  <div class="content-header__title font-weight-bold text-left d-flex">
+                    <div class="d-flex flex-dc flex-basis-4">
+                      <span class="relative position reports-back-btn my-0 pl-0 pr-8">
+                        <span class="py-8 px-0">
+                          <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0"
+                            (click)="gotoSolutionListPage()" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+                            <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                    <div *ngIf="data">
+                      <div class="report-title"> {{ data?.solutionName | titlecase }}
+                      </div>
+                      <div *ngIf="data">
+                        <span class="ml-auto sb-last-update-status mat-body-1 px-8 last-update">
+                          <span>{{resourceService?.frmelmnts?.lbl?.lastSubmittedOn}}&nbsp;: </span> &nbsp;
+                          {{data.completedDate| date: "yyyy/MM/dd"}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngFor="let filter of filters">
+                  <div *ngIf="filter.filter.type == 'dropdown'" class="d-flex">
+                    <div class="filter-drop mb-0 mr-8">
+                      <mat-form-field appearance="fill" color="accent">
+                        <mat-label>Select Submission</mat-label>
+                        <mat-select role="listbox" aria-label="Select Submission" class="selection"
+                          (selectionChange)="handleParameterChange($event)">
+                          <mat-option role="option"
+                            *ngFor="let option of filter.filter.data" [value]="option"
+                            attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown">
+                  <button color="accent" class="button-rounded mr-8" mat-raised-button *ngIf="!segmentfilter">
+                    {{this.resourceService?.frmelmnts.btn.exportAs}}
+                  </button>
+                  <div class="dropdown-content">
+                    <button color="accent" class="button-rounded mr-8" mat-raised-button (click)="download()">
+                      Pdf
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p class="m-0 report-description py-15 pl-10">{{data.entityName}}</p>
+            </div>
+          </div>
+          <div id="report-body" class="my-16" *ngIf="data">
+            <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
+              <mat-tab *ngFor="let tab of tabs; let i = index" [label]="{'tabHeader': tab?.header}">
+                <ng-template mat-tab-label>
+                  <span>{{tab.header | translate}}</span>
+                </ng-template>
+                <div class="p-16 no-bg graph-section mat-bg-white" *ngIf="segmentfilter">
+                  <div class="double-btn">
+                    <div class="column-btn">
+                      <div class="dropdown">
+                        <button color="accent" class="button-rounded mr-8" mat-raised-button>
+                          {{this.resourceService?.frmelmnts.btn.exportAs}}
+                        </button>
+                        <div class="dropdown-content">
+                          <button class="button-rounded mr-8 color-accent" mat-raised-button
+                            (click)="download()">
+                            Pdf
+                          </button>
                         </div>
                       </div>
                     </div>
-                    <div *ngFor="let filter of filters">
-                      <div *ngIf="filter.filter.type == 'dropdown'" class="d-flex">
-                        <div class="sb-field filter-drop mb-0 mr-8">
-                          <mat-form-field appearance="fill" color="accent">
-                            <mat-label>Select Submission</mat-label>
-                            <mat-select role="listbox" aria-label="Select Submission" class="selection"
-                              (selectionChange)="handleParameterChange($event)">
-                              <mat-option role="option"
-                                *ngFor="let option of filter.filter.data" [value]="option"
-                                attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="dropdown">
-                      <button color="accent" class="button-rounded mr-8" mat-raised-button *ngIf="!segmentfilter">
-                        {{this.resourceService?.frmelmnts.btn.exportAs}}
-                      </button>
-                      <div class="dropdown-content">
-                        <button color="accent" class="button-rounded mr-8" mat-raised-button (click)="download()">
-                          Pdf
+                    <div class="column-btn">
+                      <div *ngFor="let filter of filters">
+                        <button color="accent" class="button-rounded mr-8" mat-raised-button
+                          *ngIf="filter.filter.type=='modal'"
+                          (click)="filterModalPopup(filter.filter.data, filter.filter.keyToSend)">
+                          {{ resourceService?.frmelmnts?.lbl?.filters }}
                         </button>
                       </div>
                     </div>
                   </div>
-                  <p class="m-0 report-description py-15 pl-10">{{data.entityName}}</p>
                 </div>
-              </div>
-            </div>
-            
-            <div id="report-body" class="my-16" *ngIf="data">
-              <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
-                <mat-tab *ngFor="let tab of tabs; let i = index" [label]="{'tabHeader': tab?.header}">
-                  <ng-template mat-tab-label>
-                    <span>{{tab.header | translate}}</span>
-                  </ng-template>
-                  <div class="p-16 no-bg graph-section" *ngIf="segmentfilter">
-                    <div class="double-btn">
-                      <div class="column-btn">
-                        <div class="dropdown">
-                          <button color="accent" class="button-rounded mr-8" mat-raised-button>
-                            {{this.resourceService?.frmelmnts.btn.exportAs}}
-                          </button>
-                          <div class="dropdown-content">
-                            <button class="button-rounded mr-8 color-accent" mat-raised-button
-                              (click)="download()">
-                              Pdf
+                <div class="p-0 b-0 no-bg my-24 graph-section mat-bg-white">
+                  <div *ngFor="let section of reportSections">
+                    <div [ngClass]="{'sb-graph-section p-24 my-24 mat-bg-white' : section.criteriaName}">
+                      <strong *ngIf="section?.criteriaName">{{ section.criteriaName }}</strong>
+                      <div *ngFor="let element of section?.questionArray; let i = index; let l = last;">
+                        <div class="sb-graph-section p-24 my-24 mat-bg-white" [ngSwitch]="element?.responseType">
+                          <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'text'">
+                          </sl-reports-text>
+                          <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'number'">
+                          </sl-reports-text>
+                          <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'date'">
+                          </sl-reports-text>
+                          <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchDefault>
+                          </sl-reports-text>
+                          <div *ngSwitchCase="'radio'">
+                            <strong>{{i+1}} {{ element?.question }}</strong>
+                            <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
+                              class="chart-container" #lib></sb-dashlet>
+                          </div>
+                          <div *ngSwitchCase="'pie'">
+                            <strong>{{i+1}} {{ element?.question }}</strong>
+                            <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
+                              class="chart-container" #lib></sb-dashlet>
+                          </div>
+                          <div *ngSwitchCase="'column'">
+                            <strong>{{i+1}} {{ element?.question }}</strong>
+                            <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
+                          </div>
+                          <div *ngSwitchCase="'bar'">
+                            <strong>{{i+1}} {{ element?.question }}</strong>
+                            <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
+                          </div>
+                          <div *ngSwitchCase="'multiselect'">
+                            <strong>{{i+1}} {{ element?.question }}</strong>
+                            <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
+                          </div>
+                          <div *ngSwitchCase="'horizontalBar'">
+                            <sl-percentage-column-charts [chartData]="element" class="bar-chart-container">
+                            </sl-percentage-column-charts>
+                          </div>
+
+                          <sl-expansion-table [datas]="element" *ngSwitchCase="'expansion-table'">
+                          </sl-expansion-table>
+
+                          <sl-expansion-panel [datas]="element" *ngSwitchCase="'expansion'">
+                          </sl-expansion-panel>
+
+                          <div *ngSwitchCase="'matrix'">
+                            <strong>{{i+1}} {{ element?.question }}</strong>
+                            <div ui bottom graph-section
+                              *ngFor="let data of element?.instanceQuestions; let i = index">
+                              <div class="sb-graph-section p-24 my-24 mat-bg-white" [ngSwitch]="data?.responseType">
+                                <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'text'">
+                                </sl-reports-text>
+                                <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'number'">
+                                </sl-reports-text>
+                                <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'date'">
+                                </sl-reports-text>
+                                <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchDefault>
+                                </sl-reports-text>
+                                <div *ngSwitchCase="'radio'">
+                                  <strong>{{i+1}} {{ data?.question }}</strong>
+                                  <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
+                                    class="chart-container" #lib></sb-dashlet>
+                                </div>
+                                <div *ngSwitchCase="'pie'">
+                                  <strong>{{i+1}} {{ data?.question }}</strong>
+                                  <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
+                                    class="chart-container" #lib></sb-dashlet>
+                                </div>
+                                <div *ngSwitchCase="'column'">
+                                  <strong>{{i+1}} {{ data?.question }}</strong>
+                                  <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                </div>
+                                <div *ngSwitchCase="'bar'">
+                                  <strong>{{i+1}} {{ data?.question }}</strong>
+                                  <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                </div>
+                                <div *ngSwitchCase="'multiselect'">
+                                  <strong>{{i+1}} {{ data?.question }}</strong>
+                                  <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                </div>
+                                <div class="card-align">
+                                  <div *ngFor="let e of data.evidences" class="thumbnail-card">
+                                    <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
+                                  </div>
+                                  <button *ngIf="data.evidence_count > 3"
+                                    mat-raised-button role="button" tabindex="0" class="button-rounded color-accent mt-16"
+                                    (click)="getAllEvidence(data)">
+                                    View More
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-align">
+                            <div *ngFor="let e of element.evidences" class="thumbnail-card">
+                              <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
+                            </div>
+                            <button *ngIf="element.evidence_count > 3"
+                              mat-raised-button role="button" tabindex="0" class="button-rounded color-accent mt-16"
+                              (click)="getAllEvidence(element)">
+                              View More
                             </button>
                           </div>
                         </div>
                       </div>
-                      <div class="column-btn">
-                        <div *ngFor="let filter of filters">
-                          <button color="accent" class="button-rounded mr-8" mat-raised-button
-                            *ngIf="filter.filter.type=='modal'"
-                            (click)="filterModalPopup(filter.filter.data, filter.filter.keyToSend)">
-                            {{ resourceService?.frmelmnts?.lbl?.filters }}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                  <div class="p-0 b-0 no-bg my-24 graph-section">
-                    <div *ngFor="let section of reportSections">
-                      <div [ngClass]="{'sb-graph-section p-24 my-24' : section.criteriaName}">
-                        <strong *ngIf="section?.criteriaName">{{ section.criteriaName }}</strong>
-                        <div *ngFor="let element of section?.questionArray; let i = index; let l = last;">
-                          <div class="sb-graph-section p-24 my-24" [ngSwitch]="element?.responseType">
-                            <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'text'">
-                            </sl-reports-text>
-                            <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'number'">
-                            </sl-reports-text>
-                            <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'date'">
-                            </sl-reports-text>
-                            <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchDefault>
-                            </sl-reports-text>
-                            <div *ngSwitchCase="'radio'">
-                              <strong>{{i+1}}) {{ element?.question }}</strong>
-                              <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
-                                class="chart-container" #lib></sb-dashlet>
-                            </div>
-                            <div *ngSwitchCase="'pie'">
-                              <strong>{{i+1}}) {{ element?.question }}</strong>
-                              <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
-                                class="chart-container" #lib></sb-dashlet>
-                            </div>
-                            <div *ngSwitchCase="'column'">
-                              <strong>{{i+1}}) {{ element?.question }}</strong>
-                              <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
-                            </div>
-                            <div *ngSwitchCase="'bar'">
-                              <strong>{{i+1}}) {{ element?.question }}</strong>
-                              <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
-                            </div>
-                            <div *ngSwitchCase="'multiselect'">
-                              <strong>{{i+1}}) {{ element?.question }}</strong>
-                              <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
-                            </div>
-                            <div *ngSwitchCase="'horizontalBar'">
-                              <sl-percentage-column-charts [chartData]="element" class="bar-chart-container">
-                              </sl-percentage-column-charts>
-                            </div>
-
-                            <sl-expansion-table [datas]="element" *ngSwitchCase="'expansion-table'">
-                            </sl-expansion-table>
-
-                            <sl-expansion-panel [datas]="element" *ngSwitchCase="'expansion'">
-                            </sl-expansion-panel>
-
-                            <div *ngSwitchCase="'matrix'">
-                              <strong>{{i+1}}) {{ element?.question }}</strong>
-                              <div ui bottom graph-section
-                                *ngFor="let data of element?.instanceQuestions; let i = index">
-                                <div class="sb-graph-section p-24 my-24" [ngSwitch]="data?.responseType">
-                                  <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'text'">
-                                  </sl-reports-text>
-                                  <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'number'">
-                                  </sl-reports-text>
-                                  <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'date'">
-                                  </sl-reports-text>
-                                  <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchDefault>
-                                  </sl-reports-text>
-                                  <div *ngSwitchCase="'radio'">
-                                    <strong>{{i+1}}) {{ data?.question }}</strong>
-                                    <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
-                                      class="chart-container" #lib></sb-dashlet>
-                                  </div>
-                                  <div *ngSwitchCase="'pie'">
-                                    <strong>{{i+1}}) {{ data?.question }}</strong>
-                                    <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
-                                      class="chart-container" #lib></sb-dashlet>
-                                  </div>
-                                  <div *ngSwitchCase="'column'">
-                                    <strong>{{i+1}}) {{ data?.question }}</strong>
-                                    <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
-                                  </div>
-                                  <div *ngSwitchCase="'bar'">
-                                    <strong>{{i+1}}) {{ data?.question }}</strong>
-                                    <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
-                                  </div>
-                                  <div *ngSwitchCase="'multiselect'">
-                                    <strong>{{i+1}}) {{ data?.question }}</strong>
-                                    <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
-                                  </div>
-                                  <div class="card-align">
-                                    <div *ngFor="let e of data.evidences" class="thumbnail-card">
-                                      <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
-                                    </div>
-                                    <button *ngIf="data.evidence_count > 3"
-                                      class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
-                                      (click)="getAllEvidence(data)">
-                                      View More
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="card-align">
-                              <div *ngFor="let e of element.evidences" class="thumbnail-card">
-                                <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
-                              </div>
-                              <button *ngIf="element.evidence_count > 3"
-                                class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
-                                (click)="getAllEvidence(element)">
-                                View More
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
-                </mat-tab>
-              </mat-tab-group>
-              <div *ngIf="!reportSections">
-                <app-no-result [data]="noResultMessage"></app-no-result>
-              </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+            <div *ngIf="!reportSections">
+              <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
-              
           </div>
         </div>
       </div>

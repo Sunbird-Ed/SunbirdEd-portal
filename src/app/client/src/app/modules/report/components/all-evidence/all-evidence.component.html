@@ -1,59 +1,55 @@
-<app-modal-wrapper [config]="{disableClose: true, size: 'normal', width: '45rem'}" (dismiss)="closeModal()" #modal>
+<app-modal-wrapper [config]="{disableClose: true, size: 'normal', width: '45rem', panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="closeModal()" #modal>
     <ng-template sbModalContent>
         <mat-dialog-content>
             <div class="sb-onboard">
                 <div class="p-0 w-100">
-                    <div class="ui container">
-                        <mat-icon class="goback" (click)="closeModal()">highlight_off</mat-icon>
-                        <div class="twelve wide column">
-                            <div id="report-body" class="my-16">
-                                <mat-tab-group mat-align-tabs="center" #tabs mat-stretch-tabs
-                                    (selectedTabChange)="tabChanged($event)">
-                                    <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.evidences}}"
-                                        [ngClass]="{'active-tab': activeIndex === 0}">
-                                        <div class="report-block ui bottom attached segment p-0 b-0 no-bg">
-                                            <div *ngIf="images?.length">
-                                                <p class="item">Images</p>
-                                                <div *ngFor="let data of images" class="thumbnail-card">
-                                                    <sl-attachments [url]="data.url" [extension]="data.extension">
-                                                    </sl-attachments>
-                                                </div>
-                                            </div>
-                                            <div *ngIf="videos?.length">
-                                                <p class="item">Videos</p>
-                                                <div *ngFor="let data of videos" class="thumbnail-card">
-                                                    <sl-attachments [url]="data.url" [extension]="mp4">
-                                                    </sl-attachments>
-                                                </div>
-                                            </div>
-                                            <div *ngIf="documents?.length">
-                                                <p class="item">Documents</p>
-                                                <div *ngFor="let data of documents" class="thumbnail-card">
-                                                    <sl-attachments [url]="data.url" [extension]="data.extension">
-                                                    </sl-attachments>
-                                                </div>
-                                            </div>
-                                            <div *ngIf="audios && audios?.length">
-                                                <p class="item">Audios</p>
-                                                <div *ngFor="let data of audios" class="thumbnail-card">
-                                                    <sl-attachments [url]="data.url" [extension]="data.extension">
-                                                    </sl-attachments>
-                                                </div>
-                                            </div>
+                    <mat-icon class="goback color-warn" (click)="closeModal()">highlight_off</mat-icon>
+                    <div id="report-body" class="my-16">
+                        <mat-tab-group mat-align-tabs="center" #tabs mat-stretch-tabs
+                            (selectedTabChange)="tabChanged($event)">
+                            <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.evidences}}"
+                                [ngClass]="{'active-tab': activeIndex === 0}">
+                                <div class="report-block m-0 p-0 b-0 no-bg">
+                                    <div *ngIf="images?.length">
+                                        <p class="item">Images</p>
+                                        <div *ngFor="let data of images" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="data.extension">
+                                            </sl-attachments>
                                         </div>
-                                    </mat-tab>
-                                    <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.remarks}}"
-                                        [ngClass]="{'active-tab': activeIndex === 1}">
-                                        <div *ngIf="remarks?.length"
-                                            class="report-block ui bottom attached segment p-0 b-0 no-bg">
-                                            <div *ngFor="let remark of remarks;let i=index">
-                                                <label>{{i+1}}) {{ remark }}</label>
-                                            </div>
+                                    </div>
+                                    <div *ngIf="videos?.length">
+                                        <p class="item">Videos</p>
+                                        <div *ngFor="let data of videos" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="mp4">
+                                            </sl-attachments>
                                         </div>
-                                    </mat-tab>
-                                </mat-tab-group>
-                            </div>
-                        </div>
+                                    </div>
+                                    <div *ngIf="documents?.length">
+                                        <p class="item">Documents</p>
+                                        <div *ngFor="let data of documents" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="data.extension">
+                                            </sl-attachments>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="audios && audios?.length">
+                                        <p class="item">Audios</p>
+                                        <div *ngFor="let data of audios" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="data.extension">
+                                            </sl-attachments>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.remarks}}"
+                                [ngClass]="{'active-tab': activeIndex === 1}">
+                                <div *ngIf="remarks?.length"
+                                    class="report-block ui bottom attached segment p-0 b-0 no-bg">
+                                    <div *ngFor="let remark of remarks;let i=index">
+                                        <label>{{i+1}} {{ remark }}</label>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
                     </div>
                 </div>
             </div>
