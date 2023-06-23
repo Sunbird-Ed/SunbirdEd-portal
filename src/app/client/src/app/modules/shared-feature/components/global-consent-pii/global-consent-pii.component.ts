@@ -262,6 +262,9 @@ export class GlobalConsentPiiComponent implements OnInit {
         this.isTncAgreed = false;
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);
+        if(this.type === 'program-consent'){
+          this.consentShare.emit({consent:false})
+        }
       });
   }
 
