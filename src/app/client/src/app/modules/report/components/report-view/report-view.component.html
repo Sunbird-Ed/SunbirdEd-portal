@@ -118,14 +118,10 @@
                                 <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchDefault>
                                 </sl-reports-text>
                                 <div *ngSwitchCase="'radio'">
-                                  <strong>{{i+1}}) {{ element?.question }}</strong>
-                                  <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
-                                    class="chart-container" #lib></sb-dashlet>
+                                  <sl-pie-chart [data]="element" [questionNumber]="i + 1"></sl-pie-chart>
                                 </div>
                                 <div *ngSwitchCase="'pie'">
-                                  <strong>{{i+1}}) {{ element?.question }}</strong>
-                                  <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
-                                    class="chart-container" #lib></sb-dashlet>
+                                  <sl-pie-chart [data]="element" [questionNumber]="i + 1"></sl-pie-chart>
                                 </div>
                                 <div *ngSwitchCase="'column'">
                                   <strong>{{i+1}}) {{ element?.question }}</strong>
@@ -164,14 +160,10 @@
                                       <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchDefault>
                                       </sl-reports-text>
                                       <div *ngSwitchCase="'radio'">
-                                        <strong>{{i+1}}) {{ data?.question }}</strong>
-                                        <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
-                                          class="chart-container" #lib></sb-dashlet>
+                                        <sl-pie-chart [data]="data" [questionNumber]="i + 1"></sl-pie-chart>
                                       </div>
                                       <div *ngSwitchCase="'pie'">
-                                        <strong>{{i+1}}) {{ data?.question }}</strong>
-                                        <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
-                                          class="chart-container" #lib></sb-dashlet>
+                                        <sl-pie-chart [data]="data" [questionNumber]="i + 1"></sl-pie-chart>
                                       </div>
                                       <div *ngSwitchCase="'column'">
                                         <strong>{{i+1}}) {{ data?.question }}</strong>
