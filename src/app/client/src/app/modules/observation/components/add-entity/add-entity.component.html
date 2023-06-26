@@ -46,8 +46,7 @@
             </button>
             <div class="w-10"></div>
             <button type="button" mat-raised-button color="accent" class="button-rounded" type="submit"
-                tabindex="0" (click)="submit()" [disabled]="selectedListCount == 0"
-                [ngClass]="{'sb-btn-disabled' : selectedListCount == 0}">
+                tabindex="0" (click)="submit()" [disabled]="selectedListCount == 0">
                 {{resourceService.frmelmnts?.btn?.submit}}
             </button>
         </mat-dialog-actions>

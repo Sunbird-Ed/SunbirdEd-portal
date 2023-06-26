@@ -1,4 +1,4 @@
-<div class="training-info" *ngIf="courseHierarchy">
+<div class="training-info course-details-component" *ngIf="courseHierarchy">
   <h3 class="font-weight-bold mat-title">{{resourceService?.frmelmnts?.lbl?.courseDetails}}</h3>
   <div class="mat-app-background mb-16 p-16 info">
     <h4 class="mt-0 mb-8">{{resourceService?.frmelmnts?.lbl?.courseRelevantFor}}</h4>
@@ -18,8 +18,8 @@
       <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.se_subjects?.join(', ')}}</span>
     </div> -->
     <div class="mb-4 mat-body-1" *ngIf="courseHierarchy?.audience">
-      <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{ courseHierarchy?.audience?.join(',
-        ')}}</span>
+      <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span>
+      <span>{{ courseHierarchy?.audience?.join(',  ')}}</span>
     </div>
     <div *ngIf="courseHierarchy?.description">
       <h4 class="my-8 color-accent">{{resourceService?.frmelmnts?.lbl?.description}}</h4>

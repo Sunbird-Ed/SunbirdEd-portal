@@ -26,9 +26,8 @@
 
         <div *ngIf="isEnrolledCourseUpdated" class="mobile only">
           <div class="bgcolor-warn p-16 my-16 d-flex flex-ai-center">
-            <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
-            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
-              courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}</div>
+            <mat-icon class="mr-8">warning</mat-icon> {{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
+              courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}
           </div>
         </div>
 
@@ -55,66 +54,6 @@
               (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><mat-icon>remove</mat-icon> {{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
 
-          <!-- <div *ngFor="let item of courseHierarchy?.children; let index = index">
-            <sb-accordion [multi]="false">
-              <sb-accordion-item [expanded]="isExpanded(index)" (collapsedChange)="collapsedChange($event, index)"
-                [collapsed]="item?.collapsed">
-                <sb-accordion-header class="sb-bg-color-gray-0" (click)="isModuleExpanded = true;" tabindex="0">
-                  <i class="icon-svg icon-svg--sm icon-tick mr-8" role="img" aria-label="tick-icon"
-                    *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
-                    <svg class="icon">
-                      <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
-                    </svg>
-                  </i>
-                  <div class="progress-circle progress-circle--sm mr-8" [attr.data-percentage]="item?.progress"
-                    *ngIf="enrolledCourse && item?.consumedContent > 0 && item?.consumedContent !== item?.contentCount">
-                    <svg class="progress-circle__svg" viewport="0 0 2000 2000">
-                      <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
-                      <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
-                    </svg>
-                  </div>
-                  {{item?.name}}
-                </sb-accordion-header>
-                <sb-accordion-body>
-                  <div class="chapter-box">
-                    <div *ngIf="item;else noContent">
-                      <div
-                        *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
-                        <div class="child-content-padding">
-                          <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')"
-                            [type]="cardType" [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts"
-                            [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                          </sb-toc-card>
-                        </div>
-                      </div>
-                      <div *ngIf="item?.children?.length">
-                        <div *ngFor="let child of item?.children">
-                          <sb-toc-child-item
-                            *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'"
-                            [childData]="child" class="sb-toc-child-item mat-app-background2"
-                            (tocCardClick)="navigateToContent($event, item, 'child-item')"
-                            [contentStatus]="contentStatus" [type]="cardType">
-                          </sb-toc-child-item>
-                          <sb-toc-child-item
-                            *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'"
-                            [childData]="child" class="sb-toc-child-item mat-app-background2"
-                            (tocCardClick)="navigateToContent($event, item, 'child-item')"
-                            [contentStatus]="contentStatus" [type]="cardType" [maxAttempts]="child?.maxAttempts"
-                            [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
-                          </sb-toc-child-item>
-                        </div>
-                      </div>
-                    </div>
-                    <ng-template #noContent>
-                      <div class="heading">{{noContentMessage}}</div>
-                    </ng-template>
-
-                  </div>
-                </sb-accordion-body>
-              </sb-accordion-item>
-            </sb-accordion>
-          </div> -->
-
           <mat-accordion *ngFor="let item of courseHierarchy?.children; let index = index" [multi]="false">
             <mat-expansion-panel class="mat-app-background mb-16" [expanded]="isExpanded(index)"
               (collapsedChange)="collapsedChange($event, index)" [collapsed]="item?.collapsed">
@@ -136,7 +75,6 @@
                   {{item?.name}}
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <div>
                 <div *ngIf="item;else noContent">
                   <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                     <div class="course-player-list">
@@ -169,8 +107,6 @@
                 <ng-template #noContent>
                   <div class="heading">{{noContentMessage}}</div>
                 </ng-template>
-          
-              </div>
             </mat-expansion-panel>
           </mat-accordion>
         </div>
@@ -201,9 +137,8 @@
 
         <div *ngIf="isEnrolledCourseUpdated" class="computer only">
           <div class="bgcolor-warn my-16 d-flex flex-ai-center">
-            <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
-            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
-              courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}</div>
+            <mat-icon class="mr-8">warning</mat-icon> {{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{
+              courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy' }}
           </div>
         </div>
 
@@ -277,7 +212,7 @@
     </div>
     <!--/Header-->
     <!--Content-->
-    <mat-dialog-content class="text-center">
+    <mat-dialog-content class="text-center mat-body-2">
       <p>{{batchMessage}}</p>
     </mat-dialog-content>
     <!--/Content-->
@@ -296,24 +231,7 @@
 <app-confirmation-popup *ngIf="showConfirmationPopup" [popupMode]="popupMode" [batchId]="createdBatchId"
   (close)="onPopupClose($event)"></app-confirmation-popup>
 
-<!-- new UI -->
-<div class="sb-bg-color-gray-0 textbook-container hide">
-  <div class="ui container">
-    <div class="textbook py-16 d-flex flex-ai-center">
-      <div class="textbook__details d-flex flex-ai-center">
-        <img src="./assets/images/book.png" class="textbook__bookimg" alt="">
-        <div class="ml-8 toolbar-pageback__heading">
-          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0" tabindex="0">TN X SCIENCE EM ALL ONE MARKS
-            COLLECTIONS</h5>
-          <div class="textbook__rating">
-            <sui-rating class="star mini" [ngModel]="4" [maximum]="5"></sui-rating>
-          </div>
-        </div>
-      </div>
-      <button mat-raised-button class="button-rounded">Add to Group</button>
-    </div>
-  </div>
-</div>
+
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription"
   (close)="onCourseCompleteClose()"></app-course-completion>
 <!-- Start - Modal for Assessment attempts -->

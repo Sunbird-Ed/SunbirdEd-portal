@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   .course-complete-data {
-    color: var(--green);
     font-size: calculateRem(14px);
     .title {
       font-size: calculateRem(24px);
@@ -12,12 +11,5 @@
   }
 }
 .course-complete-para {
-  color: var(--gray);
   font-size: calculateRem(12px);
-}
-
-::ng-deep {
-  .sb-modal .ui.modal > .close {
-    color: var(--black);
-  }
 }

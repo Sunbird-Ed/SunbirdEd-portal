@@ -1231,10 +1231,11 @@ sb-pills-grid {
 
 //epup player splash
 sunbird-epub-player .sunbird-epub-container {
-  div:first-child {
-    height: inherit;
+  &> div:first-child {
+    height: 100% !important;
 
     sb-player-start-page {
+      height: 100% !important;
       .sb-player-splash-container {
         height: 100% !important;
       }

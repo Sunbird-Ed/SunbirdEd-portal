@@ -13,81 +13,8 @@
   }
 }
 
-// .course-list_title {
-//   color: var(--gray-800);
-//   font-size: calculateRem(14px);
-//   font-weight: bold;
-//   line-height: calculateRem(24px);
-// }
-
-.course-list-progress {
-  padding: calculateRem(16px);
-
-  &__title {
-    color: var(--primary-theme-contrast);
-    font-size: calculateRem(12px);
-  }
-
-  &__status {
-    color: var(--primary-color);
-    font-size: calculateRem(14px);
-    font-weight: bold;
-  }
-
-  &__barholder {
-    margin: 0px;
-    height: calculateRem(8px);
-  }
-
-  &__info {
-    color: var(--gray-800);
-    font-size: calculateRem(12px);
-  }
-}
-
-:host ::ng-deep {
-  .ui.progress .bar {
-    height: calculateRem(8px) !important;
-    background-color: var(--secondary-200) !important;
-  }
-}
-
-
-:host::ng-deep {
-  .batch-details {
-    &__dropdown {
-      .selection {
-        &.ui.dropdown {
-          color: var(--primary-color);
-
-          &:not(.button)>.default.text {
-            padding: calculateRem(6px) 0;
-            color: var(--primary-color);
-          }
-        }
-
-        &.ui.selection.dropdown>.dropdown.icon,
-        .ui.selection.dropdown>.search.icon {
-          font-size: calculateRem(16px);
-          padding: calculateRem(8px);
-        }
-      }
-    }
-  }
-
-  .certified-course__progress {
-    .ui.progress .bar {
-      height: calculateRem(8px) !important;
-      background: var(--secondary-color);
-    }
-  }
-
-
-}
-
 
 // Progress Circle
-
 $progressCircle: xs calculateRem(16px) 4px 10px,
   sm calculateRem(24px) 6px 10px,
   md calculateRem(40px) 12px 10px,

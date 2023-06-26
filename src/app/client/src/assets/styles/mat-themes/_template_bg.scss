@@ -24,7 +24,10 @@
 .mat-app-background2 {
     background: var(--sbt-body-bg2) !important;
 }
-
+.sb-single-resource {
+    max-width: 60rem;
+    margin: 0 auto;
+}
 .box-shadow-6px {
     box-shadow: var(--sbt-box-shadow-6px) !important;
 }

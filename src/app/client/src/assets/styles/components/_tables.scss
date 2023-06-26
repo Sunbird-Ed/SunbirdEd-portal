@@ -287,6 +287,7 @@ table.dataTable {
   }
   &.no-footer {
     border-bottom: none;
+    border-radius: var(--sbt-bradius-24);
   }
 }
 

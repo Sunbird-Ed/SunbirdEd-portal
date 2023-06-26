@@ -8,20 +8,20 @@
         </div>
         <!--/Header-->
         <!--Content-->
-        <mat-dialog-content>
+        <mat-dialog-content class="unenroll-batch-comonent mat-body-2">
             {{resourceService.frmelmnts.lbl.unenrollMsg}}
         </mat-dialog-content>
         <!--/Content-->
         <!--Actions-->
         <mat-dialog-actions align="end">
+            <button mat-raised-button class="button-rounded" tabindex="0" mat-dialog-close>
+                {{resourceService?.frmelmnts?.btn?.cancel}}
+            </button>
             <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                 [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
                 mat-raised-button color="warn" class="button-rounded mr-8" [disabled]="disableSubmitBtn"
                 id="unenrollFromCourse" tabindex="0" (click)="unenrollFromCourse()">
                 {{generaliseLabelService?.frmelmnts?.btn?.unenroll}}
-            </button>
-            <button mat-raised-button class="button-rounded" tabindex="0" mat-dialog-close>
-                {{resourceService?.frmelmnts?.btn?.cancel}}
             </button>
         </mat-dialog-actions>
         <!--/Actions-->
