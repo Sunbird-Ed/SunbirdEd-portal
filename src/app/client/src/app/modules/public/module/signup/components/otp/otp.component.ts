@@ -13,7 +13,7 @@ import { ProfileService } from '@sunbird/profile';
 @Component({
   selector: 'app-otp',
   templateUrl: './otp.component.html',
-  styleUrls: ['./otp.component.scss', '../signup/signup_form.component.scss']
+  styleUrls: ['./otp.component.scss']
 })
 export class OtpComponent implements OnInit {
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;

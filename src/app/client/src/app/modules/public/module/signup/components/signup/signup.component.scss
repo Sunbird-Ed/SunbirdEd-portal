@@ -6,10 +6,11 @@
   display: grid;
   height: calc(100vh - 3rem);
   grid-template-columns: 1fr 2fr;
+  margin-top: -.5rem;
 
   @include respond-below(sm) {
     grid-template-columns: 1fr;
-    height: calc(100vh - 3.5rem);
+    // height: calc(100vh - 5.5rem);
   }
 
   .left-panel {
@@ -25,7 +26,6 @@
     .image {
       width: calculateRem(124px);
       height: calculateRem(124px);
-      background: var(--signup-panel-bg);
       display: flex;
       align-items: center;
       border-radius: 50%;
@@ -44,7 +44,6 @@
   }
 
   .right-panel {
-    background: var(--signup-panel-bg);
     height: 100%;
     position: relative;
 
@@ -66,4 +65,11 @@
     flex-direction: column;    
     padding-bottom: 2rem;
   }
+}
+
+.logo-content{
+  width: 100%;
+  max-width: calculateRem(360px);
+  margin: 0 auto;
+  padding:0 1rem
 }

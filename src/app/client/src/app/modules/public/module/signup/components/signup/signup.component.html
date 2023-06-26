@@ -2,43 +2,42 @@
 
 <div class="layout">
   <div class="left-panel">
-    <div class="image"><img alt={{tenantName}} src="{{logo}}">
+    <div class="image mat-bg-white"><img alt={{tenantName}} src="{{logo}}">
     </div>
   </div>
 
-
-  <div class="right-panel d-flex flex-dc">
-    <div *ngIf="!routeParams?.loginMode" class="login-content w-100 fix-bottom">
+  <div class="right-panel d-flex flex-dc mat-bg-white">
+    <div *ngIf="!routeParams?.loginMode" class="login-content w-100">
       <label class="mb-0 mx-8">{{resourceService.frmelmnts?.lbl?.haveaccount}}</label>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="redirectToLogin()"
-        aria-label="Already have an account? Login here" tabindex="0"
-        type="submit">{{resourceService.frmelmnts?.btn?.login}}</button>
+      <button mat-raised-button class="button-rounded color-accent text-uppercase" (click)="redirectToLogin()"
+        aria-label="Already have an account? Login here" tabindex="0" type="submit">{{resourceService.frmelmnts?.btn?.login}}</button>
     </div>
 
     <div class="content-center-container">
-    <div class="logo-content">
+      <div class="logo-content">
         <div class="text-center mb-8">
           <img class="image centered" tabindex="0" aria-label="" alt={{tenantName}} height="56" src="{{logo}}">
         </div>
-        <h3 tabindex="0" class="sb-color-primary text-center font-weight-bold mb-8" *ngIf="!routeParams?.loginMode">
-          {{resourceService.frmelmnts.lbl.welcomeToInstance | interpolate:'{instance}': instance}}</h3>
-    </div>
+        <h2 tabindex="0" class="color-accent text-center font-weight-bold mb-8" *ngIf="!routeParams?.loginMode">
+          {{resourceService.frmelmnts.lbl.welcomeToInstance | interpolate:'{instance}': instance}}</h2>
+      </div>
 
-    <ng-container [ngSwitch]="signupStage">
-              <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
-                [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata"
-                *ngSwitchCase="Stage.BASIC_INFO" [startingForm]="signUpForm" [routeParams]="routeParams"
-                (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
-              </app-signup-basic-info>
-              <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm" 
-                (subformInitialized)="subformInitialized('onboardingInfo', $event)" (triggerNext)="changeStep()">
-              </app-signup-onboarding-info>
-              <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" [startingForm]="signUpForm" 
-                (subformInitialized)="subformInitialized('emailPassInfo', $event)" (triggerNext)="changeStep()">
-              </app-signup-email-password>
-              <app-otp class="w-100" *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm" (triggerNext)="changeStep()"></app-otp>
-    </ng-container>
-  </div>
+      <ng-container [ngSwitch]="signupStage">
+        <app-signup-basic-info [isIOSDevice]="isIOSDevice" [telemetryImpression]="telemetryImpression"
+          [submitInteractEdata]="submitInteractEdata" [telemetryCdata]="telemetryCdata" *ngSwitchCase="Stage.BASIC_INFO"
+          [startingForm]="signUpForm" [routeParams]="routeParams"
+          (subformInitialized)="subformInitialized('basicInfo', $event)" (triggerNext)="changeStep()">
+        </app-signup-basic-info>
+        <app-signup-onboarding-info *ngSwitchCase="Stage.ONBOARDING_INFO" [startingForm]="signUpForm"
+          (subformInitialized)="subformInitialized('onboardingInfo', $event)" (triggerNext)="changeStep()">
+        </app-signup-onboarding-info>
+        <app-signup-email-password *ngSwitchCase="Stage.EMAIL_PASSWORD" [startingForm]="signUpForm"
+          (subformInitialized)="subformInitialized('emailPassInfo', $event)" (triggerNext)="changeStep()">
+        </app-signup-email-password>
+        <app-otp class="w-100" *ngSwitchCase="Stage.OTP" [startingForm]="signUpForm"
+          (triggerNext)="changeStep()"></app-otp>
+      </ng-container>
+    </div>
   </div>
 
 </div>
