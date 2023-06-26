@@ -10,11 +10,9 @@
     <mat-dialog-content>
       <div *ngIf="solution.entities?.length">
         <div *ngFor="let entity of solution.entities; let i = index">
-          <div class="sb-radio-btn-checkbox sb-radio-btn-primary checked-box">
-            <input value="{{ entity._id }}" id="{{ entity._id }}" type="radio" [checked]="entity.selected"
-              (change)="onEntityChange(entity)" />
-            <label for="{{ entity._id }}"> {{ entity.name }}</label>
-          </div>
+          <mat-radio-button value="{{ entity._id }}" id="{{ entity._id }}" [checked]="entity.selected" (change)="onEntityChange(entity)">
+            {{ entity.name }}
+          </mat-radio-button>
         </div>
       </div>
       <app-no-result *ngIf="!solution.entities?.length" [data]="noResultMessage"></app-no-result>

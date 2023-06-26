@@ -7,57 +7,13 @@
   justify-content: space-around;
   align-items: center;
 }
-
-.evidence-modal {
-  .content {
-    height: 70vh;
-    padding: calculateRem(10px);
-    overflow-y: auto;
-    background: var(--sb-modal-content-bg);
-    border-radius: calculateRem(24px);
-    label{
-        color: var(--sb-prominent-filter-title);
-      }
-  }
-}
-
-.sbt-report-tabs-panel {
-  overflow: auto;
-  padding-bottom: calculateRem(2px);
-  border-radius: var(--sbt-bradius-24) !important;
-  background-color: var(--sb-card-bg);
-}
-
-.ui.secondary.pointing.menu .item {
-  font-size: calculateRem(16px) !important;
-  color: var(--gray-800);
-  opacity: 0.3;
-  font-weight: 600;
-  overflow: hidden;
-}
-.ui.secondary.pointing.menu .active.item {
-  color: var(--primary-color) !important;
-  opacity: 1 !important;
-  border-bottom-width: calculateRem(4px) !important;
-  border-color: var(--primary-color) !important;
-  overflow: hidden;
-}
-.ui.secondary.pointing.menu {
-  height: calculateRem(60px) !important;
-  overflow: hidden;
-}
-.sbt-report-btns-panel-new {
-  border-radius: 0px !important;
- background-color: var(--white);
-}
-
-
 .report-block {
     padding-top: calculateRem(10px);
     padding-bottom: 0px;
     margin-top:calculateRem(10px) !important;
     background-color: transparent;
-    color: var(--sb-text);
+    top: 0;
+    bottom: 0;
   }
 
   .item{
@@ -71,7 +27,6 @@
     width: 100%;
     margin: 0.7rem 0;
     cursor: pointer;
-    color: var(--ck-color-button-cancel);
 }
 
 
@@ -81,7 +36,7 @@
   }
 
   .mat-tab-label-active {
-    border-bottom: 2px solid var(--primary-color) !important;
+    border-bottom: calculateRem(2px) solid var(--primary-color) !important;
   }
 } 
 
