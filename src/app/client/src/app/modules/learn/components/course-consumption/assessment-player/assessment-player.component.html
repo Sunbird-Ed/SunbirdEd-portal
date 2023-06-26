@@ -22,9 +22,7 @@
   class="mat-inside-page-container mat-app-background2 assessment-player-component">
   <div class="sb-g">
     <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
-      <div>
-        <div>
-          <section id="player-area-height">
+          <section id="player-area-height" class="mb-8">
             <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
               <app-player *ngIf="showPlayer" class="content-player" [playerOption]="playerOption"
                 [playerConfig]="playerConfig" [contentProgressEvents$]="contentProgressEvents$"
@@ -42,27 +40,22 @@
               [contentData]="activeContent" [objectRollUp]="objectRollUp">
             </app-content-actions>
           </section>
-        </div>
-        <div class="mt-8">
           <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
-        </div>
-      </div>
     </section>
     <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
-      <div class="px-0">
         <!-- Module Progress bar -->
         <div class="certified-course__progress" *ngIf="totalContents > 0">
           <!-- Previous / next module buttons -->
           <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
             <!-- Previous module button -->
-            <button mat-button color="primary" class="button-rounded" aria-label="previous-module" *ngIf="prevModule"
+            <button mat-button color="accent" class="button-rounded" aria-label="previous-module" *ngIf="prevModule"
               tabindex="0"
               (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
               <mat-icon>chevron_left</mat-icon> {{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
             </button>
             <!-- Previous Module button -->
             <!-- Next Module button -->
-            <button mat-button color="primary" class="button-rounded" aria-label="next-module" *ngIf="nextModule"
+            <button mat-button color="accent" class="button-rounded" aria-label="next-module" *ngIf="nextModule"
               tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
               {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}
               <mat-icon>chevron_right</mat-icon>
@@ -86,16 +79,14 @@
         </div>
 
 
-        <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
-        <div class="player-item-list">
-          <div *ngFor="let item of courseHierarchy?.children; let index = index;" class="list-container">
-            <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
+        <h5 class="mat-subheading-2 p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
+        <div class="mat-app-background p-16 br-24">
+          <div *ngFor="let item of courseHierarchy?.children; let index = index;" class="mat-bg-white list-container">
+            <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="mat-body-2">{{item?.name}}</p>
             <div *ngIf="item;else noContent">
               <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                 <ng-container *ngIf="item?.contentType">
-                  <div>
                     <!-- toc card for Non Self Assess content -->
-
                     <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item"
                       (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
                       [contentStatus]="contentStatus">
@@ -106,17 +97,14 @@
                       [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'"
                       [disabled]="'disabled-toc-card'">
                     </sb-toc-card>
-                  </div>
                 </ng-container>
               </div>
 
               <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
-                <div>
                   <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')"
                     [type]="cardType" [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts"
                     [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                   </sb-toc-card>
-                </div>
               </div>
 
               <div *ngIf="item?.children?.length">
@@ -139,13 +127,9 @@
             (tocCardClick)="navigateToInitPlayer($event)" [type]="cardType" [contentStatus]="contentStatus">
           </sb-toc-card>
         </div>
-      </div>
     </section>
   </div>
-
-  <div class="py-16" *ngIf="showLoader">
-    <app-loader [data]='loaderMessage'></app-loader>
-  </div>
+    <app-loader *ngIf="showLoader" [data]='loaderMessage'></app-loader>
 </div>
 
 <app-modal-wrapper *ngIf="shareLinkModal" [config]="{disableClose: false, panelClass: 'material-modal'}"
@@ -169,11 +153,11 @@
       </h4>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
+      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
         [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
         mat-raised-button color="warn" class="button-rounded">
         {{resourceService?.frmelmnts?.btn?.close}}
-      </a>
+      </button>
     </mat-dialog-actions>
 
   </ng-template>
@@ -191,12 +175,12 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
+      <button mat-raised-button class="button-rounded" tabindex="0" (click)="showLastAttemptsModal = false;">
+        {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
       <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
         (click)="showLastAttemptsModal = false; onTocCardClick();">
         {{resourceService.frmelmnts?.btn?.ok}}
-      </button>
-      <button mat-raised-button class="button-rounded" tabindex="0" (click)="showLastAttemptsModal = false;">
-        {{resourceService.frmelmnts?.btn?.cancel}}
       </button>
     </mat-dialog-actions>
 

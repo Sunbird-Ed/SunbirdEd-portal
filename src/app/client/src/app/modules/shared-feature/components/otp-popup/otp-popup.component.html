@@ -28,8 +28,7 @@
 <!--Actions-->
 <mat-dialog-actions align="end">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-  [telemetryInteractEdata]="submitInteractEdata"
-    [ngClass]="{'sb-btn-disabled':!enableSubmitBtn}" color="accent" class="button-rounded" mat-raised-button tabindex="0"
+  [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn" color="accent" class="button-rounded" mat-raised-button tabindex="0"
     (click)="verifyOTP()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
 </mat-dialog-actions>
 <!--/Actions-->

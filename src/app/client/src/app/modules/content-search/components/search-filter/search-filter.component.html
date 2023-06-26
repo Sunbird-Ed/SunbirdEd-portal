@@ -2,7 +2,7 @@
   <button mat-raised-button color="primary" class="button-rounded d-above-md-none d-below-md-block" extended (click)="isOpen = !isOpen">
     <mat-icon>tune</mat-icon> {{resourceService.frmelmnts?.lbl?.filters | translate}}
   </button>
-  <button mat-mini-fab color="primary" class="d-below-md-none d-above-md-block  relative9" (click)="isOpen = !isOpen">
+  <button mat-mini-fab color="primary" class="d-below-md-none d-above-md-block zindex-2" (click)="isOpen = !isOpen">
     <mat-icon>tune</mat-icon>
   </button>
   <ng-container *ngIf="isOpen">

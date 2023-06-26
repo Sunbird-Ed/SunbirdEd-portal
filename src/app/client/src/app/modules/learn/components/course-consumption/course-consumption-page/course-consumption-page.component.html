@@ -1,17 +1,9 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
-</app-landing-section>
 <app-course-consumption-header *ngIf="!showLoader && !showError && showAddGroup !== null"
     [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId"
     [showAddGroup]="showAddGroup" [layoutConfiguration]="layoutConfiguration"></app-course-consumption-header>
-<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
+<div class="mat-inside-page-container mat-app-background2 course-consumption-page-component">
 <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
-<div *ngIf="showLoader" class="ui container">
-    <div class="ui grid">
-        <div class="twelve wide column">
-            <app-loader></app-loader>
-        </div>
-    </div>
-</div>
+<app-loader *ngIf="showLoader"></app-loader>
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches"
     (routeChanged)="refreshComponent($event)">

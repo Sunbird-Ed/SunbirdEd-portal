@@ -98,17 +98,16 @@
   <!-- Terms and Conditions popup -->
 
   <div class="assessment-action-buttons mt-16 d-flex flex-ai-center flex-dc">
-    <button type="submit" [attr.readonly]="disableSubmitBtn" role="button" appTelemetryInteract
+    <button type="submit" mat-raised-button [color]="{'accent':!disableSubmitBtn}" [attr.readonly]="disableSubmitBtn" role="button" appTelemetryInteract
       [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-      class="sb-btn sb-btn-normal w-100" [disabled]="disableSubmitBtn"
-      [attr.aria-disabled]="disableSubmitBtn == true ? true : false"
-      [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" tabindex="0"
+      class="button-rounded w-100" [disabled]="disableSubmitBtn"
+      [attr.aria-disabled]="disableSubmitBtn == true ? true : false" tabindex="0"
       (click)="verifyOTP()">{{resourceService.frmelmnts.lbl.submit}}</button>
 
-      <span class="mt-16 w-100 text-center">Didn’t Receive an OTP? <button type="button" [attr.readonly]="disableResendButton" appTelemetryInteract
+      <span class="mt-16 w-100 text-center">Didn’t Receive an OTP? <button type="button" mat-stroked-button [attr.readonly]="disableResendButton" appTelemetryInteract
         [telemetryInteractEdata]="submitResendOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" tabindex="0"
-        [ngClass]="{'sb-btn-disabled resend-disable': !disableResendButton}" [disabled]="!disableResendButton"
+        class="button-rounded mr-8" tabindex="0" [color]="{'accent':!disableSubmitBtn}"
+        [ngClass]="{'resend-disable': !disableResendButton}" [disabled]="!disableResendButton"
         [attr.aria-disabled]="disableResendButton == false ? false : true" (click)="generateResendOTP();" type="button"
         value="{{resendOTPbtn}}">{{resendOTPbtn}}</button></span>
   </div>

@@ -141,14 +141,14 @@
     </mat-dialog-content>
   
     <mat-dialog-actions align="end">
-      <button mat-raised-button color="" class="button-rounded text-uppercase" tabindex="0"
+      <button mat-button class="button-rounded text-uppercase" tabindex="0"
       (click)="updateUserConsent(false)"
       *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
-    <button type="button" color="accent" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
+    <button type="button" mat-button tabindex="0" [disabled]="!isTncAgreed"
       class="button-rounded text-uppercase ml-8" (click)="updateUserConsent(true)"
       *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
-    <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed"
-    class="sb-btn sb-btn-normal sb-btn-primary text-uppercase ml-8" (click)="updateUserConsent(true)"
+    <button type="button"  mat-button tabindex="0" [disabled]="!isTncAgreed"
+    class="button-rounded text-uppercase ml-8" (click)="updateUserConsent(true)"
     *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
     </mat-dialog-actions>
 

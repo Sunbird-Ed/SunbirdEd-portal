@@ -1,5 +1,5 @@
 <app-modal-wrapper *ngIf="showUpdateModal"
-  [config]="{disableClose: false, size: 'normal', width: '45rem', panelClass: ['overflow-visible', 'material-modal']}"
+  [config]="{disableClose: false, size: 'normal', width: '47.25rem', panelClass: ['material-modal']}"
   (dismiss)="redirect()" #updateBatchModal>
   <ng-template sbModalContent>
 
@@ -13,8 +13,8 @@
     </div>
 
     <!--Content-->
-    <div mat-dialog-content [appTelemetryImpression]="telemetryImpression">
-      <form [formGroup]="batchUpdateForm" class="batchUpdateForm">
+    <div mat-dialog-content [appTelemetryImpression]="telemetryImpression"  class="update-course-batch-component">
+      <form [formGroup]="batchUpdateForm">
         <h4 class="color-accent font-weight-bold">Batch Details</h4>
         <div class="sb-g mb-16">
           <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-8">
@@ -29,7 +29,7 @@
                 <p class="color-warn"
                   *ngIf="batchUpdateForm.controls.name.invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine">
                   {{resourceService?.messages?.stmsg?.m0114}}</p> -->
-              <mat-form-field color="accent" class="w-100 border-radius sb-mat-form-field-custom" appearance="fill">
+              <mat-form-field color="accent" class="w-100" appearance="fill">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.batchname}}</mat-label>
                 <input type="text" name="name" formControlName="name" aria-label="name of batch" matInput>
                 <mat-error
@@ -75,7 +75,7 @@
                     aria-label="batch description"></textarea>
                 </div>
               </div> -->
-            <mat-form-field color="accent" appearance="fill" class="w-100 border-radius sb-mat-form-field-custom">
+            <mat-form-field color="accent" appearance="fill" class="w-100">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</mat-label>
               <textarea matInput rows="4" name="description" formControlName="description"
                 aria-label="batch description" type="text"></textarea>
@@ -125,12 +125,12 @@
           </div>
         </div>
 
-        <div class="d-flex flex-w-wrap my-16">
-          <div class="mr-16"
+        <div class="d-flex mt-16">
+          <div class="mr-8"
             [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
             <!-- <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label> -->
             <div id="rangestartAdd">
-              <mat-form-field appearance="fill" class="mat-datepicker border-radius sb-mat-form-field-custom">
+              <mat-form-field color="accent" appearance="fill" class="w-100 mat-datepicker">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
                 <input [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null" matInput
                   [matDatepicker]="startDatePicker" formControlName="startDate"
@@ -140,17 +140,14 @@
                   [disabled]="(batchDetails.status !== 0 || showFormInViewMode ) ? true : null">
                 </mat-datepicker-toggle>
                 <mat-datepicker #startDatePicker></mat-datepicker>
+                <mat-error *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">{{resourceService?.messages?.stmsg?.m0113}}</mat-error>
               </mat-form-field>
             </div>
-            <p class="color-warn"
-              *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
-              {{resourceService?.messages?.stmsg?.m0113}}
-            </p>
           </div>
-          <div class="mr-16">
+          <div class="mr-8">
             <!-- <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label> -->
             <div id="rangeendAdd">
-              <mat-form-field appearance="fill" class="mat-datepicker border-radius sb-mat-form-field-custom">
+              <mat-form-field color="accent" appearance="fill" class="w-100 mat-datepicker">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
                 <input [attr.disabled]="(showFormInViewMode) ? true : null" matInput [matDatepicker]="endDatePicker"
                   formControlName="endDate" [min]='pickerMinDateForEndDate'>
@@ -160,11 +157,11 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="mr-16" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
+          <div class="" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
             [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
             <!-- <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label> -->
             <div id="rangeenrollMentEnd">
-              <mat-form-field appearance="fill" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
+              <mat-form-field color="accent" appearance="fill" class="w-100" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</mat-label>
                 <input
                   (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
@@ -174,12 +171,9 @@
                 <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker">
                 </mat-datepicker-toggle>
                 <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
+                <mat-error *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">{{resourceService?.messages?.stmsg?.m0135}}</mat-error>
               </mat-form-field>
             </div>
-            <p class="color-warn"
-              *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">
-              {{resourceService?.messages?.stmsg?.m0135}}
-            </p>
           </div>
         </div>
 
@@ -188,7 +182,7 @@
         </div>
         <div>
           <!-- <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label> -->
-          <mat-form-field appearance="fill" class="sb-mat-form-field-custom border-radius w-100 mb-16">
+          <mat-form-field color="accent" appearance="fill" class="w-100 mb-16">
             <mat-label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</mat-label>
             <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list" class="selection"
               [disabled]="showFormInViewMode" (selectionChange)="selectedMultiValues($event, 'mentors')">
@@ -210,7 +204,7 @@
 
         <div class="mt-16" *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
           <!-- <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label> -->
-          <mat-form-field appearance="fill" class="sb-mat-form-field-custom border-radius w-100">
+          <mat-form-field appearance="fill" color="accent" class="w-100">
             <mat-label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</mat-label>
             <mat-select formControlName="users" role="listbox" multiple aria-label="participant list" class="selection"
               [disabled]="showFormInViewMode || (batchDetails.participants && batchDetails.participants.length >= 100)"
@@ -229,9 +223,8 @@
                 {{participant.name}}{{participant.otherDetail}}
               </mat-option>
             </mat-select>
+            <mat-hint align="end" class="color-accent" *ngIf="batchDetails.participants && batchDetails.participants.length > 100">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}</mat-hint>
           </mat-form-field>
-          <small *ngIf="batchDetails.participants && batchDetails.participants.length > 100"
-            class="color-accent d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}</small>
         </div>
       </form>
     </div>
@@ -240,7 +233,7 @@
     <!--Actions-->
     <mat-dialog-actions align="end">
 
-      <button mat-raised-button class="button-rounded mr-8" tabindex="0" (click)="resetForm()"
+      <button mat-raised-button class="button-rounded" tabindex="0" (click)="resetForm()"
         [ngClass]="{'disabled': showFormInViewMode}" tabindex="0" appTelemetryInteract
         [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="clearButtonInteractEdata"
         [telemetryInteractCdata]="telemetryCdata">

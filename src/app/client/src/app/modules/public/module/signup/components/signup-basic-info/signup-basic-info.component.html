@@ -48,11 +48,6 @@
         <div class="sb-color-red pt-0" aria-describedby="signup-form-yearofbirth" tabindex="0" [attr.aria-label]="resourceService.frmelmnts?.lbl?.validYearOfBirth" *ngIf="personalInfoForm.controls.yearOfBirth.touched  && personalInfoForm.controls['yearOfBirth'].errors && (personalInfoForm.controls['yearOfBirth'].errors.min  ||  personalInfoForm.controls['yearOfBirth'].errors.max) && !(personalInfoForm.controls.yearOfBirth.touched && personalInfoForm.controls['yearOfBirth'].errors && (personalInfoForm.controls['yearOfBirth'].errors.pattern  || personalInfoForm.controls['yearOfBirth'].errors.required))">{{resourceService.frmelmnts?.lbl?.validYearOfBirth}}</div>
     </div>
     <button [attr.aria-disabled]="!personalInfoForm.valid" [disabled]="!personalInfoForm.valid" type="biutton" appTelemetryInteract
-        [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-        [ngClass]="{'sb-btn-disabled':!personalInfoForm.valid, 'sb-btn-primary':personalInfoForm.valid}"
-        class="sb-btn sb-btn-sm text-uppercase width-100 mt-16  flex-basis-1" tabindex="0" (click)="next()"><span>{{resourceService.frmelmnts.lbl.continue}}</span><span
-        class='arrow-icon pl-8'><i class="icon-svg icon-svg--xxs icon-back">
-          <svg class="icon icon-svg--white">
-            <use xlink:href="./assets/images/sprite.svg#arrow-long-right"></use>
-          </svg></i></span></button>
+        [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata" color="{'accent':personalInfoForm.valid}"
+        class="button-rounded text-uppercase width-100 mt-16 flex-basis-1" tabindex="0" (click)="next()">{{resourceService.frmelmnts.lbl.continue}} <mat-icon class="ml-8">arrow_right_alt</mat-icon></button>
 </div>

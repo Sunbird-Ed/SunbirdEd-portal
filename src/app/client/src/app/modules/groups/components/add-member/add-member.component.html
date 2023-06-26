@@ -35,8 +35,7 @@
           <sb-member-card [title]="verifiedMember?.title" [identifier]="verifiedMember?.identifier" [config]="config"
                 [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
               </sb-member-card>
-          <button type="button" mat-raised-button color="accent" tabindex="0" [disabled]= "disableBtn" tabindex="0" (click)="addMemberToGroup();"
-          [ngClass]="{'sb-btn-disabled': disableBtn}">
+          <button type="button" mat-raised-button color="accent" tabindex="0" [disabled]= "disableBtn" tabindex="0" (click)="addMemberToGroup();">
             <mat-icon>person_add</mat-icon> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
           </button>
         </div>

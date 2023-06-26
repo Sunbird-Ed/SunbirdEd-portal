@@ -1,7 +1,6 @@
 <form [formGroup]="filtersFormGroup" class="sb-form" [ngClass]="{'hide': hideElements}"
   *ngIf="showFilters && !hideElements">
   <div content>
-    <div>
       <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center">
         <div class="sb-prominent-filter-field mr-8" *ngFor="let filter of filters">
           <label>{{filter.displayName}}</label>
@@ -35,7 +34,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </form>
 

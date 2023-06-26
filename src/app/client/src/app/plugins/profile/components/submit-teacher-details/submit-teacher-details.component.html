@@ -16,15 +16,13 @@
 
 <div class="mat-inside-page-container mat-app-background2 submit-teacher-details-component">
 <div class="mt-24 sb-md-container">
-  <div class="sb-modal-header teacher-header font-weight-bold px-24 py-16">
+  <div class="font-weight-bold px-24 py-16 mat-title mb-0">
     <span *ngIf="formAction === 'submit'">{{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </span>
     <span *ngIf="formAction === 'update'">{{resourceService?.frmelmnts?.lbl?.updateDetails}}</span>
   </div>
 
   <div class="py-16 px-32">
-    <div *ngIf="showLoader">
-      <app-loader></app-loader>
-    </div>
+      <app-loader  *ngIf="showLoader"></app-loader>
 
     <div *ngIf="!showLoader">
       <sb-form *ngIf="tenantPersonaForm" [config]="tenantPersonaForm" [platform]="'web'"
@@ -38,15 +36,13 @@
       </sb-form>
 
       <div class="teacher-buttons text-right">
-        <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
-          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
-          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+        <button *ngIf="formAction === 'submit'" mat-raised-button color="accent" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
+          class="button-rounded" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
           (click)="submit()" tabindex="0">
           {{resourceService?.frmelmnts?.btn?.submit}}
         </button>
-        <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
-          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
-          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+        <button *ngIf="formAction === 'update'" mat-raised-button color="accent" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
+          class="button-rounded" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
           (click)="submit()" tabindex="0">
           {{resourceService?.frmelmnts?.btn?.update}}
         </button>

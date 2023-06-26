@@ -72,7 +72,7 @@
   <mat-dialog-actions align="end">
     <button mat-raised-button color="accent" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="submitInteractEdata" class="button-rounded"
-      [disabled]="!showButton" tabindex="0" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="onSubmitForm()">
+      [disabled]="!showButton" tabindex="0" (click)="onSubmitForm()">
       {{buttonLabel}}
     </button>
   </mat-dialog-actions>
