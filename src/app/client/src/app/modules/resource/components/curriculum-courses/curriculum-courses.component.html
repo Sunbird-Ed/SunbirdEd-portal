@@ -1,16 +1,14 @@
 <div *ngIf="courseList.length > 0" [appTelemetryImpression]="telemetryImpression">
-<mat-toolbar color="primary" class="toolbar-pageback">
-  <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
-     <button type="button" mat-mini-fab color="accent" class="button-rounded" tabindex="0" (click)="goBack()"
-     attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-     <mat-icon aria-hidden="false" aria-label="Back icon" fontIcon="arrow_back"></mat-icon>
-   </button>
-   <div class="toolbar-pageback__heading">
-    <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2"></h3>
-   </div>
+  <div class="sb-bg-color-white" >
+    <div class="ui container py-8">
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-link
+        sb-btn-link-primary sb-left-icon-btn px-0" tabindex="0" (click)="goBack()">
+        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon
+            icon-svg--primary">
+            <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i> {{resourceService?.frmelmnts?.btn?.back}}</button>
+    </div>
   </div>
-  <div class="toolbar-pageback__actions"></div>
-</mat-toolbar>
 
 <div class="content-header header-shadow explore-curriculum-course-compnent" [ngStyle]="{'background': selectedCourse?.theme}">
   <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
