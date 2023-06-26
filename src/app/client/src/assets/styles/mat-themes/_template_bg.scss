@@ -27,6 +27,12 @@
 .sb-single-resource {
     max-width: 60rem;
     margin: 0 auto;
+      @include respond-above(xl) {
+        max-width: calculateRem(1024px);
+      }
+      @include respond-above(xxxl) {
+        max-width: calculateRem(1088px);
+      }
 }
 .box-shadow-6px {
     box-shadow: var(--sbt-box-shadow-6px) !important;
