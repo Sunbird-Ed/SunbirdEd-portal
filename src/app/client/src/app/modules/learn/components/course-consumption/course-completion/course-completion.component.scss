@@ -3,12 +3,6 @@
 .course-complete-content {
   display: flex;
   align-items: center;
-  .course-complete-data {
-    font-size: calculateRem(14px);
-    .title {
-      font-size: calculateRem(24px);
-    }
-  }
 }
 .course-complete-para {
   font-size: calculateRem(12px);
