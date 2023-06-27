@@ -19,14 +19,14 @@
             <input id="signup-form-name" matInput
                 [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
                 formControlName="name" type="text" name="name" autocomplete="off" aria-required="true">
+                <mat-error class="mat-caption" aria-describedby="signup-form-name" tabindex="0" aria-label="enter name"
+                    *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</mat-error>
+        
+                <mat-error class="mat-caption" aria-describedby="signup-form-name" tabindex="0" aria-label="enter a valid name"
+                    *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">
+                    {{resourceService.frmelmnts.lbl.enterValidName}}</mat-error>
         </mat-form-field>
 
-        <mat-error aria-describedby="signup-form-name" tabindex="0" aria-label="enter name"
-            *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</mat-error>
-
-        <mat-error aria-describedby="signup-form-name" tabindex="0" aria-label="enter a valid name"
-            *ngIf="personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors && personalInfoForm.controls['name'].errors.pattern">
-            {{resourceService.frmelmnts.lbl.enterValidName}}</mat-error>
 
     </div>
 
