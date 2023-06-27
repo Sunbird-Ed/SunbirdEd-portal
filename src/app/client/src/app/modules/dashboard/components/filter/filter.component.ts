@@ -185,7 +185,12 @@ export class FilterComponent implements OnInit, OnDestroy {
       }, (err) => {
       });
       if (this.chartData.selectedFilters) {
-          this.filtersFormGroup.setValue(this.chartData.selectedFilters);
+        const tempSelectedFilters = {...this.chartData.selectedFilters}
+        setTimeout(() => {
+          for(let [key,value] of Object.entries(tempSelectedFilters)){
+            this.filtersFormGroup.controls[key].setValue(value)
+          }
+        },50)
       }
 
   }
