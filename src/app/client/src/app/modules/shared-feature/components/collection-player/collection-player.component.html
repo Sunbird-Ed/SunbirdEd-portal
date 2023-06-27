@@ -44,24 +44,24 @@
 
       <button type="button" *ngIf="!isCopyAsCourseClicked" tabindex="0" (click)="onShareLink();sharelinkModal=true;"
       mat-raised-button class="button-rounded mr-8">
-      <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="share"></mat-icon> {{resourceService?.frmelmnts?.lbl?.share}}
+      <mat-icon aria-hidden="false" fontIcon="share"></mat-icon> {{resourceService?.frmelmnts?.lbl?.share}}
       </button>
 
       <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
         [telemetryInteractEdata]="copyContentInteractEdata"
-        *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
+        *ngIf="!showCopyLoader && !isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
         appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0"
-        (click)="copyContent(collectionTreeNodes.data)" mat-raised-button class="button-rounded mr-8">
-        <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="content_copy"></mat-icon>{{resourceService?.frmelmnts?.lbl?.copy}}
+        (click)="copyContent(collectionTreeNodes.data)" mat-raised-button class="button-rounded mr-8"><mat-icon aria-hidden="false" fontIcon="content_copy"></mat-icon> {{resourceService?.frmelmnts?.lbl?.copy}}
       </button>
 
       <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
         [telemetryInteractEdata]="copyContentInteractEdata"
-        *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
+        *ngIf="!showCopyLoader && !isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
         appPermission [permission]="['BOOK_CREATOR']" tabindex="0" (click)="copyContent(collectionTreeNodes.data)"
-        mat-raised-button class="button-rounded mr-8">
-        <mat-icon aria-hidden="false" aria-label="{{resourceService?.frmelmnts?.lbl?.share}}" fontIcon="content_copy"></mat-icon> {{resourceService?.frmelmnts?.lbl?.copy}}
+        mat-raised-button class="button-rounded mr-8"><mat-icon aria-hidden="false">content_copy</mat-icon> {{resourceService?.frmelmnts?.lbl?.copy}}
       </button>
+
+      <button disabled mat-raised-button class="button-rounded mr-8" *ngIf="!isDesktopApp && showCopyLoader"><span class=" d-flex flex-ai-center"><mat-spinner class="mr-8" color="accent" [diameter]="24"></mat-spinner> {{resourceService.frmelmnts.lbl.copycontent}}</span></button>
 
       <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
         [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
@@ -69,7 +69,7 @@
         appPermission [permission]="['CONTENT_CREATOR']" tabindex="0" (click)="copyAsCourse()"
         mat-raised-button class="button-rounded mr-8"><mat-icon>file_copy</mat-icon>
         {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
-      </button>
+      </button> 
 
       <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
         [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
@@ -80,7 +80,7 @@
       </button>
 
       <button
-        [disabled]="!(selectedItems.length > 0)" type="button" appTelemetryInteract
+        [disabled]="!(selectedItems.length > 0)" color="accent" type="button" appTelemetryInteract
         [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
         href="javascript:void(0)"
         *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
@@ -89,18 +89,10 @@
         {{generaliseLabelService?.frmelmnts?.btn?.create}}
       </button>
 
-      <span *ngIf="isGroupAdmin">
-        <button mat-raised-button class="button-rounded ml-auto" appAddToGroup
-          [identifier]="collectionData?.identifier"
-          [pageId]="collectionData?.primaryCategory?.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
-        </button>
-      </span>
-
-      <div class="" *ngIf="!isDesktopApp && showCopyLoader">
-        <div class="mt-40">
-          {{resourceService.frmelmnts.lbl.copycontent}}
-        </div>
-      </div>
+      <button *ngIf="isGroupAdmin" mat-raised-button class="button-rounded ml-auto" appAddToGroup
+      [identifier]="collectionData?.identifier"
+      [pageId]="collectionData?.primaryCategory?.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+    </button>
     </div>
   </mat-toolbar>
 
@@ -121,23 +113,17 @@
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16"
           *ngIf="collectionData">
           <!-- This checkbox needs to be converted to Angular material -->
-          <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
-            <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center p-16">
+            <div *ngIf="isCopyAsCourseClicked" class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center p-16">
               <h6 class="color_accent mat-body-1 mb-0 font-weight-normal">
                 {{generaliseLabelService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
-              <div class="sb-checkbox sb-checkbox-rightaligned sb-checkbox-primary ml-auto m-0">
-                <input tabindex="0" (click)="selectAllItem()" type="checkbox" id="checkbox" name="example">
-                <label class="mb-0 mr-0 sb-color-primary" for="checkbox">
-                  {{resourceService?.frmelmnts?.lbl?.selectAll}}</label>
+              <div class="ml-auto m-0">
+                <mat-checkbox [labelPosition]="'before'" tabindex="0" (click)="selectAllItem()" color="accent" type="checkbox" id="checkbox" name="example"><span class="color-accent">{{resourceService?.frmelmnts?.lbl?.selectAll}}</span></mat-checkbox>
               </div>
             </div>
-          </div>
-          <div>
             <sb-library-filters [hidden]="isSelectChapter" [tocList]="mimeTypeFilters" [layout]="'round-with-icon'"
               (selectedMimeType)="selectedFilter($event)">
             </sb-library-filters>
-          </div>
-
+      
           <div [hidden]="isSelectChapter" class="mt-16">
             <sb-toc-item [selectAll]="selectAll" [selectMode]="isCopyAsCourseClicked"
               [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
@@ -149,10 +135,8 @@
               [trackableDefaultImage]="'assets/images/mask-image/courses.svg'"></sb-toc-item>
           </div>
           <div [hidden]="!isSelectChapter">
-            <span>
               <app-content-chapterlist [activeContent]="activeContent" [contentDetails]="collectionData"
                 (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
-            </span>
           </div>
           <div class="mb-16">
             <app-content-licence [content]="collectionData"></app-content-licence>

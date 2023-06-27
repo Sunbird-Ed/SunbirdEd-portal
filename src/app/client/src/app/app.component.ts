@@ -40,9 +40,9 @@ export class AppComponent implements OnInit, OnDestroy {
     "deeppurple-amber",
     "indigo-pink",
     "pink-bluegrey",
-    "purple-green",
+    // "purple-green",
     "joy",
-    "green-grey",
+    // "green-grey",
   ];
 
   @HostBinding('class') activeThemeCssClass: string;

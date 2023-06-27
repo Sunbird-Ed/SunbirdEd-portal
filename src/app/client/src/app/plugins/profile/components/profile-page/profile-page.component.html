@@ -23,7 +23,7 @@
       <div class="d-flex flex-jc-center flex-ai-center">
         <div class="mat-body-1">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
         <div class="mat-body-1 ml-4" id="copyUser">{{userProfile.userName}}</div>
-        <button mat-button role="button" color="accent" tabindex="0" (click)="copyToClipboard(userProfile.userName)"
+        <button mat-button role="button" class="ml-8" color="accent" tabindex="0" (click)="copyToClipboard(userProfile.userName)"
           matTooltip="{{resourceService.frmelmnts?.lbl?.copyid | interpolate:'{instance}': instance}}" [matTooltipPosition]="'left'">
           <mat-icon class="mr-2">content_copy</mat-icon>
           <span role="link" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.copy}}”>{{resourceService?.frmelmnts?.lbl?.copy}}</span>

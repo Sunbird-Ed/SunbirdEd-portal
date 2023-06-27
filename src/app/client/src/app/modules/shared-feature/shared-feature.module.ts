@@ -25,6 +25,7 @@ import { DashletModule } from  'sb-dashlet-v14';
 import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -55,6 +56,7 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     LocationModule,
     MatToolbarModule,
     LocationModule,MatCardModule,
+    MatProgressSpinnerModule,
     DashletModule.forRoot()
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
