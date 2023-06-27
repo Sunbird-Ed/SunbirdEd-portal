@@ -1,8 +1,0 @@
-@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
-.signup-form-content,.logo-content{
-    width: 100%;
-    max-width: calculateRem(360px);
-    margin: 0 auto;
-    padding:0 1rem
-  }

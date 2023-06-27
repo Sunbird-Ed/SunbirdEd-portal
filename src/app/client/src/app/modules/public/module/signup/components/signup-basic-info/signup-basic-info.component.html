@@ -10,15 +10,15 @@
         {{resourceService.frmelmnts.lbl.followingdetails | interpolate:'{instance}': instance}}</h4>
 
     <div class="d-flex flex-dc mb-16">
-        <label for="signup-form-name" class="mb-8 font-weight-bold">
+        <!-- <label for="signup-form-name" class="mb-8 font-weight-bold">
             {{resourceService.frmelmnts?.lbl?.name}}<span class="color-warn">*</span>
-        </label>
+        </label> -->
 
         <mat-form-field color="accent" appearance="fill">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.name}}</mat-label>
             <input id="signup-form-name" matInput
                 [ngClass]="{'orange-border': personalInfoForm.controls.name.touched && personalInfoForm.controls['name'].errors}"
-                formControlName="name" type="text" name="name" autocomplete="off" aria-required="true"
-                placeholder="{{resourceService.frmelmnts?.intxt?.enterfulname}}">
+                formControlName="name" type="text" name="name" autocomplete="off" aria-required="true">
         </mat-form-field>
 
         <mat-error aria-describedby="signup-form-name" tabindex="0" aria-label="enter name"
@@ -31,14 +31,13 @@
     </div>
 
     <div class="d-flex flex-dc mb-16">
-        <label for="signup-form-yearofbirth"
+        <!-- <label for="signup-form-yearofbirth"
             class="mb-8 font-weight-bold">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span
-                class="color-warn">*</span></label>
+                class="color-warn">*</span></label> -->
         <mat-form-field *ngIf="!isIOSDevice" aria-required="true" appearance="fill" class="w-100" color="accent">
-            <!-- <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span>
-                    </mat-label> -->
+            <mat-label>{{resourceService.frmelmnts?.lbl?.yearOfBirth}}</mat-label>
             <input type="text" (keypress)="isNumber(event)" formControlName="yearOfBirth" tabindex="0"
-                placeholder="Select year" [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" matInput
+                [attr.aria-label]="resourceService.frmelmnts?.lbl?.yearOfBirth" matInput
                 [matAutocomplete]="auto" maxlength="4">
             <mat-autocomplete (optionSelected)="changeBirthYear($event)" role="combobox" #auto="matAutocomplete">
                 <mat-option role="listbox" *ngFor="let option of filteredYOB | async" [value]="option">

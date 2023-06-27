@@ -16,7 +16,6 @@ input[type=number]::-webkit-inner-spin-button {
 // user-details gray box new design css
 .user-detail-container {
   border-radius: 1.5rem;
-  background: var(--rc-dddddd);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 0.5rem;
@@ -99,5 +98,25 @@ input[type=number]::-webkit-inner-spin-button {
       order: 7;
     }
 
+  }
+}
+
+.signup-form-content {
+  max-width: calculateRem(360px);
+  margin: 0 auto;
+}
+
+:host::ng-deep {
+  .terms-checkbox {
+    .mat-checkbox-layout {
+      white-space: unset;
+    }
+    .mat-checkbox-label {
+      line-height: normal;
+    }
+    label {
+      font-weight: inherit;
+      font-size: inherit;
+    }
   }
 }

@@ -1,5 +1,5 @@
 <!-- user-details gray box new design -->
-<div class="user-detail-container p-24 my-16" role="list">
+<div class="user-detail-container p-24 my-16 mat-app-background" role="list">
   <div class="user-detail-list" role="listitem" tabindex="0" attr.aria-label="Name:{{startingForm?.basicInfo?.name}}"
     *ngIf="startingForm && startingForm?.basicInfo?.name">
     <label class="label-names mat-body-1 font-weight-normal pr-8" role="heading">Name:</label>
@@ -67,20 +67,21 @@
 
   <label tabindex="0" *ngIf="redirecterrorMessage" class="color-warn mat-subheading-1 text-center mb-8">The
     redirectURL/errorcallbackURL do not match the domain</label>
-  <div *ngIf="showSignUpLink" class="">{{unabletoVerifyErrorMessage}}<br> Please <span tabindex="0"
-      (click)="redirectToSignUp()" class="mat-subheading-1 color-accent font-weight-bold cursor-pointer" role="button"
+  <div *ngIf="showSignUpLink" class="mat-caption mt-16">{{unabletoVerifyErrorMessage}} Please <span tabindex="0"
+      (click)="redirectToSignUp()" class="color-accent font-weight-bold cursor-pointer" role="button"
       tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span> again
   </div>
   <form class="my-16" [formGroup]="otpForm">
     <div class="mb-16 text-left">
 
-      <label *ngIf="!infoMessage" for="enterOTP"
-        class="mat-subheading-1 text-left mb-8 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</label>
-      <label *ngIf="errorMessage" class="color-warn d-inline-block">{{errorMessage |
-        interpolate:'{remainingAttempt}': remainingAttempt}}</label>
       <label *ngIf="infoMessage" class="text-center mb-8 d-inline-block">{{infoMessage}}</label>
-      <input matInput tabindex="0" autofocus id="enterOTP" [ngClass]="{'color-warn': errorMessage}"
-        formControlName="otp" type="text" name="otp" placeholder="{{resourceService.frmelmnts.lbl.enterOTP}}">
+      <mat-form-field class="w-100" appearance="fill" color="accent">
+        <mat-label *ngIf="!infoMessage" for="enterOTP">{{resourceService.frmelmnts.lbl.oneTimePassword}}</mat-label>
+        <input matInput tabindex="0" autofocus id="enterOTP" [ngClass]="{'color-warn': errorMessage}"
+          formControlName="otp" type="text" name="otp" placeholder="{{resourceService.frmelmnts.lbl.enterOTP}}">
+      </mat-form-field>
+      <mat-error *ngIf="errorMessage">{{errorMessage |
+        interpolate:'{remainingAttempt}': remainingAttempt}}</mat-error>
 
     </div>
     <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha"
@@ -90,10 +91,10 @@
     <!-- Terms and Conditions popup -->
     <!-- For Minor -->
     <div *ngIf="startingForm && startingForm?.basicInfo?.isMinor" class="my-16">
-      <mat-checkbox class="mr-8 cursor-pointer" formControlName="tncAccepted" (click)="generateTelemetry($event)"
+      <mat-checkbox class="cursor-pointer font-weight-normal mat-caption terms-checkbox" formControlName="tncAccepted" (click)="generateTelemetry($event)"
         value="true" type="checkbox" id="tncAccepted"
         name="tncAccepted">{{resourceService?.frmelmnts?.lbl?.tncLabelForMinor}}
-        <a class="text-underline mat-caption" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
+        <a class="text-underline" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
           {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
         </a> {{resourceService?.frmelmnts?.lbl?.tncLabelForMinorSub | interpolate:'{instance}': instance}}
       </mat-checkbox>
@@ -110,10 +111,10 @@
 
     <!-- For Major -->
     <div *ngIf="startingForm && !startingForm?.basicInfo?.isMinor" class="my-16">
-      <mat-checkbox class="mr-8 cursor-pointer" formControlName="tncAccepted" (click)="generateTelemetry($event)"
+      <mat-checkbox class="cursor-pointer font-weight-normal mat-caption terms-checkbox" formControlName="tncAccepted" (click)="generateTelemetry($event)"
         value="true" type="checkbox" id="tncAccepted"
         name="tncAccepted">{{resourceService?.frmelmnts?.lbl?.tncLabelForMajor}}
-        <a class="text-underline mat-caption" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
+        <a class="text-underline mat-caption font-weight-normal" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
           {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
         </a>
       </mat-checkbox>
@@ -139,7 +140,7 @@
       <span class="mt-16 w-100 text-center">Didn’t Receive an OTP? <button type="button"
           [attr.readonly]="disableResendButton" appTelemetryInteract
           [telemetryInteractEdata]="submitResendOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-          mat-raised-button type="submit" class="button-rounded color-accent mr-8" tabindex="0"
+          mat-raised-button type="submit" class="button-rounded color-accent ml-8" tabindex="0"
           [disabled]="!disableResendButton" [attr.aria-disabled]="disableResendButton == false ? false : true"
           (click)="generateResendOTP();" type="button" value="{{resendOTPbtn}}">{{resendOTPbtn}}</button></span>
     </div>

@@ -4,7 +4,7 @@
 
 .layout {
   display: grid;
-  height: calc(100vh - 3rem);
+  min-height: calc(100vh - 3.25rem);
   grid-template-columns: 1fr 2fr;
   margin-top: -.5rem;
 
