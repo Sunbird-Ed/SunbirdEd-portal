@@ -21,7 +21,7 @@
       <div class="mb-16">
         <mat-radio-group aria-label="{{resourceService.frmelmnts?.lbl?.allImages}}" class="w-100">
           <mat-radio-button (click)="getAssetList()" type="radio" id="tab1"
-            [value]="'tab1'">{{resourceService.frmelmnts?.lbl?.myImages}}</mat-radio-button>
+            [value]="'tab1'" checked="checked">{{resourceService.frmelmnts?.lbl?.myImages}}</mat-radio-button>
           <mat-radio-button (click)="getAllImages()" type="radio" id="tab2" [value]="'tab2'"
             class="ml-24">{{resourceService.frmelmnts?.lbl?.allImages}}</mat-radio-button>
         </mat-radio-group>
@@ -157,8 +157,7 @@
             </div>
 
             <mat-form-field class="w-100 sb-mat-form-field-custom border-radius mb-16" appearance="fill">
-              <mat-label>{{resourceService?.frmelmnts?.lbl?.assetCaption}} <span
-                  class="asterik color-warn">*</span></mat-label>
+              <mat-label>{{resourceService?.frmelmnts?.lbl?.assetCaption}}</mat-label>
               <input matInput type="text" formControlName="assetCaption">
             </mat-form-field>
 

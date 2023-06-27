@@ -4,12 +4,6 @@
   border-radius: 1.5rem;
 }
 
-::ng-deep .certificate-checkbox {
-  .mat-checkbox-layout {
-    white-space: inherit;
-  }
-}
-
 .cert-img-sb-card {
   width: 6.375rem;
   margin-bottom: calculateRem(16px);
