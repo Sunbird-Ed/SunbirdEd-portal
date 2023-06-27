@@ -17,8 +17,8 @@
     <div class="toolbar-pageback__heading">
       <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
       <!-- Textbook Rating with share icon -->
-      <div class="toolbar-pageback__metadata">
-        <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
+      <div class="toolbar-pageback__metadata d-flex flex-ai-center">
+        <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini mr-8" [isReadonly]="true"
           [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
         <button mat-button tabindex="0" (click)="onShareLink();sharelinkModal=true;">
@@ -27,7 +27,7 @@
         </button>
 
         <button mat-button class="ml-8"
-          *ngIf="!isDesktopApp && permissionService?.permissionAvailable && courseStatus !== 'Unlisted'"
+          *ngIf="!showCopyLoader && !isDesktopApp && permissionService?.permissionAvailable && courseStatus !== 'Unlisted'"
           appPermission appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
           [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
           [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" tabindex="0"
@@ -36,12 +36,14 @@
           {{resourceService?.frmelmnts?.lbl?.copy}}
         </button>
 
+        <button disabled mat-raised-button class="button-rounded mr-8" *ngIf="showCopyLoader"><span class="d-flex flex-ai-center"><mat-spinner class="mr-8" color="accent" [diameter]="24"></mat-spinner> {{resourceService.frmelmnts.lbl.copycontent}}</span></button>
+
         <!-- Discussion Forum -->
         <app-access-discussion *ngIf="isConnected && fetchForumIdReq" [fetchForumIdReq]="fetchForumIdReq"
           (routerData)="assignForumData($event)"> </app-access-discussion>
       </div>
     </div>
-   </div>
+</div>
 
     <div class="toolbar-pageback__actions">
       <div class="toolbar-pageback__batch-flagged">
@@ -94,20 +96,20 @@
         <!-- join course, start learning, continue learning, view dashboard buttons -->
         <div *ngIf="!showAddGroup && isTrackable">
           <div class="certified-course__btn py-8" *ngIf="!enrolledCourse && !viewDashboard">
-            <button mat-raised-button [color]="isEnrollmentAllowed(enrollmentEndDate) ? '' : 'success'"
+            <button mat-raised-button [color]="!(courseConsumptionService.enableCourseEntrollment | async) || isEnrollmentAllowed(enrollmentEndDate) ? '' : 'success'"
               [disabled]="!(courseConsumptionService.enableCourseEntrollment | async) || isEnrollmentAllowed(enrollmentEndDate)"
               class="button-rounded" tabindex="0"
               (click)="showJoinModal(true); this.logTelemetry(courseHierarchy?.primaryCategory.toLowerCase() === 'course' ? 'join-course' : 'join', courseHierarchy)">{{resourceService?.frmelmnts?.btn?.enroll}}</button>
           </div>
 
           <div class="certified-course__btn py-8" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
-            <button mat-raised-button color="success" class="button-rounded ml-auto"
+            <button mat-raised-button [color]="showResumeCourse ? '' : 'success'" class="button-rounded ml-auto"
               [disabled]="showResumeCourse" tabindex="0"
               (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
           </div>
 
           <div class="certified-course__btn py-8" *ngIf="enrolledCourse && progress>0 && !viewDashboard">
-            <button mat-raised-button color="success" class="button-rounded ml-8"
+            <button mat-raised-button [color]="showResumeCourse ? '' : 'success'" class="button-rounded ml-8"
               [disabled]="showResumeCourse" tabindex="0"
               (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
               <mat-icon>play_circle</mat-icon>
@@ -127,7 +129,7 @@
             *ngIf="!isDesktopApp && permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
             appPermission [permission]="dashboardPermission">
             <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
-              [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}" mat-raised-button color="accent"
+              [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}" mat-raised-button color="warn"
               class="button-rounded" tabindex="0" (click)="closeDashboard()">
               {{resourceService?.frmelmnts?.btn?.closedb}}
             </button>
@@ -144,8 +146,6 @@
       </div>
     </div>
 </mat-toolbar>
-
-<div class="mt-40" *ngIf="showCopyLoader">{{resourceService.frmelmnts.lbl.copycontent}}</div>
 
 <app-certificate-name-update-popup *ngIf="showProfileUpdatePopup" [profileInfo]="profileInfo"
   (close)="showProfileUpdatePopup = false"></app-certificate-name-update-popup>

@@ -29,6 +29,7 @@ import { PendingchangesGuard } from '@sunbird/public';
 import { GroupsModule } from '../groups';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -66,7 +67,8 @@ export const csNotificationServiceFactory = (csLibInitializerService: CsLibIniti
     DiscussionModule,
     GroupsModule,
     MatToolbarModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
