@@ -1,9 +1,19 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'pages/content-header' as *;
 .avatar-container {
-  width: calculateRem(98px);
-  height: calculateRem(98px);
-  margin: 0 auto;
+::ng-deep {
+  sb-avatar {
+    button {
+      width: calculateRem(96px);
+    height: calculateRem(96px);
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    cursor: text;
+    user-select: text;
+    pointer-events: none;
+    }
+  }
+}
 }
 /* width */
 .max-w-300 {

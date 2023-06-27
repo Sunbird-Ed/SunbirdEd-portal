@@ -17,19 +17,19 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <div class="mat-body-1 mb-4" *ngIf="collectionData?.se_boards">
-                        <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}:&nbsp;</span>
+                        <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}:&nbsp;</span>
                         <span>{{collectionData.se_boards}}</span>
                     </div>
                     <div class="mat-body-1 mb-4" *ngIf="collectionData?.se_mediums">
-                        <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.medium  | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}:&nbsp;</span>
+                        <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.medium  | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}}:&nbsp;</span>
                         <span>{{collectionData?.se_mediums?.join(', ')}}</span>
                     </div>
                     <div class="mat-body-1 mb-4" *ngIf="collectionData?.se_gradeLevels">
-                        <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}:&nbsp;</span>
+                        <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' : resourceService?.selectedLang}}:&nbsp;</span>
                         <span>{{collectionData.se_gradeLevels}}</span>
                     </div>
                     <div class="mat-body-1 mb-4" *ngIf="collectionData?.audience">
-                        <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span>
+                        <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span>
                         <span>{{collectionData?.audience?.join(', ')}}</span>
                     </div>
             </mat-expansion-panel>

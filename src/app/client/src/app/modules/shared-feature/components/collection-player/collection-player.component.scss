@@ -8,3 +8,11 @@
     }
   }
 }
+
+
+::ng-deep {
+  .sb-slider-pills-container .sb-grade-pills-container {
+    background: var(--sbt-body-bg);
+    border-radius: 1.5rem;
+  }
+}
