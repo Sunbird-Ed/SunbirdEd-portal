@@ -6,18 +6,18 @@
         <div *ngIf="courseHierarchy">
           <h3 class="font-weight-bold mat-title">{{generaliseLabelService?.frmelmnts?.lbl?.courseDetails}}</h3>
           <div class="mat-app-background p-16 pb-cp-header">
-            <h4 class="mt-0 mb-8">
+            <h4 class="mt-0 mb-8 font-weight-bold">
               {{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h4>
             <p class="mb-4 mat-body-1" *ngIf="courseHierarchy?.se_boards">
-              <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' :
+              <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' :
                 resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_boards?.join(', ')}}</span>
             </p>
             <p class="mb-4 mat-body-1" *ngIf="courseHierarchy?.se_mediums">
-              <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' :
+              <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.medium | transposeTerms: 'frmelmnts.lbl.medium' :
                 resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_mediums?.join(', ')}}</span>
             </p>
             <p class="mb-4 mat-body-1" *ngIf="courseHierarchy?.se_gradeLevels">
-              <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' :
+              <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.class | transposeTerms: 'frmelmnts.lbl.class' :
                 resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_gradeLevels?.join(',
                 ')}}</span>
             </p>
@@ -25,11 +25,11 @@
                 <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.se_subjects?.join(', ')}}</span>
               </div> -->
             <p class="mb-4 mat-body-1" *ngIf="courseHierarchy?.audience">
-              <span class="color-accent">{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{
+              <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.userType}}:&nbsp;</span><span>{{
                 courseHierarchy?.audience?.join(', ')}}</span>
             </p>
             <div *ngIf="courseHierarchy?.description">
-              <h4 class="my-8 color-accent">{{resourceService?.frmelmnts?.lbl?.description}}</h4>
+              <h4 class="my-8 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.description}}</h4>
               <p *ngIf="!readMore" class="mat-body-1 mb-0">
                 {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
                 <span class="mouse-pointer" *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
