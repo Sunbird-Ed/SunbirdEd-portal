@@ -52,3 +52,14 @@
 .whitespace-initial {
     white-space: initial;
 }
+
+.checkbox-font-normal {
+    .mat-checkbox-layout {
+        white-space: unset;
+        font-size: inherit;
+        font-weight: inherit;
+        .mat-checkbox-label {
+            line-height: normal !important;
+        }
+    }
+}

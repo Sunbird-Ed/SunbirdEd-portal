@@ -15,9 +15,9 @@
 
               <!-- This has been converted to Angular material & needs to be verified(working or not) -->
               <div class="d-flex flex-ai-center flex-w-wrap mb-8" id="Mandatory">
-                <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.phoneNumber}}" class="w-100">
-                  <mat-radio-button (click)="resetForm('phone')" type="radio" [(ngModel)]="contactForm.type" [value]="'phone'">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</mat-radio-button>
-                  <mat-radio-button (click)="resetForm('email')" type="radio" [(ngModel)]="contactForm.type" [value]="'email'">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</mat-radio-button>
+                <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.phoneNumber}}" class="w-100" [(ngModel)]="contactForm.type">
+                  <mat-radio-button (click)="resetForm('phone')" type="radio" [value]="'phone'">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</mat-radio-button>
+                  <mat-radio-button (click)="resetForm('email')" type="radio" [value]="'email'">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</mat-radio-button>
                 </mat-radio-group>
               </div>
 

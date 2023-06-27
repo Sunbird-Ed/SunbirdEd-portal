@@ -174,6 +174,12 @@ $theme in $app-themes {
     .item.active .sb-icon {
       background: #fff !important;
     }
+
+    .cert-select-card__content__description, .cert-img-sb-card__content {
+      img {
+        filter: invert(1);
+      }
+    } 
   }
 
   /* theme button */

@@ -7,7 +7,7 @@ import { ProfileService } from '@sunbird/profile';
 @Component({
   selector: 'app-signup-onboarding-info',
   templateUrl: './signup-onboarding-info.component.html',
-  styleUrls: ['./signup-onboarding-info.component.scss', '../signup/signup_form.component.scss']
+  styleUrls: ['./signup-onboarding-info.component.scss']
 })
 export class SignupOnboardingInfoComponent implements OnInit {
 

@@ -19,8 +19,8 @@
       </div>
       <div class="ml-8 heading">
         <!-- Textbook title -->
-        <h4 class="color-accent font-weight-bold mb-0 mat-title" tabindex="0">{{courseDetails?.name}}
-        </h4>
+        <h3 class="color-accent font-weight-bold mb-0 mat-subheading-1" tabindex="0">{{courseDetails?.name}}
+        </h3>
         <p class="mat-body-1 pt-8 mb-0">{{courseDetails?.contentType}}</p>
       </div>
     </div>
@@ -61,7 +61,7 @@
             </button>
           </div>
         </div>
-        <div *ngIf="selectedTemplate" class="edit-certificate p-24 mat-bg-white">
+        <div *ngIf="selectedTemplate" class="edit-certificate p-24 mat-app-background">
           <h2 class="mat-tile font-weight-bold text-left">
             {{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</h2>
           <div class="edit-certificate-img">
@@ -121,7 +121,7 @@
                   class="mat-body-1 font-weight-normal mb-0">{{resourceService?.frmelmnts?.lbl?.addCertificateprogressrule}}</label>
                 <div class="mx-16"><mat-divider class="vertical-divider" [vertical]="true"></mat-divider></div>
                 <div class="py-16 d-flex flex-dc flex-wrap">
-                  <mat-form-field>
+                  <mat-form-field color="accent" appearance="fill">
                     <input matInput type="text" placeholder="" value="100%" readonly=true color="accent">
                   </mat-form-field>
                   <p class="font-weight-normal mat-caption mb-0">
@@ -148,7 +148,7 @@
                 <div class="mx-16"><mat-divider class="vertical-divider" [vertical]="true"></mat-divider></div>
                 <div class="d-flex flex-dc w-100">
                   <div class="d-flex flex-ai-center flex-jc-space-around">
-                    <mat-form-field>
+                    <mat-form-field color="accent" appearance="fill">
                       <input matInput type="text" placeholder="Best attempt score"
                         value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
                     </mat-form-field>
@@ -169,7 +169,7 @@
               </div>
 
               <div class="mt-24 w-100">
-                <mat-checkbox class="mr-8 cursor-pointer" formControlName="allowPermission" value="true" type="checkbox"
+                <mat-checkbox class="mr-8 cursor-pointer checkbox-font-normal mat-caption" formControlName="allowPermission" value="true" type="checkbox"
                   id="check2" name="selected">{{resourceService?.frmelmnts?.cert?.lbl?.verified}}</mat-checkbox>
               </div>
             </form>
@@ -177,7 +177,7 @@
 
           <div class="d-flex flex-dc p-16" *ngIf="selectedTemplate">
             <img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}" alt="certificate edit">
-            <button type="button" (click)="removeSelectedCertificate()" tabindex="0" mat-raised-button color="accent"
+            <button type="button" (click)="removeSelectedCertificate()" tabindex="0" mat-raised-button color="warn"
               class="button-rounded ml-auto mt-16">{{resourceService?.frmelmnts?.btn?.remove}}</button>
           </div>
 

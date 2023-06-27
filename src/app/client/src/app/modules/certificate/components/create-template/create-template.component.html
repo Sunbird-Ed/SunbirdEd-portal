@@ -16,19 +16,20 @@
   <div class="sb-g mt-24">
     <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-6">
       <div class="mat-app-background br-24 p-24">
-        <label class="mat-title font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.languageSupportNote}}</label>
+        <label class="mat-body-1 font-weight-bold mb-24">{{resourceService?.frmelmnts?.cert?.lbl?.languageSupportNote}}</label>
         <form [formGroup]="createTemplateForm">
 
-          <div class="d-flex flex-dc">
-            <mat-form-field color="accent" appearance="fill">
+         
+            <mat-form-field color="accent" class="w-100" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.certtitle}}</mat-label>
               <input matInput formControlName="certificateTitle" id="certificateTitle-input"
                 [ngClass]="(createTemplateForm.controls.certificateTitle.touched && createTemplateForm.controls.certificateTitle.invalid) ? 'is-invalid' : 'is-valid'">
-            </mat-form-field>
-            <small class="pl-4 mat-caption">
-              {{resourceService?.frmelmnts?.cert?.inlntxt?.certtitle}}
-            </small>
-          </div>
+                <mat-hint>
+                  {{resourceService?.frmelmnts?.cert?.inlntxt?.certtitle}}
+                </mat-hint>
+              </mat-form-field>
+              <br>
+    
           <!-- <label>{{resourceService?.frmelmnts?.cert?.lbl?.certtitle}}<span class="asterik">*</span></label>
             <label for="certificateTitle-input"
               class="hide">{{resourceService?.frmelmnts?.cert?.prmpt?.certtitle}}</label>
@@ -39,95 +40,88 @@
             {{resourceService?.frmelmnts?.cert?.inlntxt?.certtitle}}
           </small> -->
 
-          <div class="mat-title font-weight-bold mt-16">{{resourceService?.frmelmnts?.cert?.lbl?.statedet}}</div>
+          <div class="mat-body-1 font-weight-bold my-24">{{resourceService?.frmelmnts?.cert?.lbl?.statedet}}</div>
 
-          <div class="d-flex flex-dc">
-            <mat-form-field color="accent" appearance="fill">
+          
+            <mat-form-field color="accent" class="w-100" appearance="fill">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.name}}</mat-label>
               <input matInput formControlName="stateName" id="stateName-input"
                 [ngClass]="(createTemplateForm.controls.stateName.touched && createTemplateForm.controls.stateName.invalid) ? 'is-invalid' : 'is-valid'">
+                <mat-hint>{{resourceService?.frmelmnts?.cert?.inlntxt?.statedet}}</mat-hint>
             </mat-form-field>
-            <small class="pl-4 mat-caption">{{resourceService?.frmelmnts?.cert?.inlntxt?.statedet}}</small>
             <!-- <label for="state" class="state-labels">{{resourceService?.frmelmnts?.lbl?.name}}<span class="asterik">*</span></label>
             <label for="stateName-input" class="hide">{{resourceService?.frmelmnts?.cert?.prmttxt?.statedet}}</label>
             <input formControlName="stateName" id="stateName-input" class="sb-form-control"
               [ngClass]="(createTemplateForm.controls.stateName.touched && createTemplateForm.controls.stateName.invalid) ? 'is-invalid' : 'is-valid'"
               [placeholder]="resourceService?.frmelmnts?.cert?.prmttxt?.statedet">
             <small class="pl-4 fsmall">{{resourceService?.frmelmnts?.cert?.inlntxt?.statedet}}</small> -->
-          </div>
+          
 
-          <div class="sb-g mt-16">
+          <div class="sb-g mt-32">
             <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8">
               <div class="d-flex flex-dc">
-                <label class="pl-4">{{resourceService?.frmelmnts?.cert?.lbl?.statelogo}} <span
+                <label class="font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.statelogo}} <span
                     class="asterik">*</span></label>
                 <button (click)="openSateLogos({type: 'LOGO', index: 0,  key:'LOGO1'})" tabindex="0" mat-raised-button
                   class="button-rounded w-100 color-accent">
                   {{resourceService?.frmelmnts?.cert?.btn?.browse}}
                 </button>
-              </div>
-              <div class="d-flex flex-ai-center flex-w-wrap">
-                <small *ngIf="!(images?.LOGO1?.name)" class="pl-4 py-4 mat-caption"
-                  [innerHTML]="sanitizeHTML(resourceService?.frmelmnts?.cert?.intxt?.imgdimensions)"></small>
-                <small *ngIf="(images?.LOGO1?.name)" class="pl-4 py-4 mat-caption">{{images?.LOGO1?.name}} <span
+                <mat-hint *ngIf="!(images?.LOGO1?.name)" class="py-4 mat-caption lineHeight-normal"
+                  [innerHTML]="sanitizeHTML(resourceService?.frmelmnts?.cert?.intxt?.imgdimensions)"></mat-hint>
+                <mat-hint *ngIf="(images?.LOGO1?.name)" class="py-4 mat-caption lineHeight-normal">{{images?.LOGO1?.name}} <span
                     class="pl-8">
                     <img (click)="removeImage('LOGO1')" tabindex="0" src="assets/images/close.svg"
-                      width="12px"></span></small>
+                      width="12px"></span></mat-hint>
               </div>
             </div>
             <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8">
               <div class="d-flex flex-dc">
-                <label class="pl-4">{{resourceService?.frmelmnts?.cert?.lbl?.statelogo2}}</label>
+                <label class="font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.statelogo2}}</label>
                 <button (click)="openSateLogos({type: 'LOGO', index: 1,  key:'LOGO2'})" tabindex="0" mat-raised-button
                   class="button-rounded w-100 color-accent">
                   {{resourceService?.frmelmnts?.cert?.btn?.browse}}
                 </button>
-              </div>
-              <div class="d-flex flex-dc">
-                <small *ngIf="!(images?.LOGO2?.name)" class="pl-4 py-4 mat-caption"
-                  [innerHTML]="sanitizeHTML(resourceService?.frmelmnts?.cert?.intxt?.imgdimensions)"></small>
-                <small *ngIf="(images?.LOGO2?.name)" class="pl-4 py-4 mat-caption">{{images?.LOGO2?.name}}<span
+                <mat-hint *ngIf="!(images?.LOGO2?.name)" class="py-4 mat-caption lineHeight-normal"
+                  [innerHTML]="sanitizeHTML(resourceService?.frmelmnts?.cert?.intxt?.imgdimensions)"></mat-hint>
+                <mat-hint *ngIf="(images?.LOGO2?.name)" class="py-4 mat-caption lineHeight-normal">{{images?.LOGO2?.name}}<span
                     class="pl-8">
                     <img (click)="removeImage('LOGO2')" tabindex="0" src="assets/images/close.svg"
-                      width="12px"></span></small>
+                      width="12px"></span></mat-hint>
               </div>
             </div>
           </div>
-          <div class="mat-body-1 font-weight-bold py-24">{{resourceService?.frmelmnts?.cert?.lbl?.signatory}}</div>
+          <div class="mat-body-1 font-weight-bold my-24">{{resourceService?.frmelmnts?.cert?.lbl?.signatory}}</div>
           <div class='sb-g'>
             <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8">
               <div class="d-flex flex-dc">
-                <label class="pl-4">{{resourceService?.frmelmnts?.cert?.lbl?.sign}}<span
+                <label class="font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.sign}}<span
                     class="asterik">*</span></label>
                 <button (click)="openSignLogos({type: 'SIGN', index: 0,  key:'SIGN1'})" tabindex="0" mat-raised-button
                   class="button-rounded w-100 color-accent">
                   {{resourceService?.frmelmnts?.cert?.btn?.browse}}
                 </button>
-                <div class="d-flex flex-dc">
-                  <small *ngIf="!(images?.SIGN1?.name)"
-                    class="pl-4 py-4 mat-caption">{{resourceService?.frmelmnts?.cert?.inlntxt?.signspec}}</small>
-                  <small *ngIf="(images?.SIGN1?.name)" class="pl-4 py-4 mat-caption">{{images?.SIGN1?.name}}<span
-                      class="pl-8">
-                      <img (click)="removeImage('SIGN1')" tabindex="0" src="assets/images/close.svg"
-                        width="12px"></span></small>
-                </div>
+                <mat-hint *ngIf="!(images?.SIGN1?.name)"
+                  class="py-4 mat-caption lineHeight-normal">{{resourceService?.frmelmnts?.cert?.inlntxt?.signspec}}</mat-hint>
+                <mat-hint *ngIf="(images?.SIGN1?.name)" class="py-4 mat-caption lineHeight-normal">{{images?.SIGN1?.name}}<span
+                    class="pl-8">
+                    <img (click)="removeImage('SIGN1')" tabindex="0" src="assets/images/close.svg"
+                      width="12px"></span></mat-hint>
+                
               </div>
             </div>
             <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-8">
               <div class="d-flex flex-dc">
-                <label class="pl-4">{{resourceService?.frmelmnts?.cert?.lbl?.sign2}}</label>
+                <label class="font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.sign2}}</label>
                 <button (click)="openSignLogos({type: 'SIGN', index: 1,  key:'SIGN2'})" tabindex="0" mat-raised-button
                   class="button-rounded w-100 color-accent">
                   {{resourceService?.frmelmnts?.cert?.btn?.browse}}
                 </button>
-              </div>
-              <div class="d-flex flex-dc">
-                <small *ngIf="!(images?.SIGN2?.name)"
-                  class="pl-4 py-4 mat-caption">{{resourceService?.frmelmnts?.cert?.inlntxt?.signspec}}</small>
-                <small *ngIf="(images?.SIGN2?.name)" class="pl-4 py-4 mat-caption">{{images?.SIGN2?.name}}<span
+                <mat-hint *ngIf="!(images?.SIGN2?.name)"
+                  class="py-4 mat-caption lineHeight-normal">{{resourceService?.frmelmnts?.cert?.inlntxt?.signspec}}</mat-hint>
+                <mat-hint *ngIf="(images?.SIGN2?.name)" class="py-4 mat-caption lineHeight-normal">{{images?.SIGN2?.name}}<span
                     class="pl-8">
                     <img (click)="removeImage('SIGN2')" tabindex="0" src="assets/images/close.svg"
-                      width="12px"></span></small>
+                      width="12px"></span></mat-hint>
               </div>
               
             </div>
@@ -139,10 +133,10 @@
                   <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.signdesig}}</mat-label>
                   <input matInput formControlName="authoritySignature_0" id="authoritySignature_0-input"
                     [ngClass]="(createTemplateForm.controls.authoritySignature_0.touched && createTemplateForm.controls.authoritySignature_0.invalid) ? 'is-invalid' : 'is-valid'">
+                    <mat-hint class="mat-caption lineHeight-normal">
+                      {{resourceService?.frmelmnts?.cert?.inlntxt?.signdet}}
+                    </mat-hint>
                 </mat-form-field>
-                <small class="pl-4 mat-caption">
-                  {{resourceService?.frmelmnts?.cert?.inlntxt?.signdet}}
-                </small>
 
                 <!-- <label class="mb-16">{{resourceService?.frmelmnts?.cert?.lbl?.signdesig}}<span class="asterik">*</span></label>
                 <label for="authoritySignature_0-input" class="hide">{{resourceService?.frmelmnts?.cert?.lbl?.designation}}</label>
@@ -160,10 +154,10 @@
                   <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.signdesig2}}</mat-label>
                   <input matInput formControlName="authoritySignature_1" id="authoritySignature_1-input"
                     [ngClass]="(createTemplateForm.controls.authoritySignature_1.touched && createTemplateForm.controls.authoritySignature_1.invalid) ? 'is-invalid' : 'is-valid'">
+                    <mat-hint class="mat-caption lineHeight-normal">
+                      {{resourceService?.frmelmnts?.cert?.inlntxt?.signdet}}
+                    </mat-hint>
                 </mat-form-field>
-                <small class="pl-4 mat-caption">
-                  {{resourceService?.frmelmnts?.cert?.inlntxt?.signdet}}
-                </small>
               </div>
               <!-- <label class="mb-16">{{resourceService?.frmelmnts?.cert?.lbl?.signdesig2}}</label>
                 <div class="sb-field mb-0">
@@ -179,8 +173,9 @@
 
             </div>
           </div>
+          <br>
           <div class="mt-24 w-100">
-            <mat-checkbox class="mr-8 cursor-pointer certificate-checkbox" formControlName="allowPermission"
+            <mat-checkbox class="mr-8 cursor-pointer certificate-checkbox checkbox-font-normal mat-caption" formControlName="allowPermission"
               value="true" type="checkbox" id="check2"
               name="selected">{{resourceService?.frmelmnts?.cert?.intxt?.confrmtion}}</mat-checkbox>
           </div>

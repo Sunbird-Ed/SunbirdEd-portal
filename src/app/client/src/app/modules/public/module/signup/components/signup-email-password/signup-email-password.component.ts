@@ -22,7 +22,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 @Component({
   selector: 'app-signup-email-password',
   templateUrl: './signup-email-password.component.html',
-  styleUrls: ['./signup-email-password.component.scss' , '../signup/signup_form.component.scss']
+  styleUrls: ['./signup-email-password.component.scss']
 })
 
 export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -227,8 +227,11 @@ export class SignupEmailPasswordComponent implements OnInit, OnDestroy, AfterVie
 
   vaidateUserContact(captchaResponse?) {
     const value = this.signUpForm.controls.contactType.value === 'phone' ?
-      this.signUpForm?.controls?.phone?.value.toString() : this.signUpForm?.controls?.email?.value;
+    this.signUpForm?.controls?.phone?.value?.toString() : this.signUpForm?.controls?.email?.value;
+    console.log(value, 'value');
     const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value + '?captchaResponse=' + captchaResponse;
+    console.log(uri, 'uri value');
+
     this.signupService.checkUserExists(uri).subscribe(
       (data: ServerResponse) => {
         if (_.get(data, 'result.exists')) {
