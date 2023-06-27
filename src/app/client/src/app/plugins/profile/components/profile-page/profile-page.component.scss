@@ -25,15 +25,29 @@
 }
 
 .avatar-container {
-  width: calculateRem(98px);
-  height: calculateRem(98px);
+  position: relative !important;
+  width: 96px;
+  height: 96px;
   margin: 0 auto;
-
+  ::ng-deep {
+    sb-avatar {
+      button {
+        width: calculateRem(96px);
+      height: calculateRem(96px);
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+      cursor: text;
+      user-select: text;
+      pointer-events: none;
+      }
+    }
+  }
   .avatar-tickmark {
-    width: calculateRem(32px);
-    height: calculateRem(32px);
+    width: 2.5rem;
+    height: 2.5rem;
     position: absolute;
-    left: 67%;
+    left: inherit;
+    right: -0.5rem;
   }
 }
 
