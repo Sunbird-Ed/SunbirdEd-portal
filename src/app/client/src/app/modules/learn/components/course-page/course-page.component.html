@@ -61,17 +61,17 @@
     </div>
 
     <mat-dialog-content>
-      <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
+      <p class="mat-body-2">{{resourceService?.messages?.stmsg?.m0137 }}</p>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
-        (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
-        {{resourceService.frmelmnts?.btn?.yes}}
-      </button>
       <button mat-raised-button class="button-rounded" tabindex="0"
         (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
         {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
+      <button mat-raised-button color="accent" class="button-rounded" tabindex="0"
+        (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+        {{resourceService.frmelmnts?.btn?.yes}}
       </button>
     </mat-dialog-actions>
 

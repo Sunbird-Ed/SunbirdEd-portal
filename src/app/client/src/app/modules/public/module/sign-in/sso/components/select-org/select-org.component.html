@@ -30,8 +30,7 @@
                 <select name="stateOrg" id="stateOrg"
                   class="sb-form-control mb-50 d-flex mt-60 stateOrg"
                   (change)="handleOrgChange($event)">
-                  <option value="" disabled selected>{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your
-                    State'}}</option>
+                  <option value="" disabled selected>{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}</option>
                   <option *ngFor="let state of orgList" [value]="state.loginUrl">{{state.name}}</option>
                 </select>
               </label>

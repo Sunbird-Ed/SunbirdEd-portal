@@ -13,7 +13,7 @@
     <!--/Header-->
 
     <!--Content-->
-    <div mat-dialog-content [appTelemetryImpression]="telemetryImpression">
+    <div mat-dialog-content [appTelemetryImpression]="telemetryImpression" class="create-batch-component">
       <form [formGroup]="createBatchForm" class="batchAddUserForm">
         <h4 class="color-accent font-weight-bold">Batch Details</h4>
         <div class="sb-g mb-16">
@@ -29,7 +29,7 @@
                 *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
                 {{resourceService?.messages?.stmsg?.m0114}}
               </div> -->
-              <mat-form-field color="accent" class="w-100 border-radius sb-mat-form-field-custom" appearance="fill">
+              <mat-form-field color="accent" class="w-100" appearance="fill">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.batchname}}</mat-label>
                 <input type="text" name="name" formControlName="name" aria-label="name of batch" matInput autofocus>
                 <mat-error
@@ -75,7 +75,7 @@
                 <textarea rows="4" name="description" formControlName="description" class="sb-form-control"></textarea>
               </div>
             </div> -->
-            <mat-form-field color="accent" appearance="fill" class="w-100 border-radius sb-mat-form-field-custom">
+            <mat-form-field color="accent" appearance="fill" class="w-100">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</mat-label>
               <textarea matInput rows="4" name="description" formControlName="description"
                 aria-label="batch description" type="text"></textarea>
@@ -130,24 +130,20 @@
           <div class="mr-16">
             <!-- <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label> -->
             <div id="rangestartAdd">
-              <mat-form-field color="accent" appearance="fill"
-                class="mat-datepicker border-radius sb-mat-form-field-custom">
+              <mat-form-field color="accent" appearance="fill" class="mat-datepicker">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
                 <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="pickerMinDate">
                 <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                 <mat-datepicker #startPicker></mat-datepicker>
+                <mat-error
+                  *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">{{resourceService?.messages?.stmsg?.m0113}}</mat-error>
               </mat-form-field>
             </div>
           </div>
-          <p class="color-warn"
-            *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
-            {{resourceService?.messages?.stmsg?.m0113}}
-          </p>
           <div class="mr-16">
             <!-- <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label> -->
             <div apply-script id="rangeendAdd">
-              <mat-form-field color="accent" appearance="fill"
-                class="mat-datepicker border-radius sb-mat-form-field-custom">
+              <mat-form-field color="accent" appearance="fill" class="mat-datepicker">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
                 <input matInput [matDatepicker]="endDatePicker" formControlName="endDate"
                   [min]="getPickerMinDateForEndDate()">
@@ -160,8 +156,7 @@
             [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
             <!-- <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label> -->
             <div id="rangeenrollMentEnd">
-              <mat-form-field color="accent" appearance="fill"
-                class="mat-datepicker border-radius sb-mat-form-field-custom"
+              <mat-form-field color="accent" appearance="fill" class="mat-datepicker"
                 [ngClass]="{'disabled': !createBatchForm.value.startDate}"
                 (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])">
                 <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</mat-label>
@@ -169,19 +164,17 @@
                   [min]="createBatchForm.value.startDate" [max]="createBatchForm.value.endDate">
                 <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
+                <mat-error
+                  *ngIf="createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine? 'error': ''">{{resourceService?.messages?.stmsg?.m0135}}</mat-error>
               </mat-form-field>
             </div>
-            <p class="color-warn"
-              *ngIf="createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine? 'error': ''">
-              {{resourceService?.messages?.stmsg?.m0135}}
-            </p>
           </div>
         </div>
 
 
         <div>
           <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-          <mat-form-field color="accent" appearance="fill" class="w-100 border-radius sb-mat-form-field-custom">
+          <mat-form-field color="accent" appearance="fill" class="w-100">
             <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list" class="selection"
               (selectionChange)="selectedMultiValues($event, 'mentors')">
               <mat-select-trigger>
@@ -202,7 +195,7 @@
 
         <div class="mt-16" *ngIf="createBatchForm.value.enrollmentType !== 'open'">
           <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-          <mat-form-field color="accent" appearance="fill" class="w-100 border-radius sb-mat-form-field-custom">
+          <mat-form-field color="accent" appearance="fill" class="w-100">
             <mat-select formControlName="users" role="listbox" multiple aria-label="participant list" class="selection"
               (selectionChange)="selectedMultiValues($event, 'participant')">
               <mat-select-trigger>
@@ -254,7 +247,8 @@
               class="color-accent">{{resourceService?.frmelmnts?.lbl?.courseGuidelines}}</a>
           </mat-checkbox>
           <p class="color-warn mat-caption font-weight-bold mb-0 pl-24"
-            *ngIf="!createBatchForm.get('tncCheck').valid && this.createBatchForm.get('tncCheck').dirty">{{resourceService?.frmelmnts?.lbl?.courseToc}}</p>
+            *ngIf="!createBatchForm.get('tncCheck').valid && this.createBatchForm.get('tncCheck').dirty">
+            {{resourceService?.frmelmnts?.lbl?.courseToc}}</p>
         </div>
 
       </form>
@@ -264,11 +258,15 @@
     <!--Actions-->
     <mat-dialog-actions align="end">
 
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0" [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata" mat-raised-button class="button-rounded mr-8" (click)="createBatchForm.reset()">
+      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
+        [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata" mat-raised-button
+        class="button-rounded" (click)="createBatchForm.reset()">
         {{resourceService?.frmelmnts?.btn?.clear}}
       </button>
 
-      <button mat-raised-button color="accent" class="button-rounded" tabindex="0" id="submitbutton" [disabled]="!createBatchForm.valid || disableSubmitBtn" (click)="createBatch()" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createBatchInteractEdata"
+      <button mat-raised-button color="accent" class="button-rounded" tabindex="0" id="submitbutton"
+        [disabled]="!createBatchForm.valid || disableSubmitBtn" (click)="createBatch()" appTelemetryInteract
+        [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createBatchInteractEdata"
         [telemetryInteractCdata]="telemetryCdata">
         {{resourceService?.frmelmnts?.btn?.create}}
       </button>

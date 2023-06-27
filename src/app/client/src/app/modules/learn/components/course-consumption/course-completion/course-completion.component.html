@@ -7,21 +7,21 @@
         mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
 
-    <mat-dialog-content>
+    <mat-dialog-content class="course-completion-component">
       <div class="course-complete mat-bg-white p-24">
         <div class="course-complete-content">
           <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
-          <div class="course-complete-data font-weight-bold">
-            <div class="title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
-            <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
+          <div class="course-complete-data font-weight-bold color-success">
+            <div class="mat-title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
+            <p class="mat-body-2">{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
           </div>
         </div>
-        <div class="course-complete-para mt-32 color-warn"
+        <div class="course-complete-para mt-32 color-warn mat-body-2"
           *ngIf="certificateDescription && !certificateDescription?.isCertificate">
-          <img src="assets/images/alert.svg" width="22px" height="22px" alt="Cpu load warning" class="mr-8">
+          <mat-icon class="mr-8">warning</mat-icon>
           <span>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</span>
         </div>
-        <div class="course-complete-para mt-32" *ngIf="certificateDescription && certificateDescription?.description">
+        <div class="course-complete-para mt-32 mat-body-2" *ngIf="certificateDescription && certificateDescription?.description">
           <p class="mat-caption mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
         </div>
         <div class="course-complete-para mt-32 color-accent"

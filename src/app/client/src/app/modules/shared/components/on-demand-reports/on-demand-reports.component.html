@@ -18,7 +18,6 @@
           <input class="sb-form-control" type="text" formControlName="password" placeholder="Enter password" aria-label="enter password">
         </div>
         <button type="button" [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))"
-        [ngClass]="{'sb-btn-disabled': (!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))}"
         tabindex="0" (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary">
           {{resourceService?.frmelmnts?.lbl?.request}}
         </button>

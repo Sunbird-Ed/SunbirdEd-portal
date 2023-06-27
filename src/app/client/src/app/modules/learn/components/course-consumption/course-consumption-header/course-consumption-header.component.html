@@ -2,7 +2,7 @@
 <app-loader *ngIf="showLoader"></app-loader>
 <!-- /Loader-->
 <!-- Back Button -->
-<mat-toolbar color="primary" class="toolbar-pageback">
+<mat-toolbar color="primary" class="toolbar-pageback course-consumption-header-component">
     <!-- /* Back button */ -->
    <div class="d-flex flex-ai-center w-below-sm-100 w-above-sm-60">
       <button type="button" mat-mini-fab color="accent"
@@ -74,21 +74,21 @@
         </div>
 
         <div *ngIf="isDesktopApp && enrolledCourse && !viewDashboard" class="d-flex py-8">
-          <button type="button" mat-stroked-button color="primary" class="button-rounded mr-8"
+          <button type="button" mat-stroked-button color="accent" class="button-rounded mr-8"
             *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" tabindex="0"
             (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
-          <button type="button" mat-stroked-button color="primary" class="button-rounded mr-8"
+          <button type="button" mat-stroked-button color="accent" class="button-rounded mr-8"
             *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" tabindex="0"
             (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-          <button type="button" mat-stroked-button color="primary" class="button-rounded mr-8"
+          <button type="button" mat-stroked-button color="accent" class="button-rounded mr-8"
             *ngIf="checkStatus('DOWNLOADED')" tabindex="0"
             (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-          <button type="button" mat-stroked-button color="primary" class="button-rounded mr-8"
+          <button type="button" mat-stroked-button color="accent" class="button-rounded mr-8"
             *ngIf="checkStatus('DOWNLOAD')" appOnlineOnly tabindex="0"
             (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.download}}</button>
-          <button type="button" mat-stroked-button color="primary" class="button-rounded mr-8"
+          <button type="button" mat-stroked-button color="accent" class="button-rounded mr-8"
             *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-          <button type="button" mat-stroked-button color="primary" class="button-rounded mr-8"
+          <button type="button" mat-stroked-button color="accent" class="button-rounded mr-8"
             *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->
@@ -145,9 +145,7 @@
     </div>
 </mat-toolbar>
 
-<div class="" *ngIf="showCopyLoader">
-  <div class="mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
-</div>
+<div class="mt-40" *ngIf="showCopyLoader">{{resourceService.frmelmnts.lbl.copycontent}}</div>
 
 <app-certificate-name-update-popup *ngIf="showProfileUpdatePopup" [profileInfo]="profileInfo"
   (close)="showProfileUpdatePopup = false"></app-certificate-name-update-popup>
@@ -171,17 +169,17 @@
       </div>
   
       <mat-dialog-content>
-        <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
+        <p class="mat-body-2">{{resourceService?.messages?.stmsg?.m0137}}</p>
       </mat-dialog-content>
   
       <mat-dialog-actions align="end">
-        <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
-          (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
-          {{resourceService.frmelmnts?.btn?.download}}
-        </button>
         <button mat-raised-button class="button-rounded" tabindex="0"
           (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
           {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+        <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
+          (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
+          {{resourceService.frmelmnts?.btn?.download}}
         </button>
       </mat-dialog-actions>
   
@@ -198,18 +196,18 @@
       </div>
   
       <mat-dialog-content>
-        <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCourse | interpolate:'{name}': courseHierarchy?.name}}
+        <p class="mat-body-2">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCourse | interpolate:'{name}': courseHierarchy?.name}}
         </p>
       </mat-dialog-content>
   
       <mat-dialog-actions align="end">
-        <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
-          (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
-          {{resourceService?.frmelmnts?.lbl?.delete}}
-        </button>
         <button mat-raised-button class="button-rounded" tabindex="0"
           (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
           {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+        <button mat-raised-button color="accent" class="button-rounded mr-8" tabindex="0"
+          (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
+          {{resourceService?.frmelmnts?.lbl?.delete}}
         </button>
       </mat-dialog-actions>
   

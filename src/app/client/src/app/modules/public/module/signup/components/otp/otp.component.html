@@ -91,8 +91,8 @@
     <!-- Terms and Conditions popup -->
     <!-- For Minor -->
     <div *ngIf="startingForm && startingForm?.basicInfo?.isMinor" class="my-16">
-      <mat-checkbox class="cursor-pointer font-weight-normal mat-caption terms-checkbox" formControlName="tncAccepted" (click)="generateTelemetry($event)"
-        value="true" type="checkbox" id="tncAccepted"
+      <mat-checkbox class="cursor-pointer font-weight-normal mat-caption terms-checkbox" formControlName="tncAccepted"
+        (click)="generateTelemetry($event)" value="true" type="checkbox" id="tncAccepted"
         name="tncAccepted">{{resourceService?.frmelmnts?.lbl?.tncLabelForMinor}}
         <a class="text-underline" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
           {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
@@ -111,10 +111,11 @@
 
     <!-- For Major -->
     <div *ngIf="startingForm && !startingForm?.basicInfo?.isMinor" class="my-16">
-      <mat-checkbox class="cursor-pointer font-weight-normal mat-caption terms-checkbox" formControlName="tncAccepted" (click)="generateTelemetry($event)"
-        value="true" type="checkbox" id="tncAccepted"
+      <mat-checkbox class="cursor-pointer font-weight-normal mat-caption terms-checkbox" formControlName="tncAccepted"
+        (click)="generateTelemetry($event)" value="true" type="checkbox" id="tncAccepted"
         name="tncAccepted">{{resourceService?.frmelmnts?.lbl?.tncLabelForMajor}}
-        <a class="text-underline mat-caption font-weight-normal" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
+        <a class="text-underline mat-caption font-weight-normal" href="javascript:void(0)" tabindex="0"
+          (click)="showAndHidePopup(true)">
           {{resourceService?.frmelmnts?.lbl?.tncAcceptLabel | interpolate:'{instance}': instance}}
         </a>
       </mat-checkbox>

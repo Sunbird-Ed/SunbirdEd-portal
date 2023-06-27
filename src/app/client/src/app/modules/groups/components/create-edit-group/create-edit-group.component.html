@@ -57,7 +57,7 @@
         {{ resourceService?.frmelmnts?.lbl?.createGroup }}
       </button>
       <button mat-raised-button color="accent" *ngIf="groupId" class="button-rounded" type="button"
-        [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
+        [disabled]="!groupForm.valid || disableBtn"
         (click)="updateGroup({modalId: data?.id});addTelemetry('update-group-form')" tabindex="0">
         {{resourceService?.frmelmnts?.btn?.updateGroup}}
       </button>

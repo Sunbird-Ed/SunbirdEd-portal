@@ -1,7 +1,3 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
-</app-landing-section>
-<!--CC-Player Content Header -->
-
 <mat-toolbar color="primary" class="toolbar-pageback">
   <div class="d-flex flex-ai-center  w-below-sm-100 w-above-sm-60" [ngClass]="{'header-block': isFullScreenView}" *ngIf="contentData">
     <button mat-mini-fab color="accent" type="button" (click)="goBack()" class="button-rounded" tabindex="0"
@@ -48,7 +44,7 @@
   <div [style.display]="!showLoader ? 'block' : 'none'" *ngIf="contentData">
     <!-- CC-Player Video -->
 
-    <div class="sb-g">
+    <div class="sb-g sb-single-resource">
       <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16 cc-player__video"
         [appTelemetryImpression]="telemetryImpression">
         <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData"
