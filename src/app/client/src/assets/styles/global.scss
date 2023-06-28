@@ -310,52 +310,6 @@ app-workspace {
   overflow: hidden;
 }
 
-.sbt-page-header-content {
-  background: var(--sbt-page-header-bg);
-  padding-left: 0px;
-  display: flex;
-  align-items: center;
-  border-radius: 0 0 0 calculateRem(40px);
-  height: calculateRem(80px);
-  padding-bottom: calculateRem(8px);
-
-  @include respond-above(sm) {
-    align-items: flex-end;
-  }
-
-  html[dir="rtl"] & {
-    border-radius: 0px 0px calculateRem(40px) 0px;
-  }
-
-  h1 {
-    color: var(--primary-color);
-    font-size: calculateRem(24px);
-    font-weight: bold;
-    position: relative;
-
-    @include respond-above(sm) {
-      font-size: calculateRem(40px);
-    }
-  }
-
-  svg {
-    position: absolute;
-    width: calculateRem(260px);
-    bottom: calculateRem(-16px);
-    right: calculateRem(32px);
-
-    html[dir="rtl"] & {
-      left: calculateRem(32px);
-      right: inherit;
-    }
-  }
-}
-
-// .sbt-page-content {
-//   position: relative;
-//   min-height: calc(100vh - 20rem);
-// }
-
 .sbt-page-content-area {
   background: none;
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);

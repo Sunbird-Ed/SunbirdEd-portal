@@ -1,28 +1,35 @@
-<div class="sb-modal">
-  <div class="popup">
-    <i class="close inside icon" (click)="modal?.deny()"></i>
-    <div class="popup-header" *ngIf="modal.context.data.content.title">
-      <span>{{ modal.context.data.content.title }}</span>
+<app-modal-wrapper [config]="{disableClose: true, size: 'normal', width: '30rem', panelClass: 'material-modal'}" (dismiss)="modal?.deny()" #modal>
+  <ng-template sbModalContent>
+    <div mat-dialog-title class="mb-0">
+      <h2 class="mb-0" *ngIf="modal.context.data.content.title">{{ modal.context.data.content.title }}</h2>
+      <button mat-mini-fab color="warn" class="ml-auto" aria-label="close dialog"
+        mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
-    <div *ngIf="modal.context.data.content.body.type == 'checkbox'" class="popup-body-checkbox">
-      <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" />
-      <label for="myCheck" innerHtml="{{modal.context.data.content.body.data| interpolate:'{instance}': instance | interpolate:'{instance}': instance}}"></label><br />
-    </div>
-    <div *ngIf="modal.context.data.content.body.type == 'text'">
-      <div class="popup-body" *ngIf="modal.context.data.content.body.data">
-        {{ modal.context.data.content.body.data }}
+    <mat-dialog-content>
+      <div class="alert-modal-component">
+        <div *ngIf="modal.context.data.content.body.type == 'checkbox'" class="popup-body-checkbox">
+          <mat-checkbox type="checkbox" id="myCheck" [(ngModel)]="isChecked">
+            {{modal.context.data.content.body.data| interpolate:'{instance}': instance | interpolate:'{instance}': instance}}
+          </mat-checkbox>
+        </div>
+        <div *ngIf="modal.context.data.content.body.type == 'text'">
+          <div class="mat-body-1" *ngIf="modal.context.data.content.body.data">
+            {{ modal.context.data.content.body.data }}
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class={{modal.context.data.footer.className}}>
-      <div *ngFor="let btn of modal.context.data.footer.buttons">
-        <button
-          [ngClass]="{'sb-btn sb-btn-normal sb-btn-primary':true,'sb-btn-disabled':isChecked == false && btn.type =='accept' && modal.context.data.content.body.type == 'checkbox'}"
-          [disabled]="!isChecked && modal.context.data.content.body.type == 'checkbox' && btn.type=='accept'"
-          tabindex="0" (click)="getMethod(btn)" autofocus>
-          {{ btn.buttonText }}
-        </button>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <div class={{modal.context.data.footer.className}}>
+        <div *ngFor="let btn of modal.context.data.footer.buttons">
+          <button mat-raised-button class="button-rounded"
+            [ngClass]="{'color-accent':true,'disabled':isChecked == false && btn.type =='accept' && modal.context.data.content.body.type == 'checkbox'}"
+            [disabled]="!isChecked && modal.context.data.content.body.type == 'checkbox' && btn.type=='accept'"
+            tabindex="0" (click)="getMethod(btn)" autofocus>
+            {{ btn.buttonText }}
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
+    </mat-dialog-actions>
+  </ng-template>
+</app-modal-wrapper>
