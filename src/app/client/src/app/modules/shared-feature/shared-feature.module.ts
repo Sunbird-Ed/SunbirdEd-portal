@@ -21,7 +21,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CommonFormElementsModule } from '@project-sunbird/common-form-elements-full';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashletModule } from  'sb-dashlet-v14';
+import { DashletModule } from  '@project-sunbird/sb-dashlet';
 import { FrameworkCatLabelTranslatePipe } from './pipe/framework-label-translate/framework-label-translate.pipe';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
