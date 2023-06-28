@@ -1,16 +1,15 @@
-<mat-accordion class="sb-mat-accordion sb-desktop-content-manager"
-  [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true, 'hide': visibility === false}"
+<mat-accordion [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true, 'hide': visibility === false}"
   *ngIf="contentResponse?.length"> 
   <mat-expansion-panel [expanded]="isOpen" (click)="getContentList()">
     <mat-expansion-panel-header>
-      <mat-panel-title class="sb-mat-accordion__title" appTelemetryInteract [telemetryInteractEdata]="getTelemetryInteractData()">
+      <mat-panel-title appTelemetryInteract [telemetryInteractEdata]="getTelemetryInteractData()">
         {{resourceService?.frmelmnts?.lbl?.contentManager}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div *ngIf="contentResponse" class="sb-mat-accordion__content">
-      <div class="sb-single-pannel-accordion-list-item flex-ai-center text-left"
+    <div *ngIf="contentResponse">
+      <div class="text-left"
         *ngFor="let data of contentResponse">
-        <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
+        <mat-icon *ngIf="data.status === 'completed'">check_circle</mat-icon>
         <div class="download-details-container" [ngClass]="{'cursor-pointer': data.status === 'completed'}" tabindex="0"
           (click)="openContent(data)">
           <div class="d-flex flex-ai-center flex-w-wrap">
@@ -18,7 +17,7 @@
 
             <!-- Buttons -->
             <button *ngIf="cancelId !== data.id && (data.status === 'pausing' || data.status === 'inProgress')"
-              type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" tabindex="0"
+              type="button" mat-raised-button class="color-accent button-rounded ml-8" tabindex="0"
               (click)="contentManagerActions(data.addedUsing, 'Pause', data.id); updateLocalStatus(data, 'pausing');"
               [disabled]="data.status === 'pausing'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('pause', data.downloadedSize)"
@@ -29,7 +28,7 @@
 
             <button
               *ngIf="cancelId !== data.id && (data.status === 'paused' || data.status === 'resume' || data.status === 'resuming')"
-              type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" tabindex="0"
+              type="button" mat-raised-button class="color-accent button-rounded ml-8" tabindex="0"
               (click)="contentManagerActions(data.addedUsing, 'Resume', data.id); updateLocalStatus(data, 'resuming');"
               [disabled]="data.status === 'resuming'  || data.status === 'resume'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('resume', data.downloadedSize)"
@@ -40,7 +39,7 @@
 
             <button
               *ngIf="(data.status === 'inProgress' || data.status === 'inQueue' || data.status === 'paused') && cancelId !== data.id"
-              type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" tabindex="0"
+              type="button" mat-raised-button color="warn" class="button-rounded ml-8" tabindex="0"
               (click)="cancelId = data.id;" [disabled]="data.status === 'canceling'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('cancel', data.downloadedSize)"
               [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
@@ -49,7 +48,7 @@
             </button>
 
             <button *ngIf="data.status === 'failed' || data.status === 'retrying'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8" tabindex="0"
+              mat-raised-button color="warn" class="button-rounded ml-8" tabindex="0"
               (click)="contentManagerActions(data.addedUsing, 'Retry', data.id); updateLocalStatus(data, 'retrying');"
               [disabled]="data.status === 'retrying'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('retry', data.downloadedSize)"
@@ -62,13 +61,13 @@
           </div>
 
           <!-- File details -->
-          <div class="info-text" *ngIf="data.totalSize && data.status !== 'inProgress'">{{data.totalSize | filesize}}
+          <div class="d-inline-block mat-caption mb-8 w-auto" *ngIf="data.totalSize && data.status !== 'inProgress'">{{data.totalSize | filesize}}
           </div>
 
-          <div *ngIf="data.addedUsing === 'download' && data.status === 'inProgress'" class="info-text">
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'inProgress'" class="d-inline-block mat-caption mb-8 w-auto">
             {{resourceService?.frmelmnts?.lbl?.downloading}}&nbsp;{{data.totalSize | filesize}}</div>
 
-          <div *ngIf="data.addedUsing === 'import' && data.status === 'inProgress'" class="info-text">
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'inProgress'" class="d-inline-block mat-caption mb-8 w-auto">
             {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
           <!-- File details -->
 
@@ -80,57 +79,57 @@
           <!-- Progress bar -->
 
           <!-- Content status -->
-          <div *ngIf="data.status === 'paused' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+          <div *ngIf="data.status === 'paused' && data.addedUsing === 'import'" class="color-accent mat-body-1">
             {{resourceService?.frmelmnts?.lbl?.uploadPaused}} </div>
 
-          <div *ngIf="data.status === 'retrying' && data.addedUsing === 'download'" class="fs-0-785 sb-color-primary">
+          <div *ngIf="data.status === 'retrying' && data.addedUsing === 'download'" class="color-accent mat-body-1">
             {{resourceService?.frmelmnts?.btn?.resuming}} </div>
 
-          <div *ngIf="data.status === 'paused' && data.addedUsing === 'download'" class="fs-0-785 sb-color-primary">
+          <div *ngIf="data.status === 'paused' && data.addedUsing === 'download'" class="color-accent mat-body-1">
             {{resourceService?.frmelmnts?.lbl?.downloadPaused}} </div>
 
-          <div *ngIf="(data.status === 'resuming' || data.status === 'resume')" class="fs-0-785 sb-color-primary">
+          <div *ngIf="(data.status === 'resuming' || data.status === 'resume')" class="color-accent mat-body-1">
             {{resourceService?.frmelmnts?.btn?.resuming}} </div>
 
-          <div *ngIf="data.status === 'pausing'" class="fs-0-785 sb-color-primary">
+          <div *ngIf="data.status === 'pausing'" class="color-accent mat-body-1">
             {{resourceService?.frmelmnts?.btn?.pausing}} </div>
 
-          <div *ngIf="data.status === 'canceling'" class="fs-0-785 sb-color-primary">
+          <div *ngIf="data.status === 'canceling'" class="color-accent mat-body-1">
             {{resourceService?.frmelmnts?.btn?.canceling}} </div>
-          <div *ngIf="data.status === 'completed'" class="fs-0-785 sb-color-success">
+          <div *ngIf="data.status === 'completed'" class="mat-caption color-success">
             {{resourceService?.frmelmnts?.btn?.completed}} </div>
-          <div *ngIf="data.status === 'extract'" class="fs-0-785 sb-color-success">
+          <div *ngIf="data.status === 'extract'" class="mat-caption color-success">
             {{resourceService?.frmelmnts?.desktop?.lbl?.completing}} </div>
-          <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="fs-0-785 sb-color-error">
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="mat-caption color-error">
             {{resourceService?.frmelmnts?.lbl?.downloadFailed}} </div>
 
-          <div *ngIf="data.addedUsing === 'import' && data.status === 'failed'" class="fs-0-785 sb-color-error">
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'failed'" class="mat-caption color-error">
             {{resourceService?.frmelmnts?.lbl?.uploadFailed}} </div>
 
-          <div *ngIf="data.addedUsing === 'import' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'inQueue'" class="mat-caption color-warn">
             {{resourceService?.frmelmnts?.lbl?.waitingForUpload}} </div>
 
-          <div *ngIf="data.addedUsing === 'download' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'inQueue'" class="mat-caption color-warn">
             {{resourceService?.frmelmnts?.lbl?.waitingForDownload}} </div>
           <!-- Content status -->
 
           <!-- Cancel confirmation message -->
           <div class="d-flex flex-ai-center mt-8 ml-0"
             *ngIf="cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
-            <div *ngIf="data.addedUsing === 'import'" class="fs-1 font-weight-bold sb-color-error mr-auto">
+            <div *ngIf="data.addedUsing === 'import'" class="mat-subheading-1 font-weight-bold color-error mr-auto">
               {{resourceService?.frmelmnts?.lbl?.cancelUpload}}
             </div>
-            <div *ngIf="data.addedUsing === 'download'" class="fs-1 font-weight-bold sb-color-error mr-auto">
+            <div *ngIf="data.addedUsing === 'download'" class="mat-subheading-1 font-weight-bold color-error mr-auto">
               {{resourceService?.frmelmnts?.lbl?.cancelDownload}}
             </div>
             <button tabindex="0"
               (click)="contentManagerActions(data.addedUsing, 'Cancel', data.id); updateLocalStatus(data, 'canceling'); cancelId = '';"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button" appTelemetryInteract
+              class="button-rounded color-accent ml-8" mat-raised-button type="button" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('confirm-cancel', getContentPercentage(data.downloadedSize, data.totalSize))"
               [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
               [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.yes}} </button>
-            <button tabindex="0" (click)="cancelId = '';" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
+            <button tabindex="0" (click)="cancelId = '';" mat-raised-button color="error" class="button-rounded ml-8"
               type="button" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('deny-cancel', getContentPercentage(data.downloadedSize, data.totalSize))"
               [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"

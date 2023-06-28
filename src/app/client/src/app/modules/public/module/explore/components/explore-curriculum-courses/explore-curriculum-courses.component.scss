@@ -1,6 +1,6 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'pages/content-header' as *;
-.sbgrid {
+.ex-cc-course-card {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
   grid-gap: 1rem;
