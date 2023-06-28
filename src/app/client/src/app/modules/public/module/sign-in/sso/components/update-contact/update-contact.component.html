@@ -41,9 +41,11 @@
                 *ngIf="!userBlocked && !isValidIdentifier && contactForm.type === 'phone' && contactDetailsForm.controls.value && disableSubmitBtn && contactDetailsForm.controls.value.touched"
                 class="color-warn mat-caption mt-8">
                 {{ resourceService.frmelmnts?.lbl?.validPhone}}</label>
-              <div *ngIf="contactForm.type === 'email'" class="sb-field">
-                <input [(ngModel)]="contactForm.value" matInput name="value"
-                  placeholder="{{ resourceService.frmelmnts?.lbl?.email }}" required>
+              <div *ngIf="contactForm.type === 'email'">
+                <mat-form-field appearance="fill">
+                  <input [(ngModel)]="contactForm.value" matInput name="value"
+                    placeholder="{{ resourceService.frmelmnts?.lbl?.email }}" required>
+                </mat-form-field>
                 <!-- pattern="validationPattern.email" -->
               </div>
               <label

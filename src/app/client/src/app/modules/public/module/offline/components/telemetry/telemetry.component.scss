@@ -4,12 +4,10 @@
   font-size: calculateRem(16px);
   font-weight: bold;
   border-bottom: calculateRem(1px) solid var(--primary-color);
-  color: var(--primary-color);
 }
 
 .profile-telemetry-subtitle {
   font-size: calculateRem(14px);
-  color: var(--primary-color) !important;
 }
 
 .share-tele-btn {
@@ -20,17 +18,7 @@
   }
 }
 
-.sb-checkbox label,
-.sb-radio-btn-checkbox label {
-  color: var(--primary-color);
-  font-weight: normal;
-}
-
 .profile-description {
   width: 100%;
   max-width: calculateRem(160px);
-}
-
-.profile-description-title {
-  color: var(--primary-color) !important;
 }

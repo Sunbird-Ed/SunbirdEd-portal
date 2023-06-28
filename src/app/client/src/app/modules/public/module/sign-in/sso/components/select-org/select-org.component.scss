@@ -1,2 +1,6 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use 'pages/sign_in_up' as *;
+
+.width-300 {
+    width: calculateRem(300px) !important;
+}

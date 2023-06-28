@@ -7,7 +7,15 @@
       <div class="p-8">
         <div class="d-flex flex-dc sb-radio-btn-checkbox sb-radio-btn-secondary m-0 mb-16"
           [ngClass]="{'disable-color': !isConnected}">
-          <div class="d-flex flex-ai-center">
+          <mat-radio-group class="d-flex flex-ai-center w-100">
+            <mat-radio-button type="radio" id="online" [value]="'online'" [disabled]="!isConnected" [checked]="isConnected"
+            (change)="onChange('browse')">{{resourceService?.frmelmnts?.lbl?.library}}</mat-radio-button>
+            <div class="bgcolor-warn ml-16" *ngIf="!isConnected"><span
+              class="mr-8"></span>{{resourceService?.frmelmnts?.lbl?.offline}}</div>
+            <div class="bgcolor-success ml-16" *ngIf="isConnected"><span
+              class="sb-live mr-8"></span>{{resourceService?.frmelmnts?.lbl?.online}}</div>
+          </mat-radio-group>
+          <!-- <div class="d-flex flex-ai-center">
             <input type="radio" id="online" name="example" [disabled]="!isConnected" [checked]="isConnected"
               (change)="onChange('browse')">
             <label for="online" class="mb-0" [ngClass]="{'font-weight-bold': !addImportFontWeight}"
@@ -16,23 +24,29 @@
                 class="sb-live-error mr-8"></span>{{resourceService?.frmelmnts?.lbl?.offline}}</div>
             <div class="sb-label sb-label-table sb-label-success-0 ml-12" *ngIf="isConnected"><span
                 class="sb-live mr-8"></span>{{resourceService?.frmelmnts?.lbl?.online}}</div>
-          </div>
-          <div class="sb-radio-title py-8 fs-0-92">{{resourceService?.messages?.stmsg?.m0031 |
+          </div> -->
+          <div class="pl-24 pr-8 mat-body-1">{{resourceService?.messages?.stmsg?.m0031 |
             interpolate:'{instance}': instance}} &lrm;</div>
         </div>
-        <div class="d-flex flex-dc sb-radio-btn-checkbox sb-radio-btn-secondary">
+        <mat-radio-group class="d-flex flex-ai-center w-100">
+          <mat-radio-button type="radio" id="offline" [value]="'offline'" [checked]="!isConnected" (change)="onChange('import')">{{resourceService?.frmelmnts?.lbl?.drive}}</mat-radio-button>
+        </mat-radio-group>
+        <div class="pl-24 pr-8 mat-body-1">{{resourceService?.messages?.stmsg?.m0036 |
+          interpolate:'{instance}': instance}} &lrm;</div>
+
+        <!-- <div class="d-flex flex-dc sb-radio-btn-checkbox sb-radio-btn-secondary">
           <div class="d-flex flex-ai-center">
             <input type="radio" id="offline" name="example2" [checked]="!isConnected" (change)="onChange('import')">
             <label class="font-weight-bold mb-0" id="" for="offline"
               [ngClass]="{'font-weight-bold': addImportFontWeight}">{{resourceService?.frmelmnts?.lbl?.drive}}</label>
           </div>
-          <div class="sb-radio-title py-8 fs-0-92">{{resourceService?.messages?.stmsg?.m0036 |
+          <div class="pl-24 pr-8 mat-body-1">{{resourceService?.messages?.stmsg?.m0036 |
             interpolate:'{instance}': instance}} &lrm;</div>
-        </div>
+        </div> -->
       </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button type="button" mat-raised-button class="button-rounded mr-8" tabindex="0" (click)="closeModal()"
+      <button type="button" mat-raised-button class="button-rounded" tabindex="0" (click)="closeModal()"
         appTelemetryInteract
         [telemetryInteractEdata]="cancelTelemetryInteractEdata">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
       <button mat-raised-button color="accent" class="button-rounded" tabindex="0" (click)="navigate()"

@@ -32,21 +32,3 @@
   }
 }
 
-.ui.dimmer .ui.loader:before {
-  border-color: rgba(var(--rc-rgba-white), 0.01);
-}
-.ui.dimmer .ui.loader:after {
-  border-color: var(--primary-200) transparent transparent;
-}
-
-// sb grid template css
-.sbgrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
-  grid-gap: 1rem;
-  grid-row-gap: 1.5rem;
-}
-
-.sb--card:hover {
-  transform: none !important;
-}
