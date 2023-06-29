@@ -83,7 +83,7 @@ export default class FileSDK {
   }
 
   zip(Path: string, destPath: string, fileName: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       let output = fs.createWriteStream(
         path.join(this.prefixPath, destPath, fileName)
       );
