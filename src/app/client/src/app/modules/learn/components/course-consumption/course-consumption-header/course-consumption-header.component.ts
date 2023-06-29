@@ -99,7 +99,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   enrollmentEndDate: string;
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   showError = false;
-  isGroupURL: String;
+  isGroupURL: Boolean;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, public router: Router, public permissionService: PermissionService,
