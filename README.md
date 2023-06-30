@@ -65,7 +65,7 @@ Installing Sunbird requires two primary software components:
 
 | Software dependencies |  |
 | :--- | ------- |
-| **[Node](https://nodejs.org/en/download/)** | > 16.19.x (Install the latest release of LTS version) |
+| **[Node](https://nodejs.org/en/download/)** | > 18.16.x (Install the latest release of LTS version) |
 | **[Angular CLI](https://angular.io/cli#installing-angular-cli)** | > 14.x.x (Install the latest Angular CLI version) |
 | **[yarn](https://classic.yarnpkg.com/en/)** | Latest version of yarn: `npm install --global yarn` |
 | **[nodemon](https://www.npmjs.com/package/nodemon)** | Latest version  of nodemon: `npm install -g nodemon` |

@@ -28,8 +28,8 @@
     "webpack-bundle-analyzer": "^3.7.0"
   },
   "engines": {
-    "node": ">=16.19.0",
-    "npm": ">=8.19.3"
+    "node": ">=18.16.1",
+    "npm": ">=9.5.1"
   },
   "nodemonConfig": {
     "ignore": [
