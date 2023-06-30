@@ -1,33 +1,21 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.sbgrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
-    grid-gap: 1rem;
+:host{
+  .ui.tabular.menu.report-menu .item{
+    width: 50%;
+    display: flex;
+    justify-content: center;
   }
+}
 
-  @media screen and (max-width: 1024px) {
-    .sb__DesktopOnly {
-      display: none;
+:host::ng-deep {
+  .listallreports-section {
+    .dataTables_wrapper .dataTables_filter input {
+      outline: 0;
+      background-color: var(--white) !important;
     }
-  } 
-
-  :host{
-    .ui.tabular.menu.report-menu .item{
-      width: 50%;
-      display: flex;
-      justify-content: center;
-    }
-  }
-
-  :host::ng-deep {
-    .listallreports-section {
-      .dataTables_wrapper .dataTables_filter input {
-        outline: 0;
-        background-color: var(--white) !important;
-      }
-      .sb-table .sb-table-striped tbody tr:nth-child(2n) {
-        background-color: var(--primary-0);
-      }
+    .sb-table .sb-table-striped tbody tr:nth-child(2n) {
+      background-color: var(--primary-0);
     }
   }
+}

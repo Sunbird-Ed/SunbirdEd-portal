@@ -1,37 +1,6 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.sb-prominent-filter-field {
-  .form-control {
-
-    &:focus {
-      border: calculateRem(1px) solid var(--rc-dddddd);
-      border-radius: calculateRem(24px);
-    }
-
-    &::placeholder {
-      color: var(--black);
-      opacity: 1;
-    }
-
-    &:-ms-input-placeholder {
-      color: var(--black);
-    }
-
-    &::-ms-input-placeholder {
-      color: var(--black);
-    }
-  }
-
-  .md-drppicker .ranges ul li {
-    margin-bottom: calculateRem(8px);
-  }
-
-}
-
-
-.sb-prominent-filter
-  .sb-prominent-filter-container
-  .sb-prominent-filter-field:last-child {
+.sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
   margin-left: 0;
   margin-top: 0;
   text-align: left;
@@ -39,23 +8,8 @@
   padding-right: calculateRem(16px);
 }
 
-.sb-prominent-filter
-  .sb-prominent-filter-container
-  .sb-prominent-filter-field {
-    margin-bottom:  calculateRem(24px);
-  }
-
-.reset-filter-section {
-    display: block !important;
-    position: relative;
-
-  right: 0;
-  top: calculateRem(2px);
-  align-items: center;
-
-  .selection {
-    padding: calculateRem(8px);
-  }
+.sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field {
+  margin-bottom: calculateRem(24px);
 }
 
 .sb-filter-label {
@@ -63,14 +17,9 @@
   width: 100%;
   .sb-label-value {
     border-radius: calculateRem(24px);
-    padding: calculateRem(7px) !important;
-    padding-left: calculateRem(9px) !important;
-    padding-right: calculateRem(9px) !important;
-
+    padding: calculateRem(8px) !important;
     background-color: var(---rc-e9e8d9) !important;
     box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(3px) 0 var(--gray-100) !important;
-    color: var(--gray-800);
-
     margin-bottom: calculateRem(4px);
     margin-right: calculateRem(4px);
    
@@ -80,152 +29,6 @@
   }
 }
 
-:host ::ng-deep {
-  .ui.toggle.checkbox input:checked ~ label,
-  .ui.checkbox input.hidden + label {
-    margin-bottom: 0px;
-  }
-
-  .ui.toggle.checkbox .box:before,
-  .ui.toggle.checkbox label:before {
-    background: rgba(var(--rc-rgba-black), 0.2);
-  }
-
-  .ui.toggle.checkbox .box:after,
-  .ui.toggle.checkbox label:after {
-    width: 1.5rem;
-    height: 1.2rem;
-    top: calculateRem(2px);
-  }
-
-  .ui.toggle.checkbox input ~ .box:after,
-  .ui.toggle.checkbox input ~ label:after {
-    left: 0.1rem;
-  }
-
-  .ui.toggle.checkbox input:checked ~ .box:after,
-  .ui.toggle.checkbox input:checked ~ label:after {
-    left: 1.8rem;
-  }
-
-  .ui.styled.accordion,
-  .ui.styled.accordion .accordion {
-    box-shadow: none;
-    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
-  }
-
-  .graph-filters {
-    .ui.form {
-      min-height: calculateRem(36px);
-    }
-
-    .ui.styled.accordion .accordion .title,
-    .ui.styled.accordion .title {
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    .ui.styled.accordion .accordion .content,
-    .ui.styled.accordion .content {
-      padding: 0;
-    }
-
-    .ui.styled.accordion,
-    .ui.styled.accordion .accordion {
-      box-shadow: none;
-      border-bottom: calculateRem(1px) solid var(--rc-dddddd);
-    }
-  }
-}
-
-.sb-prominent-filter-field {
-  ::ng-deep {
-    label {
-      padding-bottom: calculateRem(2px);
-      margin-bottom: 0px !important;
-      margin-left: calculateRem(10px) !important;
-    }
-    .md-drppicker {
-      padding: calculateRem(16px) calculateRem(8px);
-
-      .ranges ul li {
-        margin-bottom: calculateRem(8px);
-      }
-
-      .btn {
-        background-color: var(--primary-400);
-        margin-right: calculateRem(16px);
-        line-height: calculateRem(32px);
-      }
-
-      .buttons {
-        margin: 0;
-      }
-    }
-  }
-}
-
-.ui.dropdown.selection 
-::ng-deep {
-  .menu {
-    padding-top: calculateRem(16px);
-    border-radius: calculateRem(16px) !important;
-  }
-} 
-
-.ui.form {
-  ::ng-deep {
-    sui-accordion {
-      sui-accordion-panel {
-        .title {
-          padding-top: calculateRem(8px) !important;
-        }
-      }
-    }
-  }
-}
-
-.ui.selection.dropdown {
-  color: var(--ui-dropdown-selection-icon) !important;  
-  box-sizing: border-box;
-  height: calculateRem(40px) !important;
-  border: calculateRem(1px) solid var(--rc-e2e3e5);
-  border-radius: calculateRem(24px);
-  background-color: var(--white); 
-}
-
-.ui.selection.dropdown {
-  ::ng-deep { 
-    .text {
-      font-size: calculateRem(18px) !important;
-    }
- }
-}
-
-sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
-  min-width: calculateRem(250px) !important;
-  min-height: calculateRem(40px) !important;
-  font-size: calculateRem(16px) !important;
-}
 .sb-prominent-filter {
  background: var(---rc-e9e8d9) !important; 
-}
-
-.errorMessage{
-  color:var(--ck-color-base-error);
-  margin-left: 1.875rem;
-  margin-top: 0.625rem;
-}
-
-::ng-deep{
-  .modals.dimmer .ui.scrolling.modal {
-    margin: 3.5rem auto auto !important;
-  }
-}
-.additional-selection {
-  opacity: 0.75;
-  font-size: 0.75em;
-}
-.select-container{
-  margin-top:calculateRem(10px);
 }
