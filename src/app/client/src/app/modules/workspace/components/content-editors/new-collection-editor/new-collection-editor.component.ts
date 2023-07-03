@@ -328,6 +328,8 @@ export class NewCollectionEditorComponent implements OnInit, OnDestroy {
         cloudStorage: _.get(this.config, 'editorConfig.COLLECTION_EDITOR.cloudStorage', {})
       },
       config: {
+        primaryCategory: this.collectionDetails.primaryCategory,
+        objectType: _.get(this.collectionDetails, 'objectType') || 'QuestionSet',
         mode: this.getEditorMode(),
         questionSet: {
           maxQuestionsLimit: this.sunbirdQuestionSetChildrenLimit
