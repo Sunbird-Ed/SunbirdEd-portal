@@ -8,19 +8,3 @@
   .administrator-text {
     font-style: italic;
   }
-
-
-  .administrator-text {
-    font-style: italic;
-    color:var(--gray-200);
-  }
-  .download-section-text{
-    font-size: calculateRem(14px);
-    color: var(--gray-800);
-  }
-  ::ng-deep {
-    html[layout=joy] .sb-btn-normal {
-      height: 2rem;
-      box-shadow: none;
-   }
-  }
