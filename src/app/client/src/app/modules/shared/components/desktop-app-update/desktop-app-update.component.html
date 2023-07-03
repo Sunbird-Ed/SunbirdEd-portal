@@ -1,4 +1,4 @@
-<app-modal-wrapper *ngIf="isUpdateAvailable" [config]="{disableClose: true, size: 'normal', width: '45rem'}" (dismiss)="modal.deny()" #modal>
+<app-modal-wrapper *ngIf="isUpdateAvailable" [config]="{disableClose: true, size: 'normal', width: '45rem', panelClass: 'material-modal' }" (dismiss)="modal.deny()" #modal>
   <ng-template sbModalContent>
     <div mat-dialog-title class="mb-0">
       <button mat-mini-fab color="warn" class="ml-auto" aria-label="close updatePopupClose"
@@ -6,19 +6,19 @@
     </div>
 
     <mat-dialog-content>
-      <div class="sb-offline-updates pb-32">
-        <div class="sb-offline-updates-content text-center">
-          <div class="sb-offline-updates-content-logo">
+      <div class="mat-bg-white pb-32">
+        <div class="text-center">
+          <div class="offline-updates">
             <img src="assets/images/Group16.svg" class="logo" alt="DEV Logo" />
           </div>
-          <div class="sb-offline-updates-content-desc mb-32">
-            <h3 class="sb-offline-updates-content-title mt-16 mb-8 font-weight-bold">
+          <div class="mb-32">
+            <h3 class="mat-title mt-16 mb-8 font-weight-bold">
               {{resourceService.frmelmnts?.lbl?.appUpdateAvailable}}</h3>
-            <p class="sb-offline-updates-content-para">
+            <p class="mat-small">
               {{resourceService.frmelmnts?.lbl?.appUpdateDescription}}
             </p>
           </div>
-          <div class="sb-offline-label">
+          <div class="mat-subheading-1">
             <div class="d-inline-flex">
               <span class="sb-label-name mr-8">{{resourceService.frmelmnts?.lbl?.useThis}}</span>
               <span>
@@ -28,7 +28,6 @@
               </span>
             </div>
           </div>
-          <!-- <p class="sb-offline-updates-content-para mt-4">*Requires Windows 64 bit operating system</p> -->
         </div>
       </div>
     </mat-dialog-content>

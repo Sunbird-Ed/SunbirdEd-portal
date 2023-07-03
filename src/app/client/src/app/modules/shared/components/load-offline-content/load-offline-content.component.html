@@ -1,7 +1,7 @@
 <!--Load content-->
 <div class="mat-app-background mr-16 p-24 mb-24 br-24" *ngIf="!hideLoadButton">
   <h4 class="mat-body-2 mb-0">{{resourceService?.frmelmnts?.lbl?.downloadBooks}}</h4>
-  <button mat-raised-button color="success" class="button-rounded my-8 w-100 fs-1 sb-offline-load-content-btn" type="button"
+  <button mat-raised-button color="success" class="button-rounded my-8 w-100" type="button"
     tabindex="0" (click)="showLoadContentModal = true">
     {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
 </div>

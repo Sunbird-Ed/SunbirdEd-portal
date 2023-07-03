@@ -19,6 +19,10 @@
   $error: mat.define-palette(mat.$orange-palette);
   color: mat.get-color-from-palette($error, 900) !important;
 }
+@mixin color-gray {
+  $gray: mat.define-palette(mat.$grey-palette);
+  color: mat.get-color-from-palette($gray, 500) !important;
+}
 
 @mixin theme-var-colors($theme) {
 
@@ -33,6 +37,7 @@
   $info: mat.define-palette(mat.$blue-palette);
   $success: mat.define-palette(mat.$green-palette);
   $error: mat.define-palette(mat.$orange-palette);
+  $gray: mat.define-palette(mat.$grey-palette);
 
   $color-primary: mat.get-color-from-palette($primary);
   $color-accent: mat.get-color-from-palette($accent);
@@ -40,13 +45,14 @@
   $color-success: mat.get-color-from-palette($success);
   $color-info: mat.get-color-from-palette($info);
   $color-error: mat.get-color-from-palette($error);
-
+  $color-gray: mat.get-color-from-palette($gray);
   --color-primary: #{$color-primary};
   --color-accent: #{$color-accent};
   --color-warn: #{$color-warn};
   --color-success: #{$color-success};
   --color-info: #{$color-info};
   --color-error: #{$color-error};
+  --color-gray: #{$color-gray};
 
   /* color starts */
   .color-primary,
@@ -78,7 +84,12 @@
   .hover-color-error:hover {
     color: var(--color-error);
   }
-
+  .color-white{
+    color: mat.get-color-from-palette($background, background);
+  }
+  .color-gray{
+    color:var(--color-gray)
+  }
   /* color ends */
 
   /* bg color starts */

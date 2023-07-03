@@ -1,93 +1,12 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
-.appPopup-header {
-  font-weight: 500 !important;
-  font-size: 1rem !important;
-  display: flex !important;
-  align-content: flex-start;
-}
-
-.appPopup-header .small {
-  font-size: 0.7857rem;
-  line-height: 1.3;
-}
 .appPopup-logo {
   width: calculateRem(65px);
   height: calculateRem(65px);
-  float: left;
-}
-
-.appPopup-cover .ui .actions {
-  background: transparent !important;
-  justify-content: center !important;
-  display: flex;
-}
-
-.appPopup-mobile .modal .header {
-  padding-right: 1rem !important;
-}
-
-.appPopup-mobile .ui.button {
-  font-weight: 600;
-  width: calculateRem(135px);
-  height: calculateRem(38px);
-  line-height: calculateRem(38px);
-  margin-left: 0.25em !important;
-}
-
-.appPopup-computer .ui.button {
-  font-weight: 600;
-  min-width: calculateRem(170px);
-}
-
-.text-lightGray {
-  color: var(--gray-200) !important;
-}
-
-.ui.basic.button,
-.ui.basic.buttons .button {
-  background-color: var(--white) !important;
-}
-
-.ui.positive.button,
-.ui.positive.buttons .button {
-  background-color: var(--secondary-color);
-}
-
-.ui.positive.button:hover,
-.ui.positive.buttons .button:hover {
-  opacity: 0.9;
-}
-
-.ui.basic.positive.button,
-.ui.basic.positive.buttons .button {
-  border-color: var(--secondary-color) !important;
-  color: var(--secondary-color) !important;
-}
-
-.ui.basic.positive.button:hover,
-.ui.basic.positive.buttons .button:hover {
-  opacity: 0.9;
-}
-
-.img-cover {
-  border: calculateRem(1px) solid var(--gray-200);
-  border-radius: calculateRem(2px);
-  background-color: var(--gray-0);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.img-cover img {
-  max-width: 100%;
-  max-height: 100%;
-  height: auto;
-  width: auto;
-}
-
-.modal.mini.fixed-small {
-  max-width: calculateRem(320px);
-  width: 100%;
-  transform: translate(-50%, -50%);
+  border: 0.0625rem solid var(--color-gray);
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
+  }
 }

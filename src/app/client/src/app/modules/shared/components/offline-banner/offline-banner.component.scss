@@ -27,36 +27,3 @@
   z-index: 999;
   border-radius: calculateRem(4px) calculateRem(4px) 0 0;
 }
-.sb-banner-content {
-  display: flex;
-  align-items: center;
-}
-.sb-banner-heading {
-  font-weight: bold;
-  font-size: calculateRem(18px);
-}
-.sb-banner-content-left {
-  display: flex;
-}
-[dir="ltr"] {  
-  .sb-banner-close-icon.close.icon {
-    width: 1rem;
-    margin-left: 1.5rem;
-    font-size: 1.5rem;
-  }
-  .sb-banner-content-left {
-    margin-left:auto;
-  }
-}
-[dir="rtl"] {
-  .sb-banner-close-icon.close.icon {
-    width: 1rem;
-    margin-right: 1.5rem;
-    font-size: 1.5rem;
-  }
-  .sb-banner-content-left {
-    margin-right:auto;
-  }
-}
-
-/* banner style ends */

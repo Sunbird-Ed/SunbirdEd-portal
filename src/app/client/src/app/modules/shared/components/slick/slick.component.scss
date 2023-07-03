@@ -5,23 +5,6 @@
   position: relative;
   min-height: 7rem;
 }
-.mat-slick-button {
-  background-color: var(--white);
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 999;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--tertiary-color);
-  box-shadow: var(--sbt-box-shadow-6px);
-  border: 0.0625rem solid var(--sbt-body-bg);
-  &:hover {
-    box-shadow: none;
-  }
-}
 .prevBtn, .nextBtn {
 	position: absolute;
   top: 50%;
@@ -78,7 +61,7 @@
       content: "";
       position: absolute;
       border-radius: 50%;
-      background-color: var(--gray-800);
+      background-color: var(--color-gray);
     }
   }
   .slickDots.active {
@@ -88,7 +71,7 @@
       border-radius: 50%;
       width: 0.75rem;
       height: 0.75rem;
-      background-color: var(--gray-300);
+      background-color: var(--color-gray);
     }
   }
 }
