@@ -72,16 +72,16 @@ done
       cd ..
   fi
 
-  yarn install --force
+  yarn cache clean --all && yarn install --force
   npm run  resource-bundles
   cd ../desktop/OpenRAP
-  yarn install --force
+  yarn cache clean --all && yarn install --force
 
   printLog "Packaging OpenRAP"
   npm run pack
   cd ..
   yarn --update-checksums
-  yarn install --force
+  yarn cache clean --all && yarn install --force
 
   printLog "Starting tsc to compile/execute tsconfig.json"
   npm run build-ts
