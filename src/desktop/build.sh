@@ -70,6 +70,7 @@ done
       cd ..
   fi
 
+
   yarn install
   npm run  resource-bundles
   cd ../desktop/OpenRAP
