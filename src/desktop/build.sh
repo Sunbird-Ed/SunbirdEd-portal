@@ -2,6 +2,8 @@
 # Install python
 apt update && apt install -y python3.7 build-essential
 
+apk update && apk add git
+
 export PYTHON=/usr/bin/python3.7
 # ARGUMENTS copy=false build=false yarn=false
 # https://stackoverflow.com/questions/46354149/how-do-i-parse-command-line-argumentsas-key-value-pair-in-bash-with-arguments
@@ -69,7 +71,6 @@ done
       checkArgument npm run prod-desktop
       cd ..
   fi
-
 
   yarn install
   npm run  resource-bundles
