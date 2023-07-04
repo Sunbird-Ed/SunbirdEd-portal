@@ -76,8 +76,8 @@ done
   yarn cache clean --all && yarn install --force
 
   printLog "Packaging OpenRAP"
-  sudo chown -R 113:117 "/root/.npm"
-  
+  chown -R 113:117 "/root/.npm"
+
   npm run pack
   cd ..
   yarn --update-checksums
