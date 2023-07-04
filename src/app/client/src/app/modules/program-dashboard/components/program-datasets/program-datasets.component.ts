@@ -747,7 +747,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       };
       const request = {
         request: {
-          dataset: 'druid-dataset',
+          dataset: this.selectedReport['dataset'],
           tag: this.hashedTag,
           requestedBy: this.userId,
           datasetConfig: config,
