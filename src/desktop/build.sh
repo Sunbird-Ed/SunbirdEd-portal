@@ -2,7 +2,7 @@
 # Install python
 apt update && apt install -y python3.7 build-essential
 
-apk update && apk add git
+apk update && apk install git
 
 export PYTHON=/usr/bin/python3.7
 # ARGUMENTS copy=false build=false yarn=false
