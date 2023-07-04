@@ -1,6 +1,8 @@
 <ng-container #outlet [ngTemplateOutlet]="content">
 </ng-container>
 <ng-template #content>
+  <button type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn flex-as-flex-end" (click)="exportToCsv()"><i
+      class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>
   <sb-dashlet [type]="'table'" [data]="(globalChange ? filtered : unfiltered )| bigData"
     [config]="table?.config ? table.config : table.columnsConfiguration" #lib>
     <ng-template sbTemplateRef="header" let-config>

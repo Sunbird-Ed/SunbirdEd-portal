@@ -1,5 +1,8 @@
 #!/bin/bash
+# Install python
+apt update && apt install -y python3.7 build-essential
 
+export PYTHON=/usr/bin/python3.7
 # ARGUMENTS copy=false build=false yarn=false
 # https://stackoverflow.com/questions/46354149/how-do-i-parse-command-line-argumentsas-key-value-pair-in-bash-with-arguments
 for argument; do #syntactic sugar for: for argument in "$@"; do

@@ -126,13 +126,10 @@ export class FilterComponent implements OnInit, OnDestroy {
       previousKeys = Object.keys(this.previousFilters);
     }
     _.forEach(this.filters, filter => {
-      const { reference, dependency } = filter;
+      const { reference } = filter;
       const options = (_.sortBy(_.uniq(
         _.map(chartData, (data) => (data && data[reference]) ? data[reference].toLowerCase() : ''
         )))).filter(Boolean);
-        if(dependency &&  !_.has(this.selectedFilters, `${dependency.reference}`) && _.has(this.selectedFilters, `${reference}`)){
-          this.selectedFilters[reference] = options
-        }
         if(this.firstFilter && this.firstFilter[0] !== reference){
           if (this.selectedFilters[reference] && this.selectedFilters[reference].length > 0) {
             this.selectedFilters[reference] = options;
@@ -188,7 +185,12 @@ export class FilterComponent implements OnInit, OnDestroy {
       }, (err) => {
       });
       if (this.chartData.selectedFilters) {
-          this.filtersFormGroup.setValue(this.chartData.selectedFilters);
+        const tempSelectedFilters = {...this.chartData.selectedFilters}
+        setTimeout(() => {
+          for(let [key,value] of Object.entries(tempSelectedFilters)){
+            this.filtersFormGroup.controls[key].setValue(value)
+          }
+        },50)
       }
 
   }
@@ -228,6 +230,16 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.filtersFormGroup.get(columnRef).setValue(dateRange);
   }
 
+  checkDependencyFilters(){
+    _.map(this.filters, filter => {
+      const {reference,dependency} = filter;
+      if(dependency &&  !_.has(this.selectedFilters, `${dependency.reference}`) && _.has(this.selectedFilters, `${reference}`)){
+        this.filtersFormGroup.controls[reference].setValue('')
+        delete this.selectedFilters[reference]
+      }
+    })
+  }
+
   filterData() {
     if (this.selectedFilters) {
       const filterKeys = Object.keys(this.selectedFilters);
@@ -235,6 +247,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.firstFilter = Object.keys(this.selectedFilters);
       }
 
+    this.checkDependencyFilters();
+     
     if(this.firstFilter && this.firstFilter.length && !filterKeys.includes(this.firstFilter[0])){
       this.chartData['selectedFilters'] = {};
       this.filterChanged.emit({

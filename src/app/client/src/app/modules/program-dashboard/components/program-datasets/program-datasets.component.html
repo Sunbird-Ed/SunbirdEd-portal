@@ -140,16 +140,14 @@
 
           
         </div>
-        <div class="d-flex flex-dc ml-auto">
+        <div class="d-flex flex-dc ml-auto btn-col">
           <button type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary reset-filter flex-as-flex-end" (click)="resetFilter()">{{resourceService?.frmelmnts?.btn?.resetFilters}}</button>
           <mat-form-field *ngIf="!noResult && (tabIndex == 1)" appearance="fill" class="sb-mat__dropdown custom_mat_dd">
             <mat-select role="radio" class="selection" placeholder="Export as" (selectionChange)="downloadReport($event)" >
             <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of exportOptions" [value]="option"
             attr.aria-label="{{option}}">{{option}}</mat-option>
             </mat-select>
-            </mat-form-field>
-            <button  *ngIf="!noResult && hideTableToCsv && (tabIndex == 2 || tabIndex == 3)" type="button" class="sb-btn sb-btn-normal sb-btn-primary export-btn flex-as-flex-end"
-            (click)="tableToCsv = !tableToCsv"><i class="download icon"></i>{{resourceService?.frmelmnts?.lbl?.exportCsv}}</button>    
+            </mat-form-field>    
         </div>
       </div>
     </form>
@@ -209,14 +207,14 @@
 </ng-template>
 <ng-template #graphs let-currentReport>
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
-  <ng-container *ngIf="currentReport.charts.length">
+  <ng-container *ngIf="currentReport.charts.length && userAccess">
     <div class="sb-graph-section p-24 my-24"
         *ngFor="let chart of currentReport.charts;">
         <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
-          <app-sb-bignumber [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-bignumber>
+          <app-sb-bignumber [chart]="chart" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-bignumber>
         </ng-container>
         <ng-container *ngIf="chart?.chartConfig?.id !== 'Big_Number' && chart?.chartData && chart?.chartConfig">
-      <app-sb-chart [chart]="chart" [lastUpdatedOn]="lastUpdatedOn" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
+      <app-sb-chart [chart]="chart" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-chart>
       </ng-container>
       </div>
     </ng-container>

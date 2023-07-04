@@ -22,7 +22,7 @@
       </button>
     </div>
   </div>
-  <div *ngIf="lastUpdatedOn !== 'Invalid date'" class="sb-last-update-status mb-8">
+  <div *ngIf="showLastUpdatedOn && lastUpdatedOn" class="sb-last-update-status mb-8">
     <span>{{ resourceService?.frmelmnts?.lbl?.lastUpdatedOn }}&nbsp;: </span>
     &nbsp; {{ lastUpdatedOn }}
   </div>
@@ -78,10 +78,10 @@
                 <div class="sb-filter__container">
                   <div class="sb-filter__content">
                     <div class="sb-filter__content">
-                      <app-filter [filterType]="filterType" selectedFilters="selectedFilters" [resetFilters]="resetFilters" [hideElements]="hideElements"
+                      <app-filter [filterType]="filterType" [selectedFilter]="selectedFilters" [resetFilters]="resetFilters" [hideElements]="hideElements"
                         [filters]="chart.chartConfig.filters" (filterChanged)="filterChanged($event)" [chartData]="
                           chartConfig.id | filterChart: (globalChange ? globalData:chartData):currentFilters
-                        ">
+                        " #appFilter>
                       </app-filter>
                     </div>
                   </div>
