@@ -80,7 +80,7 @@ done
 
   npm run pack
   cd ..
-  yarn install fs-extra@8.1.0
+  yarn add fs-extra@8.1.0
   yarn --update-checksums
   yarn cache clean --all && yarn install --force
 
