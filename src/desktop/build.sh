@@ -65,23 +65,23 @@ done
 
 
       cd ../app/client
-      checkArgument yarn install
+      checkArgument yarn install --force
 
       printLog "Build prod desktop build."
       checkArgument npm run prod-desktop
       cd ..
   fi
 
-  yarn install
+  yarn install --force
   npm run  resource-bundles
   cd ../desktop/OpenRAP
-  yarn install
+  yarn install --force
 
   printLog "Packaging OpenRAP"
   npm run pack
   cd ..
   yarn --update-checksums
-  yarn install
+  yarn install --force
 
   printLog "Starting tsc to compile/execute tsconfig.json"
   npm run build-ts
