@@ -94,7 +94,15 @@ done
   printLog "Copying all the the required files to output app_dist folder"
 
   set -e
-  npm install fs-extra@8.1.0
+  printLog "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  printLog "+++++++ pre check fs-extra"
+  npm ls fs-extra
+  printLog "+++++++ installing fs-extra global"
+  npm install fs-extra@8.1.0 -g
+  printLog "+++++++ check installation"
+  npm list -g --depth=0
+  npm install --save fs-extra@8.1.0
+  printLog "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   node scripts/copy.js
 
 
