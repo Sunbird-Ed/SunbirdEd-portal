@@ -34,6 +34,14 @@ export class AssessmentScoreService {
    */
   private _userId: string;
 
+    /**
+  * get below variable in content state update api if serverEvaluable is true
+  */
+  serverEvalutionObj: any = {};
+  serverEvaluable: boolean = false;
+  attemptID: any;
+
+
   constructor(private courseProgressService: CourseProgressService) {
   }
 
@@ -97,7 +105,7 @@ export class AssessmentScoreService {
    */
   private processAssessEvents() {
     if (this.initialized) {
-      const attpemtId = this.generateHash();
+      const attpemtId = this.serverEvaluable? this.attemptID: this.generateHash();
       const request = this.prepareRequestObject(attpemtId);
       this.updateAssessmentScore(request)
         .pipe(
@@ -123,7 +131,7 @@ export class AssessmentScoreService {
   /**
    * generates UUID for attemptId
    */
-  private generateHash() {
+  generateHash() {
     const string = _.join([_.get(this._batchDetails, 'courseId'), _.get(this._batchDetails, 'batchId'),
     _.get(this._contentDetails, 'identifier'),
     this._userId, (new Date()).getTime()], '-');
@@ -159,9 +167,27 @@ export class AssessmentScoreService {
         ]
       }
     };
+    request.request = {...request.request, ...this.getServerEvaluableFields()}
     return request;
   }
 
+  setServerEvaluableFields(evaluable, token: string, attemptID) {
+    this.attemptID =  attemptID;
+    this.serverEvaluable = evaluable;
+    if(evaluable) {
+      this.serverEvalutionObj = {
+        serverEvaluable: true,
+        questionSetToken: token
+      }
+    } else {
+      this.serverEvalutionObj = {};
+    }
+  }
+
+  getServerEvaluableFields() {
+    return this.serverEvalutionObj;
+  }
+  
   /**
    * handles submit button clicked in course player
    */
