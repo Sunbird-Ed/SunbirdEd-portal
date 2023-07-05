@@ -94,18 +94,18 @@ done
   printLog "Copying all the the required files to output app_dist folder"
 
   set -e
-  printLog "____________________________________________________"
-  printLog "checking tar file"
+  echo "____________________________________________________"
+  echo "checking tar file"
   cd OpenRAP
   ls -l
   cd OpenRAP/dist
   ls -l
-  printLog "____________________________________________________"
-  cd ../../
-  printLog "==========="
+  echo "____________________________________________________"
+  cd ../
+  echo "==========="
   pwd
-  printLog "==========="
-  printLog "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  echo "==========="
+  echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   echo 'PWD'
   pwd
   ls -l
@@ -121,7 +121,7 @@ done
   cp -r ./scripts ./app_dist/scripts
   cp -r ./public ./app_dist/public
   cp -r ./../app/resourcebundles/json/ ./app_dist/openrap-sunbirded-plugin/data/resourceBundles/
-  printLog "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   # node scripts/copy.js
 
 
