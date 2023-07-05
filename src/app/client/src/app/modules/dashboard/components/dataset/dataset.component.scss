@@ -1,3 +1,9 @@
 .toolbar {
-    float: left;
+  float: left;
+}
+
+.segment {
+  min-height: 12.5rem;
+  width: 100%;
+  overflow: auto;
 }

@@ -4,103 +4,17 @@
   width: calculateRem(300px);
 }
 
-a {
-  &.download-file {
-    text-decoration: underline;
-  }
-}
-
-.course-participants-label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-
-.download-report.sb-btn.sb-btn-link:disabled {
-  background-color: transparent;
-  border: none;
-  color: var(--gray-200);
-}
-
-.info-outline-img {
-  background-image: url(/assets/images/info-outline.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: inline-block;
-  width: calculateRem(14px);
-  height: calculateRem(14px);
-}
-
-.sb-btn-link {
-  font-size: calculateRem(14px);
-}
-
-::ng-deep {
-  .ui.selection.dropdown {
-    line-height: 1em;
-  }
-
-  .ui.search.dropdown.course-dashboard-select>.text {
-    margin: calculateRem(6px) calculateRem(16px) calculateRem(6px) calculateRem(6px);
-  }
-
-}
-
-.table-headerDashboard {
-  color: var(--primary-color);
-  font-weight: bold;
-}
-
-.CloseButtonFont {
-  font-size: 1.5rem !important;
-}
-
-.summary-text {
-  font-style: italic;
-  color:var(--gray-200);  word-break: break-word;
-} 
-
 .progress-content {
-  background-color: var(--sbt-body-bg2);
-
-  .sb-course-progress-status .sb-course-progress-status-label {
-    background: var(--sbt-body-bg);
-  }
 
   @include respond-below(sm) {
     margin-top: 0px;
   }
 
   .progress-report-content {
-    height: calculateRem(64px);
-    align-items: center;
 
     @include respond-below(sm) {
       flex-direction: column;
       height: auto;
-    }
-
-    .report-buttons {
-      align-items: flex-end;
-      height: 100%;
-
-      @include respond-below(sm) {
-        flex-direction: column;
-        margin-top: calculateRem(8px);
-      }
-
-      &__divider {
-        width: calculateRem(1px);
-        border-left: calculateRem(1px) solid var(--gray-100);
-        height: calculateRem(32px);
-        margin: 0 calculateRem(16px);
-        @include respond-below(sm) {
-          display: none;
-        }
-      }
     }
   }
 

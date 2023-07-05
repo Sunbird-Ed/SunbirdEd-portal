@@ -5,8 +5,7 @@ import { ISummaryObject } from '../../interfaces';
 
 @Component({
   selector: 'app-add-summary-modal',
-  templateUrl: './add-summary-modal.component.html',
-  styleUrls: ['./add-summary-modal.component.scss']
+  templateUrl: './add-summary-modal.component.html'
 })
 export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
