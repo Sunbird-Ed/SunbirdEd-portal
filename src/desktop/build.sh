@@ -96,6 +96,9 @@ done
   set -e
   echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   # Copy directories
+  mkdir app_dist/OpenRAP/dist
+  mkdir -p app_dist/openrap-sunbirded-plugin/data/resourceBundles
+
   cp -r ./loading ./app_dist/loading
   cp -r ./scripts ./app_dist/scripts
   cp -r ./public ./app_dist/public
