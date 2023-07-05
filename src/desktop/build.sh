@@ -1,6 +1,6 @@
 #!/bin/bash
 # Install python
-apt update && apt install -y python3.7 build-essential git typescript
+apt update && apt install -y python3.7 build-essential git
 
 export PYTHON=/usr/bin/python3.7
 # ARGUMENTS copy=false build=false yarn=false
