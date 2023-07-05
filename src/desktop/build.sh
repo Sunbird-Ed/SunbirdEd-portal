@@ -5,7 +5,7 @@ apt update && apt install -y python3.7 build-essential git
 export PYTHON=/usr/bin/python3.7
 
 npm install typescript@4.6.4 -g
-npm install fs-extra@8.1.0 -g
+npm install fs-extra@11.1.1 -g
 
 # ARGUMENTS copy=false build=false yarn=false
 # https://stackoverflow.com/questions/46354149/how-do-i-parse-command-line-argumentsas-key-value-pair-in-bash-with-arguments
@@ -86,7 +86,7 @@ done
   npm run pack
   cd ..
   yarn cache clean --all && yarn install --force
-  yarn add fs-extra@8.1.0
+  yarn add fs-extra@11.1.1
 
   printLog "Starting tsc to compile/execute tsconfig.json"
   npm run build-ts
