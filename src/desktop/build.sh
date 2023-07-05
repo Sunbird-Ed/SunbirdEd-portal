@@ -94,6 +94,7 @@ done
   printLog "Copying all the the required files to output app_dist folder"
 
   set -e
+  npm install fs-extra@8.1.0
   node scripts/copy.js
 
 
