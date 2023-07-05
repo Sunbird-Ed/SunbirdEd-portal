@@ -739,8 +739,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       const config = {
         type: this.selectedReport['datasetId'],
         params: {
-          ...(_.get(this.reportForm, 'controls.startDate.value') && !this.userAccess && { 'start_date': _.get(this.reportForm, 'controls.startDate.value') }),
-          ...(_.get(this.reportForm, 'controls.endDate.value') && !this.userAccess && { 'end_date': _.get(this.reportForm, 'controls.endDate.value') }),
+          ...((_.get(this.reportForm, 'controls.startDate.value') && _.get(this.reportForm, 'controls.solution.value')) && { 'start_date': _.get(this.reportForm, 'controls.startDate.value') }),
+          ...((_.get(this.reportForm, 'controls.endDate.value') && _.get(this.reportForm, 'controls.solution.value') ) && { 'end_date': _.get(this.reportForm, 'controls.endDate.value') }),
           filters: this.filter
         },
         title: this.selectedReport.name
