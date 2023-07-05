@@ -53,7 +53,7 @@
               resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}" class="mat-body-2 mb-0 hover-bgcolor-primary" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}" (click)="changeFontSize('increase')" #increaseFontSize>A+</button>
               <span class="opacity50 font-weight-normal mx-4">|</span>
               <button mat-icon-button id="theme-selector" class="hover-bgcolor-primary" [mat-menu-trigger-for]="themeMenu"
-                matTooltip="Select a theme!" tabindex="-1">
+                matTooltip="Select a theme!" tabindex="0">
                 <mat-icon class="auto-flip">format_color_fill</mat-icon>
               </button>
               <mat-menu #themeMenu="matMenu" class="themeMenuDropdown">

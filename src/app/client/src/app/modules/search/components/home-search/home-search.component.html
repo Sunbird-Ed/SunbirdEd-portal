@@ -18,7 +18,7 @@
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div class="d-flex flex-ai-center flex-jc-space-between mb-16"
         *ngIf="!showLoader && contentList?.length && !showBackButton">
-        <h4 class="mat-title m-0 mr-5">{{resourceService.frmelmnts?.lbl?.showingResults | translate}} <span
+        <h4 class="m-0 mr-4">{{resourceService.frmelmnts?.lbl?.showingResults | translate}} <span
             class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText
             [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
           {{resourceService.frmelmnts?.lbl?.inAll | translate}}</h4>

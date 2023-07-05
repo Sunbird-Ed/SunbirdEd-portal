@@ -27,7 +27,7 @@
   <button mat-mini-fab color="warn" role="button" class="ml-auto" tabindex="0" aria-label="Close Member dialog"
   (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><mat-icon>close</mat-icon></button>
    </div>
-    <app-slick [viewType]="'dots'" [loadStatus]="'done'">
+    <app-slick [loadStatus]="'done'">
       <ng-container>
             <div class="item-help">
               <h6 class="mat-body-1 mb-0">{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>

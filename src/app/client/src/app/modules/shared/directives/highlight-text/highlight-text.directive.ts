@@ -23,7 +23,7 @@ export class HighlightTextDirective implements OnInit, OnDestroy {
 
   /* replaces the key portion of the label with the highlighted value */
   highlightText(label: string, key: string, value: string) {
-    const span = '<span class="sb-pageSection-count sb-label sb-label-xs sb-label-error mr-5">' + value + '</span>';
+    const span = '<span class="bgcolor-warn p-2 br-4 mat-subheading-2 mr-5">' + value + '</span>';
     this.elRef.nativeElement.innerHTML = label.replace(key, span);
   }
 

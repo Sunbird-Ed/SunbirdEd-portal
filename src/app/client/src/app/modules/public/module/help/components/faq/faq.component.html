@@ -4,7 +4,7 @@
     <mat-icon>arrow_back</mat-icon>
   </button>
   <div class="toolbar-pageback__heading">
-    <h3 class="mat-title" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.tab?.help}}</h3>
+    <h3 class="mat-title mb-0" tabindex="0" role="heading" aria-level="2">{{resourceService?.frmelmnts?.tab?.help}}</h3>
     <div class="mat-small mt-4" *ngIf="isDesktopApp">
       {{resourceService?.frmelmnts?.lbl?.learn_more | interpolate:'{instance}': instance}}</div>
     <div class="mat-small mt-4" *ngIf="!isDesktopApp">{{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}

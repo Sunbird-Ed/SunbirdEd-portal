@@ -16,9 +16,9 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100 relative9">
       <div class="d-flex flex-ai-center my-16" *ngIf="!showLoader && totalCount > 0 && !showBackButton">
-        <h4 class="mat-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
+        <h4 class="m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
 interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "> <span
-            class="sb-pageSection-count sb-label sb-label-xs color-warn">{{totalCount}}</span></h4>
+            class="bgcolor-warn p-2 br-4 mat-subheading-2">{{totalCount}}</span></h4>
         <button mat-raised-button color="warn" class="button-rounded ml-auto"
           [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" type="button" tabindex="0"
           (click)="goback()">

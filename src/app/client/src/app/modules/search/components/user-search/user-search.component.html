@@ -1,127 +1,84 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-
-</app-landing-section>
-
-
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-user-profile relative9 sbt-fluid-content-bg pt-16':''" >
+<div class="mat-inside-container user-search-component pt-16" [appTelemetryImpression]="telemetryImpression">
 <app-user-filter></app-user-filter>
-<div class="ui container mt-16">
-  <div [appTelemetryImpression]="telemetryImpression" class="ui grid mt-0">
-    <div class="twelve wide column">
-      <div>
-        <div class=" ui clearing segment content-player-header search-content-header" *ngIf="!showLoader && !noResult">
-          <div class="ui left floated header  ">
-            <p class="serch-allresult">{{resourceService.frmelmnts?.lbl?.showingResults | translate}} 
-              <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
-              {{resourceService.frmelmnts?.lbl?.inUsers | translate}}
-            </p>
-          </div>
-          <!-- <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button " [routerLink]="['/profile']">
-            <i class="ui remove icon "></i>
-          </h5> -->
+        <div class="mat-body-2" *ngIf="!showLoader && !noResult">{{resourceService.frmelmnts?.lbl?.showingResults | translate}} 
+          <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
+          {{resourceService.frmelmnts?.lbl?.inUsers | translate}}
         </div>
+        <!-- <h5 appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="ui right floated basic icon circular button " [routerLink]="['/profile']">
+          <i class="ui remove icon "></i>
+        </h5> -->
 
-        <div class=" ui clearing segment" *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.USER.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">
-          <!-- <angular2csv class="ui right floated primary button" [data]="downloadUser()" filename="Users" [options]="csvOptions">
-            {{resourceService.frmelmnts?.btn?.download | translate}} TODO: use Blob object to generate csv file
-          </angular2csv> -->
-        </div>
+      <div *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.USER.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">
+        <!-- <angular2csv class="ui right floated primary button" [data]="downloadUser()" filename="Users" [options]="csvOptions">
+          {{resourceService.frmelmnts?.btn?.download | translate}} TODO: use Blob object to generate csv file
+        </angular2csv> -->
+      </div>
 
-        <div>
-          <div *ngIf="!showLoader && !noResult" [throttle]="[1000]" [trigger]="searchList">
-            <div [id]="i" [data]="user" class="ui segment mb-20" *ngFor="let user of searchList;let i = index;">
-              <div class="ui items">
-                <div class="item">
-                  <div class="ui tiny image userSearchImage">
+        <div *ngIf="!showLoader && !noResult" [throttle]="[1000]" [trigger]="searchList">
+          <div [id]="i" [data]="user" class="ui segment mb-20" *ngFor="let user of searchList;let i = index;">
+              <sb-avatar class="my-avatar" [config]=avatarConfig initialsSize="1" [initial]="user?.firstName[0]"
+              [title]="user?.firstName">
+            </sb-avatar>
+              <div class="content userSearchContent">
+                <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
+                    [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
+                    class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" tabindex="0" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>-->
+                <div class="mat-body-2 mb-4" *ngIf="user.status===1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
+                <div class="mat-body-2 mb-4" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
 
-                    <sb-avatar class="my-avatar" [config]=avatarConfig initialsSize="1" [initial]="user?.firstName[0]"
-                      [title]="user?.firstName">
-                    </sb-avatar>
+                <a *ngIf="user.status===1 && user.isEditableProfile" mat-button class="ml-auto">
+                  <!-- update user roles -->
+                  <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
+                    class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" tabindex="0" (click)="user.status===1 && userSearchService.userDetailsObject=user">
+                    <mat-icon>edit</mat-icon>
+                  </span>
+                  <!-- delete user -->
+                  <!-- <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
+                    class="remove-outline mx-5">
+                    <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
+                  </span> -->
+                </a>
 
-                  </div>
-                  <div class="content userSearchContent">
-                    <!--<a appTelemetryInteract [telemetryInteractEdata]="userViewIntractEdata" 
-                        [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}" 
-                        class="header " *ngIf="user.status===1" [queryParams]="queryParams" [routerLink]="['view/' + user.id]" tabindex="0" (click)="user.status===1 && userSearchService.userDetailsObject=user">{{user.firstName}} &nbsp;{{user.lastName}}</a>-->
-                    <div class="header mb-5" *ngIf="user.status===1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
-                    <div class="header mb-5" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
-
-                    <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
-                      <!-- update user roles -->
-                      <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
-                        class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" tabindex="0" (click)="user.status===1 && userSearchService.userDetailsObject=user">
-                        <i class="edit large icon"></i>
-                      </span>
-                      <!-- delete user -->
-                      <!-- <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
-                        class="remove-outline mx-5">
-                        <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
-                      </span> -->
-                    </a>
-
-                    <!-- organization Name -->
-                    <div class="meta">
-                      <span class="cinema ">
-                        <span *ngFor="let org of user.organisations; let last = last;">
-                          <span *ngIf="org.orgName">{{org.orgName | titlecase}}</span>
-                          <span *ngIf="!last && org.orgName">,</span>
-                        </span>
-                      </span>
-                    </div>
-
-                    <div class="extra ">
-                      <!-- <div class="ui label " *ngIf="user.status===0">{{resourceService?.frmelmnts?.lbl?.inactive | translate}}</div>
-                          <div class="ui label " *ngIf="user.status===1">{{resourceService?.frmelmnts?.lbl?.active | translate}}</div>
-                          <div class="ui label " *ngIf="user.status===2">{{resourceService?.frmelmnts?.lbl?.blocked | translate}}</div>
-                          <div class="ui label " *ngIf="user.status===3">{{resourceService?.frmelmnts?.lbl?.retired | translate}}</div> -->
-
-                      <!-- updated code as per new design -->
-
-                      <div class="ui horizontal bulleted list">
-                        <span class="item" *ngIf="user.block"><span class="sunbird-portal-icon location-outline-icon"></span>&nbsp;{{user.block.name | titlecase}}</span>
-                        <span class="item" *ngIf="user.district">{{user.district.name | titlecase}}</span>
-
-                      </div>
-                    </div>
-                  </div>
+                <!-- organization Name -->
+                <div *ngFor="let org of user.organisations; let last = last;" class="mat-caption">
+                  <span *ngIf="org.orgName">{{org.orgName | titlecase}}</span>
+                  <span *ngIf="!last && org.orgName">,</span>
                 </div>
 
-                <!-- Badging (Certifications and Awards) -->
-                <div class="ui middle aligned list" *ngIf="user.badgeAssertions && user.badgeAssertions.length > 0">
-                  <div class="item" *ngFor="let badge of user.badgeAssertions">
-                    <img class="ui avatar image" [src]="badge.badgeClassImage">
-                    <div class="content">
-                      <div class="header secondary-text-color-sunbird">{{badge.badgeClassName}}</div>
-                    </div>
+                <div class="extra ">
+                  <!-- <div class="ui label " *ngIf="user.status===0">{{resourceService?.frmelmnts?.lbl?.inactive | translate}}</div>
+                      <div class="ui label " *ngIf="user.status===1">{{resourceService?.frmelmnts?.lbl?.active | translate}}</div>
+                      <div class="ui label " *ngIf="user.status===2">{{resourceService?.frmelmnts?.lbl?.blocked | translate}}</div>
+                      <div class="ui label " *ngIf="user.status===3">{{resourceService?.frmelmnts?.lbl?.retired | translate}}</div> -->
+
+                  <!-- updated code as per new design -->
+
+                  <div class="mat-caption bullets vertical">
+                    <span class="item" *ngIf="user.block"><span class="sunbird-portal-icon location-outline-icon"></span>&nbsp;{{user.block.name | titlecase}}</span>
+                    <span class="item" *ngIf="user.district">{{user.district.name | titlecase}}</span>
                   </div>
                 </div>
-
               </div>
-            </div>
-          </div>
-          <div *ngIf="noResult && !showLoader">
-            <app-no-result [data]="noResultMessage"></app-no-result>
-          </div>
-        </div>
-      </div>
-      <div class="ui grid mt-20">
-        <div class="twelve wide column pt-0">
-          <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
-            <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length">
-              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">First</a>
-              <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
-              <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>
-              <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-              <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
-            </div>
+
+              <!-- Badging (Certifications and Awards) -->
+              <div class="ui middle aligned list" *ngIf="user.badgeAssertions && user.badgeAssertions.length > 0">
+                <div class="item" *ngFor="let badge of user.badgeAssertions">
+                  <img class="ui avatar image" [src]="badge.badgeClassImage">
+                  <div class="mat-body-2 color-accent">{{badge.badgeClassName}}</div>
+                </div>
+              </div>
           </div>
         </div>
+        <app-no-result *ngIf="noResult && !showLoader" [data]="noResultMessage"></app-no-result>
+      <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+        <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length">
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">First</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+          <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+        </div>
       </div>
-      <div class="twelve wide column" *ngIf="showLoader">
-        <app-loader [data]='loaderMessage'></app-loader>
-      </div>
-    </div>
-  </div>
-</div>
+      <app-loader *ngIf="showLoader" [data]='loaderMessage'></app-loader>
 <router-outlet></router-outlet>
 </div>

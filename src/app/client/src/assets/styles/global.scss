@@ -20,7 +20,7 @@ body {
 body {
   background: var(--sbt-body-bg);
   position: relative;
-  font-family: var(--font-stack-en) !important;
+  font-family: var(--font-stack-en);
   letter-spacing: calculateRem(0.2px);
   height: auto;
   color: var(--gray-800);
@@ -56,7 +56,7 @@ body {
 }
 
 *[lang="en"] body {
-  font-family: var(--font-stack-en) !important;
+  font-family: var(--font-stack-en);
 }
 
 *[lang="hi"] body {
@@ -644,37 +644,37 @@ quml-player {
   background: var(--gray-800) !important;
 }
 
-app-landing-page {
-  .ui.segment {
-    background: var(--sb-landing-page-segments);
-  }
+// app-landing-page {
+//   .ui.segment {
+//     background: var(--sb-landing-page-segments);
+//   }
 
-  .ui.card,
-  .ui.cards>.card {
-    background: var(--sb-landing-page-cards);
-  }
+//   .ui.card,
+//   .ui.cards>.card {
+//     background: var(--sb-landing-page-cards);
+//   }
 
-  .ui.card>.content>.description,
-  .ui.cards>.card>.content>.description {
-    color: var(--sb-landing-page-cards-desc);
-  }
+//   .ui.card>.content>.description,
+//   .ui.cards>.card>.content>.description {
+//     color: var(--sb-landing-page-cards-desc);
+//   }
 
-  .ui.list .list>.item .description,
-  .ui.list>.item .description {
-    color: var(--sb-landing-page-cards-desc);
-  }
+//   .ui.list .list>.item .description,
+//   .ui.list>.item .description {
+//     color: var(--sb-landing-page-cards-desc);
+//   }
 
-  .ui.basic.button,
-  .ui.basic.buttons .button {
-    background: var(--sb-landing-page-btn) !important;
-    color: var(--sb-landing-page-cards-desc) !important;
-  }
-}
+//   .ui.basic.button,
+//   .ui.basic.buttons .button {
+//     background: var(--sb-landing-page-btn) !important;
+//     color: var(--sb-landing-page-cards-desc) !important;
+//   }
+// }
 
-.sb-btn-secondary,
-.sb-btn-primary {
-  color: var(--sb-btn-default-color);
-}
+// .sb-btn-secondary,
+// .sb-btn-primary {
+//   color: var(--sb-btn-default-color);
+// }
 
 // .sb-btn-outline-primary,
 // .sb-btn-outline-secondary {
@@ -884,19 +884,19 @@ a.ui.labels .label:hover {
   color: var(--black) !important;
 }
 
-.sb-modal .ui.modal {
-  .sb-modal-header {
-    color: var(--sb-modal-header-text);
-  }
+// .sb-modal .ui.modal {
+//   .sb-modal-header {
+//     color: var(--sb-modal-header-text);
+//   }
 
-  .sb-modal-content {
-    background: var(--sb-modal-content-bg);
-  }
+//   .sb-modal-content {
+//     background: var(--sb-modal-content-bg);
+//   }
 
-  .sb-modal-actions {
-    background: var(--sb-modal-actions-bg);
-  }
-}
+//   .sb-modal-actions {
+//     background: var(--sb-modal-actions-bg);
+//   }
+// }
 
 // Buttons
 .sb-btn-outline-primary {
@@ -1345,3 +1345,27 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   font-weight: normal;
   padding: calculateRem(10px) 0;
 }
+
+
+
+/* taken from sb-themes */
+.sbt-fluid-content-bg {
+  padding: 0rem 0;
+  border-radius: 2rem 0 0 2rem;
+  margin: 0 0 0 2%;
+  padding: 0 5% 2rem 3%;
+
+  &[dir="rtl"] {
+      border-radius: 2rem 2rem 0 0;
+      padding: 0 3% 2rem 5%;
+  }
+}
+
+.sbt-fluid-content-bg.sbt-footer-container {
+  margin: 0 0 0 0;
+}
+
+.ui.grid.sb-form.m-0.sb-workspace-modal.p-16 {
+  padding: 0px !important;
+}
+
