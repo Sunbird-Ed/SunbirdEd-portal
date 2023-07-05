@@ -71,7 +71,8 @@ done
   fi
 
   yarn cache clean --all && yarn install --force
-  npm run  resource-bundles
+  yarn add properties
+  npm run resource-bundles
   cd ../desktop/OpenRAP
   yarn cache clean --all && yarn install --force
 
@@ -80,9 +81,8 @@ done
 
   npm run pack
   cd ..
-  yarn add fs-extra@8.1.0
-  yarn --update-checksums
   yarn cache clean --all && yarn install --force
+  yarn add fs-extra@8.1.0
 
   printLog "Starting tsc to compile/execute tsconfig.json"
   npm run build-ts
