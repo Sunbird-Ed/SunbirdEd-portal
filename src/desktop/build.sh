@@ -1,6 +1,6 @@
 #!/bin/bash
 # Install python
-apt update && apt install -y python3.7 build-essential git
+apt update && apt install -y python3.7 build-essential git typescript
 
 export PYTHON=/usr/bin/python3.7
 # ARGUMENTS copy=false build=false yarn=false
@@ -76,7 +76,7 @@ done
   yarn cache clean --all && yarn install --force
 
   printLog "Packaging OpenRAP"
-  chown -R 113:117 "/root/.npm"
+  chown -R root:root  /offline
 
   npm run pack
   cd ..
