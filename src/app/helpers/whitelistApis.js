@@ -695,6 +695,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/action/questionset/v1/hierarchy/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
+    },
 
     // Groups related APIs
     '/learner/group/v1/create': {
@@ -2056,6 +2060,8 @@ const API_LIST = {
     '/kendra/resource/mlreports/v1/filtervalues',
     '/assessment/programs/mlcore/v1/join/:id',
     '/assessment/users/mlcore/v1/solutions/:id',
+    '/api/questionset/v1/retire/:QuestionSet_Id',
+    '/action/questionset/v1/hierarchy/:do_id'
   ]
 };
 module.exports = API_LIST;
