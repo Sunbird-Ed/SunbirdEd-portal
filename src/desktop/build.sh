@@ -94,33 +94,17 @@ done
   printLog "Copying all the the required files to output app_dist folder"
 
   set -e
-  echo "____________________________________________________"
-  echo "checking tar file"
-  cd OpenRAP
-  ls -l
-  cd OpenRAP/dist
-  ls -l
-  echo "____________________________________________________"
-  cd ../
-  echo "==========="
-  pwd
-  echo "==========="
   echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo 'PWD'
-  pwd
-  ls -l
-  # Copy individual files
-  cp ./package.json ./app_dist/package.json
-  cp ./modules/sdk/database/schema_1.0.json ./app_dist/modules/sdk/database/schema_1.0.json
-  cp ./OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz ./app_dist/OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz
-  cp ./logo.png ./app_dist/logo.png
-  cp ./helper/appconfig.desktop ./app_dist/helper/appconfig.desktop
-
   # Copy directories
   cp -r ./loading ./app_dist/loading
   cp -r ./scripts ./app_dist/scripts
   cp -r ./public ./app_dist/public
-  cp -r ./../app/resourcebundles/json/ ./app_dist/openrap-sunbirded-plugin/data/resourceBundles/
+  cp ./package.json ./app_dist/package.json
+  cp ./modules/sdk/database/schema_1.0.json ./app_dist/modules/sdk/database/schema_1.0.json
+  cp ./OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz ./app_dist/OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz
+  cp ./logo.png ./app_dist/logo.png
+  cp -r ../app/resourcebundles/json/ ./app_dist/openrap-sunbirded-plugin/data/resourceBundles/
+  cp ./helper/appconfig.desktop ./app_dist/helper/appconfig.desktop
   echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   # node scripts/copy.js
 
