@@ -1,6 +1,6 @@
 <div class="mat-inside-container user-search-component pt-16" [appTelemetryImpression]="telemetryImpression">
 <app-user-filter></app-user-filter>
-        <div class="serch-allresult" *ngIf="!showLoader && !noResult">{{resourceService.frmelmnts?.lbl?.showingResults | translate}} 
+        <div class="mat-body-2" *ngIf="!showLoader && !noResult">{{resourceService.frmelmnts?.lbl?.showingResults | translate}} 
           <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
           {{resourceService.frmelmnts?.lbl?.inUsers | translate}}
         </div>

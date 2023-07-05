@@ -4,14 +4,13 @@
 <!-- header -->
 <div class="sb-g courseStructureHeader" *ngIf="!showLoader && !showError">
   <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-8">
-    <div class="profileheader ui link items">
-      <div class="ui grid">
-        <div class="two wide column pt-0">
+    <div class="profileheader sb-g">
+        <div class="sb-g-col-xs-12 sb-g-col-md-2 sb-g-col-lg-2 sb-g-col-xxxl-2 pt-0">
           <div class="userAvtarWrap field link ui small circular image header-image-profile">
             <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || 'assets/images/user_logo.png' | cdnprefixurl" alt="avatar image">
           </div>
         </div>
-        <div class="ten wide column profile-header-text pt-0">
+        <div class="sb-g-col-xs-12 sb-g-col-md-10 sb-g-col-lg-10 sb-g-col-xxxl-10 pt-0">
           <div class="content pt-10">
             <div class="sectionHeading header">{{userDetails.firstName}} &nbsp;{{userDetails.lastName}}</div>
             <div class="meta profileViewSubHeader pb-10">
@@ -19,7 +18,6 @@
             </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
   <div class="profilesettings sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
