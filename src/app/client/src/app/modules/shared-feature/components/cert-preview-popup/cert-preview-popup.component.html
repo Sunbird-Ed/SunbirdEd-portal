@@ -3,7 +3,7 @@
     <div mat-dialog-title class="mb-0">
       <h2 class="mb-0" tabindex="0" *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.cert?.lbl?.certPreview }}
       </h2>
-      <button mat-mini-fab color="warn" mat-dialog-close aria-label="close dialog">
+      <button mat-mini-fab class="ml-auto" color="warn" mat-dialog-close aria-label="close dialog">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -12,7 +12,7 @@
     </div>
 
     <mat-dialog-actions align="end">
-      <button mat-raised-button class="button-rounded mr-8" tabindex="0" (click)="closeModal()">
+      <button mat-raised-button class="button-rounded" tabindex="0" (click)="closeModal()">
         {{resourceService?.frmelmnts?.btn?.close}}
       </button>
       <button mat-raised-button color="accent" class="button-rounded" tabindex="0" (click)="closeModal('select')">

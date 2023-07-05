@@ -182,6 +182,7 @@ $app-themes: (
     typography:
       mat.define-typography-config(
         $font-family: "Cabin",
+
       ),
   ),
   pink-bluegrey: (
@@ -193,21 +194,21 @@ $app-themes: (
     background: mat.$dark-theme-background-palette,
     typography:
       mat.define-typography-config(
-        $font-family: "Josefin Slab",
+        $font-family: "Poppins",
       ),
   ),
-  purple-green: (
-    primary-base: mat.$purple-palette,
-    accent-base: mat.$green-palette,
-    success: mat.$green-palette,
-    is-dark: true,
-    foreground: mat.$dark-theme-foreground-palette,
-    background: mat.$dark-theme-background-palette,
-    typography:
-      mat.define-typography-config(
-        $font-family: "Quicksand",
-      ),
-  ),
+  // purple-green: (
+  //   primary-base: mat.$purple-palette,
+  //   accent-base: mat.$green-palette,
+  //   success: mat.$green-palette,
+  //   is-dark: true,
+  //   foreground: mat.$dark-theme-foreground-palette,
+  //   background: mat.$dark-theme-background-palette,
+  //   typography:
+  //     mat.define-typography-config(
+  //       $font-family: "Quicksand",
+  //     ),
+  // ),
   joy: (
     primary-base: $sb-mat-joy-primary,
     accent-base: $sb-mat-joy-accent,
@@ -220,16 +221,16 @@ $app-themes: (
         $font-family: var(--font-stack-en),
       ),
   ),
-  green-grey: (
-    primary-base: $sb-mat-green,
-    accent-base: mat.$orange-palette,
-    success: mat.$green-palette,
-    is-dark: true,
-    foreground: mat.$dark-theme-foreground-palette,
-    background: mat.$dark-theme-background-palette,
-    typography:
-      mat.define-typography-config(
-        $font-family: "Roboto Slab",
-      ),
-  ),
+  // green-grey: (
+  //   primary-base: $sb-mat-green,
+  //   accent-base: mat.$orange-palette,
+  //   success: mat.$green-palette,
+  //   is-dark: true,
+  //   foreground: mat.$dark-theme-foreground-palette,
+  //   background: mat.$dark-theme-background-palette,
+  //   typography:
+  //     mat.define-typography-config(
+  //       $font-family: "Roboto Slab",
+  //     ),
+  // ),
 );

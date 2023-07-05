@@ -280,7 +280,7 @@ app-card[lang="ur"] {
 
 .sb--card {
   width: 100%;
-  border-radius: .125rem;
+  // border-radius: .125rem;
   // background-color: var(--white);
   display: flex;
   flex-direction: column;
@@ -289,6 +289,8 @@ app-card[lang="ur"] {
   margin-top: 0;
   border: 0;
   contain: content;
+  border-radius: 1rem;
+  box-shadow: var(--sbt-box-shadow-6px);
   .card-hover {
     position: absolute;
     top: 0;

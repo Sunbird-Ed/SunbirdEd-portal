@@ -1,8 +1,1 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
-
-.save-btn {
-    margin: calculateRem(40px) 0 0;
-    .wide-btn {
-        min-width: calculateRem(200px);
-    }
-}

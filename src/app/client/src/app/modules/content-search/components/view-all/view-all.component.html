@@ -9,7 +9,7 @@
             <div class="d-flex flex-ai-center flex-jc-space-between" *ngIf="!showLoader">
                     <h4 class="mat-title m-0 mr-5">{{get(resourceService, sectionName) ||
                         sectionName}} <span *ngIf="totalCount"
-                        class="sb-pageSection-count sb-label sb-label-xs sb-label-error">{{totalCount}}</span></h4>
+                        class="bgcolor-warn p-2 br-4 mat-subheading-2">{{totalCount}}</span></h4>
                     <button mat-raised-button color="warn" class="button-rounded" appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
                         type="button" (click)="handleCloseButton()" tabindex="0">{{resourceService?.frmelmnts?.btn?.close}} <mat-icon>close</mat-icon></button>
                 </div>
