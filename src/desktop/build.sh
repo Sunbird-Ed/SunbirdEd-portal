@@ -95,15 +95,22 @@ done
 
   set -e
   printLog "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-  printLog "+++++++ pre check fs-extra"
-  npm ls fs-extra
-  printLog "+++++++ installing fs-extra global"
-  npm install fs-extra@8.1.0 -g
-  printLog "+++++++ check installation"
-  npm list -g --depth=0
-  npm install --save fs-extra@8.1.0
+  echo 'PWD $(pwd)...'
+  ls -l
+  # Copy individual files
+  cp ./package.json ./app_dist/package.json
+  cp ./modules/sdk/database/schema_1.0.json ./app_dist/modules/sdk/database/schema_1.0.json
+  cp ./OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz app_dist/OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz
+  cp ./logo.png app_dist/logo.png
+  cp ./helper/appconfig.desktop ./app_dist/helper/appconfig.desktop
+
+  # Copy directories
+  cp -r ./loading ./app_dist/loading
+  cp -r ./scripts ./app_dist/scripts
+  cp -r ./public ./app_dist/public
+  cp -r ./../app/resourcebundles/json/ ./app_dist/openrap-sunbirded-plugin/data/resourceBundles
   printLog "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-  node scripts/copy.js
+  # node scripts/copy.js
 
 
   printLog "Generating TAR file from app_dist"
