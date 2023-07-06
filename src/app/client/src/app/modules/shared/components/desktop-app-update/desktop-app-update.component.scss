@@ -1,32 +1,7 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.sb-offline-updates {
-  background: var(--white);
-}
-.sb-offline-updates-content {
-}
-.sb-offline-updates-content-logo {
+.offline-updates {
   .logo {
     height: calculateRem(100px);
   }
-}
-.sb-offline-updates-content-title {
-  font-size: calculateRem(18px);
-}
-.sb-offline-updates-content-para {
-  font-size: calculateRem(12px);
-  color: var(--gray-400);
-  line-height: calculateRem(18px);
-}
-.sb-offline-label {
-  font-size: calculateRem(16px);
-}
-.sb-offline-updates-modal {
-  .sb-modal-header {
-    background-color: var(--white) !important;
-  }
-}
-.updatePopupClose {
-  border: none;
-  border-radius: 50% !important;
 }

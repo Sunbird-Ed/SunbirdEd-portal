@@ -8,7 +8,6 @@
   &__list {
     position: absolute;
     top: 100%;
-    background: var(--sb-dropdown-menu-bg);
     border-radius: calculateRem(4px);
     z-index: 1;
     width: 100%;
@@ -30,52 +29,6 @@
         margin-top: calculateRem(8px);
         border-radius: calculateRem(24px);
       }
-
-      .mat-checkbox-checkmark-path {
-        stroke: var(--sb-dropdown-menu-bg) !important;
-      }
-    }
-  }
-
-  ::ng-deep {
-    .mat-form-field {
-      width: 100%;
-      height: calculateRem(32px);
-      padding: 0 calculateRem(20px);
-      border: calculateRem(1px) solid var(--gray-100);
-      background: var(--sb-dropdown-menu-bg);
-      border-radius: calculateRem(4px);
-
-      &.mat-form-field-appearance-legacy {
-        .mat-form-field-wrapper {
-          padding-bottom: 0;
-        }
-
-        .mat-form-field-wrapper,
-        .mat-form-field-flex {
-          height: 100%;
-        }
-
-        .mat-form-field-flex {
-          align-items: center;
-        }
-
-        .mat-form-field-underline {
-          height: 0;
-        }
-
-        .mat-form-field-infix {
-          padding: 0;
-          width: 100%;
-          border: none;
-        }
-      }
-
-    }
-
-    .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
-    .mat-checkbox-checked.mat-accent .mat-checkbox-background {
-      background-color: var(--primary-color);
     }
   }
 }
