@@ -1,4 +1,4 @@
-<mat-accordion class="" *ngIf="showSettingsPage">
+<mat-accordion class="global-consent-pii-component" *ngIf="showSettingsPage" >
   <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header>
       <mat-panel-title class="">
@@ -7,53 +7,43 @@
     </mat-expansion-panel-header>
     <div class="" role="region" id="dataSetting"
       aria-labelledby="dataSetting">
-      <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
+      <label class="mat-body-1 text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
         <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
       </label>
 
-      <p class="fsmall mb-0" *ngIf="isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOnNote}}</p>
-      <p class="fsmall mb-0" *ngIf="!isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOffNote}}</p>
-      <label class="fsmall font-weight-normal data-labels"
+      <p class="mat-small mb-0" *ngIf="isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOnNote}}</p>
+      <p class="mat-small mb-0" *ngIf="!isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOffNote}}</p>
+      <label class="mat-small"
         *ngIf="lastUpdatedOn">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}} {{lastUpdatedOn | date
         :'dd/MM/yyyy'}}</label>
 
       <div class="d-flex flex-ai-end flex-jc-flex-end">
-        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary font-weight-bold"
+        <button class="button-rounded" mat-raised-button color="accent"
           (click)="toggleEditSetting()" tabindex="0">
           {{ editSetting ? resourceService?.frmelmnts?.btn?.close : resourceService?.frmelmnts?.lbl?.editSetting }}
         </button>
       </div>
 
       <div *ngIf="editSetting" class="sb-update-data-settings">
-        <hr>
+        <mat-divider class="my-16"></mat-divider>
         <!-- Material Radio button -->
-        <!-- <label
-          class="fsmall mb-0 font-weight-bold data-labels">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
-        <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.updateSetting}}">
-          <mat-radio-button [value]="'Yes'" [(ngModel)]="consentPii" style="width: 100%;">{{resourceService?.frmelmnts?.lbl?.shareProfileDetails}}</mat-radio-button>
-          <mat-radio-button [value]="'No'" [(ngModel)]="consentPii" style="width: 100%;">{{resourceService?.frmelmnts?.lbl?.notShareProfileDetails}}</mat-radio-button>
-        </mat-radio-group> -->
-        <label
-          class="fsmall mb-0 font-weight-bold data-labels">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
-        <div class="d-flex py-8 flex-w-wrap">
-          <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-            <input [value]="'Yes'" id="shareConsent" type="radio" [(ngModel)]="consentPii">
-            <label for="shareConsent" class="fsmall">{{resourceService?.frmelmnts?.lbl?.shareProfileDetails}}</label>
-          </div>
-          <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-            <input [value]="'No'" id="noShareContent" type="radio" [(ngModel)]="consentPii">
-            <label for="noShareContent"
-              class="fsmall">{{resourceService?.frmelmnts?.lbl?.notShareProfileDetails}}</label>
-          </div>
+        <label class="mat-small mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
+        <div class="d-flex py-8 flex-w-wrap globalConsent-mat-radion-btns">
+          <mat-radio-group [(ngModel)]="consentPii">
+            <mat-radio-button value="Yes" id="shareConsent">
+              {{resourceService?.frmelmnts?.lbl?.shareProfileDetails}}
+            </mat-radio-button>
+            <mat-radio-button value="No" id="noShareContent">{{resourceService?.frmelmnts?.lbl?.notShareProfileDetails}}</mat-radio-button>
+          </mat-radio-group>
         </div>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary w-100 text-uppercase" tabindex="0"
+        <button class="color-accent button-rounded w-100" mat-raised-button tabindex="0"
           (click)="saveConsent()">{{resourceService?.frmelmnts?.btn?.save}}</button>
       </div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
 
-<app-modal-wrapper *ngIf="showConsentPopup" [config]="{disableClose: true, width: 'normal', panelClass: ['overflow-visible', 'material-modal']}"
+<app-modal-wrapper *ngIf="showConsentPopup" [config]="{disableClose: true, width: '45rem', panelClass: ['overflow-visible', 'material-modal']}"
   (dismiss)="showConsentPopup = false;" #profileDetailsModal>
   <ng-template sbModalContent>
 
@@ -65,94 +55,84 @@
       </button>
     </div>
   
-    <mat-dialog-content>
-      <div class="profile-fields">
-        <div class="d-flex mb-16 fnormal">
-          <label
-            class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.name || '-'}}</div>
+    <mat-dialog-content class="pb-0">
+      <div class="profile-fields mat-body-1">
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.name || '-'}}</div>
         </div>
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.state}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.state || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.state}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.state || '-'}}</div>
         </div>
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.userId}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.userid || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.userId}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.userid || '-'}}</div>
         </div>
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.externalId}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.externalId || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.externalId}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.externalId || '-'}}</div>
         </div>
-
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.district}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.district || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.district}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.district || '-'}}</div>
         </div>
-
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.block}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.block || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.block}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.block || '-'}}</div>
         </div>
-
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.schoolId}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.schoolId || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.schoolId}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.schoolId || '-'}}</div>
         </div>
-
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.schoolName}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.schoolName || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.schoolName}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.schoolName || '-'}}</div>
         </div>
-
-        <div class="d-flex mb-16 fnormal">
-          <label
-            class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.mobileNumber}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.phone || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.mobileNumber}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.phone || '-'}}</div>
         </div>
-
-        <div class="d-flex mb-16 fnormal">
-          <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.emailId}}<span
-              class="mx-8">:</span></label>
-          <div class="font-weight-normal">{{userInformation.emailId || '-'}}</div>
+        <div class="d-flex mb-16">
+          <div class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.emailId}}</div>
+          <span class="mx-8">:</span>
+          <div>{{userInformation.emailId || '-'}}</div>
         </div>
       </div>
-      <div class="mb-16 fnormal font-weight-normal" *ngIf="type === 'course-consent'">
-        <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8"
-          alt="info">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}
+      <div class="mb-16 mat-body-1 d-flex flex-ai-center" *ngIf="type === 'course-consent'">
+        <mat-icon>info</mat-icon>
+        <span class="ml-8">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}</span>
       </div>
-
-      <p class="mb-0fnormal font-weight-normal">
-        <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8" aria-label="term and condition checkbox">
-        {{consentConfig.tncText | interpolate:'{instance}': instance}}
-        <a class="sb-color-primary" href="javascript:void(0)" tabindex="0"
-          (click)="showTncPopup=true">{{consentConfig.tncLink | interpolate:'{instance}':
-          resourceService?.instance}}</a>
+      <p class="mb-0 mat-body-1 globalConsent-mat-checkbox">
+        <mat-checkbox [(ngModel)]="isTncAgreed" aria-label="term and condition checkbox">{{consentConfig.tncText | interpolate:'{instance}': instance}}
+          <a class="color-accent" href="javascript:void(0)" tabindex="0" (click)="showTncPopup=true">
+            {{consentConfig.tncLink | interpolate:'{instance}': resourceService?.instance}}
+          </a>
+        </mat-checkbox>
+       
       </p>
     </mat-dialog-content>
   
     <mat-dialog-actions align="end">
-      <button mat-button class="button-rounded text-uppercase" tabindex="0"
+      <button mat-raised-button class="button-rounded text-uppercase color-accent" tabindex="0"
       (click)="updateUserConsent(false)"
       *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
-    <button type="button" mat-button tabindex="0" [disabled]="!isTncAgreed"
+    <button type="button" mat-raised-button color="accent" tabindex="0" [disabled]="!isTncAgreed"
       class="button-rounded text-uppercase ml-8" (click)="updateUserConsent(true)"
       *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
-    <button type="button"  mat-button tabindex="0" [disabled]="!isTncAgreed"
+    <button type="button" mat-raised-button color="accent" tabindex="0" [disabled]="!isTncAgreed"
     class="button-rounded text-uppercase ml-8" (click)="updateUserConsent(true)"
     *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
     </mat-dialog-actions>
-
-
   </ng-template>
 </app-modal-wrapper>
 

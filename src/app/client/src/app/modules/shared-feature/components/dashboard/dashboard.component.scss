@@ -77,18 +77,4 @@
         color: var(--gray-300);
         margin-bottom: 0;
     }
-    .download-csv {
-        color: var(--primary-color);
-        font-size: 0.87rem;
-        font-weight: bold;
-        border: none;
-        background: transparent;
-        outline: none !important;
-        cursor: pointer;
-        .download-icon{
-            margin:0 0.5rem;
-            width: 1rem;
-            height: 1rem;
-        }
-    }
 }
