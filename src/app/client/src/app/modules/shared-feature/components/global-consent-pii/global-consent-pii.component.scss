@@ -1,16 +1,7 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.sb-modal-profile-details {
-    input[type="checkbox"] {
-        width: calculateRem(16px);
-        height: calculateRem(16px);
-        position: relative;
-        top: calculateRem(2px);
-    }
-}
-
 .profile-fields{
-word-break: break-all;
+    word-break: break-all;
     .profile-field-label{
         width: calculateRem(150px);
         @media screen and (max-width:768px) {

@@ -136,11 +136,11 @@
           </div>
         </div>
         <!--Activity Dashboard-->
-        <div *ngIf="isGroupAdmin" class="py-8">
+        <div *ngIf="isGroupAdmin">
           <button mat-raised-button color="success"
             class="button-rounded ml-8 disabled"
             appActivityDashboard [hierarchyData]="courseHierarchy">
-            <mat-icon>bar-chart</mat-icon>
+            <mat-icon>bar_chart</mat-icon>
             {{resourceService?.frmelmnts?.btn?.activityDashboard}}</button>
         </div>
       </div>

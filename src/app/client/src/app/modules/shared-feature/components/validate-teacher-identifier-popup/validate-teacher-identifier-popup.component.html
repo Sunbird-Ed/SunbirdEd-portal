@@ -15,23 +15,19 @@
       <div *ngIf="!processValidation">
         {{labels?.headerLabel}}
       </div>
-      <form class="sb-form" [formGroup]="userDetailsForm">
-        <div *ngIf="processValidation && !(extIdVerified || extIdFailed)" class="sb-field-group mb-16 text-left">
-          <div class="sb-field" *ngIf="showStateDropdown">
-            <label>{{resourceService?.frmelmnts?.lbl?.state}}</label>
-            <sui-select id="stateField" [isSearchable]="false" class="selection" [options]="options"
-              formControlName="state">
-              <sui-select-option *ngFor="let option of channelData" [value]="option"></sui-select-option>
-            </sui-select>
-          </div>
-          <div class="sb-field">
-            <label class="required">{{labels?.fieldLabel}}</label>
-            <input #extIdInputField type="text" required name="extId" placeholder="For example, ER12345"
-              class="sb-form-control" formControlName="extId" />
-            <span *ngIf="showError" class="sb-color-error fxsmall mt-8">
-              {{labels?.incorrectIDLabel}}
-            </span>
-          </div>
+      <form [formGroup]="userDetailsForm">
+        <div *ngIf="processValidation && !(extIdVerified || extIdFailed)" class="mb-16 text-left">
+          <mat-form-field *ngIf="showStateDropdown" class="sb-mat__dropdown mb-16 w100" appearance="fill">
+            <mat-label>{{resourceService?.frmelmnts?.lbl?.state}}</mat-label>
+            <mat-select id="stateField" [isSearchable]="false" [options]="options" formControlName="state" tabindex="0">
+              <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of channelData" [value]="option"></mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>{{labels?.fieldLabel}}</mat-label>
+            <input matInput #extIdInputField type="text" required name="extId" placeholder="For example, ER12345" [formControl]="extId">
+            <mat-error *ngIf="showError">{{labels?.incorrectIDLabel}}</mat-error>
+          </mat-form-field>
         </div>
       </form>
       <!-- Success / error field  -->

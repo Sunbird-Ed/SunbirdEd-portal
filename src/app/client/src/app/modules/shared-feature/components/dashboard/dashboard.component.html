@@ -6,9 +6,9 @@
           {{ resourceService?.frmelmnts?.lbl?.lastupdate}} : {{lastUpdatedOn | date:'MMM d, y, h:mm a'}}
         </label>
       </div>
-      <button class="download-csv" (click)="downloadCSV($event)">
-        {{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}<img src="assets/images/download-icon.svg"
-          class="download-icon"></button>
+        <a mat-button color="accent" (click)="downloadCSV($event)" tabindex="0">
+          <mat-icon class="mr-8">download</mat-icon>{{ resourceService?.frmelmnts?.lbl?.downloadAsCSV }}
+        </a>
     </div>
   </ng-template>
 </sb-dashlet>

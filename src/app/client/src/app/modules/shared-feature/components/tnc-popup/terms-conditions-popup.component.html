@@ -7,7 +7,7 @@
       </button>
       <p class="mat-subheading-2 mb-0" aria-level="1">{{resourceService?.frmelmnts?.lbl?.termsAndCond}}</p>
     </div>
-    <mat-dialog-content>
+    <mat-dialog-content class="pb-0">
       <!--Content-->
       <div class="text-center mb-12">
         <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}">
@@ -29,7 +29,7 @@
       <!--/Content-->
     </mat-dialog-content>
      <!--Actions-->
-     <mat-dialog-actions align="end">
+     <mat-dialog-actions align="end" class="pt-0">
       <button mat-raised-button color="accent" class="button-rounded" [ngClass]="tncChecked ? '' : 'disabled'"
         [disabled]="!disableContinueBtn" (click)="onSubmitTnc(data?.id)" tabindex="0"
         *ngIf="!tncUrl || showAcceptTnc">
