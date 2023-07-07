@@ -151,7 +151,6 @@
         </div>
       </div>
     </form>
-    <div *ngIf="newData" class="newData">*{{errorMessage}}</div>
   </ng-container>
   <div class="sb-filter-label pt-16 pb-8" *ngIf="hideElements">
     <div *ngFor="let key of loadash.keys(displayFilters)" class="d-inline-flex flex-w-wrap pr-10">
@@ -163,6 +162,7 @@
 </ng-template>
 <ng-template #programDataset>
   <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
+  <div *ngIf="(!userAccess)|| (oldProgram && !reportForm.controls.solution.value) || newData"class="newData">*{{errorMessage}}</div>
   <div class="sbt-inside-page-container relative position mt-32">
     <div>
       <div>
@@ -207,7 +207,8 @@
 </ng-template>
 <ng-template #graphs let-currentReport>
   <ng-container *ngTemplateOutlet="globalFilters" ></ng-container>
-  <ng-container *ngIf="currentReport.charts.length && userAccess">
+  <div *ngIf="(oldProgram && newData) || (!oldProgram && showErrorForGraphs)" class="newData">*{{errorMessage}}</div>
+  <ng-container *ngIf="(oldProgram && reportForm.controls.solution.value && currentReport.charts.length) || (!oldProgram && currentReport.charts.length)">
     <div class="sb-graph-section p-24 my-24"
         *ngFor="let chart of currentReport.charts;">
         <ng-container *ngIf="chart?.chartConfig?.id == 'Big_Number'">
@@ -218,7 +219,7 @@
       </ng-container>
       </div>
     </ng-container>
-      <div class="ui warning message mt-16" *ngIf="!currentReport.charts.length || !userAccess">
+      <div class="ui warning message mt-16" *ngIf="(!reportForm.controls.solution.value && oldProgram) || !currentReport.charts.length">
         {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
       </div>
   <div *ngIf="noResult">
@@ -237,6 +238,7 @@
 
   <ng-template #tables let-table>
     <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
+    <div *ngIf="(oldProgram && newData) || !oldProgram"class="newData">*{{errorMessage}}</div>
       <div *ngIf="table?.data" class="sb-graph-section p-24 my-24">
             <div class="customTable">
               <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-table>
