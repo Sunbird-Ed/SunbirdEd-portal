@@ -1,4 +1,4 @@
-<form [formGroup]="filtersFormGroup" class="sb-form" [ngClass]="{'hide': hideElements}"
+<form [formGroup]="filtersFormGroup" [ngClass]="{'hide': hideElements}"
   *ngIf="showFilters && !hideElements">
   <div content>
       <div class="sb-prominent-filter-container pb-0 d-flex flex-w-wrap flex-ai-center">
@@ -27,7 +27,7 @@
           <div *ngIf="filter.controlType === 'date'">
             <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
-              [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="sb-form-control" type="text"
+              [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters type="text"
               placeholder="Select {{filter.displayName | lowercase}}" ngxDaterangepickerMd [showCustomRangeLabel]="true"
               [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
               [minDate]="pickerMinDate" [maxDate]="pickerMaxDate" (change)="getDateRange($event,filter.reference)" />
@@ -37,7 +37,7 @@
   </div>
 </form>
 
-<div *ngIf="errorMessage" class="errorMessage">*{{errorMessage}}</div>
+<div *ngIf="errorMessage" class="color-warn ml-16 mt-8">*{{errorMessage}}</div>
 <div class="sb-filter-label pt-16 pb-8" *ngIf="selectedFilters && filterType=='report-filter'">
   <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap pr-10">
 

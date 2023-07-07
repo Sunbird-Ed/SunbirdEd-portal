@@ -41,7 +41,12 @@
       position: relative;
       top: -0.5rem;
     }
-
+    .mat-icon, .mat-form-field-label {
+      color:initial;
+      .pink-bluegrey & {
+        color:inherit;
+      }
+    }
     .mat-form-field-label-wrapper {}
   }
 

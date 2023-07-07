@@ -15,7 +15,7 @@
       <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
     </div>
     <div class="toolbar-pageback__heading">
-      <h3 class="mat-title mb-0 sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
+      <h3 class="mat-title sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
       <!-- Textbook Rating with share icon -->
       <div class="toolbar-pageback__metadata d-flex flex-ai-center">
         <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini mr-8" [isReadonly]="true"

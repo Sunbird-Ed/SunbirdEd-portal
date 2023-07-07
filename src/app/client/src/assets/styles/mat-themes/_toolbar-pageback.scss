@@ -48,7 +48,7 @@
         @include mat.typography-level($title-typography, 'subheading-2');
         // font-size: mat.font-size($pagebackTitle, $title);
         // font-size: mat.font-size($title-typography, $subheading-2);
-        margin: 0;
+        margin: 0 0 0.5rem 0;
         color: mat.get-color-from-palette($primary, 500-contrast);
         // color: mat.get-color-from-palette($accent);
         width: 95%;

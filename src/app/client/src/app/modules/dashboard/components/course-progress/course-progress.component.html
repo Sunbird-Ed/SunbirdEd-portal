@@ -13,21 +13,19 @@
   </ng-template>
 </app-modal-wrapper>
 <!-- Updated code as per new design for semantic datatable-->
-<div class="p-16 progress-content">
+<div class="p-16 progress-content mat-app-background2">
   <div>
     <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
-      <div class="d-flex  progress-report-content">
-        <div class="d-flex w-300 flex-dc">
-          <div class="sb-field">
-            <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+      <div class="d-flex flex-ai-center progress-report-content">
+        <div class="w-300">
+            <mat-form-field appearance="fill" class="w-100">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.selectBatch}}</mat-label>
-              <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.selectBatch" class="selection"
+              <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.selectBatch"
                 [(ngModel)]="selectedOption" (selectionChange)="setBatchId($event)">
-                <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of batchlist" [value]="option"
+                <mat-option role="option" *ngFor="let option of batchlist" [value]="option"
                 attr.aria-label="{{option.name}}">{{option.name}}</mat-option>
               </mat-select>
             </mat-form-field>
-          </div>
         </div>
         <!-- below needs to be done score card -->
         <app-access-discussion *ngIf="fetchForumIdReq" [fetchForumIdReq]="fetchForumIdReq"
@@ -35,41 +33,41 @@
       </div>
       <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
       <div class="d-flex flex-dc current-batch-list">
-        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 fsmall mt-8 mb-0 update-text">
+        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 mt-8 mb-0 mat-caption update-text">
           {{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote | interpolate:'{date}': (currentBatch?.lastUpdatedOn
           | sbDataTable : 'dateTime')}}</p>
 
         <div class="d-flex flex-dc my-16 sb-course-progress-status" *ngIf="currentBatch">
-          <div class="sb-course-progress-status-label">
-            <span class="course-start-dt course-participants-label">
+          <div class="sb-course-progress-status-label mat-app-background">
+            <span class="course-start-dt course-participants-label d-flex flex-ai-center flex-jc-center w-100">
               <span *ngIf="currentBatch.startDate">
                 {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
               </span>
             </span>
 
-            <span class="course-end-dt course-participants-label">
+            <span class="course-end-dt course-participants-label d-flex flex-ai-center flex-jc-center w-100">
               <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
               </span>
             </span>
 
             <span *ngIf="currentBatch.participantCount !== null"
-              class="d-flex flex-dc course-participants course-participants-label">
+              class="course-participants course-participants-label d-flex flex-ai-center flex-jc-center w-100">
               <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}</span>
             </span>
           </div>
 
           <div class="sb-course-progress-status-result">
-            <span class="course-start-dt course-participants-label">
+            <span class="course-start-dt course-participants-label d-flex flex-ai-center flex-jc-center w-100">
               <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
             </span>
 
-            <span class="course-end-dt course-participants-label">
+            <span class="course-end-dt course-participants-label d-flex flex-ai-center flex-jc-center w-100">
               <span *ngIf="currentBatch.endDate" class="font-weight-bold">{{currentBatch.endDate | dateFormat
                 :'DD/MM/YYYY'}}</span>
               <span *ngIf="!currentBatch.endDate">-</span>
             </span>
 
-            <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label">
+            <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label d-flex flex-ai-center flex-jc-center w-100">
               <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
             </span>
           </div>
@@ -93,19 +91,13 @@
         </div>
       </div>
     </div>
-    <div class="tweleve wide column" *ngIf="showLoader">
+    <div class="w-100" *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
-    <div class="ui grid" *ngIf="showNoBatch">
-      <div class="twelve wide column">
-        <div class="ui info message">
-          <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
-          <ul class="list">
-            <li>{{resourceService?.frmelmnts?.instn?.t0062}}</li>
-          </ul>
-        </div>
+      <div class="w-100 p-16 bgcolor-accent" *ngIf="showNoBatch">
+        <div class="font-weight-bold mat-subheading-1">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
+        <ul><li>{{resourceService?.frmelmnts?.instn?.t0062}}</li></ul>
       </div>
-    </div>
   </div>
 
   <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)">
@@ -117,6 +109,5 @@
         [tag]="courseId + '_'+batchId"></app-on-demand-reports>
     </mat-tab>
   </mat-tab-group>
-
 
 </div>
