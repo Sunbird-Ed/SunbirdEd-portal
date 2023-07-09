@@ -1,10 +1,10 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
-.information-icon{
-    position: relative;
-    top: calculateRem(8px);
-  }
+.information-icon {
+  position: relative;
+  top: calculateRem(8px);
+}
 
-  .administrator-text {
-    font-style: italic;
-  }
+.admin-text {
+  font-style: italic !important;
+}

@@ -18,7 +18,7 @@
     <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
       <div class="d-flex flex-ai-center progress-report-content">
         <div class="w-300">
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="fill" class="w-100" color="accent">
               <mat-label>{{resourceService?.frmelmnts?.lbl?.selectBatch}}</mat-label>
               <mat-select role="listbox" aria-label="resourceService?.frmelmnts?.lbl?.selectBatch"
                 [(ngModel)]="selectedOption" (selectionChange)="setBatchId($event)">
@@ -33,7 +33,7 @@
       </div>
       <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
       <div class="d-flex flex-dc current-batch-list">
-        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 mt-8 mb-0 mat-caption update-text">
+        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 mt-8 mb-0 mat-caption">
           {{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote | interpolate:'{date}': (currentBatch?.lastUpdatedOn
           | sbDataTable : 'dateTime')}}</p>
 
@@ -100,10 +100,10 @@
       </div>
   </div>
 
-  <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)">
+  <mat-tab-group *ngIf="currentBatch" (selectedTabChange)="selectedTabChange($event)" color="accent">
     <mat-tab [label]="{index: 2}">
       <ng-template mat-tab-label>
-        <span>{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</span>
+        <h4 class="mb-0">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</h4>
       </ng-template>
       <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch"
         [tag]="courseId + '_'+batchId"></app-on-demand-reports>
