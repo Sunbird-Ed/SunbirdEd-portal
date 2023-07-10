@@ -238,7 +238,7 @@
 
   <ng-template #tables let-table>
     <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
-    <div *ngIf="(oldProgram && newData) || !oldProgram"class="newData">*{{errorMessage}}</div>
+    <div *ngIf="(oldProgram && newData) || (!oldProgram && !reportForm.controls.solution.value) || newData"class="newData">*{{errorMessage}}</div>
       <div *ngIf="table?.data" class="sb-graph-section p-24 my-24">
             <div class="customTable">
               <app-sb-table [tableToCsv]="tableToCsv" [table]="table" [hideElements]="hideElements" [appliedFilters]="appliedFilters"></app-sb-table>
