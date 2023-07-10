@@ -1,6 +1,6 @@
 const desktopAppHelper = require('../helpers/desktopAppHelper.js');
 const envHelper = require('../helpers/environmentVariablesHelper.js');
-const crashReporter = require('../helpers/desktopCrashReporter.js');
+
 const bodyParser = require('body-parser');
 const { logger } = require('@project-sunbird/logger');
 const path = require('path');
