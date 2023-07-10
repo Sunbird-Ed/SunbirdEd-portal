@@ -1,42 +1,44 @@
-<div class="d-flex flex-dc pt-0">
+<div class="d-flex flex-dc p-16">
   <!-- <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label> -->
-  <div [formGroup]="reportForm" class="d-flex flex-ai-center">
-    <div class="sb-field w-25">
-    <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
-      <mat-label>Choose your report</mat-label>
-      <mat-select formControlName="reportType" role="listbox" aria-label="Choose your report" class="selection"
-        (selectionChange)="reportChanged($event)">
-        <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of reportTypes" [value]="option"
-        attr.aria-label="{{option.title}}">{{option.title}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-    <div class="filterTable mx-16 mb-0">
-      <mat-form-field class="example-full-width" appearance="fill">
+  <div [formGroup]="reportForm" class="d-flex flex-ai-flex-start flex-w-wrap py-16">
+    <div class="w-25">
+      <mat-form-field appearance="fill" class="w-100" color="accent">
+        <mat-label>Choose your report</mat-label>
+        <mat-select formControlName="reportType" role="listbox" aria-label="Choose your report" class="selection"
+          (selectionChange)="reportChanged($event)">
+          <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of reportTypes" [value]="option"
+            attr.aria-label="{{option.title}}">{{option.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="filterTable mx-16">
+      <mat-form-field class="example-full-width" appearance="fill" color="accent">
         <mat-label>Enter password</mat-label>
         <input matInput formControlName="password" placeholder="Enter password" aria-label="enter password">
       </mat-form-field>
     </div>
-    <button mat-raised-button color="accent" class="button-rounded" type="button" [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))"
-    tabindex="0" (click)="submitRequest()">
+    <button mat-raised-button color="accent" class="button-rounded mt-8" type="button"
+      [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))" tabindex="0"
+      (click)="submitRequest()">
       {{resourceService?.frmelmnts?.lbl?.request}}
     </button>
   </div>
   <!-- <p *ngIf="!isProcessed" class="fnormal note-text mt-8 mb-24 administrator-text">{{resourceService.frmelmnts?.lbl?.downloadReqNote}}</p> -->
   <div *ngIf="isProcessed" class="d-flex">
     <div class="information-icon">
-      <img src="assets/images/error-icon.svg" width="18px"></div>
-    <p class="mat-small note-text my-8 administrator-text color-gray">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
+      <img src="assets/images/error-icon.svg" width="18px">
+    </div>
+    <p class="mat-caption my-8 admin-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}
+    </p>
   </div>
   <!-- <p class="administrator-text">{{resourceService.frmelmnts?.lbl?.ondemandReportNote | interpolate:'{instance}': instance}}</p> -->
 
-  <p class="mat-small note-text my-8 administrator-text color-gray" *ngIf="!isProcessed"> 
-   {{resourceService?.frmelmnts?.lbl?.pswdRule}}
-    </p>
+  <p class="mat-caption mb-16 admin-text" *ngIf="!isProcessed">{{resourceService?.frmelmnts?.lbl?.pswdRule}}
+  </p>
+  <div class="mat-caption font-weight-bold mb-16">{{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
+  <p class="mat-caption mb-16 admin-text">{{resourceService?.frmelmnts?.lbl?.repgenAdminNote |
+    interpolate:'{instance_course_terms}': instance}}</p>
+  
+  <sb-datatable [name]="fileName" [message]="message" [data]="onDemandReportData" [columns]="columns"
+    [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
 </div>
-<div class="mat-small font-weight-bold color-gray">{{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
-<p class="mat-small mt-8 mb-16 administrator-text color-gray">{{resourceService?.frmelmnts?.lbl?.repgenAdminNote | interpolate:'{instance_course_terms}': instance}}</p>
-
-<sb-datatable [name]="fileName" [message]="message" [data]="onDemandReportData" [columns]="columns"
-              [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
-

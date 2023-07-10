@@ -1,26 +1,17 @@
-<app-landing-section
-  [textToDisplay]="pageTitleSrc"
-  [svgToDisplay]="svgToDisplay"
-  [layoutConfiguration]="layoutConfiguration"
-></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg' : ''">
-  <div
-    class="sb-g"
-    [ngClass]="
-      layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'
-    "
-  >
+<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
+  [layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div class="mat-inside-page-container mat-app-background2 questionnaire-component">
+  <div class="sb-g">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <div class="sticky-block p-10"
-        *ngIf="
+      <div class="sticky-block p-10" *ngIf="
           assessmentInfo?.solution?.criteriaLevelReport &&
           assessmentInfo?.solution?.isRubricDriven
-        "
-      >
+        ">
         <h5 class="pl-10">{{ resourceService.frmelmnts?.lbl?.sectionName }}</h5>
-        <div class="sbt-page-content-area sections pl-10">
+        <div class="mat-app-background p-16 br-24 sections pl-10">
           <div *ngFor="let section of sections;let sectionIndex=index" class="section-list">
-            <a class="item item--tests" [ngClass]="{'selected': sectionIndex===selectedSectionIndex}" tabindex="0" (click)="scrollToContent(section.code);selectedSectionIndex=sectionIndex">
+            <a class="item item--tests" [ngClass]="{'selected': sectionIndex===selectedSectionIndex}" tabindex="0"
+              (click)="scrollToContent(section.code);selectedSectionIndex=sectionIndex">
               {{ section.name }}
             </a>
           </div>
@@ -28,85 +19,38 @@
       </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-      <div>
-        <button
-          type="button"
-          class="
-            sb-btn
-            sb-btn-normal
-            sb-btn-link
-            sb-btn-link-primary
-            sb-left-icon-btn
-            mr-auto
-          "
-          tabindex="0" (click)="goBack()"
-        >
-          <i class="icon-svg icon-svg--xxs icon-back mr-4"
-            ><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-            </svg>
-          </i>
-          {{ resourceService.frmelmnts?.btn?.back }}
+      <div class="mat-app-background p-16">
+        <button mat-mini-fab color="accent" tabindex="0" (click)="goBack()"
+        attr.aria-label=“{{resourceService?.frmelmnts?.btn?.back}}”>
+        <mat-icon>arrow_back</mat-icon>
         </button>
       </div>
-      <div style="position: relative">
+      <div class="relative position">
         <div class="overlay" *ngIf="evidence?.isSubmitted"></div>
-        <div
-          *ngFor="let section of sections"
-          [id]="section.code"
-          [ngClass]="{ 'evidence-completed': evidence?.isSubmitted }"
-        >
-          <div
-            *ngIf="
+        <div *ngFor="let section of sections" [id]="section.code"
+          [ngClass]="{ 'evidence-completed': evidence?.isSubmitted }">
+          <div *ngIf="
               assessmentInfo?.solution?.criteriaLevelReport &&
               assessmentInfo?.solution?.isRubricDriven
-            "
-            class="sbt-page-content-area my-20"
-          >
-            <h4 class="sb-color-primary">{{ section.name }}</h4>
+            " class="mat-app-background p-16 br-24 my-16">
+            <h4 class="color-accent">{{ section.name }}</h4>
           </div>
-          <div
-            [ngClass]="
-              layoutConfiguration
-                ? 'sbt-page-content-area'
-                : 'ui container mt-24'
-            "
-          >
+          <div class="mat-app-background p-16 br-24 my-16">
             <form [formGroup]="questionnaireForm" class="adjust">
-              <sl-input
-                [questions]="section.questions"
-                [questionnaireForm]="questionnaireForm"
-              ></sl-input>
+              <sl-input [questions]="section.questions" [questionnaireForm]="questionnaireForm"></sl-input>
             </form>
           </div>
         </div>
       </div>
 
-      <div
-        [ngClass]="{
+      <div [ngClass]="{
           'd-flex flex-jc-space-evenly': true,
           'evidence-completed': evidence?.isSubmitted
-        }"
-        class="sticky-footer"
-        *ngIf="!evidence?.isSubmitted"
-      >
-        <button
-          class="sb-btn sb-btn-normal sb-btn-primary"
-          type="button"
-          tabindex="0" (click)="onSubmit('save')"
-        >
+        }" class="sticky-footer" *ngIf="!evidence?.isSubmitted">
+        <button mat-raised-button color="accent" class="button-rounded" type="button" tabindex="0" (click)="onSubmit('save')">
           {{ resourceService?.frmelmnts?.btn?.save | translate }}
         </button>
-        <button
-          [ngClass]="{
-            'sb-btn sb-btn-normal': true,
-            'sb-btn-primary': questionnaireForm?.valid,
-            'sb-btn-disabled': !questionnaireForm?.valid
-          }"
-          type="button"
-          [disabled]="!questionnaireForm?.valid"
-          tabindex="0" (click)="onSubmit()"
-        >
+        <button mat-raised-button color="accent" class="button-rounded" type="button" [disabled]="!questionnaireForm?.valid" tabindex="0" (click)="onSubmit()">
           {{ resourceService?.frmelmnts?.btn?.submit | translate }}
         </button>
       </div>
