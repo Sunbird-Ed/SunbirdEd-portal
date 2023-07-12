@@ -161,7 +161,7 @@
       <!-- User info mobile view ends-->
     </section>
   
-    <section class="py-24 my-24 d-flex flex-jc-center flex-dc bg-primary-500 br-32" *ngIf="userProfile.email || userProfile.phone">
+    <section class="py-24 my-24 d-flex flex-jc-center flex-dc bgcolor-primary br-32" *ngIf="userProfile.email || userProfile.phone">
       <div class="d-flex flex-jc-center">
         <button role="button" mat-raised-button class="mb-16 button-rounded" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
           *ngIf="userProfile.phone"
