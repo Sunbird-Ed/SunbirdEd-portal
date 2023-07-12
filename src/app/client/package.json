@@ -158,7 +158,7 @@
     "protractor": "~7.0.0",
     "ts-node": "^10.9.1",
     "tslint": "~6.1.0",
-    "typescript": "~4.6.4",
+    "typescript": "4.6.4",
     "webpack-bundle-analyzer": "^4.7.0"
   },
   "resolutions": {},
