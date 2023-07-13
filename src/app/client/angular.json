@@ -26,6 +26,11 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
+                "input": "src/assets/External-link",
+                "output": "./"
+              },
+              {
+                "glob": "**/*.*",
                 "input": "./node_modules/@project-sunbird/common-consumption/assets",
                 "output": "./assets/common-consumption"
               },
