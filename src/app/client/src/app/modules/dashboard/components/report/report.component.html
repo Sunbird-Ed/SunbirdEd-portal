@@ -1,5 +1,5 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-container relative9 sbt-fluid-content-bg':''">
+<div class="mat-inside-page-container mat-app-background2">
   <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
         <div class="reports-container w-100" *ngIf="showComponent">
           <ng-container *ngIf="(report$ | async) as currentReport else loading">

@@ -93,8 +93,13 @@
 
         <!-- Text update -->
         <section *ngIf="selectedSVGObject?.type === 'text'" id="content1">
-          <div class="twelve wide column">
-            <div class="sb-search-box m-0">
+          <div class="w-100">
+            <mat-form-field class="w-100 sb-mat-form-field-custom border-radius mb-16" appearance="fill">
+              <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+              <input matInput autofocus [(ngModel)]="selectedSVGObject.value" type="text" maxlength="80">
+              <mat-hint>{{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}</mat-hint>
+            </mat-form-field>
+            <!-- <div class="sb-search-box m-0">
               <div class="input-div relative">
                 <input autofocus class="sb-search-input" [(ngModel)]="selectedSVGObject.value" type="text"
                   maxlength="80" />
@@ -102,7 +107,7 @@
             </div>
             <small _ngcontent-nit-c26="" class="pl-4 fsmall">
               {{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}
-            </small>
+            </small> -->
           </div>
         </section>
       </div>
