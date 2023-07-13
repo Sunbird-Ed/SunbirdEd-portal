@@ -162,7 +162,7 @@
 </ng-template>
 <ng-template #programDataset>
   <ng-container *ngTemplateOutlet="globalFilters"></ng-container>
-  <div *ngIf="(!userAccess)|| (oldProgram && !reportForm.controls.solution.value) || newData"class="newData">*{{errorMessage}}</div>
+  <div *ngIf="(reportForm.controls.programName.value && !userAccess)|| (oldProgram && !reportForm.controls.solution.value) || newData"class="newData">*{{errorMessage}}</div>
   <div class="sbt-inside-page-container relative position mt-32">
     <div>
       <div>
