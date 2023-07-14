@@ -1,8 +1,8 @@
 <div *ngIf="facets && layoutConfiguration" class="global-search-filter-component">
-  <button mat-raised-button color="primary" class="button-rounded mobile only" extended (click)="isOpen = !isOpen">
+  <button mat-raised-button color="primary" class="d-above-md-none d-below-md-block" extended (click)="isOpen = !isOpen">
     <mat-icon>tune</mat-icon> {{resourceService.frmelmnts?.lbl?.filters | translate}}
   </button>
-  <button mat-mini-fab color="primary" class="computer only relative9" (click)="isOpen = !isOpen">
+  <button mat-mini-fab color="primary" class="d-below-md-none d-above-md-block zindex-2" (click)="isOpen = !isOpen">
     <mat-icon>tune</mat-icon>
   </button>
   <ng-container *ngIf="isOpen">
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="sbt-filter-scrollable pr-24">
-        <div class="mat-small mt-24 mb-8" tabindex="0">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
+        <div class="mat-small mt-24 mb-8 text-left" tabindex="0">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
         <sb-search-facet-filter *ngIf="filterFormTemplateConfig"
           [supportedFilterAttributes]="supportedFilterAttributes" [searchResultFacets]="facets"
           [filterFormTemplateConfig]="filterFormTemplateConfig"

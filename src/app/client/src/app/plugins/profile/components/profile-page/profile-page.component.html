@@ -344,7 +344,7 @@
       </div>
   </div>
 </div>
-<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}" (dismiss)="showEdit = !showEdit">
+<app-modal-wrapper #profileModal *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['profile-page-app-popup','overflow-visible', 'material-modal']}" (dismiss)="showEdit = !showEdit">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userFrameWork" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)">

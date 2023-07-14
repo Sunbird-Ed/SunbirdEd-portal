@@ -122,7 +122,7 @@
   </section>
 </div>
 
-<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
+<app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['guest-profile-popup', 'material-modal']}">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="guestUser?.framework" [showCloseIcon]="true"
       [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isGuestUser]="true" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
@@ -131,7 +131,5 @@
 </app-modal-wrapper>
 
 <app-location-selection (close)="closeEditDetailsPopup()" *ngIf="showEditUserDetailsPopup">
-  <div slot="popup-sub-header">
-    <p class="mat-subheading-2 mb-0 font-w-bold">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
-  </div>
+  <div slot="popup-sub-header">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</div>
 </app-location-selection>

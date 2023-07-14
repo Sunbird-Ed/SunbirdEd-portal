@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  .mat-icon  {
+  .mat-icon {
     transform: scale(2.5);
   }
 }
@@ -15,7 +15,6 @@
   top: 0;
   height: 100%;
 }
-
 .overlay-sidebar {
   width: 100%;
   left: 0;
@@ -23,15 +22,19 @@
   overflow: hidden;
   display: block;
   z-index: 99999;
-
+  background: rgba(var(--rc-rgba-black), 0.4);
   &__menu {
     width: calculateRem(400px);
     right: 0;
+    ::ng-deep html[dir="rtl"] & {
+      left: 0;
+      right:unset;
+    }
     z-index: 100000;
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: calculateRem(-6px) 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.1);
-
+    box-shadow: calculateRem(-6px) 0 calculateRem(10px) 0
+      rgba(var(--rc-rgba-black), 0.1);
     @include respond-below(xs) {
       width: 88%;
       left: 0;
@@ -42,7 +45,8 @@
 
 .profile {
   &__info {
-    padding: calculateRem(48px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
+    padding: calculateRem(48px) calculateRem(16px) calculateRem(8px)
+      calculateRem(16px);
     position: relative;
     @include respond-below(sm) {
       .user {
@@ -57,7 +61,6 @@
     }
   }
 }
-
 
 .add-user {
   display: inline-block;
@@ -131,34 +134,33 @@
   }
 }
 
-
 .group__type {
   margin-left: 1.5rem;
   position: relative;
   height: 1.25rem;
-  padding: 0 .25rem 0 0.5rem;
-  margin-right: -.5rem;
-  font-size: .6875rem;
+  padding: 0 0.25rem 0 0.5rem;
+  margin-right: -0.5rem;
+  font-size: 0.6875rem;
   display: inline-flex;
   align-items: center;
   font-weight: normal;
 
   html[dir="rtl"] & {
-    padding: 0 .5rem 0 0.25rem;
+    padding: 0 0.5rem 0 0.25rem;
   }
 
   &::after {
     content: "";
     width: 0;
     height: 0;
-    border-width: .625rem .3125rem;
+    border-width: 0.625rem 0.3125rem;
     border-style: solid;
     border-color: var(--red) transparent var(--red) var(--red);
     position: absolute;
-    right: -.625rem;
+    right: -0.625rem;
 
     html[dir="rtl"] & {
-      left: -.6rem;
+      left: -0.6rem;
       right: inherit;
       transform: rotate(180deg);
     }
@@ -169,4 +171,12 @@
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;
+  ::ng-deep html[dir="rtl"] & {
+    left: 0.5rem;
+    right: unset;
+  }
 }
+
+
+
+

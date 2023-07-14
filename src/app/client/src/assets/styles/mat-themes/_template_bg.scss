@@ -13,7 +13,7 @@
     padding: 2rem 5% 2rem 3%;
     margin: 0 0 0 2%;
     border-radius: 2rem 0 0 2rem;
-
+    min-height: calc(100vh - 31.25rem);
     @include respond-below(sm) {
         margin-top: -1.5rem;
         width: 100%;

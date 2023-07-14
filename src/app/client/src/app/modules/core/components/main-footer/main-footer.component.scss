@@ -39,9 +39,10 @@
       bottom: 0%;
       overflow: hidden;
       width: 88%;
-      html[dir="rtl"] & {
-        -webkit-transform: scaleX(-1);
-        transform: scaleX(-1);
+      left:0;
+      ::ng-deep html[dir="rtl"] & {
+        right:0;
+        left:unset
       }
       @include respond-below(sm){
         display: none;

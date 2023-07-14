@@ -1,5 +1,5 @@
 <div class="faq-report-container">
-  <h4 class="mat-subheading-1">{{faqData?.constants?.tellMoreMsg}}</h4>
+  <h4 class="mat-subheading-1 d-flex">{{faqData?.constants?.tellMoreMsg}}</h4>
   <sb-form class="faq-sbforms" [ngClass]="{'other-issue': formValues?.category === 'otherissues', '': formValues?.category !== 'otherissues'}" *ngIf="faqReportConfig"
     [config]='faqReportConfig' 
     [platform]="'web'" 
@@ -8,8 +8,8 @@
   </sb-form>
   
   <div class="d-flex flex-ai-center flex-w-wrap mt-16">
-    <p class="mat-caption flex-basis-1 mb-0">{{faqData?.constants?.triggerEmailMsg}}</p>
-      <button type="button" mat-raised-button color="accent" class="button-rounded ml-auto" tabindex="0" (click)="faqReportSubmit()">
+    <p class="mat-caption flex-basis-1 mb-0 text-left">{{faqData?.constants?.triggerEmailMsg}}</p>
+      <button type="button" mat-raised-button color="accent" class="button-rounded ml-8" tabindex="0" (click)="faqReportSubmit()">
         {{faqData?.constants?.submitButton}}
       </button>
   </div>
