@@ -3,7 +3,7 @@ STARTTIME=$(date +%s)
 export PYTHON=/usr/bin/python3.7
 NODE_VERSION=16.19.0
 echo "Starting portal build from build.sh"
-set -euo pipefail	
+set -euo pipefail   
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -13,6 +13,7 @@ node=$2
 org=$3
 buildDockerImage=$4
 buildCdnAssests=$5
+cloudProvider=$6
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
@@ -70,9 +71,22 @@ build_server(){
     echo "copying requied files to app_dist"
     cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
     cd app_dist
+
+    echo "Replacing the cloud provider in the code"
+    cd helpers/cloudStorage
+
+    IFS="@" read var1 var2 <<< "$cloudProvider"
+    echo "var1=$var1, var2=$var2"
+    echo $PWD
+
+    sed -i '' "s/[a-zA-z]*-cloud-services/$var1/g" index.js
+
+    cd ../..
     nvm use $NODE_VERSION
     echo "starting server yarn install"
     yarn install --no-progress --production=true
+    echo installing the cloud provider ${cloudProvider}
+    yarn install $cloudProvider
     echo "completed server yarn install"
     node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
@@ -102,3 +116,4 @@ fi
 
 ENDTIME=$(date +%s)
 echo "build completed. Took $[$ENDTIME - $STARTTIME] seconds."
+
