@@ -86,7 +86,7 @@ build_server(){
     echo "starting server yarn install"
     yarn install --no-progress --production=true
     echo installing the cloud provider ${cloudProvider}
-    yarn install $cloudProvider
+    yarn add $cloudProvider
     echo "completed server yarn install"
     node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
