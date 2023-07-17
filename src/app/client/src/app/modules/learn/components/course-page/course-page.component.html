@@ -23,7 +23,7 @@
       </div>
 
       <div *ngFor="let section of pageSections;let last = last"
-        [ngClass]="{'last mb-0':last, 'relative9': !isUserLoggedIn()}" class="mt-24">
+        [ngClass]="{'last mb-0':last, 'zindex-9': !isUserLoggedIn()}" class="mt-24">
         <app-page-section *ngIf="isPageAssemble" (visits)="prepareVisits($event)"
           [layoutConfiguration]="layoutConfiguration" (playEvent)="playContent($event)" [section]="section"
           (viewAll)="viewAll($event)"></app-page-section>

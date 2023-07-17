@@ -10,9 +10,9 @@
     <!--/Header-->
     <!--Content-->
     <mat-dialog-content>
-      <div *ngIf="!hasOngoingBatches" class="mat-subheading-1 font-weight-bold mb-8 color-accent">
+      <div *ngIf="!hasOngoingBatches" class="mat-subheading-1 font-weight-bold mb-8 color-accent text-left">
         {{resourceService.frmelmnts?.lbl?.exprdbtch}}</div>
-      <div *ngFor="let batchDetails of enrolledBatches" class="batch-row mb-16">
+      <div *ngFor="let batchDetails of enrolledBatches" class="batch-row mb-16 text-left">
         <div class="mat-body-2 d-block mb-16">{{batchDetails.batch.name}}</div>
         <div class="d-flex flex-dc">
           <div class="px-10"><mat-icon>calendar_month</mat-icon></div>
@@ -35,11 +35,11 @@
         </div>
       </div>
       <mat-divider *ngIf="!hasOngoingBatches && openForEnrollBatches.length"></mat-divider>
-      <div *ngIf="!hasOngoingBatches && openForEnrollBatches.length" class="mat-subheading-1 mb-16 color-accent">
+      <div *ngIf="!hasOngoingBatches && openForEnrollBatches.length" class="mat-subheading-1 mb-16 color-accent text-left">
         {{resourceService.frmelmnts?.lbl?.opndbtch}}
       </div>
       <div *ngIf="!hasOngoingBatches && openForEnrollBatches.length">
-        <div *ngFor="let batchDetails of openForEnrollBatches" class="batch-row mb-16">
+        <div *ngFor="let batchDetails of openForEnrollBatches" class="batch-row mb-16 text-left">
           <div class="mat-body-2 d-block mb-16">{{batchDetails.name}}</div>
           <div class="d-flex flex-dc">
             <div class="px-10"><mat-icon>calendar_month</mat-icon></div>

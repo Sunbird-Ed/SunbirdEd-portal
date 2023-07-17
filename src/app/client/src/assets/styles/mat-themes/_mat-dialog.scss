@@ -55,6 +55,11 @@
   .mat-dialog-content {
     padding: 1rem;
     margin: 0;
+    text-align: left;
+    ::ng-deep html[dir="rtl"]{
+      text-align: right;
+      text-align: unset;
+    }
   }
 
   .mat-dialog-actions {

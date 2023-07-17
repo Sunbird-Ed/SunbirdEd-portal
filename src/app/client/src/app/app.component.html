@@ -61,9 +61,9 @@
                   (click)="$event.stopPropagation(); setMatTheme(theme)"
                   class="d-flex flex-ai-center flex-jc-space-between">
                   <div><mat-icon *ngIf="activeTheme === theme"
-                      class="center theme-check">radio_button_checked</mat-icon>
-                    <mat-icon *ngIf="activeTheme != theme" class="center theme-check">radio_button_unchecked</mat-icon>
-                    <span>{{ theme }}</span>
+                      class="mr-0">radio_button_checked</mat-icon>
+                    <mat-icon *ngIf="activeTheme != theme" class="mr-0">radio_button_unchecked</mat-icon>
+                    <span class="mx-8">{{ theme }}</span>
                   </div>
                   <mat-icon role="img" svgicon="theme-example" class="mat-icon {{ theme }} ml-16 mr-0"
                     aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="theme-example"><svg
@@ -99,7 +99,7 @@
           <!-- 2nd popup BMGS  -->
           <app-modal-wrapper #frameWorkPopUp *ngIf="showFrameWorkPopUp" [config]="{
               disableClose: true,
-              panelClass: ['overflow-visible', 'material-modal'],
+              panelClass: ['app-component-app-popup', 'material-modal'],
               autoFocus: false
             }">
             <ng-template sbModalContent let-data>

@@ -46,7 +46,7 @@
         <!-- Module Progress bar -->
         <div class="mat-app-background br-24 p-24" *ngIf="totalContents > 0">
           <!-- Previous / next module buttons -->
-          <div class="d-flex flex-ai-center flex-jc-space-between mb-8">
+          <div class="d-flex flex-ai-center flex-jc-space-between mb-16">
             <!-- Previous module button -->
             <button mat-button color="accent" class="button-rounded" aria-label="previous-module" *ngIf="prevModule"
               tabindex="0"
@@ -62,8 +62,8 @@
             </button>
             <!-- Next Module button -->
           </div>
-          <div *ngIf="!isUnitCompleted">
-            <div class="mat-caption">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
+          <div *ngIf="!isUnitCompleted" class="mat-bg-white p-16 text-left">
+            <div class="mat-body-2">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
             <div class="color-accent mat-body-1 font-weight-bold mt-4">{{consumedContents}}/{{totalContents}}
               {{resourceService?.frmelmnts?.lbl?.completed}}</div>
             <mat-progress-bar color="accent" mode="determinate" [value]="consumedContents"
@@ -79,7 +79,7 @@
         </div>
 
 
-        <h5 class="mat-subheading-2 p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
+        <h5 class="mat-subheading-2 p-16 mb-0 font-weight-bold text-left">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
         <div class="mat-app-background p-16 br-24">
           <div *ngFor="let item of courseHierarchy?.children; let index = index;" class="mat-bg-white list-container">
             <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="mat-body-2">{{item?.name}}</p>

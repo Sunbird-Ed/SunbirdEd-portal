@@ -39,7 +39,7 @@
         {{resourceService?.frmelmnts?.lbl?.batches}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div role="region" id="batches" aria-labelledby="batches">
+    <div role="region" id="batches" class="text-left" aria-labelledby="batches">
         <div class="mb-16" *ngIf="showBatchList">
             
             <mat-form-field appearance="fill" class="w-100" color="accent">
@@ -101,7 +101,7 @@
         {{resourceService?.frmelmnts?.lbl?.batchdetails}}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="mb-16">
+    <div class="mb-16 text-left">
       <div *ngIf="batchDetails?.startDate">
         <div class="mat-caption color-accent">
           {{resourceService?.frmelmnts?.lbl?.coursebatchstartdate}}</div>
@@ -126,7 +126,7 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-<mat-accordion class="show-certificate-details" *ngIf="showCertificateDetails">
+<mat-accordion class="show-certificate-details d-block mt-16" *ngIf="showCertificateDetails">
   <mat-expansion-panel class="mat-app-background">
     <mat-expansion-panel-header title class="">
       <mat-panel-title class="mat-subheading-1 mb-0">
@@ -144,7 +144,7 @@
 </mat-accordion>
 
 <!-- Leave batch card -->
-<mat-accordion class="leave-batch-card" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
+<mat-accordion class="leave-batch-card d-block mt-16" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
   <mat-expansion-panel [expanded]="true" class="mat-app-background">
     <mat-expansion-panel-header>
       <mat-panel-title class="mat-subheading-1 mb-0">
@@ -152,7 +152,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
       <div class="d-flex flex-dc">
-        <div class="mb-16">
+        <div class="mb-16 text-left">
           <div class="mat-subheading-2 color-accent">
             {{enrolledBatchInfo?.name}}</div>
           <div class="mt-8 mat-caption">
@@ -165,7 +165,7 @@
             mat-stroked-button color="accent" class="button-rounded" tabindex="0"
             (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
             [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll}}</button>
-        <div class="mt-8 mat-caption">
+        <div class="mt-8 mat-caption text-left">
           <span *ngIf="enrolledBatchInfo?.participantCount>=0">
             {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
           </span>

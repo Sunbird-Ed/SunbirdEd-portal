@@ -1,11 +1,10 @@
-<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-<div class="mat-inside-page-container mat-app-background2">
+<div class="mat-inside-page-container mat-app-background2 report-component">
   <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
         <div class="reports-container w-100" *ngIf="showComponent">
           <ng-container *ngIf="(report$ | async) as currentReport else loading">
             <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
               <div id="report-header" class="report__header">
-                <div class="cc-player__content-header relative9 w-100 m-0 p-16">
+                <div class="cc-player__content-header zindex-9 reports-content-header">
                   <div class="ui container py-16">
                     <div class="content-header__content p-10">
                       <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
@@ -13,7 +12,7 @@
                           <div class="d-flex">
                             <div class="d-flex flex-dc flex-basis-4">
                               <span *ngIf="!hideElements"
-                                class="relative position relative9 my-0 pl-0 pr-10">
+                                class="relative position zindex-9 reports-back-btn my-0 pl-0 pr-10">
                                 <span class="ui py-8 px-0">
                                   <button type="button"
                                     class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5"
