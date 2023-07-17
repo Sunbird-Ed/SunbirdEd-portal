@@ -973,12 +973,12 @@ html[layout="joy"] {
     }
   }
 
-  .relative9 {
-    @include respond-above(md) {
-      position: relative;
-      z-index: 2;
-    }
-  }
+  // .relative9 {
+  //   @include respond-above(md) {
+  //     position: relative;
+  //     z-index: 2;
+  //   }
+  // }
 
   .sbt-dropdown-profile-area,
   app-language-dropdown,
@@ -1501,4 +1501,8 @@ i.large.icon.limitedPublishingLinkIcon {
 .UpReviewHeader {
   font-size: 1em;
   font-weight: 500;
+}
+
+ul.disc-list {
+  list-style-type: disc;
 }

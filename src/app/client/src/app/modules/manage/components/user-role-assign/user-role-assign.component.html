@@ -1,5 +1,5 @@
 <!-- Admin role page -->
-<div class="relative9 mat-inside-page-container mat-app-background2 user-role-assign-component">
+<div class="zindex-9 mat-inside-page-container mat-app-background2 user-role-assign-component">
   <div class="d-flex flex-ai-center">
     <button mat-mini-fab color="accent" (click)="goBack()" *ngIf="showingResults" tabindex="0">
       <mat-icon>arrow_back</mat-icon>
@@ -7,7 +7,7 @@
     <h4 class="text-capitalize" *ngIf="!showingResults">{{resourceService?.frmelmnts?.scttl?.userrole1}}</h4>
     <div class="mat-title my-16 ml-16 d-flex" *ngIf="showingResults">Showing results for <b>"{{userObj.userName}}"</b></div>
   </div>
-  <div *ngIf="!showingResults">
+  <div *ngIf="!showingResults" class="text-left">
     <mat-form-field class="w-50 sb-mat-form-search sb-mat-form-field-custom border-radius" appearance="fill">
       <mat-label>Search user by DIKSHA ID</mat-label>
       <mat-icon matPrefix (click)="onEnter(key)">search</mat-icon>

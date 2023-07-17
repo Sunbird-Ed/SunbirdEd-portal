@@ -4,8 +4,8 @@
     <div class="mat-app-background p-16 mt-16 br-24">
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <div class="d-flex flex-dc mr-auto">
-        <h4 class="mat-body-1 m-0">Add new user roles</h4>
-        <p class="mat-small m-0">Search and add more user roles</p>
+        <h4 class="mat-body-1 m-0 text-left">Add new user roles</h4>
+        <p class="mat-small m-0 text-left">Search and add more user roles</p>
         </div>
         <button mat-raised-button class="button-rounded" color="accent" tabindex="0" type="button" (click)="assignUserRole()">Add User Role</button>
       </div>   
@@ -24,7 +24,7 @@
         <mat-icon color="accent">info</mat-icon>
         <label class="mat-body-1 ml-4 my-4">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
       </div>
-      <p class="mat-small m-0">
+      <p class="mat-small m-0 text-left">
         {{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} 
         <button mat-button role="button" color="accent" appTelemetryInteract
           [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="adminPolicyDetailsInteractEdata"

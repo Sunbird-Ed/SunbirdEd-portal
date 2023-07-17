@@ -3,7 +3,7 @@
 <app-location-selection (onFormValueChange)="onSbFormValueChange($event)" (registerSubmit)="onRegisterSubmit($event)"
     [showModal]="false">
     <div slot="popup-sub-header">
-        <p class="mat-subheading-2 mb-0 font-w-bold">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
+        {{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;
     </div>
 </app-location-selection>
 </div>

@@ -5,12 +5,20 @@
       position: fixed !important;
       right: 7rem;
       top: 8.5rem;
+      ::ng-deep html[dir="rtl"] & {
+        left: 7rem;
+        right:unset;
+      }
       @include respond-below(md){
         top: 13.5rem;
       }
       @include respond-below(sm){
         right: 5rem;
         top: 8.5rem;
+        ::ng-deep html[dir="rtl"] & {
+          left: 5rem;
+          right:unset;
+        }
       }
       @include respond-below(xs){
         right: inherit;
@@ -22,6 +30,10 @@
         right: 1rem;
         top: 1rem;
         z-index: 99;
+        ::ng-deep html[dir="rtl"] & {
+          left: 1rem;
+          right:unset;
+        }
       }
   }
   .pink-bluegrey .mat-card {
