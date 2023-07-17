@@ -1,5 +1,5 @@
 <div *ngIf="contentData.description" class="mat-app-background br-24">
-  <div class="m-16 py-16 " tabindex="0">
+  <div class="m-16 py-16 text-left" tabindex="0">
     <div class="mat-body-1 font-weight-bold" role="heading" aria-level="2">
       {{resourceService?.frmelmnts?.lbl?.description}}</div>
     <p class="mat-body-1 pt-8">
@@ -17,7 +17,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div content role="region" id="aboutTheContent" aria-labelledby="aboutTheContent">
+    <div content role="region" id="aboutTheContent" aria-labelledby="aboutTheContent" class="text-left">
       <div *ngIf="contentData?.transcripts" (click)="showDownloadTranscript()">
         <a mat-button color="accent" tabindex="0">
           {{resourceService?.frmelmnts?.lbl?.DownloadTranscript}}

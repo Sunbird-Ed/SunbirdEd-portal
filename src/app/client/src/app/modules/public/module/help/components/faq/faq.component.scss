@@ -84,6 +84,10 @@
     }
     &__right {
         padding-left: 2rem;
+        ::ng-deep html[dir="rtl"] & {
+            padding-right: 2rem;
+            padding-left: unset;
+        }
         width: 100%;
         transition: all ease-in-out .3s;
         @include respond-below(sm) {

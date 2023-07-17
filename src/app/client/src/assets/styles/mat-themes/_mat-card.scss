@@ -114,6 +114,10 @@
     .mat-card__type {
       top: 1rem;
       right: 0.5em;
+      ::ng-deep html[dir="rtl"] & {
+        left: 0.5em;
+        right: unset;
+      }
       border-radius: 1.5rem;
       z-index: 2;
       bottom: unset !important;
@@ -167,6 +171,10 @@
       border-radius: 0 0.5rem 0.5rem 0;
       top: 1rem;
       left: 0;
+      ::ng-deep html[dir="rtl"] & {
+        right: 0;
+        left: unset;
+      }
       text-align: center;
       bottom: unset !important;
       &::before {
@@ -209,7 +217,10 @@
     .mat-card__type {
       right: 0;
       bottom: 1rem;
-
+      ::ng-deep html[dir="rtl"] & {
+        left: 0;
+        right: unset;
+      }
       &::before {
         transform: rotatey(0) !important;
         content: "";
@@ -307,14 +318,14 @@
       margin: 0 !important;
       html[dir='rtl'] & {
         right: 0;
-        left: auto;
+        left: unset;
       }
       &::before {
         left: auto !important;
         html[dir='rtl'] & {
           left: -0.5rem !important;
           transform: rotatex(180deg);
-          right: auto;
+          right: unset;
         }
       }
     }
@@ -358,7 +369,10 @@
     }
     .mat-card__type {
       right: 0;
-
+      ::ng-deep html[dir="rtl"] & {
+        left: 0;
+        right: unset;
+      }
       &::before {
         transform: rotatey(0) !important;
         content: "";
