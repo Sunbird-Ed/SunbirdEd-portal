@@ -1,5 +1,5 @@
-<div>
-  <app-modal-wrapper #modal>
+<div class="onboarding-popup-component">
+  <app-modal-wrapper #modal [config]="{disableClose: false, panelClass: ['profile-page-app-popup','material-modal']}">
       <ng-template sbModalContent>
           <mat-horizontal-stepper style="background: var(--sbt-body-bg);" [linear]="true" #stepper>
               <ng-container *ngFor="let configData of OnboardingFormConfig | sortBy:'sequence':'asc'">
@@ -21,7 +21,7 @@
                           *ngIf="configData?.renderOptions?.name === onboardingScreenType.LOCATION"
                           [deviceProfile]="deviceProfile" [isClosable]="false" [isStepper]="true"
                           (close)="locationSubmit(stepper)">
-                          <img [src]="tenantInfo?.logo" class="b\rand-logo" height="40"
+                          <img [src]="tenantInfo?.logo" class="brand-logo" height="40"
                               alt="{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}" />
                           <h1 class="my-8 mat-headline color_accent">{{resourceService?.frmelmnts?.lbl?.welcomeToInstance |
                               interpolate:'{instance}': tenantInfo?.titleName}}</h1>

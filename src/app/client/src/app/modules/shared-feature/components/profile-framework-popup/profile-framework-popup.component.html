@@ -9,15 +9,15 @@
   </div>
   <!--/Header-->
   <!--Content-->
-  <mat-dialog-content class="m-0">
+  <mat-dialog-content class="m-0 profile-framework-popup">
       <span *ngIf="isPreference">
         <div class="d-flex">
           <label class="mat-subheading-2 mb-0"> {{resourceService?.frmelmnts?.lbl?.yourPreferences}}</label>
           <mat-divider class="ml-24"></mat-divider>
         </div>
-        <p class="mat-body-2 my-0">{{resourceService?.frmelmnts?.lbl?.preferencesheader | transposeTerms: 'frmelmnts.lbl.preferencesheader' : resourceService?.selectedLang
+        <p class="mat-body-2 my-0 text-left">{{resourceService?.frmelmnts?.lbl?.preferencesheader | transposeTerms: 'frmelmnts.lbl.preferencesheader' : resourceService?.selectedLang
           | interpolate:'{instance}': instance}}</p>
-          <mat-divider class="py-8"></mat-divider>
+          <mat-divider class="my-16"></mat-divider>
       </span>
       <form>
         <span *ngFor="let field of formFieldOptions">

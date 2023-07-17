@@ -1,7 +1,8 @@
-import { Component, ContentChild, OnInit, Directive, TemplateRef, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ContentChild, OnInit, Directive, TemplateRef, Input, Output, EventEmitter, OnDestroy, Inject } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { v4 as UUID } from 'uuid';
 import { Overlay } from '@angular/cdk/overlay';
+import { DOCUMENT } from '@angular/common';
 
 
 const modalSizeToMinWidthMapping = {
@@ -45,7 +46,7 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
     return { disableClose: true, width: this.config.width != undefined ? this.config.width : modalSizeToMinWidthMapping.normal };
   }
 
-  constructor(private matDialog: MatDialog, private overlay: Overlay) { }
+  constructor(private matDialog: MatDialog, private overlay: Overlay, @Inject(DOCUMENT) private _document: any) { }
 
   private getDialogConfig(): MatDialogConfig {
     const { width: modalSize = 'normal', id = UUID(), data = {}, scrollStrategy = this.overlay.scrollStrategies.reposition(), ...config } = this.config || {};
@@ -78,6 +79,8 @@ export class ModalWrapperComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const config = this.getDialogConfig();
+    // written for rtl change when the modal opens
+    config.direction = this._document.documentElement.dir;
     this.modal = this.open(this.modalContent.templateRef, config);
     this.subscribeToDialogDismiss();
   }

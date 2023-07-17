@@ -30,7 +30,7 @@
       [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
     </app-global-search-filter>
     <div class="flex-basis-1">
-      <h4 class="mat-body-1 w-100 color-accent">
+      <h4 class="mat-body-1 w-100 color-accent text-left">
         <span *ngIf="!queryParams?.key?.length">{{resourceService?.frmelmnts?.lbl?.activityRecommendation}}</span>
         <span *ngIf="queryParams?.key?.length && contentList?.length">
           {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' :

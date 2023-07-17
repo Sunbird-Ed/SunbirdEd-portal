@@ -11,6 +11,10 @@
     align-items: center;
     flex-wrap: wrap;
     margin-left: auto;
+    html[dir="rtl"] & {
+      margin-right: auto;
+      margin-left: unset;
+    }
     white-space: nowrap;
 
     @include respond-below(sm) {
@@ -46,7 +50,10 @@
     width: 3rem;
     height: 3rem;
     margin-left: .5rem;
-
+    ::ng-deep html[dir="rtl"] & {
+      margin-right: .5rem;
+      margin-left: unset;
+    }
     img {
       width: 3rem;
       height: 3rem;
@@ -57,7 +64,12 @@
     margin-left: .5rem;
     min-width: 0;
     flex: 1;
-
+    text-align: left;
+        html[dir='rtl'] & {
+          text-align: right;
+          margin-right: .5rem;
+          margin-left: 0;
+        }
     @include respond-below(md) {
       flex: auto;
     }

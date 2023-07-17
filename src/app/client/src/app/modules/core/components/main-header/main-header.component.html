@@ -93,7 +93,7 @@
           <sb-member-card [config]=cardConfig [initial]="userProfile?.firstName[0]" tabindex="0"
             [title]="userProfile?.firstName" [isMenu]="false">
           </sb-member-card>
-        <div class="my-12 mat-caption">
+        <div class="my-12 mat-caption text-left">
           {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
         </div>
 
@@ -135,7 +135,7 @@
           {{resourceService.frmelmnts?.lbl?.addAnotherUser}}
         </div>
       </div> -->
-      <mat-nav-list class="pt-0">
+      <mat-nav-list class="pt-0 text-left">
         <!-- <div mat-subheader>Profile</div> -->
         <mat-divider></mat-divider>
         <mat-list-item tabindex="0" role="navigation" (click)="toggleSideMenu(false)" routerLink="profile">
@@ -192,7 +192,7 @@
         <mat-list-item tabindex="0" (click)="toggleSideMenu(false)" role="navigation"
           *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission [permission]='orgAdminRole'
           routerLink="uci-admin">
-          <mat-icon mat-list-icon>stadia_controller</mat-icon>
+          <mat-icon mat-list-icon>sports_esports</mat-icon>
           <div mat-line>{{resourceService.frmelmnts?.lbl?.communicationConsole}}</div>
           <!-- <div mat-line>subline</div> -->
         </mat-list-item>
@@ -268,7 +268,7 @@
             [title]="guestUser?.formatedName || 'Guest'">
           </sb-member-card>
         </div>
-        <mat-nav-list class="pt-0">
+        <mat-nav-list class="pt-0 text-left">
           <!-- <div mat-subheader>Profile</div> -->
           <mat-divider></mat-divider>
           <mat-list-item role="navigation" tabindex="0" (click)="toggleSideMenu(false)" routerLink="guest-profile">

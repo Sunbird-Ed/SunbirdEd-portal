@@ -11,7 +11,7 @@
     </div>
 
     <mat-dialog-content class="pt-0">
-      <p class="mat-subheading-2 mb-0"><ng-content select="[slot=popup-sub-header]" class="mt-8"></ng-content></p>
+      <p class="mat-subheading-2 mb-0 text-left"><ng-content select="[slot=popup-sub-header]" class="mt-8"></ng-content></p>
       <div class="w-100" [appTelemetryImpression]="telemetryImpression">
         <sb-form
           *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"

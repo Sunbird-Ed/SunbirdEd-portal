@@ -973,12 +973,12 @@ html[layout="joy"] {
     }
   }
 
-  .relative9 {
-    @include respond-above(md) {
-      position: relative;
-      z-index: 2;
-    }
-  }
+  // .relative9 {
+  //   @include respond-above(md) {
+  //     position: relative;
+  //     z-index: 2;
+  //   }
+  // }
 
   .sbt-dropdown-profile-area,
   app-language-dropdown,
@@ -1369,3 +1369,7 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   padding: 0px !important;
 }
 
+
+ul.disc-list {
+  list-style-type: disc;
+}
