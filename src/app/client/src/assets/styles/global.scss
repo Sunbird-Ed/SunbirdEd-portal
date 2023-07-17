@@ -1369,3 +1369,136 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   padding: 0px !important;
 }
 
+//legacy styles
+.curriculum-content {
+  font-size: calculateRem(14px);
+  display: flex;
+  padding: calculateRem(8px) 0;
+}
+/* Semantic UI icons only applies on i tag*/
+span.icon {
+  display: inline-block;
+  opacity: 1;
+  margin: 0 0.25rem 0 0;
+  width: 1.18em;
+  height: 1em;
+  font-family: Icons;
+  font-style: normal;
+  font-weight: 400;
+  text-decoration: inherit;
+  text-align: center;
+  speak: none;
+  font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+span.icon.folder:before {
+  content: "\f07b";
+}
+span.icon.folder.outline:before {
+  content: "\f114";
+}
+span.icon.play.circle:before {
+  content: "\f144";
+}
+/*End Semantic UI icons only applies on i tag*/
+.placeholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.placeholder-heading {
+  align-self: center;
+  font-weight: bold;
+}
+.placeholder-content {
+  align-self: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  opacity: 0.6;
+}
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+.float-ContentRight {
+  float: right !important;
+}
+.width-100 {
+  width: 100% !important;
+}
+.mouse-pointer {
+  cursor: pointer;
+}
+.right-floated {
+  float: right !important;
+}
+.overflowContentHorizontal {
+  overflow-x: auto;
+  max-width: 100%;
+}
+div:focus {
+  outline: none;
+}
+.content-player {
+  position: relative;
+  width: 99.8%;
+  z-index: 11;
+}
+.ui.menu {
+  font-weight: 500;
+  color: var(--gray-800);
+}
+.ui.secondary.pointing.menu {
+  border-bottom: 0;
+}
+.ui.secondary.pointing.menu .active.item {
+  border-color: var(--primary-color);
+  color: var(--gray-800);
+  font-weight: 400;
+}
+.ui.secondary.pointing.menu {
+  background: var(--white);
+  margin: 0rem;
+  justify-content: flex-start;
+}
+.ui.cards > .card > .content {
+  padding-right: calculateRem(3px);
+}
+
+.ui.three.cards > .card {
+  width: calc(33.33333333% - 3.3em);
+  margin-right: 0.2em;
+}
+.ui.three.cards > .card:hover {
+  transition: all 0.3s ease 0s;
+  box-shadow: 0 calculateRem(3px) calculateRem(5px) 0 rgba(var(--rc-rgba-black), 0.5);
+}
+.ui.card>.extra, .ui.cards>.card>.extra{
+  font-size: calculateRem(14px);
+}
+i.large.icon.limitedPublishingLinkIcon {
+  margin-left: calculateRem(-4px);
+  -webkit-transform: rotate(-43deg);
+  transform: rotate(-43deg);
+  font-size: 1.8em;
+}
+.ui.segment.content-player-header {
+  padding: calculateRem(5px);
+  border: var(--gray-300);
+}
+.UpReviewTableHeader {
+  font-size: 1em;
+  font-weight: 400;
+}
+.UpReviewSubHeader {
+  font-size: 0.7em;
+  opacity: 0.7;
+  font-weight: 500;
+}
+.UpReviewHeader {
+  font-size: 1em;
+  font-weight: 500;
+}

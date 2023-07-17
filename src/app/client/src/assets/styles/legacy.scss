@@ -3,312 +3,9 @@
 .text-gray {
   color: var(--gray-300) !important;
 }
-.line-height-1-3 {
-  line-height: 1.3em !important;
-}
-.curriculum-content {
-  font-size: calculateRem(14px);
-  display: flex;
-  padding: calculateRem(8px) 0;
-}
-/* Semantic UI icons only applies on i tag*/
-span.icon {
-  display: inline-block;
-  opacity: 1;
-  margin: 0 0.25rem 0 0;
-  width: 1.18em;
-  height: 1em;
-  font-family: Icons;
-  font-style: normal;
-  font-weight: 400;
-  text-decoration: inherit;
-  text-align: center;
-  speak: none;
-  font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-span.icon.folder:before {
-  content: "\f07b";
-}
-span.icon.folder.outline:before {
-  content: "\f114";
-}
-span.icon.play.circle:before {
-  content: "\f144";
-}
-
-/* placeholder if content is not there */
-.placeholder {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-/* TODO: need to remove font family once we add fonts in index.html file */
-.placeholder-heading {
-  align-self: center;
-  font-weight: bold;
-}
-.placeholder-content {
-  align-self: center;
-  font-size: 1.1em;
-  font-weight: 600;
-  opacity: 0.6;
-}
-
-.disabled .title span {
-  font-weight: 500;
-}
-/*cards fonts*/
-.cardsHeading {
-  font-weight: bold;
-  font-size: 1.25em;
-}
 
 
-/* segment card fonts*/
-.segmentCardSubDesc {
-  font-weight: 500;
-  font-size: 1.0625em;
-}
-/*course structure page fonts*/
-.courseStructureDesc {
-  font-weight: 500;
-  font-size: 0.7em;
-}
-
-/*home page fonts*/
-.ui.header.HomeAccordianHeading {
-  font-weight: bold;
-  font-size: 1.375em;
-}
-/*section heading fonts*/
-.sectionHeading {
-  font-weight: bold;
-  font-size: 1.375em;
-}
-/*show filter fonts*/
-
-.ShowFilterSubTitle {
-  font-weight: 500;
-  font-size: 0.9375em;
-  color: var(--rc-7c7b7b);
-}
-
-.opacity-1 {
-  opacity: 1 !important;
-}
-.text-decoration-underline {
-  text-decoration: underline !important;
-}
-
-.float-ContentRight {
-  float: right !important;
-}
-.right-float {
-  float: right !important;
-}
-.width-100 {
-  width: 100% !important;
-}
-.mouse-pointer {
-  cursor: pointer;
-}
-.right-floated {
-  float: right !important;
-}
-.overflowContentHorizontal {
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-.ui.menu {
-  font-weight: 500;
-  color: var(--gray-800);
-}
-.ui.secondary.pointing.menu {
-  border-bottom: 0;
-}
-.ui.secondary.pointing.menu .active.item {
-  border-color: var(--primary-color);
-  color: var(--gray-800);
-  font-weight: 400;
-}
-.ui.secondary.pointing.menu {
-  background: var(--white);
-  margin: 0rem;
-  justify-content: flex-start;
-}
-.searchfilterinput .ng-empty + .icon.search,
-.searchfilterinput .ng-empty + .icon.search:hover {
-  cursor: auto !important;
-  opacity: 0.3 !important;
-  pointer-events: none;
-}
-/*for the text on image in card */
-
-.rightSideSectionCards.ui.card {
-  width: 100%;
-}
-div:focus {
-  outline: none;
-}
-.ui.cards > .card > .content {
-  padding-right: calculateRem(3px);
-}
-/*three stackable cards width reduced to match design*/
-/*using ~ in calc because of Less issue with clac function */
-.ui.three.cards > .card {
-  width: calc(33.33333333% - 3.3em);
-  margin-right: 0.2em;
-}
-.ui.three.cards > .card:hover {
-  transition: all 0.3s ease 0s;
-  box-shadow: 0 calculateRem(3px) calculateRem(5px) 0 rgba(var(--rc-rgba-black), 0.5);
-}
-
-/*card font size for curriculum*/
-.rightSideSectionCards.ui.card > .content > .header {
-  font-size: calculateRem(16px);
-}
-.ui.card>.extra, .ui.cards>.card>.extra{
-  font-size: calculateRem(14px);
-}
-/*text description height fixed in card*/
-i.large.icon.limitedPublishingLinkIcon {
-  margin-left: calculateRem(-4px);
-  -webkit-transform: rotate(-43deg);
-  transform: rotate(-43deg);
-  font-size: 1.8em;
-}
-.content-player {
-  position: relative;
-  width: 99.8%;
-  z-index: 11;
-}
-.ui.segment.content-player-header {
-  padding: calculateRem(5px);
-  border: var(--gray-300);
-}
-.contentViewerIframeShadow {
-  width: 100%;
-  border: 0px;
-  height: 100%;
-}
-
-/*semantic ui modal form field changes*/
-.ui.modal.ui.dropdown > .text {
-  margin-left: -1.1em;
-}
-.ui.modal.ui.multiple.dropdown > .text {
-  margin: 0;
-  line-height: 0;
-}
-.field > label {
-  color: var(--gray-800);
-  font-weight: bold;
-  line-height: normal;
-}
-.inline.fields > label {
-  color: var(--gray-800);
-}
-.ui.modal .ui.radio.checkbox .box,
-.ui.radio.checkbox label {
-  color: var(--gray-800);
-}
-.ui.modal .ui.header {
-  font-size: 1.5em;
-}
-/*it is a quick fix to make modal content scrollable need to updated with semantic libray*/
-.ui.modal .scrolling.content {
-  max-height: calc(70vh);
-  overflow: auto;
-}
-/*concept selector pop up */
-.ui.tree-picker.modal .header .ui.menu {
-  margin-top: calculateRem(-12px);
-}
-/*removing border and box-shadow for popup modal in workspace*/
-.modal .ui.segment {
-  box-shadow: none;
-  border: none;
-}
-.ui.form input:not([type]):focus {
-  border-color: var(--gray-800);
-}
-.centered.grid.no-result-container {
-  margin-top: 5%;
-  margin-bottom: 5%;
-}
-.no-result-container .column img {
-  display: block;
-  height: 9em;
-  margin: auto;
-  width: 9em;
-}
-
-.no-result-container .no-result-text {
-  text-align: center;
-  padding-top: calculateRem(20px);
-  font-size: calculateRem(18px);
-  font-weight: 600;
-  color: var(--rc-7c7b7b);
-}
-.no-result-container .no-result-search-text {
-  text-align: center;
-  padding-top: calculateRem(5px);
-  font-size: calculateRem(16px);
-  color: var(--rc-7c7b7b);
-}
-.announcement-description {
-  font-weight: 500;
-  font-size: 1em;
-}
-.ui.items > .item.box {
-  box-shadow: 0 calculateRem(1px) calculateRem(2px) 0 rgba(var(--rc-rgba-gray-300), 0.15);
-  margin: 1rem 0;
-  padding: 1em 1em;
-  border-radius: 0.28571429rem;
-  border: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.15);
-}
-
-.UpReviewTableHeader {
-  font-size: 1em;
-  font-weight: 400;
-}
-.UpReviewSubHeader {
-  font-size: 0.7em;
-  opacity: 0.7;
-  font-weight: 500;
-}
-.UpReviewHeader {
-  font-size: 1em;
-  font-weight: 500;
-}
-
-.ui.tiny.image.UpReviewTinyImage {
-  height: calculateRem(40px);
-  width: calculateRem(40px);
-  max-height: calculateRem(40px);
-  max-width: calculateRem(40px);
-}
-.UpForReviewListHover:hover {
-  background-color: var(--gray-0);
-}
-.UpForReviewStatusOrange {
-  color: var(--rc-ffb300);
-  font-size: 1.1em;
-  font-weight: 500;
-}
-.ui.upForReviewTable.table {
-  border: none;
-}
-h5.ui.header {
-  font-size: 1rem;
-}
+//need to cleanup
 .searchicon.ui.icon.input input.upForReviewSearchBox {
   width: calculateRem(450px);
   background: var(--rc-f9f9f9);
@@ -1073,4 +770,91 @@ i.blue.icon {
 }
 .sbt-page-gap{
   padding-top: calculateRem(24px);
+}
+
+//workspace styles...need to cleanup in future
+.ui.header.HomeAccordianHeading {
+  font-weight: bold;
+  font-size: 1.375em;
+}
+.sectionHeading {
+  font-weight: bold;
+  font-size: 1.375em;
+}
+.ShowFilterSubTitle {
+  font-weight: 500;
+  font-size: 0.9375em;
+  color: var(--rc-7c7b7b);
+}
+.searchfilterinput .ng-empty + .icon.search,
+.searchfilterinput .ng-empty + .icon.search:hover {
+  cursor: auto !important;
+  opacity: 0.3 !important;
+  pointer-events: none;
+}
+.rightSideSectionCards.ui.card {
+  width: 100%;
+}
+.rightSideSectionCards.ui.card > .content > .header {
+  font-size: calculateRem(16px);
+}
+/*semantic ui modal form field changes*/
+.ui.modal.ui.dropdown > .text {
+  margin-left: -1.1em;
+}
+.ui.modal.ui.multiple.dropdown > .text {
+  margin: 0;
+  line-height: 0;
+}
+.field > label {
+  color: var(--gray-800);
+  font-weight: bold;
+  line-height: normal;
+}
+.inline.fields > label {
+  color: var(--gray-800);
+}
+.ui.modal .ui.radio.checkbox .box,
+.ui.radio.checkbox label {
+  color: var(--gray-800);
+}
+.ui.modal .ui.header {
+  font-size: 1.5em;
+}
+/*it is a quick fix to make modal content scrollable need to updated with semantic libray*/
+.ui.modal .scrolling.content {
+  max-height: calc(70vh);
+  overflow: auto;
+}
+/*concept selector pop up */
+.ui.tree-picker.modal .header .ui.menu {
+  margin-top: calculateRem(-12px);
+}
+/*removing border and box-shadow for popup modal in workspace*/
+.modal .ui.segment {
+  box-shadow: none;
+  border: none;
+}
+.ui.form input:not([type]):focus {
+  border-color: var(--gray-800);
+}
+.ui.tiny.image.UpReviewTinyImage {
+  height: calculateRem(40px);
+  width: calculateRem(40px);
+  max-height: calculateRem(40px);
+  max-width: calculateRem(40px);
+}
+.UpForReviewListHover:hover {
+  background-color: var(--gray-0);
+}
+.UpForReviewStatusOrange {
+  color: var(--rc-ffb300);
+  font-size: 1.1em;
+  font-weight: 500;
+}
+.ui.upForReviewTable.table {
+  border: none;
+}
+h5.ui.header {
+  font-size: 1rem;
 }
