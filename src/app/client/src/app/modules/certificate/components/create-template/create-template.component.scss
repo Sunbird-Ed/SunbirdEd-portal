@@ -1,9 +1,5 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins"as *;
 
-.br-24 {
-  border-radius: 1.5rem;
-}
-
 .cert-img-sb-card {
   width: 6.375rem;
   margin-bottom: calculateRem(16px);
