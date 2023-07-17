@@ -33,7 +33,7 @@
       </div>
       <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
       <div class="d-flex flex-dc current-batch-list">
-        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 mt-8 mb-0 mat-caption">
+        <p *ngIf="currentBatch?.lastUpdatedOn" class="last-updated d-flex flex-ai-flex-end mr-24 mt-8 mb-0 mat-caption ml-auto">
           {{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote | interpolate:'{date}': (currentBatch?.lastUpdatedOn
           | sbDataTable : 'dateTime')}}</p>
 

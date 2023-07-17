@@ -1,6 +1,6 @@
 <app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.observation" [svgToDisplay]="svgToDisplay"
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+<div class="mat-inside-page-container mat-app-background2">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <div *ngIf="layoutConfiguration">
