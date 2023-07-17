@@ -81,12 +81,20 @@ build_server(){
 
     sed -ie "s/[a-zA-Z]*-cloud-services/$var1/g" index.js
 
+    echo "showing contents of the index.js"
+
+    cat index.js
     cd ../..
     nvm use $NODE_VERSION
     echo "starting server yarn install"
     yarn install --no-progress --production=true
     echo installing the cloud provider ${cloudProvider}
     yarn add $cloudProvider
+
+    echo "showing package.json"
+    cat package.json
+
+
     echo "completed server yarn install"
     node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
