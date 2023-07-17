@@ -2,6 +2,10 @@
 @use "pages/course-player" as *;
 @use 'pages/content-header' as *;
 
+.br-24 {
+  border-radius: 1.5rem;
+}
+
 .course-player-list {
   padding: calculateRem(16px);
   margin-bottom: calculateRem(16px);

@@ -1,6 +1,9 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "components/video" as *;
 
+.br-24 {
+  border-radius: 1.5rem;
+}
 
 :host::ng-deep {
   .sbchapter__item__score {

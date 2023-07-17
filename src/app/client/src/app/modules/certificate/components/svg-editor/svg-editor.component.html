@@ -4,23 +4,14 @@
 
 <div class="mat-inside-page-container mat-app-background2 svg-editor-component">
 
-  <div class="sb-bg-color-white py-8 zindex-9 cc-player__content-header cc-player__border-fix">
-    <div class="ui container">
-      <div class="d-flex flex-ai-center flex-jc-space-between">
-        <button (click)="back()" tabindex="0"
-          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
-          type="button">
-          <i class="icon-svg icon-svg--xxs icon-back mr-4">
-            <svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-            </svg></i>
-          {{resourceService?.frmelmnts?.btn?.back}}
-        </button>
-      </div>
-    </div>
+  <div class="p-16 d-flex flex-ai-center br-24 mat-app-background">
+    <button type="button" mat-mini-fab color="accent" class="button-rounded" (click)="back()" tabindex="0" id="goBack" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
+      <mat-icon fontIcon="arrow_back"></mat-icon>
+    </button>
+
   </div>
 
-  <div class="certificate-container zindex-9">
+  <div class="certificate-container relative9">
     <div class="ui container">
       <div class='sb-g mt-16'>
         <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-12">
@@ -93,8 +84,13 @@
 
         <!-- Text update -->
         <section *ngIf="selectedSVGObject?.type === 'text'" id="content1">
-          <div class="twelve wide column">
-            <div class="sb-search-box m-0">
+          <div class="w-100">
+            <mat-form-field class="w-100 sb-mat-form-field-custom border-radius mb-16" appearance="fill">
+              <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+              <input matInput autofocus [(ngModel)]="selectedSVGObject.value" type="text" maxlength="80">
+              <mat-hint>{{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}</mat-hint>
+            </mat-form-field>
+            <!-- <div class="sb-search-box m-0">
               <div class="input-div relative">
                 <input autofocus class="sb-search-input" [(ngModel)]="selectedSVGObject.value" type="text"
                   maxlength="80" />
@@ -102,7 +98,7 @@
             </div>
             <small _ngcontent-nit-c26="" class="pl-4 fsmall">
               {{80 - selectedSVGObject.value.length}} / 80 {{resourceService?.frmelmnts?.lbl?.characterleft}}
-            </small>
+            </small> -->
           </div>
         </section>
       </div>
