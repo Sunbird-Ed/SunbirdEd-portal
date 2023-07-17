@@ -79,7 +79,7 @@ build_server(){
     echo "var1=$var1, var2=$var2"
     echo $PWD
 
-    sed -i '' "s/[a-zA-z]*-cloud-services/$var1/g" index.js
+    sed -i'' "s/[a-zA-z]*-cloud-services/$var1/g" index.js
 
     cd ../..
     nvm use $NODE_VERSION
