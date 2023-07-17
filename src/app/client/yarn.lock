@@ -2474,10 +2474,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@samagra-x/uci-console@6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@samagra-x/uci-console/-/uci-console-6.0.1.tgz#ef134eb854dbcf00715d5fdafc3b5c1d1bc1a725"
-  integrity sha512-5btOzEgxPSKOu65hw+/imArHoZMtlXNErXIxvovA3jpzNlpsBFuwbu/WlVyNR3BLzFLbQsQ0ERy56NwYSKcZ1A==
+"@samagra-x/uci-console@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@samagra-x/uci-console/-/uci-console-6.0.2.tgz#10b548277e8497ba8b5dbb9ec55e5bcf8ff3363d"
+  integrity sha512-rSeP9ZUSGsW9I1XO0pEUtf8KJr9gkkD22+ZkyI9sHaEAuXpDwbi0MjLM1LUsYTlH2mGc72cJ9qeiSqcyE4J0GA==
   dependencies:
     tslib "^2.0.0"
 
