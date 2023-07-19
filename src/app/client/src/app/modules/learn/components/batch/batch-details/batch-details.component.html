@@ -86,7 +86,7 @@
         </div>
      <div *ngIf="showError" class="bgcolor-error px-16 py-8 mat-body-2 br-4">{{resourceService.messages.stmsg.m0081}}</div>
     
-     <button mat-raised-button color="accent" class="width-100 button-rounded" tabindex="0"
+     <button mat-raised-button color="accent" class="w-100 button-rounded" tabindex="0"
      (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
      *ngIf="allowBatchCreation && isTrackable && showCreateBatchBtn">{{resourceService.frmelmnts.lbl.createbatch}}</button>
       </div>

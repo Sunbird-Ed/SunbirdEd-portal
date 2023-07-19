@@ -71,7 +71,7 @@
         </div>
         <app-no-result *ngIf="noResult && !showLoader" [data]="noResultMessage"></app-no-result>
       <div class="pb-10" *ngIf="searchList && totalCount > config.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
-        <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length">
+        <div class="ui pagination menu mt-10 float-right pt-0" *ngIf="pager.pages.length">
           <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">First</a>
           <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
           <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>

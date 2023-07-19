@@ -1,9 +1,9 @@
-<div class="rightSideSectionCards sb-course-batch-card" *ngIf="curriculum?.length">
+<div class="w-100 sb-course-batch-card" *ngIf="curriculum?.length">
   <div class="header p-16 mat-body-1">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
   <div class="content">
     <div class="description">
       <div class="item" *ngFor="let data of curriculum">
-        <div class="content curriculum-content">
+        <div class="content curriculum-content mat-body-1 d-flex py-8">
           <i [className]="data?.class" aria-hidden="true"></i>
           <span> {{data?.count}}&nbsp;{{data?.label}}</span>
         </div>

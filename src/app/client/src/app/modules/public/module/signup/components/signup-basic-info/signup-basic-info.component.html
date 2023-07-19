@@ -68,6 +68,6 @@
     </div>
     <button [attr.aria-disabled]="!personalInfoForm.valid" [disabled]="!personalInfoForm.valid" type="biutton"
         appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-        mat-raised-button color="accent" class="button-rounded text-uppercase width-100 mt-16" tabindex="0"
+        mat-raised-button color="accent" class="button-rounded text-uppercase w-100 mt-16" tabindex="0"
         (click)="next()">{{resourceService.frmelmnts.lbl.continue}}<mat-icon>arrow_right_alt</mat-icon></button>
 </div>

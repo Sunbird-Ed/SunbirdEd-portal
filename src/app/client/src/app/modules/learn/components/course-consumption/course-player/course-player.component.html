@@ -7,7 +7,7 @@
         <!-- Course details for mobile view -->
         <!-- <div class="sb-bg-color-white p-8 mb-16 mobile only"
           *ngIf="enrolledBatchInfo?.cert_templates; else noMobileCertificate">
-          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 w-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
               class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
@@ -16,7 +16,7 @@
 
         <ng-template #noMobileCertificate>
           <div class="sb-bg-color-white p-8 mb-16 mobile only">
-            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 w-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
               <span
                 class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
@@ -33,7 +33,7 @@
 
         <div class="mat-bg-white p-8 mb-16 mobile only"
           *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
-          <div class="d-inline-flex flex-ai-center py-8 px-16 width-100">
+          <div class="d-inline-flex flex-ai-center py-8 px-16 w-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
               class="mat-body-1 color-accent ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
@@ -178,7 +178,7 @@
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
 
         <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledBatchInfo?.cert_templates; else noCertificate">
-          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 w-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
               class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
@@ -187,7 +187,7 @@
 
         <ng-template #noCertificate>
           <div class="sb-bg-color-white p-8 mb-16 computer only">
-            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 w-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
               <span
                 class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
@@ -204,7 +204,7 @@
 
         <div class="mat-bg-white p-8 mb-16 computer only"
           *ngIf="enrolledCourse && certificateDescription && !certificateDescription?.isCertificate">
-          <div class="d-inline-flex flex-ai-center py-8 px-16 width-100">
+          <div class="d-inline-flex flex-ai-center py-8 px-16 w-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
               class="mat-body-1 color-accent ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
@@ -213,7 +213,7 @@
 
         <div class="mat-bg-white p-8 mb-16 computer only"
           *ngIf="enrolledCourse && certificateDescription && certificateDescription?.description">
-          <div class="d-inline-flex flex-ai-center p-8 width-100">
+          <div class="d-inline-flex flex-ai-center p-8 w-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
               class="mat-body-1 color-accent ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>

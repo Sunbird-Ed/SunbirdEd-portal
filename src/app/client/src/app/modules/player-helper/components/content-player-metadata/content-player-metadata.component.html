@@ -5,13 +5,13 @@
         </h4>
         <div *ngIf="!readMore">
             <span class="overflow-word-wrap">{{metadata.description | slice:0:150 }}&nbsp;</span>
-            <span class="font-weight-bold color-accent mouse-pointer mat-subheading-1" tabindex="0" (click)="readMore = !readMore" *ngIf="metadata.description.length > 150 && readMore === false">
+            <span class="font-weight-bold color-accent cursor-pointer mat-subheading-1" tabindex="0" (click)="readMore = !readMore" *ngIf="metadata.description.length > 150 && readMore === false">
                 {{resourceService.frmelmnts.lbl.readmore}}
             </span>
         </div>
         <div *ngIf="readMore">
             <span class="overflow-word-wrap">{{metadata.description}}&nbsp;</span>
-            <span class="font-weight-bold color-accent mouse-pointer mat-subheading-1" tabindex="0" (click)="readMore = false">
+            <span class="font-weight-bold color-accent cursor-pointer mat-subheading-1" tabindex="0" (click)="readMore = false">
                 {{resourceService.frmelmnts.lbl.readless}}
             </span>
         </div>
