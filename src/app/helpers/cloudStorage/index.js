@@ -9,16 +9,16 @@
  * @version     - 1.0.0
  */
 
-const cloudService  = require('client-cloud-services');
-const mapCloudConfig=require('./helperUtils')
+const cloudService = require('azure-cloud-services');
+const cloudHelper = require('./helperUtils')
 
 /**
  * Based on Environment Cloud Provider value
  * Export respective Storage Service
  */
-    let config = mapCloudConfig(cloudService.config());
-    console.log("Cloud config is",config)
-    let cloudClient = cloudService.init();
-    const cloudStorage = new cloudClient(config);
-    exports.CLOUD_CLIENT = cloudStorage;
+let config = cloudHelper.mapCloudConfig(cloudService.config());
+console.log("Cloud config is", config)
+let cloudClient = cloudService.init();
+const cloudStorage = new cloudClient(config);
+exports.CLOUD_CLIENT = cloudStorage;
 
