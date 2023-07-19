@@ -1,7 +1,8 @@
 const env = process.env
-export const mapCloudConfig = (cloudConfig)=>{
+ const mapCloudConfig = (cloudConfig)=>{
     Object.keys(cloudConfig).forEach((item) => {
         cloudConfig[item] = env[item]
     })
     return  cloudConfig;
   }
+  module.exports={mapCloudConfig}
