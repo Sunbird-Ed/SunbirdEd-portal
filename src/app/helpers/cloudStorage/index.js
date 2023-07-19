@@ -10,27 +10,15 @@
  */
 
 const cloudService  = require('client-cloud-services');
-const envHelper     = require('../../helpers/environmentVariablesHelper');
-
+const mapCloudConfig=require('./helperUtils')
 
 /**
  * Based on Environment Cloud Provider value
  * Export respective Storage Service
  */
-  let cloudConfig = {
-      identity: envHelper.cloud_private_storage_accountname,
-      credential: envHelper.cloud_private_storage_secret,
-     
-      reportsContainer: envHelper.cloud_storage_privatereports_bucketname,
-      labelsContainer: envHelper.cloud_storage_resourceBundle_bucketname,
-
-      region: envHelper.cloud_private_storage_region||null,
-      // containerName: envHelper.sunbird_aws_bucket_name||null,
-      cloud_private_storage_project: envHelper.cloud_private_storage_project||null,
-
-
-    };
+    let config = mapCloudConfig(cloudService.config());
+    console.log("Cloud config is",config)
     let cloudClient = cloudService.init();
-    const cloudStorage = new cloudClient(cloudConfig);
+    const cloudStorage = new cloudClient(config);
     exports.CLOUD_CLIENT = cloudStorage;
 
