@@ -122,6 +122,7 @@ export class ObservationUtilService {
         for (const org of profileData.organisations) {
           if (org.isSchool) {
             obj['school'] = org.externalId;
+            break;
           }
         }
   

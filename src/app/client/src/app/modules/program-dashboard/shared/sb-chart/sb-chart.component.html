@@ -22,7 +22,7 @@
       </button>
     </div>
   </div>
-  <div *ngIf="lastUpdatedOn !== 'Invalid date'" class="mb-8 mat-body-2">
+  <div *ngIf="showLastUpdatedOn && lastUpdatedOn" class="mb-8 mb-8 mat-body-2">
     <span>{{ resourceService?.frmelmnts?.lbl?.lastUpdatedOn }}&nbsp;: </span>
     &nbsp; {{ lastUpdatedOn }}
   </div>

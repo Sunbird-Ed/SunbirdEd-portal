@@ -98,12 +98,11 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   goToPrevLocation: boolean = true;
   reportConfig: any;
   chartsReportData: any;
-  lastUpdatedOn: any;
   exportOptions = ['Pdf', 'Img'];
   hideElements: boolean = false;
   globalDistrict: any;
   globalOrg: any;
-  tabIndex: number;
+  tabIndex: number = 0;
   tableToCsv: boolean;
   hideTableToCsv:boolean = true;
   minEndDate: any;  //Min end date - has to be one more than start date 
@@ -117,6 +116,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   blocks:object[] = [];
   errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
   solutionType: any;
+  showErrorForGraphs: boolean = false;
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
@@ -152,7 +152,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   public selectedSolution: string;
   public userAccess:boolean;
   hashedTag;
-
+  oldProgram;
   getProgramsList() {
     const paramOptions = {
       url:
@@ -264,7 +264,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   }
 
   public getUpdatedParameterizedPath(dataSources) {
-    const explicitValue = this.userAccess && !this.reportForm.controls.solution.value ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value')
+    const explicitValue = !this.reportForm.controls.solution.value ? _.get(this.reportForm, 'controls.programName.value') : _.get(this.reportForm, 'controls.solution.value')
     return _.map(dataSources, (dataSource) => ({
       id: dataSource.id,
       path: this.resolveParameterizedPath(dataSource.path, explicitValue)
@@ -294,6 +294,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.districts = this.organisations = this.blocks = [];
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
     this.getReportTypes($event.value,'user_detail_report');
+    this.oldProgram = !_.has(program[0],'requestForPIIConsent')
     this.userAccess = this.reportTypes.length > 0 && _.has(program[0],'requestForPIIConsent');
     if(this.userAccess){
       this.tag = program[0]._id + '_' + this.userId;
@@ -301,6 +302,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       this.loadReports();
     }
     this.newData = !this.userAccess;
+    this.showErrorForGraphs = false;
     const requestBody:ResourceAPIRequestBody= {
       type:'program',
       id:$event.value,
@@ -311,8 +313,10 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   public selectSolution($event) {
     this.newData = false;
+    this.showErrorForGraphs = false;
     this.noResult = false;
     this.districts = this.organisations = []
+    this.userAccess = true;
     this.resetConfigFilters();
     delete this.displayFilters['District'];
     delete this.displayFilters['Organisation'];
@@ -414,7 +418,6 @@ export class DatasetsComponent implements OnInit, OnDestroy {
           this.hideTableToCsv = (result?.tables[0]?.data != undefined) ? true : false;
           result['reportMetaData'] = reportConfig;
           result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
-          this.lastUpdatedOn = dayjs(_.get(result, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
           this.chartsReportData = JSON.parse(JSON.stringify(result));
           return result;
         }))
@@ -621,7 +624,9 @@ export class DatasetsComponent implements OnInit, OnDestroy {
 
   districtSelection($event) {
     this.newData = false;
-    this.appliedFilters = {...this.appliedFilters, district_externalId: $event.value}
+    this.showErrorForGraphs = false
+    this.appliedFilters = {...this.appliedFilters, district_externalId: $event.value};
+    if(_.has(this.appliedFilters,'block_externalId')) delete this.appliedFilters['block_externalId'];
     this.reportForm.controls.districtName.setValue($event.value);
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
     this.displayFilters['District'] = [$event?.source?.triggerValue];
@@ -645,6 +650,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
     this.reportForm.controls.organisationName.setValue($event.value);
     this.displayFilters['Organisation'] = [$event?.source?.triggerValue]
     this.newData = false;
+    this.showErrorForGraphs = false;
     this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
   }
 
@@ -665,7 +671,8 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   dependentFilterMsg(){
     if(!this.reportForm.controls.districtName.value){
       this.newData = true;
-      this.errorMessage = this.resourceService?.frmelmnts?.lbl?.blockWithoutDistrict
+      this.errorMessage = this.resourceService?.frmelmnts?.lbl?.blockWithoutDistrict;
+      this.showErrorForGraphs = true;
     }
   }
 
@@ -740,15 +747,15 @@ export class DatasetsComponent implements OnInit, OnDestroy {
       const config = {
         type: this.selectedReport['datasetId'],
         params: {
-          ...(_.get(this.reportForm, 'controls.startDate.value') && !this.userAccess && { 'start_date': _.get(this.reportForm, 'controls.startDate.value') }),
-          ...(_.get(this.reportForm, 'controls.endDate.value') && !this.userAccess && { 'end_date': _.get(this.reportForm, 'controls.endDate.value') }),
+          ...((_.get(this.reportForm, 'controls.startDate.value') && _.get(this.reportForm, 'controls.solution.value')) && { 'start_date': _.get(this.reportForm, 'controls.startDate.value') }),
+          ...((_.get(this.reportForm, 'controls.endDate.value') && _.get(this.reportForm, 'controls.solution.value') ) && { 'end_date': _.get(this.reportForm, 'controls.endDate.value') }),
           filters: this.filter
         },
         title: this.selectedReport.name
       };
       const request = {
         request: {
-          dataset: 'druid-dataset',
+          dataset: this.selectedReport['dataset'],
           tag: this.hashedTag,
           requestedBy: this.userId,
           datasetConfig: config,
@@ -886,6 +893,7 @@ export class DatasetsComponent implements OnInit, OnDestroy {
   dateChanged($event, type) {
     if (dayjs($event.value).isValid()) {
       this.newData = false;
+      this.showErrorForGraphs = false;
       this.errorMessage = this.resourceService?.frmelmnts?.lbl?.resourceSelect;
       const year = new Date($event.value._d).getFullYear();
       const month = new Date($event.value._d).getMonth();

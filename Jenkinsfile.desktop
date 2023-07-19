@@ -18,7 +18,11 @@ node() {
         stage('Build') {
             sh """
             cd src/desktop/
-            docker run -d --name offline_build -w /offline node:14.19.0-stretch sleep infinity
+            echo "logging_here_______begin"
+            which git
+            which python
+            echo "logging_here________end"
+            docker run -d --name offline_build -w /offline node:16.19.0-slim sleep infinity
             docker cp .. offline_build:/offline/
             docker exec offline_build bash -x /offline/src/desktop/build.sh
             docker cp offline_build:/offline/src/desktop/app_dist.tar.gz ../../
