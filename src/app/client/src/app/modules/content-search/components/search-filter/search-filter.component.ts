@@ -122,10 +122,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         console.error('Error while fetching filters', error);
       });
 
-    if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
-      const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
-      this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
-    }
+    // Checking the fix for #ED-2455
+    // if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
+    //   const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
+    //   this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
+    // }
   }
 
   /**
