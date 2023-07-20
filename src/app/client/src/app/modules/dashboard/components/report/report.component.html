@@ -139,7 +139,7 @@
                             </app-filter>
                           </div>
                         </div>
-                        <div class="ui bottom p-0 b-0 no-bg my-24">
+                        <div class="p-0 br-0 no-bg my-24">
                           <div class="sb-graph-section p-24 my-24"
                             *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
                             <app-map *ngIf="chart?.chartConfig?.chartType === 'map'" [mapData]="chart?.mapData"
@@ -152,7 +152,7 @@
                               (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
                             </app-data-chart>
                           </div>
-                          <div class="ui warning message" *ngIf="!currentReport.charts.length">
+                          <div class="color-warn p-8" *ngIf="!currentReport.charts.length">
                             {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
                           </div>
                         </div>

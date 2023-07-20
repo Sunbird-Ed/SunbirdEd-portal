@@ -17,13 +17,13 @@
              {id: '' + reportsList?.datasetsArr?.length, type: 'CountDatasets'}] : [{id: '' + reportsList?.reportsArr?.length, type: 'CountReports'}]})">
         <mat-tab-group mat-align-tabs="center" color="accent">
           <mat-tab label="Reports">
-            <div class="p-24 b-0 sb-table-responsive">
+            <div class="p-24 br-0 sb-table-responsive">
               <table #allReports class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
               </table>
             </div>
           </mat-tab>
           <mat-tab label="Datasets" *ngIf="reportService?.isUserReportAdmin()">
-            <div class="p-24 b-0 sb-table-responsive">
+            <div class="p-24 br-0 sb-table-responsive">
               <table #allDatasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
               </table>
             </div>
