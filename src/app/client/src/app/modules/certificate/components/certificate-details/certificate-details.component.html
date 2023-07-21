@@ -69,8 +69,10 @@
   
   <div  class="sb-certificatePage sb-certificate-view min-height-auto">
     <div class="sb-certificatePage-holder-details">
-      <a appTelemetryInteract [telemetryInteractEdata]="{id:'return-to-courses-button' , type:'click' , pageid:pageId }" (click)="navigateToCoursesPage()" tabindex="0" class="mt-32 w-100 d-flex flex-jc-space-between p-8 cursor-pointer sb-btn-arrow" title="Return to Courses">
-        {{resourceService?.frmelmnts?.lbl?.returnToCourses}} <i class="angle right icon"></i>
+      <a mat-button appTelemetryInteract [telemetryInteractEdata]="{id:'return-to-courses-button' , type:'click' , pageid:pageId }" 
+      (click)="navigateToCoursesPage()" title="Return to Courses" class="mt-32 w-100 d-flex flex-jc-space-between p-8" tabindex="0">
+      {{resourceService?.frmelmnts?.lbl?.returnToCourses}}
+      <mat-icon> arrow_right_alt</mat-icon>
       </a>
     </div>
   </div>
