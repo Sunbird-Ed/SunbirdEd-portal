@@ -72,13 +72,13 @@
                             </mat-form-field>
                           </div>
                         </div>
-
+                        
                         <button *ngIf="type === 0" appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject()"
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'report-summary'})"
                           (click)="openReportSummaryModal()" tabindex="0" type="button"
                           class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-                          <i class="blue plus alternate icon"></i>
+                          <mat-icon class="color-accent">Add</mat-icon>
                           {{ this.currentReportSummary !='' ? 'Update' : 'Add' }} {{
                           resourceService.frmelmnts.lbl.reportSummary }}
                         </button>
@@ -139,7 +139,7 @@
                             </app-filter>
                           </div>
                         </div>
-                        <div class="ui bottom p-0 b-0 no-bg my-24">
+                        <div class="p-0 br-0 no-bg my-24">
                           <div class="sb-graph-section p-24 my-24"
                             *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
                             <app-map *ngIf="chart?.chartConfig?.chartType === 'map'" [mapData]="chart?.mapData"
@@ -152,7 +152,7 @@
                               (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
                             </app-data-chart>
                           </div>
-                          <div class="ui warning message" *ngIf="!currentReport.charts.length">
+                          <div class="color-warn p-8" *ngIf="!currentReport.charts.length">
                             {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
                           </div>
                         </div>
@@ -280,7 +280,7 @@
           </ng-container>
           <ng-template #loading>
             <div class="ui container">
-              <div class="nine wide column workspacesegment">
+              <div class="nine wide column mt-0">
                 <app-loader></app-loader>
               </div>
             </div>

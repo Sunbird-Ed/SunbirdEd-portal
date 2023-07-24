@@ -102,7 +102,7 @@
                   <mat-form-field appearance="fill" class="w-100">
                     <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
                     <mat-select formControlName="issueTo" role="listbox"
-                      aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo" class="selection"
+                      aria-label="resourceService?.frmelmnts?.cert?.lbl?.issueTo"
                       [disabled]="configurationMode === 'edit'" (selectionChange)="handleParameterChange($event)">
                       <mat-option role="option" *ngFor="let option of issueTo" [value]="option.name"
                         attr.aria-label="{{option.name}}">{{option.name}}</mat-option>

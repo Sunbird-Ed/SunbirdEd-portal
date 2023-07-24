@@ -25,13 +25,13 @@
       <h4 class="my-8 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.description}}</h4>
       <p *ngIf="!readMore" class="mb-0 mat-body-1">
         {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
-        <span class="ui cardsKnowMore mouse-pointer"
+        <span class="cursor-pointer"
           *ngIf="courseHierarchy?.description?.length > 200 && readMore === false" tabindex="0"
           (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
       </p>
       <p *ngIf="readMore" class="mb-0">
         {{ courseHierarchy?.description}}&nbsp;
-        <span class="mouse-pointer" tabindex="0"
+        <span class="cursor-pointer" tabindex="0"
           (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
       </p>
     </div>

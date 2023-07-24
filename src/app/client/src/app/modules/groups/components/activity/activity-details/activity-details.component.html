@@ -1,4 +1,4 @@
-<div class="activity-details-component zindex-9">
+<div class="mat-inside-page-container mat-app-background2 activity-details-component zindex-9">
   <app-back-button></app-back-button>
   <div class="py-16" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
@@ -78,7 +78,13 @@
               <div *ngIf="!isContentTrackable(activity, activity?.contentType)" class="pb-16"><span
                   class="note-color">{{resourceService?.frmelmnts?.lbl?.note}}</span>
                 {{resourceService?.frmelmnts.lbl.noProgress | interpolate:'{type}': (showActivityType())}}</div>
-              <div class="sb-search-box no-btn">
+                <mat-form-field class="w-100 sb-mat-form-field-custom border-radius mb-16" appearance="fill">
+                  <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+                  <input matInput type="text" #searchInputBox (input)="search(searchInputBox.value)"
+                  [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" aria-label="search box">
+                  <button mat-raised-button matSuffix class="ml-8 sb-mat-form-search__button button-rounded" (click)="search(searchInputBox.value)">{{resourceService.frmelmnts?.lbl?.search}}</button>
+                </mat-form-field>
+              <!-- <div class="sb-search-box no-btn">
                 <div class="input-div relative">
                   <i class="search icon" aria-hidden="true"></i>
                   <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"
@@ -86,7 +92,7 @@
                 </div>
                 {{resourceService?.frmelmnts?.lbl?.change}}
                 <button mat-button class="button-rounded color-accent" role="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
-              </div>
+              </div> -->
             </div>
             <div class="d-flex flex-ai-center px-16 py-8 flex-jc-space-between"
               *ngIf="isContentTrackable(activity, activity?.contentType)">

@@ -1,6 +1,23 @@
 @use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 @use "components/video" as *;
 
+.content-video-offline {
+  box-shadow: none;
+  margin-bottom: calculateRem(16px);
+  border-radius: var(--sbt-bradius-24);
+  overflow: hidden;
+
+}
+
+@include respond-below(sm) {
+  .content-video {
+    background: var(--sbt-body-bg2);
+    padding: 0rem;
+    border-radius: calculateRem(16px);
+  }
+}
+
+
 // sb card css
 .sbcard {
   width: 100%;
