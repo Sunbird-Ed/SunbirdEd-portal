@@ -238,30 +238,6 @@ app-workspace {
   padding: 0.5rem 0;
 }
 
-.b-0 {
-  border: 0px solid var(--gray-400);
-}
-
-.bl-0 {
-  border-left: none;
-}
-
-.br-0 {
-  border-right: none;
-}
-
-.br-4 {
-  border-radius: calculateRem(4px);
-}
-
-.bs-0 {
-  box-shadow: none !important;
-}
-
-.bs-2 {
-  box-shadow: 0 0 calculateRem(20px) 0 rgba(var(--rc-rgba-black), 0.29) !important;
-}
-
 .toc-box-shadow {
   box-shadow: 0 calculateRem(4px) calculateRem(8px) 0px rgba(var(--rc-rgba-black), 0.25) !important;
 }
