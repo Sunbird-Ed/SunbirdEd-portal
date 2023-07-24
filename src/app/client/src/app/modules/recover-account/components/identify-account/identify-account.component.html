@@ -4,8 +4,9 @@
       <mat-label class="required">{{resourceService?.frmelmnts?.lbl?.email}}/{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</mat-label>
       <input matInput [ngClass]="{'is-invalid': form.controls.identifier.touched && form.controls.identifier.errors }" type="email" formControlName="identifier" 
       name="identifier" placeholder="{{resourceService?.frmelmnts?.lbl?.enterEmailID}}/{{resourceService?.frmelmnts?.lbl?.phone}}">
-      <span *ngIf="identiferStatus === 'MATCHED'" class="sb-field-verified"><i
-        class="check circle icon"></i></span>
+      <span *ngIf="identiferStatus === 'MATCHED'" class="sb-field-verified">
+        <mat-icon>check_circle</mat-icon>
+      </span>
       <mat-error *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required">
         {{resourceService?.frmelmnts?.lbl?.email}}/{{resourceService?.frmelmnts?.lbl?.phoneRequired}}
       </mat-error>

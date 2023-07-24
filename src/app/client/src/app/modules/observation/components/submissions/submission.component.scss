@@ -35,6 +35,16 @@
     .ui.dropdown .menu {
         background: var(--sb-card-bg);
     }
+    .ui.styled.accordion.title {
+        margin: 0;
+        padding: 2%;
+        font-size: 1em;
+        padding: 0.75em 1em;
+        color: rgba(var(--rc-rgba-black), 0.95);
+        border-top: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.15);
+        transition: background 0.1s ease, color 0.1s ease;
+        font-size: calculateRem(20px);
+      }
 }
 
 .content-submission {

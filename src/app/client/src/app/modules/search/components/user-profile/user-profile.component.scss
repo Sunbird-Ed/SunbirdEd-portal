@@ -1,0 +1,90 @@
+@use "@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+
+//added from legacy
+.cardsHeading {
+    font-weight: bold;
+    font-size: 1.25em;
+}
+.courseStructureHeader {
+    border-bottom: 0 solid rgba(var(--rc-rgba-gray-300), 0.15) !important;
+}
+.userAvtarWrap {
+    position: relative;
+    max-height: calculateRem(150px) !important;
+    max-width: calculateRem(150px) !important;
+}
+.header-image-profile {
+    height: calculateRem(100px) !important;
+    width: calculateRem(100px) !important;
+}
+@media only screen and (max-width: 1024px) {
+    .profile-header-text {
+      padding-left: calculateRem(40px) !important;
+    }
+}
+.profileitems.ui.items > .item a.header,
+.profileitems.ui.items > .item a.header:hover {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  line-height: calculateRem(20px) !important;
+  color: var(--rc-7c7b7b) !important;
+}
+.profileitems.ui.items > .item > .content > a.header,
+.profileitems.ui.items > .item > .content > a.header:hover {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  line-height: calculateRem(20px) !important;
+  color: var(--rc-7c7b7b) !important;
+}
+.profileitems.ui.items > .item .description {
+  color: var(--rc-7c7b7b) !important;
+  font-size: 0.89em !important;
+  line-height: calculateRem(17px) !important;
+  margin-top: 0 !important;
+}
+.profileitems .item .metadata .date {
+  color: var(--rc-7c7b7b) !important;
+  font-size: 0.89em !important;
+  line-height: calculateRem(14px) !important;
+}
+
+.profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:last-child) {
+  padding: calculateRem(12px) 0;
+}
+.profileitems.ui.relaxed.items:not(.horizontal) > .item:not(:first-child) {
+  padding: calculateRem(12px) 0;
+}
+.profileitems .ui.avatar.image {
+  width: 3em;
+  height: 3em;
+  border-radius: 0;
+}
+.profileitems.ui.items > .item .avatar img,
+.ui.items > .item img.avatar {
+  width: 3em;
+  height: 3em;
+  border-radius: 0 !important;
+}
+.iniformationcontent {
+    color: var(--rc-7c7b7b);
+}
+.ui.bottom.attached.tabular.menu.expand-or-minimize-btn {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 0.3em;
+    min-height: 1.28571429em;
+    margin-top: -0.1em;
+  }
+  .ui.bottom.attached.tabular.menu .item.expand-or-minimize-btn-pad {
+    padding: calculateRem(10px) calculateRem(10px) calculateRem(14px) calculateRem(15px);
+  }
+  .secondary-text-color-sunbird {
+    color: var(--rc-7c7b7b) !important;
+  }
+  .expand-or-minimize {
+    font-weight: bold;
+    font-size: 1em;
+    color: var(--primary-color);
+    cursor: pointer;
+  }
