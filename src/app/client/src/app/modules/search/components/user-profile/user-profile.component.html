@@ -12,7 +12,7 @@
         </div>
         <div class="sb-g-col-xs-12 sb-g-col-md-10 sb-g-col-lg-10 sb-g-col-xxxl-10 pt-0">
           <div class="content pt-10">
-            <div class="sectionHeading header">{{userDetails.firstName}} &nbsp;{{userDetails.lastName}}</div>
+            <div class="mat-title font-weight-bold header">{{userDetails.firstName}} &nbsp;{{userDetails.lastName}}</div>
             <div class="meta profileViewSubHeader pb-10">
               <span *ngIf="userDetails.location">{{userDetails.location}}</span>
             </div>
@@ -20,7 +20,7 @@
         </div>
     </div>
   </div>
-  <div class="profilesettings sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+  <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 text-right">
     <h5 class="ui right floated basic icon circular button" [queryParams]="queryParams" [routerLink]="['../../']">
       <i class="ui remove icon"></i>
     </h5>
@@ -119,7 +119,7 @@
                 <span *ngIf="skill.endorsementCount !== 0">{{skill.endorsementCount}}</span>
               </div>
             </div>
-            <div *ngIf="!skill.isEndorsable" class="ui circular labels float-ContentRight ">
+            <div *ngIf="!skill.isEndorsable" class="ui circular labels float-right">
               <a class="ui basic label" tabindex="0" (click)="submitEndorsement(skill.skillName)" [ngClass]="{'not-active': disableEndorsementButton }">
                 +1 </a>
             </div>

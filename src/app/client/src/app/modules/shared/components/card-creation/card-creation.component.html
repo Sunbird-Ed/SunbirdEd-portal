@@ -12,7 +12,7 @@
       <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{(data?.ribbon?.right?.name).toLowerCase() === 'selfassess' ?  resourceService?.frmelmnts?.lbl?.courseassessment : data?.ribbon?.right?.name }}</a>
       <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
       <div class="cardImageText center aligned " matTooltip="{{data.name}}" [matTooltipPosition]="'left'" >
-        <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}
+        <span class="sliderCardHeading text-capitalize"  >{{data.name | slice:0:20}}
            <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 20" ></i>
         </span>
       </div>

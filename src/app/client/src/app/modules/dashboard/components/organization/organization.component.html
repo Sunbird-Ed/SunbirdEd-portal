@@ -49,7 +49,7 @@
       </div> -->
         <div class="right floated three wide column padding-right-dropdown pr-10"
           *ngIf="identifier && myOrganizations && myOrganizations.length > 0">
-          <div class="ui dropdown float-ContentRight">
+          <div class="ui dropdown float-right">
             <div class="text dashBoardSectionHeading">
               {{resourceService?.frmelmnts?.lbl?.creationdataset}}
             </div>
@@ -139,7 +139,7 @@
         <div class="twelve wide column mt-20" *ngIf="graphData && graphData.length > 0">
           <p class="text-align-right dashBoardCardText">
             {{resourceService?.frmelmnts?.instn?.t0058}}
-            <a [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline pl-10"
+            <a [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-underline pl-10"
               (click)="downloadReport();" tabindex="0" appTelemetryInteract [telemetryInteractObject]="interactObject"
               [telemetryInteractEdata]="{id:'download',type:'click',pageid:'org-admin-dashboard'}">
               {{resourceService?.frmelmnts?.instn?.t0059}}</a>

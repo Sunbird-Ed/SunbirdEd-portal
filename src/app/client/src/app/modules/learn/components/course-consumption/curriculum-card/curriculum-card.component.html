@@ -1,31 +1,31 @@
-<div class="rightSideSectionCards ui card sb-course-batch-card">
+<div class="w-100 ui card sb-course-batch-card">
     <div class="p-16 mat-title mb-0">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
     <div class="item p-0" *ngFor="let data of curriculum">
-        <div *ngIf="data.mimeType=='application/pdf'" class="content curriculum-content">
+        <div *ngIf="data.mimeType=='application/pdf'" class="content curriculum-content mat-body-1 d-flex py-8">
             <mat-icon class="mr-8">picture_as_df</mat-icon>
             <span>{{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.pdfcontents}}</span>
         </div>
-        <div *ngIf="data.mimeType.indexOf('video')!=-1" class="content curriculum-content">
+        <div *ngIf="data.mimeType.indexOf('video')!=-1" class="content curriculum-content mat-body-1 d-flex py-8">
             <mat-icon class="mr-8">video_library</mat-icon> <span>
                 {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.videos}}</span>
         </div>
-        <div *ngIf="data.mimeType.indexOf('image')!=-1" class="content curriculum-content">
+        <div *ngIf="data.mimeType.indexOf('image')!=-1" class="content curriculum-content mat-body-1 d-flex py-8">
             <mat-icon class="mr-8">image</mat-icon> <span>
                 {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.imagecontents}}</span>
         </div>
-        <div *ngIf="data.mimeType=='application/vnd.ekstep.html-archive'" class="content curriculum-content">
+        <div *ngIf="data.mimeType=='application/vnd.ekstep.html-archive'" class="content curriculum-content mat-body-1 d-flex py-8">
             <mat-icon class="mr-8">html</mat-icon> <span>
                 {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.htmlarchives}}</span>
         </div>
-        <div *ngIf="data.mimeType=='application/vnd.ekstep.ecml-archive'" class="content curriculum-content">
+        <div *ngIf="data.mimeType=='application/vnd.ekstep.ecml-archive'" class="content curriculum-content mat-body-1 d-flex py-8">
             <mat-icon class="mr-8">code</mat-icon> <span>
                 {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.ecmlarchives}}</span>
         </div>
-        <div *ngIf="data.mimeType=='application/epub'" class="content curriculum-content">
+        <div *ngIf="data.mimeType=='application/epub'" class="content curriculum-content mat-body-1 d-flex py-8">
             <mat-icon class="mr-8">code</mat-icon> <span>
                 {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.epubarchives}}</span>
         </div>
-        <div *ngIf="data.mimeType=='application/vnd.ekstep.h5p-archive'" class="content curriculum-content">
+        <div *ngIf="data.mimeType=='application/vnd.ekstep.h5p-archive'" class="content curriculum-content mat-body-1 d-flex py-8">
             <mat-icon class="mr-8">code</mat-icon> <span>
                 {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.h5parchives}}</span>
         </div>

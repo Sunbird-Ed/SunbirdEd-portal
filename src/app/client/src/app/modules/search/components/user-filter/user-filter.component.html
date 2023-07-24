@@ -2,7 +2,7 @@
   <!--Header-->
   <h5 class="sb-prominent-filter-header">
     {{ resourceService.frmelmnts?.lbl?.userFilterForm | translate }}
-    <i class="mobile only large angle down icon link right-floated" [ngStyle]="{
+    <i class="mobile only large angle down icon link float-right" [ngStyle]="{
         transform: collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'
       }" tabindex="0" (click)="collapse = !collapse" title="{{ collapse == true ? 'Expand' : 'Collapse' }}"
       popupInverted>
