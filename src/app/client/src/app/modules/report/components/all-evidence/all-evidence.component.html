@@ -9,7 +9,7 @@
                             (selectedTabChange)="tabChanged($event)">
                             <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.evidences}}"
                                 [ngClass]="{'active-tab': activeIndex === 0}">
-                                <div class="report-block m-0 p-0 b-0 no-bg">
+                                <div class="report-block m-0 p-0 br-0 no-bg">
                                     <div *ngIf="images?.length">
                                         <p class="item">Images</p>
                                         <div *ngFor="let data of images" class="thumbnail-card">
@@ -43,7 +43,7 @@
                             <mat-tab label="{{this.resourceService?.frmelmnts?.lbl?.remarks}}"
                                 [ngClass]="{'active-tab': activeIndex === 1}">
                                 <div *ngIf="remarks?.length"
-                                    class="report-block ui bottom attached segment p-0 b-0 no-bg">
+                                    class="report-block ui bottom attached segment p-0 br-0 no-bg">
                                     <div *ngFor="let remark of remarks;let i=index">
                                         <label>{{i+1}} {{ remark }}</label>
                                     </div>
