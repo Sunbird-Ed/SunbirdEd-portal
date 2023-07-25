@@ -92,7 +92,7 @@
 
   /* Table striped */
   .sb-table-striped tbody tr:nth-child(2n) {
-    background-color: var(--primary-0);
+    background-color: var(--color-accent-50);
   }
 
   /* Table sortable */
@@ -187,7 +187,7 @@
       }
 
       &-active {
-        background: var(--primary-0);
+        background: var(--color-accent-50);
 
         .sb-media .media-heading {
           font-weight: var(--font-weight-bold);
@@ -258,7 +258,7 @@
   }
 
   .sb-course-progress-status-label{
-    background: var(--primary-100);
+    background: var(--color-primary-100);
     width: 100%;
     border-radius:calculateRem(8px) calculateRem(8px) 0 0;
     justify-content: space-between;
