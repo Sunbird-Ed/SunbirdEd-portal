@@ -15,7 +15,7 @@
     <!--Content-->
     <div mat-dialog-content [appTelemetryImpression]="telemetryImpression" class="create-batch-component">
       <form [formGroup]="createBatchForm" class="batchAddUserForm">
-        <h4 class="color-accent font-weight-bold">Batch Details</h4>
+        <h3 class="color-accent font-weight-bold" tabindex="0">Batch Details</h3>
         <div class="sb-g mb-16">
           <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-8">
             <div
@@ -54,7 +54,7 @@
                   </div>
                 </div> -->
 
-            <label class="w-100">{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
+            <div class="font-weight-bold mat-body-1 mb-8" tabindex="0">{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</div>
             <mat-radio-group aria-label="{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}">
               <mat-radio-button class="mr-16" (change)="handleInputChange('issue-certificate-yes', undefined)"
                 formControlName="issueCertificate" type="radio" id="yes"
@@ -95,7 +95,7 @@
                   <label for="false">{{resourceService?.frmelmnts?.btn?.no}}</label>
                 </div>
               </div> -->
-              <label class="w-100">{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</label>
+              <div class="font-weight-bold mat-body-1 mb-8" tabindex="0">{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</div>
               <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}">
                 <mat-radio-button class="mr-16" formControlName="enableDiscussions" type="radio" id="true"
                   [value]="true">{{resourceService?.frmelmnts?.btn?.yes}}</mat-radio-button>
@@ -104,7 +104,7 @@
               </mat-radio-group>
             </div>
             <div>
-              <label class="w-100" for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
+              <div class="font-weight-bold mat-body-1 mb-8" for="Enrollment Type" tabindex="0">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</div>
               <mat-radio-group aria-label="{{resourceService?.frmelmnts?.lbl?.natureofbatch}}">
                 <mat-radio-button formControlName="enrollmentType" type="radio" id="create-open"
                   [value]="'open'">{{resourceService?.frmelmnts?.lbl?.open}}</mat-radio-button>
@@ -173,7 +173,7 @@
 
 
         <div>
-          <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
+          <div class="font-weight-bold mat-body-1 mb-8" tabindex="0">{{resourceService?.frmelmnts?.lbl?.batchmentors}}</div>
           <mat-form-field color="accent" appearance="fill" class="w-100">
             <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list" class="selection"
               (selectionChange)="selectedMultiValues($event, 'mentors')">
@@ -194,7 +194,7 @@
         </div>
 
         <div class="mt-16" *ngIf="createBatchForm.value.enrollmentType !== 'open'">
-          <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
+          <div class="font-weight-bold mat-body-1 mb-8" tabindex="0">{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</div>
           <mat-form-field color="accent" appearance="fill" class="w-100">
             <mat-select formControlName="users" role="listbox" multiple aria-label="participant list" class="selection"
               (selectionChange)="selectedMultiValues($event, 'participant')">

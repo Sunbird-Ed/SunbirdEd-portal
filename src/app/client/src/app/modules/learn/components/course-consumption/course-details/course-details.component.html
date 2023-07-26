@@ -1,7 +1,7 @@
 <div class="training-info course-details-component text-left" *ngIf="courseHierarchy">
-  <h3 class="font-weight-bold mat-title ">{{resourceService?.frmelmnts?.lbl?.courseDetails}}</h3>
-  <div class="mat-app-background mb-16 p-16 info">
-    <h4 class="mt-0 mb-8 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseRelevantFor}}</h4>
+  <h2 class="font-weight-bold mat-title " tabindex="0">{{resourceService?.frmelmnts?.lbl?.courseDetails}}</h2>
+  <div class="mat-app-background mb-16 p-16 info" tabindex="0">
+    <h3 class="mt-0 mb-8 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseRelevantFor}}</h3>
     <div class="mb-4 mat-body-1" *ngIf="courseHierarchy?.se_boards">
       <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' :
         resourceService?.selectedLang}}:&nbsp;</span><span>{{ courseHierarchy?.se_boards?.join(', ')}}</span>
