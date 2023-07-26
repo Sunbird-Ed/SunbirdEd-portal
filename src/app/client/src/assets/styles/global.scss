@@ -1160,7 +1160,7 @@ a.ui.labels .label:hover {
 }
 
 // theme custom changes
-html[layout="joy"] {
+html[layout="joy"], html[layout="base"] {
   .sbt-sticky-topbar.sb-fontresizecontainer {
     position: sticky;
 

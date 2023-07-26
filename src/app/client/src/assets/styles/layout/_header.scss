@@ -7,7 +7,7 @@
 .sbt-header-bar {
   width: 100%;
   @include respond-above(sm) {
-  height:calculateRem(80px);
+  height:calculateRem(56px);
   }
 }
 .sbt-header-tool-bar {
@@ -34,7 +34,7 @@
   align-items: flex-start;
   padding:0px 0px;
   @include respond-above(sm) {
-    min-height: calculateRem(80px);
+    min-height: calculateRem(56px);
     align-items: center;
     }
     .profile-avtar {
@@ -228,4 +228,8 @@
 }
 .profile-avtar:hover {
   opacity: 1;
+}
+
+.sbt-fluid-header-bg {
+  background: var(--sb-btn-default-color) !important;
 }
