@@ -1,0 +1,4 @@
+<section class="ui container infor-card__wrap" *ngIf="cardInfo">
+    <h1>{{cardInfo.title}}</h1>
+    <info-card *ngFor="let info of cardInfo.cardsData" [cardInfo]="info"></info-card>
+</section>
