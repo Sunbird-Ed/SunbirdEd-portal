@@ -8,7 +8,7 @@
         </div>
         <div class="sb-g px-72-min-sm px-32-max-sm">
           <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-6">
-              <label class="d-flex footer-terms-info flex-w-wrap mat-body-2">
+              <div class="d-flex footer-terms-info flex-w-wrap mat-body-2">
                <span class="d-above-md-none d-below-md-block">
                 <ul class="d-flex flex-ai-center mb-0 pl-0">
                   <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer mat-body-2 font-weight-bold">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
@@ -20,15 +20,15 @@
                 <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                   href="{{appBaseUrl}}/term-of-use.html" target="_blank" class="mat-body-2">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
                 <span [attr.aria-label]="instance" tabindex="0" class="mat-body-2">| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
-              </label>
-              <label class="d-block text-left mat-caption" tabindex="0">
-                <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
-              </label>
+              </div>
+              <div class="d-block text-left mat-caption" tabindex="0">
+                <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img alt="" src="/assets/images/CCby.svg"></span>
+              </div>
           </div>
           <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 sb-g-col-xxxl-6 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative pt-32">
               <img [attr.aria-label]="resourceService.frmelmnts?.lnk?.footerAppDownload | interpolate:'{instance}':  instance" class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
-              <label class="text-center font-weight-bold sbt-footer-title mat-subheading-2 px-24">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
+              <span class="text-center font-weight-bold sbt-footer-title mat-subheading-2 px-24">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</span>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{ resourceService?.frmelmnts?.lbl?.altGoogleplay }}">
