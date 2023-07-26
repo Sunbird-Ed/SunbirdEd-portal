@@ -90,11 +90,11 @@
                 font-size: calculateRem(10px);
                 line-height: calculateRem(11px);
                 border-radius: calculateRem(4px);
-                border: calculateRem(1px) solid var(--primary-200);
+                border: calculateRem(1px) solid var(--color-primary-200);
                 height: calculateRem(16px);
                 width: calculateRem(16px);
                 padding: calculateRem(2px);
-                color: var(--primary-200);
+                color: var(--color-primary-200);
                 display: inline-block;
                 vertical-align: middle;
             }
@@ -106,7 +106,7 @@
             }
 
             .square {
-                color: var(--primary-200);
+                color: var(--color-primary-200);
                 font-size: calculateRem(16px);
             }
 
