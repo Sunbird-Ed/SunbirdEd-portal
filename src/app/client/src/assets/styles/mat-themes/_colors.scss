@@ -4,7 +4,6 @@
 @use "./palette" as *;
 // @use './import-component-theme-config';
 
-
 @mixin color-success {
   $success: mat.define-palette(mat.$green-palette);
   color: mat.get-color-from-palette($success, 500) !important;
@@ -53,6 +52,123 @@
   --color-info: #{$color-info};
   --color-error: #{$color-error};
   --color-gray: #{$color-gray};
+
+  // $color-values: 50, 100, 200, 300, 400, 600, 800;
+
+  // @each $value in $color-values {
+  //   $color-accent-#{$value}: mat.get-color-from-palette($accent, $value);
+  //   --color-accent-#{$value}: #{$color-accent-#{$value}};
+  // }
+
+  // Primary color variations
+  $color-primary-50: mat.get-color-from-palette($primary, 50);
+  $color-primary-100: mat.get-color-from-palette($primary, 100);
+  $color-primary-200: mat.get-color-from-palette($primary, 200);
+  $color-primary-300: mat.get-color-from-palette($primary, 300);
+  $color-primary-400: mat.get-color-from-palette($primary, 400);
+  $color-primary-500: mat.get-color-from-palette($primary, 500);
+  $color-primary-600: mat.get-color-from-palette($primary, 600);
+  $color-primary-700: mat.get-color-from-palette($primary, 700);
+  $color-primary-800: mat.get-color-from-palette($primary, 800);
+  $color-primary-900: mat.get-color-from-palette($primary, 900);
+  --color-primary-50: #{$color-primary-50};
+  --color-primary-100: #{$color-primary-100};
+  --color-primary-200: #{$color-primary-200};
+  --color-primary-300: #{$color-primary-300};
+  --color-primary-400: #{$color-primary-400};
+  --color-primary-500: #{$color-primary-500};
+  --color-primary-600: #{$color-primary-600};
+  --color-primary-700: #{$color-primary-700};
+  --color-primary-800: #{$color-primary-800};
+  --color-primary-900: #{$color-primary-900};
+
+  // Accent color variations
+  $color-accent-50: mat.get-color-from-palette($accent, 50);
+  $color-accent-100: mat.get-color-from-palette($accent, 100);
+  $color-accent-200: mat.get-color-from-palette($accent, 200);
+  $color-accent-300: mat.get-color-from-palette($accent, 300);
+  $color-accent-400: mat.get-color-from-palette($accent, 400);
+  $color-accent-500: mat.get-color-from-palette($accent, 500);
+  $color-accent-600: mat.get-color-from-palette($accent, 600);
+  $color-accent-700: mat.get-color-from-palette($accent, 700);
+  $color-accent-800: mat.get-color-from-palette($accent, 800);
+  $color-accent-900: mat.get-color-from-palette($accent, 900);
+  --color-accent-50: #{$color-accent-50};
+  --color-accent-100: #{$color-accent-100};
+  --color-accent-200: #{$color-accent-200};
+  --color-accent-300: #{$color-accent-300};
+  --color-accent-400: #{$color-accent-400};
+  --color-accent-500: #{$color-accent-500};
+  --color-accent-600: #{$color-accent-600};
+  --color-accent-700: #{$color-accent-700};
+  --color-accent-800: #{$color-accent-800};
+  --color-accent-900: #{$color-accent-900};
+
+  // Success color variations
+  $color-success-50:  mat.get-color-from-palette($success, 50);
+  $color-success-100: mat.get-color-from-palette($success, 100);
+  $color-success-200: mat.get-color-from-palette($success, 200);
+  $color-success-300: mat.get-color-from-palette($success, 300);
+  $color-success-400: mat.get-color-from-palette($success, 400);
+  $color-success-500: mat.get-color-from-palette($success, 500);
+  $color-success-600: mat.get-color-from-palette($success, 600);
+  $color-success-700: mat.get-color-from-palette($success, 700);
+  $color-success-800: mat.get-color-from-palette($success, 800);
+  $color-success-900: mat.get-color-from-palette($success, 900);
+  --color-success-50:  #{$color-success-50};
+  --color-success-100: #{$color-success-100};
+  --color-success-200: #{$color-success-200};
+  --color-success-300: #{$color-success-300};
+  --color-success-400: #{$color-success-400};
+  --color-success-500: #{$color-success-500};
+  --color-success-600: #{$color-success-600};
+  --color-success-700: #{$color-success-700};
+  --color-success-800: #{$color-success-800};
+  --color-success-900: #{$color-success-900};
+
+  // Warning color variations
+  $color-warn-50:  mat.get-color-from-palette($warn, 50);
+  $color-warn-100: mat.get-color-from-palette($warn, 100);
+  $color-warn-200: mat.get-color-from-palette($warn, 200);
+  $color-warn-300: mat.get-color-from-palette($warn, 300);
+  $color-warn-400: mat.get-color-from-palette($warn, 400);
+  $color-warn-500: mat.get-color-from-palette($warn, 500);
+  $color-warn-600: mat.get-color-from-palette($warn, 600);
+  $color-warn-700: mat.get-color-from-palette($warn, 700);
+  $color-warn-800: mat.get-color-from-palette($warn, 800);
+  $color-warn-900: mat.get-color-from-palette($warn, 900);
+  --color-warn-50:  #{$color-warn-50};
+  --color-warn-100: #{$color-warn-100};
+  --color-warn-200: #{$color-warn-200};
+  --color-warn-300: #{$color-warn-300};
+  --color-warn-400: #{$color-warn-400};
+  --color-warn-500: #{$color-warn-500};
+  --color-warn-600: #{$color-warn-700};
+  --color-warn-700: #{$color-warn-700};
+  --color-warn-800: #{$color-warn-800};
+  --color-warn-900: #{$color-warn-900};
+
+  // Error color variations
+  $color-error-50:  mat.get-color-from-palette($error, 50);
+  $color-error-100: mat.get-color-from-palette($error, 100);
+  $color-error-200: mat.get-color-from-palette($error, 200);
+  $color-error-300: mat.get-color-from-palette($error, 300);
+  $color-error-400: mat.get-color-from-palette($error, 400);
+  $color-error-500: mat.get-color-from-palette($error, 500);
+  $color-error-600: mat.get-color-from-palette($error, 600);
+  $color-error-700: mat.get-color-from-palette($error, 700);
+  $color-error-800: mat.get-color-from-palette($error, 800);
+  $color-error-900: mat.get-color-from-palette($error, 900);
+  --color-error-50:  #{$color-error-50};
+  --color-error-100: #{$color-error-100};
+  --color-error-200: #{$color-error-200};
+  --color-error-300: #{$color-error-300};
+  --color-error-400: #{$color-error-400};
+  --color-error-500: #{$color-error-500};
+  --color-error-600: #{$color-error-600};
+  --color-error-700: #{$color-error-700};
+  --color-error-800: #{$color-error-800};
+  --color-error-900: #{$color-error-900};
 
   /* color starts */
   .color-primary,

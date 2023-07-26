@@ -24,7 +24,7 @@
 
       &:hover,
       &.active {
-        background-color: var(--primary-100);
+        background-color: var(--color-primary-100);
         width: 100% !important;
         padding-right: calculateRem(24px);
       }
