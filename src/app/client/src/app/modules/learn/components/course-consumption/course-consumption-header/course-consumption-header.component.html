@@ -12,10 +12,10 @@
     </button>
     <!-- Textbook image -->
     <div class="toolbar-pageback__img">
-      <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
+      <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="umage of course book">
     </div>
     <div class="toolbar-pageback__heading">
-      <h3 class="mat-title sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h3>
+      <h1 class="mat-title sb__ellipsis" tabindex="0" role="heading" aria-level="2">{{courseHierarchy?.name}}</h1>
       <!-- Textbook Rating with share icon -->
       <div class="toolbar-pageback__metadata d-flex flex-ai-center">
         <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini mr-8" [isReadonly]="true"
