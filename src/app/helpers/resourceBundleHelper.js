@@ -7,7 +7,6 @@ const StorageService    = require('../helpers/cloudStorage/index');
 const getGeneralisedResourcesBundles = (req, res) => {
     let container, blobName = req.params.fileName;
     container = envHelper.cloud_storage_resourceBundle_bucketname;
-
     StorageService.CLOUD_CLIENT.getFileAsText(container, blobName, function (error, result, response) {
         if (error && error.statusCode === 404) {
             logger.error({ msg: "Blob %s wasn't found container %s", blobName, container })

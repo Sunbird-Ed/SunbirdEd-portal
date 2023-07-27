@@ -2,23 +2,31 @@
 /**
  * @file        - Entry file referencing Storage Service
  * @description - Entry file referencing Storage Service
- * @exports     - `AzureStorageService`, `AWSStorageService` and `GoogleStorageService`
+ * @exports     - `AzureStorageService`, `AWSStorageService` and `GoogleStorageService` 
  * @author      - RAJESH KUMARAVEL
  * @since       - 5.0.1
- * @updated     - 5.1.0
- * @version     - 1.0.0
+ * @updated     - 6.0.0
+ * @version     - 2.0.0
  */
 
-const cloudService = require('azure-cloud-services');
-const cloudHelper = require('./helperUtils')
+const cloudService  = require('c-cloud-services');
+const envHelper     = require('../../helpers/environmentVariablesHelper');
+const cloudProvider = envHelper.sunbird_cloud_storage_provider;
 
 /**
  * Based on Environment Cloud Provider value
  * Export respective Storage Service
  */
-let config = cloudHelper.mapCloudConfig(cloudService.config());
-console.log("Cloud config is", config)
-let cloudClient = cloudService.init();
-const cloudStorage = new cloudClient(config);
-exports.CLOUD_CLIENT = cloudStorage;
+if (!cloudProvider) throw new Error("Cloud Storage Service - Provider is not initialized");
+let cloudConfig = {
+  provider: envHelper.sunbird_cloud_storage_provider,
+  identity: envHelper.cloud_private_storage_accountname,
+  credential: envHelper.cloud_private_storage_secret,
+  reportsContainer: envHelper.cloud_storage_privatereports_bucketname,
+  labelsContainer: envHelper.cloud_storage_resourceBundle_bucketname,
+  region: envHelper.cloud_private_storage_region,
+  projectId: envHelper.cloud_private_storage_project,
+};
 
+let cloudClient = cloudService.init(cloudConfig);
+exports.CLOUD_CLIENT = cloudClient;

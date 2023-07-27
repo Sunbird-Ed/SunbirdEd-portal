@@ -75,6 +75,7 @@
     "azure-cloud-services":"1.0.1",
     "body-parser": "1.17.2",
     "cassandra-session-store": "1.0.6",
+    "c-cloud-services": "1.0.0",
     "compare-versions": "3.5.1",
     "compression": "1.7.2",
     "connect-redis": "4.0.4",
